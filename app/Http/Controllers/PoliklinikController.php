@@ -96,10 +96,11 @@ class PoliklinikController extends Controller
             ->editColumn('nm_pasien', function ($q) {
                 return $q->pasien->nm_pasien . ' <br/> (' . $q->no_rawat . ')';
             })
-            ->addColumn('aksi', function () {
-                return "<button class='btn btn-success btn-sm mb-2' style='width:100px'>PANGGIL</button><br/>
-                <button class='btn btn-warning btn-sm mb-2' style='width:100px'>SELESAI</button><br/>
-                <button class='btn btn-danger btn-sm mb-2' style='width:100px'>BATAL</button></div>";
+            ->addColumn('aksi', function ($q) {
+                return '<div id="aksi">
+                <button onclick="panggil(\'' . $q->no_reg . '\')" class="btn btn-success btn-sm mb-2 periksa-' . $q->no_reg . '" type="button" style="width:100px" data-id="' . $q->no_rawat . '">PANGGIL</button><br/>
+                <button disabled class="btn btn-secondary btn-sm mb-2 selesai-' . $q->no_reg . '" style="width:100px" data-id="' . $q->no_rawat . '" type="button">SELESAI</button><br/>
+                <button disabled onclick="batal(\'' . $q->no_reg . '\')" class="btn btn-secondary btn-sm mb-2 batal-' . $q->no_reg . '" style="width:100px" data-id="' . $q->no_rawat . '" type="button">BATAL</button></div>';
             })
             ->addColumn('upload', function ($q) {
                 $no_rawat = $this->statusUpload($q->no_rawat);

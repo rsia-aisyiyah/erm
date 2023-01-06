@@ -26,7 +26,7 @@
                         <thead>
                             <tr role="row">
                                 <th style="width: 5%">Riwayat</th>
-                                <th>Aksi</th>
+                                <th style="width: 10%">Aksi</th>
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>Upload</th>
@@ -66,6 +66,7 @@
         function tb_pasien() {
             var table = $('#tb_pasien').DataTable({
                 processing: true,
+                scrollX: true,
                 serverSide: true,
                 ajax: {
                     url: "table/{{ Request::segment(2) }}?dokter={{ Request::get('dokter') }}",

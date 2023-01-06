@@ -58,6 +58,55 @@
     </style>
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script>
+        function panggil(urut) {
+
+
+            $('.selesai-' + urut).prop('disabled', false);
+            $('.selesai-' + urut).prop('class', 'btn btn-warning btn-sm mb-2 selesai-' + urut + '');
+
+            $('.batal-' + urut).prop('disabled', false);
+            $('.batal-' + urut).prop('class', 'btn btn-danger btn-sm mb-2 batal-' + urut + '');
+
+            $('.periksa-' + urut).prop('class', 'btn btn-primary btn-sm mb-2 periksa-' + urut + '');
+            $('.periksa-' + urut).css({
+                'background-color': 'rgb(152 0 175)',
+                'border-color': 'rgb(142 6 163)'
+            });
+            $('.periksa-' + urut).text('RE-CALL');
+
+            id = $('.periksa-' + urut).data('id');
+
+
+            $.ajax({
+                url: '/erm/poliklinik/panggil',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'no_rawat': id,
+                },
+                method: "POST",
+                success: function(data) {
+                    console.log(data);
+                }
+            })
+        }
+
+        function batal(urut) {
+            $('.periksa-' + urut).prop('class', 'btn btn-success btn-sm mb-2 periksa-' + urut + '');
+            $('.periksa-' + urut).removeAttr('style');
+            $('.periksa-' + urut).css({
+                'width': '100px'
+            });
+
+            $('.batal-' + urut).prop('disabled', true);
+            $('.batal-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 batal-' + urut + '');
+
+            $('.selesai-' + urut).prop('disabled', true);
+            $('.selesai-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 selesai-' + urut + '');
+
+            $('.periksa-' + urut).text('PANGGIL');
+        }
+
+
         function formatTanggal(oldTgl) {
             let t = new Date(oldTgl);
             let bulan = '';

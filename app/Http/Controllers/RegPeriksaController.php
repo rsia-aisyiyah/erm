@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EstimasiPoli;
 use App\Models\Pasien;
 use App\Models\RegPeriksa;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RegPeriksaController extends Controller
@@ -41,10 +43,26 @@ class RegPeriksaController extends Controller
                     }]);
                 }, 'detailPemeriksaanLab' => function ($q) {
                     $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
-                }, 'kamarInap']);
+                }, 'kamarInap'])->orderBy('tgl_registrasi', 'DESC');
             })
             ->get();
 
         return response()->json($pemeriksaan);
+    }
+    public function kirimEstimasi(Request $request)
+    {
+        $tanggal = new Carbon();
+        $no_rawat = $request->no_rawat;
+        $jam_periksa = $tanggal->now()->toDateTimeString();
+
+        // return $jam_periksa;
+        $estimasi = EstimasiPoli::create(
+            [
+                'no_rawat' => $no_rawat,
+                'jam_periksa' => $jam_periksa
+            ]
+
+        );
+        return response()->json('Berhasil', 200);
     }
 }

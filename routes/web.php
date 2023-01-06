@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
         'viewPoliPasien',
     ]);
     Route::get('/poliklinik/count/{kd_poli}', [PoliklinikController::class, 'countUpload']);
+    Route::post('/poliklinik/panggil', [RegPeriksaController::class, 'kirimEstimasi']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'pemeriksaanRalan']);
