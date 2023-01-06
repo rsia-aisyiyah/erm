@@ -97,10 +97,30 @@ class PoliklinikController extends Controller
                 return $q->pasien->nm_pasien . ' <br/> (' . $q->no_rawat . ')';
             })
             ->addColumn('aksi', function ($q) {
+                if ($q->stts != 'Berkas Diterima') {
+                    $classPanggil = "btn btn-success btn-sm mb-2 periksa-" . $q->no_reg;
+                    $textPanggil = "PANGGIL";
+                    $stylePanggil = "width:100px";
+                    $classSelesai = "btn btn-secondary btn-sm mb-2 selesai-" . $q->no_reg;
+                    $styleSelesai = "width:100px";
+                    $disable = 'disabled';
+                    $classBatal = "btn btn-secondary btn-sm mb-2 batal-" . $q->no_reg;
+                    $styleBatal = "width:100px";
+                } else {
+                    $classPanggil = "btn btn-dark btn-sm mb-2 periksa-" . $q->no_reg;
+                    $textPanggil = "RE-CALL";
+                    $stylePanggil = "width: 100px; background-color: rgb(152, 0, 175); border-color: rgb(142, 6, 163);";
+                    $classSelesai = "btn btn-warning btn-sm mb-2 selesai-" . $q->no_reg;
+                    $styleSelesai = "width:100px";
+                    $classBatal = "btn btn-danger btn-sm mb-2 batal-" . $q->no_reg;
+                    $styleBatal = "width:100px";
+                    $disable = '';
+                }
                 return '<div id="aksi">
-                <button onclick="panggil(\'' . $q->no_reg . '\')" class="btn btn-success btn-sm mb-2 periksa-' . $q->no_reg . '" type="button" style="width:100px" data-id="' . $q->no_rawat . '">PANGGIL</button><br/>
-                <button disabled class="btn btn-secondary btn-sm mb-2 selesai-' . $q->no_reg . '" style="width:100px" data-id="' . $q->no_rawat . '" type="button">SELESAI</button><br/>
-                <button disabled onclick="batal(\'' . $q->no_reg . '\')" class="btn btn-secondary btn-sm mb-2 batal-' . $q->no_reg . '" style="width:100px" data-id="' . $q->no_rawat . '" type="button">BATAL</button></div>';
+                <button onclick="panggil(\'' . $q->no_reg . '\')" class="' . $classPanggil . '" type="button" style="' . $stylePanggil . '" data-id="' . $q->no_rawat . '">' . $textPanggil . '</button><br/>
+                <button ' . $disable . ' class="' . $classSelesai . '" style="' . $styleSelesai . '" data-id="' . $q->no_rawat . '" type="button">SELESAI</button><br/>
+                <button ' . $disable . ' onclick="batal(\'' . $q->no_reg . '\')" class="' . $classBatal . '" style="' . $styleBatal . '" data-id="' . $q->no_rawat . '" type="button">BATAL</button>
+                </div>';
             })
             ->addColumn('upload', function ($q) {
                 $no_rawat = $this->statusUpload($q->no_rawat);

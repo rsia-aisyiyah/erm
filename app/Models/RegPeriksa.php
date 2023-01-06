@@ -12,6 +12,7 @@ class RegPeriksa extends Model
 {
     use HasFactory;
     protected $table = 'reg_periksa';
+    public $timestamps = false;
 
     public function pasien()
     {
