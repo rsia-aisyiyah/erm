@@ -91,6 +91,7 @@
         }
 
         function batal(urut) {
+            console.log(urut)
             $('.periksa-' + urut).prop('class', 'btn btn-success btn-sm mb-2 periksa-' + urut + '');
             $('.periksa-' + urut).removeAttr('style');
             $('.periksa-' + urut).css({
@@ -104,8 +105,13 @@
             $('.selesai-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 selesai-' + urut + '');
 
             $('.periksa-' + urut).text('PANGGIL');
+
+
         }
 
+        function cekPemanggilan() {
+
+        }
 
         function formatTanggal(oldTgl) {
             let t = new Date(oldTgl);
