@@ -3,7 +3,22 @@
 @include('layout.head')
 
 <body>
+    <style>
+        table {
+            font-size: 12px;
+        }
 
+        table td {
+            vertical-align: middle;
+        }
+
+        .borderless th,
+        .borderless td {
+            border: none;
+            height: 5px !important;
+            padding: 5px !important;
+        }
+    </style>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">{{ config('app.name') }}</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
@@ -40,27 +55,12 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <style>
-        table {
-            font-size: 12px;
-        }
+    <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
 
-        table td {
-            vertical-align: middle;
-        }
 
-        .borderless th,
-        .borderless td {
-            border: none;
-            height: 5px !important;
-            padding: 5px !important;
-        }
-    </style>
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script>
         function panggil(urut) {
-
-
             $('.selesai-' + urut).prop('disabled', false);
             $('.selesai-' + urut).prop('class', 'btn btn-warning btn-sm mb-2 selesai-' + urut + '');
 
@@ -86,12 +86,17 @@
                 method: "POST",
                 success: function(data) {
                     console.log(data);
+                    $.toast({
+                        text: 'Memangil : ' + data.no_rawat + '<br/> Jam Periksa : ' + data.jam_periksa,
+                        position: 'bottom-center',
+                        bgColor: '#0067dd',
+                        loader: false
+                    })
                 }
             })
         }
 
         function batal(urut) {
-            console.log(urut)
             $('.periksa-' + urut).prop('class', 'btn btn-success btn-sm mb-2 periksa-' + urut + '');
             $('.periksa-' + urut).removeAttr('style');
             $('.periksa-' + urut).css({
@@ -108,6 +113,9 @@
 
 
         }
+
+
+
 
         function cekPemanggilan() {
 

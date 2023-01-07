@@ -15,5 +15,6 @@
     <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/jquery.toast.min.css') }}">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>

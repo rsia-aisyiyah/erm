@@ -10,7 +10,11 @@ use Illuminate\Http\Request;
 
 class RegPeriksaController extends Controller
 {
-    //
+    public $tanggal;
+    public function __construct()
+    {
+        $this->tanggal = new Carbon();
+    }
     public function show($no_rkm_medis)
     {
         $regPeriksa = RegPeriksa::where('no_rkm_medis', $no_rkm_medis)
@@ -49,40 +53,22 @@ class RegPeriksaController extends Controller
 
         return response()->json($pemeriksaan);
     }
-    public function estimasi($no_rawat)
-    {
-        $estimasi = EstimasiPoli::where('no_rawat', $no_rawat)->first();
-        return $estimasi;
-    }
-    public function kirimEstimasi(Request $request)
-    {
-        $tanggal = new Carbon();
-        $no_rawat = $request->no_rawat;
-        $jam_periksa = $tanggal->now()->toDateTimeString();
 
-        if ($this->estimasi($no_rawat)) {
-            $estimasi = EstimasiPoli::where('no_rawat', $no_rawat)->update(['jam_periksa' => $jam_periksa]);
-        } else {
-            $estimasi = EstimasiPoli::create(
-                [
-                    'no_rawat' => $no_rawat,
-                    'jam_periksa' => $jam_periksa,
-                ]
-            );
-        }
-        $this->statusDaftar($no_rawat, 'Berkas Diterima');
-        return response()->json('Berhasil', 200);
-    }
 
     public function statusDaftar($no_rawat, $status)
     {
-
         $status = RegPeriksa::where('no_rawat', $no_rawat)->update([
             'stts' => $status
         ]);
     }
 
-    public function status()
+    public function statusDiterima(Request $request)
+    {
+        $regPeriksa = RegPeriksa::where('tgl_registrasi', $this->tanggal->now()->toDateString())
+            ->where('kd_poli', $request->kd_poli)
+            ->where('kd_dokter', $request->kd_dokter)->count();
+    }
+    public function showRegPeriksa($no_rawat)
     {
     }
 }
