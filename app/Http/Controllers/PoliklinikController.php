@@ -37,7 +37,7 @@ class PoliklinikController extends Controller
         return $pasienPoli = RegPeriksa::where('tgl_registrasi', $tanggal->now()->toDateString())
             ->with(['pasien', 'dokter'])
             ->where('kd_poli', $kd_poli)
-            ->where('kd_dokter', $kd_dokter);
+            ->where('kd_dokter', $kd_dokter)->orderBy('no_reg', 'ASC');
 
         // return response()->json($pasienPoli);
     }

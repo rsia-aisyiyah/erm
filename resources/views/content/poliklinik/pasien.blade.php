@@ -6,7 +6,8 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-center">PASIEN HARI INI</h5>
-                    <p style="background-color: #0067dd;color:white;padding:5px">Poli : <strong>{{ $poli->nm_poli }}</strong>
+                    <p style="background-color: #0067dd;color:white;padding:5px">Poli :
+                        <strong>{{ $poli->nm_poli }}</strong>
                     </p>
                     <p style="">Dokter : <strong>{{ $dokter->nm_dokter }}</strong></p>
                     <table>
@@ -14,6 +15,12 @@
                             <td>Jumlah Pasien</td>
                             <td>:</td>
                             <td> <strong>{{ $jumlah }}</strong></td>
+
+                        </tr>
+                        <tr>
+                            <td>Selesai</td>
+                            <td>:</td>
+                            <td><strong id="count-selesai" class="text-success"></strong></td>
                         </tr>
                         <tr>
                             <td>Terupload</td>
@@ -21,6 +28,8 @@
                             <td><strong id="count-uploaded" class="text-success"></strong></td>
                         </tr>
                     </table>
+
+                    <input type="hidden" class="hitung-panggil" value="">
 
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_pasien" width="100%">
                         <thead>
@@ -49,10 +58,25 @@
     <script type="text/javascript">
         $(document).ready(function() {
             tb_pasien();
-            countUploaded();
+            hitungUpload();
+            hitungSelesai();
         })
 
-        function countUploaded() {
+
+        function hitungSelesai() {
+            kd_poli = '{{ $poli->kd_poli }}';
+            kd_dokter = '{{ $dokter->kd_dokter }}';
+            $.ajax({
+                url: '/erm/registrasi/selesai',
+                method: 'GET',
+                dataType: 'JSON',
+                success: function(response) {
+                    $('#count-selesai').text(response)
+                }
+            });
+        }
+
+        function hitungUpload() {
             $.ajax({
                 url: 'count/{{ $poli->kd_poli }}?dokter={{ $dokter->kd_dokter }}',
                 method: 'GET',
@@ -117,7 +141,6 @@
                         dataType: 'JSON',
                         success: function(data) {
                             data.forEach(function(response) {
-                                // console.log(dataPeriksa)
                                 row.child(resume(response)).show();
                                 tr.addClass('shown');
                                 tr.removeClass('shown');

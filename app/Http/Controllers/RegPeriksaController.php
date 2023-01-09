@@ -66,9 +66,18 @@ class RegPeriksaController extends Controller
     {
         $regPeriksa = RegPeriksa::where('tgl_registrasi', $this->tanggal->now()->toDateString())
             ->where('kd_poli', $request->kd_poli)
-            ->where('kd_dokter', $request->kd_dokter)->count();
+            ->where('kd_dokter', $request->kd_dokter)
+            ->where('stts', 'Berkas Diterima')->count();
+
+        return $regPeriksa;
     }
-    public function showRegPeriksa($no_rawat)
+    public function hitungSelesai(Request $request)
     {
+        $regPeriksa = RegPeriksa::where('tgl_registrasi', $this->tanggal->now()->toDateString())
+            ->where('kd_poli', $request->kd_poli)
+            ->where('kd_dokter', $request->kd_dokter)
+            ->where('stts', 'Selesai')->count();
+
+        return $regPeriksa;
     }
 }
