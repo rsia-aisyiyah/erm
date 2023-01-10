@@ -34,9 +34,8 @@
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_pasien" width="100%">
                         <thead>
                             <tr role="row">
-                                <th style="width: 5%">Riwayat</th>
+                                <th style="width: 5%"></th>
                                 <th style="width: 10%">Aksi</th>
-                                <th>No</th>
                                 <th>Nama</th>
                                 <th>Upload</th>
                             </tr>
@@ -51,6 +50,193 @@
         </div>
         @include('content.upload.inforegistrasi')
         @include('content.upload.resume')
+    </div>
+    <div class="modal fade" id="modalSoap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN S.O.A.P</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <table class="borderless">
+                                    <tr>
+                                        <td width="20%">Dilakukan Oleh :</td>
+                                        <td width="30%">
+                                            <input type="text" class="form-control form-control-sm" id="kd_petugas"
+                                                name="kd_petugas" placeholder=""
+                                                style="font-size:12px;min-height:12px;border-radius:0;">
+                                        </td>
+                                        <td width="45%">
+                                            <input type="text" class="form-control form-control-sm" id="nm_petugas"
+                                                name="nm_petugas" placeholder=""
+                                                style="font-size:12px;min-height:12px;border-radius:0">
+
+                                        </td>
+                                        <td width="5%">
+                                            <button class="btn btn-secondary"
+                                                style="border-radius:0;--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                type="button"><i class="bi bi-paperclip"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Profesi / Jabatan / Departmen : </td>
+                                        <td width="30%">
+                                            <input type="text" class="form-control form-control-sm" id="jabatan"
+                                                name="jabatan" placeholder=""
+                                                style="font-size:12px;min-height:12px;border-radius:0;">
+                                        </td>
+                                        <td width="5%">
+                                            <button class="btn btn-secondary"
+                                                style="border-radius:0;--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                type="button"><i class="bi bi-paperclip"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Subjek : </td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="4"
+                                                style="font-size:12px;min-height:12px;border-radius:0;resize:none"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Objek : </td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="objek" id="objek" cols="30" rows="4"
+                                                style="font-size:12px;min-height:12px;border-radius:0;resize:none"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="3">
+                                            <table>
+                                                <td width="12%">
+                                                    Suhu (<sup>0</sup>C) : <input type="text"
+                                                        class="form-control form-control-sm" id="suhu" name="suhu"
+                                                        placeholder=""
+                                                        style="font-size:12px;min-height:12px;border-radius:0;">
+                                                </td>
+                                                <td width="12%">
+                                                    Tinggi (Cm): <input type="text" class="form-control form-control-sm"
+                                                        id="tb" name="tb" placeholder=""
+                                                        style="font-size:12px;min-height:12px;border-radius:0;">
+                                                </td>
+                                                <td width="12%">
+                                                    Berat (Kg) : <input type="text"
+                                                        class="form-control form-control-sm" id="bb"
+                                                        name="bb" placeholder=""
+                                                        style="font-size:12px;min-height:12px;border-radius:0;">
+                                                </td>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="3">
+                                            <table>
+                                                <td width="12%">
+                                                    Tensi : <input type="text" class="form-control form-control-sm"
+                                                        id="tensi" name="tensi" placeholder=""
+                                                        style="font-size:12px;min-height:12px;border-radius:0;">
+                                                </td>
+                                                <td width="12%">
+                                                    Respirasi (/menit): <input type="text"
+                                                        class="form-control form-control-sm" id="respirasi"
+                                                        name="respirasi" placeholder=""
+                                                        style="font-size:12px;min-height:12px;border-radius:0;">
+                                                </td>
+                                                <td width="12%">
+                                                    Nadi (/menit) : <input type="text"
+                                                        class="form-control form-control-sm" id="jabatan"
+                                                        name="jabatan" placeholder=""
+                                                        style="font-size:12px;min-height:12px;border-radius:0;">
+                                                </td>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="3">
+                                            <table>
+                                                <td width="12%">
+                                                    SpO2 : <input type="text" class="form-control form-control-sm"
+                                                        id="spo2" name="spo2" placeholder=""
+                                                        style="font-size:12px;min-height:12px;border-radius:0;">
+                                                </td>
+                                                <td width="12%">
+                                                    GCS (E,V,M): <input type="text"
+                                                        class="form-control form-control-sm" id="respirasi"
+                                                        name="respirasi" placeholder=""
+                                                        style="font-size:12px;min-height:12px;border-radius:0;">
+                                                </td>
+                                                <td width="12%">
+                                                    Kesadaran :
+                                                    <select class="form-select" name="kesadaran" id="kesadaran"
+                                                        style="font-size:12px;min-height:12px;border-radius:0;>">
+                                                        <option value="Compos Mentis">Compos Mentis</option>
+                                                        <option value="Somnolence">Somnolence</option>
+                                                        <option value="Sopor">Sopor</option>
+                                                        <option value="Coma">Coma</option>
+                                                    </select>
+                                                </td>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-sm-6">
+                                <table class="borderless">
+                                    <tr>
+                                        <td width="5%">Alergi :</td>
+                                        <td width="20%">
+                                            <input type="text" class="form-control form-control-sm" id="kd_petugas"
+                                                name="kd_petugas" placeholder=""
+                                                style="font-size:12px;min-height:12px;border-radius:0;width:150px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Asesmen : </td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="4"
+                                                style="font-size:12px;min-height:12px;border-radius:0;resize:none"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Asesmen : </td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="4"
+                                                style="font-size:12px;min-height:12px;border-radius:0;resize:none"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Plan : </td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="plan" id="plan" cols="30" rows="4"
+                                                style="font-size:12px;min-height:12px;border-radius:0;resize:none"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Instruksi : </td>
+                                        <td colspan="3">
+                                            <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="4"
+                                                style="font-size:12px;min-height:12px;border-radius:0;resize:none"></textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                            class="bi bi-x-circle"></i> Keluar</button>
+                    <button type="button" class="btn btn-primary btn-sm"><i class="bi bi-save"></i> Simpan</button>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -69,8 +255,13 @@
             $.ajax({
                 url: '/erm/registrasi/selesai',
                 method: 'GET',
+                data: {
+                    'kd_poli': kd_poli,
+                    'kd_dokter': kd_dokter,
+                },
                 dataType: 'JSON',
                 success: function(response) {
+                    console.log(response)
                     $('#count-selesai').text(response)
                 }
             });
@@ -104,10 +295,6 @@
                     {
                         data: 'aksi',
                         name: 'aksi'
-                    },
-                    {
-                        data: 'no_reg',
-                        name: 'no_reg'
                     },
                     {
                         data: 'nm_pasien',

@@ -81,6 +81,66 @@
             });
         }
 
+        function selesai(urut) {
+            id = $('.periksa-' + urut).data('id');
+
+            Swal.fire({
+                title: 'Yakin pemeriksaan selesai ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Belum',
+                confirmButtonText: 'Ya, Selesai !'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/erm/poliklinik/selesai',
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                            'no_rawat': id,
+                        },
+                        method: 'POST',
+                        success: function(response) {
+                            console.log(response);
+                            hitungPanggilan();
+                            $.toast({
+                                text: 'Periksa : ' + response.no_rawat +
+                                    ' Selesai <br/> Jam Periksa : ' +
+                                    response.jam_periksa,
+                                position: 'bottom-center',
+                                bgColor: '#198754',
+                                loader: false,
+                                stack: false,
+                            });
+                            $('.selesai-' + urut).prop('disabled', true);
+                            $('.selesai-' + urut).prop('class',
+                                'btn btn-secondary btn-sm mb-2 selesai-' +
+                                urut + '');
+
+                            $('.batal-' + urut).prop('disabled', true);
+                            $('.batal-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 batal-' +
+                                urut + '');
+
+                            $('.periksa-' + urut).prop('disabled', true);
+                            $('.periksa-' + urut).prop('class',
+                                'btn btn-secondary btn-sm mb-2 periksa-' +
+                                urut + '');
+
+                            $('.periksa-' + urut).css({
+                                'background-color': '',
+                                'border-color': ''
+                            });
+                            $('.periksa-' + urut).text('PANGGIL');
+
+                            hitungSelesai();
+                        }
+
+                    });
+                }
+            })
+        }
+
         function panggil(urut) {
             id = $('.periksa-' + urut).data('id');
             hitung_panggilan = $('.hitung-panggil').val();
@@ -136,7 +196,7 @@
             $('.periksa-' + urut).prop('class', 'btn btn-success btn-sm mb-2 periksa-' + urut + '');
             $('.periksa-' + urut).removeAttr('style');
             $('.periksa-' + urut).css({
-                'width': '100px'
+                'width': '80px'
             });
 
             $('.batal-' + urut).prop('disabled', true);

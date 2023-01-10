@@ -12,6 +12,7 @@ use App\Http\Controllers\RegPeriksaController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\EstimasiPoliController;
 use App\Http\Controllers\LabController;
+use App\Http\Controllers\SelesaiPoliController;
 
 Route::get('/login', function () {
     return view('content.auth.login');
@@ -68,6 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/poliklinik/count/{kd_poli}', [PoliklinikController::class, 'countUpload']);
     Route::post('/poliklinik/panggil', [EstimasiPoliController::class, 'kirim']);
     Route::delete('/poliklinik/batal', [EstimasiPoliController::class, 'hapus']);
+    Route::post('/poliklinik/selesai', [SelesaiPoliController::class, 'kirim']);
 
     Route::get('/registrasi/status', [RegPeriksaController::class, 'statusDiterima']);
     Route::get('/registrasi/selesai', [RegPeriksaController::class, 'hitungSelesai']);
