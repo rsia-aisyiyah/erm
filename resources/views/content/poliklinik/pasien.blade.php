@@ -66,13 +66,13 @@
                                     <tr>
                                         <td width="20%">Dilakukan Oleh :</td>
                                         <td width="30%">
-                                            <input type="text" class="form-control form-control-sm" id="kd_petugas"
-                                                name="kd_petugas" placeholder=""
+                                            <input type="text" class="form-control form-control-sm" id="nik"
+                                                name="nik" placeholder=""
                                                 style="font-size:12px;min-height:12px;border-radius:0;">
                                         </td>
                                         <td width="45%">
-                                            <input type="text" class="form-control form-control-sm" id="nm_petugas"
-                                                name="nm_petugas" placeholder=""
+                                            <input type="text" class="form-control form-control-sm" id="nama"
+                                                name="nama" placeholder=""
                                                 style="font-size:12px;min-height:12px;border-radius:0">
 
                                         </td>
@@ -247,6 +247,29 @@
             hitungUpload();
             hitungSelesai();
         })
+
+        function modalsoap(no_rawat) {
+            // console.log('{{ session()->get('pegawai')->nama }}')
+            jbtn = "{{ session()->get('pegawai')->jbtn }}";
+            nik = "{{ session()->get('pegawai')->nik }}";
+            nama = "{{ session()->get('pegawai')->nama }}";
+
+            $('#nama').val(nama);
+            $('#nik').val(nik);
+            $('#jabatan').val(jbtn);
+
+            $.ajax({
+                url: '/erm/poliklinik/pemeriksaan',
+                method: 'GET',
+                dataType: 'JSON',
+                data: {
+                    no_rawat: no_rawat,
+                },
+                success: function(response) {
+                    console.log(response)
+                }
+            })
+        }
 
 
         function hitungSelesai() {

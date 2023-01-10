@@ -148,7 +148,7 @@ class PoliklinikController extends Controller
                 $btnUpload =
                     '<a href="#form-upload" onclick="detailPeriksa(\'' . $q->no_rawat . '\', \'' . $q->status_lanjut . '\')" ' . $btnClass;
                 $btnUpload .=
-                    '<button class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap"><i class="bi bi-pencil-square"></i></button>';
+                    '<button class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" onclick="modalsoap(\'' . $q->no_rawat . '\')"><i class="bi bi-pencil-square"></i></button>';
 
                 return $btnUpload;
             })

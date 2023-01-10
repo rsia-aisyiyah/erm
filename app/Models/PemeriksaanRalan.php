@@ -13,4 +13,8 @@ class PemeriksaanRalan extends Model
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
     }
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'nik', 'nik');
+    }
 }

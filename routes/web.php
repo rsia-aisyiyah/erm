@@ -12,6 +12,7 @@ use App\Http\Controllers\RegPeriksaController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\EstimasiPoliController;
 use App\Http\Controllers\LabController;
+use App\Http\Controllers\PemeriksaanRalanController;
 use App\Http\Controllers\SelesaiPoliController;
 
 Route::get('/login', function () {
@@ -73,6 +74,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/registrasi/status', [RegPeriksaController::class, 'statusDiterima']);
     Route::get('/registrasi/selesai', [RegPeriksaController::class, 'hitungSelesai']);
+
+    Route::get('/poliklinik/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'pemeriksaanRalan']);
