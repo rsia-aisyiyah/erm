@@ -83,7 +83,7 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-sm-6">
+                            {{-- <div class="col-sm-6">
                                 <table class="borderless">
                                     <tr>
                                         <td width="5%">Tanggal : </td>
@@ -94,7 +94,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </div>
+                            </div> --}}
                         </div>
                         <hr />
                         <div class="row">
@@ -274,14 +274,40 @@
 @push('script')
     <script type="text/javascript">
         $(document).ready(function() {
+            var kd_poli = '{{ $poli->kd_poli }}';
+            var kd_dokter = '{{ $dokter->kd_dokter }}';
             tb_pasien();
             hitungUpload();
             hitungSelesai();
+            hitungPasien();
+
+            setInterval(function() {
+                $('#tb_pasien').DataTable().destroy();
+                tb_pasien();
+                hitungUpload();
+                hitungSelesai();
+                $.toast({
+                    heading: 'MEMUAT ULANG DATA',
+                    icon: 'success',
+                    loaderBg: '#13653f',
+                    position: 'bottom-center',
+                    bgColor: '#198754',
+                    textColor: 'white',
+                    stack: false,
+                })
+            }, 20000);
         })
 
-        $('#tgl_perawatan').datetimepicker({
-            format: 'yyyy-mm-dd'
-        });
+        function hitungPasien() {
+            console.log(kd_poli, ' dari gobal variabel');
+            // $.ajax({
+            //     url: '/erm/poliklinik/jumlah',
+            //     data: {
+            //         'kd_poli':
+            //     }
+            // })
+
+        }
 
         function modalsoap(no_rawat) {
 
@@ -289,37 +315,49 @@
             nik = "{{ session()->get('pegawai')->nik }}";
             nama = "{{ session()->get('pegawai')->nama }}";
 
-            $('#nama').val(nama);
-            $('#nik').val(nik);
-            $('#jabatan').val(jbtn);
 
             $.ajax({
                 url: '/erm/pemeriksaan',
                 method: 'GET',
-                // dataType: 'JSON',
+                dataType: 'JSON',
                 data: {
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
+                    // $.each(response, function(d) {
+                    //     console.log(d);
+                    // })
+
+                    console.log(response)
                     $('#modalSoap').modal('show')
-                    if (response) {
-                        $('#tgl_perawatan').val(response.pemeriksaan.tgl_perawatan)
-                        $('#no_rm').val(response.pemeriksaan.reg_periksa.no_rkm_medis)
-                        $('#nomor_rawat').val(response.pemeriksaan.no_rawat)
-                        $('#nama_pasien').val(response.pemeriksaan.reg_periksa.pasien.nm_pasien)
-                        $('#subjek').val(response.pemeriksaan.keluhan)
-                        $('#objek').val(response.pemeriksaan.pemeriksaan)
-                        $('#asesmen').val(response.pemeriksaan.penilaian)
-                        $('#plan').val(response.pemeriksaan.rtl)
-                        $('#instruksi').val(response.pemeriksaan.instruksi)
-                        $('#suhu').val(response.pemeriksaan.suhu_tubuh)
-                        $('#tensi').val(response.pemeriksaan.tensi)
-                        $('#tinggi').val(response.pemeriksaan.tinggi)
-                        $('#berat').val(response.pemeriksaan.berat)
-                        $('#gcs').val(response.pemeriksaan.gcs)
-                        $('#respirasi').val(response.pemeriksaan.respirasi)
-                        $('#alergi').val(response.pemeriksaan.alergi)
-                        $('#nadi').val(response.pemeriksaan.nadi)
+                    $('input').val('');
+                    $('textarea').val('');
+                    $('#nama').val(nama);
+                    $('#nik').val(nik);
+                    $('#jabatan').val(jbtn);
+                    if (response.tgl_perawatan) {
+                        $('#no_rm').val(response.reg_periksa.no_rkm_medis)
+                        $('#nomor_rawat').val(response.no_rawat)
+                        $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien)
+                        $('#tgl_perawatan').val(response.tgl_perawatan)
+                        $('#subjek').val(response.keluhan)
+                        $('#objek').val(response.pemeriksaan)
+                        $('#asesmen').val(response.penilaian)
+                        $('#plan').val(response.rtl)
+                        $('#instruksi').val(response.instruksi)
+                        $('#suhu').val(response.suhu_tubuh)
+                        $('#tensi').val(response.tensi)
+                        $('#tinggi').val(response.tinggi)
+                        $('#berat').val(response.berat)
+                        $('#gcs').val(response.gcs)
+                        $('#respirasi').val(response.respirasi)
+                        $('#alergi').val(response.alergi)
+                        $('#nadi').val(response.nadi)
+                    } else {
+
+                        $('#nomor_rawat').val(response.no_rawat)
+                        $('#nama_pasien').val(response.pasien.nm_pasien)
+                        $('#no_rm').val(response.no_rkm_medis)
                     }
                 },
                 error: function(xhr, status, error) {
@@ -330,8 +368,7 @@
 
 
         function hitungSelesai() {
-            kd_poli = '{{ $poli->kd_poli }}';
-            kd_dokter = '{{ $dokter->kd_dokter }}';
+
             $.ajax({
                 url: '/erm/registrasi/selesai',
                 method: 'GET',

@@ -41,6 +41,11 @@ class PoliklinikController extends Controller
 
         // return response()->json($pasienPoli);
     }
+    public function jumlahPasienPoli(Request $request)
+    {
+        return $this->poliPasien($request->kd_poli, $request->kd_dokter)->count();
+    }
+
     public function namaPoli($kd_poli = '')
     {
         return $poliklinik = Poliklinik::where('status', '1')

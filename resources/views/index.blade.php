@@ -74,6 +74,7 @@
             hitungPanggilan();
         })
 
+
         function hitungPanggilan() {
             kd_poli = '{{ Request::segment(2) }}';
             kd_dokter = '{{ Request::get('dokter') }}';

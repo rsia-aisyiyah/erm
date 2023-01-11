@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
         'viewPoliPasien',
     ]);
     Route::get('/poliklinik/count/{kd_poli}', [PoliklinikController::class, 'countUpload']);
+    Route::post('/poliklinik/jumlah', [PoliklinikController::class, 'jumlahPasienPoli']);
     Route::post('/poliklinik/panggil', [EstimasiPoliController::class, 'kirim']);
     Route::delete('/poliklinik/batal', [EstimasiPoliController::class, 'hapus']);
     Route::post('/poliklinik/selesai', [SelesaiPoliController::class, 'kirim']);
