@@ -64,6 +64,43 @@
                             <div class="col-sm-6">
                                 <table class="borderless">
                                     <tr>
+                                        <td width="15%">No Rawat : </td>
+                                        <td width="30%">
+                                            <input type="text" class="form-control form-control-sm" id="nomor_rawat"
+                                                name="nomor_rawat" placeholder=""
+                                                style="font-size:12px;min-height:12px;border-radius:0;">
+                                        </td>
+                                        <td width="20%">
+                                            <input type="text" class="form-control form-control-sm" id="no_rm"
+                                                name="no_rm" placeholder=""
+                                                style="font-size:12px;min-height:12px;border-radius:0;">
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" class="form-control form-control-sm" id="nama_pasien"
+                                                name="nama_pasien" placeholder=""
+                                                style="font-size:12px;min-height:12px;border-radius:0;">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-sm-6">
+                                <table class="borderless">
+                                    <tr>
+                                        <td width="5%">Tanggal : </td>
+                                        <td width="20%">
+                                            <input type="text" class="form-control form-control-sm" id="tgl_perawatan"
+                                                name="tgl_perawatan" placeholder=""
+                                                style="font-size:12px;min-height:12px;border-radius:0;">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <table class="borderless">
+                                    <tr>
                                         <td width="20%">Dilakukan Oleh :</td>
                                         <td width="30%">
                                             <input type="text" class="form-control form-control-sm" id="nik"
@@ -115,19 +152,20 @@
                                             <table>
                                                 <td width="12%">
                                                     Suhu (<sup>0</sup>C) : <input type="text"
-                                                        class="form-control form-control-sm" id="suhu" name="suhu"
-                                                        placeholder=""
+                                                        class="form-control form-control-sm" id="suhu"
+                                                        name="suhu" placeholder=""
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                                 <td width="12%">
-                                                    Tinggi (Cm): <input type="text" class="form-control form-control-sm"
-                                                        id="tb" name="tb" placeholder=""
+                                                    Tinggi (Cm): <input type="text"
+                                                        class="form-control form-control-sm" id="tinggi"
+                                                        name="tinggi" placeholder=""
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                                 <td width="12%">
                                                     Berat (Kg) : <input type="text"
-                                                        class="form-control form-control-sm" id="bb"
-                                                        name="bb" placeholder=""
+                                                        class="form-control form-control-sm" id="berat"
+                                                        name="berat" placeholder=""
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                             </table>
@@ -150,8 +188,8 @@
                                                 </td>
                                                 <td width="12%">
                                                     Nadi (/menit) : <input type="text"
-                                                        class="form-control form-control-sm" id="jabatan"
-                                                        name="jabatan" placeholder=""
+                                                        class="form-control form-control-sm" id="nadi"
+                                                        name="nadi" placeholder=""
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                             </table>
@@ -168,8 +206,8 @@
                                                 </td>
                                                 <td width="12%">
                                                     GCS (E,V,M): <input type="text"
-                                                        class="form-control form-control-sm" id="respirasi"
-                                                        name="respirasi" placeholder=""
+                                                        class="form-control form-control-sm" id="gcs"
+                                                        name="gcs" placeholder=""
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                                 <td width="12%">
@@ -192,16 +230,9 @@
                                     <tr>
                                         <td width="5%">Alergi :</td>
                                         <td width="20%">
-                                            <input type="text" class="form-control form-control-sm" id="kd_petugas"
-                                                name="kd_petugas" placeholder=""
+                                            <input type="text" class="form-control form-control-sm" id="alergi"
+                                                name="alergi" placeholder=""
                                                 style="font-size:12px;min-height:12px;border-radius:0;width:150px">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Asesmen : </td>
-                                        <td colspan="3">
-                                            <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="4"
-                                                style="font-size:12px;min-height:12px;border-radius:0;resize:none"></textarea>
                                         </td>
                                     </tr>
                                     <tr>
@@ -248,8 +279,12 @@
             hitungSelesai();
         })
 
+        $('#tgl_perawatan').datetimepicker({
+            format: 'yyyy-mm-dd'
+        });
+
         function modalsoap(no_rawat) {
-            // console.log('{{ session()->get('pegawai')->nama }}')
+
             jbtn = "{{ session()->get('pegawai')->jbtn }}";
             nik = "{{ session()->get('pegawai')->nik }}";
             nama = "{{ session()->get('pegawai')->nama }}";
@@ -259,14 +294,36 @@
             $('#jabatan').val(jbtn);
 
             $.ajax({
-                url: '/erm/poliklinik/pemeriksaan',
+                url: '/erm/pemeriksaan',
                 method: 'GET',
-                dataType: 'JSON',
+                // dataType: 'JSON',
                 data: {
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    console.log(response)
+                    $('#modalSoap').modal('show')
+                    if (response) {
+                        $('#tgl_perawatan').val(response.pemeriksaan.tgl_perawatan)
+                        $('#no_rm').val(response.pemeriksaan.reg_periksa.no_rkm_medis)
+                        $('#nomor_rawat').val(response.pemeriksaan.no_rawat)
+                        $('#nama_pasien').val(response.pemeriksaan.reg_periksa.pasien.nm_pasien)
+                        $('#subjek').val(response.pemeriksaan.keluhan)
+                        $('#objek').val(response.pemeriksaan.pemeriksaan)
+                        $('#asesmen').val(response.pemeriksaan.penilaian)
+                        $('#plan').val(response.pemeriksaan.rtl)
+                        $('#instruksi').val(response.pemeriksaan.instruksi)
+                        $('#suhu').val(response.pemeriksaan.suhu_tubuh)
+                        $('#tensi').val(response.pemeriksaan.tensi)
+                        $('#tinggi').val(response.pemeriksaan.tinggi)
+                        $('#berat').val(response.pemeriksaan.berat)
+                        $('#gcs').val(response.pemeriksaan.gcs)
+                        $('#respirasi').val(response.pemeriksaan.respirasi)
+                        $('#alergi').val(response.pemeriksaan.alergi)
+                        $('#nadi').val(response.pemeriksaan.nadi)
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error)
                 }
             })
         }
@@ -284,7 +341,6 @@
                 },
                 dataType: 'JSON',
                 success: function(response) {
-                    console.log(response)
                     $('#count-selesai').text(response)
                 }
             });

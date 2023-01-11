@@ -9,12 +9,15 @@ class PemeriksaanRalanController extends Controller
 {
     public function ambil(Request $request)
     {
-        $pemeriksaan = PemeriksaanRalan::where('no_rawat', $request->no_rawat)->first();
+        return $pemeriksaan = PemeriksaanRalan::where('no_rawat', $request->no_rawat)
+            ->with('regPeriksa', function ($q) {
+                $q->with('pasien');
+            })->first();
 
-        if ($pemeriksaan) {
-            return response()->json(['message' => 'Berhasil ambil data', 'pemeriksaan' => $pemeriksaan], 200);
-        } else {
-            return response()->json(['message' => 'Tidak ditemukan data'], 419);
-        }
+        // if ($pemeriksaan) {
+        //     return response()->json(['message' => 'Berhasil ambil data', 'pemeriksaan' => $pemeriksaan], 200);
+        // } else {
+        //     return response()->json(['message' => 'Tidak ditemukan data'], 404);
+        // }
     }
 }
