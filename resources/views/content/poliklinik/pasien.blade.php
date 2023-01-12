@@ -264,7 +264,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                             class="bi bi-x-circle"></i> Keluar</button>
-                    <button type="button" class="btn btn-primary btn-sm"><i class="bi bi-save"></i> Simpan</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoap()"><i
+                            class="bi bi-save"></i> Simpan</button>
                 </div>
             </div>
         </div>
@@ -288,7 +289,6 @@
                 hitungUpload();
                 hitungSelesai();
                 hitungPasien();
-                modalsoap(id);
                 $.toast({
                     heading: 'MEMUAT ULANG DATA',
                     icon: 'success',
@@ -324,6 +324,45 @@
             id = no_rawat;
         }
 
+        function simpanSoap() {
+            $.ajax({
+                url: '/erm/pemeriksaan/simpan',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    no_rawat: id,
+                    suhu_tubuh: $('#suhu').val(),
+                    tensi: $('#tensi').val(),
+                    nadi: $('#nadi').val(),
+                    respirasi: $('#respirasi').val(),
+                    tinggi: $('#tinggi').val(),
+                    berat: $('#berat').val(),
+                    spo2: $('#spo2').val(),
+                    gcs: $('#gcs').val(),
+                    kesadaran: $('#kesadaran').val(),
+                    rtl: $('#plan').val(),
+                    keluhan: $('#subjek').val(),
+                    penilaian: $('#asesmen').val(),
+                    pemeriksaan: $('#objek').val(),
+                    alergi: $('#alergi').val(),
+                    instruksi: $('#instruksi').val(),
+                    evaluasi: '-',
+                },
+                success: function(response) {
+                    $.toast({
+                        heading: 'Sukses',
+                        heading: 'SOAP telah disimpan',
+                        icon: 'success',
+                        loaderBg: '#13653f',
+                        position: 'bottom-center',
+                        bgColor: '#198754',
+                        textColor: 'white',
+                        stack: false,
+                    })
+                }
+            })
+        }
+
         function modalsoap(no_rawat) {
             jbtn = "{{ session()->get('pegawai')->jbtn }}";
             nik = "{{ session()->get('pegawai')->nik }}";
@@ -336,10 +375,6 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    // $.each(response, function(d) {
-                    //     console.log(d);
-                    // })
-
                     console.log(response)
 
                     $('input').val('');
@@ -365,6 +400,7 @@
                         $('#respirasi').val(response.respirasi)
                         $('#alergi').val(response.alergi)
                         $('#nadi').val(response.nadi)
+                        $('#spo2').val(response.spo2)
                     } else {
 
                         $('#nomor_rawat').val(response.no_rawat)
