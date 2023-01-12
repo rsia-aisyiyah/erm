@@ -14,7 +14,7 @@
                         <tr>
                             <td>Jumlah Pasien</td>
                             <td>:</td>
-                            <td> <strong>{{ $jumlah }}</strong></td>
+                            <td> <strong id="count-pasien">{{ $jumlah }}</strong></td>
 
                         </tr>
                         <tr>
@@ -273,6 +273,7 @@
 
 @push('script')
     <script type="text/javascript">
+        var id = '';
         $(document).ready(function() {
             var kd_poli = '{{ $poli->kd_poli }}';
             var kd_dokter = '{{ $dokter->kd_dokter }}';
@@ -286,6 +287,8 @@
                 tb_pasien();
                 hitungUpload();
                 hitungSelesai();
+                hitungPasien();
+                modalsoap(id);
                 $.toast({
                     heading: 'MEMUAT ULANG DATA',
                     icon: 'success',
@@ -300,22 +303,31 @@
 
         function hitungPasien() {
             console.log(kd_poli, ' dari gobal variabel');
-            // $.ajax({
-            //     url: '/erm/poliklinik/jumlah',
-            //     data: {
-            //         'kd_poli':
-            //     }
-            // })
+            $.ajax({
+                url: '/erm/pemeriksaan/jumlah',
+                data: {
+                    'kd_poli': kd_poli,
+                    'kd_dokter': kd_dokter
+                },
+                method: 'GET',
+                success: function(response) {
+                    $('#count-pasien').text(response);
+                }
+            })
+        }
 
+        $('#modalSoap').on('shown.bs.modal', function() {
+            modalsoap(id);
+        })
+
+        function ambilNoRawat(no_rawat) {
+            id = no_rawat;
         }
 
         function modalsoap(no_rawat) {
-
             jbtn = "{{ session()->get('pegawai')->jbtn }}";
             nik = "{{ session()->get('pegawai')->nik }}";
             nama = "{{ session()->get('pegawai')->nama }}";
-
-
             $.ajax({
                 url: '/erm/pemeriksaan',
                 method: 'GET',
@@ -329,7 +341,7 @@
                     // })
 
                     console.log(response)
-                    $('#modalSoap').modal('show')
+
                     $('input').val('');
                     $('textarea').val('');
                     $('#nama').val(nama);
@@ -365,7 +377,6 @@
                 }
             })
         }
-
 
         function hitungSelesai() {
 
@@ -427,17 +438,18 @@
                     [1, 'asc']
                 ],
             });
+
             $('#tb_pasien tbody').on('click', 'td.dt-control', function() {
                 var tr = $(this).closest('tr');
                 var row = table.row(tr);
                 var dataPeriksa = [];
 
+                console.log(row);
+
                 if (row.child.isShown()) {
-                    // This row is already open - close it
                     row.child.hide();
                     tr.removeClass('shown');
                 } else {
-                    // Open this row
                     $.ajax({
                         url: '/erm/test/' + row.data().no_rkm_medis,
                         method: 'GET',
@@ -450,8 +462,6 @@
                             })
                         }
                     })
-
-
                 }
             });
         }

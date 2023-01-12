@@ -242,13 +242,6 @@
 
         }
 
-
-
-
-        function cekPemanggilan() {
-
-        }
-
         function formatTanggal(oldTgl) {
             let t = new Date(oldTgl);
             let bulan = '';
