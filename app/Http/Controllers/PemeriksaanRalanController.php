@@ -10,7 +10,8 @@ use App\Models\PemeriksaanRalan;
 class PemeriksaanRalanController extends Controller
 {
     private $tanggal;
-    public function __construct() {
+    public function __construct()
+    {
         $this->tanggal = new Carbon();
     }
     public function ambil(Request $request)
@@ -51,23 +52,24 @@ class PemeriksaanRalanController extends Controller
             'evaluasi' => $request->evaluasi,
         ];
 
-        if($pemeriksaan){
+        if ($pemeriksaan) {
             $update = PemeriksaanRalan::where('no_rawat', $request->no_rawat)->update(
                 $data
             );
-        }else{
+        } else {
 
             $dataTambah = [
+                'nip' => $request->nip,
                 'no_rawat' => $request->no_rawat,
                 'tgl_perawatan' => $this->tanggal->now()->toDateString(),
                 'jam_rawat' => date('h:i:s'),
             ];
 
-            $create = array_push($data, $dataTambah);
+            $create = array_merge($data, $dataTambah);
 
+            // return $create;
             $update = PemeriksaanRalan::create($create);
         }
-
-        return response()->json('Berhasil', 200);
+        return response()->json(['Berhasil', $update], 200);
     }
 }

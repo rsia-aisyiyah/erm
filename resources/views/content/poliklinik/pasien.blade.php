@@ -153,19 +153,19 @@
                                                 <td width="12%">
                                                     Suhu (<sup>0</sup>C) : <input type="text"
                                                         class="form-control form-control-sm" id="suhu"
-                                                        name="suhu" placeholder=""
+                                                        name="suhu" placeholder="" maxlength="5"
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                                 <td width="12%">
                                                     Tinggi (Cm): <input type="text"
                                                         class="form-control form-control-sm" id="tinggi"
-                                                        name="tinggi" placeholder=""
+                                                        name="tinggi" placeholder="" maxlength="5"
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                                 <td width="12%">
                                                     Berat (Kg) : <input type="text"
                                                         class="form-control form-control-sm" id="berat"
-                                                        name="berat" placeholder=""
+                                                        name="berat" placeholder="" maxlength="5"
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                             </table>
@@ -177,19 +177,19 @@
                                             <table>
                                                 <td width="12%">
                                                     Tensi : <input type="text" class="form-control form-control-sm"
-                                                        id="tensi" name="tensi" placeholder=""
+                                                        id="tensi" name="tensi" placeholder="" maxlength="8"
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                                 <td width="12%">
                                                     Respirasi (/menit): <input type="text"
                                                         class="form-control form-control-sm" id="respirasi"
-                                                        name="respirasi" placeholder=""
+                                                        name="respirasi" placeholder="" maxlength="3"
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                                 <td width="12%">
                                                     Nadi (/menit) : <input type="text"
                                                         class="form-control form-control-sm" id="nadi"
-                                                        name="nadi" placeholder=""
+                                                        name="nadi" placeholder="" maxlength="3"
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                             </table>
@@ -200,14 +200,14 @@
                                         <td colspan="3">
                                             <table>
                                                 <td width="12%">
-                                                    SpO2 : <input type="text" class="form-control form-control-sm"
-                                                        id="spo2" name="spo2" placeholder=""
+                                                    SpO2 (%): <input type="text" class="form-control form-control-sm"
+                                                        id="spo2" name="spo2" placeholder="" maxlength="3"
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                                 <td width="12%">
                                                     GCS (E,V,M): <input type="text"
                                                         class="form-control form-control-sm" id="gcs"
-                                                        name="gcs" placeholder=""
+                                                        name="gcs" placeholder="" maxlength="10"
                                                         style="font-size:12px;min-height:12px;border-radius:0;">
                                                 </td>
                                                 <td width="12%">
@@ -347,8 +347,10 @@
                     alergi: $('#alergi').val(),
                     instruksi: $('#instruksi').val(),
                     evaluasi: '-',
+                    nip: $('#nik').val(),
                 },
                 success: function(response) {
+                    console.log(response)
                     $.toast({
                         heading: 'Sukses',
                         heading: 'SOAP telah disimpan',
