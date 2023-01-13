@@ -53,13 +53,13 @@
     </div>
     <div class="modal fade" id="modalSoap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
+            <div class="modal-content" style="background-color: #e7e7e7;">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN S.O.A.P</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST">
+                    <form action="" method="POST" class="form-soap">
                         <div class="row">
                             <div class="col-sm-6">
                                 <table class="borderless">
@@ -83,18 +83,6 @@
                                     </tr>
                                 </table>
                             </div>
-                            {{-- <div class="col-sm-6">
-                                <table class="borderless">
-                                    <tr>
-                                        <td width="5%">Tanggal : </td>
-                                        <td width="20%">
-                                            <input type="text" class="form-control form-control-sm" id="tgl_perawatan"
-                                                name="tgl_perawatan" placeholder=""
-                                                style="font-size:12px;min-height:12px;border-radius:0;">
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div> --}}
                         </div>
                         <hr />
                         <div class="row">
@@ -105,31 +93,21 @@
                                         <td width="30%">
                                             <input type="text" class="form-control form-control-sm" id="nik"
                                                 name="nik" placeholder=""
-                                                style="font-size:12px;min-height:12px;border-radius:0;">
+                                                style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                                         </td>
-                                        <td width="45%">
+                                        <td width="45%" colspan="2">
                                             <input type="text" class="form-control form-control-sm" id="nama"
                                                 name="nama" placeholder=""
-                                                style="font-size:12px;min-height:12px;border-radius:0">
+                                                style="font-size:12px;min-height:12px;border-radius:0" readonly>
 
-                                        </td>
-                                        <td width="5%">
-                                            <button class="btn btn-secondary"
-                                                style="border-radius:0;--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                type="button"><i class="bi bi-paperclip"></i></button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">Profesi / Jabatan / Departmen : </td>
-                                        <td width="30%">
+                                        <td width="30%" colspan="2">
                                             <input type="text" class="form-control form-control-sm" id="jabatan"
                                                 name="jabatan" placeholder=""
-                                                style="font-size:12px;min-height:12px;border-radius:0;">
-                                        </td>
-                                        <td width="5%">
-                                            <button class="btn btn-secondary"
-                                                style="border-radius:0;--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                type="button"><i class="bi bi-paperclip"></i></button>
+                                                style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                                         </td>
                                     </tr>
                                     <tr>
@@ -275,6 +253,8 @@
 @push('script')
     <script type="text/javascript">
         var id = '';
+        var isModalSoapShow = false;
+
         $(document).ready(function() {
             var kd_poli = '{{ $poli->kd_poli }}';
             var kd_dokter = '{{ $dokter->kd_dokter }}';
@@ -289,15 +269,19 @@
                 hitungUpload();
                 hitungSelesai();
                 hitungPasien();
-                $.toast({
-                    heading: 'MEMUAT ULANG DATA',
-                    icon: 'success',
-                    loaderBg: '#13653f',
-                    position: 'bottom-center',
-                    bgColor: '#198754',
-                    textColor: 'white',
-                    stack: false,
-                })
+
+                if (isModalSoapShow == false) {
+                    Swal.fire({
+                        title: 'Memuat ulang data register!',
+                        position: 'top-end',
+                        toast: true,
+                        icon: 'success',
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+
             }, 20000);
         })
 
@@ -318,7 +302,12 @@
 
         $('#modalSoap').on('shown.bs.modal', function() {
             modalsoap(id);
-        })
+            isModalSoapShow = true;
+        });
+
+        $('#modalSoap').on('hidden.bs.modal', function() {
+            isModalSoapShow = false;
+        });
 
         function ambilNoRawat(no_rawat) {
             id = no_rawat;
@@ -351,16 +340,18 @@
                 },
                 success: function(response) {
                     console.log(response)
-                    $.toast({
-                        heading: 'Sukses',
-                        heading: 'SOAP telah disimpan',
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: 'Data SOAP disimpan',
+                        position: 'center',
+                        toast: true,
                         icon: 'success',
-                        loaderBg: '#13653f',
-                        position: 'bottom-center',
-                        bgColor: '#198754',
-                        textColor: 'white',
-                        stack: false,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        timer: 1500,
                     })
+
+                    $('#modalSoap').modal('hide');
                 }
             })
         }

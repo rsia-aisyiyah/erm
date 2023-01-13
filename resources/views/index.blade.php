@@ -18,6 +18,10 @@
             height: 5px !important;
             padding: 5px !important;
         }
+
+        .form-soap .form-control {
+            border-color: #a5a5a5;
+        }
     </style>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">{{ config('app.name') }}</a>

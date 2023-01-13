@@ -50,6 +50,7 @@ class PemeriksaanRalanController extends Controller
             'penilaian' => $request->penilaian,
             'instruksi' => $request->instruksi,
             'evaluasi' => $request->evaluasi,
+            'lingkar_perut' => '-',
         ];
 
         if ($pemeriksaan) {
