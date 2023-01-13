@@ -29,7 +29,7 @@
                         </tr>
                     </table>
 
-                    <input type="hidden" class="hitung-panggil" value="">
+                    <input type="hidden" id="hitung-panggil" value="">
 
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_pasien" width="100%">
                         <thead>
@@ -254,21 +254,21 @@
     <script type="text/javascript">
         var id = '';
         var isModalSoapShow = false;
+        var kd_poli = '{{ $poli->kd_poli }}';
+        var kd_dokter = '{{ $dokter->kd_dokter }}';
 
         $(document).ready(function() {
-            var kd_poli = '{{ $poli->kd_poli }}';
-            var kd_dokter = '{{ $dokter->kd_dokter }}';
             tb_pasien();
             hitungUpload();
             hitungSelesai();
             hitungPasien();
-
+            hitungPanggilan();
             setInterval(function() {
                 $('#tb_pasien').DataTable().destroy();
                 tb_pasien();
                 hitungUpload();
                 hitungSelesai();
-                hitungPasien();
+                hitungPanggilan();
 
                 if (isModalSoapShow == false) {
                     Swal.fire({
@@ -283,10 +283,78 @@
                 }
 
             }, 20000);
-        })
+        });
+
+        function hitungPanggilan() {
+            $.ajax({
+                url: '/erm/registrasi/status',
+                data: {
+                    'kd_poli': kd_poli,
+                    'kd_dokter': kd_dokter,
+                },
+                method: 'GET',
+                success: function(response) {
+                    console.log('Hitung panggilan : ', response)
+                    $('#hitung-panggil').val(response)
+                }
+            });
+        }
+
+        function panggil(urut) {
+
+            id = $('.periksa-' + urut).data('id');
+            hitung_panggilan = $('#hitung-panggil').val();
+            text_recall = $('.periksa-' + urut).text();
+
+            console.log(hitung_panggilan, ', ', text_recall);
+
+            if (hitung_panggilan < 2 || text_recall == 'RE-CALL') {
+                $('.selesai-' + urut).prop('disabled', false);
+                $('.selesai-' + urut).prop('class', 'btn btn-warning btn-sm mb-2 selesai-' + urut + '');
+
+                $('.batal-' + urut).prop('disabled', false);
+                $('.batal-' + urut).prop('class', 'btn btn-danger btn-sm mb-2 batal-' + urut + '');
+
+                $('.periksa-' + urut).prop('class', 'btn btn-primary btn-sm mb-2 periksa-' + urut + '');
+                $('.periksa-' + urut).css({
+                    'background-color': 'rgb(152 0 175)',
+                    'border-color': 'rgb(142 6 163)'
+                });
+                $('.periksa-' + urut).text('RE-CALL');
+                $.ajax({
+                    url: '/erm/poliklinik/panggil',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'no_rawat': id,
+                    },
+                    method: "POST",
+                    success: function(data) {
+                        hitungPanggilan();
+                        $.toast({
+                            text: 'Memangil : ' + data.no_rawat + '<br/> Jam Periksa : ' + data
+                                .jam_periksa,
+                            position: 'bottom-center',
+                            bgColor: '#0067dd',
+                            loader: false,
+                            stack: false,
+                        })
+                    }
+                })
+            } else {
+                $.toast({
+                    text: 'Sedang ada pasien',
+                    position: 'bottom-center',
+                    bgColor: '#ffc107',
+                    textColor: 'black',
+                    stack: false,
+                    loader: false,
+                })
+                hitungPanggilan();
+            }
+
+        }
 
         function hitungPasien() {
-            console.log(kd_poli, ' dari gobal variabel');
             $.ajax({
                 url: '/erm/pemeriksaan/jumlah',
                 data: {
@@ -368,8 +436,6 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    console.log(response)
-
                     $('input').val('');
                     $('textarea').val('');
                     $('#nama').val(nama);
