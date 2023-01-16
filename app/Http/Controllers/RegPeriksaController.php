@@ -33,9 +33,9 @@ class RegPeriksaController extends Controller
             ->first();
         return response()->json($regPeriksa);
     }
-    public function pemeriksaanRalan($no_rkm_medis)
+    public function riwayat(Request $request)
     {
-        $pemeriksaan = Pasien::where('no_rkm_medis', $no_rkm_medis)
+        $pemeriksaan = Pasien::where('no_rkm_medis', $request->no_rkm_medis)
             ->with('regPeriksa', function ($q) {
                 return $q->where(function ($q) {
                     $q->where('stts', 'Sudah')->orWhere('status_lanjut', '=', 'Ranap');
@@ -49,7 +49,7 @@ class RegPeriksaController extends Controller
                     $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
                 }, 'kamarInap'])->orderBy('tgl_registrasi', 'DESC');
             })
-            ->get();
+            ->first();
 
         return response()->json($pemeriksaan);
     }

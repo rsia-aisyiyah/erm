@@ -75,11 +75,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/registrasi/status', [RegPeriksaController::class, 'statusDiterima']);
     Route::get('/registrasi/selesai', [RegPeriksaController::class, 'hitungSelesai']);
+    Route::get('/registrasi/riwayat', [RegPeriksaController::class, 'riwayat']);
 
     Route::get('/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
     Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
-Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'pemeriksaanRalan']);
+Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
 Route::get('/aturan', [DetailPemberianObatController::class, 'aturanPakai']);
 Route::get('lab/petugas', [LabController::class, 'petugas']);

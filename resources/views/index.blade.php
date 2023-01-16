@@ -347,7 +347,7 @@
                     }
                 })
                 pemberian += '</table>'
-                return '<tr><td>Pemberian Obat</td><td>' + pemberian + '</td></tr>';
+                return '<tr><th>Pemberian Obat</th><td>' + pemberian + '</td></tr>';
             }
             return '';
         }
@@ -428,22 +428,6 @@
                     barisPetugas = tgl_sekarang != l.tgl_periksa && classPetugasSekarang != classPetugas ?
                         '<td class="' + classPetugas + '" colspan="2">' + '</td>' +
                         '<tr><td></td><th>Pemeriksaan</th><th>Hasil</th><th>Rujukan</th></tr>' : '';
-
-
-                    // console.log(barisPetugas);
-
-
-                    // hasilLab += '<tr class="table-bordered">' +
-                    //     barisTanggal +
-                    //     barisDokter +
-                    //     barisPetugas +
-                    //     '<tr colspan=3>' + barisPerawatan +
-                    //     '</tr>' +
-                    //     '<tr><td></td><td>' + no + '. ' + l.template.Pemeriksaan + '</td><td>' + l.nilai +
-                    //     ' ' + l.template.satuan + (l.keterangan != '' ? ' (' + l.keterangan + ')' : '') +
-                    //     '</td><td>' + l.nilai_rujukan + ' ' + l.template.satuan + '</td></tr>' +
-                    //     '</tr>';
-
                     tgl_sekarang = l.tgl_periksa;
                     jnsPeriksa = l.kd_jenis_prw;
                     nmPerawatan = l.jns_perawatan_lab.nm_perawatan;
@@ -452,7 +436,7 @@
                     no++
                 })
                 hasilLab += '</table>'
-                return '<tr><td>Laboratorium </td><td>' + hasilLab + '</td></tr>';
+                return '<tr><th>Laboratorium </th><td>' + hasilLab + '</td></tr>';
             }
             return '';
         }
@@ -467,81 +451,9 @@
                         .nm_penyakit + '</td><tr>';
                 })
                 diagnosaPasien += '</table>'
-                return '<tr><td>Diagnosa</td><td>' + diagnosaPasien + '</td></tr>';
+                return '<tr><th>Diagnosa</th><td>' + diagnosaPasien + '</td></tr>';
             }
             return '';
-        }
-
-        function resume(d) {
-            var detail = '';
-            var pemeriksaan = '';
-            var diagnosa = '';
-            d.reg_periksa.forEach(function(i) {
-                if (i.status_lanjut == 'Ranap') {
-                    status_lanjut = 'RAWAT INAP';
-                    class_status = 'background:rgb(152, 0, 175);color:white';
-                } else {
-                    status_lanjut = 'RAWAT JALAN';
-                    class_status = 'background:rgb(255 193 7);color:black';
-                }
-                i.pemeriksaan_ralan.forEach(function(x) {
-                    pemeriksaan = '<tr><td>Pemeriksaan</td><td>' +
-                        '<div class="row">' +
-                        '<div class="col-sm-4">' +
-                        '<table class="table table-sm text-sm borderless table-success mb-2">' +
-                        '<tr><td style="width=12%">Tanggal Rawat</td><td>: ' + formatTanggal(x
-                            .tgl_perawatan) + ' ' + x
-                        .jam_rawat + '</td></tr>' +
-                        '<tr><td>Tinggi</td><td>: ' + isKosong(x.tinggi, ' cm') + '</td><tr>' +
-                        '<tr><td>Berat Badan</td><td>: ' + isKosong(x.berat, ' Kg') + '</td><tr>' +
-                        '<tr><td>Suhu</td><td>: ' + isKosong(x.suhu_tubuh, ' <sup>o</sup>C') +
-                        '</td><tr>' +
-                        '<tr><td>Tensi</td><td>: ' + isKosong(x.tensi) + '</td><tr>' +
-                        '<tr><td>Kesadaran</td><td>: ' + isKosong(x.kesadaran) + '</td><tr>' +
-                        '<tr><td>Respirasi</td><td>: ' + isKosong(x.respirasi) +
-                        '<tr><td>GCS(E,V,M)</td><td>: ' + isKosong(x.gcs) +
-                        '<tr><td>Alergi</td><td>: ' + isKosong(x.alergi) +
-                        '<tr><td>Imunisasi</td><td>: ' + isKosong(x.imun_ke) +
-                        '</td><tr>' +
-                        '</tr>' +
-                        '</table>' +
-                        '</div>' +
-                        '<div class="col-sm-8">' +
-                        '<table class="table table-sm text-sm borderless table-success">' +
-                        '<tr>' +
-                        '<tr><td style="width:10%">Subject</td><td>: ' + isKosong(x.keluhan) +
-                        '</td><tr>' +
-                        '<tr><td>Object</td><td>: ' + isKosong(x.pemeriksaan) + '</td><tr>' +
-                        '<tr><td>Assesment</td><td>: ' + isKosong(x.penilaian) + '</td><tr>' +
-                        '<tr><td>Plan</td><td>: ' + isKosong(x.rtl) + '</td><tr>' +
-                        '</table>' +
-                        '</div>' +
-                        '</td></tr>';
-                })
-                detail +=
-                    '<tr>' +
-                    '<td colspan="2" align="center" style="' + class_status + '"><h5>' + status_lanjut +
-                    '<h2></td>' +
-                    '</tr>' +
-                    '<tr><td style="width:15%">Tanggal Daftar</td><td>: ' + formatTanggal(i.tgl_registrasi) +
-                    ' ' +
-                    i.jam_reg +
-                    '<tr><td>Nomor Rawat</td><td>: ' + i.no_rawat + '</td></tr>' +
-                    '<tr><td>Nomor RM</td><td>: ' + i.no_rkm_medis + '</td></tr>' +
-                    '</td></tr>' +
-                    '<tr><td>Unit/Poliklinik</td><td>: ' + i.poliklinik.nm_poli + '</td></tr>' +
-                    '<tr><td>Dokter</td><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
-                    '<tr><td>Cara Bayar</td><td>: ' + i.penjab.png_jawab + '</td></tr>' +
-
-                    diagnosaPasien(i.diagnosa_pasien) + pemeriksaan + pemberianObat(i.detail_pemberian_obat) +
-                    pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk)
-                '</tr>'
-
-            });
-            return (
-                '<table class="table table-bordered table-responsive" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-                detail + '</table>'
-            );
         }
 
 
@@ -816,7 +728,6 @@
 
         function hiddenForm() {
             $('#upload-image').css('visibility', 'hidden')
-
         }
     </script>
     @stack('script')
