@@ -55,7 +55,6 @@
                         resume(response);
                     }
                 }
-
             });
         }
 
