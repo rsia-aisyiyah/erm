@@ -29,7 +29,7 @@
                         </tr>
                     </table>
 
-                    <input type="hidden" class="hitung-panggil" value="">
+                    <input type="hidden" id="hitung-panggil" value="">
 
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_pasien" width="100%">
                         <thead>
@@ -59,21 +59,21 @@
     <script type="text/javascript">
         var id = '';
         var isModalSoapShow = false;
+        var kd_poli = '{{ $poli->kd_poli }}';
+        var kd_dokter = '{{ $dokter->kd_dokter }}';
 
         $(document).ready(function() {
-            var kd_poli = '{{ $poli->kd_poli }}';
-            var kd_dokter = '{{ $dokter->kd_dokter }}';
             tb_pasien();
             hitungUpload();
             hitungSelesai();
             hitungPasien();
-
+            hitungPanggilan();
             setInterval(function() {
                 $('#tb_pasien').DataTable().destroy();
                 tb_pasien();
                 hitungUpload();
                 hitungSelesai();
-                hitungPasien();
+                hitungPanggilan();
 
                 if (isModalSoapShow == false) {
                     Swal.fire({
@@ -87,7 +87,7 @@
                     })
                 }
 
-            }, 25000);
+            }, 20000);
         })
 
         function hitungPasien() {
@@ -100,6 +100,113 @@
                 method: 'GET',
                 success: function(response) {
                     $('#count-pasien').text(response);
+                }
+            })
+        }
+
+        $('#modalSoap').on('shown.bs.modal', function() {
+            modalsoap(id);
+            isModalSoapShow = true;
+        });
+
+        $('#modalSoap').on('hidden.bs.modal', function() {
+            isModalSoapShow = false;
+        });
+
+        function ambilNoRawat(no_rawat) {
+            id = no_rawat;
+        }
+
+        function simpanSoap() {
+            $.ajax({
+                url: '/erm/pemeriksaan/simpan',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    no_rawat: id,
+                    suhu_tubuh: $('#suhu').val(),
+                    tensi: $('#tensi').val(),
+                    nadi: $('#nadi').val(),
+                    respirasi: $('#respirasi').val(),
+                    tinggi: $('#tinggi').val(),
+                    berat: $('#berat').val(),
+                    spo2: $('#spo2').val(),
+                    gcs: $('#gcs').val(),
+                    kesadaran: $('#kesadaran').val(),
+                    rtl: $('#plan').val(),
+                    keluhan: $('#subjek').val(),
+                    penilaian: $('#asesmen').val(),
+                    pemeriksaan: $('#objek').val(),
+                    alergi: $('#alergi').val(),
+                    instruksi: $('#instruksi').val(),
+                    evaluasi: '-',
+                    nip: $('#nik').val(),
+                },
+                success: function(response) {
+                    console.log(response)
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: 'Data SOAP disimpan',
+                        position: 'center',
+                        toast: true,
+                        icon: 'success',
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        timer: 1500,
+                    })
+
+                    $('#modalSoap').modal('hide');
+                }
+            })
+        }
+
+        function modalsoap(no_rawat) {
+            jbtn = "{{ session()->get('pegawai')->jbtn }}";
+            nik = "{{ session()->get('pegawai')->nik }}";
+            nama = "{{ session()->get('pegawai')->nama }}";
+            $.ajax({
+                url: '/erm/pemeriksaan',
+                method: 'GET',
+                dataType: 'JSON',
+                data: {
+                    no_rawat: no_rawat,
+                },
+                success: function(response) {
+                    console.log(response)
+
+                    $('input').val('');
+                    $('textarea').val('');
+                    $('#nama').val(nama);
+                    $('#nik').val(nik);
+                    $('#jabatan').val(jbtn);
+                    if (response.tgl_perawatan) {
+                        $('#no_rm').val(response.reg_periksa.no_rkm_medis)
+                        $('#nomor_rawat').val(response.no_rawat)
+                        $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien)
+                        $('#tgl_perawatan').val(response.tgl_perawatan)
+                        $('#subjek').val(response.keluhan)
+                        $('#objek').val(response.pemeriksaan)
+                        $('#asesmen').val(response.penilaian)
+                        $('#plan').val(response.rtl)
+                        $('#instruksi').val(response.instruksi)
+                        $('#suhu').val(response.suhu_tubuh)
+                        $('#tensi').val(response.tensi)
+                        $('#tinggi').val(response.tinggi)
+                        $('#berat').val(response.berat)
+                        $('#gcs').val(response.gcs)
+                        $('#respirasi').val(response.respirasi)
+                        $('#alergi').val(response.alergi)
+                        $('#nadi').val(response.nadi)
+                        $('#spo2').val(response.spo2)
+                    } else {
+
+                        $('#nomor_rawat').val(response.no_rawat)
+                        $('#nama_pasien').val(response.pasien.nm_pasien)
+                        $('#no_rm').val(response.no_rkm_medis)
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error)
                 }
             })
         }

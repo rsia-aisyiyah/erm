@@ -102,7 +102,7 @@ class PoliklinikController extends Controller
                 return '<h5>' . $q->no_reg . '</h5>' . $q->pasien->nm_pasien . ' <br/> (' . $q->no_rawat . ')';
             })
             ->addColumn('aksi', function ($q) {
-                if ($q->stts == 'Berkas Diterima') {
+                if ($q->stts == 'Berkas Diterima' || $q->stts == 'Periksa') {
                     $classPanggil = "btn btn-dark btn-sm mb-2 periksa-" . $q->no_reg;
                     $textPanggil = "RE-CALL";
                     $stylePanggil = "width: 80px; background-color: rgb(152, 0, 175); border-color: rgb(142, 6, 163);";
@@ -153,9 +153,7 @@ class PoliklinikController extends Controller
                 $btnUpload =
                     '<a href="#form-upload" onclick="detailPeriksa(\'' . $q->no_rawat . '\', \'' . $q->status_lanjut . '\')" ' . $btnClass;
                 $btnUpload .=
-                    '<button onclick="ambilNoRawat(\'' . $q->no_rawat . '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' . $q->no_rawat . '"><i class="bi bi-pencil-square"></i></button><br/>';
-                $btnUpload .=
-                    '<button onclick="ambilNoRm(\'' . $q->no_rkm_medis . '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' . $q->no_rkm_medis . '"><i class="bi bi-search"></i></button>';
+                    '<button onclick="ambilNoRawat(\'' . $q->no_rawat . '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' . $q->no_rawat . '"><i class="bi bi-pencil-square"></i></button>';
 
                 return $btnUpload;
             })
