@@ -74,6 +74,10 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
     </script>
     <script>
+        $(document).ready(function() {
+            hitungPanggilan();
+        })
+
         function hanyaAngka(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode
             if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -82,7 +86,22 @@
             return true;
         }
 
+        function hitungPanggilan() {
+            kd_poli = '{{ Request::segment(2) }}';
+            kd_dokter = '{{ Request::get('dokter') }}';
 
+            $.ajax({
+                url: '/erm/registrasi/status',
+                data: {
+                    'kd_poli': kd_poli,
+                    'kd_dokter': kd_dokter,
+                },
+                method: 'GET',
+                success: function(response) {
+                    $('.hitung-panggil').val(response)
+                }
+            });
+        }
 
         function selesai(urut) {
             id = $('.periksa-' + urut).data('id');
