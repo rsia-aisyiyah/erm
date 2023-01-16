@@ -40,7 +40,9 @@ class RegPeriksaController extends Controller
                 return $q->where(function ($q) {
                     $q->where('stts', 'Sudah')->orWhere('status_lanjut', '=', 'Ranap');
                 })->with(['poliklinik', 'dokter', 'penjab', 'pemeriksaanRalan', 'diagnosaPasien' => function ($q) {
-                    return $q->with('penyakit');
+                    return $q->with('penyakit')->orderBy('prioritas', 'ASC');
+                }, 'prosedurPasien' => function ($q) {
+                    return $q->with('icd9');
                 }, 'detailPemberianObat' => function ($q) {
                     return $q->with(['aturanPakai', 'dataBarang' => function ($q) {
                         $q->with('kodeSatuan');

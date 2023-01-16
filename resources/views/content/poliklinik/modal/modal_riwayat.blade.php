@@ -63,6 +63,7 @@
         var diagnosa = '';
 
         function resume(d) {
+            console.log(d)
             d.reg_periksa.forEach(function(i) {
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
@@ -120,7 +121,7 @@
                     '<tr><th>Unit/Poliklinik</th><td>: ' + i.poliklinik.nm_poli + '</td></tr>' +
                     '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
                     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
-                    diagnosaPasien(i.diagnosa_pasien) + pemeriksaan +
+                    diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + pemeriksaan +
                     pemberianObat(i.detail_pemberian_obat) +
                     // diagnosaPasien(i.diagnosa_pasien) + pemeriksaan + pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
@@ -134,6 +135,149 @@
             //     detail + '</table>'
             // );
             $('#tb_riwayat').append(detail);
+        }
+
+        function pemberianObat(obat) {
+            if (Object.keys(obat).length > 0) {
+                var pemberian = '<table class="table table-success borderless mb-0">';
+                let tgl_sekarang = ''
+                obat.forEach(function(o) {
+                    if (o.data_barang.kdjns != 'J024') {
+                        pemberian += '<tr><td>' + (tgl_sekarang != o.tgl_perawatan ? formatTanggal(o
+                                    .tgl_perawatan) +
+                                ', Jam ' +
+                                o.jam : '') +
+                            '</td><td>: <strong>' + o.data_barang.nama_brng +
+                            '</strong></td><td> ' + o.jml + '</td><td class="aturan-' + textRawat(o.no_rawat) +
+                            '-' + o
+                            .kode_brng + '"></td><tr>';
+                        tgl_sekarang = o.tgl_perawatan;
+                        getAturanPakai(o.no_rawat, o.kode_brng)
+                    }
+                })
+                pemberian += '</table>'
+                return '<tr><th>Pemberian Obat</th><td>' + pemberian + '</td></tr>';
+            }
+            return '';
+        }
+
+        function petugasLab(no_rawat, lab) {
+            $.ajax({
+                url: '/erm/lab/petugas',
+                data: {
+                    'no_rawat': no_rawat,
+                    'kd_jenis_prw': lab,
+                },
+                dataType: 'JSON',
+                method: 'GET',
+                success: function(response) {
+                    $('.dr-' + textRawat(no_rawat) + '-' + lab).text(response.dokter.nm_dokter);
+                    $('.petugas-' + textRawat(no_rawat) + '-' + lab).text(response.petugas.nama);
+                }
+            })
+
+        }
+
+        function pemeriksaanLab(lab, umur, jk) {
+            if (Object.keys(lab).length > 0) {
+                var hasilLab = '<table class="table borderless table-success mb-0">';
+                let tgl_sekarang = '';
+                let jnsPeriksa = '';
+                let nmPerawatan = '';
+                let no = 1;
+                let rujukan = '';
+                let classDokter = '';
+                let classDokterSekarang = '';
+                let classPetugas = '';
+                let classPetugasSekarang = '';
+                let barisTanggal = '';
+
+                lab.forEach(function(l) {
+                    classDokterSekarang = classDokter;
+                    classPetugasSekarang = classPetugas;
+
+                    classDokter = 'dr-' + textRawat(l.no_rawat) + '-' + l.kd_jenis_prw;
+                    classPetugas = 'petugas-' + textRawat(l.no_rawat) + '-' + l.kd_jenis_prw;
+
+                    tgl_sekarang != l.tgl_periksa || nmPerawatan != l.jns_perawatan_lab.nm_perawatan ? no = 1 :
+                        '';
+                    hasilLab += (tgl_sekarang != l.tgl_periksa ?
+                            '<tr class="table-warning" border=1><td style="width:9%">' +
+                            formatTanggal(l.tgl_periksa) + ', Jam ' + l.jam + '</td>' +
+                            '</td><td class="dr-' + textRawat(l.no_rawat) + '-' + l.kd_jenis_prw + '"></td>' +
+                            '<td class="petugas-' + textRawat(l.no_rawat) + '-' + l.kd_jenis_prw +
+                            '"></td>' +
+                            '</tr>' : nmPerawatan != l.jns_perawatan_lab.nm_perawatan ?
+                            '<tr class="">' : '') +
+                        (jnsPeriksa == l.kd_jenis_prw ? (tgl_sekarang != l.tgl_periksa ?
+                                '<td style="width:30%" colspan="3"> <strong>' + l.jns_perawatan_lab
+                                .nm_perawatan +
+                                '</tr>' +
+                                '</tr>' +
+                                '<tr><th>Pemeriksaan</th><th>Hasil</th><th>Rujukan</th></tr>' : '') :
+                            '<td style="width:30%" colspan="3"><strong>' + l.jns_perawatan_lab.nm_perawatan +
+                            '</td>' +
+                            '</tr>' +
+                            '<tr><th>Pemeriksaan</th><th>Hasil</th><th>Rujukan</th></tr>') +
+                        '<tr><td>' + no + '. ' + l.template.Pemeriksaan + '</td><td>' + l.nilai +
+                        ' ' + l.template.satuan + (l.keterangan != '' ? ' (' + l.keterangan + ')' : '') +
+                        '</td><td>' + l.nilai_rujukan + ' ' + l.template.satuan + '</td></tr>';
+                    barisTanggal = tgl_sekarang != l.tgl_periksa ? '<td>' + formatTanggal(l.tgl_periksa) + ' ' +
+                        l
+                        .jam + '</td>' : '';
+                    barisPerawatan = nmPerawatan != l.jns_perawatan_lab.nm_perawatan ?
+                        '<td></td><td colspan="3""><strong>' +
+                        l
+                        .jns_perawatan_lab
+                        .nm_perawatan + '</strong></td>' : '';
+                    barisDokter = tgl_sekarang != l.tgl_periksa && classDokterSekarang != classDokter ?
+                        '<td class="' + classDokter + '">' + '</td>' : '';
+                    barisPetugas = tgl_sekarang != l.tgl_periksa && classPetugasSekarang != classPetugas ?
+                        '<td class="' + classPetugas + '" colspan="2">' + '</td>' +
+                        '<tr><td></td><th>Pemeriksaan</th><th>Hasil</th><th>Rujukan</th></tr>' : '';
+                    tgl_sekarang = l.tgl_periksa;
+                    jnsPeriksa = l.kd_jenis_prw;
+                    nmPerawatan = l.jns_perawatan_lab.nm_perawatan;
+                    petugasLab(l.no_rawat, l.kd_jenis_prw);
+
+                    no++
+                })
+                hasilLab += '</table>'
+                return '<tr><th>Laboratorium </th><td>' + hasilLab + '</td></tr>';
+            }
+            return '';
+        }
+
+        function diagnosaPasien(diagnosa) {
+            let prioritas = '';
+            if (Object.keys(diagnosa).length > 0) {
+                var diagnosaPasien = '<table class="table table-success borderless mb-0">';
+                diagnosa.forEach(function(d) {
+                    prioritas = d.prioritas == 1 ? '<span class="text-danger" title="Prioritas"> *</span>' : '';
+                    diagnosaPasien +=
+                        '<tr><td style="width:5%"><strong>' + d.kd_penyakit + '</strong></td><td>: ' + d
+                        .penyakit
+                        .nm_penyakit + ' ' + prioritas + '</td><tr>';
+                })
+                diagnosaPasien += '</table>'
+                return '<tr><th>Diagnosa</th><td>' + diagnosaPasien + '</td></tr>';
+            }
+            return '';
+        }
+
+        function prosedurPasien(prosedur) {
+            console.log(prosedur);
+            if (Object.keys(prosedur).length > 0) {
+                var prosedurPasien = '<table class="table table-success borderless mb-0">';
+                prosedur.forEach(function(p) {
+                    prosedurPasien +=
+                        '<tr><td style="width:5%"><strong>' + p.kode + '</strong> : ' + p.icd9.deskripsi_panjang +
+                        '</td><tr>';
+                })
+                prosedurPasien += '</table>'
+                return '<tr><th>Prosedur </th><td>' + prosedurPasien + '</td></tr>';
+            }
+            // return '';
         }
     </script>
 @endpush

@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ProsedurPasien extends Model
+{
+    use HasFactory;
+
+    protected $table = 'prosedur_pasien';
+
+    public function icd9()
+    {
+        return $this->belongsTo(Icd9::class, 'kode', 'kode');
+    }
+    public function regPeriksa()
+    {
+        return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
+    }
+}
