@@ -27,7 +27,7 @@
         });
 
         $('#modalRiwayat').on('hidden.bs.modal', function() {
-            // $('#tb_riwayat').append();
+            $('#tb_riwayat').empty();
             detail = '';
             isModalSoapShow = false;
         });
@@ -46,7 +46,14 @@
                 dataType: 'JSON',
                 method: 'GET',
                 success: function(response) {
-                    resume(response);
+                    if (Object.keys(response.reg_periksa).length == 0) {
+                        Swal.fire(
+                            'Kosong!', 'Belum ada riwayat perawatan', 'error'
+                        );
+                        $('#modalRiwayat').modal('hide');
+                    } else {
+                        resume(response);
+                    }
                 }
 
             });
@@ -57,8 +64,6 @@
         var diagnosa = '';
 
         function resume(d) {
-            $('#tb_riwayat').empty();
-            console.log(d)
             d.reg_periksa.forEach(function(i) {
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
