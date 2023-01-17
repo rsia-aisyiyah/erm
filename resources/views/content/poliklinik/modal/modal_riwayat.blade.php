@@ -63,7 +63,6 @@
         var diagnosa = '';
 
         function resume(d) {
-            console.log(d)
             d.reg_periksa.forEach(function(i) {
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
@@ -109,7 +108,7 @@
 
                 detail +=
                     '<tr>' +
-                    '<th colspan="2" align="center" style="' + class_status + '"><h6>' + status_lanjut +
+                    '<th colspan="2" style="' + class_status + '"><h6 align="center">' + status_lanjut +
                     '</h6></th>' +
                     '</tr>' +
                     '<tr><th style="width:15%">Tanggal Daftar</th><td>: ' + formatTanggal(i.tgl_registrasi) +
@@ -130,11 +129,24 @@
                 pemeriksaan = '';
 
             });
-            // return (
-            //     '<table class="table table-bordered table-responsive" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-            //     detail + '</table>'
-            // );
             $('#tb_riwayat').append(detail);
+        }
+
+        function getAturanPakai(no_rawat, obat) {
+
+            var aturan = '';
+            var ajaxAturan = $.ajax({
+                url: '/erm/aturan',
+                data: {
+                    'no_rawat': no_rawat,
+                    'kode_brng': obat
+                },
+                dataType: 'JSON',
+                // async: false,
+                success: function(response) {
+                    $('.aturan-' + textRawat(no_rawat) + '-' + obat).text(response.aturan)
+                }
+            })
         }
 
         function pemberianObat(obat) {
@@ -143,7 +155,7 @@
                 let tgl_sekarang = ''
                 obat.forEach(function(o) {
                     if (o.data_barang.kdjns != 'J024') {
-                        pemberian += '<tr><td>' + (tgl_sekarang != o.tgl_perawatan ? formatTanggal(o
+                        pemberian += '<tr><td width="15px">' + (tgl_sekarang != o.tgl_perawatan ? formatTanggal(o
                                     .tgl_perawatan) +
                                 ', Jam ' +
                                 o.jam : '') +
@@ -199,8 +211,8 @@
                     classDokter = 'dr-' + textRawat(l.no_rawat) + '-' + l.kd_jenis_prw;
                     classPetugas = 'petugas-' + textRawat(l.no_rawat) + '-' + l.kd_jenis_prw;
 
-                    tgl_sekarang != l.tgl_periksa || nmPerawatan != l.jns_perawatan_lab.nm_perawatan ? no = 1 :
-                        '';
+                    tgl_sekarang != l.tgl_periksa || nmPerawatan != l.jns_perawatan_lab.nm_perawatan ? no = 1 : '';
+
                     hasilLab += (tgl_sekarang != l.tgl_periksa ?
                             '<tr class="table-warning" border=1><td style="width:9%">' +
                             formatTanggal(l.tgl_periksa) + ', Jam ' + l.jam + '</td>' +
@@ -210,7 +222,7 @@
                             '</tr>' : nmPerawatan != l.jns_perawatan_lab.nm_perawatan ?
                             '<tr class="">' : '') +
                         (jnsPeriksa == l.kd_jenis_prw ? (tgl_sekarang != l.tgl_periksa ?
-                                '<td style="width:30%" colspan="3"> <strong>' + l.jns_perawatan_lab
+                                '<td style="width:30%" colspan="3"><strong>' + l.jns_perawatan_lab
                                 .nm_perawatan +
                                 '</tr>' +
                                 '</tr>' +
@@ -239,8 +251,8 @@
                     jnsPeriksa = l.kd_jenis_prw;
                     nmPerawatan = l.jns_perawatan_lab.nm_perawatan;
                     petugasLab(l.no_rawat, l.kd_jenis_prw);
+                    no++;
 
-                    no++
                 })
                 hasilLab += '</table>'
                 return '<tr><th>Laboratorium </th><td>' + hasilLab + '</td></tr>';
@@ -266,7 +278,6 @@
         }
 
         function prosedurPasien(prosedur) {
-            console.log(prosedur);
             if (Object.keys(prosedur).length > 0) {
                 var prosedurPasien = '<table class="table table-success borderless mb-0">';
                 prosedur.forEach(function(p) {
@@ -277,7 +288,6 @@
                 prosedurPasien += '</table>'
                 return '<tr><th>Prosedur </th><td>' + prosedurPasien + '</td></tr>';
             }
-            // return '';
         }
     </script>
 @endpush

@@ -261,22 +261,7 @@
 
         }
 
-        function getAturanPakai(no_rawat, obat) {
 
-            var aturan = '';
-            var ajaxAturan = $.ajax({
-                url: '/erm/aturan',
-                data: {
-                    'no_rawat': no_rawat,
-                    'kode_brng': obat
-                },
-                dataType: 'JSON',
-                // async: false,
-                success: function(response) {
-                    $('.aturan-' + textRawat(no_rawat) + '-' + obat).text(response.aturan)
-                }
-            })
-        }
 
 
 

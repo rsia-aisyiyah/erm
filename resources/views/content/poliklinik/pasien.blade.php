@@ -23,10 +23,20 @@
                             <td><strong id="count-selesai" class="text-success"></strong></td>
                         </tr>
                         <tr>
+                            <td>Menunggu</td>
+                            <td>:</td>
+                            <td><strong id="count-tunggu" class="text-warning"></strong></td>
+                        </tr>
+                        <tr>
+                            <td>Batal</td>
+                            <td>:</td>
+                            <td><strong id="count-batal" class="text-danger"></strong></td>
+                        </tr>
+                        {{-- <tr>
                             <td>Terupload</td>
                             <td>:</td>
                             <td><strong id="count-uploaded" class="text-success"></strong></td>
-                        </tr>
+                        </tr> --}}
                     </table>
 
                     <input type="hidden" id="hitung-panggil" value="">
@@ -68,12 +78,16 @@
             hitungSelesai();
             hitungPasien();
             hitungPanggilan();
+            hitungBatal();
+            hitungTunggu();
             setInterval(function() {
                 $('#tb_pasien').DataTable().destroy();
                 tb_pasien();
                 hitungUpload();
                 hitungSelesai();
                 hitungPanggilan();
+                hitungBatal();
+                hitungTunggu();
 
                 if (isModalSoapShow == false) {
                     Swal.fire({
@@ -227,6 +241,36 @@
             });
         }
 
+        function hitungBatal() {
+            $.ajax({
+                url: '/erm/registrasi/batal',
+                method: 'GET',
+                data: {
+                    'kd_poli': kd_poli,
+                    'kd_dokter': kd_dokter,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    $('#count-batal').text(response)
+                }
+            });
+        }
+
+        function hitungTunggu() {
+            $.ajax({
+                url: '/erm/registrasi/tunggu',
+                method: 'GET',
+                data: {
+                    'kd_poli': kd_poli,
+                    'kd_dokter': kd_dokter,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    $('#count-tunggu').text(response)
+                }
+            });
+        }
+
         function hitungUpload() {
             $.ajax({
                 url: 'count/{{ $poli->kd_poli }}?dokter={{ $dokter->kd_dokter }}',
@@ -244,6 +288,10 @@
                 scrollX: true,
                 serverSide: true,
                 stateSave: true,
+                searching: false,
+                paging: false,
+                paging: false,
+                info: false,
                 ajax: {
                     url: "table/{{ Request::segment(2) }}?dokter={{ Request::get('dokter') }}",
                 },
@@ -262,36 +310,11 @@
                     }
 
                 ],
-                // order: [
-                //     [1, 'asc']
-                // ],
+                "language": {
+                    "zeroRecords": "Tidak ada data pasien terdaftar",
+                    "infoEmpty": "Tidak ada data pasien terdaftar",
+                }
             });
-
-            // $('#tb_pasien tbody').on('click', 'td.dt-control', function() {
-            //     var tr = $(this).closest('tr');
-            //     var row = table.row(tr);
-            //     var dataPeriksa = [];
-
-            //     console.log(row);
-
-            //     if (row.child.isShown()) {
-            //         row.child.hide();
-            //         tr.removeClass('shown');
-            //     } else {
-            //         $.ajax({
-            //             url: '/erm/test/' + row.data().no_rkm_medis,
-            //             method: 'GET',
-            //             dataType: 'JSON',
-            //             success: function(data) {
-            //                 data.forEach(function(response) {
-            //                     row.child(resume(response)).show();
-            //                     tr.addClass('shown');
-            //                     tr.removeClass('shown');
-            //                 })
-            //             }
-            //         })
-            //     }
-            // });
         }
     </script>
 @endpush

@@ -85,12 +85,6 @@
                     autocomplete="off">
                 <label for="password">Password</label>
             </div>
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" name="remember"> Tetap ingat saya
-                </label>
-            </div>
-
             <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
             <p class="mt-5 mb-3 text-muted">&copy; {{ date('Y') }}</p>
         </form>

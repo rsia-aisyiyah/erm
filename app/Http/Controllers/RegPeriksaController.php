@@ -84,4 +84,22 @@ class RegPeriksaController extends Controller
 
         return $regPeriksa;
     }
+    public function hitungBatal(Request $request)
+    {
+        $regPeriksa = RegPeriksa::where('tgl_registrasi', $this->tanggal->now()->toDateString())
+            ->where('kd_poli', $request->kd_poli)
+            ->where('kd_dokter', $request->kd_dokter)
+            ->where('stts', 'Batal')->count();
+
+        return $regPeriksa;
+    }
+    public function hitungTunggu(Request $request)
+    {
+        $regPeriksa = RegPeriksa::where('tgl_registrasi', $this->tanggal->now()->toDateString())
+            ->where('kd_poli', $request->kd_poli)
+            ->where('kd_dokter', $request->kd_dokter)
+            ->where('stts', 'Belum')->count();
+
+        return $regPeriksa;
+    }
 }

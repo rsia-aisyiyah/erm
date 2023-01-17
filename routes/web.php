@@ -75,6 +75,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/registrasi/status', [RegPeriksaController::class, 'statusDiterima']);
     Route::get('/registrasi/selesai', [RegPeriksaController::class, 'hitungSelesai']);
+    Route::get('/registrasi/batal', [RegPeriksaController::class, 'hitungBatal']);
+    Route::get('/registrasi/tunggu', [RegPeriksaController::class, 'hitungTunggu']);
     Route::get('/registrasi/riwayat', [RegPeriksaController::class, 'riwayat']);
 
     Route::get('/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
