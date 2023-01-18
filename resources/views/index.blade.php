@@ -115,6 +115,60 @@
             });
         }
 
+        function panggil(urut) {
+
+            id = $('.periksa-' + urut).data('id');
+            hitung_panggilan = $('#hitung-panggil').val();
+            text_recall = $('.periksa-' + urut).text()
+
+
+            if (hitung_panggilan < 2 || text_recall == 'RE-CALL') {
+                $('.selesai-' + urut).prop('disabled', false);
+                $('.selesai-' + urut).prop('class', 'btn btn-warning btn-sm mb-2 selesai-' + urut + '');
+
+                $('.batal-' + urut).prop('disabled', false);
+                $('.batal-' + urut).prop('class', 'btn btn-danger btn-sm mb-2 batal-' + urut + '');
+
+                $('.periksa-' + urut).prop('class', 'btn btn-primary btn-sm mb-2 periksa-' + urut + '');
+                $('.periksa-' + urut).css({
+                    'background-color': 'rgb(152 0 175)',
+                    'border-color': 'rgb(142 6 163)'
+                });
+                $('.periksa-' + urut).text('RE-CALL');
+                $.ajax({
+                    url: '/erm/poliklinik/panggil',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'no_rawat': id,
+                    },
+                    method: "POST",
+                    success: function(data) {
+                        hitungPanggilan();
+                        $.toast({
+                            text: 'Memangil : ' + data.no_rawat + '<br/> Jam Periksa : ' + data
+                                .jam_periksa,
+                            position: 'bottom-center',
+                            bgColor: '#0067dd',
+                            loader: false,
+                            stack: false,
+                        })
+                    }
+                })
+            } else {
+                $.toast({
+                    text: 'Sedang ada pasien',
+                    position: 'bottom-center',
+                    bgColor: '#ffc107',
+                    textColor: 'black',
+                    stack: false,
+                    loader: false,
+                })
+                $.toast().reset();
+                hitungPanggilan();
+            }
+
+        }
+
         function selesai(urut) {
             id = $('.periksa-' + urut).data('id');
 
