@@ -157,7 +157,7 @@
                     nip: $('#nik').val(),
                 },
                 success: function(response) {
-                    console.log(response)
+                    // console.log(response)
                     Swal.fire({
                         title: 'Berhasil!',
                         text: 'Data SOAP disimpan',
@@ -186,38 +186,56 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    console.log(response)
+                    if (response.reg_periksa) {
+                        $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
+                            .pasien
+                            .nm_pasien : '-')
+                        $('#no_rm').val(response.reg_periksa.no_rkm_medis ? response.reg_periksa.no_rkm_medis :
+                            '-')
+                    } else {
+                        $('#nama_pasien').val(response.pasien.nm_pasien ? response.pasien
+                            .nm_pasien : '-')
+                        $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
 
-                    $('input').val('');
-                    $('textarea').val('');
+                    }
+
                     $('#nama').val(nama);
                     $('#nik').val(nik);
                     $('#jabatan').val(jbtn);
-                    if (response.tgl_perawatan) {
-                        $('#no_rm').val(response.reg_periksa.no_rkm_medis)
-                        $('#nomor_rawat').val(response.no_rawat)
-                        $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien)
-                        $('#tgl_perawatan').val(response.tgl_perawatan)
-                        $('#subjek').val(response.keluhan)
-                        $('#objek').val(response.pemeriksaan)
-                        $('#asesmen').val(response.penilaian)
-                        $('#plan').val(response.rtl)
-                        $('#instruksi').val(response.instruksi)
-                        $('#suhu').val(response.suhu_tubuh)
-                        $('#tensi').val(response.tensi)
-                        $('#tinggi').val(response.tinggi)
-                        $('#berat').val(response.berat)
-                        $('#gcs').val(response.gcs)
-                        $('#respirasi').val(response.respirasi)
-                        $('#alergi').val(response.alergi)
-                        $('#nadi').val(response.nadi)
-                        $('#spo2').val(response.spo2)
-                    } else {
 
-                        $('#nomor_rawat').val(response.no_rawat)
-                        $('#nama_pasien').val(response.pasien.nm_pasien)
-                        $('#no_rm').val(response.no_rkm_medis)
-                    }
+                    $('#nomor_rawat').val(response.no_rawat ? response.no_rawat : '-')
+                    $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '-')
+                    $('#subjek').val(response.keluhan ? response.keluhan : '-')
+                    $('#objek').val(response.pemeriksaan ? response.pemeriksaan : '-')
+                    $('#asesmen').val(response.penilaian ? response.penilaian : '-')
+                    $('#plan').val(response.rtl ? response.rtl : '-')
+                    $('#instruksi').val(response.instruksi ? response.instruksi : '-')
+                    $('#suhu').val(response.suhu_tubuh ? response.suhu_tubuh : '-')
+                    $('#tensi').val(response.tensi ? response.tensi : '-')
+                    $('#tinggi').val(response.tinggi ? response.tinggi : '-')
+                    $('#berat').val(response.berat ? response.berat : '-')
+                    $('#gcs').val(response.gcs ? response.gcs : '-')
+                    $('#respirasi').val(response.respirasi ? response.respirasi : '-')
+                    $('#alergi').val(response.alergi ? response.alergi : '-')
+                    $('#nadi').val(response.nadi ? response.nadi : '-')
+                    $('#spo2').val(response.spo2 ? response.spo2 : '-')
+                    // } else {
+                    //     $('#subjek').val('-')
+                    //     $('#objek').val('-')
+                    //     $('#asesmen').val('-')
+                    //     $('#plan').val('-')
+                    //     $('#instruksi').val('-')
+                    //     $('#suhu').val('-')
+                    //     $('#tensi').val('-')
+                    //     $('#tinggi').val('-')
+                    //     $('#berat').val('-')
+                    //     $('#gcs').val('-')
+                    //     $('#respirasi').val('-')
+                    //     $('#alergi').val('-')
+                    //     $('#nadi').val('-')
+                    //     $('#spo2').val('-')
+
+                    // }
                 },
                 error: function(xhr, status, error) {
                     console.log(error)

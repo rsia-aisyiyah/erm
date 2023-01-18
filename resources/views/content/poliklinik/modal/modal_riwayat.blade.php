@@ -12,8 +12,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i> Keluar</button>
-                {{-- <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoap()"><i class="bi bi-save"></i>
-                    Simpan</button> --}}
             </div>
         </div>
     </div>
@@ -25,6 +23,10 @@
             isModalSoapShow = true;
             modalRiwayat(no_rm);
         });
+
+        function name(params) {
+
+        }
 
         $('#modalRiwayat').on('hidden.bs.modal', function() {
             $('#tb_riwayat').empty();
@@ -155,7 +157,7 @@
                 let tgl_sekarang = ''
                 obat.forEach(function(o) {
                     if (o.data_barang.kdjns != 'J024') {
-                        pemberian += '<tr><td width="15px">' + (tgl_sekarang != o.tgl_perawatan ? formatTanggal(o
+                        pemberian += '<tr><td width="20%">' + (tgl_sekarang != o.tgl_perawatan ? formatTanggal(o
                                     .tgl_perawatan) +
                                 ', Jam ' +
                                 o.jam : '') +
@@ -222,13 +224,16 @@
                             '</tr>' : nmPerawatan != l.jns_perawatan_lab.nm_perawatan ?
                             '<tr class="">' : '') +
                         (jnsPeriksa == l.kd_jenis_prw ? (tgl_sekarang != l.tgl_periksa ?
-                                '<td style="width:30%" colspan="3"><strong>' + l.jns_perawatan_lab
+                                '<td style="width:30%" colspan="3"><strong>' + l
+                                .jns_perawatan_lab
                                 .nm_perawatan +
                                 '</tr>' +
                                 '</tr>' +
                                 '<tr><th>Pemeriksaan</th><th>Hasil</th><th>Rujukan</th></tr>' : '') :
-                            '<td style="width:30%" colspan="3"><strong>' + l.jns_perawatan_lab.nm_perawatan +
-                            '</td>' +
+                            '<td style="width:30%" colspan="3"><p align="center" style="padding:0;margin:0"><strong>' +
+                            l
+                            .jns_perawatan_lab.nm_perawatan +
+                            '</strong></p></td>' +
                             '</tr>' +
                             '<tr><th>Pemeriksaan</th><th>Hasil</th><th>Rujukan</th></tr>') +
                         '<tr><td>' + no + '. ' + l.template.Pemeriksaan + '</td><td>' + l.nilai +

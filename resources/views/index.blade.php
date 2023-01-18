@@ -78,6 +78,18 @@
             hitungPanggilan();
         })
 
+        function removeZero(input) {
+            if (input.value == '-') {
+                $(input).val('');
+            }
+        }
+
+        function cekKosong(input) {
+            if (input.value == '') {
+                $(input).val('-');
+            }
+        }
+
         function hanyaAngka(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode
             if (charCode > 31 && (charCode < 48 || charCode > 57))
