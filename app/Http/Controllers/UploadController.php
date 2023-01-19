@@ -124,4 +124,10 @@ class UploadController extends Controller
             'message' => 'Berhasil hapus gambar',
         ]);
     }
+    public function ambilPeriksa(Request $request)
+    {
+        $upload = Upload::where('no_rawat', $request->no_rawat)->get();
+
+        return $upload;
+    }
 }

@@ -11,26 +11,43 @@
                     </p>
                     <p style="">Dokter : <strong>{{ $dokter->nm_dokter }}</strong></p>
                     <table>
-                        <tr>
+                        <tr style="height: 25px">
                             <td>Jumlah Pasien</td>
                             <td>:</td>
-                            <td> <strong id="count-pasien">{{ $jumlah }}</strong></td>
+                            <td>
+                                <button class="btn btn-sm"
+                                    style=" display: block; width:30px; border-radius: 50%; background-color: #0067dd; color:white; font-weight:bold; font-size:9pt">
+                                    {{ $jumlah }}
+                                </button>
+                            </td>
 
                         </tr>
-                        <tr>
+                        <tr style="height: 25px">
                             <td>Selesai</td>
                             <td>:</td>
-                            <td><strong id="count-selesai" class="text-success"></strong></td>
+                            <td>
+                                <button id="count-selesai" class="btn btn-sm btn-success"
+                                    style=" display: block; width:30px; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
+                                </button>
+                            </td>
                         </tr>
-                        <tr>
+                        <tr style="height: 25px">
                             <td>Menunggu</td>
                             <td>:</td>
-                            <td><strong id="count-tunggu" class="text-warning"></strong></td>
+                            <td>
+                                <button id="count-tunggu" class="btn btn-sm btn-warning"
+                                    style=" display: block; width:30px; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold; font-size:9pt">
+                                </button>
+                            </td>
                         </tr>
-                        <tr>
+                        <tr style="height: 25px">
                             <td>Batal</td>
                             <td>:</td>
-                            <td><strong id="count-batal" class="text-danger"></strong></td>
+                            <td>
+                                <button id="count-batal" class="btn btn-sm btn-danger"
+                                    style=" display: block; width:30px; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
+                                </button>
+                            </td>
                         </tr>
                         {{-- <tr>
                             <td>Terupload</td>
@@ -45,7 +62,7 @@
                         <thead>
                             <tr role="row">
                                 {{-- <th style="width: 5%"></th> --}}
-                                <th style="width: 10%">Aksi</th>
+                                <th style="width: 20px">Aksi</th>
                                 <th>Nama</th>
                                 <th>Tools</th>
                             </tr>
@@ -101,7 +118,7 @@
                     })
                 }
 
-            }, 20000);
+            }, 25000);
         })
 
         function hitungPasien() {
@@ -129,6 +146,10 @@
 
         function ambilNoRawat(no_rawat) {
             id = no_rawat;
+        }
+
+        function ambilNoRm(no_rkm_medis) {
+            no_rm = no_rkm_medis;
         }
 
         function simpanSoap() {
@@ -307,9 +328,14 @@
                 serverSide: true,
                 stateSave: true,
                 searching: false,
+                ordering: false,
                 paging: false,
                 paging: false,
                 info: false,
+                columnDefs: [{
+                    width: 50,
+                    targets: 0,
+                }],
                 ajax: {
                     url: "table/{{ Request::segment(2) }}?dokter={{ Request::get('dokter') }}",
                 },

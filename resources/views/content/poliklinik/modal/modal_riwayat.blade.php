@@ -16,6 +16,20 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-image" data-bs-backdrop="static" data-bs-closable="false" data-bs-keyboard="false"
+    aria-hidden="true" aria-labelledby="modal-image" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="" class="img-thumbnails popup" width="100%" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-target="#modalRiwayat" data-bs-toggle="modal"><i
+                        class="bi bi-x-circle"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
 @push('script')
     <script>
         var no_rm = '';
@@ -24,19 +38,12 @@
             modalRiwayat(no_rm);
         });
 
-        function name(params) {
-
-        }
-
         $('#modalRiwayat').on('hidden.bs.modal', function() {
             $('#tb_riwayat').empty();
             detail = '';
             isModalSoapShow = false;
         });
 
-        function ambilNoRm(no_rkm_medis) {
-            no_rm = no_rkm_medis;
-        }
 
 
         function modalRiwayat(no_rm) {
@@ -64,7 +71,36 @@
         var pemeriksaan = '';
         var diagnosa = '';
 
+        function fotoPemeriksaan(foto) {
+            var hasilFoto = '<table>';
+            if (Object.keys(foto).length > 0) {
+                foto.forEach(function(f) {
+                    let arrFoto = f.file.split(',')
+                    let kategori = f.kategori;
+                    hasilFoto += '<tr>'
+                    arrFoto.forEach(function(fx) {
+                        hasilFoto += '<td><img src="{{ asset('erm') }}/' + fx +
+                            '" class="img-thumbnail position-relative" width="300px" onclick="popup(\'' +
+                            fx +
+                            '\')" data-bs-target="#modal-image" data-bs-toggle="modal"><figcaption align="center">' +
+                            kategori.toUpperCase() + '</figcaption></td>'
+                    })
+                    hasilFoto += '</tr>'
+                })
+                hasilFoto += '</table>';
+                return '<tr><th>Berkas Penunjang : </th><td>' + hasilFoto + '</td></tr>';
+            }
+            return '';
+        }
+
+        function popup(foto) {
+            $('#modal-image').modal('show');
+            let src = "{{ asset('erm') }}/" + foto;
+            $('.popup').attr('src', src)
+        }
+
         function resume(d) {
+            console.log(d)
             d.reg_periksa.forEach(function(i) {
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
@@ -124,8 +160,8 @@
                     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
                     diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + pemeriksaan +
                     pemberianObat(i.detail_pemberian_obat) +
-                    // diagnosaPasien(i.diagnosa_pasien) + pemeriksaan + pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
+                    fotoPemeriksaan(i.upload) +
                     '</tr>';
 
                 pemeriksaan = '';

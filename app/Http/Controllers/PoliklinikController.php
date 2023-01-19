@@ -103,7 +103,9 @@ class PoliklinikController extends Controller
             })
             ->addColumn('aksi', function ($q) {
                 if ($q->stts == 'Batal') {
-                    return '<h3 class="text-danger">BATAL</h3>';
+                    return '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
+                } else if ($q->stts == 'Sudah') {
+                    return '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
                 } else {
                     if ($q->stts == 'Berkas Diterima' || $q->stts == 'Periksa') {
                         $classPanggil = "btn btn-dark btn-sm mb-2 periksa-" . $q->no_reg;
@@ -115,16 +117,16 @@ class PoliklinikController extends Controller
                         $styleBatal = "width:80px";
                         $disable = '';
                         $disablePanggil = '';
-                    } else if ($q->stts == 'Sudah') {
-                        $classPanggil = "btn btn-secondary btn-sm mb-2 periksa-" . $q->no_reg;
-                        $textPanggil = "PANGGIL";
-                        $stylePanggil = "width:80px";
-                        $classSelesai = "btn btn-secondary btn-sm mb-2 selesai-" . $q->no_reg;
-                        $styleSelesai = "width:80px";
-                        $disable = 'disabled';
-                        $disablePanggil = 'disabled';
-                        $classBatal = "btn btn-secondary btn-sm mb-2 batal-" . $q->no_reg;
-                        $styleBatal = "width:80px";
+                        // } else if ($q->stts == 'Sudah') {
+                        //     $classPanggil = "btn btn-secondary btn-sm mb-2 periksa-" . $q->no_reg;
+                        //     $textPanggil = "PANGGIL";
+                        //     $stylePanggil = "width:80px";
+                        //     $classSelesai = "btn btn-secondary btn-sm mb-2 selesai-" . $q->no_reg;
+                        //     $styleSelesai = "width:80px";
+                        //     $disable = 'disabled';
+                        //     $disablePanggil = 'disabled';
+                        //     $classBatal = "btn btn-secondary btn-sm mb-2 batal-" . $q->no_reg;
+                        //     $styleBatal = "width:80px";
                     } else {
                         $classPanggil = "btn btn-success btn-sm mb-2 periksa-" . $q->no_reg;
                         $textPanggil = "PANGGIL";
@@ -148,18 +150,18 @@ class PoliklinikController extends Controller
 
                 if ($no_rawat) {
                     $btnClass =
-                        'class="btn btn-success btn-sm mb-2 mr-1"><i class="bi bi-check2-circle"></i></a></br>';
+                        'class="btn btn-success btn-sm mb-2 mr-1"><i class="bi bi-check2-circle"></i> UPLOAD</a></br>';
                 } else {
                     $btnClass =
-                        'class="btn btn-primary btn-sm mb-2 mr-1"><i class="bi bi-cloud-upload-fill"></i></a></br>';
+                        'class="btn btn-primary btn-sm mb-2 mr-1"><i class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
                 }
 
                 $btnUpload =
-                    '<a href="#form-upload" onclick="detailPeriksa(\'' . $q->no_rawat . '\', \'' . $q->status_lanjut . '\')" ' . $btnClass;
+                    '<a href="#form-upload" style="width:80px;font-size:12px;text-align:left" onclick="detailPeriksa(\'' . $q->no_rawat . '\', \'' . $q->status_lanjut . '\')" ' . $btnClass;
                 $btnUpload .=
-                    '<button onclick="ambilNoRawat(\'' . $q->no_rawat . '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' . $q->no_rawat . '"><i class="bi bi-pencil-square"></i></button><br/>';
+                    '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRawat(\'' . $q->no_rawat . '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' . $q->no_rawat . '"><i class="bi bi-pencil-square"></i> SOAP</button><br/>';
                 $btnUpload .=
-                    '<button onclick="ambilNoRm(\'' . $q->no_rkm_medis . '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' . $q->no_rkm_medis . '"><i class="bi bi-search"></i></button>';
+                    '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' . $q->no_rkm_medis . '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' . $q->no_rkm_medis . '"><i class="bi bi-search"></i>RIWAYAT</button>';
 
                 return $btnUpload;
             })

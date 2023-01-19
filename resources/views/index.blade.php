@@ -200,25 +200,30 @@
                                 loader: false,
                                 stack: false,
                             });
-                            $('.selesai-' + urut).prop('disabled', true);
-                            $('.selesai-' + urut).prop('class',
-                                'btn btn-secondary btn-sm mb-2 selesai-' +
-                                urut + '');
+                            $('#aksi').empty();
+                            $('#aksi').append(
+                                '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>'
+                            );
 
-                            $('.batal-' + urut).prop('disabled', true);
-                            $('.batal-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 batal-' +
-                                urut + '');
+                            // $('.selesai-' + urut).prop('disabled', true);
+                            // $('.selesai-' + urut).prop('class',
+                            //     'btn btn-secondary btn-sm mb-2 selesai-' +
+                            //     urut + '');
 
-                            $('.periksa-' + urut).prop('disabled', true);
-                            $('.periksa-' + urut).prop('class',
-                                'btn btn-secondary btn-sm mb-2 periksa-' +
-                                urut + '');
+                            // $('.batal-' + urut).prop('disabled', true);
+                            // $('.batal-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 batal-' +
+                            //     urut + '');
 
-                            $('.periksa-' + urut).css({
-                                'background-color': '',
-                                'border-color': ''
-                            });
-                            $('.periksa-' + urut).text('PANGGIL');
+                            // $('.periksa-' + urut).prop('disabled', true);
+                            // $('.periksa-' + urut).prop('class',
+                            //     'btn btn-secondary btn-sm mb-2 periksa-' +
+                            //     urut + '');
+
+                            // $('.periksa-' + urut).css({
+                            //     'background-color': '',
+                            //     'border-color': ''
+                            // });
+                            // $('.periksa-' + urut).text('PANGGIL');
 
                             hitungSelesai();
                         }
