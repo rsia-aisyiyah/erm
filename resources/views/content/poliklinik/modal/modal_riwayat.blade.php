@@ -194,7 +194,7 @@
 
         function pemeriksaanLab(lab, umur, jk) {
             if (Object.keys(lab).length > 0) {
-                var hasilLab = '<table class="table borderless table-success mb-0">';
+                var hasilLab = '<table class="table table-success mb-0">';
                 let tgl_sekarang = '';
                 let jnsPeriksa = '';
                 let nmPerawatan = '';

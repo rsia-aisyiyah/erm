@@ -110,7 +110,7 @@
                 },
                 method: 'GET',
                 success: function(response) {
-                    $('.hitung-panggil').val(response)
+                    $('#hitung-panggil').val(response)
                 }
             });
         }
