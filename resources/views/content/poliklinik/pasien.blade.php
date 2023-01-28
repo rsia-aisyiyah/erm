@@ -16,7 +16,7 @@
                             <td>:</td>
                             <td>
                                 <button class="btn btn-sm"
-                                    style=" display: block; width:30px; border-radius: 50%; background-color: #0067dd; color:white; font-weight:bold; font-size:9pt">
+                                    style=" display: block; width:auto; border-radius: 50%; background-color: #0067dd; color:white; font-weight:bold; font-size:9pt">
                                     {{ $jumlah }}
                                 </button>
                             </td>
@@ -27,7 +27,7 @@
                             <td>:</td>
                             <td>
                                 <button id="count-selesai" class="btn btn-sm btn-success"
-                                    style=" display: block; width:30px; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
+                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
                                 </button>
                             </td>
                         </tr>
@@ -36,7 +36,7 @@
                             <td>:</td>
                             <td>
                                 <button id="count-tunggu" class="btn btn-sm btn-warning"
-                                    style=" display: block; width:30px; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold; font-size:9pt">
+                                    style=" display: block; width:auto; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold; font-size:9pt">
                                 </button>
                             </td>
                         </tr>
@@ -45,15 +45,11 @@
                             <td>:</td>
                             <td>
                                 <button id="count-batal" class="btn btn-sm btn-danger"
-                                    style=" display: block; width:30px; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
+                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
                                 </button>
                             </td>
                         </tr>
-                        {{-- <tr>
-                            <td>Terupload</td>
-                            <td>:</td>
-                            <td><strong id="count-uploaded" class="text-success"></strong></td>
-                        </tr> --}}
+
                     </table>
 
                     <input type="hidden" id="hitung-panggil" value="">
@@ -61,7 +57,6 @@
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_pasien" width="100%">
                         <thead>
                             <tr role="row">
-                                {{-- <th style="width: 5%"></th> --}}
                                 <th style="width: 20px">Aksi</th>
                                 <th>Nama</th>
                                 <th>Tools</th>
@@ -117,7 +112,6 @@
                         timer: 1500
                     })
                 }
-
             }, 25000);
         })
 
@@ -178,7 +172,6 @@
                     nip: $('#nik').val(),
                 },
                 success: function(response) {
-                    // console.log(response)
                     Swal.fire({
                         title: 'Berhasil!',
                         text: 'Data SOAP disimpan',
@@ -240,23 +233,6 @@
                     $('#alergi').val(response.alergi ? response.alergi : '-')
                     $('#nadi').val(response.nadi ? response.nadi : '-')
                     $('#spo2').val(response.spo2 ? response.spo2 : '-')
-                    // } else {
-                    //     $('#subjek').val('-')
-                    //     $('#objek').val('-')
-                    //     $('#asesmen').val('-')
-                    //     $('#plan').val('-')
-                    //     $('#instruksi').val('-')
-                    //     $('#suhu').val('-')
-                    //     $('#tensi').val('-')
-                    //     $('#tinggi').val('-')
-                    //     $('#berat').val('-')
-                    //     $('#gcs').val('-')
-                    //     $('#respirasi').val('-')
-                    //     $('#alergi').val('-')
-                    //     $('#nadi').val('-')
-                    //     $('#spo2').val('-')
-
-                    // }
                 },
                 error: function(xhr, status, error) {
                     console.log(error)
@@ -265,7 +241,6 @@
         }
 
         function hitungSelesai() {
-
             $.ajax({
                 url: '/erm/registrasi/selesai',
                 method: 'GET',

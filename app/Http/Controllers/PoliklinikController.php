@@ -99,7 +99,15 @@ class PoliklinikController extends Controller
 
         return DataTables::of($pasien)
             ->editColumn('nm_pasien', function ($q) {
-                return '<h5>' . $q->no_reg . '</h5>' . $q->pasien->nm_pasien . ' <br/> (' . $q->no_rawat . ')';
+                if (
+                    $q->kd_pj == 'A01' ||
+                    $q->kd_pj == 'A05'
+                ) {
+                    $classText = 'text-success';
+                } else {
+                    $classText = 'text-danger';
+                }
+                return '<h5>' . $q->no_reg . '</h5>' . $q->pasien->nm_pasien . ' <br/> (' . $q->no_rawat . ') <br/><strong class="h6 ' . $classText . '"><i>' . $q->penjab->png_jawab . '</i></strong>';
             })
             ->addColumn('aksi', function ($q) {
                 if ($q->stts == 'Batal') {
@@ -117,16 +125,6 @@ class PoliklinikController extends Controller
                         $styleBatal = "width:80px";
                         $disable = '';
                         $disablePanggil = '';
-                        // } else if ($q->stts == 'Sudah') {
-                        //     $classPanggil = "btn btn-secondary btn-sm mb-2 periksa-" . $q->no_reg;
-                        //     $textPanggil = "PANGGIL";
-                        //     $stylePanggil = "width:80px";
-                        //     $classSelesai = "btn btn-secondary btn-sm mb-2 selesai-" . $q->no_reg;
-                        //     $styleSelesai = "width:80px";
-                        //     $disable = 'disabled';
-                        //     $disablePanggil = 'disabled';
-                        //     $classBatal = "btn btn-secondary btn-sm mb-2 batal-" . $q->no_reg;
-                        //     $styleBatal = "width:80px";
                     } else {
                         $classPanggil = "btn btn-success btn-sm mb-2 periksa-" . $q->no_reg;
                         $textPanggil = "PANGGIL";
