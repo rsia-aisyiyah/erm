@@ -69,7 +69,26 @@ class UploadController extends Controller
                 'erm/' . $name,
                 $base
             );
+            $info = getimagesize('public/erm/' . $name);
+            $filesize = filesize('public/erm/' . $name);
+
+            if ($info['mime'] == 'image/jpeg') {
+                $image = imagecreatefromjpeg('public/erm/' . $name);
+            } elseif ($info['mime'] == 'image/png') {
+                $image = imagecreatefrompng('public/erm/' . $name);
+            } elseif ($info['mime'] == 'image/gif') {
+                $image = imagecreatefromgif('public/erm/' . $name);
+            }
+
+            if ($filesize > 500000) {
+                $imageInfo[] = imagejpeg($image, 'public/erm/' . $name, 15);
+            } else {
+                $imageInfo[] = imagejpeg($image, 'public/erm/' . $name, 80);
+            }
         }
+
+
+        return $filesize;
 
         $fileName = implode(',', $arrNama);
 
