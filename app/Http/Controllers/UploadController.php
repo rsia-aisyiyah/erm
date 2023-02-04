@@ -87,9 +87,6 @@ class UploadController extends Controller
             }
         }
 
-
-        return $filesize;
-
         $fileName = implode(',', $arrNama);
 
         $isUploaded = Upload::where('no_rawat', $no_rawat)->where(
