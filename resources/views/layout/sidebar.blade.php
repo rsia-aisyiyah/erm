@@ -38,6 +38,12 @@
                     Poliklinik
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('ranap') ? 'active' : '' }}" href="/erm/ranap">
+                    <i class="bi bi-hospital-fill align-text-bottom"></i>
+                    Rawat Inap
+                </a>
+            </li>
 
         </ul>
     </div>

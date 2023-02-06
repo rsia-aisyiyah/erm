@@ -13,6 +13,7 @@ use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\EstimasiPoliController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\PemeriksaanRalanController;
+use App\Http\Controllers\RanapController;
 use App\Http\Controllers\SelesaiPoliController;
 
 Route::get('/login', function () {
@@ -82,8 +83,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
     Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
+    Route::get('/aturan', [DetailPemberianObatController::class, 'aturanPakai']);
+    Route::get('lab/petugas', [LabController::class, 'petugas']);
+
+    Route::get('ranap', [RanapController::class, 'index']);
+    Route::get('ranap/pasien', [RanapController::class, 'ranap']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
-Route::get('/aturan', [DetailPemberianObatController::class, 'aturanPakai']);
-Route::get('lab/petugas', [LabController::class, 'petugas']);

@@ -26,4 +26,8 @@ class Dokter extends Model
     {
         return $this->hasMany(PeriksaLab::class, 'kd_dokter', 'kd_dokter');
     }
+    public function spesialis()
+    {
+        return $this->belongsTo(Spesialis::class, 'kd_sps', 'kd_sps');
+    }
 }

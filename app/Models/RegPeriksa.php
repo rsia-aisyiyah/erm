@@ -14,6 +14,10 @@ class RegPeriksa extends Model
     protected $table = 'reg_periksa';
     public $timestamps = false;
 
+    public function ranapGabung()
+    {
+        return $this->belongsTo(RanapGabung::class, 'no_rawat', 'no_rawat');
+    }
     public function pasien()
     {
         return $this->belongsTo(Pasien::class, 'no_rkm_medis', 'no_rkm_medis');
@@ -24,7 +28,7 @@ class RegPeriksa extends Model
     }
     public function kamarInap()
     {
-        return $this->hasOne(KamarInap::class, 'no_rawat', 'no_rawat');
+        return $this->hasMany(KamarInap::class, 'no_rawat', 'no_rawat');
     }
     public function dokter()
     {

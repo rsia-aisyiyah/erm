@@ -38,7 +38,7 @@
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">
-                        {{ Request::segment(1) == null ? 'DASHBOARD' : strtoupper(Request::segment(1)) }}
+                        {{ (Request::segment(1) == null ? 'DASHBOARD' : Request::segment(1) == 'ranap') ? 'Rawat Inap' : strtoupper(Request::segment(1)) }}
                     </h1>
                 </div>
                 @yield('contents')
@@ -59,20 +59,13 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
 
 
     <script src="{{ asset('js/dashboard.js') }}"></script>
-    <!-- Include Moment.js CDN -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-    <!-- Include Bootstrap DateTimePicker CDN -->
-    <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
-        rel="stylesheet">
 
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
-    </script>
+
     <script>
         $(document).ready(function() {
             hitungPanggilan();
