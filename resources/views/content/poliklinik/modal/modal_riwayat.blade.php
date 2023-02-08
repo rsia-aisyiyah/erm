@@ -108,8 +108,13 @@
                     status_lanjut = 'RAWAT JALAN';
                     class_status = 'background:rgb(255 193 7);color:black';
                 }
-                console.log(i.catatan_perawatan.catatan)
+                // console.log(i.catatan_perawatan)
 
+                if (i.catatan_perawatan == null) {
+                    catatan = '<strong>Tidak ada catatan</strong>';
+                } else {
+                    catatan = i.catatan_perawatan.catatan.replace(/\n/g, '<br/>');
+                }
 
                 i.pemeriksaan_ralan.forEach(function(x) {
                     pemeriksaan += '<tr><th>Pemeriksaan</th><td>' +
@@ -145,7 +150,7 @@
                         '<table class="table table-sm text-sm borderless table-success">' +
                         '<tr>' +
                         '<tr><td style="width:10%">Catatan Perawatan / Dokter </td><tr>' +
-                        '<tr><td> ' + isKosong(i.catatan_perawatan.catatan.replace(/\n/g, '<br/>')) +
+                        '<tr><td> ' + isKosong(catatan) +
                         '</td><tr>' +
                         '</table>' +
                         '</div>' +
