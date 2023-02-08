@@ -100,7 +100,6 @@
         }
 
         function resume(d) {
-            console.log(d)
             d.reg_periksa.forEach(function(i) {
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
@@ -109,6 +108,7 @@
                     status_lanjut = 'RAWAT JALAN';
                     class_status = 'background:rgb(255 193 7);color:black';
                 }
+                console.log(i.catatan_perawatan)
                 i.pemeriksaan_ralan.forEach(function(x) {
                     pemeriksaan += '<tr><th>Pemeriksaan</th><td>' +
                         '<div class="row">' +
@@ -139,6 +139,11 @@
                         '<tr><td>Object</td><td>: ' + isKosong(x.pemeriksaan) + '</td><tr>' +
                         '<tr><td>Assesment</td><td>: ' + isKosong(x.penilaian) + '</td><tr>' +
                         '<tr><td>Plan</td><td>: ' + isKosong(x.rtl) + '</td><tr>' +
+                        '</table>' +
+                        '<table class="table table-sm text-sm borderless table-success">' +
+                        '<tr>' +
+                        '<tr><td style="width:10%">Catatan Perawatan / Dokter </td><tr>' +
+                        '<tr><td> ' + isKosong(i.catatan_perawatan.catatan) + '</td><tr>' +
                         '</table>' +
                         '</div>' +
                         '</td></tr>';
