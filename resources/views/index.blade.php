@@ -412,6 +412,8 @@
         }
 
         function previewImage(input) {
+
+
             if (input.files && input.files[0]) {
 
                 $('input[name="kategori"]').each(function(index) {
@@ -434,6 +436,8 @@
                             fileName + '" alt="' + fileName +
                             '"><br /><span class="remove badge text-bg-danger">Remove image</span></div>')
                         $(".remove").click(function() {
+                            // $('#preview').remove();
+                            $('input[type="file"]').val('');
                             $(this).parent(".pip").remove();
                             if ($('.pip').length == 0) {
                                 $('#images').val("");
