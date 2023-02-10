@@ -482,6 +482,28 @@
                 method: 'POST',
                 data: data,
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#submit').prop('disabled', true);
+                    swal.fire({
+                        title: 'Memproses Data',
+                        text: 'Mohon Tunggu',
+                        footer: '<img width="25" src="http://192.168.100.33/simrsiav2/assets/gambar/rsiap.ico"><b>&nbsp;RSIA AISYIYAH PEKAJANGAN</b>',
+                        onOpen: () => {
+                            swal.showLoading();
+                        }
+                    })
+                },
+                complete: function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses !',
+                        text: 'Data Berhasil Diproses',
+                        showConfirmButton: false,
+                        timer: 1500
+                        // text: 'Something went wrong!',
+                        // footer: '<a href>Why do I have this issue?</a>'
+                    })
+                },
                 success: function(msg) {
                     hiddenForm();
                     showHistory();
