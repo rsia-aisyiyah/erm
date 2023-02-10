@@ -4,17 +4,18 @@ use App\Models\Pasien;
 use App\Models\Poliklinik;
 use App\Models\DetailPemberianObat;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LabController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RanapController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\PoliklinikController;
 use App\Http\Controllers\RegPeriksaController;
-use App\Http\Controllers\DetailPemberianObatController;
-use App\Http\Controllers\EstimasiPoliController;
-use App\Http\Controllers\LabController;
-use App\Http\Controllers\PemeriksaanRalanController;
-use App\Http\Controllers\RanapController;
 use App\Http\Controllers\SelesaiPoliController;
+use App\Http\Controllers\EstimasiPoliController;
+use App\Http\Controllers\PemeriksaanRalanController;
+use App\Http\Controllers\PemeriksaanRanapController;
+use App\Http\Controllers\DetailPemberianObatController;
 
 Route::get('/login', function () {
     return view('content.auth.login');
@@ -83,8 +84,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
     Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
+    Route::get('/soap', [PemeriksaanRanapController::class, 'ambil']);
     Route::get('/aturan', [DetailPemberianObatController::class, 'aturanPakai']);
     Route::get('lab/petugas', [LabController::class, 'petugas']);
+    Route::get('lab/ranap', [LabController::class, 'labRanap']);
 
     Route::get('ranap', [RanapController::class, 'index']);
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);

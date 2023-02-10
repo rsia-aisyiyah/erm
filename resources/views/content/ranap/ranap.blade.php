@@ -98,6 +98,8 @@
 
         </div>
     </div>
+    @include('content.ranap.modal.modal_lab')
+    @include('content.ranap.modal.modal_soap')
 @endsection
 @push('script')
     <script>
@@ -186,11 +188,29 @@
                         'tgl_kedua': tgl_akhir,
                     },
                 },
+                initComplete: function() {
+                    Swal.fire({
+                        title: 'Menampilkan data rawat inap',
+                        position: 'top-end',
+                        toast: true,
+                        icon: 'success',
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data) {
+
                             list =
-                                '<li><a class="dropdown-item" href="#">Action</a></li><li><a class="dropdown-item" href="#">Another action</a></li><li><a class="dropdown-item" href="#">Something else here</a></li>'
+                                '<li><a class="dropdown-item" href="#" onclick="modalLabRanap()">Laborat</a></li>';
+                            list +=
+                                '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data
+                                .no_rawat + '\')">S.O.A.P</a></li>';
+                            list += '<li><a class="dropdown-item" href="#">EWS</a></li>';
+                            list += '<li><a class="dropdown-item" href="#">Pemeriksaan Penunjang</a></li>';
+                            list += '<li><a class="dropdown-item" href="#">Diagnosis ICD</a></li>';
                             button =
                                 '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" width="100px">Aksi</button><ul class="dropdown-menu">' +
                                 list + '</ul></div>'
@@ -201,8 +221,7 @@
                         data: 'reg_periksa',
                         render: function(data) {
                             return data.no_rawat + '<br/><strong>' +
-                                data.pasien
-                                .nm_pasien +
+                                data.pasien.nm_pasien +
                                 '</strong><br/> (' + data.no_rkm_medis +
                                 ')';
                         },
@@ -240,10 +259,19 @@
                     "zeroRecords": "Tidak ada data pasien terdaftar",
                     "infoEmpty": "Tidak ada data pasien terdaftar",
                 }
-            });
+            })
         }
-        $('.pasien').on('contextmenu', function(e) {
-            console.log('ewewewewe');
+
+        function modalLabRanap() {
+            $('#modalLabRanap').modal('show')
+        }
+
+        function modalSoapRanap(no_rawat) {
+            $('#modalSoapRanap').modal('show')
+            tbSoapRanap(no_rawat);
+        }
+        $('#modalSoapRanap').on('hidden.bs.modal', function() {
+            $('#tbSoap').DataTable().destroy();
         });
     </script>
 @endpush

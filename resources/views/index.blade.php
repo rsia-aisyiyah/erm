@@ -506,7 +506,7 @@
                     })
                 },
                 success: function(msg) {
-                    $('#submit').prop('disabled', true);
+                    $('#submit').prop('disabled', false);
                     hiddenForm();
                     showHistory();
                     $(".pip").remove();

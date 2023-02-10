@@ -13,4 +13,10 @@ class LabController extends Controller
             ->where('kd_jenis_prw', $request->kd_jenis_prw)->with(['petugas', 'dokter'])->first();
         return response()->json($lab);
     }
+    public function labRanap(Request $request)
+    {
+        $lab = PeriksaLab::where('no_rawat', $request->no_rawat)->with('jnsPerawatanLab')->get();
+
+        return response()->json($lab);
+    }
 }
