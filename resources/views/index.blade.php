@@ -487,8 +487,9 @@
                     swal.fire({
                         title: 'Memproses Data',
                         text: 'Mohon Tunggu',
+                        showConfirmButton: false,
                         footer: '<img width="25" src="http://192.168.100.33/simrsiav2/assets/gambar/rsiap.ico"><b>&nbsp;RSIA AISYIYAH PEKAJANGAN</b>',
-                        onOpen: () => {
+                        didOpen: () => {
                             swal.showLoading();
                         }
                     })
@@ -505,6 +506,7 @@
                     })
                 },
                 success: function(msg) {
+                    $('#submit').prop('disabled', true);
                     hiddenForm();
                     showHistory();
                     $(".pip").remove();
