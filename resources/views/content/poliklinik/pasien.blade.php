@@ -138,13 +138,6 @@
             isModalSoapShow = false;
         });
 
-        function ambilNoRawat(no_rawat) {
-            id = no_rawat;
-        }
-
-        function ambilNoRm(no_rkm_medis) {
-            no_rm = no_rkm_medis;
-        }
 
         function simpanSoap() {
             $.ajax({

@@ -1,9 +1,32 @@
+<div class="row">
+    <div class="col">
+        <div class="input-group input-group-sm mb-3">
+            <input type="text" class="form-control tanggal tgl_pertama_soap">
+            <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-group input-group-sm mb-3">
+            <input type="text" class="form-control tanggal tgl_kedua_soap">
+            <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+        </div>
+    </div>
+    <div class="col">
+        <div class="d-grid gap-2">
+            <button type="button" class="btn btn-success btn-sm" style="border-radius:0px" id="cari"
+                onclick="cariSoap()">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
+</div>
 <div>
-    <table width="100%" class="table table-striped" id="tbSoap">
+    <table width="80%" class="table table-striped nowrap" id="tbSoap">
         <thead>
             <tr>
                 {{-- <td>No. Rawat</td>
                 <td>Nama Pasien</td> --}}
+                <td>Ubah</td>
                 <td>Tanggal & Jam Rawat</td>
                 <td>Suhu (<sup>o</sup>C)</td>
                 <td>Tensi</td>
@@ -15,7 +38,7 @@
                 <td>GCS (E,V,M)</td>
                 <td>Kesadaran</td>
                 <td>Alergi</td>
-                <td widht="200px">Subjek</td>
+                <td widht="500px">Subjek</td>
                 <td>Objek</td>
                 <td>Asesmen</td>
                 <td>Plan</td>
@@ -29,17 +52,30 @@
 
 @push('script')
     <script>
-        function tbSoapRanap(no_rawat = '') {
+        var no_rawat_soap = '';
+
+        function editSoap(no, tgl, jam) {
+
+        }
+
+        function cariSoap() {
+            tgl_pertama = splitTanggal($('.tgl_pertama_soap').val());
+            tgl_kedua = splitTanggal($('.tgl_kedua_soap').val());
+            $('#tbSoap').DataTable().destroy();
+            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+        }
+
+        function tbSoapRanap(no_rawat = '', tgl_pertama = '', tgl_kedua = '') {
+            no_rawat_soap = no_rawat;
             var tbSoapRanap = $('#tbSoap').DataTable({
                 processing: true,
                 scrollX: true,
-                scrollY: 200,
+                scrollY: 300,
                 serverSide: true,
                 stateSave: true,
                 searching: false,
                 lengthChange: false,
                 ordering: false,
-                paging: false,
                 paging: false,
                 info: false,
                 autoWidth: false,
@@ -47,39 +83,28 @@
                     url: "soap",
                     data: {
                         'no_rawat': no_rawat,
+                        'tgl_pertama': tgl_pertama,
+                        'tgl_kedua': tgl_kedua,
                     },
                 },
-                columnDefs: [{
-                        width: 500,
-                        targets: 11,
-                    },
-                    {
-                        width: 500,
-                        targets: 12,
-                    },
-                    {
-                        width: 500,
-                        targets: 13,
-                    },
-                    {
-                        width: 500,
-                        targets: 14,
-                    },
-                ],
-                // fixedColumns: true,
+                fixedColumns: {
+                    left: 2,
+                },
                 scrollCollapse: true,
-                columns: [
-                    // {
-                    //     data: 'no_rawat',
-                    //     name: 'no_rawat',
-                    // },
-                    // {
-                    //     data: 'reg_periksa',
-                    //     render: function(data) {
-                    //         return data.pasien.nm_pasien + '(' + data.no_rkm_medis + ')';
-                    //     },
-                    //     name: 'pasien',
-                    // },
+                columns: [{
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            console.log(row)
+                            return '<button type="button" data-id="' + row.no_rawat +
+                                '" data-tgl="' + row.tgl_perawatan +
+                                '" data-jam="' + row.jam_rawat +
+                                '" class="btn btn-primary btn-sm" data-bs-target="#formSoapRanap" aria-expanded="false" aria-controls="formSoapRanap" data-bs-toggle="collapse" onclick="editSoap(\'' +
+                                row.no_rawat + '\',\'' + row.tgl_perawatan +
+                                '\', \'' + row.jam_rawat +
+                                '\')"><i class="bi bi-pencil-square"></i></button>';
+                        },
+                        name: 'tgl_perawatan',
+                    },
                     {
                         data: 'tgl_perawatan',
                         render: function(data, type, row, meta) {
@@ -202,7 +227,6 @@
                     {
                         data: 'petugas',
                         render: function(data, type, row, meta) {
-                            console.log(row)
                             return data.nama;
                         },
                         name: 'petugas',
