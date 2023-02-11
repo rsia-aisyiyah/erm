@@ -28,8 +28,8 @@
                 <td>Nama Pasien</td> --}}
                 <td>Ubah</td>
                 <td>Tanggal & Jam Rawat</td>
-                <td>Suhu (<sup>o</sup>C)</td>
-                <td>Tensi</td>
+                <td>TTV</td>
+                <td>Antropometri</td>
                 <td>Nadi (/mnt)</td>
                 <td>Respirasi (/mnt)</td>
                 <td>Tinggi (cm)</td>
@@ -88,7 +88,7 @@
                     },
                 },
                 fixedColumns: {
-                    left: 2,
+                    left: 1,
                 },
                 scrollCollapse: true,
                 columns: [{
@@ -113,18 +113,33 @@
                         name: 'tgl_perawatan',
                     },
                     {
-                        data: 'suhu_tubuh',
+                        data: null,
                         render: function(data, type, row, meta) {
-                            return data;
+
+                            list = '<li> Suhu Tubuh : ' + row.suhu_tubuh + '  (<sup>o</sup>C)</li>';
+                            list += '<li> Tensi : ' + row.tensi + ' mmHg</li>';
+                            list += '<li> Nadi : ' + row.nadi + ' /mnt</li>';
+                            list += '<li> Respirasi : ' + row.respirasi + ' /mnt</li>';
+                            list += '<li> Tinggi : ' + row.tinggi + ' Cm</li>';
+                            list += '<li> Berat : ' + row.berat + ' Kg</li>';
+                            list += '<li> SpO2 : ' + row.spo2 + ' %</li>';
+                            list += '<li> GCS : ' + row.gcs + '</li>';
+                            list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
+                            list += '<li> alergi : ' + row.alergi + '</li>';
+                            html = '<ul>' + list + '</ul>';
+                            return html;
                         },
-                        name: 'suhu_tubuh',
+                        name: 'ttv',
                     },
                     {
-                        data: 'tensi',
+                        data: null,
                         render: function(data, type, row, meta) {
-                            return data;
+                            list = '<li> Tensi : ' + row.tinggi + ' Cm</li>';
+                            list += '<li> Berat : ' + row.berat + ' Kg</li>';
+                            html = '<ul>' + list + '</ul>';
+                            return html;
                         },
-                        name: 'tensi',
+                        name: 'antoprometri',
                     },
                     {
                         data: 'nadi',
