@@ -60,6 +60,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/4.2.1/js/dataTables.fixedColumns.min.js"></script>
     <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
 
 
@@ -70,6 +71,14 @@
         $(document).ready(function() {
             hitungPanggilan();
         })
+
+        function ambilNoRawat(no_rawat) {
+            id = no_rawat;
+        }
+
+        function ambilNoRm(no_rkm_medis) {
+            no_rm = no_rkm_medis;
+        }
 
         function removeZero(input) {
             if (input.value == '-') {
@@ -361,6 +370,7 @@
                         html =
                             '<input type="radio" class="btn-check" name="kategori" id="opt-rujukan" autocomplete="off" onclick="showForm()" value="surat rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-rujukan">Surat Rujukan</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-usg" autocomplete="off" onclick="showForm()" value="usg"><label class="btn btn-outline-primary btn-sm" for="opt-usg">USG</label>' +
+                            '<input type="radio" class="btn-check" name="kategori" id="opt-cppt" autocomplete="off" onclick="showForm()" value="cppt"><label class="btn btn-outline-primary btn-sm" for="opt-cppt">CPPT</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-laborat" autocomplete="off" onclick="showForm()" value="laborat"><label class="btn btn-outline-primary btn-sm" for="opt-laborat">Laboratorium</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-radiologi" autocomplete="off" onclick="showForm()" value="radiologi"><label class="btn btn-outline-primary btn-sm" for="opt-radiologi">Radiologi</label>'
                         $('#button-form').append(html)
