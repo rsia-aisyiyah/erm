@@ -80,16 +80,16 @@ class UploadController extends Controller
                 $image = imagecreatefromgif('public/erm/' . $name);
             }
 
-            if ($info[0] > $info[1]) {
-                $imageRotate = imagerotate($image, 90, 0);
-            } else {
-                $imageRotate = imagerotate($image, 0, 0);
-            }
+            // if ($info[0] > $info[1]) {
+            //     $imageRotate = imagerotate($image, 90, 0);
+            // } else {
+            //     $imageRotate = imagerotate($image, 0, 0);
+            // }
 
             if ($filesize > 500000) {
-                $imageInfo[] = imagejpeg($imageRotate, 'public/erm/' . $name, 15);
+                $imageInfo[] = imagejpeg($image, 'public/erm/' . $name, 15);
             } else {
-                $imageInfo[] = imagejpeg($imageRotate, 'public/erm/' . $name, 80);
+                $imageInfo[] = imagejpeg($image, 'public/erm/' . $name, 80);
             }
         }
 
