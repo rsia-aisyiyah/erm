@@ -1,12 +1,13 @@
 <div class="modal fade" id="modalSoapRanap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
-            <div class="modal-header">
+            {{-- <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN S.O.A.P</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+            </div> --}}
             <div class="modal-body">
-                <div class="accordion" id="accordionPanelsStayOpenExample">
+                @include('content.ranap.modal._form_soap')
+                {{-- <div class="accordion" id="accordionPanelsStayOpenExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingFormSooap">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -18,7 +19,6 @@
                         <div id="formSoapRanap" class="accordion-collapse collapse"
                             aria-labelledby="panelsStayOpen-headingTwo">
                             <div class="accordion-body">
-                                @include('content.ranap.modal._form_soap')
                             </div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
             </div>
             <div class="modal-footer">
