@@ -146,6 +146,7 @@
                         '<tr><td>Object</td><td>: ' + isKosong(x.pemeriksaan) + '</td><tr>' +
                         '<tr><td>Assesment</td><td>: ' + isKosong(x.penilaian) + '</td><tr>' +
                         '<tr><td>Plan</td><td>: ' + isKosong(x.rtl) + '</td><tr>' +
+                        '<tr><td>Instruksi</td><td>: ' + isKosong(x.instruksi) + '</td><tr>' +
                         '</table>' +
                         '<table class="table table-sm text-sm borderless table-success">' +
                         '<tr>' +
