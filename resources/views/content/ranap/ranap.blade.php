@@ -244,7 +244,12 @@
                     {
                         data: 'reg_periksa',
                         render: function(data) {
-                            return data.dokter.nm_dokter;
+                            if (data.dokter) {
+                                return data.dokter.nm_dokter;
+
+                            } else {
+                                return '-';
+                            }
                         },
                         name: 'dokter'
                     },
@@ -267,11 +272,41 @@
         }
 
         function modalSoapRanap(no_rawat) {
+
+            $.ajax({
+                url: 'periksa/detail',
+                data: {
+                    'no_rawat': no_rawat,
+                },
+                success: function(response) {
+                    $('#nomor_rawat').val(response.no_rawat + ' - ' + response.pasien.nm_pasien);
+                }
+            })
             $('#modalSoapRanap').modal('show')
+            nik = "{{ session()->get('pegawai')->nik }}" + " - " + "{{ session()->get('pegawai')->nama }}";
+            $('#nik').val(nik)
             tbSoapRanap(no_rawat);
         }
         $('#modalSoapRanap').on('hidden.bs.modal', function() {
             $('#tbSoap').DataTable().destroy();
+            $('#ubah_soap').empty();
+            $('#suhu').val("-");
+            $('#tinggi').val("-");
+            $('#berat').val("-");
+            $('#tensi').val("-");
+            $('#respirasi').val("-");
+            $('#nadi').val("-");
+            $('#spo2').val("-");
+            $('#gcs').val("-");
+            $('#alergi').val("-");
+            $('#asesmen').val("-");
+            $('#plan').val("-");
+            $('#instruksi').val("-");
+            $('#evaluasi').val("-");
+            $('#subjek').val("-");
+            $('#objek').val("-");
+            $('#btn-reset').remove();
+            $('#btn-ubah').remove();
         });
     </script>
 @endpush

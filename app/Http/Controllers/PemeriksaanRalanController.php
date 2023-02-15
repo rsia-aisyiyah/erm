@@ -63,7 +63,7 @@ class PemeriksaanRalanController extends Controller
                 'nip' => $request->nip,
                 'no_rawat' => $request->no_rawat,
                 'tgl_perawatan' => $this->tanggal->now()->toDateString(),
-                'jam_rawat' => date('h:i:s'),
+                'jam_rawat' => date('H:i:s'),
             ];
 
             $create = array_merge($data, $dataTambah);

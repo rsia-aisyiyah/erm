@@ -85,6 +85,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
     Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
     Route::get('/soap', [PemeriksaanRanapController::class, 'ambil']);
+    Route::get('/soap/ambil', [PemeriksaanRanapController::class, 'ambilSatu']);
+    Route::post('/soap/ubah', [PemeriksaanRanapController::class, 'ubah']);
+    Route::post('/soap/simpan', [PemeriksaanRanapController::class, 'simpan']);
+    Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
     Route::get('/aturan', [DetailPemberianObatController::class, 'aturanPakai']);
     Route::get('lab/petugas', [LabController::class, 'petugas']);
     Route::get('lab/ranap', [LabController::class, 'labRanap']);
