@@ -245,15 +245,15 @@
 
                             list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
                                 '</strong></li>';
-                            list += '<li> Suhu Tubuh : ' + row.suhu_tubuh + '  (<sup>o</sup>C)</li>';
+                            list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
+                            list += '<li> GCS : ' + row.gcs + '</li>';
                             list += '<li> Tensi : ' + row.tensi + ' mmHg</li>';
                             list += '<li> Nadi : ' + row.nadi + ' /mnt</li>';
-                            list += '<li> Respirasi : ' + row.respirasi + ' /mnt</li>';
                             list += '<li> SpO2 : ' + row.spo2 + ' %</li>';
+                            list += '<li> Respirasi : ' + row.respirasi + ' /mnt</li>';
+                            list += '<li> Suhu Tubuh : ' + row.suhu_tubuh + '  (<sup>o</sup>C)</li>';
                             list += '<li> Tinggi : ' + row.tinggi + ' Cm</li>';
                             list += '<li> Berat : ' + row.berat + ' Kg</li>';
-                            list += '<li> GCS : ' + row.gcs + '</li>';
-                            list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
                             list += '<li> alergi : ' + row.alergi + '</li>';
                             html = '<ul>' + list + '</ul>';
                             return html;
@@ -263,6 +263,7 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
+                            console.log(row)
                             baris = '<tr><td>Petugas </td><td>:</td><td>' + row.petugas.nama + '</td></tr>'
                             baris += '<tr><td>Subjek </td><td>:</td><td>' + row.keluhan + '</td></tr>'
                             baris += '<tr><td>Objek </td><td>:</td><td>' + row.pemeriksaan + '</td></tr>'

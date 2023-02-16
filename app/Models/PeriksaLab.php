@@ -23,8 +23,8 @@ class PeriksaLab extends Model
     {
         return $this->hasMany(JnsPerawatanLab::class, 'kd_jenis_prw', 'kd_jenis_prw');
     }
-    // public function dpjp()
-    // {
-    //     return $this->belongsTo(Dokter::class, 'dokter_perujuk', 'kd_dokter');
-    // }
+    public function perujuk()
+    {
+        return $this->belongsTo(Dokter::class, 'dokter_perujuk', 'kd_dokter');
+    }
 }

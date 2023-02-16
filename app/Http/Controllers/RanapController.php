@@ -33,6 +33,25 @@ class RanapController extends Controller
             $ranap->whereBetween('tgl_keluar', [$request->tgl_pertama, $request->tgl_kedua]);
         }
 
-        return DataTables::of($ranap)->make(true);
+        if ($request->kd_dokter) {
+            $ranap->whereHas('regPeriksa', function ($q) use ($request) {
+                $q->where('kd_dokter', $request->kd_dokter);
+            });
+        }
+
+        if ($request->kamar) {
+            $ranap->whereHas('kamar.bangsal', function ($q) use ($request) {
+                $q->where('nm_bangsal', 'like', '%' . $request->kamar . '%');
+            });
+        }
+
+        return DataTables::of($ranap)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('search') && $request->get('search')['value']) {
+                    return $query->whereHas('regPeriksa.pasien', function ($query) use ($request) {
+                        $query->where('nm_pasien', 'like', '%' . $request->get('search')['value'] . '%');
+                    });
+                }
+            })->make(true);
     }
 }

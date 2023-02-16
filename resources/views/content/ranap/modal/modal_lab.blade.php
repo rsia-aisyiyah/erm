@@ -1,19 +1,43 @@
 <div class="modal fade" id="modalLabRanap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
-            <div class="modal-header" style="padding:5px">
-                <h5 class="modal-title" id="exampleModalLabel">PEMERIKSAAN LAB</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
             <div class="modal-body">
-                <table class="table table-striped table-bordered" width="100%">
+                <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
+                <table class="borderless">
                     <tr>
-                        <th>fsfsdfs</th>
-                        <th>fsfsdfs</th>
-                        <th>fsfsdfs</th>
-                        <th>fsfsdfs</th>
-                        <th>fsfsdfs</th>
+                        <td>Nomor Rawat</td>
+                        <td>:</td>
+                        <td id="no_rawat">
+
+                        </td>
                     </tr>
+                    <tr>
+                        <td>Nama</td>
+                        <td>:</td>
+                        <td id="nama">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Umur / JK</td>
+                        <td>:</td>
+                        <td id="umur">
+
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Pemeriksaan</th>
+                            <th>Hasil</th>
+                            <th>Nilai Rujukan</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-lab">
+                    </tbody>
                 </table>
             </div>
             <div class="modal-footer">
@@ -26,4 +50,77 @@
     </div>
 </div>
 @push('script')
+    <script>
+        function modalLabRanap(no_rawat) {
+            let hasil = '';
+            let jenisPerawatan = '';
+            let tglPeriksa = '';
+            $.ajax({
+                url: 'lab/ambil',
+                data: {
+                    'no_rawat': no_rawat,
+                },
+                success: function(response) {
+                    if (Object.keys(response).length > 0) {
+                        response.forEach(function(res) {
+                            console.log(res)
+                            if (jenisPerawatan != res.jns_perawatan_lab.kd_jenis_prw || tglPeriksa !=
+                                res
+                                .tgl_periksa) {
+                                hasil +=
+                                    '<tr class="borderless" style="background-color:#eee"><td colspan="3"><strong>' +
+                                    res
+                                    .jns_perawatan_lab
+                                    .nm_perawatan + '</strong> <br/> ' + formatTanggal(res
+                                        .tgl_periksa) +
+                                    ' ' +
+                                    res.jam + '</td><td>' + res.periksa_lab.petugas.nama + '</td></tr>';
+                            }
+
+                            if (res.keterangan == 'L') {
+                                warna = 'style="color:#0d6efd"';
+                            } else if (res.keterangan == 'H' || res.keterangan == '*') {
+                                warna = 'style="color:#dc3545"';
+                            } else {
+                                warna = '';
+                            }
+                            hasil += '<tr>';
+                            hasil += '<td>' + res.template.Pemeriksaan + '</td>';
+                            hasil += '<td ' + warna + '>' + res.nilai + ' ' + res.template.satuan +
+                                '</td>';
+                            hasil += '<td>' + res.nilai_rujukan + '</td>';
+                            hasil += '<td>' + res.keterangan + '</td>';
+                            hasil += '</tr>';
+
+                            jenisPerawatan = res.jns_perawatan_lab.kd_jenis_prw;
+                            tglPeriksa = res.tgl_periksa;
+
+
+                            jk = res.reg_periksa.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
+
+                            $('#no_rawat').html(res.no_rawat);
+                            $('#nama').html(res.reg_periksa.pasien.nm_pasien + ' ( No. RM ' + res
+                                .reg_periksa
+                                .no_rkm_medis + ')');
+                            $('#umur').html(res.reg_periksa.umurdaftar + ' ' + res.reg_periksa
+                                .sttsumur +
+                                ' / ' + jk)
+                        })
+                        $('#tabel-lab').append(hasil)
+                        $('#modalLabRanap').modal('show')
+                    } else {
+                        Swal.fire(
+                            'Kosong!', 'Belum ada pemeriksaan laborat', 'error'
+                        );
+                    }
+
+                }
+            });
+
+        }
+
+        $('#modalLabRanap').on('hidden.bs.modal', function() {
+            $('#tabel-lab').empty()
+        })
+    </script>
 @endpush

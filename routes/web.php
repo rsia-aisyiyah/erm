@@ -16,6 +16,7 @@ use App\Http\Controllers\EstimasiPoliController;
 use App\Http\Controllers\PemeriksaanRalanController;
 use App\Http\Controllers\PemeriksaanRanapController;
 use App\Http\Controllers\DetailPemberianObatController;
+use App\Http\Controllers\DokterController;
 
 Route::get('/login', function () {
     return view('content.auth.login');
@@ -91,10 +92,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
     Route::get('/aturan', [DetailPemberianObatController::class, 'aturanPakai']);
     Route::get('lab/petugas', [LabController::class, 'petugas']);
-    Route::get('lab/ranap', [LabController::class, 'labRanap']);
+    Route::get('lab/ambil', [LabController::class, 'ambil']);
 
     Route::get('ranap', [RanapController::class, 'index']);
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
+
+    Route::get('dokter/ambil', [DokterController::class, 'ambil']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);

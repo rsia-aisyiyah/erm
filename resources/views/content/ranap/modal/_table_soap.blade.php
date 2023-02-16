@@ -26,7 +26,7 @@
     <table class="table table-bordered table-striped" id="tbSoap">
         <thead>
             <tr>
-                <td>Ubah</td>
+                <td>Aksi</td>
                 <td>TTV & Fisik</td>
                 <td>S.O.A.P</td>
             </tr>

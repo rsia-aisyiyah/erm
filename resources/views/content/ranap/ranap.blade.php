@@ -77,8 +77,47 @@
                             </div>
 
                         </div>
-
                     </div>
+                    <div class="form-group mb-2">
+                        <div class="row gy-2">
+                            <div class="col-lg-3 col-md-12 col-sm-12">
+                                <select name="spesialis" id="spesialis" class="form-select form-select-sm"
+                                    style="width:100%">
+                                    <option value="">Kategori</option>
+                                    <option value="S0001">Kebidanan & Kandungan</option>
+                                    <option value="S0003">Anak</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 col-md-12 col-sm-12">
+                                <select name="dokter" id="dokter" class="form-select form-select-sm" style="width:100%"
+                                    disabled>
+                                    <option value="">Semua Dokter</option>
+                                    <option value="1.101.1112">dr. Himawan Budityastomo, Sp.OG</option>
+                                    <option value="1.109.1119">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
+                                    <option value="1.107.0317">dr. Dwi Riyanto, Sp.A</option>
+                                    <option value="1.111.1221">dr. Rendy Yoga Ardian, Sp.A</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-5 col-md-12 col-sm-12">
+                                <div class="mb-3 row">
+                                    <label for="cari-kamar" class="col-sm-3 col-form-label">Cari Kamar : </label>
+                                    <div class="col-sm-9">
+                                        <input type="search" id="cari-kamar" name="cari-kamar"
+                                            class="form-control form-control-sm" width="100%">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_ranap" width="100%">
                         <thead>
                             <tr role="row">
@@ -106,6 +145,11 @@
         var stts_pulang = '-';
         var tgl_awal = '';
         var tgl_akhir = '';
+        var kd_dokter = '';
+        var kamar = '';
+
+
+
         $(document).ready(function() {
             date = new Date()
             hari = ('0' + (date.getDate())).slice(-2);
@@ -118,6 +162,56 @@
                 autoclose: true,
             });
             $('.tanggal').datepicker('setDate', dateStart)
+            tb_ranap();
+
+        });
+
+        $('#spesialis').on('change', function() {
+            sps = $('#spesialis option:selected').val();
+            if (sps) {
+                $.ajax({
+                    url: 'dokter/ambil',
+                    data: {
+                        'sps': sps,
+                    },
+                    success: function(response) {
+                        let option =
+                            '<option value="" disabled selected>Pilih Dokter Spesialis</option>';
+                        response.data.forEach(function(res) {
+                            $('#dokter').prop('disabled', false)
+                            $('#dokter').empty();
+
+                            option += '<option value="' + res.kd_dokter + '">' + res.nm_dokter +
+                                '</option>';
+                        })
+                        $('#dokter').append(option);
+                    }
+                })
+            } else {
+                $('#dokter').prop('disabled', true)
+                $('#dokter').empty();
+                option = '<option value="">Semua Dokter</option>'
+                $('#dokter').append(option);
+                kd_dokter = '';
+                $('#tb_ranap').DataTable().destroy();
+                tb_ranap();
+
+            }
+        })
+
+        $("#cari-kamar").bind('keypress', function(e) {
+            console.log($(this).val())
+        })
+
+        $('#cari-kamar').on('keyup', function() {
+            kamar = $(this).val();
+            $('#tb_ranap').DataTable().destroy();
+            tb_ranap();
+        })
+
+        $('#dokter').on('change', function() {
+            kd_dokter = $(this).val();
+            $('#tb_ranap').DataTable().destroy();
             tb_ranap();
         })
 
@@ -175,6 +269,7 @@
             var tb_ranap = $('#tb_ranap').DataTable({
                 processing: true,
                 scrollX: true,
+                scrollY: 400,
                 serverSide: true,
                 stateSave: true,
                 ordering: false,
@@ -186,6 +281,8 @@
                         'stts_pulang': stts_pulang,
                         'tgl_pertama': tgl_awal,
                         'tgl_kedua': tgl_akhir,
+                        'kd_dokter': kd_dokter,
+                        'kamar': kamar,
                     },
                 },
                 initComplete: function() {
@@ -204,7 +301,8 @@
                         render: function(data) {
 
                             list =
-                                '<li><a class="dropdown-item" href="#" onclick="modalLabRanap()">Laborat</a></li>';
+                                '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data
+                                .no_rawat + '\')">Laborat</a></li>';
                             list +=
                                 '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data
                                 .no_rawat + '\')">S.O.A.P</a></li>';
@@ -263,13 +361,14 @@
                 "language": {
                     "zeroRecords": "Tidak ada data pasien terdaftar",
                     "infoEmpty": "Tidak ada data pasien terdaftar",
+                    "search": "Cari Nama Pasien",
                 }
             })
         }
 
-        function modalLabRanap() {
-            $('#modalLabRanap').modal('show')
-        }
+        // function modalLabRanap() {
+        //     $('#modalLabRanap').modal('show')
+        // }
 
         function modalSoapRanap(no_rawat) {
 

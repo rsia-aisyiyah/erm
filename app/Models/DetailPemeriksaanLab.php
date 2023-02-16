@@ -21,4 +21,8 @@ class DetailPemeriksaanLab extends Model
     {
         return $this->belongsTo(TemplateLaboratorium::class, 'id_template', 'id_template');
     }
+    public function periksaLab()
+    {
+        return $this->belongsTo(PeriksaLab::class, 'no_rawat', 'no_rawat');
+    }
 }
