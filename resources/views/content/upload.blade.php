@@ -42,7 +42,7 @@
                     <label>Anda dapat mengupload lebih dari satu gambar</label>
                     <div class="mb-3">
                         <input class="form-control" type="file" id="images" name="file" multiple
-                            onchange="previewImage(this)" style="display: none">
+                            onchange="previewImage(this)" style="display: none" accept="image/png, image/jpeg, application/pdf">
 
                     </div>
                     <div class="mb-2 text-center">
