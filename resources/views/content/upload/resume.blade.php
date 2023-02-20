@@ -23,7 +23,7 @@
                         </div>
                         <div class="mb-3">
                             <input class="form-control" type="file" id="file" name="file" multiple
-                                onchange="previewImage(this)" style="display: none">
+                                onchange="previewImage(this)" style="display: none" accept="image/png, image/jpeg, application/pdf">
                         </div>
                         <div class="d-grid gap-2">
                             <label type="button" class="btn btn-success" width="100%" for="file">Tambah</label>

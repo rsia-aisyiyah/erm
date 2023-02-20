@@ -399,11 +399,15 @@
                 kategori = event.target.value;
             }
 
-
             var img = '';
             $('#image .tmb').detach()
             $.ajax({
-                url: '/erm/upload/show?no_rawat=' + no_rawat + '&kategori=' + kategori,
+                url: '/erm/upload/show',
+                data : {
+                    'no_rawat' : no_rawat,
+                    'kategori' : kategori,
+                },
+
                 method: 'GET',
                 dataType: 'JSON',
                 success: function(data) {
@@ -411,11 +415,16 @@
                     if (countData > 0) {
                         img = data.file.split(',');
                         $.map(img, function(file) {
+                            splitNamaFile = file.split('.');
+                            // console.log(splitNamaFile[1])
+                            if(splitNamaFile[1] != 'pdf'){
+                                fileName = '{{ asset("erm") }}/'+file;
+                            }else{
+                                fileName = "{{ asset('img/pdf-icon.png') }}";
+                            }
                             $('#image').append(
-                                '<div class="tmb col-sm-4"><img class="img-thumbnail position-relative" src="{{ asset('erm') }}/' +
-                                file +
-                                '" /><span style="cursor:pointer" class="badge text-bg-danger" onclick=deleteImage(' +
-                                data.id + ',"' + file + '")>Hapus</span></div>')
+                                '<div class="tmb col-md-4 col-lg-3 col-sm-12"><img class="img-thumbnail position-relative" src="'+fileName+'"/><span style="cursor:pointer" class="badge text-bg-danger" onclick="deleteImage(' +
+                                data.id + ',\'' + file +'\')">Hapus</span></div>')
                         })
                     }
                     $('#upload-image').css('visibility', 'visible')
@@ -441,15 +450,21 @@
                     reader.readAsDataURL(input.files[index]);
                     reader.onload = function(e) {
                         var file = e.target;
-                        var fileName = input.files[index].name
+                        var fileName = input.files[index].name;
+                        var filePreview='';
+                        console.log(input.files[index].type);
+                        if(input.files[index].type == 'application/pdf'){
+                            filePreview = "{{ asset('img/pdf-icon.png') }}";
+                        }else{
+                            filePreview = file.result;
+                        }
                         $('#preview').append(
-                            '<div class="pip col-sm-3"><input type="hidden" name="images" value="' +
-                            file.result + '" class="images"><img width="75%" src="' + file.result +
+                            '<div class="pip col-md-3 col-lg-3 col-sm-12"><input type="hidden" name="images" value="' +
+                            file.result + '" class="images"><img width="75%" src="' + filePreview +
                             '" title="' +
                             fileName + '" alt="' + fileName +
-                            '"><br /><span class="remove badge text-bg-danger">Remove image</span></div>')
+                            '"/><br /><span class="remove badge text-bg-danger">Batal Upload</span></div>')
                         $(".remove").click(function() {
-                            // $('#preview').remove();
                             $('input[type="file"]').val('');
                             $(this).parent(".pip").remove();
                             if ($('.pip').length == 0) {
@@ -615,10 +630,11 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'DELETE',
-                        url: '/erm/upload/delete/' + id + '?image=' + img,
+                        url: '/erm/upload/delete/' + id,
                         dataType: 'JSON',
                         data: {
                             _token: "{{ csrf_token() }}",
+                            image : img
                         },
                         success: function(data) {
                             showForm(no_rawat, kategori);

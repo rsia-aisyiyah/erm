@@ -47,13 +47,18 @@ class UploadController extends Controller
         $kategori = $request->kategori;
 
 
-        // return $request;
+        $txt_no_rawat = str_replace('/', '', $no_rawat);
+
         $arrNama = [];
-        // return $request->tgl_masuk;
         foreach ($request->images as $images) {
             $image_parts[] = explode(';base64,', $images);
             foreach ($image_parts as $parts) {
-                $image_type_aux = explode('image/', $parts[0]);
+                if ($parts[0] == 'data:application/pdf') {
+                    $image_type_aux = explode('application/', $parts[0]);
+                } else {
+
+                    $image_type_aux = explode('image/', $parts[0]);
+                }
                 $image_base64[] = base64_decode($parts[1]);
             }
 
@@ -63,36 +68,40 @@ class UploadController extends Controller
                     $base = base64_decode($parts[1]);
                 }
             }
-            $name = uniqid() . '.' . $type;
+            $name = $txt_no_rawat . '-' . $kategori . '-' . rand(10, 9999) . '.' . $type;
             array_push($arrNama, $name);
             $storage = Storage::disk('public_upload')->put(
                 'erm/' . $name,
                 $base
             );
-            $info = getimagesize('public/erm/' . $name);
-            $filesize = filesize('public/erm/' . $name);
 
-            if ($info['mime'] == 'image/jpeg') {
-                $image = imagecreatefromjpeg('public/erm/' . $name);
-            } elseif ($info['mime'] == 'image/png') {
-                $image = imagecreatefrompng('public/erm/' . $name);
-            } elseif ($info['mime'] == 'image/gif') {
-                $image = imagecreatefromgif('public/erm/' . $name);
-            }
 
-            // if ($info[0] > $info[1]) {
-            //     $imageRotate = imagerotate($image, 90, 0);
-            // } else {
-            //     $imageRotate = imagerotate($image, 0, 0);
-            // }
+            if ($image_type_aux[1] != 'pdf') {
+                $info = getimagesize('public/erm/' . $name);
+                $filesize = filesize('public/erm/' . $name);
 
-            if ($filesize > 500000) {
-                $imageInfo[] = imagejpeg($image, 'public/erm/' . $name, 15);
-            } else {
-                $imageInfo[] = imagejpeg($image, 'public/erm/' . $name, 80);
+                if ($info['mime'] == 'image/jpeg') {
+                    $image = imagecreatefromjpeg('public/erm/' . $name);
+                } elseif ($info['mime'] == 'image/png') {
+                    $image = imagecreatefrompng('public/erm/' . $name);
+                } elseif ($info['mime'] == 'image/gif') {
+                    $image = imagecreatefromgif('public/erm/' . $name);
+                }
+
+                // if ($info[0] > $info[1]) {
+                //     $imageRotate = imagerotate($image, 90, 0);
+                // } else {
+                //     $imageRotate = imagerotate($image, 0, 0);
+                // }
+
+                if ($filesize > 500000) {
+                    $imageInfo[] = imagejpeg($image, 'public/erm/' . $name, 15);
+                } else {
+                    $imageInfo[] = imagejpeg($image, 'public/erm/' . $name, 80);
+                }
             }
         }
-
+        // return $name;
         $fileName = implode(',', $arrNama);
 
         $isUploaded = Upload::where('no_rawat', $no_rawat)->where(
