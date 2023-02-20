@@ -266,6 +266,7 @@
         })
 
         function tb_ranap() {
+
             var tb_ranap = $('#tb_ranap').DataTable({
                 processing: true,
                 scrollX: true,
@@ -318,9 +319,24 @@
                     {
                         data: 'reg_periksa',
                         render: function(data) {
-                            return data.no_rawat + '<br/><strong>' +
-                                data.pasien.nm_pasien +
-                                '</strong><br/> (' + data.no_rkm_medis +
+                            if (data.pasien) {
+                                pasien = data.pasien.nm_pasien;
+                            } else {
+                                pasien = data.no_rkm_medis.replace(/\s/g, '');
+                                $.ajax({
+                                    url: 'pasien/cari',
+                                    data: {
+                                        'q': pasien,
+                                    },
+                                    success: function(response) {
+                                        $.map(response, function(data) {
+                                            $('#pasien').text(data.nm_pasien);
+                                        })
+                                    }
+                                })
+                            }
+                            return data.no_rawat + '<br/><strong>' + '<span id="pasien">' + pasien +
+                                '</span></strong><br/> (' + data.no_rkm_medis +
                                 ')';
                         },
                         name: 'reg_periksa',
@@ -342,12 +358,25 @@
                     {
                         data: 'reg_periksa',
                         render: function(data) {
+                            let dokter = '';
                             if (data.dokter) {
-                                return data.dokter.nm_dokter;
-
+                                dokter = data.dokter.nm_dokter;
                             } else {
-                                return '-';
+                                kd_dokter = data.kd_dokter.replace(/\s/g, '');
+                                $.ajax({
+                                    url: 'dokter/ambil',
+                                    dataType: 'JSON',
+                                    data: {
+                                        'nik': kd_dokter,
+                                    },
+                                    success: function(response) {
+                                        $.map(response.data, function(res) {
+                                            $('.nm_dokter').text(res.nm_dokter);
+                                        })
+                                    }
+                                });
                             }
+                            return '<span class="nm_dokter">' + dokter + '</span>';
                         },
                         name: 'dokter'
                     },

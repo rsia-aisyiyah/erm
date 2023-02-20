@@ -22,13 +22,12 @@ class RanapController extends Controller
     public function ranap(Request $request)
     {
 
-        $ranap = KamarInap::with(['regPeriksa', 'regPeriksa.pasien', 'regPeriksa.dokter', 'regPeriksa.dokter.spesialis', 'kamar', 'ranapGabung', 'ranapGabung.regPeriksa', 'kamar.bangsal']);
+        $ranap = KamarInap::with(['regPeriksa.pasien', 'regPeriksa.dokter', 'regPeriksa.dokter.spesialis', 'kamar', 'ranapGabung', 'ranapGabung.regPeriksa', 'kamar.bangsal']);
 
         if ($request->stts_pulang == '-') {
             $ranap->where('stts_pulang', $request->stts_pulang);
         } else if ($request->stts_pulang == 'Masuk') {
             $ranap->whereBetween('tgl_masuk', [$request->tgl_pertama, $request->tgl_kedua]);
-            // $ranap->where('stts_pulang', '-');
         } else if ($request->stts_pulang == 'Pulang') {
             $ranap->whereBetween('tgl_keluar', [$request->tgl_pertama, $request->tgl_kedua]);
         }
