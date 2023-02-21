@@ -108,7 +108,12 @@ class PoliklinikController extends Controller
                 } else {
                     $classText = 'text-danger';
                 }
-                return '<h5>' . $q->no_reg . '</h5>' . $q->pasien->nm_pasien . ' <br/> (' . $q->no_rawat . ') <br/><strong class="h6 ' . $classText . '"><i>' . $q->penjab->png_jawab . '</i></strong>';
+                if ($q->pasien) {
+                    $pasien = $q->pasien->nm_pasien;
+                } else {
+                    $pasien = '-';
+                }
+                return '<h5>' . $q->no_reg . '</h5>' . $pasien . ' <br/> (' . $q->no_rawat . ') <br/><strong class="h6 ' . $classText . '"><i>' . $q->penjab->png_jawab . '</i></strong>';
             })
             ->addColumn('aksi', function ($q) {
                 if ($q->stts == 'Batal') {

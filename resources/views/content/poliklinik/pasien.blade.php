@@ -313,6 +313,10 @@
                     },
                     {
                         data: 'nm_pasien',
+                        render : function(data){
+                            console.log(data);
+                            return data;
+                        },
                         name: 'nm_pasien'
 
                     },
