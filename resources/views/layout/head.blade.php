@@ -21,4 +21,24 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.toast.min.css') }}">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .card {
+            border-radius: 0px;
+        }
+
+        .btn {
+
+            border-radius: 0px;
+        }
+
+        .dropdown-menu {
+            border-radius: 0px;
+        }
+
+        input[type=text],
+        input[type=search],
+        .form-select-sm {
+            border-radius: 0px;
+        }
+    </style>
 </head>

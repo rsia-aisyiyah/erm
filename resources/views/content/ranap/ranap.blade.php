@@ -3,7 +3,7 @@
 @section('contents')
     <div class="row gy-2">
         <div class="col-sm-12">
-            @if (session()->get('pegawai')->bidang != 'Direksi' && session()->get('pegawai')->bidang != 'Spesiais')
+            @if (session()->get('pegawai')->bidang != 'Direksi' && session()->get('pegawai')->bidang != 'Spesialis')
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group mb-2">
@@ -166,10 +166,18 @@
                 orientation: 'bottom',
                 autoclose: true,
             });
+            kd_dokter = $('#kd_dokter').val();
             $('.tanggal').datepicker('setDate', dateStart)
             tb_ranap();
         });
 
+        $('#cari-kamar').on('search', function() {
+            if ($(this).val() == '') {
+                kamar = '';
+                $('#tb_ranap').DataTable().destroy();
+                tb_ranap();
+            }
+        })
         $('#spesialis').on('change', function() {
             sps = $('#spesialis option:selected').val();
             if (sps) {
@@ -270,7 +278,7 @@
         })
 
         function tb_ranap() {
-            kd_dokter = $('#kd_dokter').val();
+
             var tb_ranap = $('#tb_ranap').DataTable({
                 processing: true,
                 scrollX: true,
