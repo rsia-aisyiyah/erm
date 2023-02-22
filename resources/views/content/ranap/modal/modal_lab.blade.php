@@ -56,6 +56,44 @@
             let jenisPerawatan = '';
             let tglPeriksa = '';
             $.ajax({
+                url: 'registrasi/ambil',
+                data: {
+                    'no_rawat': no_rawat,
+                },
+                success: function(response) {
+                    $('#no_rawat').html(no_rawat);
+                    umur = response.umurdaftar;
+                    status_umur = response.sttsumur;
+                    if (data.pasien) {
+                        jk = res.reg_periksa.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
+                        $('#nama').html(res.reg_periksa.pasien.nm_pasien + ' ( No. RM ' + res
+                            .reg_periksa
+                            .no_rkm_medis + ')');
+                        $('#umur').html(umur + ' ' + status_umur +
+                            ' / ' + jk)
+                    } else {
+                        pasien = response.no_rkm_medis.replace(/\s/g, '');
+                        $.ajax({
+                            url: 'pasien/cari',
+                            data: {
+                                'q': pasien,
+                            },
+                            success: function(response) {
+                                $.map(response, function(data) {
+                                    jk = data.jk == 'L' ?
+                                        'Laki-laki' : 'Perempuan';
+                                    $('#nama').html(data.nm_pasien + ' ( No. RM ' + data
+                                        .no_rkm_medis + ')');
+                                    $('#umur').html(umur + ' ' + status_umur +
+                                        ' / ' + jk)
+                                })
+                            }
+                        })
+                    }
+                }
+            })
+
+            $.ajax({
                 url: 'lab/ambil',
                 data: {
                     'no_rawat': no_rawat,
@@ -63,7 +101,7 @@
                 success: function(response) {
                     if (Object.keys(response).length > 0) {
                         response.forEach(function(res) {
-                            console.log(res)
+
                             if (jenisPerawatan != res.jns_perawatan_lab.kd_jenis_prw || tglPeriksa !=
                                 res
                                 .tgl_periksa) {
@@ -84,6 +122,7 @@
                             } else {
                                 warna = '';
                             }
+
                             hasil += '<tr>';
                             hasil += '<td>' + res.template.Pemeriksaan + '</td>';
                             hasil += '<td ' + warna + '>' + res.nilai + ' ' + res.template.satuan +
@@ -96,15 +135,10 @@
                             tglPeriksa = res.tgl_periksa;
 
 
-                            jk = res.reg_periksa.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
+                            // console.log(res.reg_periksa)
 
-                            $('#no_rawat').html(res.no_rawat);
-                            $('#nama').html(res.reg_periksa.pasien.nm_pasien + ' ( No. RM ' + res
-                                .reg_periksa
-                                .no_rkm_medis + ')');
-                            $('#umur').html(res.reg_periksa.umurdaftar + ' ' + res.reg_periksa
-                                .sttsumur +
-                                ' / ' + jk)
+
+
                         })
                         $('#tabel-lab').append(hasil)
                         $('#modalLabRanap').modal('show')

@@ -36,7 +36,7 @@ class PoliklinikController extends Controller
 
         $sekarang = $tanggal->now()->toDateString();
         return $pasienPoli = RegPeriksa::where('tgl_registrasi', $tanggal->now()->toDateString())
-            ->with(['pasien', 'dokter'])
+            ->with(['pasien', 'dokter', 'penjab'])
             ->where('kd_poli', $kd_poli)
             ->where('kd_dokter', $kd_dokter)->orderBy('no_reg', 'ASC');
 
@@ -94,61 +94,11 @@ class PoliklinikController extends Controller
         }
         return $jmlUpload;
     }
-    public function tbPoliPasien($kd_poli, Request $request)
+    public function tbPoliPasien(Request $request)
     {
-        $pasien = $this->poliPasien($kd_poli, $request->dokter);
+        $pasien = $this->poliPasien($request->kd_poli, $request->dokter);
 
         return DataTables::of($pasien)
-            ->editColumn('nm_pasien', function ($q) {
-                if (
-                    $q->kd_pj == 'A01' ||
-                    $q->kd_pj == 'A05'
-                ) {
-                    $classText = 'text-success';
-                } else {
-                    $classText = 'text-danger';
-                }
-                if ($q->pasien) {
-                    $pasien = $q->pasien->nm_pasien;
-                } else {
-                    $pasien = '-';
-                }
-                return '<h5>' . $q->no_reg . '</h5>' . $pasien . ' <br/> (' . $q->no_rawat . ') <br/><strong class="h6 ' . $classText . '"><i>' . $q->penjab->png_jawab . '</i></strong>';
-            })
-            ->addColumn('aksi', function ($q) {
-                if ($q->stts == 'Batal') {
-                    return '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
-                } else if ($q->stts == 'Sudah') {
-                    return '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
-                } else {
-                    if ($q->stts == 'Berkas Diterima' || $q->stts == 'Periksa') {
-                        $classPanggil = "btn btn-dark btn-sm mb-2 periksa-" . $q->no_reg;
-                        $textPanggil = "RE-CALL";
-                        $stylePanggil = "width: 80px; background-color: rgb(152, 0, 175); border-color: rgb(142, 6, 163);";
-                        $classSelesai = "btn btn-warning btn-sm mb-2 selesai-" . $q->no_reg;
-                        $styleSelesai = "width:80px";
-                        $classBatal = "btn btn-danger btn-sm mb-2 batal-" . $q->no_reg;
-                        $styleBatal = "width:80px";
-                        $disable = '';
-                        $disablePanggil = '';
-                    } else {
-                        $classPanggil = "btn btn-success btn-sm mb-2 periksa-" . $q->no_reg;
-                        $textPanggil = "PANGGIL";
-                        $stylePanggil = "width:80px";
-                        $classSelesai = "btn btn-secondary btn-sm mb-2 selesai-" . $q->no_reg;
-                        $styleSelesai = "width:80px";
-                        $disablePanggil = '';
-                        $disable = 'disabled';
-                        $classBatal = "btn btn-secondary btn-sm mb-2 batal-" . $q->no_reg;
-                        $styleBatal = "width:80px";
-                    }
-                    return '<div id="aksi">
-                    <button ' . $disablePanggil . ' onclick="panggil(\'' . $q->no_reg . '\')" class="' . $classPanggil . '" type="button" style="' . $stylePanggil . '" data-id="' . $q->no_rawat . '">' . $textPanggil . '</button><br/>
-                    <button ' . $disable . ' onclick="selesai(\'' . $q->no_reg . '\')" class="' . $classSelesai . '" style="' . $styleSelesai . '" data-id="' . $q->no_rawat . '" type="button">SELESAI</button><br/>
-                    <button ' . $disable . ' onclick="batal(\'' . $q->no_reg . '\')" class="' . $classBatal . '" style="' . $styleBatal . '" data-id="' . $q->no_rawat . '" type="button">BATAL</button>
-                    </div>';
-                }
-            })
             ->addColumn('upload', function ($q) {
                 $no_rawat = $this->statusUpload($q->no_rawat);
                 $status = $this->statusSoap($q->no_rawat);

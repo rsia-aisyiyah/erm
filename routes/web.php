@@ -38,8 +38,7 @@ Route::middleware('auth')->group(function () {
         'show',
     ]);
     Route::get('/periksa/show/{no_rkm_medis}', [
-        RegPeriksaController::class,
-        'show',
+        RegPeriksaController::class, 'show',
     ]);
     Route::get('periksa/detail', [
         RegPeriksaController::class,
@@ -62,7 +61,7 @@ Route::middleware('auth')->group(function () {
         PoliklinikController::class,
         'poliDokter',
     ]);
-    Route::get('/poliklinik/table/{kd_poli}', [
+    Route::get('/poliklinik/table', [
         PoliklinikController::class,
         'tbPoliPasien',
     ]);
@@ -76,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/poliklinik/batal', [EstimasiPoliController::class, 'hapus']);
     Route::post('/poliklinik/selesai', [SelesaiPoliController::class, 'kirim']);
 
+    Route::get('registrasi/ambil', [RegPeriksaController::class, 'ambil']);
     Route::get('/registrasi/status', [RegPeriksaController::class, 'statusDiterima']);
     Route::get('/registrasi/selesai', [RegPeriksaController::class, 'hitungSelesai']);
     Route::get('/registrasi/batal', [RegPeriksaController::class, 'hitungBatal']);

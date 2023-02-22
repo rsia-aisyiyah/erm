@@ -5,24 +5,19 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title text-center">PASIEN HARI INI</h5>
-                    <p style="background-color: #0067dd;color:white;padding:5px">Poli :
-                        <strong>{{ $poli->nm_poli }}</strong>
+                    <h5 class="card-title text-center">Poli : {{ $poli->nm_poli }}</h5>
+                    <p style="background-color: #0067dd;color:white;padding:5px">
+                        Dokter : <strong>{{ $dokter->nm_dokter }}</strong>
                     </p>
-                    <p style="">Dokter : <strong>{{ $dokter->nm_dokter }}</strong></p>
                     <table>
                         <tr style="height: 25px">
                             <td>Jumlah Pasien</td>
                             <td>:</td>
-                            <td>
-                                <button class="btn btn-sm"
+                            <td width="100px">
+                                <button class="btn btn-sm" id="count-pasien"
                                     style=" display: block; width:auto; border-radius: 50%; background-color: #0067dd; color:white; font-weight:bold; font-size:9pt">
-                                    {{ $jumlah }}
                                 </button>
                             </td>
-
-                        </tr>
-                        <tr style="height: 25px">
                             <td>Selesai</td>
                             <td>:</td>
                             <td>
@@ -31,7 +26,7 @@
                                 </button>
                             </td>
                         </tr>
-                        <tr style="height: 25px">
+                        <tr style="height: 40   px">
                             <td>Menunggu</td>
                             <td>:</td>
                             <td>
@@ -39,8 +34,6 @@
                                     style=" display: block; width:auto; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold; font-size:9pt">
                                 </button>
                             </td>
-                        </tr>
-                        <tr style="height: 25px">
                             <td>Batal</td>
                             <td>:</td>
                             <td>
@@ -293,6 +286,7 @@
             var table = $('#tb_pasien').DataTable({
                 processing: true,
                 scrollX: true,
+                scrollY: 550,
                 serverSide: true,
                 stateSave: true,
                 searching: false,
@@ -305,17 +299,59 @@
                     targets: 0,
                 }],
                 ajax: {
-                    url: "table/{{ Request::segment(2) }}?dokter={{ Request::get('dokter') }}",
+                    url: "table",
+                    data : {
+                        kd_poli : "{{ Request::segment(2) }}",
+                        dokter : "{{ Request::get('dokter') }}",
+                    },
                 },
                 columns: [{
-                        data: 'aksi',
+                        data: null,
+                        render : function(data, type, row, meta){
+                            let html ='';
+                            if(row.stts == 'Batal'){
+                                html = '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
+                            }else if(row.stts == 'Sudah'){
+                                html = '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
+                            }else{
+                               
+                                if(row.stts == 'Berkas Diterima' || row.stts == 'Periksa'){
+                                    $('.panggil-'+row.no_reg).text('RE-CALL');
+                                    $('.selesai-'+row.no_reg).addClass('btn-warning');
+                                    $('.panggil-'+row.no_reg).prop('style', 'width:80px;background-color:#9800af;border-color:#8e06a3;color:white');
+                                    $('.batal-'+row.no_reg).addClass('btn-danger');
+                                }else{
+                                    $('.panggil-'+row.no_reg).addClass('btn-success');
+                                    $('.batal-'+row.no_reg).addClass('btn-secondary');
+                                    $('.selesai-'+row.no_reg).addClass('btn-secondary');
+                                    $('.panggil-'+row.no_reg).text('PANGGIL')
+                                    $('.batal-'+row.no_reg).prop('disabled',true);
+                                    $('.selesai-'+row.no_reg).prop('disabled',true);
+                                }
+                                html = '<div id="aksi">';
+                                html +=' <button onclick="panggil(\''+row.no_reg+'\')" class="btn btn-sm mb-2 panggil-'+row.no_reg+'" type="button" style="width:80px;" data-id="'+row.no_rawat+'"></button><br/>';
+                                html +=' <button onclick="selesai(\''+row.no_reg+'\')" class="btn btn-sm mb-2 selesai-'+row.no_reg+'" type="button" style="width:80px;" data-id="'+row.no_rawat+'">SELESAI</button><br/>';
+                                html +=' <button onclick="batal(\''+row.no_reg+'\')" class="btn btn-sm mb-2 batal-'+row.no_reg+'" type="button" style="width:80px;" data-id="'+row.no_rawat+'">BATAL</button><br/>';
+                                html += '</div>';
+                            }
+                            return html
+                        },
                         name: 'aksi'
                     },
                     {
-                        data: 'nm_pasien',
-                        render : function(data){
-                            console.log(data);
-                            return data;
+                        data: null,
+                        render : function(data, type, row, meta){
+
+                            if(row.kd_pj == 'A01' || row.kd_pj == 'A05' ){
+                                classTeksPenjab = 'text-success';
+                            }else{
+                                classTeksPenjab = 'text-danger';
+                            }
+
+                            html = '<h5>'+row.no_reg+'</h5>';
+                            html += '<p>'+row.pasien.nm_pasien+'</br>'+row.no_rawat+'</br><i><strong class="'+classTeksPenjab+' h6">'+row.penjab.png_jawab+'</strong></i></p>';
+                            
+                            return html;
                         },
                         name: 'nm_pasien'
 

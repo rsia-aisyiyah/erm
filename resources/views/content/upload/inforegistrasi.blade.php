@@ -1,5 +1,5 @@
 <div class="col-sm-12" id="infoReg" style="visibility: hidden">
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-header text-bg-primary">
             Data Perawatan
         </div>
@@ -19,11 +19,6 @@
                     <td>Tanggal Masuk</td>
                     <td>:</td>
                     <td id="td_tgl_reg"></td>
-                </tr>
-                <tr>
-                    <td>Tanggal Pulang</td>
-                    <td>:</td>
-                    <td id="td_tgl_pulang"></td>
                 </tr>
             </table>
         </div>

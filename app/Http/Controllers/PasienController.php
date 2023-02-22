@@ -15,8 +15,7 @@ class PasienController extends Controller
     {
         $pasien = [];
         if ($request->has('q')) {
-            $pasien = Pasien::select(['nm_pasien', 'no_rkm_medis'])
-                ->where('nm_pasien', 'like', '%' . $request->q . '%')
+            $pasien = Pasien::where('nm_pasien', 'like', '%' . $request->q . '%')
                 ->orWhere('no_rkm_medis', 'like', '%' . $request->q . '%')
                 ->get();
         }

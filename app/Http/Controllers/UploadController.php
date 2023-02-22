@@ -157,8 +157,7 @@ class UploadController extends Controller
     }
     public function ambilPeriksa(Request $request)
     {
-        $upload = Upload::where('no_rawat', $request->no_rawat)->get();
-
-        return $upload;
+        $upload = Upload::where('no_rawat', $request->no_rawat)->with('regPeriksa.pasien')->get();
+        return response()->json($upload);
     }
 }

@@ -120,9 +120,9 @@
 
         function panggil(urut) {
 
-            id = $('.periksa-' + urut).data('id');
+            id = $('.panggil-' + urut).data('id');
             hitung_panggilan = $('#hitung-panggil').val();
-            text_recall = $('.periksa-' + urut).text()
+            text_recall = $('.panggil-' + urut).text()
 
 
             if (hitung_panggilan < 2 || text_recall == 'RE-CALL') {
@@ -132,12 +132,12 @@
                 $('.batal-' + urut).prop('disabled', false);
                 $('.batal-' + urut).prop('class', 'btn btn-danger btn-sm mb-2 batal-' + urut + '');
 
-                $('.periksa-' + urut).prop('class', 'btn btn-primary btn-sm mb-2 periksa-' + urut + '');
-                $('.periksa-' + urut).css({
+                $('.panggil-' + urut).prop('class', 'btn btn-primary btn-sm mb-2 panggil-' + urut + '');
+                $('.panggil-' + urut).css({
                     'background-color': 'rgb(152 0 175)',
                     'border-color': 'rgb(142 6 163)'
                 });
-                $('.periksa-' + urut).text('RE-CALL');
+                $('.panggil-' + urut).text('RE-CALL');
                 $.ajax({
                     url: '/erm/poliklinik/panggil',
                     data: {
@@ -173,7 +173,7 @@
         }
 
         function selesai(urut) {
-            id = $('.periksa-' + urut).data('id');
+            id = $('.panggil-' + urut).data('id');
 
             Swal.fire({
                 title: 'Yakin pemeriksaan selesai ?',
@@ -207,27 +207,6 @@
                             $('#aksi').append(
                                 '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>'
                             );
-
-                            // $('.selesai-' + urut).prop('disabled', true);
-                            // $('.selesai-' + urut).prop('class',
-                            //     'btn btn-secondary btn-sm mb-2 selesai-' +
-                            //     urut + '');
-
-                            // $('.batal-' + urut).prop('disabled', true);
-                            // $('.batal-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 batal-' +
-                            //     urut + '');
-
-                            // $('.periksa-' + urut).prop('disabled', true);
-                            // $('.periksa-' + urut).prop('class',
-                            //     'btn btn-secondary btn-sm mb-2 periksa-' +
-                            //     urut + '');
-
-                            // $('.periksa-' + urut).css({
-                            //     'background-color': '',
-                            //     'border-color': ''
-                            // });
-                            // $('.periksa-' + urut).text('PANGGIL');
-
                             hitungSelesai();
                         }
 
@@ -236,12 +215,10 @@
             })
         }
 
-
-
         function batal(urut) {
-            $('.periksa-' + urut).prop('class', 'btn btn-success btn-sm mb-2 periksa-' + urut + '');
-            $('.periksa-' + urut).removeAttr('style');
-            $('.periksa-' + urut).css({
+            $('.panggil-' + urut).prop('class', 'btn btn-success btn-sm mb-2 panggil-' + urut + '');
+            $('.panggil-' + urut).removeAttr('style');
+            $('.panggil-' + urut).css({
                 'width': '80px'
             });
 
@@ -251,7 +228,7 @@
             $('.selesai-' + urut).prop('disabled', true);
             $('.selesai-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 selesai-' + urut + '');
 
-            $('.periksa-' + urut).text('PANGGIL');
+            $('.panggil-' + urut).text('PANGGIL');
 
             id = $('.batal-' + urut).data('id');
 
@@ -335,11 +312,8 @@
 
         }
 
-
-
-
-
         function detailPeriksa(no_rawat, status) {
+
             $('#upload-image').css('visibility', 'hidden')
             $('#form-upload').css('visibility', 'visible')
             $('#image .tmb').detach()
@@ -348,23 +322,17 @@
                 method: "GET",
                 dataType: 'JSON',
                 success: function(data) {
+                    console.log(data)
                     $('#no_rawat').val(data.no_rawat)
                     $('#no_rkm_medis').val(data.no_rkm_medis)
                     $('#tgl_masuk').val(data.tgl_registrasi)
                     $('#td_no_rawat').text(data.no_rawat)
                     $('#td_nm_pasien').text(data.pasien.nm_pasien)
-                    $('#td_tgl_reg').text(data.tgl_registrasi)
-                    if (data.kamar_inap != null) {
-                        $('#td_tgl_pulang').text(data.kamar_inap.tgl_keluar)
-                    } else {
-                        $('#td_tgl_pulang').text("-")
-                    }
+                    $('#td_tgl_reg').text(formatTanggal(data.tgl_registrasi))
                     $('#infoReg').css('visibility', 'visible')
-
 
                     $('#button-form label').detach()
                     $('#button-form input').detach()
-
 
 
                     if (status == "Ralan") {
@@ -375,9 +343,9 @@
                             '<input type="radio" class="btn-check" name="kategori" id="opt-cppt" autocomplete="off" onclick="showForm()" value="cppt"><label class="btn btn-outline-primary btn-sm" for="opt-cppt">CPPT</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-laborat" autocomplete="off" onclick="showForm()" value="laborat"><label class="btn btn-outline-primary btn-sm" for="opt-laborat">Laboratorium</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-radiologi" autocomplete="off" onclick="showForm()" value="radiologi"><label class="btn btn-outline-primary btn-sm" for="opt-radiologi">Radiologi</label>'
-                            $('#button-form').append(html)
-                        } else {
-                            html =
+                        $('#button-form').append(html)
+                    } else {
+                        html =
                             '<input type="radio" class="btn-check" name="kategori" id="opt-klaim" autocomplete="off" onclick="showForm()" value="klaim"><label class="btn btn-outline-primary btn-sm" for="opt-klaim">Berkas Klaim</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-rujukan" autocomplete="off" onclick="showForm()" value="surat rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-rujukan">Surat Rujukan</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-usg" autocomplete="off" onclick="showForm()" value="usg"><label class="btn btn-outline-primary btn-sm" for="opt-usg">USG</label>' +
@@ -405,9 +373,9 @@
             $('#image .tmb').detach()
             $.ajax({
                 url: '/erm/upload/show',
-                data : {
-                    'no_rawat' : no_rawat,
-                    'kategori' : kategori,
+                data: {
+                    'no_rawat': no_rawat,
+                    'kategori': kategori,
                 },
 
                 method: 'GET',
@@ -419,14 +387,16 @@
                         $.map(img, function(file) {
                             splitNamaFile = file.split('.');
                             // console.log(splitNamaFile[1])
-                            if(splitNamaFile[1] != 'pdf'){
-                                fileName = '{{ asset("erm") }}/'+file;
-                            }else{
+                            if (splitNamaFile[1] != 'pdf') {
+                                fileName = '{{ asset('erm') }}/' + file;
+                            } else {
                                 fileName = "{{ asset('img/pdf-icon.png') }}";
                             }
                             $('#image').append(
-                                '<div class="tmb col-md-4 col-lg-3 col-sm-12"><img class="img-thumbnail position-relative" src="'+fileName+'"/><span style="cursor:pointer" class="badge text-bg-danger" onclick="deleteImage(' +
-                                data.id + ',\'' + file +'\')">Hapus</span></div>')
+                                '<div class="tmb col-md-4 col-lg-3 col-sm-12"><img class="img-thumbnail position-relative" src="' +
+                                fileName +
+                                '"/><span style="cursor:pointer" class="badge text-bg-danger" onclick="deleteImage(' +
+                                data.id + ',\'' + file + '\')">Hapus</span></div>')
                         })
                     }
                     $('#upload-image').css('visibility', 'visible')
@@ -453,11 +423,11 @@
                     reader.onload = function(e) {
                         var file = e.target;
                         var fileName = input.files[index].name;
-                        var filePreview='';
+                        var filePreview = '';
                         console.log(input.files[index].type);
-                        if(input.files[index].type == 'application/pdf'){
+                        if (input.files[index].type == 'application/pdf') {
                             filePreview = "{{ asset('img/pdf-icon.png') }}";
-                        }else{
+                        } else {
                             filePreview = file.result;
                         }
                         $('#preview').append(
@@ -476,6 +446,7 @@
                                     $(this).prop('disabled', false);
                                 })
                             }
+                            return false;
                         });
                     };
                 }
@@ -636,7 +607,7 @@
                         dataType: 'JSON',
                         data: {
                             _token: "{{ csrf_token() }}",
-                            image : img
+                            image: img
                         },
                         success: function(data) {
                             showForm(no_rawat, kategori);

@@ -64,6 +64,12 @@ class RegPeriksaController extends Controller
         ]);
     }
 
+    public function ambil(Request $request)
+    {
+        $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien')->first();
+        return response()->json($regPeriksa);
+    }
+
     public function statusDiterima(Request $request)
     {
         $regPeriksa = RegPeriksa::where('tgl_registrasi', $this->tanggal->now()->toDateString())
