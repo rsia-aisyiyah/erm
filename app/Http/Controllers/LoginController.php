@@ -27,16 +27,9 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-
-        // $user = User::where('username', $request->get('username'))
-        //     ->where('password', md5($request->get('password')))
-        //     ->first();
-
         $user = User::select('*', DB::raw("AES_DECRYPT(id_user, 'nur') as username, AES_DECRYPT(password, 'windi') as passwd"))->where('id_user', DB::raw("AES_ENCRYPT('" . $request->get('username') . "', 'nur')"))
             ->where('password', DB::raw("AES_ENCRYPT('" . $request->get('password') . "', 'windi')"))
             ->first();
-
-        // return $user;
 
         if ($user) {
             Auth::login($user);
@@ -45,7 +38,7 @@ class LoginController extends Controller
             Session::put('pegawai', $pegawai);
             return redirect('/poliklinik');
         } else {
-            return back()->with('loginError', 'Login Gagal');
+            return back()->with('error', 'Login Gagal, Periksa Kembali NIK dan Password');
         }
     }
     public function logout(Request $request)

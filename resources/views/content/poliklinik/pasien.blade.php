@@ -286,7 +286,6 @@
             var table = $('#tb_pasien').DataTable({
                 processing: true,
                 scrollX: true,
-                scrollY: 550,
                 serverSide: true,
                 stateSave: true,
                 searching: false,
@@ -300,38 +299,51 @@
                 }],
                 ajax: {
                     url: "table",
-                    data : {
-                        kd_poli : "{{ Request::segment(2) }}",
-                        dokter : "{{ Request::get('dokter') }}",
+                    data: {
+                        kd_poli: "{{ Request::segment(2) }}",
+                        dokter: "{{ Request::get('dokter') }}",
                     },
                 },
                 columns: [{
                         data: null,
-                        render : function(data, type, row, meta){
-                            let html ='';
-                            if(row.stts == 'Batal'){
-                                html = '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
-                            }else if(row.stts == 'Sudah'){
-                                html = '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
-                            }else{
-                               
-                                if(row.stts == 'Berkas Diterima' || row.stts == 'Periksa'){
-                                    $('.panggil-'+row.no_reg).text('RE-CALL');
-                                    $('.selesai-'+row.no_reg).addClass('btn-warning');
-                                    $('.panggil-'+row.no_reg).prop('style', 'width:80px;background-color:#9800af;border-color:#8e06a3;color:white');
-                                    $('.batal-'+row.no_reg).addClass('btn-danger');
-                                }else{
-                                    $('.panggil-'+row.no_reg).addClass('btn-success');
-                                    $('.batal-'+row.no_reg).addClass('btn-secondary');
-                                    $('.selesai-'+row.no_reg).addClass('btn-secondary');
-                                    $('.panggil-'+row.no_reg).text('PANGGIL')
-                                    $('.batal-'+row.no_reg).prop('disabled',true);
-                                    $('.selesai-'+row.no_reg).prop('disabled',true);
+                        render: function(data, type, row, meta) {
+                            let html = '';
+                            if (row.stts == 'Batal') {
+                                html =
+                                    '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
+                            } else if (row.stts == 'Sudah') {
+                                html =
+                                    '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
+                            } else {
+
+                                if (row.stts == 'Berkas Diterima' || row.stts == 'Periksa') {
+                                    $('.panggil-' + row.no_reg).text('RE-CALL');
+                                    $('.selesai-' + row.no_reg).addClass('btn-warning');
+                                    $('.panggil-' + row.no_reg).prop('style',
+                                        'width:80px;background-color:#9800af;border-color:#8e06a3;color:white'
+                                    );
+                                    $('.batal-' + row.no_reg).addClass('btn-danger');
+                                } else {
+                                    $('.panggil-' + row.no_reg).addClass('btn-success');
+                                    $('.batal-' + row.no_reg).addClass('btn-secondary');
+                                    $('.selesai-' + row.no_reg).addClass('btn-secondary');
+                                    $('.panggil-' + row.no_reg).text('PANGGIL')
+                                    $('.batal-' + row.no_reg).prop('disabled', true);
+                                    $('.selesai-' + row.no_reg).prop('disabled', true);
                                 }
                                 html = '<div id="aksi">';
-                                html +=' <button onclick="panggil(\''+row.no_reg+'\')" class="btn btn-sm mb-2 panggil-'+row.no_reg+'" type="button" style="width:80px;" data-id="'+row.no_rawat+'"></button><br/>';
-                                html +=' <button onclick="selesai(\''+row.no_reg+'\')" class="btn btn-sm mb-2 selesai-'+row.no_reg+'" type="button" style="width:80px;" data-id="'+row.no_rawat+'">SELESAI</button><br/>';
-                                html +=' <button onclick="batal(\''+row.no_reg+'\')" class="btn btn-sm mb-2 batal-'+row.no_reg+'" type="button" style="width:80px;" data-id="'+row.no_rawat+'">BATAL</button><br/>';
+                                html += ' <button onclick="panggil(\'' + row.no_reg +
+                                    '\')" class="btn btn-sm mb-2 panggil-' + row.no_reg +
+                                    '" type="button" style="width:80px;" data-id="' + row.no_rawat +
+                                    '"></button><br/>';
+                                html += ' <button onclick="selesai(\'' + row.no_reg +
+                                    '\')" class="btn btn-sm mb-2 selesai-' + row.no_reg +
+                                    '" type="button" style="width:80px;" data-id="' + row.no_rawat +
+                                    '">SELESAI</button><br/>';
+                                html += ' <button onclick="batal(\'' + row.no_reg +
+                                    '\')" class="btn btn-sm mb-2 batal-' + row.no_reg +
+                                    '" type="button" style="width:80px;" data-id="' + row.no_rawat +
+                                    '">BATAL</button><br/>';
                                 html += '</div>';
                             }
                             return html
@@ -340,17 +352,19 @@
                     },
                     {
                         data: null,
-                        render : function(data, type, row, meta){
+                        render: function(data, type, row, meta) {
 
-                            if(row.kd_pj == 'A01' || row.kd_pj == 'A05' ){
+                            if (row.kd_pj == 'A01' || row.kd_pj == 'A05') {
                                 classTeksPenjab = 'text-success';
-                            }else{
+                            } else {
                                 classTeksPenjab = 'text-danger';
                             }
 
-                            html = '<h5>'+row.no_reg+'</h5>';
-                            html += '<p>'+row.pasien.nm_pasien+'</br>'+row.no_rawat+'</br><i><strong class="'+classTeksPenjab+' h6">'+row.penjab.png_jawab+'</strong></i></p>';
-                            
+                            html = '<h5>' + row.no_reg + '</h5>';
+                            html += '<p>' + row.pasien.nm_pasien + '</br>' + row.no_rawat +
+                                '</br><i><strong class="' + classTeksPenjab + ' h6">' + row.penjab
+                                .png_jawab + '</strong></i></p>';
+
                             return html;
                         },
                         name: 'nm_pasien'

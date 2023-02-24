@@ -75,6 +75,15 @@
             <img class="mb-4" src="{{ asset('img/logo.png') }}" alt="" width="72" height="72">
             <h1 class="h3 mb-3 fw-normal">LOGIN ERM</h1>
 
+            @if (session()->has('error'))
+                <div class="alert alert-danger fade show p-2" role="alert"
+                    style="background-color:#dc3545;color:#fff;border-radius:0px">
+
+                    <span class="text-sm" style="font-size:12px">{{ session()->get('error') }}</span>
+
+                </div>
+            @endif
+
             <div class="form-floating">
                 <input type="text" class="form-control" id="username" name="username"
                     placeholder="Nomor Induk Karyawan" autocomplete="off" autofocus value="{{ old('username') }}">

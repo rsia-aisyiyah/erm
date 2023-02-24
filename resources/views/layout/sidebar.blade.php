@@ -4,28 +4,8 @@
         <ul class="nav flex-column">
             <h6
                 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
-                <span>User</span>
+                <span>MENU</span>
             </h6>
-            <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">
-                    <i class="bi bi-person-circle"></i>
-                    {{ session()->get('pegawai')->nama }}
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/erm/logout">
-                    <i class="bi bi-box-arrow-left"></i>
-                    Logout
-                </a>
-            </li>
-            <hr />
-            {{-- 
-            <li class="nav-item">
-                <a class="nav-link {{Request::is('/') ? 'active' : ''}}" href="/erm">
-                    <i class="bi bi-house align-text-bottom"></i>
-                    Dashboard
-                </a>
-            </li> --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
                     <i class="bi bi-people-fill align-text-bottom"></i>
@@ -44,7 +24,24 @@
                     Rawat Inap
                 </a>
             </li>
+            <hr />
 
+            <h6
+                class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+                <span>USER</span>
+            </h6>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">
+                    <i class="bi bi-person-circle"></i>
+                    {{ session()->get('pegawai')->nama }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/erm/logout">
+                    <i class="bi bi-box-arrow-left"></i>
+                    Logout
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
