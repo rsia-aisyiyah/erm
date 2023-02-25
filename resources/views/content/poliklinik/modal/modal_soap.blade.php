@@ -219,6 +219,8 @@
 
         $('#modalSoap').on('hidden.bs.modal', function() {
             isModalSoapShow = false;
+            $('#tb_pasien').DataTable().destroy();
+            tb_pasien();
         });
 
         function ambilNoRawat(no_rawat) {

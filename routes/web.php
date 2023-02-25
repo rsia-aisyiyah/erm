@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DataBarangController;
 use App\Models\Pasien;
 use App\Models\Poliklinik;
 use App\Models\DetailPemberianObat;
@@ -74,6 +75,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/poliklinik/panggil', [EstimasiPoliController::class, 'kirim']);
     Route::delete('/poliklinik/batal', [EstimasiPoliController::class, 'hapus']);
     Route::post('/poliklinik/selesai', [SelesaiPoliController::class, 'kirim']);
+    Route::get('/poliklinik/status/periksa', [PoliklinikController::class, 'statusSoap']);
+    Route::get('/poliklinik/status/upload', [PoliklinikController::class, 'statusUpload']);
 
     Route::get('registrasi/ambil', [RegPeriksaController::class, 'ambil']);
     Route::get('/registrasi/status', [RegPeriksaController::class, 'statusDiterima']);
@@ -98,6 +101,9 @@ Route::middleware('auth')->group(function () {
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
 
     Route::get('dokter/ambil', [DokterController::class, 'ambil']);
+
+    Route::get('obat/', [DataBarangController::class, 'index']);
+    Route::get('obat/cari', [DataBarangController::class, 'cari']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);

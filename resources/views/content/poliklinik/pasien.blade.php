@@ -371,7 +371,68 @@
 
                     },
                     {
-                        data: 'upload',
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            $.ajax({
+                                url: 'status/upload',
+                                data: {
+                                    'no_rawat': row.no_rawat,
+                                },
+                                success: function(response) {
+                                    if (Object.keys(response).length > 0) {
+                                        $('#upload-' + row.no_reg).addClass(
+                                            'bi bi-check2-circle')
+                                        $('#btn-upload-' + row.no_reg).addClass('btn-success')
+                                    } else {
+                                        $('#upload-' + row.no_reg).addClass(
+                                            'bi bi-cloud-upload-fill')
+                                        $('#btn-upload-' + row.no_reg).addClass('btn-primary')
+                                    }
+                                }
+                            })
+                            $.ajax({
+                                url: 'status/periksa',
+                                data: {
+                                    'no_rawat': row.no_rawat,
+                                },
+                                success: function(response) {
+                                    if (Object.keys(response).length > 0) {
+                                        $('#icon-periksa-' + row.no_reg).addClass(
+                                            'bi bi-check2-circle')
+                                        $('#btn-periksa-' + row.no_reg).addClass('btn-success')
+                                    } else {
+                                        $('#icon-periksa-' + row.no_reg).addClass(
+                                            'bi bi-pencil-square')
+                                        $('#btn-periksa-' + row.no_reg).addClass('btn-primary')
+                                    }
+                                }
+                            })
+                            html =
+                                '<a href="#form-upload" class="btn btn-sm mb-2 mr-1" style = "width:80px;font-size:12px;text-align:left" onclick = "detailPeriksa(\'' +
+                                row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' + row
+                                .no_reg +
+                                '"><i id="upload-' +
+                                row.no_reg + '" class=""></i> UPLOAD</a></br>';
+                            html +=
+                                '<button id="btn-periksa-' + row.no_reg +
+                                '" style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRawat(\'' +
+                                row.no_rawat +
+                                '\')" class="btn btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' +
+                                row.no_rawat + '"><i class="" id="icon-periksa-' +
+                                row.no_reg + '"></i> SOAP</button><br/>';
+                            html +=
+                                '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' +
+                                row.no_rkm_medis +
+                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' +
+                                row.no_rkm_medis + '"><i class="bi bi-search"></i>RIWAYAT</button></br>';
+                            html +=
+                                '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilAskeb(\'' +
+                                row.no_rawat +
+                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalAsmed" data-id="' +
+                                row.no_rkm_medis +
+                                '"><i class="bi bi-file-bar-graph-fill"></i> ASMED</button>';
+                            return html;
+                        },
                         name: 'upload',
                     }
 

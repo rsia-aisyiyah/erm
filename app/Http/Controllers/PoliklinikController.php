@@ -99,48 +99,48 @@ class PoliklinikController extends Controller
         $pasien = $this->poliPasien($request->kd_poli, $request->dokter);
 
         return DataTables::of($pasien)
-            ->addColumn('upload', function ($q) {
-                $no_rawat = $this->statusUpload($q->no_rawat);
-                $status = $this->statusSoap($q->no_rawat);
+            // ->addColumn('upload', function ($q) {
+            // $no_rawat = $this->statusUpload($q->no_rawat);
+            // $status = $this->statusSoap($q->no_rawat);
 
-                if ($no_rawat) {
-                    $btnClass =
-                        'class="btn btn-success btn-sm mb-2 mr-1"><i class="bi bi-check2-circle"></i> UPLOAD</a></br>';
-                } else {
-                    $btnClass =
-                        'class="btn btn-primary btn-sm mb-2 mr-1"><i class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
-                }
+            // if ($no_rawat) {
+            //     $btnClass =
+            //         'class="btn btn-success btn-sm mb-2 mr-1"><i class="bi bi-check2-circle"></i> UPLOAD</a></br>';
+            // } else {
+            //     $btnClass =
+            //         'class="btn btn-primary btn-sm mb-2 mr-1"><i class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
+            // }
 
-                if ($status) {
-                    $classSoap = 'btn btn-success';
-                } else {
-                    $classSoap = 'btn btn-primary';
-                }
+            // if ($status) {
+            //     $classSoap = 'btn btn-success';
+            // } else {
+            //     $classSoap = 'btn btn-primary';
+            // }
 
-                $btnUpload =
-                    '<a href="#form-upload" style="width:80px;font-size:12px;text-align:left" onclick="detailPeriksa(\'' . $q->no_rawat . '\', \'' . $q->status_lanjut . '\')" ' . $btnClass;
-                $btnUpload .=
-                    '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRawat(\'' . $q->no_rawat . '\')" class="' . $classSoap . ' btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' . $q->no_rawat . '"><i class="bi bi-pencil-square"></i> SOAP</button><br/>';
-                $btnUpload .=
-                    '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' . $q->no_rkm_medis . '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' . $q->no_rkm_medis . '"><i class="bi bi-search"></i>RIWAYAT</button>';
+            // $btnUpload =
+            //     '<a href="#form-upload" style="width:80px;font-size:12px;text-align:left" onclick="detailPeriksa(\'' . $q->no_rawat . '\', \'' . $q->status_lanjut . '\')" ' . $btnClass;
+            // $btnUpload .=
+            //     '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRawat(\'' . $q->no_rawat . '\')" class="' . $classSoap . ' btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' . $q->no_rawat . '"><i class="bi bi-pencil-square"></i> SOAP</button><br/>';
+            // $btnUpload .=
+            //     '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' . $q->no_rkm_medis . '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' . $q->no_rkm_medis . '"><i class="bi bi-search"></i>RIWAYAT</button>';
 
-                return $btnUpload;
-            })
-            ->rawColumns(['upload', 'nm_pasien', 'aksi'])
+            // return $btnUpload;
+            // })
+            // ->rawColumns(['upload', 'nm_pasien', 'aksi'])
             ->make(true);
     }
 
-    public function statusUpload($no_rawat)
+    public function statusUpload(Request $request)
     {
         $upload = Upload::select('no_rawat')
-            ->where('no_rawat', $no_rawat)
+            ->where('no_rawat', $request->no_rawat)
             ->first();
         return $upload;
     }
-    public function statusSoap($no_rawat)
+    public function statusSoap(Request $request)
     {
         $status = PemeriksaanRalan::select('no_rawat')
-            ->where('no_rawat', $no_rawat)
+            ->where('no_rawat', $request->no_rawat)
             ->first();
         return $status;
     }
