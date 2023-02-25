@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\DataBarangController;
 use App\Models\Pasien;
 use App\Models\Poliklinik;
@@ -18,6 +19,7 @@ use App\Http\Controllers\PemeriksaanRalanController;
 use App\Http\Controllers\PemeriksaanRanapController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\PenilaianMedisKebidananController;
 
 Route::get('/login', function () {
     return view('content.auth.login');
@@ -77,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/poliklinik/selesai', [SelesaiPoliController::class, 'kirim']);
     Route::get('/poliklinik/status/periksa', [PoliklinikController::class, 'statusSoap']);
     Route::get('/poliklinik/status/upload', [PoliklinikController::class, 'statusUpload']);
+    Route::get('poliklinik/askep/kebidanan', [AskepRalanKebidananController::class, 'ambil']);
 
     Route::get('registrasi/ambil', [RegPeriksaController::class, 'ambil']);
     Route::get('/registrasi/status', [RegPeriksaController::class, 'statusDiterima']);
@@ -101,6 +104,8 @@ Route::middleware('auth')->group(function () {
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
 
     Route::get('dokter/ambil', [DokterController::class, 'ambil']);
+
+    Route::get('asmed/kebidanan', [PenilaianMedisKebidananController::class, 'index']);
 
     Route::get('obat/', [DataBarangController::class, 'index']);
     Route::get('obat/cari', [DataBarangController::class, 'cari']);

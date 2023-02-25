@@ -68,6 +68,7 @@
     </div>
     @include('content.poliklinik.modal.modal_soap')
     @include('content.poliklinik.modal.modal_riwayat')
+    @include('content.poliklinik.modal.modal_askep')
 @endsection
 
 @push('script')
@@ -427,7 +428,7 @@
                                 row.no_rkm_medis + '"><i class="bi bi-search"></i>RIWAYAT</button></br>';
                             html +=
                                 '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilAskeb(\'' +
-                                row.no_rawat +
+                                row.no_rkm_medis +
                                 '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalAsmed" data-id="' +
                                 row.no_rkm_medis +
                                 '"><i class="bi bi-file-bar-graph-fill"></i> ASMED</button>';
@@ -442,6 +443,10 @@
                     "infoEmpty": "Tidak ada data pasien terdaftar",
                 }
             });
+        }
+
+        function ambilAskep(no_rkm_medis) {
+            $('#modalAskep').modal('show');
         }
     </script>
 @endpush
