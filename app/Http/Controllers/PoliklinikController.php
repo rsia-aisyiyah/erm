@@ -35,7 +35,7 @@ class PoliklinikController extends Controller
         $tanggal = new Carbon();
 
         $sekarang = $tanggal->now()->toDateString();
-        return $pasienPoli = RegPeriksa::where('tgl_registrasi', $tanggal->now()->toDateString())
+        return $pasienPoli = RegPeriksa::where('tgl_registrasi', $sekarang)
             ->with(['pasien', 'dokter', 'penjab'])
             ->where('kd_poli', $kd_poli)
             ->where('kd_dokter', $kd_dokter)->orderBy('no_reg', 'ASC');
@@ -98,36 +98,7 @@ class PoliklinikController extends Controller
     {
         $pasien = $this->poliPasien($request->kd_poli, $request->dokter);
 
-        return DataTables::of($pasien)
-            // ->addColumn('upload', function ($q) {
-            // $no_rawat = $this->statusUpload($q->no_rawat);
-            // $status = $this->statusSoap($q->no_rawat);
-
-            // if ($no_rawat) {
-            //     $btnClass =
-            //         'class="btn btn-success btn-sm mb-2 mr-1"><i class="bi bi-check2-circle"></i> UPLOAD</a></br>';
-            // } else {
-            //     $btnClass =
-            //         'class="btn btn-primary btn-sm mb-2 mr-1"><i class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
-            // }
-
-            // if ($status) {
-            //     $classSoap = 'btn btn-success';
-            // } else {
-            //     $classSoap = 'btn btn-primary';
-            // }
-
-            // $btnUpload =
-            //     '<a href="#form-upload" style="width:80px;font-size:12px;text-align:left" onclick="detailPeriksa(\'' . $q->no_rawat . '\', \'' . $q->status_lanjut . '\')" ' . $btnClass;
-            // $btnUpload .=
-            //     '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRawat(\'' . $q->no_rawat . '\')" class="' . $classSoap . ' btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' . $q->no_rawat . '"><i class="bi bi-pencil-square"></i> SOAP</button><br/>';
-            // $btnUpload .=
-            //     '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' . $q->no_rkm_medis . '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' . $q->no_rkm_medis . '"><i class="bi bi-search"></i>RIWAYAT</button>';
-
-            // return $btnUpload;
-            // })
-            // ->rawColumns(['upload', 'nm_pasien', 'aksi'])
-            ->make(true);
+        return DataTables::of($pasien)->make(true);
     }
 
     public function statusUpload(Request $request)

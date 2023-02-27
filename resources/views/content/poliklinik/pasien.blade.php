@@ -426,12 +426,12 @@
                                 row.no_rkm_medis +
                                 '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' +
                                 row.no_rkm_medis + '"><i class="bi bi-search"></i>RIWAYAT</button></br>';
-                            html +=
-                                '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilAskeb(\'' +
-                                row.no_rkm_medis +
-                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalAsmed" data-id="' +
-                                row.no_rkm_medis +
-                                '"><i class="bi bi-file-bar-graph-fill"></i> ASMED</button>';
+                            // html +=
+                            //     '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilAskep(\'' +
+                            //     row.no_rkm_medis +
+                            //     '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalAsmed" data-id="' +
+                            //     row.no_rkm_medis +
+                            //     '"><i class="bi bi-file-bar-graph-fill"></i> ASMED</button>';
                             return html;
                         },
                         name: 'upload',
@@ -446,6 +446,53 @@
         }
 
         function ambilAskep(no_rkm_medis) {
+            $.ajax({
+                url: 'askep/kebidanan',
+                data: {
+                    no_rkm_medis: no_rkm_medis,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    let data = response.data;
+                    console.log(data)
+                    $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
+                    $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' : ': Perempuan')
+                    $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa.tgl_registrasi));
+                    $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
+                    $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) + ' / ' + data
+                        .reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
+                    $('.anamnesis').html(': ' + data.informasi);
+                    $('.tensi').html(': ' + data.td + ' mmHG');
+                    $('.nadi').html(': ' + data.nadi + ' x/menit');
+                    $('.respirasi').html(': ' + data.rr + ' x/menit');
+                    $('.suhu').html(': ' + data.suhu + ' <sup>o</sup>C');
+                    $('.gcs').html(': ' + data.gcs);
+                    $('.bb').html(': ' + data.bb + ' Kg');
+                    $('.tb').html(': ' + data.bb + ' Cm');
+                    $('.lila').html(': ' + data.lila + ' Cm');
+                    $('.bmi').html(': ' + data.bmi + ' Kg/m<sup>2</sup>');
+                    $('.tfu').html(': ' + data.tfu + ' Cm');
+                    $('.tbj').html(': ' + data.tbj + ' Cm');
+                    $('.letak').html(': ' + data.letak);
+                    $('.presentasi').html(': ' + data.presentasi);
+                    $('.penurunan').html(': ' + data.penurunan);
+                    $('.kontraksi').html(': ' + data.his + ' x/10');
+                    $('.kekuatan').html(': ' + data.kekuatan);
+                    $('.lama').html(': ' + data.lama + ' detik');
+                    $('.djj').html(': ' + data.bjj + ' /mnt ' + data.ket_bjj);
+                    $('.portio').html(': ' + data.portio);
+                    $('.serviks').html(': ' + data.serviks + ' Cm');
+                    $('.ketuban').html(': ' + data.ketuban + ' kep/bok');
+                    $('.hodge').html(': ' + data.hodge);
+                    $('.inspekulo').html(': ' + data.inspekulo + ' ,<br/>Hasil : ' + data.ket_inspekulo);
+                    $('.ctg').html(': ' + data.ctg + ' ,<br/>Hasil : ' + data.ket_ctg);
+                    $('.lakmus').html(': ' + data.lakmus + ' ,<br/>Hasil : ' + data.ket_lakmus);
+                    $('.lab').html(': ' + data.lab + ' ,<br/>Hasil : ' + data.ket_lab);
+                    $('.usg').html(': ' + data.usg + ' ,<br/>Hasil : ' + data.ket_usg);
+                    $('.panggul').html(': ' + data.panggul);
+
+                }
+            });
             $('#modalAskep').modal('show');
         }
     </script>

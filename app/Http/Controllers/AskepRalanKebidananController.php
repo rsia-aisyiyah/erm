@@ -27,7 +27,11 @@ class AskepRalanKebidananController extends Controller
         }
 
         if ($askep->count() > 0) {
-            $response = response()->json(['success' => true, 'message' => 'Menampilkan data asesmen keperawatan awal', 'data' => $askep->get()], 200);
+            if($askep->count() ==1 ){
+                $response = response()->json(['success' => true, 'message' => 'Menampilkan data asesmen keperawatan awal', 'data' => $askep->first()], 200);
+            }else{
+                $response = response()->json(['success' => true, 'message' => 'Menampilkan data asesmen keperawatan awal', 'data' => $askep->get()], 200);
+            }
         } else {
             $response = response()->json(['success' => false, 'message' => 'Tidak ada data yang ditemukan', 'data' => NULL], 404);
         }
