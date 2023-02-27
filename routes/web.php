@@ -77,8 +77,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/poliklinik/panggil', [EstimasiPoliController::class, 'kirim']);
     Route::delete('/poliklinik/batal', [EstimasiPoliController::class, 'hapus']);
     Route::post('/poliklinik/selesai', [SelesaiPoliController::class, 'kirim']);
-    Route::get('/poliklinik/status/periksa', [PoliklinikController::class, 'statusSoap']);
-    Route::get('/poliklinik/status/upload', [PoliklinikController::class, 'statusUpload']);
+    Route::get('poliklinik/status/periksa', [PoliklinikController::class, 'statusSoap']);
+    Route::get('poliklinik/status/upload', [PoliklinikController::class, 'statusUpload']);
     Route::get('poliklinik/askep/kebidanan', [AskepRalanKebidananController::class, 'ambil']);
 
     Route::get('registrasi/ambil', [RegPeriksaController::class, 'ambil']);

@@ -103,16 +103,14 @@ class PoliklinikController extends Controller
 
     public function statusUpload(Request $request)
     {
-        $upload = Upload::select('no_rawat')
-            ->where('no_rawat', $request->no_rawat)
-            ->first();
-        return $upload;
+        $upload = Upload::where('no_rawat', $request->no_rawat)
+            ->get()->count();
+        return response()->json($upload);
     }
     public function statusSoap(Request $request)
     {
-        $status = PemeriksaanRalan::select('no_rawat')
-            ->where('no_rawat', $request->no_rawat)
-            ->first();
-        return $status;
+        $status = PemeriksaanRalan::where('no_rawat', $request->no_rawat)
+            ->get()->count();
+        return response()->json($status);
     }
 }

@@ -1,11 +1,12 @@
-<div class="modal fade" id="modalAsmed" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-md">
+<div class="modal fade" id="modalAskep" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
-            <div class="modal-body">
-                <h6 class="text-center">ASESMEN PENILAIAN PASIEN RAWAT
+            <div class="modal-header">
+                <h5 class="modal-title fs-6">ASESMEN PASIEN RAWAT
                     JALAN KEBIDANAN &
-                    KANDUNGAN</h6>
-                <hr />
+                    KANDUNGAN</h5>
+            </div>
+            <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-12">
                         <table class="tb-askep table table-striped" width="100%">
@@ -138,92 +139,114 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="col-md-4 col-lg-3 col-sm-12">
+                    <div class="col-sm-12">
+                        <table class="tb-askep table table-striped table-bordered" width="100%">
+                            <tr>
+                                <th colspan="6">III. RIWAYAT KESEHATAN
+                                </th>
+
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    Keluhan Utama <span class="keluhan"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="r_mens">
+                                    Riwayat Menstruasi
+                                </td>
+                                <td>
+                                    Menarche <span class="umur"></span>, Lamanya <span class="lama"></span>,
+                                    Banyaknya <span class="banyak"></span>, Haid Terakhir <span
+                                        class="haid"></span><br />
+                                    Siklus <span class="siklus"></span> ( <span class="ket_siklus1"></span> ), <span
+                                        class="ket_silkus2"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="r_kawin">
+                                    Riwayat Perkawinan
+                                </td>
+                                <td colspan="5">
+                                    Status Menikah <span class="status"></span>, <span class="kali"></span> Kali
+                                    <ol>
+                                        <li>Usia Perkawinan <span class="usia1"></span> Tahun, <span
+                                                class="ket1"></span>
+                                        </li>
+                                        <li>Usia Perkawinan <span class="usia2"></span> Tahun, <span
+                                                class="ket2"></span>
+                                        </li>
+                                        <li>Usia Perkawinan <span class="usia2"></span> Tahun, <span
+                                                class="ket2"></span>
+                                        </li>
+                                    </ol>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="r_hamil">
+                                    Riwayat Kehamilan Tetap
+                                </td>
+                                <td colspan="5">
+                                    HPHT <span class="hpht"></span>, Usia Kehamilan <span
+                                        class="usia_kehamilan"></span>, TP <span class="tp"></span>, Riwayat
+                                    Imunisasi <span class="imunisasi"></span>, <span class="ket_imunisasi"></span>
+                                    Kali<br />
+                                    <span class="gpa"></span>,
+                                    Hidup : <span class="hidup"></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="tb-askep table table-striped table-bordered" width="100%">
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>Tempat & Penolong</th>
+                                <th>Usia Hamil</th>
+                                <th>Persalinan & Penyulit</th>
+                                <th>Anak</th>
+                            </tr>
+                            <tbody class="r_persalinan">
+
+                            </tbody>
+                        </table>
+                        <table class="tb-askep table table-striped table-bordered" width="100%">
+                            <tr>
+                                <td class="r_hamil">
+                                    Riwayat Ginekologi
+                                </td>
+                                <td colspan="5">
+                                    : <span class="ginekologi"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Riwayat Kebiasaan
+                                </td>
+                                <td colspan="5">
+                                    : <span class="kebiasaan"></span>, Merokok : <span class="kebiasaan1"></span>,
+                                    Alkohol : <span class="kebiasaan2"></span>,Obat Tidur/Narkoba : <span
+                                        class="kebiasaan3"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Riwayat KB
+                                </td>
+                                <td colspan="5">
+                                    : <span class="kb"></span>,
+                                    Lamanya : <span class="ket_kb"></span>.
+                                    Komplikasi : <span class="komplikasi"></span>.
+                                    Berhenti : <span class="berhenti"></span>.
+                                    Alasan : <span class="alasan"></span>.
+                                </td>
+                            </tr>
+                        </table>
+
 
                     </div>
                 </div>
             </div>
-            {{-- <p class="tb-askep"><strong>I. KEADANAN UMUM</strong></p> --}}
-            {{-- <table class="tb-askep">
-                    <tr>
-                        <td>TD</td>
-                        <td class="tensi"></td>
-                        <td>Nadi</td>
-                        <td class="nadi"></td>
-                        <td>RR</td>
-                        <td class="respirasi"></td>
-                        <td>Suhu</td>
-                        <td class="suhu"></td>
-                        <td>GCS(E,V,M)</td>
-                        <td class="gcs"></td>
-                    </tr>
-                    <tr>
-                        <td>BB</td>
-                        <td class="bb"></td>
-                        <td>TB</td>
-                        <td class="tb"></td>
-                        <td>LILA</td>
-                        <td class="lila"></td>
-                        <td>BMI</td>
-                        <td class="bmi" colspan="4"></td>
-                    </tr>
 
-                </table> --}}
-            {{-- <p class="tb-askep"><strong>II. PEMERIKSAAN KEBIDANAN</strong></p>
-            <table class="tb-askep">
-                <tr>
-                    <td>TFU</td>
-                    <td class="tfu"></td>
-                    <td>TBJ</td>
-                    <td class="tbj"></td>
-                    <td>Letak</td>
-                    <td class="letak"></td>
-                    <td>Presentasi</td>
-                    <td class="presentasi"></td>
-                    <td width="15px">Penurunan</td>
-                    <td class="penurunan"></td>
-                </tr>
-                <tr>
-                    <td>Kontraksi/HIS</td>
-                    <td class="kontraksi"></td>
-                    <td>Kekuatan</td>
-                    <td class="kekuatan"></td>
-                    <td>Lamanya</td>
-                    <td class="lama"></td>
-                    <td colspan="2">Gerak janin x/30 menit, DJJ</td>
-                    <td class="djj" colspan="2"></td>
-                </tr>
-                <tr>
-                    <td width="20px">Portio</td>
-                    <td class="portio"></td>
-                    <td width="40px">Pembukaan Serviks</td>
-                    <td class="serviks"></td>
-                    <td width="15px">Ketuban</td>
-                    <td class="ketuban"></td>
-                    <td width="15px" colspan="2">Hodge</td>
-                    <td class="hodge" colspan="2"></td>
-                </tr>
-            </table>
-            <p class="tb-askep">PEMERIKSAAN PENUNJANG</p>
-            <table class="tb-askep">
-                <tr>
-                    <td width="20px">Inspekulo</td>
-                    <td class="inspekulo"></td>
-                    <td width="20px">CTG</td>
-                    <td class="ctg"></td>
-                    <td width="20px">Lakmus</td>
-                    <td class="lakmus"></td>
-                </tr>
-                <tr>
-                    <td>Laboratorium</td>
-                    <td class="lab"></td>
-                    <td>USG</td>
-                    <td class="ctg"></td>
-                    <td>Panggul</td>
-                    <td class="panggul"></td>
-                </tr>
-            </table>
-            <p class="tb-askep"><strong>III. RIWAYAT KESEHATAN</strong></p> --}}
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i>
@@ -237,6 +260,9 @@
     <script>
         $('#modalAskep').on('shown.bs.modal', function() {
 
+        })
+        $('#modalAskep').on('hidden.bs.modal', function() {
+            $('.r_persalinan').empty();
         })
     </script>
 @endpush

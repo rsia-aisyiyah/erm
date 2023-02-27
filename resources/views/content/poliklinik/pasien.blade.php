@@ -106,8 +106,53 @@
                         timer: 1500
                     })
                 }
-            }, 25000);
+            }, 60000);
         })
+
+        function statusUpload(no_rawat, no_reg) {
+            $.ajax({
+                url: 'status/upload',
+                data: {
+                    'no_rawat': no_rawat,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    $('#upload-' + no_reg).addClass(
+                        'bi bi-cloud-upload-fill')
+                    $('#btn-upload-' + no_reg).addClass('btn-primary')
+                    if (response > 0) {
+                        $('#upload-' + no_reg).addClass(
+                            'bi bi-check2-circle')
+                        $('#btn-upload-' + no_reg).addClass('btn-success')
+                    }
+
+                },
+
+            })
+
+        }
+
+        function statusPeriksa(no_rawat, no_reg) {
+            $.ajax({
+                url: 'status/periksa',
+                data: {
+                    'no_rawat': no_rawat,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    $('#icon-periksa-' + no_reg).addClass(
+                        'bi bi-pencil-square')
+                    $('#btn-periksa-' + no_reg).addClass('btn-primary')
+                    if (response > 0) {
+                        $('#icon-periksa-' + no_reg).addClass(
+                            'bi bi-check2-circle')
+                        $('#btn-periksa-' + no_reg).addClass('btn-success')
+                    }
+
+                },
+
+            })
+        }
 
         function hitungPasien() {
             $.ajax({
@@ -287,12 +332,12 @@
             var table = $('#tb_pasien').DataTable({
                 processing: true,
                 scrollX: true,
-                serverSide: true,
+                serverSide: false,
                 stateSave: true,
                 searching: false,
                 ordering: false,
                 paging: false,
-                paging: false,
+                lenghtChange: false,
                 info: false,
                 columnDefs: [{
                     width: 50,
@@ -372,42 +417,10 @@
 
                     },
                     {
-                        data: null,
+                        data: '',
                         render: function(data, type, row, meta) {
-                            $.ajax({
-                                url: 'status/upload',
-                                data: {
-                                    'no_rawat': row.no_rawat,
-                                },
-                                success: function(response) {
-                                    if (Object.keys(response).length > 0) {
-                                        $('#upload-' + row.no_reg).addClass(
-                                            'bi bi-check2-circle')
-                                        $('#btn-upload-' + row.no_reg).addClass('btn-success')
-                                    } else {
-                                        $('#upload-' + row.no_reg).addClass(
-                                            'bi bi-cloud-upload-fill')
-                                        $('#btn-upload-' + row.no_reg).addClass('btn-primary')
-                                    }
-                                }
-                            })
-                            $.ajax({
-                                url: 'status/periksa',
-                                data: {
-                                    'no_rawat': row.no_rawat,
-                                },
-                                success: function(response) {
-                                    if (Object.keys(response).length > 0) {
-                                        $('#icon-periksa-' + row.no_reg).addClass(
-                                            'bi bi-check2-circle')
-                                        $('#btn-periksa-' + row.no_reg).addClass('btn-success')
-                                    } else {
-                                        $('#icon-periksa-' + row.no_reg).addClass(
-                                            'bi bi-pencil-square')
-                                        $('#btn-periksa-' + row.no_reg).addClass('btn-primary')
-                                    }
-                                }
-                            })
+                            statusPeriksa(row.no_rawat, row.no_reg)
+                            statusUpload(row.no_rawat, row.no_reg)
                             html =
                                 '<a href="#form-upload" class="btn btn-sm mb-2 mr-1" style = "width:80px;font-size:12px;text-align:left" onclick = "detailPeriksa(\'' +
                                 row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' + row
@@ -426,12 +439,12 @@
                                 row.no_rkm_medis +
                                 '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' +
                                 row.no_rkm_medis + '"><i class="bi bi-search"></i>RIWAYAT</button></br>';
-                            // html +=
-                            //     '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilAskep(\'' +
-                            //     row.no_rkm_medis +
-                            //     '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalAsmed" data-id="' +
-                            //     row.no_rkm_medis +
-                            //     '"><i class="bi bi-file-bar-graph-fill"></i> ASMED</button>';
+                            html +=
+                                '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilAskep(\'' +
+                                row.no_rkm_medis +
+                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
+                                row.no_rkm_medis +
+                                '"><i class="bi bi-file-bar-graph-fill"></i> ASMED</button>';
                             return html;
                         },
                         name: 'upload',
@@ -453,47 +466,113 @@
                 },
                 dataType: 'JSON',
                 success: function(response) {
+                    console.log(response)
                     let data = response.data;
-                    console.log(data)
-                    $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
-                    $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' : ': Perempuan')
-                    $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa.tgl_registrasi));
-                    $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
-                    $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) + ' / ' + data
-                        .reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
-                    $('.anamnesis').html(': ' + data.informasi);
-                    $('.tensi').html(': ' + data.td + ' mmHG');
-                    $('.nadi').html(': ' + data.nadi + ' x/menit');
-                    $('.respirasi').html(': ' + data.rr + ' x/menit');
-                    $('.suhu').html(': ' + data.suhu + ' <sup>o</sup>C');
-                    $('.gcs').html(': ' + data.gcs);
-                    $('.bb').html(': ' + data.bb + ' Kg');
-                    $('.tb').html(': ' + data.bb + ' Cm');
-                    $('.lila').html(': ' + data.lila + ' Cm');
-                    $('.bmi').html(': ' + data.bmi + ' Kg/m<sup>2</sup>');
-                    $('.tfu').html(': ' + data.tfu + ' Cm');
-                    $('.tbj').html(': ' + data.tbj + ' Cm');
-                    $('.letak').html(': ' + data.letak);
-                    $('.presentasi').html(': ' + data.presentasi);
-                    $('.penurunan').html(': ' + data.penurunan);
-                    $('.kontraksi').html(': ' + data.his + ' x/10');
-                    $('.kekuatan').html(': ' + data.kekuatan);
-                    $('.lama').html(': ' + data.lama + ' detik');
-                    $('.djj').html(': ' + data.bjj + ' /mnt ' + data.ket_bjj);
-                    $('.portio').html(': ' + data.portio);
-                    $('.serviks').html(': ' + data.serviks + ' Cm');
-                    $('.ketuban').html(': ' + data.ketuban + ' kep/bok');
-                    $('.hodge').html(': ' + data.hodge);
-                    $('.inspekulo').html(': ' + data.inspekulo + ' ,<br/>Hasil : ' + data.ket_inspekulo);
-                    $('.ctg').html(': ' + data.ctg + ' ,<br/>Hasil : ' + data.ket_ctg);
-                    $('.lakmus').html(': ' + data.lakmus + ' ,<br/>Hasil : ' + data.ket_lakmus);
-                    $('.lab').html(': ' + data.lab + ' ,<br/>Hasil : ' + data.ket_lab);
-                    $('.usg').html(': ' + data.usg + ' ,<br/>Hasil : ' + data.ket_usg);
-                    $('.panggul').html(': ' + data.panggul);
+
+                    if (data) {
+                        $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
+                        $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' : ': Perempuan')
+                        $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa.tgl_registrasi));
+                        $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
+                        $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) + ' / ' +
+                            data
+                            .reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
+                        $('.anamnesis').html(': ' + data.informasi);
+                        $('.tensi').html(': ' + data.td + ' mmHG');
+                        $('.nadi').html(': ' + data.nadi + ' x/menit');
+                        $('.respirasi').html(': ' + data.rr + ' x/menit');
+                        $('.suhu').html(': ' + data.suhu + ' <sup>o</sup>C');
+                        $('.gcs').html(': ' + data.gcs);
+                        $('.bb').html(': ' + data.bb + ' Kg');
+                        $('.tb').html(': ' + data.bb + ' Cm');
+                        $('.lila').html(': ' + data.lila + ' Cm');
+                        $('.bmi').html(': ' + data.bmi + ' Kg/m<sup>2</sup>');
+                        $('.tfu').html(': ' + data.tfu + ' Cm');
+                        $('.tbj').html(': ' + data.tbj + ' Cm');
+                        $('.letak').html(': ' + data.letak);
+                        $('.presentasi').html(': ' + data.presentasi);
+                        $('.penurunan').html(': ' + data.penurunan);
+                        $('.kontraksi').html(': ' + data.his + ' x/10');
+                        $('.kekuatan').html(': ' + data.kekuatan);
+                        $('.lama').html(': ' + data.lama + ' detik');
+                        $('.djj').html(': ' + data.bjj + ' /mnt ' + data.ket_bjj);
+                        $('.portio').html(': ' + data.portio);
+                        $('.serviks').html(': ' + data.serviks + ' Cm');
+                        $('.ketuban').html(': ' + data.ketuban + ' kep/bok');
+                        $('.hodge').html(': ' + data.hodge);
+                        $('.inspekulo').html(': ' + data.inspekulo + ' ,<br/>Hasil : ' + data.ket_inspekulo);
+                        $('.ctg').html(': ' + data.ctg + ' ,<br/>Hasil : ' + data.ket_ctg);
+                        $('.lakmus').html(': ' + data.lakmus + ' ,<br/>Hasil : ' + data.ket_lakmus);
+                        $('.lab').html(': ' + data.lab + ' ,<br/>Hasil : ' + data.ket_lab);
+                        $('.usg').html(': ' + data.usg + ' ,<br/>Hasil : ' + data.ket_usg);
+                        $('.panggul').html(': ' + data.panggul);
+                        $('.keluhan').text(': ' + data.keluhan_utama);
+                        $('.umur').text(': ' + data.umur + ' Th');
+                        $('.lama').text(': ' + data.umur + ' Hari');
+                        $('.banyak').text(': ' + data.umur + ' Pembalut');
+                        $('.haid').text(': ' + data.haid);
+                        $('.siklus').text(': ' + data.siklus + ' hari');
+                        $('.ket_siklus1').text(data.ket_siklus1);
+                        $('.ket_siklus2').text(': ' + data.ket_siklus2);
+                        $('.status').text(': ' + data.status);
+                        $('.kali').text(data.kali);
+                        $('.usia1').text(data.usia1);
+                        $('.ket1').text(data.ket1);
+                        $('.usia2').text(data.usia2);
+                        $('.ket2').text(data.ket2);
+                        $('.usia3').text(data.usia3);
+                        $('.ket3').text(data.ket3);
+                        $('.hpht').text(': ' + formatTanggal(data.hpht));
+                        $('.usia_kehamilan').text(': ' + data.usia_kehamilan + ' bln/mgg');
+                        $('.tp').text(': ' + formatTanggal(data.tp));
+                        $('.imunisasi').text(': ' + data.imunisasi);
+                        $('.ket_imunisasi').text(data.ket_imunisasi ? data.ket_imunisasi : '-');
+                        $('.gpa').text('G : ' + data.g + ', P :' + data.p + ', A : ' + data.a);
+                        $('.hidup').text(data.hidup);
+                        $('.ginekologi').text(data.ginekologi);
+                        $('.kebiasaan').text(data.kebiasaan + ', ' + data.ket_kebiasaan);
+                        $('.kebiasaan1').text(data.kebiasaan1 + ', ' + data.ket_kebiasaan1 + ' Batang /hari');
+                        $('.kebiasaan2').text(data.kebiasaan2 + ', ' + data.ket_kebiasaan2 + ' Botol /hari');
+                        $('.kebiasaan3').text(data.kebiasaan3);
+                        $('.kb').text(data.kb + ' , ', +data.ket_kb);
+                        $('.kb').text(data.kb);
+                        $('.ket_kb').text(data.ket_kb);
+                        $('.komplikasi').text(data.komplikasi + ', ' + data.ket_komplikasi);
+                        $('.berhenti').text(data.berhenti);
+                        $('.alasan').text(data.alasan);
+
+                        no = 1;
+                        data.reg_periksa.pasien.riwayat_persalinan.forEach(function(riwayat) {
+                            console.log(riwayat)
+                            html = '<tr>';
+                            html += '<td>' + no + '</td>'
+                            html += '<td>' + formatTanggal(riwayat.tgl_thn) + '</td>'
+                            html += '<td>' + riwayat.tempat_persalinan + '</br>' + riwayat.penolong +
+                                '</td>'
+                            html += '<td>' + riwayat.usia_hamil + '</td>'
+                            html += '<td> Persalinan : ' + riwayat.jenis_persalinan +
+                                '<br/> Penyulit : ' +
+                                riwayat
+                                .penyulit +
+                                '</td>'
+                            html += '<td> JK : ' + riwayat.jk + '<br/> BB/PB : ' + riwayat.bbpb +
+                                '<br/> Keadaaan : ' + riwayat.keadaan + '</td>'
+                            html += '</tr>';
+                            no++;
+                            $('.r_persalinan').append(html)
+                        })
+
+                        $('#modalAskep').modal('show');
+                    } else {
+                        // $('#modalAskep').modal('toggle');
+                        Swal.fire(
+                            'Kosong!', 'Belum ada riwayat perawatan', 'error'
+                        );
+                    }
+
 
                 }
             });
-            $('#modalAskep').modal('show');
         }
     </script>
 @endpush

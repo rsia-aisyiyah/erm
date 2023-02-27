@@ -20,6 +20,6 @@ class AskepRalanKebidanan extends Model
     }
     public function semua()
     {
-        return $this->with(['petugas', 'regPeriksa.pasien']);
+        return $this->with(['petugas', 'regPeriksa.pasien.riwayatPersalinan']);
     }
 }
