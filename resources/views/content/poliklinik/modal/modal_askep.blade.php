@@ -262,6 +262,7 @@
 
         })
         $('#modalAskep').on('hidden.bs.modal', function() {
+            reloadTabelPoli();
             $('.r_persalinan').empty();
         })
     </script>

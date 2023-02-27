@@ -78,8 +78,7 @@
         var kd_poli = '{{ $poli->kd_poli }}';
         var kd_dokter = '{{ $dokter->kd_dokter }}';
 
-        $(document).ready(function() {
-            tb_pasien();
+        function reloadTabelPoli() {
             hitungUpload();
             hitungSelesai();
             hitungPasien();
@@ -107,6 +106,9 @@
                     })
                 }
             }, 60000);
+        }
+        $(document).ready(function() {
+            tb_pasien();
         })
 
         function statusUpload(no_rawat, no_reg) {
@@ -330,7 +332,7 @@
 
         function tb_pasien() {
             var table = $('#tb_pasien').DataTable({
-                processing: true,
+                processing: false,
                 scrollX: true,
                 serverSide: false,
                 stateSave: true,
