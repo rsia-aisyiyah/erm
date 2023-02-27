@@ -446,7 +446,7 @@
                                 row.no_rkm_medis +
                                 '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
                                 row.no_rkm_medis +
-                                '"><i class="bi bi-file-bar-graph-fill"></i> ASMED</button>';
+                                '"><i class="bi bi-file-bar-graph-fill"></i> ASKEP</button>';
                             return html;
                         },
                         name: 'upload',
