@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalPenunjangRanap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
+        <div class="modal-content" style="border-radius:0px">
             <div class="modal-body">
                 <h5 class="text-center">BERKAS PEMERIKSAAN PENUNJANG</h5>
                 {{-- <table class="borderless">

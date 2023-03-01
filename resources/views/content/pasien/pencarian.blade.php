@@ -67,11 +67,9 @@
             ajax: {
                 url: 'pasien/cari',
                 dataType: 'json',
-                delay: 250,
                 processResults: function(data) {
                     return {
                         results: $.map(data, function(item) {
-                            // console.log(item)
                             return {
                                 text: item.no_rkm_medis + ' - ' + item.nm_pasien,
                                 id: item.no_rkm_medis

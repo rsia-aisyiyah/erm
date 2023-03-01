@@ -16,7 +16,7 @@ class AskepRalanKebidanan extends Model
     }
     public function regPeriksa()
     {
-        return $this->hasOne(RegPeriksa::class, 'no_rawat', 'no_rawat');
+        return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
     }
     public function semua()
     {

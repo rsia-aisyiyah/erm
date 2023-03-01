@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalSoap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content" style="background-color: #e7e7e7;">
+        <div class="modal-content" style="background-color: #f5f5f5;">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN S.O.A.P</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -8,27 +8,25 @@
             <div class="modal-body">
                 <form action="" method="POST" class="form-soap">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <table class="borderless">
-                                <tr>
-                                    <td width="15%">No Rawat : </td>
-                                    <td width="30%">
-                                        <input type="text" class="form-control form-control-sm" id="nomor_rawat"
-                                            name="nomor_rawat" placeholder=""
-                                            style="font-size:12px;min-height:12px;border-radius:0;">
-                                    </td>
-                                    <td width="20%">
-                                        <input type="text" class="form-control form-control-sm" id="no_rm"
-                                            name="no_rm" placeholder=""
-                                            style="font-size:12px;min-height:12px;border-radius:0;">
-                                    </td>
-                                    <td width="30%">
-                                        <input type="text" class="form-control form-control-sm" id="nama_pasien"
-                                            name="nama_pasien" placeholder=""
-                                            style="font-size:12px;min-height:12px;border-radius:0;">
-                                    </td>
-                                </tr>
-                            </table>
+                        <label for="nomor_rawat" class="col-lg-2 col-sm-12 col-form-label" style="font-size:12px">No.
+                            Rawat</label>
+                        <div class="col-lg-2 col-sm-12 mb-2">
+                            <input type="text" class="form-control form-control-sm" id="nomor_rawat"
+                                name="nomor_rawat" placeholder=""
+                                style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                        </div>
+                        <div class="col-lg-2 col-sm-12 mb-2">
+                            <input type="text" class="form-control form-control-sm" id="no_rm" name="no_rm"
+                                placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                        </div>
+                        <div class="col-lg-3 col-sm-12 mb-2">
+                            <input type="text" class="form-control form-control-sm" id="nama_pasien"
+                                name="nama_pasien" placeholder=""
+                                style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                        </div>
+                        <div class="col-lg-2 col-sm-12 mb-2">
+                            <input type="text" class="form-control form-control-sm" id="p_jawab" name="p_jawab"
+                                placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                         </div>
                     </div>
                     <hr />
@@ -79,8 +77,8 @@
                                         <table>
                                             <td width="12%">
                                                 Suhu (<sup>0</sup>C) : <input type="text"
-                                                    class="form-control form-control-sm" id="suhu" name="suhu"
-                                                    placeholder="" maxlength="5"
+                                                    class="form-control form-control-sm" id="suhu"
+                                                    name="suhu" placeholder="" maxlength="5"
                                                     style="font-size:12px;min-height:12px;border-radius:0;"
                                                     value="-" onfocus="removeZero(this)"
                                                     onblur="cekKosong(this)">
@@ -205,7 +203,8 @@
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i> Keluar</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoap()"><i
-                        class="bi bi-save"></i> Simpan</button>
+                        class="bi bi-save"></i>
+                    Simpan</button>
             </div>
         </div>
     </div>
@@ -219,7 +218,6 @@
 
         $('#modalSoap').on('hidden.bs.modal', function() {
             isModalSoapShow = false;
-            reloadTabelPoli();
         });
 
         function ambilNoRawat(no_rawat) {

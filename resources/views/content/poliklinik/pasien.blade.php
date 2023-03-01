@@ -85,6 +85,7 @@
             hitungPanggilan();
             hitungBatal();
             hitungTunggu();
+            tb_pasien();
             setInterval(function() {
                 $('#tb_pasien').DataTable().destroy();
                 tb_pasien();
@@ -93,7 +94,6 @@
                 hitungPanggilan();
                 hitungBatal();
                 hitungTunggu();
-
                 if (isModalSoapShow == false) {
                     Swal.fire({
                         title: 'Memuat ulang data register!',
@@ -105,56 +105,11 @@
                         timer: 1500
                     })
                 }
-            }, 60000);
+            }, 120000);
         }
         $(document).ready(function() {
-            tb_pasien();
+            reloadTabelPoli();
         })
-
-        function statusUpload(no_rawat, no_reg) {
-            $.ajax({
-                url: 'status/upload',
-                data: {
-                    'no_rawat': no_rawat,
-                },
-                dataType: 'JSON',
-                success: function(response) {
-                    $('#upload-' + no_reg).addClass(
-                        'bi bi-cloud-upload-fill')
-                    $('#btn-upload-' + no_reg).addClass('btn-primary')
-                    if (response > 0) {
-                        $('#upload-' + no_reg).addClass(
-                            'bi bi-check2-circle')
-                        $('#btn-upload-' + no_reg).addClass('btn-success')
-                    }
-
-                },
-
-            })
-
-        }
-
-        function statusPeriksa(no_rawat, no_reg) {
-            $.ajax({
-                url: 'status/periksa',
-                data: {
-                    'no_rawat': no_rawat,
-                },
-                dataType: 'JSON',
-                success: function(response) {
-                    $('#icon-periksa-' + no_reg).addClass(
-                        'bi bi-pencil-square')
-                    $('#btn-periksa-' + no_reg).addClass('btn-primary')
-                    if (response > 0) {
-                        $('#icon-periksa-' + no_reg).addClass(
-                            'bi bi-check2-circle')
-                        $('#btn-periksa-' + no_reg).addClass('btn-success')
-                    }
-
-                },
-
-            })
-        }
 
         function hitungPasien() {
             $.ajax({
@@ -169,16 +124,6 @@
                 }
             })
         }
-
-        $('#modalSoap').on('shown.bs.modal', function() {
-            modalsoap(id);
-            isModalSoapShow = true;
-        });
-
-        $('#modalSoap').on('hidden.bs.modal', function() {
-            isModalSoapShow = false;
-        });
-
 
         function simpanSoap() {
             $.ajax({
@@ -210,7 +155,7 @@
                         title: 'Berhasil!',
                         text: 'Data SOAP disimpan',
                         position: 'center',
-                        toast: true,
+                        // toast: true,
                         icon: 'success',
                         timerProgressBar: true,
                         showConfirmButton: false,
@@ -236,8 +181,10 @@
                 success: function(response) {
                     if (response.reg_periksa) {
                         $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
-                            .pasien
-                            .nm_pasien : '-')
+                            .pasien.nm_pasien + ' / ' + response.reg_periksa.umurdaftar + ' ' + response
+                            .reg_periksa
+                            .sttsumur :
+                            '-')
                         $('#no_rm').val(response.reg_periksa.no_rkm_medis ? response.reg_periksa.no_rkm_medis :
                             '-')
                     } else {
@@ -252,6 +199,8 @@
                     $('#jabatan').val(jbtn);
 
                     $('#nomor_rawat').val(response.no_rawat ? response.no_rawat : '-')
+                    $('#p_jawab').val(response.reg_periksa.p_jawab ? 'P. JAWAB : ' + response.reg_periksa
+                        .p_jawab : '-')
                     $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '-')
                     $('#subjek').val(response.keluhan ? response.keluhan : '-')
                     $('#objek').val(response.pemeriksaan ? response.pemeriksaan : '-')
@@ -267,10 +216,48 @@
                     $('#alergi').val(response.alergi ? response.alergi : '-')
                     $('#nadi').val(response.nadi ? response.nadi : '-')
                     $('#spo2').val(response.spo2 ? response.spo2 : '-')
+
                 },
                 error: function(xhr, status, error) {
-                    console.log(error)
+                    console.log(xhr, status, error)
                 }
+            }).done(function(response) {
+                console.log('respon dari done')
+                // if (response.reg_periksa) {
+                //     $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
+                //         .pasien
+                //         .nm_pasien : '-')
+                //     $('#no_rm').val(response.reg_periksa.no_rkm_medis ? response.reg_periksa.no_rkm_medis :
+                //         '-')
+                // } else {
+                //     $('#nama_pasien').val(response.pasien.nm_pasien ? response.pasien
+                //         .nm_pasien : '-')
+                //     $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
+
+                // }
+
+                // $('#nama').val(nama);
+                // $('#nik').val(nik);
+                // $('#jabatan').val(jbtn);
+
+                // $('#nomor_rawat').val(response.no_rawat ? response.no_rawat : '-')
+                // $('#p_jawab').val(response.p_jawab ? 'P. JAWAB : ' +
+                //     response.p_jawab : '-')
+                // $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '-')
+                // $('#subjek').val(response.keluhan ? response.keluhan : '-')
+                // $('#objek').val(response.pemeriksaan ? response.pemeriksaan : '-')
+                // $('#asesmen').val(response.penilaian ? response.penilaian : '-')
+                // $('#plan').val(response.rtl ? response.rtl : '-')
+                // $('#instruksi').val(response.instruksi ? response.instruksi : '-')
+                // $('#suhu').val(response.suhu_tubuh ? response.suhu_tubuh : '-')
+                // $('#tensi').val(response.tensi ? response.tensi : '-')
+                // $('#tinggi').val(response.tinggi ? response.tinggi : '-')
+                // $('#berat').val(response.berat ? response.berat : '-')
+                // $('#gcs').val(response.gcs ? response.gcs : '-')
+                // $('#respirasi').val(response.respirasi ? response.respirasi : '-')
+                // $('#alergi').val(response.alergi ? response.alergi : '-')
+                // $('#nadi').val(response.nadi ? response.nadi : '-')
+                // $('#spo2').val(response.spo2 ? response.spo2 : '-')
             })
         }
 
@@ -334,7 +321,7 @@
             var table = $('#tb_pasien').DataTable({
                 processing: false,
                 scrollX: true,
-                serverSide: false,
+                serverSide: true,
                 stateSave: true,
                 searching: false,
                 ordering: false,
@@ -355,6 +342,7 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
+
                             let html = '';
                             if (row.stts == 'Batal') {
                                 html =
@@ -421,20 +409,23 @@
                     {
                         data: '',
                         render: function(data, type, row, meta) {
-                            statusPeriksa(row.no_rawat, row.no_reg)
-                            statusUpload(row.no_rawat, row.no_reg)
+                            if (row.dokter.kd_sps == 'S0001') {
+                                ambilAskep = 'ambilAskepKebidanan(\'' + row.no_rkm_medis + '\')';
+                            } else {
+                                ambilAskep = 'ambilAskepAnak(\'' + row.no_rkm_medis + '\')';
+                            }
                             html =
-                                '<a href="#form-upload" class="btn btn-sm mb-2 mr-1" style = "width:80px;font-size:12px;text-align:left" onclick = "detailPeriksa(\'' +
+                                '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1" style = "width:80px;font-size:12px;text-align:left" onclick = "detailPeriksa(\'' +
                                 row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' + row
                                 .no_reg +
                                 '"><i id="upload-' +
-                                row.no_reg + '" class=""></i> UPLOAD</a></br>';
+                                row.no_reg + '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
                             html +=
                                 '<button id="btn-periksa-' + row.no_reg +
                                 '" style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRawat(\'' +
                                 row.no_rawat +
-                                '\')" class="btn btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' +
-                                row.no_rawat + '"><i class="" id="icon-periksa-' +
+                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' +
+                                row.no_rawat + '"><i class="bi bi-pencil-square" id="icon-periksa-' +
                                 row.no_reg + '"></i> SOAP</button><br/>';
                             html +=
                                 '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' +
@@ -442,11 +433,28 @@
                                 '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' +
                                 row.no_rkm_medis + '"><i class="bi bi-search"></i>RIWAYAT</button></br>';
                             html +=
-                                '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilAskep(\'' +
+                                '<button id="btn-askep-' + row.no_reg +
+                                '"style="width:80px;font-size:12px;text-align:left" onclick="' +
+                                ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
                                 row.no_rkm_medis +
-                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
-                                row.no_rkm_medis +
-                                '"><i class="bi bi-file-bar-graph-fill"></i> ASKEP</button>';
+                                '"><i id="icon-askep-' +
+                                row.no_reg + '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button>';
+                            if (row.upload.length > 0) {
+                                $('#upload-' + row.no_reg).removeClass(
+                                    'bi bi-cloud-upload-fill')
+                                $('#btn-upload-' + row.no_reg).removeClass('btn-primary')
+                                $('#upload-' + row.no_reg).addClass(
+                                    'bi bi-check2-circle')
+                                $('#btn-upload-' + row.no_reg).addClass('btn-success')
+                            }
+                            if (row.pemeriksaan_ralan) {
+                                $('#icon-periksa-' + row.no_reg).removeClass(
+                                    'bi bi-pencil-square')
+                                $('#btn-periksa-' + row.no_reg).removeClass('btn-primary')
+                                $('#icon-periksa-' + row.no_reg).addClass(
+                                    'bi bi-check2-circle')
+                                $('#btn-periksa-' + row.no_reg).addClass('btn-success')
+                            }
                             return html;
                         },
                         name: 'upload',
@@ -460,7 +468,13 @@
             });
         }
 
-        function ambilAskep(no_rkm_medis) {
+        function ambilAskepAnak(no_rkm_medis) {
+            Swal.fire(
+                'Mohon Maaf', 'Sedang dalam pengembangan', 'info'
+            );
+        }
+
+        function ambilAskepKebidanan(no_rkm_medis) {
             $.ajax({
                 url: 'askep/kebidanan',
                 data: {
@@ -468,7 +482,6 @@
                 },
                 dataType: 'JSON',
                 success: function(response) {
-                    console.log(response)
                     let data = response.data;
 
                     if (data) {
@@ -510,8 +523,8 @@
                         $('.panggul').html(': ' + data.panggul);
                         $('.keluhan').text(': ' + data.keluhan_utama);
                         $('.umur').text(': ' + data.umur + ' Th');
-                        $('.lama').text(': ' + data.umur + ' Hari');
-                        $('.banyak').text(': ' + data.umur + ' Pembalut');
+                        $('.lama').text(': ' + data.lama + ' Hari');
+                        $('.banyak').text(': ' + data.banyaknya + ' Pembalut');
                         $('.haid').text(': ' + data.haid);
                         $('.siklus').text(': ' + data.siklus + ' hari');
                         $('.ket_siklus1').text(data.ket_siklus1);
@@ -566,9 +579,8 @@
 
                         $('#modalAskep').modal('show');
                     } else {
-                        // $('#modalAskep').modal('toggle');
                         Swal.fire(
-                            'Kosong!', 'Belum ada riwayat perawatan', 'error'
+                            'Kosong!', 'Belum ada data asesmen', 'error'
                         );
                     }
 

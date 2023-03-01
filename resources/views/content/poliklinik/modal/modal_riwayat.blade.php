@@ -1,11 +1,11 @@
 <div class="modal fade" id="modalRiwayat" tabindex="-1" aria-labelledby="modalRiwayat" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content" style="background-color: #e7e7e7;">
+        <div class="modal-content" style="border-radius:0px">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">RIWAYAT PASIEN</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body modal-riwayat">
                 <table id="tb_riwayat" class="table table-bordered table-responsive" cellpadding="5" cellspacing="0"
                     style="padding-left:50px;"></table>
             </div>
@@ -19,7 +19,7 @@
 <div class="modal fade" id="modal-image" data-bs-backdrop="static" data-bs-closable="false" data-bs-keyboard="false"
     aria-hidden="true" aria-labelledby="modal-image" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content" style="border-radius:0px">
             <div class="modal-body">
                 <img src="" class="img-thumbnails popup" width="100%" />
             </div>
@@ -39,13 +39,9 @@
         });
 
         $('#modalRiwayat').on('hidden.bs.modal', function() {
-            reloadTabelPoli();
-            $('#tb_riwayat').empty();
             detail = '';
             isModalSoapShow = false;
         });
-
-
 
         function modalRiwayat(no_rm) {
             $.ajax({
@@ -109,19 +105,18 @@
                     status_lanjut = 'RAWAT JALAN';
                     class_status = 'background:rgb(255 193 7);color:black';
                 }
-                // console.log(i.catatan_perawatan)
 
                 if (i.catatan_perawatan == null) {
                     catatan = '<strong>Tidak ada catatan</strong>';
                 } else {
                     catatan = i.catatan_perawatan.catatan.replace(/\n/g, '<br/>');
                 }
-
-                i.pemeriksaan_ralan.forEach(function(x) {
+                x = i.pemeriksaan_ralan;
+                if (x) {
                     pemeriksaan += '<tr><th>Pemeriksaan</th><td>' +
                         '<div class="row">' +
                         '<div class="col-sm-4">' +
-                        '<table class="table table-sm text-sm borderless table-success mb-2">' +
+                        '<table class="table table-sm text-sm borderless mb-2" style="background-color:#e1ffe3">' +
                         '<tr><td style="width=12%">Tanggal Rawat</td><td>: ' + formatTanggal(x
                             .tgl_perawatan) + ' ' + x
                         .jam_rawat + '</td></tr>' +
@@ -140,7 +135,7 @@
                         '</table>' +
                         '</div>' +
                         '<div class="col-sm-8">' +
-                        '<table class="table table-sm text-sm borderless table-success">' +
+                        '<table class="table table-sm text-sm borderless" style="background-color:#e1ffe3">' +
                         '<tr>' +
                         '<tr><td style="width:10%">Subject</td><td>: ' + isKosong(x.keluhan) +
                         '</td><tr>' +
@@ -149,7 +144,7 @@
                         '<tr><td>Plan</td><td>: ' + isKosong(x.rtl) + '</td><tr>' +
                         '<tr><td>Instruksi</td><td>: ' + isKosong(x.instruksi) + '</td><tr>' +
                         '</table>' +
-                        '<table class="table table-sm text-sm borderless table-success">' +
+                        '<table class="table table-sm text-sm borderless" style="background-color:#e1ffe3">' +
                         '<tr>' +
                         '<tr><td style="width:10%">Catatan Perawatan / Dokter </td><tr>' +
                         '<tr><td> ' + isKosong(catatan) +
@@ -157,7 +152,7 @@
                         '</table>' +
                         '</div>' +
                         '</td></tr>';
-                })
+                }
 
                 detail +=
                     '<tr>' +
@@ -204,7 +199,7 @@
 
         function pemberianObat(obat) {
             if (Object.keys(obat).length > 0) {
-                var pemberian = '<table class="table table-success borderless mb-0">';
+                var pemberian = '<table class="table borderless mb-0" style="background-color:#e1ffe3">';
                 let tgl_sekarang = ''
                 obat.forEach(function(o) {
                     if (o.data_barang.kdjns != 'J024') {
@@ -245,7 +240,7 @@
 
         function pemeriksaanLab(lab, umur, jk) {
             if (Object.keys(lab).length > 0) {
-                var hasilLab = '<table class="table table-success mb-0">';
+                var hasilLab = '<table class="table mb-0" style="background-color:#e1ffe3">';
                 let tgl_sekarang = '';
                 let jnsPeriksa = '';
                 let nmPerawatan = '';
@@ -281,7 +276,7 @@
                                 '</tr>' +
                                 '</tr>' +
                                 '<tr><th>Pemeriksaan</th><th>Hasil</th><th>Rujukan</th></tr>' : '') :
-                            '<td style="width:30%" colspan="3"><p align="center" style="padding:0;margin:0"><strong>' +
+                            '<td style="width:30%" colspan="3"><p style="padding:0;margin:0"><strong>' +
                             l
                             .jns_perawatan_lab.nm_perawatan +
                             '</strong></p></td>' +
@@ -319,7 +314,7 @@
         function diagnosaPasien(diagnosa) {
             let prioritas = '';
             if (Object.keys(diagnosa).length > 0) {
-                var diagnosaPasien = '<table class="table table-success borderless mb-0">';
+                var diagnosaPasien = '<table class="table borderless mb-0" style="background-color:#e1ffe3">';
                 diagnosa.forEach(function(d) {
                     prioritas = d.prioritas == 1 ? '<span class="text-danger" title="Prioritas"> *</span>' : '';
                     diagnosaPasien +=
@@ -335,7 +330,7 @@
 
         function prosedurPasien(prosedur) {
             if (Object.keys(prosedur).length > 0) {
-                var prosedurPasien = '<table class="table table-success borderless mb-0">';
+                var prosedurPasien = '<table class="table borderless mb-0" style="background-color:#e1ffe3">';
                 prosedur.forEach(function(p) {
                     prosedurPasien +=
                         '<tr><td style="width:5%"><strong>' + p.kode + '</strong> : ' + p.icd9.deskripsi_panjang +

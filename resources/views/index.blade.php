@@ -4,6 +4,10 @@
 
 <body>
     <style>
+        /* .container-fluid {
+            background-image: url("https://sim.rsiaaisyiyah.com/rsiap/assets/images/wa7.png") !important;
+        } */
+
         table {
             font-size: 12px;
         }
@@ -23,9 +27,29 @@
             border-color: #a5a5a5;
         }
 
+        .modal-content {
+            border-radius: 0px;
+        }
+
+        .card,
+        .card-header {
+            border-radius: 0px !important;
+        }
+
         @media (max-width: 400px) {
             .tb-askep {
-                font-size: 7.5px !important;
+                font-size: 9px !important;
+            }
+
+            .modal-riwayat table {
+                font-size: 9px !important;
+            }
+
+            #modalSoap table,
+            #modalSoap form input,
+            #modalSoap form select,
+            #modalSoap form textarea {
+                font-size: 10px !important;
             }
         }
     </style>

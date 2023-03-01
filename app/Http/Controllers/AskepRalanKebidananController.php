@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\AskepRalanKebidanan;
 use Illuminate\Http\Request;
-use PDO;
 
 class AskepRalanKebidananController extends Controller
 {

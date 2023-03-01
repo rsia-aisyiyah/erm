@@ -35,12 +35,11 @@ class PoliklinikController extends Controller
         $tanggal = new Carbon();
 
         $sekarang = $tanggal->now()->toDateString();
-        return $pasienPoli = RegPeriksa::where('tgl_registrasi', $sekarang)
-            ->with(['pasien', 'dokter', 'penjab'])
+        $pasienPoli = RegPeriksa::where('tgl_registrasi', $sekarang)
+            ->with(['pasien', 'dokter', 'penjab', 'upload', 'pemeriksaanRalan'])
             ->where('kd_poli', $kd_poli)
             ->where('kd_dokter', $kd_dokter)->orderBy('no_reg', 'ASC');
-
-        // return response()->json($pasienPoli);
+        return $pasienPoli;
     }
     public function jumlahPasienPoli(Request $request)
     {
