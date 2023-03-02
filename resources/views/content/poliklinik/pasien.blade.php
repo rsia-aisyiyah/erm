@@ -187,10 +187,13 @@
                             '-')
                         $('#no_rm').val(response.reg_periksa.no_rkm_medis ? response.reg_periksa.no_rkm_medis :
                             '-')
+                        $('#p_jawab').val(response.reg_periksa.p_jawab ? 'P. JAWAB : ' + response.reg_periksa
+                            .p_jawab : '-')
                     } else {
                         $('#nama_pasien').val(response.pasien.nm_pasien ? response.pasien
-                            .nm_pasien : '-')
+                            .nm_pasien + ' / ' + response.umurdaftar + ' ' + response.sttsumur : '-')
                         $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
+                        $('#p_jawab').val(response.p_jawab ? 'P. JAWAB : ' + response.p_jawab : '-')
 
                     }
 
@@ -199,8 +202,6 @@
                     $('#jabatan').val(jbtn);
 
                     $('#nomor_rawat').val(response.no_rawat ? response.no_rawat : '-')
-                    $('#p_jawab').val(response.reg_periksa.p_jawab ? 'P. JAWAB : ' + response.reg_periksa
-                        .p_jawab : '-')
                     $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '-')
                     $('#subjek').val(response.keluhan ? response.keluhan : '-')
                     $('#objek').val(response.pemeriksaan ? response.pemeriksaan : '-')
@@ -221,43 +222,6 @@
                 error: function(xhr, status, error) {
                     console.log(xhr, status, error)
                 }
-            }).done(function(response) {
-                console.log('respon dari done')
-                // if (response.reg_periksa) {
-                //     $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
-                //         .pasien
-                //         .nm_pasien : '-')
-                //     $('#no_rm').val(response.reg_periksa.no_rkm_medis ? response.reg_periksa.no_rkm_medis :
-                //         '-')
-                // } else {
-                //     $('#nama_pasien').val(response.pasien.nm_pasien ? response.pasien
-                //         .nm_pasien : '-')
-                //     $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
-
-                // }
-
-                // $('#nama').val(nama);
-                // $('#nik').val(nik);
-                // $('#jabatan').val(jbtn);
-
-                // $('#nomor_rawat').val(response.no_rawat ? response.no_rawat : '-')
-                // $('#p_jawab').val(response.p_jawab ? 'P. JAWAB : ' +
-                //     response.p_jawab : '-')
-                // $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '-')
-                // $('#subjek').val(response.keluhan ? response.keluhan : '-')
-                // $('#objek').val(response.pemeriksaan ? response.pemeriksaan : '-')
-                // $('#asesmen').val(response.penilaian ? response.penilaian : '-')
-                // $('#plan').val(response.rtl ? response.rtl : '-')
-                // $('#instruksi').val(response.instruksi ? response.instruksi : '-')
-                // $('#suhu').val(response.suhu_tubuh ? response.suhu_tubuh : '-')
-                // $('#tensi').val(response.tensi ? response.tensi : '-')
-                // $('#tinggi').val(response.tinggi ? response.tinggi : '-')
-                // $('#berat').val(response.berat ? response.berat : '-')
-                // $('#gcs').val(response.gcs ? response.gcs : '-')
-                // $('#respirasi').val(response.respirasi ? response.respirasi : '-')
-                // $('#alergi').val(response.alergi ? response.alergi : '-')
-                // $('#nadi').val(response.nadi ? response.nadi : '-')
-                // $('#spo2').val(response.spo2 ? response.spo2 : '-')
             })
         }
 
@@ -576,7 +540,6 @@
                             no++;
                             $('.r_persalinan').append(html)
                         })
-
                         $('#modalAskep').modal('show');
                     } else {
                         Swal.fire(

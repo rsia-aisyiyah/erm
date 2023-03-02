@@ -39,6 +39,7 @@
         });
 
         $('#modalRiwayat').on('hidden.bs.modal', function() {
+            $('#tb_riwayat').empty();
             detail = '';
             isModalSoapShow = false;
         });
