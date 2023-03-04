@@ -16,6 +16,9 @@ class AskepRalanKebidananController extends Controller
     {
         $askep =  $this->askep->semua();
 
+        if ($request->no_rawat) {
+            $askep->where('no_rawat', $request->no_rawat);
+        }
         if ($request->no_rkm_medis) {
             $askep->whereHas('regPeriksa', function ($q) use ($request) {
                 $q->where('no_rkm_medis', $request->no_rkm_medis);
@@ -26,11 +29,7 @@ class AskepRalanKebidananController extends Controller
         }
 
         if ($askep->count() > 0) {
-            if ($askep->count() == 1) {
-                $response = response()->json(['success' => true, 'message' => 'Menampilkan data asesmen keperawatan awal', 'data' => $askep->first()], 200);
-            } else {
-                $response = response()->json(['success' => true, 'message' => 'Menampilkan data asesmen keperawatan awal', 'data' => $askep->get()], 200);
-            }
+            $response = response()->json(['success' => true, 'message' => 'Menampilkan data asesmen keperawatan awal', 'data' => $askep->orderBy('tanggal', 'DESC')->first()], 200);
         } else {
             $response = response()->json(['success' => false, 'message' => 'Tidak ada data yang ditemukan', 'data' => NULL], 200);
         }

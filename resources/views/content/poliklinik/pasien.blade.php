@@ -292,10 +292,35 @@
                 paging: false,
                 lenghtChange: false,
                 info: false,
+                deferRender: true,
                 columnDefs: [{
                     width: 50,
                     targets: 0,
                 }],
+                initComplete: function(setting, json) {
+                    $.map(json.data, function(val, index) {
+                        // console.log(val.no_rkm_medis);
+                        $.ajax({
+                            url: 'askep/kebidanan',
+                            data: {
+                                no_rkm_medis: val.no_rkm_medis,
+                            },
+                            dataType: 'JSON',
+                        }).done(function(response) {
+                            if (response.success == true) {
+                                $('#icon-askep-' + val.no_reg).removeClass(
+                                    'bi bi-file-bar-graph-fill')
+                                $('#btn-askep-' + val.no_reg).removeClass('btn-primary')
+                                $('#icon-askep-' + val.no_reg).addClass(
+                                    'bi bi-check2-circle')
+                                $('#btn-askep-' + val.no_reg).addClass('btn-success')
+                                forEach(function(respon) {
+                                    console.log(respon);
+                                })
+                            }
+                        })
+                    })
+                },
                 ajax: {
                     url: "table",
                     data: {
@@ -306,7 +331,6 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
-
                             let html = '';
                             if (row.stts == 'Batal') {
                                 html =
@@ -360,8 +384,28 @@
                                 classTeksPenjab = 'text-danger';
                             }
 
+                            if (row.pasien) {
+                                pasien = data.pasien.nm_pasien;
+                            } else {
+                                pasien = data.no_rkm_medis.replace(/\s/g, '');
+                                $.ajax({
+                                    url: '/erm/pasien/cari',
+                                    data: {
+                                        'q': pasien,
+                                    },
+                                    success: function(response) {
+                                        $.map(response, function(data) {
+                                            $('.pasien-' + row.no_reg).text(data
+                                                .nm_pasien);
+                                        })
+                                    }
+                                })
+                            }
+
                             html = '<h5>' + row.no_reg + '</h5>';
-                            html += '<p>' + row.pasien.nm_pasien + '</br>' + row.no_rawat +
+                            html += '<p><span class="pasien-' + row.no_reg + '">' + pasien +
+                                '</span></br>' +
+                                row.no_rawat +
                                 '</br><i><strong class="' + classTeksPenjab + ' h6">' + row.penjab
                                 .png_jawab + '</strong></i></p>';
 
@@ -373,11 +417,42 @@
                     {
                         data: '',
                         render: function(data, type, row, meta) {
-                            if (row.dokter.kd_sps == 'S0001') {
-                                ambilAskep = 'ambilAskepKebidanan(\'' + row.no_rkm_medis + '\')';
+                            let ambilAskep = '';
+                            let no_rkm_medis = row.no_rkm_medis.replace(/\s/g, '');
+                            if (row.dokter) {
+                                dokter = row.dokter.nm_dokter;
+                                if (row.dokter.kd_sps == 'S0001') {
+                                    ambilAskep = 'ambilAskepKebidanan(\'' + no_rkm_medis + '\')';
+                                } else {
+                                    ambilAskep = 'ambilAskepAnak(\'' + no_rkm_medis + '\')';
+                                }
                             } else {
-                                ambilAskep = 'ambilAskepAnak(\'' + row.no_rkm_medis + '\')';
+                                kd_dokter = row.kd_dokter.replace(/\s/g, '');
+                                $.ajax({
+                                    url: '/erm/dokter/ambil',
+                                    dataType: 'JSON',
+                                    data: {
+                                        'nik': kd_dokter,
+                                    },
+                                    success: function(response) {
+                                        $.map(response.data, function(res) {
+                                            if (res.kd_dokter == 'S0001') {
+                                                $('#btn-askep-' + row.no_reg).attr(
+                                                    'onclick',
+                                                    'ambilAskepAnak(\'' +
+                                                    no_rkm_medis + '\')');
+
+                                            } else {
+                                                $('#btn-askep-' + row.no_reg).attr(
+                                                    'onclick',
+                                                    'ambilAskepKebidanan(\'' +
+                                                    no_rkm_medis + '\')');
+                                            }
+                                        })
+                                    }
+                                });
                             }
+
                             html =
                                 '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1" style = "width:80px;font-size:12px;text-align:left" onclick = "detailPeriksa(\'' +
                                 row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' + row
@@ -392,17 +467,18 @@
                                 row.no_rawat + '"><i class="bi bi-pencil-square" id="icon-periksa-' +
                                 row.no_reg + '"></i> SOAP</button><br/>';
                             html +=
-                                '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' +
-                                row.no_rkm_medis +
-                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' +
-                                row.no_rkm_medis + '"><i class="bi bi-search"></i>RIWAYAT</button></br>';
-                            html +=
                                 '<button id="btn-askep-' + row.no_reg +
                                 '"style="width:80px;font-size:12px;text-align:left" onclick="' +
                                 ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
                                 row.no_rkm_medis +
                                 '"><i id="icon-askep-' +
-                                row.no_reg + '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button>';
+                                row.no_reg + '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
+                            html +=
+                                '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' +
+                                row.no_rkm_medis +
+                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' +
+                                row.no_rkm_medis + '"><i class="bi bi-search"></i>RIWAYAT</button>';
+
                             if (row.upload.length > 0) {
                                 $('#upload-' + row.no_reg).removeClass(
                                     'bi bi-cloud-upload-fill')
@@ -445,7 +521,18 @@
                     no_rkm_medis: no_rkm_medis,
                 },
                 dataType: 'JSON',
+                // beforeSend: function() {
+                // swal.fire({
+                //     title: 'Sedang mengirim data',
+                //     text: 'Mohon Tunggu',
+                //     showConfirmButton: false,
+                //     didOpen: () => {
+                //         swal.showLoading();
+                //     }
+                // })
+                // },
                 success: function(response) {
+                    // console.log(response)
                     let data = response.data;
 
                     if (data) {
@@ -522,7 +609,7 @@
 
                         no = 1;
                         data.reg_periksa.pasien.riwayat_persalinan.forEach(function(riwayat) {
-                            console.log(riwayat)
+                            // console.log(riwayat)
                             html = '<tr>';
                             html += '<td>' + no + '</td>'
                             html += '<td>' + formatTanggal(riwayat.tgl_thn) + '</td>'
