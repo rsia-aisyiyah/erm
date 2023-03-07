@@ -299,7 +299,6 @@
                 }],
                 initComplete: function(setting, json) {
                     $.map(json.data, function(val, index) {
-                        // console.log(val.no_rkm_medis);
                         $.ajax({
                             url: 'askep/kebidanan',
                             data: {
@@ -308,15 +307,14 @@
                             dataType: 'JSON',
                         }).done(function(response) {
                             if (response.success == true) {
-                                $('#icon-askep-' + val.no_reg).removeClass(
+                                $('#icon-askep-' + textRawat(val.no_rawat)).removeClass(
                                     'bi bi-file-bar-graph-fill')
-                                $('#btn-askep-' + val.no_reg).removeClass('btn-primary')
-                                $('#icon-askep-' + val.no_reg).addClass(
+                                $('#btn-askep-' + textRawat(val.no_rawat)).removeClass(
+                                    'btn-primary')
+                                $('#icon-askep-' + textRawat(val.no_rawat)).addClass(
                                     'bi bi-check2-circle')
-                                $('#btn-askep-' + val.no_reg).addClass('btn-success')
-                                forEach(function(respon) {
-                                    console.log(respon);
-                                })
+                                $('#btn-askep-' + textRawat(val.no_rawat)).addClass(
+                                    'btn-success')
                             }
                         })
                     })
@@ -455,24 +453,26 @@
 
                             html =
                                 '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1" style = "width:80px;font-size:12px;text-align:left" onclick = "detailPeriksa(\'' +
-                                row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' + row
-                                .no_reg +
+                                row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' +
+                                textRawat(row.no_rawat) +
                                 '"><i id="upload-' +
-                                row.no_reg + '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
+                                textRawat(row.no_rawat) +
+                                '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
                             html +=
-                                '<button id="btn-periksa-' + row.no_reg +
+                                '<button id="btn-periksa-' + textRawat(row.no_rawat) +
                                 '" style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRawat(\'' +
                                 row.no_rawat +
                                 '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' +
                                 row.no_rawat + '"><i class="bi bi-pencil-square" id="icon-periksa-' +
-                                row.no_reg + '"></i> SOAP</button><br/>';
+                                textRawat(row.no_rawat) + '"></i> SOAP</button><br/>';
                             html +=
-                                '<button id="btn-askep-' + row.no_reg +
+                                '<button id="btn-askep-' + textRawat(row.no_rawat) +
                                 '"style="width:80px;font-size:12px;text-align:left" onclick="' +
                                 ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
                                 row.no_rkm_medis +
                                 '"><i id="icon-askep-' +
-                                row.no_reg + '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
+                                textRawat(row.no_rawat) +
+                                '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
                             html +=
                                 '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' +
                                 row.no_rkm_medis +
@@ -480,20 +480,20 @@
                                 row.no_rkm_medis + '"><i class="bi bi-search"></i>RIWAYAT</button>';
 
                             if (row.upload.length > 0) {
-                                $('#upload-' + row.no_reg).removeClass(
+                                $('#upload-' + textRawat(row.no_rawat)).removeClass(
                                     'bi bi-cloud-upload-fill')
-                                $('#btn-upload-' + row.no_reg).removeClass('btn-primary')
-                                $('#upload-' + row.no_reg).addClass(
+                                $('#btn-upload-' + textRawat(row.no_rawat)).removeClass('btn-primary')
+                                $('#upload-' + textRawat(row.no_rawat)).addClass(
                                     'bi bi-check2-circle')
-                                $('#btn-upload-' + row.no_reg).addClass('btn-success')
+                                $('#btn-upload-' + textRawat(row.no_rawat)).addClass('btn-success')
                             }
                             if (row.pemeriksaan_ralan) {
-                                $('#icon-periksa-' + row.no_reg).removeClass(
+                                $('#icon-periksa-' + textRawat(row.no_rawat)).removeClass(
                                     'bi bi-pencil-square')
-                                $('#btn-periksa-' + row.no_reg).removeClass('btn-primary')
-                                $('#icon-periksa-' + row.no_reg).addClass(
+                                $('#btn-periksa-' + textRawat(row.no_rawat)).removeClass('btn-primary')
+                                $('#icon-periksa-' + textRawat(row.no_rawat)).addClass(
                                     'bi bi-check2-circle')
-                                $('#btn-periksa-' + row.no_reg).addClass('btn-success')
+                                $('#btn-periksa-' + textRawat(row.no_rawat)).addClass('btn-success')
                             }
                             return html;
                         },
