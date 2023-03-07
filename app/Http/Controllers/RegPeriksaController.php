@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EstimasiPoli;
+use Carbon\Carbon;
 use App\Models\Pasien;
 use App\Models\RegPeriksa;
-use Carbon\Carbon;
+use App\Models\EstimasiPoli;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RegPeriksaController extends Controller
 {
@@ -107,5 +108,17 @@ class RegPeriksaController extends Controller
             ->where('stts', 'Belum')->count();
 
         return $regPeriksa;
+    }
+
+    public function status(Request $request)
+    {
+        $regPeriksa = DB::table('reg_periksa')
+            ->select('stts', DB::raw('count(*) as jumlah'))
+            ->groupBy('stts')
+            ->where('tgl_registrasi', $this->tanggal->now()->toDateString())
+            ->where('kd_poli', $request->kd_poli)
+            ->where('kd_dokter', $request->kd_dokter)
+            ->get();
+        return response()->json($regPeriksa, 200);
     }
 }
