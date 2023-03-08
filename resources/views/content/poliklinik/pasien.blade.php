@@ -74,27 +74,17 @@
 @push('script')
     <script type="text/javascript">
         var id = '';
-        var isModalSoapShow = false;
+        var isModalShow = false;
         var kd_poli = '{{ $poli->kd_poli }}';
         var kd_dokter = '{{ $dokter->kd_dokter }}';
 
         function reloadTabelPoli() {
-            hitungUpload();
-            hitungSelesai();
-            hitungPasien();
             hitungPanggilan();
-            hitungBatal();
-            hitungTunggu();
             tb_pasien();
             setInterval(function() {
                 $('#tb_pasien').DataTable().destroy();
                 tb_pasien();
-                hitungUpload();
-                hitungSelesai();
-                hitungPanggilan();
-                hitungBatal();
-                hitungTunggu();
-                if (isModalSoapShow == false) {
+                if (isModalShow == false) {
                     Swal.fire({
                         title: 'Memuat ulang data register!',
                         position: 'top-end',
@@ -108,7 +98,9 @@
             }, 120000);
         }
         $(document).ready(function() {
+            hitungPanggilan();
             reloadTabelPoli();
+
         })
 
         function hitungPasien() {
@@ -225,60 +217,178 @@
             })
         }
 
-        function hitungSelesai() {
+        function hitungPanggilan() {
+            kd_poli = '{{ Request::segment(2) }}';
+            kd_dokter = '{{ Request::get('dokter') }}';
+
             $.ajax({
-                url: '/erm/registrasi/selesai',
-                method: 'GET',
+                url: '/erm/registrasi/status',
                 data: {
                     'kd_poli': kd_poli,
                     'kd_dokter': kd_dokter,
                 },
-                dataType: 'JSON',
-                success: function(response) {
-                    $('#count-selesai').text(response)
-                }
-            });
-        }
-
-        function hitungBatal() {
-            $.ajax({
-                url: '/erm/registrasi/batal',
                 method: 'GET',
-                data: {
-                    'kd_poli': kd_poli,
-                    'kd_dokter': kd_dokter,
+                success: function(response) {
+                    let jumlah = 0;
+                    let batal = 0;
+                    let tunggu = 0;
+                    let sudah = 0;
+                    let periksa = 0;
+                    $.map(response, function(val, index) {
+                        if (val.stts == 'Belum') {
+                            tunggu = val.jumlah;
+                        } else if (val.stts == 'Sudah') {
+                            sudah = val.jumlah;
+                        } else if (val.stts == 'Batal') {
+                            batal = val.jumlah;
+                        } else if (val.stts == 'Berkas Diterima' || val.stts == 'Periksa') {
+                            periksa = val.jumlah;
+                            $('#hitung-panggil').val(periksa);
+                        }
+                        jumlah = jumlah + parseInt(val.jumlah)
+
+                    })
+                    $('#count-pasien').text(jumlah)
+                    $('#count-tunggu').text(tunggu)
+                    $('#count-selesai').text(sudah)
+                    $('#count-batal').text(batal)
                 },
-                dataType: 'JSON',
-                success: function(response) {
-                    $('#count-batal').text(response)
-                }
             });
         }
 
-        function hitungTunggu() {
-            $.ajax({
-                url: '/erm/registrasi/tunggu',
-                method: 'GET',
-                data: {
-                    'kd_poli': kd_poli,
-                    'kd_dokter': kd_dokter,
-                },
-                dataType: 'JSON',
-                success: function(response) {
-                    $('#count-tunggu').text(response)
-                }
-            });
+        function panggil(urut) {
+
+            id = $('.panggil-' + urut).data('id');
+            hitung_panggilan = $('#hitung-panggil').val();
+            text_recall = $('.panggil-' + urut).text()
+
+
+            if (hitung_panggilan < 2 || text_recall == 'RE-CALL') {
+                $('.selesai-' + urut).prop('disabled', false);
+                $('.selesai-' + urut).prop('class', 'btn btn-warning btn-sm mb-2 selesai-' + urut + '');
+
+                $('.batal-' + urut).prop('disabled', false);
+                $('.batal-' + urut).prop('class', 'btn btn-danger btn-sm mb-2 batal-' + urut + '');
+
+                $('.panggil-' + urut).prop('class', 'btn btn-primary btn-sm mb-2 panggil-' + urut + '');
+                $('.panggil-' + urut).css({
+                    'background-color': 'rgb(152 0 175)',
+                    'border-color': 'rgb(142 6 163)'
+                });
+                $('.panggil-' + urut).text('RE-CALL');
+                $.ajax({
+                    url: '/erm/poliklinik/panggil',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'no_rawat': id,
+                    },
+                    method: "POST",
+                    success: function(data) {
+                        $.toast({
+                            text: 'Memangil : ' + data.no_rawat + '<br/> Jam Periksa : ' + data
+                                .jam_periksa,
+                            position: 'bottom-center',
+                            bgColor: '#0067dd',
+                            loader: false,
+                            stack: false,
+                        })
+                        hitungPanggilan();
+                    }
+                })
+            } else {
+                $.toast({
+                    text: 'Sedang ada pasien',
+                    position: 'bottom-center',
+                    bgColor: '#ffc107',
+                    textColor: 'black',
+                    stack: false,
+                    loader: false,
+                })
+                $.toast().reset();
+                hitungPanggilan();
+            }
+
         }
 
-        function hitungUpload() {
-            $.ajax({
-                url: 'count/{{ $poli->kd_poli }}?dokter={{ $dokter->kd_dokter }}',
-                method: 'GET',
-                dataType: 'JSON',
-                success: function(data) {
-                    $('#count-uploaded').text(data)
+        function selesai(urut) {
+            id = $('.panggil-' + urut).data('id');
+            console.log(id)
+            Swal.fire({
+                title: 'Yakin pemeriksaan selesai ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Belum',
+                confirmButtonText: 'Ya, Selesai !'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/erm/poliklinik/selesai',
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                            'no_rawat': id,
+                        },
+                        method: 'POST',
+                        success: function(response) {
+                            $.toast({
+                                text: 'Periksa : ' + response.no_rawat +
+                                    ' Selesai <br/> Jam Periksa : ' +
+                                    response.jam_periksa,
+                                position: 'bottom-center',
+                                bgColor: '#198754',
+                                loader: false,
+                                stack: false,
+                            });
+                            $('#aksi-' + urut).empty();
+                            $('#aksi-' + urut).append(
+                                '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>'
+                            );
+                            hitungPanggilan();
+                        }
+
+                    });
                 }
             })
+        }
+
+        function batal(urut) {
+            $('.panggil-' + urut).prop('class', 'btn btn-success btn-sm mb-2 panggil-' + urut + '');
+            $('.panggil-' + urut).removeAttr('style');
+            $('.panggil-' + urut).css({
+                'width': '80px'
+            });
+
+            $('.batal-' + urut).prop('disabled', true);
+            $('.batal-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 batal-' + urut + '');
+
+            $('.selesai-' + urut).prop('disabled', true);
+            $('.selesai-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 selesai-' + urut + '');
+
+            $('.panggil-' + urut).text('PANGGIL');
+
+            id = $('.batal-' + urut).data('id');
+
+            $.ajax({
+                url: '/erm/poliklinik/batal',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'no_rawat': id,
+                },
+                method: "DELETE",
+                success: function(response) {
+                    $.toast({
+                        text: response.pesan + ' : ' + response.no_rawat,
+                        position: 'bottom-center',
+                        bgColor: '#dc3545',
+                        loader: false,
+                        stack: false,
+                    });
+                    hitungPanggilan();
+                }
+            });
+
+
         }
 
         function tb_pasien() {
@@ -353,7 +463,7 @@
                                     $('.batal-' + row.no_reg).prop('disabled', true);
                                     $('.selesai-' + row.no_reg).prop('disabled', true);
                                 }
-                                html = '<div id="aksi">';
+                                html = '<div id="aksi-' + row.no_reg + '">';
                                 html += ' <button onclick="panggil(\'' + row.no_reg +
                                     '\')" class="btn btn-sm mb-2 panggil-' + row.no_reg +
                                     '" type="button" style="width:80px;" data-id="' + row.no_rawat +
@@ -521,18 +631,8 @@
                     no_rkm_medis: no_rkm_medis,
                 },
                 dataType: 'JSON',
-                // beforeSend: function() {
-                // swal.fire({
-                //     title: 'Sedang mengirim data',
-                //     text: 'Mohon Tunggu',
-                //     showConfirmButton: false,
-                //     didOpen: () => {
-                //         swal.showLoading();
-                //     }
-                // })
-                // },
                 success: function(response) {
-                    // console.log(response)
+                    console.log(response)
                     let data = response.data;
 
                     if (data) {

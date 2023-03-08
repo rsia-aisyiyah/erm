@@ -34,14 +34,14 @@
     <script>
         var no_rm = '';
         $('#modalRiwayat').on('shown.bs.modal', function() {
-            isModalSoapShow = true;
+            isModalShow = true;
             modalRiwayat(no_rm);
         });
 
         $('#modalRiwayat').on('hidden.bs.modal', function() {
             $('#tb_riwayat').empty();
             detail = '';
-            isModalSoapShow = false;
+            isModalShow = false;
         });
 
         function modalRiwayat(no_rm) {

@@ -260,11 +260,10 @@
 @push('script')
     <script>
         $('#modalAskep').on('shown.bs.modal', function() {
-            isModalSoapShow = true;
+            isModalShow = true;
         })
         $('#modalAskep').on('hidden.bs.modal', function() {
-            isModalSoapShow = false;
-            // reloadTabelPoli();
+            isModalShow = false;
             $('.r_persalinan').empty();
         })
     </script>

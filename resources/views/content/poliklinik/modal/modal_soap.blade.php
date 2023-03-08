@@ -213,11 +213,11 @@
     <script>
         $('#modalSoap').on('shown.bs.modal', function() {
             modalsoap(id);
-            isModalSoapShow = true;
+            isModalShow = true;
         });
 
         $('#modalSoap').on('hidden.bs.modal', function() {
-            isModalSoapShow = false;
+            isModalShow = false;
         });
 
         function ambilNoRawat(no_rawat) {
