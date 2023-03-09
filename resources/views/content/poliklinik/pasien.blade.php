@@ -69,6 +69,7 @@
     @include('content.poliklinik.modal.modal_soap')
     @include('content.poliklinik.modal.modal_riwayat')
     @include('content.poliklinik.modal.modal_askep')
+    @include('content.poliklinik.modal.modal_resep')
 @endsection
 
 @push('script')
@@ -584,6 +585,11 @@
                                 textRawat(row.no_rawat) +
                                 '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
                             html +=
+                                '<button style="width:80px;font-size:12px;text-align:left" onclick="resep(\'' +
+                                row.no_rawat +
+                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
+                                row.no_rawat + '"><i class="bi bi-capsule"></i> RESEP</button><br/>';
+                            html +=
                                 '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' +
                                 row.no_rkm_medis +
                                 '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' +
@@ -737,6 +743,24 @@
 
                 }
             });
+        }
+
+        function resep(no_rawat) {
+            $.ajax({
+                url: '/erm/registrasi/ambil',
+                data: {
+                    no_rawat: no_rawat,
+                },
+                method: 'GET',
+                dataType: 'JSON',
+                success: function(response) {
+                    $('.no_rawat').val(response.no_rawat);
+                    $('.nm_pasien').val(response.no_rkm_medis + ' / ' + response.pasien.nm_pasien + ' / ' +
+                        response.umurdaftar + ' ' + response.sttsumur)
+                    console.log(response)
+                }
+            })
+            $('#modalResep').modal('show');
         }
     </script>
 @endpush

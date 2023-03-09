@@ -36,6 +36,23 @@
             border-radius: 0px !important;
         }
 
+        .nav-tabs .nav-link {
+            border: 0px !important;
+            border-radius: 0px !important;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+
+        .nav-link {
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 0px !important;
+        }
+
         @media (max-width: 400px) {
             .tb-askep {
                 font-size: 9px !important;
@@ -51,6 +68,12 @@
             #modalSoap form textarea {
                 font-size: 10px !important;
             }
+        }
+
+        .form-control-sm {
+            font-size: 12px;
+            min-height: 12px;
+            border-radius: 0;
         }
     </style>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">

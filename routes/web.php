@@ -20,6 +20,7 @@ use App\Http\Controllers\PemeriksaanRanapController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
+use App\Http\Controllers\ResepObatController;
 
 Route::get('/login', function () {
     return view('content.auth.login');
@@ -89,6 +90,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/registrasi/tunggu', [RegPeriksaController::class, 'hitungTunggu']);
     Route::get('/registrasi/riwayat', [RegPeriksaController::class, 'riwayat']);
     Route::get('/registrasi/foto', [UploadController::class, 'ambilPeriksa']);
+
+    Route::get('/resep/obat/akhir', [ResepObatController::class, 'akhir']);
 
     Route::get('/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
     Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
