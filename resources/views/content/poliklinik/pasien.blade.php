@@ -160,6 +160,33 @@
             })
         }
 
+        function hitungUmur(tgl_lahir) {
+            sekarang = new Date();
+            hari = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate());
+
+            var tahunSekarang = sekarang.getFullYear();
+            var bulanSekarang = sekarang.getMonth();
+            var tanggalSekarang = sekarang.getDate();
+
+            splitTgl = tgl_lahir.split('-');
+            lahir = new Date(splitTgl[0], splitTgl[1] - 1, splitTgl[2]);
+
+
+            tahunLahir = lahir.getFullYear();
+            bulanLahir = lahir.getMonth();
+            tanggalLahir = lahir.getDate();
+
+            umurTahun = tahunSekarang - tahunLahir;
+            if (bulanSekarang >= bulanLahir) {
+                umurBulan = bulanSekarang - bulanLahir;
+            } else {
+                umurTahun--;
+                umurBulan = 12 + bulanSekarang - bulanLahir;
+            }
+            console.log(umurTahun + ' ' + umurBulan)
+            return umurTahun + ' Th ' + umurBulan + ' Bln';
+        }
+
         function modalsoap(no_rawat) {
             jbtn = "{{ session()->get('pegawai')->jbtn }}";
             nik = "{{ session()->get('pegawai')->nik }}";
@@ -173,18 +200,19 @@
                 },
                 success: function(response) {
                     if (response.reg_periksa) {
+                        console.log(response.reg_periksa.pasien.tgl_lahir)
+                        // hitungUmur(response.reg_periksa.pasien.tgl_lahir)
                         $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
-                            .pasien.nm_pasien + ' / ' + response.reg_periksa.umurdaftar + ' ' + response
-                            .reg_periksa
-                            .sttsumur :
+                            .pasien.nm_pasien + ' / ' + hitungUmur(response.reg_periksa.pasien.tgl_lahir) :
                             '-')
                         $('#no_rm').val(response.reg_periksa.no_rkm_medis ? response.reg_periksa.no_rkm_medis :
                             '-')
                         $('#p_jawab').val(response.reg_periksa.p_jawab ? 'P. JAWAB : ' + response.reg_periksa
                             .p_jawab : '-')
                     } else {
+
                         $('#nama_pasien').val(response.pasien.nm_pasien ? response.pasien
-                            .nm_pasien + ' / ' + response.umurdaftar + ' ' + response.sttsumur : '-')
+                            .nm_pasien + ' / ' + hitungUmur(response.pasien.tgl_lahir) : '-')
                         $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
                         $('#p_jawab').val(response.p_jawab ? 'P. JAWAB : ' + response.p_jawab : '-')
 

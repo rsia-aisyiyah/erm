@@ -33,12 +33,20 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="umum">
-                        <h4 class="mt-2">Umum</h4>
-                        <p>Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher
-                            voluptate nisi qui. Raw denim you probably haven't heard of them jean shorts Austin.
-                            Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor,
-                            williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher
-                            synth.</p>
+                        <table class="table table-stripped table-responsive" id="tb-resep-racikan" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Jumlah</th>
+                                    <th>Nama Obat</th>
+                                    <th>Aturan Pakai</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                        <button class="btn btn-primary btn-sm" onclick="tambahUmum()">Tambah Resep</button>
                     </div>
                     <div class="tab-pane fade" id="racikan">
                         <table class="table table-stripped table-responsive" id="tb-resep-racikan" width="100%">
@@ -49,6 +57,7 @@
                                     <th>Jumlah Racik</th>
                                     <th>Aturan Pakai</th>
                                     <th>Keterangan</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -67,8 +76,30 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalResepUmum" tabindex="-1" aria-labelledby="modalResepUmum" aria-hidden="true"
+    style="background-color: #00000062!important;">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content" style="border-radius:0px">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="">Obat</h1>
+            </div>
+            <div class="modal-body modal-resep">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                        class="bi bi-x-circle"></i> Keluar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @push('script')
     <script>
+        function tambahUmum() {
+            $('#modalResepUmum').modal('show');
+        }
+
         function tambahRacikan() {
             html = '<tr>';
             html += '<td onclick="aktifTeks(this)">';
@@ -98,6 +129,9 @@
             html += '<td>';
             html += '<input type="text" class="form-control form-control-sm" name="keterangan[]"/>';
             html += '</td>';
+            html += '<td>';
+            html += '<button class="btn btn-danger btn-sm" style="font-size:12px">x</button>';
+            html += '</td>';
             html += '</tr>';
             $('#tb-resep-racikan').append(html);
         }
@@ -112,7 +146,11 @@
                     'tgl_peresepan': tanggal
                 },
                 success: function(response) {
-                    nomor = parseInt(response.no_resep) + 1
+                    if (Object.keys(response).length > 0) {
+                        nomor = parseInt(response.no_resep) + 1
+                    } else {
+                        nomor = "{{ date('Ymd') }}" + '0001';
+                    }
                     $('.no_resep').val(nomor)
                 }
             })
