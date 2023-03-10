@@ -183,7 +183,6 @@
                 umurTahun--;
                 umurBulan = 12 + bulanSekarang - bulanLahir;
             }
-            console.log(umurTahun + ' ' + umurBulan)
             return umurTahun + ' Th ' + umurBulan + ' Bln';
         }
 
@@ -209,6 +208,7 @@
                             '-')
                         $('#p_jawab').val(response.reg_periksa.p_jawab ? 'P. JAWAB : ' + response.reg_periksa
                             .p_jawab : '-')
+                        cekAlergi(response.reg_periksa.no_rkm_medis)
                     } else {
 
                         $('#nama_pasien').val(response.pasien.nm_pasien ? response.pasien
@@ -216,7 +216,9 @@
                         $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
                         $('#p_jawab').val(response.p_jawab ? 'P. JAWAB : ' + response.p_jawab : '-')
 
+                        cekAlergi(response.no_rkm_medis)
                     }
+
 
                     $('#nama').val(nama);
                     $('#nik').val(nik);
@@ -235,7 +237,7 @@
                     $('#berat').val(response.berat ? response.berat : '-')
                     $('#gcs').val(response.gcs ? response.gcs : '-')
                     $('#respirasi').val(response.respirasi ? response.respirasi : '-')
-                    $('#alergi').val(response.alergi ? response.alergi : '-')
+                    // $('#alergi').val(response.alergi ? response.alergi : '-')
                     $('#nadi').val(response.nadi ? response.nadi : '-')
                     $('#spo2').val(response.spo2 ? response.spo2 : '-')
 
@@ -244,6 +246,29 @@
                     console.log(xhr, status, error)
                 }
             })
+        }
+
+        function cekAlergi(no_rm) {
+            $.ajax({
+                url: '/erm/registrasi/riwayat',
+                data: {
+                    no_rkm_medis: no_rm
+                },
+                success: function(response) {
+                    alergi = '-'
+                    $.map(response.reg_periksa, function(val) {
+                        if (val.pemeriksaan_ralan) {
+                            if (val.pemeriksaan_ralan.alergi != '-' && val.pemeriksaan_ralan.alergi !=
+                                '') {
+                                alergi = val.pemeriksaan_ralan.alergi
+                                console.log(val.pemeriksaan_ralan.alergi);
+                            }
+                        }
+                    })
+                    $('#alergi').val(alergi)
+                }
+            })
+            return false;
         }
 
         function hitungPanggilan() {
@@ -612,11 +637,11 @@
                                 '"><i id="icon-askep-' +
                                 textRawat(row.no_rawat) +
                                 '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
-                            html +=
-                                '<button style="width:80px;font-size:12px;text-align:left" onclick="resep(\'' +
-                                row.no_rawat +
-                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
-                                row.no_rawat + '"><i class="bi bi-capsule"></i> RESEP</button><br/>';
+                            // html +=
+                            //     '<button style="width:80px;font-size:12px;text-align:left" onclick="resep(\'' +
+                            //     row.no_rawat +
+                            //     '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
+                            //     row.no_rawat + '"><i class="bi bi-capsule"></i> RESEP</button><br/>';
                             html +=
                                 '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' +
                                 row.no_rkm_medis +
