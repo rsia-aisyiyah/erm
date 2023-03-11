@@ -37,7 +37,7 @@ class RegPeriksaController extends Controller
     public function riwayat(Request $request)
     {
         $pemeriksaan = Pasien::where('no_rkm_medis', $request->no_rkm_medis)
-            ->with('regPeriksa', function ($q) {
+            ->with('regPeriksa', function ($q) use ($request) {
                 return $q->where(function ($q) {
                     $q->where('stts', 'Sudah')->orWhere('status_lanjut', '=', 'Ranap');
                 })->with(['upload', 'poliklinik', 'dokter', 'penjab', 'pemeriksaanRalan', 'catatanPerawatan', 'diagnosaPasien' => function ($q) {
@@ -50,7 +50,7 @@ class RegPeriksaController extends Controller
                     }]);
                 }, 'detailPemeriksaanLab' => function ($q) {
                     $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
-                }, 'kamarInap'])->orderBy('tgl_registrasi', 'DESC');
+                }, 'kamarInap'])->orderBy('tgl_registrasi', $request->sortir);
             })
             ->first();
 
