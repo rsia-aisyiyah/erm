@@ -49,6 +49,7 @@
                 url: '/erm/registrasi/riwayat',
                 data: {
                     'no_rkm_medis': no_rm,
+                    'sortir': 'DESC',
                 },
                 dataType: 'JSON',
                 method: 'GET',
