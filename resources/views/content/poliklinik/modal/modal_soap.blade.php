@@ -218,6 +218,29 @@
 
         $('#modalSoap').on('hidden.bs.modal', function() {
             isModalShow = false;
+            $('#nomor_rawat').val('-');
+            $('#p_jawab').val('-');
+            $('#no_rm').val('-');
+            $('#nama_pasien').val('-');
+            $('#nama').val('-');
+            $('#nik').val('-');
+            $('#jabatan').val('-');
+            $('#nomor_rawat').val('-');
+            $('#tgl_perawatan').val('-');
+            $('#subjek').val('-');
+            $('#objek').val('-');
+            $('#asesmen').val('-');
+            $('#plan').val('-');
+            $('#instruksi').val('-');
+            $('#suhu').val('-');
+            $('#tensi').val('-');
+            $('#tinggi').val('-');
+            $('#berat').val('-');
+            $('#gcs').val('-');
+            $('#respirasi').val('-');
+            $('#alergi').val('-')
+            $('#nadi').val('-');
+            $('#spo2').val('-');
         });
 
         function ambilNoRawat(no_rawat) {
