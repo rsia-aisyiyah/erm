@@ -183,7 +183,27 @@
                 umurTahun--;
                 umurBulan = 12 + bulanSekarang - bulanLahir;
             }
-            return umurTahun + ' Th ' + umurBulan + ' Bln';
+
+            if (tanggalSekarang >= tanggalLahir) {
+                umurTanggal = tanggalSekarang - tanggalLahir;
+            } else {
+                umurBulan--;
+                if (bulanSekarang == '1') {
+                    if (bulanSekarang % 4 == 0) {
+                        jmlHari = 29;
+                    } else {
+                        jmlHari = 28;
+                    }
+                } else if (bulanSekarang == '0' && bulanSekarang == '2' && bulanSekarang == '4' && bulanSekarang == '6' &&
+                    bulanSekarang == '8' && bulanSekarang == '9') {
+                    jmlHari = 31;
+                } else {
+                    jmlHari = 30;
+                }
+                umurTanggal = jmlHari + tanggalSekarang - tanggalLahir;
+            }
+
+            return umurTahun + ' Th ' + umurBulan + ' Bln ' + umurTanggal + ' Hari';
         }
 
         function modalsoap(no_rawat) {
@@ -252,7 +272,8 @@
             $.ajax({
                 url: '/erm/registrasi/riwayat',
                 data: {
-                    no_rkm_medis: no_rm
+                    no_rkm_medis: no_rm,
+                    sortir: 'ASC',
                 },
                 success: function(response) {
                     alergi = '-'
@@ -261,7 +282,7 @@
                             if (val.pemeriksaan_ralan.alergi != '-' && val.pemeriksaan_ralan.alergi !=
                                 '') {
                                 alergi = val.pemeriksaan_ralan.alergi
-                                console.log(val.pemeriksaan_ralan.alergi);
+                                // console.log(val.pemeriksaan_ralan);
                             }
                         }
                     })
