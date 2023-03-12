@@ -20,7 +20,8 @@ class DataBarangController extends Controller
     }
     public function cari(Request $request)
     {
-        $hasil = $this->data->where('nama_brng', 'like', '%' . $request->nama . '%')->get();
+        $hasil = $this->data->where('kdjns', '!=', 'J024')->where('nama_brng', 'like', '%' . $request->nama . '%')->get();
+
         if ($hasil) {
             $response =
                 response()->json([

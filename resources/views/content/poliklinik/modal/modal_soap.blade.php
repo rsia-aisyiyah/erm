@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalSoap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content" style="background-color: #f5f5f5;">
+        <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN S.O.A.P</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -31,7 +31,7 @@
                     </div>
                     <hr />
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-lg-6 col-md-12 col-sm-12">
                             <table class="borderless">
                                 <tr>
                                     <td width="20%">Dilakukan Oleh :</td>
@@ -77,8 +77,8 @@
                                         <table>
                                             <td width="12%">
                                                 Suhu (<sup>0</sup>C) : <input type="text"
-                                                    class="form-control form-control-sm" id="suhu"
-                                                    name="suhu" placeholder="" maxlength="5"
+                                                    class="form-control form-control-sm" id="suhu" name="suhu"
+                                                    placeholder="" maxlength="5"
                                                     style="font-size:12px;min-height:12px;border-radius:0;"
                                                     value="-" onfocus="removeZero(this)"
                                                     onblur="cekKosong(this)">
@@ -159,7 +159,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-lg-6 col-md-12 col-sm-12">
                             <table class="borderless">
                                 <tr>
                                     <td width="5%">Alergi :</td>
@@ -194,7 +194,65 @@
                                             onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>No. Resep : </td>
+                                    <td colspan="3">
+                                        <input type="text" class="no_resep form-control form-control-sm"
+                                            readonly />
+                                    </td>
+                                </tr>
                             </table>
+                            <ul class="nav nav-tabs" id="myTab">
+                                <li class="nav-item">
+                                    <a href="#umum" class="nav-link active" data-bs-toggle="tab">NON RACIKAN</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#racikan" class="nav-link" data-bs-toggle="tab">RACIKAN</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="umum">
+                                    <table class="table table-stripped table-responsive" id="tb-resep"
+                                        width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Nomor</th>
+                                                <th>Nama Obat</th>
+                                                <th>Jumlah</th>
+                                                <th>Aturan Pakai</th>
+                                                <th>Keterangan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                    <button class="btn btn-primary btn-sm" type="button"
+                                        onclick="tambahUmum()">Tambah
+                                        Resep</button>
+                                </div>
+                                <div class="tab-pane fade" id="racikan">
+                                    <table class="table table-stripped table-responsive" id="tb-resep-racikan"
+                                        width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama Racikan</th>
+                                                <th>Metode Racikan</th>
+                                                <th>Jumlah Racik</th>
+                                                <th>Aturan Pakai</th>
+                                                <th>Keterangan</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                    <button class="btn btn-primary btn-sm" type="button"
+                                        onclick="tambahRacikan()">Tambah
+                                        Racikan</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -211,12 +269,165 @@
 </div>
 @push('script')
     <script>
+        function cariObat(obat) {
+            $.ajax({
+                url: '/erm/obat/cari',
+                data: {
+                    'nama': obat.value,
+                },
+                success: function(response) {
+                    html =
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                    $.map(response.data, function(data) {
+                        if (data.status != "0") {
+                            html +=
+                                '<li><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                                data.nama_brng + '</a></li>'
+                        }
+                    })
+                    html += '</ul>';
+                    $('#list_obat').fadeIn();
+                    $('#list_obat').html(html);
+                }
+            })
+        }
+
+        function cariAturan(aturan) {
+            $.ajax({
+                url: '/erm/resep/cari',
+                data: {
+                    'aturan_pakai': aturan.value,
+                },
+                success: function(response) {
+                    html =
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                    $.map(response, function(data) {
+                        html +=
+                            '<li><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                            data.aturan_pakai + '</a></li>'
+                    })
+                    html += '</ul>';
+                    $('#list_aturan').fadeIn();
+                    $('#list_aturan').html(html);
+                }
+            })
+        }
+        $('#list_obat').on('click', 'li', function() {
+            $('.nama_obat').val($(this).text());
+            $('#list_obat').fadeOut();
+        });
+        $('#list_aturan').on('click', 'li', function() {
+            $('.aturan_pakai').val($(this).text());
+            $('#list_aturan').fadeOut();
+        });
+
+        $(document).click(function() {
+            $('#list_obat').fadeOut();
+            $('#list_aturan').fadeOut();
+        });
+
+        function pilihObat() {
+
+        }
+        var no = 1;
+
+        // function tambahUmum() {
+        //     html = '<tr>';
+        //     html += '<td>';
+        //     html += no;
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="search" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm form-underline nama_obat" name="nama_obat[]"/>';
+
+        //     html += '</td><span id="list_obat"></span>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="text" onkeypress="return hanyaAngka(event)" class="form-control form-control-sm form-underline" id="jumlah" name="jumlah[]" />';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<input type="search" class="form-control form-control-sm form-underline" name="aturan[]"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<input type="text" class="form-control form-control-sm form-underline" name="keterangan[]"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<button class="btn btn-danger btn-sm" style="font-size:12px">x</button>';
+        //     html += '</td>';
+        //     html += '</tr>';
+        //     $('#tb-resep').append(html);
+        //     no++;
+        // }
+        function tambahUmum() {
+            $('#modalResepUmum').modal('show');
+        }
+
+        function tambahRacikan() {
+            html = '<tr>';
+            html += '<td onclick="aktifTeks(this)">';
+            html +=
+                '<input type="text" class="form-control form-control-sm id="nama_racik" name="nama_racik[]"/>';
+            html += '</td>';
+            html += '<td>';
+            html +=
+                '<select class="form-select" name="kd_racik[]" style="font-size:12px;min-height:12px;border-radius:0;">';
+            html += '<option value="R01">Puyer</option>'
+            html += '<option value="R02">Sirup</option>'
+            html += '<option value="R03">Salep</option>'
+            html += '<option value="R04">Kapsul</option>'
+            html += '<option value="R05">TABLET/KAPSUL/KAPLET</option>'
+            html += '<option value="R06">Sachet</option>'
+            html += '<option value="R07">Tablet</option>'
+            html += '<option value="R08">Injeksi</option>'
+            html +=
+                '</select>';
+            html += '</td>';
+            html += '<td>';
+            html += '<input type="number" class="form-control form-control-sm" name="jml_dr[]"/>';
+            html += '</td>';
+            html += '<td>';
+            html += '<input type="text" class="form-control form-control-sm" name="aturan[]"/>';
+            html += '</td>';
+            html += '<td>';
+            html += '<input type="text" class="form-control form-control-sm" name="keterangan[]"/>';
+            html += '</td>';
+            html += '<td>';
+            html += '<button class="btn btn-danger btn-sm" style="font-size:12px">x</button>';
+            html += '</td>';
+            html += '</tr>';
+            $('#tb-resep-racikan').append(html);
+        }
+
+        function setNoResep() {
+            let tanggal = "{{ date('Y-m-d') }}";
+            $.ajax({
+                url: '/erm/resep/obat/akhir',
+                method: 'GET',
+                dataType: 'JSON',
+                data: {
+                    'tgl_peresepan': tanggal
+                },
+                success: function(response) {
+                    if (Object.keys(response).length > 0) {
+                        nomor = parseInt(response.no_resep) + 1
+                    } else {
+                        nomor = "{{ date('Ymd') }}" + '0001';
+                    }
+                    $('.no_resep').val(nomor)
+                }
+            })
+
+        }
         $('#modalSoap').on('shown.bs.modal', function() {
+            setNoResep();
             modalsoap(id);
+            no = 1;
             isModalShow = true;
         });
 
         $('#modalSoap').on('hidden.bs.modal', function() {
+            $('#tb-resep tbody').empty();
+            $('#tb-resep-racikan tbody').empty();
             isModalShow = false;
             $('#nomor_rawat').val('-');
             $('#p_jawab').val('-');

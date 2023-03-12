@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">RESEP</h1>
             </div>
-            <div class="modal-body modal-resep">
+            {{-- <div class="modal-body modal-resep">
                 <div class="row">
                     <label for="no_resep" class="col-lg-1 col-sm-12 col-form-label" style="font-size:12px">No.
                         Resep</label>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div> --}}
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i> Keluar</button>
@@ -82,9 +82,32 @@
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content" style="border-radius:0px">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="">Obat</h1>
+                <h2 class="modal-title fs-5" id="">Pilih Obat</h2>
             </div>
             <div class="modal-body modal-resep">
+                <div class="row">
+                    <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label" style="font-size:12px">Pilih
+                        Obat</label>
+                    <div class="col-lg-8 col-sm-12 mb-2">
+                        <input type="search" onkeyup="cariObat(this)" autocomplete="off"
+                            class="form-control form-control-sm nama_obat" name="nama_obat" />
+                        <div id="list_obat"></div>
+                    </div>
+                    <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label"
+                        style="font-size:12px">Jumlah</label>
+                    <div class="col-lg-8 col-sm-12 mb-2">
+                        <input type="search" onkeypress="return hanyaAngka(event)" class="form-control form-control-sm"
+                            id="jumlah" name="jumlah" autocomplete="off" />
+                    </div>
+                    <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label" style="font-size:12px">Aturan
+                        Pakai</label>
+                    <div class="col-lg-8 col-sm-12 mb-2">
+                        <input type="search" onkeyup="cariAturan(this)" autocomplete="off"
+                            class="form-control form-control-sm aturan_pakai" name="aturan_pakai" />
+                        <div id="list_aturan"></div>
+                    </div>
+
+                </div>
 
             </div>
             <div class="modal-footer">
@@ -96,69 +119,101 @@
 </div>
 @push('script')
     <script>
-        function tambahUmum() {
-            $('#modalResepUmum').modal('show');
-        }
+        // function tambahUmum() {
+        //     $('#modalResepUmum').modal('show');
+        //     html = '<tr>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="text" class="form-control form-control-sm id="nama_racik" name="nama_racik[]"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<select class="form-select" name="kd_racik[]" style="font-size:12px;min-height:12px;border-radius:0;">';
+        //     html += '<option value="R01">Puyer</option>'
+        //     html += '<option value="R02">Sirup</option>'
+        //     html += '<option value="R03">Salep</option>'
+        //     html += '<option value="R04">Kapsul</option>'
+        //     html += '<option value="R05">TABLET/KAPSUL/KAPLET</option>'
+        //     html += '<option value="R06">Sachet</option>'
+        //     html += '<option value="R07">Tablet</option>'
+        //     html += '<option value="R08">Injeksi</option>'
+        //     html +=
+        //         '</select>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<input type="number" class="form-control form-control-sm" name="jml_dr[]"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<input type="text" class="form-control form-control-sm" name="aturan[]"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<input type="text" class="form-control form-control-sm" name="keterangan[]"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<button class="btn btn-danger btn-sm" style="font-size:12px">x</button>';
+        //     html += '</td>';
+        //     html += '</tr>';
+        // }
 
-        function tambahRacikan() {
-            html = '<tr>';
-            html += '<td onclick="aktifTeks(this)">';
-            html +=
-                '<input type="text" class="form-control form-control-sm id="nama_racik" name="nama_racik[]"/>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<select class="form-select" name="kd_racik[]" style="font-size:12px;min-height:12px;border-radius:0;">';
-            html += '<option value="R01">Puyer</option>'
-            html += '<option value="R02">Sirup</option>'
-            html += '<option value="R03">Salep</option>'
-            html += '<option value="R04">Kapsul</option>'
-            html += '<option value="R05">TABLET/KAPSUL/KAPLET</option>'
-            html += '<option value="R06">Sachet</option>'
-            html += '<option value="R07">Tablet</option>'
-            html += '<option value="R08">Injeksi</option>'
-            html +=
-                '</select>';
-            html += '</td>';
-            html += '<td>';
-            html += '<input type="number" class="form-control form-control-sm" name="jml_dr[]"/>';
-            html += '</td>';
-            html += '<td>';
-            html += '<input type="text" class="form-control form-control-sm" name="aturan[]"/>';
-            html += '</td>';
-            html += '<td>';
-            html += '<input type="text" class="form-control form-control-sm" name="keterangan[]"/>';
-            html += '</td>';
-            html += '<td>';
-            html += '<button class="btn btn-danger btn-sm" style="font-size:12px">x</button>';
-            html += '</td>';
-            html += '</tr>';
-            $('#tb-resep-racikan').append(html);
-        }
+        // function tambahRacikan() {
+        //     html = '<tr>';
+        //     html += '<td onclick="aktifTeks(this)">';
+        //     html +=
+        //         '<input type="text" class="form-control form-control-sm id="nama_racik" name="nama_racik[]"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<select class="form-select" name="kd_racik[]" style="font-size:12px;min-height:12px;border-radius:0;">';
+        //     html += '<option value="R01">Puyer</option>'
+        //     html += '<option value="R02">Sirup</option>'
+        //     html += '<option value="R03">Salep</option>'
+        //     html += '<option value="R04">Kapsul</option>'
+        //     html += '<option value="R05">TABLET/KAPSUL/KAPLET</option>'
+        //     html += '<option value="R06">Sachet</option>'
+        //     html += '<option value="R07">Tablet</option>'
+        //     html += '<option value="R08">Injeksi</option>'
+        //     html +=
+        //         '</select>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<input type="number" class="form-control form-control-sm" name="jml_dr[]"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<input type="text" class="form-control form-control-sm" name="aturan[]"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<input type="text" class="form-control form-control-sm" name="keterangan[]"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html += '<button class="btn btn-danger btn-sm" style="font-size:12px">x</button>';
+        //     html += '</td>';
+        //     html += '</tr>';
+        //     $('#tb-resep-racikan').append(html);
+        // }
 
-        function setNoResep() {
-            let tanggal = "{{ date('Y-m-d') }}";
-            $.ajax({
-                url: '/erm/resep/obat/akhir',
-                method: 'GET',
-                dataType: 'JSON',
-                data: {
-                    'tgl_peresepan': tanggal
-                },
-                success: function(response) {
-                    if (Object.keys(response).length > 0) {
-                        nomor = parseInt(response.no_resep) + 1
-                    } else {
-                        nomor = "{{ date('Ymd') }}" + '0001';
-                    }
-                    $('.no_resep').val(nomor)
-                }
-            })
+        // function setNoResep() {
+        //     let tanggal = "{{ date('Y-m-d') }}";
+        //     $.ajax({
+        //         url: '/erm/resep/obat/akhir',
+        //         method: 'GET',
+        //         dataType: 'JSON',
+        //         data: {
+        //             'tgl_peresepan': tanggal
+        //         },
+        //         success: function(response) {
+        //             if (Object.keys(response).length > 0) {
+        //                 nomor = parseInt(response.no_resep) + 1
+        //             } else {
+        //                 nomor = "{{ date('Ymd') }}" + '0001';
+        //             }
+        //             $('.no_resep').val(nomor)
+        //         }
+        //     })
 
-        }
-        $('#modalResep').on('shown.bs.modal', function() {
-            isShowModal = true;
-            setNoResep();
-        })
+        // }
+        // $('#modalResep').on('shown.bs.modal', function() {
+        //     isShowModal = true;
+        //     setNoResep();
+        // })
     </script>
 @endpush

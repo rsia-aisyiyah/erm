@@ -1,26 +1,28 @@
 <?php
 
-use App\Http\Controllers\AskepRalanKebidananController;
-use App\Http\Controllers\DataBarangController;
 use App\Models\Pasien;
+use App\Models\ResepObat;
 use App\Models\Poliklinik;
 use App\Models\DetailPemberianObat;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RanapController;
+use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\ResepObatController;
+use App\Http\Controllers\DataBarangController;
 use App\Http\Controllers\PoliklinikController;
 use App\Http\Controllers\RegPeriksaController;
+use App\Http\Controllers\ResepDokterController;
 use App\Http\Controllers\SelesaiPoliController;
 use App\Http\Controllers\EstimasiPoliController;
 use App\Http\Controllers\PemeriksaanRalanController;
 use App\Http\Controllers\PemeriksaanRanapController;
+use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\DetailPemberianObatController;
-use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
-use App\Http\Controllers\ResepObatController;
 
 Route::get('/login', function () {
     return view('content.auth.login');
@@ -113,6 +115,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('obat/', [DataBarangController::class, 'index']);
     Route::get('obat/cari', [DataBarangController::class, 'cari']);
+
+    Route::get('resep/cari', [ResepDokterController::class, 'cari']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
