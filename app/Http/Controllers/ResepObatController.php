@@ -17,7 +17,6 @@ class ResepObatController extends Controller
     }
     public function akhir(Request $request)
     {
-        // return $request;
         $resepObat = $this->resepObat;
 
         if ($request->tgl_peresepan) {
@@ -25,5 +24,22 @@ class ResepObatController extends Controller
         }
 
         return response()->json($result);
+    }
+    public function simpan(Request $request)
+    {
+        $resepObat = $this->resepObat->create([
+            'no_resep' => $request->data['no_resep'],
+            'kd_dokter' => $request->data['kd_dokter'],
+            'no_rawat' => $request->data['no_rawat'],
+            'tgl_perawatan' => date('Y-m-d'),
+            'jam' => date('H:i:s'),
+            'tgl_peresepan' => date('Y-m-d'),
+            'jam_peresepan' => date('H:i:s'),
+            'status' => 'ralan',
+            'tgl_penyerahan' => date('Y-m-d', strtotime("00:00:00")),
+            'jam_penyerahan' => date('H:i:s', strtotime("00:00:00")),
+        ]);
+
+        return $resepObat;
     }
 }

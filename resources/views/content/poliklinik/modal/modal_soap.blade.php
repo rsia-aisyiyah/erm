@@ -221,14 +221,18 @@
                                                 <th>Jumlah</th>
                                                 <th>Aturan Pakai</th>
                                                 <th>Keterangan</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="body_umum">
 
                                         </tbody>
                                     </table>
                                     <button class="btn btn-primary btn-sm" type="button"
                                         onclick="tambahUmum()">Tambah
+                                        Obat</button>
+                                    <button class="btn btn-success btn-sm btn_simpan_resep" type="button"
+                                        style="visibility: hidden">Simpan
                                         Resep</button>
                                 </div>
                                 <div class="tab-pane fade" id="racikan">
@@ -279,10 +283,15 @@
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
                     $.map(response.data, function(data) {
-                        if (data.status != "0") {
-                            html +=
-                                '<li><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                data.nama_brng + '</a></li>'
+                        if (data) {
+
+                            if (data.status != "0") {
+                                html +=
+                                    '<li data-id="' +
+                                    data.kode_brng +
+                                    '"><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                                    data.nama_brng + '</a></li>'
+                            }
                         }
                     })
                     html += '</ul>';
@@ -313,6 +322,8 @@
             })
         }
         $('#list_obat').on('click', 'li', function() {
+
+            $('.kode_obat').val($(this).data('id'));
             $('.nama_obat').val($(this).text());
             $('#list_obat').fadeOut();
         });
@@ -320,6 +331,9 @@
             $('.aturan_pakai').val($(this).text());
             $('#list_aturan').fadeOut();
         });
+
+
+
 
         $(document).click(function() {
             $('#list_obat').fadeOut();

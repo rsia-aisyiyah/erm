@@ -8,17 +8,17 @@
                 <div class="row">
                     <label for="no_resep" class="col-lg-1 col-sm-12 col-form-label" style="font-size:12px">No.
                         Resep</label>
-                    <div class="col-lg-2 col-sm-12 mb-2">
+                    <div class="col-lg-2 col-sm-12 mb-1">
                         <input type="text" class="form-control form-control-sm no_resep" name="no_resep"
                             placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly="">
                     </div>
                     <label for="no_rawat" class="col-lg-1 col-sm-12 col-form-label" style="font-size:12px">No.
                         Rawat</label>
-                    <div class="col-lg-2 col-sm-12 mb-2">
+                    <div class="col-lg-2 col-sm-12 mb-1">
                         <input type="text" class="form-control form-control-sm no_rawat" name="nomor_rawat"
                             placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly="">
                     </div>
-                    <div class="col-lg-4 col-sm-12 mb-2">
+                    <div class="col-lg-4 col-sm-12 mb-1">
                         <input type="text" class="form-control form-control-sm nm_pasien" name="nm_pasien"
                             placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly="">
                     </div>
@@ -85,32 +85,43 @@
                 <h2 class="modal-title fs-5" id="">Pilih Obat</h2>
             </div>
             <div class="modal-body modal-resep">
-                <div class="row">
-                    <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label" style="font-size:12px">Pilih
-                        Obat</label>
-                    <div class="col-lg-8 col-sm-12 mb-2">
-                        <input type="search" onkeyup="cariObat(this)" autocomplete="off"
-                            class="form-control form-control-sm nama_obat" name="nama_obat" />
-                        <div id="list_obat"></div>
-                    </div>
-                    <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label"
-                        style="font-size:12px">Jumlah</label>
-                    <div class="col-lg-8 col-sm-12 mb-2">
-                        <input type="search" onkeypress="return hanyaAngka(event)" class="form-control form-control-sm"
-                            id="jumlah" name="jumlah" autocomplete="off" />
-                    </div>
-                    <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label" style="font-size:12px">Aturan
-                        Pakai</label>
-                    <div class="col-lg-8 col-sm-12 mb-2">
-                        <input type="search" onkeyup="cariAturan(this)" autocomplete="off"
-                            class="form-control form-control-sm aturan_pakai" name="aturan_pakai" />
-                        <div id="list_aturan"></div>
-                    </div>
+                <form id="resep-umum">
+                    <div class="row">
+                        <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label" style="font-size:12px">Pilih
+                            Obat</label>
+                        <div class="col-lg-8 col-sm-12 mb-1">
+                            <input type="search" onkeyup="cariObat(this)" autocomplete="off"
+                                class="form-control form-control-sm nama_obat" name="nama_obat" />
+                            <div id="list_obat"></div>
+                        </div>
+                        <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label"
+                            style="font-size:12px">Jumlah</label>
+                        <div class="col-lg-8 col-sm-12 mb-1">
+                            <input type="search" onkeypress="return hanyaAngka(event)"
+                                class="form-control form-control-sm jumlah" id="jumlah" name="jumlah"
+                                autocomplete="off" />
+                        </div>
+                        <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label" style="font-size:12px">Aturan
+                            Pakai</label>
+                        <div class="col-lg-8 col-sm-12 mb-1">
+                            <input type="search" onkeyup="cariAturan(this)" autocomplete="off"
+                                class="form-control form-control-sm aturan_pakai" name="aturan_pakai" />
+                            <div id="list_aturan"></div>
+                        </div>
+                        <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label"
+                            style="font-size:12px">Keterangan</label>
+                        <div class="col-lg-8 col-sm-12 mb-1">
+                            <input type="search" autocomplete="off" class="form-control form-control-sm keterangan"
+                                name="keterangan" />
+                        </div>
+                        <input type="hidden" value="" class="kode_obat" />
 
-                </div>
-
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
+                <button id="tempSimpan"type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal"><i
+                        class="bi bi-x-circle"></i> Tambah</button>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i> Keluar</button>
             </div>
@@ -119,6 +130,134 @@
 </div>
 @push('script')
     <script>
+        var resepObj = [];
+        $('#tempSimpan').on('click', function() {
+            resep = {
+                'no_resep': $('.no_resep').val(),
+                'kode_brng': $('.kode_obat').val(),
+                'nama_obat': $('.nama_obat').val(),
+                'jml': $('.jumlah').val(),
+                'aturan_pakai': $('.aturan_pakai').val(),
+            }
+            resepObj.push(resep);
+
+            $('.nama_obat').val('')
+            $('.jumlah').val('')
+            $('.aturan_pakai').val('')
+            $('.keterangan').val('')
+            no = 1;
+            id = 0;
+            $.map(resepObj, function(resep) {
+                html = '<tr>';
+                html += '<td>' + no + '</td>'
+                html += '<td>' + resep.nama_obat + '</td>'
+                html += '<td>' + resep.jml + '</td>'
+                html += '<td>' + resep.aturan_pakai + '</td>'
+                html += '<td>' + resep.keterangan + '</td>'
+                html +=
+                    '<td><button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-id="' +
+                    id + '">x</button></td>';
+                html += '</tr>';
+                id++;
+                no++;
+            })
+
+            if (Object.keys(resepObj).length == 0) {
+                $('.btn_simpan_resep').css('visibility', 'hidden')
+            } else {
+                $('.btn_simpan_resep').css('visibility', 'visible')
+            }
+
+            $('#body_umum').append(html)
+
+        });
+
+        $('tbody').on('click', '.remove', function() {
+            no = 1;
+            let id = $(this).attr('data-id');
+            $(this).closest("tr").remove();
+            idObject = 0;
+            resepObj.splice(id, 1)
+            html = '';
+            $.map(resepObj, function(resep) {
+                html += '<tr>';
+                html += '<td>' + no + '</td>'
+                html += '<td>' + resep.nama_obat + '</td>'
+                html += '<td>' + resep.jml + '</td>'
+                html += '<td>' + resep.aturan_pakai + '</td>'
+                html += '<td>' + resep.keterangan + '</td>'
+                html +=
+                    '<td><button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-id="' +
+                    idObject + '">x</button></td>';
+                html += '</tr>';
+                idObject++;
+                no++;
+            })
+
+            $('#body_umum').empty();
+            $('#body_umum').append(html);
+
+            if (Object.keys(resepObj).length == 0) {
+                $('.btn_simpan_resep').css('visibility', 'hidden')
+            } else {
+                $('.btn_simpan_resep').css('visibility', 'visible')
+            }
+
+            return false;
+        })
+
+        $('.btn_simpan_resep').on('click', function() {
+            data = resepObj;
+            $.ajax({
+                url: '/erm/resep/obat/simpan',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    data: {
+                        kd_dokter: "{{ Request::get('dokter') }}",
+                        no_rawat: $('#nomor_rawat').val(),
+                        no_resep: $('.no_resep').val(),
+                    },
+                },
+                method: 'POST',
+                beforeSend: function() {
+                    console.log('wkwkwkwk')
+                },
+                success: function(response) {
+                    simpanResep();
+                    console.log(response)
+                }
+            });
+            // console.log(data)
+        })
+
+        function simpanResep() {
+            $.ajax({
+                url: '/erm/resep/umum/simpan',
+                data: {
+                    data: resepObj,
+                    _token: "{{ csrf_token() }}",
+                },
+                method: 'POST',
+                success: function(response) {
+                    console.log(response)
+                    textPlan = '';
+                    no = 1;
+                    $.map(resepObj, function(resep) {
+                        textPlan += no + '. ';
+                        textPlan += resep.nama_obat + ' ';
+                        textPlan += resep.jml + ' ';
+                        textPlan += resep.aturan_pakai + '\r\n';
+                        no++;
+                    })
+                    $('#plan').val(textPlan);
+                    $('#body_umum').empty();
+                    $('.btn_simpan_resep').css('visibility', 'hidden')
+                    resepObj = [];
+
+                }
+            });
+        }
+
         // function tambahUmum() {
         //     $('#modalResepUmum').modal('show');
         //     html = '<tr>';

@@ -10,6 +10,7 @@ class ResepDokter extends Model
     use HasFactory;
     protected $table = "resep_dokter";
     protected $fillable = ['no_resep', 'kode_brng', 'jml', 'aturan_pakai'];
+    public $timestamps = false;
 
     public function dataBarang()
     {

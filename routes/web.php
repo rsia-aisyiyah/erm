@@ -93,7 +93,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/registrasi/riwayat', [RegPeriksaController::class, 'riwayat']);
     Route::get('/registrasi/foto', [UploadController::class, 'ambilPeriksa']);
 
-    Route::get('/resep/obat/akhir', [ResepObatController::class, 'akhir']);
 
     Route::get('/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
     Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
@@ -116,7 +115,11 @@ Route::middleware('auth')->group(function () {
     Route::get('obat/', [DataBarangController::class, 'index']);
     Route::get('obat/cari', [DataBarangController::class, 'cari']);
 
-    Route::get('resep/cari', [ResepDokterController::class, 'cari']);
+    Route::get('/resep/cari', [ResepDokterController::class, 'cari']);
+    Route::get('/resep/obat/akhir', [ResepObatController::class, 'akhir']);
+    Route::post('/resep/obat/simpan', [ResepObatController::class, 'simpan']);
+
+    Route::post('/resep/umum/simpan', [ResepDokterController::class, 'simpan']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
