@@ -12,8 +12,25 @@ class ResepObatController extends Controller
     {
         $this->resepObat = new ResepObat();
     }
-    public function ambil()
+
+    public function hapus(Request $request)
     {
+        $resepObat = $this->resepObat;
+        $result = $resepObat->where('no_rawat', $request->no_rawat)->where('no_resep', $request->no_resep)->delete();
+        return response()->json($result);
+    }
+    public function ambil(Request $request)
+    {
+        $resepObat = $this->resepObat;
+
+        if ($request->no_rawat) {
+            $result = $resepObat->where('no_rawat', $request->no_rawat)->with('resepDokter.dataBarang')->get();
+        }
+        if ($request->no_resep) {
+            $result = $resepObat->where('no_resep', $request->no_resep)->with('resepDokter.dataBarang')->get();
+        }
+
+        return response()->json($result);
     }
     public function akhir(Request $request)
     {
@@ -28,15 +45,15 @@ class ResepObatController extends Controller
     public function simpan(Request $request)
     {
         $resepObat = $this->resepObat->create([
-            'no_resep' => $request->data['no_resep'],
-            'kd_dokter' => $request->data['kd_dokter'],
-            'no_rawat' => $request->data['no_rawat'],
-            'tgl_perawatan' => date('Y-m-d'),
-            'jam' => date('H:i:s'),
+            'no_resep' => $request->no_resep,
+            'kd_dokter' => $request->kd_dokter,
+            'no_rawat' => $request->no_rawat,
+            'tgl_perawatan' => date_format(date_create('0000-00-00'), 'Y-m-d'),
+            'jam' => date('H:i:s', strtotime("00:00:00")),
             'tgl_peresepan' => date('Y-m-d'),
             'jam_peresepan' => date('H:i:s'),
             'status' => 'ralan',
-            'tgl_penyerahan' => date('Y-m-d', strtotime("00:00:00")),
+            'tgl_penyerahan' => date_format(date_create('0000-00-00'), 'Y-m-d'),
             'jam_penyerahan' => date('H:i:s', strtotime("00:00:00")),
         ]);
 

@@ -115,11 +115,16 @@ Route::middleware('auth')->group(function () {
     Route::get('obat/', [DataBarangController::class, 'index']);
     Route::get('obat/cari', [DataBarangController::class, 'cari']);
 
+    Route::get('/aturan/cari', [ResepDokterController::class, 'cari']);
+
     Route::get('/resep/cari', [ResepDokterController::class, 'cari']);
     Route::get('/resep/obat/akhir', [ResepObatController::class, 'akhir']);
+    Route::get('/resep/obat/ambil', [ResepObatController::class, 'ambil']);
     Route::post('/resep/obat/simpan', [ResepObatController::class, 'simpan']);
+    Route::post('/resep/obat/hapus', [ResepObatController::class, 'hapus']);
 
     Route::post('/resep/umum/simpan', [ResepDokterController::class, 'simpan']);
+    Route::delete('/resep/umum/hapus', [ResepDokterController::class, 'hapus']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);

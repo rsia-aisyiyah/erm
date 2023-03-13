@@ -124,7 +124,7 @@
                 method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
-                    no_rawat: id,
+                    no_rawat: $('#nomor_rawat').val(),
                     suhu_tubuh: $('#suhu').val(),
                     tensi: $('#tensi').val(),
                     nadi: $('#nadi').val(),

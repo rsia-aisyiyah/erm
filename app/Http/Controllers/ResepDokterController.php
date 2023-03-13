@@ -17,9 +17,9 @@ class ResepDokterController extends Controller
         $resepDokter = $this->resepDokter;
 
         if ($request->aturan_pakai) {
-            $hasil = $resepDokter->where('aturan_pakai', 'like', $request->aturan_pakai . "%")->get();
+            $hasil = $resepDokter->where('aturan_pakai', 'like', $request->aturan_pakai . "%")->limit(10)->get();
         } else {
-            $resepDokter->get();
+            $resepDokter->limit(10)->get();
         }
 
         return response()->json($hasil, 200);
@@ -27,15 +27,18 @@ class ResepDokterController extends Controller
     public function simpan(Request $request)
     {
 
-        foreach ($request->data as $data) {
-            $resepDokter[] = $this->resepDokter->create([
-                'no_resep' => $data['no_resep'],
-                'kode_brng' => $data['kode_brng'],
-                'jml' => $data['jml'],
-                'aturan_pakai' => $data['aturan_pakai'],
-            ]);
-        }
+        $resepDokter = $this->resepDokter->create([
+            'no_resep' => $request->no_resep,
+            'kode_brng' => $request->kode_brng,
+            'jml' => $request->jml,
+            'aturan_pakai' => $request->aturan_pakai,
+        ]);
 
-        return $resepDokter;
+        return response()->json($resepDokter);
+    }
+    public function hapus(Request $request)
+    {
+        $resepDokter = $this->resepDokter->where('no_resep', $request->no_resep)->where('kode_brng', $request->kode_brng)->delete();
+        return response()->json($resepDokter, 200);
     }
 }
