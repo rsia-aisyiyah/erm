@@ -186,7 +186,7 @@
                                             onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
-                                <input type="hidden" class="no_resep form-control form-control-sm" readonly />
+                                <input type="hidden" class="no_resep form-control form-control-sm" />
                             </table>
                             <ul class="nav nav-tabs" id="myTab">
                                 <li class="nav-item">
@@ -276,7 +276,8 @@
                             'no_resep': $('.no_resep').val(),
                             'kode_brng': $('.kode_obat').val(),
                             'jml': $('.jumlah').val(),
-                            'aturan_pakai': $('.aturan_pakai').val() + ' ' + $('.keterangan')
+                            'aturan_pakai': $('.aturan_pakai').val() + ' ' + $(
+                                    '.keterangan')
                                 .val(),
                         },
                         beforeSend: function() {
@@ -300,8 +301,6 @@
                     })
                 }
             })
-
-
         });
 
 
@@ -323,7 +322,6 @@
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
 
-            console.log(no_resep, kode_brng)
             Swal.fire({
                 title: 'Yakin ?',
                 text: "Anda tidak bisa mengembalikan lagi",
@@ -349,8 +347,8 @@
                                 'Obat berhasil dihapus',
                                 'success'
                             );
-
                             $('#body_umum').empty();
+                            cekResep($('#nomor_rawat').val())
                         }
                     })
                 }
@@ -365,19 +363,33 @@
                     'nama': obat.value,
                 },
                 success: function(response) {
+                    // console.log(response)
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
                     $.map(response.data, function(data) {
-                        if (data) {
+                        $.map(data.gudang_barang, function(item) {
+                            // console.log(item.stok)
+                            if (data) {
+                                if (data.status != "0") {
+                                    if (item.stok != "0") {
+                                        html +=
+                                            '<li data-id="' +
+                                            data.kode_brng +
+                                            '" data-stok="' + item.stok +
+                                            '"><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                                            data.nama_brng + '</a></li>'
 
-                            if (data.status != "0") {
-                                html +=
-                                    '<li data-id="' +
-                                    data.kode_brng +
-                                    '"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                    data.nama_brng + '</a></li>'
+                                    } else {
+                                        html +=
+                                            '<li class="disable" data-id="' + data.kode_brng +
+                                            '" data-stok="' + item.stok +
+                                            '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
+                                            data.nama_brng + ' - Stok Kosong' + '</a></i></li>'
+
+                                    }
+                                }
                             }
-                        }
+                        })
                     })
                     html += '</ul>';
                     $('#list_obat').fadeIn();
@@ -407,9 +419,15 @@
             })
         }
         $('#list_obat').on('click', 'li', function() {
-            $('.kode_obat').val($(this).data('id'));
-            $('.nama_obat').val($(this).text());
-            $('#list_obat').fadeOut();
+            console.log($(this).data('stok'))
+
+            if ($(this).data('stok') > 0) {
+                $('.kode_obat').val($(this).data('id'));
+                $('.nama_obat').val($(this).text());
+                $('#list_obat').fadeOut();
+            } else {
+                $('.nama_obat').val('');
+            }
         });
         $('#list_aturan').on('click', 'li', function() {
             $('.aturan_pakai').val($(this).text());
@@ -436,11 +454,11 @@
                 },
                 success: function(response) {
                     if (Object.keys(response).length > 0) {
-                        console.log('Tanggal Perawatan ', response.tgl_perawatan)
-                        nomor = parseInt(response.no_resep) + 1
                         if (response.tgl_perawatan == '0000-00-00' && response.no_rawat == $('#nomor_rawat')
                             .val()) {
                             nomor = response.no_resep;
+                        } else {
+                            nomor = parseInt(response.no_resep) + 1
                         }
                     } else {
                         nomor = "{{ date('Ymd') }}" + '0001';
@@ -478,7 +496,6 @@
                 success: function(response) {
                     if (Object.keys(response).length > 0) {
                         $('#body_umum').empty();
-                        console.log(response);
                         $.map(response, function(res) {
                             $.map(res.resep_dokter, function(resep) {
                                 html = '<tr>';
@@ -493,14 +510,12 @@
                                 html += '</tr>';
                                 $('#body_umum').append(html);
                             })
-                            // console.log(res.tgl_perawatan)
                             if (res.tgl_perawatan != "0000-00-00") {
                                 $('.aksi').html(
                                     '<button type="button" class="btn btn-success btn-sm" style="font-size:12px"><i class="bi bi-check"></i></button>'
                                 )
-                            } else {
-                                setNoResep();
                             }
+                            setNoResep();
                         })
                     } else {
                         setNoResep();

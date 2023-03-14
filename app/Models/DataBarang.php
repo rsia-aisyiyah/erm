@@ -10,6 +10,10 @@ class DataBarang extends Model
     use HasFactory;
     protected $table = 'databarang';
 
+    public function gudangBarang()
+    {
+        return $this->hasMany(GudangBarang::class, 'kode_brng', 'kode_brng');
+    }
     public function detailPemberianObat()
     {
         return $this->belongsTo(DetailPemberianObat::class, 'kode_brng', 'kode_brng');

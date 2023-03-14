@@ -116,6 +116,7 @@
                                 name="keterangan" />
                         </div>
                         <input type="hidden" value="" class="kode_obat" />
+                        {{-- <input type="hidden" value="" class="stok" /> --}}
 
                     </div>
                 </form>

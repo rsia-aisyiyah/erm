@@ -48,12 +48,14 @@ class ResepObatController extends Controller
             'no_resep' => $request->no_resep,
             'kd_dokter' => $request->kd_dokter,
             'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => date_format(date_create('0000-00-00'), 'Y-m-d'),
+            // 'tgl_perawatan' => date_format(date_create('00/00/0000'), 'Y-m-d'),
+            'tgl_perawatan' =>  '0000-00-00',
             'jam' => date('H:i:s', strtotime("00:00:00")),
             'tgl_peresepan' => date('Y-m-d'),
             'jam_peresepan' => date('H:i:s'),
             'status' => 'ralan',
-            'tgl_penyerahan' => date_format(date_create('0000-00-00'), 'Y-m-d'),
+            'tgl_penyerahan' =>  '0000-00-00',
+            // 'tgl_penyerahan' => date_format(date_create('00/00/0000'), 'Y-m-d'),
             'jam_penyerahan' => date('H:i:s', strtotime("00:00:00")),
         ]);
 

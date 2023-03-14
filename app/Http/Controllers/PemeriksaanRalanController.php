@@ -48,7 +48,7 @@ class PemeriksaanRalanController extends Controller
             'alergi' => $request->alergi,
             'rtl' => $request->rtl,
             'penilaian' => $request->penilaian,
-            'instruksi' => $request->instruksi,
+            'instruksi' => '-',
             'evaluasi' => $request->evaluasi,
             'lingkar_perut' => '-',
         ];
