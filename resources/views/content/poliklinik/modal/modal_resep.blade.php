@@ -1,74 +1,57 @@
-<div class="modal fade" id="modalResep" tabindex="-1" aria-labelledby="modalResp" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
+<div class="modal fade" id="modalResepRacikan" tabindex="-1" aria-labelledby="modalResepUmum" aria-hidden="true"
+    style="background-color: #00000062!important;">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content" style="border-radius:0px">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">RESEP</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">RESEP RACIKAN</h1>
             </div>
-            {{-- <div class="modal-body modal-resep">
-                <div class="row">
-                    <label for="no_resep" class="col-lg-1 col-sm-12 col-form-label" style="font-size:12px">No.
-                        Resep</label>
-                    <div class="col-lg-2 col-sm-12 mb-1">
-                        <input type="text" class="form-control form-control-sm no_resep" name="no_resep"
-                            placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly="">
+            <div class="modal-body modal-resep">
+
+                <form id="resep-racikan">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-12 mb-1">
+                            <label for="no_resep" style="font-size:12px">Nama Racikan</label>
+                            <input type="search" autocomplete="off" class="form-control form-control-sm nm_racik"
+                                name="nm_racik" />
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12 mb-1">
+                            <label for="metode_racik" style="font-size:12px">Metode
+                                Racik</label>
+                            <select name="metode_racik" id="" class="form-select form-select-sm metode_racik"
+                                style="font-size:12px">
+                                <option value="R01" selected>Puyer</option>
+                                <option value="R02">Sirup</option>
+                                <option value="R03">Salep</option>
+                                <option value="R04">Kapsul</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12 mb-1">
+                            <label for="jml" class="" style="font-size:12px">Jumlah</label>
+                            <input type="search" autocomplete="off" class="form-control form-control-sm jml"
+                                name="jml" onkeypress="return hanyaAngka(event)" />
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-12 mb-1">
+                            <label for="aturan_pakai" style="font-size:12px">Aturan
+                                Pakai</label>
+                            <input type="search" autocomplete="off" class="form-control form-control-sm aturan_pakai"
+                                name="aturan_pakai" />
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 mb-1">
+                            <label for="keterangan" style="font-size:12px">Keterangan</label>
+                            <input type="search" autocomplete="off" class="form-control form-control-sm keterangan"
+                                name="keterangan" />
+                        </div>
+                        <input type="hidden" value="" class="no_racik" />
+                        {{-- <input type="hidden" value="" class="kode_racik" /> --}}
                     </div>
-                    <label for="no_rawat" class="col-lg-1 col-sm-12 col-form-label" style="font-size:12px">No.
-                        Rawat</label>
-                    <div class="col-lg-2 col-sm-12 mb-1">
-                        <input type="text" class="form-control form-control-sm no_rawat" name="nomor_rawat"
-                            placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly="">
-                    </div>
-                    <div class="col-lg-4 col-sm-12 mb-1">
-                        <input type="text" class="form-control form-control-sm nm_pasien" name="nm_pasien"
-                            placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly="">
-                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="simpanRacikan()"><i
+                            class="bi bi-save"></i>
+                        Simpan</i></button>
+                </form>
+                <div class="obat_racik">
+
                 </div>
-                <ul class="nav nav-tabs" id="myTab">
-                    <li class="nav-item">
-                        <a href="#umum" class="nav-link active" data-bs-toggle="tab">UMUM</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#racikan" class="nav-link" data-bs-toggle="tab">RACIKAN</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="umum">
-                        <table class="table table-stripped table-responsive" id="tb-resep-racikan" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Jumlah</th>
-                                    <th>Nama Obat</th>
-                                    <th>Aturan Pakai</th>
-                                    <th>Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                        <button class="btn btn-primary btn-sm" onclick="tambahUmum()">Tambah Resep</button>
-                    </div>
-                    <div class="tab-pane fade" id="racikan">
-                        <table class="table table-stripped table-responsive" id="tb-resep-racikan" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Nama Racikan</th>
-                                    <th>Metode Racikan</th>
-                                    <th>Jumlah Racik</th>
-                                    <th>Aturan Pakai</th>
-                                    <th>Keterangan</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                        <button class="btn btn-primary btn-sm" onclick="tambahRacikan()">Tambah Racikan</button>
-                    </div>
-                </div>
-
-            </div> --}}
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i> Keluar</button>
@@ -116,8 +99,6 @@
                                 name="keterangan" />
                         </div>
                         <input type="hidden" value="" class="kode_obat" />
-                        {{-- <input type="hidden" value="" class="stok" /> --}}
-
                     </div>
                 </form>
             </div>
@@ -131,5 +112,27 @@
     </div>
 </div>
 @push('script')
-    <script></script>
+    <script>
+        function simpanRacikan() {
+            simpanResepObat();
+        }
+
+        function cekResepRacikan() {
+            $.ajax({
+                url: '/erm/resep/racik/ambil',
+                data: {
+                    no_resep: $('.no_resep').val()
+                },
+                success: function(response) {
+                    no_racik = '';
+                    if (Object.keys(response).length > 0) {
+                        no_racik = response.no_racik + 1;
+                    } else {
+                        no_racik = 1;
+                    }
+                    $('.no_racik').val(String(no_racik));
+                }
+            })
+        }
+    </script>
 @endpush

@@ -443,6 +443,11 @@
             $('#modalResepUmum').modal('show');
         }
 
+        function tambahRacikan() {
+            $('#modalResepRacikan').modal('show');
+            cekResepRacikan();
+        }
+
         function setNoResep() {
             let tanggal = "{{ date('Y-m-d') }}";
             $.ajax({
