@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Dokter;
+use App\Models\RegPeriksa;
+use App\Models\ResepDokter;
+use App\Models\ResepDokterRacikan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ResepObat extends Model
 {
@@ -23,5 +27,13 @@ class ResepObat extends Model
     public function regPeriksa()
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
+    }
+    public function resepRacikan()
+    {
+        return $this->hasMany(ResepDokterRacikan::class, 'no_resep', 'no_resep');
+    }
+    public function detailRacikan()
+    {
+        return $this->hasMany(ResepDokterRacikanDetail::class, 'no_resep', 'no_resep');
     }
 }

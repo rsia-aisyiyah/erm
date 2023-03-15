@@ -78,10 +78,12 @@
 
         .form-underline {
             border: none;
+            border-bottom: 1px solid #a5a5a5;
         }
 
         .form-underline:focus {
-            border-bottom: 1px solid #a5a5a5;
+            box-shadow: none;
+            /* border-bottom: 1px solid #737272; */
         }
     </style>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">

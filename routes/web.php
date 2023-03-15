@@ -20,9 +20,11 @@ use App\Http\Controllers\SelesaiPoliController;
 use App\Http\Controllers\EstimasiPoliController;
 use App\Http\Controllers\PemeriksaanRalanController;
 use App\Http\Controllers\PemeriksaanRanapController;
+use App\Http\Controllers\ResepDokterRacikanController;
 use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
+use App\Http\Controllers\ResepDokterRacikanDetailController;
 
 Route::get('/login', function () {
     return view('content.auth.login');
@@ -126,7 +128,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/resep/umum/simpan', [ResepDokterController::class, 'simpan']);
     Route::delete('/resep/umum/hapus', [ResepDokterController::class, 'hapus']);
 
-    Route::get('/resep/racik/ambil', [ResepDokterController::class, 'ambil']);
+    Route::get('/resep/racik/ambil', [ResepDokterRacikanController::class, 'ambil']);
+    Route::post('/resep/racik/simpan', [ResepDokterRacikanController::class, 'simpan']);
+    Route::delete('/resep/racik/hapus', [ResepDokterRacikanController::class, 'hapus']);
+    Route::post('/resep/racik/detail/simpan', [ResepDokterRacikanController::class, 'simpanRacik']);
+
+    Route::get('/resep/racik/detail/ambil', [ResepDokterRacikanDetailController::class, 'ambil']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);

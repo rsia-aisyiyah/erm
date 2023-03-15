@@ -24,10 +24,10 @@ class ResepObatController extends Controller
         $resepObat = $this->resepObat;
 
         if ($request->no_rawat) {
-            $result = $resepObat->where('no_rawat', $request->no_rawat)->with('resepDokter.dataBarang')->get();
+            $result = $resepObat->where('no_rawat', $request->no_rawat)->with(['resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang'])->get();
         }
         if ($request->no_resep) {
-            $result = $resepObat->where('no_resep', $request->no_resep)->with('resepDokter.dataBarang')->get();
+            $result = $resepObat->where('no_resep', $request->no_resep)->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang')->get();
         }
 
         return response()->json($result);
