@@ -219,8 +219,6 @@
                 },
                 success: function(response) {
                     if (response.reg_periksa) {
-                        console.log(response.reg_periksa.pasien.tgl_lahir)
-                        // hitungUmur(response.reg_periksa.pasien.tgl_lahir)
                         $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
                             .pasien.nm_pasien + ' / ' + hitungUmur(response.reg_periksa.pasien.tgl_lahir) :
                             '-')

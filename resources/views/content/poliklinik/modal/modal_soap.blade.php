@@ -160,7 +160,7 @@
                             </table>
                         </div>
                         <div class="col-lg-6 col-md-12 col-sm-12">
-                            <table class="borderless">
+                            <table class="borderless mb-3">
                                 <tr>
                                     <td width="5%">Alergi :</td>
                                     <td width="20%">
@@ -338,69 +338,105 @@
         function ambilObatRacikan() {
             $('.table-racikan tbody').empty();
             no_resep = $('.no_resep').val();
+            no_racik = $('.no_racik').val();
             $.ajax({
                 url: '/erm/resep/racik/detail/ambil',
                 method: 'GET',
                 dataType: 'JSON',
                 data: {
                     no_resep: no_resep,
+                    no_racik: no_racik,
                 },
-                beforeSend: function() {
-                    swal.fire({
-                        title: 'Sedang memuat data obat',
-                        text: 'Mohon Tunggu',
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            swal.showLoading();
-                        }
-                    })
-                },
-                success: function(response) {
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: 'Obat telah ditambah diresep',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 800,
-                    })
-                    console.log(response);
+                success: function(response, status, detail) {
+                    html = '';
                     $.map(response, function(res) {
-                        html = '<tr>'
+                        html += '<tr>'
                         html += '<td>' + res.data_barang.nama_brng + '</td>'
                         html += '<td>' + res.kandungan + ' mg</td>'
                         html += '<td>' + res.jml + '</td>'
                         html +=
-                            '<td><button type="button" class="btn btn-danger btn-sm remove-obat" style="font-size:12px" data-resep="' +
+                            '<td><button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="' +
                             res.no_resep + '" data-racik="' +
                             res.no_racik +
                             '" data-obat="' + res.kode_brng +
-                            '"><i class="bi bi-trash-fill"></i></button></td>'
+                            '" onclick="hapusObat(this)"><i class="bi bi-trash-fill"></i></button></td>'
                         html += '</tr>'
-                        $('.table-racikan tbody').append(html);
                     });
+                    $('.table-racikan tbody').append(html);
                 },
             })
         }
 
+        function hapusObat(param) {
+            no_resep = $(param).data('resep');
+            no_racik = $(param).data('racik');
+            kode_brng = $(param).data('obat');
+            Swal.fire({
+                title: 'Yakin ?',
+                text: "Anda tidak bisa mengembalikan lagi",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus saja!',
+                cancelButtonText: 'Jangan',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/erm/resep/racik/detail/hapus',
+                        method: 'DELETE',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_resep: no_resep,
+                            no_racik: no_racik,
+                            kode_brng: kode_brng,
+                        },
+                        success: function() {
+
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: 'Obat telah dihapus',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 800,
+                            })
+
+                            ambilObatRacikan();
+                            cekResep(id);
+                        }
+                    })
+                }
+            })
+        }
 
         $('tbody').on('click', '.edit', function() {
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
             let no_racik = $(this).attr('data-racik');
+            // console.log('noracik', no_racik)
             $('#modalObatRacik').modal('show');
             racikan = ambilRacikan(no_resep, no_racik)
-            ambilObatRacikan();
-            $('.no_racik').val(no_racik);
-            $('.no_resep').val(no_resep);
+            $('.no_racik').val(racikan.no_racik);
+            $('.no_resep').val(racikan.no_resep);
             $('.nm_racik').val(racikan.nama_racik);
+            $('.no_racik').val(no_racik);
             $('.jml').val(racikan.jml_dr);
+            ambilObatRacikan();
         })
+        $('#modalObatRacik').on('hidden.bs.modal', function() {
+            $('.no_racik').val('');
+            $('.kps').val('');
+            $('.p1').val('');
+            $('.p2').val('');
+            $('.jml_obat').val('');
+            $('.nama_obat').val('');
+            $('.kandumgan').val('');
+        });
         $('tbody').on('click', '.remove', function() {
 
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
             let no_racik = $(this).attr('data-racik');
-            // alert(no_racik)
             Swal.fire({
                 title: 'Yakin ?',
                 text: "Anda tidak bisa mengembalikan lagi",
@@ -431,7 +467,11 @@
                                 cekResep($('#nomor_rawat').val())
                             },
                             error: function(request, status, error) {
-                                alert(status)
+                                Swal.fire(
+                                    'Gagal !',
+                                    'Obat tidak terhapus',
+                                    'error'
+                                );
                             }
                         })
                     } else {
@@ -518,13 +558,13 @@
                             data.aturan_pakai + '</a></li>'
                     })
                     html += '</ul>';
-                    $('#list_aturan').fadeIn();
-                    $('#list_aturan').html(html);
+                    $('.list_aturan').fadeIn();
+                    $('.list_aturan').html(html);
                 }
             })
         }
         $('.list_obat').on('click', 'li', function() {
-            console.log($(this).data())
+            // console.log($(this).data())
 
             if ($(this).data('stok') > 0) {
                 $('.kode_obat').val($(this).data('id'));
@@ -537,14 +577,14 @@
                 $('.nama_obat').val('');
             }
         });
-        $('#list_aturan').on('click', 'li', function() {
+        $('.list_aturan').on('click', 'li', function() {
             $('.aturan_pakai').val($(this).text());
-            $('#list_aturan').fadeOut();
+            $('.list_aturan').fadeOut();
         });
 
         $(document).click(function() {
             $('#list_obat').fadeOut();
-            $('#list_aturan').fadeOut();
+            $('.list_aturan').fadeOut();
         });
 
         function tambahUmum() {
@@ -557,14 +597,15 @@
             // cekResepRacikan();
 
         }
+
         $('#modalResepRacikan').on('hidden.bs.modal', function() {
             $('.nm_racik').val('');
             $('.jml').val('');
             $('.aturan_pakai').val('');
             $('.keterangan').val('');
             $('.no_racik').val('');
-
         })
+
         $('#modalResepRacikan').on('shown.bs.modal', function() {
             cekResep(id);
             setNoResep();
@@ -625,7 +666,6 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    // console.log(response);
                     if (Object.keys(response).length > 0) {
                         $.map(response, function(res) {
                             if (Object.keys(res.resep_dokter).length > 0) {
@@ -647,7 +687,6 @@
                             }
                             no_racik = Object.keys(res.resep_racikan).length + 1
                             if (Object.keys(res.resep_racikan).length > 0) {
-                                // console.log(res.detail_racikan)
                                 $.map(res.resep_racikan, function(resep) {
                                     // console.log()
                                     html = '<tr>';
@@ -658,38 +697,44 @@
                                     html += '<td>' + resep.jml_dr + '</td>'
                                     html += '<td>' + resep.aturan_pakai + '</td>'
                                     html +=
-                                        '<td class="aksi"><button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-resep="' +
-                                        resep.no_resep + '" data-racik="' + resep
-                                        .no_racik +
-                                        '"><i class="bi bi-trash-fill"></i></button> <button type="button" class="btn btn-warning btn-sm edit" style="font-size:12px" data-resep="' +
-                                        resep.no_resep + '" data-racik="' + resep.no_racik +
-                                        '"><i class="bi bi-pen-fill"></i></button></td>';
+                                        '<td class="' + resep.no_resep + '"></td>';
                                     html += '</tr>';
-                                    // '<button type="button" class="btn btn-warning btn-sm edit" style="font-size:12px" data-resep="' +resep.no_resep + '" data-racik="' + resep.no_racik +'"><i class="bi bi-pen-fill"></i></button>'
                                     $('#body_racikan').append(html);
                                     if (Object.keys(resep.detail_racikan).length > 0) {
-                                        console.log(resep)
+                                        // console.log(resep)
                                         d = '<tr><td></td><td colspan="6">'
                                         $.map(resep.detail_racikan, function(detail) {
                                             if (resep.no_racik == detail.no_racik) {
 
-                                                d += '<strong><i>' + detail.databarang
+                                                d += '<span class="badge rounded-pill text-bg-success"><i>' +
+                                                    detail.databarang
                                                     .nama_brng + ' (' +
                                                     detail.kandungan + ' mg)' +
-                                                    ', <i></strong>';
+                                                    '<i></span>';
                                             }
                                         })
                                         d += '</td></tr>'
                                         $('#body_racikan').append(d);
                                     }
+                                    if (res.tgl_perawatan != "0000-00-00") {
+                                        // console.log(res.tgl_perawatan)
+                                        $('.' + res.no_resep).html(
+                                            '<button type="button" class="btn btn-success btn-sm" style="font-size:12px"><i class="bi bi-check"></i></button>'
+                                        )
+                                    } else {
+                                        $('.' + res.no_resep).html(
+                                            '<button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-resep="' +
+                                            resep.no_resep + '" data-racik="' + resep
+                                            .no_racik +
+                                            '"><i class="bi bi-trash-fill"></i></button> <button type="button" class="btn btn-warning btn-sm edit" style="font-size:12px" data-resep="' +
+                                            resep.no_resep + '" data-racik="' + resep
+                                            .no_racik +
+                                            '"><i class="bi bi-pen-fill"></i></button>'
+                                        )
+                                    }
                                 })
                             }
                             $('.no_racik').val(no_racik)
-                            if (res.tgl_perawatan != "0000-00-00") {
-                                $('.aksi').html(
-                                    '<button type="button" class="btn btn-success btn-sm" style="font-size:12px"><i class="bi bi-check"></i></button>'
-                                )
-                            }
                             setNoResep();
                         })
                     } else {

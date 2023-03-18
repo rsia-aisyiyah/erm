@@ -134,6 +134,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/resep/racik/detail/simpan', [ResepDokterRacikanController::class, 'simpanRacik']);
 
     Route::get('/resep/racik/detail/ambil', [ResepDokterRacikanDetailController::class, 'ambil']);
+    Route::delete('/resep/racik/detail/hapus', [ResepDokterRacikanDetailController::class, 'hapus']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);

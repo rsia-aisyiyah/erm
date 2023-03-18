@@ -24,6 +24,10 @@ class ResepDokterRacikan extends Model
     {
         return $this->hasMany(ResepDokterRacikanDetail::class, 'no_resep', 'no_resep');
     }
+    public function detailRacikNo()
+    {
+        return $this->hasMany(ResepDokterRacikanDetail::class, 'no_racik', 'no_racik');
+    }
     // public function dataBarang()
     // {
     //     return $this->belongsTo(DataBarang::class, 'kd_barang', 'kd_barang');

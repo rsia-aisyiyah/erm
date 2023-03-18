@@ -13,14 +13,14 @@ class ResepDokterRacikanController extends Controller
         $resepDokter = new ResepDokterRacikan();
 
         if ($request->no_resep) {
-            $hasil = $resepDokter->where('no_resep', $request->no_resep)->with(['metode', 'detailRacikan'])->get();
+            if ($request->no_racik) {
+                $hasil = $resepDokter->where('no_resep', $request->no_resep)->where('no_racik', $request->no_racik)->with(['metode', 'detailRacikan' => function ($q) use ($request) {
+                    $q->where('no_racik', $request->no_racik);
+                }])->first();
+            } else {
+                $hasil = $resepDokter->where('no_resep', $request->no_resep)->with(['metode', 'detailRacikan'])->get();
+            }
         }
-
-        if ($request->no_racik) {
-            $hasil = $resepDokter->where('no_resep', $request->no_resep)->where('no_racik', $request->no_racik)->with(['metode', 'detailRacikan'])->first();
-        }
-
-
         return response()->json($hasil, 200);
     }
     public function simpan(Request $request)
