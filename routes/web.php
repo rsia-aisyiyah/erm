@@ -24,6 +24,7 @@ use App\Http\Controllers\ResepDokterRacikanController;
 use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
+use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
 
 Route::get('/login', function () {
@@ -63,6 +64,8 @@ Route::middleware('auth')->group(function () {
             ->with('regPeriksa')
             ->get();
     });
+
+    Route::get('/petugas/cari', [PetugasController::class, 'cari']);
 
     Route::get('/poliklinik', [PoliklinikController::class, 'index'])->name('poliklinik');
     Route::get('/poliklinik/dokter', [

@@ -51,18 +51,15 @@
                             <input type="search" autocomplete="off" class="form-control form-control-sm keterangan"
                                 name="keterangan" />
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-12 mb-1">
-                            <button type="button" class="btn btn-primary btn-sm"
-                                style="font-size:12px;margin-top: 19px;" onclick="simpanRacikan()"><i
-                                    class="bi bi-save"></i>
-                                Simpan</i></button>
-                        </div>
                         <input type="hidden" value="" class="no_racik" />
                         {{-- <input type="hidden" value="" class="kode_racik" /> --}}
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" onclick="simpanRacikan()"><i
+                        class="bi bi-save"></i>
+                    Simpan</i></button>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i> Keluar</button>
             </div>
@@ -192,15 +189,13 @@
                                 <div class="col-lg-3 col-md-12 col-sm-6">
                                     <label for="jml_obat" class="" style="font-size:12px">Jml. Obat</label>
                                 </div>
-                                <div class="col-lg-9 col-md-12 col-sm-12 mb-1">
+                                <div class="col-lg-9 col-md-9 col-sm-12 mb-1">
                                     <input type="search" autocomplete="off"
                                         class="form-control form-control-sm jml_obat mb-1" name="jml_obat"
                                         onkeypress="return hanyaAngka(event)" readonly />
                                 </div>
-                                <div class="col-lg-3 col-md-12 col-sm-6">
-                                    <label for="" class="" style="font-size:12px"></label>
-                                </div>
-                                <div class="col-lg-6 col-md-12 col-sm-12 mb-1">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 mb-1">
                                     <button width="100%" type="button" class="btn btn-success btn-sm"
                                         style="font-size:12px;" onclick="simpanObatRacikan()"><i
                                             class="bi bi-plus-circle"></i> Tambah Obat</button>
@@ -277,8 +272,19 @@
                                 'success'
                             )
                             cekResep($('#nomor_rawat').val())
+                        },
+                        error: function(response, message, detail) {
+                            Swal.fire(
+                                'Gagal !',
+                                detail,
+                                'error'
+                            );
+                            hapusResep($('.no_resep').val(), $('#nomor_rawat'))
                         }
                     })
+                },
+                error: function(response, message, detail) {
+                    console.log(message)
                 }
             })
         }

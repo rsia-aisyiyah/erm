@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN S.O.A.P</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN & RESEP</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -48,14 +48,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">Profesi / Jabatan / Departmen : </td>
-                                    <td width="30%" colspan="2">
-                                        <input type="text" class="form-control form-control-sm" id="jabatan"
-                                            name="jabatan" placeholder=""
-                                            style="font-size:12px;min-height:12px;border-radius:0;" readonly>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td>Subjek : </td>
                                     <td colspan="3">
                                         <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="4"
@@ -80,8 +72,7 @@
                                                     class="form-control form-control-sm" id="suhu" name="suhu"
                                                     placeholder="" maxlength="5"
                                                     style="font-size:12px;min-height:12px;border-radius:0;"
-                                                    value="-" onfocus="removeZero(this)"
-                                                    onblur="cekKosong(this)">
+                                                    value="-" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                             </td>
                                             <td width="12%">
                                                 Tinggi (Cm): <input type="text"
@@ -299,6 +290,14 @@
                                 'success'
                             )
                             cekResep($('#nomor_rawat').val())
+                        },
+                        error: function() {
+                            Swal.fire(
+                                'Gagal !',
+                                'Obat tidak tersimpan',
+                                'error'
+                            )
+
                         }
                     })
                 }
@@ -521,7 +520,6 @@
                                             '" data-kapasitas="' + data.kapasitas +
                                             '"><a class="dropdown-item" href="#" style="overflow:hidden">' +
                                             data.nama_brng + '</a></li>'
-
                                     } else {
                                         html +=
                                             '<li class="disable" data-id="' + data
@@ -530,7 +528,6 @@
                                             '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
                                             data.nama_brng + ' - Stok Kosong' +
                                             '</a></i></li>'
-
                                     }
                                 }
                             }
@@ -734,12 +731,13 @@
                                     }
                                 })
                             }
-                            $('.no_racik').val(no_racik)
                             setNoResep();
                         })
                     } else {
+                        no_racik = 1;
                         setNoResep();
                     }
+                    $('.no_racik').val(no_racik)
                 }
             })
         }
