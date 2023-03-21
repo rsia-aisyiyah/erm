@@ -118,6 +118,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalObat" tabindex="-1" aria-labelledby="modalObatRacik" aria-hidden="true"
+    style="background-color: #00000062!important;">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius:0px">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Pilih Obat</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="search" onkeyup="cariObat(this)" autocomplete="off"
+                    class="form-control form-control-sm nama_obat" name="nama_obat" />
+                <div class="list_obat"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                        class="bi bi-x-circle"></i> Keluar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modalObatRacik" tabindex="-1" aria-labelledby="modalObatRacik" aria-hidden="true"
     style="background-color: #00000062!important;">
     <div class="modal-dialog modal-xl modal-dialog-centered">

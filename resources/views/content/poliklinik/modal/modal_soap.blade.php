@@ -193,9 +193,9 @@
                                         width="100%">
                                         <thead>
                                             <tr>
-                                                <th>No. Resep</th>
+                                                <th width="18%">No. Resep</th>
                                                 <th>Nama Obat</th>
-                                                <th>Jumlah</th>
+                                                <th width="10%">Jumlah</th>
                                                 <th>Aturan Pakai</th>
                                                 <th>Status</th>
                                             </tr>
@@ -536,6 +536,7 @@
                     html += '</ul>';
                     $('.list_obat').fadeIn();
                     $('.list_obat').html(html);
+
                 }
             })
         }
@@ -570,6 +571,7 @@
                 $('.p1').val(1);
                 $('.p2').val(1);
                 $('.list_obat').fadeOut();
+                $('#modalObat').modal('hide');
             } else {
                 $('.nama_obat').val('');
             }
@@ -580,12 +582,33 @@
         });
 
         $(document).click(function() {
-            $('#list_obat').fadeOut();
+            $('.list_obat').fadeOut();
             $('.list_aturan').fadeOut();
         });
 
         function tambahUmum() {
-            $('#modalResepUmum').modal('show');
+            cekResep(id);
+            // $('#modalResepUmum').modal('show');
+            html = '<tr>';
+            html += '<td>';
+            html +=
+                '<input type="text" class="no_resep form-control form-control-sm form-underline"/>';
+            html += '</td>';
+            html += '<td>';
+            html +=
+                '<div class="row g-3"><div class="col-10" style="padding:0px"><input type="search" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat form-underline" name="nama_obat"  onclick="ambilObat()" readonly/></div>';
+            html += '</td>';
+            html += '<td>';
+            html +=
+                '<input type="search" class="jml form-control form-control-sm form-underline"/>';
+            html += '</td>';
+            html += '</tr>';
+            $('#tb-resep tbody').append(html)
+
+        }
+
+        function ambilObat() {
+            $('#modalObat').modal('show');
         }
 
         function tambahRacikan() {
