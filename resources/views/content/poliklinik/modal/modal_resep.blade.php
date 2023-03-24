@@ -14,7 +14,7 @@
                         </div>
                         <div class="col-lg-9 col-md-9 col-sm-12 mb-1">
                             <input type="search" autocomplete="off" class="form-control form-control-sm nm_racik"
-                                name="nm_racik" autofocus />
+                                name="nm_racik" />
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-12 mb-1">
                             <label for="kd_racik" style="font-size:12px">Metode</label>
@@ -99,7 +99,7 @@
                                 class="form-control form-control-sm aturan_pakai" name="aturan_pakai" />
                             <div class="list_aturan"></div>
                         </div>
-                        <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label"
+                        <label for="keterangan" class="col-lg-4 col-sm-12 col-form-label"
                             style="font-size:12px">Keterangan</label>
                         <div class="col-lg-8 col-sm-12 mb-1">
                             <input type="search" autocomplete="off" class="form-control form-control-sm keterangan"
@@ -159,7 +159,7 @@
                                 </div>
                                 <div class="col-lg-3 col-md-4 col-sm-12">
                                     <input type="text" autocomplete="off"
-                                        class="form-control form-control-sm nm_racik mb-1" name="no_resep" readonly />
+                                        class="form-control form-control-sm nm_racik mb-1" name="nm_racik" readonly />
                                 </div>
                                 <div class="col-lg-2 col-md-4 col-sm-12">
                                     <input type="text" autocomplete="off"
@@ -209,7 +209,7 @@
                                 <div class="col-lg-3 col-md-12 col-sm-6">
                                     <label for="jml_obat" class="" style="font-size:12px">Jml. Obat</label>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-12 mb-1">
+                                <div class="col-lg-9 col-md-12 col-sm-12 mb-1">
                                     <input type="search" autocomplete="off"
                                         class="form-control form-control-sm jml_obat mb-1" name="jml_obat"
                                         onkeypress="return hanyaAngka(event)" readonly />
@@ -258,50 +258,51 @@
                     'no_resep': $('.no_resep').val(),
                 },
                 success: function(response) {
-                    if (Object.keys(response).length == 0) {
-                        simpanResepObat()
-                    }
-                    $.ajax({
-                        url: '/erm/resep/racik/simpan',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            no_resep: $('.no_resep').val(),
-                            no_racik: $('.no_racik').val(),
-                            nama_racik: $('.nm_racik').val(),
-                            kd_racik: $('.kd_racik').find(":selected").val(),
-                            jml_dr: $('.jml').val(),
-                            aturan_pakai: $('.aturan_pakai').val(),
-                            keterangan: $('.keterangan').val(),
-
-                        },
-                        method: 'POST',
-                        beforeSend: function() {
-                            swal.fire({
-                                title: 'Sedang mengirim data racikan',
-                                text: 'Mohon Tunggu',
-                                showConfirmButton: false,
-                                didOpen: () => {
-                                    swal.showLoading();
-                                }
-                            })
-                        },
-                        success: function(response) {
-                            Swal.fire(
-                                'Berhasil!',
-                                'Obat telah ditambah diresep',
-                                'success'
-                            )
-                            cekResep($('#nomor_rawat').val())
-                        },
-                        error: function(response, message, detail) {
-                            Swal.fire(
-                                'Gagal !',
-                                detail,
-                                'error'
-                            );
-                            hapusResep($('.no_resep').val(), $('#nomor_rawat'))
+                    if ($('.nm_racik').val() == '' || $('.jml').val() == '') {
+                        Swal.fire(
+                            'Gagal !',
+                            'Pastikan nama racik & jumlah tidak kosong',
+                            'error'
+                        );
+                    } else {
+                        if (Object.keys(response).length == 0) {
+                            simpanResepObat()
                         }
-                    })
+                        $.ajax({
+                            url: '/erm/resep/racik/simpan',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                no_resep: $('.no_resep').val(),
+                                no_racik: $('.no_racik').val(),
+                                nama_racik: $('.nm_racik').val(),
+                                kd_racik: $('.kd_racik').find(":selected").val(),
+                                jml_dr: $('.jml').val(),
+                                aturan_pakai: $('.aturan_pakai').val(),
+                                keterangan: '-',
+
+                            },
+                            method: 'POST',
+                            success: function(response) {
+                                // Swal.fire({
+                                //     title: 'Berhasil!',
+                                //     text: 'Obat telah ditambah diresep',
+                                //     icon: 'success',
+                                //     timer: 500,
+
+                                // })
+                                cekResep($('#nomor_rawat').val())
+                            },
+                            error: function(response, message, detail) {
+                                Swal.fire(
+                                    'Gagal !',
+                                    detail,
+                                    'error'
+                                );
+                                hapusResep($('.no_resep').val(), $('#nomor_rawat'))
+                            }
+                        })
+
+                    }
                 },
                 error: function(response, message, detail) {
                     console.log(message)
