@@ -18,12 +18,12 @@
                     Poliklinik
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep">
                     <i class="bi bi-prescription align-text-bottom"></i>
                     Resep
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('ranap') ? 'active' : '' }}" href="/erm/ranap">
                     <i class="bi bi-hospital-fill align-text-bottom"></i>

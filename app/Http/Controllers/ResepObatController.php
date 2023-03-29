@@ -27,17 +27,16 @@ class ResepObatController extends Controller
     {
         $resepObat = $this->resepObat;
 
-        $result = '';
         if ($request->no_rawat) {
-            $resepObat = $this->resepObat->where('no_rawat', $request->no_rawat)->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang');
+            $resepObat = $this->resepObat->where('no_rawat', $request->no_rawat)->where('status', 'ralan')->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang')->get();
         }
         if ($request->no_resep) {
-            $resepObat = $this->resepObat->where('no_resep', $request->no_resep)->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang');
+            $resepObat = $this->resepObat->where('no_resep', $request->no_resep)->where('status', 'ralan')->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang')->get();
         }
 
-        $result = $resepObat->get();
+        // $result = $resepObat->get();
 
-        return response()->json($result);
+        return response()->json($resepObat);
     }
     public function ambilTable(Request $request)
     {
@@ -49,7 +48,7 @@ class ResepObatController extends Controller
         $resepObat = $this->resepObat;
 
         if ($request->tgl_peresepan) {
-            $result = $resepObat->where('tgl_peresepan', $request->tgl_peresepan)->orderBy('no_resep', 'DESC')->first();
+            $result = $resepObat->where('tgl_peresepan', $request->tgl_peresepan)->orWhere('tgl_perawatan', $request->tgl_perawatan)->orderBy('no_resep', 'DESC')->first();
         }
 
         return response()->json($result);

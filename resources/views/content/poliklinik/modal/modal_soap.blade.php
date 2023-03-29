@@ -306,7 +306,7 @@
                 },
                 success: function(response) {
                     if (Object.keys(response).length == 0) {
-                        console.log()
+                        console.log(response)
                         simpanResepObat()
                     }
                     $.ajax({
@@ -810,8 +810,10 @@
         });
 
         function tambahUmum() {
-            cekResep(id);
             no_resep = $('.no_resep').val();
+            no_rawat = $('#nomor_rawat').val();
+            cekResep(no_rawat);
+            console.log(ambilResep(no_resep))
             if (Object.keys(ambilResep(no_resep)).length == 0) {
                 simpanResepObat();
             }
@@ -935,8 +937,10 @@
                 dataType: 'JSON',
                 data: {
                     'tgl_peresepan': tanggal,
+                    'tgl_perawatan': tanggal,
                 },
                 success: function(response) {
+                    // console.log('Set Resep', response)
                     if (Object.keys(response).length > 0) {
                         if (response.tgl_perawatan == '0000-00-00' && response.no_rawat == $(
                                 '#nomor_rawat')
