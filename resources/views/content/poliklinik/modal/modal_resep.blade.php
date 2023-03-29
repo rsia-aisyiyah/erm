@@ -118,7 +118,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modalObat" tabindex="-1" aria-labelledby="modalObatRacik" aria-hidden="true"
+<div class="modal fade" id="modalObat" tabindex="-1" aria-labelledby="modalObat" aria-hidden="true"
     style="background-color: #00000062!important;">
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content" style="border-radius:0px">
@@ -138,7 +138,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modalObatRacik" tabindex="-1" aria-labelledby="modalObatRacik" aria-hidden="true"
+<div class="modal fade" id="modalObatRacik" aria-labelledby="modalObatRacik" aria-hidden="true"
     style="background-color: #00000062!important;">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content" style="border-radius:0px">
@@ -216,9 +216,15 @@
                                 </div>
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 mb-1">
-                                    <button width="100%" type="button" class="btn btn-success btn-sm"
+                                    <button width="100%" type="button" class="btn btn-success btn-sm simpan-obat"
                                         style="font-size:12px;" onclick="simpanObatRacikan()"><i
-                                            class="bi bi-plus-circle"></i> Tambah Obat</button>
+                                            class="bi bi-save"></i> Simpan Obat</button> <button width="100%"
+                                        type="button" class="btn btn-warning btn-sm ubah-obat"
+                                        style="font-size:12px;display:none"><i class="bi bi-pen-fill"></i>
+                                        Ubah Kandungan</button> <button width="100%" type="button"
+                                        class="btn btn-danger btn-sm obat-baru" style="font-size:12px;display:none"
+                                        onclick="resetObatRacikan()"><i class="bi bi-arrow-clockwise"></i> Obat
+                                        Baru</button>
                                 </div>
                                 <input type="hidden" value="" class="no_racik" />
                             </div>
@@ -251,62 +257,55 @@
 </div>
 @push('script')
     <script>
-        function simpanRacikan() {
+        function ambilTemplateRacik() {
+            hasil = '';
+            nama_racik = $('.nm_racik').val();
             $.ajax({
-                url: '/erm/resep/obat/ambil',
+                async: false,
+                url: '/erm/resep/racik/template/ambil',
                 data: {
-                    'no_resep': $('.no_resep').val(),
+                    'nama_racik': nama_racik,
                 },
                 success: function(response) {
-                    if ($('.nm_racik').val() == '' || $('.jml').val() == '') {
-                        Swal.fire(
-                            'Gagal !',
-                            'Pastikan nama racik & jumlah tidak kosong',
-                            'error'
-                        );
-                    } else {
-                        if (Object.keys(response).length == 0) {
-                            simpanResepObat()
-                        }
-                        $.ajax({
-                            url: '/erm/resep/racik/simpan',
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                no_resep: $('.no_resep').val(),
-                                no_racik: $('.no_racik').val(),
-                                nama_racik: $('.nm_racik').val(),
-                                kd_racik: $('.kd_racik').find(":selected").val(),
-                                jml_dr: $('.jml').val(),
-                                aturan_pakai: $('.aturan_pakai').val(),
-                                keterangan: '-',
+                    hasil = response;
+                }
+            })
+            return hasil;
+        }
 
-                            },
-                            method: 'POST',
-                            success: function(response) {
-                                // Swal.fire({
-                                //     title: 'Berhasil!',
-                                //     text: 'Obat telah ditambah diresep',
-                                //     icon: 'success',
-                                //     timer: 500,
+        function simpanRacikan() {
+            $.map(ambilTemplateRacik(), function(temp) {
+                if (Object.keys(temp).length > 0) {
+                    simpanObatRacikanTemplate(temp.kode_brng)
+                }
+            })
+            $.ajax({
+                url: '/erm/resep/racik/simpan',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: $('.no_resep').val(),
+                    no_racik: $('.no_racik').val(),
+                    nama_racik: $('.nm_racik').val(),
+                    kd_racik: $('.kd_racik').find(":selected").val(),
+                    jml_dr: $('.jml').val(),
+                    aturan_pakai: $('.aturan_pakai').val(),
+                    keterangan: '-',
 
-                                // })
-                                cekResep($('#nomor_rawat').val())
-                            },
-                            error: function(response, message, detail) {
-                                Swal.fire(
-                                    'Gagal !',
-                                    detail,
-                                    'error'
-                                );
-                                hapusResep($('.no_resep').val(), $('#nomor_rawat'))
-                            }
-                        })
-
-                    }
+                },
+                method: 'POST',
+                success: function(response) {
+                    cekResep($('#nomor_rawat').val())
                 },
                 error: function(response, message, detail) {
-                    console.log(message)
+                    Swal.fire(
+                        'Gagal !',
+                        detail,
+                        'error'
+                    );
+                    hapusResep($('.no_resep').val(), $('#nomor_rawat'))
                 }
+            }).done(function() {
+                tulisPlan();
             })
         }
 
@@ -345,6 +344,34 @@
             $('.p1').val('1');
         })
 
+        function simpanObatRacikanTemplate(kode_obat) {
+            no_racik = $('.no_racik').val();
+            no_resep = $('.no_resep').val();
+            $.ajax({
+                url: '/erm/resep/racik/detail/simpan',
+                method: 'POST',
+                data: {
+
+                    '_token': '{{ csrf_token() }}',
+                    'no_resep': no_resep,
+                    'no_racik': no_racik,
+                    'kode_brng': kode_obat,
+                    'kandungan': 0,
+                    'p1': 1,
+                    'p2': 1,
+                    'jml': 0,
+                },
+                error: function(a, b, c) {
+                    Swal.fire(
+                        'Gagal !',
+                        'Obat tidak tersimpan, pastikan tidak ada kolom kosong',
+                        'error'
+                    );
+                    console.log(a, b, c)
+                }
+            })
+        }
+
         function simpanObatRacikan() {
             no_racik = $('.no_racik').val();
             no_resep = $('.no_resep').val();
@@ -369,31 +396,14 @@
                     'p2': p2,
                     'jml': jml,
                 },
-                beforeSend: function() {
-                    swal.fire({
-                        title: 'Sedang mengirim data obat',
-                        text: 'Mohon Tunggu',
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            swal.showLoading();
-                        }
-                    })
-                },
                 success: function(response) {
-                    cekResep($('#nomor_rawat').val());
+                    cekResep(id);
                     ambilObatRacikan();
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: 'Obat telah ditambah diresep',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 800,
-                    })
                     $('.nama_obat').val('');
                     $('.kandungan').val('');
                     $('.kps').val('');
                     $('.p1').val('');
-                    $('.p1').val('');
+                    $('.p2').val('');
                     $('.jml_obat').val('');
                 },
                 error: function(a, b, c) {
@@ -404,6 +414,8 @@
                     );
                     console.log(a, b, c)
                 }
+            }).done(function() {
+                tulisPlan();
             });
         }
     </script>

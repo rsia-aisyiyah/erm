@@ -26,6 +26,7 @@ use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
+use App\Http\Controllers\RsiaMappingRacikanController;
 
 Route::get('/login', function () {
     return view('content.auth.login');
@@ -122,6 +123,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/aturan/cari', [ResepDokterController::class, 'cari']);
 
+
+    Route::get('/resep', [ResepObatController::class, 'index']);
+    Route::get('/resep/ambil/tabel', [ResepObatController::class, 'ambilTable']);
+
     Route::get('/resep/cari', [ResepDokterController::class, 'cari']);
     Route::get('/resep/obat/akhir', [ResepObatController::class, 'akhir']);
     Route::get('/resep/obat/ambil', [ResepObatController::class, 'ambil']);
@@ -134,10 +139,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/resep/racik/ambil', [ResepDokterRacikanController::class, 'ambil']);
     Route::post('/resep/racik/simpan', [ResepDokterRacikanController::class, 'simpan']);
     Route::delete('/resep/racik/hapus', [ResepDokterRacikanController::class, 'hapus']);
-    Route::post('/resep/racik/detail/simpan', [ResepDokterRacikanController::class, 'simpanRacik']);
 
     Route::get('/resep/racik/detail/ambil', [ResepDokterRacikanDetailController::class, 'ambil']);
     Route::delete('/resep/racik/detail/hapus', [ResepDokterRacikanDetailController::class, 'hapus']);
+    Route::post('/resep/racik/detail/simpan', [ResepDokterRacikanDetailController::class, 'simpan']);
+    Route::post('/resep/racik/detail/ubah', [ResepDokterRacikanDetailController::class, 'ubah']);
+
+    Route::get('/resep/racik/cari', [RsiaMappingRacikanController::class, 'cari']);
+    Route::get('/resep/racik/template/ambil', [RsiaMappingRacikanController::class, 'ambil']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);

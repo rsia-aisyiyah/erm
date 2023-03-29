@@ -20,7 +20,7 @@ class DataBarangController extends Controller
     }
     public function cari(Request $request)
     {
-        $hasil = $this->data->where('kdjns', '!=', 'J024')->where('nama_brng', 'like', '%' . $request->nama . '%')->limit(10)->with(['gudangBarang' => function ($q) {
+        $hasil = $this->data->where('kdjns', '!=', 'J024')->where('nama_brng', 'like', $request->nama . '%')->limit(10)->with(['gudangBarang' => function ($q) {
             return $q
                 ->where('kd_bangsal', 'RM7')
                 ->sum('stok');

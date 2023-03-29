@@ -43,17 +43,4 @@ class ResepDokterRacikanController extends Controller
         $resep = ResepDokterRacikan::where('no_racik', $request->no_racik)->where('no_resep', $request->no_resep)->delete();
         return response()->json($resep);
     }
-    public function simpanRacik(Request $request)
-    {
-        $racikan = ResepDokterRacikanDetail::create([
-            'no_resep' => $request->no_resep,
-            'no_racik' => $request->no_racik,
-            'kode_brng' => $request->kode_brng,
-            'p1' => $request->p1,
-            'p2' => $request->p2,
-            'kandungan' => $request->kandungan,
-            'jml' => $request->jml,
-        ]);
-        return response()->json($racikan);
-    }
 }

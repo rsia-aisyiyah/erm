@@ -16,7 +16,7 @@ class ResepDokterController extends Controller
     public function cari(Request $request)
     {
         $resepDokter = $this->resepDokter;
-
+        $hasil = '';
         if ($request->aturan_pakai) {
             $hasil = $resepDokter->where('aturan_pakai', 'like', '%' . $request->aturan_pakai . "%")->limit(10)->get();
         } else {

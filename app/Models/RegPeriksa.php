@@ -70,4 +70,8 @@ class RegPeriksa extends Model
     {
         return $this->hasMany(PenilaianMedisRalanKandungan::class, 'no_rawat', 'no_rawat');
     }
+    public function resepObat()
+    {
+        return $this->hasMany(ResepObat::class, 'no_rawat', 'no_rawat');
+    }
 }

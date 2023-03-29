@@ -247,7 +247,7 @@
                     $('#subjek').val(response.keluhan ? response.keluhan : '-')
                     $('#objek').val(response.pemeriksaan ? response.pemeriksaan : '-')
                     $('#asesmen').val(response.penilaian ? response.penilaian : '-')
-                    $('#plan').val(response.rtl ? response.rtl : '-')
+                    $('#plan').val(response.rtl ? response.rtl : '')
                     $('#instruksi').val(response.instruksi ? response.instruksi : '-')
                     $('#suhu').val(response.suhu_tubuh ? response.suhu_tubuh : '-')
                     $('#tensi').val(response.tensi ? response.tensi : '-')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ResepObat;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class ResepObatController extends Controller
 {
@@ -12,7 +13,10 @@ class ResepObatController extends Controller
     {
         $this->resepObat = new ResepObat();
     }
-
+    public function index()
+    {
+        return view('content.farmasi.ralan.resep');
+    }
     public function hapus(Request $request)
     {
         $resepObat = $this->resepObat;
@@ -23,14 +27,22 @@ class ResepObatController extends Controller
     {
         $resepObat = $this->resepObat;
 
+        $result = '';
         if ($request->no_rawat) {
-            $result = $resepObat->where('no_rawat', $request->no_rawat)->with(['resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang'])->get();
+            $resepObat = $this->resepObat->where('no_rawat', $request->no_rawat)->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang');
         }
         if ($request->no_resep) {
-            $result = $resepObat->where('no_resep', $request->no_resep)->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang')->get();
+            $resepObat = $this->resepObat->where('no_resep', $request->no_resep)->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang');
         }
 
+        $result = $resepObat->get();
+
         return response()->json($result);
+    }
+    public function ambilTable(Request $request)
+    {
+        $resepObat = $this->resepObat->where('tgl_peresepan', $request->tgl_peresepan)->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis')->where('status', 'ralan');
+        return DataTables::of($resepObat->get())->make(true);
     }
     public function akhir(Request $request)
     {

@@ -29,13 +29,13 @@
                                 placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                         </div>
                     </div>
-                    <hr />
+                    <hr style="margin:2px">
                     <div class="row">
                         <div class="col-lg-6 col-md-12 col-sm-12">
                             <table class="borderless">
                                 <tr>
                                     <td width="20%">Dilakukan Oleh :</td>
-                                    <td width="30%">
+                                    <td width="30%" colspan="2">
                                         <input type="text" class="form-control form-control-sm" id="nik"
                                             name="nik" placeholder=""
                                             style="font-size:12px;min-height:12px;border-radius:0;" readonly>
@@ -50,7 +50,7 @@
                                 <tr>
                                     <td>Subjek : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="4"
+                                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="3"
                                             style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
                                             onblur="cekKosong(this)"></textarea>
                                     </td>
@@ -58,7 +58,7 @@
                                 <tr>
                                     <td>Objek : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="4"
+                                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="3"
                                             style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
                                             onblur="cekKosong(this)"></textarea>
                                     </td>
@@ -67,118 +67,117 @@
                                     <td></td>
                                     <td colspan="3">
                                         <table>
-                                            <td width="12%">
-                                                Suhu (<sup>0</sup>C) : <input type="text"
-                                                    class="form-control form-control-sm" id="suhu" name="suhu"
-                                                    placeholder="" maxlength="5"
-                                                    style="font-size:12px;min-height:12px;border-radius:0;"
-                                                    value="-" onfocus="removeZero(this)" onblur="cekKosong(this)">
-                                            </td>
-                                            <td width="12%">
-                                                Tinggi (Cm): <input type="text"
-                                                    class="form-control form-control-sm" id="tinggi"
-                                                    name="tinggi" placeholder="" maxlength="5"
-                                                    style="font-size:12px;min-height:12px;border-radius:0;"
-                                                    onfocus="removeZero(this)" onblur="cekKosong(this)">
-                                            </td>
-                                            <td width="12%">
-                                                Berat (Kg) : <input type="text"
-                                                    class="form-control form-control-sm" id="berat"
-                                                    name="berat" placeholder="" maxlength="5"
-                                                    style="font-size:12px;min-height:12px;border-radius:0;"
-                                                    onfocus="removeZero(this)" onblur="cekKosong(this)">
-                                            </td>
+                                            <tr>
+
+                                                <td width="12%">
+                                                    Suhu (<sup>0</sup>C) : <input type="text"
+                                                        class="form-control form-control-sm" id="suhu"
+                                                        name="suhu" placeholder="" maxlength="5"
+                                                        style="font-size:12px;min-height:12px;border-radius:0;"
+                                                        value="-" onfocus="removeZero(this)"
+                                                        onblur="cekKosong(this)">
+                                                </td>
+                                                <td width="12%">
+                                                    Tinggi (Cm): <input type="text"
+                                                        class="form-control form-control-sm" id="tinggi"
+                                                        name="tinggi" placeholder="" maxlength="5"
+                                                        style="font-size:12px;min-height:12px;border-radius:0;"
+                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                </td>
+                                                <td width="12%">
+                                                    Berat (Kg) : <input type="text"
+                                                        class="form-control form-control-sm" id="berat"
+                                                        name="berat" placeholder="" maxlength="5"
+                                                        style="font-size:12px;min-height:12px;border-radius:0;"
+                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                </td>
+                                                <td width="12%">
+                                                    Tensi : <input type="text" class="form-control form-control-sm"
+                                                        id="tensi" name="tensi" placeholder="" maxlength="8"
+                                                        style="font-size:12px;min-height:12px;border-radius:0;"
+                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                </td>
+                                                <td width="12%">
+                                                    Respirasi (/mnt): <input type="text"
+                                                        class="form-control form-control-sm" id="respirasi"
+                                                        name="respirasi" placeholder="" maxlength="3"
+                                                        style="font-size:12px;min-height:12px;border-radius:0;"
+                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="12%">
+                                                    Nadi (/mnt) : <input type="text"
+                                                        class="form-control form-control-sm" id="nadi"
+                                                        name="nadi" placeholder="" maxlength="3"
+                                                        style="font-size:12px;min-height:12px;border-radius:0;"
+                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                </td>
+                                                <td width="12%">
+                                                    SpO2 (%): <input type="text"
+                                                        class="form-control form-control-sm" id="spo2"
+                                                        name="spo2" placeholder="" maxlength="3"
+                                                        style="font-size:12px;min-height:12px;border-radius:0;"
+                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                </td>
+                                                <td width="12%">
+                                                    GCS (E,V,M): <input type="text"
+                                                        class="form-control form-control-sm" id="gcs"
+                                                        name="gcs" placeholder="" maxlength="10"
+                                                        style="font-size:12px;min-height:12px;border-radius:0;"
+                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                </td>
+                                                <td width="12%">
+                                                    Kesadaran :
+                                                    <select class="form-select" name="kesadaran" id="kesadaran"
+                                                        style="font-size:12px;min-height:12px;border-radius:0;">
+                                                        <option value="Compos Mentis">Compos Mentis</option>
+                                                        <option value="Somnolence">Somnolence</option>
+                                                        <option value="Sopor">Sopor</option>
+                                                        <option value="Coma">Coma</option>
+                                                    </select>
+                                                </td>
+                                                <td width="12%">
+                                                    Alergi :
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="alergi" name="alergi" placeholder=""
+                                                        style="font-size:12px;min-height:12px;border-radius:0;"
+                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                </td>
+                                            </tr>
                                         </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td colspan="3">
-                                        <table>
-                                            <td width="12%">
-                                                Tensi : <input type="text" class="form-control form-control-sm"
-                                                    id="tensi" name="tensi" placeholder="" maxlength="8"
-                                                    style="font-size:12px;min-height:12px;border-radius:0;"
-                                                    onfocus="removeZero(this)" onblur="cekKosong(this)">
-                                            </td>
-                                            <td width="12%">
-                                                Respirasi (/mnt): <input type="text"
-                                                    class="form-control form-control-sm" id="respirasi"
-                                                    name="respirasi" placeholder="" maxlength="3"
-                                                    style="font-size:12px;min-height:12px;border-radius:0;"
-                                                    onfocus="removeZero(this)" onblur="cekKosong(this)">
-                                            </td>
-                                            <td width="12%">
-                                                Nadi (/mnt) : <input type="text"
-                                                    class="form-control form-control-sm" id="nadi"
-                                                    name="nadi" placeholder="" maxlength="3"
-                                                    style="font-size:12px;min-height:12px;border-radius:0;"
-                                                    onfocus="removeZero(this)" onblur="cekKosong(this)">
-                                            </td>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td colspan="3">
-                                        <table>
-                                            <td width="12%">
-                                                SpO2 (%): <input type="text" class="form-control form-control-sm"
-                                                    id="spo2" name="spo2" placeholder="" maxlength="3"
-                                                    style="font-size:12px;min-height:12px;border-radius:0;"
-                                                    onfocus="removeZero(this)" onblur="cekKosong(this)">
-                                            </td>
-                                            <td width="12%">
-                                                GCS (E,V,M): <input type="text"
-                                                    class="form-control form-control-sm" id="gcs"
-                                                    name="gcs" placeholder="" maxlength="10"
-                                                    style="font-size:12px;min-height:12px;border-radius:0;"
-                                                    onfocus="removeZero(this)" onblur="cekKosong(this)">
-                                            </td>
-                                            <td width="12%">
-                                                Kesadaran :
-                                                <select class="form-select" name="kesadaran" id="kesadaran"
-                                                    style="font-size:12px;min-height:12px;border-radius:0;>">
-                                                    <option value="Compos Mentis">Compos Mentis</option>
-                                                    <option value="Somnolence">Somnolence</option>
-                                                    <option value="Sopor">Sopor</option>
-                                                    <option value="Coma">Coma</option>
-                                                </select>
-                                            </td>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12">
-                            <table class="borderless mb-3">
-                                <tr>
-                                    <td width="5%">Alergi :</td>
-                                    <td width="20%">
-                                        <input type="text" class="form-control form-control-sm" id="alergi"
-                                            name="alergi" placeholder=""
-                                            style="font-size:12px;min-height:12px;border-radius:0;width:150px"
-                                            onfocus="removeZero(this)" onblur="cekKosong(this)">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Asesmen : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="4"
+                                        <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="3"
                                             style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
                                             onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <td>Instruksi : </td>
+                                    <td colspan="3">
+                                        <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="3"
+                                            style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)"></textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12">
+                            <table class="borderless mb-3" width="100%">
                                 <tr>
                                     <td>Plan : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="4"
-                                            style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
-                                            onblur="cekKosong(this)"></textarea>
+                                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="6"
+                                            style="font-size:12px;min-height:12px;border-radius:0;resize:none" readonly></textarea>
                                     </td>
                                 </tr>
-                                <input type="hidden" class="no_resep form-control form-control-sm" />
                             </table>
+                            <input type="hidden" class="no_resep form-control form-control-sm" />
                             <ul class="nav nav-tabs" id="myTab">
                                 <li class="nav-item">
                                     <a href="#umum" class="nav-link active" data-bs-toggle="tab">NON RACIKAN</a>
@@ -221,7 +220,7 @@
                                                 <th>Metode Racikan</th>
                                                 <th width="10%">Jumlah</th>
                                                 <th>Aturan Pakai</th>
-                                                {{-- <th>Keterangan</th> --}}
+
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -255,68 +254,49 @@
         }
 
         function simpanObat() {
-            $.ajax({
-                url: '/erm/resep/obat/ambil',
-                data: {
-                    'no_resep': $('.no_resep').val(),
-                },
-                success: function(response) {
-                    if (Object.keys(response).length == 0) {
-                        simpanResepObat()
-                    }
-                    if ($('.kode_obat').val()) {
+            if ($('.kode_obat').val()) {
+                $.ajax({
+                    url: '/erm/resep/umum/simpan',
+                    method: 'POST',
+                    data: {
+                        '_token': "{{ csrf_token() }}",
+                        'no_resep': $('.no_resep').val(),
+                        'kode_brng': $('.kode_obat').val(),
+                        'jml': $('.jml').val(),
+                        'aturan_pakai': $('.aturan_pakai').val() + ' ' + $(
+                                '.keterangan')
+                            .val(),
+                    },
+                    success: function(response) {
+                        html = $('#plan').val();
 
-                        $.ajax({
-                            url: '/erm/resep/umum/simpan',
-                            method: 'POST',
-                            data: {
-                                '_token': "{{ csrf_token() }}",
-                                'no_resep': $('.no_resep').val(),
-                                'kode_brng': $('.kode_obat').val(),
-                                'jml': $('.jml').val(),
-                                'aturan_pakai': $('.aturan_pakai').val() + ' ' + $(
-                                        '.keterangan')
-                                    .val(),
-                            },
-                            beforeSend: function() {
-                                swal.fire({
-                                    title: 'Sedang mengirim data',
-                                    text: 'Mohon Tunggu',
-                                    showConfirmButton: false,
-                                    didOpen: () => {
-                                        swal.showLoading();
-                                    }
-                                })
-                            },
-                            success: function(response) {
-                                Swal.fire({
-                                    title: 'Berhasil!',
-                                    text: 'Obat telah ditambah diresep',
-                                    showConfirmButton: false,
-                                    icon: 'success',
-                                    timer: '800',
-                                })
-                                cekResep($('#nomor_rawat').val())
-                            },
-                            error: function() {
-                                Swal.fire(
-                                    'Gagal !',
-                                    'Obat tidak tersimpan',
-                                    'error'
-                                )
+                        html += $('.nama_obat').val() + ' ' + $('.jml').val() + ' ' + $(
+                            '.aturan_pakai').val() + '\n';
 
-                            }
-                        })
-                    } else {
+                        $('#plan').val(html);
+                        cekResep($('#nomor_rawat').val())
+                    },
+                    error: function() {
                         Swal.fire(
                             'Gagal !',
-                            'Kolom obat tidak boleh kosong',
+                            'Obat tidak tersimpan',
                             'error'
                         )
+
                     }
-                }
-            })
+                }).done(function() {
+                    tulisPlan()
+                })
+            } else {
+                Swal.fire(
+                    'Gagal !',
+                    'Kolom obat tidak boleh kosong',
+                    'error'
+                )
+            }
+
         }
+
 
         $('#simpanObat').on('click', function() {
             $.ajax({
@@ -326,6 +306,7 @@
                 },
                 success: function(response) {
                     if (Object.keys(response).length == 0) {
+                        console.log()
                         simpanResepObat()
                     }
                     $.ajax({
@@ -340,23 +321,8 @@
                                     '.keterangan')
                                 .val(),
                         },
-                        beforeSend: function() {
-                            swal.fire({
-                                title: 'Sedang mengirim data',
-                                text: 'Mohon Tunggu',
-                                showConfirmButton: false,
-                                didOpen: () => {
-                                    swal.showLoading();
-                                }
-                            })
-                        },
                         success: function(response) {
-                            Swal.fire(
-                                'Berhasil!',
-                                'Obat telah ditambah diresep',
-                                'success'
-                            )
-                            cekResep($('#nomor_rawat').val())
+                            cekResep(id)
                         },
                         error: function() {
                             Swal.fire(
@@ -364,7 +330,6 @@
                                 'Obat tidak tersimpan',
                                 'error'
                             )
-
                         }
                     })
                 }
@@ -401,6 +366,63 @@
             return hasil;
         }
 
+        function ambilResep(no_resep) {
+            hasil = '';
+            $.ajax({
+                async: false,
+                url: '/erm/resep/obat/ambil',
+                data: {
+                    no_resep: no_resep,
+                },
+                success: function(response) {
+                    hasil = response;
+                },
+            })
+            return hasil;
+        }
+
+        function tulisPlan() {
+            no_rawat = $('#nomor_rawat').val();
+            $.ajax({
+                url: '/erm/resep/obat/ambil',
+                method: 'GET',
+                data: {
+                    no_rawat: no_rawat,
+                },
+                success: function(response) {
+                    // console.log('Tulis Plan', response)
+                    teksRd = '';
+                    teksRr = '';
+                    $.map(response, function(res) {
+                        $.map(res.resep_dokter, function(rd) {
+                            teksRd += rd.data_barang.nama_brng + ' ' + rd.aturan_pakai + '\n';
+                        })
+
+                        $.map(res.resep_racikan, function(rr) {
+                            teksRr += rr.metode.nm_racik + ' ' + rr.nama_racik +
+                                ' ' + rr
+                                .aturan_pakai + '\n' + 'Isi : '
+                            $.map(rr.detail_racikan, function(dr) {
+                                // console.log('Detail Racikan', rr);
+                                console.log(dr)
+                                if (rr.no_racik == dr.no_racik) {
+                                    teksRr += dr.databarang.nama_brng +
+                                        ' ' +
+                                        dr.kandungan + ' mg' + ', ';
+                                }
+                            })
+                            teksRr += '\n';
+
+                            // }
+
+                        })
+
+                    })
+                    $('#plan').val(teksRd + '\n' + teksRr);
+                }
+            })
+        }
+
         function ambilObatRacikan() {
             $('.table-racikan tbody').empty();
             no_resep = $('.no_resep').val();
@@ -418,10 +440,14 @@
                     $.map(response, function(res) {
                         html += '<tr>'
                         html += '<td>' + res.data_barang.nama_brng + '</td>'
-                        html += '<td>' + res.kandungan + ' mg</td>'
+                        html += '<td>' + res.kandungan + ' mg </td>'
                         html += '<td>' + res.jml + '</td>'
                         html +=
-                            '<td><button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="' +
+                            '<td><button type="button" class="btn btn-warning btn-sm" style="font-size:12px" data-barang="' +
+                            res.kode_brng +
+                            '" data-kps="' + res.data_barang.kapasitas +
+                            '" data-obat="' + res.data_barang.nama_brng +
+                            '" onclick="editObat(this)"><i class="bi bi-pen-fill"></i></button> <button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="' +
                             res.no_resep + '" data-racik="' +
                             res.no_racik +
                             '" data-obat="' + res.kode_brng +
@@ -432,6 +458,84 @@
                 },
             })
         }
+
+        function editObat(param) {
+            kode_obat = $(param).data('barang');
+            kps = $(param).data('kps');
+            obat = $(param).data('obat');
+
+            $('.simpan-obat').css('display', 'none');
+            $('.ubah-obat').css('display', '');
+            $('.obat-baru').css('display', '');
+
+            $('.kandungan').val(0);
+            $('.jml_obat').val(0);
+            $('.kps').val(kps);
+            $('.kode_obat').val(kode_obat);
+            $('.nama_obat').val(obat);
+            $('.p1').val(1);
+            $('.p2').val(1);
+
+            // return false;
+        }
+
+        $('.ubah-obat').on('click', function() {
+            no_racik = $('.no_racik').val();
+            no_resep = $('.no_resep').val();
+            kode_brng = $('.kode_obat').val();
+            p1 = $('.p1').val();
+            p2 = $('.p2').val();
+            kandungan = $('.kandungan').val();
+            jml = $('.jml_obat').val();
+
+            $.ajax({
+                url: '/erm/resep/racik/detail/ubah',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    kode_brng: kode_brng,
+                    no_racik: no_racik,
+                    no_resep: no_resep,
+                    p1: p1,
+                    p2: p2,
+                    kandungan: kandungan,
+                    jml: jml,
+                },
+                method: 'POST',
+                success: function(response) {
+                    console.log(response);
+                    ambilObatRacikan();
+                },
+                error: function(request, status, error) {
+                    Swal.fire(
+                        'Gagal !',
+                        'Obat tidak terubah',
+                        'error'
+                    );
+                }
+            }).done(function() {
+                tulisPlan();
+            })
+        })
+
+
+
+
+        $('.obat-baru').on('click', function() {
+            $('.simpan-obat').css('display', '');
+            $('.ubah-obat').css('display', 'none');
+            $('.obat-baru').css('display', 'none');
+
+            $('.kandungan').val('');
+            $('.jml_obat').val('');
+            $('.kps').val('');
+            $('.kode_obat').val('');
+            $('.nama_obat').val('');
+            $('.p1').val('');
+            $('.p2').val('');
+
+            $('.nama_obat').focus();
+
+        })
 
         function hapusObat(param) {
             no_resep = $(param).data('resep');
@@ -458,18 +562,11 @@
                             kode_brng: kode_brng,
                         },
                         success: function() {
-
-                            Swal.fire({
-                                title: 'Berhasil!',
-                                text: 'Obat telah dihapus',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 800,
-                            })
-
                             ambilObatRacikan();
                             cekResep(id);
                         }
+                    }).done(function() {
+                        tulisPlan();
                     })
                 }
             })
@@ -482,13 +579,21 @@
             // console.log('noracik', no_racik)
             $('#modalObatRacik').modal('show');
             racikan = ambilRacikan(no_resep, no_racik)
-            $('.no_racik').val(racikan.no_racik);
+            // $('.no_racik').val(racikan.no_racik);
             $('.no_resep').val(racikan.no_resep);
             $('.nm_racik').val(racikan.nama_racik);
             $('.no_racik').val(no_racik);
             $('.jml').val(racikan.jml_dr);
             ambilObatRacikan();
         })
+
+        $('#modalObatRacik').on('shown.bs.modal', function() {
+            $('.kps').val('');
+            $('.p1').val('');
+            $('.p2').val('');
+            $('.jml_obat').val('');
+            $('.kandungan').val('');
+        });
         $('#modalObatRacik').on('hidden.bs.modal', function() {
             $('.no_racik').val('');
             $('.kps').val('');
@@ -496,7 +601,7 @@
             $('.p2').val('');
             $('.jml_obat').val('');
             $('.nama_obat').val('');
-            $('.kandumgan').val('');
+            $('.kandungan').val('');
         });
 
         $('tbody').on('click', '.hapus-baris', function() {
@@ -522,7 +627,7 @@
                 if (result.isConfirmed) {
                     if (no_racik) {
                         $.ajax({
-                            url: '/erm/resep/racik/hapus',
+                            url: '/erm/resep/racik/detail/hapus',
                             data: {
                                 _token: "{{ csrf_token() }}",
                                 no_resep: no_resep,
@@ -530,11 +635,15 @@
                             },
                             method: 'DELETE',
                             success: function(response) {
-                                Swal.fire(
-                                    'Terhapus !',
-                                    'Obat berhasil dihapus',
-                                    'success'
-                                );
+                                $.ajax({
+                                    url: '/erm/resep/racik/hapus',
+                                    data: {
+                                        _token: "{{ csrf_token() }}",
+                                        no_resep: no_resep,
+                                        no_racik: no_racik,
+                                    },
+                                    method: 'DELETE',
+                                })
                                 $('#body_racik').empty();
                                 cekResep($('#nomor_rawat').val())
                             },
@@ -545,6 +654,8 @@
                                     'error'
                                 );
                             }
+                        }).done(function() {
+                            tulisPlan();
                         })
                     } else {
                         $.ajax({
@@ -556,20 +667,56 @@
                             },
                             method: 'DELETE',
                             success: function(response) {
-                                Swal.fire(
-                                    'Terhapus !',
-                                    'Obat berhasil dihapus',
-                                    'success'
-                                );
+                                // Swal.fire(
+                                //     'Terhapus !',
+                                //     'Obat berhasil dihapus',
+                                //     'success'
+                                // );
                                 $('#body_umum').empty();
                                 cekResep($('#nomor_rawat').val())
                             }
+                        }).done(function() {
+                            tulisPlan();
                         })
                     }
                 }
             })
             return false;
         })
+
+        function cariRacikan(racik) {
+            $.ajax({
+                url: '/erm/resep/racik/cari',
+                data: {
+                    'nama_racik': racik.value,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+
+                    html =
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                    $.map(response, function(data) {
+                        html +=
+                            '<li onclick="setNamaRacik(this)" data-nama="' + data.nama_racik +
+                            '"><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                            data.nama_racik + '</a></li>'
+                    })
+                    html += '</ul>';
+                    $('.list_racik').fadeIn();
+                    $('.list_racik').html(html);
+
+                }
+            })
+        }
+
+        $('.list_racik').on('click', 'li', function() {
+            $('.list_racik').fadeOut();
+        })
+
+        function setNamaRacik(racik) {
+            nama_racik = $(racik).data('nama');
+            $('.nm_racik').val(nama_racik);
+        }
 
         function cariObat(obat) {
             $.ajax({
@@ -659,10 +806,15 @@
         $(document).click(function() {
             $('.list_obat').fadeOut();
             $('.list_aturan').fadeOut();
+            $('.list_racik').fadeOut();
         });
 
         function tambahUmum() {
             cekResep(id);
+            no_resep = $('.no_resep').val();
+            if (Object.keys(ambilResep(no_resep)).length == 0) {
+                simpanResepObat();
+            }
             // $('#modalResepUmum').modal('show');
             html = '<tr>';
             html += '<td>';
@@ -698,8 +850,13 @@
 
         function tambahRacikan() {
             // $('#modalResepRacikan').modal('show');
-            cekResep(id);
+            // cekResep(id);
             // $('#modalResepUmum').modal('show');
+            no_resep = $('.no_resep').val();
+            if (Object.keys(ambilResep(no_resep)).length == 0) {
+                simpanResepObat();
+            }
+
             html = '<tr>';
             html += '<td>';
             html +=
@@ -711,7 +868,7 @@
             html += '</td>';
             html += '<td>';
             html +=
-                '<input type="text" autocomplete="off" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/>';
+                '<input type="text" autocomplete="off" onkeyup="cariRacikan(this)" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/><div class="list_racik"></div>';
             html += '</td>';
 
             html += '<td>';
@@ -726,16 +883,35 @@
             html +=
                 '<input type="search" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
             html += '</td>';
-            // html += '<td>';
-            // html +=
-            //     '<input type="search" autocomplete="off" class="form-control form-control-sm keterangan" name="keterangan" />';
-            // html += '</td>';
             html += '<td>';
             html +=
                 '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanRacikan()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
             html += '</td>';
             html += '</tr>';
             $('#tb-resep-racikan tbody').append(html)
+
+            no_racik = 0;
+            $.ajax({
+                url: '/erm/resep/racik/ambil',
+                method: 'GET',
+                dataType: 'JSON',
+                data: {
+                    no_resep: $('.no_resep').val(),
+                },
+                success: function(response) {
+                    if (response) {
+                        $.map(response, function(data) {
+                            no_racik = data.no_racik
+                        })
+                        no_racik = parseInt(no_racik) + 1;
+                    } else {
+                        no_racik = 1
+                    }
+                    // console.log(no_racik)
+                    $('.no_racik').val(no_racik)
+                    $('.no_resep').val(no_resep)
+                }
+            })
         }
 
         $('#modalResepRacikan').on('hidden.bs.modal', function() {
@@ -831,9 +1007,10 @@
                                     $('#body_umum').append(html);
                                 })
                             }
-                            no_racik = Object.keys(res.resep_racikan).length + 1;
                             if (Object.keys(res.resep_racikan).length > 0) {
+
                                 $.map(res.resep_racikan, function(resep) {
+
                                     html = '<tr>';
                                     html += '<td>' + resep.no_racik + '</td>'
                                     html += '<td>' + resep.no_resep + '</td>'
@@ -842,7 +1019,8 @@
                                     html += '<td>' + resep.jml_dr + '</td>'
                                     html += '<td>' + resep.aturan_pakai + '</td>'
                                     html +=
-                                        '<td class="' + resep.no_resep + '"></td>';
+                                        '<td class="' + resep.no_resep + resep.no_racik +
+                                        '"></td>';
                                     html += '</tr>';
                                     $('#body_racikan').append(html);
                                     if (Object.keys(resep.detail_racikan).length > 0) {
@@ -862,31 +1040,31 @@
                                         $('#body_racikan').append(d);
                                     }
                                     if (res.tgl_perawatan != "0000-00-00") {
-                                        $('.' + res.no_resep).html(
+                                        $('.' + resep.no_resep + resep.no_racik).html(
                                             '<button type="button" class="btn btn-success btn-sm" style="font-size:12px"><i class="bi bi-check"></i></button>'
                                         )
                                     } else {
-                                        $('.' + res.no_resep).html(
+                                        $('.' + resep.no_resep + resep.no_racik).html(
                                             '<button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-resep="' +
                                             resep.no_resep + '" data-racik="' +
-                                            resep
-                                            .no_racik +
+                                            resep.no_racik +
                                             '"><i class="bi bi-trash-fill"></i></button> <button type="button" class="btn btn-warning btn-sm edit" style="font-size:12px" data-resep="' +
                                             resep.no_resep + '" data-racik="' +
-                                            resep
-                                            .no_racik +
+                                            resep.no_racik +
                                             '"><i class="bi bi-pen-fill"></i></button>'
                                         )
                                     }
+                                    // console.log(resep.no_resep + resep.no_racik)
                                 })
+
                             }
                             setNoResep();
                         })
                     } else {
-                        no_racik = 1;
+                        // no_racik = 1;
                         setNoResep();
                     }
-                    $('.no_racik').val(no_racik)
+                    // $('.no_racik').val(no_racik)
                 },
                 error: function(request, status, error) {
                     Swal.fire(
@@ -895,6 +1073,8 @@
                         'error'
                     );
                 }
+            }).done(function(response) {
+                // console.log(response)
             })
         }
 

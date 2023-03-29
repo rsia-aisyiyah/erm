@@ -14,8 +14,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('poliklinik') ? 'active' : '' }}" href="/erm/poliklinik">
-                    <i class="bi bi-bandaid-fill align-text-bottom"></i>
+                    <i class="bi bi-bandaid align-text-bottom"></i>
                     Poliklinik
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep">
+                    <i class="bi bi-prescription align-text-bottom"></i>
+                    Resep
                 </a>
             </li>
             <li class="nav-item">

@@ -23,11 +23,17 @@ class SelesaiPoliController extends Controller
     {
         $no_rawat = $request->no_rawat;
         $jam_periksa = $this->tanggal->now()->toDateTimeString();
-
-        $selesai = SelesaiPoli::create([
-            'no_rawat' => $no_rawat,
-            'jam_periksa' => $jam_periksa,
-        ]);
+        $cekSelesai = SelesaiPoli::where('no_rawat', $no_rawat)->first();
+        if ($cekSelesai) {
+            $selesai = SelesaiPoli::where('no_rawat', $no_rawat)->update([
+                'jam_periksa' => $jam_periksa,
+            ]);
+        } else {
+            $selesai = SelesaiPoli::create([
+                'no_rawat' => $no_rawat,
+                'jam_periksa' => $jam_periksa,
+            ]);
+        }
         app('App\Http\Controllers\RegPeriksaController')->statusDaftar($no_rawat, 'Sudah');
         return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $jam_periksa, 'status' => 'Selesai'], 200);
     }

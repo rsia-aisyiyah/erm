@@ -100,6 +100,7 @@
 
         function resume(d) {
             d.reg_periksa.forEach(function(i) {
+                console.log
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
                     class_status = 'background:rgb(152, 0, 175);color:white';
