@@ -228,7 +228,7 @@
 
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-primary btn-sm" type="button"
+                                    <button class="btn btn-primary btn-sm tambah_racik" type="button"
                                         onclick="tambahRacikan()">Tambah
                                         Racikan</button>
                                 </div>
@@ -997,10 +997,13 @@
                                     html += '<td>' + resep.jml + '</td>'
                                     html += '<td>' + resep.aturan_pakai + '</td>'
                                     if (res.tgl_perawatan != "0000-00-00") {
-
+                                        $('.tambah_racik').css('visibility', 'hidden')
+                                        $('.tambah_umum').css('visibility', 'hidden')
                                         html +=
                                             '<td class="aksi"><button type="button" class="btn btn-success btn-sm" style="font-size:12px"><i class="bi bi-check"></i></button></td>';
                                     } else {
+                                        $('.tambah_racik').css('visibility', 'visible')
+                                        $('.tambah_umum').css('visibility', 'visible')
                                         html +=
                                             '<td class="aksi"><button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-resep="' +
                                             resep.no_resep + '" data-obat="' + resep
@@ -1044,10 +1047,14 @@
                                         $('#body_racikan').append(d);
                                     }
                                     if (res.tgl_perawatan != "0000-00-00") {
+                                        $('.tambah_racik').css('visibility', 'hidden')
+                                        $('.tambah_umum').css('visibility', 'hidden')
                                         $('.' + resep.no_resep + resep.no_racik).html(
                                             '<button type="button" class="btn btn-success btn-sm" style="font-size:12px"><i class="bi bi-check"></i></button>'
                                         )
                                     } else {
+                                        $('.tambah_racik').css('visibility', 'visible')
+                                        $('.tambah_umum').css('visibility', 'visible')
                                         $('.' + resep.no_resep + resep.no_racik).html(
                                             '<button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-resep="' +
                                             resep.no_resep + '" data-racik="' +
@@ -1062,10 +1069,10 @@
                                 })
 
                             }
-                            setNoResep();
+                            $('.no_resep').val(res.no_resep)
+                            // console.log('no_resep', res)
                         })
                     } else {
-                        // no_racik = 1;
                         setNoResep();
                     }
                     // $('.no_racik').val(no_racik)
