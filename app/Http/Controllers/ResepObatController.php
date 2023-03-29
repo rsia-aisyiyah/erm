@@ -40,7 +40,9 @@ class ResepObatController extends Controller
     }
     public function ambilTable(Request $request)
     {
-        $resepObat = $this->resepObat->where('tgl_peresepan', $request->tgl_peresepan)->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis')->where('status', 'ralan');
+        $resepObat = $this->resepObat
+            ->where('tgl_peresepan', $request->tgl_peresepan)
+            ->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis')->where('status', 'ralan');
         return DataTables::of($resepObat->get())->make(true);
     }
     public function akhir(Request $request)

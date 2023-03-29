@@ -155,6 +155,11 @@
             });
         }
 
+        $('#modalResepObat').on('hidden.bs.modal', function() {
+            $('#tabel-racikan tbody').empty()
+            $('#tabel-umum tbody').empty()
+        })
+
         function tampilResep(no_resep) {
             // no_resep = $('#no_resep').val(no_resep)
             $('#modalResepObat').modal('show');
@@ -164,18 +169,17 @@
                     no_resep: no_resep,
                 },
                 success: function(response) {
-
-                    console.log()
                     $.map(response, function(res) {
+                        no = 1;
                         $.map(res.resep_racikan, function(racik) {
                             console.log(racik)
                             html = '<tr>';
                             html += '<td>' + racik.no_racik + '</td>';
-                            html += '<td>' + racik.metode.nm_racik + ' Jumlah ' + racik
+                            html += '<td><strong>' + racik.metode.nm_racik + ' ' + racik
                                 .nama_racik +
-                                ' ' + racik.jml_dr + ' aturan ' + racik.aturan_pakai +
-                                '</td>';
-                            html += '<td colspan="3"><ul>';
+                                ' , Jumlah : ' + racik.jml_dr + ' Aturan Pakai ' + racik
+                                .aturan_pakai;
+                            html += '</strong><ul>';
                             $.map(racik.detail_racikan, function(dr) {
                                 html += '<li>' + dr.p1 + '/' +
                                     dr.p2 + ' x ' + dr.databarang.nama_brng + ' = ' + dr
@@ -183,10 +187,22 @@
                                     '</li>'
                             })
                             html += '</ul></td>';
-                            // html += '<td>' + racik.aturan_pakai + '</td>';
+                            html += '</ul></td>';
                             html += '</tr>';
 
                             $('#tabel-racikan tbody').append(html)
+                        })
+
+                        $.map(res.resep_dokter, function(umum) {
+                            console.log(umum)
+                            html = '<tr>';
+                            html += '<td>' + no + '</td>';
+                            html += '<td>' + umum.data_barang.nama_brng + '</td>';
+                            html += '<td>' + umum.jml + '</td>';
+                            html += '<td>' + umum.aturan_pakai + '</td>';
+                            html += '</tr>';
+                            no++;
+                            $('#tabel-umum tbody').append(html)
                         })
                     })
                 }
