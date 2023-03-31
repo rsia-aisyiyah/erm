@@ -33,10 +33,18 @@ class LoginController extends Controller
 
         if ($user) {
             Auth::login($user);
-            $pegawai = Pegawai::where('nik', $request->get('username'))->first();
+            $pegawai = Pegawai::where('nik', $request->get('username'))->with('petugas')->first();
             $request->session()->regenerate();
             Session::put('pegawai', $pegawai);
-            return redirect('/poliklinik');
+            if (
+                $pegawai->petugas->kd_jbtn == 'J015' ||
+                $pegawai->petugas->kd_jbtn == 'J067' ||
+                $pegawai->petugas->kd_jbtn == 'J034'
+            ) {
+                return redirect('/resep');
+            } else {
+                return redirect('/poliklinik');
+            }
         } else {
             return back()->with('error', 'Login Gagal, Periksa Kembali NIK dan Password');
         }

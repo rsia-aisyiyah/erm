@@ -9,5 +9,10 @@ class Pegawai extends Model
 {
     use HasFactory;
     protected $table = 'pegawai';
-    protected $fillable=['nik'];
+    protected $fillable = ['nik'];
+
+    public function petugas()
+    {
+        return $this->hasOne(Petugas::class, 'nip', 'nik');
+    }
 }
