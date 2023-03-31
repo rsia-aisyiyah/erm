@@ -7,10 +7,10 @@
                 <div class="card-body">
                     <table>
                         <tr style="height: 25px">
-                            <td>Jumlah Pasien</td>
+                            <td>Jumlah Resep</td>
                             <td>:</td>
                             <td width="100px">
-                                <button class="btn btn-sm" id="count-pasien"
+                                <button class="btn btn-sm" id="count-resep"
                                     style=" display: block; width:auto; border-radius: 50%; background-color: #0067dd; color:white; font-weight:bold; font-size:9pt">
                                 </button>
                             </td>
@@ -30,13 +30,13 @@
                                     style=" display: block; width:auto; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold; font-size:9pt">
                                 </button>
                             </td>
-                            <td>Batal</td>
+                            {{-- <td>Batal</td>
                             <td>:</td>
                             <td>
                                 <button id="count-batal" class="btn btn-sm btn-danger"
                                     style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
                                 </button>
-                            </td>
+                            </td> --}}
                         </tr>
 
                     </table>
@@ -46,8 +46,9 @@
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_resep" width="100%">
                         <thead>
                             <tr role="row">
-                                <th>Nama</th>
-                                <th>Poliklinik</th>
+                                <th>No. Resep</th>
+                                {{-- <th>Poliklinik</th> --}}
+                                <th>Waktu</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -68,25 +69,51 @@
     <script>
         $(document).ready(function() {
             tbResep();
+            reloadTabelResep();
         })
 
 
         function reloadTabelResep() {
+            hitungResep();
             setInterval(function() {
                 $('#tb_resep').DataTable().destroy();
                 tbResep();
-                if (isModalShow == false) {
-                    Swal.fire({
-                        title: 'Memuat ulang data resep!',
-                        position: 'top-end',
-                        toast: true,
-                        icon: 'success',
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                        timer: 1500
+                // if (isModalShow == false) {
+                Swal.fire({
+                    title: 'Memuat ulang data resep!',
+                    position: 'top-end',
+                    toast: true,
+                    icon: 'success',
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                // }
+                hitungResep();
+            }, 10000);
+        }
+
+        function hitungResep() {
+            $.ajax({
+                url: 'resep/ambil/sekarang',
+                success: function(response) {
+                    resep = 0;
+                    valid = 0;
+                    tunggu = 0;
+                    $.map(response, function(res) {
+                        if (res.tgl_perawatan != '0000-00-00') {
+                            valid += parseInt(1)
+                        }
+                        if (res.tgl_peresepan != '0000-00-00') {
+                            resep += parseInt(1)
+                        }
+                        tunggu = resep - valid;
                     })
+                    $('#count-resep').text(resep)
+                    $('#count-tunggu').text(tunggu)
+                    $('#count-selesai').text(valid)
                 }
-            }, 120000);
+            })
         }
 
         function tbResep() {
@@ -111,26 +138,28 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             html = row.no_resep + '<br/>';
-                            html += '<h6>' + row.reg_periksa.pasien.nm_pasien + '</h6>';
+                            html += '<h6 style="margin:0px">' + row.reg_periksa.pasien.nm_pasien + '</h6>';
+                            html += row.no_rawat + '<br/>';
+                            html += row.reg_periksa.dokter.nm_dokter;
                             return html;
                         },
                         name: 'nm_pasien'
                     },
+
                     {
                         data: null,
                         render: function(data, type, row, meta) {
 
-                            html = row.reg_periksa.poliklinik.nm_poli + '<br/>';
-                            html += row.reg_periksa.dokter.nm_dokter + '<br/>';
+                            html = 'Resep : ' + row.jam_peresepan + '<br/>';
+                            html += 'Validasi : ' + row.jam + '<br/>';
                             return html;
                         },
-                        name: 'poliklinik'
+                        name: 'waktu'
 
                     },
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            console.log(row)
                             if (row.tgl_perawatan == '0000-00-00') {
                                 $('.status-' + row.no_resep).addClass('btn-primary');
                                 $('.status-' + row.no_resep).text('Belum')
@@ -149,8 +178,8 @@
 
                 ],
                 "language": {
-                    "zeroRecords": "Tidak ada data pasien terdaftar",
-                    "infoEmpty": "Tidak ada data pasien terdaftar",
+                    "zeroRecords": "Tidak ada data resep masuk",
+                    "infoEmpty": "Tidak ada data resep masuk",
                 }
             });
         }

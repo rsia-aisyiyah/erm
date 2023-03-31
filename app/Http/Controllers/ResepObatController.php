@@ -38,6 +38,11 @@ class ResepObatController extends Controller
 
         return response()->json($resepObat);
     }
+    public function ambilSekarang()
+    {
+        $resepObat = $this->resepObat->where('tgl_peresepan', date('Y-m-d'))->where('status', 'ralan')->get();
+        return response()->json($resepObat);
+    }
     public function ambilTable(Request $request)
     {
         $resepObat = $this->resepObat

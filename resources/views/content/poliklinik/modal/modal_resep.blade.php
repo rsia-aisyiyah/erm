@@ -146,6 +146,10 @@
                 <h2 class="modal-title fs-5" id="">Pilih Obat</h2>
             </div>
             <div class="modal-body">
+                <div class="alert alert-primary" style="padding:10px;border-radius:0px;font-size:12px"
+                    role="alert">
+                    Anda dapat menghapus / menambah daftar obat yang tercantum
+                </div>
                 <div class="row">
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="obat_racik">

@@ -276,11 +276,11 @@
                         $('#plan').val(html);
                         cekResep($('#nomor_rawat').val())
                     },
-                    error: function() {
+                    error: function(request, status, error) {
                         Swal.fire(
                             'Gagal !',
-                            'Obat tidak tersimpan',
-                            'error'
+                            'Obat tidak tersimpan<br/>' + request.responseJSON.message,
+                            'error',
                         )
 
                     }
@@ -347,6 +347,14 @@
                     no_resep: $('.no_resep').val(),
                 },
                 method: 'POST',
+                error: function(request, status, error) {
+                    Swal.fire(
+                        'Gagal !',
+                        'Tidak bisa menambah resep<br/>' + request.responseJSON.message,
+                        'error',
+                    )
+
+                }
             });
         }
 
@@ -508,9 +516,10 @@
                 error: function(request, status, error) {
                     Swal.fire(
                         'Gagal !',
-                        'Obat tidak terubah',
-                        'error'
-                    );
+                        'Tidak bisa mengubah obat<br/>' + request.responseJSON.message,
+                        'error',
+                    )
+
                 }
             }).done(function() {
                 tulisPlan();
@@ -564,6 +573,14 @@
                         success: function() {
                             ambilObatRacikan();
                             cekResep(id);
+                        },
+                        error: function(request, status, error) {
+                            Swal.fire(
+                                'Gagal !',
+                                'Tidak menghapus obat<br/>' + request.responseJSON.message,
+                                'error',
+                            )
+
                         }
                     }).done(function() {
                         tulisPlan();
@@ -813,7 +830,6 @@
             no_resep = $('.no_resep').val();
             no_rawat = $('#nomor_rawat').val();
             cekResep(no_rawat);
-            console.log(ambilResep(no_resep))
             if (Object.keys(ambilResep(no_resep)).length == 0) {
                 simpanResepObat();
             }
@@ -970,6 +986,7 @@
             $.ajax({
                 url: '/erm/resep/obat/hapus',
                 data: {
+                    _token: "{{ csrf_token() }}",
                     no_rawat: no_rawat,
                     no_resep: no_resep,
                 },
@@ -986,6 +1003,7 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
+                    console.log(response)
                     if (Object.keys(response).length > 0) {
                         $.map(response, function(res) {
                             if (Object.keys(res.resep_dokter).length > 0) {
@@ -1069,13 +1087,17 @@
                                 })
 
                             }
+
+                            if (Object.keys(res.resep_racikan).length == 0 && Object.keys(res
+                                    .resep_dokter).length == 0) {
+
+                                hapusResep(res.no_resep, no_rawat)
+                            }
                             $('.no_resep').val(res.no_resep)
-                            // console.log('no_resep', res)
                         })
                     } else {
                         setNoResep();
                     }
-                    // $('.no_racik').val(no_racik)
                 },
                 error: function(request, status, error) {
                     Swal.fire(
