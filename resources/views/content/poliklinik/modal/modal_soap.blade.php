@@ -50,7 +50,7 @@
                                 <tr>
                                     <td>Subjek : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="3"
+                                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="4"
                                             style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
                                             onblur="cekKosong(this)"></textarea>
                                     </td>
@@ -58,7 +58,7 @@
                                 <tr>
                                     <td>Objek : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="3"
+                                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="4"
                                             style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
                                             onblur="cekKosong(this)"></textarea>
                                     </td>
@@ -151,7 +151,7 @@
                                 <tr>
                                     <td>Asesmen : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="3"
+                                        <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="4"
                                             style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
                                             onblur="cekKosong(this)"></textarea>
                                     </td>
@@ -160,7 +160,7 @@
                                 <tr>
                                     <td>Instruksi : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="3"
+                                        <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="4"
                                             style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
                                             onblur="cekKosong(this)"></textarea>
                                     </td>
@@ -172,7 +172,7 @@
                                 <tr>
                                     <td>Plan : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="6"
+                                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="8"
                                             style="font-size:12px;min-height:12px;border-radius:0;resize:none" readonly></textarea>
                                     </td>
                                 </tr>
@@ -420,13 +420,18 @@
                                 }
                             })
                             teksRr += '\n';
-
-                            // }
-
                         })
 
                     })
                     $('#plan').val(teksRd + '\n' + teksRr);
+                },
+                error: function(request, status, error) {
+                    Swal.fire(
+                        'Gagal !',
+                        'Tidak tertulis di PLAN<br/>' + request.responseJSON.message,
+                        'error',
+                    )
+
                 }
             })
         }
@@ -445,23 +450,54 @@
                 },
                 success: function(response, status, detail) {
                     html = '';
+                    // html = '< id="form-racik-obat">';
+                    no = 1;
                     $.map(response, function(res) {
-                        html += '<tr>'
-                        html += '<td>' + res.data_barang.nama_brng + '</td>'
-                        html += '<td>' + res.kandungan + ' mg </td>'
-                        html += '<td>' + res.jml + '</td>'
+                        console.log(res)
+                        html += '<tr class="">'
                         html +=
-                            '<td><button type="button" class="btn btn-warning btn-sm" style="font-size:12px" data-barang="' +
-                            res.kode_brng +
-                            '" data-kps="' + res.data_barang.kapasitas +
-                            '" data-obat="' + res.data_barang.nama_brng +
-                            '" onclick="editObat(this)"><i class="bi bi-pen-fill"></i></button> <button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="' +
+                            '<td><input type="hidden" id="kode_brng' + no + '" value="' + res
+                            .kode_brng +
+                            '" name="kode_brng[]"/>' + res.data_barang.nama_brng + '</td>'
+                        html +=
+                            '<td><input type="hidden" id="kps' + no + '" name="kps[]" value="' +
+                            res.data_barang.kapasitas +
+                            '"/>' + res.data_barang.kapasitas + ' mg </td>'
+                        html +=
+                            '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' +
+                            no +
+                            '" name="p1[]" value="' +
+                            res.p1 +
+                            '" onfocusout="hitungObatRacik(' + no + ')"/></td>'
+                        html += '<td>/</td>'
+                        html +=
+                            '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' +
+                            no +
+                            '"name="p2[]" onfocusout="hitungObatRacik(' + no + ')" value="' +
+                            res.p2 +
+                            '"/></td>'
+                        html +=
+                            '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' +
+                            no +
+                            '" name="kandungan[]" value="' +
+                            res.kandungan +
+                            '" onchange="hitungDosis(' + no + ')"/></td>'
+                        html +=
+                            '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +
+                            no +
+                            '" name="jml[]" value="' +
+                            res.jml +
+                            '" readonly/></td>'
+                        html +=
+                            '<td><button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="' +
                             res.no_resep + '" data-racik="' +
                             res.no_racik +
                             '" data-obat="' + res.kode_brng +
                             '" onclick="hapusObat(this)"><i class="bi bi-trash-fill"></i></button></td>'
                         html += '</tr>'
+                        no++
                     });
+                    html += '<input type="hidden" class="nomor" value="' + no + '">'
                     $('.table-racikan tbody').append(html);
                 },
             })
@@ -483,8 +519,6 @@
             $('.nama_obat').val(obat);
             $('.p1').val(1);
             $('.p2').val(1);
-
-            // return false;
         }
 
         $('.ubah-obat').on('click', function() {
@@ -519,7 +553,6 @@
                         'Tidak bisa mengubah obat<br/>' + request.responseJSON.message,
                         'error',
                     )
-
                 }
             }).done(function() {
                 tulisPlan();
@@ -598,6 +631,7 @@
             racikan = ambilRacikan(no_resep, no_racik)
             // $('.no_racik').val(racikan.no_racik);
             $('.no_resep').val(racikan.no_resep);
+            $('.metode').val(racikan.metode.nm_racik);
             $('.nm_racik').val(racikan.nama_racik);
             $('.no_racik').val(no_racik);
             $('.jml').val(racikan.jml_dr);
@@ -684,11 +718,6 @@
                             },
                             method: 'DELETE',
                             success: function(response) {
-                                // Swal.fire(
-                                //     'Terhapus !',
-                                //     'Obat berhasil dihapus',
-                                //     'success'
-                                // );
                                 $('#body_umum').empty();
                                 cekResep($('#nomor_rawat').val())
                             }
@@ -774,9 +803,12 @@
                     $('.list_obat').fadeIn();
                     $('.list_obat').html(html);
 
+
+
                 }
             })
         }
+
 
         function cariAturan(aturan) {
             $.ajax({
@@ -1088,11 +1120,11 @@
 
                             }
 
-                            if (Object.keys(res.resep_racikan).length == 0 && Object.keys(res
-                                    .resep_dokter).length == 0) {
+                            // if (Object.keys(res.resep_racikan).length == 0 && Object.keys(res
+                            //         .resep_dokter).length == 0) {
 
-                                hapusResep(res.no_resep, no_rawat)
-                            }
+                            //     hapusResep(res.no_resep, no_rawat)
+                            // }
                             $('.no_resep').val(res.no_resep)
                         })
                     } else {

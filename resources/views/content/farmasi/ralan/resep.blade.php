@@ -30,13 +30,6 @@
                                     style=" display: block; width:auto; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold; font-size:9pt">
                                 </button>
                             </td>
-                            {{-- <td>Batal</td>
-                            <td>:</td>
-                            <td>
-                                <button id="count-batal" class="btn btn-sm btn-danger"
-                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
-                                </button>
-                            </td> --}}
                         </tr>
 
                     </table>
@@ -47,7 +40,6 @@
                         <thead>
                             <tr role="row">
                                 <th>No. Resep</th>
-                                {{-- <th>Poliklinik</th> --}}
                                 <th>Waktu</th>
                                 <th>Status</th>
                             </tr>

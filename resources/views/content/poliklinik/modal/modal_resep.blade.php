@@ -52,6 +52,7 @@
                                 name="keterangan" />
                         </div>
                         <input type="hidden" value="" class="no_racik" />
+                        <input type="hidden" value="" class="kps" />
                         {{-- <input type="hidden" value="" class="kode_racik" /> --}}
                     </div>
                 </form>
@@ -151,7 +152,7 @@
                     Anda dapat menghapus / menambah daftar obat yang tercantum
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 col-md-12 col-sm-12">
+                    {{-- <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="obat_racik">
                             <div class="row">
                                 <div class="col-lg-3 col-md-12 col-sm-12">
@@ -183,8 +184,7 @@
                                     <label for="kps" style="font-size:12px">Kapasitas</label>
                                 </div>
                                 <div class="col-lg-9 col-md-12 col-sm-12 mb-1">
-                                    <input type="text" autocomplete="off" class="form-control form-control-sm kps"
-                                        name="kps" onkeypress="return hanyaAngka(event)" readonly />
+                                    <input type="text" autocomplete="off" class="form-control form-control-sm kps" name="kps" onkeypress="return hanyaAngka(event)" readonly />
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12">
                                     <label for="p1" class="" style="font-size:12px">P1</label>
@@ -233,26 +233,61 @@
                                 <input type="hidden" value="" class="no_racik" />
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12">
-                        <table class="table table-striped table-racikan">
-                            <thead>
-                                <tr>
-                                    <th>Nama Obat</th>
-                                    <th>Dosis</th>
-                                    <th>Jumlah</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    </div> --}}
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="no_resep" style="font-size:12px">Nomor Resep</label>
+                                <input type="text" autocomplete="off"
+                                    class="form-control form-control-sm no_resep mb-1" name="no_resep" readonly />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
+                                <input type="text" autocomplete="off"
+                                    class="form-control form-control-sm nm_racik mb-1" name="nm_racik" readonly />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="metode" style="font-size:12px">Metode</label>
+                                <input type="text" autocomplete="off"
+                                    class="form-control form-control-sm metode mb-1" name="metode" readonly />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="jml" style="font-size:12px">Jumlah Racik</label>
+                                <input type="text" autocomplete="off"
+                                    class="form-control form-control-sm jml mb-1" name="jml" readonly />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <table class="table table-racikan table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th width="35%">Nama Obat</th>
+                                            <th>Kapasitas</th>
+                                            <th width="5%">P1</th>
+                                            <th width="3%"></th>
+                                            <th width="5%">P2</th>
+                                            <th>Dosis</th>
+                                            <th>Jumlah</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                            </tbody>
-                        </table>
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn-success btn-sm"
+                                    onclick="tambahDaftarRacik()"><i class="bi bi-plus-circle"></i> Tambah
+                                    Obat</button>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" onclick="simpanDosisObat()"><i
+                        class="bi bi-save" data-bs-dismiss="modal"></i> Simpan</button>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i> Keluar</button>
             </div>
@@ -303,7 +338,7 @@
                 error: function(response, message, detail) {
                     Swal.fire(
                         'Gagal !',
-                        detail,
+                        request.responseJSON.message,
                         'error'
                     );
                     hapusResep($('.no_resep').val(), $('#nomor_rawat'))
@@ -313,7 +348,138 @@
             })
         }
 
+        function hitungObatRacik(no) {
+            kps = $('#kps' + no).val();
+            p2 = $('#p2' + no).val();
+            p1 = $('#p1' + no).val();
+            jumlah = $('.jml').val();
 
+            kandungan = parseFloat(kps) * (parseFloat(p1) / parseFloat(p2));
+
+            jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
+
+            console.log(kps, p1, p2, 'kandungan = ' + kandungan)
+
+            $('#kandungan' + no).val(kandungan.toFixed(1));
+
+            $('#jml_obat' + no).val(jml_obat.toFixed(1));
+        }
+
+        function hitungDosis(no) {
+            kandungan = $('#kandungan' + no).val();
+            jumlah = $('.jml').val();
+            kps = $('#kps' + no).val();
+            if (parseInt(kandungan) <= parseInt(kps)) {
+                jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
+                $('#jml_obat' + no).val(jml_obat.toFixed(1));
+                $('#p2' + no).val('1');
+                $('#p1' + no).val('1');
+            } else {
+                $('#kandungan' + no).val(0);
+                Swal.fire(
+                    'Ada yang salah !',
+                    'Dosis tidak boleh lebih besar dari kapasitas obat',
+                    'warning'
+                );
+            }
+        }
+
+        function simpanDosisObat() {
+            let banyakBaris = $('.table-racikan tbody tr').length
+            console.log(banyakBaris)
+            arrInput = [];
+            respon = false;
+            for (let no = 1; no <= banyakBaris; no++) {
+                $.ajax({
+                    url: '/erm/resep/racik/detail/ubah',
+                    async: false,
+                    data: {
+                        '_token': "{{ csrf_token() }}",
+                        'no_resep': $('.no_resep').val(),
+                        'no_racik': $('.no_racik').val(),
+                        'kode_brng': $('#kode_brng' + no).val(),
+                        'kandungan': $('#kandungan' + no).val(),
+                        'p1': $('#p1' + no).val(),
+                        'p2': $('#p2' + no).val(),
+                        'jml': $('#jml_obat' + no).val(),
+                    },
+                    method: 'POST',
+                    success: function(response) {
+                        // console.log(response);
+                        respon = true
+                    },
+                    error: function(response) {
+                        Swal.fire(
+                            'Gagal !',
+                            response.responseJSON.message,
+                            'error'
+                        );
+                    }
+                })
+            }
+            if (respon) {
+                // $('.table-racikan tbody').empty();
+                // ambilObatRacikan();
+                cekResep($('#nomor_rawat').val());
+                tulisPlan();
+                $('#modalObatRacik').modal('hide');
+            }
+        }
+
+        function tambahDaftarRacik() {
+            no = $('.nomor').val();
+            html = '<tr class="baris_' + no + '">'
+            html +=
+                '<td><input type="hidden" id="kode_brng' + no +
+                '"/><input type="search" onkeyup="cariObatRacikan(this, ' + no +
+                ')" autocomplete="off" class="form-control form-control-sm nama_obat_' + no +
+                ' form-underline" name="nama_obat" /><div class="list_obat_' +
+                no + '"></div></td>'
+            html +=
+                '<td><input type="search" autocomplete="off" class="form-control form-control-sm form-underline" id="kps' +
+                no + '" name="kps" readonly /></td>'
+            html +=
+                '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' +
+                no +
+                '" name="p1[]"  onfocusout="hitungObatRacik(' + no + ')"/></td>'
+            html += '<td>/</td>'
+            html +=
+                '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' +
+                no +
+                '"name="p2[]" onfocusout="hitungObatRacik(' + no + ')"/></td>'
+            html +=
+                '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' +
+                no +
+                '" name="kandungan[]" onchange="hitungDosis(' + no + ')"/></td>'
+            html +=
+                '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +
+                no +
+                '" name="jml[]" readonly/></td>'
+            html +=
+                '<td><a href="#modal" data-no=' + no +
+                ' type="button" class="btn btn-danger btn-sm x"  style="font-size:12px"><i class="bi bi-trash-fill"></i></a></td>'
+            html += '</tr>'
+            $('.table-racikan tbody').append(html);
+            no = parseInt(no) + 1;
+            $('.nomor').val(no)
+
+        }
+
+        // function hapusBaris(p) {
+        //     no = $(this).data('no')
+        //     $('.baris_' + no).remove();
+        //     console.log('ssss')
+
+
+        // }
+
+        $('.table-racikan tbody').on('click', '.x', function(e) {
+            // $(this) remove()
+            e.preventDefault();
+            row = $(this).parents('td').parents('tr').remove();
+            console.log(row)
+            return false;
+        })
         $('.p1').on('change', function() {
             kps = $('.kps').val();
             p2 = $('.p2').val();
@@ -340,8 +506,6 @@
             kandungan = $(this).val();
             jumlah = $('.jml').val();
             kps = $('.kps').val();
-
-
             jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
             $('.jml_obat').val(jml_obat.toFixed(1));
             $('.p2').val('1');
@@ -421,6 +585,61 @@
             }).done(function() {
                 tulisPlan();
             });
+        }
+
+        function cariObatRacikan(obat, no) {
+            $.ajax({
+                url: '/erm/obat/cari',
+                data: {
+                    'nama': obat.value,
+                },
+                success: function(response) {
+                    // console.log(response)
+                    html =
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                    $.map(response.data, function(data) {
+                        $.map(data.gudang_barang, function(item) {
+                            if (data) {
+                                if (data.status != "0") {
+                                    if (item.stok != "0") {
+                                        html +=
+                                            '<li data-id="' +
+                                            data.kode_brng +
+                                            '" data-stok="' + item.stok +
+                                            '" data-kapasitas="' + data.kapasitas +
+                                            '" onclick="setObat(this, ' + no +
+                                            ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                                            data.nama_brng + '</a></li>'
+                                    } else {
+                                        html +=
+                                            '<li class="disable" data-id="' + data
+                                            .kode_brng +
+                                            '" data-stok="' + item.stok +
+                                            '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
+                                            data.nama_brng + ' - Stok Kosong' +
+                                            '</a></i></li>'
+                                    }
+                                }
+                            }
+                        })
+                    })
+                    html += '</ul>';
+                    $('.list_obat_' + no).fadeIn();
+                    $('.list_obat_' + no).html(html);
+                }
+            })
+        }
+
+        function setObat(param, no) {
+            // console.log('wkwkwkwk')
+            $('.nama_obat_' + no).val($(param).text());
+            $('#kode_brng' + no).val($(param).data('id'))
+            $('#kps' + no).val($(param).data('kapasitas'))
+            $('#p1' + no).val(1)
+            $('#p2' + no).val(1)
+            $('#jml_obat' + no).val(0)
+            $('#kandungan' + no).val(0)
+            $('.list_obat_' + no).fadeOut()
         }
     </script>
 @endpush

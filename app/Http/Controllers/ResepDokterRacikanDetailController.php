@@ -50,15 +50,23 @@ class ResepDokterRacikanDetailController extends Controller
     public function ubah(Request $request)
     {
         // return $request->all();
-        $racik = ResepDokterRacikanDetail::where('no_resep', $request->no_resep)
+        $cekRacik = ResepDokterRacikanDetail::where('no_resep', $request->no_resep)
             ->where('no_racik', $request->no_racik)
-            ->where('kode_brng', $request->kode_brng)->update([
-                'kode_brng' => $request->kode_brng,
-                'p1' => $request->p1,
-                'p2' => $request->p2,
-                'kandungan' => $request->kandungan,
-                'jml' => $request->jml,
-            ]);
+            ->where('kode_brng', $request->kode_brng)->count();
+        // return 'cekracikan ' . $cekRacik;
+        if ($cekRacik == 0) {
+            $racik = $this->simpan($request);
+        } else {
+            $racik =  ResepDokterRacikanDetail::where('no_resep', $request->no_resep)
+                ->where('no_racik', $request->no_racik)
+                ->where('kode_brng', $request->kode_brng)->update([
+                    'kode_brng' => $request->kode_brng,
+                    'p1' => $request->p1,
+                    'p2' => $request->p2,
+                    'kandungan' => $request->kandungan,
+                    'jml' => $request->jml,
+                ]);
+        }
         return response()->json($racik);
     }
 }
