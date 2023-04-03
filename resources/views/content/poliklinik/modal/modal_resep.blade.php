@@ -314,6 +314,7 @@
 
         function simpanRacikan() {
             $.map(ambilTemplateRacik(), function(temp) {
+                console.log(temp)
                 if (Object.keys(temp).length > 0) {
                     simpanObatRacikanTemplate(temp.kode_brng)
                 }
@@ -338,7 +339,7 @@
                 error: function(response, message, detail) {
                     Swal.fire(
                         'Gagal !',
-                        request.responseJSON.message,
+                        response.responseJSON.message,
                         'error'
                     );
                     hapusResep($('.no_resep').val(), $('#nomor_rawat'))

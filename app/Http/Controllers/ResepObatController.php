@@ -40,7 +40,7 @@ class ResepObatController extends Controller
     }
     public function ambilSekarang()
     {
-        $resepObat = $this->resepObat->where('tgl_peresepan', date('Y-m-d'))->where('status', 'ralan')->get();
+        $resepObat = $this->resepObat->where('tgl_peresepan', date('Y-m-d'))->where('status', 'ralan')->with('regPeriksa')->get();
         return response()->json($resepObat);
     }
     public function ambilTable(Request $request)

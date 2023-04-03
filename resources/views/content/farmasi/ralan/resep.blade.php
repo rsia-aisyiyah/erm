@@ -22,12 +22,19 @@
                                 </button>
                             </td>
                         </tr>
-                        <tr style="height: 40   px">
+                        <tr style="height: 40px">
                             <td>Menunggu</td>
                             <td>:</td>
                             <td>
                                 <button id="count-tunggu" class="btn btn-sm btn-warning"
                                     style=" display: block; width:auto; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold; font-size:9pt">
+                                </button>
+                            </td>
+                            <td>Tidak Ambil</td>
+                            <td>:</td>
+                            <td>
+                                <button id="count-tidak" class="btn btn-sm btn-danger"
+                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
                                 </button>
                             </td>
                         </tr>
@@ -82,28 +89,35 @@
                 })
                 // }
                 hitungResep();
-            }, 10000);
+            }, 30000);
         }
 
         function hitungResep() {
             $.ajax({
                 url: 'resep/ambil/sekarang',
                 success: function(response) {
+                    console.log(response)
                     resep = 0;
                     valid = 0;
                     tunggu = 0;
+                    tidak = 0;
                     $.map(response, function(res) {
                         if (res.tgl_perawatan != '0000-00-00') {
                             valid += parseInt(1)
                         }
                         if (res.tgl_peresepan != '0000-00-00') {
                             resep += parseInt(1)
+
+                            if (res.reg_periksa.status_bayar == 'Sudah Bayar') {
+                                tidak += parseInt(1)
+                            }
                         }
-                        tunggu = resep - valid;
+                        tunggu = resep - valid - tidak;
                     })
                     $('#count-resep').text(resep)
                     $('#count-tunggu').text(tunggu)
                     $('#count-selesai').text(valid)
+                    $('#count-tidak').text(tidak)
                 }
             })
         }
@@ -129,6 +143,7 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
+
                             html = row.no_resep + '<br/>';
                             html += '<h6 style="margin:0px">' + row.reg_periksa.pasien.nm_pasien + '</h6>';
                             html += row.no_rawat + '<br/>';
@@ -153,15 +168,21 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             if (row.tgl_perawatan == '0000-00-00') {
-                                $('.status-' + row.no_resep).addClass('btn-primary');
-                                $('.status-' + row.no_resep).text('Belum')
+                                if (row.reg_periksa.status_bayar == 'Belum Bayar') {
+                                    $('.status-' + row.no_resep).addClass('btn-primary');
+                                    $('.status-' + row.no_resep).text('Belum')
+
+                                } else {
+                                    $('.status-' + row.no_resep).addClass('btn-danger');
+                                    $('.status-' + row.no_resep).text('Tidak Diambil')
+                                }
                             } else {
                                 $('.status-' + row.no_resep).addClass('btn-success');
                                 $('.status-' + row.no_resep).text('Sudah')
                             }
                             html = '<button onclick="tampilResep(\'' + row.no_resep +
                                 '\')" class="btn btn-sm mb-2 status-' + row.no_resep +
-                                '" type="button" style="width:80px;" data-id="' + row.no_rawat +
+                                '" type="button" style="width:110px;" data-id="' + row.no_rawat +
                                 '"></button><br/>';
                             return html;
                         },
