@@ -96,7 +96,6 @@
             $.ajax({
                 url: 'resep/ambil/sekarang',
                 success: function(response) {
-                    console.log(response)
                     resep = 0;
                     valid = 0;
                     tunggu = 0;
@@ -104,13 +103,14 @@
                     $.map(response, function(res) {
                         if (res.tgl_perawatan != '0000-00-00') {
                             valid += parseInt(1)
+                        } else {
+                            if (res.reg_periksa.status_bayar ==
+                                'Sudah Bayar') {
+                                tidak += parseInt(1);
+                            }
                         }
                         if (res.tgl_peresepan != '0000-00-00') {
                             resep += parseInt(1)
-
-                            if (res.reg_periksa.status_bayar == 'Sudah Bayar') {
-                                tidak += parseInt(1)
-                            }
                         }
                         tunggu = resep - valid - tidak;
                     })
