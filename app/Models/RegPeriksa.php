@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Pasien;
 use App\Models\Upload;
 use App\Models\KamarInap;
+use App\Models\RsiaGeneralConsent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -73,5 +74,9 @@ class RegPeriksa extends Model
     public function resepObat()
     {
         return $this->hasMany(ResepObat::class, 'no_rawat', 'no_rawat');
+    }
+    public function generalConsent()
+    {
+        return $this->hasOne(RsiaGeneralConsent::class, 'no_rawat', 'no_rawat');
     }
 }

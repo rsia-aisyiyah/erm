@@ -15,4 +15,8 @@ class Pegawai extends Model
     {
         return $this->hasOne(Petugas::class, 'nip', 'nik');
     }
+    public function generalConsent()
+    {
+        return $this->hasOne(RsiaGeneralConsent::class, 'nik', 'nik');
+    }
 }

@@ -6,6 +6,13 @@
                 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
                 <span>MENU</span>
             </h6>
+
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('registrasi') ? 'active' : '' }}" href="/erm/registrasi">
+                    <i class="bi bi-pen  align-text-bottom"></i>
+                    Pendaftaran
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
                     <i class="bi bi-people-fill align-text-bottom"></i>

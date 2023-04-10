@@ -8,6 +8,7 @@ use App\Models\RegPeriksa;
 use App\Models\EstimasiPoli;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class RegPeriksaController extends Controller
 {
@@ -16,6 +17,11 @@ class RegPeriksaController extends Controller
     {
         $this->tanggal = new Carbon();
     }
+    public function index()
+    {
+        return view('content.registrasi.daftar');
+    }
+
     public function show($no_rkm_medis)
     {
         $regPeriksa = RegPeriksa::where('no_rkm_medis', $no_rkm_medis)
@@ -69,7 +75,11 @@ class RegPeriksaController extends Controller
 
     public function ambil(Request $request)
     {
-        $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien')->first();
+        if ($request->no_rawat) {
+            $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien')->first();
+        } else {
+            $regPeriksa = RegPeriksa::where('tgl_registrasi', $request->tgl_registrasi)->where('status_lanjut', 'Ralan')->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik')->get();
+        }
         return response()->json($regPeriksa);
     }
 
@@ -122,5 +132,10 @@ class RegPeriksaController extends Controller
             ->where('kd_dokter', $request->kd_dokter)
             ->get();
         return response()->json($regPeriksa, 200);
+    }
+    public function ambilTable(Request $request)
+    {
+        $regPeriksa = RegPeriksa::whereMonth('tgl_registrasi', '4')->whereYear('tgl_registrasi', '2023')->where('status_lanjut', 'Ralan')->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai')->orderBy('no_rawat', 'DESC')->get();
+        return DataTables::of($regPeriksa)->make(true);
     }
 }
