@@ -135,7 +135,11 @@ class RegPeriksaController extends Controller
     }
     public function ambilTable(Request $request)
     {
-        $regPeriksa = RegPeriksa::whereMonth('tgl_registrasi', '4')->whereYear('tgl_registrasi', '2023')->where('status_lanjut', 'Ralan')->whereNotIn('kd_poli', ['U0016', 'P002', 'IGDK'])->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai')->orderBy('no_rawat', 'DESC')->get();
+        $regPeriksa = RegPeriksa::where('tgl_registrasi', date('Y-m-d'))
+            ->where('status_lanjut', 'Ralan')
+            ->where('stts_daftar', 'Baru')
+            ->whereNotIn('kd_poli', ['U0016', 'P002', 'IGDK', 'OPE'])
+            ->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai')->orderBy('no_rawat', 'DESC')->get();
         return DataTables::of($regPeriksa)->make(true);
     }
 }

@@ -26,6 +26,7 @@ class RsiaGeneralConsentController extends Controller
             'tgl_persetujuan' => date('Y-m-d'),
             'jam_persetujuan' => date('h:i:s'),
             'loket' => $request->loket,
+            'no_rkm_medis' => $request->no_rkm_medis,
             'nik' => $request->nik,
         ]);
 

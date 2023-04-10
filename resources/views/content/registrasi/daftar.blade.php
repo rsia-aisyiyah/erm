@@ -62,7 +62,7 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
-                            console.log(row)
+                            // console.log(row)
 
 
                             html = row.no_rawat + '<br/>';
@@ -78,7 +78,7 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            console.log(row)
+                            // console.log(row)
                             if (row.general_consent) {
                                 if (row.general_consent.ttd) {
                                     html = '<img src="{{ asset('ttd') }}/' + row.general_consent.ttd +
@@ -92,6 +92,7 @@
                                 html =
                                     '<button onclick="buka(this, 1)" class="btn btn-sm btn-primary mb-2" type="button" style="width:110px;" data-id="' +
                                     row.no_rawat +
+                                    '" data-rm="' + row.no_rkm_medis +
                                     '" data-loket="1">LOKET 1</button><br/>';
                                 html +=
                                     '<button onclick="buka(this, 2)" class="btn btn-sm btn-primary mb-2" type="button" style="width:110px;" data-id="' +
@@ -120,22 +121,22 @@
         function buka(p, loket) {
             console.log('Loket ', loket)
             no_rawat = $(p).data('id');
+            no_rkm_medis = $(p).data('rm');
             nik = "{{ session()->get('pegawai')->nik }}"
-
+            console.log(no_rkm_medis)
             $.ajax({
                 url: 'persetujuan/tambah',
                 method: 'POST',
                 data: {
                     _token: "{{ csrf_token() }}",
                     no_rawat: no_rawat,
+                    no_rkm_medis: no_rkm_medis,
                     nik: nik,
                     loket: loket,
                 },
                 success: function(response) {
                     $('#tb_daftar_pasien').DataTable().destroy();
                     tbDaftarPasien()
-
-                    console.log(response);
                 },
                 error: function(request, status, error) {
                     swal.fire(
@@ -145,7 +146,7 @@
                     )
                 }
             })
-            console.log(nik)
+            // console.log(nik)
         }
     </script>
 @endpush

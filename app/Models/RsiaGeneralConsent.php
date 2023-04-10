@@ -9,7 +9,7 @@ class RsiaGeneralConsent extends Model
 {
     use HasFactory;
     protected $table = 'rsia_general_consent';
-    protected $fillable = ['id', 'no_rawat', 'ttd', 'tgl_persetujuan', 'jam_persetujuan', 'nik', 'status', 'loket'];
+    protected $fillable = ['id', 'no_rawat', 'ttd', 'tgl_persetujuan', 'jam_persetujuan', 'nik', 'status', 'loket', 'no_rkm_medis'];
     public $timestamps = false;
 
     public function regPeriksa()

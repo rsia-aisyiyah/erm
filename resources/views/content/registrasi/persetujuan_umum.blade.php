@@ -540,12 +540,11 @@
                     'warning'
                 )
             } else {
-                console.log(signaturePad.toDataURL());
+                // console.log(signaturePad.toDataURL());
                 no_rawat = $('#no_rawat').val();
                 nik = "{{ session()->get('pegawai')->nik }}";
+                photo = "{{ session()->get('pegawai')->photo }}"
                 pegawai = ambilPegawai(nik)
-                console.log(no_rawat)
-                console.log('hasil pegawi', pegawai)
                 $.ajax({
                     type: "POST",
                     url: "/erm/persetujuan/ttd",
@@ -558,7 +557,7 @@
                         signaturePad.clear();
                         $('#modalPenilaian').modal('show')
                         $('#modalTtd').modal('hide')
-                        url = 'http://192.168.100.33/rsiap/file/pegawai/' + pegawai.photo
+                        url = 'http://192.168.100.33/rsiap/file/pegawai/' + photo
                         $('#img-pegawai').attr('src', url)
                         $('#nm_pegawai').text(pegawai.nama)
                     }
