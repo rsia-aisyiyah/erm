@@ -42,6 +42,8 @@ class LoginController extends Controller
                 $pegawai->petugas->kd_jbtn == 'J034'
             ) {
                 return redirect('/resep');
+            } else if ($pegawai->petugas->kd_jbtn == 'J017') {
+                return redirect('/registrasi');
             } else {
                 return redirect('/poliklinik');
             }

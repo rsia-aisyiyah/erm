@@ -274,7 +274,8 @@
     <div class="container" id="idle">
         <div id="loket">
             <h2>LOKET</h2>
-            <h1>1</h1>
+            <h1>{{ Request::segment(3) }}</h1>
+            <h3>PETUGAS : {{ strtoupper(session()->get('pegawai')->nama) }}</h3>
             {{-- <h1>PASIEN BPJS</h1> --}}
         </div>
     </div>
