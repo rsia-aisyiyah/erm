@@ -281,7 +281,7 @@
 
             var tb_ranap = $('#tb_ranap').DataTable({
                 processing: true,
-                scrollX: true,
+                scrollX: false,
                 serverSide: true,
                 stateSave: true,
                 ordering: false,

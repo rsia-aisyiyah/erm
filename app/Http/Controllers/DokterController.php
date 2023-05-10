@@ -9,7 +9,7 @@ class DokterController extends Controller
 {
     public function ambil(Request $request)
     {
-        $dokter = Dokter::where('status', '1');
+        $dokter = Dokter::where('status', '1')->with('pegawai', 'spesialis');
 
         if ($request->sps) {
             $dokter->where('kd_sps', $request->sps);

@@ -200,7 +200,7 @@
             var tbSoapRanap = $('#tbSoap').DataTable({
                 processing: true,
                 scrollX: true,
-                scrollY: 450,
+                scrollY: 610,
                 serverSide: true,
                 stateSave: true,
                 searching: false,

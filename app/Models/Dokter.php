@@ -30,4 +30,8 @@ class Dokter extends Model
     {
         return $this->belongsTo(Spesialis::class, 'kd_sps', 'kd_sps');
     }
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'kd_dokter', 'nik');
+    }
 }

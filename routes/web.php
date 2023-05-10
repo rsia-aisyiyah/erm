@@ -25,11 +25,13 @@ use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
+use App\Http\Controllers\PenilaianMedisRanapController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\RsiaGeneralConsentController;
 use App\Http\Controllers\RsiaMappingRacikanController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
+use App\Models\PenilaianMedisRanap;
 
 Route::get('/login', function () {
     return view('content.auth.login');
@@ -102,6 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/registrasi/batal', [RegPeriksaController::class, 'hitungBatal']);
     Route::get('/registrasi/tunggu', [RegPeriksaController::class, 'hitungTunggu']);
     Route::get('/registrasi/riwayat', [RegPeriksaController::class, 'riwayat']);
+    Route::get('/registrasi/ubah/dokter', [RegPeriksaController::class, 'ubahDpjp']);
     Route::get('/registrasi/foto', [UploadController::class, 'ambilPeriksa']);
 
     Route::get('persetujuan/loket/{loket}', [RsiaGeneralConsentController::class, 'index']);
@@ -161,6 +164,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pegawai/ambil', [PegawaiController::class, 'ambil']);
 
     Route::post('/penilaian/pendaftaran/simpan', [RsiaPenilaianPendaftaranController::class, 'simpan']);
+    Route::get('/penilaian/medis/ranap/ambil', [PenilaianMedisRanapController::class, 'ambil']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);

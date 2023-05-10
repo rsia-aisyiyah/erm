@@ -97,7 +97,8 @@
                                 html +=
                                     '<button onclick="buka(this, 2)" class="btn btn-sm btn-primary mb-2" type="button" style="width:110px;" data-id="' +
                                     row.no_rawat +
-                                    '" data-loket="2">LOKET 2</button><br/>';
+                                    '" data-loket="2" data-rm="' + row.no_rkm_medis +
+                                    '">LOKET 2</button><br/>';
                                 // html +=
                                 //     '<button onclick="buka(this, 3)" class="btn btn-sm btn-primary mb-2" type="button" style="width:110px;" data-id="' +
                                 //     row.no_rawat +
@@ -118,34 +119,68 @@
             });
         }
 
-        function buka(p, loket) {
-            console.log('Loket ', loket)
-            no_rawat = $(p).data('id');
-            no_rkm_medis = $(p).data('rm');
-            nik = "{{ session()->get('pegawai')->nik }}"
-            console.log(no_rkm_medis)
+        // memeriksa apakah ada proses general yang gantung ?
+        function cekProses(loket) {
+            // loket = "{{ Request::segment(3) }}";
+            hasil = '';
             $.ajax({
-                url: 'persetujuan/tambah',
-                method: 'POST',
+                url: '/erm/persetujuan/ambil',
                 data: {
-                    _token: "{{ csrf_token() }}",
-                    no_rawat: no_rawat,
-                    no_rkm_medis: no_rkm_medis,
-                    nik: nik,
                     loket: loket,
                 },
+                async: false,
                 success: function(response) {
-                    $('#tb_daftar_pasien').DataTable().destroy();
-                    tbDaftarPasien()
+                    // console.log('Cek Proses', response);
+                    hasil = response;
+
                 },
                 error: function(request, status, error) {
                     swal.fire(
-                        'Gagal',
+                        'Peringatan',
                         request.responseJSON.message,
-                        'error'
+                        'error',
                     )
                 }
+
             })
+            return hasil;
+        }
+
+        function buka(p, loket) {
+            no_rawat = $(p).data('id');
+            no_rkm_medis = $(p).data('rm');
+            nik = "{{ session()->get('pegawai')->nik }}"
+            if (Object.keys(cekProses(loket)).length == 0) {
+                $.ajax({
+                    url: 'persetujuan/tambah',
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        no_rawat: no_rawat,
+                        no_rkm_medis: no_rkm_medis,
+                        nik: nik,
+                        loket: loket,
+                    },
+                    success: function(response) {
+                        $('#tb_daftar_pasien').DataTable().destroy();
+                        tbDaftarPasien()
+                    },
+                    error: function(request, status, error) {
+                        swal.fire(
+                            'Gagal',
+                            request.responseJSON.message,
+                            'error'
+                        )
+                    }
+                })
+            } else {
+                swal.fire(
+                    'Peringatan',
+                    'Sedang ada antrian',
+                    'warning'
+                )
+                // alert(Object.keys(cekProses(loket)).length);
+            }
             // console.log(nik)
         }
     </script>
