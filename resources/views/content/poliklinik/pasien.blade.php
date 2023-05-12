@@ -510,7 +510,6 @@
                             },
                             dataType: 'JSON',
                         }).done(function(response) {
-                            console.log('response', response)
                             if (Object.keys(response).length > 0) {
                                 $('#icon-askep-' + textRawat(val.no_rawat)).removeClass(
                                     'bi bi-file-bar-graph-fill')
