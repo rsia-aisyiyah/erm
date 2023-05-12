@@ -502,6 +502,27 @@
                             }
                         })
                     })
+                    $.map(json.data, function(val, index) {
+                        $.ajax({
+                            url: 'askep/anak',
+                            data: {
+                                no_rkm_medis: val.no_rkm_medis,
+                            },
+                            dataType: 'JSON',
+                        }).done(function(response) {
+                            console.log('response', response)
+                            if (Object.keys(response).length > 0) {
+                                $('#icon-askep-' + textRawat(val.no_rawat)).removeClass(
+                                    'bi bi-file-bar-graph-fill')
+                                $('#btn-askep-' + textRawat(val.no_rawat)).removeClass(
+                                    'btn-primary')
+                                $('#icon-askep-' + textRawat(val.no_rawat)).addClass(
+                                    'bi bi-check2-circle')
+                                $('#btn-askep-' + textRawat(val.no_rawat)).addClass(
+                                    'btn-success')
+                            }
+                        })
+                    })
                 },
                 ajax: {
                     url: "table",
