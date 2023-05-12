@@ -26,4 +26,8 @@ class Pasien extends Model
     {
         return $this->hasMany(RiwayatPersalinan::class, 'no_rkm_medis', 'no_rkm_medis');
     }
+    public function riwayatImunisasi()
+    {
+        return $this->hasMany(RiwayatImunisasi::class, 'no_rkm_medis', 'no_rkm_medis');
+    }
 }

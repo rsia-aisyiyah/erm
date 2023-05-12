@@ -69,6 +69,7 @@
     @include('content.poliklinik.modal.modal_soap')
     @include('content.poliklinik.modal.modal_riwayat')
     @include('content.poliklinik.modal.modal_askep')
+    @include('content.poliklinik.modal.modal_askep_anak')
     @include('content.poliklinik.modal.modal_resep')
 @endsection
 
@@ -697,10 +698,74 @@
         }
 
         function ambilAskepAnak(no_rkm_medis) {
-            Swal.fire(
-                'Mohon Maaf', 'Sedang dalam pengembangan', 'info'
-            );
+            $.ajax({
+                url: 'askep/anak',
+                data: {
+                    no_rkm_medis: no_rkm_medis,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    console.log(response)
+
+                    $.map(response, function(data) {
+                        $('#opt-rawat').append('<option value=' + data.no_rawat + '>' + data.no_rawat +
+                            '</option>')
+                        // console.log(data)
+                        $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
+                        $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' : ': Perempuan')
+                        $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa
+                            .tgl_registrasi));
+                        $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
+                        $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) +
+                            ' / ' + data.reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
+                        $('.anamnesis').html(': ' + data.informasi);
+                    })
+
+                    $('#modalAskepAnak').modal('show');
+                }
+            });
         }
+
+        $('#opt-rawat').on('change', function() {
+            no_rawat = $(this).val();
+            $.ajax({
+                url: 'askep/anak/detail',
+                data: {
+                    no_rawat: no_rawat,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    console.log(response)
+                    $('.tensi').html(': ' + response.td + ' mmHG');
+                    $('.nadi').html(': ' + response.nadi + ' x/menit');
+                    $('.respirasi').html(': ' + response.rr + ' x/menit');
+                    $('.suhu').html(': ' + response.suhu + ' <sup>o</sup>C');
+                    $('.gcs').html(': ' + response.gcs);
+                    $('.bb').html(': ' + response.bb + ' Kg');
+                    $('.tb').html(': ' + response.bb + ' Cm');
+                    $('.lp').html(': ' + response.lp + ' Cm');
+                    $('.ld').html(': ' + response.ld + ' Cm');
+                    $('.lk').html(': ' + response.lk + ' Cm');
+                    $('.keluhan_utama').html(': ' + response.keluhan_utama);
+                    $('.rpd').html(': ' + response.rpd);
+                    $('.rpk').html(': ' + response.rpk);
+                    $('.rpo').html(': ' + response.rpo);
+                    $('.alergi').html(': ' + response.alergi);
+                    $('.anakke').html(': ' + response.anakke + ', dari ' + response.darisaudara +
+                        ' bersaudara');
+                    $('.caralahir').html(': ' + response.caralahir + ' ( ' + response.ket_caralahir +
+                        ' )');
+                    $('.umurkelahiran').html(': ' + response.umurkelahiran);
+                    $('.kelainanbawaan').html(': ' + response.kelainanbawaan + ' (' + response
+                        .ket_kelainan_bawaan + ' )');
+
+                    $.map(response.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
+                        console.log('imunisasi', imunisasi)
+                    })
+                }
+            });
+
+        })
 
         function ambilAskepKebidanan(no_rkm_medis) {
             $.ajax({
