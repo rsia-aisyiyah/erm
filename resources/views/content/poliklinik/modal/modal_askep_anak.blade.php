@@ -9,7 +9,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <table class="tb-askep table table-striped mt-3" width="100%">
+                            <table class="tb-askep table table-striped" width="100%">
                                 <tr>
                                     <th colspan="2">IDENTITAS</th>
                                 </tr>
@@ -41,7 +41,9 @@
                         </div>
                         <div class="col-sm-12">
                             <select class="form-select form-select-sm" id="opt-rawat" class=""
-                                style="border-radius:0px;"></select>
+                                style="border-radius:0px;">
+
+                            </select>
 
                             <table class="tb-askep table table-striped mt-3" width="100%">
                                 <tr>
@@ -125,60 +127,121 @@
                             </table>
                         </div>
                         <div class="col-sm-12">
-                            <table class="tb-askep table table-striped table-bordered" width="100%">
+                            <table class="tb-askep-imunisasi table table-striped table-bordered" width="100%">
                                 <thead>
                                     <tr>
-                                        <th colspan="6">III. RIWAYAT IMUNISASI
+                                        <th colspan="7">IV. RIWAYAT IMUNISASI
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Nama Imunisasi
+                                        </th>
+                                        <th>
+                                            Ke-1
+                                        </th>
+                                        <th>
+                                            Ke-2
+                                        </th>
+                                        <th>
+                                            Ke-3
+                                        </th>
+                                        <th>
+                                            Ke-4
+                                        </th>
+                                        <th>
+                                            Ke-5
+                                        </th>
+                                        <th>
+                                            Ke-6
                                         </th>
                                     </tr>
                                 </thead>
+                                <tbody>
+
+                                </tbody>
 
 
                             </table>
-                            <table class="tb-askep table table-striped table-bordered" width="100%">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Tanggal</th>
-                                    <th>Tempat & Penolong</th>
-                                    <th>Usia Hamil</th>
-                                    <th>Persalinan & Penyulit</th>
-                                    <th>Anak</th>
-                                </tr>
-                                <tbody class="r_persalinan">
+                            <table class="tb-askep table table-striped" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th colspan="7">V. RIWAYAT TUMBUH KEMBANG
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Usia Tengkurap</td>
+                                        <td class="usiatengkurap"></td>
+                                        <td>Usia Berdiri</td>
+                                        <td class="usiaberdiri"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Usia Duduk</td>
+                                        <td class="usiaduduk"></td>
+                                        <td>Usia Gigi Pertama</td>
+                                        <td class="usiagigipertama"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Usia Jalan</td>
+                                        <td class="usiaberjalan"></td>
+                                        <td>Usia Membaca</td>
+                                        <td class="usiamembaca"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Usia Menulis</td>
+                                        <td class="usiamenulis"></td>
+                                        <td>Gangguan Perkembangan/Emosi</td>
+                                        <td class="wajah"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="tb-askep table table-striped" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th colspan="7">VI. FUNGSIONAL
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Alat Bantu</td>
+                                        <td class="alat_bantu"></td>
+                                        <td>Prothesa</td>
+                                        <td class="prothesa"></td>
+                                        <td>Aktivitas Sehari-hari</td>
+                                        <td class="aktifitas"></td>
+                                    </tr>
 
                                 </tbody>
                             </table>
-                            <table class="tb-askep table table-striped table-bordered" width="100%">
-                                <tr>
-                                    <td class="r_hamil">
-                                        Riwayat Ginekologi
-                                    </td>
-                                    <td colspan="5">
-                                        : <span class="ginekologi"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Riwayat Kebiasaan
-                                    </td>
-                                    <td colspan="5">
-                                        : <span class="kebiasaan"></span>, Merokok : <span class="kebiasaan1"></span>,
-                                        Alkohol : <span class="kebiasaan2"></span>,Obat Tidur/Narkoba : <span
-                                            class="kebiasaan3"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Riwayat KB
-                                    </td>
-                                    <td colspan="5">
-                                        : <span class="kb"></span>,
-                                        Lamanya : <span class="ket_kb"></span>.
-                                        Komplikasi : <span class="komplikasi"></span>.
-                                        Berhenti : <span class="berhenti"></span>.
-                                        Alasan : <span class="alasan"></span>.
-                                    </td>
-                                </tr>
+                            <table class="tb-askep table table-striped" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th colspan="7">VI. RIWAYAT PSIKO SOSIAL, SPIRITUAL & BUDAYA
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Status Psikologis</td>
+                                        <td class="status_psiko"></td>
+                                        <td>Edukasi</td>
+                                        <td class="edukasi"></td>
+                                        <td>Pengasuh</td>
+                                        <td class="pengasuh"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hubungan Keluarga</td>
+                                        <td class="hub_keluarga"></td>
+                                        <td>Status Ekonomi</td>
+                                        <td class="ekonomi"></td>
+                                        <td>Budaya</td>
+                                        <td class="budaya"></td>
+                                    </tr>
+
+                                </tbody>
                             </table>
 
 
@@ -197,12 +260,16 @@
 </div>
 @push('script')
     <script>
-        $('#modalAskep').on('shown.bs.modal', function() {
+        $('#modalAskepAnak').on('shown.bs.modal', function() {
             isModalShow = true;
         })
-        $('#modalAskep').on('hidden.bs.modal', function() {
+        $('#modalAskepAnak').on('hidden.bs.modal', function() {
             isModalShow = false;
+            var nomorImun = '';
             $('.r_persalinan').empty();
+            $('.tb-askep-imunisasi tbody').empty()
+            $('.imunisasi').remove()
+            $('select .opt-asesmen-anak').remove()
         })
     </script>
 @endpush
