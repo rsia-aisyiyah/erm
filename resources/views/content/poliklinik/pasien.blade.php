@@ -720,84 +720,99 @@
                 },
                 dataType: 'JSON',
                 success: function(response) {
-                    $('#opt-rawat').append('<option value="" disabled selected>PILIH TANGGAL ASESMEN</option>')
-                    $.map(response, function(data) {
-                        console.log(data)
-                        $('#opt-rawat').append('<option class="opt-asesmen-anak" value=' + data
-                            .no_rawat + '>' + formatTanggal(
-                                data.tanggal) + ' - ' + data.no_rawat +
-                            '</option>')
-                        $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
-                        $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' : ': Perempuan')
-                        $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa
-                            .tgl_registrasi));
-                        $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
-                        $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) +
-                            ' / ' + data.reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
-                        $('.anamnesis').html(': ' + data.informasi);
-                        $('.tensi').html(': ' + data.td + ' mmHG');
-                        $('.nadi').html(': ' + data.nadi + ' x/menit');
-                        $('.respirasi').html(': ' + data.rr + ' x/menit');
-                        $('.suhu').html(': ' + data.suhu + ' <sup>o</sup>C');
-                        $('.gcs').html(': ' + data.gcs);
-                        $('.bb').html(': ' + data.bb + ' Kg');
-                        $('.tb').html(': ' + data.bb + ' Cm');
-                        $('.lp').html(': ' + data.lp + ' Cm');
-                        $('.ld').html(': ' + data.ld + ' Cm');
-                        $('.lk').html(': ' + data.lk + ' Cm');
-                        $('.keluhan_utama').html(': ' + data.keluhan_utama);
-                        $('.rpd').html(': ' + data.rpd);
-                        $('.rpk').html(': ' + data.rpk);
-                        $('.rpo').html(': ' + data.rpo);
-                        $('.alergi').html(': ' + data.alergi);
-                        $('.anakke').html(': ' + data.anakke + ', dari ' + data.darisaudara +
-                            ' bersaudara');
-                        $('.caralahir').html(': ' + data.caralahir + ' ( ' + data
-                            .ket_caralahir +
-                            ' )');
-                        $('.umurkelahiran').html(': ' + data.umurkelahiran);
-                        $('.kelainanbawaan').html(': ' + data.kelainanbawaan + ' (' + data
-                            .ket_kelainan_bawaan + ' )');
+                    if (Object.keys(response).length > 0) {
+                        $('#opt-rawat').append(
+                            '<option value="" disabled selected>PILIH TANGGAL ASESMEN</option>')
+                        $.map(response, function(data) {
+                            console.log(data)
+                            $('#opt-rawat').append('<option class="opt-asesmen-anak" value=' + data
+                                .no_rawat + '>' + formatTanggal(
+                                    data.tanggal) + ' - ' + data.no_rawat +
+                                '</option>')
+                            $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
+                            $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' :
+                                ': Perempuan')
+                            $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa
+                                .tgl_registrasi));
+                            $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
+                            $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien
+                                    .tgl_lahir) +
+                                ' / ' + data.reg_periksa.umurdaftar + ' ' + data.reg_periksa
+                                .sttsumur);
+                            $('.anamnesis').html(': ' + data.informasi);
+                            $('.tensi').html(': ' + data.td + ' mmHG');
+                            $('.nadi').html(': ' + data.nadi + ' x/menit');
+                            $('.respirasi').html(': ' + data.rr + ' x/menit');
+                            $('.suhu').html(': ' + data.suhu + ' <sup>o</sup>C');
+                            $('.gcs').html(': ' + data.gcs);
+                            $('.bb').html(': ' + data.bb + ' Kg');
+                            $('.tb').html(': ' + data.bb + ' Cm');
+                            $('.lp').html(': ' + data.lp + ' Cm');
+                            $('.ld').html(': ' + data.ld + ' Cm');
+                            $('.lk').html(': ' + data.lk + ' Cm');
+                            $('.keluhan_utama').html(': ' + data.keluhan_utama);
+                            $('.rpd').html(': ' + data.rpd);
+                            $('.rpk').html(': ' + data.rpk);
+                            $('.rpo').html(': ' + data.rpo);
+                            $('.alergi').html(': ' + data.alergi);
+                            $('.anakke').html(': ' + data.anakke + ', dari ' + data.darisaudara +
+                                ' bersaudara');
+                            $('.caralahir').html(': ' + data.caralahir + ' ( ' + data
+                                .ket_caralahir +
+                                ' )');
+                            $('.umurkelahiran').html(': ' + data.umurkelahiran);
+                            $('.kelainanbawaan').html(': ' + data.kelainanbawaan + ' (' + data
+                                .ket_kelainan_bawaan + ' )');
 
-                        namaImunisasi = '';
-                        $('.tb-askep-imunisasi tbody').empty()
-                        $('.imunisasi').remove()
-                        $.map(data.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
-                            if (namaImunisasi != imunisasi.master_imunisasi.nama_imunisasi) {
-                                namaImunisasi = imunisasi.master_imunisasi.nama_imunisasi
-                                html = '<tr class="imunisasi ' + imunisasi.kode_imunisasi + '">'
-                                html += '<td>' + namaImunisasi + '</td>';
+                            namaImunisasi = '';
+                            $('.tb-askep-imunisasi tbody').empty()
+                            $('.imunisasi').remove()
+                            $.map(data.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
+                                if (namaImunisasi != imunisasi.master_imunisasi
+                                    .nama_imunisasi) {
+                                    namaImunisasi = imunisasi.master_imunisasi.nama_imunisasi
+                                    html = '<tr class="imunisasi ' + imunisasi.kode_imunisasi +
+                                        '">'
+                                    html += '<td>' + namaImunisasi + '</td>';
 
-                                html += '</tr>'
-                                $('.tb-askep-imunisasi tbody').append(html)
-                            }
-                            nomorImun = '<td><i class="bi bi-check-lg text-success"></i></td>'
-                            $('.' + imunisasi.kode_imunisasi).append(nomorImun)
+                                    html += '</tr>'
+                                    $('.tb-askep-imunisasi tbody').append(html)
+                                }
+                                nomorImun =
+                                    '<td><i class="bi bi-check-lg text-success"></i></td>'
+                                $('.' + imunisasi.kode_imunisasi).append(nomorImun)
+                            })
+
+
+                            $('.usiatengkurap').html(': ' + data.usiatengkurap);
+                            $('.usiaduduk').html(': ' + data.usiaduduk);
+                            $('.usiaberdiri').html(': ' + data.usiaberdiri);
+                            $('.usiagigipertama').html(': ' + data.usiagigipertama);
+                            $('.usiaberjalan').html(': ' + data.usiaberjalan);
+                            $('.usiamembaca').html(': ' + data.usiamembaca);
+                            $('.usiamenulis').html(': ' + data.usiamenulis);
+                            $('.wajah').html(': ' + data.wajah);
+                            $('.alat_bantu').html(': ' + data.alat_bantu);
+                            $('.prothesa').html(': ' + data.prothesa);
+                            $('.aktifitas').html(': ' + data.aktifitas);
+                            $('.status_psiko').html(': ' + data.status_psiko + ' (' + data.ket_psiko +
+                                ' )');
+                            $('.edukasi').html(': ' + data.edukasi + ' (' + data.ket_edukasi + ' )');
+                            $('.hub_keluarga').html(': ' + data.hub_keluarga);
+                            $('.ekonomi').html(': ' + data.ekonomi);
+                            $('.pengasuh').html(': ' + data.pengasuh + ' ( ' + data.ket_pengasuh +
+                                ' )');
+                            $('.budaya').html(': ' + data.budaya + ' ( ' + data.ket_budaya + ' )');
+
                         })
 
+                        $('#modalAskepAnak').modal('show');
+                    } else {
+                        Swal.fire(
+                            'Kosong!', 'Belum ada data asesmen', 'error'
+                        );
+                    }
 
-                        $('.usiatengkurap').html(': ' + data.usiatengkurap);
-                        $('.usiaduduk').html(': ' + data.usiaduduk);
-                        $('.usiaberdiri').html(': ' + data.usiaberdiri);
-                        $('.usiagigipertama').html(': ' + data.usiagigipertama);
-                        $('.usiaberjalan').html(': ' + data.usiaberjalan);
-                        $('.usiamembaca').html(': ' + data.usiamembaca);
-                        $('.usiamenulis').html(': ' + data.usiamenulis);
-                        $('.wajah').html(': ' + data.wajah);
-                        $('.alat_bantu').html(': ' + data.alat_bantu);
-                        $('.prothesa').html(': ' + data.prothesa);
-                        $('.aktifitas').html(': ' + data.aktifitas);
-                        $('.status_psiko').html(': ' + data.status_psiko + ' (' + data.ket_psiko +
-                            ' )');
-                        $('.edukasi').html(': ' + data.edukasi + ' (' + data.ket_edukasi + ' )');
-                        $('.hub_keluarga').html(': ' + data.hub_keluarga);
-                        $('.ekonomi').html(': ' + data.ekonomi);
-                        $('.pengasuh').html(': ' + data.pengasuh + ' ( ' + data.ket_pengasuh + ' )');
-                        $('.budaya').html(': ' + data.budaya + ' ( ' + data.ket_budaya + ' )');
-
-                    })
-
-                    $('#modalAskepAnak').modal('show');
                 }
             });
         }
