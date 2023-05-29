@@ -1,7 +1,9 @@
 @extends('index')
 
 @section('contents')
-    @if (session()->get('pegawai')->nama == 'direksi')
+    @if (session()->get('pegawai')->nama == 'direksi' ||
+            session()->get('pegawai')->bidang == 'Kebidanan' ||
+            session()->get('pegawai')->bidang == 'Keperawatan')
         <div class="row gy-2">
             <div class="col-lg-3 col-md-12 col-sm-12">
                 <div class="card">
@@ -61,16 +63,10 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Poliklinik Umum</h5>
                         <div class="d-grid gap-2">
-                            @foreach ($data as $d)
-                                {{-- {{ $d }} --}}
-                                @if ($d->dokter->kd_sps == 'S0007')
-                                    <a href="poliklinik/{{ $d->kd_poli }}?dokter={{ $d->dokter->kd_dokter }}"
-                                        class="btn text-light"
-                                        style="background-color: #6f42c1">{{ $d->dokter->nm_dokter }} <br>
-                                        {{ $d->nama }}
-                                    </a>
-                                @endif
-                            @endforeach
+                            <a href="poliklinik/P006?dokter=" class="btn text-light"
+                                style="background-color: #dc3700;height:55px; padding-top:10px;font-size:20px">POLIKLINIK
+                                UMUM<br>
+                            </a>
                         </div>
                     </div>
                 </div>

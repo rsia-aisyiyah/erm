@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">Poli : {{ $poli->nm_poli }}</h5>
                     <p style="background-color: #0067dd;color:white;padding:5px">
-                        Dokter : <strong>{{ $dokter->nm_dokter }}</strong>
+                        <strong>{{ Request::get('dokter') ? 'Dokter : ' . $dokter->nm_dokter : '' }}</strong>
                     </p>
                     <table>
                         <tr style="height: 25px">
@@ -78,7 +78,7 @@
         var id = '';
         var isModalShow = false;
         var kd_poli = '{{ $poli->kd_poli }}';
-        var kd_dokter = '{{ $dokter->kd_dokter }}';
+        var kd_dokter = "{{ Request::get('dokter') }}";
 
         function reloadTabelPoli() {
             hitungPanggilan();
@@ -102,6 +102,7 @@
         $(document).ready(function() {
             hitungPanggilan();
             reloadTabelPoli();
+            // alert(kd_dokter)
 
         })
 
