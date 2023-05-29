@@ -41,9 +41,11 @@
                                             style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                                     </td>
                                     <td width="45%" colspan="2">
-                                        <input type="text" class="form-control form-control-sm" id="nama"
+                                        <input type="search" class="form-control form-control-sm" id="nama"
                                             name="nama" placeholder=""
-                                            style="font-size:12px;min-height:12px;border-radius:0" readonly>
+                                            style="font-size:12px;min-height:12px;border-radius:0"
+                                            onkeyup="cariPetugas(this)" autocomplete="off">
+                                        <div class="list_petugas"></div>
 
                                     </td>
                                 </tr>
@@ -185,6 +187,9 @@
                                 <li class="nav-item">
                                     <a href="#racikan" class="nav-link" data-bs-toggle="tab">RACIKAN</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="#riwayat" class="nav-link" data-bs-toggle="tab">RIWAYAT RESEP</a>
+                                </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="umum">
@@ -232,6 +237,23 @@
                                         onclick="tambahRacikan()">Tambah
                                         Racikan</button>
                                 </div>
+                                <div class="tab-pane fade" id="riwayat">
+                                    <table class="table table-responsive" id="tb-resep-riwayat" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>No Resep</th>
+                                                <th>Obat/Racikan</th>
+                                                <th>Jumlah</th>
+                                                <th>Aturan Pakai</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="body_riwayat" class="align-top">
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -251,6 +273,77 @@
     <script>
         function hapusBaris(param) {
             console.log($(this).parent().remove())
+        }
+
+        function riwayatResep() {
+            no_rm = $('#no_rm').val();
+            $.ajax({
+                url: '/erm/pasien/ambil/' + no_rm,
+                method: 'GET',
+                success: function(response) {
+                    html = '';
+                    $.map(response.reg_periksa, function(reg) {
+                        if (Object.keys(reg.resep_obat).length > 0) {
+                            console.log(reg)
+                            $.map(reg.resep_obat, function(resep) {
+
+                                html += '<tr>';
+                                if (Object.keys(resep.resep_dokter).length > 0 || Object.keys(
+                                        resep.resep_racikan).length > 0) {
+                                    html += '<td>' + formatTanggal(resep.tgl_peresepan) +
+                                        '</td>';
+                                    html += '<td>' + resep.no_resep + '</td>';
+                                    html += '<td class="align-top">';
+                                    // html += ;
+                                    $.map(resep.resep_dokter, function(dokter) {
+                                        html += dokter.data_barang.nama_brng + '<br/>';
+                                    })
+                                    $.map(resep.resep_racikan, function(racik) {
+                                        html += '<b>Racikan : ' + racik
+                                            .nama_racik + '</b><br/>';
+                                        html += '<ul>';
+                                        $.map(racik.detail_racikan, function(detail) {
+                                            html += '<li>';
+                                            html += detail.data_barang
+                                                .nama_brng;
+                                            html += '</li>';
+                                        })
+                                        html += '</ul>';
+                                    })
+                                    html += '</td>';
+                                    html += '<td class="align-top">';
+                                    $.map(resep.resep_dokter, function(dokter) {
+                                        html += dokter.jml +
+                                            '<br/>';
+                                    })
+                                    $.map(resep.resep_racikan, function(racik) {
+                                        html += racik.jml_dr +
+                                            '<br/>';
+                                    })
+                                    html += '</td>';
+                                    html += '<td class="align-top">';
+                                    $.map(resep.resep_dokter, function(dokter) {
+                                        html += dokter.aturan_pakai +
+                                            '<br/>';
+                                    })
+                                    $.map(resep.resep_racikan, function(racik) {
+                                        html += racik.aturan_pakai +
+                                            '<br/>';
+                                    })
+                                    html += '</td>';
+                                    // html +=
+                                    //     '<td><button class="btn btn-warning btn-sm" onclick="copyResep(\'' +
+                                    //     resep.no_resep +
+                                    //     '\')"><i class="bi bi-clipboard-check-fill"></i> Copy</button></td>';
+                                }
+                                html += '</tr>';
+                            })
+                        }
+                    })
+
+                    $('#tb-resep-riwayat tbody').append(html)
+                }
+            })
         }
 
         function simpanObat() {
@@ -856,7 +949,9 @@
             $('.list_obat').fadeOut();
             $('.list_aturan').fadeOut();
             $('.list_racik').fadeOut();
+
         });
+
 
         function tambahUmum() {
             no_resep = $('.no_resep').val();
@@ -1027,15 +1122,14 @@
         }
 
         function cekResep(no_rawat) {
-            $('#body_umum').empty();
-            $('#body_racikan').empty();
+
             $.ajax({
                 url: '/erm/resep/obat/ambil',
                 data: {
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    console.log(response)
+                    riwayatResep();
                     if (Object.keys(response).length > 0) {
                         $.map(response, function(res) {
                             if (Object.keys(res.resep_dokter).length > 0) {
@@ -1170,10 +1264,47 @@
             $('#alergi').val('-')
             $('#nadi').val('-');
             $('#spo2').val('-');
+            $('#body_umum').empty();
+            $('#body_racikan').empty();
+            $('#body_riwayat').empty();
+
         });
 
         function ambilNoRawat(no_rawat) {
             id = no_rawat;
+        }
+
+        function cariPetugas(nama) {
+            // console.log()
+            // alert(nama)
+            $.ajax({
+                url: '/erm/petugas/cari',
+                data: {
+                    'q': nama.value
+                },
+                success: function(response) {
+
+                    html =
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                    $.map(response, function(data) {
+                        html += '<li>'
+                        html += '<a data-id="' + data.nip +
+                            '" class="dropdown-item" onclick="setPetugas(this)">' + data.nama +
+                            '</a>'
+                        html += '</li>'
+                    })
+                    html += '</ul>';
+                    $('.list_petugas').fadeIn();
+                    $('.list_petugas').html(html);
+                    console.log('Respon Petugas', response);
+                },
+            })
+        }
+
+        function setPetugas(param) {
+            $('#nik').val($(param).data('id'));
+            $('#nama').val($(param).text());
+            $('.list_petugas').fadeOut();
         }
     </script>
 @endpush

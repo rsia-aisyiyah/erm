@@ -49,10 +49,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pasien', [PasienController::class, 'index']);
     Route::get('/pasien/cari', [PasienController::class, 'search']);
-    Route::get('/pasien/show/{no_rkm_medis}', [
-        PasienController::class,
-        'show',
-    ]);
+    Route::get('/pasien/ambil/{no_rkm_medis}', [PasienController::class, 'ambil']);
+
     Route::get('/periksa/show/{no_rkm_medis}', [
         RegPeriksaController::class, 'show',
     ]);
