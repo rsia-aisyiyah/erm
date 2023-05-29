@@ -45,7 +45,10 @@ class PoliklinikController extends Controller
         $pasienPoli = RegPeriksa::where('tgl_registrasi', $sekarang)
             ->with(['pasien', 'dokter', 'penjab', 'upload', 'pemeriksaanRalan'])
             ->where('kd_poli', $kd_poli)
-            ->where('kd_dokter', $kd_dokter)->orderBy('no_reg', 'ASC');
+            ->orderBy('no_reg', 'ASC');
+
+        $pasienPoli = $kd_dokter ? $pasienPoli->where('kd_dokter', $kd_dokter) : $pasienPoli;
+
         return $pasienPoli;
     }
     public function jumlahPasienPoli(Request $request)
@@ -74,7 +77,8 @@ class PoliklinikController extends Controller
     }
     public function viewPoliPasien($kd_poli, Request $request)
     {
-        $pasien = $this->poliPasien($kd_poli, $request->dokter);
+        $kd_dokter = $request->dokter ? $request->dokter : '';
+        $pasien = $this->poliPasien($kd_poli, $kd_dokter);
         $poliklinik = $this->namaPoli($kd_poli);
         $dokter = $this->dokterPoli($request->dokter);
         $jmlUpload = 0;
@@ -82,7 +86,8 @@ class PoliklinikController extends Controller
             $jmlUpload = $jmlUpload + $p->upload_count;
         }
 
-        // return $jmlUpload;
+        // return $pasien;
+        // // return $jmlUpload;
         return view('content.poliklinik.pasien', [
             'pasien' => $pasien->get(),
             'jumlah' => $pasien->count(),
