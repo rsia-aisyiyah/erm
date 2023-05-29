@@ -21,9 +21,9 @@ class PasienController extends Controller
         }
         return response()->json($pasien);
     }
-    public function show($no_rkm_medis)
+    public function ambil($no_rkm_medis)
     {
-        $pasien = Pasien::where('no_rkm_medis', $no_rkm_medis)->first();
+        $pasien = Pasien::where('no_rkm_medis', $no_rkm_medis)->with(['regPeriksa.resepObat.resepDokter.dataBarang', 'regPeriksa.resepObat.resepRacikan.detailRacikan.dataBarang'])->first();
         return response()->json($pasien);
     }
 }

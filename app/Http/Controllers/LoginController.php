@@ -44,8 +44,9 @@ class LoginController extends Controller
                 return redirect('/resep');
             } else if ($pegawai->petugas->kd_jbtn == 'J017') {
                 return redirect('/registrasi');
+            } else if ($pegawai->petugas->bidang == 'Dokter Umum') {
             } else {
-                return redirect('/poliklinik');
+                return redirect('/poliklinik/P006?dokter=' . $request->get('username'));
             }
         } else {
             return back()->with('error', 'Login Gagal, Periksa Kembali NIK dan Password');

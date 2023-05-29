@@ -16,11 +16,18 @@ use function PHPUnit\Framework\isEmpty;
 
 class PoliklinikController extends Controller
 {
+
+    protected $dokter;
+    public function __construct()
+    {
+        $this->dokter = new DokterController();
+    }
     public function index()
     {
         $poliklinik = $this->poliDokter();
         return view('content.poliklinik.poliklinik', [
             'data' => $poliklinik,
+            'umum' => $this->dokter->ambilUmum(),
         ]);
     }
     public function poliDokter()

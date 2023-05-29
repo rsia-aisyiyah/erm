@@ -21,4 +21,11 @@ class DokterController extends Controller
         $data = $dokter->get();
         return response()->json(['Message' => 'Berhasil', 'data' => $data], 200);
     }
+    public function ambilUmum()
+    {
+        $dokter = Dokter::where('status', '1')
+            ->where('kd_sps', 'S0007')
+            ->with('pegawai', 'spesialis', 'mappingPoli.poliklinik')->get();
+        return $dokter;
+    }
 }
