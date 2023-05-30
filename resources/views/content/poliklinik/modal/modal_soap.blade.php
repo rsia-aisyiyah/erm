@@ -1122,6 +1122,9 @@
         }
 
         function cekResep(no_rawat) {
+            $('#body_umum').empty();
+            $('#body_racikan').empty();
+            $('#body_riwayat').empty();
 
             $.ajax({
                 url: '/erm/resep/obat/ambil',
