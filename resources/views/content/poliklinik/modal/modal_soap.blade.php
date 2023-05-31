@@ -331,10 +331,10 @@
                                             '<br/>';
                                     })
                                     html += '</td>';
-                                    // html +=
-                                    //     '<td><button class="btn btn-warning btn-sm" onclick="copyResep(\'' +
-                                    //     resep.no_resep +
-                                    //     '\')"><i class="bi bi-clipboard-check-fill"></i> Copy</button></td>';
+                                    html +=
+                                        '<td><button class="btn btn-warning btn-sm" onclick="copyResep(\'' +
+                                        resep.no_resep +
+                                        '\')" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy</button></td>';
                                 }
                                 html += '</tr>';
                             })
@@ -343,6 +343,23 @@
 
                     $('#tb-resep-riwayat tbody').append(html)
                 }
+            })
+        }
+
+        function copyResep(resep) {
+            console.log(ambilResep(resep))
+            Swal.fire({
+                title: 'Yakin ?',
+                text: "Anda mengcopy resep ini",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak',
+            }).then((result) => {
+
+
             })
         }
 
