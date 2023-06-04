@@ -73,23 +73,22 @@
 
 
         function reloadTabelResep() {
+            // setInterval(function() {
+            $('#tb_resep').DataTable().destroy();
+            tbResep();
             hitungResep();
-            setInterval(function() {
-                $('#tb_resep').DataTable().destroy();
-                tbResep();
-                // if (isModalShow == false) {
-                Swal.fire({
-                    title: 'Memuat ulang data resep!',
-                    position: 'top-end',
-                    toast: true,
-                    icon: 'success',
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                // }
-                hitungResep();
-            }, 30000);
+            // if (isModalShow == false) {
+            // Swal.fire({
+            //     title: 'Memuat ulang data resep!',
+            //     position: 'top-end',
+            //     toast: true,
+            //     icon: 'success',
+            //     timerProgressBar: true,
+            //     showConfirmButton: false,
+            //     timer: 1500
+            // })
+            // }
+            // }, 30000);
         }
 
         function hitungResep() {
@@ -204,6 +203,7 @@
 
         function tampilResep(no_resep) {
             // no_resep = $('#no_resep').val(no_resep)
+            reloadTabelResep();
             $('#modalResepObat').modal('show');
             $.ajax({
                 url: 'resep/obat/ambil',

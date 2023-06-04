@@ -80,28 +80,11 @@
         var kd_poli = '{{ $poli->kd_poli }}';
         var kd_dokter = "{{ Request::get('dokter') }}";
 
-        function reloadTabelPoli() {
-            hitungPanggilan();
-            tb_pasien();
-            setInterval(function() {
-                $('#tb_pasien').DataTable().destroy();
-                tb_pasien();
-                if (isModalShow == false) {
-                    Swal.fire({
-                        title: 'Memuat ulang data register!',
-                        position: 'top-end',
-                        toast: true,
-                        icon: 'success',
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            }, 120000);
-        }
+
         $(document).ready(function() {
+            tb_pasien();
             hitungPanggilan();
-            reloadTabelPoli();
+            // reloadTabelPoli();
             // alert(kd_dokter)
 
         })
@@ -155,8 +138,9 @@
                         timerProgressBar: true,
                         showConfirmButton: false,
                         timer: 1500,
-                    })
-
+                    });
+                    hitungPanggilan();
+                    reloadTabelPoli();
                     $('#modalSoap').modal('hide');
                 }
             })
@@ -220,6 +204,9 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
+                    // console.log(response)
+                    riwayatResep(response.no_rkm_medis)
+                    reloadTabelPoli();
                     if (response.reg_periksa) {
                         $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
                             .pasien.nm_pasien + ' / ' + hitungUmur(response.reg_periksa.pasien.tgl_lahir) :
@@ -264,6 +251,78 @@
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr, status, error)
+                }
+            })
+        }
+
+        function riwayatResep(no_rm) {
+            // no_rm = $('#no_rm').val();
+            // console.log(no_rm)
+            $.ajax({
+                url: '/erm/pasien/ambil/' + no_rm,
+                method: 'GET',
+                success: function(response) {
+                    html = '';
+                    $.map(response.reg_periksa, function(reg) {
+                        if (Object.keys(reg.resep_obat).length > 0) {
+                            // console.log(reg)
+                            $.map(reg.resep_obat, function(resep) {
+
+                                html += '<tr>';
+                                if (Object.keys(resep.resep_dokter).length > 0 || Object.keys(
+                                        resep.resep_racikan).length > 0) {
+                                    html += '<td>' + formatTanggal(resep.tgl_peresepan) +
+                                        '</td>';
+                                    html += '<td>' + resep.no_resep + '</td>';
+                                    html += '<td class="align-top">';
+                                    // html += ;
+                                    $.map(resep.resep_dokter, function(dokter) {
+                                        html += dokter.data_barang.nama_brng + '<br/>';
+                                    })
+                                    $.map(resep.resep_racikan, function(racik) {
+                                        html += '<b>Racikan : ' + racik
+                                            .nama_racik + '</b><br/>';
+                                        html += '<ul>';
+                                        $.map(racik.detail_racikan, function(detail) {
+                                            html += '<li>';
+                                            html += detail.data_barang
+                                                .nama_brng;
+                                            html += '</li>';
+                                        })
+                                        html += '</ul>';
+                                    })
+                                    html += '</td>';
+                                    html += '<td class="align-top">';
+                                    $.map(resep.resep_dokter, function(dokter) {
+                                        html += dokter.jml +
+                                            '<br/>';
+                                    })
+                                    $.map(resep.resep_racikan, function(racik) {
+                                        html += racik.jml_dr +
+                                            '<br/>';
+                                    })
+                                    html += '</td>';
+                                    html += '<td class="align-top">';
+                                    $.map(resep.resep_dokter, function(dokter) {
+                                        html += dokter.aturan_pakai +
+                                            '<br/>';
+                                    })
+                                    $.map(resep.resep_racikan, function(racik) {
+                                        html += racik.aturan_pakai +
+                                            '<br/>';
+                                    })
+                                    html += '</td>';
+                                    // html +=
+                                    //     '<td><button class="btn btn-warning btn-sm" onclick="copyResep(\'' +
+                                    //     resep.no_resep +
+                                    //     '\')" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy</button></td>';
+                                }
+                                html += '</tr>';
+                            })
+                        }
+                    })
+
+                    $('#tb-resep-riwayat tbody').append(html)
                 }
             })
         }
@@ -336,7 +395,7 @@
             id = $('.panggil-' + urut).data('id');
             hitung_panggilan = $('#hitung-panggil').val();
             text_recall = $('.panggil-' + urut).text()
-
+            reloadTabelPoli();
 
             if (hitung_panggilan < 2 || text_recall == 'RE-CALL') {
                 $('.selesai-' + urut).prop('disabled', false);
@@ -387,7 +446,7 @@
 
         function selesai(urut) {
             id = $('.panggil-' + urut).data('id');
-            console.log(id)
+            reloadTabelPoli();
             Swal.fire({
                 title: 'Yakin pemeriksaan selesai ?',
                 icon: 'warning',
@@ -428,6 +487,7 @@
         }
 
         function batal(urut) {
+            reloadTabelPoli();
             $('.panggil-' + urut).prop('class', 'btn btn-success btn-sm mb-2 panggil-' + urut + '');
             $('.panggil-' + urut).removeAttr('style');
             $('.panggil-' + urut).css({
@@ -771,8 +831,10 @@
                             $.map(data.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
                                 if (namaImunisasi != imunisasi.master_imunisasi
                                     .nama_imunisasi) {
-                                    namaImunisasi = imunisasi.master_imunisasi.nama_imunisasi
-                                    html = '<tr class="imunisasi ' + imunisasi.kode_imunisasi +
+                                    namaImunisasi = imunisasi.master_imunisasi
+                                        .nama_imunisasi
+                                    html = '<tr class="imunisasi ' + imunisasi
+                                        .kode_imunisasi +
                                         '">'
                                     html += '<td>' + namaImunisasi + '</td>';
 
@@ -796,9 +858,11 @@
                             $('.alat_bantu').html(': ' + data.alat_bantu);
                             $('.prothesa').html(': ' + data.prothesa);
                             $('.aktifitas').html(': ' + data.aktifitas);
-                            $('.status_psiko').html(': ' + data.status_psiko + ' (' + data.ket_psiko +
+                            $('.status_psiko').html(': ' + data.status_psiko + ' (' + data
+                                .ket_psiko +
                                 ' )');
-                            $('.edukasi').html(': ' + data.edukasi + ' (' + data.ket_edukasi + ' )');
+                            $('.edukasi').html(': ' + data.edukasi + ' (' + data.ket_edukasi +
+                                ' )');
                             $('.hub_keluarga').html(': ' + data.hub_keluarga);
                             $('.ekonomi').html(': ' + data.ekonomi);
                             $('.pengasuh').html(': ' + data.pengasuh + ' ( ' + data.ket_pengasuh +
@@ -847,7 +911,8 @@
                     $('.alergi').html(': ' + response.alergi);
                     $('.anakke').html(': ' + response.anakke + ', dari ' + response.darisaudara +
                         ' bersaudara');
-                    $('.caralahir').html(': ' + response.caralahir + ' ( ' + response.ket_caralahir +
+                    $('.caralahir').html(': ' + response.caralahir + ' ( ' + response
+                        .ket_caralahir +
                         ' )');
                     $('.umurkelahiran').html(': ' + response.umurkelahiran);
                     $('.kelainanbawaan').html(': ' + response.kelainanbawaan + ' (' + response
@@ -879,9 +944,11 @@
                     $('.alat_bantu').html(': ' + response.alat_bantu);
                     $('.prothesa').html(': ' + response.prothesa);
                     $('.aktifitas').html(': ' + response.aktifitas);
-                    $('.status_psiko').html(': ' + response.status_psiko + ' (' + response.ket_psiko +
+                    $('.status_psiko').html(': ' + response.status_psiko + ' (' + response
+                        .ket_psiko +
                         ' )');
-                    $('.edukasi').html(': ' + response.edukasi + ' (' + response.ket_edukasi + ' )');
+                    $('.edukasi').html(': ' + response.edukasi + ' (' + response.ket_edukasi +
+                        ' )');
                     $('.hub_keluarga').html(': ' + response.hub_keluarga);
                     $('.ekonomi').html(': ' + response.ekonomi);
                     $('.pengasuh').html(': ' + response.pengasuh + ' ( ' + response.ket_pengasuh +
@@ -908,7 +975,8 @@
                         $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' : ': Perempuan')
                         $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa.tgl_registrasi));
                         $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
-                        $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) + ' / ' +
+                        $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) +
+                            ' / ' +
                             data
                             .reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
                         $('.anamnesis').html(': ' + data.informasi);
@@ -934,7 +1002,8 @@
                         $('.serviks').html(': ' + data.serviks + ' Cm');
                         $('.ketuban').html(': ' + data.ketuban + ' kep/bok');
                         $('.hodge').html(': ' + data.hodge);
-                        $('.inspekulo').html(': ' + data.inspekulo + ' ,<br/>Hasil : ' + data.ket_inspekulo);
+                        $('.inspekulo').html(': ' + data.inspekulo + ' ,<br/>Hasil : ' + data
+                            .ket_inspekulo);
                         $('.ctg').html(': ' + data.ctg + ' ,<br/>Hasil : ' + data.ket_ctg);
                         $('.lakmus').html(': ' + data.lakmus + ' ,<br/>Hasil : ' + data.ket_lakmus);
                         $('.lab').html(': ' + data.lab + ' ,<br/>Hasil : ' + data.ket_lab);
@@ -965,8 +1034,10 @@
                         $('.hidup').text(data.hidup);
                         $('.ginekologi').text(data.ginekologi);
                         $('.kebiasaan').text(data.kebiasaan + ', ' + data.ket_kebiasaan);
-                        $('.kebiasaan1').text(data.kebiasaan1 + ', ' + data.ket_kebiasaan1 + ' Batang /hari');
-                        $('.kebiasaan2').text(data.kebiasaan2 + ', ' + data.ket_kebiasaan2 + ' Botol /hari');
+                        $('.kebiasaan1').text(data.kebiasaan1 + ', ' + data.ket_kebiasaan1 +
+                            ' Batang /hari');
+                        $('.kebiasaan2').text(data.kebiasaan2 + ', ' + data.ket_kebiasaan2 +
+                            ' Botol /hari');
                         $('.kebiasaan3').text(data.kebiasaan3);
                         $('.kb').text(data.kb + ' , ', +data.ket_kb);
                         $('.kb').text(data.kb);
@@ -981,7 +1052,8 @@
                             html = '<tr>';
                             html += '<td>' + no + '</td>'
                             html += '<td>' + formatTanggal(riwayat.tgl_thn) + '</td>'
-                            html += '<td>' + riwayat.tempat_persalinan + '</br>' + riwayat.penolong +
+                            html += '<td>' + riwayat.tempat_persalinan + '</br>' + riwayat
+                                .penolong +
                                 '</td>'
                             html += '<td>' + riwayat.usia_hamil + '</td>'
                             html += '<td> Persalinan : ' + riwayat.jenis_persalinan +

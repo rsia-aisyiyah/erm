@@ -7,12 +7,12 @@
                 <span>MENU</span>
             </h6>
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link {{ Request::is('registrasi') ? 'active' : '' }}" href="/erm/registrasi">
                     <i class="bi bi-pen  align-text-bottom"></i>
                     Pendaftaran
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
                     <i class="bi bi-people-fill align-text-bottom"></i>

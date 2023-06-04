@@ -376,6 +376,13 @@
         }
         var data = {};
 
+
+        function reloadTabelPoli() {
+            hitungPanggilan();
+            $('#tb_pasien').DataTable().destroy();
+            tb_pasien();
+        }
+
         function simpan() {
             var images = []
 
@@ -423,8 +430,6 @@
                         text: 'Data Berhasil Diproses',
                         showConfirmButton: false,
                         timer: 1500
-                        // text: 'Something went wrong!',
-                        // footer: '<a href>Why do I have this issue?</a>'
                     })
                 },
                 success: function(msg) {
@@ -443,12 +448,12 @@
                     if ($('#tb_pasien').length > 0) {
                         $('#tb_pasien').DataTable().destroy();
                         tb_pasien();
-                        hitungUpload();
                     }
                     showForm(data.no_rawat, data.kategori);
                     Swal.fire(
                         'Berhasil!', 'Berkas sudah terupload di server', 'success'
                     )
+                    reloadTabelPoli();
 
                 },
                 fail: function(jqXHR, status) {
