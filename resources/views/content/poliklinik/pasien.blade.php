@@ -206,7 +206,6 @@
                 success: function(response) {
                     // console.log(response)
                     riwayatResep(response.no_rkm_medis)
-                    reloadTabelPoli();
                     if (response.reg_periksa) {
                         $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
                             .pasien.nm_pasien + ' / ' + hitungUmur(response.reg_periksa.pasien.tgl_lahir) :
@@ -544,44 +543,54 @@
                 }],
                 initComplete: function(setting, json) {
                     $.map(json.data, function(val, index) {
-                        $.ajax({
-                            url: 'askep/kebidanan',
-                            data: {
-                                no_rkm_medis: val.no_rkm_medis,
-                            },
-                            dataType: 'JSON',
-                        }).done(function(response) {
-                            if (response.success == true) {
-                                $('#icon-askep-' + textRawat(val.no_rawat)).removeClass(
-                                    'bi bi-file-bar-graph-fill')
-                                $('#btn-askep-' + textRawat(val.no_rawat)).removeClass(
-                                    'btn-primary')
-                                $('#icon-askep-' + textRawat(val.no_rawat)).addClass(
-                                    'bi bi-check2-circle')
-                                $('#btn-askep-' + textRawat(val.no_rawat)).addClass(
-                                    'btn-success')
-                            }
-                        })
-                    })
-                    $.map(json.data, function(val, index) {
-                        $.ajax({
-                            url: 'askep/anak',
-                            data: {
-                                no_rkm_medis: val.no_rkm_medis,
-                            },
-                            dataType: 'JSON',
-                        }).done(function(response) {
-                            if (Object.keys(response).length > 0) {
-                                $('#icon-askep-' + textRawat(val.no_rawat)).removeClass(
-                                    'bi bi-file-bar-graph-fill')
-                                $('#btn-askep-' + textRawat(val.no_rawat)).removeClass(
-                                    'btn-primary')
-                                $('#icon-askep-' + textRawat(val.no_rawat)).addClass(
-                                    'bi bi-check2-circle')
-                                $('#btn-askep-' + textRawat(val.no_rawat)).addClass(
-                                    'btn-success')
-                            }
-                        })
+                        console.log(val)
+                        if (val.kd_poli == 'P001' || val.kd_poli == 'P007' || val.kd_poli ==
+                            'P009') {
+                            $.ajax({
+                                url: 'askep/kebidanan',
+                                data: {
+                                    no_rkm_medis: val.no_rkm_medis,
+                                },
+                                dataType: 'JSON',
+                            }).done(function(response) {
+                                if (response.success == true) {
+                                    $('#icon-askep-' + textRawat(val.no_rawat)).removeClass(
+                                        'bi bi-file-bar-graph-fill')
+                                    $('#btn-askep-' + textRawat(val.no_rawat)).removeClass(
+                                        'btn-primary')
+                                    $('#icon-askep-' + textRawat(val.no_rawat)).addClass(
+                                        'bi bi-check2-circle')
+                                    $('#btn-askep-' + textRawat(val.no_rawat)).addClass(
+                                        'btn-success')
+                                }
+                            })
+
+                        } else if (val.kd_poli == 'P003' || val.kd_poli == 'P008') {
+                            $.map(json.data, function(val, index) {
+                                $.ajax({
+                                    url: 'askep/anak',
+                                    data: {
+                                        no_rkm_medis: val.no_rkm_medis,
+                                    },
+                                    dataType: 'JSON',
+                                }).done(function(response) {
+                                    if (Object.keys(response).length > 0) {
+                                        $('#icon-askep-' + textRawat(val.no_rawat))
+                                            .removeClass(
+                                                'bi bi-file-bar-graph-fill')
+                                        $('#btn-askep-' + textRawat(val.no_rawat))
+                                            .removeClass(
+                                                'btn-primary')
+                                        $('#icon-askep-' + textRawat(val.no_rawat))
+                                            .addClass(
+                                                'bi bi-check2-circle')
+                                        $('#btn-askep-' + textRawat(val.no_rawat))
+                                            .addClass(
+                                                'btn-success')
+                                    }
+                                })
+                            })
+                        }
                     })
                 },
                 ajax: {
