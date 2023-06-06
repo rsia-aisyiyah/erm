@@ -204,8 +204,7 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    // console.log(response)
-                    riwayatResep(response.no_rkm_medis)
+                    // console.log('wlwkwkwkwkw', response)
                     if (response.reg_periksa) {
                         $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
                             .pasien.nm_pasien + ' / ' + hitungUmur(response.reg_periksa.pasien.tgl_lahir) :
@@ -215,6 +214,7 @@
                         $('#p_jawab').val(response.reg_periksa.p_jawab ? 'P. JAWAB : ' + response.reg_periksa
                             .p_jawab : '-')
                         cekAlergi(response.reg_periksa.no_rkm_medis)
+                        riwayatResep(response.reg_periksa.no_rkm_medis)
                     } else {
 
                         $('#nama_pasien').val(response.pasien.nm_pasien ? response.pasien
@@ -222,6 +222,7 @@
                         $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
                         $('#p_jawab').val(response.p_jawab ? 'P. JAWAB : ' + response.p_jawab : '-')
 
+                        riwayatResep(response.no_rkm_medis)
                         cekAlergi(response.no_rkm_medis)
                     }
 
@@ -243,7 +244,6 @@
                     $('#berat').val(response.berat ? response.berat : '-')
                     $('#gcs').val(response.gcs ? response.gcs : '-')
                     $('#respirasi').val(response.respirasi ? response.respirasi : '-')
-                    // $('#alergi').val(response.alergi ? response.alergi : '-')
                     $('#nadi').val(response.nadi ? response.nadi : '-')
                     $('#spo2').val(response.spo2 ? response.spo2 : '-')
 
@@ -259,13 +259,12 @@
                 url: '/erm/pasien/ambil/' + no_rm,
                 method: 'GET',
                 success: function(response) {
-                    html = '';
                     $.map(response.reg_periksa, function(reg) {
                         if (Object.keys(reg.resep_obat).length > 0) {
                             // console.log(reg)
+                            html = '';
                             $.map(reg.resep_obat, function(resep) {
-
-                                html += '<tr>';
+                                html = '<tr>';
                                 if (Object.keys(resep.resep_dokter).length > 0 || Object.keys(
                                         resep.resep_racikan).length > 0) {
                                     html += '<td>' + formatTanggal(resep.tgl_peresepan) +
@@ -315,11 +314,11 @@
                                         '\')" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy</button></td>';
                                 }
                                 html += '</tr>';
+                                $('#tb-resep-riwayat tbody').append(html)
                             })
                         }
                     })
 
-                    $('#tb-resep-riwayat tbody').append(html)
                 }
             })
         }

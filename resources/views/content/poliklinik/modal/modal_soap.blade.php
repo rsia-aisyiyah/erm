@@ -320,6 +320,7 @@
                     let dataRacikan;
                     let no_resep = setNoResep();
                     let no_rawat = $('#nomor_rawat').val();
+                    let no_racik = setNoRacik(no_resep)
                     $.map(resep, function(resep) {
                         if (Object.keys(ambilResep(no_resep)).length == 0) {
                             $.ajax({
@@ -345,7 +346,7 @@
                                     data: {
                                         '_token': "{{ csrf_token() }}",
                                         'no_resep': no_resep,
-                                        'no_racik': setNoRacik(no_resep),
+                                        'no_racik': no_racik,
                                         'nama_racik': racik.nama_racik,
                                         'kd_racik': racik.kd_racik,
                                         'jml_dr': racik.jml_dr,
@@ -354,17 +355,63 @@
                                         'keterangan': racik.keterangan,
                                     },
                                     success: function(response) {
-                                        cekResep(no_rawat)
-                                        riwayatResep($('#no_rm').val())
+                                        $.map(racik.detail_racikan, function(racikan) {
+                                            $.ajax({
+                                                url: '/erm/resep/racik/detail/simpan',
+                                                method: 'POST',
+                                                data: {
+                                                    '_token': '{{ csrf_token() }}',
+                                                    'no_resep': no_resep,
+                                                    'no_racik': no_racik,
+                                                    'kode_brng': racikan
+                                                        .kode_brng,
+                                                    'p1': racikan.p1,
+                                                    'p2': racikan.p2,
+                                                    'jml': racikan.jml,
+                                                    'kandungan': racikan
+                                                        .kandungan,
+                                                },
+                                                success: function(
+                                                    response) {}
+                                            })
+                                        })
+
+                                    }
+                                })
+                            })
+                        }
+
+                        if (Object.keys(resep.resep_dokter).length > 0) {
+                            $.map(resep.resep_dokter, function(rd) {
+                                $.ajax({
+                                    url: '/erm/resep/umum/simpan',
+                                    method: 'POST',
+                                    data: {
+                                        '_token': '{{ csrf_token() }}',
+                                        'no_resep': no_resep,
+                                        'kode_brng': rd.kode_brng,
+                                        'aturan_pakai': rd.aturan_pakai,
+                                        'jml': rd.jml,
+                                    },
+                                    success: function(response) {
+                                        // cekResep(no_rawat)
+                                        // riwayatResep($('#no_rm').val())
+                                        // tulisPlan();
+
                                     }
                                 })
                             })
                         }
 
 
+                        cekResep(no_rawat)
+                        riwayatResep($('#no_rm').val())
+                        tulisPlan();
+
+
                     })
                 }
-
+                return false;
             })
         }
 
@@ -780,7 +827,6 @@
         })
 
         $('tbody').on('click', '.remove', function() {
-
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
             let no_racik = $(this).attr('data-racik');
@@ -815,7 +861,8 @@
                                     method: 'DELETE',
                                 })
                                 $('#body_racik').empty();
-                                cekResep($('#nomor_rawat').val())
+                                cekResep($('#nomor_rawat').val());
+                                riwayatResep($('#no_rm').val());
                             },
                             error: function(request, status, error) {
                                 Swal.fire(
@@ -826,6 +873,7 @@
                             }
                         }).done(function() {
                             tulisPlan();
+                            riwayatResep($('#no_rm').val());
                         })
                     } else {
                         $.ajax({
@@ -842,6 +890,7 @@
                             }
                         }).done(function() {
                             tulisPlan();
+                            riwayatResep($('#no_rm').val());
                         })
                     }
                 }
@@ -1011,6 +1060,7 @@
             html += '</td>';
             html += '</tr>';
             $('#tb-resep tbody').append(html)
+            riwayatResep($('#no_rm').val())
 
         }
 
@@ -1143,20 +1193,20 @@
                 },
                 method: 'DELETE',
             })
+            riwayatResep($('#no_rm').val())
         }
 
         function cekResep(no_rawat) {
             $('#body_umum').empty();
             $('#body_racikan').empty();
             $('#body_riwayat').empty();
-
-
             $.ajax({
                 url: '/erm/resep/obat/ambil',
                 data: {
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
+                    html = '';
                     if (Object.keys(response).length > 0) {
                         $.map(response, function(res) {
                             if (Object.keys(res.resep_dokter).length > 0) {
@@ -1250,7 +1300,6 @@
                                                 '"><i class="bi bi-pen-fill"></i></button>'
                                             )
                                     }
-                                    // console.log(resep.no_resep + resep.no_racik)
                                 })
 
                             }
@@ -1259,7 +1308,6 @@
                         })
                     } else {
                         $('.no_resep').val(setNoResep())
-                        // setNoResep();
                     }
                 },
                 error: function(request, status, error) {
@@ -1270,7 +1318,7 @@
                     );
                 }
             }).done(function(response) {
-                // console.log(response)
+
             })
         }
 
