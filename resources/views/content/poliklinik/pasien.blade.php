@@ -255,8 +255,6 @@
         }
 
         function riwayatResep(no_rm) {
-            // no_rm = $('#no_rm').val();
-            // console.log(no_rm)
             $.ajax({
                 url: '/erm/pasien/ambil/' + no_rm,
                 method: 'GET',
@@ -311,10 +309,10 @@
                                             '<br/>';
                                     })
                                     html += '</td>';
-                                    // html +=
-                                    //     '<td><button class="btn btn-warning btn-sm" onclick="copyResep(\'' +
-                                    //     resep.no_resep +
-                                    //     '\')" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy</button></td>';
+                                    html +=
+                                        '<td><button class="btn btn-warning btn-sm" onclick="copyResep(\'' +
+                                        resep.no_resep +
+                                        '\')" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy</button></td>';
                                 }
                                 html += '</tr>';
                             })
@@ -340,7 +338,6 @@
                             if (val.pemeriksaan_ralan.alergi != '-' && val.pemeriksaan_ralan.alergi !=
                                 '') {
                                 alergi = val.pemeriksaan_ralan.alergi
-                                // console.log(val.pemeriksaan_ralan);
                             }
                         }
                     })
