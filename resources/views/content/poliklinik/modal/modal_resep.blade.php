@@ -314,7 +314,6 @@
 
         function simpanRacikan() {
             $.map(ambilTemplateRacik(), function(temp) {
-                console.log(temp)
                 if (Object.keys(temp).length > 0) {
                     simpanObatRacikanTemplate(temp.kode_brng)
                 }
