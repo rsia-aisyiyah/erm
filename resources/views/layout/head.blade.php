@@ -20,6 +20,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.toast.min.css') }}">
+    <link rel="icon" href="{{ asset('img/rsiap.ico') }}">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .card {
