@@ -345,6 +345,7 @@
                 }
             }).done(function() {
                 tulisPlan();
+                riwayatResep($('#no_rm').val());
             })
         }
 

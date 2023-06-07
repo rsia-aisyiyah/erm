@@ -255,6 +255,7 @@
         }
 
         function riwayatResep(no_rm) {
+            $('#tb-resep-riwayat tbody').empty()
             $.ajax({
                 url: '/erm/pasien/ambil/' + no_rm,
                 method: 'GET',
