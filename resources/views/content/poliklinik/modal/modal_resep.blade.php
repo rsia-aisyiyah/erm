@@ -53,7 +53,6 @@
                         </div>
                         <input type="hidden" value="" class="no_racik" />
                         <input type="hidden" value="" class="kps" />
-                        {{-- <input type="hidden" value="" class="kode_racik" /> --}}
                     </div>
                 </form>
             </div>
@@ -514,7 +513,6 @@
                     'nama': obat.value,
                 },
                 success: function(response) {
-                    // console.log(response)
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
                     $.map(response.data, function(data) {
@@ -529,7 +527,7 @@
                                             '" data-kapasitas="' + data.kapasitas +
                                             '" onclick="setObat(this, ' + no +
                                             ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                            data.nama_brng + '</a></li>'
+                                            data.nama_brng + ' - <span class="text-primary"><b><i> Stok ' + item.stok + '</b></i></span></a></li>'
                                     } else {
                                         html +=
                                             '<li class="disable" data-id="' + data
