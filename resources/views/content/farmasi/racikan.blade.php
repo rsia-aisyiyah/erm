@@ -53,7 +53,7 @@
 
     <div class="modal fade" id="modalTemplate" aria-labelledby="modalTemplate" aria-hidden="true"
         style="background-color: #00000062!important;">
-        <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content" style="border-radius:0px">
                 <div class="modal-header">
                     <h2 class="modal-title fs-5" id="">Pilih Obat</h2>
@@ -70,6 +70,7 @@
                                     <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
                                     <input type="text" autocomplete="off"
                                         class="form-control form-control-sm nm_racik mb-1 form-underline" name="nm_racik" readonly />
+                                    <input type="hidden" class="id_racik">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="nm_dokter" style="font-size:12px">Dokter</label>
@@ -80,7 +81,7 @@
                             </div>
                             <div class="row">
                                 <div class="container">
-                                    <table class="table table-racikan table-borderless">
+                                    <table class="table table-racikan table-stripped">
                                         <thead>
                                             <tr>
                                                 <th width="35%">Nama Obat</th>
@@ -93,7 +94,7 @@
                                         </tbody>
                                     </table>
                                     <button type="button" class="btn btn-success btn-sm"
-                                        onclick="tambahObat()"><i class="bi bi-plus-circle"></i> Tambah
+                                        onclick="tambahDetailObat()"><i class="bi bi-plus-circle"></i> Tambah
                                         Obat</button>
                                 </div>
                             </div>
@@ -102,7 +103,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="simpanDosisObat()"><i
+                    <button type="button" class="btn btn-primary btn-sm" onclick="simpanDetailTemplate()"><i
                             class="bi bi-save" data-bs-dismiss="modal"></i> Simpan</button>
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                             class="bi bi-x-circle"></i> Keluar</button>
@@ -154,7 +155,6 @@
 
             template = ambilTemplateRacikan(kd_dokter, nm_racik);
             if (Object.keys(template).length >= 1) {
-                console.log(template)
                 $.map(template, function(data) {
                     html = '<tr>'
                     html += '<td>' + data.nm_racik + '</td>'
@@ -167,7 +167,7 @@
                     html += '</td>'
                     html += '<td>' + data.dokter.nm_dokter + '</td>'
                     html += '<td><button class="btn btn-warning btn-sm" style="font-size:12px" onclick="ubahTemplate(' + data.id + ')"><i class="bi bi-pencil"></i></button><button class="btn btn-danger btn-sm" style="font-size:12px"><i class="bi bi-trash3-fill"></i></button></td>'
-                    html += '<tr>'
+                    html += '<td>'
                     $('#tb_template tbody').append(html)
                 })
 
@@ -176,7 +176,6 @@
         }
 
         function ubahTemplate(id) {
-
             $('#modalTemplate').modal('show')
 
             template = ambilTemplateRacikan(null, null, id);
@@ -184,8 +183,25 @@
             $('.kd_dokter').val(template.kd_dokter)
             $('.nm_dokter').val(template.dokter.nm_dokter)
             $('.nm_racik').val(template.nm_racik)
-            console.log(ambilTemplateRacikan(null, null, id))
+            $('.id_racik').val(template.id)
+
+            no = 1;
+            html = '';
+            $.map(template.detail_racik, function(temp) {
+                html += '<tr class="baris_' + no + '">'
+                html += '<td>' + temp.data_barang.nama_brng + '</td>'
+                html += '<td>' + temp.data_barang.kapasitas + ' mg</td>'
+                html += '<td><button class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill"></i></button></td>'
+                html += '</tr>'
+                no++;
+            })
+            html += '<input type="hidden" class="nomor" value="' + no + '">'
+            $('.table-racikan').append(html)
         }
+
+        $('#modalTemplate').on('hidden.bs.modal', function() {
+            $('.table-racikan tbody').empty();
+        })
 
         function setDokter(param) {
             // $('#nm_dokter').val($(param).data('id'));
@@ -201,11 +217,43 @@
 
         }
 
-        function tambahObat() {
+        function tambahDetailObat() {
+            no = $('.nomor').val();
 
+            html = '<tr class="baris_' + no + '">'
+            html += '<td><input type="hidden" id="kode_brng' + no + '" /><input class="form-control form-control-sm form-underline nama_obat_' + no + '" type="search" onkeyup="cariObatRacikan(this, ' + no + ')" id="nama_brng_' + no + '" name="nama_brng"/><div class="list_obat_' + no + '"></div></td>'
+            html += '<td><input type="text" readonly class="form-control form-control-sm form-underline" id="kps' + no + '"/></td>'
+            html += '</tr>'
+
+
+            $('.table-racikan tbody').append(html)
+            no = parseInt(no) + 1;
+            $('.nomor').val(no)
         }
 
+        function simpanDetailTemplate() {
+            let row = $('.table-racikan tbody tr').length
 
+            console.log(row)
+
+            arrInput = [];
+            response = false;
+
+            for (let no = 1; no <= row; no++) {
+                $.ajax({
+                    url: '/erm/resep/racik/template/detail/tambah',
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id_racik: $('.id_racik').val(),
+                        kode_brng: $("#kode_brng" + no).val(),
+                    },
+                    success: function(response) {
+                        console.log(response)
+                    }
+                })
+            }
+        }
 
 
         $('#buatTemplate').on('click', function() {
@@ -225,7 +273,6 @@
                     },
                     method: 'POST',
                     success: function(response) {
-                        console.log(response)
                         setTemplate();
                     }
                 })

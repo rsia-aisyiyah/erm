@@ -307,7 +307,6 @@
 
         function simpanDosisObat() {
             let banyakBaris = $('.table-racikan tbody tr').length
-            console.log(banyakBaris)
             arrInput = [];
             respon = false;
             for (let no = 1; no <= banyakBaris; no++) {
@@ -506,47 +505,7 @@
             });
         }
 
-        function cariObatRacikan(obat, no) {
-            $.ajax({
-                url: '/erm/obat/cari',
-                data: {
-                    'nama': obat.value,
-                },
-                success: function(response) {
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
-                    $.map(response.data, function(data) {
-                        $.map(data.gudang_barang, function(item) {
-                            if (data) {
-                                if (data.status != "0") {
-                                    if (item.stok != "0") {
-                                        html +=
-                                            '<li data-id="' +
-                                            data.kode_brng +
-                                            '" data-stok="' + item.stok +
-                                            '" data-kapasitas="' + data.kapasitas +
-                                            '" onclick="setObat(this, ' + no +
-                                            ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                            data.nama_brng + ' - <span class="text-primary"><b><i> Stok ' + item.stok + '</b></i></span></a></li>'
-                                    } else {
-                                        html +=
-                                            '<li class="disable" data-id="' + data
-                                            .kode_brng +
-                                            '" data-stok="' + item.stok +
-                                            '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
-                                            data.nama_brng + ' - Stok Kosong' +
-                                            '</a></i></li>'
-                                    }
-                                }
-                            }
-                        })
-                    })
-                    html += '</ul>';
-                    $('.list_obat_' + no).fadeIn();
-                    $('.list_obat_' + no).html(html);
-                }
-            })
-        }
+
 
         function setObat(param, no) {
             // console.log('wkwkwkwk')

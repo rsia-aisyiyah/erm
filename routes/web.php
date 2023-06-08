@@ -32,6 +32,7 @@ use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\PenilaianMedisRanapController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
+use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 
 Route::get('/login', function () {
@@ -164,6 +165,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/resep/racik/template/ambil', [RsiaMappingRacikanController::class, 'ambil']);
     Route::get('/resep/racik', [RsiaMappingRacikanController::class, 'index']);
     Route::post('/resep/racik/template/tambah', [RsiaMappingRacikanController::class, 'tambah']);
+    Route::post('/resep/racik/template/detail/tambah', [RsiaMappingRacikanDetailController::class, 'tambah']);
 
     Route::get('/pegawai/ambil', [PegawaiController::class, 'ambil']);
 

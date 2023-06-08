@@ -556,6 +556,58 @@
             $('#upload-image').css('visibility', 'hidden')
         }
 
+        function cariObatRacikan(obat, no) {
+            $.ajax({
+                url: '/erm/obat/cari',
+                data: {
+                    'nama': obat.value,
+                },
+                success: function(response) {
+                    html =
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                    $.map(response.data, function(data) {
+                        $.map(data.gudang_barang, function(item) {
+                            if (data) {
+                                if (data.status != "0") {
+                                    if (item.stok != "0") {
+                                        html +=
+                                            '<li data-id="' +
+                                            data.kode_brng +
+                                            '" data-stok="' + item.stok +
+                                            '" data-kapasitas="' + data.kapasitas +
+                                            '" data-nama ="' + data.nama_brng + '" onclick="setObat(this, ' + no +
+                                            ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                                            data.nama_brng + ' - <span class="text-primary"><b><i> Stok ' + item.stok + '</b></i></span></a></li>'
+                                    } else {
+                                        html +=
+                                            '<li class="disable" data-id="' + data
+                                            .kode_brng +
+                                            '" data-stok="' + item.stok +
+                                            '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
+                                            data.nama_brng + ' - Stok Kosong' +
+                                            '</a></i></li>'
+                                    }
+                                }
+                            }
+                        })
+                    })
+                    html += '</ul>';
+                    $('.list_obat_' + no).fadeIn();
+                    $('.list_obat_' + no).html(html);
+                }
+            })
+        }
+
+        function setObat(param, no) {
+            $('.nama_obat_' + no).val($(param).data('nama'));
+            $('#kode_brng' + no).val($(param).data('id'))
+            $('#kps' + no).val($(param).data('kapasitas'))
+            $('#p1' + no).val(1)
+            $('#p2' + no).val(1)
+            $('#jml_obat' + no).val(0)
+            $('#kandungan' + no).val(0)
+            $('.list_obat_' + no).fadeOut()
+        }
 
         function ambilTemplateRacikan(kd_dokter = '', nm_racik = '', id = '') {
             let template = '';
