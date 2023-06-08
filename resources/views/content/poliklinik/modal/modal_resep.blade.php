@@ -507,16 +507,16 @@
 
 
 
-        function setObat(param, no) {
-            // console.log('wkwkwkwk')
-            $('.nama_obat_' + no).val($(param).text());
-            $('#kode_brng' + no).val($(param).data('id'))
-            $('#kps' + no).val($(param).data('kapasitas'))
-            $('#p1' + no).val(1)
-            $('#p2' + no).val(1)
-            $('#jml_obat' + no).val(0)
-            $('#kandungan' + no).val(0)
-            $('.list_obat_' + no).fadeOut()
-        }
+        // function setObat(param, no) {
+        //     // console.log('wkwkwkwk')
+        //     $('.nama_obat_' + no).val($(param).text());
+        //     $('#kode_brng' + no).val($(param).data('id'))
+        //     $('#kps' + no).val($(param).data('kapasitas'))
+        //     $('#p1' + no).val(1)
+        //     $('#p2' + no).val(1)
+        //     $('#jml_obat' + no).val(0)
+        //     $('#kandungan' + no).val(0)
+        //     $('.list_obat_' + no).fadeOut()
+        // }
     </script>
 @endpush

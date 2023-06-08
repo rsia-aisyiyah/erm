@@ -889,7 +889,7 @@
                                             data.kode_brng +
                                             '" data-stok="' + item.stok +
                                             '" data-kapasitas="' + data.kapasitas +
-                                            '" onclick="ambilObat(this)"><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                                            '" data-nama="' + data.nama_brng + '" onclick="ambilObat(this)"><a class="dropdown-item" href="#" style="overflow:hidden">' +
                                             data.nama_brng + ' <span class="text-primary"><i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
                                     } else {
                                         html +=
@@ -1001,7 +1001,7 @@
         }
 
         function ambilObat(param) {
-            $('.nama_obat').val($(param).text());
+            $('.nama_obat').val($(param).data('nama'));
             $('.kode_obat').val($(param).data('id'))
         }
 
