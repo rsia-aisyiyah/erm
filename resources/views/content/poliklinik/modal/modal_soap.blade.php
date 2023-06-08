@@ -890,15 +890,15 @@
                                             '" data-stok="' + item.stok +
                                             '" data-kapasitas="' + data.kapasitas +
                                             '" onclick="ambilObat(this)"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                            data.nama_brng + '</a></li>'
+                                            data.nama_brng + ' <span class="text-primary"><i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
                                     } else {
                                         html +=
                                             '<li class="disable" data-id="' + data
                                             .kode_brng +
                                             '" data-stok="' + item.stok +
                                             '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
-                                            data.nama_brng + ' - Stok Kosong' +
-                                            '</a></i></li>'
+                                            data.nama_brng + ' - <b>Stok Kosong' +
+                                            '</b></a></i></li>'
                                     }
                                 }
                             }
