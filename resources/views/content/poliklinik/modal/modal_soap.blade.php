@@ -11,22 +11,16 @@
                         <label for="nomor_rawat" class="col-lg-2 col-sm-12 col-form-label" style="font-size:12px">No.
                             Rawat</label>
                         <div class="col-lg-2 col-sm-12 mb-2">
-                            <input type="text" class="form-control form-control-sm" id="nomor_rawat"
-                                name="nomor_rawat" placeholder=""
-                                style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                            <input type="text" class="form-control form-control-sm" id="nomor_rawat" name="nomor_rawat" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                         </div>
                         <div class="col-lg-2 col-sm-12 mb-2">
-                            <input type="text" class="form-control form-control-sm" id="no_rm" name="no_rm"
-                                placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                            <input type="text" class="form-control form-control-sm" id="no_rm" name="no_rm" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                         </div>
                         <div class="col-lg-3 col-sm-12 mb-2">
-                            <input type="text" class="form-control form-control-sm" id="nama_pasien"
-                                name="nama_pasien" placeholder=""
-                                style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                            <input type="text" class="form-control form-control-sm" id="nama_pasien" name="nama_pasien" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                         </div>
                         <div class="col-lg-2 col-sm-12 mb-2">
-                            <input type="text" class="form-control form-control-sm" id="p_jawab" name="p_jawab"
-                                placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                            <input type="text" class="form-control form-control-sm" id="p_jawab" name="p_jawab" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                         </div>
                     </div>
                     <hr style="margin:2px">
@@ -36,15 +30,10 @@
                                 <tr>
                                     <td width="20%">Dilakukan Oleh :</td>
                                     <td width="30%" colspan="2">
-                                        <input type="text" class="form-control form-control-sm" id="nik"
-                                            name="nik" placeholder=""
-                                            style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nik" name="nik" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                                     </td>
                                     <td width="45%" colspan="2">
-                                        <input type="search" class="form-control form-control-sm" id="nama"
-                                            name="nama" placeholder=""
-                                            style="font-size:12px;min-height:12px;border-radius:0"
-                                            onkeyup="cariPetugas(this)" autocomplete="off">
+                                        <input type="search" class="form-control form-control-sm" id="nama" name="nama" placeholder="" style="font-size:12px;min-height:12px;border-radius:0" onkeyup="cariPetugas(this)" autocomplete="off">
                                         <div class="list_petugas"></div>
 
                                     </td>
@@ -52,17 +41,13 @@
                                 <tr>
                                     <td>Subjek : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="4"
-                                            style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
-                                            onblur="cekKosong(this)"></textarea>
+                                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="4" style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Objek : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="4"
-                                            style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
-                                            onblur="cekKosong(this)"></textarea>
+                                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="4" style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -72,67 +57,34 @@
                                             <tr>
 
                                                 <td width="12%">
-                                                    Suhu (<sup>0</sup>C) : <input type="text"
-                                                        class="form-control form-control-sm" id="suhu"
-                                                        name="suhu" placeholder="" maxlength="5"
-                                                        style="font-size:12px;min-height:12px;border-radius:0;"
-                                                        value="-" onfocus="removeZero(this)"
-                                                        onblur="cekKosong(this)">
+                                                    Suhu (<sup>0</sup>C) : <input type="text" class="form-control form-control-sm" id="suhu" name="suhu" placeholder="" maxlength="5" style="font-size:12px;min-height:12px;border-radius:0;" value="-" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    Tinggi (Cm): <input type="text"
-                                                        class="form-control form-control-sm" id="tinggi"
-                                                        name="tinggi" placeholder="" maxlength="5"
-                                                        style="font-size:12px;min-height:12px;border-radius:0;"
-                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Tinggi (Cm): <input type="text" class="form-control form-control-sm" id="tinggi" name="tinggi" placeholder="" maxlength="5" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    Berat (Kg) : <input type="text"
-                                                        class="form-control form-control-sm" id="berat"
-                                                        name="berat" placeholder="" maxlength="5"
-                                                        style="font-size:12px;min-height:12px;border-radius:0;"
-                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Berat (Kg) : <input type="text" class="form-control form-control-sm" id="berat" name="berat" placeholder="" maxlength="5" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    Tensi : <input type="text" class="form-control form-control-sm"
-                                                        id="tensi" name="tensi" placeholder="" maxlength="8"
-                                                        style="font-size:12px;min-height:12px;border-radius:0;"
-                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Tensi : <input type="text" class="form-control form-control-sm" id="tensi" name="tensi" placeholder="" maxlength="8" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    Respirasi (/mnt): <input type="text"
-                                                        class="form-control form-control-sm" id="respirasi"
-                                                        name="respirasi" placeholder="" maxlength="3"
-                                                        style="font-size:12px;min-height:12px;border-radius:0;"
-                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Respirasi (/mnt): <input type="text" class="form-control form-control-sm" id="respirasi" name="respirasi" placeholder="" maxlength="3" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td width="12%">
-                                                    Nadi (/mnt) : <input type="text"
-                                                        class="form-control form-control-sm" id="nadi"
-                                                        name="nadi" placeholder="" maxlength="3"
-                                                        style="font-size:12px;min-height:12px;border-radius:0;"
-                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Nadi (/mnt) : <input type="text" class="form-control form-control-sm" id="nadi" name="nadi" placeholder="" maxlength="3" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    SpO2 (%): <input type="text"
-                                                        class="form-control form-control-sm" id="spo2"
-                                                        name="spo2" placeholder="" maxlength="3"
-                                                        style="font-size:12px;min-height:12px;border-radius:0;"
-                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    SpO2 (%): <input type="text" class="form-control form-control-sm" id="spo2" name="spo2" placeholder="" maxlength="3" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    GCS (E,V,M): <input type="text"
-                                                        class="form-control form-control-sm" id="gcs"
-                                                        name="gcs" placeholder="" maxlength="10"
-                                                        style="font-size:12px;min-height:12px;border-radius:0;"
-                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    GCS (E,V,M): <input type="text" class="form-control form-control-sm" id="gcs" name="gcs" placeholder="" maxlength="10" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
                                                     Kesadaran :
-                                                    <select class="form-select" name="kesadaran" id="kesadaran"
-                                                        style="font-size:12px;min-height:12px;border-radius:0;">
+                                                    <select class="form-select" name="kesadaran" id="kesadaran" style="font-size:12px;min-height:12px;border-radius:0;">
                                                         <option value="Compos Mentis">Compos Mentis</option>
                                                         <option value="Somnolence">Somnolence</option>
                                                         <option value="Sopor">Sopor</option>
@@ -141,10 +93,7 @@
                                                 </td>
                                                 <td width="12%">
                                                     Alergi :
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        id="alergi" name="alergi" placeholder=""
-                                                        style="font-size:12px;min-height:12px;border-radius:0;"
-                                                        onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                             </tr>
                                         </table>
@@ -153,18 +102,14 @@
                                 <tr>
                                     <td>Asesmen : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="4"
-                                            style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
-                                            onblur="cekKosong(this)"></textarea>
+                                        <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="4" style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td>Instruksi : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="4"
-                                            style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)"
-                                            onblur="cekKosong(this)"></textarea>
+                                        <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="4" style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -174,8 +119,7 @@
                                 <tr>
                                     <td>Plan : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="8"
-                                            style="font-size:12px;min-height:12px;border-radius:0;resize:none" readonly></textarea>
+                                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="8" style="font-size:12px;min-height:12px;border-radius:0;resize:none" readonly></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -193,8 +137,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="umum">
-                                    <table class="table table-stripped table-responsive" id="tb-resep"
-                                        width="100%">
+                                    <table class="table table-stripped table-responsive" id="tb-resep" width="100%">
                                         <thead>
                                             <tr>
                                                 <th width="18%">No. Resep</th>
@@ -208,11 +151,9 @@
 
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-primary btn-sm tambah_umum" type="button"
-                                        onclick="tambahUmum()">Tambah
+                                    <button class="btn btn-primary btn-sm tambah_umum" type="button" onclick="tambahUmum()">Tambah
                                         Obat</button>
-                                    <button class="btn btn-success btn-sm btn_simpan_resep" type="button"
-                                        style="visibility: hidden">Simpan
+                                    <button class="btn btn-success btn-sm btn_simpan_resep" type="button" style="visibility: hidden">Simpan
                                         Resep</button>
                                 </div>
                                 <div class="tab-pane fade" id="racikan">
@@ -233,8 +174,7 @@
 
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-primary btn-sm tambah_racik" type="button"
-                                        onclick="tambahRacikan()">Tambah
+                                    <button class="btn btn-primary btn-sm tambah_racik" type="button" onclick="tambahRacikan()">Tambah
                                         Racikan</button>
                                 </div>
                                 <div class="tab-pane fade" id="riwayat">
@@ -260,10 +200,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                        class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoap()"><i
-                        class="bi bi-save"></i>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Keluar</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoap()"><i class="bi bi-save"></i>
                     Simpan</button>
             </div>
         </div>
@@ -333,89 +271,79 @@
                                 },
                                 method: 'POST',
                                 success: function(response) {
-                                    if (Object.keys(resep.resep_racikan).length > 0) {
-                                        $.map(resep.resep_racikan, function(racik) {
-                                            $.ajax({
-                                                url: '/erm/resep/racik/simpan',
-                                                method: 'POST',
-                                                data: {
-                                                    '_token': "{{ csrf_token() }}",
-                                                    'no_resep': no_resep,
-                                                    'no_racik': no_racik,
-                                                    'nama_racik': racik
-                                                        .nama_racik,
-                                                    'kd_racik': racik.kd_racik,
-                                                    'jml_dr': racik.jml_dr,
-                                                    'aturan_pakai': racik
-                                                        .aturan_pakai,
-                                                    'keterangan': racik
-                                                        .keterangan,
-                                                },
-                                                success: function(response) {
-                                                    $.map(racik
-                                                        .detail_racikan,
-                                                        function(
-                                                            racikan) {
-                                                            $.ajax({
-                                                                url: '/erm/resep/racik/detail/simpan',
-                                                                method: 'POST',
-                                                                data: {
-                                                                    '_token': '{{ csrf_token() }}',
-                                                                    'no_resep': no_resep,
-                                                                    'no_racik': no_racik,
-                                                                    'kode_brng': racikan
-                                                                        .kode_brng,
-                                                                    'p1': racikan
-                                                                        .p1,
-                                                                    'p2': racikan
-                                                                        .p2,
-                                                                    'jml': racikan
-                                                                        .jml,
-                                                                    'kandungan': racikan
-                                                                        .kandungan,
-                                                                },
-                                                                success: function(
-                                                                    response
-                                                                ) {}
-                                                            })
-                                                        })
 
-                                                }
-                                            })
-                                        })
-                                    }
-
-                                    if (Object.keys(resep.resep_dokter).length > 0) {
-                                        $.map(resep.resep_dokter, function(rd) {
-                                            $.ajax({
-                                                url: '/erm/resep/umum/simpan',
-                                                method: 'POST',
-                                                data: {
-                                                    '_token': '{{ csrf_token() }}',
-                                                    'no_resep': no_resep,
-                                                    'kode_brng': rd.kode_brng,
-                                                    'aturan_pakai': rd
-                                                        .aturan_pakai,
-                                                    'jml': rd.jml,
-                                                },
-                                                success: function(response) {
-
-                                                }
-                                            })
-                                        })
-                                    }
                                 }
                             })
                         }
 
-                        cekResep(no_rawat)
-                        riwayatResep($('#no_rm').val())
-                        tulisPlan();
+                        if (Object.keys(resep.resep_racikan).length > 0) {
+                            $.map(resep.resep_racikan, function(racik) {
+                                $.ajax({
+                                    url: '/erm/resep/racik/simpan',
+                                    method: 'POST',
+                                    data: {
+                                        '_token': "{{ csrf_token() }}",
+                                        'no_resep': no_resep,
+                                        'no_racik': no_racik,
+                                        'nama_racik': racik.nama_racik,
+                                        'kd_racik': racik.kd_racik,
+                                        'jml_dr': racik.jml_dr,
+                                        'aturan_pakai': racik.aturan_pakai,
+                                        'keterangan': racik.keterangan,
+                                    },
+                                    success: function(response) {
+                                        $.map(racik.detail_racikan, function(racikan) {
+                                            $.ajax({
+                                                url: '/erm/resep/racik/detail/simpan',
+                                                method: 'POST',
+                                                data: {
+                                                    '_token': '{{ csrf_token() }}',
+                                                    'no_resep': no_resep,
+                                                    'no_racik': no_racik,
+                                                    'kode_brng': racikan.kode_brng,
+                                                    'p1': racikan.p1,
+                                                    'p2': racikan.p2,
+                                                    'jml': racikan.jml,
+                                                    'kandungan': racikan.kandungan,
+                                                },
+                                                success: function(response) {
 
+                                                }
+                                            })
+                                        })
+                                    }
+                                })
+                            })
+                            cekResep(no_rawat)
+                            riwayatResep($('#no_rm').val())
+                            tulisPlan();
+                        }
+                        if (Object.keys(resep.resep_dokter).length > 0) {
+                            $.map(resep.resep_dokter, function(rd) {
+                                $.ajax({
+                                    url: '/erm/resep/umum/simpan',
+                                    method: 'POST',
+                                    data: {
+                                        '_token': '{{ csrf_token() }}',
+                                        'no_resep': no_resep,
+                                        'kode_brng': rd.kode_brng,
+                                        'aturan_pakai': rd.aturan_pakai,
+                                        'jml': rd.jml,
+                                    },
+                                    success: function(response) {
 
-                    })
+                                    }
+                                })
+                            })
+                            $('#tb-resep-riwayat tbody').empty()
+                            cekResep(no_rawat)
+                            riwayatResep($('#no_rm').val())
+                            tulisPlan();
+                        }
+                    });
+
                 }
-                return false;
+
             })
         }
 
@@ -563,7 +491,6 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    // console.log('Tulis Plan', response)
                     teksRd = '';
                     teksRr = '';
                     $.map(response, function(res) {
@@ -906,19 +833,22 @@
             $.ajax({
                 url: '/erm/resep/racik/cari',
                 data: {
-                    'nama_racik': racik.value,
+                    'nm_': racik.value,
+                    'kd_dokter': "{{ Request::get('dokter') }}",
                 },
                 dataType: 'JSON',
                 success: function(response) {
+
+                    console.log(response)
 
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
                     $.map(response, function(data) {
                         html +=
                             '<li onclick="setNamaRacik(this)" data-nama="' + data
-                            .nama_racik +
-                            '"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                            data.nama_racik + '</a></li>'
+                            .nm_racik +
+                            '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                            data.nm_racik + '</a></li>'
                     })
                     html += '</ul>';
                     $('.list_racik').fadeIn();
@@ -934,7 +864,9 @@
 
         function setNamaRacik(racik) {
             nama_racik = $(racik).data('nama');
+            id_racik = $(racik).data('id');
             $('.nm_racik').val(nama_racik);
+            $('.id_racik').val(id_racik);
         }
 
         function cariObat(obat) {
@@ -1090,7 +1022,7 @@
             html += '</td>';
             html += '<td>';
             html +=
-                '<input type="text" autocomplete="off" onkeyup="cariRacikan(this)" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/><div class="list_racik"></div>';
+                '<input type="text" autocomplete="off" onkeyup="cariRacikan(this)" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/><input type="hidden" class="id_racik" /><div class="list_racik"></div>';
             html += '</td>';
 
             html += '<td>';
@@ -1210,7 +1142,6 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    html = '';
                     if (Object.keys(response).length > 0) {
                         $.map(response, function(res) {
                             if (Object.keys(res.resep_dokter).length > 0) {

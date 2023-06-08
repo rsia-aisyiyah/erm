@@ -262,8 +262,6 @@
                 success: function(response) {
                     $.map(response.reg_periksa, function(reg) {
                         if (Object.keys(reg.resep_obat).length > 0) {
-                            // console.log(reg)
-                            html = '';
                             $.map(reg.resep_obat, function(resep) {
                                 html = '<tr>';
                                 if (Object.keys(resep.resep_dokter).length > 0 || Object.keys(
@@ -310,9 +308,9 @@
                                     })
                                     html += '</td>';
                                     html +=
-                                        '<td><button class="btn btn-warning btn-sm" onclick="copyResep(\'' +
+                                        '<td><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(\'' +
                                         resep.no_resep +
-                                        '\')" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy</button></td>';
+                                        '\')" type="button"><i class="bi bi-clipboard-check-fill"></i></button></td>';
                                 }
                                 html += '</tr>';
                                 $('#tb-resep-riwayat tbody').append(html)

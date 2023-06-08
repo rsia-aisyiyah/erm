@@ -28,4 +28,13 @@ class DokterController extends Controller
             ->with('pegawai', 'spesialis', 'mappingPoli.poliklinik')->get();
         return $dokter;
     }
+
+    public function cari(Request $request)
+    {
+        $dokter = Dokter::where('status', '1')
+        ->where('nm_dokter','like', '%'.$request->nm_dokter.'%')
+        ->with('pegawai', 'spesialis')->get();
+
+        return response()->json($dokter);
+    }
 }

@@ -32,6 +32,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ Request::is('racikan') ? 'active' : '' }}" href="/erm/resep/racik">
+                    <i class="bi bi-pen  align-text-bottom"></i>
+                    Template Racikan
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ Request::is('ranap') ? 'active' : '' }}" href="/erm/ranap">
                     <i class="bi bi-hospital-fill align-text-bottom"></i>
                     Rawat Inap

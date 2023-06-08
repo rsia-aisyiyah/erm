@@ -152,88 +152,6 @@
                     Anda dapat menghapus / menambah daftar obat yang tercantum
                 </div>
                 <div class="row">
-                    {{-- <div class="col-lg-6 col-md-12 col-sm-12">
-                        <div class="obat_racik">
-                            <div class="row">
-                                <div class="col-lg-3 col-md-12 col-sm-12">
-                                    <label for="no_resep" style="font-size:12px">Nomor Resep</label>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <input type="text" autocomplete="off"
-                                        class="form-control form-control-sm no_resep mb-1" name="no_resep" readonly />
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-12">
-                                    <input type="text" autocomplete="off"
-                                        class="form-control form-control-sm nm_racik mb-1" name="nm_racik" readonly />
-                                </div>
-                                <div class="col-lg-2 col-md-4 col-sm-12">
-                                    <input type="text" autocomplete="off"
-                                        class="form-control form-control-sm jml mb-1" name="jml" readonly />
-                                </div>
-                                <div class="col-lg-3 col-md-12 col-sm-12">
-                                    <label for="nama_obat" style="font-size:12px">Nama Obat</label>
-                                </div>
-                                <div class="col-lg-9 col-md-12 col-sm-12">
-                                    <input type="hidden" class="kode_obat" />
-                                    <input type="search" autocomplete="off" onkeypress="cariObat(this)"
-                                        class="form-control form-control-sm nama_obat mb-1" name="nama_obat"
-                                        autofocus />
-                                    <div class="list_obat"></div>
-                                </div>
-                                <div class="col-lg-3 col-md-12 col-sm-12">
-                                    <label for="kps" style="font-size:12px">Kapasitas</label>
-                                </div>
-                                <div class="col-lg-9 col-md-12 col-sm-12 mb-1">
-                                    <input type="text" autocomplete="off" class="form-control form-control-sm kps" name="kps" onkeypress="return hanyaAngka(event)" readonly />
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12">
-                                    <label for="p1" class="" style="font-size:12px">P1</label>
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12 mt-1">
-                                    <input type="text" autocomplete="off" class="form-control form-control-sm p1"
-                                        name="p1" onkeypress="return hanyaAngka(event)" />
-                                </div>
-
-                                <div class="col-lg-1 col-md-3 col-sm-12">
-                                    <label for="p2" class="" style="font-size:12px">P2</label>
-                                </div>
-                                <div class="col-lg-5 col-md-3 col-sm-12 mt-1">
-                                    <input type="text" autocomplete="off"
-                                        class="form-control form-control-sm p2 mb-1" name="p2"
-                                        onkeypress="return hanyaAngka(event)" />
-                                </div>
-
-                                <div class="col-lg-3 col-md-12 col-sm-6">
-                                    <label for="kandungan" style="font-size:12px">Kandungan</label>
-                                </div>
-                                <div class="col-lg-9 col-md-12 col-sm-12 mb-1">
-                                    <input type="search" autocomplete="off"
-                                        class="form-control form-control-sm kandungan mb-1" name="kandungan" />
-                                </div>
-                                <div class="col-lg-3 col-md-12 col-sm-6">
-                                    <label for="jml_obat" class="" style="font-size:12px">Jml. Obat</label>
-                                </div>
-                                <div class="col-lg-9 col-md-12 col-sm-12 mb-1">
-                                    <input type="search" autocomplete="off"
-                                        class="form-control form-control-sm jml_obat mb-1" name="jml_obat"
-                                        onkeypress="return hanyaAngka(event)" readonly />
-                                </div>
-
-                                <div class="col-lg-12 col-md-12 col-sm-12 mb-1">
-                                    <button width="100%" type="button" class="btn btn-success btn-sm simpan-obat"
-                                        style="font-size:12px;" onclick="simpanObatRacikan()"><i
-                                            class="bi bi-save"></i> Simpan Obat</button> <button width="100%"
-                                        type="button" class="btn btn-warning btn-sm ubah-obat"
-                                        style="font-size:12px;display:none"><i class="bi bi-pen-fill"></i>
-                                        Ubah Kandungan</button> <button width="100%" type="button"
-                                        class="btn btn-danger btn-sm obat-baru" style="font-size:12px;display:none"
-                                        onclick="resetObatRacikan()"><i class="bi bi-arrow-clockwise"></i> Obat
-                                        Baru</button>
-                                </div>
-                                <input type="hidden" value="" class="no_racik" />
-                            </div>
-                        </div>
-                    </div> --}}
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="row">
                             <div class="col-md-3">
@@ -296,28 +214,26 @@
 </div>
 @push('script')
     <script>
-        function ambilTemplateRacik() {
-            hasil = '';
-            nama_racik = $('.nm_racik').val();
-            $.ajax({
-                async: false,
-                url: '/erm/resep/racik/template/ambil',
-                data: {
-                    'nama_racik': nama_racik,
-                },
-                success: function(response) {
-                    hasil = response;
-                }
-            })
-            return hasil;
-        }
+        // function ambilTemplateRacik() {
+        //     hasil = '';
+        //     nama_racik = $('.nm_racik').val();
+        //     $.ajax({
+        //         async: false,
+        //         url: '/erm/resep/racik/template/ambil',
+        //         data: {
+        //             'nama_racik': nama_racik,
+        //         },
+        //         success: function(response) {
+        //             hasil = response;
+        //         }
+        //     })
+        //     return hasil;
+        // }
 
         function simpanRacikan() {
-            $.map(ambilTemplateRacik(), function(temp) {
-                if (Object.keys(temp).length > 0) {
-                    simpanObatRacikanTemplate(temp.kode_brng)
-                }
-            })
+            id_racik = $('.id_racik').val();
+            template = ambilTemplateRacikan(null, null, id_racik);
+
             $.ajax({
                 url: '/erm/resep/racik/simpan',
                 data: {
@@ -333,6 +249,11 @@
                 },
                 method: 'POST',
                 success: function(response) {
+                    $.map(template.detail_racik, function(temp) {
+                        if (Object.keys(temp).length > 0) {
+                            simpanObatRacikanTemplate(temp.kode_brng)
+                        }
+                    })
                     cekResep($('#nomor_rawat').val())
                 },
                 error: function(response, message, detail) {
@@ -419,8 +340,6 @@
                 })
             }
             if (respon) {
-                // $('.table-racikan tbody').empty();
-                // ambilObatRacikan();
                 cekResep($('#nomor_rawat').val());
                 tulisPlan();
                 $('#modalObatRacik').modal('hide');

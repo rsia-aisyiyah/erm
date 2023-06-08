@@ -128,6 +128,7 @@ Route::middleware('auth')->group(function () {
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
 
     Route::get('dokter/ambil', [DokterController::class, 'ambil']);
+    Route::get('dokter/cari', [DokterController::class, 'cari']);
 
     Route::get('asmed/kebidanan', [PenilaianMedisKebidananController::class, 'index']);
 
@@ -161,6 +162,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/resep/racik/cari', [RsiaMappingRacikanController::class, 'cari']);
     Route::get('/resep/racik/template/ambil', [RsiaMappingRacikanController::class, 'ambil']);
+    Route::get('/resep/racik', [RsiaMappingRacikanController::class, 'index']);
+    Route::post('/resep/racik/template/tambah', [RsiaMappingRacikanController::class, 'tambah']);
 
     Route::get('/pegawai/ambil', [PegawaiController::class, 'ambil']);
 
