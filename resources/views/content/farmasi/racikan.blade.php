@@ -11,9 +11,11 @@
                     <form>
                         <div class="mb-2">
                             <label for="dokter" class="form-label">Dokter</label>
-                            <input type="search" class="form-control" id="dokter" aria-describedby="dokter" name="dokter" onkeyup="cariDokter(this)">
+                            <input type="search" class="form-control" id="dokter" aria-describedby="dokter" name="dokter"
+                                onkeyup="cariDokter(this)">
                             <div class="list_dokter"></div>
-                            <input type="hidden" class="form-control" id="kd_dokter" aria-describedby="kd_dokter" name="kd_dokter" value="">
+                            <input type="hidden" class="form-control" id="kd_dokter" aria-describedby="kd_dokter"
+                                name="kd_dokter" value="">
                         </div>
                         <div class="mb-2">
                             <label for="nm_racikan" class="form-label">Nama Racikan</label>
@@ -59,8 +61,7 @@
                     <h2 class="modal-title fs-5" id="">Pilih Obat</h2>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-primary" style="padding:10px;border-radius:0px;font-size:12px"
-                        role="alert">
+                    <div class="alert alert-primary" style="padding:10px;border-radius:0px;font-size:12px" role="alert">
                         Anda dapat menghapus / menambah daftar obat yang tercantum
                     </div>
                     <div class="row">
@@ -69,13 +70,15 @@
                                 <div class="col-md-6">
                                     <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
                                     <input type="text" autocomplete="off"
-                                        class="form-control form-control-sm nm_racik mb-1 form-underline" name="nm_racik" readonly />
+                                        class="form-control form-control-sm nm_racik mb-1 form-underline" name="nm_racik"
+                                        readonly />
                                     <input type="hidden" class="id_racik">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="nm_dokter" style="font-size:12px">Dokter</label>
                                     <input type="text" autocomplete="off"
-                                        class="form-control form-control-sm nm_dokter mb-1 form-underline" name="nm_dokter" readonly />
+                                        class="form-control form-control-sm nm_dokter mb-1 form-underline" name="nm_dokter"
+                                        readonly />
                                     <input type="hidden" class="kd_dokter" name="kd_dokter" />
                                 </div>
                             </div>
@@ -93,8 +96,8 @@
 
                                         </tbody>
                                     </table>
-                                    <button type="button" class="btn btn-success btn-sm"
-                                        onclick="tambahDetailObat()"><i class="bi bi-plus-circle"></i> Tambah
+                                    <button type="button" class="btn btn-success btn-sm" onclick="tambahDetailObat()"><i
+                                            class="bi bi-plus-circle"></i> Tambah
                                         Obat</button>
                                 </div>
                             </div>
@@ -135,7 +138,8 @@
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
                     $.map(response, function(data) {
                         html += '<li>'
-                        html += '<a data-id="' + data.kd_dokter + '" class="dropdown-item" onclick="setDokter(this)">' + data
+                        html += '<a data-id="' + data.kd_dokter +
+                            '" class="dropdown-item" onclick="setDokter(this)">' + data
                             .nm_dokter +
                             '</a>'
                         html += '</li>'
@@ -159,14 +163,28 @@
                     html = '<tr>'
                     html += '<td>' + data.nm_racik + '</td>'
                     html += '<td>'
+                    // if (Object.keys(data.detail_racik).length > 0) {
                     html += '<ul>'
                     $.map(data.detail_racik, function(detail) {
-                        html += '<li>' + detail.data_barang.nama_brng + '</li>'
+
+                        if (detail.data_barang) {
+                            html += '<li>' + detail.data_barang.nama_brng + '</li>'
+                        } else {
+                            html += 'BELUM ADA OBAT <br/>';
+                        }
+                        // html += '<li>' + detail.data_barang.nama_brng + '</li>'
+                        console.log(detail.data_barang)
                     })
                     html += '</ul>'
+
+                    // } else {
+                    // }
                     html += '</td>'
                     html += '<td>' + data.dokter.nm_dokter + '</td>'
-                    html += '<td><button class="btn btn-warning btn-sm" style="font-size:12px" onclick="ubahTemplate(' + data.id + ')"><i class="bi bi-pencil"></i></button><button class="btn btn-danger btn-sm" style="font-size:12px"><i class="bi bi-trash3-fill"></i></button></td>'
+                    html +=
+                        '<td><button class="btn btn-warning btn-sm" style="font-size:12px" onclick="ubahTemplate(' +
+                        data.id +
+                        ')"><i class="bi bi-pencil"></i></button><button class="btn btn-danger btn-sm" style="font-size:12px"><i class="bi bi-trash3-fill"></i></button></td>'
                     html += '<td>'
                     $('#tb_template tbody').append(html)
                 })
@@ -221,8 +239,12 @@
             no = $('.nomor').val();
 
             html = '<tr class="baris_' + no + '">'
-            html += '<td><input type="hidden" id="kode_brng' + no + '" /><input class="form-control form-control-sm form-underline nama_obat_' + no + '" type="search" onkeyup="cariObatRacikan(this, ' + no + ')" id="nama_brng_' + no + '" name="nama_brng"/><div class="list_obat_' + no + '"></div></td>'
-            html += '<td><input type="text" readonly class="form-control form-control-sm form-underline" id="kps' + no + '"/></td>'
+            html += '<td><input type="hidden" id="kode_brng' + no +
+                '" /><input class="form-control form-control-sm form-underline nama_obat_' + no +
+                '" type="search" onkeyup="cariObatRacikan(this, ' + no + ')" id="nama_brng_' + no +
+                '" name="nama_brng"/><div class="list_obat_' + no + '"></div></td>'
+            html += '<td><input type="text" readonly class="form-control form-control-sm form-underline" id="kps' + no +
+                '"/></td>'
             html += '</tr>'
 
 
