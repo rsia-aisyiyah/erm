@@ -43,4 +43,12 @@ class ResepDokterRacikanController extends Controller
         $resep = ResepDokterRacikan::where('no_racik', $request->no_racik)->where('no_resep', $request->no_resep)->delete();
         return response()->json($resep);
     }
+    public function ubah(Request $request)
+    {
+        $resep = ResepDokterRacikan::where('no_racik', $request->no_racik)->where('no_resep', $request->no_resep)->update([
+            'jml_dr' => $request->jml_dr,
+            'aturan_pakai' => $request->aturan_pakai,
+        ]);
+        return response()->json('Data berhasil diubah');
+    }
 }

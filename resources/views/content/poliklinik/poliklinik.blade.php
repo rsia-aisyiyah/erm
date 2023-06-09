@@ -1,9 +1,7 @@
 @extends('index')
 
 @section('contents')
-    @if (session()->get('pegawai')->nama == 'direksi' ||
-            session()->get('pegawai')->bidang == 'Kebidanan' ||
-            session()->get('pegawai')->bidang == 'Keperawatan')
+    @if (session()->get('pegawai')->nama == 'direksi' || session()->get('pegawai')->bidang == 'Kebidanan' || session()->get('pegawai')->bidang == 'Keperawatan')
         <div class="row gy-2">
             <div class="col-lg-3 col-md-12 col-sm-12">
                 <div class="card">
@@ -12,7 +10,7 @@
                         <div class="d-grid gap-2">
                             @foreach ($data as $d)
                                 @if ($d->dokter->kd_sps == 'S0001' && $d->kd_poli != 'U0017')
-                                    <a href="poliklinik/{{ $d->kd_poli }}?dokter={{ $d->dokter->kd_dokter }}"
+                                    <a style="font-size:12px" href="poliklinik/{{ $d->kd_poli }}?dokter={{ $d->dokter->kd_dokter }}"
                                         class="btn btn-primary">{{ $d->dokter->nm_dokter }} <br>
                                         {{ $d->nama }}
                                     </a>
@@ -29,7 +27,7 @@
                         <div class="d-grid gap-2">
                             @foreach ($data as $d)
                                 @if ($d->dokter->kd_sps == 'S0003' && $d->kd_poli != 'U0017')
-                                    <a href="poliklinik/{{ $d->kd_poli }}?dokter={{ $d->dokter->kd_dokter }}"
+                                    <a style="font-size:12px" href="poliklinik/{{ $d->kd_poli }}?dokter={{ $d->dokter->kd_dokter }}"
                                         class="btn btn-success">{{ $d->dokter->nm_dokter }} <br>
                                         {{ $d->nama }}
                                     </a>
@@ -49,7 +47,7 @@
                                 @if ($d->dokter->kd_sps == 'S0005')
                                     <a href="poliklinik/{{ $d->kd_poli }}?dokter={{ $d->dokter->kd_dokter }}"
                                         class="btn text-light"
-                                        style="background-color: #6f42c1">{{ $d->dokter->nm_dokter }} <br>
+                                        style="font-size:14px;background-color: #6f42c1">{{ $d->dokter->nm_dokter }} <br>
                                         {{ $d->nama }}
                                     </a>
                                 @endif

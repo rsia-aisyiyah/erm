@@ -136,24 +136,27 @@ Route::middleware('auth')->group(function () {
     Route::get('obat/', [DataBarangController::class, 'index']);
     Route::get('obat/cari', [DataBarangController::class, 'cari']);
 
-    Route::get('/aturan/cari', [ResepDokterController::class, 'cari']);
-
-
+    
+    
     Route::get('/resep', [ResepObatController::class, 'index']);
     Route::get('/resep/ambil/tabel', [ResepObatController::class, 'ambilTable']);
     Route::get('/resep/ambil/sekarang', [ResepObatController::class, 'ambilSekarang']);
-
-    Route::get('/resep/cari', [ResepDokterController::class, 'cari']);
+    
     Route::get('/resep/obat/akhir', [ResepObatController::class, 'akhir']);
     Route::get('/resep/obat/ambil', [ResepObatController::class, 'ambil']);
     Route::post('/resep/obat/simpan', [ResepObatController::class, 'simpan']);
     Route::delete('/resep/obat/hapus', [ResepObatController::class, 'hapus']);
-
+    
     Route::post('/resep/umum/simpan', [ResepDokterController::class, 'simpan']);
+    Route::post('/resep/umum/ubah', [ResepDokterController::class, 'ubah']);
     Route::delete('/resep/umum/hapus', [ResepDokterController::class, 'hapus']);
+    Route::get('/aturan/cari', [ResepDokterController::class, 'cari']);
+    Route::get('/resep/cari', [ResepDokterController::class, 'cari']);
+
 
     Route::get('/resep/racik/ambil', [ResepDokterRacikanController::class, 'ambil']);
     Route::post('/resep/racik/simpan', [ResepDokterRacikanController::class, 'simpan']);
+    Route::post('/resep/racik/ubah', [ResepDokterRacikanController::class, 'ubah']);
     Route::delete('/resep/racik/hapus', [ResepDokterRacikanController::class, 'hapus']);
 
     Route::get('/resep/racik/detail/ambil', [ResepDokterRacikanDetailController::class, 'ambil']);
@@ -163,6 +166,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/resep/racik/cari', [RsiaMappingRacikanController::class, 'cari']);
     Route::get('/resep/racik/template/ambil', [RsiaMappingRacikanController::class, 'ambil']);
+    Route::delete('/resep/racik/template/hapus', [RsiaMappingRacikanController::class, 'hapus']);
     Route::get('/resep/racik', [RsiaMappingRacikanController::class, 'index']);
     Route::post('/resep/racik/template/tambah', [RsiaMappingRacikanController::class, 'tambah']);
     Route::post('/resep/racik/template/detail/tambah', [RsiaMappingRacikanDetailController::class, 'tambah']);

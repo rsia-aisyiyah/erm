@@ -153,25 +153,31 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="no_resep" style="font-size:12px">Nomor Resep</label>
                                 <input type="text" autocomplete="off"
                                     class="form-control form-control-sm no_resep mb-1" name="no_resep" readonly />
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
                                 <input type="text" autocomplete="off"
                                     class="form-control form-control-sm nm_racik mb-1" name="nm_racik" readonly />
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="metode" style="font-size:12px">Metode</label>
                                 <input type="text" autocomplete="off"
                                     class="form-control form-control-sm metode mb-1" name="metode" readonly />
                             </div>
-                            <div class="col-md-3">
-                                <label for="jml" style="font-size:12px">Jumlah Racik</label>
+                            <div class="col-md-2">
+                                <label for="jml_dr" style="font-size:12px">Jumlah Racik</label>
                                 <input type="text" autocomplete="off"
-                                    class="form-control form-control-sm jml mb-1" name="jml" readonly />
+                                    class="form-control form-control-sm jml_dr mb-1" name="jml_dr" readonly />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="jml" style="font-size:12px">Aturan Pakai</label>
+                                <input type="text" autocomplete="off" onkeyup="cariAturan(this)"
+                                    class="form-control form-control-sm aturan_pakai_dr mb-1" name="aturan_pakai_dr" id="aturan_pakai" />
+                                <div class="list_aturan" style="display: none;"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -257,7 +263,7 @@
             kps = $('#kps' + no).val();
             p2 = $('#p2' + no).val();
             p1 = $('#p1' + no).val();
-            jumlah = $('.jml').val();
+            jumlah = $('.jml_dr').val();
 
             kandungan = parseFloat(kps) * (parseFloat(p1) / parseFloat(p2));
 
@@ -272,7 +278,7 @@
 
         function hitungDosis(no) {
             kandungan = $('#kandungan' + no).val();
-            jumlah = $('.jml').val();
+            jumlah = $('.jml_dr').val();
             kps = $('#kps' + no).val();
             if (parseInt(kandungan) <= parseInt(kps)) {
                 jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
@@ -293,39 +299,56 @@
             let banyakBaris = $('.table-racikan tbody tr').length
             arrInput = [];
             respon = false;
-            for (let no = 1; no <= banyakBaris; no++) {
-                $.ajax({
-                    url: '/erm/resep/racik/detail/ubah',
-                    async: false,
-                    data: {
-                        '_token': "{{ csrf_token() }}",
-                        'no_resep': $('.no_resep').val(),
-                        'no_racik': $('.no_racik').val(),
-                        'kode_brng': $('#kode_brng' + no).val(),
-                        'kandungan': $('#kandungan' + no).val(),
-                        'p1': $('#p1' + no).val(),
-                        'p2': $('#p2' + no).val(),
-                        'jml': $('#jml_obat' + no).val(),
-                    },
-                    method: 'POST',
-                    success: function(response) {
-                        // console.log(response);
-                        respon = true
-                    },
-                    error: function(response) {
-                        Swal.fire(
-                            'Gagal !',
-                            response.responseJSON.message,
-                            'error'
-                        );
+
+
+            $.ajax({
+                url: '/erm/resep/racik/ubah',
+                method: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: $('.no_resep').val(),
+                    no_racik: $('.no_racik').val(),
+                    jml_dr: $('.jml_dr').val(),
+                    aturan_pakai: $('.aturan_pakai_dr').val(),
+                },
+                success: function(response) {
+                    for (let no = 1; no <= banyakBaris; no++) {
+                        $.ajax({
+                            url: '/erm/resep/racik/detail/ubah',
+                            async: false,
+                            data: {
+                                '_token': "{{ csrf_token() }}",
+                                'no_resep': $('.no_resep').val(),
+                                'no_racik': $('.no_racik').val(),
+                                'kode_brng': $('#kode_brng' + no).val(),
+                                'kandungan': $('#kandungan' + no).val(),
+                                'p1': $('#p1' + no).val(),
+                                'p2': $('#p2' + no).val(),
+                                'jml': $('#jml_obat' + no).val(),
+                            },
+                            method: 'POST',
+                            success: function(response) {
+                                // console.log(response);
+                                respon = true
+                            },
+                            error: function(response) {
+                                Swal.fire(
+                                    'Gagal !',
+                                    response.responseJSON.message,
+                                    'error'
+                                );
+                            }
+                        })
                     }
-                })
-            }
-            if (respon) {
-                cekResep($('#nomor_rawat').val());
-                tulisPlan();
-                $('#modalObatRacik').modal('hide');
-            }
+                    if (respon) {
+                        cekResep($('#nomor_rawat').val());
+                        tulisPlan();
+                        $('#modalObatRacik').modal('hide');
+                    }
+                }
+            })
+
+
         }
 
         function tambahDaftarRacik() {

@@ -5,7 +5,7 @@
         <div class="col-lg-4 col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    Featured
+                    Dokter & Nama Template Racikan
                 </div>
                 <div class="card-body">
                     <form>
@@ -159,6 +159,7 @@
             $('#tb_template tbody').empty()
 
             template = ambilTemplateRacikan(kd_dokter, nm_racik);
+
             if (Object.keys(template).length >= 1) {
                 $.map(template, function(data) {
                     html = '<tr>'
@@ -178,7 +179,7 @@
                     html +=
                         '<td><button class="btn btn-warning btn-sm edit" data-id="' + data.id + '" style="font-size:12px" onclick="ubahTemplate(' +
                         data.id +
-                        ')"><i class="bi bi-pencil"></i></button><button class="btn btn-danger btn-sm" style="font-size:12px"><i class="bi bi-trash3-fill"></i></button></td>'
+                        ')"><i class="bi bi-pencil"></i></button><button class="btn btn-danger btn-sm" style="font-size:12px" onclick="hapusTemplateRacikan(' + data.id + ')"><i class="bi bi-trash3-fill"></i></button></td>'
                     html += '<td>'
                     $('#tb_template tbody').append(html)
                 })
@@ -227,6 +228,40 @@
             })
             html += '<input type="hidden" class="nomor" value="' + no + '">'
             $('.table-racikan').append(html)
+        }
+
+        function hapusTemplateRacikan(id) {
+            console.log(id)
+            Swal.fire({
+                title: 'Anda yakin ?',
+                text: "Data yang dihapus tidak bisa dikembalikan",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yakin, hapus !',
+                cancelButtonText: 'Tidak',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/erm/resep/racik/template/hapus',
+                        method: 'delete',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id: id,
+                        },
+                        success: function(reponse) {
+                            Swal.fire(
+                                'Dihapus!',
+                                'Template resep berhasil dihapus',
+                                'success'
+                            )
+                            setTemplate();
+                        }
+                    })
+                }
+            })
+
         }
 
         function hapusDetailTemplate(id, id_racik) {

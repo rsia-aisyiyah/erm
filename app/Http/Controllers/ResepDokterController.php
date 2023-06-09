@@ -42,4 +42,14 @@ class ResepDokterController extends Controller
         $resepDokter = $this->resepDokter->where('no_resep', $request->no_resep)->where('kode_brng', $request->kode_brng)->delete();
         return response()->json($resepDokter, 200);
     }
+    
+    public function ubah(Request $request)
+    {
+        $resepDokter = $this->resepDokter->where('no_resep', $request->no_resep)->where('kode_brng', $request->kode_brng)->update([
+            'jml' => $request->jml,
+            'aturan_pakai' => $request->aturan_pakai,
+        ]);
+
+        return response()->json('Data berhasil diubah');
+    }
 }

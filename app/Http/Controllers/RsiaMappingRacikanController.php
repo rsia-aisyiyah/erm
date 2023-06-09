@@ -25,10 +25,7 @@ class RsiaMappingRacikanController extends Controller
 
         return response()->json($cari);
     }
-    // public function ambilId(Type $var = null)
-    // {
-    //     # code...
-    // }
+ 
     public function ambil(Request $request)
     {
         // return $request;
@@ -59,5 +56,11 @@ class RsiaMappingRacikanController extends Controller
             'nm_racik' => $request->nm_racik,
         ]);
         return response()->json($mapping);
+    }
+    public function hapus(Request $request)
+    {
+        $mapping = $this->mapping->where('id', $request->id)->delete();
+
+        return response()->json('Data berhasil dihapus');
     }
 }
