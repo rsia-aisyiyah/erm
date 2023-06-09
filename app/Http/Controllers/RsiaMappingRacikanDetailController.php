@@ -22,4 +22,11 @@ class RsiaMappingRacikanDetailController extends Controller
 
         return response()->json($racikan);
     }
+
+    public function hapus(Request $request)
+    {
+        $this->detail->where('id', $request->id)->delete();
+
+        return response()->json('Data id ' . $request->id . ' dihapus');
+    }
 }

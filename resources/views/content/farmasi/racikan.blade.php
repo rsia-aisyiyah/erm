@@ -84,11 +84,12 @@
                             </div>
                             <div class="row">
                                 <div class="container">
-                                    <table class="table table-racikan table-stripped">
+                                    <table class="table table-racikan table-borderless">
                                         <thead>
                                             <tr>
                                                 <th width="35%">Nama Obat</th>
                                                 <th>Kapasitas</th>
+                                                <th>Stok Obat</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -163,26 +164,19 @@
                     html = '<tr>'
                     html += '<td>' + data.nm_racik + '</td>'
                     html += '<td>'
-                    // if (Object.keys(data.detail_racik).length > 0) {
                     html += '<ul>'
                     $.map(data.detail_racik, function(detail) {
-
                         if (detail.data_barang) {
                             html += '<li>' + detail.data_barang.nama_brng + '</li>'
                         } else {
                             html += 'BELUM ADA OBAT <br/>';
                         }
-                        // html += '<li>' + detail.data_barang.nama_brng + '</li>'
-                        console.log(detail.data_barang)
                     })
                     html += '</ul>'
-
-                    // } else {
-                    // }
                     html += '</td>'
                     html += '<td>' + data.dokter.nm_dokter + '</td>'
                     html +=
-                        '<td><button class="btn btn-warning btn-sm" style="font-size:12px" onclick="ubahTemplate(' +
+                        '<td><button class="btn btn-warning btn-sm edit" data-id="' + data.id + '" style="font-size:12px" onclick="ubahTemplate(' +
                         data.id +
                         ')"><i class="bi bi-pencil"></i></button><button class="btn btn-danger btn-sm" style="font-size:12px"><i class="bi bi-trash3-fill"></i></button></td>'
                     html += '<td>'
@@ -193,11 +187,20 @@
             }
         }
 
-        function ubahTemplate(id) {
+        $('tbody').on('click', '.edit', function() {
+            id = $(this).data('id');
             $('#modalTemplate').modal('show')
+            ubahTemplate(id)
+        })
+
+        // $('.edit').on('click', function() {
+        // })
+
+
+        function ubahTemplate(id) {
+            $('.table-racikan tbody').empty();
 
             template = ambilTemplateRacikan(null, null, id);
-
             $('.kd_dokter').val(template.kd_dokter)
             $('.nm_dokter').val(template.dokter.nm_dokter)
             $('.nm_racik').val(template.nm_racik)
@@ -209,7 +212,16 @@
                 html += '<tr class="baris_' + no + '">'
                 html += '<td>' + temp.data_barang.nama_brng + '</td>'
                 html += '<td>' + temp.data_barang.kapasitas + ' mg</td>'
-                html += '<td><button class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill"></i></button></td>'
+                $.map(temp.data_barang.gudang_barang, function(gudang) {
+                    if (gudang.kd_bangsal == 'RM7') {
+                        if (gudang.stok == 0) {
+                            html += '<td class="text-danger">KOSONG </td>'
+                        } else {
+                            html += '<td class="text-red">' + gudang.stok + '</td>'
+                        }
+                    }
+                })
+                html += '<td><button class="btn btn-danger btn-sm" onclick="hapusDetailTemplate(' + temp.id + ', ' + id + ')"><i class="bi bi-trash3-fill"></i></button></td>'
                 html += '</tr>'
                 no++;
             })
@@ -217,12 +229,23 @@
             $('.table-racikan').append(html)
         }
 
-        $('#modalTemplate').on('hidden.bs.modal', function() {
-            $('.table-racikan tbody').empty();
-        })
+        function hapusDetailTemplate(id, id_racik) {
+            $.ajax({
+                url: '/erm/resep/racik/template/detail/hapus',
+                method: 'DELETE',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                },
+                success: function(response) {
+                    // alert(response);
+                    setTemplate();
+                    ubahTemplate(id_racik)
+                }
+            })
+        }
 
         function setDokter(param) {
-            // $('#nm_dokter').val($(param).data('id'));
             kd_dokter = $(param).data('id')
             nm_dokter = $(param).text()
             $('#kd_dokter').val(kd_dokter);
@@ -230,9 +253,6 @@
             $('.list_dokter').fadeOut();
 
             setTemplate(kd_dokter)
-
-
-
         }
 
         function tambahDetailObat() {
@@ -240,11 +260,14 @@
 
             html = '<tr class="baris_' + no + '">'
             html += '<td><input type="hidden" id="kode_brng' + no +
-                '" /><input class="form-control form-control-sm form-underline nama_obat_' + no +
+                '" name="kode_brng[]"/><input class="form-control form-control-sm form-underline nama_obat_' + no +
                 '" type="search" onkeyup="cariObatRacikan(this, ' + no + ')" id="nama_brng_' + no +
-                '" name="nama_brng"/><div class="list_obat_' + no + '"></div></td>'
+                '" name="nama_brng[]" autocomplete="off"/><div class="list_obat_' + no + '"></div></td>'
             html += '<td><input type="text" readonly class="form-control form-control-sm form-underline" id="kps' + no +
                 '"/></td>'
+            html += '<td><input type="text" readonly class="form-control form-control-sm form-underline" id="stok' + no +
+                '"/></td>';
+            html += '<td><button class="btn btn-danger btn-sm hapus"><i class="bi bi-trash3-fill"></i></button></td>';
             html += '</tr>'
 
 
@@ -253,27 +276,41 @@
             $('.nomor').val(no)
         }
 
+
+        $('.table-racikan tbody').on('click', '.hapus', function() {
+            row = $(this).parents('td').parents('tr').remove();
+            return false;
+        })
+
         function simpanDetailTemplate() {
             let row = $('.table-racikan tbody tr').length
 
-            console.log(row)
-
             arrInput = [];
             response = false;
-
             for (let no = 1; no <= row; no++) {
-                $.ajax({
-                    url: '/erm/resep/racik/template/detail/tambah',
-                    method: 'POST',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id_racik: $('.id_racik').val(),
-                        kode_brng: $("#kode_brng" + no).val(),
-                    },
-                    success: function(response) {
-                        console.log(response)
-                    }
-                })
+                kode_brng = $("#kode_brng" + no).val();
+                if (kode_brng) {
+                    $.ajax({
+                        url: '/erm/resep/racik/template/detail/tambah',
+                        method: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id_racik: $('.id_racik').val(),
+                            kode_brng: $("#kode_brng" + no).val(),
+                        },
+                        success: function(response) {
+                            $('#modalTemplate').modal('hide')
+                            setTemplate()
+                        },
+                        error: function(a, b, c) {
+                            Swal.fire(
+                                'Gagal !',
+                                'Obat tidak tersimpan, pastikan tidak ada kolom kosong',
+                                'error'
+                            );
+                        }
+                    })
+                }
             }
         }
 

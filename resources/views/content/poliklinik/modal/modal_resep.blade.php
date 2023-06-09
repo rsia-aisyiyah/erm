@@ -213,22 +213,6 @@
 </div>
 @push('script')
     <script>
-        // function ambilTemplateRacik() {
-        //     hasil = '';
-        //     nama_racik = $('.nm_racik').val();
-        //     $.ajax({
-        //         async: false,
-        //         url: '/erm/resep/racik/template/ambil',
-        //         data: {
-        //             'nama_racik': nama_racik,
-        //         },
-        //         success: function(response) {
-        //             hasil = response;
-        //         }
-        //     })
-        //     return hasil;
-        // }
-
         function simpanRacikan() {
             id_racik = $('.id_racik').val();
             template = ambilTemplateRacikan(null, null, id_racik);
@@ -383,19 +367,10 @@
 
         }
 
-        // function hapusBaris(p) {
-        //     no = $(this).data('no')
-        //     $('.baris_' + no).remove();
-        //     console.log('ssss')
-
-
-        // }
 
         $('.table-racikan tbody').on('click', '.x', function(e) {
-            // $(this) remove()
             e.preventDefault();
             row = $(this).parents('td').parents('tr').remove();
-            console.log(row)
             return false;
         })
         $('.p1').on('change', function() {
@@ -504,19 +479,5 @@
                 tulisPlan();
             });
         }
-
-
-
-        // function setObat(param, no) {
-        //     // console.log('wkwkwkwk')
-        //     $('.nama_obat_' + no).val($(param).text());
-        //     $('#kode_brng' + no).val($(param).data('id'))
-        //     $('#kps' + no).val($(param).data('kapasitas'))
-        //     $('#p1' + no).val(1)
-        //     $('#p2' + no).val(1)
-        //     $('#jml_obat' + no).val(0)
-        //     $('#kandungan' + no).val(0)
-        //     $('.list_obat_' + no).fadeOut()
-        // }
     </script>
 @endpush

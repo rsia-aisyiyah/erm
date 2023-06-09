@@ -574,16 +574,13 @@
                                             '<li data-id="' +
                                             data.kode_brng +
                                             '" data-stok="' + item.stok +
-                                            '" data-kapasitas="' + data.kapasitas +
-                                            '" data-nama ="' + data.nama_brng + '" onclick="setObat(this, ' + no +
-                                            ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                                            '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok ="' + item.stok + '" onclick="setObat(this, ' + no + ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
                                             data.nama_brng + ' - <span class="text-primary"><b><i> Stok ' + item.stok + '</b></i></span></a></li>'
                                     } else {
                                         html +=
                                             '<li class="disable" data-id="' + data
                                             .kode_brng +
-                                            '" data-stok="' + item.stok +
-                                            '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
+                                            '" data-stok="' + item.stok + '" onclick="setObat(this, ' + no + ')"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
                                             data.nama_brng + ' - Stok Kosong' +
                                             '</a></i></li>'
                                     }
@@ -606,6 +603,7 @@
             $('#p2' + no).val(1)
             $('#jml_obat' + no).val(0)
             $('#kandungan' + no).val(0)
+            $('#stok' + no).val($(param).data('stok'))
             $('.list_obat_' + no).fadeOut()
         }
 

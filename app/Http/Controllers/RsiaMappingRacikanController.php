@@ -32,7 +32,7 @@ class RsiaMappingRacikanController extends Controller
     public function ambil(Request $request)
     {
         // return $request;
-        $mapping = $this->mapping->with(['dokter', 'detailRacik.dataBarang']);
+        $mapping = $this->mapping->with(['dokter', 'detailRacik.dataBarang.gudangBarang.bangsal']);
 
         if ($request->nm_racik) {
             $ambil = $mapping->where('nm_racik', $request->nm_racik)->get();
