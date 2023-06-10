@@ -204,7 +204,6 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    // console.log('wlwkwkwkwkw', response)
                     if (response.reg_periksa) {
                         $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
                             .pasien.nm_pasien + ' / ' + hitungUmur(response.reg_periksa.pasien.tgl_lahir) :
@@ -215,21 +214,23 @@
                             .p_jawab : '-')
                         cekAlergi(response.reg_periksa.no_rkm_medis)
                         riwayatResep(response.reg_periksa.no_rkm_medis)
+
+                        $('#nama').val(response.pegawai.nama);
+                        $('#nik').val(response.nip);
                     } else {
+                        riwayatResep(response.no_rkm_medis)
+                        cekAlergi(response.no_rkm_medis)
 
                         $('#nama_pasien').val(response.pasien.nm_pasien ? response.pasien
                             .nm_pasien + ' / ' + hitungUmur(response.pasien.tgl_lahir) : '-')
                         $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
                         $('#p_jawab').val(response.p_jawab ? 'P. JAWAB : ' + response.p_jawab : '-')
+                        $('#nama').val(nama);
+                        $('#nik').val(nik);
 
-                        riwayatResep(response.no_rkm_medis)
-                        cekAlergi(response.no_rkm_medis)
                     }
 
-
-                    $('#nama').val(nama);
-                    $('#nik').val(nik);
-                    $('#jabatan').val(jbtn);
+                    // $('#jabatan').val(jbtn);
 
                     $('#nomor_rawat').val(response.no_rawat ? response.no_rawat : '-')
                     $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '-')
@@ -538,7 +539,6 @@
                 }],
                 initComplete: function(setting, json) {
                     $.map(json.data, function(val, index) {
-                        console.log(val)
                         if (val.kd_poli == 'P001' || val.kd_poli == 'P007' || val.kd_poli ==
                             'P009') {
                             $.ajax({

@@ -495,7 +495,7 @@
                     teksRr = '';
                     $.map(response, function(res) {
                         $.map(res.resep_dokter, function(rd) {
-                            teksRd += rd.data_barang.nama_brng + ' ' + rd.jml +' '+ rd
+                            teksRd += rd.data_barang.nama_brng + ' ' + rd.jml + ' ' + rd
                                 .aturan_pakai + '\n';
                         })
 
@@ -834,14 +834,11 @@
             $.ajax({
                 url: '/erm/resep/racik/cari',
                 data: {
-                    'nm_': racik.value,
+                    'nm_racik': racik.value,
                     'kd_dokter': "{{ Request::get('dokter') }}",
                 },
                 dataType: 'JSON',
                 success: function(response) {
-
-                    console.log(response)
-
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
                     $.map(response, function(data) {

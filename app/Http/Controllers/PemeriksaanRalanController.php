@@ -19,7 +19,7 @@ class PemeriksaanRalanController extends Controller
         $pemeriksaan = PemeriksaanRalan::where('no_rawat', $request->no_rawat)
             ->with('regPeriksa', function ($q) {
                 $q->with('pasien');
-            })->first();
+            })->with('pegawai')->first();
 
         if ($pemeriksaan) {
             return response()->json($pemeriksaan, 200);

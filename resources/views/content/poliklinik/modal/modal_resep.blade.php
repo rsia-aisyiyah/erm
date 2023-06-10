@@ -269,7 +269,7 @@
 
             jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
 
-            console.log(kps, p1, p2, 'kandungan = ' + kandungan)
+            // console.log(kps, p1, p2, 'kandungan = ' + kandungan)
 
             $('#kandungan' + no).val(kandungan.toFixed(1));
 
@@ -298,7 +298,6 @@
         function simpanDosisObat() {
             let banyakBaris = $('.table-racikan tbody tr').length
             arrInput = [];
-            respon = false;
 
 
             $.ajax({
@@ -312,6 +311,7 @@
                     aturan_pakai: $('.aturan_pakai_dr').val(),
                 },
                 success: function(response) {
+                    respon = false;
                     for (let no = 1; no <= banyakBaris; no++) {
                         $.ajax({
                             url: '/erm/resep/racik/detail/ubah',
@@ -340,11 +340,9 @@
                             }
                         })
                     }
-                    if (respon) {
-                        cekResep($('#nomor_rawat').val());
-                        tulisPlan();
-                        $('#modalObatRacik').modal('hide');
-                    }
+                    cekResep($('#nomor_rawat').val());
+                    tulisPlan();
+                    $('#modalObatRacik').modal('hide');
                 }
             })
 

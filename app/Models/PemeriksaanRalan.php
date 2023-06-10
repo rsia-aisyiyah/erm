@@ -17,7 +17,7 @@ class PemeriksaanRalan extends Model
     }
     public function pegawai()
     {
-        return $this->belongsTo(Pegawai::class, 'nik', 'nip');
+        return $this->belongsTo(Pegawai::class, 'nip', 'nik');
         // return $this->belongsTo()
     }
 }

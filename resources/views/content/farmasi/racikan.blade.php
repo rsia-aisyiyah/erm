@@ -371,7 +371,11 @@
                     }
                 })
             } else {
-                console.log("TIDAK MEENAMBAH")
+                Swal.fire(
+                    'Gagal !',
+                    'Template racikan sudah ada',
+                    'error'
+                );
             }
 
             // console.log(ambil)
