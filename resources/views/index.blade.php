@@ -234,7 +234,7 @@
                 method: "GET",
                 dataType: 'JSON',
                 success: function(data) {
-                    console.log(data)
+                    // console.log(data)
                     $('#no_rawat').val(data.no_rawat)
                     $('#no_rkm_medis').val(data.no_rkm_medis)
                     $('#tgl_masuk').val(data.tgl_registrasi)
@@ -343,7 +343,7 @@
                         var file = e.target;
                         var fileName = input.files[index].name;
                         var filePreview = '';
-                        console.log(input.files[index].type);
+                        // console.log(input.files[index].type);
                         if (input.files[index].type == 'application/pdf') {
                             filePreview = "{{ asset('img/pdf-icon.png') }}";
                         } else {
@@ -454,7 +454,7 @@
 
                 },
                 fail: function(jqXHR, status) {
-                    console.log(status)
+                    // console.log(status)
                 }
             })
 
@@ -580,7 +580,7 @@
                                         html +=
                                             '<li class="disable" data-id="' + data
                                             .kode_brng +
-                                            '" data-stok="' + item.stok + '" onclick="setObat(this, ' + no + ')"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
+                                            '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok="' + item.stok + '" onclick="setObat(this, ' + no + ')"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
                                             data.nama_brng + ' - Stok Kosong' +
                                             '</a></i></li>'
                                     }
