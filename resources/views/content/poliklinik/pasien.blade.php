@@ -392,7 +392,7 @@
             text_recall = $('.panggil-' + urut).text()
             reloadTabelPoli();
 
-            if (hitung_panggilan < 2 || text_recall == 'RE-CALL') {
+            if (hitung_panggilan < 2 || text_recall == 'CALL') {
                 $('.selesai-' + urut).prop('disabled', false);
                 $('.selesai-' + urut).prop('class', 'btn btn-warning btn-sm mb-2 selesai-' + urut + '');
 

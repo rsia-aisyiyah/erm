@@ -169,24 +169,35 @@
                             if (row.tgl_perawatan == '0000-00-00') {
                                 if (row.reg_periksa.status_bayar == 'Belum Bayar') {
                                     $('.status-' + row.no_resep).addClass('btn-primary');
-                                    $('.status-' + row.no_resep).text('Belum')
+                                    $('.status-' + row.no_resep).text('BELUM')
+                                    $('.panggil-' + row.no_resep).css('display', 'none')
 
                                 } else {
                                     $('.status-' + row.no_resep).addClass('btn-danger');
-                                    $('.status-' + row.no_resep).text('Tidak Diambil')
+                                    $('.status-' + row.no_resep).text('TIDAK DIAMBIL')
+                                    $('.panggil-' + row.no_resep).css('display', 'none')
                                 }
                             } else {
                                 $('.status-' + row.no_resep).addClass('btn-success');
-                                $('.status-' + row.no_resep).text('Sudah')
+                                $('.status-' + row.no_resep).text('SUDAH')
+                                $('.panggil-' + row.no_resep).css('display', 'inline')
                             }
-                            html = '<button onclick="tampilResep(\'' + row.no_resep +
-                                '\')" class="btn btn-sm mb-2 status-' + row.no_resep +
-                                '" type="button" style="width:110px;" data-id="' + row.no_rawat +
-                                '"></button><br/>';
+                            html = '<button onclick="tampilResep(\'' + row.no_resep + '\')" class="btn btn-sm mb-2 status-' + row.no_resep + '" type="button" style="width:110px;" data-id="' + row.no_rawat + '"></button><br/>';
+
+                            html += '<button onclick="panggilResep(\'' + row.no_resep + '\')" class="btn btn-sm btn-warning mb-2 panggil-' + row.no_resep + '" style="width:110px;" type="button" style="width:110px;" data-id="' + row.no_rawat + '">PANGGIL</button>';
+
+                            if (row.tgl_penyerahan != '0000-00-00') {
+
+                                $('.panggil-' + row.no_resep).removeAttr('onclick');
+                                $('.panggil-' + row.no_resep).attr('onclick', 'resetPanggilan(' + row.no_resep + ')');
+                                $('.panggil-' + row.no_resep).addClass('btn-success').removeClass('btn-warning');
+                                $('.panggil-' + row.no_resep).text('SELESAI');
+                            }
+
                             return html;
                         },
                         name: 'status',
-                    }
+                    },
 
                 ],
                 "language": {
@@ -200,6 +211,38 @@
             $('#tabel-racikan tbody').empty()
             $('#tabel-umum tbody').empty()
         })
+
+        function resetPanggilan(no_resep) {
+            $.ajax({
+                url: 'resep/obat/panggil',
+                data: {
+                    no_resep: no_resep,
+                    tanggal: '0000-00-00',
+                },
+                success: function(response) {
+                    console.log('reset panggil')
+                    panggilResep(no_resep).delay(5000)
+                }
+            })
+        }
+
+        function panggilResep(no_resep) {
+            $.ajax({
+                url: 'resep/obat/panggil',
+                data: {
+                    no_resep: no_resep,
+                    tanggal: "{{ date('Y-m-d') }}"
+                },
+                success: function(response) {
+                    console.log(response);
+                    $('.panggil-' + no_resep).removeAttr('onclick');
+                    $('.panggil-' + no_resep).attr('onclick', 'resetPanggilan(' + no_resep + ')');
+                    $('.panggil-' + no_resep).addClass('btn-success').removeClass('btn-warning');
+                    $('.panggil-' + no_resep).text('SELESAI');
+                    reloadTabelResep();
+                }
+            })
+        }
 
         function tampilResep(no_resep) {
             // no_resep = $('#no_resep').val(no_resep)

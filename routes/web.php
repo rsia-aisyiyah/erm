@@ -136,17 +136,19 @@ Route::middleware('auth')->group(function () {
     Route::get('obat/', [DataBarangController::class, 'index']);
     Route::get('obat/cari', [DataBarangController::class, 'cari']);
 
-    
-    
+
+
     Route::get('/resep', [ResepObatController::class, 'index']);
     Route::get('/resep/ambil/tabel', [ResepObatController::class, 'ambilTable']);
     Route::get('/resep/ambil/sekarang', [ResepObatController::class, 'ambilSekarang']);
-    
+
     Route::get('/resep/obat/akhir', [ResepObatController::class, 'akhir']);
     Route::get('/resep/obat/ambil', [ResepObatController::class, 'ambil']);
+    Route::get('/resep/obat/ubah', [ResepObatController::class, 'ubah']);
+    Route::get('/resep/obat/panggil', [ResepObatController::class, 'panggil']);
     Route::post('/resep/obat/simpan', [ResepObatController::class, 'simpan']);
     Route::delete('/resep/obat/hapus', [ResepObatController::class, 'hapus']);
-    
+
     Route::post('/resep/umum/simpan', [ResepDokterController::class, 'simpan']);
     Route::post('/resep/umum/ubah', [ResepDokterController::class, 'ubah']);
     Route::delete('/resep/umum/hapus', [ResepDokterController::class, 'hapus']);
