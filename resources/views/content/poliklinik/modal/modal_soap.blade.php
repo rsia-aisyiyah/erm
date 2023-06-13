@@ -115,14 +115,39 @@
                             </table>
                         </div>
                         <div class="col-lg-6 col-md-12 col-sm-12">
-                            <table class="borderless mb-3" width="100%">
+                            <table class="borderless mb-6" width="100%">
                                 <tr>
                                     <td>Plan : </td>
                                     <td colspan="3">
                                         <textarea class="form-control" name="plan" id="plan" cols="30" rows="8" style="font-size:12px;min-height:12px;border-radius:0;resize:none" readonly></textarea>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>Diagnosa ICD</td>
+                                    <td colspan="3">
+                                        <input type="search" class="form-control form-control-sm" onkeyup="cariDiagnosa(this)" name="diagnosa" id="diagnosa" style="font-size:12px;min-height:12px;border-radius:0" autocomplete="off">
+                                        <div class="list-diagnosa"></div>
+                                        <input type="hidden" class="no_diagnosa" value="" />
+                                    </td>
+                                </tr>
+                                <tr class="table-stripped">
+                                    <table class="table table-stripped table-diagnosa" style="margin-bottom: 30px;">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Kode ICD</th>
+                                                <th>Deskripsi</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </tr>
                             </table>
+
+
                             <input type="hidden" class="no_resep form-control form-control-sm" />
                             <ul class="nav nav-tabs" id="myTab">
                                 <li class="nav-item">
@@ -830,6 +855,114 @@
             return false;
         })
 
+        function cariDiagnosa(diagnosa) {
+            $.ajax({
+                url: '/erm/penyakit/cari',
+                data: {
+                    'kd_penyakit': diagnosa.value,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+
+                    html =
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                    no = 1;
+                    $.map(response, function(data) {
+                        html +=
+                            '<li data-nama="' + data.nm_penyakit + '" data-id="' + data.kd_penyakit + '" onclick="tambahDiagnosa(this)"><a class="dropdown-item" href="#" style="overflow:hidden"> ' + data.kd_penyakit + ' - ' + data.nm_penyakit + '</a></li>'
+                        no++;
+                    })
+                    html += '</ul>';
+                    $('.list-diagnosa').fadeIn();
+                    $('.list-diagnosa').html(html);
+
+
+                }
+            })
+        }
+
+        function tambahDiagnosa(param) {
+            no_rawat = $('#nomor_rawat').val();
+            kd_penyakit = $(param).data('id');
+            prioritas = $('.no_diagnosa').val()
+
+            $.ajax({
+                url: '/erm/penyakit/pasien/tambah',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_rawat: no_rawat,
+                    kd_penyakit: kd_penyakit,
+                    status: "Ralan",
+                    prioritas: prioritas,
+                },
+                method: 'POST',
+                success: function(response) {
+                    ambilDiagnosaPasien(no_rawat)
+                    $('#diagnosa').val('').focus();
+                }
+            })
+
+        }
+
+        function ambilDiagnosaPasien(no_rawat) {
+            $.ajax({
+                url: '/erm/penyakit/pasien/ambil',
+                data: {
+                    no_rawat: no_rawat,
+                },
+                success: function(response) {
+                    nomor = 1;
+                    $('.table-diagnosa tbody').empty();
+                    if (Object.keys(response).length > 0) {
+                        $.map(response, function(res) {
+                            html = '<tr class="diagnosa_' + res.kd_penyakit + '">'
+                            html += '<td>'
+                            html += res.prioritas
+                            html += '</td>'
+                            html += '<td>'
+                            html += res.kd_penyakit
+                            html += '</td>'
+                            html += '<td>'
+                            html += res.penyakit.nm_penyakit
+                            html += '</td>'
+                            html += '<td>'
+                            html += '<button type="button" class="btn btn-danger btn-sm" style="font-size:12px" onclick="hapusDiagnosaPasien(\'' + no_rawat + '\', \'' + res.kd_penyakit + '\')"><i class="bi bi-trash-fill"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+                            nomor = res.prioritas + 1;
+                            $('.table-diagnosa tbody').append(html)
+                        })
+                    } else {
+                        html = '<tr>'
+                        html += '<td colspan="4" style="text-align:center">Tidak ada diagnosa</td>'
+                        html += '</tr>'
+                        $('.table-diagnosa tbody').append(html)
+
+                    }
+                    $('.no_diagnosa').val(nomor)
+                }
+            })
+        }
+
+        function hapusDiagnosaPasien(no_rawat, kd_penyakit) {
+            // console.log(no_rawat)
+            no = $('.no_diagnosa').val();
+            $.ajax({
+                url: '/erm/penyakit/pasien/hapus',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_rawat: no_rawat,
+                    kd_penyakit: kd_penyakit,
+                },
+                method: 'DELETE',
+                success: function(response) {
+
+                    $('.no_diagnosa').val(parseInt(no) - 1)
+                    ambilDiagnosaPasien(no_rawat)
+                }
+            })
+        }
+
         function cariRacikan(racik) {
             $.ajax({
                 url: '/erm/resep/racik/cari',
@@ -843,10 +976,7 @@
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
                     $.map(response, function(data) {
                         html +=
-                            '<li onclick="setNamaRacik(this)" data-nama="' + data
-                            .nm_racik +
-                            '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                            data.nm_racik + '</a></li>'
+                            '<li onclick="setNamaRacik(this)" data-nama="' + data.nm_racik + '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' + data.nm_racik + '</a></li>'
                     })
                     html += '</ul>';
                     $('.list_racik').fadeIn();
@@ -959,6 +1089,7 @@
             $('.list_obat').fadeOut();
             $('.list_aturan').fadeOut();
             $('.list_racik').fadeOut();
+            $('.list-diagnosa').fadeOut();
 
         });
 
@@ -1113,6 +1244,7 @@
             $('.tambah_umum').css('visibility', 'visible')
             modalsoap(id);
             cekResep(id);
+            ambilDiagnosaPasien(id);
             no = 1;
             isModalShow = true;
         });

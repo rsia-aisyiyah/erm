@@ -12,6 +12,6 @@ class Penyakit extends Model
 
     public function diagnosaPasien()
     {
-        return $this->hasOne(DiagnosaPasien::class, 'kd_penyakit', 'kd_penyakit');
+        return $this->hasMany(DiagnosaPasien::class, 'kd_penyakit', 'kd_penyakit');
     }
 }

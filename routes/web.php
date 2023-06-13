@@ -29,8 +29,10 @@ use App\Http\Controllers\RsiaGeneralConsentController;
 use App\Http\Controllers\RsiaMappingRacikanController;
 use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\DetailPemberianObatController;
+use App\Http\Controllers\DiagnosaPasienController;
 use App\Http\Controllers\PenilaianMedisRanapController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
+use App\Http\Controllers\PenyakitController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
@@ -178,6 +180,11 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/penilaian/pendaftaran/simpan', [RsiaPenilaianPendaftaranController::class, 'simpan']);
     Route::get('/penilaian/medis/ranap/ambil', [PenilaianMedisRanapController::class, 'ambil']);
+
+    Route::get('/penyakit/cari', [PenyakitController::class, 'cari']);
+    Route::post('/penyakit/pasien/tambah', [DiagnosaPasienController::class, 'tambah']);
+    Route::get('/penyakit/pasien/ambil', [DiagnosaPasienController::class, 'ambil']);
+    Route::delete('/penyakit/pasien/hapus', [DiagnosaPasienController::class, 'hapus']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
