@@ -10,6 +10,8 @@ class ProsedurPasien extends Model
     use HasFactory;
 
     protected $table = 'prosedur_pasien';
+    protected $fillable = ['no_rawat', 'kode', 'status', 'prioritas'];
+    public $timestamps = false;
 
     public function icd9()
     {

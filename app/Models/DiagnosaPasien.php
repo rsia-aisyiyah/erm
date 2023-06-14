@@ -9,7 +9,8 @@ class DiagnosaPasien extends Model
 {
     use HasFactory;
     protected $table = 'diagnosa_pasien';
-
+    protected $fillable = ['no_rawat', 'kd_penyakit', 'status', 'prioritas', 'status_penyakit'];
+    public $timestamps = false;
     public function regPeriksa()
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
