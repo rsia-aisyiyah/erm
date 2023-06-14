@@ -12,6 +12,7 @@ use App\Http\Controllers\RanapController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\AntreanController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ResepObatController;
@@ -39,9 +40,13 @@ use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 
+Route::get('/antrian', [AntreanController::class, 'index']);
+Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
+
 Route::get('/login', function () {
     return view('content.auth.login');
 });
+
 Route::post('/login', [LoginController::class, 'authenticate'])
     ->name('login')
     ->middleware('guest');
