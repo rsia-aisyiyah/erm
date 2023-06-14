@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,7 +35,7 @@
                                 </p>
                             </div>
                         </div>
-                        
+
                         <div class="grid grid-cols-2">
                             <div
                                 class="flex justify-between items-center my-1 p-1.5 px-2 border-r-2 border-y-2 border-green-600">
@@ -60,7 +59,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="flex justify-between items-center my-1 px-2">
                             <div class="w-full">
                                 <p class="text-sm font-bold text-green-700 leading-5 font-mono">Selesai</p>
@@ -107,7 +106,7 @@
 
     <script src="https://code.responsivevoice.org/responsivevoice.js?key=bJDDvdyZ"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             getData();
 
             responsiveVoice.speak("Welcome", "Indonesian Female", {
@@ -120,7 +119,7 @@
                 getData();
             }, 5000);
         });
-        
+
         // var no_terakhir = null;
         setInterval(() => {
             if (localStorage.getItem('panggil') == "yes") {
@@ -137,17 +136,20 @@
                         volume: 1
                     });
                 }, 1000);
-            } 
+            }
         }, 3000);
 
         function getData() {
             $.ajax({
                 url: "<?= url('/get/antrian') ?>",
                 type: "GET",
-                success: function (data) {
+                success: function(data) {
                     var html = "";
-                    var cselesai = 0, non_racikan = 0, racikan = 0;
-                    $.each(data, function (key, value) {
+                    var cselesai = 0,
+                        non_racikan = 0,
+                        racikan = 0;
+                    $.each(data, function(key, value) {
+                        // console.log(value.status_obat)
                         html += "<tr id='" + value.no_resep + "' class=''>";
                         html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.no_resep + "</td>";
                         html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.nm_pasien + "</td>";
@@ -157,11 +159,11 @@
                         html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.jam_penyerahan + "</td>";
                         html += "</tr>";
 
-                        if (value.status_obat == "Selesai") {
+                        if (value.status_obat == "SELESAI") {
                             cselesai++;
-                        } 
-                        
-                        if (value.category_obat.toLowerCase() == 'racikan') {
+                        }
+
+                        if (value.category_obat.toLowerCase() == 'RACIKAN') {
                             racikan++;
                         } else {
                             non_racikan++;

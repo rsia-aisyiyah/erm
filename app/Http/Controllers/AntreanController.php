@@ -9,22 +9,24 @@ class AntreanController extends Controller
 
     protected $resepObat;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->resepObat = new \App\Models\ResepObat;
     }
 
-    function index() {
+    function index()
+    {
         return view('antrian');
     }
 
-    function getAntrian() {
+    function getAntrian()
+    {
         $data = $this->resepObat
-            ->with([ 'regPeriksa', 'regPeriksa.pasien', 'resepDokter', 'resepRacikan',])
+            ->with(['regPeriksa', 'regPeriksa.pasien', 'resepDokter', 'resepRacikan',])
             ->where('tgl_peresepan', date('Y-m-d'))
             ->get();
 
-        // map data return only nm_pasien
-        $data = $data->map(function($item) {
+        $data = $data->map(function ($item) {
             return [
                 'no_resep' => $item->no_resep,
                 'no_rawat' => $item->no_rawat,
@@ -48,25 +50,27 @@ class AntreanController extends Controller
         return response()->json($data);
     }
 
-    private function getCategory($data) {
+    private function getCategory($data)
+    {
         if ($data->resepRacikan && count($data->resepRacikan) > 0) {
-            return 'racikan';
-        } elseif($data->resepDokter && count($data->resepDokter) > 0) {
-            return 'non racikan';
+            return 'RACIKAN';
+        } elseif ($data->resepDokter && count($data->resepDokter) > 0) {
+            return 'NON RACIKAN';
         } else {
-            return 'umum';
+            return 'UMUM';
         }
     }
 
-    private function getStatus($data) {
+    private function getStatus($data)
+    {
         if ($data->tgl_perawatan == "000-00-00") {
-            return "menunggu validasi";
+            return "MENUNGGU VALIDASI";
         } elseif ($data->tgl_perawatan !== "0000-00-00" && $data->tgl_penyerahan == "0000-00-00") {
-            return "disiapkan";
+            return "DISIAPKAN";
         } elseif ($data->tgl_perawatan != "0000-00-00" && $data->tgl_penyerahan != "0000-00-00") {
-            return "selesai";
+            return "SELESAI";
         } else {
-            return "tidak diketahui";
+            return "-";
         }
     }
 }

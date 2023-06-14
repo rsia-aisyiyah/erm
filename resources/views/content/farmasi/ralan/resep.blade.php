@@ -95,6 +95,8 @@
             $.ajax({
                 url: 'resep/ambil/sekarang',
                 success: function(response) {
+
+                    conosle.log(response)
                     resep = 0;
                     valid = 0;
                     tunggu = 0;
@@ -186,13 +188,6 @@
 
                             html += '<button onclick="panggilResep(\'' + row.no_resep + '\', \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-warning mb-2 panggil-' + row.no_resep + '" style="width:110px;" type="button" style="width:110px;" data-id="' + row.no_rawat + '">PANGGIL</button>';
 
-                            if (row.tgl_penyerahan != '0000-00-00') {
-
-                                $('.panggil-' + row.no_resep).removeAttr('onclick');
-                                $('.panggil-' + row.no_resep).attr('onclick', 'resetPanggilan(' + row.no_resep + ')');
-                                $('.panggil-' + row.no_resep).addClass('btn-success').removeClass('btn-warning');
-                                $('.panggil-' + row.no_resep).text('SELESAI');
-                            }
 
                             return html;
                         },
@@ -228,31 +223,26 @@
 
         function panggilResep(no_resep, nm_pasien = null) {
             localStorage.setItem('panggil', 'yes');
-            
+
             localStorage.setItem('no_panggil', no_resep);
             if (nm_pasien != null) {
                 localStorage.setItem('nm_pasien', nm_pasien);
             }
-            
+
             setTimeout(() => {
                 localStorage.setItem('panggil', 'no');
             }, 3000);
 
-            // $.ajax({
-            //     url: 'resep/obat/panggil',
-            //     data: {
-            //         no_resep: no_resep,
-            //         tanggal: "{{ date('Y-m-d') }}"
-            //     },
-            //     success: function(response) {
-            //         console.log(response);
-            //         $('.panggil-' + no_resep).removeAttr('onclick');
-            //         $('.panggil-' + no_resep).attr('onclick', 'resetPanggilan(' + no_resep + ')');
-            //         $('.panggil-' + no_resep).addClass('btn-success').removeClass('btn-warning');
-            //         $('.panggil-' + no_resep).text('SELESAI');
-            //         reloadTabelResep();
-            //     }
-            // })
+            $.ajax({
+                url: 'resep/obat/panggil',
+                data: {
+                    no_resep: no_resep,
+                    tanggal: "{{ date('Y-m-d') }}"
+                },
+                success: function(response) {
+                    reloadTabelResep();
+                }
+            })
         }
 
         function tampilResep(no_resep) {
