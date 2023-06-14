@@ -146,6 +146,7 @@
                 type: "GET",
                 success: function (data) {
                     var html = "";
+                    var cselesai = 0, non_racikan = 0, racikan = 0;
                     $.each(data, function (key, value) {
                         html += "<tr id='" + value.no_resep + "' class=''>";
                         html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.no_resep + "</td>";
@@ -155,112 +156,25 @@
                         html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.status_obat + "</td>";
                         html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.jam_penyerahan + "</td>";
                         html += "</tr>";
+
+                        if (value.status_obat == "Selesai") {
+                            cselesai++;
+                        } 
+                        
+                        if (value.category_obat.toLowerCase() == 'racikan') {
+                            racikan++;
+                        } else {
+                            non_racikan++;
+                        }
                     });
 
                     $("tbody").html(html);
+                    $("#cracik").html(racikan);
+                    $("#cselesai").html(cselesai);
+                    $("#cnon_racik").html(non_racikan);
                 }
             });
         }
-
-        // save to localstorage
-
-        // function getData() {
-        //     $.ajax({
-        //         url: "/get/antrian",
-        //         type: "GET",
-        //         success: function (data) {
-        //             var html = "";
-        //             var cselesai = 0, non_racikan = 0, racikan = 0;
-        //             $.each(data, function (key, value) {
-        //                 html += "<tr id='" + value.no_resep + "' class=''>";
-        //                 html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.no_resep + "</td>";
-        //                 html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.reg_periksa.pasien.nm_pasien + "</td>";
-        //                 html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.jam_peresepan + "</td>";
-        //                 html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + cekKategori(value) + "</td>";
-        //                 html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + genStatus(value) + "</td>";
-        //                 html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.jam_penyerahan + "</td>";
-        //                 html += "</tr>";
-
-        //                 // if status selesai count and append to cselesai
-        //                 if (genStatus(value).toLowerCase() == "selesai") {
-        //                     cselesai += 1;
-        //                 }
-
-        //                 if (cekKategori(value).toLowerCase() == "non racikan") {
-        //                     non_racikan += 1;
-        //                 } else if (cekKategori(value).toLowerCase() == "racikan") {
-        //                     racikan += 1;
-        //                 } else {
-        //                     non_racikan += 0;
-        //                     racikan += 0;
-        //                 }
-
-        //                 $("#cselesai").html(cselesai);
-        //                 $("#cnon_racik").html(non_racikan);
-        //                 $("#cracik").html(racikan);
-        //             });
-
-        //             // get text from #no_resep
-        //             let no_resep_appended = $("#no_resep").text();
-                    
-        //             $("tr").removeClass("bg-yellow-300");
-        //             $("#" + no_resep_appended).addClass("bg-yellow-300");
-                    
-        //             appendCall(data);
-
-        //             // auto scroll table to tr with id #no_resep
-        //             let tr = $("#" + no_resep_appended);
-        //             let table = $("table");
-        //             table.animate({
-        //                 scrollTop: tr.offset().top - table.offset().top + table.scrollTop()
-        //             });
-        //         }
-        //     });
-        // }
-        
-        // function appendCall(data) {
-        //     $.each(data, function (key, value) {
-        //         if (value.tgl_penyerahan != "0000-00-00") {
-        //             $("#nm_pasien").html(value.reg_periksa.pasien.nm_pasien);
-        //             $("#no_resep").html(value.no_resep);
-        //         }
-        //     });
-        // }
-
-        // // cek racikan atau bukan
-        // function cekKategori(val) {
-        //     if (val.resep_dokter && val.resep_dokter.length == 0) {
-        //         return "Racikan";
-        //     } else if (val.resep_dokter && val.resep_dokter_racikan.length == 0) {
-        //         return "Non Racikan";
-        //     } else {
-        //         return "Racikan";
-        //     }
-        // }
-
-        // function genStatus(val) {
-        //     if (val.tgl_perawatan == "0000-00-00") {
-        //         return "Menunggu Validasi";
-        //     } else if (val.tgl_perawatan != "0000-00-00" && val.tgl_penyerahan == "0000-00-00") {
-        //         return "Obat disiapkan";
-        //     } else if (val.tgl_perawatan != "0000-00-00" && val.tgl_penyerahan != "0000-00-00") {
-        //         let lowername =  val.reg_periksa.pasien.nm_pasien.toLowerCase();
-        //         let splitname = lowername.split(",");
-                
-        //         if (!sudahDipanggil.includes(no_resep)) {
-        //             sudahDipanggil.push(no_resep);
-        //             responsiveVoice.speak(splitname[0] + ". silahkan menuju loket penyerahan obat", "Indonesian Female", {
-        //                 pitch: 1,
-        //                 rate: .85,
-        //                 volume: 1
-        //             });
-        //         }
-
-        //         return "Selesai";
-        //     } else {
-        //         return "....";
-        //     }
-        // }
     </script>
 
 </body>
