@@ -538,55 +538,7 @@
                     targets: 0,
                 }],
                 initComplete: function(setting, json) {
-                    $.map(json.data, function(val, index) {
-                        if (val.kd_poli == 'P001' || val.kd_poli == 'P007' || val.kd_poli ==
-                            'P009') {
-                            $.ajax({
-                                url: 'askep/kebidanan',
-                                data: {
-                                    no_rkm_medis: val.no_rkm_medis,
-                                },
-                                dataType: 'JSON',
-                            }).done(function(response) {
-                                if (response.success == true) {
-                                    $('#icon-askep-' + textRawat(val.no_rawat)).removeClass(
-                                        'bi bi-file-bar-graph-fill')
-                                    $('#btn-askep-' + textRawat(val.no_rawat)).removeClass(
-                                        'btn-primary')
-                                    $('#icon-askep-' + textRawat(val.no_rawat)).addClass(
-                                        'bi bi-check2-circle')
-                                    $('#btn-askep-' + textRawat(val.no_rawat)).addClass(
-                                        'btn-success')
-                                }
-                            })
 
-                        } else if (val.kd_poli == 'P003' || val.kd_poli == 'P008') {
-                            $.map(json.data, function(val, index) {
-                                $.ajax({
-                                    url: 'askep/anak',
-                                    data: {
-                                        no_rkm_medis: val.no_rkm_medis,
-                                    },
-                                    dataType: 'JSON',
-                                }).done(function(response) {
-                                    if (Object.keys(response).length > 0) {
-                                        $('#icon-askep-' + textRawat(val.no_rawat))
-                                            .removeClass(
-                                                'bi bi-file-bar-graph-fill')
-                                        $('#btn-askep-' + textRawat(val.no_rawat))
-                                            .removeClass(
-                                                'btn-primary')
-                                        $('#icon-askep-' + textRawat(val.no_rawat))
-                                            .addClass(
-                                                'bi bi-check2-circle')
-                                        $('#btn-askep-' + textRawat(val.no_rawat))
-                                            .addClass(
-                                                'btn-success')
-                                    }
-                                })
-                            })
-                        }
-                    })
                 },
                 ajax: {
                     url: "table",
@@ -704,16 +656,10 @@
                                     success: function(response) {
                                         $.map(response.data, function(res) {
                                             if (res.kd_dokter == 'S0001') {
-                                                $('#btn-askep-' + row.no_reg).attr(
-                                                    'onclick',
-                                                    'ambilAskepAnak(\'' +
-                                                    no_rkm_medis + '\')');
+                                                $('#btn-askep-' + row.no_reg).attr('onclick', 'ambilAskepAnak(\'' + no_rkm_medis + '\')');
 
                                             } else {
-                                                $('#btn-askep-' + row.no_reg).attr(
-                                                    'onclick',
-                                                    'ambilAskepKebidanan(\'' +
-                                                    no_rkm_medis + '\')');
+                                                $('#btn-askep-' + row.no_reg).attr('onclick', 'ambilAskepKebidanan(\'' + no_rkm_medis + '\')');
                                             }
                                         })
                                     }
@@ -764,6 +710,19 @@
                                     'bi bi-check2-circle')
                                 $('#btn-periksa-' + textRawat(row.no_rawat)).addClass('btn-success')
                             }
+
+                            $.map(row.pasien.reg_periksa, function(data) {
+                                if (data.kd_poli == 'P001' || data.kd_poli == 'P007' || data.kd_poli == 'P009') {
+                                    if (Object.keys(data.askep_ralan_kebidanan).length > 0) {
+                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mb-2 mr-1')
+                                    }
+                                } else if (data.kd_poli == 'P008' || data.kd_poli == 'P003') {
+                                    if (Object.keys(data.askep_ralan_anak).length > 0) {
+                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mb-2 mr-1')
+                                    }
+                                }
+                            })
+
                             return html;
                         },
                         name: 'upload',

@@ -41,5 +41,15 @@
         .form-select-sm {
             border-radius: 0px;
         }
+
+        .my-custom-scrollbar {
+            position: relative;
+            height: 500px;
+            overflow: auto;
+        }
+
+        .table-wrapper-scroll-y {
+            display: block;
+        }
     </style>
 </head>

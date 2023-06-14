@@ -79,4 +79,12 @@ class RegPeriksa extends Model
     {
         return $this->hasOne(RsiaGeneralConsent::class, 'no_rawat', 'no_rawat');
     }
+    public function askepRalanKebidanan()
+    {
+        return $this->hasMany(AskepRalanKebidanan::class, 'no_rawat', 'no_rawat');
+    }
+    public function askepRalanAnak()
+    {
+        return $this->hasMany(AskepRalanAnak::class, 'no_rawat', 'no_rawat');
+    }
 }
