@@ -130,14 +130,37 @@
                                         <input type="hidden" class="no_diagnosa" value="" />
                                     </td>
                                 </tr>
-                                <tr class="table-stripped">
+                                <tr>
+                                    <td>Prosedur</td>
+                                    <td colspan="3">
+                                        <input type="search" class="form-control form-control-sm" onkeyup="cariProsedur(this)" name="prosedur" id="prosedur" style="font-size:12px;min-height:12px;border-radius:0" autocomplete="off">
+                                        <div class="list-prosedur"></div>
+                                        <input type="hidden" class="no_prosedur" value="" />
+                                    </td>
+                                </tr>
+                                <tr>
                                     <table class="table table-stripped table-diagnosa" style="margin-bottom: 30px;">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Kode ICD</th>
-                                                <th>Deskripsi</th>
-                                                <th></th>
+                                                <th width="25%">Kode ICD</th>
+                                                <th width="60%">Deskripsi</th>
+                                                <th width="15%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </tr>
+                                <tr>
+                                    <table class="table table-stripped table-prosedur" style="margin-bottom: 30px;">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th width="25%">Kode Prosedur</th>
+                                                <th width="60%">Deskripsi</th>
+                                                <th width="15%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -881,6 +904,32 @@
             })
         }
 
+        function cariProsedur(kode) {
+            $.ajax({
+                url: '/erm/prosedur/cari',
+                data: {
+                    'kode': kode.value,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    console.log(response)
+                    html =
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                    no = 1;
+                    $.map(response, function(data) {
+                        html +=
+                            '<li data-nama="' + data.deskripsi_pendek + '" data-id="' + data.kode + '" onclick="tambahProsedur(this)"><a class="dropdown-item" href="#" style="overflow:hidden"> ' + data.kode + ' - ' + data.deskripsi_pendek + '</a></li>'
+                        no++;
+                    })
+                    html += '</ul>';
+                    $('.list-prosedur').fadeIn();
+                    $('.list-prosedur').html(html);
+
+
+                }
+            })
+        }
+
         function tambahDiagnosa(param) {
             no_rawat = $('#nomor_rawat').val();
             kd_penyakit = $(param).data('id');
@@ -899,6 +948,29 @@
                 success: function(response) {
                     ambilDiagnosaPasien(no_rawat)
                     $('#diagnosa').val('').focus();
+                }
+            })
+
+        }
+
+        function tambahProsedur(param) {
+            no_rawat = $('#nomor_rawat').val();
+            kode = $(param).data('id');
+            prioritas = $('.no_prosedur').val()
+
+            $.ajax({
+                url: '/erm/prosedur/pasien/tambah',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_rawat: no_rawat,
+                    kode: kode,
+                    status: "Ralan",
+                    prioritas: prioritas,
+                },
+                method: 'POST',
+                success: function(response) {
+                    ambilProsedurPasien(no_rawat)
+                    $('#prosedur').val('').focus();
                 }
             })
 
@@ -940,6 +1012,64 @@
 
                     }
                     $('.no_diagnosa').val(nomor)
+                }
+            })
+        }
+
+        function ambilProsedurPasien(no_rawat) {
+            $.ajax({
+                url: '/erm/prosedur/pasien/ambil',
+                data: {
+                    no_rawat: no_rawat,
+                },
+                success: function(response) {
+                    nomor = 1;
+                    $('.table-prosedur tbody').empty();
+                    if (Object.keys(response).length > 0) {
+                        $.map(response, function(res) {
+                            html = '<tr class="prosedur_' + res.kode + '">'
+                            html += '<td>'
+                            html += res.prioritas
+                            html += '</td>'
+                            html += '<td>'
+                            html += res.kode
+                            html += '</td>'
+                            html += '<td>'
+                            html += res.icd9.deskripsi_pendek
+                            html += '</td>'
+                            html += '<td>'
+                            html += '<button type="button" class="btn btn-danger btn-sm" style="font-size:12px" onclick="hapusProsedurPasien(\'' + no_rawat + '\', \'' + res.kode + '\')"><i class="bi bi-trash-fill"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+                            nomor = res.prioritas + 1;
+                            $('.table-prosedur tbody').append(html)
+                        })
+                    } else {
+                        html = '<tr>'
+                        html += '<td colspan="4" style="text-align:center">Tidak ada prosedur</td>'
+                        html += '</tr>'
+                        $('.table-prosedur tbody').append(html)
+
+                    }
+                    $('.no_prosedur').val(nomor)
+                }
+            })
+        }
+
+        function hapusProsedurPasien(no_rawat, kode) {
+            no = $('.no_diagnosa').val();
+            $.ajax({
+                url: '/erm/prosedur/pasien/hapus',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_rawat: no_rawat,
+                    kode: kode,
+                },
+                method: 'DELETE',
+                success: function(response) {
+
+                    $('.no_prosedur').val(parseInt(no) - 1)
+                    ambilProsedurPasien(no_rawat)
                 }
             })
         }
@@ -1090,6 +1220,7 @@
             $('.list_aturan').fadeOut();
             $('.list_racik').fadeOut();
             $('.list-diagnosa').fadeOut();
+            $('.list-prosedur').fadeOut();
 
         });
 
@@ -1245,6 +1376,7 @@
             modalsoap(id);
             cekResep(id);
             ambilDiagnosaPasien(id);
+            ambilProsedurPasien(id)
             no = 1;
             isModalShow = true;
         });

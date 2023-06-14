@@ -30,9 +30,11 @@ use App\Http\Controllers\RsiaMappingRacikanController;
 use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\DiagnosaPasienController;
+use App\Http\Controllers\Icd9Controller;
 use App\Http\Controllers\PenilaianMedisRanapController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\PenyakitController;
+use App\Http\Controllers\ProsedurPasienController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
@@ -185,6 +187,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/penyakit/pasien/tambah', [DiagnosaPasienController::class, 'tambah']);
     Route::get('/penyakit/pasien/ambil', [DiagnosaPasienController::class, 'ambil']);
     Route::delete('/penyakit/pasien/hapus', [DiagnosaPasienController::class, 'hapus']);
+
+    Route::get('/prosedur/cari', [Icd9Controller::class, 'cari']);
+    Route::get('/prosedur/pasien/ambil', [ProsedurPasienController::class, 'ambil']);
+    Route::post('/prosedur/pasien/tambah', [ProsedurPasienController::class, 'tambah']);
+    Route::delete('/prosedur/pasien/hapus', [ProsedurPasienController::class, 'hapus']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
