@@ -405,7 +405,7 @@
                         'no_resep': $('.no_resep').val(),
                         'kode_brng': $('.kode_obat').val(),
                         'jml': $('.jml').val(),
-                        'aturan_pakai': $('.aturan_pakai').val() + ' ' + $('.keterangan').val(),
+                        'aturan_pakai': $('.aturan_pakai').val(),
                     },
                     success: function(response) {
 
