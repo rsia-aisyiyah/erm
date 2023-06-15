@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalResepRacikan" tabindex="-1" aria-labelledby="modalResepUmum" aria-hidden="true"
+{{-- <div class="modal fade" id="modalResepRacikan" tabindex="-1" aria-labelledby="modalResepUmum" aria-hidden="true"
     style="background-color: #00000062!important;">
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content" style="border-radius:0px">
@@ -117,8 +117,8 @@
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="modalObat" tabindex="-1" aria-labelledby="modalObat" aria-hidden="true"
+</div> --}}
+{{-- <div class="modal fade" id="modalObat" tabindex="-1" aria-labelledby="modalObat" aria-hidden="true"
     style="background-color: #00000062!important;">
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content" style="border-radius:0px">
@@ -137,7 +137,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <div class="modal fade" id="modalObatRacik" aria-labelledby="modalObatRacik" aria-hidden="true"
     style="background-color: #00000062!important;">
     <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -305,16 +305,17 @@
                 data: {
                     _token: "{{ csrf_token() }}",
                     no_resep: $('.no_resep').val(),
+                    nama_racik: $('.nm_racik').val(),
                     no_racik: $('.no_racik').val(),
-                    jml_dr: $('.jml_dr').val(),
+                    // jml_dr: $('.jml_dr').val(),
                     aturan_pakai: $('.aturan_pakai_dr').val(),
                 },
                 success: function(response) {
-                    respon = false;
+                    // respon = false;
                     for (let no = 1; no <= banyakBaris; no++) {
                         $.ajax({
                             url: '/erm/resep/racik/detail/ubah',
-                            async: false,
+                            // async: false,
                             data: {
                                 '_token': "{{ csrf_token() }}",
                                 'no_resep': $('.no_resep').val(),
@@ -328,7 +329,7 @@
                             method: 'POST',
                             success: function(response) {
                                 // console.log(response);
-                                respon = true
+                                // respon = true
                             },
                             error: function(response) {
                                 Swal.fire(
