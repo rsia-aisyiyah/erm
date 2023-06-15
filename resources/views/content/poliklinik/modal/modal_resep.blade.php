@@ -161,7 +161,7 @@
                             <div class="col-md-2">
                                 <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
                                 <input type="text" autocomplete="off"
-                                    class="form-control form-control-sm nm_racik mb-1" name="nm_racik" readonly />
+                                    class="form-control form-control-sm nm_racik mb-1" name="nm_racik" />
                             </div>
                             <div class="col-md-2">
                                 <label for="metode" style="font-size:12px">Metode</label>
@@ -177,6 +177,8 @@
                                 <label for="jml" style="font-size:12px">Aturan Pakai</label>
                                 <input type="text" autocomplete="off" onkeyup="cariAturan(this)"
                                     class="form-control form-control-sm aturan_pakai_dr mb-1" name="aturan_pakai_dr" id="aturan_pakai" />
+                                <input type="hidden" class="nomor">
+                                <input type="hidden" value="" class="no_racik" />
                                 <div class="list_aturan" style="display: none;"></div>
                             </div>
                         </div>
@@ -186,10 +188,10 @@
                                     <thead>
                                         <tr>
                                             <th width="35%">Nama Obat</th>
-                                            <th>Kapasitas</th>
-                                            <th width="5%">P1</th>
+                                            <th>Sediaan</th>
+                                            <th width="7%">P1</th>
                                             <th width="3%"></th>
-                                            <th width="5%">P2</th>
+                                            <th width="7%">P2</th>
                                             <th>Dosis</th>
                                             <th>Jumlah</th>
                                             <th></th>
@@ -297,9 +299,6 @@
 
         function simpanDosisObat() {
             let banyakBaris = $('.table-racikan tbody tr').length
-            arrInput = [];
-
-
             $.ajax({
                 url: '/erm/resep/racik/ubah',
                 method: 'POST',

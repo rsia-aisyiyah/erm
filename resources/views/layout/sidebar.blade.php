@@ -25,12 +25,15 @@
                     Poliklinik
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep">
-                    <i class="bi bi-prescription align-text-bottom"></i>
-                    Resep
-                </a>
-            </li>
+            @if (session()->get('pegawai')->jbtn == 'Asisten Apoteker' || session()->get('pegawai')->jbtn == 'Apoteker' || session()->get('pegawai')->jbtn == '-')
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep">
+                        <i class="bi bi-prescription align-text-bottom"></i>
+                        Resep
+                    </a>
+                </li>
+            @endif
+
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('racikan') ? 'active' : '' }}" href="/erm/resep/racik">
                     <i class="bi bi-pen  align-text-bottom"></i>

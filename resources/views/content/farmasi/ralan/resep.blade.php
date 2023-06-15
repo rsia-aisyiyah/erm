@@ -95,8 +95,6 @@
             $.ajax({
                 url: 'resep/ambil/sekarang',
                 success: function(response) {
-
-                    conosle.log(response)
                     resep = 0;
                     valid = 0;
                     tunggu = 0;
@@ -160,6 +158,7 @@
 
                             html = 'Resep : ' + row.jam_peresepan + '<br/>';
                             html += 'Validasi : ' + row.jam + '<br/>';
+                            html += 'Penyerahan : ' + row.jam_penyerahan + '<br/>';
                             return html;
                         },
                         name: 'waktu'

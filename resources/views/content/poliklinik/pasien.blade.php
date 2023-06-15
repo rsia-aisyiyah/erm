@@ -537,9 +537,6 @@
                     width: 50,
                     targets: 0,
                 }],
-                initComplete: function(setting, json) {
-
-                },
                 ajax: {
                     url: "table",
                     data: {
