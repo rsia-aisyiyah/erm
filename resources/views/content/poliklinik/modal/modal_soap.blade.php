@@ -408,9 +408,7 @@
                         'aturan_pakai': $('.aturan_pakai').val() + ' ' + $('.keterangan').val(),
                     },
                     success: function(response) {
-                        // html = $('#plan').val();
-                        // html += $('.nama_obat').val() + ' ' + $('.jml').val() + ' ' + $('.aturan_pakai').val() + '\n';
-                        // $('#plan').val(html);
+
                         cekResep($('#nomor_rawat').val())
                         tulisPlan()
                     },
@@ -1234,7 +1232,7 @@
             }
             // $('#modalResepUmum').modal('show');
             html = '<tr>';
-            html += '<td>';
+            html += '<td><input type="hidden" class="kode_obat"/>';
             html +=
                 '<input type="text" class="no_resep form-control form-control-sm form-underline" readonly/>';
             html += '</td>';
