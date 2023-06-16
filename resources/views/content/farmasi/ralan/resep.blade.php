@@ -257,7 +257,7 @@
                     $.map(response, function(res) {
                         no = 1;
                         $.map(res.resep_racikan, function(racik) {
-                            console.log(racik)
+
                             html = '<tr>';
                             html += '<td>' + racik.no_racik + '</td>';
                             html += '<td><strong>' + racik.metode.nm_racik + ' ' + racik
@@ -265,11 +265,11 @@
                                 ' , Jumlah : ' + racik.jml_dr + ' Aturan Pakai ' + racik
                                 .aturan_pakai;
                             html += '</strong><ul>';
+                            no_racik = 1;
                             $.map(racik.detail_racikan, function(dr) {
-                                html += '<li>' + dr.p1 + '/' +
-                                    dr.p2 + ' x ' + dr.databarang.nama_brng + ' = ' + dr
-                                    .kandungan + ' mg, Jumlah : ' + dr.jml +
-                                    '</li>'
+                                if (racik.no_racik == dr.no_racik) {
+                                    html += '<li>' + dr.p1 + '/' + dr.p2 + ' x ' + dr.databarang.nama_brng + ' = ' + dr.kandungan + ' mg, Jumlah : ' + dr.jml + '</li>'
+                                }
                             })
                             html += '</ul></td>';
                             html += '</ul></td>';
@@ -279,7 +279,6 @@
                         })
 
                         $.map(res.resep_dokter, function(umum) {
-                            console.log(umum)
                             html = '<tr>';
                             html += '<td>' + no + '</td>';
                             html += '<td>' + umum.data_barang.nama_brng + '</td>';
