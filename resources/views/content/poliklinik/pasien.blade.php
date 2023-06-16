@@ -267,45 +267,27 @@
                                 html = '<tr>';
                                 if (Object.keys(resep.resep_dokter).length > 0 || Object.keys(
                                         resep.resep_racikan).length > 0) {
-                                    html += '<td>' + formatTanggal(resep.tgl_peresepan) +
-                                        '</td>';
+                                    html += '<td>' + formatTanggal(resep.tgl_peresepan) + '</td>';
                                     html += '<td>' + resep.no_resep + '</td>';
                                     html += '<td class="align-top">';
                                     // html += ;
                                     $.map(resep.resep_dokter, function(dokter) {
-                                        html += dokter.data_barang.nama_brng + '<br/>';
+                                        html += '<b class="text-success">' + dokter.data_barang.nama_brng + ' Jumlah : ' + dokter.jml + ', Aturan : ' + dokter.aturan_pakai + '</b><br/>';
                                     })
                                     $.map(resep.resep_racikan, function(racik) {
-                                        html += '<b>Racikan : ' + racik
-                                            .nama_racik + '</b><br/>';
+                                        console.log(racik)
+                                        html += '<b class="text-success">Racikan : ' + racik
+                                            .nama_racik + ' Jumlah : ' + racik.jml_dr + ', Aturan : ' + racik.aturan_pakai + '</b><br/>';
                                         html += '<ul>';
                                         $.map(racik.detail_racikan, function(detail) {
-                                            html += '<li>';
-                                            html += detail.data_barang
-                                                .nama_brng;
-                                            html += '</li>';
+                                            if (racik.no_racik == detail.no_racik) {
+                                                html += '<li>';
+                                                html += detail.data_barang
+                                                    .nama_brng;
+                                                html += '</li>';
+                                            }
                                         })
                                         html += '</ul>';
-                                    })
-                                    html += '</td>';
-                                    html += '<td class="align-top">';
-                                    $.map(resep.resep_dokter, function(dokter) {
-                                        html += dokter.jml +
-                                            '<br/>';
-                                    })
-                                    $.map(resep.resep_racikan, function(racik) {
-                                        html += racik.jml_dr +
-                                            '<br/>';
-                                    })
-                                    html += '</td>';
-                                    html += '<td class="align-top">';
-                                    $.map(resep.resep_dokter, function(dokter) {
-                                        html += dokter.aturan_pakai +
-                                            '<br/>';
-                                    })
-                                    $.map(resep.resep_racikan, function(racik) {
-                                        html += racik.aturan_pakai +
-                                            '<br/>';
                                     })
                                     html += '</td>';
                                     html +=

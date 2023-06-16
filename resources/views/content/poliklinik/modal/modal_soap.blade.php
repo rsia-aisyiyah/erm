@@ -232,8 +232,6 @@
                                                 <th>Tanggal</th>
                                                 <th>No Resep</th>
                                                 <th>Obat/Racikan</th>
-                                                <th>Jumlah</th>
-                                                <th>Aturan Pakai</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
