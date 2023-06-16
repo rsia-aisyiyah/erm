@@ -142,10 +142,11 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
-
+                            console.log(row)
                             html = row.no_resep + '<br/>';
                             html += '<h6 style="margin:0px">' + row.reg_periksa.pasien.nm_pasien + '</h6>';
                             html += row.no_rawat + '<br/>';
+                            html += row.reg_periksa.poliklinik.nm_poli + '<br/>';
                             html += row.reg_periksa.dokter.nm_dokter;
                             return html;
                         },
