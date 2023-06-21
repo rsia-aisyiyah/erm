@@ -272,22 +272,20 @@
                                     html += '<td class="align-top">';
                                     // html += ;
                                     $.map(resep.resep_dokter, function(dokter) {
-                                        html += '<b class="text-success">' + dokter.data_barang.nama_brng + ' Jumlah : ' + dokter.jml + ', Aturan : ' + dokter.aturan_pakai + '</b><br/>';
+                                        html += '<b class="">' + dokter.data_barang.nama_brng + ' Jumlah : ' + dokter.jml + ', Aturan : ' + dokter.aturan_pakai + '</b><br/>';
                                     })
                                     $.map(resep.resep_racikan, function(racik) {
                                         console.log(racik)
-                                        html += '<b class="text-success">Racikan : ' + racik
+                                        html += '<b class="">Racikan : ' + racik
                                             .nama_racik + ' Jumlah : ' + racik.jml_dr + ', Aturan : ' + racik.aturan_pakai + '</b><br/>';
-                                        html += '<ul>';
                                         $.map(racik.detail_racikan, function(detail) {
                                             if (racik.no_racik == detail.no_racik) {
-                                                html += '<li>';
+                                                html += '<span class="badge rounded-pill bg-success">';
                                                 html += detail.data_barang
                                                     .nama_brng;
-                                                html += '</li>';
+                                                html += '</span>';
                                             }
                                         })
-                                        html += '</ul>';
                                     })
                                     html += '</td>';
                                     html +=

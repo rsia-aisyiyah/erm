@@ -624,7 +624,8 @@
                         html +=
                             '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' +
                             no +
-                            '" name="kandungan[]" value="' + kandungan + '" onchange="hitungDosis(' + no + ')"/></td>'
+                            '" name="kandungan[]" onkeypress="return hanyaAngka(event)" value="' + kandungan + '" onchange="hitungDosis(' + no + ')"/></td>'
+                        html += '<td>mg</td>'
                         html +=
                             '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +
                             no +

@@ -36,8 +36,8 @@
 
             setInterval(function() {
                 $('#tb_daftar_pasien').DataTable().destroy();
-                tbDaftarPasien()
-            }, 5000);
+                tbDaftarPasien();
+            }, 10000);
         })
 
         function tbDaftarPasien() {
@@ -55,21 +55,16 @@
                 ajax: {
                     url: "registrasi/ambil/table",
                     data: {
-                        // tgl_registrasi: "04-04-2023",
                         tgl_registrasi: "{{ date('Y-m-d') }}",
                     }
                 },
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
-                            // console.log(row)
-
-
                             html = row.no_rawat + '<br/>';
                             html += '<h5 style="margin:0px">' + row.pasien.nm_pasien + '</h5>';
                             html += row.poliklinik.nm_poli + '<br/>';
                             html += row.dokter.nm_dokter + '<br/>';
-                            // html += row.reg_periksa.dokter.nm_dokter;
                             return html;
                         },
                         name: 'nm_pasien'
@@ -78,7 +73,6 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            // console.log(row)
                             if (row.general_consent) {
                                 if (row.general_consent.ttd) {
                                     html = '<img src="{{ asset('ttd') }}/' + row.general_consent.ttd +
@@ -99,10 +93,7 @@
                                     row.no_rawat +
                                     '" data-loket="2" data-rm="' + row.no_rkm_medis +
                                     '">LOKET 2</button><br/>';
-                                // html +=
-                                //     '<button onclick="buka(this, 3)" class="btn btn-sm btn-primary mb-2" type="button" style="width:110px;" data-id="' +
-                                //     row.no_rawat +
-                                //     '" data-loket="3">P3</button><br/>';
+
                             }
                             return html;
                         },
@@ -179,9 +170,7 @@
                     'Sedang ada antrian',
                     'warning'
                 )
-                // alert(Object.keys(cekProses(loket)).length);
             }
-            // console.log(nik)
         }
     </script>
 @endpush

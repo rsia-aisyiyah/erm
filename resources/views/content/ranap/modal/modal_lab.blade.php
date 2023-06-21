@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalLabRanap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content" style="border-radius:0px">
             <div class="modal-body">
                 <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
