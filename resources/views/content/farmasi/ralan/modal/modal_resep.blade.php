@@ -12,7 +12,7 @@
 
                 </div>
                 <div class="row gy-2">
-                    <div class="col-lg-6 col-md-6 col-sm-12" id="umum">
+                    <div class="col-lg-6 col-md-12 col-sm-12" id="umum">
                         <div class="card">
                             <div class="card-header text-bg-warning">
                                 Resep Non-Racik
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12" id="racikan">
+                    <div class="col-lg-6 col-md-12 col-sm-12" id="racikan">
                         <div class="card">
                             <div class="card-header text-bg-danger">
                                 Resep Racikan

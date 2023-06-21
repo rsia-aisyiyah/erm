@@ -6,13 +6,14 @@
                 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
                 <span>MENU</span>
             </h6>
-
-            {{-- <li class="nav-item">
-                <a class="nav-link {{ Request::is('registrasi') ? 'active' : '' }}" href="/erm/registrasi">
-                    <i class="bi bi-pen  align-text-bottom"></i>
-                    Pendaftaran
-                </a>
-            </li> --}}
+            @if (session()->get('pegawai')->jbtn == 'Pendaftaran' || session()->get('pegawai')->jbtn == 'Koordinoator Pendaftaran' || session()->get('pegawai')->jbtn == '-')
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('registrasi') ? 'active' : '' }}" href="/erm/registrasi">
+                        <i class="bi bi-pen  align-text-bottom"></i>
+                        Pendaftaran
+                    </a>
+                </li>
+            @endif
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
                     <i class="bi bi-people-fill align-text-bottom"></i>
@@ -25,12 +26,16 @@
                     Poliklinik
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep">
-                    <i class="bi bi-prescription align-text-bottom"></i>
-                    Resep
-                </a>
-            </li>
+
+            @if (session()->get('pegawai')->jbtn == 'Asisten Apoteker' || session()->get('pegawai')->jbtn == 'Apoteker' || session()->get('pegawai')->jbtn == '-')
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep">
+                        <i class="bi bi-prescription align-text-bottom"></i>
+                        Resep
+                    </a>
+                </li>
+            @endif
+
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('racikan') ? 'active' : '' }}" href="/erm/resep/racik">
                     <i class="bi bi-pen  align-text-bottom"></i>

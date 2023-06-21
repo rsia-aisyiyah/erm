@@ -7,7 +7,6 @@
     <meta name="description" content="">
     <meta name="csrf-content" content="" {{ csrf_token() }}>
     <title>Login</title>
-    {{-- <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sign-in/"> --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -16,8 +15,6 @@
 
     <style>
     </style>
-    {{-- <link href="{{ asset('css/signature-pad.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/ie9.css') }}" rel="stylesheet"> --}}
     <style>
         body {
             background: linear-gradient(#ffffffdb, #ffffff), url('http://192.168.100.10/erm/public/img/bg.png');
@@ -400,12 +397,22 @@
                             Dan saya juga menyatakan bahwa saya/ pasien bersedia dirawat sebagai pasien dengan
                             penanggung jawab pembiayaan :
                         </p>
+
                         <ul style="text-align: justify">
-                            <li><strong>UMUM</strong>
+                            <li class="umum"><strong>UMUM</strong>
                                 <ol type="a">
-                                    <li>Setuju dirawat di kelas : <strong><span class="kelas"
-                                                style="color:green"></span></strong> Ruang :
-                                        <strong><span class="kamar" style="color:green"></span></strong>
+                                    <li>Setuju dirawat di kelas :
+                                        <select name="kelas" class="">
+                                            <option value="1">Kelas 1</option>
+                                            <option value="2">Kelas 2</option>
+                                            <option value="3">Kelas 3</option>
+                                            <option value="vip">VIP</option>
+                                            <option value="vvip">VVIP</option>
+                                        </select>
+                                        {{-- <strong><span class="kelas"style="color:green"></span></strong> --}}
+
+                                        {{-- Ruang :
+                                        <strong><span class="kamar" style="color:green"></span></strong> --}}
                                     </li>
                                     <li>
                                         Setuju dirawat dengan pembiayaan mandiri (umum) dari awal masuk sampai dengan
@@ -419,7 +426,7 @@
                                     </li>
                                 </ol>
                             </li>
-                            <li><strong>BPJS Non PBI / BPJS PBI <sup>*</sup>, dengan ketentuan</strong>
+                            <li class="bpjs"><strong>BPJS Non PBI / BPJS PBI <sup>*</sup>, dengan ketentuan</strong>
                                 <ol type="a">
                                     <li>
                                         Sanggup melengkapi syarat kepesertaan BPJS/ membayar denda iuran BPJS paling
@@ -812,8 +819,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous">
-    </script>
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js"></script>
     <script src="{{ asset('js/signature_pad.umd.js') }}"></script>
     <script>
@@ -1055,6 +1061,15 @@
                             $('.kamar').text(data.kamar.bangsal.nm_bangsal)
                         })
                     }
+
+                    if (response.kd_pj == 'A03') {
+                        $('.bpjs').css('display', 'none');
+                        $('.umum').css('display', 'inline');
+                    } else {
+                        $('.umum').css('display', 'none');
+                        $('.bpjs').css('display', 'inline');
+                    }
+                    // console.log(response)
 
                     tampilDokter(response.dokter.kd_sps)
                 }

@@ -142,10 +142,11 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
-
+                            console.log(row)
                             html = row.no_resep + '<br/>';
                             html += '<h6 style="margin:0px">' + row.reg_periksa.pasien.nm_pasien + '</h6>';
                             html += row.no_rawat + '<br/>';
+                            html += row.reg_periksa.poliklinik.nm_poli + '<br/>';
                             html += row.reg_periksa.dokter.nm_dokter;
                             return html;
                         },
@@ -158,6 +159,7 @@
 
                             html = 'Resep : ' + row.jam_peresepan + '<br/>';
                             html += 'Validasi : ' + row.jam + '<br/>';
+                            html += 'Penyerahan : ' + row.jam_penyerahan + '<br/>';
                             return html;
                         },
                         name: 'waktu'
@@ -186,13 +188,6 @@
 
                             html += '<button onclick="panggilResep(\'' + row.no_resep + '\', \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-warning mb-2 panggil-' + row.no_resep + '" style="width:110px;" type="button" style="width:110px;" data-id="' + row.no_rawat + '">PANGGIL</button>';
 
-                            if (row.tgl_penyerahan != '0000-00-00') {
-
-                                $('.panggil-' + row.no_resep).removeAttr('onclick');
-                                $('.panggil-' + row.no_resep).attr('onclick', 'resetPanggilan(' + row.no_resep + ')');
-                                $('.panggil-' + row.no_resep).addClass('btn-success').removeClass('btn-warning');
-                                $('.panggil-' + row.no_resep).text('SELESAI');
-                            }
 
                             return html;
                         },
@@ -228,31 +223,26 @@
 
         function panggilResep(no_resep, nm_pasien = null) {
             localStorage.setItem('panggil', 'yes');
-            
+
             localStorage.setItem('no_panggil', no_resep);
             if (nm_pasien != null) {
                 localStorage.setItem('nm_pasien', nm_pasien);
             }
-            
+
             setTimeout(() => {
                 localStorage.setItem('panggil', 'no');
             }, 3000);
 
-            // $.ajax({
-            //     url: 'resep/obat/panggil',
-            //     data: {
-            //         no_resep: no_resep,
-            //         tanggal: "{{ date('Y-m-d') }}"
-            //     },
-            //     success: function(response) {
-            //         console.log(response);
-            //         $('.panggil-' + no_resep).removeAttr('onclick');
-            //         $('.panggil-' + no_resep).attr('onclick', 'resetPanggilan(' + no_resep + ')');
-            //         $('.panggil-' + no_resep).addClass('btn-success').removeClass('btn-warning');
-            //         $('.panggil-' + no_resep).text('SELESAI');
-            //         reloadTabelResep();
-            //     }
-            // })
+            $.ajax({
+                url: 'resep/obat/panggil',
+                data: {
+                    no_resep: no_resep,
+                    tanggal: "{{ date('Y-m-d') }}"
+                },
+                success: function(response) {
+                    reloadTabelResep();
+                }
+            })
         }
 
         function tampilResep(no_resep) {
@@ -268,7 +258,7 @@
                     $.map(response, function(res) {
                         no = 1;
                         $.map(res.resep_racikan, function(racik) {
-                            console.log(racik)
+
                             html = '<tr>';
                             html += '<td>' + racik.no_racik + '</td>';
                             html += '<td><strong>' + racik.metode.nm_racik + ' ' + racik
@@ -276,11 +266,11 @@
                                 ' , Jumlah : ' + racik.jml_dr + ' Aturan Pakai ' + racik
                                 .aturan_pakai;
                             html += '</strong><ul>';
+                            no_racik = 1;
                             $.map(racik.detail_racikan, function(dr) {
-                                html += '<li>' + dr.p1 + '/' +
-                                    dr.p2 + ' x ' + dr.databarang.nama_brng + ' = ' + dr
-                                    .kandungan + ' mg, Jumlah : ' + dr.jml +
-                                    '</li>'
+                                if (racik.no_racik == dr.no_racik) {
+                                    html += '<li>' + dr.p1 + '/' + dr.p2 + ' x ' + dr.databarang.nama_brng + ' = ' + dr.kandungan + ' mg, Jumlah : ' + dr.jml + '</li>'
+                                }
                             })
                             html += '</ul></td>';
                             html += '</ul></td>';
@@ -290,7 +280,6 @@
                         })
 
                         $.map(res.resep_dokter, function(umum) {
-                            console.log(umum)
                             html = '<tr>';
                             html += '<td>' + no + '</td>';
                             html += '<td>' + umum.data_barang.nama_brng + '</td>';

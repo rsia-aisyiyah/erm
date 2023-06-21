@@ -267,45 +267,25 @@
                                 html = '<tr>';
                                 if (Object.keys(resep.resep_dokter).length > 0 || Object.keys(
                                         resep.resep_racikan).length > 0) {
-                                    html += '<td>' + formatTanggal(resep.tgl_peresepan) +
-                                        '</td>';
+                                    html += '<td>' + formatTanggal(resep.tgl_peresepan) + '</td>';
                                     html += '<td>' + resep.no_resep + '</td>';
                                     html += '<td class="align-top">';
                                     // html += ;
                                     $.map(resep.resep_dokter, function(dokter) {
-                                        html += dokter.data_barang.nama_brng + '<br/>';
+                                        html += '<b class="">' + dokter.data_barang.nama_brng + ' Jumlah : ' + dokter.jml + ', Aturan : ' + dokter.aturan_pakai + '</b><br/>';
                                     })
                                     $.map(resep.resep_racikan, function(racik) {
-                                        html += '<b>Racikan : ' + racik
-                                            .nama_racik + '</b><br/>';
-                                        html += '<ul>';
+                                        console.log(racik)
+                                        html += '<b class="">Racikan : ' + racik
+                                            .nama_racik + ' Jumlah : ' + racik.jml_dr + ', Aturan : ' + racik.aturan_pakai + '</b><br/>';
                                         $.map(racik.detail_racikan, function(detail) {
-                                            html += '<li>';
-                                            html += detail.data_barang
-                                                .nama_brng;
-                                            html += '</li>';
+                                            if (racik.no_racik == detail.no_racik) {
+                                                html += '<span class="badge rounded-pill bg-success">';
+                                                html += detail.data_barang
+                                                    .nama_brng;
+                                                html += '</span>';
+                                            }
                                         })
-                                        html += '</ul>';
-                                    })
-                                    html += '</td>';
-                                    html += '<td class="align-top">';
-                                    $.map(resep.resep_dokter, function(dokter) {
-                                        html += dokter.jml +
-                                            '<br/>';
-                                    })
-                                    $.map(resep.resep_racikan, function(racik) {
-                                        html += racik.jml_dr +
-                                            '<br/>';
-                                    })
-                                    html += '</td>';
-                                    html += '<td class="align-top">';
-                                    $.map(resep.resep_dokter, function(dokter) {
-                                        html += dokter.aturan_pakai +
-                                            '<br/>';
-                                    })
-                                    $.map(resep.resep_racikan, function(racik) {
-                                        html += racik.aturan_pakai +
-                                            '<br/>';
                                     })
                                     html += '</td>';
                                     html +=
@@ -537,57 +517,6 @@
                     width: 50,
                     targets: 0,
                 }],
-                initComplete: function(setting, json) {
-                    $.map(json.data, function(val, index) {
-                        if (val.kd_poli == 'P001' || val.kd_poli == 'P007' || val.kd_poli ==
-                            'P009') {
-                            $.ajax({
-                                url: 'askep/kebidanan',
-                                data: {
-                                    no_rkm_medis: val.no_rkm_medis,
-                                },
-                                dataType: 'JSON',
-                            }).done(function(response) {
-                                if (response.success == true) {
-                                    $('#icon-askep-' + textRawat(val.no_rawat)).removeClass(
-                                        'bi bi-file-bar-graph-fill')
-                                    $('#btn-askep-' + textRawat(val.no_rawat)).removeClass(
-                                        'btn-primary')
-                                    $('#icon-askep-' + textRawat(val.no_rawat)).addClass(
-                                        'bi bi-check2-circle')
-                                    $('#btn-askep-' + textRawat(val.no_rawat)).addClass(
-                                        'btn-success')
-                                }
-                            })
-
-                        } else if (val.kd_poli == 'P003' || val.kd_poli == 'P008') {
-                            $.map(json.data, function(val, index) {
-                                $.ajax({
-                                    url: 'askep/anak',
-                                    data: {
-                                        no_rkm_medis: val.no_rkm_medis,
-                                    },
-                                    dataType: 'JSON',
-                                }).done(function(response) {
-                                    if (Object.keys(response).length > 0) {
-                                        $('#icon-askep-' + textRawat(val.no_rawat))
-                                            .removeClass(
-                                                'bi bi-file-bar-graph-fill')
-                                        $('#btn-askep-' + textRawat(val.no_rawat))
-                                            .removeClass(
-                                                'btn-primary')
-                                        $('#icon-askep-' + textRawat(val.no_rawat))
-                                            .addClass(
-                                                'bi bi-check2-circle')
-                                        $('#btn-askep-' + textRawat(val.no_rawat))
-                                            .addClass(
-                                                'btn-success')
-                                    }
-                                })
-                            })
-                        }
-                    })
-                },
                 ajax: {
                     url: "table",
                     data: {
@@ -704,16 +633,10 @@
                                     success: function(response) {
                                         $.map(response.data, function(res) {
                                             if (res.kd_dokter == 'S0001') {
-                                                $('#btn-askep-' + row.no_reg).attr(
-                                                    'onclick',
-                                                    'ambilAskepAnak(\'' +
-                                                    no_rkm_medis + '\')');
+                                                $('#btn-askep-' + row.no_reg).attr('onclick', 'ambilAskepAnak(\'' + no_rkm_medis + '\')');
 
                                             } else {
-                                                $('#btn-askep-' + row.no_reg).attr(
-                                                    'onclick',
-                                                    'ambilAskepKebidanan(\'' +
-                                                    no_rkm_medis + '\')');
+                                                $('#btn-askep-' + row.no_reg).attr('onclick', 'ambilAskepKebidanan(\'' + no_rkm_medis + '\')');
                                             }
                                         })
                                     }
@@ -764,6 +687,19 @@
                                     'bi bi-check2-circle')
                                 $('#btn-periksa-' + textRawat(row.no_rawat)).addClass('btn-success')
                             }
+
+                            $.map(row.pasien.reg_periksa, function(data) {
+                                if (data.kd_poli == 'P001' || data.kd_poli == 'P007' || data.kd_poli == 'P009') {
+                                    if (Object.keys(data.askep_ralan_kebidanan).length > 0) {
+                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mb-2 mr-1')
+                                    }
+                                } else if (data.kd_poli == 'P008' || data.kd_poli == 'P003') {
+                                    if (Object.keys(data.askep_ralan_anak).length > 0) {
+                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mb-2 mr-1')
+                                    }
+                                }
+                            })
+
                             return html;
                         },
                         name: 'upload',

@@ -232,8 +232,6 @@
                                                 <th>Tanggal</th>
                                                 <th>No Resep</th>
                                                 <th>Obat/Racikan</th>
-                                                <th>Jumlah</th>
-                                                <th>Aturan Pakai</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -405,12 +403,10 @@
                         'no_resep': $('.no_resep').val(),
                         'kode_brng': $('.kode_obat').val(),
                         'jml': $('.jml').val(),
-                        'aturan_pakai': $('.aturan_pakai').val() + ' ' + $('.keterangan').val(),
+                        'aturan_pakai': $('.aturan_pakai').val(),
                     },
                     success: function(response) {
-                        // html = $('#plan').val();
-                        // html += $('.nama_obat').val() + ' ' + $('.jml').val() + ' ' + $('.aturan_pakai').val() + '\n';
-                        // $('#plan').val(html);
+
                         cekResep($('#nomor_rawat').val())
                         tulisPlan()
                     },
@@ -553,7 +549,6 @@
                                 .aturan_pakai + '\n' + 'Isi : '
                             $.map(rr.detail_racikan, function(dr) {
                                 // console.log('Detail Racikan', rr);
-                                console.log(dr)
                                 if (rr.no_racik == dr.no_racik) {
                                     teksRr += dr.databarang.nama_brng +
                                         ' ' +
@@ -577,6 +572,13 @@
             })
         }
 
+        function hitungJumlahObat(kps, p1, p2, jumlah) {
+            jumlah = $('.jml_dr').val();
+            kandungan = parseFloat(kps) * (parseFloat(p1) / parseFloat(p2));
+            jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
+            return parseFloat(jml_obat).toFixed(2);
+        }
+
         function ambilObatRacikan() {
             $('.table-racikan tbody').empty();
             no_resep = $('.no_resep').val();
@@ -591,10 +593,11 @@
                 },
                 success: function(response, status, detail) {
                     html = '';
-                    // html = '< id="form-racik-obat">';
                     no = 1;
                     $.map(response, function(res) {
-                        console.log(res)
+
+                        kandungan = res.kandungan != 0 ? res.kandungan : res.data_barang.kapasitas;
+
                         html += '<tr class="">'
                         html +=
                             '<td><input type="hidden" id="kode_brng' + no + '" value="' +
@@ -617,21 +620,16 @@
                             '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' +
                             no +
                             '"name="p2[]" onfocusout="hitungObatRacik(' + no +
-                            ')" value="' +
-                            res.p2 +
-                            '"/></td>'
+                            ')" value="' + res.p2 + '"/></td>'
                         html +=
                             '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' +
                             no +
-                            '" name="kandungan[]" value="' +
-                            res.kandungan +
-                            '" onchange="hitungDosis(' + no + ')"/></td>'
+                            '" name="kandungan[]" onkeypress="return hanyaAngka(event)" value="' + kandungan + '" onchange="hitungDosis(' + no + ')"/></td>'
+                        html += '<td>mg</td>'
                         html +=
                             '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +
                             no +
-                            '" name="jml[]" value="' +
-                            res.jml +
-                            '" readonly/></td>'
+                            '" name="jml[]" value="' + hitungJumlahObat(res.data_barang.kapasitas, res.p1, res.p2) + '" readonly/></td>'
                         html +=
                             '<td><button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="' +
                             res.no_resep + '" data-racik="' +
@@ -641,8 +639,8 @@
                         html += '</tr>'
                         no++
                     });
-                    html += '<input type="hidden" class="nomor" value="' + no + '">'
                     $('.table-racikan tbody').append(html);
+                    $('.nomor').val(no)
                 },
             })
         }
@@ -688,7 +686,6 @@
                 },
                 method: 'POST',
                 success: function(response) {
-                    console.log(response);
                     ambilObatRacikan();
                 },
                 error: function(request, status, error) {
@@ -770,11 +767,10 @@
         $('tbody').on('click', '.edit', function() {
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
-            let no_racik = $(this).attr('data-racik');
+            let no_racik = $(this).data('racik');
             // console.log('noracik', no_racik)
             $('#modalObatRacik').modal('show');
             racikan = ambilRacikan(no_resep, no_racik)
-            // $('.no_racik').val(racikan.no_racik);
             $('.no_resep').val(racikan.no_resep);
             $('.metode').val(racikan.metode.nm_racik);
             $('.nm_racik').val(racikan.nama_racik);
@@ -789,6 +785,7 @@
             $('.p1').val('');
             $('.p2').val('');
             $('.jml_obat').val('');
+            $('.kandungan').val('');
             $('.kandungan').val('');
         });
         $('#modalObatRacik').on('hidden.bs.modal', function() {
@@ -1234,7 +1231,7 @@
             }
             // $('#modalResepUmum').modal('show');
             html = '<tr>';
-            html += '<td>';
+            html += '<td><input type="hidden" class="kode_obat"/>';
             html +=
                 '<input type="text" class="no_resep form-control form-control-sm form-underline" readonly/>';
             html += '</td>';
@@ -1618,7 +1615,6 @@
                     html += '</ul>';
                     $('.list_petugas').fadeIn();
                     $('.list_petugas').html(html);
-                    console.log('Respon Petugas', response);
                 },
             })
         }

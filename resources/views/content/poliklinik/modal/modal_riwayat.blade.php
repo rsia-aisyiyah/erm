@@ -61,6 +61,8 @@
                         $('#modalRiwayat').modal('hide');
                     } else {
                         resume(response);
+
+                        console.log(response)
                     }
                 }
             });

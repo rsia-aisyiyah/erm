@@ -2,50 +2,44 @@
 
 @section('contents')
     <div class="row">
-        <div class="col-lg-4 col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    Dokter & Nama Template Racikan
-                </div>
-                <div class="card-body">
-                    <form>
-                        <div class="mb-2">
-                            <label for="dokter" class="form-label">Dokter</label>
-                            <input type="search" class="form-control" id="dokter" aria-describedby="dokter" name="dokter"
-                                onkeyup="cariDokter(this)">
-                            <div class="list_dokter"></div>
-                            <input type="hidden" class="form-control" id="kd_dokter" aria-describedby="kd_dokter"
-                                name="kd_dokter" value="">
-                        </div>
-                        <div class="mb-2">
-                            <label for="nm_racikan" class="form-label">Nama Racikan</label>
-                            <input type="text" class="form-control" id="nm_racik" aria-describedby="nm_racik">
-                        </div>
-                        <button type="button" class="btn btn-primary" id="buatTemplate">Buat Template Racikan</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="mb-6 col-lg-8 col-sm-12" id="template">
+        <div class="mb-12 col-lg-12 col-sm-12" id="template">
             <div class="card">
                 <div class="card-header">
                     Daftar Racikan
                 </div>
                 <div class="overflow-auto">
                     <div class="card-body">
-                        <table class="table tale-responsive table-stripped" id="tb_template">
-                            <thead>
-                                <tr>
-                                    <th>Nama Racikan</th>
-                                    <th>Obat</th>
-                                    <th>Dokter</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <form>
+                            <div class="mb-2">
+                                <label for="dokter" class="form-label">Dokter</label>
+                                <input type="search" class="form-control form-control-sm" id="dokter" aria-describedby="dokter" name="dokter"
+                                    onkeyup="cariDokter(this)">
+                                <div class="list_dokter"></div>
+                                <input type="hidden" class="form-control" id="kd_dokter" aria-describedby="kd_dokter"
+                                    name="kd_dokter" value="">
+                            </div>
+                            <div class="mb-2">
+                                <label for="nm_racikan" class="form-label">Nama Racikan</label>
+                                <input type="text" class="form-control form-control-sm" id="nm_racik" aria-describedby="nm_racik">
+                            </div>
+                            <button type="button" class="btn btn-primary btn-sm" style="font-size: 12px" id="buatTemplate">Buat Template Racikan</button>
+                        </form>
+                        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                            <table class="table tale-responsive table-stripped table-" id="tb_template">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Racikan</th>
+                                        <th>Obat</th>
+                                        <th>Dokter</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,7 +118,17 @@
         })
 
         $(document).ready(function() {
-            setTemplate()
+
+            var bidang = "{{ session()->get('pegawai')->bidang }}"
+            var nik = "{{ session()->get('pegawai')->nik }}"
+            var nama = "{{ session()->get('pegawai')->nama }}"
+            if (bidang == 'Spesialis') {
+                setTemplate(nik)
+                $('#kd_dokter').val(nik)
+                $('#dokter').val(nama)
+            } else {
+                setTemplate();
+            }
         })
 
         function cariDokter(dokter) {
@@ -154,10 +158,7 @@
 
 
         function setTemplate(kd_dokter = '', nm_racik = '') {
-
-
             $('#tb_template tbody').empty()
-
             template = ambilTemplateRacikan(kd_dokter, nm_racik);
 
             if (Object.keys(template).length >= 1) {
@@ -256,7 +257,8 @@
                                 'Template resep berhasil dihapus',
                                 'success'
                             )
-                            setTemplate();
+
+                            setTemplate($("#kd_dokter").val());
                         }
                     })
                 }
@@ -274,7 +276,7 @@
                 },
                 success: function(response) {
                     // alert(response);
-                    setTemplate();
+                    setTemplate($("#kd_dokter").val());
                     ubahTemplate(id_racik)
                 }
             })
@@ -335,7 +337,7 @@
                         },
                         success: function(response) {
                             $('#modalTemplate').modal('hide')
-                            setTemplate()
+                            setTemplate($("#kd_dokter").val());
                         },
                         error: function(a, b, c) {
                             Swal.fire(
@@ -367,7 +369,9 @@
                     },
                     method: 'POST',
                     success: function(response) {
-                        setTemplate();
+                        setTemplate($("#kd_dokter").val());
+                        $('#nm_racik').val('');
+                        // ubahTemplate(response.id)
                     }
                 })
             } else {

@@ -1,143 +1,3 @@
-<div class="modal fade" id="modalResepRacikan" tabindex="-1" aria-labelledby="modalResepUmum" aria-hidden="true"
-    style="background-color: #00000062!important;">
-    <div class="modal-dialog modal-md modal-dialog-centered">
-        <div class="modal-content" style="border-radius:0px">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">RESEP RACIKAN</h1>
-            </div>
-            <div class="modal-body modal-resep">
-
-                <form id="resep-racikan">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-3 col-sm-12 mb-1">
-                            <label for="no_resep" style="font-size:12px">Nama Racikan</label>
-                        </div>
-                        <div class="col-lg-9 col-md-9 col-sm-12 mb-1">
-                            <input type="search" autocomplete="off" class="form-control form-control-sm nm_racik"
-                                name="nm_racik" />
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 mb-1">
-                            <label for="kd_racik" style="font-size:12px">Metode</label>
-                        </div>
-                        <div class="col-lg-9 col-md-9 col-sm-12 mb-1">
-                            <select name=kd_racik" id="" class="form-select form-select-sm kd_racik"
-                                style="font-size:12px">
-                                <option value="R01" selected>Puyer</option>
-                                <option value="R02">Sirup</option>
-                                <option value="R03">Salep</option>
-                                <option value="R04">Kapsul</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 mb-1">
-                            <label for="jml" class="" style="font-size:12px">Jumlah</label>
-                        </div>
-                        <div class="col-lg-9 col-md-9 col-sm-12 mb-1">
-                            <input type="search" autocomplete="off" class="form-control form-control-sm jml"
-                                name="jml" onkeypress="return hanyaAngka(event)" />
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 mb-1">
-                            <label for="aturan_pakai" style="font-size:12px">Aturan
-                                Pakai</label>
-                        </div>
-                        <div class="col-lg-9 col-md-9 col-sm-12 mb-1">
-                            <input type="search" autocomplete="off" onkeyup="cariAturan(this)"
-                                class="form-control form-control-sm aturan_pakai" name="aturan_pakai" />
-                            <div class="list_aturan"></div>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 mb-1">
-                            <label for="keterangan" style="font-size:12px">Keterangan</label>
-                        </div>
-                        <div class="col-lg-9 col-md-9 col-sm-12 mb-1">
-                            <input type="search" autocomplete="off" class="form-control form-control-sm keterangan"
-                                name="keterangan" />
-                        </div>
-                        <input type="hidden" value="" class="no_racik" />
-                        <input type="hidden" value="" class="kps" />
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" onclick="simpanRacikan()"><i
-                        class="bi bi-save"></i>
-                    Simpan</i></button>
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                        class="bi bi-x-circle"></i> Keluar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalResepUmum" tabindex="-1" aria-labelledby="modalResepUmum" aria-hidden="true"
-    style="background-color: #00000062!important;">
-    <div class="modal-dialog modal-md modal-dialog-centered">
-        <div class="modal-content" style="border-radius:0px">
-            <div class="modal-header">
-                <h2 class="modal-title fs-5" id="">Pilih Obat</h2>
-            </div>
-            <div class="modal-body modal-resep">
-                <form id="resep-umum">
-                    <div class="row">
-                        <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label" style="font-size:12px">Pilih
-                            Obat</label>
-                        <div class="col-lg-8 col-sm-12 mb-1">
-                            <input type="search" onkeyup="cariObat(this)" autocomplete="off"
-                                class="form-control form-control-sm nama_obat" name="nama_obat" autofocus />
-                            <div class="list_obat"></div>
-                        </div>
-                        <label for="no_resep" class="col-lg-4 col-sm-12 col-form-label"
-                            style="font-size:12px">Jumlah</label>
-                        <div class="col-lg-8 col-sm-12 mb-1">
-                            <input type="search" onkeypress="return hanyaAngka(event)"
-                                class="form-control form-control-sm jumlah" id="jumlah" name="jumlah"
-                                autocomplete="off" />
-                        </div>
-                        <label for="aturan_pakai" class="col-lg-4 col-sm-12 col-form-label"
-                            style="font-size:12px">Aturan
-                            Pakai</label>
-                        <div class="col-lg-8 col-sm-12 mb-1">
-                            <input type="search" onkeyup="cariAturan(this)" autocomplete="off"
-                                class="form-control form-control-sm aturan_pakai" name="aturan_pakai" />
-                            <div class="list_aturan"></div>
-                        </div>
-                        <label for="keterangan" class="col-lg-4 col-sm-12 col-form-label"
-                            style="font-size:12px">Keterangan</label>
-                        <div class="col-lg-8 col-sm-12 mb-1">
-                            <input type="search" autocomplete="off" class="form-control form-control-sm keterangan"
-                                name="keterangan" />
-                        </div>
-                        <input type="hidden" value="" class="kode_obat" />
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button id="simpanObat"type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal"><i
-                        class="bi bi-x-circle"></i> Tambah</button>
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                        class="bi bi-x-circle"></i> Keluar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="modalObat" tabindex="-1" aria-labelledby="modalObat" aria-hidden="true"
-    style="background-color: #00000062!important;">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content" style="border-radius:0px">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Pilih Obat</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type="search" onkeyup="cariObat(this)" autocomplete="off"
-                    class="form-control form-control-sm nama_obat" name="nama_obat" />
-                <div class="list_obat"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                        class="bi bi-x-circle"></i> Keluar</button>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="modal fade" id="modalObatRacik" aria-labelledby="modalObatRacik" aria-hidden="true"
     style="background-color: #00000062!important;">
     <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -161,7 +21,7 @@
                             <div class="col-md-2">
                                 <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
                                 <input type="text" autocomplete="off"
-                                    class="form-control form-control-sm nm_racik mb-1" name="nm_racik" readonly />
+                                    class="form-control form-control-sm nm_racik mb-1" name="nm_racik" />
                             </div>
                             <div class="col-md-2">
                                 <label for="metode" style="font-size:12px">Metode</label>
@@ -177,20 +37,23 @@
                                 <label for="jml" style="font-size:12px">Aturan Pakai</label>
                                 <input type="text" autocomplete="off" onkeyup="cariAturan(this)"
                                     class="form-control form-control-sm aturan_pakai_dr mb-1" name="aturan_pakai_dr" id="aturan_pakai" />
+                                <input type="hidden" class="nomor">
+                                <input type="hidden" value="" class="no_racik" />
                                 <div class="list_aturan" style="display: none;"></div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="container">
+                            <div class="container table-responsive">
                                 <table class="table table-racikan table-borderless">
                                     <thead>
                                         <tr>
                                             <th width="35%">Nama Obat</th>
-                                            <th>Kapasitas</th>
-                                            <th width="5%">P1</th>
+                                            <th>Sediaan</th>
+                                            <th width="7%">P1</th>
                                             <th width="3%"></th>
-                                            <th width="5%">P2</th>
-                                            <th>Dosis</th>
+                                            <th width="7%">P2</th>
+                                            <th width="8%">Dosis</th>
+                                            <th></th>
                                             <th>Jumlah</th>
                                             <th></th>
                                         </tr>
@@ -297,25 +160,23 @@
 
         function simpanDosisObat() {
             let banyakBaris = $('.table-racikan tbody tr').length
-            arrInput = [];
-
-
             $.ajax({
                 url: '/erm/resep/racik/ubah',
                 method: 'POST',
                 data: {
                     _token: "{{ csrf_token() }}",
                     no_resep: $('.no_resep').val(),
+                    nama_racik: $('.nm_racik').val(),
                     no_racik: $('.no_racik').val(),
-                    jml_dr: $('.jml_dr').val(),
+                    // jml_dr: $('.jml_dr').val(),
                     aturan_pakai: $('.aturan_pakai_dr').val(),
                 },
                 success: function(response) {
-                    respon = false;
+                    // respon = false;
                     for (let no = 1; no <= banyakBaris; no++) {
                         $.ajax({
                             url: '/erm/resep/racik/detail/ubah',
-                            async: false,
+                            // async: false,
                             data: {
                                 '_token': "{{ csrf_token() }}",
                                 'no_resep': $('.no_resep').val(),
@@ -329,7 +190,7 @@
                             method: 'POST',
                             success: function(response) {
                                 // console.log(response);
-                                respon = true
+                                // respon = true
                             },
                             error: function(response) {
                                 Swal.fire(
@@ -340,6 +201,7 @@
                             }
                         })
                     }
+                    riwayatResep($('#no_rm').val())
                     cekResep($('#nomor_rawat').val());
                     tulisPlan();
                     $('#modalObatRacik').modal('hide');
@@ -371,9 +233,10 @@
                 no +
                 '"name="p2[]" onfocusout="hitungObatRacik(' + no + ')"/></td>'
             html +=
-                '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' +
+                '<td><input type="search" onkeypress="return hanyaAngka(event)" class="form-control form-control-sm form-underline" id="kandungan' +
                 no +
                 '" name="kandungan[]" onchange="hitungDosis(' + no + ')"/></td>'
+            html += '<td>mg</td>'
             html +=
                 '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +
                 no +
