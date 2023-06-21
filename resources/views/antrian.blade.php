@@ -43,9 +43,7 @@
                                     <p class="text-sm font-bold text-green-700 leading-5 font-mono">Non Racikan</p>
                                 </div>
                                 <div class="w-[30%]">
-                                    <p class="text-sm text-green-700 leading-5 font-mono text-right" id="cnon_racik">
-                                        0
-                                    </p>
+                                    <p class="text-sm text-green-700 leading-5 font-mono text-right" id="cnon_racik">0</p>
                                 </div>
                             </div>
 
@@ -75,24 +73,12 @@
                         <table class="table-auto w-full">
                             <thead class="sticky top-0 bg-green-300">
                                 <tr class="border-2 border-green-100">
-                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">
-                                        No Resep
-                                    </th>
-                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">
-                                        Nama
-                                    </th>
-                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">
-                                        Jam Resep
-                                    </th>
-                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">
-                                        Kategori
-                                    </th>
-                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">
-                                        Status
-                                    </th>
-                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">
-                                        Jam Selesai
-                                    </th>
+                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">No Resep</th>
+                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">Nama</th>
+                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">Jam Resep</th>
+                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">Kategori</th>
+                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">Status</th>
+                                    <th class="p-3 px-5 border-2 border-green-100 text-left text-xl text-green-600">Jam Selesai</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -115,18 +101,20 @@
                 volume: 1
             });
 
+            $("#no_resep").html(localStorage.getItem('no_panggil'));
+            $("#nm_pasien").html(localStorage.getItem('nm_pasien'));
+
             setInterval(() => {
                 getData();
-            }, 5000);
+            }, 4000);
         });
 
-        // var no_terakhir = null;
         setInterval(() => {
             if (localStorage.getItem('panggil') == "yes") {
-                setTimeout(() => {
-                    $("#no_resep").html(localStorage.getItem('no_panggil'));
-                    $("#nm_pasien").html(localStorage.getItem('nm_pasien'));
+                $("#no_resep").html(localStorage.getItem('no_panggil'));
+                $("#nm_pasien").html(localStorage.getItem('nm_pasien'));
 
+                setTimeout(() => {
                     var nm_pasien = localStorage.getItem('nm_pasien').toLowerCase();
                     var splitname = nm_pasien.split(",");
 
@@ -137,6 +125,23 @@
                     });
                 }, 1000);
             }
+
+            $("tr").each(function() {
+                if ($(this).attr('id') != localStorage.getItem('no_panggil')) {
+                    $(this).removeClass("bg-yellow-300");
+                }
+            });
+            
+            
+            var no_resep = localStorage.getItem('no_panggil');
+            var element = document.getElementById(no_resep);
+            
+            $("#" + no_resep).addClass("bg-yellow-300");
+            element.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "nearest"
+            });
         }, 3000);
 
         function getData() {
@@ -149,8 +154,13 @@
                         non_racikan = 0,
                         racikan = 0;
                     $.each(data, function(key, value) {
-                        // console.log(value.status_obat)
-                        html += "<tr id='" + value.no_resep + "' class=''>";
+
+                        if (value.no_resep == localStorage.getItem('no_panggil')) {
+                            html += "<tr id='" + value.no_resep + "' class='bg-yellow-300'>";
+                        } else {
+                            html += "<tr id='" + value.no_resep + "' class=''>";
+                        }
+
                         html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.no_resep + "</td>";
                         html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.nm_pasien + "</td>";
                         html += "<td class='p-1 px-5 border-2 border-green-100 text-left text-base text-green-600'>" + value.jam_peresepan + "</td>";
@@ -163,7 +173,7 @@
                             cselesai++;
                         }
 
-                        if (value.category_obat.toLowerCase() == 'RACIKAN') {
+                        if (value.category_obat == 'RACIKAN') {
                             racikan++;
                         } else {
                             non_racikan++;
@@ -171,9 +181,9 @@
                     });
 
                     $("tbody").html(html);
-                    $("#cracik").html(racikan);
-                    $("#cselesai").html(cselesai);
                     $("#cnon_racik").html(non_racikan);
+                    $("#cselesai").html(cselesai);
+                    $("#cracik").html(racikan);
                 }
             });
         }
