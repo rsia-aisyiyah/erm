@@ -22,10 +22,13 @@
             </div>
             <div class="p-1 border-2 xl:border-4 border-blue-500 flex flex-col md:flex-row gap-1">
                 <div class="w-full md:w-[45%]">
-                    <iframe class="w-full h-[500px]" src="https://www.youtube.com/embed/rTu824dilZo"
+                    {{-- <iframe class="w-full h-[500px]" src="https://www.youtube.com/embed/rTu824dilZo"
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
+                        allowfullscreen></iframe> --}}
+                    <video autoplay="" muted="">
+                        <source src="http://192.168.100.31/antrian/image/dinamic/1910070001.mp4" type="video/mp4">
+                    </video>
                     <div class="w-full border-2 border-blue-500 mt-1.5">
                         <div class="flex justify-center items-center p-2">
                             <div class="w-full text-center">
@@ -131,11 +134,11 @@
                     $(this).removeClass("bg-yellow-300");
                 }
             });
-            
-            
+
+
             var no_resep = localStorage.getItem('no_panggil');
             var element = document.getElementById(no_resep);
-            
+
             $("#" + no_resep).addClass("bg-yellow-300");
             element.scrollIntoView({
                 behavior: "smooth",
