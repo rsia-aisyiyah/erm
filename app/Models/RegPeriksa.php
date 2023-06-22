@@ -15,6 +15,11 @@ class RegPeriksa extends Model
     protected $table = 'reg_periksa';
     public $timestamps = false;
 
+
+    public function sep()
+    {
+        return $this->hasOne(BridgingSep::class, 'no_rawat', 'no_rawat');
+    }
     public function ranapGabung()
     {
         return $this->belongsTo(RanapGabung::class, 'no_rawat', 'no_rawat');

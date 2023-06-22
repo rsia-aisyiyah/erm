@@ -43,7 +43,7 @@ class PoliklinikController extends Controller
 
         $sekarang = $tanggal->now()->toDateString();
         $pasienPoli = RegPeriksa::where('tgl_registrasi', $sekarang)
-            ->with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter', 'penjab', 'upload', 'pemeriksaanRalan'])
+            ->with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter', 'penjab', 'upload', 'pemeriksaanRalan', 'sep'])
             ->where('kd_poli', $kd_poli)
             ->orderBy('no_reg', 'ASC');
 

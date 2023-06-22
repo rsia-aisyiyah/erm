@@ -44,7 +44,7 @@
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen></iframe> --}}
-                    <video autoplay="" muted="" class="rounded-xl">
+                    <video autoplay="" muted="" class="rounded-xl" loop>
                         <source src="http://192.168.100.31/antrian/image/dinamic/1910070001.mp4" type="video/mp4">
                     </video>
                     <div class="w-full mt-1.5">
@@ -155,7 +155,7 @@
             }, 4000);
 
             appendTglWaktu();
-            
+
             setInterval(() => {
                 appendTglWaktu();
             }, 1000);
@@ -183,13 +183,13 @@
                     $(this).removeClass("bg-yellow-400");
                 }
             });
-            
-            
+
+
             var no_resep = localStorage.getItem('no_panggil');
             var element = document.getElementById(no_resep);
-            
+
             $("#" + no_resep).addClass("bg-yellow-400");
-            
+
             element.scrollIntoView({
                 behavior: "smooth",
                 block: "center",
@@ -204,7 +204,7 @@
                     block: "center",
                     inline: "nearest"
                 });
-            }            
+            }
         }, 3000);
 
         function getData() {
