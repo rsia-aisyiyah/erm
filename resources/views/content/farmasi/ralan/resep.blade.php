@@ -189,22 +189,24 @@
                                     $('.status-' + row.no_resep).text('TIDAK DIAMBIL')
                                     $('.panggil-' + row.no_resep).css('display', 'none')
                                 }
+                            } else {
+                                if (row.jam_penyerahan == '00:00:00') {
+                                    $('.status-' + row.no_resep).addClass('btn-primary');
+                                    $('.status-' + row.no_resep).text('RESEP')
+                                    $('.panggil-' + row.no_resep).css('display', 'inline')
+                                    $('.selesai-' + row.no_resep).css('display', 'inline')
+                                } else if (row.jam_penyerahan != '00:00:00') {
+                                    $('.status-' + row.no_resep).prop('onclick', '');
+                                    $('.status-' + row.no_resep).css('height', '50px');
+                                    $('.status-' + row.no_resep).removeClass('btn-primary');
+                                    $('.status-' + row.no_resep).removeClass('mb-2');
+                                    $('.status-' + row.no_resep).addClass('btn-success');
+                                    $('.status-' + row.no_resep).text('SELESAI')
+                                    $('.panggil-' + row.no_resep).css('display', 'none')
+                                    $('.selesai-' + row.no_resep).css('display', 'none')
+                                }
                             }
-                            if (row.jam_penyerahan == '00:00:00') {
-                                $('.status-' + row.no_resep).addClass('btn-primary');
-                                $('.status-' + row.no_resep).text('RESEP')
-                                $('.panggil-' + row.no_resep).css('display', 'inline')
-                                $('.selesai-' + row.no_resep).css('display', 'inline')
-                            } else if (row.jam_penyerahan != '00:00:00') {
-                                $('.status-' + row.no_resep).prop('onclick', '');
-                                $('.status-' + row.no_resep).css('height', '50px');
-                                $('.status-' + row.no_resep).removeClass('btn-primary');
-                                $('.status-' + row.no_resep).removeClass('mb-2');
-                                $('.status-' + row.no_resep).addClass('btn-success');
-                                $('.status-' + row.no_resep).text('SELESAI')
-                                $('.panggil-' + row.no_resep).css('display', 'none')
-                                $('.selesai-' + row.no_resep).css('display', 'none')
-                            }
+
 
                             return html;
                         },
