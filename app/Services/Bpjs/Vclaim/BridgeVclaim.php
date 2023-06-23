@@ -2,9 +2,9 @@
 
 namespace App\Services\Bpjs\Vclaim;
 
-use Bpjs\Bridging\CurlFactory;
-// use Bpjs\Bridging\Vclaim\ConfigVclaim;
-use Bpjs\Bridging\Vclaim\ResponseVclaim;
+// use App\Services\Bpjs\CurlFactory;
+use App\Services\Bpjs\CurlFactory;
+use App\Services\Bpjs\Vclaim\ResponseVclaim;
 
 class BridgeVclaim extends CurlFactory
 {

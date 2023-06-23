@@ -18,12 +18,6 @@ class ConfigVclaim extends ManageService
 
     public function __construct()
     {
-        // $this->urlEndpoint = getenv('API_BPJS_VCLAIM', true);
-        // $this->consId = getenv('CONS_ID', true);
-        // $this->secretKey = getenv('SECRET_KEY', true);
-        // $this->userKey = getenv('USER_KEY_VCLAIM', true);
-        // $this->urlEndpoint;
-
         $this->urlEndpoint = 'https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev/';
         $this->consId = '16748';
         $this->secretKey = '7cM8A9F546';

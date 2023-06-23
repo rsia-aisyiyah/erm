@@ -3,7 +3,7 @@
 namespace App\Services\Bpjs\Vclaim;
 
 use LZCompressor\LZString;
-use Bpjs\Bridging\GenerateBpjs;
+use App\Services\Bpjs\Vclaim\GenerateBpjs;
 
 class ResponseVclaim
 {

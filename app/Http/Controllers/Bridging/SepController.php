@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Bridging;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
-use Bpjs\Bridging\Vclaim\BridgeVclaim;
-use Bpjs\Bridging\Vclaim\ConfigVclaim;
-use Bpjs\Bridging\Vclaim\ResponseVclaim;
+use App\Services\Bpjs\Vclaim\BridgeVclaim;
+use App\Services\Bpjs\Vclaim\ConfigVclaim;
+use App\Services\Bpjs\Vclaim\ResponseVclaim;
+
 
 class SepController extends Controller
 {
