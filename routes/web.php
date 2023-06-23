@@ -29,6 +29,8 @@ use App\Http\Controllers\ResepDokterRacikanController;
 use App\Http\Controllers\RsiaGeneralConsentController;
 use App\Http\Controllers\RsiaMappingRacikanController;
 use App\Http\Controllers\AskepRalanKebidananController;
+use App\Http\Controllers\Bridging\ReferensiController;
+use App\Http\Controllers\Bridging\SepController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\DiagnosaPasienController;
 use App\Http\Controllers\Icd9Controller;
@@ -197,6 +199,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/prosedur/pasien/ambil', [ProsedurPasienController::class, 'ambil']);
     Route::post('/prosedur/pasien/tambah', [ProsedurPasienController::class, 'tambah']);
     Route::delete('/prosedur/pasien/hapus', [ProsedurPasienController::class, 'hapus']);
+
+    Route::prefix('bridging')->group(function () {
+        Route::prefix('referensi')->group(function () {
+            Route::get('/propinsi', [ReferensiController::class, 'getPropinsi']);
+            Route::get('/diagnosa/{diagnosa}', [ReferensiController::class, 'getDiagnosa']);
+        });
+        Route::get('/sep/{no_sep}', [SepController::class, 'getSep']);
+    });
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
