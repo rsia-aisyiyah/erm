@@ -133,8 +133,8 @@
                 lenghtChange: false,
                 info: false,
                 deferRender: true,
-                scrollY: 500,
-                scrollX: true,
+                // scrollY: 500,
+                // scrollX: true,
                 ajax: {
                     url: "resep/ambil/tabel",
                     data: {

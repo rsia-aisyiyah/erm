@@ -45,11 +45,15 @@ class ResepObatController extends Controller
     {
         $resepObat = $this->resepObat->where('no_resep', $request->no_resep)->update([
             'tgl_penyerahan' => $request->tanggal,
-            'jam_penyerahan' => date('H:i:s'),
+            'jam_penyerahan' => $request->jam,
         ]);
 
         return response()->json('Berhasil dipanggil');
     }
+
+
+
+
     public function ambilSekarang()
     {
         $resepObat = $this->resepObat->where('tgl_peresepan', date('Y-m-d'))->where('status', 'ralan')->with('regPeriksa')->get();
