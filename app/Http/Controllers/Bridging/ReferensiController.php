@@ -38,4 +38,19 @@ class ReferensiController extends Controller
         $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . "referensi/propinsi");
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }
+    public function getPoli($poli)
+    {
+        $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . "referensi/poli/{$poli}");
+        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+    }
+    public function getDokterDpjp($jenis, $tgl, $kd_sps)
+    {
+        $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . "referensi/dokter/pelayanan/{$jenis}/tglpelayanan/{$tgl}/spesialis/{$kd_sps}");
+        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+    }
+    public function getPasien($nokartu, $tglsep)
+    {
+        $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . "peserta/nokartu/{$nokartu}/tglSEP/{$tglsep}");
+        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+    }
 }

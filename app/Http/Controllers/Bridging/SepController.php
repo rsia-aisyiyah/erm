@@ -27,10 +27,10 @@ class SepController extends Controller
         return $this->config->setHeader();
     }
 
-    public function getSep($no_sep)
+    public function getSep($sep)
     {
 
-        $endpoint = "SEP/{$no_sep}";
+        $endpoint = "SEP/{$sep}";
         $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }

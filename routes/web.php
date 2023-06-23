@@ -204,8 +204,11 @@ Route::middleware('auth')->group(function () {
         Route::prefix('referensi')->group(function () {
             Route::get('/propinsi', [ReferensiController::class, 'getPropinsi']);
             Route::get('/diagnosa/{diagnosa}', [ReferensiController::class, 'getDiagnosa']);
+            Route::get('/poli/{poli}', [ReferensiController::class, 'getPoli']);
+            Route::get('/dokter/pelayanan/{jenis}/{tgl}/{kd_sps}', [ReferensiController::class, 'getDokterDpjp']);
         });
-        Route::get('/sep/{no_sep}', [SepController::class, 'getSep']);
+        Route::get('SEP/{sep}', [SepController::class, 'getSep']);
+        Route::get('peserta/nokartu/{nokartu}/tglsep/{tglsep}', [ReferensiController::class, 'getPasien']);
     });
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
