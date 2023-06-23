@@ -27,7 +27,7 @@
                 </a>
             </li>
 
-            @if (session()->get('pegawai')->jbtn == 'Asisten Apoteker' || session()->get('pegawai')->jbtn == 'Apoteker' || session()->get('pegawai')->jbtn == '-')
+            @if (session()->get('pegawai')->jbtn == 'Asisten Apoteker' || session()->get('pegawai')->jbtn == 'Apoteker' || session()->get('pegawai')->jbtn == 'TTK' || session()->get('pegawai')->jbtn == '-')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep">
                         <i class="bi bi-prescription align-text-bottom"></i>

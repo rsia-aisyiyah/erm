@@ -61,7 +61,15 @@ class ResepObatController extends Controller
             ->where('tgl_peresepan', $request->tgl_peresepan)
             ->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis')->where('status', 'ralan');
 
-        return DataTables::of($resepObat->get())->make(true);
+        return DataTables::of($resepObat)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('search') && $request->get('search')['value']) {
+                    return $query->whereHas('regPeriksa.pasien', function ($query) use ($request) {
+                        $query->where('nm_pasien', 'like', '%' . $request->get('search')['value'] . '%');
+                    });
+                }
+            })
+            ->make(true);
     }
     public function akhir(Request $request)
     {

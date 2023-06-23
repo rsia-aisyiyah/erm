@@ -133,6 +133,8 @@
                 lenghtChange: false,
                 info: false,
                 deferRender: true,
+                scrollY: 500,
+                scrollX: true,
                 ajax: {
                     url: "resep/ambil/tabel",
                     data: {
@@ -168,6 +170,10 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
+
+                            html = '<button onclick="tampilResep(\'' + row.no_resep + '\')" class="btn btn-sm mb-2 status-' + row.no_resep + '" type="button" style="width:110px;display:inline" data-id="' + row.no_rawat + '"></button><br/>';
+
+                            html += '<button onclick="panggilResep(\'' + row.no_resep + '\', \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-warning mb-2 panggil-' + row.no_resep + '" style="width:110px;display:none" type="button" style="width:110px;" data-id="' + row.no_rawat + '">PANGGIL</button>';
                             if (row.tgl_perawatan == '0000-00-00') {
                                 if (row.reg_periksa.status_bayar == 'Belum Bayar') {
                                     $('.status-' + row.no_resep).addClass('btn-primary');
@@ -184,10 +190,6 @@
                                 $('.status-' + row.no_resep).text('SUDAH')
                                 $('.panggil-' + row.no_resep).css('display', 'inline')
                             }
-                            html = '<button onclick="tampilResep(\'' + row.no_resep + '\')" class="btn btn-sm mb-2 status-' + row.no_resep + '" type="button" style="width:110px;" data-id="' + row.no_rawat + '"></button><br/>';
-
-                            html += '<button onclick="panggilResep(\'' + row.no_resep + '\', \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-warning mb-2 panggil-' + row.no_resep + '" style="width:110px;" type="button" style="width:110px;" data-id="' + row.no_rawat + '">PANGGIL</button>';
-
 
                             return html;
                         },
