@@ -501,6 +501,11 @@
 
         }
 
+
+        function cekSep(sep) {
+            console.log(sep);
+        }
+
         function tb_pasien() {
             var table = $('#tb_pasien').DataTable({
                 processing: false,
@@ -522,6 +527,7 @@
                     data: {
                         kd_poli: "{{ Request::segment(2) }}",
                         dokter: "{{ Request::get('dokter') }}",
+                        tgl_periksa: "{{ date('2023-06-23') }}",
                     },
                 },
                 columns: [{
@@ -599,13 +605,16 @@
                                 })
                             }
 
+                            // console.log(row.sep)
 
                             if (row.sep && row.kd_pj != "A03") {
-                                $('#sep-' + row.no_reg).addClass('badge text-bg-success')
-                                $('#sep-' + row.no_reg).text('Sudah Terbit SEP')
+                                badgeSep = '<a href="#" onclick="cekSep(\'' + row.sep.no_sep + '\')"><span id="sep-' + row.no_reg + '" class="badge text-bg-success" style="font-size:12px">Sudah Terbit SEP</span></a>';
+                                // $('#sep-' + row.no_reg).addClass('badge text-bg-success')
+                                // $('#sep-' + row.no_reg).text('Sudah Terbit SEP')
                             } else if (!row.sep && row.kd_pj != "A03") {
-                                $('#sep-' + row.no_reg).addClass('badge text-bg-danger')
-                                $('#sep-' + row.no_reg).text('Belum Terbit SEP')
+                                badgeSep = '<span id="sep-' + row.no_reg + '" class="badge text-bg-success">Belum Terbit SEP</span>';
+                                // $('#sep-' + row.no_reg).addClass('badge text-bg-danger')
+                                // $('#sep-' + row.no_reg).text('Belum Terbit SEP')
                             }
 
                             html = '<h5>' + row.no_reg + '</h5>';
@@ -613,7 +622,7 @@
                                 '</span></br>' +
                                 row.no_rawat +
                                 '</br><i><strong class="' + classTeksPenjab + ' h6">' + row.penjab
-                                .png_jawab + '</strong></i><br/><span id="sep-' + row.no_reg + '" class=""></span></p>';
+                                .png_jawab + '</strong></i><br/>' + badgeSep + '</p>';
 
                             if (row.sep) {
                                 // html += '<p>SEP TERCETAK</p>'
