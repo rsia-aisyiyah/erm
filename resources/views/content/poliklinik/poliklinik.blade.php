@@ -1,7 +1,7 @@
 @extends('index')
 
 @section('contents')
-    @if (session()->get('pegawai')->nama == 'direksi' || session()->get('pegawai')->bidang == 'Kebidanan' || session()->get('pegawai')->bidang == 'Keperawatan')
+    @if (session()->get('pegawai')->nama == 'direksi' || session()->get('pegawai')->bidang == 'Kebidanan' || session()->get('pegawai')->bidang == 'Keperawatan' || session()->get('pegawai')->jbtn == 'Asisten Apoteker' || session()->get('pegawai')->jbtn == 'Apoteker' || session()->get('pegawai')->jbtn == 'TTK' || session()->get('pegawai')->jbtn == '-')
         <div class="row gy-2">
             <div class="col-lg-3 col-md-12 col-sm-12">
                 <div class="card">

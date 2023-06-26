@@ -528,6 +528,7 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             let html = '';
+                            console.log(row)
                             if (row.stts == 'Batal') {
                                 html =
                                     '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
@@ -598,12 +599,25 @@
                                 })
                             }
 
+
+                            if (row.sep && row.kd_pj != "A03") {
+                                $('#sep-' + row.no_reg).addClass('badge text-bg-success')
+                                $('#sep-' + row.no_reg).text('Sudah Terbit SEP')
+                            } else if (!row.sep && row.kd_pj != "A03") {
+                                $('#sep-' + row.no_reg).addClass('badge text-bg-danger')
+                                $('#sep-' + row.no_reg).text('Belum Terbit SEP')
+                            }
+
                             html = '<h5>' + row.no_reg + '</h5>';
                             html += '<p><span class="pasien-' + row.no_reg + '">' + pasien +
                                 '</span></br>' +
                                 row.no_rawat +
                                 '</br><i><strong class="' + classTeksPenjab + ' h6">' + row.penjab
-                                .png_jawab + '</strong></i></p>';
+                                .png_jawab + '</strong></i><br/><span id="sep-' + row.no_reg + '" class=""></span></p>';
+
+                            if (row.sep) {
+                                // html += '<p>SEP TERCETAK</p>'
+                            }
 
                             return html;
                         },

@@ -136,7 +136,7 @@ class RegPeriksaController extends Controller
     public function ambilTable(Request $request)
     {
         $regPeriksa = RegPeriksa::where('tgl_registrasi', date('Y-m-d'))
-            ->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai')->orderBy('no_rawat', 'DESC')->get();
+            ->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai', 'sep')->orderBy('no_rawat', 'DESC')->get();
         return DataTables::of($regPeriksa)->make(true);
     }
     public function ubahDpjp(Request $request)

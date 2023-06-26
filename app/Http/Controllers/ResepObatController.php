@@ -45,11 +45,15 @@ class ResepObatController extends Controller
     {
         $resepObat = $this->resepObat->where('no_resep', $request->no_resep)->update([
             'tgl_penyerahan' => $request->tanggal,
-            'jam_penyerahan' => date('H:i:s'),
+            'jam_penyerahan' => $request->jam,
         ]);
 
         return response()->json('Berhasil dipanggil');
     }
+
+
+
+
     public function ambilSekarang()
     {
         $resepObat = $this->resepObat->where('tgl_peresepan', date('Y-m-d'))->where('status', 'ralan')->with('regPeriksa')->get();
@@ -61,7 +65,15 @@ class ResepObatController extends Controller
             ->where('tgl_peresepan', $request->tgl_peresepan)
             ->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis')->where('status', 'ralan');
 
-        return DataTables::of($resepObat->get())->make(true);
+        return DataTables::of($resepObat)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('search') && $request->get('search')['value']) {
+                    return $query->whereHas('regPeriksa.pasien', function ($query) use ($request) {
+                        $query->where('nm_pasien', 'like', '%' . $request->get('search')['value'] . '%');
+                    });
+                }
+            })
+            ->make(true);
     }
     public function akhir(Request $request)
     {
