@@ -1296,7 +1296,7 @@
             html += '</td>';
             html += '<td>';
             html +=
-                '<input type="search" autocomplete="off" class="form-control form-control-sm jml form-underline" name="jml" onkeypress="return hanyaAngka(event)" />';
+                '<input type="search" autocomplete="off" class="form-control form-control-sm jml_dr form-underline" name="jml_dr" onkeypress="return hanyaAngka(event)" />';
             html += '</td>';
             html += '<td>';
             html +=

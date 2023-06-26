@@ -85,7 +85,7 @@
         function simpanRacikan() {
             id_racik = $('.id_racik').val();
             template = ambilTemplateRacikan(null, null, id_racik);
-            jml_dr = $('.jml').val()
+            jml_dr = $('.jml_dr').val()
             aturan_pakai = $('.aturan_pakai').val()
             nama_racik = $('.nm_racik').val()
 
@@ -96,10 +96,10 @@
                         _token: "{{ csrf_token() }}",
                         no_resep: $('.no_resep').val(),
                         no_racik: $('.no_racik').val(),
-                        nama_racik: $('.nm_racik').val(),
+                        nama_racik: nama_racik,
                         kd_racik: $('.kd_racik').find(":selected").val(),
-                        jml_dr: $('.jml').val(),
-                        aturan_pakai: $('.aturan_pakai').val(),
+                        jml_dr: jml_dr,
+                        aturan_pakai: aturan_pakai,
                         keterangan: '-',
 
                     },
