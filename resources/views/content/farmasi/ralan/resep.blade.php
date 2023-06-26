@@ -120,7 +120,7 @@
         function reloadTabelResep() {
             // if (isModalShow == false) {
             // setInterval(function() {
-            // $('#tb_resep').DataTable().destroy();
+            $('#tb_resep').DataTable().destroy();
             tbResep();
             hitungResep();
             // Swal.fire({
