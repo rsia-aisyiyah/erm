@@ -135,8 +135,7 @@
             <div class="w-full h-[50px] bg-green-100 border-2 border-green-500 rounded-xl flex items-center justify-center">
                 <marquee behavior="" direction="" class="font-bold text-2xl">
                     WAKTU TUNGGU KATEGORI RESEP <span class="text-rose-500">RACIKAN</span> MAKSIMAL <span
-                        class="text-blue-500">1 JAM</span>, UNTUK RESEP <span class="text-rose-500">NON
-                        RACIKAN</span> MAKSIMAL <span class="text-blue-50">30 MENIT</span>
+                        class="text-rose-500">1 JAM</span>, UNTUK RESEP <span class="text-blue-500">NON RACIKAN</span> MAKSIMAL <span class="text-blue-500">30 MENIT</span>
                 </marquee>
             </div>
         </div>
@@ -189,8 +188,8 @@
                     $(this).removeClass("bg-yellow-400");
                 }
             });
-            
-            
+
+
             var no_resep = localStorage.getItem('no_panggil');
             var element = document.getElementById(no_resep);
 
