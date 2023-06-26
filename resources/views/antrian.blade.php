@@ -31,12 +31,12 @@
     <div class="w-full h-[100vh] flex items-center align-items-center">
         <div class="w-[98%] h-auto m-auto flex flex-col gap-0">
             <div>
-                <p class="font-bold text-blue-600 text-5xl text-center">
+                <p class="font-bold text-blue-600 text-[2.5rem] leading-9 text-center">
                     LOKET ANTRIAN FARMASI
                 </p>
             </div>
             {{-- separtor horizontal --}}
-            <div class="w-full my-3 h-[3px] rounded-full bg-blue-600"></div>
+            <div class="w-full my-2 h-[3px] rounded-full bg-blue-600"></div>
             {{-- separtor horizontal --}}
             <div class="p-1 flex flex-col md:flex-row gap-1">
                 <div class="w-full md:w-[35%] h-full">
@@ -48,8 +48,7 @@
                         <source src="http://192.168.100.31/antrian/image/dinamic/1910070001.mp4" type="video/mp4">
                     </video>
                     <div class="w-full mt-1.5">
-                        <div
-                            class="flex justify-center rounded-xl border-2 bg-emerald-100 border-emerald-500 mb-2 items-center p-2 h-[171px] max-h-[171px] overflow-y-scroll no-scrollbar"
+                        <div class="flex justify-center rounded-xl border-2 bg-emerald-100 border-emerald-500 mb-2 items-center p-2 h-[161px] max-h-[161px] overflow-y-scroll no-scrollbar"
                             id="name_active_position">
                             <div class="w-full text-center">
                                 <p class="text-2xl font-bold underline"><span id="nm_pasien"></span></p>
@@ -109,7 +108,8 @@
                     </div>
                 </div>
                 <div class="w-full">
-                    <div class="h-[553px] 2xl:h-[610px] border-2 border-blue-300 rounded-xl overflow-y-scroll no-scrollbar">
+                    <div
+                        class="h-[543px] 2xl:h-[590px] border-2 border-blue-300 rounded-xl overflow-y-scroll no-scrollbar">
                         <table class="table-auto w-full">
                             <thead class="sticky top-0 bg-blue-100">
                                 <tr>
@@ -131,6 +131,13 @@
                         </table>
                     </div>
                 </div>
+            </div>
+            <div class="w-full h-[50px] bg-green-100 border-2 border-green-500 rounded-xl flex items-center justify-center">
+                <marquee behavior="" direction="" class="font-bold text-2xl">
+                    WAKTU TUNGGU KATEGORI RESEP <span class="text-rose-500">RACIKAN</span> MAKSIMAL <span
+                        class="text-blue-500">1 JAM</span>, UNTUK RESEP <span class="text-rose-500">NON
+                        RACIKAN</span> MAKSIMAL <span class="text-blue-50">30 MENIT</span>
+                </marquee>
             </div>
         </div>
     </div>
