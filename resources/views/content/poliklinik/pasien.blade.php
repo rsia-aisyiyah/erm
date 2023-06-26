@@ -612,7 +612,7 @@
                                 // $('#sep-' + row.no_reg).addClass('badge text-bg-success')
                                 // $('#sep-' + row.no_reg).text('Sudah Terbit SEP')
                             } else if (!row.sep && row.kd_pj != "A03") {
-                                badgeSep = '<span id="sep-' + row.no_reg + '" class="badge text-bg-success">Belum Terbit SEP</span>';
+                                badgeSep = '<span id="sep-' + row.no_reg + '" class="badge text-bg-danger">Belum Terbit SEP</span>';
                                 // $('#sep-' + row.no_reg).addClass('badge text-bg-danger')
                                 // $('#sep-' + row.no_reg).text('Belum Terbit SEP')
                             } else {
