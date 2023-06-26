@@ -405,7 +405,7 @@
                     data: {
                         '_token': "{{ csrf_token() }}",
                         'no_resep': no_resep,
-                        'kode_brng': kode_barang,
+                        'kode_brng': kode_obat,
                         'jml': jml,
                         'aturan_pakai': aturan_pakai,
                     },
