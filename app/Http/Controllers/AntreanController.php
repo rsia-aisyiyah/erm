@@ -57,7 +57,7 @@ class AntreanController extends Controller
         } elseif ($data->resepDokter && count($data->resepDokter) > 0) {
             return 'NON RACIKAN';
         } else {
-            return 'UMUM';
+            return 'NON RACIK';
         }
     }
 
