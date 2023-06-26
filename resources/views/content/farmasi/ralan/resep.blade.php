@@ -118,22 +118,22 @@
 
 
         function reloadTabelResep() {
-            // if (isModalShow == false) {
-            // setInterval(function() {
-            $('#tb_resep').DataTable().destroy();
-            tbResep();
-            hitungResep();
-            // Swal.fire({
-            //     title: 'Memuat ulang data resep!',
-            //     position: 'top-end',
-            //     toast: true,
-            //     icon: 'success',
-            //     timerProgressBar: true,
-            //     showConfirmButton: false,
-            //     timer: 1500
-            // })
-            // }, 30000);
-            // }
+            setInterval(function() {
+                // if (isModalShow == false) {
+                $('#tb_resep').DataTable().destroy();
+                tbResep();
+                hitungResep();
+                Swal.fire({
+                    title: 'Memuat ulang data resep!',
+                    position: 'top-end',
+                    toast: true,
+                    icon: 'success',
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                // }
+            }, 30000);
         }
 
         function hitungResep() {

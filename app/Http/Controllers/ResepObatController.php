@@ -60,7 +60,7 @@ class ResepObatController extends Controller
         $resepObat = $this->resepObat
             ->where('tgl_peresepan', $request->tgl_peresepan)
             ->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis')->where('status', 'ralan')
-            ->orderBy('jam_penyerahan', 'ASC');
+            ->orderBy('jam_peresepan', 'DESC');
 
         return DataTables::of($resepObat)
             ->filter(function ($query) use ($request) {
