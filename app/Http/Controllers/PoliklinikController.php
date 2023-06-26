@@ -37,14 +37,14 @@ class PoliklinikController extends Controller
             'poliklinik',
         ])->get();
     }
-    public function poliPasien($kd_poli, $kd_dokter)
+    public function poliPasien($kd_poli, $kd_dokter, $tgl_periksa = '')
     {
         $tanggal = new Carbon();
 
         $sekarang = $tanggal->now()->toDateString();
-        $pasienPoli = RegPeriksa::where('tgl_registrasi', $sekarang)
-            ->with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter', 'penjab', 'upload', 'pemeriksaanRalan', 'sep'])
+        $pasienPoli = RegPeriksa::with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter', 'penjab', 'upload', 'pemeriksaanRalan', 'sep'])
             ->where('kd_poli', $kd_poli)
+            ->where('tgl_registrasi', $tgl_periksa)
             ->orderBy('no_reg', 'ASC');
 
         $pasienPoli = $kd_dokter ? $pasienPoli->where('kd_dokter', $kd_dokter) : $pasienPoli;
@@ -107,7 +107,7 @@ class PoliklinikController extends Controller
     }
     public function tbPoliPasien(Request $request)
     {
-        $pasien = $this->poliPasien($request->kd_poli, $request->dokter);
+        $pasien = $this->poliPasien($request->kd_poli, $request->dokter, $request->tgl_periksa);
 
         return DataTables::of($pasien)->make(true);
     }
