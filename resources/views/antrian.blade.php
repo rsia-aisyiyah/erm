@@ -31,12 +31,12 @@
     <div class="w-full h-[100vh] flex items-center align-items-center">
         <div class="w-[98%] h-auto m-auto flex flex-col gap-0">
             <div>
-                <p class="font-bold text-blue-600 text-5xl text-center">
+                <p class="font-bold text-blue-600 text-4xl text-center">
                     LOKET ANTRIAN FARMASI
                 </p>
             </div>
             {{-- separtor horizontal --}}
-            <div class="w-full my-3 h-[3px] rounded-full bg-blue-600"></div>
+            <div class="w-full my-2 h-[3px] rounded-full bg-blue-600"></div>
             {{-- separtor horizontal --}}
             <div class="p-1 flex flex-col md:flex-row gap-1">
                 <div class="w-full md:w-[35%] h-full">
@@ -48,8 +48,7 @@
                         <source src="http://192.168.100.31/antrian/image/dinamic/1910070001.mp4" type="video/mp4">
                     </video>
                     <div class="w-full mt-1.5">
-                        <div
-                            class="flex justify-center rounded-xl border-2 bg-emerald-100 border-emerald-500 mb-2 items-center p-2 h-[171px] max-h-[171px] overflow-y-scroll no-scrollbar"
+                        <div class="flex justify-center rounded-xl border-2 bg-emerald-100 border-emerald-500 mb-2 items-center p-2 h-[143px] max-h-[171px] overflow-y-scroll no-scrollbar"
                             id="name_active_position">
                             <div class="w-full text-center">
                                 <p class="text-2xl font-bold underline"><span id="nm_pasien"></span></p>
@@ -63,8 +62,7 @@
                             <div
                                 class="flex justify-between items-center rounded-t-xl p-1.5 px-2 border-2 bg-green-100 border-green-500">
                                 <div class="w-full">
-                                    <p class="text-base font-bold font-mono">Non Racikan
-                                    </p>
+                                    <p class="text-base font-bold font-mono">Non Racikan</p>
                                 </div>
                                 <div class="w-[30%]">
                                     <p class="text-base font-mono text-right" id="cnon_racik">0</p>
@@ -74,7 +72,7 @@
                                 class="flex justify-between items-center rounded-t-xl p-1.5 px-2 border-2 bg-yellow-100 border-yellow-500">
                                 <div class="w-full">
                                     <p class="text-base font-bold font-mono">Racikan</p>
-                                </div>
+                                <v>
                                 <div class="w-[30%]">
                                     <p class="text-base font-mono text-right" id="cracik">0</p>
                                 </div>
@@ -83,8 +81,7 @@
                             <div
                                 class="flex justify-between items-center rounded-b-xl p-1.5 px-2 border-2 border-t-0 bg-green-100 border-green-500">
                                 <div class="w-full">
-                                    <p class="text-base font-bold font-mono">Selesai
-                                    </p>
+                                    <p class="text-base font-bold font-mono">Selesai</p>
                                 </div>
                                 <div class="w-[30%]">
                                     <p class="text-base font-mono text-right" id="nrselesai">0</p>
@@ -109,28 +106,29 @@
                     </div>
                 </div>
                 <div class="w-full">
-                    <div class="h-[553px] 2xl:h-[610px] border-2 border-blue-300 rounded-xl overflow-y-scroll no-scrollbar">
+                    <div
+                        class="h-[525px] 2xl:h-[680px] border-2 border-blue-300 rounded-xl overflow-y-scroll no-scrollbar">
                         <table class="table-auto w-full">
                             <thead class="sticky top-0 bg-blue-100">
                                 <tr>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">No
-                                        Resep</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">
-                                        Nama</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Jam
-                                        Resep</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">
-                                        Kategori</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">
-                                        Status</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Jam
-                                        Selesai</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">No Resep</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Nama</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Jam Resep</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Kategori</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Status</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Jam Selesai</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
                     </div>
                 </div>
+            </div>
+            {{-- marque text --}}
+            <div class="w-full h-[50px] bg-green-100 border-2 border-green-500 rounded-xl flex items-center justify-center">
+                <marquee behavior="" direction="" class="font-bold text-2xl">
+                    WAKTU TUNGGU KATEGORI RESEP <span class="text-rose-500">RACIKAN</span> MAKSIMAL <span class="text-blue-500">1 JAM</span>, UNTUK RESEP <span class="text-rose-500">NON RACIKAN</span> MAKSIMAL <span class="text-blue-50">30 MENIT</span>
+                </marquee>
             </div>
         </div>
     </div>
@@ -155,7 +153,6 @@
             }, 4000);
 
             appendTglWaktu();
-
             setInterval(() => {
                 appendTglWaktu();
             }, 1000);
@@ -183,8 +180,8 @@
                     $(this).removeClass("bg-yellow-400");
                 }
             });
-
-
+            
+            
             var no_resep = localStorage.getItem('no_panggil');
             var element = document.getElementById(no_resep);
 
