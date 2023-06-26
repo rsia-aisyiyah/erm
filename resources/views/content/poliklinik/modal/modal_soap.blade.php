@@ -394,16 +394,20 @@
         }
 
         function simpanObat() {
-            if ($('.kode_obat').val()) {
+            no_resep = $('.no_resep').val()
+            kode_obat = $('.kode_obat').val()
+            jml = $('.jml').val()
+            aturan_pakai = $('.aturan_pakai').val()
+            if (kode_obat && jml && aturan_pakai) {
                 $.ajax({
                     url: '/erm/resep/umum/simpan',
                     method: 'POST',
                     data: {
                         '_token': "{{ csrf_token() }}",
-                        'no_resep': $('.no_resep').val(),
-                        'kode_brng': $('.kode_obat').val(),
-                        'jml': $('.jml').val(),
-                        'aturan_pakai': $('.aturan_pakai').val(),
+                        'no_resep': no_resep,
+                        'kode_brng': kode_barang,
+                        'jml': jml,
+                        'aturan_pakai': aturan_pakai,
                     },
                     success: function(response) {
 
@@ -422,9 +426,13 @@
                     tulisPlan()
                 })
             } else {
+
+                textObat = kode_obat ? '' : '<b class="text-danger" >Obat, </b>';
+                textJml = jml ? '' : '<b class="text-danger"> Jumlah, </b>';
+                textAturan = aturan_pakai ? '' : '<b class="text-danger"> Aturan Pakai</b>';
                 Swal.fire(
                     'Gagal !',
-                    'Kolom obat tidak boleh kosong',
+                    'Kolom ' + textObat + textJml + textAturan + ' tidak boleh kosong',
                     'error'
                 )
             }

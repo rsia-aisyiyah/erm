@@ -85,41 +85,57 @@
         function simpanRacikan() {
             id_racik = $('.id_racik').val();
             template = ambilTemplateRacikan(null, null, id_racik);
+            jml_dr = $('.jml').val()
+            aturan_pakai = $('.aturan_pakai').val()
+            nama_racik = $('.nm_racik').val()
 
-            $.ajax({
-                url: '/erm/resep/racik/simpan',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    no_resep: $('.no_resep').val(),
-                    no_racik: $('.no_racik').val(),
-                    nama_racik: $('.nm_racik').val(),
-                    kd_racik: $('.kd_racik').find(":selected").val(),
-                    jml_dr: $('.jml').val(),
-                    aturan_pakai: $('.aturan_pakai').val(),
-                    keterangan: '-',
+            if (nama_racik && aturan_pakai && jml_dr) {
+                $.ajax({
+                    url: '/erm/resep/racik/simpan',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        no_resep: $('.no_resep').val(),
+                        no_racik: $('.no_racik').val(),
+                        nama_racik: $('.nm_racik').val(),
+                        kd_racik: $('.kd_racik').find(":selected").val(),
+                        jml_dr: $('.jml').val(),
+                        aturan_pakai: $('.aturan_pakai').val(),
+                        keterangan: '-',
 
-                },
-                method: 'POST',
-                success: function(response) {
-                    $.map(template.detail_racik, function(temp) {
-                        if (Object.keys(temp).length > 0) {
-                            simpanObatRacikanTemplate(temp.kode_brng)
-                        }
-                    })
-                    cekResep($('#nomor_rawat').val())
-                },
-                error: function(response, message, detail) {
-                    Swal.fire(
-                        'Gagal !',
-                        response.responseJSON.message,
-                        'error'
-                    );
-                    hapusResep($('.no_resep').val(), $('#nomor_rawat'))
-                }
-            }).done(function() {
-                tulisPlan();
-                riwayatResep($('#no_rm').val());
-            })
+                    },
+                    method: 'POST',
+                    success: function(response) {
+                        $.map(template.detail_racik, function(temp) {
+                            if (Object.keys(temp).length > 0) {
+                                simpanObatRacikanTemplate(temp.kode_brng)
+                            }
+                        })
+                        cekResep($('#nomor_rawat').val())
+                    },
+                    error: function(response, message, detail) {
+                        Swal.fire(
+                            'Gagal !',
+                            response.responseJSON.message,
+                            'error'
+                        );
+                        hapusResep($('.no_resep').val(), $('#nomor_rawat'))
+                    }
+                }).done(function() {
+                    tulisPlan();
+                    riwayatResep($('#no_rm').val());
+                })
+            } else {
+                textObat = nama_racik ? '' : '<b class="text-danger" >Nama Racikan, </b>';
+                textJml = jml_dr ? '' : '<b class="text-danger"> Jumlah, </b>';
+                textAturan = aturan_pakai ? '' : '<b class="text-danger"> Aturan Pakai</b>';
+
+                Swal.fire(
+                    'Gagal !',
+                    'Kolom ' + textObat + textJml + textAturan + ' tidak boleh kosong',
+                    'error'
+                )
+            }
+
         }
 
         function hitungObatRacik(no) {
