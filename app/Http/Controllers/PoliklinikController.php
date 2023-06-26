@@ -45,6 +45,7 @@ class PoliklinikController extends Controller
         $pasienPoli = RegPeriksa::with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter', 'penjab', 'upload', 'pemeriksaanRalan', 'sep'])
             ->where('kd_poli', $kd_poli)
             ->where('tgl_registrasi', $tgl_periksa)
+            ->where('tgl_registrasi', date('Y-m-d'))
             ->orderBy('no_reg', 'ASC');
 
         $pasienPoli = $kd_dokter ? $pasienPoli->where('kd_dokter', $kd_dokter) : $pasienPoli;
