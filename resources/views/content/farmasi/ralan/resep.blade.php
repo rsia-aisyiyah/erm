@@ -195,10 +195,16 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             console.log(row)
+
+                            if (row.reg_periksa.kd_pj == 'A03') {
+                                penjab = '<b><span class="text-danger">(UMUM)</span></b>'
+                            } else {
+                                penjab = '<b><span class="text-success">(BPJS)</span></b>'
+                            }
                             html = row.no_resep + '<br/>';
                             html += '<h6 style="margin:0px">' + row.reg_periksa.pasien.nm_pasien + '</h6>';
                             html += row.no_rawat + '<br/>';
-                            html += row.reg_periksa.poliklinik.nm_poli + '<br/>';
+                            html += row.reg_periksa.poliklinik.nm_poli + ' ' + penjab + '<br/>';
                             html += row.reg_periksa.dokter.nm_dokter;
                             return html;
                         },
