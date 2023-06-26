@@ -50,10 +50,6 @@ class ResepObatController extends Controller
 
         return response()->json('Berhasil dipanggil');
     }
-
-
-
-
     public function ambilSekarang()
     {
         $resepObat = $this->resepObat->where('tgl_peresepan', date('Y-m-d'))->where('status', 'ralan')->with('regPeriksa')->get();
@@ -63,7 +59,8 @@ class ResepObatController extends Controller
     {
         $resepObat = $this->resepObat
             ->where('tgl_peresepan', $request->tgl_peresepan)
-            ->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis')->where('status', 'ralan');
+            ->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis')->where('status', 'ralan')
+            ->orderBy('jam_penyerahan', 'ASC');
 
         return DataTables::of($resepObat)
             ->filter(function ($query) use ($request) {

@@ -1,10 +1,54 @@
 @extends('index')
 
 @section('contents')
+    {{-- <div class="row">
+        <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="card text-bg-primary mb-3">
+                <div class="card-header">Jumlah Resep</div>
+                <div class="card-body">
+                    <h3 class="card-title" id="count-resep"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="card text-bg-warning mb-3">
+                <div class="card-header">Menungu</div>
+                <div class="card-body">
+                    <h3 class="card-title" id="count-tunggu"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="card text-bg-info mb-3">
+                <div class="card-header">Divalidasi</div>
+                <div class="card-body">
+                    <h3 class="card-title" id="count-valid"> </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="card mb-3 text-bg-success mb-3">
+                <div class="card-header">Selesai</div>
+                <div class="card-body">
+                    <h3 class="card-title" id="count-selesai"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="card mb-3 text-bg-danger mb-3">
+                <div class="card-header">Tidak Diambil</div>
+                <div class="card-body">
+                    <h3 class="card-title" id="count-tidak"></h3>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
     <div class="row gy-2">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
+
                     <table>
                         <tr style="height: 25px">
                             <td>Jumlah Resep</td>
@@ -68,27 +112,28 @@
     <script>
         $(document).ready(function() {
             tbResep();
+            hitungResep();
             reloadTabelResep();
         })
 
 
         function reloadTabelResep() {
-            // setInterval(function() {
-            $('#tb_resep').DataTable().destroy();
-            tbResep();
-            hitungResep();
             // if (isModalShow == false) {
-            // Swal.fire({
-            //     title: 'Memuat ulang data resep!',
-            //     position: 'top-end',
-            //     toast: true,
-            //     icon: 'success',
-            //     timerProgressBar: true,
-            //     showConfirmButton: false,
-            //     timer: 1500
-            // })
+            setInterval(function() {
+                $('#tb_resep').DataTable().destroy();
+                tbResep();
+                hitungResep();
+                Swal.fire({
+                    title: 'Memuat ulang data resep!',
+                    position: 'top-end',
+                    toast: true,
+                    icon: 'success',
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }, 30000);
             // }
-            // }, 30000);
         }
 
         function hitungResep() {
@@ -99,6 +144,7 @@
                     valid = 0;
                     tunggu = 0;
                     tidak = 0;
+                    selesai = 0;
                     $.map(response, function(res) {
                         if (res.tgl_perawatan != '0000-00-00') {
                             valid += parseInt(1)
@@ -111,11 +157,15 @@
                         if (res.tgl_peresepan != '0000-00-00') {
                             resep += parseInt(1)
                         }
+                        if (res.tgl_penyerahan != '0000-00-00' && res.jam_penyerahan) {
+                            selesai += parseInt(1)
+                        }
                         tunggu = resep - valid - tidak;
                     })
                     $('#count-resep').text(resep)
                     $('#count-tunggu').text(tunggu)
-                    $('#count-selesai').text(valid)
+                    $('#count-selesai').text(selesai)
+                    $('#count-valid').text(valid)
                     $('#count-tidak').text(tidak)
                 }
             })
