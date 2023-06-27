@@ -248,11 +248,7 @@
             }
         })
 
-        function splitTanggal(tanggal) {
-            let arrTgl = tanggal.split('-');
-            let txtTanggal = arrTgl[2] + '-' + arrTgl[1] + '-' + arrTgl[0];
-            return txtTanggal;
-        }
+
         $('#belum').on('click', function() {
             stts_pulang = '-';
             $('.tgl_pulang').prop('disabled', true)

@@ -30,7 +30,9 @@ use App\Http\Controllers\RsiaGeneralConsentController;
 use App\Http\Controllers\RsiaMappingRacikanController;
 use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\Bridging\ReferensiController;
+use App\Http\Controllers\Bridging\RencanaKontrolController;
 use App\Http\Controllers\Bridging\SepController;
+use App\Http\Controllers\BridgingSepController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\DiagnosaPasienController;
 use App\Http\Controllers\Icd9Controller;
@@ -207,9 +209,12 @@ Route::middleware('auth')->group(function () {
             Route::get('/poli/{poli}', [ReferensiController::class, 'getPoli']);
             Route::get('/dokter/pelayanan/{jenis}/{tgl}/{kd_sps}', [ReferensiController::class, 'getDokterDpjp']);
         });
+        Route::get('rencanaKontrol/{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
         Route::get('SEP/{sep}', [SepController::class, 'getSep']);
         Route::get('peserta/nokartu/{nokartu}/tglsep/{tglsep}', [ReferensiController::class, 'getPasien']);
     });
+
+    Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
 });
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);

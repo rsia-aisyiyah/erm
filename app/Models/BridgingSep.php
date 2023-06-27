@@ -9,4 +9,9 @@ class BridgingSep extends Model
 {
     use HasFactory;
     protected $table = 'bridging_sep';
+
+    public function regPeriksa()
+    {
+        return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
+    }
 }

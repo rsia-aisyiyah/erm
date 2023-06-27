@@ -164,7 +164,11 @@
             return true;
         }
 
-
+        function splitTanggal(tanggal) {
+            let arrTgl = tanggal.split('-');
+            let txtTanggal = arrTgl[2] + '-' + arrTgl[1] + '-' + arrTgl[0];
+            return txtTanggal;
+        }
 
         function formatTanggal(oldTgl) {
             let t = new Date(oldTgl);

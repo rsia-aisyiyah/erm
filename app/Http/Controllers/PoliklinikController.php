@@ -37,24 +37,23 @@ class PoliklinikController extends Controller
             'poliklinik',
         ])->get();
     }
-    public function poliPasien($kd_poli, $kd_dokter, $tgl_periksa = '')
+    public function poliPasien($kd_poli, $kd_dokter, $tgl_registrasi)
     {
         $tanggal = new Carbon();
 
         $sekarang = $tanggal->now()->toDateString();
         $pasienPoli = RegPeriksa::with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter', 'penjab', 'upload', 'pemeriksaanRalan', 'sep'])
             ->where('kd_poli', $kd_poli)
-            // ->where('tgl_registrasi', $tgl_periksa)
-            ->where('tgl_registrasi', date('Y-m-d'))
             ->orderBy('no_reg', 'ASC');
 
         $pasienPoli = $kd_dokter ? $pasienPoli->where('kd_dokter', $kd_dokter) : $pasienPoli;
+        $pasienPoli = $tgl_registrasi ? $pasienPoli->where('tgl_registrasi', $tgl_registrasi) : $pasienPoli->where('tgl_registrasi', $tgl_registrasi);
 
         return $pasienPoli;
     }
     public function jumlahPasienPoli(Request $request)
     {
-        return $this->poliPasien($request->kd_poli, $request->kd_dokter)->count();
+        return $this->poliPasien($request->kd_poli, $request->kd_dokter, $request->tgl_registrasi)->count();
     }
 
     public function namaPoli($kd_poli = '')
@@ -79,16 +78,14 @@ class PoliklinikController extends Controller
     public function viewPoliPasien($kd_poli, Request $request)
     {
         $kd_dokter = $request->dokter ? $request->dokter : '';
-        $pasien = $this->poliPasien($kd_poli, $kd_dokter);
+        $tgl_registrasi = $request->tgl_registrasi ? $request->tgl_registrasi : '';
+        $pasien = $this->poliPasien($kd_poli, $kd_dokter, $tgl_registrasi);
         $poliklinik = $this->namaPoli($kd_poli);
         $dokter = $this->dokterPoli($request->dokter);
         $jmlUpload = 0;
         foreach ($pasien as $p) {
             $jmlUpload = $jmlUpload + $p->upload_count;
         }
-
-        // return $pasien;
-        // // return $jmlUpload;
         return view('content.poliklinik.pasien', [
             'pasien' => $pasien->get(),
             'jumlah' => $pasien->count(),
@@ -99,7 +96,7 @@ class PoliklinikController extends Controller
     }
     public function countUpload($kd_poli, Request $request)
     {
-        $pasien = $this->poliPasien($kd_poli, $request->dokter)->withCount('upload')->get();
+        $pasien = $this->poliPasien($kd_poli, $request->dokter, $request->tgl_registrasi)->withCount('upload')->get();
         $jmlUpload = 0;
         foreach ($pasien as $p) {
             $jmlUpload = $jmlUpload + $p->upload_count;
@@ -108,7 +105,7 @@ class PoliklinikController extends Controller
     }
     public function tbPoliPasien(Request $request)
     {
-        $pasien = $this->poliPasien($request->kd_poli, $request->dokter, $request->tgl_periksa);
+        $pasien = $this->poliPasien($request->kd_poli, $request->dokter, $request->tgl_registrasi);
 
         return DataTables::of($pasien)->make(true);
     }
