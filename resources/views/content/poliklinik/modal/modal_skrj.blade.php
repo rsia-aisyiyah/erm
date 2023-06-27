@@ -1,6 +1,10 @@
 <div class="modal fade" id="modalSkrj" tabindex="-1" aria-labelledby="modalSkrj" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
         <div class="modal-content" style="border-radius:0px">
+            <div class="modal-header">
+                <h5 class="modal-title">FORM SKRJ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6 col-sm-12 gy-2">
@@ -33,7 +37,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="tgl_kontrol" class="form-label mb-0">Tgl. Kontrol</label>
-                        <input type="text" class="form-control form-control-sm tgl_kontrol tanggal" id="tgl_kotrol" placeholder="">
+                        <input type="text" class="form-control form-control-sm tgl_kontrol tanggal" id="tgl_kontrol" placeholder="">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="spesialis" class="form-label mb-0">Spesialis/Sub</label>

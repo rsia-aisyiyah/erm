@@ -28,8 +28,13 @@ class RencanaKontrolController extends Controller
 
     public function getSpesialis($jnsKontrol, $nomor, $tanggal)
     {
-
         $endpoint = "RencanaKontrol/ListSpesialistik/JnsKontrol/{$jnsKontrol}/nomor/{$nomor}/TglRencanaKontrol/{$tanggal}";
+        $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
+        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+    }
+    public function getDokterSpesialis($jnsKontrol, $kdPoli, $tanggal)
+    {
+        $endpoint = "RencanaKontrol/JadwalPraktekDokter/JnsKontrol/{$jnsKontrol}/kodePoli/{$kdPoli}/TglRencanaKontrol/{$tanggal}";
         $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }

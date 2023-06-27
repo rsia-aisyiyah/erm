@@ -12,6 +12,9 @@
                             <th>No</th>
                             <th>Kode Poli</th>
                             <th>Nama Poli</th>
+                            <th>Kapasitas</th>
+                            <th>Jml Rencana</th>
+                            <th>Persentase</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,23 +27,7 @@
 </div>
 @push('script')
     <script>
-        // $('#modalSkrj').on('shown.bs.modal', function() {
-        //     isModalShow = true;
-        //     date = new Date()
-        //     hari = ('0' + (date.getDate())).slice(-2);
-        //     bulan = ('0' + (date.getMonth() + 1)).slice(-2);
-        //     tahun = date.getFullYear();
-        //     dateStart = hari + '-' + bulan + '-' + tahun;
-        //     $('.tanggal').datepicker({
-        //         format: 'dd-mm-yyyy',
-        //         orientation: 'bottom',
-        //         autoclose: true,
-        //     });
-        //     $('.tanggal').datepicker('setDate', dateStart)
-        // })
         $('#modalPoli').on('hidden.bs.modal', function() {
-            // isModalShow = false;
-            // $('#opt-rawat').empty();
             $('#modalSkrj').modal('show')
             $('.table-poli tbody').empty()
         })
