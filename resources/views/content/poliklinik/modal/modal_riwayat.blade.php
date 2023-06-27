@@ -80,11 +80,15 @@
                     let kategori = f.kategori;
                     hasilFoto += '<tr>'
                     arrFoto.forEach(function(fx) {
-                        hasilFoto += '<td><img src="{{ asset('erm') }}/' + fx +
-                            '" class="img-thumbnail position-relative" width="300px" onclick="popup(\'' +
+                        hasilFoto += '<td><img src="http://192.168.100.33/erm/public/erm/' + fx + '" class="img-thumbnail position-relative" width="300px" onclick="popup(\'' +
                             fx +
                             '\')" data-bs-target="#modal-image" data-bs-toggle="modal"><figcaption align="center">' +
                             kategori.toUpperCase() + '</figcaption></td>'
+                        // hasilFoto += '<td><img src="{{ asset('erm') }}/' + fx +
+                        //     '" class="img-thumbnail position-relative" width="300px" onclick="popup(\'' +
+                        //     fx +
+                        //     '\')" data-bs-target="#modal-image" data-bs-toggle="modal"><figcaption align="center">' +
+                        //     kategori.toUpperCase() + '</figcaption></td>'
                     })
                     hasilFoto += '</tr>'
                 })
