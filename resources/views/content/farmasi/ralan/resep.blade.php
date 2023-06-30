@@ -271,7 +271,7 @@
                 data: {
                     no_resep: no_resep,
                     tanggal: "{{ date('Y-m-d') }}",
-                    jam: jam,
+                    jam: jam_panggil,
                 },
                 success: function(response) {
                     reloadTabelResep();
