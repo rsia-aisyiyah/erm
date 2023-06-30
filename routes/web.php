@@ -210,6 +210,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/dokter/pelayanan/{jenis}/{tgl}/{kd_sps}', [ReferensiController::class, 'getDokterDpjp']);
         });
         Route::get('rencanaKontrol/{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
+        Route::get('rencanaKontrol/jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);
         Route::get('SEP/{sep}', [SepController::class, 'getSep']);
         Route::get('peserta/nokartu/{nokartu}/tglsep/{tglsep}', [ReferensiController::class, 'getPasien']);
     });

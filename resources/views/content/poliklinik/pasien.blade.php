@@ -9,7 +9,7 @@
                     <p style="background-color: #0067dd;color:white;padding:5px">
                         <strong>{{ Request::get('dokter') ? 'Dokter : ' . $dokter->nm_dokter : '' }}</strong>
                     </p>
-                    <table class="" style="margin-bottom : 40px">
+                    <table class="" style="margin-bottom : 10px">
                         <tr style="height: 25px">
                             <td>Jumlah Pasien</td>
                             <td>:</td>
@@ -548,61 +548,42 @@
                             $('.pasien').val(response.nomr + ' - ' + response.nama_pasien + '(' + response.reg_periksa.umurdaftar + ')');
                             $('.tgl_lahir').val(dataApi.peserta.tglLahir)
                             $('.no_surat').val(dataApi.kontrol.noSurat)
-                            $('#btn-unit').attr('onclick', 'cariPoliBpjs(\'' + dataApi.poli + '\')')
-
+                            $('#btn-unit').attr('onclick', 'cariSpesialisBpjs(2, \'' + response.no_sep + '\')');
                         }
                     })
                 }
             })
-
         }
 
-        function cariPoliBpjs(poli) {
+        function cariSpesialisBpjs(jnsKontrol, nomor) {
+            tanggal = splitTanggal($('#tgl_kontrol').val());
             $.ajax({
-                url: '/erm/bridging/referensi/poli/' + poli,
+                url: '/erm/bridging/rencanaKontrol/' + jnsKontrol + '/' + nomor + '/' + tanggal,
                 dataType: 'JSON',
                 success: function(response) {
-                    // console.log(response)
+                    console.log(response)
+                    no = 1
                     html = '';
-                    no = 1;
-                    $.map(response.response.poli, function(data) {
-                        console.log('Poliklinik', data)
+                    $.map(response.response.list, function(data) {
+                        console.log(data)
                         html += '<tr>'
                         html += '<td>' + no + '</td>'
-                        html += '<td><a href="javascript:void(0)" onclick="setPoliBpjs(\'' + data.kode + '\', \'' + data.nama + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.kode + '</span></a></td>'
-                        html += '<td>' + data.nama + '</td>'
+                        html += '<td><a href="javascript:void(0)" onclick="setPoliBpjs(\'' + data.kodePoli + '\', \'' + data.namaPoli + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.kodePoli + '</span></a></td>'
+                        html += '<td>' + data.namaPoli + '</td>'
+                        html += '<td>' + data.kapasitas + '</td>'
+                        html += '<td>' + data.jmlRencanaKontroldanRujukan + '</td>'
+                        html += '<td>' + data.persentase + '</td>'
                         html += '</tr>'
+                        no++;
                     })
+
                     $('.table-poli tbody').append(html)
+                    $('#modalPoli').modal('show');
+                    $('#modalSkrj').modal('hide');
 
-                    $('#modalSkrj').modal('hide')
-                    $('#modalPoli').modal('show')
-
-                    noSep = $('.no_sep').val();
-                    tanggalKontrol = splitTanggal($('.tgl_kontrol').val());
-                    $('#btn-spesialis').attr('onclick', 'cariSpesialisBpjs(2, \'' + noSep + '\', \'' + tanggalKontrol + '\')');
                 }
             })
 
-        }
-
-        function cariSpesialisBpjs(jnsKontrol, nomor, tanggal) {
-            kode_poli = $('.kode_poli').val();
-            if (kode_poli) {
-                $.ajax({
-                    url: '/erm/bridging/rencanaKontrol/' + jnsKontrol + '/' + nomor + '/' + tanggal,
-                    dataType: 'JSON',
-                    success: function(response) {
-                        console.log(response)
-
-                        $('#modalSpesialis').modal('show');
-                        $('#modalSkrj').modal('hide');
-
-                    }
-                })
-            } else {
-                alert('WKWKWKWK');
-            }
         }
 
         function setPoliBpjs(kode, nama) {
@@ -610,10 +591,12 @@
             $('#modalPoli').modal('hide')
             $('.kode_poli').val(kode);
             $('.nama_poli').val(nama);
+
+            $('#btn-spesialis').attr('onclick', 'cariDokterSpesialisBpjs(2, \'' + kode + '\')');
         }
 
-        function name(params) {
-
+        function cariDokterSpesialisBpjs(jnsKontrol, kdPoli) {
+          
         }
 
         function tb_pasien(kd_poli, kd_dokter, tgl_registrasi) {
