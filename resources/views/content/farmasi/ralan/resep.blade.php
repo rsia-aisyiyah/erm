@@ -274,7 +274,18 @@
                     jam: jam_panggil,
                 },
                 success: function(response) {
-                    reloadTabelResep();
+                    console.log(response)
+                    $('.status-' + no_resep).prop('onclick', '');
+                    $('.status-' + no_resep).css('height', '50px');
+                    $('.status-' + no_resep).removeClass('btn-primary');
+                    $('.status-' + no_resep).removeClass('mb-2');
+                    $('.status-' + no_resep).addClass('btn-success');
+                    $('.status-' + no_resep).text('SELESAI')
+                    $('.panggil-' + no_resep).css('display', 'none')
+                    $('.selesai-' + no_resep).css('display', 'none')
+                    $('#tb_resep').DataTable().destroy();
+                    tbResep();
+                    hitungResep();
                 }
             })
         }
