@@ -40,10 +40,11 @@
                         <input type="text" class="form-control form-control-sm tgl_kontrol tanggal" id="tgl_kontrol" placeholder="">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
-                        <label for="spesialis" class="form-label mb-0">Spesialis/Sub</label>
+                        <label for="dokter" class="form-label mb-0">Spesialis/Sub</label>
                         <div class="input-group mb-3">
                             <button class="btn btn-sm btn-outline-secondary" type="button" id="btn-spesialis"><i class="bi bi-paperclip"></i></button>
-                            <input type="text" class="form-control form-control-sm spesialis" placeholder="" aria-label="" aria-describedby="btn-spesialis" readonly>
+                            <input type="text" class="form-control form-control-sm kode_dokter" placeholder="" aria-label="" id="kode_dokter" aria-describedby="btn-spesialis" readonly>
+                            <input type="text" style="margin-left: 10px" class="form-control form-control-sm nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
@@ -62,6 +63,7 @@
 </div>
 @include('content.poliklinik.modal.modal_poli')
 @include('content.poliklinik.modal.modal_spesialis')
+@include('content.poliklinik.modal.modal_dokter')
 @push('script')
     <script>
         $('#modalSkrj').on('shown.bs.modal', function() {

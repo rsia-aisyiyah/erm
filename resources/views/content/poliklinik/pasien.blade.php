@@ -104,14 +104,14 @@
             });
             $('#tgl_registrasi').datepicker('setDate', dateStart)
             $('#tb_pasien').DataTable().destroy();
-            tb_pasien(kd_poli, kd_dokter, tgl_registrasi);
+            tb_pasien(tgl_registrasi);
             hitungPanggilan();
         });
 
         $('#tgl_registrasi').on('change', function(e) {
             tanggal = splitTanggal(this.value)
             $('#tb_pasien').DataTable().destroy();
-            tb_pasien(kd_poli, kd_dokter, tanggal);
+            tb_pasien(tanggal);
             console.log(tanggal);
         })
 
@@ -396,7 +396,7 @@
             id = $('.panggil-' + urut).data('id');
             hitung_panggilan = $('#hitung-panggil').val();
             text_recall = $('.panggil-' + urut).text()
-            reloadTabelPoli();
+            // reloadTabelPoli();
 
             if (hitung_panggilan < 2 || text_recall == 'CALL') {
                 $('.selesai-' + urut).prop('disabled', false);
@@ -488,7 +488,7 @@
         }
 
         function batal(urut) {
-            reloadTabelPoli();
+            // reloadTabelPoli();
             $('.panggil-' + urut).prop('class', 'btn btn-success btn-sm mb-2 panggil-' + urut + '');
             $('.panggil-' + urut).removeAttr('style');
             $('.panggil-' + urut).css({
@@ -596,10 +596,45 @@
         }
 
         function cariDokterSpesialisBpjs(jnsKontrol, kdPoli) {
-          
+            tanggal = splitTanggal($('#tgl_kontrol').val())
+            $.ajax({
+                url: '/erm/bridging/rencanaKontrol/jadwal/' + jnsKontrol + '/' + kdPoli + '/' + tanggal,
+                dataType: 'JSON',
+                success: function(response) {
+                    no = 1;
+                    html = '';
+                    console.log('DOKTER', response)
+                    $.map(response.response.list, function(data) {
+                        html += '<tr>'
+                        html += '<td>' + no + '</td>'
+                        html += '<td><a href="javascript:void(0)" onclick="setDokterSpesialis(\'' + data.kodeDokter + '\', \'' + data.namaDokter + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.kodeDokter + '</span></a></td>'
+                        html += '<td>' + data.namaDokter + '</td>'
+                        html += '<td>' + data.jadwalPraktek + '</td>'
+                        html += '<td>' + data.kapasitas + '</td>'
+                        html += '</tr>'
+                        no++;
+                    });
+                    $('.table-dokter tbody').append(html)
+                    $('#modalDokter').modal('show');
+                    $('#modalSkrj').modal('hide');
+
+                }
+            })
         }
 
-        function tb_pasien(kd_poli, kd_dokter, tgl_registrasi) {
+        function setDokterSpesialis(kode, nama) {
+            $('#modalSkrj').modal('show')
+            $('#modalDokter').modal('hide')
+            $('.kode_dokter').val(kode);
+            $('.nama_dokter').val(nama);
+
+            // $('#btn-spesialis').attr('onclick', 'cariDokterSpesialisBpjs(2, \'' + kode + '\')');
+        }
+
+        function tb_pasien(tgl_registrasi) {
+
+            tgl_registrasi = tgl_registrasi ? tgl_registrasi : date('Y-m-d');
+
             var table = $('#tb_pasien').DataTable({
                 processing: false,
                 scrollX: true,
@@ -618,8 +653,8 @@
                 ajax: {
                     url: "table",
                     data: {
-                        kd_poli: kd_poli,
-                        dokter: kd_dokter,
+                        kd_poli: '{{ $poli->kd_poli }}',
+                        kd_dokter: "{{ Request::get('dokter') }}",
                         tgl_registrasi: tgl_registrasi,
                     },
                 },

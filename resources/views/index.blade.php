@@ -377,11 +377,10 @@
         }
         var data = {};
 
-
         function reloadTabelPoli() {
             hitungPanggilan();
             $('#tb_pasien').DataTable().destroy();
-            tb_pasien();
+            tb_pasien(tgl_registrasi);
         }
 
         function simpan() {
@@ -447,8 +446,7 @@
 
                     }
                     if ($('#tb_pasien').length > 0) {
-                        $('#tb_pasien').DataTable().destroy();
-                        tb_pasien();
+                        reloadTabelPoli();
                     }
                     showForm(data.no_rawat, data.kategori);
                     Swal.fire(
@@ -541,7 +539,7 @@
                             showForm(no_rawat, kategori);
                             if ($('#tb_pasien').length > 0) {
                                 $('#tb_pasien').DataTable().destroy();
-                                tb_pasien();
+                                tb_pasien("{{ date('Y-m-d') }}");
                                 hitungUpload();
                             }
                             Swal.fire(
