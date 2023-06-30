@@ -43,9 +43,10 @@ class ResepObatController extends Controller
     }
     public function panggil(Request $request)
     {
+        $jam = $request->jam ? date('H:i:s') : '00:00:00';
         $resepObat = $this->resepObat->where('no_resep', $request->no_resep)->update([
             'tgl_penyerahan' => $request->tanggal,
-            'jam_penyerahan' => $request->jam,
+            'jam_penyerahan' => $jam,
         ]);
 
         return response()->json('Berhasil dipanggil');

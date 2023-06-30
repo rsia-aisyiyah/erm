@@ -1,49 +1,6 @@
 @extends('index')
 
 @section('contents')
-    {{-- <div class="row">
-        <div class="col-md-2 col-sm-6 col-xs-6">
-            <div class="card text-bg-primary mb-3">
-                <div class="card-header">Jumlah Resep</div>
-                <div class="card-body">
-                    <h3 class="card-title" id="count-resep"></h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 col-sm-6 col-xs-6">
-            <div class="card text-bg-warning mb-3">
-                <div class="card-header">Menungu</div>
-                <div class="card-body">
-                    <h3 class="card-title" id="count-tunggu"></h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 col-sm-6 col-xs-6">
-            <div class="card text-bg-info mb-3">
-                <div class="card-header">Divalidasi</div>
-                <div class="card-body">
-                    <h3 class="card-title" id="count-valid"> </h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 col-sm-6 col-xs-6">
-            <div class="card mb-3 text-bg-success mb-3">
-                <div class="card-header">Selesai</div>
-                <div class="card-body">
-                    <h3 class="card-title" id="count-selesai"></h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 col-sm-6 col-xs-6">
-            <div class="card mb-3 text-bg-danger mb-3">
-                <div class="card-header">Tidak Diambil</div>
-                <div class="card-body">
-                    <h3 class="card-title" id="count-tidak"></h3>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
     <div class="row gy-2">
         <div class="col-sm-12">
             <div class="card">
@@ -304,7 +261,7 @@
                 localStorage.setItem('nm_pasien', nm_pasien);
             }
 
-            jam = jam_panggil ? "{{ date('H:i:s') }}" : '00:00:00';
+            // jam = jam_panggil ? "{{ date('H:i:s') }}" : '00:00:00';
             setTimeout(() => {
                 localStorage.setItem('panggil', 'no');
             }, 3000);
