@@ -228,11 +228,11 @@
                         render: function(data, type, row, meta) {
 
                             console.log(row)
-                            tanggal = "{{ date('H:i:s') }}";
+
                             html = '<button onclick="tampilResep(\'' + row.no_resep + '\')" class="btn btn-sm mb-2 status-' + row.no_resep + '" type="button" style="width:110px;display:inline" data-id="' + row.no_rawat + '"></button><br/>';
 
-                            html += '<button onclick="panggilResep(\'' + row.no_resep + '\',0000-00-00, \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-warning mb-2 panggil-' + row.no_resep + '" style="width:110px;display:none" type="button" style="width:110px;" data-id="' + row.no_rawat + '">PANGGIL</button><br/>';
-                            html += '<button onclick="panggilResep(\'' + row.no_resep + '\',\'' + tanggal + '\', \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-success mb-2 selesai-' + row.no_resep + '" style="width:110px;display:none" type="button" style="width:110px;" data-id="' + row.no_rawat + '">SELESAI</button>';
+                            html += '<button onclick="panggilResep(\'' + row.no_resep + '\',' + false + ', \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-warning mb-2 panggil-' + row.no_resep + '" style="width:110px;display:none" type="button" style="width:110px;" data-id="' + row.no_rawat + '">PANGGIL</button><br/>';
+                            html += '<button onclick="panggilResep(\'' + row.no_resep + '\',\'' + true + '\', \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-success mb-2 selesai-' + row.no_resep + '" style="width:110px;display:none" type="button" style="width:110px;" data-id="' + row.no_rawat + '">SELESAI</button>';
 
                             if (row.tgl_perawatan == '0000-00-00') {
                                 if (row.reg_periksa.status_bayar == 'Belum Bayar') {
@@ -304,6 +304,7 @@
                 localStorage.setItem('nm_pasien', nm_pasien);
             }
 
+            jam = jam_panggil ? "{{ date('H:i:s') }}" : '00:00:00';
             setTimeout(() => {
                 localStorage.setItem('panggil', 'no');
             }, 3000);
@@ -313,7 +314,7 @@
                 data: {
                     no_resep: no_resep,
                     tanggal: "{{ date('Y-m-d') }}",
-                    jam: jam_panggil,
+                    jam: jam,
                 },
                 success: function(response) {
                     reloadTabelResep();
