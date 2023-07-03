@@ -10,6 +10,10 @@ class Poliklinik extends Model
     use HasFactory;
     protected $table = 'poliklinik';
 
+    public function poliBpjs()
+    {
+        return $this->hasMany(MappingPoliBpjs::class, 'kd_poli', 'kd_poli_rs');
+    }
     public function mappingPoli()
     {
         return $this->hasMany(MappingPoliklinik::class, 'kd_poli', 'kd_poli');

@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalDokter" tabindex="-1" aria-labelledby="modalDokter" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
         <div class="modal-content" style="border-radius:0px">
             <div class="modal-header">
                 <h5 class="modal-title">Dokter Praktek</h5>
@@ -10,10 +10,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Kode Dokter</th>
+                            <th>Poliklinik</th>
                             <th>Nama Dokter</th>
-                            <th>Jadwal Praktek</th>
-                            <th>Kapasitas</th>
                         </tr>
                     </thead>
                     <tbody>

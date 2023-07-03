@@ -37,7 +37,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="tgl_kontrol" class="form-label mb-0">Tgl. Kontrol</label>
-                        <input type="text" class="form-control form-control-sm tgl_kontrol tanggal" id="tgl_kontrol" placeholder="">
+                        <input type="text" class="form-control form-control-sm tgl_kontrol tanggal" onchange="setTanggalKontrol(this)" id="tgl_kontrol" placeholder="">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="dokter" class="form-label mb-0">Spesialis/Sub</label>
@@ -50,12 +50,15 @@
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="poli" class="form-label mb-0">Unit/Poli</label>
                         <div class="input-group mb-3">
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="btn-unit"><i class="bi bi-paperclip"></i></button>
                             <input type="text" class="form-control form-control-sm kode_poli" placeholder="" aria-label="" aria-describedby="kode_poli" readonly>
                             <input type="text" style="margin-left: 10px" class="form-control form-control-sm nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
                         </div>
 
                     </div>
+                    <div class="col-md-6 col-sm-12 gy-2">
+                        <button class="btn btn-sm btn-primary" onclick="simpanSkrj()">Buat SKRJ</button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -67,6 +70,7 @@
 @push('script')
     <script>
         $('#modalSkrj').on('shown.bs.modal', function() {
+            console.log(tanggalKontrol)
             isModalShow = true;
             date = new Date()
             hari = ('0' + (date.getDate())).slice(-2);
@@ -78,11 +82,34 @@
                 orientation: 'bottom',
                 autoclose: true,
             });
-            $('.tanggal').datepicker('setDate', dateStart)
+
+            let tanggal = tanggalKontrol ? tanggalKontrol : dateStart;
+            $('#tgl_surat').datepicker('setDate', dateStart)
+            $('#tgl_kontrol').datepicker('setDate', tanggal)
         })
         $('#modalSkrj').on('hidden.bs.modal', function() {
             isModalShow = false;
             $('#opt-rawat').empty();
-        })
+        });
+
+        function simpanSkrj() {
+            data = {
+                _token: "{{ csrf_token() }}",
+                noSEP: $('#no_sep').val(),
+                kodeDokter: $('#kode_dokter').val(),
+                poliKontrol: $('.kode_poli').val(),
+                tglRencanaKontrol: splitTanggal($('#tgl_kontrol').val()),
+                user: "{{ session()->get('pegawai')->nama }}",
+            };
+
+            $.ajax({
+                url: '/erm/bridging/rencanaKontrol/insert',
+                data: data,
+                method: 'POST',
+                success: function(response) {
+                    console.log(response)
+                }
+            });
+        }
     </script>
 @endpush

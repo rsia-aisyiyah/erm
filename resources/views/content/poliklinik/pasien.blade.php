@@ -530,27 +530,20 @@
 
         function cekSep(sep) {
             $.ajax({
-                url: '/erm/bridging/SEP/' + sep,
+                url: '/erm/sep/' + sep,
                 dataType: 'JSON',
                 success: function(response) {
-                    console.log('API', response.response)
-                    dataApi = response.response;
-                    $.ajax({
-                        url: '/erm/sep/' + sep,
-                        dataType: 'JSON',
-                        success: function(response) {
-                            console.log(response)
-                            // console.log(tanggalKontrol)
-                            $('#modalSkrj').modal('show')
-                            $('.no_rawat').val(response.no_rawat)
-                            $('.no_sep').val(response.no_sep)
-                            $('.diagnosa').val(dataApi.diagnosa)
-                            $('.pasien').val(response.nomr + ' - ' + response.nama_pasien + '(' + response.reg_periksa.umurdaftar + ')');
-                            $('.tgl_lahir').val(dataApi.peserta.tglLahir)
-                            $('.no_surat').val(dataApi.kontrol.noSurat)
-                            $('#btn-unit').attr('onclick', 'cariSpesialisBpjs(2, \'' + response.no_sep + '\')');
-                        }
-                    })
+                    console.log(response)
+                    $('#modalSkrj').modal('show')
+                    $('.no_rawat').val(response.no_rawat)
+                    $('.no_sep').val(response.no_sep)
+                    $('.pasien').val(response.nomr + ' - ' + response.nama_pasien + '(' + response.reg_periksa.umurdaftar + ')');
+                    $('.tgl_lahir').val(splitTanggal(response.tanggal_lahir))
+                    $('.kode_poli').val(response.kdpolitujuan)
+                    $('.nama_poli').val(response.nmpolitujuan)
+                    // $('#btn-spesialis').attr('onclick', 'cariDokterSpesialisBpjs(2, \'' + response.kdpolitujuan + '\')');
+                    $('#btn-spesialis').attr('onclick', 'cariDokterPoli(\'' + response.kdpolitujuan + '\')');
+                    $('#kode_dokter').attr('onclick', 'cariDokterPoli(\'' + response.kdpolitujuan + '\')');
                 }
             })
         }
@@ -592,32 +585,73 @@
             $('.kode_poli').val(kode);
             $('.nama_poli').val(nama);
 
-            $('#btn-spesialis').attr('onclick', 'cariDokterSpesialisBpjs(2, \'' + kode + '\')');
+
         }
 
-        function cariDokterSpesialisBpjs(jnsKontrol, kdPoli) {
-            tanggal = splitTanggal($('#tgl_kontrol').val())
+        // function cariDokterSpesialis(kd_poli) {
+
+        // }
+
+        // function cariDokterSpesialisBpjs(jnsKontrol, kdPoli) {
+        //     tanggal = splitTanggal($('#tgl_kontrol').val())
+        //     $.ajax({
+        //         url: '/erm/bridging/rencanaKontrol/jadwal/' + jnsKontrol + '/' + kdPoli + '/' + tanggal,
+        //         dataType: 'JSON',
+        //         success: function(response) {
+        //             no = 1;
+        //             html = '';
+        //             console.log('DOKTER', response)
+        //             $.map(response.response.list, function(data) {
+        //                 html += '<tr>'
+        //                 html += '<td>' + no + '</td>'
+        //                 html += '<td><a href="javascript:void(0)" onclick="setDokterSpesialis(\'' + data.kodeDokter + '\', \'' + data.namaDokter + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.kodeDokter + '</span></a></td>'
+        //                 html += '<td>' + data.namaDokter + '</td>'
+        //                 html += '<td>' + data.jadwalPraktek + '</td>'
+        //                 html += '<td>' + data.kapasitas + '</td>'
+        //                 html += '</tr>'
+        //                 no++;
+        //             });
+        //             $('.table-dokter tbody').append(html)
+        //             $('#modalDokter').modal('show');
+        //             $('#modalSkrj').modal('hide');
+
+        //         }
+        //     })
+        // }
+        var tanggalKontrol = '';
+
+        function setTanggalKontrol(param) {
+            // console.log($(param).val())
+            tanggalKontrol = $(param).val()
+        }
+
+        function cariDokterPoli(kdPoli) {
             $.ajax({
-                url: '/erm/bridging/rencanaKontrol/jadwal/' + jnsKontrol + '/' + kdPoli + '/' + tanggal,
+                url: '/erm/poliklinik/bpjs/' + kdPoli,
                 dataType: 'JSON',
                 success: function(response) {
+                    // console.log(response)
                     no = 1;
                     html = '';
-                    console.log('DOKTER', response)
-                    $.map(response.response.list, function(data) {
-                        html += '<tr>'
-                        html += '<td>' + no + '</td>'
-                        html += '<td><a href="javascript:void(0)" onclick="setDokterSpesialis(\'' + data.kodeDokter + '\', \'' + data.namaDokter + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.kodeDokter + '</span></a></td>'
-                        html += '<td>' + data.namaDokter + '</td>'
-                        html += '<td>' + data.jadwalPraktek + '</td>'
-                        html += '<td>' + data.kapasitas + '</td>'
-                        html += '</tr>'
-                        no++;
-                    });
+                    kd_dokter = '';
+                    $.map(response, function(res) {
+                        $.map(res.poliklinik.mapping_poli, function(data) {
+                            console.log(data.dokter)
+
+                            if (kd_dokter != data.dokter.kd_dokter) {
+                                html += '<tr>'
+                                html += '<td>' + no + '</td>'
+                                html += '<td><a href="javascript:void(0)" onclick="setDokterSpesialis(\'' + data.dokter.mapping_dokter.kd_dokter_bpjs + '\', \'' + data.dokter.mapping_dokter.nm_dokter_bpjs + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.dokter.mapping_dokter.kd_dokter_bpjs + '</span></a></td>'
+                                html += '<td>' + data.dokter.nm_dokter + '</td>'
+                                html += '</tr>'
+                                no++;
+                                kd_dokter = data.dokter.kd_dokter;
+                            }
+                        })
+                    })
                     $('.table-dokter tbody').append(html)
                     $('#modalDokter').modal('show');
                     $('#modalSkrj').modal('hide');
-
                 }
             })
         }

@@ -2,8 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Pegawai;
+use App\Models\Spesialis;
+use App\Models\PeriksaLab;
+use App\Models\RegPeriksa;
+use App\Models\MappingPoliklinik;
+use App\Models\MappingDokterDpjpVlcaim;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Dokter extends Model
 {
@@ -12,11 +18,12 @@ class Dokter extends Model
 
     public function mappingPoli()
     {
-        return $this->hasMany(
-            MappingPoliklinik::class,
-            'kd_dokter',
-            'kd_dokter'
-        );
+        return $this->hasMany(MappingPoliklinik::class, 'kd_dokter', 'kd_dokter');
+    }
+
+    public function mappingDokter()
+    {
+        return $this->hasOne(MappingDokterDpjpVlcaim::class, 'kd_dokter', 'kd_dokter');
     }
     public function regPeriksa()
     {
@@ -34,4 +41,7 @@ class Dokter extends Model
     {
         return $this->belongsTo(Pegawai::class, 'kd_dokter', 'nik');
     }
+    // public function jadwal(){
+    //     return $this->hasMany()
+    // }
 }

@@ -62,6 +62,7 @@ class PoliklinikController extends Controller
             ->where('kd_poli', $kd_poli)
             ->first();
     }
+
     public function pasienPoliUpload()
     {
         // return $regPeriksa = RegPeriksa::

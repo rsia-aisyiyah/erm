@@ -36,9 +36,16 @@ class RencanaKontrolController extends Controller
     {
         $endpoint = "RencanaKontrol/JadwalPraktekDokter/JnsKontrol/{$jnsKontrol}/KdPoli/{$kdPoli}/TglRencanaKontrol/{$tanggal}";
         $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
-
-        // return $this->config->setHeader();
-        // return $response;
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+    }
+
+    public function insertRencanaKontrol(Request $request)
+    {
+        $data = $request->all();
+        $endpoint = "RencanaKontrol/insert";
+        // $response = Http::withHeaders($this->config->setHeader())->post($this->config->setUrl() . $endpoint, $request);
+        $response = $this->bridge->request($this->config->setUrl() . $endpoint, $this->config->setHeader(), "POST", $data);
+        return $response;
+        // return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }
 }
