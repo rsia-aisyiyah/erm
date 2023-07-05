@@ -106,7 +106,7 @@ class PoliklinikController extends Controller
     }
     public function tbPoliPasien(Request $request)
     {
-        $pasien = $this->poliPasien($request->kd_poli, $request->dokter, $request->tgl_registrasi);
+        $pasien = $this->poliPasien($request->kd_poli, $request->kd_dokter, $request->tgl_registrasi);
 
         return DataTables::of($pasien)->make(true);
     }
