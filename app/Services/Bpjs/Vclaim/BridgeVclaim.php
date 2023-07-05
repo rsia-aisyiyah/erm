@@ -37,7 +37,7 @@ class BridgeVclaim extends CurlFactory
     public function postRequest($endpoint, $data)
     {
         $result = $this->request($this->config->setUrl() . $endpoint, $this->header, "POST", $data);
-        $result = $this->response->responseVclaim($result, $this->config->keyDecrypt($this->header['X-timestamp']));
+        // $result = $this->response->responseVclaim($result, $this->config->keyDecrypt($this->header['X-timestamp']));
         return $result;
     }
 

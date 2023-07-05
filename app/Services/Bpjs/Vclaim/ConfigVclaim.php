@@ -76,6 +76,17 @@ class ConfigVclaim extends ManageService
             'user_key'    => $this->setUserKey()
         ];
     }
+    public function setHeaderPost()
+    {
+        return [
+            'Accept' => 'application/json',
+            'X-cons-id'   => $this->setConsid(),
+            'X-timestamp' => $this->setTimestamp(),
+            'X-signature' => $this->setSignature(),
+            'user_key'    => $this->setUserKey(),
+            'Content-Type'    => $this->setUrlEncode()
+        ];
+    }
 
     public function keyDecrypt($timestamp)
     {

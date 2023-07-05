@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use App\Services\Bpjs\Vclaim\BridgeVclaim;
 use App\Services\Bpjs\Vclaim\ConfigVclaim;
 use App\Services\Bpjs\Vclaim\ResponseVclaim;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class RencanaKontrolController extends Controller
 {
@@ -38,14 +39,18 @@ class RencanaKontrolController extends Controller
         $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }
+    public function getListRencana($bulan, $tahun, $noka, $filter)
+    {
+        $endpoint = "RencanaKontrol/ListRencanaKontrol/Bulan/{$bulan}/Tahun/{$tahun}/Nokartu/{$noka}/filter/{$filter}";
+        $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
+        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+    }
 
     public function insertRencanaKontrol(Request $request)
     {
-        $data = $request->all();
+        $data = ['request' => $request->all()];
         $endpoint = "RencanaKontrol/insert";
-        // $response = Http::withHeaders($this->config->setHeader())->post($this->config->setUrl() . $endpoint, $request);
-        $response = $this->bridge->request($this->config->setUrl() . $endpoint, $this->config->setHeader(), "POST", $data);
-        return $response;
-        // return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+        $response = Http::withHeaders($this->config->setHeaderPost())->post($this->config->setUrl() . $endpoint, $data);
+        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }
 }

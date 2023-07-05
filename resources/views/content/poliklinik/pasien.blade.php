@@ -112,7 +112,6 @@
             tanggal = splitTanggal(this.value)
             $('#tb_pasien').DataTable().destroy();
             tb_pasien(tanggal);
-            console.log(tanggal);
         })
 
         function hitungPasien() {
@@ -301,7 +300,6 @@
                                         html += '<b class="">' + dokter.data_barang.nama_brng + ' Jumlah : ' + dokter.jml + ', Aturan : ' + dokter.aturan_pakai + '</b><br/>';
                                     })
                                     $.map(resep.resep_racikan, function(racik) {
-                                        console.log(racik)
                                         html += '<b class="">Racikan : ' + racik
                                             .nama_racik + ' Jumlah : ' + racik.jml_dr + ', Aturan : ' + racik.aturan_pakai + '</b><br/>';
                                         $.map(racik.detail_racikan, function(detail) {
@@ -396,8 +394,6 @@
             id = $('.panggil-' + urut).data('id');
             hitung_panggilan = $('#hitung-panggil').val();
             text_recall = $('.panggil-' + urut).text()
-            // reloadTabelPoli();
-
             if (hitung_panggilan < 2 || text_recall == 'CALL') {
                 $('.selesai-' + urut).prop('disabled', false);
                 $('.selesai-' + urut).prop('class', 'btn btn-warning btn-sm mb-2 selesai-' + urut + '');
@@ -488,7 +484,6 @@
         }
 
         function batal(urut) {
-            // reloadTabelPoli();
             $('.panggil-' + urut).prop('class', 'btn btn-success btn-sm mb-2 panggil-' + urut + '');
             $('.panggil-' + urut).removeAttr('style');
             $('.panggil-' + urut).css({
@@ -527,8 +522,23 @@
 
         }
 
+        function cariRencanaKontrol(bulan, tahun, noka, filter) {
+            return rencana = $.ajax({
+                url: '/erm/bridging/rencanaKontrol/list/' + bulan + '/' + tahun + '/' + noka + '/' + filter,
+                dataType: 'JSON',
+                method: 'GET',
+                success: function(response) {
+                    console.log(response)
+                }
+            }).done(function(response) {
+                console.log('Done', response)
+            })
+        }
+
 
         function cekSep(sep) {
+            tanggalKontrol = '';
+            reloadTabelPoli();
             $.ajax({
                 url: '/erm/sep/' + sep,
                 dataType: 'JSON',
@@ -541,9 +551,25 @@
                     $('.tgl_lahir').val(splitTanggal(response.tanggal_lahir))
                     $('.kode_poli').val(response.kdpolitujuan)
                     $('.nama_poli').val(response.nmpolitujuan)
-                    // $('#btn-spesialis').attr('onclick', 'cariDokterSpesialisBpjs(2, \'' + response.kdpolitujuan + '\')');
-                    $('#btn-spesialis').attr('onclick', 'cariDokterPoli(\'' + response.kdpolitujuan + '\')');
-                    $('#kode_dokter').attr('onclick', 'cariDokterPoli(\'' + response.kdpolitujuan + '\')');
+                    $('.diagnosa').val(response.nmdiagnosaawal)
+                    $('.nama_dokter').val(response.nmdpdjp)
+                    $('.kode_dokter').val(response.kddpjp)
+                    $('.noka').val(response.no_kartu)
+
+                    if (response.surat_kontrol) {
+                        tanggal = response.surat_kontrol.tgl_rencana.split('-');
+                        tanggalKontrol = tanggal[2] + '-' + tanggal[1] + '-' + tanggal[0];
+                        $('.no_surat').val(response.surat_kontrol.no_surat)
+                        $('.nama_dokter').val(response.surat_kontrol.nm_dokter_bpjs)
+                        $('.kode_dokter').val(response.surat_kontrol.kd_dokter_bpjs)
+                        $('.btn-buat-skrj').css('display', 'none');
+                        $('#btn-spesialis').removeAttr('onclick');
+                    } else {
+                        $('#btn-spesialis').removeAttr('onclick');
+                        $('.no_surat').val('')
+                        $('.btn-buat-skrj').css('display', 'inline');
+                    }
+
                 }
             })
         }
@@ -621,7 +647,6 @@
         var tanggalKontrol = '';
 
         function setTanggalKontrol(param) {
-            // console.log($(param).val())
             tanggalKontrol = $(param).val()
         }
 
@@ -630,7 +655,6 @@
                 url: '/erm/poliklinik/bpjs/' + kdPoli,
                 dataType: 'JSON',
                 success: function(response) {
-                    // console.log(response)
                     no = 1;
                     html = '';
                     kd_dokter = '';
@@ -651,6 +675,7 @@
                     })
                     $('.table-dokter tbody').append(html)
                     $('#modalDokter').modal('show');
+                    tanggalKontrol = $('#tgl_kontrol').val();
                     $('#modalSkrj').modal('hide');
                 }
             })
@@ -696,7 +721,6 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             let html = '';
-                            console.log(row)
                             if (row.stts == 'Batal') {
                                 html =
                                     '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
@@ -769,14 +793,14 @@
 
                             // console.log(row.sep)
 
+                            badgeKontrol = '';
                             if (row.sep && row.kd_pj != "A03") {
-                                badgeSep = '<a href="javascript:void(0)" onclick="cekSep(\'' + row.sep.no_sep + '\')"><span id="sep-' + row.no_reg + '" class="badge text-bg-success" style="font-size:12px">Sudah Terbit SEP</span></a>';
-                                // $('#sep-' + row.no_reg).addClass('badge text-bg-success')
-                                // $('#sep-' + row.no_reg).text('Sudah Terbit SEP')
+                                badgeSep = '<a href="javascript:void(0)" onclick="cekSep(\'' + row.sep.no_sep + '\')"><span id="sep-' + row.no_reg + '" class="badge text-bg-success" style="font-size:10px">Sudah Terbit SEP</span></a>';
+                                if (row.sep.surat_kontrol && row.kd_pj != "A03") {
+                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + row.no_reg + '" class="badge text-bg-warning" style="font-size:10px">Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
+                                }
                             } else if (!row.sep && row.kd_pj != "A03") {
-                                badgeSep = '<span id="sep-' + row.no_reg + '" class="badge text-bg-danger">Belum Terbit SEP</span>';
-                                // $('#sep-' + row.no_reg).addClass('badge text-bg-danger')
-                                // $('#sep-' + row.no_reg).text('Belum Terbit SEP')
+                                badgeSep = '<span id="sep-' + row.no_reg + '" class="badge text-bg-danger" style="font-size:10px">Belum Terbit SEP</span>';
                             } else {
                                 badgeSep = '';
                             }
@@ -786,7 +810,7 @@
                                 '</span></br>' +
                                 row.no_rawat +
                                 '</br><i><strong class="' + classTeksPenjab + ' h6">' + row.penjab
-                                .png_jawab + '</strong></i><br/>' + badgeSep + '</p>';
+                                .png_jawab + '</strong></i><br/>' + badgeSep + ' ' + badgeKontrol + ' </p>';
 
                             if (row.sep) {
                                 // html += '<p>SEP TERCETAK</p>'

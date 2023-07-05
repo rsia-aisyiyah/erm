@@ -14,4 +14,8 @@ class BridgingSep extends Model
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
     }
+    public function suratKontrol()
+    {
+        return $this->hasOne(RencanaKontrol::class, 'no_sep', 'no_sep');
+    }
 }

@@ -33,6 +33,7 @@ use App\Http\Controllers\Bridging\ReferensiController;
 use App\Http\Controllers\Bridging\RencanaKontrolController;
 use App\Http\Controllers\Bridging\SepController;
 use App\Http\Controllers\BridgingSepController;
+use App\Http\Controllers\BrigdgingRencanaKontrolController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\DiagnosaPasienController;
 use App\Http\Controllers\Icd9Controller;
@@ -212,6 +213,7 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('rencanaKontrol/{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
         Route::get('rencanaKontrol/jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);
+        Route::get('rencanaKontrol/list/{bulan}/{tahun}/{noka}/{filter}', [RencanaKontrolController::class, 'getListRencana']);
         Route::post('rencanaKontrol/insert', [RencanaKontrolController::class, 'insertRencanaKontrol']);
         Route::get('SEP/{sep}', [SepController::class, 'getSep']);
         Route::get('peserta/nokartu/{nokartu}/tglsep/{tglsep}', [ReferensiController::class, 'getPasien']);
@@ -219,8 +221,11 @@ Route::middleware('auth')->group(function () {
 
 
 
+    Route::post('rencanaKontrol/insert', [BrigdgingRencanaKontrolController::class, 'create']);
     Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
     Route::get('poliklinik/bpjs/{kdPoli}', [MappingPoliBpjsController::class, 'ambil']);
 });
+Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
+
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
-Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
+// Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
