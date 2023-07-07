@@ -22,6 +22,58 @@ class RegPeriksaController extends Controller
         return view('content.registrasi.daftar');
     }
 
+    function create(Request $request)
+    {
+        $data = [
+            'no_reg' => $request->no_reg,
+            'no_rawat' => $this->setNoRawat(),
+            'tgl_registrasi' => date('Y-m-d'),
+            'jam_reg' => date('H:i:s'),
+            'kd_dokter' => $request->kd_dokter,
+            'no_rkm_medis' => $request->no_rkm_medis,
+            'kd_poli' => $request->kd_poli,
+            'p_jawab' => $request->p_jawab,
+            'almt_pj' => $request->alamat,
+            'hubungabpj' => $request->hubungan,
+            'biaya_reg' => 0,
+            'stts' => 'Belum',
+            'status_lanjut' => $request->status_lanjut,
+            'kd_pj' => $request->kd_pj,
+            'umurdaftar' => $request->umur,
+            'sttsumur' => $request->sttsumur,
+            'status_bayar' => 'Belum Bayar',
+            'status_poli' => $request->status_poli,
+        ];
+        $regPeriksa = RegPeriksa::create($data);
+
+        return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $regPeriksa]);
+    }
+    function setNoRawat()
+    {
+        $regPeriksa = Regperiksa::select('no_rawat')->where('tgl_registrasi', date('Y-m-d'))->orderBy('no_rawat', 'DESC')->first();
+
+
+        if ($regPeriksa) {
+            $no = explode('/', $regPeriksa->no_rawat);
+            $no = $no[3] + 1;
+        } else {
+            $no = 1;
+        }
+        $noRawat = date('Y/m/d') . '/' . sprintf('%06d', $no);
+        return $noRawat;
+    }
+    function setNoReg($kd_poli, $kd_dokter)
+    {
+        $regPeriksa = Regperiksa::select('no_reg')->where('tgl_registrasi', date('Y-m-d'))
+            ->where('kd_poli', $kd_poli)
+            ->where('kd_dokter', $kd_dokter)->orderBy('no_reg', 'DESC')->first();
+        if ($regPeriksa) {
+            $noReg = $regPeriksa->no_reg + 1;
+        } else {
+            $noReg = 1;
+        }
+        return sprintf('%03d', $noReg);
+    }
     public function show($no_rkm_medis)
     {
         $regPeriksa = RegPeriksa::where('no_rkm_medis', $no_rkm_medis)
@@ -76,9 +128,9 @@ class RegPeriksaController extends Controller
     public function ambil(Request $request)
     {
         if ($request->no_rawat) {
-            $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien', 'dokter.spesialis', 'kamarInap.kamar.bangsal')->first();
+            $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien', 'dokter.spesialis', 'kamarInap.kamar.bangsal', 'suratKontrol', 'poliklinik')->first();
         } else {
-            $regPeriksa = RegPeriksa::where('tgl_registrasi', $request->tgl_registrasi)->where('status_lanjut', 'Ralan')->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik')->get();
+            $regPeriksa = RegPeriksa::where('tgl_registrasi', $request->tgl_registrasi)->where('status_lanjut', 'Ralan')->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'suratKontrol')->get();
         }
         return response()->json($regPeriksa);
     }

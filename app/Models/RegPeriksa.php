@@ -15,7 +15,12 @@ class RegPeriksa extends Model
     protected $table = 'reg_periksa';
     public $timestamps = false;
 
+    protected $fillable = ['no_reg', 'no_rkm_medis', 'no_rawat', 'tgl_registrasi', 'jam_reg', 'kd_dokter', 'no_rkm_medis', 'kd_poli', 'p_jawab', 'almt_pj', 'hubunganpj', 'biaya_reg', 'stts', 'stts_daftar', 'stts_lanjut', 'kd_pj', 'umurdaftar', 'sttsumur', 'status_bayar', 'status_poli'];
 
+    public function suratKontrol()
+    {
+        return $this->hasOne(SuratKontrolUlang::class, 'no_rawat', 'no_rawat');
+    }
     public function sep()
     {
         return $this->hasOne(BridgingSep::class, 'no_rawat', 'no_rawat');

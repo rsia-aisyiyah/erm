@@ -929,43 +929,126 @@
         }
 
         function kontrolUmum(no_rawat) {
-            // alert(no_rawat);
             $.ajax({
                 url: '/erm/registrasi/ambil',
                 data: {
                     no_rawat: no_rawat
                 },
                 success: function(response) {
-                    console.log(response);
+                    if (response.surat_kontrol) {
+                        tanggalKontrol = splitTanggal(response.surat_kontrol.tanggal);
+                        $('.no_surat').val(response.surat_kontrol.no_surat)
+                        $('.btn-buat-kontrol-umum').css('display', 'none')
+                    } else {
+                        tanggalKontrol = '';
+                        $('.no_surat').val('')
+                        $('.btn-buat-kontrol-umum').css('display', 'inline')
+                    }
                     $('.no_rawat').val(response.no_rawat)
+                    $('.no_rkm_medis').val(response.no_rkm_medis)
                     $('.pasien').val(response.pasien.no_rkm_medis + ' - ' + response.pasien.nm_pasien + ' (' + response.umurdaftar + ' ' + response.sttsumur + ')')
-                    $('.no_surat').val('')
+                    $('.umurdaftar').val(response.umurdaftar)
+                    $('.sttsumur').val(response.sttsumur)
                     $('.kode_dokter').val(response.kd_dokter)
+                    $('.dokter').val(response.dokter.nm_dokter)
                     $('.nama_dokter').val(response.kd_dokter + ' - ' + response.dokter.nm_dokter)
                     $('.tgl_lahir').val(splitTanggal(response.pasien.tgl_lahir))
                     poli = response.dokter.kd_sps == 'S0003' ? 'PAN' : 'POG';
                     $('.kode_poli').val(poli)
-                    $('.nama_poli').val(response.kd_poli + ' - POLIKLINIK ' + response.dokter.spesialis.nm_sps)
+                    $('.nama_poli').val(response.kd_poli + ' - ' + response.poliklinik.nm_poli)
                     $('#modalKontrolUmum').modal('show')
                 }
             })
         }
 
         function buatKontrolUmum() {
-            $.ajax({
 
-                url: '/erm/kontrol/baru',
+            no_rkm_medis = $('.no_rkm_medis').val()
+            no_rawat = $('.no_rawat').val()
+            jenis = $('.kode_poli').val()
+            tanggal = $('.tgl_kontrol_umum').val()
+            dokter = $('.dokter').val()
+            kode_dokter = $('.kode_dokter').val()
+            $.ajax({
+                url: '/erm/kontrol/umum/baru',
+                method: 'POST',
                 data: {
+                    _token: "{{ csrf_token() }}",
                     no_rkm_medis: no_rkm_medis,
                     no_rawat: no_rawat,
                     jenis: jenis,
-                    tanggal: tanggal,
+                    tanggal: splitTanggal(tanggal),
                     dokter: dokter,
                 },
                 success: function(response) {
-                    console.log(response)
+                    Swal.fire(
+                        'Berhasil',
+                        'Surat kontrol sudah dibuat',
+                        'success'
+                    );
+                    dataBooking = {
+                        'no_rkm_medis': no_rkm_medis,
+                        'kd_dokter': kode_dokter,
+                        'kd_poli': kd_poli,
+                        'tanggal': splitTanggal(tanggal),
+                    }
+
+                    buatBooking(dataBooking).done(function(val) {
+                        console.log('BERHASIL BOOKING', val.response)
+                        data = {
+                            'no_reg': val.response.no_reg,
+                            'kd_dokter': val.response.kd_dokter,
+                            'no_rkm_medis': val.response.no_rkm_medis,
+                            'kd_poli': val.response.kd_poli,
+                            'p_jawab': val.response.pasien.namakeluarga,
+                            'almt_pj': val.response.pasien.alamatpj,
+                            'hubungan': val.response.pasien.keluarga,
+                            'status_lanjut': 'Ralan',
+                            'kd_pj': val.response.kd_pj,
+                            'umurdaftar': $('.umurdaftar').val(),
+                            'sttsumur': $('.sttsumur').val(),
+                            'status_poli': 'Lama',
+                        }
+
+                        buatRegistrasi(data).done(function(response) {
+                            console.log('BERHASIL REG', response)
+
+                        })
+                    })
+
+                    $('#modalKontrolUmum').modal('hide')
                 }
             })
+        }
+
+        function buatBooking(data) {
+            data._token = "{{ csrf_token() }}";
+
+            booking = $.ajax({
+                url: '/erm/booking/buat',
+                data: data,
+                method: 'POST',
+                success: function(response) {
+                    $('.booking').val('true')
+                }
+            })
+
+            return booking;
+        }
+
+        function buatRegistrasi(data) {
+            data._token = "{{ csrf_token() }}";
+
+            registrasi = $.ajax({
+                url: '/erm/registrasi/buat',
+                method: 'POST',
+                data: data,
+                success: function(response) {
+                    $('.registrasi').val('true')
+                }
+            })
+
+            return registrasi;
         }
 
         function ambilAskepAnak(no_rkm_medis) {

@@ -13,6 +13,9 @@
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="pasien" class="form-label mb-0">Pasien</label>
+                        <input type="hidden" class="umurdaftar">
+                        <input type="hidden" class="sttsumur">
+                        <input type="hidden" class="no_rkm_medis">
                         <input type="text" class="form-control form-control-sm pasien" id="pasien" placeholder="" readonly>
                     </div>
                     <div class="col-md-3 col-sm-12 gy-2">
@@ -20,8 +23,8 @@
                         <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" placeholder="" readonly>
                     </div>
                     <div class="col-md-3 col-sm-12 gy-2">
-                        <label for="tgl_kontrol" class="form-label mb-0">Tgl. Kontrol</label>
-                        <input type="text" class="form-control form-control-sm tgl_kontrol tanggal" onchange="setTanggalKontrol(this)" id="tgl_kontrol" placeholder="">
+                        <label for="tgl_kontrol_umum" class="form-label mb-0">Tgl. Kontrol</label>
+                        <input type="text" class="form-control form-control-sm tgl_kontrol_umum tanggal" onchange="setTanggalKontrol(this)" id="tgl_kontrol_umum" placeholder="">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="no_surat" class="form-label mb-0">No. Surat</label>
@@ -30,6 +33,7 @@
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="dokter" class="form-label mb-0">Dokter DPJP</label>
                         <input type="hidden" class="kode_dokter" id="kode_dokter" />
+                        <input type="hidden" class="dokter" id="dokter" />
                         <input type="text" class="form-control form-control-sm nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
@@ -42,6 +46,8 @@
                         <button class="btn btn-sm btn-primary btn-buat-kontrol-umum" onclick="buatKontrolUmum()">Buat Surat Kontrol</button>
                     </div>
                     <input type="hidden" name="noka" class="noka">
+                    <input type="hidden" name="booking" class="booking">
+                    <input type="hidden" name="registrasi" class="registrasi">
                 </div>
             </div>
         </div>
@@ -51,10 +57,9 @@
 @push('script')
     <script>
         $('#modalKontrolUmum').on('shown.bs.modal', function() {
-            console.log(tanggalKontrol)
             isModalShow = true;
             date = new Date()
-            hari = ('0' + (date.getDate())).slice(-2);
+            hari = ('0' + (date.getDate() + 1)).slice(-2);
             bulan = ('0' + (date.getMonth() + 1)).slice(-2);
             tahun = date.getFullYear();
             dateStart = hari + '-' + bulan + '-' + tahun;
@@ -62,11 +67,12 @@
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
                 autoclose: true,
+                startDate: '+1d',
             });
 
             let tanggal = tanggalKontrol ? tanggalKontrol : dateStart;
             $('.tgl_surat').datepicker('setDate', dateStart)
-            $('.tgl_kontrol').datepicker('setDate', tanggal)
+            $('.tgl_kontrol_umum').datepicker('setDate', tanggal)
         })
     </script>
 @endpush

@@ -7,6 +7,7 @@ use App\Models\DetailPemberianObat;
 use App\Models\PenilaianMedisRanap;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LabController;
+use App\Http\Controllers\Icd9Controller;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RanapController;
 use App\Http\Controllers\DokterController;
@@ -15,33 +16,34 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\AntreanController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PetugasController;
+use App\Http\Controllers\PenyakitController;
 use App\Http\Controllers\ResepObatController;
 use App\Http\Controllers\DataBarangController;
 use App\Http\Controllers\PoliklinikController;
 use App\Http\Controllers\RegPeriksaController;
+use App\Http\Controllers\BridgingSepController;
 use App\Http\Controllers\ResepDokterController;
 use App\Http\Controllers\SelesaiPoliController;
+use App\Http\Controllers\Bridging\SepController;
 use App\Http\Controllers\EstimasiPoliController;
 use App\Http\Controllers\AskepRalanAnakController;
+use App\Http\Controllers\DiagnosaPasienController;
+use App\Http\Controllers\ProsedurPasienController;
+use App\Http\Controllers\MappingPoliBpjsController;
 use App\Http\Controllers\PemeriksaanRalanController;
 use App\Http\Controllers\PemeriksaanRanapController;
+use App\Http\Controllers\SuratKontrolUlangController;
+use App\Http\Controllers\Bridging\ReferensiController;
 use App\Http\Controllers\ResepDokterRacikanController;
 use App\Http\Controllers\RsiaGeneralConsentController;
 use App\Http\Controllers\RsiaMappingRacikanController;
 use App\Http\Controllers\AskepRalanKebidananController;
-use App\Http\Controllers\Bridging\ReferensiController;
-use App\Http\Controllers\Bridging\RencanaKontrolController;
-use App\Http\Controllers\Bridging\SepController;
-use App\Http\Controllers\BridgingSepController;
-use App\Http\Controllers\BrigdgingRencanaKontrolController;
+use App\Http\Controllers\BookingRegistrasiController;
 use App\Http\Controllers\DetailPemberianObatController;
-use App\Http\Controllers\DiagnosaPasienController;
-use App\Http\Controllers\Icd9Controller;
-use App\Http\Controllers\MappingPoliBpjsController;
 use App\Http\Controllers\PenilaianMedisRanapController;
+use App\Http\Controllers\Bridging\RencanaKontrolController;
+use App\Http\Controllers\BrigdgingRencanaKontrolController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
-use App\Http\Controllers\PenyakitController;
-use App\Http\Controllers\ProsedurPasienController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
@@ -110,13 +112,18 @@ Route::middleware('auth')->group(function () {
     Route::get('registrasi/ambil', [RegPeriksaController::class, 'ambil']);
     Route::get('registrasi/ambil/table', [RegPeriksaController::class, 'ambilTable']);
     Route::get('/registrasi/status', [RegPeriksaController::class, 'status']);
-    // Route::get('/registrasi/status', [RegPeriksaController::class, 'statusDiterima']);
     Route::get('/registrasi/selesai', [RegPeriksaController::class, 'hitungSelesai']);
     Route::get('/registrasi/batal', [RegPeriksaController::class, 'hitungBatal']);
     Route::get('/registrasi/tunggu', [RegPeriksaController::class, 'hitungTunggu']);
     Route::get('/registrasi/riwayat', [RegPeriksaController::class, 'riwayat']);
     Route::get('/registrasi/ubah/dokter', [RegPeriksaController::class, 'ubahDpjp']);
     Route::get('/registrasi/foto', [UploadController::class, 'ambilPeriksa']);
+
+    Route::post('/registrasi/buat', [RegPeriksaController::class, 'create']);
+
+    Route::post('/booking/buat', [BookingRegistrasiController::class, 'create']);
+
+
 
     Route::get('persetujuan/loket/{loket}', [RsiaGeneralConsentController::class, 'index']);
     Route::post('persetujuan/tambah', [RsiaGeneralConsentController::class, 'tambah']);
@@ -216,10 +223,13 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('rencanaKontrol/insert', [BrigdgingRencanaKontrolController::class, 'create']);
+    Route::post('kontrol/umum/baru', [SuratKontrolUlangController::class, 'create']);
     Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
     Route::get('poliklinik/bpjs/{kdPoli}', [MappingPoliBpjsController::class, 'ambil']);
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
+Route::get('/nosurat/{poli}', [SuratKontrolUlangController::class, 'setNoSurat']);
+Route::get('/noreg/{poli}/{dokter}', [BookingRegistrasiController::class, 'setNoReg']);
 // Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
