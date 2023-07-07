@@ -80,6 +80,7 @@
     @include('content.poliklinik.modal.modal_askep_anak')
     @include('content.poliklinik.modal.modal_resep')
     @include('content.poliklinik.modal.modal_skrj')
+    @include('content.poliklinik.modal.modal_kontrol_umum')
 @endsection
 
 @push('script')
@@ -805,16 +806,19 @@
                                 badgeSep = '';
                             }
 
+
+
+                            if (row.penjab.png_jawab == 'UMUM') {
+                                textPenjab = '<a href="javascript:void(0)" onclick="kontrolUmum(\'' + row.no_rawat + '\')" style="text-decoration:none;color:red">' + row.penjab.png_jawab + '</a>'
+                            } else {
+                                textPenjab = '<a href="javascript:void(0)" onclick="" style="text-decoration:none;color:green">' + row.penjab.png_jawab + '</a>'
+                            }
+
                             html = '<h5>' + row.no_reg + '</h5>';
                             html += '<p><span class="pasien-' + row.no_reg + '">' + pasien +
                                 '</span></br>' +
                                 row.no_rawat +
-                                '</br><i><strong class="' + classTeksPenjab + ' h6">' + row.penjab
-                                .png_jawab + '</strong></i><br/>' + badgeSep + ' ' + badgeKontrol + ' </p>';
-
-                            if (row.sep) {
-                                // html += '<p>SEP TERCETAK</p>'
-                            }
+                                '</br><i><strong class="' + classTeksPenjab + ' h6">' + textPenjab + '</strong></i><br/>' + badgeSep + ' ' + badgeKontrol + ' </p>';
 
                             return html;
                         },
@@ -922,6 +926,46 @@
                     "infoEmpty": "Tidak ada data pasien terdaftar",
                 }
             });
+        }
+
+        function kontrolUmum(no_rawat) {
+            // alert(no_rawat);
+            $.ajax({
+                url: '/erm/registrasi/ambil',
+                data: {
+                    no_rawat: no_rawat
+                },
+                success: function(response) {
+                    console.log(response);
+                    $('.no_rawat').val(response.no_rawat)
+                    $('.pasien').val(response.pasien.no_rkm_medis + ' - ' + response.pasien.nm_pasien + ' (' + response.umurdaftar + ' ' + response.sttsumur + ')')
+                    $('.no_surat').val('')
+                    $('.kode_dokter').val(response.kd_dokter)
+                    $('.nama_dokter').val(response.kd_dokter + ' - ' + response.dokter.nm_dokter)
+                    $('.tgl_lahir').val(splitTanggal(response.pasien.tgl_lahir))
+                    poli = response.dokter.kd_sps == 'S0003' ? 'PAN' : 'POG';
+                    $('.kode_poli').val(poli)
+                    $('.nama_poli').val(response.kd_poli + ' - POLIKLINIK ' + response.dokter.spesialis.nm_sps)
+                    $('#modalKontrolUmum').modal('show')
+                }
+            })
+        }
+
+        function buatKontrolUmum() {
+            $.ajax({
+
+                url: '/erm/kontrol/baru',
+                data: {
+                    no_rkm_medis: no_rkm_medis,
+                    no_rawat: no_rawat,
+                    jenis: jenis,
+                    tanggal: tanggal,
+                    dokter: dokter,
+                },
+                success: function(response) {
+                    console.log(response)
+                }
+            })
         }
 
         function ambilAskepAnak(no_rkm_medis) {

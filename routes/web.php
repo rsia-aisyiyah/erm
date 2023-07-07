@@ -74,17 +74,11 @@ Route::middleware('auth')->group(function () {
         RegPeriksaController::class,
         'detailPeriksa',
     ]);
-    Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'show']);
     Route::get('/upload', [UploadController::class, 'index']);
     Route::get('/upload/show', [UploadController::class, 'showUpload']);
     Route::delete('/upload/delete/{id}', [UploadController::class, 'delete']);
     Route::post('/upload', [UploadController::class, 'upload']);
     Route::get('/upload/status', [PoliklinikController::class, 'statusUpload']);
-    Route::get('/test', function () {
-        return Pasien::limit(10)
-            ->with('regPeriksa')
-            ->get();
-    });
 
     Route::get('/petugas/cari', [PetugasController::class, 'cari']);
 

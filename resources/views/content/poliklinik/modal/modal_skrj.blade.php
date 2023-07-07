@@ -43,7 +43,6 @@
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="dokter" class="form-label mb-0">Spesialis/Sub</label>
                         <div class="input-group mb-3">
-                            {{-- <button class="btn btn-sm btn-outline-secondary" type="button" id="btn-spesialis"><i class="bi bi-paperclip"></i></button> --}}
                             <input type="text" class="form-control form-control-sm kode_dokter" placeholder="" aria-label="" id="kode_dokter" aria-describedby="btn-spesialis" readonly>
                             <input type="text" style="margin-left: 10px" class="form-control form-control-sm nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
                         </div>
@@ -90,7 +89,7 @@
         })
         $('#modalSkrj').on('hidden.bs.modal', function() {
             isModalShow = false;
-            $('#opt-rawat').empty();
+            $('.opt-rawat').empty();
         });
 
         function tarikRencanaKontrol(data) {
