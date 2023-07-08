@@ -1028,262 +1028,85 @@
             data._token = "{{ csrf_token() }}";
 
             booking = $.ajax({
-                    url: '/erm/booking/buat',
-                    data: data,
-                    method: 'POST',
-                    success: function(response) {
-                        $('.booking').val('true');
-                        Swal.fire(
-                            'Berhasil',
-                            'Telah di tambahakan booking',
-                            'success'
-                        );
-                    },
-                    error: function(a, b, c) {
-                        Swal.fire(
-                            'Gagal',
-                            'Terjadi kesalahan pembuatan booking',
-                            'error'
-                        );
+                url: '/erm/booking/buat',
+                data: data,
+                method: 'POST',
+                success: function(response) {
+                    $('.booking').val('true');
+                    Swal.fire(
+                        'Berhasil',
+                        'Telah di tambahakan booking',
+                        'success'
+                    );
+                },
+                error: function(a, b, c) {
+                    Swal.fire(
+                        'Gagal',
+                        'Terjadi kesalahan pembuatan booking',
+                        'error'
+                    );
 
-                    })
-
-                return booking;
-            }
-
-            function buatRegistrasi(data) {
-                data._token = "{{ csrf_token() }}";
-
-                registrasi = $.ajax({
-                    url: '/erm/registrasi/buat',
-                    method: 'POST',
-                    data: data,
-                    success: function(response) {
-                        $('.registrasi').val('true');
-                        Swal.fire(
-                            'Berhasil',
-                            'Data registrasi telah dibuat dengan nomor registrasi ' + response.response.no_rawat,
-                            'error'
-                        );
-                    },
-                    error: function(a, b, c) {
-                        Swal.fire(
-                            'Gagal',
-                            'Terjadi kesalahan pembuatan registrasi pasien',
-                            'error'
-                        );
-                    }
-                })
-
-                return registrasi;
-            }
-
-            function ambilAskepAnak(no_rkm_medis) {
-                $.ajax({
-                    url: 'askep/anak',
-                    data: {
-                        no_rkm_medis: no_rkm_medis,
-                    },
-                    dataType: 'JSON',
-                    success: function(response) {
-                        if (Object.keys(response).length > 0) {
-                            $('#opt-rawat').append(
-                                '<option value="" disabled selected>PILIH TANGGAL ASESMEN</option>')
-                            $.map(response, function(data) {
-                                console.log(data)
-                                $('#opt-rawat').append('<option class="opt-asesmen-anak" value=' + data
-                                    .no_rawat + '>' + formatTanggal(
-                                        data.tanggal) + ' - ' + data.no_rawat +
-                                    '</option>')
-                                $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
-                                $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' :
-                                    ': Perempuan')
-                                $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa
-                                    .tgl_registrasi));
-                                $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
-                                $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien
-                                        .tgl_lahir) +
-                                    ' / ' + data.reg_periksa.umurdaftar + ' ' + data.reg_periksa
-                                    .sttsumur);
-                                $('.anamnesis').html(': ' + data.informasi);
-                                $('.tensi').html(': ' + data.td + ' mmHG');
-                                $('.nadi').html(': ' + data.nadi + ' x/menit');
-                                $('.respirasi').html(': ' + data.rr + ' x/menit');
-                                $('.suhu').html(': ' + data.suhu + ' <sup>o</sup>C');
-                                $('.gcs').html(': ' + data.gcs);
-                                $('.bb').html(': ' + data.bb + ' Kg');
-                                $('.tb').html(': ' + data.bb + ' Cm');
-                                $('.lp').html(': ' + data.lp + ' Cm');
-                                $('.ld').html(': ' + data.ld + ' Cm');
-                                $('.lk').html(': ' + data.lk + ' Cm');
-                                $('.keluhan_utama').html(': ' + data.keluhan_utama);
-                                $('.rpd').html(': ' + data.rpd);
-                                $('.rpk').html(': ' + data.rpk);
-                                $('.rpo').html(': ' + data.rpo);
-                                $('.alergi').html(': ' + data.alergi);
-                                $('.anakke').html(': ' + data.anakke + ', dari ' + data.darisaudara +
-                                    ' bersaudara');
-                                $('.caralahir').html(': ' + data.caralahir + ' ( ' + data
-                                    .ket_caralahir +
-                                    ' )');
-                                $('.umurkelahiran').html(': ' + data.umurkelahiran);
-                                $('.kelainanbawaan').html(': ' + data.kelainanbawaan + ' (' + data
-                                    .ket_kelainan_bawaan + ' )');
-
-                                namaImunisasi = '';
-                                $('.tb-askep-imunisasi tbody').empty()
-                                $('.imunisasi').remove()
-                                $.map(data.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
-                                    if (namaImunisasi != imunisasi.master_imunisasi
-                                        .nama_imunisasi) {
-                                        namaImunisasi = imunisasi.master_imunisasi
-                                            .nama_imunisasi
-                                        html = '<tr class="imunisasi ' + imunisasi
-                                            .kode_imunisasi +
-                                            '">'
-                                        html += '<td>' + namaImunisasi + '</td>';
-
-                                        html += '</tr>'
-                                        $('.tb-askep-imunisasi tbody').append(html)
-                                    }
-                                    nomorImun =
-                                        '<td><i class="bi bi-check-lg text-success"></i></td>'
-                                    $('.' + imunisasi.kode_imunisasi).append(nomorImun)
-                                })
+                }
+            });
 
 
-                                $('.usiatengkurap').html(': ' + data.usiatengkurap);
-                                $('.usiaduduk').html(': ' + data.usiaduduk);
-                                $('.usiaberdiri').html(': ' + data.usiaberdiri);
-                                $('.usiagigipertama').html(': ' + data.usiagigipertama);
-                                $('.usiaberjalan').html(': ' + data.usiaberjalan);
-                                $('.usiamembaca').html(': ' + data.usiamembaca);
-                                $('.usiamenulis').html(': ' + data.usiamenulis);
-                                $('.wajah').html(': ' + data.wajah);
-                                $('.alat_bantu').html(': ' + data.alat_bantu);
-                                $('.prothesa').html(': ' + data.prothesa);
-                                $('.aktifitas').html(': ' + data.aktifitas);
-                                $('.status_psiko').html(': ' + data.status_psiko + ' (' + data
-                                    .ket_psiko +
-                                    ' )');
-                                $('.edukasi').html(': ' + data.edukasi + ' (' + data.ket_edukasi +
-                                    ' )');
-                                $('.hub_keluarga').html(': ' + data.hub_keluarga);
-                                $('.ekonomi').html(': ' + data.ekonomi);
-                                $('.pengasuh').html(': ' + data.pengasuh + ' ( ' + data.ket_pengasuh +
-                                    ' )');
-                                $('.budaya').html(': ' + data.budaya + ' ( ' + data.ket_budaya + ' )');
+            return booking;
+        }
 
-                            })
+        function buatRegistrasi(data) {
+            data._token = "{{ csrf_token() }}";
 
-                            $('#modalAskepAnak').modal('show');
-                        } else {
-                            Swal.fire(
-                                'Kosong!', 'Belum ada data asesmen', 'error'
-                            );
-                        }
-
-                    }
-                });
-            }
-
-            $('#opt-rawat').on('change', function() {
-                no_rawat = $(this).val();
-                $.ajax({
-                    url: 'askep/anak/detail',
-                    data: {
-                        no_rawat: no_rawat,
-                    },
-                    dataType: 'JSON',
-                    success: function(response) {
-                        console.log(response)
-                        $('.tgl_registrasi').html(': ' + formatTanggal(response.reg_periksa
-                            .tgl_registrasi));
-                        $('.tensi').html(': ' + response.td + ' mmHG');
-                        $('.nadi').html(': ' + response.nadi + ' x/menit');
-                        $('.respirasi').html(': ' + response.rr + ' x/menit');
-                        $('.suhu').html(': ' + response.suhu + ' <sup>o</sup>C');
-                        $('.gcs').html(': ' + response.gcs);
-                        $('.bb').html(': ' + response.bb + ' Kg');
-                        $('.tb').html(': ' + response.bb + ' Cm');
-                        $('.lp').html(': ' + response.lp + ' Cm');
-                        $('.ld').html(': ' + response.ld + ' Cm');
-                        $('.lk').html(': ' + response.lk + ' Cm');
-                        $('.keluhan_utama').html(': ' + response.keluhan_utama);
-                        $('.rpd').html(': ' + response.rpd);
-                        $('.rpk').html(': ' + response.rpk);
-                        $('.rpo').html(': ' + response.rpo);
-                        $('.alergi').html(': ' + response.alergi);
-                        $('.anakke').html(': ' + response.anakke + ', dari ' + response.darisaudara +
-                            ' bersaudara');
-                        $('.caralahir').html(': ' + response.caralahir + ' ( ' + response
-                            .ket_caralahir +
-                            ' )');
-                        $('.umurkelahiran').html(': ' + response.umurkelahiran);
-                        $('.kelainanbawaan').html(': ' + response.kelainanbawaan + ' (' + response
-                            .ket_kelainan_bawaan + ' )');
-                        namaImunisasi = '';
-                        $('.tb-askep-imunisasi tbody').empty()
-                        $('.imunisasi').remove()
-                        $.map(response.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
-                            // console.log('imunisasi', imunisasi)
-                            if (namaImunisasi != imunisasi.master_imunisasi.nama_imunisasi) {
-                                namaImunisasi = imunisasi.master_imunisasi.nama_imunisasi
-                                html = '<tr class="imunisasi ' + imunisasi.kode_imunisasi + '">'
-                                html += '<td>' + namaImunisasi + '</td>';
-
-                                html += '</tr>'
-                                $('.tb-askep-imunisasi tbody').append(html)
-                            }
-                            nomorImun = '<td><i class="bi bi-check-lg text-success"></i></td>'
-                            $('.' + imunisasi.kode_imunisasi).append(nomorImun)
-                        })
-                        $('.usiatengkurap').html(': ' + response.usiatengkurap);
-                        $('.usiaduduk').html(': ' + response.usiaduduk);
-                        $('.usiaberdiri').html(': ' + response.usiaberdiri);
-                        $('.usiagigipertama').html(': ' + response.usiagigipertama);
-                        $('.usiaberjalan').html(': ' + response.usiaberjalan);
-                        $('.usiamembaca').html(': ' + response.usiamembaca);
-                        $('.usiamenulis').html(': ' + response.usiamenulis);
-                        $('.wajah').html(': ' + response.wajah);
-                        $('.alat_bantu').html(': ' + response.alat_bantu);
-                        $('.prothesa').html(': ' + response.prothesa);
-                        $('.aktifitas').html(': ' + response.aktifitas);
-                        $('.status_psiko').html(': ' + response.status_psiko + ' (' + response
-                            .ket_psiko +
-                            ' )');
-                        $('.edukasi').html(': ' + response.edukasi + ' (' + response.ket_edukasi +
-                            ' )');
-                        $('.hub_keluarga').html(': ' + response.hub_keluarga);
-                        $('.ekonomi').html(': ' + response.ekonomi);
-                        $('.pengasuh').html(': ' + response.pengasuh + ' ( ' + response.ket_pengasuh +
-                            ' )');
-                        $('.budaya').html(': ' + response.budaya + ' ( ' + response.ket_budaya + ' )');
-                    }
-                });
-
+            registrasi = $.ajax({
+                url: '/erm/registrasi/buat',
+                method: 'POST',
+                data: data,
+                success: function(response) {
+                    $('.registrasi').val('true');
+                    Swal.fire(
+                        'Berhasil',
+                        'Data registrasi telah dibuat dengan nomor registrasi ' + response.response.no_rawat,
+                        'error'
+                    );
+                },
+                error: function(a, b, c) {
+                    Swal.fire(
+                        'Gagal',
+                        'Terjadi kesalahan pembuatan registrasi pasien',
+                        'error'
+                    );
+                }
             })
 
-            function ambilAskepKebidanan(no_rkm_medis) {
-                $.ajax({
-                    url: 'askep/kebidanan',
-                    data: {
-                        no_rkm_medis: no_rkm_medis,
-                    },
-                    dataType: 'JSON',
-                    success: function(response) {
-                        console.log(response)
-                        let data = response.data;
+            return registrasi;
+        }
 
-                        if (data) {
+        function ambilAskepAnak(no_rkm_medis) {
+            $.ajax({
+                url: 'askep/anak',
+                data: {
+                    no_rkm_medis: no_rkm_medis,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    if (Object.keys(response).length > 0) {
+                        $('#opt-rawat').append(
+                            '<option value="" disabled selected>PILIH TANGGAL ASESMEN</option>')
+                        $.map(response, function(data) {
+                            console.log(data)
+                            $('#opt-rawat').append('<option class="opt-asesmen-anak" value=' + data
+                                .no_rawat + '>' + formatTanggal(
+                                    data.tanggal) + ' - ' + data.no_rawat +
+                                '</option>')
                             $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
-                            $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' : ': Perempuan')
-                            $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa.tgl_registrasi));
+                            $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' :
+                                ': Perempuan')
+                            $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa
+                                .tgl_registrasi));
                             $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
-                            $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) +
-                                ' / ' +
-                                data
-                                .reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
+                            $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien
+                                    .tgl_lahir) +
+                                ' / ' + data.reg_periksa.umurdaftar + ' ' + data.reg_periksa
+                                .sttsumur);
                             $('.anamnesis').html(': ' + data.informasi);
                             $('.tensi').html(': ' + data.td + ' mmHG');
                             $('.nadi').html(': ' + data.nadi + ' x/menit');
@@ -1292,114 +1115,293 @@
                             $('.gcs').html(': ' + data.gcs);
                             $('.bb').html(': ' + data.bb + ' Kg');
                             $('.tb').html(': ' + data.bb + ' Cm');
-                            $('.lila').html(': ' + data.lila + ' Cm');
-                            $('.bmi').html(': ' + data.bmi + ' Kg/m<sup>2</sup>');
-                            $('.tfu').html(': ' + data.tfu + ' Cm');
-                            $('.tbj').html(': ' + data.tbj + ' Cm');
-                            $('.letak').html(': ' + data.letak);
-                            $('.presentasi').html(': ' + data.presentasi);
-                            $('.penurunan').html(': ' + data.penurunan);
-                            $('.kontraksi').html(': ' + data.his + ' x/10');
-                            $('.kekuatan').html(': ' + data.kekuatan);
-                            $('.lama').html(': ' + data.lama + ' detik');
-                            $('.djj').html(': ' + data.bjj + ' /mnt ' + data.ket_bjj);
-                            $('.portio').html(': ' + data.portio);
-                            $('.serviks').html(': ' + data.serviks + ' Cm');
-                            $('.ketuban').html(': ' + data.ketuban + ' kep/bok');
-                            $('.hodge').html(': ' + data.hodge);
-                            $('.inspekulo').html(': ' + data.inspekulo + ' ,<br/>Hasil : ' + data
-                                .ket_inspekulo);
-                            $('.ctg').html(': ' + data.ctg + ' ,<br/>Hasil : ' + data.ket_ctg);
-                            $('.lakmus').html(': ' + data.lakmus + ' ,<br/>Hasil : ' + data.ket_lakmus);
-                            $('.lab').html(': ' + data.lab + ' ,<br/>Hasil : ' + data.ket_lab);
-                            $('.usg').html(': ' + data.usg + ' ,<br/>Hasil : ' + data.ket_usg);
-                            $('.panggul').html(': ' + data.panggul);
-                            $('.keluhan').text(': ' + data.keluhan_utama);
-                            $('.umur').text(': ' + data.umur + ' Th');
-                            $('.lama').text(': ' + data.lama + ' Hari');
-                            $('.banyak').text(': ' + data.banyaknya + ' Pembalut');
-                            $('.haid').text(': ' + data.haid);
-                            $('.siklus').text(': ' + data.siklus + ' hari');
-                            $('.ket_siklus1').text(data.ket_siklus1);
-                            $('.ket_siklus2').text(': ' + data.ket_siklus2);
-                            $('.status').text(': ' + data.status);
-                            $('.kali').text(data.kali);
-                            $('.usia1').text(data.usia1);
-                            $('.ket1').text(data.ket1);
-                            $('.usia2').text(data.usia2);
-                            $('.ket2').text(data.ket2);
-                            $('.usia3').text(data.usia3);
-                            $('.ket3').text(data.ket3);
-                            $('.hpht').text(': ' + formatTanggal(data.hpht));
-                            $('.usia_kehamilan').text(': ' + data.usia_kehamilan + ' bln/mgg');
-                            $('.tp').text(': ' + formatTanggal(data.tp));
-                            $('.imunisasi').text(': ' + data.imunisasi);
-                            $('.ket_imunisasi').text(data.ket_imunisasi ? data.ket_imunisasi : '-');
-                            $('.gpa').text('G : ' + data.g + ', P :' + data.p + ', A : ' + data.a);
-                            $('.hidup').text(data.hidup);
-                            $('.ginekologi').text(data.ginekologi);
-                            $('.kebiasaan').text(data.kebiasaan + ', ' + data.ket_kebiasaan);
-                            $('.kebiasaan1').text(data.kebiasaan1 + ', ' + data.ket_kebiasaan1 +
-                                ' Batang /hari');
-                            $('.kebiasaan2').text(data.kebiasaan2 + ', ' + data.ket_kebiasaan2 +
-                                ' Botol /hari');
-                            $('.kebiasaan3').text(data.kebiasaan3);
-                            $('.kb').text(data.kb + ' , ', +data.ket_kb);
-                            $('.kb').text(data.kb);
-                            $('.ket_kb').text(data.ket_kb);
-                            $('.komplikasi').text(data.komplikasi + ', ' + data.ket_komplikasi);
-                            $('.berhenti').text(data.berhenti);
-                            $('.alasan').text(data.alasan);
+                            $('.lp').html(': ' + data.lp + ' Cm');
+                            $('.ld').html(': ' + data.ld + ' Cm');
+                            $('.lk').html(': ' + data.lk + ' Cm');
+                            $('.keluhan_utama').html(': ' + data.keluhan_utama);
+                            $('.rpd').html(': ' + data.rpd);
+                            $('.rpk').html(': ' + data.rpk);
+                            $('.rpo').html(': ' + data.rpo);
+                            $('.alergi').html(': ' + data.alergi);
+                            $('.anakke').html(': ' + data.anakke + ', dari ' + data.darisaudara +
+                                ' bersaudara');
+                            $('.caralahir').html(': ' + data.caralahir + ' ( ' + data
+                                .ket_caralahir +
+                                ' )');
+                            $('.umurkelahiran').html(': ' + data.umurkelahiran);
+                            $('.kelainanbawaan').html(': ' + data.kelainanbawaan + ' (' + data
+                                .ket_kelainan_bawaan + ' )');
 
-                            no = 1;
-                            data.reg_periksa.pasien.riwayat_persalinan.forEach(function(riwayat) {
-                                // console.log(riwayat)
-                                html = '<tr>';
-                                html += '<td>' + no + '</td>'
-                                html += '<td>' + formatTanggal(riwayat.tgl_thn) + '</td>'
-                                html += '<td>' + riwayat.tempat_persalinan + '</br>' + riwayat
-                                    .penolong +
-                                    '</td>'
-                                html += '<td>' + riwayat.usia_hamil + '</td>'
-                                html += '<td> Persalinan : ' + riwayat.jenis_persalinan +
-                                    '<br/> Penyulit : ' +
-                                    riwayat
-                                    .penyulit +
-                                    '</td>'
-                                html += '<td> JK : ' + riwayat.jk + '<br/> BB/PB : ' + riwayat.bbpb +
-                                    '<br/> Keadaaan : ' + riwayat.keadaan + '</td>'
-                                html += '</tr>';
-                                no++;
-                                $('.r_persalinan').append(html)
+                            namaImunisasi = '';
+                            $('.tb-askep-imunisasi tbody').empty()
+                            $('.imunisasi').remove()
+                            $.map(data.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
+                                if (namaImunisasi != imunisasi.master_imunisasi
+                                    .nama_imunisasi) {
+                                    namaImunisasi = imunisasi.master_imunisasi
+                                        .nama_imunisasi
+                                    html = '<tr class="imunisasi ' + imunisasi
+                                        .kode_imunisasi +
+                                        '">'
+                                    html += '<td>' + namaImunisasi + '</td>';
+
+                                    html += '</tr>'
+                                    $('.tb-askep-imunisasi tbody').append(html)
+                                }
+                                nomorImun =
+                                    '<td><i class="bi bi-check-lg text-success"></i></td>'
+                                $('.' + imunisasi.kode_imunisasi).append(nomorImun)
                             })
-                            $('#modalAskep').modal('show');
-                        } else {
-                            Swal.fire(
-                                'Kosong!', 'Belum ada data asesmen', 'error'
-                            );
+
+
+                            $('.usiatengkurap').html(': ' + data.usiatengkurap);
+                            $('.usiaduduk').html(': ' + data.usiaduduk);
+                            $('.usiaberdiri').html(': ' + data.usiaberdiri);
+                            $('.usiagigipertama').html(': ' + data.usiagigipertama);
+                            $('.usiaberjalan').html(': ' + data.usiaberjalan);
+                            $('.usiamembaca').html(': ' + data.usiamembaca);
+                            $('.usiamenulis').html(': ' + data.usiamenulis);
+                            $('.wajah').html(': ' + data.wajah);
+                            $('.alat_bantu').html(': ' + data.alat_bantu);
+                            $('.prothesa').html(': ' + data.prothesa);
+                            $('.aktifitas').html(': ' + data.aktifitas);
+                            $('.status_psiko').html(': ' + data.status_psiko + ' (' + data
+                                .ket_psiko +
+                                ' )');
+                            $('.edukasi').html(': ' + data.edukasi + ' (' + data.ket_edukasi +
+                                ' )');
+                            $('.hub_keluarga').html(': ' + data.hub_keluarga);
+                            $('.ekonomi').html(': ' + data.ekonomi);
+                            $('.pengasuh').html(': ' + data.pengasuh + ' ( ' + data.ket_pengasuh +
+                                ' )');
+                            $('.budaya').html(': ' + data.budaya + ' ( ' + data.ket_budaya + ' )');
+
+                        })
+
+                        $('#modalAskepAnak').modal('show');
+                    } else {
+                        Swal.fire(
+                            'Kosong!', 'Belum ada data asesmen', 'error'
+                        );
+                    }
+
+                }
+            });
+        }
+
+        $('#opt-rawat').on('change', function() {
+            no_rawat = $(this).val();
+            $.ajax({
+                url: 'askep/anak/detail',
+                data: {
+                    no_rawat: no_rawat,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    console.log(response)
+                    $('.tgl_registrasi').html(': ' + formatTanggal(response.reg_periksa
+                        .tgl_registrasi));
+                    $('.tensi').html(': ' + response.td + ' mmHG');
+                    $('.nadi').html(': ' + response.nadi + ' x/menit');
+                    $('.respirasi').html(': ' + response.rr + ' x/menit');
+                    $('.suhu').html(': ' + response.suhu + ' <sup>o</sup>C');
+                    $('.gcs').html(': ' + response.gcs);
+                    $('.bb').html(': ' + response.bb + ' Kg');
+                    $('.tb').html(': ' + response.bb + ' Cm');
+                    $('.lp').html(': ' + response.lp + ' Cm');
+                    $('.ld').html(': ' + response.ld + ' Cm');
+                    $('.lk').html(': ' + response.lk + ' Cm');
+                    $('.keluhan_utama').html(': ' + response.keluhan_utama);
+                    $('.rpd').html(': ' + response.rpd);
+                    $('.rpk').html(': ' + response.rpk);
+                    $('.rpo').html(': ' + response.rpo);
+                    $('.alergi').html(': ' + response.alergi);
+                    $('.anakke').html(': ' + response.anakke + ', dari ' + response.darisaudara +
+                        ' bersaudara');
+                    $('.caralahir').html(': ' + response.caralahir + ' ( ' + response
+                        .ket_caralahir +
+                        ' )');
+                    $('.umurkelahiran').html(': ' + response.umurkelahiran);
+                    $('.kelainanbawaan').html(': ' + response.kelainanbawaan + ' (' + response
+                        .ket_kelainan_bawaan + ' )');
+                    namaImunisasi = '';
+                    $('.tb-askep-imunisasi tbody').empty()
+                    $('.imunisasi').remove()
+                    $.map(response.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
+                        // console.log('imunisasi', imunisasi)
+                        if (namaImunisasi != imunisasi.master_imunisasi.nama_imunisasi) {
+                            namaImunisasi = imunisasi.master_imunisasi.nama_imunisasi
+                            html = '<tr class="imunisasi ' + imunisasi.kode_imunisasi + '">'
+                            html += '<td>' + namaImunisasi + '</td>';
+
+                            html += '</tr>'
+                            $('.tb-askep-imunisasi tbody').append(html)
                         }
+                        nomorImun = '<td><i class="bi bi-check-lg text-success"></i></td>'
+                        $('.' + imunisasi.kode_imunisasi).append(nomorImun)
+                    })
+                    $('.usiatengkurap').html(': ' + response.usiatengkurap);
+                    $('.usiaduduk').html(': ' + response.usiaduduk);
+                    $('.usiaberdiri').html(': ' + response.usiaberdiri);
+                    $('.usiagigipertama').html(': ' + response.usiagigipertama);
+                    $('.usiaberjalan').html(': ' + response.usiaberjalan);
+                    $('.usiamembaca').html(': ' + response.usiamembaca);
+                    $('.usiamenulis').html(': ' + response.usiamenulis);
+                    $('.wajah').html(': ' + response.wajah);
+                    $('.alat_bantu').html(': ' + response.alat_bantu);
+                    $('.prothesa').html(': ' + response.prothesa);
+                    $('.aktifitas').html(': ' + response.aktifitas);
+                    $('.status_psiko').html(': ' + response.status_psiko + ' (' + response
+                        .ket_psiko +
+                        ' )');
+                    $('.edukasi').html(': ' + response.edukasi + ' (' + response.ket_edukasi +
+                        ' )');
+                    $('.hub_keluarga').html(': ' + response.hub_keluarga);
+                    $('.ekonomi').html(': ' + response.ekonomi);
+                    $('.pengasuh').html(': ' + response.pengasuh + ' ( ' + response.ket_pengasuh +
+                        ' )');
+                    $('.budaya').html(': ' + response.budaya + ' ( ' + response.ket_budaya + ' )');
+                }
+            });
 
+        })
 
+        function ambilAskepKebidanan(no_rkm_medis) {
+            $.ajax({
+                url: 'askep/kebidanan',
+                data: {
+                    no_rkm_medis: no_rkm_medis,
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    console.log(response)
+                    let data = response.data;
+
+                    if (data) {
+                        $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
+                        $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' : ': Perempuan')
+                        $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa.tgl_registrasi));
+                        $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
+                        $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) +
+                            ' / ' +
+                            data
+                            .reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
+                        $('.anamnesis').html(': ' + data.informasi);
+                        $('.tensi').html(': ' + data.td + ' mmHG');
+                        $('.nadi').html(': ' + data.nadi + ' x/menit');
+                        $('.respirasi').html(': ' + data.rr + ' x/menit');
+                        $('.suhu').html(': ' + data.suhu + ' <sup>o</sup>C');
+                        $('.gcs').html(': ' + data.gcs);
+                        $('.bb').html(': ' + data.bb + ' Kg');
+                        $('.tb').html(': ' + data.bb + ' Cm');
+                        $('.lila').html(': ' + data.lila + ' Cm');
+                        $('.bmi').html(': ' + data.bmi + ' Kg/m<sup>2</sup>');
+                        $('.tfu').html(': ' + data.tfu + ' Cm');
+                        $('.tbj').html(': ' + data.tbj + ' Cm');
+                        $('.letak').html(': ' + data.letak);
+                        $('.presentasi').html(': ' + data.presentasi);
+                        $('.penurunan').html(': ' + data.penurunan);
+                        $('.kontraksi').html(': ' + data.his + ' x/10');
+                        $('.kekuatan').html(': ' + data.kekuatan);
+                        $('.lama').html(': ' + data.lama + ' detik');
+                        $('.djj').html(': ' + data.bjj + ' /mnt ' + data.ket_bjj);
+                        $('.portio').html(': ' + data.portio);
+                        $('.serviks').html(': ' + data.serviks + ' Cm');
+                        $('.ketuban').html(': ' + data.ketuban + ' kep/bok');
+                        $('.hodge').html(': ' + data.hodge);
+                        $('.inspekulo').html(': ' + data.inspekulo + ' ,<br/>Hasil : ' + data
+                            .ket_inspekulo);
+                        $('.ctg').html(': ' + data.ctg + ' ,<br/>Hasil : ' + data.ket_ctg);
+                        $('.lakmus').html(': ' + data.lakmus + ' ,<br/>Hasil : ' + data.ket_lakmus);
+                        $('.lab').html(': ' + data.lab + ' ,<br/>Hasil : ' + data.ket_lab);
+                        $('.usg').html(': ' + data.usg + ' ,<br/>Hasil : ' + data.ket_usg);
+                        $('.panggul').html(': ' + data.panggul);
+                        $('.keluhan').text(': ' + data.keluhan_utama);
+                        $('.umur').text(': ' + data.umur + ' Th');
+                        $('.lama').text(': ' + data.lama + ' Hari');
+                        $('.banyak').text(': ' + data.banyaknya + ' Pembalut');
+                        $('.haid').text(': ' + data.haid);
+                        $('.siklus').text(': ' + data.siklus + ' hari');
+                        $('.ket_siklus1').text(data.ket_siklus1);
+                        $('.ket_siklus2').text(': ' + data.ket_siklus2);
+                        $('.status').text(': ' + data.status);
+                        $('.kali').text(data.kali);
+                        $('.usia1').text(data.usia1);
+                        $('.ket1').text(data.ket1);
+                        $('.usia2').text(data.usia2);
+                        $('.ket2').text(data.ket2);
+                        $('.usia3').text(data.usia3);
+                        $('.ket3').text(data.ket3);
+                        $('.hpht').text(': ' + formatTanggal(data.hpht));
+                        $('.usia_kehamilan').text(': ' + data.usia_kehamilan + ' bln/mgg');
+                        $('.tp').text(': ' + formatTanggal(data.tp));
+                        $('.imunisasi').text(': ' + data.imunisasi);
+                        $('.ket_imunisasi').text(data.ket_imunisasi ? data.ket_imunisasi : '-');
+                        $('.gpa').text('G : ' + data.g + ', P :' + data.p + ', A : ' + data.a);
+                        $('.hidup').text(data.hidup);
+                        $('.ginekologi').text(data.ginekologi);
+                        $('.kebiasaan').text(data.kebiasaan + ', ' + data.ket_kebiasaan);
+                        $('.kebiasaan1').text(data.kebiasaan1 + ', ' + data.ket_kebiasaan1 +
+                            ' Batang /hari');
+                        $('.kebiasaan2').text(data.kebiasaan2 + ', ' + data.ket_kebiasaan2 +
+                            ' Botol /hari');
+                        $('.kebiasaan3').text(data.kebiasaan3);
+                        $('.kb').text(data.kb + ' , ', +data.ket_kb);
+                        $('.kb').text(data.kb);
+                        $('.ket_kb').text(data.ket_kb);
+                        $('.komplikasi').text(data.komplikasi + ', ' + data.ket_komplikasi);
+                        $('.berhenti').text(data.berhenti);
+                        $('.alasan').text(data.alasan);
+
+                        no = 1;
+                        data.reg_periksa.pasien.riwayat_persalinan.forEach(function(riwayat) {
+                            // console.log(riwayat)
+                            html = '<tr>';
+                            html += '<td>' + no + '</td>'
+                            html += '<td>' + formatTanggal(riwayat.tgl_thn) + '</td>'
+                            html += '<td>' + riwayat.tempat_persalinan + '</br>' + riwayat
+                                .penolong +
+                                '</td>'
+                            html += '<td>' + riwayat.usia_hamil + '</td>'
+                            html += '<td> Persalinan : ' + riwayat.jenis_persalinan +
+                                '<br/> Penyulit : ' +
+                                riwayat
+                                .penyulit +
+                                '</td>'
+                            html += '<td> JK : ' + riwayat.jk + '<br/> BB/PB : ' + riwayat.bbpb +
+                                '<br/> Keadaaan : ' + riwayat.keadaan + '</td>'
+                            html += '</tr>';
+                            no++;
+                            $('.r_persalinan').append(html)
+                        })
+                        $('#modalAskep').modal('show');
+                    } else {
+                        Swal.fire(
+                            'Kosong!', 'Belum ada data asesmen', 'error'
+                        );
                     }
-                });
-            }
 
-            function resep(no_rawat) {
-                $.ajax({
-                    url: '/erm/registrasi/ambil',
-                    data: {
-                        no_rawat: no_rawat,
-                    },
-                    method: 'GET',
-                    dataType: 'JSON',
-                    success: function(response) {
-                        $('.no_rawat').val(response.no_rawat);
-                        $('.nm_pasien').val(response.no_rkm_medis + ' / ' + response.pasien.nm_pasien + ' / ' +
-                            response.umurdaftar + ' ' + response.sttsumur)
-                        console.log(response)
-                    }
-                })
-                $('#modalResep').modal('show');
-            }
+
+                }
+            });
+        }
+
+        function resep(no_rawat) {
+            $.ajax({
+                url: '/erm/registrasi/ambil',
+                data: {
+                    no_rawat: no_rawat,
+                },
+                method: 'GET',
+                dataType: 'JSON',
+                success: function(response) {
+                    $('.no_rawat').val(response.no_rawat);
+                    $('.nm_pasien').val(response.no_rkm_medis + ' / ' + response.pasien.nm_pasien + ' / ' +
+                        response.umurdaftar + ' ' + response.sttsumur)
+                    console.log(response)
+                }
+            })
+            $('#modalResep').modal('show');
+        }
     </script>
 @endpush
