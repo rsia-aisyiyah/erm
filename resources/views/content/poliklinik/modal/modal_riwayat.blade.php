@@ -100,7 +100,7 @@
 
         function popup(foto) {
             $('#modal-image').modal('show');
-            let src = "{{ asset('erm') }}/" + foto;
+            let src = "https://sim.rsiaaisyiyah.com/erm/public/erm/" + foto;
             $('.popup').attr('src', src)
         }
 
