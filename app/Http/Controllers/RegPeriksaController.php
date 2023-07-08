@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Pasien;
 use App\Models\RegPeriksa;
 use App\Models\EstimasiPoli;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -13,9 +14,11 @@ use Yajra\DataTables\DataTables;
 class RegPeriksaController extends Controller
 {
     public $tanggal;
+    public $track;
     public function __construct()
     {
         $this->tanggal = new Carbon();
+        $this->track = new TrackerSqlController();
     }
     public function index()
     {
@@ -26,47 +29,55 @@ class RegPeriksaController extends Controller
     {
         $data = [
             'no_reg' => $request->no_reg,
-            'no_rawat' => $this->setNoRawat(),
-            'tgl_registrasi' => date('Y-m-d'),
+            'no_rawat' => $this->setNoRawat($request->tgl_registrasi),
+            'tgl_registrasi' => $request->tgl_registrasi,
             'jam_reg' => date('H:i:s'),
             'kd_dokter' => $request->kd_dokter,
             'no_rkm_medis' => $request->no_rkm_medis,
             'kd_poli' => $request->kd_poli,
             'p_jawab' => $request->p_jawab,
-            'almt_pj' => $request->alamat,
+            'almt_pj' => $request->almt_pj,
             'hubungabpj' => $request->hubungan,
             'biaya_reg' => 0,
             'stts' => 'Belum',
             'status_lanjut' => $request->status_lanjut,
             'kd_pj' => $request->kd_pj,
-            'umurdaftar' => $request->umur,
+            'umurdaftar' => $request->umurdaftar,
             'sttsumur' => $request->sttsumur,
             'status_bayar' => 'Belum Bayar',
             'status_poli' => $request->status_poli,
         ];
-        $regPeriksa = RegPeriksa::create($data);
+        try {
+            dd($regPeriksa = RegPeriksa::create(clock($data)));
 
-        return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $regPeriksa]);
+            $track = $this->track->create($regPeriksa, session()->get('pegawai')->nik);
+            return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $regPeriksa, 'qury' => $track]);
+        } catch (QueryException $e) {
+            return response()->json(['metaData' => ['Status' => 'FAILED', 'Code' => 400], 'response' => $e->errorInfo]);
+        }
     }
-    function setNoRawat()
+    function setNoRawat($tanggal)
     {
-        $regPeriksa = Regperiksa::select('no_rawat')->where('tgl_registrasi', date('Y-m-d'))->orderBy('no_rawat', 'DESC')->first();
 
+        $regPeriksa = RegPeriksa::where('tgl_registrasi', $tanggal)->orderBy('no_rawat', 'DESC')->first();
 
+        $tanggal = str_replace('-', '/', $tanggal);
         if ($regPeriksa) {
             $no = explode('/', $regPeriksa->no_rawat);
             $no = $no[3] + 1;
+            $noRawat = $tanggal . '/' . sprintf('%06d', $no);
         } else {
             $no = 1;
+            $noRawat = $tanggal . '/' . sprintf('%06d', $no);
         }
-        $noRawat = date('Y/m/d') . '/' . sprintf('%06d', $no);
         return $noRawat;
     }
-    function setNoReg($kd_poli, $kd_dokter)
+    function setNoReg($tanggal, $kd_poli, $kd_dokter)
     {
         $regPeriksa = Regperiksa::select('no_reg')->where('tgl_registrasi', date('Y-m-d'))
             ->where('kd_poli', $kd_poli)
             ->where('kd_dokter', $kd_dokter)->orderBy('no_reg', 'DESC')->first();
+
         if ($regPeriksa) {
             $noReg = $regPeriksa->no_reg + 1;
         } else {

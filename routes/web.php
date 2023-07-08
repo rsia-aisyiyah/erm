@@ -231,5 +231,6 @@ Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 
 Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/nosurat/{poli}', [SuratKontrolUlangController::class, 'setNoSurat']);
-Route::get('/noreg/{poli}/{dokter}', [BookingRegistrasiController::class, 'setNoReg']);
+Route::get('/noreg/{tanggal}/{poli}/{dokter}', [BookingRegistrasiController::class, 'setNoReg']);
+Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 // Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);

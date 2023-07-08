@@ -17,10 +17,10 @@ class BookingRegistrasiController extends Controller
         $this->regPeriksa = new RegPeriksaController();
     }
 
-    public function setNoReg($poli, $dokter)
+    public function setNoReg($tanggal, $poli, $dokter)
     {
-        $setNoReg = $this->regPeriksa->setNoReg($poli, $dokter);
-        $setNoRawat = $this->regPeriksa->setNoRawat();
+        return $this->regPeriksa->setNoReg($tanggal, $poli, $dokter);
+        // $setNoRawat = $this->regPeriksa->setNoRawat();
     }
 
     public function create(Request $request)
@@ -31,7 +31,7 @@ class BookingRegistrasiController extends Controller
             'no_rkm_medis' => $request->no_rkm_medis,
             'kd_dokter' => $request->kd_dokter,
             'kd_poli' => $request->kd_poli,
-            'no_reg' => $this->regPeriksa->setNoReg($request->kd_poli, $request->kd_dokter),
+            'no_reg' => $this->setNoReg($request->tanggal, $request->kd_poli, $request->kd_dokter),
             'kd_pj' => 'A03',
             'tanggal_periksa' => $request->tanggal,
             'limit_reg' => '0',
