@@ -11,10 +11,12 @@ class BookingRegistrasiController extends Controller
 {
     protected $booking;
     protected $regPeriksa;
+    protected $track;
     public function __construct()
     {
         $this->booking = new BookingRegistrasi();
         $this->regPeriksa = new RegPeriksaController();
+        $this->track = new TrackerSqlController();
     }
 
     public function setNoReg($tanggal, $poli, $dokter)
@@ -37,10 +39,16 @@ class BookingRegistrasiController extends Controller
             'waktu_kunjungan' => date('Y-m-d H:i:s'),
             'status' => 'Terdaftar',
         ];
+        try {
+            $booking = $this->booking->create($data);
+            $track = $this->track->create($this->booking, $data, session()->get('pegawai')->nik);
+            return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $this->getBooking($request->no_rkm_medis), 'qury' => $track]);
+        } catch (QueryException $e) {
+            return response()->json(['metaData' => ['Status' => 'FAILED', 'Code' => 400], 'response' => $e->errorInfo]);
+        }
 
-        $booking = $this->booking->create($data);
 
-        return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $this->getBooking($request->no_rkm_medis)]);
+        // return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $this->getBooking($request->no_rkm_medis)]);
     }
 
     function getBooking($no_rkm_medis)
