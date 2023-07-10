@@ -12,15 +12,18 @@ class TrackerSqlController extends Controller
     {
         $this->tracker = new TrackerSql();
     }
-    public function convertSql($query)
+    public function convertSql($table, $values)
     {
-        return $query = vsprintf(str_replace(array('?'), array('\'%s\''), $query->toSql()), $query->getBindings());
+        $table = $table->getTable();
+        $values = implode('|', $values);
+
+        return "insert into $table values(|$values))";
     }
-    public function create($query, $user)
+    public function create($table, $values, $user)
     {
         $data = [
             'tanggal' => date('Y-m-d H:i:s'),
-            'sqle' => $this->convertSql($query),
+            'sqle' => $this->convertSql($table, $values),
             'usere' => $user,
         ];
         try {

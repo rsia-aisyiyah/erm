@@ -20,7 +20,6 @@ class BookingRegistrasiController extends Controller
     public function setNoReg($tanggal, $poli, $dokter)
     {
         return $this->regPeriksa->setNoReg($tanggal, $poli, $dokter);
-        // $setNoRawat = $this->regPeriksa->setNoRawat();
     }
 
     public function create(Request $request)

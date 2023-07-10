@@ -996,7 +996,6 @@
                     }
 
                     buatBooking(dataBooking).done(function(val) {
-                        console.log('BERHASIL BOOKING', val.response)
                         data = {
                             'no_reg': val.response.no_reg,
                             'tgl_registrasi': val.response.tanggal_periksa,
@@ -1011,12 +1010,9 @@
                             'umurdaftar': umurdaftar,
                             'sttsumur': sttsumur,
                             'status_poli': 'Lama',
+                            'stts_daftar': 'Lama',
                         }
-
-                        buatRegistrasi(data).done(function(response) {
-                            console.log('BERHASIL REG', response)
-
-                        })
+                        buatRegistrasi(data);
                     })
 
                     $('#modalKontrolUmum').modal('hide')
@@ -1045,11 +1041,8 @@
                         'Terjadi kesalahan pembuatan booking',
                         'error'
                     );
-
                 }
             });
-
-
             return booking;
         }
 
@@ -1065,7 +1058,7 @@
                     Swal.fire(
                         'Berhasil',
                         'Data registrasi telah dibuat dengan nomor registrasi ' + response.response.no_rawat,
-                        'error'
+                        'success'
                     );
                 },
                 error: function(a, b, c) {

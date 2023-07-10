@@ -15,10 +15,12 @@ class RegPeriksaController extends Controller
 {
     public $tanggal;
     public $track;
+    public $regPeriksa;
     public function __construct()
     {
         $this->tanggal = new Carbon();
         $this->track = new TrackerSqlController();
+        $this->regPeriksa = new RegPeriksa();
     }
     public function index()
     {
@@ -37,7 +39,7 @@ class RegPeriksaController extends Controller
             'kd_poli' => $request->kd_poli,
             'p_jawab' => $request->p_jawab,
             'almt_pj' => $request->almt_pj,
-            'hubungabpj' => $request->hubungan,
+            'hubunganpj' => $request->hubungan,
             'biaya_reg' => 0,
             'stts' => 'Belum',
             'status_lanjut' => $request->status_lanjut,
@@ -46,12 +48,13 @@ class RegPeriksaController extends Controller
             'sttsumur' => $request->sttsumur,
             'status_bayar' => 'Belum Bayar',
             'status_poli' => $request->status_poli,
+            'stts_daftar' => $request->stts_daftar,
         ];
         try {
-            dd($regPeriksa = RegPeriksa::create(clock($data)));
 
-            $track = $this->track->create($regPeriksa, session()->get('pegawai')->nik);
-            return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $regPeriksa, 'qury' => $track]);
+            $result = $this->regPeriksa->create($data);
+            $track = $this->track->create($this->regPeriksa, $data, session()->get('pegawai')->nik);
+            return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $result, 'qury' => $track]);
         } catch (QueryException $e) {
             return response()->json(['metaData' => ['Status' => 'FAILED', 'Code' => 400], 'response' => $e->errorInfo]);
         }
@@ -74,7 +77,7 @@ class RegPeriksaController extends Controller
     }
     function setNoReg($tanggal, $kd_poli, $kd_dokter)
     {
-        $regPeriksa = Regperiksa::select('no_reg')->where('tgl_registrasi', date('Y-m-d'))
+        $regPeriksa = Regperiksa::select('no_reg')->where('tgl_registrasi', $tanggal)
             ->where('kd_poli', $kd_poli)
             ->where('kd_dokter', $kd_dokter)->orderBy('no_reg', 'DESC')->first();
 
