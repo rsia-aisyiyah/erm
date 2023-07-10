@@ -42,9 +42,30 @@ class RencanaKontrolController extends Controller
     public function getListRencana($bulan, $tahun, $noka, $filter)
     {
         $endpoint = "RencanaKontrol/ListRencanaKontrol/Bulan/{$bulan}/Tahun/{$tahun}/Nokartu/{$noka}/filter/{$filter}";
+
+        $countHit = 1;
+        $output = false;
+        while ($output == false) {
+            $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
+            $response = $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+            $res = json_decode($response);
+            if ($res->response == null && $res->metaData->message == '200') {
+                $output = false;
+                $countHit++;
+            } else {
+                $output = true;
+            }
+        }
+        return [$res, $countHit];
+        // return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+    }
+    public function getDataSuratKontrol($tglAwal, $tglAkhir, $filter)
+    {
+        $endpoint = "RencanaKontrol/ListRencanaKontrol/tglAwal/{$tglAwal}/tglAkhir/{$tglAkhir}/filter/{$filter}";
         $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }
+
 
     public function insertRencanaKontrol(Request $request)
     {

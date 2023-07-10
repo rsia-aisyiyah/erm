@@ -8,18 +8,22 @@ use Illuminate\Support\Facades\Http;
 use App\Services\Bpjs\Vclaim\BridgeVclaim;
 use App\Services\Bpjs\Vclaim\ConfigVclaim;
 use App\Services\Bpjs\Vclaim\ResponseVclaim;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class ReferensiController extends Controller
 {
     protected $config;
     protected $output;
     protected $bridge;
+    protected $client;
 
     public function __construct()
     {
         $this->config = new ConfigVclaim();
         $this->output = new ResponseVclaim();
         $this->bridge = new BridgeVclaim();
+        $this->client = new Client();
     }
     public function testConfig()
     {
@@ -29,9 +33,27 @@ class ReferensiController extends Controller
     public function getDiagnosa($diagnosa)
     {
 
+
         $endpoint = "referensi/diagnosa/{$diagnosa}";
-        $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
-        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+        $output = false;
+        try {
+            $countHit = 1;
+            while ($output == false) {
+                $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
+                $response = $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+                $reponse = json_decode($response);
+
+                if ($reponse->response == null && $reponse->meteData->message == '200') {
+                    $output = false;
+                    $countHit++;
+                } else {
+                    $output = true;
+                }
+            }
+            return $response;
+        } catch (RequestException $e) {
+            return abort(404, 'NOT FOUND');
+        }
     }
     public function getPropinsi()
     {

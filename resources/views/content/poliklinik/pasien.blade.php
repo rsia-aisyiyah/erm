@@ -524,16 +524,13 @@
         }
 
         function cariRencanaKontrol(bulan, tahun, noka, filter) {
-            return rencana = $.ajax({
+            rencana = $.ajax({
                 url: '/erm/bridging/rencanaKontrol/list/' + bulan + '/' + tahun + '/' + noka + '/' + filter,
                 dataType: 'JSON',
                 method: 'GET',
-                success: function(response) {
-                    console.log(response)
-                }
-            }).done(function(response) {
-                console.log('Done', response)
-            })
+            });
+
+            return rencana;
         }
 
 
@@ -575,36 +572,36 @@
             })
         }
 
-        function cariSpesialisBpjs(jnsKontrol, nomor) {
-            tanggal = splitTanggal($('#tgl_kontrol').val());
-            $.ajax({
-                url: '/erm/bridging/rencanaKontrol/' + jnsKontrol + '/' + nomor + '/' + tanggal,
-                dataType: 'JSON',
-                success: function(response) {
-                    console.log(response)
-                    no = 1
-                    html = '';
-                    $.map(response.response.list, function(data) {
-                        console.log(data)
-                        html += '<tr>'
-                        html += '<td>' + no + '</td>'
-                        html += '<td><a href="javascript:void(0)" onclick="setPoliBpjs(\'' + data.kodePoli + '\', \'' + data.namaPoli + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.kodePoli + '</span></a></td>'
-                        html += '<td>' + data.namaPoli + '</td>'
-                        html += '<td>' + data.kapasitas + '</td>'
-                        html += '<td>' + data.jmlRencanaKontroldanRujukan + '</td>'
-                        html += '<td>' + data.persentase + '</td>'
-                        html += '</tr>'
-                        no++;
-                    })
+        // function cariSpesialisBpjs(jnsKontrol, nomor) {
+        //     tanggal = splitTanggal($('#tgl_kontrol').val());
+        //     $.ajax({
+        //         url: '/erm/bridging/rencanaKontrol/' + jnsKontrol + '/' + nomor + '/' + tanggal,
+        //         dataType: 'JSON',
+        //         success: function(response) {
+        //             console.log(response)
+        //             no = 1
+        //             html = '';
+        //             $.map(response.response.list, function(data) {
+        //                 console.log(data)
+        //                 html += '<tr>'
+        //                 html += '<td>' + no + '</td>'
+        //                 html += '<td><a href="javascript:void(0)" onclick="setPoliBpjs(\'' + data.kodePoli + '\', \'' + data.namaPoli + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.kodePoli + '</span></a></td>'
+        //                 html += '<td>' + data.namaPoli + '</td>'
+        //                 html += '<td>' + data.kapasitas + '</td>'
+        //                 html += '<td>' + data.jmlRencanaKontroldanRujukan + '</td>'
+        //                 html += '<td>' + data.persentase + '</td>'
+        //                 html += '</tr>'
+        //                 no++;
+        //             })
 
-                    $('.table-poli tbody').append(html)
-                    $('#modalPoli').modal('show');
-                    $('#modalSkrj').modal('hide');
+        //             $('.table-poli tbody').append(html)
+        //             $('#modalPoli').modal('show');
+        //             $('#modalSkrj').modal('hide');
 
-                }
-            })
+        //         }
+        //     })
 
-        }
+        // }
 
         function setPoliBpjs(kode, nama) {
             $('#modalSkrj').modal('show')
@@ -791,8 +788,6 @@
                                     }
                                 })
                             }
-
-                            // console.log(row.sep)
 
                             badgeKontrol = '';
                             if (row.sep && row.kd_pj != "A03") {

@@ -59,6 +59,7 @@
                         <button class="btn btn-sm btn-primary btn-buat-skrj" onclick="simpanSkrj()">Buat SKRJ</button>
                     </div>
                     <input type="hidden" name="noka" class="noka">
+                    <input type="hidden" name="nokontrol" class="nokontrol">
                 </div>
             </div>
         </div>
@@ -146,7 +147,7 @@
                         let nmPoli = $('.nama_poli').val();
                         let nmDokter = $('.nama_dokter').val();
 
-                        if (val.response) {
+                        if (val.response != null) {
                             data = {
                                 '_token': "{{ csrf_token() }}",
                                 'no_sep': noSEP,
@@ -159,21 +160,30 @@
                                 'nm_poli_bpjs': nmPoli,
                             }
                             tarikRencanaKontrol(data)
+                            $('.nokontrol').val(val.response.noSuratKontrol)
                         } else {
-                            // tgl = new Date();
-                            // bulan = ("0" + (tgl.getMonth() + 1)).slice(-2)
-                            // tahun = tgl.getFullYear();
-                            noka = $('.noka').val()
-                            rencana = cariRencanaKontrol(bulan, tahun, noka, 1)
+                            noSuratKontrol = $('.nokontrol').val();
 
-                            alert(rencana.metaData)
-                            // do {
-                            // } while (rencana != null)
-                            // swal.fire(
-                            //     'Peringatan',
-                            //     'Berhasil membuat SKRJ, dan Gagal Menambahkan SKRJ di SIM RS',
-                            //     'error'
-                            // );
+                            tgl = new Date();
+                            bulan = ("0" + (tgl.getMonth() + 1)).slice(-2)
+                            tahun = tgl.getFullYear();
+                            noka = $('.noka').val()
+
+
+                            while (noSuratKontrol == '') {
+                                cariRencanaKontrol(bulan, tahun, noka, 1).done(function(response) {
+                                    console.log('ini respon cari rencana', response)
+                                    // while (response.response == null) {
+                                    //     $.map(response.list, function(data) {
+                                    //         console.log(data.noSuratKontrol, ' ', data.tglRencanaKontrol)
+                                    //     })
+                                    $('.nokontrol').val(data.noSuratKontrol)
+                                    // }
+                                })
+
+                            }
+
+
                         }
 
                     } else {
