@@ -49,15 +49,14 @@ class RencanaKontrolController extends Controller
             $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
             $response = $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
             $res = json_decode($response);
-            if ($res->response == null && $res->metaData->message == '200') {
+            if ($res->response == null && $res->metaData->code == '200') {
                 $output = false;
                 $countHit++;
             } else {
                 $output = true;
             }
         }
-        return [$res, $countHit];
-        // return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+        return $res;
     }
     public function getDataSuratKontrol($tglAwal, $tglAkhir, $filter)
     {

@@ -378,9 +378,11 @@
         var data = {};
 
         function reloadTabelPoli() {
+            tgl_registrasi = $('#tgl_registrasi').val();
+            console.log('tanggal regist', tgl_registrasi)
             hitungPanggilan();
             $('#tb_pasien').DataTable().destroy();
-            tb_pasien(tgl_registrasi);
+            tb_pasien(splitTanggal(tgl_registrasi));
         }
 
         function simpan() {

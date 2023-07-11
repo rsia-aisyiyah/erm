@@ -142,7 +142,7 @@ class RegPeriksaController extends Controller
     public function ambil(Request $request)
     {
         if ($request->no_rawat) {
-            $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien', 'dokter.spesialis', 'kamarInap.kamar.bangsal', 'suratKontrol', 'poliklinik')->first();
+            $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien', 'dokter.spesialis', 'kamarInap.kamar.bangsal', 'suratKontrol', 'poliklinik', 'suratKontrol')->first();
         } else {
             $regPeriksa = RegPeriksa::where('tgl_registrasi', $request->tgl_registrasi)->where('status_lanjut', 'Ralan')->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'suratKontrol')->get();
         }
@@ -202,7 +202,7 @@ class RegPeriksaController extends Controller
     public function ambilTable(Request $request)
     {
         $regPeriksa = RegPeriksa::where('tgl_registrasi', date('Y-m-d'))
-            ->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai', 'sep')->orderBy('no_rawat', 'DESC')->get();
+            ->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai', 'sep', 'suratKontrol')->orderBy('no_rawat', 'DESC')->get();
         return DataTables::of($regPeriksa)->make(true);
     }
     public function ubahDpjp(Request $request)

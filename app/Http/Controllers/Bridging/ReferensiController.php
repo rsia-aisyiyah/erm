@@ -37,22 +37,20 @@ class ReferensiController extends Controller
         $endpoint = "referensi/diagnosa/{$diagnosa}";
         $output = false;
         try {
-            $countHit = 1;
             while ($output == false) {
                 $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
                 $response = $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
                 $reponse = json_decode($response);
 
-                if ($reponse->response == null && $reponse->meteData->message == '200') {
+                if ($reponse->response == null && $reponse->meteData->code == '200') {
                     $output = false;
-                    $countHit++;
                 } else {
                     $output = true;
                 }
             }
             return $response;
         } catch (RequestException $e) {
-            return abort(404, 'NOT FOUND');
+            return $e;
         }
     }
     public function getPropinsi()

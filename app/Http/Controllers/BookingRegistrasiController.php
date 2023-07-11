@@ -53,9 +53,8 @@ class BookingRegistrasiController extends Controller
 
     function getBooking($no_rkm_medis)
     {
-        $booking = $this->booking
-            ->with('pasien')
-            ->where('no_rkm_medis', $no_rkm_medis)->first();
+        $booking = $this->booking->with('pasien')
+            ->where('no_rkm_medis', $no_rkm_medis)->orderBy('tanggal_periksa', 'DESC')->first();
         return $booking;
     }
 }
