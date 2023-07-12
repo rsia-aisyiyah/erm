@@ -211,6 +211,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/diagnosa/{diagnosa}', [ReferensiController::class, 'getDiagnosa']);
             Route::get('/poli/{poli}', [ReferensiController::class, 'getPoli']);
             Route::get('/dokter/pelayanan/{jenis}/{tgl}/{kd_sps}', [ReferensiController::class, 'getDokterDpjp']);
+            Route::get('/faskes/{faskes}/{jnsFaskes}', [ReferensiController::class, 'getFaskes']);
         });
         Route::get('rencanaKontrol/{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
         Route::get('rencanaKontrol/jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);

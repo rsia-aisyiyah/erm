@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
         <div class="modal-content" style="border-radius:0px">
             <div class="modal-header text-bg-success" style="border-radius:0px">
-                <h5 class="modal-title">FORM SKRJ</h5>
+                <h5 class="modal-title">FORM SURAT KONTROL ULANG</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

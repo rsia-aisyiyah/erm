@@ -32,27 +32,11 @@ class ReferensiController extends Controller
 
     public function getDiagnosa($diagnosa)
     {
-
-
         $endpoint = "referensi/diagnosa/{$diagnosa}";
-        $output = false;
-        try {
-            while ($output == false) {
-                $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
-                $response = $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
-                $reponse = json_decode($response);
-
-                if ($reponse->response == null && $reponse->meteData->code == '200') {
-                    $output = false;
-                } else {
-                    $output = true;
-                }
-            }
-            return $response;
-        } catch (RequestException $e) {
-            return $e;
-        }
+        $result = $this->bridge->getRequest($endpoint);
+        return $result;
     }
+
     public function getPropinsi()
     {
         $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . "referensi/propinsi");
@@ -72,5 +56,11 @@ class ReferensiController extends Controller
     {
         $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . "peserta/nokartu/{$nokartu}/tglSEP/{$tglsep}");
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+    }
+    public function getFaskes($faskes, $jnsFaskes)
+    {
+        $endpoint = "referensi/faskes/{$faskes}/{$jnsFaskes}";
+        $result = $this->bridge->getRequest($endpoint);
+        return $result;
     }
 }

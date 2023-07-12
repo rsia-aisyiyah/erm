@@ -22,9 +22,27 @@ class BridgeVclaim extends CurlFactory
 
     public function getRequest($endpoint)
     {
-        $result = $this->request($this->config->setUrl() . $endpoint, $this->header);
-        $result = $this->response->responseVclaim($result, $this->config->keyDecrypt($this->header['X-timestamp']));
-        return $result;
+
+        $output = false;
+        try {
+            while ($output == false) {
+                $result = $this->request($this->config->setUrl() . $endpoint, $this->header);
+                $result = $this->response->responseVclaim($result, $this->config->keyDecrypt($this->header['X-timestamp']));
+                $response = json_decode($result);
+
+                if ($response->response == null && $response->metaData->code = '200') {
+                    $output = false;
+                    if ($response->metaData->message != 'Sukses') {
+                        $output = true;
+                    }
+                } else {
+                    $output = true;
+                }
+            }
+            return $response;
+        } catch (\Throwable $e) {
+            return $e->getMessage();
+        }
     }
 
     public function getRequestNew($endpoint)
@@ -36,8 +54,8 @@ class BridgeVclaim extends CurlFactory
 
     public function postRequest($endpoint, $data)
     {
-        $result = $this->request($this->config->setUrl() . $endpoint, $this->header, "POST", $data);
-        // $result = $this->response->responseVclaim($result, $this->config->keyDecrypt($this->header['X-timestamp']));
+        $result = $this->request($this->config->setUrl() . $endpoint, $this->config->setHeaderPost(), "POST", $data);
+        $result = $this->response->responseVclaim($result, $this->config->keyDecrypt($this->header['X-timestamp']));
         return $result;
     }
 
