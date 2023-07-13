@@ -44,8 +44,9 @@ class ReferensiController extends Controller
     }
     public function getPoli($poli)
     {
-        $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . "referensi/poli/{$poli}");
-        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+        $endpoint = "referensi/poli/{$poli}";
+        $result = $this->bridge->getRequest($endpoint);
+        return $result;
     }
     public function getDokterDpjp($jenis, $tgl, $kd_sps)
     {

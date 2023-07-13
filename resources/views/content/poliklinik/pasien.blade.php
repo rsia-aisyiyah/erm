@@ -154,6 +154,9 @@
                     instruksi: $('#instruksi').val(),
                     evaluasi: '-',
                     nip: $('#nik').val(),
+                    kd_dokter: "{{ Request::get('dokter') }}",
+                    kd_poli: "{{ Request::segment(2) }}",
+                    no_rkm_medis: $('#no_rm').val(),
                 },
                 success: function(response) {
                     Swal.fire({
@@ -591,8 +594,6 @@
             $('#modalPoli').modal('hide')
             $('.kode_poli').val(kode);
             $('.nama_poli').val(nama);
-
-
         }
         var tanggalKontrol = '';
 
