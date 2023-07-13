@@ -42,6 +42,7 @@ use App\Http\Controllers\BookingRegistrasiController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\PenilaianMedisRanapController;
 use App\Http\Controllers\Bridging\RencanaKontrolController;
+use App\Http\Controllers\Bridging\RujukanController;
 use App\Http\Controllers\BrigdgingRencanaKontrolController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
@@ -212,6 +213,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/poli/{poli}', [ReferensiController::class, 'getPoli']);
             Route::get('/dokter/pelayanan/{jenis}/{tgl}/{kd_sps}', [ReferensiController::class, 'getDokterDpjp']);
             Route::get('/faskes/{faskes}/{jnsFaskes}', [ReferensiController::class, 'getFaskes']);
+        });
+        Route::prefix('rujukan')->group(function () {
+            Route::post('insert', [RujukanController::class, 'insertRujukanKeluar']);
         });
         Route::get('rencanaKontrol/{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
         Route::get('rencanaKontrol/jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);

@@ -10,9 +10,11 @@ use App\Models\PemeriksaanRalan;
 class PemeriksaanRalanController extends Controller
 {
     private $tanggal;
+    private $berkas;
     public function __construct()
     {
         $this->tanggal = new Carbon();
+        $this->berkas = new RsiaAmbilBerkasController();
     }
     public function ambil(Request $request)
     {
@@ -67,8 +69,19 @@ class PemeriksaanRalanController extends Controller
             ];
 
             $create = array_merge($data, $dataTambah);
+            if ($this->berkas->isAvailable($request->no_rawat)) {
+                $this->berkas->updateWaktu($request->no_rawat);
+            } else {
+                $this->berkas->create(
+                    [
+                        'kd_dokter' => $request->kd_dokter,
+                        'kd_poli' => $request->kd_poli,
+                        'no_rawat' => $request->no_rawat,
+                        'no_rkm_medis' => $request->no_rkm_medis,
+                    ]
+                );
+            }
 
-            // return $create;
             $update = PemeriksaanRalan::create($create);
         }
         return response()->json(['Berhasil', $update], 200);
