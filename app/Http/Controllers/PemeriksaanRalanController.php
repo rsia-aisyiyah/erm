@@ -78,6 +78,7 @@ class PemeriksaanRalanController extends Controller
                         'kd_poli' => $request->kd_poli,
                         'no_rawat' => $request->no_rawat,
                         'no_rkm_medis' => $request->no_rkm_medis,
+                        'waktu_soap' => date('Y-m-d H:i:s'),
                     ]
                 );
             }

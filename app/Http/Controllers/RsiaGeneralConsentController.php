@@ -62,4 +62,10 @@ class RsiaGeneralConsentController extends Controller
 
         return $consent;
     }
+
+    function delete(Request $request)
+    {
+        $general = $this->consent->where('no_rawat', $request->no_rawat)->delete();
+        return response()->json($general);
+    }
 }

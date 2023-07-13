@@ -7,73 +7,71 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <form action="" name="form_rujuk_keluar" id="form_rujuk_keluar">
-                        <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
-                            <label for="no_rawat" class="form-label mb-0" style="font-size:12px;">No. Rawat</label>
-                            <input type="text" class="form-control form-control-sm no_rawat_rujuk" id="no_rawat_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                    <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
+                        <label for="no_rawat" class="form-label mb-0" style="font-size:12px;">No. Rawat</label>
+                        <input type="text" class="form-control form-control-sm no_rawat_rujuk" id="no_rawat_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
+                        <label for="pasien" class="form-label mb-0" style="font-size:12px;">Pasien</label>
+                        <input type="text" class="form-control form-control-sm pasien_rujuk" id="pasien_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
+                        <label for="tgl_lahir" class="form-label mb-0" style="font-size:12px;">Tanggal Lahir</label>
+                        <input type="text" class="form-control form-control-sm tgl_lahir_rujuk" id="tgl_lahir_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
+                        <label for="tgl_surat" class="form-label mb-0" style="font-size:12px;">Tgl. Surat</label>
+                        <input type="text" class="form-control form-control-sm tgl_surat_rujuk" id="tgl_surat_rujuk" name="tgl_surat_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
+                        <label for="tgl_kontrol" class="form-label mb-0" style="font-size:12px;">Tgl. R. Kunjungan</label>
+                        <input type="text" class="form-control form-control-sm tgl_kunjungan tanggal" name="tgl_kunjungan_rujuk" onchange="setTanggalKontrol(this)" id="tgl_kunjungan_rujuk" placeholder="">
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
+                        <label for="no_sep_rujuk" class="form-label mb-0" style="font-size:12px;">No. SEP</label>
+                        <input type="text" class="form-control form-control-sm no_sep_rujuk" id="no_sep_rujuk" name="no_sep_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                    </div>
+                    <input type="hidden" value="2" id="jns_rujuk">
+                    <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
+                        <label for="tipe_rujuk" class="form-label mb-0" style="font-size:12px;">Tipe Rujukan</label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="tipe_rujuk" id="tipe_rujuk" style="font-size:12px">
+                            <option selected disabled value="">Pilih Jenis Rujukan</option>
+                            <option value="0">Penuh</option>
+                            <option value="1">Parsial</option>
+                            <option value="2">Rujuk Balik</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
+                        <label for="ppj_rujuk" class="form-label mb-0" style="font-size:12px;">PPK Rujukan</label>
+                        <div class="input-group mb-3">
+                            <input type="hidden" id="kode_ppk" name="kode_ppk">
+                            <input type="search" class="form-control form-control-sm ppk_rujuk" id="ppk_rujuk" aria-label="PPK Rujukan" aria-describedby="ppk_rujuk">
+                            <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariFaskes()"><i class="bi bi-paperclip"></i></button>
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
-                            <label for="pasien" class="form-label mb-0" style="font-size:12px;">Pasien</label>
-                            <input type="text" class="form-control form-control-sm pasien_rujuk" id="pasien_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
+                        <label for="diagnosa_rujuk" class="form-label mb-0" style="font-size:12px;">Diagnosa</label>
+                        <div class="input-group mb-3">
+                            <input type="hidden" id="kode_diagnosa" name="kode_diagnosa">
+                            <input type="search" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk">
+                            <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariDiagnosa()"><i class="bi bi-paperclip"></i></button>
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
-                            <label for="tgl_lahir" class="form-label mb-0" style="font-size:12px;">Tanggal Lahir</label>
-                            <input type="text" class="form-control form-control-sm tgl_lahir_rujuk" id="tgl_lahir_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <label for="poli_rujuk" class="form-label mb-0" style="font-size:12px;">Poli Tujuan</label>
+                        <div class="input-group mb-3">
+                            <input type="hidden" id="kode_poli_rujuk" name="kode_poli_rujuk">
+                            <input type="text" class="form-control form-control-sm poli_rujuk" id="poli_rujuk" aria-label="Poliklinik Tujuan" aria-describedby="poli_rujuk">
+                            <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariPoli()"><i class="bi bi-paperclip"></i></button>
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
-                            <label for="tgl_surat" class="form-label mb-0" style="font-size:12px;">Tgl. Surat</label>
-                            <input type="text" class="form-control form-control-sm tgl_surat_rujuk" id="tgl_surat_rujuk" name="tgl_surat_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
-                            <label for="tgl_kontrol" class="form-label mb-0" style="font-size:12px;">Tgl. R. Kunjungan</label>
-                            <input type="text" class="form-control form-control-sm tgl_kunjungan tanggal" name="tgl_kunjungan_rujuk" onchange="setTanggalKontrol(this)" id="tgl_kunjungan_rujuk" placeholder="">
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
-                            <label for="no_sep_rujuk" class="form-label mb-0" style="font-size:12px;">No. SEP</label>
-                            <input type="text" class="form-control form-control-sm no_sep_rujuk" id="no_sep_rujuk" name="no_sep_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
-                        </div>
-                        <input type="hidden" value="2" id="jns_rujuk">
-                        <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
-                            <label for="tipe_rujuk" class="form-label mb-0" style="font-size:12px;">Tipe Rujukan</label>
-                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="tipe_rujuk" id="tipe_rujuk" style="font-size:12px">
-                                <option selected disabled value="">Pilih Jenis Rujukan</option>
-                                <option value="0">Penuh</option>
-                                <option value="1">Parsial</option>
-                                <option value="2">Rujuk Balik</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
-                            <label for="ppj_rujuk" class="form-label mb-0" style="font-size:12px;">PPK Rujukan</label>
-                            <div class="input-group mb-3">
-                                <input type="hidden" id="kode_ppk" name="kode_ppk">
-                                <input type="search" class="form-control form-control-sm ppk_rujuk" id="ppk_rujuk" aria-label="PPK Rujukan" aria-describedby="ppk_rujuk">
-                                <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariFaskes()"><i class="bi bi-paperclip"></i></button>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
-                            <label for="diagnosa_rujuk" class="form-label mb-0" style="font-size:12px;">Diagnosa</label>
-                            <div class="input-group mb-3">
-                                <input type="hidden" id="kode_diagnosa" name="kode_diagnosa">
-                                <input type="search" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk">
-                                <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariDiagnosa()"><i class="bi bi-paperclip"></i></button>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <label for="poli_rujuk" class="form-label mb-0" style="font-size:12px;">Poli Tujuan</label>
-                            <div class="input-group mb-3">
-                                <input type="hidden" id="kode_poli_rujuk" name="kode_poli_rujuk">
-                                <input type="text" class="form-control form-control-sm poli_rujuk" id="poli_rujuk" aria-label="Poliklinik Tujuan" aria-describedby="poli_rujuk">
-                                <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariPoli()"><i class="bi bi-paperclip"></i></button>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <label for="catatan_rujuk" class="form-label mb-0" style="font-size:12px;">Catatan</label>
-                            <input type="search" class="form-control form-control-sm catatan_rujuk" id="catatan_rujuk" name="catatan_rujuk" placeholder="">
-                            <div class="list_catatan"></div>
-                        </div>
-                        <input type="hidden" name="noka" class="noka">
-                        <input type="hidden" name="nokontrol" class="nokontrol">
-                    </form>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <label for="catatan_rujuk" class="form-label mb-0" style="font-size:12px;">Catatan</label>
+                        <input type="search" class="form-control form-control-sm catatan_rujuk" id="catatan_rujuk" name="catatan_rujuk" placeholder="">
+                        <div class="list_catatan"></div>
+                    </div>
+                    <input type="hidden" name="noka" class="noka">
+                    <input type="hidden" name="nokontrol" class="nokontrol">
                 </div>
             </div>
             <div class="modal-footer">

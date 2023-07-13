@@ -130,6 +130,7 @@ Route::middleware('auth')->group(function () {
     Route::post('persetujuan/tambah', [RsiaGeneralConsentController::class, 'tambah']);
     Route::get('persetujuan/ambil', [RsiaGeneralConsentController::class, 'ambil']);
     Route::post('persetujuan/ttd', [RsiaGeneralConsentController::class, 'simpanTtd']);
+    Route::delete('persetujuan/hapus', [RsiaGeneralConsentController::class, 'delete']);
 
     Route::get('/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
     Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);

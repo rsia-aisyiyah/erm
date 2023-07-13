@@ -24,6 +24,7 @@ class RsiaAmbilBerkasController extends Controller
             'no_rawat' => $data['no_rawat'],
             'no_rkm_medis' => $data['no_rkm_medis'],
             'waktu' => date('Y-m-d H:i:s'),
+            'waktu_soap' => $data['waktu_soap'],
             'jam_praktek' => date('Y-m-d') . ' ' . $jadwal->jam_mulai,
         ];
         $create = $this->berkas->create($data);
@@ -33,7 +34,7 @@ class RsiaAmbilBerkasController extends Controller
     function updateWaktu($no_rawat)
     {
         $data = [
-            'waktu' => date('Y-m-d H:i:s'),
+            'waktu_soap' => date('Y-m-d H:i:s'),
         ];
         $update = $this->berkas->where('no_rawat', $no_rawat)->update($data);
         return response()->json($update);

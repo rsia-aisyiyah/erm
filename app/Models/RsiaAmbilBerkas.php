@@ -9,7 +9,7 @@ class RsiaAmbilBerkas extends Model
 {
     use HasFactory;
     protected $table = 'rsia_ambil_berkas';
-    protected $fillable = ['no_rawat', 'no_rkm_medis', 'waktu', 'jam_praktek'];
+    protected $fillable = ['no_rawat', 'no_rkm_medis', 'waktu', 'jam_praktek', 'waktu_soap'];
     public $timestamps = false;
 
     function regPeriksa()
