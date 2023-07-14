@@ -101,4 +101,16 @@ class ResepObatController extends Controller
 
         return $resepObat;
     }
+
+    function updateTime($no_resep)
+    {
+        $resep = $this->resepObat->where('no_resep', $no_resep)->update(['jam_peresepan' => date('H:i:s')]);
+        return $resep;
+    }
+
+    function isAvailable($no_rawat)
+    {
+        $resep = $this->resepObat->where('no_rawat', $no_rawat)->first();
+        return $resep;
+    }
 }

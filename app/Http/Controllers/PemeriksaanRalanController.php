@@ -6,15 +6,18 @@ use Carbon\Carbon;
 use App\Models\RegPeriksa;
 use Illuminate\Http\Request;
 use App\Models\PemeriksaanRalan;
+use App\Http\Controllers\ResepObatController;
 
 class PemeriksaanRalanController extends Controller
 {
     private $tanggal;
     private $berkas;
+    private $resepObat;
     public function __construct()
     {
         $this->tanggal = new Carbon();
         $this->berkas = new RsiaAmbilBerkasController();
+        $this->resepObat = new ResepObatController();
     }
     public function ambil(Request $request)
     {
@@ -56,11 +59,8 @@ class PemeriksaanRalanController extends Controller
         ];
 
         if ($pemeriksaan) {
-            $update = PemeriksaanRalan::where('no_rawat', $request->no_rawat)->update(
-                $data
-            );
+            $update = PemeriksaanRalan::where('no_rawat', $request->no_rawat)->update($data);
         } else {
-
             $dataTambah = [
                 'nip' => $request->nip,
                 'no_rawat' => $request->no_rawat,
@@ -69,6 +69,7 @@ class PemeriksaanRalanController extends Controller
             ];
 
             $create = array_merge($data, $dataTambah);
+
             if ($this->berkas->isAvailable($request->no_rawat)) {
                 $this->berkas->updateWaktu($request->no_rawat);
             } else {
@@ -78,12 +79,17 @@ class PemeriksaanRalanController extends Controller
                         'kd_poli' => $request->kd_poli,
                         'no_rawat' => $request->no_rawat,
                         'no_rkm_medis' => $request->no_rkm_medis,
+                        'waktu' => "0000-00-00 00:00:00",
                         'waktu_soap' => date('Y-m-d H:i:s'),
                     ]
                 );
             }
-
             $update = PemeriksaanRalan::create($create);
+        }
+
+        if ($this->resepObat->isAvailable($request->no_rawat)) {
+            $resep = $this->resepObat->isAvailable($request->no_rawat);
+            $this->resepObat->updateTime($resep->no_resep);
         }
         return response()->json(['Berhasil', $update], 200);
     }

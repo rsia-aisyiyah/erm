@@ -23,7 +23,7 @@ class RsiaAmbilBerkasController extends Controller
         $data = [
             'no_rawat' => $data['no_rawat'],
             'no_rkm_medis' => $data['no_rkm_medis'],
-            'waktu' => date('Y-m-d H:i:s'),
+            'waktu' => $data['waktu'],
             'waktu_soap' => $data['waktu_soap'],
             'jam_praktek' => date('Y-m-d') . ' ' . $jadwal->jam_mulai,
         ];
