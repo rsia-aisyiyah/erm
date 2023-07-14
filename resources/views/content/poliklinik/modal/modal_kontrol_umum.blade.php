@@ -43,13 +43,13 @@
                         <input type="text" class="form-control form-control-sm nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly style="background-color: #f0f0f0;cursor:not-allowed">
 
                     </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
-                        <button class="btn btn-sm btn-primary btn-buat-kontrol-umum" onclick="buatKontrolUmum()">Buat Surat Kontrol</button>
-                    </div>
                     <input type="hidden" name="noka" class="noka">
                     <input type="hidden" name="booking" class="booking">
                     <input type="hidden" name="registrasi" class="registrasi">
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-primary btn-buat-kontrol-umum" onclick="buatKontrolUmum()">Buat Surat Kontrol</button>
             </div>
         </div>
     </div>

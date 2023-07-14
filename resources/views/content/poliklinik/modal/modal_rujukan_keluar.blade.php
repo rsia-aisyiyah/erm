@@ -52,9 +52,9 @@
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="diagnosa_rujuk" class="form-label mb-0" style="font-size:12px;">Diagnosa</label>
                         <div class="input-group mb-3">
-                            <input type="hidden" id="kode_diagnosa" name="kode_diagnosa">
+                            <input type="hidden" id="kode_diagnosa_rujuk" name="kode_diagnosa_rujuk">
                             <input type="search" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk">
-                            <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariDiagnosa()"><i class="bi bi-paperclip"></i></button>
+                            <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariDiagnosaRujuk()"><i class="bi bi-paperclip"></i></button>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -157,7 +157,7 @@
             }
         }
 
-        function cariDiagnosa() {
+        function cariDiagnosaRujuk() {
             $('#modalDiagnosa').modal('show')
             diagnosa = $('#diagnosa_rujuk').val();
             $.ajax({
@@ -221,7 +221,7 @@
         }
 
         function setDiagnosa(kode, nama) {
-            $('#kode_diagnosa').val(kode)
+            $('#kode_diagnosa_rujuk').val(kode)
             $('#diagnosa_rujuk').val(nama)
             $('#modalDiagnosa').modal('hide')
         }

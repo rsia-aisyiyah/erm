@@ -32,6 +32,7 @@ class ReferensiController extends Controller
 
     public function getDiagnosa($diagnosa)
     {
+
         $endpoint = "referensi/diagnosa/{$diagnosa}";
         $result = $this->bridge->getRequest($endpoint);
         return $result;

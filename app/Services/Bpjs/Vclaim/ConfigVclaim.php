@@ -18,16 +18,10 @@ class ConfigVclaim extends ManageService
 
     public function __construct()
     {
-        $this->urlEndpoint = 'https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev/';
-        $this->consId = '16748';
-        $this->secretKey = '7cM8A9F546';
-        $this->userKey = '23cdf31249c696d807e7cb714f98a471';
-        // $this->urlEndpoint = 'https://apijkn.bpjs-kesehatan.go.id/vclaim-rest/';
-        // $this->consId = '18626';
-        // $this->secretKey = '8gU0048B8D';
-        // $this->userKey = 'd79e5e17bbe11bc57d46af999aadf44e';
-
-        // echo $this->userKey;
+        $this->urlEndpoint = config('app.bpjsUrl');
+        $this->consId = config('app.consId');
+        $this->secretKey = config('app.secretKey');
+        $this->userKey = config('app.userKey');
     }
 
     public function setUrl()

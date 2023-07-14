@@ -12,18 +12,48 @@ class TrackerSqlController extends Controller
     {
         $this->tracker = new TrackerSql();
     }
-    public function convertSql($table, $values)
+    public function insertSql($table, $values)
     {
         $table = $table->getTable();
         $values = implode('|', $values);
 
+
         return "insert into $table values(|$values))";
     }
+
+
+    function stringClause($clause)
+    {
+        $count = 1;
+        $stringClause = '';
+        foreach ($clause as $cls) {
+            if ($count < count($clause)) {
+                $and = ' AND ';
+                $count++;
+            } else {
+                $and = '';
+            }
+            $keyClasue = array_keys($clause, $cls, true);
+            $stringClause .= "$keyClasue[0]" . '=' . "'$cls'" . $and;
+        }
+
+        return $stringClause;
+    }
+
+    function updateSql($table, $values, $clause)
+    {
+        $table = $table->getTable();
+        $val = implode('|', $values);
+        $keys = implode('=?,', array_keys($values));
+        $stringClause = $this->stringClause($clause);
+        return "update $table set $keys where $stringClause |$val ";
+    }
+
     public function create($table, $values, $user)
     {
         $data = [
             'tanggal' => date('Y-m-d H:i:s'),
-            'sqle' => $this->convertSql($table, $values),
+            'sqle' => $values,
             'usere' => $user,
         ];
         try {

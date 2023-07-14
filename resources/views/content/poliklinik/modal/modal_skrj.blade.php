@@ -55,12 +55,12 @@
                         </div>
 
                     </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
-                        <button class="btn btn-sm btn-primary btn-buat-skrj" onclick="simpanSkrj()">Buat SKRJ</button>
-                    </div>
                     <input type="hidden" name="noka" class="noka">
                     <input type="hidden" name="nokontrol" class="nokontrol">
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-primary btn-buat-skrj" onclick="simpanSkrj()">Buat SKRJ</button>
             </div>
         </div>
     </div>
