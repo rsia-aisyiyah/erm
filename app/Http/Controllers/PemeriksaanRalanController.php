@@ -80,22 +80,23 @@ class PemeriksaanRalanController extends Controller
 
             $create = array_merge($data, $dataTambah);
 
-            if ($this->berkas->isAvailable($request->no_rawat)) {
-                $this->berkas->updateWaktu($request->no_rawat);
-            } else {
-                $this->berkas->create(
-                    [
-                        'kd_dokter' => $request->kd_dokter,
-                        'kd_poli' => $request->kd_poli,
-                        'no_rawat' => $request->no_rawat,
-                        'no_rkm_medis' => $request->no_rkm_medis,
-                        'waktu' => "0000-00-00 00:00:00",
-                        'waktu_soap' => date('Y-m-d H:i:s'),
-                    ]
-                );
-            }
             $update = PemeriksaanRalan::create($create);
             $trackSql  = $this->track->insertSql($this->pemeriksaan, $data);
+        }
+
+        if ($this->berkas->isAvailable($request->no_rawat)) {
+            $this->berkas->updateWaktu($request->no_rawat);
+        } else {
+            $this->berkas->create(
+                [
+                    'kd_dokter' => $request->kd_dokter,
+                    'kd_poli' => $request->kd_poli,
+                    'no_rawat' => $request->no_rawat,
+                    'no_rkm_medis' => $request->no_rkm_medis,
+                    'waktu' => "0000-00-00 00:00:00",
+                    'waktu_soap' => date('Y-m-d H:i:s'),
+                ]
+            );
         }
 
         if ($this->resepObat->isAvailable($request->no_rawat)) {
