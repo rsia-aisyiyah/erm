@@ -53,7 +53,7 @@ class RegPeriksaController extends Controller
         try {
 
             $result = $this->regPeriksa->create($data);
-            $track = $this->track->create($this->regPeriksa, $data, session()->get('pegawai')->nik);
+            $track = $this->track->create($this->track->insertSql($this->regPeriksa, $data));
             return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $result, 'qury' => $track]);
         } catch (QueryException $e) {
             return response()->json(['metaData' => ['Status' => 'FAILED', 'Code' => 400], 'response' => $e->errorInfo]);

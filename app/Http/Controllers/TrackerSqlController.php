@@ -49,12 +49,12 @@ class TrackerSqlController extends Controller
         return "update $table set $keys where $stringClause |$val ";
     }
 
-    public function create($table, $values, $user)
+    public function create($sql)
     {
         $data = [
             'tanggal' => date('Y-m-d H:i:s'),
-            'sqle' => $values,
-            'usere' => $user,
+            'sqle' => $sql,
+            'usere' => session()->get('pegawai')->nik,
         ];
         try {
             $result = $this->tracker->create($data);
