@@ -41,7 +41,7 @@ class BookingRegistrasiController extends Controller
         ];
         try {
             $booking = $this->booking->create($data);
-            $track = $this->track->create($this->booking, $data, session()->get('pegawai')->nik);
+            $track = $this->track->create($this->track->insertSql($this->booking, $data));
             return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $this->getBooking($request->no_rkm_medis), 'qury' => $track]);
         } catch (QueryException $e) {
             return response()->json(['metaData' => ['Status' => 'FAILED', 'Code' => 400], 'response' => $e->errorInfo]);
