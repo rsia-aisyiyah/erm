@@ -287,6 +287,11 @@
                 success: function(response) {
                     if (response.metaData.code == 200) {
                         console.log(response);
+                        if (response.response != null) {
+
+                        } else {
+
+                        }
                     } else {
                         swal.fire(
                             'Peringatan',
