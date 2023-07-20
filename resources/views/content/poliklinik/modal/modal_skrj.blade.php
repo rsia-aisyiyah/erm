@@ -120,7 +120,7 @@
                 "kodeDokter": $('#kode_dokter').val(),
                 "poliKontrol": $('.kode_poli').val(),
                 "tglRencanaKontrol": splitTanggal($('#tgl_kontrol').val()),
-                "user": "{{ session()->get('pegawai')->nama }}",
+                "user": "{{ session()->get('pegawai')->nik }}",
             };
 
             $.ajax({

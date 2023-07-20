@@ -23,12 +23,13 @@ class RujukanController extends Controller
     }
     public function insertRujukanKeluar(Request $request)
     {
-        $data = ['request' => [
-            "t_rujukan" => $request->all()
-        ]];
-        $endpoint = "RencanaKontrol/2.0/insert";
+        $data = [
+            'request' => [
+                't_rujukan' => $request->all()
+            ]
+        ];
+        $endpoint = "Rujukan/2.0/insert";
         $response = Http::withHeaders($this->config->setHeaderPost())->post($this->config->setUrl() . $endpoint, $data);
-        return $response;
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }
 }

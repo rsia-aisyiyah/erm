@@ -617,33 +617,13 @@
                             '" name="kps[]" value="' +
                             res.data_barang.kapasitas +
                             '"/>' + res.data_barang.kapasitas + ' mg </td>'
-                        html +=
-                            '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' +
-                            no +
-                            '" name="p1[]" value="' +
-                            res.p1 +
-                            '" onchange="hitungObatRacik(' + no + ')"/></td>'
+                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' + no + '" name="p1[]" value="' + res.p1 + '" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
                         html += '<td>/</td>'
-                        html +=
-                            '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' +
-                            no +
-                            '"name="p2[]" onchange="hitungObatRacik(' + no +
-                            ')" value="' + res.p2 + '"/></td>'
-                        html +=
-                            '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' +
-                            no +
-                            '" name="kandungan[]" onkeypress="return hanyaAngka(event)" value="' + kandungan + '" onchange="hitungDosis(' + no + ')" autocomplete="off"/></td>'
+                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' + no + '"name="p2[]" onkeyup="hitungObatRacik(' + no + ')" value="' + res.p2 + '" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
+                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' + no + '" name="kandungan[]" onkeypress="return hanyaAngka(event)" value="' + kandungan + '" onkeyup="hitungDosis(' + no + ')" autocomplete="off"/></td>'
                         html += '<td>mg</td>'
-                        html +=
-                            '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +
-                            no +
-                            '" name="jml[]" value="' + hitungJumlahObat(res.data_barang.kapasitas, res.p1, res.p2) + '" readonly/></td>'
-                        html +=
-                            '<td><button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="' +
-                            res.no_resep + '" data-racik="' +
-                            res.no_racik +
-                            '" data-obat="' + res.kode_brng +
-                            '" data-no="' + no + '" onclick="hapusObat(this)"><i class="bi bi-trash-fill"></i></button></td>'
+                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' + no + '" name="jml[]" value="' + hitungJumlahObat(res.data_barang.kapasitas, res.p1, res.p2) + '" readonly/></td>'
+                        html += '<td><button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="' + res.no_resep + '" data-racik="' + res.no_racik + '" data-obat="' + res.kode_brng + '" data-no="' + no + '" onclick="hapusObat(this)"><i class="bi bi-trash-fill"></i></button></td>'
                         html += '</tr>'
                         no++
                     });

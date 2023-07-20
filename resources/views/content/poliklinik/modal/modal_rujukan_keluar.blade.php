@@ -266,28 +266,34 @@
 
         function simpanRujukanKeluar() {
             data = {
-
                 '_token': "{{ csrf_token() }}",
                 'noSep': $('#no_sep_rujuk').val(),
                 'tglRujukan': splitTanggal($('#tgl_surat_rujuk').val()),
-                'tglRancanaKunjungan': splitTanggal($('#tgl_kunjungan_rujuk').val()),
+                'tglRencanaKunjungan': splitTanggal($('#tgl_kunjungan_rujuk').val()),
                 'ppkDirujuk': $('#kode_ppk').val(),
                 'jnsPelayanan': $('#jns_rujuk').val(),
                 'catatan': $('#catatan_rujuk').val(),
-                'diagRujukan': $('#kode_diagnosa').val(),
+                'diagRujukan': $('#kode_diagnosa_rujuk').val(),
                 'tipeRujukan': $('#tipe_rujuk').val(),
                 'poliRujukan': $('#kode_poli_rujuk').val(),
-                'user': "{{ session()->get('pegawai')->nama }}",
-            }
-
-            console.log(data)
+                'user': "{{ session()->get('pegawai')->nik }}",
+            };
 
             $.ajax({
                 url: '/erm/bridging/rujukan/insert',
                 data: data,
                 method: 'POST',
+                dataType: 'JSON',
                 success: function(response) {
-                    console.log(response);
+                    if (response.metaData.code == 200) {
+                        console.log(response);
+                    } else {
+                        swal.fire(
+                            'Peringatan',
+                            response.metaData.message,
+                            'warning'
+                        );
+                    }
                 }
             })
 
