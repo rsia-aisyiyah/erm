@@ -139,6 +139,7 @@
         }
 
         function hitungObatRacik(no) {
+
             kps = $('#kps' + no).val();
             p2 = $('#p2' + no).val();
             p1 = $('#p1' + no).val();
@@ -147,8 +148,6 @@
             kandungan = parseFloat(kps) * (parseFloat(p1) / parseFloat(p2));
 
             jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
-
-            // console.log(kps, p1, p2, 'kandungan = ' + kandungan)
 
             $('#kandungan' + no).val(kandungan.toFixed(1));
 

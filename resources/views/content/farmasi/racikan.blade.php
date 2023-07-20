@@ -232,7 +232,6 @@
         }
 
         function hapusTemplateRacikan(id) {
-            console.log(id)
             Swal.fire({
                 title: 'Anda yakin ?',
                 text: "Data yang dihapus tidak bisa dikembalikan",
