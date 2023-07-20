@@ -250,7 +250,7 @@
             html +=
                 '<td><input type="search" onkeypress="return hanyaAngka(event)" class="form-control form-control-sm form-underline" id="kandungan' +
                 no +
-                '" name="kandungan[]" onchange="hitungDosis(' + no + ')"/></td>'
+                '" name="kandungan[]" onchange="hitungDosis(' + no + ')" autocomplete="off"/></td>'
             html += '<td>mg</td>'
             html +=
                 '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +

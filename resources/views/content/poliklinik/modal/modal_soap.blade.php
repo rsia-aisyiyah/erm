@@ -632,7 +632,7 @@
                         html +=
                             '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' +
                             no +
-                            '" name="kandungan[]" onkeypress="return hanyaAngka(event)" value="' + kandungan + '" onchange="hitungDosis(' + no + ')"/></td>'
+                            '" name="kandungan[]" onkeypress="return hanyaAngka(event)" value="' + kandungan + '" onchange="hitungDosis(' + no + ')" autocomplete="off"/></td>'
                         html += '<td>mg</td>'
                         html +=
                             '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +
@@ -789,7 +789,8 @@
                 $(element).find('td:eq(5) input').attr('id', 'kandungan' + index)
                 $(element).find('td:eq(5) input').attr('onchange', 'hitungDosis(' + index + ')')
                 $(element).find('td:eq(7) input').attr('id', 'jml_obat' + index)
-            })
+            });
+            $('.nomor').val($table.find('tr').length);
         }
 
         $('tbody').on('click', '.edit', function() {
