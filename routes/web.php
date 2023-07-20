@@ -217,6 +217,10 @@ Route::middleware('auth')->group(function () {
         });
         Route::prefix('rujukan')->group(function () {
             Route::post('insert', [RujukanController::class, 'insertRujukanKeluar']);
+            Route::get('keluar/list/{tglPertama}/{tglKedua}', [RujukanController::class, 'getListRujukanKeluarRs']);
+            Route::get('keluar/{noRujukan}', [RujukanController::class, 'getRujukanKeluar']);
+            Route::get('peserta/{noka}', [RujukanController::class, 'getRujukanPeserta']);
+            Route::get('list/peserta/{noka}', [RujukanController::class, 'getListRujukanPeserta']);
         });
         Route::get('rencanaKontrol/{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
         Route::get('rencanaKontrol/jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);
@@ -225,7 +229,6 @@ Route::middleware('auth')->group(function () {
         Route::get('SEP/{sep}', [SepController::class, 'getSep']);
         Route::get('peserta/nokartu/{nokartu}/tglsep/{tglsep}', [ReferensiController::class, 'getPasien']);
     });
-
 
 
     Route::post('rencanaKontrol/insert', [BrigdgingRencanaKontrolController::class, 'create']);

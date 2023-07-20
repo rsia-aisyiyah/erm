@@ -36,9 +36,9 @@
                         <label for="tipe_rujuk" class="form-label mb-0" style="font-size:12px;">Tipe Rujukan</label>
                         <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="tipe_rujuk" id="tipe_rujuk" style="font-size:12px">
                             <option selected disabled value="">Pilih Jenis Rujukan</option>
-                            <option value="0">Penuh</option>
-                            <option value="1">Parsial</option>
-                            <option value="2">Rujuk Balik</option>
+                            <option value="0">0. Penuh</option>
+                            <option value="1">1. Parsial</option>
+                            <option value="2">2. Rujuk Balik</option>
                         </select>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
@@ -265,6 +265,7 @@
         }
 
         function simpanRujukanKeluar() {
+
             data = {
                 '_token': "{{ csrf_token() }}",
                 'noSep': $('#no_sep_rujuk').val(),
@@ -288,7 +289,22 @@
                     if (response.metaData.code == 200) {
                         console.log(response);
                         if (response.response != null) {
-
+                            data = {
+                                'noSep': $('#no_sep_rujuk').val(),
+                                'tglRujukan': splitTanggal($('#tgl_surat_rujuk').val()),
+                                'tglRencanaKunjungan': splitTanggal($('#tgl_kunjungan_rujuk').val()),
+                                'ppkDirujuk': $('#kode_ppk').val(),
+                                'nm_ppkDirujuk': $('#ppk_rujuk').val(),
+                                'jnsPelayanan': $('#jns_rujuk').val(),
+                                'catatan': $('#catatan_rujuk').val(),
+                                'diagRujukan': $('#kode_diagnosa_rujuk').val(),
+                                'nama_diagRujukan': $('#diagnosa_rujuk').val(),
+                                'tipeRujukan': $('#tipe_rujuk option:selected').text(),
+                                'poliRujukan': $('#kode_poli_rujuk').val(),
+                                'nama_poliRujukan': $('#poli_rujuk').val(),
+                                'no_rujukan': response.response.rujukan.noRujukan,
+                                'user': "{{ session()->get('pegawai')->nik }}",
+                            }
                         } else {
 
                         }
@@ -302,6 +318,30 @@
                 }
             })
 
+
+        }
+
+        function getListRujukanKeluar(tglPertama, tglKedua) {
+            let listRujukan = $.ajax({
+                url: '/erm/bridging/rujukan/keluar/list/' + tglPertama + '/' + tglKedua,
+                method: 'GET',
+                dataType: 'JSON',
+            });
+
+            return listRujukan;
+        }
+
+        function getRujukanKeluar(noRujukan) {
+            let rujukanKeluar = $.ajax({
+                url: '/erm/bridging/rujukan/keluar' + noRujukan,
+                method: "GET",
+                dataType: 'JSON',
+            });
+
+            return rujukanKeluar;
+        }
+
+        function tarikRujukanKeluar(data) {
 
         }
     </script>

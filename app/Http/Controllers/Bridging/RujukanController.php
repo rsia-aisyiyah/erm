@@ -32,4 +32,30 @@ class RujukanController extends Controller
         $response = Http::withHeaders($this->config->setHeaderPost())->post($this->config->setUrl() . $endpoint, $data);
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }
+    public function getRujukanPeserta($noka)
+    {
+        $endpoint = "Rujukan/RS/Peserta/{$noka}";
+        $response = $this->bridge->getRequest($endpoint);
+        return $response;
+    }
+
+    function getListRujukanPeserta($noka)
+    {
+        $endpoint = "Rujukan/RS/List/Peserta/{$noka}";
+        $response = $this->bridge->getRequest($endpoint);
+        return $response;
+    }
+    function getRujukanKeluar($noRujukan)
+    {
+        $endpoint = "Rujukan/Keluar/{$noRujukan}";
+        $response = $this->bridge->getRequest($endpoint);
+        return $response;
+    }
+
+    function getListRujukanKeluarRs($tglPertama, $tglKedua)
+    {
+        $endpoint = "Rujukan/Keluar/List/tglMulai/{$tglPertama}/tglAkhir/{$tglKedua}";
+        $response = $this->bridge->getRequest($endpoint);
+        return $response;
+    }
 }

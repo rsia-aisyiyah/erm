@@ -40,8 +40,9 @@ class ReferensiController extends Controller
 
     public function getPropinsi()
     {
-        $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . "referensi/propinsi");
-        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+        $endpoint = "Referensi/propinsi";
+        $result = $this->bridge->getRequest($endpoint);
+        return $result;
     }
     public function getPoli($poli)
     {
