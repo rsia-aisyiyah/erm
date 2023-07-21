@@ -740,28 +740,31 @@
                             }
 
                             // console.log(row)
-                            btnSep = '<div class="dropdown mb-1 mt-1" id="dropdown-sep-' + row.no_reg + '"> <button id="btn-rujuk-' + row.no_reg + '" class="btn-sm" style="font-size:10px;width:112px" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button></div>';
+
+
+                            no_rawat = textRawat(row.no_rawat);
+                            btnSep = '<div class="dropdown mb-1 mt-1" id="dropdown-sep-' + no_rawat + '"> <button id="btn-rujuk-' + no_rawat + '" class="btn-sm" style="font-size:10px;width:112px" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button></div>';
                             badgeKontrol = '';
                             if (row.sep && row.kd_pj != "A03") {
-                                $('#btn-rujuk-' + row.no_reg).addClass('btn btn-success dropdown-toggle');
-                                $('#btn-rujuk-' + row.no_reg).text('SEP Sudah Terbit');
+                                $('#btn-rujuk-' + no_rawat).addClass('btn btn-success dropdown-toggle');
+                                $('#btn-rujuk-' + no_rawat).text('SEP Sudah Terbit');
                                 html = '<ul class="dropdown-menu" style="font-size:12px">'
                                 html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="kontrolUlang(\'' + row.sep.no_sep + '\')">Kontrol Ulang / SKRJ</a></li>'
                                 html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rujukanKeluar(\'' + row.sep.no_sep + '\')">Rujukan Keluar</a></li>'
                                 html += '</ul>'
-                                $('#dropdown-sep-' + row.no_reg).append(html)
+                                $('#dropdown-sep-' + no_rawat).append(html)
                                 if (row.sep.surat_kontrol && row.kd_pj != "A03") {
-                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + row.no_reg + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
+                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
                                 }
                             } else if (!row.sep && row.kd_pj != "A03") {
-                                $('#btn-rujuk-' + row.no_reg).addClass('btn btn-danger dropdown-toggle');
-                                $('#btn-rujuk-' + row.no_reg).text('Belum Terbit SEP');
+                                $('#btn-rujuk-' + no_rawat).addClass('btn btn-danger dropdown-toggle');
+                                $('#btn-rujuk-' + no_rawat).text('Belum Terbit SEP');
 
                             } else {
                                 if (row.surat_kontrol) {
-                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + row.no_reg + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.surat_kontrol.tanggal) + '</span></a>';
+                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.surat_kontrol.tanggal) + '</span></a>';
                                 }
-                                $('#dropdown-sep-' + row.no_reg).css('display', 'none')
+                                $('#dropdown-sep-' + no_rawat).css('display', 'none')
                             }
 
 
