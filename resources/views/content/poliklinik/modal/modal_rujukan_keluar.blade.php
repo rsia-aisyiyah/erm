@@ -35,7 +35,7 @@
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="tipe_rujuk" class="form-label mb-0" style="font-size:12px;">Tipe Rujukan</label>
                         <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="tipe_rujuk" id="tipe_rujuk" style="font-size:12px">
-                            <option selected disabled value="">Pilih Jenis Rujukan</option>
+                            <option selected disabled value="y">Pilih Jenis Rujukan</option>
                             <option value="0">0. Penuh</option>
                             <option value="1">1. Parsial</option>
                             <option value="2">2. Rujuk Balik</option>
@@ -46,15 +46,17 @@
                         <div class="input-group mb-3">
                             <input type="hidden" id="kode_ppk" name="kode_ppk">
                             <input type="search" class="form-control form-control-sm ppk_rujuk" id="ppk_rujuk" aria-label="PPK Rujukan" aria-describedby="ppk_rujuk">
-                            <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariFaskes()"><i class="bi bi-paperclip"></i></button>
+                            <button class="btn btn-secondary btn-sm btn-cari" type="button" style="font-size:12px" onclick="cariFaskes()"><i class="bi bi-paperclip"></i></button>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="diagnosa_rujuk" class="form-label mb-0" style="font-size:12px;">Diagnosa</label>
                         <div class="input-group mb-3">
                             <input type="hidden" id="kode_diagnosa_rujuk" name="kode_diagnosa_rujuk">
-                            <input type="search" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk">
-                            <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariDiagnosaRujuk()"><i class="bi bi-paperclip"></i></button>
+                            <input type="search" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk" onkeyup="cariDiagnosa(this)">
+                            <div id="list_diagnosa_rujuk"></div>
+                            <button class="btn btn-secondary btn-sm btn-cari" type="button" style="font-size:12px" onclick="cariDiagnosaRujuk()"><i class="bi bi-paperclip"></i></button>
+
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -62,7 +64,7 @@
                         <div class="input-group mb-3">
                             <input type="hidden" id="kode_poli_rujuk" name="kode_poli_rujuk">
                             <input type="text" class="form-control form-control-sm poli_rujuk" id="poli_rujuk" aria-label="Poliklinik Tujuan" aria-describedby="poli_rujuk">
-                            <button class="btn btn-secondary btn-sm" type="button" style="font-size:12px" onclick="cariPoli()"><i class="bi bi-paperclip"></i></button>
+                            <button class="btn btn-secondary btn-sm btn-cari" type="button" style="font-size:12px" onclick="cariPoli()"><i class="bi bi-paperclip"></i></button>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -75,7 +77,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sm btn-primary btn-buat-skrj mr-auto" onclick="simpanRujukanKeluar()"><i class="bi bi-envelope-plus-fill"></i> Buat Rujukan Keluar</button>
+                <button class="btn btn-sm btn-primary btn-buat-rujukan mr-auto" onclick="simpanRujukanKeluar()"><i class="bi bi-envelope-plus-fill"></i> Buat Rujukan Keluar</button>
             </div>
         </div>
     </div>
@@ -93,7 +95,7 @@
             hari = ('0' + (date.getDate())).slice(-2);
             bulan = ('0' + (date.getMonth() + 1)).slice(-2);
             tahun = date.getFullYear();
-            dateStart = parseInt(hari) + 1 + '-' + bulan + '-' + tahun;
+            dateStart = parseInt(hari) + '-' + bulan + '-' + tahun;
             let tanggal = tanggalKontrol ? tanggalKontrol : dateStart;
             $('#tgl_kunjungan_rujuk').datepicker({
                 format: 'dd-mm-yyyy',
@@ -101,10 +103,29 @@
                 autoclose: true,
             });
 
-            console.log(tanggal)
             $('#tgl_surat_rujuk').val(splitTanggal("{{ date('Y-m-d') }}"));
             $('#tgl_kunjungan_rujuk').datepicker('setDate', tanggal)
         })
+
+        $('#modalRujukanKeluar').on('hidden.bs.modal', function() {
+            $('#ppk_rujuk').removeAttr('disabled')
+            $('#poli_rujuk').removeAttr('disabled')
+            $('#tipe_rujuk').removeAttr('disabled')
+            $('#tgl_kunjungan_rujuk').removeAttr('disabled')
+            $('#diagnosa_rujuk').removeAttr('disabled')
+            $('#catatan_rujuk').removeAttr('disabled')
+            $('#modalRujukanKeluar .modal-footer').removeAttr('style')
+            $('#ppk_rujuk').val('')
+            tanggalKontrol = '';
+            $('.btn-cari').css('display', 'inline')
+            $('#diagnosa_rujuk').val('')
+            $('#poli_rujuk').val('')
+            $('#catatan_rujuk').val('')
+            $("#tipe_rujuk option[value='x']").remove();
+            $("#tipe_rujuk").val("y").change();
+            $('#modalRujukanKeluar .modal-footer').removeAttr('style')
+        })
+
         $('#tipe_rujuk').on('change', function(evt) {
             if (this.value == 2) {
                 cekSep($('#no_sep_rujuk').val()).done(function(response) {
@@ -118,7 +139,6 @@
         })
 
         function cariFaskes() {
-            $('#modalFaskes').modal('show')
             faskes = $('#ppk_rujuk').val();
             for (let jenis = 2; jenis >= 1; jenis--) {
 
@@ -154,11 +174,12 @@
                     $('.table-faskes tbody').append(html);
 
                 })
+                $('#modalFaskes').css('background-color', 'rgba(0,0,0,.25)')
+                $('#modalFaskes').modal('show')
             }
         }
 
         function cariDiagnosaRujuk() {
-            $('#modalDiagnosa').modal('show')
             diagnosa = $('#diagnosa_rujuk').val();
             $.ajax({
                 url: '/erm/bridging/referensi/diagnosa/' + diagnosa,
@@ -182,11 +203,12 @@
                     html += '</tr>'
                 }
                 $('.table-diagnosa tbody').append(html);
+                $('#modalDiagnosa').css('background-color', 'rgba(0,0,0,.25)')
+                $('#modalDiagnosa').modal('show')
             })
         }
 
         function cariPoli() {
-            $('#modalPoliRujuk').modal('show')
             poli = $('#poli_rujuk').val();
             $.ajax({
                 url: '/erm/bridging/referensi/poli/' + poli,
@@ -210,8 +232,9 @@
                     html += '</tr>'
                 }
                 $('.table-poli tbody').append(html);
+                $('#modalPoliRujuk').css('background-color', 'rgba(0,0,0,.25)')
+                $('#modalPoliRujuk').modal('show')
             })
-
         }
 
         function setPpkRujukan(kode, nama) {
@@ -242,7 +265,6 @@
             ];
             let input = $(this).val();
             let obj = data.filter(item => item.toLowerCase().indexOf(input) > -1);
-            console.log(obj)
             if (obj.length > 0) {
                 html = '<ul class="dropdown-menu" style="width:auto;display:inline;position:absolute;border-radius:0;font-size:12px">';
                 $.map(obj, function(val) {
@@ -266,8 +288,7 @@
 
         function simpanRujukanKeluar() {
 
-            data = {
-                '_token': "{{ csrf_token() }}",
+            let data = {
                 'noSep': $('#no_sep_rujuk').val(),
                 'tglRujukan': splitTanggal($('#tgl_surat_rujuk').val()),
                 'tglRencanaKunjungan': splitTanggal($('#tgl_kunjungan_rujuk').val()),
@@ -279,34 +300,64 @@
                 'poliRujukan': $('#kode_poli_rujuk').val(),
                 'user': "{{ session()->get('pegawai')->nik }}",
             };
-
+            let token = {
+                '_token': "{{ csrf_token() }}",
+            }
+            dataRujukan = Object.assign(data, token)
             $.ajax({
                 url: '/erm/bridging/rujukan/insert',
-                data: data,
+                data: dataRujukan,
                 method: 'POST',
                 dataType: 'JSON',
+                beforeSend: function() {
+                    swal.fire({
+                        title: 'Sedang mengirim data',
+                        text: 'Mohon Tunggu',
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            swal.showLoading();
+                        }
+                    })
+                },
                 success: function(response) {
+                    delete data._token;
+                    delete data.noSep;
+                    detailData = {
+                        'nm_ppkDirujuk': $('#ppk_rujuk').val(),
+                        'nama_diagRujukan': $('#diagnosa_rujuk').val(),
+                        'nama_poliRujukan': $('#poli_rujuk').val(),
+                    }
+
                     if (response.metaData.code == 200) {
                         console.log(response);
                         if (response.response != null) {
-                            data = {
-                                'noSep': $('#no_sep_rujuk').val(),
-                                'tglRujukan': splitTanggal($('#tgl_surat_rujuk').val()),
-                                'tglRencanaKunjungan': splitTanggal($('#tgl_kunjungan_rujuk').val()),
-                                'ppkDirujuk': $('#kode_ppk').val(),
-                                'nm_ppkDirujuk': $('#ppk_rujuk').val(),
-                                'jnsPelayanan': $('#jns_rujuk').val(),
-                                'catatan': $('#catatan_rujuk').val(),
-                                'diagRujukan': $('#kode_diagnosa_rujuk').val(),
-                                'nama_diagRujukan': $('#diagnosa_rujuk').val(),
-                                'tipeRujukan': $('#tipe_rujuk option:selected').text(),
-                                'poliRujukan': $('#kode_poli_rujuk').val(),
-                                'nama_poliRujukan': $('#poli_rujuk').val(),
+                            rujukan = {
+                                '_token': "{{ csrf_token() }}",
+                                'no_sep': $('#no_sep_rujuk').val(),
                                 'no_rujukan': response.response.rujukan.noRujukan,
-                                'user': "{{ session()->get('pegawai')->nik }}",
                             }
-                        } else {
 
+                            dataRujukan = Object.assign(data, detailData, rujukan)
+                            tarikRujukanKeluar(dataRujukan)
+                        } else {
+                            tanggal = "{{ date('Y-m-d') }}";
+                            no_sep = $('#no_sep_rujuk').val();
+                            tanggal = "{{ date('Y-m-d') }}";
+                            getListRujukanKeluar(tanggal, tanggal).done(function(response) {
+                                $.map(response.response.list, function(val) {
+                                    if (no_sep == val.noSep) {
+                                        getRujukanKeluar(val.noRujukan).done(function(response) {
+                                            rujukan = {
+                                                '_token': "{{ csrf_token() }}",
+                                                'no_sep': $('#no_sep_rujuk').val(),
+                                                'no_rujukan': response.response.rujukan.noRujukan,
+                                            }
+                                            dataRujukan = Object.assign(data, detailData, rujukan)
+                                            tarikRujukanKeluar(dataRujukan)
+                                        })
+                                    }
+                                })
+                            })
                         }
                     } else {
                         swal.fire(
@@ -326,6 +377,7 @@
                 url: '/erm/bridging/rujukan/keluar/list/' + tglPertama + '/' + tglKedua,
                 method: 'GET',
                 dataType: 'JSON',
+
             });
 
             return listRujukan;
@@ -333,7 +385,7 @@
 
         function getRujukanKeluar(noRujukan) {
             let rujukanKeluar = $.ajax({
-                url: '/erm/bridging/rujukan/keluar' + noRujukan,
+                url: '/erm/bridging/rujukan/keluar/' + noRujukan,
                 method: "GET",
                 dataType: 'JSON',
             });
@@ -342,7 +394,21 @@
         }
 
         function tarikRujukanKeluar(data) {
-
+            let rujukanKeluar = $.ajax({
+                url: '/erm/rujukan/insert',
+                data: data,
+                method: 'POST',
+                dataType: 'JSON',
+                success: function(response) {
+                    swal.fire(
+                        'Berhasil',
+                        'Berhasil Membuat Rujukan Keluar',
+                        'success'
+                    );
+                    $('.btn-buat-rujukan').css('display', 'none')
+                    reloadTabelPoli();
+                }
+            })
         }
     </script>
 @endpush

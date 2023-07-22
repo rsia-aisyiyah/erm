@@ -25,11 +25,12 @@
 @push('script')
     <script>
         $('#modalPoliRujuk').on('hidden.bs.modal', function() {
-            $('#modalRujukanKeluar').modal('show')
+            // $('#modalRujukanKeluar').modal('show')
             $('.table-poli tbody').empty()
         })
         $('#modalPoliRujuk').on('shown.bs.modal', function() {
-            $('#modalRujukanKeluar').modal('hide')
+            // $('#modalRujukanKeluar').modal('hide')
+            $(this).css('background-color', 'rgba(0,0,0,.25)')
         })
     </script>
 @endpush

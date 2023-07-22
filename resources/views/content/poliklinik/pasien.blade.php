@@ -555,6 +555,22 @@
                 $('#no_rawat_rujuk').val(response.no_rawat)
                 $('#pasien_rujuk').val(response.reg_periksa.no_rkm_medis + ' - ' + response.nama_pasien)
                 $('#tgl_lahir_rujuk').val(splitTanggal(response.tanggal_lahir))
+                if (response.rujukan_keluar) {
+                    $('#ppk_rujuk').attr('disabled', '')
+                    $('#poli_rujuk').attr('disabled', '')
+                    $('#tipe_rujuk').attr('disabled', '')
+                    $('#tgl_kunjungan_rujuk').attr('disabled', '')
+                    $('#diagnosa_rujuk').attr('disabled', '')
+                    $('#catatan_rujuk').attr('disabled', '')
+                    $('.btn-cari').css('display', 'none')
+                    $('#ppk_rujuk').val(response.rujukan_keluar.nm_ppkDirujuk)
+                    tanggalKontrol = splitTanggal(response.rujukan_keluar.tglRencanaKunjungan);
+                    $('#diagnosa_rujuk').val(response.rujukan_keluar.nama_diagRujukan)
+                    $('#poli_rujuk').val(response.rujukan_keluar.poliRujukan)
+                    $('#catatan_rujuk').val(response.rujukan_keluar.catatan)
+                    $('#tipe_rujuk').append('<option selected disable value="x">' + response.rujukan_keluar.tipeRujukan + '</option>')
+                    $('#modalRujukanKeluar .modal-footer').css('display', 'none')
+                }
             })
         }
 
@@ -739,9 +755,6 @@
                                 })
                             }
 
-                            // console.log(row)
-
-
                             no_rawat = textRawat(row.no_rawat);
                             btnSep = '<div class="dropdown mb-1 mt-1" id="dropdown-sep-' + no_rawat + '"> <button id="btn-rujuk-' + no_rawat + '" class="btn-sm" style="font-size:10px;width:112px" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button></div>';
                             badgeKontrol = '';
@@ -753,8 +766,10 @@
                                 html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rujukanKeluar(\'' + row.sep.no_sep + '\')">Rujukan Keluar</a></li>'
                                 html += '</ul>'
                                 $('#dropdown-sep-' + no_rawat).append(html)
-                                if (row.sep.surat_kontrol && row.kd_pj != "A03") {
+                                if (row.sep.surat_kontrol) {
                                     badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
+                                } else if (row.sep.rujukan_keluar) {
+                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Rujuk : ' + row.sep.rujukan_keluar.nm_ppkDirujuk.split(' - ')[0] + '</span></a>';
                                 }
                             } else if (!row.sep && row.kd_pj != "A03") {
                                 $('#btn-rujuk-' + no_rawat).addClass('btn btn-danger dropdown-toggle');

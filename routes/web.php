@@ -43,6 +43,7 @@ use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\PenilaianMedisRanapController;
 use App\Http\Controllers\Bridging\RencanaKontrolController;
 use App\Http\Controllers\Bridging\RujukanController;
+use App\Http\Controllers\BridgingRujukanBpjsController;
 use App\Http\Controllers\BrigdgingRencanaKontrolController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
@@ -232,6 +233,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('rencanaKontrol/insert', [BrigdgingRencanaKontrolController::class, 'create']);
+    Route::post('rujukan/insert', [BridgingRujukanBpjsController::class, 'create']);
     Route::post('kontrol/umum/baru', [SuratKontrolUlangController::class, 'create']);
     Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
     Route::get('poliklinik/bpjs/{kdPoli}', [MappingPoliBpjsController::class, 'ambil']);

@@ -25,11 +25,10 @@
 @push('script')
     <script>
         $('#modalFaskes').on('hidden.bs.modal', function() {
-            $('#modalRujukanKeluar').modal('show')
             $('.table-faskes tbody').empty()
         })
         $('#modalFaskes').on('shown.bs.modal', function() {
-            $('#modalRujukanKeluar').modal('hide')
+            $(this).css('background-color', 'rgba(0,0,0,.25)')
         })
     </script>
 @endpush
