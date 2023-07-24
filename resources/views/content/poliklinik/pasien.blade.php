@@ -711,18 +711,9 @@
                                     $('.selesai-' + norawat).prop('disabled', true);
                                 }
                                 html = '<div id="aksi-' + norawat + '">';
-                                html += ' <button onclick="panggil(\'' + norawat +
-                                    '\')" class="btn btn-sm mb-2 panggil-' + norawat +
-                                    '" type="button" style="width:80px;" data-id="' + row.no_rawat +
-                                    '"></button><br/>';
-                                html += ' <button onclick="selesai(\'' + norawat +
-                                    '\')" class="btn btn-sm mb-2 selesai-' + norawat +
-                                    '" type="button" style="width:80px;" data-id="' + row.no_rawat +
-                                    '">SELESAI</button><br/>';
-                                html += ' <button onclick="batal(\'' + norawat +
-                                    '\')" class="btn btn-sm mb-2 batal-' + norawat +
-                                    '" type="button" style="width:80px;" data-id="' + row.no_rawat +
-                                    '">BATAL</button><br/>';
+                                html += ' <button onclick="panggil(\'' + norawat + '\')" class="btn btn-sm mb-2 panggil-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '"></button><br/>';
+                                html += ' <button onclick="selesai(\'' + norawat + '\')" class="btn btn-sm mb-2 selesai-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">SELESAI</button><br/>';
+                                html += ' <button onclick="batal(\'' + norawat + '\')" class="btn btn-sm mb-2 batal-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">BATAL</button><br/>';
                                 html += '</div>';
                             }
                             return html
