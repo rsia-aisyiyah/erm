@@ -116,7 +116,7 @@
             $('#catatan_rujuk').removeAttr('disabled')
             $('#modalRujukanKeluar .modal-footer').removeAttr('style')
             $('#ppk_rujuk').val('')
-            tanggalKontrol = '';
+            tanggalKontrol = splitTanggal("{{ date('Y-m-d') }}");
             $('.btn-cari').css('display', 'inline')
             $('#diagnosa_rujuk').val('')
             $('#poli_rujuk').val('')

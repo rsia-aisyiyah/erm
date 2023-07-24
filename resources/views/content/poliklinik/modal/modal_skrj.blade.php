@@ -71,27 +71,28 @@
 @push('script')
     <script>
         $('#modalSkrj').on('shown.bs.modal', function() {
-            console.log(tanggalKontrol)
+            // console.log(tanggalKontrol)
             isModalShow = true;
             date = new Date()
             hari = ('0' + (date.getDate())).slice(-2);
             bulan = ('0' + (date.getMonth() + 1)).slice(-2);
             tahun = date.getFullYear();
             dateStart = hari + '-' + bulan + '-' + tahun;
-            $('.tanggal').datepicker({
+            let tanggal = tanggalKontrol ? tanggalKontrol : dateStart;
+            $('#tgl_kontrol').datepicker({
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
                 autoclose: true,
-                startDate: '+1d',
+                setDate: dateStart,
+                startDate: '+1',
             });
-
-            let tanggal = tanggalKontrol ? tanggalKontrol : dateStart;
             $('#tgl_surat').val(splitTanggal("{{ date('Y-m-d') }}"));
             $('#tgl_kontrol').datepicker('setDate', tanggal)
         })
         $('#modalSkrj').on('hidden.bs.modal', function() {
             isModalShow = false;
             $('.opt-rawat').empty();
+            tanggalKontrol = splitTanggal("{{ date('Y-m-d') }}");
         });
 
         function tarikRencanaKontrol(data) {
