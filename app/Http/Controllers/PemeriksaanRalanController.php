@@ -99,10 +99,11 @@ class PemeriksaanRalanController extends Controller
         }
 
 
-        if ($this->resepObat->isAvailable($request->no_rawat)) {
-            $resep = $this->resepObat->isAvailable($request->no_rawat);
-            $this->resepObat->updateTime($resep->no_resep);
-        }
+        // if ($this->resepObat->isAvailable($request->no_rawat)) {
+        //     $resep = $this->resepObat->isAvailable($request->no_rawat);
+        //     $this->resepObat->updateTime($resep->no_resep);
+        // }
+
         $this->track->create($trackSql);
         return response()->json(['Berhasil', $update], 200);
     }
