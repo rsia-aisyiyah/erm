@@ -686,6 +686,7 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             let html = '';
+                            norawat = textRawat(row.no_rawat)
                             if (row.stts == 'Batal') {
                                 html =
                                     '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
@@ -695,31 +696,31 @@
                             } else {
 
                                 if (row.stts == 'Berkas Diterima' || row.stts == 'Periksa') {
-                                    $('.panggil-' + row.no_reg).text('RE-CALL');
-                                    $('.selesai-' + row.no_reg).addClass('btn-warning');
-                                    $('.panggil-' + row.no_reg).prop('style',
+                                    $('.panggil-' + norawat).text('RE-CALL');
+                                    $('.selesai-' + norawat).addClass('btn-warning');
+                                    $('.panggil-' + norawat).prop('style',
                                         'width:80px;background-color:#9800af;border-color:#8e06a3;color:white'
                                     );
-                                    $('.batal-' + row.no_reg).addClass('btn-danger');
+                                    $('.batal-' + norawat).addClass('btn-danger');
                                 } else {
-                                    $('.panggil-' + row.no_reg).addClass('btn-success');
-                                    $('.batal-' + row.no_reg).addClass('btn-secondary');
-                                    $('.selesai-' + row.no_reg).addClass('btn-secondary');
-                                    $('.panggil-' + row.no_reg).text('PANGGIL')
-                                    $('.batal-' + row.no_reg).prop('disabled', true);
-                                    $('.selesai-' + row.no_reg).prop('disabled', true);
+                                    $('.panggil-' + norawat).addClass('btn-success');
+                                    $('.batal-' + norawat).addClass('btn-secondary');
+                                    $('.selesai-' + norawat).addClass('btn-secondary');
+                                    $('.panggil-' + norawat).text('PANGGIL')
+                                    $('.batal-' + norawat).prop('disabled', true);
+                                    $('.selesai-' + norawat).prop('disabled', true);
                                 }
-                                html = '<div id="aksi-' + row.no_reg + '">';
-                                html += ' <button onclick="panggil(\'' + row.no_reg +
-                                    '\')" class="btn btn-sm mb-2 panggil-' + row.no_reg +
+                                html = '<div id="aksi-' + norawat + '">';
+                                html += ' <button onclick="panggil(\'' + norawat +
+                                    '\')" class="btn btn-sm mb-2 panggil-' + norawat +
                                     '" type="button" style="width:80px;" data-id="' + row.no_rawat +
                                     '"></button><br/>';
-                                html += ' <button onclick="selesai(\'' + row.no_reg +
-                                    '\')" class="btn btn-sm mb-2 selesai-' + row.no_reg +
+                                html += ' <button onclick="selesai(\'' + norawat +
+                                    '\')" class="btn btn-sm mb-2 selesai-' + norawat +
                                     '" type="button" style="width:80px;" data-id="' + row.no_rawat +
                                     '">SELESAI</button><br/>';
-                                html += ' <button onclick="batal(\'' + row.no_reg +
-                                    '\')" class="btn btn-sm mb-2 batal-' + row.no_reg +
+                                html += ' <button onclick="batal(\'' + norawat +
+                                    '\')" class="btn btn-sm mb-2 batal-' + norawat +
                                     '" type="button" style="width:80px;" data-id="' + row.no_rawat +
                                     '">BATAL</button><br/>';
                                 html += '</div>';
