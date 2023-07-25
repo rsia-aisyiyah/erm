@@ -47,10 +47,39 @@
 
                     <input type="hidden" id="hitung-panggil" value="">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6 col-lg-3 col-sm-12">
                             <div class="mb-3">
-                                <label for="tgl_registrasi" class="form-label">Tgl. Registrasi</label>
+                                <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Tgl. Registrasi</label>
                                 <input type="text" class="form-control form-control-sm" id="tgl_registrasi" placeholder="" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 col-sm-12">
+                            <div class="mb-3">
+                                <label for="pasien" class="form-label" style="font-size: 12px;margin-bottom:0px">Nama Pasien</label>
+                                <input type="search" class="form-control form-control-sm" id="pasien-cari" placeholder="Cari nama pasien... " autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 col-sm-12">
+                            <div class="mb-3">
+                                <label for="pembiayaan" class="form-label" style="font-size: 12px;margin-bottom:0px">Pembiayaan</label>
+                                <select name="pembiayaan" id="pembiayaan" class="form-select form-select-sm" style="font-size: 12px;">
+                                    <option value="" disabled selected>Pilih Pembiayaan</option>
+                                    <option value="">Umum & BPJS </option>
+                                    <option value="BPJS">BPJS</option>
+                                    <option value="Umum">Umum</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 col-sm-12">
+                            <div class="mb-3">
+                                <label for="status_periksa" class="form-label" style="font-size: 12px;margin-bottom:0px">Status Periksa</label>
+                                <select name="status_periksa" id="status_periksa" class="form-select form-select-sm" style="font-size: 12px;">
+                                    <option value="" disabled selected>Pilih Status Periksa</option>
+                                    <option value="">Semua</option>
+                                    <option value="Sudah">Sudah</option>
+                                    <option value="Belum">Belum</option>
+                                    <option value="Batal">Batal</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -92,7 +121,34 @@
         var kd_poli = '{{ $poli->kd_poli }}';
         var kd_dokter = "{{ Request::get('dokter') }}";
         var tgl_registrasi = "";
+        var nmpasien = "";
+        var pembiayaan = "";
+        var status_periksa = "";
 
+        $('#pasien-cari').on('keyup', function() {
+            nmpasien = $('#pasien-cari').val();
+            if (nmpasien.length >= 3) {
+                $('#tb_pasien').DataTable().destroy();
+                tb_pasien(tgl_registrasi, nmpasien, pembiayaan, status_periksa);
+            }
+        })
+
+        $('#pasien-cari').on('search', function() {
+            nmpasien = '';
+            $('#tb_pasien').DataTable().destroy();
+            tb_pasien(tgl_registrasi);
+        })
+
+        $('#pembiayaan').on('change', function() {
+            pembiayaan = $(this).val();
+            $('#tb_pasien').DataTable().destroy();
+            tb_pasien(tgl_registrasi, nmpasien, pembiayaan, status_periksa);
+        })
+        $('#status_periksa').on('change', function() {
+            status_periksa = $(this).val();
+            $('#tb_pasien').DataTable().destroy();
+            tb_pasien(tgl_registrasi, nmpasien, pembiayaan, status_periksa);
+        })
 
         $(document).ready(function() {
             date = new Date()
@@ -551,7 +607,6 @@
             $('#modalRujukanKeluar').modal('show')
 
             cekSep(noSep).done(function(response) {
-                console.log(response)
                 $('#no_sep_rujuk').val(response.no_sep)
                 $('#no_rawat_rujuk').val(response.no_rawat)
                 $('#pasien_rujuk').val(response.reg_periksa.no_rkm_medis + ' - ' + response.nama_pasien)
@@ -656,7 +711,7 @@
             // $('#btn-spesialis').attr('onclick', 'cariDokterSpesialisBpjs(2, \'' + kode + '\')');
         }
 
-        function tb_pasien(tgl_registrasi) {
+        function tb_pasien(tgl_registrasi, nama = '', pembiayaan = '', status) {
 
             tgl_registrasi = tgl_registrasi ? tgl_registrasi : "{{ date('Y-m-d') }}";
 
@@ -681,6 +736,9 @@
                         kd_poli: '{{ $poli->kd_poli }}',
                         kd_dokter: "{{ Request::get('dokter') }}",
                         tgl_registrasi: tgl_registrasi,
+                        pasien: nama,
+                        pembiayaan: pembiayaan,
+                        status_periksa: status,
                     },
                 },
                 columns: [{
@@ -749,8 +807,8 @@
                             }
 
                             no_rawat = textRawat(row.no_rawat);
-                            btnSep = '<div class="dropdown mb-1 mt-1" id="dropdown-sep-' + no_rawat + '"> <button id="btn-rujuk-' + no_rawat + '" class="btn-sm" style="font-size:10px;width:112px" type="button" data-bs-toggle="dropdown" aria-expanded="false" ><ul class="dropdown-menu" style="font-size:12px"></button></div>';
                             badgeKontrol = '';
+                            btnSep = '<div class="dropdown mb-1 mt-1" id="dropdown-sep-' + no_rawat + '"> <button id="btn-rujuk-' + no_rawat + '" class="btn-sm" style="font-size:10px;width:112px" type="button" data-bs-toggle="dropdown" aria-expanded="false" ><ul class="dropdown-menu" style="font-size:12px"></button></div>';
                             if (row.sep && row.kd_pj != "A03") {
                                 $('#btn-rujuk-' + no_rawat).addClass('btn btn-success dropdown-toggle');
                                 $('#btn-rujuk-' + no_rawat).text('SEP Sudah Terbit');
@@ -1244,7 +1302,6 @@
                     $('.tb-askep-imunisasi tbody').empty()
                     $('.imunisasi').remove()
                     $.map(response.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
-                        // console.log('imunisasi', imunisasi)
                         if (namaImunisasi != imunisasi.master_imunisasi.nama_imunisasi) {
                             namaImunisasi = imunisasi.master_imunisasi.nama_imunisasi
                             html = '<tr class="imunisasi ' + imunisasi.kode_imunisasi + '">'
