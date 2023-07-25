@@ -82,6 +82,7 @@
     @include('content.poliklinik.modal.modal_skrj')
     @include('content.poliklinik.modal.modal_rujukan_keluar')
     @include('content.poliklinik.modal.modal_kontrol_umum')
+    @include('content.poliklinik.modal.modal_icare')
 @endsection
 
 @push('script')
@@ -748,7 +749,7 @@
                             }
 
                             no_rawat = textRawat(row.no_rawat);
-                            btnSep = '<div class="dropdown mb-1 mt-1" id="dropdown-sep-' + no_rawat + '"> <button id="btn-rujuk-' + no_rawat + '" class="btn-sm" style="font-size:10px;width:112px" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button></div>';
+                            btnSep = '<div class="dropdown mb-1 mt-1" id="dropdown-sep-' + no_rawat + '"> <button id="btn-rujuk-' + no_rawat + '" class="btn-sm" style="font-size:10px;width:112px" type="button" data-bs-toggle="dropdown" aria-expanded="false" ><ul class="dropdown-menu" style="font-size:12px"></button></div>';
                             badgeKontrol = '';
                             if (row.sep && row.kd_pj != "A03") {
                                 $('#btn-rujuk-' + no_rawat).addClass('btn btn-success dropdown-toggle');
@@ -756,15 +757,22 @@
                                 html = '<ul class="dropdown-menu" style="font-size:12px">'
                                 html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="kontrolUlang(\'' + row.sep.no_sep + '\')">Kontrol Ulang / SKRJ</a></li>'
                                 html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rujukanKeluar(\'' + row.sep.no_sep + '\')">Rujukan Keluar</a></li>'
+                                html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
                                 html += '</ul>'
                                 $('#dropdown-sep-' + no_rawat).append(html)
                                 if (row.sep.surat_kontrol) {
                                     badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
                                 } else if (row.sep.rujukan_keluar) {
-                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Rujuk : ' + row.sep.rujukan_keluar.nm_ppkDirujuk.split(' - ')[0] + '</span></a>';
+                                    textRujukan = row.sep.rujukan_keluar.nm_ppkDirujuk.split(' - ')[0];
+                                    rujukan = textRujukan.length > 10 ? textRujukan.substring(0, 10) + '...' : textRujukan
+                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Rujuk : ' + rujukan + '</span></a>';
                                 }
                             } else if (!row.sep && row.kd_pj != "A03") {
                                 $('#btn-rujuk-' + no_rawat).addClass('btn btn-danger dropdown-toggle');
+                                html = '<ul class="dropdown-menu" style="font-size:12px">'
+                                html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
+                                html += '</ul>'
+                                $('#dropdown-sep-' + no_rawat).append(html)
                                 $('#btn-rujuk-' + no_rawat).text('Belum Terbit SEP');
 
                             } else {
@@ -894,6 +902,53 @@
                 }
             });
         }
+
+        function riwayatIcare(noka, dokter) {
+
+            let riwayat = $.ajax({
+                url: '/erm/bridging/riwayat/icare',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    param: noka,
+                    kodedokter: dokter,
+                },
+                beforeSend: function() {
+                    swal.fire({
+                        title: 'Sedang mengirim data',
+                        text: 'Mohon Tunggu',
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            swal.showLoading();
+                        }
+                    })
+                },
+                crossDomain: true,
+                method: 'POST',
+                dataType: 'JSON',
+            }).done(function(response) {
+                if (response.metaData.code == 200) {
+                    if (response.response != null) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sukses !',
+                            text: 'Data Berhasil Diproses',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        window.open(response.response.url, 'Riwayat Perawatan Icare', "width=" + screen.availWidth + ",height=" + screen.availHeight)
+                    } else {
+                        riwayatIcare(noka, dokter)
+                    }
+                } else {
+                    Swal.fire(
+                        'Peringatan',
+                        response.metaData.message,
+                        'warning'
+                    )
+                }
+            })
+        }
+
 
         function kontrolUmum(no_rawat) {
             $.ajax({

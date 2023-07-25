@@ -236,5 +236,6 @@ return [
     'secretKey' => env('BPJS_SECRET_KEY'),
     'userKey' => env('BPJS_USER_KEY'),
     'bpjsUrl' => env('BPJS_URL'),
+    'icareUrl' => env('ICARE_URL'),
 
 ];

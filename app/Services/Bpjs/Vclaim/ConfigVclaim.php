@@ -10,6 +10,7 @@ use App\Services\Bpjs\Vclaim\ManageService;
 class ConfigVclaim extends ManageService
 {
     protected $urlEndpoint;
+    protected $icareUrl;
     protected $consId;
     protected $secretKey;
     protected $userKey;
@@ -22,11 +23,16 @@ class ConfigVclaim extends ManageService
         $this->consId = config('app.consId');
         $this->secretKey = config('app.secretKey');
         $this->userKey = config('app.userKey');
+        $this->icareUrl = config('app.icareUrl');
     }
 
     public function setUrl()
     {
         return $this->urlEndpoint;
+    }
+    public function setUrlIcare()
+    {
+        return $this->icareUrl;
     }
 
     public function setConsId()
@@ -83,6 +89,18 @@ class ConfigVclaim extends ManageService
             'X-signature' => $this->setSignature(),
             'user_key'    => $this->setUserKey(),
             'Content-Type'    => $this->setUrlEncode()
+        ];
+    }
+
+    public function setHeaderIcare()
+    {
+        return [
+            'Accept' => 'application/json',
+            'X-cons-id'   => $this->setConsid(),
+            'X-timestamp' => $this->setTimestamp(),
+            'X-signature' => $this->setSignature(),
+            'user_key'    => $this->setUserKey(),
+            'Content-Type'    => $this->setUrlJson()
         ];
     }
 
