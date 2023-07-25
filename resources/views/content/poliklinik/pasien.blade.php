@@ -127,7 +127,7 @@
 
         $('#pasien-cari').on('keyup', function() {
             nmpasien = $('#pasien-cari').val();
-            if (nmpasien.length >= 3) {
+            if (nmpasien.length >= 3 || nmpasien.length == 0) {
                 $('#tb_pasien').DataTable().destroy();
                 tb_pasien(tgl_registrasi, nmpasien, pembiayaan, status_periksa);
             }
