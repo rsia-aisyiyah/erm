@@ -1,8 +1,9 @@
 /node_modules
-/public
+# /public
 /public/hot
 /public/storage
 /public/ttd
+/public/vendor
 /storage/*.key
 /vendor
 .env
