@@ -643,7 +643,17 @@
 
             cekSep(noSep).done(function(response) {
 
-                rujukanExpired(response.tglrujukan)
+                cekSep(response.no_rujukan).done(function(res) {
+                    console.log(res)
+                    if (Object.keys(res).length == 0) {
+                        rujukanExpired(response.tglrujukan)
+                        console.log('TAMPIL MASA BERLAKU RUJUKAN ')
+                    } else {
+                        $('.rujukan-expired').empty()
+                        console.log('TIDAK TAMPIL ')
+                    }
+                })
+
                 $('.no_rawat').val(response.no_rawat)
                 $('.no_sep').val(response.no_sep)
                 $('.pasien').val(response.nomr + ' - ' + response.nama_pasien + '(' + response.reg_periksa.umurdaftar + ')');

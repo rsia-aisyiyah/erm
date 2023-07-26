@@ -11,4 +11,9 @@ class BridgingRujukanBpjs extends Model
     protected $table = 'bridging_rujukan_bpjs';
     protected $fillable = ['no_sep', 'tglRujukan', 'tglRencanaKunjungan', 'ppkDirujuk', 'nm_ppkDirujuk', 'jnsPelayanan', 'nama_diagRujukan', 'catatan', 'diagRujukan', 'poliRujukan', 'tipeRujukan', 'nama_poliRujukan', 'no_rujukan', 'user'];
     public $timestamps = false;
+
+    function sep()
+    {
+        return $this->belongsTo(BridgingSep::class, 'no_sep', 'no_sep');
+    }
 }

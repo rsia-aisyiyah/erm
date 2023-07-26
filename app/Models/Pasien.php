@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Upload;
+use App\Models\BridgingSep;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -29,5 +30,9 @@ class Pasien extends Model
     public function riwayatImunisasi()
     {
         return $this->hasMany(RiwayatImunisasi::class, 'no_rkm_medis', 'no_rkm_medis');
+    }
+    function sep()
+    {
+        return $this->hasMany(BridgingSep::class, 'no_kartu', 'no_peserta');
     }
 }

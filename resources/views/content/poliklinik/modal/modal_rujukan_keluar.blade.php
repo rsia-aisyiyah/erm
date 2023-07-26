@@ -127,6 +127,7 @@
         })
 
         $('#tipe_rujuk').on('change', function(evt) {
+            $('#jns_rujuk').val(this.value)
             if (this.value == 2) {
                 cekSep($('#no_sep_rujuk').val()).done(function(response) {
                     $('#kode_ppk').val(response.kdppkrujukan)
@@ -322,6 +323,7 @@
                 success: function(response) {
                     delete data._token;
                     delete data.noSep;
+                    delete data.tipeRujukan;
                     detailData = {
                         'nm_ppkDirujuk': $('#ppk_rujuk').val(),
                         'nama_diagRujukan': $('#diagnosa_rujuk').val(),
@@ -335,6 +337,7 @@
                                 '_token': "{{ csrf_token() }}",
                                 'no_sep': $('#no_sep_rujuk').val(),
                                 'no_rujukan': response.response.rujukan.noRujukan,
+                                'tipeRujukan': $('#tipe_rujuk option:selected').text(),
                             }
 
                             dataRujukan = Object.assign(data, detailData, rujukan)
@@ -351,6 +354,7 @@
                                                 '_token': "{{ csrf_token() }}",
                                                 'no_sep': $('#no_sep_rujuk').val(),
                                                 'no_rujukan': response.response.rujukan.noRujukan,
+                                                'tipeRujukan': $('#tipe_rujuk option:selected').text(),
                                             }
                                             dataRujukan = Object.assign(data, detailData, rujukan)
                                             tarikRujukanKeluar(dataRujukan)
