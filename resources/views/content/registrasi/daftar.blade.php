@@ -78,10 +78,9 @@
                                     html = '<img src="{{ asset('ttd') }}/' + row.general_consent.ttd +
                                         '" width = "200px" / > '
                                 } else {
-                                    html =
-                                        '<img src="{{ asset('img/default.png') }}/" width="200px"/>'
+                                    html = '<img src="{{ asset('img/default.png') }}/" width="150px"/><br/>';
+                                    html += '<button onclick="hapusPersetujuan(\'' + row.no_rawat + '\')" class="btn btn-sm btn-danger mt-2" type="button" style="width:150px;" data-id="' + row.no_rawat + '" data-rm="' + row.no_rkm_medis + '" data-loket="1">BATAL</button><br/>';
                                 }
-
                             } else {
                                 html =
                                     '<button onclick="buka(this, 1)" class="btn btn-sm btn-primary mb-2" type="button" style="width:110px;" data-id="' +
@@ -135,6 +134,21 @@
 
             })
             return hasil;
+        }
+
+        function hapusPersetujuan(no_rawat) {
+            $.ajax({
+                url: 'persetujuan/hapus',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_rawat: no_rawat,
+                },
+                method: 'DELETE',
+                success: function(response) {
+                    $('#tb_daftar_pasien').DataTable().destroy();
+                    tbDaftarPasien()
+                }
+            })
         }
 
         function buka(p, loket) {

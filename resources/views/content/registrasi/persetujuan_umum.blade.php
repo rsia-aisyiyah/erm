@@ -204,6 +204,13 @@
                     </h4>
 
                     <ol class="mt-4" style="font-size:13px">
+                        <li>
+                            <strong>SAYA MENGETAHUI DAN MENYETUJUI </strong> berdasarkan Peraturan Menteri Kesehatan Nomor 24 Tahun 2022 tentang Rekam Medis, fasilitas kesehatan wajib membuka akses dan mengirim data rekam medis kepada Kementrian Kesehatan melalui platform <strong><u>SATUSEHAT</u></strong>.
+                        </li>
+                        <li>
+                            <strong>
+                                MENYETUJUI UNTUK MENERIMA DAN MEMBUKA </strong> data pasien dari Fasilitas Pelayanan Kesehatan lainnya melalui <strong><u>SATUSEHAT</u></strong> untuk kepentingan pelayanan kesehatan dan/atau rujukan.
+                        </li>
                         <li><strong>HAK PASIEN DAN KELUARGA</strong>. Saya telah mendapat informasi dan memahami tentang
                             hak dan
                             kewajiban
@@ -597,6 +604,13 @@
             </h4>
 
             <ol class="mt-4" style="font-size:13px">
+                <li>
+                    <strong>SAYA MENGETAHUI DAN MENYETUJUI </strong> berdasarkan Peraturan Menteri Kesehatan Nomor 24 Tahun 2022 tentang Rekam Medis, fasilitas kesehatan wajib membuka akses dan mengirim data rekam medis kepada Kementrian Kesehatan melalui platform <strong><u>SATUSEHAT</u></strong>.
+                </li>
+                <li>
+                    <strong>
+                        MENYETUJUI UNTUK MENERIMA DAN MEMBUKA </strong> data pasien dari Fasilitas Pelayanan Kesehatan lainnya melalui <strong><u>SATUSEHAT</u></strong> untuk kepentingan pelayanan kesehatan dan/atau rujukan.
+                </li>
                 <li><strong>HAK PASIEN DAN KELUARGA</strong>. Saya telah mendapat informasi dan memahami
                     tentang
                     hak dan
@@ -743,14 +757,14 @@
                     Aisyiyah Pekajangan
                 </li>
             </ol>
-            <p style="font-size:13px"><strong><a class="btn btn-primary btn-setuju" data-id="" id=""
-                        style="border-radius:0px">TELAH MEMBACA
-                        dan
+            <p style="font-size:13px"><strong><a class="btn btn-primary btn-setuju" data-id="" id="" style="border-radius:0px">TELAH MEMBACA dan
                         SEPENUHNYA
                         SETUJU</a></strong> dengan setiap pernyataan
                 diatas dan
                 menandatanganinya
                 tanpa paksaan dan dengan kesadaran penuh.</p>
+
+            <p class="text-center alert alert-success" style="padding:5px;border-raduis:0px;font-size:13px">Form tanda tangan akan muncul jika anda klik tombol "TELAH MEMBACA DAN SEPENUHNYA SETUJU"</p>
         </div>
     </div>
 

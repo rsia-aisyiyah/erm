@@ -42,7 +42,7 @@ class PoliklinikController extends Controller
         $tanggal = new Carbon();
 
         $sekarang = $tanggal->now()->toDateString();
-        $pasienPoli = RegPeriksa::with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter', 'penjab', 'upload', 'pemeriksaanRalan', 'sep.suratKontrol'])
+        $pasienPoli = RegPeriksa::with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter.mappingDokter', 'penjab', 'upload', 'pemeriksaanRalan', 'sep.suratKontrol', 'suratKontrol', 'sep.rujukanKeluar'])
             ->where('kd_poli', $kd_poli)
             ->orderBy('no_reg', 'ASC');
 
@@ -106,9 +106,30 @@ class PoliklinikController extends Controller
     }
     public function tbPoliPasien(Request $request)
     {
-        $pasien = $this->poliPasien($request->kd_poli, $request->kd_dokter, $request->tgl_registrasi);
 
-        return DataTables::of($pasien)->make(true);
+        $pasien = $this->poliPasien($request->kd_poli, $request->kd_dokter, $request->tgl_registrasi);
+        if ($request->pasien) {
+            $pasien->whereHas('pasien', function ($query) use ($request) {
+                $query->where('nm_pasien', 'like', '%' . $request->pasien . '%');
+            });
+        }
+        if ($request->pembiayaan) {
+            $pasien->whereHas('penjab', function ($query) use ($request) {
+                $query->where('png_jawab', 'like', '%' . $request->pembiayaan . '%');
+            });
+        }
+        if ($request->status_periksa) {
+            $pasien->where('stts', $request->status_periksa);
+        }
+
+        return DataTables::of($pasien)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('search') && $request->get('search')['value']) {
+                    return $query->whereHas('pasien', function ($query) use ($request) {
+                        $query->where('nm_pasien', 'like', '%' . $request->get('search')['value'] . '%');
+                    });
+                }
+            })->make(true);
     }
 
     public function statusUpload(Request $request)

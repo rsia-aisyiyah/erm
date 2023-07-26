@@ -284,68 +284,71 @@
             });
         }
 
-        function simpanSoap() {
-            let pasien = $('#nomor_rawat').val();
-            let splitPasien = pasien.split(' - ');
-            let no = splitPasien[0];
+        // function simpanSoap() {
+        //     let pasien = $('#nomor_rawat').val();
+        //     let splitPasien = pasien.split(' - ');
+        //     let no = splitPasien[0];
 
-            $.ajax({
-                url: 'soap/simpan',
-                data: {
-                    '_token': '{{ csrf_token() }}',
-                    'suhu_tubuh': $('#suhu').val(),
-                    'nip': "{{ session()->get('pegawai')->nik }}",
-                    'no_rawat': no,
-                    'jam_rawat': $('#jam_rawat').val(),
-                    'tgl_perawatan': $('#tgl_perawatan').val(),
-                    'tinggi': $('#tinggi').val(),
-                    'berat': $('#berat').val(),
-                    'respirasi': $('#respirasi').val(),
-                    'nadi': $('#nadi').val(),
-                    'tensi': $('#tensi').val(),
-                    'spo2': $('#spo2').val(),
-                    'gcs': $('#gcs').val(),
-                    'alergi': $('#alergi').val(),
-                    'keluhan': $('#subjek').val(),
-                    'pemeriksaan': $('#objek').val(),
-                    'penilaian': $('#asesmen').val(),
-                    'rtl': $('#plan').val(),
-                    'evaluasi': $('#plan').val(),
-                    'instruksi': $('#instruksi').val(),
-                },
-                method: 'POST',
-                beforeSend: function() {
-                    swal.fire({
-                        title: 'Sedang mengirim data',
-                        text: 'Mohon Tunggu',
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            swal.showLoading();
-                        }
-                    })
-                },
-                success: function(response) {
-                    if (response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'SUKSES !',
-                            text: 'Data Berhasil Ditambah',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        $('#tbSoap').DataTable().destroy();
-                        tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
-                    } else {
-                        Swal.fire({
-                            icon: 'danger',
-                            title: 'GAGAL !',
-                            text: 'Data Gagal Ditambah',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }
-                }
-            })
-        }
+        //     $.ajax({
+        //         url: 'soap/simpan',
+        //         data: {
+        //             '_token': '{{ csrf_token() }}',
+        //             'suhu_tubuh': $('#suhu').val(),
+        //             'nip': "{{ session()->get('pegawai')->nik }}",
+        //             'no_rawat': no,
+        //             'jam_rawat': $('#jam_rawat').val(),
+        //             'tgl_perawatan': $('#tgl_perawatan').val(),
+        //             'tinggi': $('#tinggi').val(),
+        //             'berat': $('#berat').val(),
+        //             'respirasi': $('#respirasi').val(),
+        //             'nadi': $('#nadi').val(),
+        //             'tensi': $('#tensi').val(),
+        //             'spo2': $('#spo2').val(),
+        //             'gcs': $('#gcs').val(),
+        //             'alergi': $('#alergi').val(),
+        //             'keluhan': $('#subjek').val(),
+        //             'pemeriksaan': $('#objek').val(),
+        //             'penilaian': $('#asesmen').val(),
+        //             'rtl': $('#plan').val(),
+        //             'evaluasi': $('#plan').val(),
+        //             'instruksi': $('#instruksi').val(),
+        //             'kd_dokter': "{{ Request::get('dokter') }}"
+        //             'kd_poli': "{{ Request::segment(2) }}"
+        //             'no_rkm_medis': $('#no_rm').val()
+        //         },
+        //         method: 'POST',
+        //         beforeSend: function() {
+        //             swal.fire({
+        //                 title: 'Sedang mengirim data',
+        //                 text: 'Mohon Tunggu',
+        //                 showConfirmButton: false,
+        //                 didOpen: () => {
+        //                     swal.showLoading();
+        //                 }
+        //             })
+        //         },
+        //         success: function(response) {
+        //             if (response) {
+        //                 Swal.fire({
+        //                     icon: 'success',
+        //                     title: 'SUKSES !',
+        //                     text: 'Data Berhasil Ditambah',
+        //                     showConfirmButton: false,
+        //                     timer: 1500
+        //                 })
+        //                 $('#tbSoap').DataTable().destroy();
+        //                 tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+        //             } else {
+        //                 Swal.fire({
+        //                     icon: 'danger',
+        //                     title: 'GAGAL !',
+        //                     text: 'Data Gagal Ditambah',
+        //                     showConfirmButton: false,
+        //                     timer: 1500
+        //                 })
+        //             }
+        //         }
+        //     })
+        // }
     </script>
 @endpush

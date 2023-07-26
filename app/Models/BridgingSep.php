@@ -18,4 +18,8 @@ class BridgingSep extends Model
     {
         return $this->hasOne(RencanaKontrol::class, 'no_sep', 'no_sep');
     }
+    public function rujukanKeluar()
+    {
+        return $this->hasOne(BridgingRujukanBpjs::class, 'no_sep', 'no_sep');
+    }
 }

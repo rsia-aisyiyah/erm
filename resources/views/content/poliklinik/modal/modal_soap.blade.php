@@ -606,7 +606,7 @@
 
                         kandungan = res.kandungan != 0 ? res.kandungan : res.data_barang.kapasitas;
 
-                        html += '<tr class="">'
+                        html += '<tr class="obat-' + no + '">'
                         html +=
                             '<td><input type="hidden" id="kode_brng' + no + '" value="' +
                             res
@@ -617,33 +617,13 @@
                             '" name="kps[]" value="' +
                             res.data_barang.kapasitas +
                             '"/>' + res.data_barang.kapasitas + ' mg </td>'
-                        html +=
-                            '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' +
-                            no +
-                            '" name="p1[]" value="' +
-                            res.p1 +
-                            '" onfocusout="hitungObatRacik(' + no + ')"/></td>'
+                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' + no + '" name="p1[]" value="' + res.p1 + '" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
                         html += '<td>/</td>'
-                        html +=
-                            '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' +
-                            no +
-                            '"name="p2[]" onfocusout="hitungObatRacik(' + no +
-                            ')" value="' + res.p2 + '"/></td>'
-                        html +=
-                            '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' +
-                            no +
-                            '" name="kandungan[]" onkeypress="return hanyaAngka(event)" value="' + kandungan + '" onchange="hitungDosis(' + no + ')"/></td>'
+                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' + no + '"name="p2[]" onkeyup="hitungObatRacik(' + no + ')" value="' + res.p2 + '" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
+                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' + no + '" name="kandungan[]" onkeypress="return hanyaAngka(event)" value="' + kandungan + '" onkeyup="hitungDosis(' + no + ')" autocomplete="off"/></td>'
                         html += '<td>mg</td>'
-                        html +=
-                            '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +
-                            no +
-                            '" name="jml[]" value="' + hitungJumlahObat(res.data_barang.kapasitas, res.p1, res.p2) + '" readonly/></td>'
-                        html +=
-                            '<td><button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="' +
-                            res.no_resep + '" data-racik="' +
-                            res.no_racik +
-                            '" data-obat="' + res.kode_brng +
-                            '" onclick="hapusObat(this)"><i class="bi bi-trash-fill"></i></button></td>'
+                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' + no + '" name="jml[]" value="' + hitungJumlahObat(res.data_barang.kapasitas, res.p1, res.p2) + '" readonly/></td>'
+                        html += '<td><button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="' + res.no_resep + '" data-racik="' + res.no_racik + '" data-obat="' + res.kode_brng + '" data-no="' + no + '" onclick="hapusObat(this)"><i class="bi bi-trash-fill"></i></button></td>'
                         html += '</tr>'
                         no++
                     });
@@ -729,9 +709,13 @@
         })
 
         function hapusObat(param) {
+
             no_resep = $(param).data('resep');
             no_racik = $(param).data('racik');
             kode_brng = $(param).data('obat');
+            no = $(param).data('no');
+
+
             Swal.fire({
                 title: 'Yakin ?',
                 text: "Anda tidak bisa mengembalikan lagi",
@@ -753,7 +737,8 @@
                             kode_brng: kode_brng,
                         },
                         success: function() {
-                            ambilObatRacikan();
+                            $('.obat-' + no).remove();
+                            hitungBarisObat($('.table-racikan'))
                             cekResep(id);
                         },
                         error: function(request, status, error) {
@@ -770,6 +755,22 @@
                     })
                 }
             })
+        }
+
+        function hitungBarisObat($table) {
+            $table.find('tr').each(function(index, element) {
+                $(element).attr('class', 'obat-' + index)
+                $(element).find('td:eq(0) input').attr('id', 'kode_brng' + index)
+                $(element).find('td:eq(1) input').attr('id', 'kps' + index)
+                $(element).find('td:eq(2) input').attr('id', 'p1' + index)
+                $(element).find('td:eq(2) input').attr('onchange', 'hitungObatRacik(' + index + ')')
+                $(element).find('td:eq(4) input').attr('id', 'p2' + index)
+                $(element).find('td:eq(4) input').attr('onchange', 'hitungObatRacik(' + index + ')')
+                $(element).find('td:eq(5) input').attr('id', 'kandungan' + index)
+                $(element).find('td:eq(5) input').attr('onchange', 'hitungDosis(' + index + ')')
+                $(element).find('td:eq(7) input').attr('id', 'jml_obat' + index)
+            });
+            $('.nomor').val($table.find('tr').length);
         }
 
         $('tbody').on('click', '.edit', function() {

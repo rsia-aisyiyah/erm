@@ -9,18 +9,18 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="no_rawat" class="form-label mb-0">No. Rawat</label>
-                        <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat" placeholder="" readonly>
+                        <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="pasien" class="form-label mb-0">Pasien</label>
                         <input type="hidden" class="umurdaftar">
                         <input type="hidden" class="sttsumur">
                         <input type="hidden" class="no_rkm_medis">
-                        <input type="text" class="form-control form-control-sm pasien" id="pasien" placeholder="" readonly>
+                        <input type="text" class="form-control form-control-sm pasien" id="pasien" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
                     </div>
                     <div class="col-md-3 col-sm-12 gy-2">
                         <label for="tgl_lahir" class="form-label mb-0">Tanggal Lahir</label>
-                        <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" placeholder="" readonly>
+                        <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
                     </div>
                     <div class="col-md-3 col-sm-12 gy-2">
                         <label for="tgl_kontrol_umum" class="form-label mb-0">Tgl. Kontrol</label>
@@ -28,27 +28,28 @@
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="no_surat" class="form-label mb-0">No. Surat</label>
-                        <input type="text" class="form-control form-control-sm no_surat" id="no_surat" placeholder="" readonly>
+                        <input type="text" class="form-control form-control-sm no_surat" id="no_surat" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="dokter" class="form-label mb-0">Dokter DPJP</label>
                         <input type="hidden" class="kode_dokter" id="kode_dokter" />
                         <input type="hidden" class="dokter" id="dokter" />
-                        <input type="text" class="form-control form-control-sm nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
+                        <input type="text" class="form-control form-control-sm nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly style="background-color: #f0f0f0;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="poli" class="form-label mb-0">Unit/Poli</label>
+                        <input type="hidden" class="kode_jenis" id="kode_jenis">
                         <input type="hidden" class="kode_poli" id="kode_poli">
-                        <input type="text" class="form-control form-control-sm nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
+                        <input type="text" class="form-control form-control-sm nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly style="background-color: #f0f0f0;cursor:not-allowed">
 
-                    </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
-                        <button class="btn btn-sm btn-primary btn-buat-kontrol-umum" onclick="buatKontrolUmum()">Buat Surat Kontrol</button>
                     </div>
                     <input type="hidden" name="noka" class="noka">
                     <input type="hidden" name="booking" class="booking">
                     <input type="hidden" name="registrasi" class="registrasi">
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-primary btn-buat-kontrol-umum" onclick="buatKontrolUmum()">Buat Surat Kontrol</button>
             </div>
         </div>
     </div>

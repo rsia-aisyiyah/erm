@@ -12,16 +12,49 @@ class TrackerSqlController extends Controller
     {
         $this->tracker = new TrackerSql();
     }
-    public function convertSql($query)
+    public function insertSql($table, $values)
     {
-        return $query = vsprintf(str_replace(array('?'), array('\'%s\''), $query->toSql()), $query->getBindings());
+        $table = $table->getTable();
+        $values = implode('|', $values);
+
+
+        return "insert into $table values(|$values))";
     }
-    public function create($query, $user)
+
+
+    function stringClause($clause)
+    {
+        $count = 1;
+        $stringClause = '';
+        foreach ($clause as $cls) {
+            if ($count < count($clause)) {
+                $and = ' AND ';
+                $count++;
+            } else {
+                $and = '';
+            }
+            $keyClasue = array_keys($clause, $cls, true);
+            $stringClause .= "$keyClasue[0]" . '=' . "'$cls'" . $and;
+        }
+
+        return $stringClause;
+    }
+
+    function updateSql($table, $values, $clause)
+    {
+        $table = $table->getTable();
+        $val = implode('|', $values);
+        $keys = implode('=?,', array_keys($values));
+        $stringClause = $this->stringClause($clause);
+        return "update $table set $keys where $stringClause |$val ";
+    }
+
+    public function create($sql)
     {
         $data = [
             'tanggal' => date('Y-m-d H:i:s'),
-            'sqle' => $this->convertSql($query),
-            'usere' => $user,
+            'sqle' => $sql,
+            'usere' => session()->get('pegawai')->nik,
         ];
         try {
             $result = $this->tracker->create($data);

@@ -15,10 +15,12 @@ class RegPeriksaController extends Controller
 {
     public $tanggal;
     public $track;
+    public $regPeriksa;
     public function __construct()
     {
         $this->tanggal = new Carbon();
         $this->track = new TrackerSqlController();
+        $this->regPeriksa = new RegPeriksa();
     }
     public function index()
     {
@@ -37,7 +39,7 @@ class RegPeriksaController extends Controller
             'kd_poli' => $request->kd_poli,
             'p_jawab' => $request->p_jawab,
             'almt_pj' => $request->almt_pj,
-            'hubungabpj' => $request->hubungan,
+            'hubunganpj' => $request->hubungan,
             'biaya_reg' => 0,
             'stts' => 'Belum',
             'status_lanjut' => $request->status_lanjut,
@@ -46,12 +48,13 @@ class RegPeriksaController extends Controller
             'sttsumur' => $request->sttsumur,
             'status_bayar' => 'Belum Bayar',
             'status_poli' => $request->status_poli,
+            'stts_daftar' => $request->stts_daftar,
         ];
         try {
-            dd($regPeriksa = RegPeriksa::create(clock($data)));
 
-            $track = $this->track->create($regPeriksa, session()->get('pegawai')->nik);
-            return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $regPeriksa, 'qury' => $track]);
+            $result = $this->regPeriksa->create($data);
+            $track = $this->track->create($this->track->insertSql($this->regPeriksa, $data));
+            return response()->json(['metaData' => ['Status' => 'OK', 'Code' => 200], 'response' => $result, 'qury' => $track]);
         } catch (QueryException $e) {
             return response()->json(['metaData' => ['Status' => 'FAILED', 'Code' => 400], 'response' => $e->errorInfo]);
         }
@@ -74,7 +77,7 @@ class RegPeriksaController extends Controller
     }
     function setNoReg($tanggal, $kd_poli, $kd_dokter)
     {
-        $regPeriksa = Regperiksa::select('no_reg')->where('tgl_registrasi', date('Y-m-d'))
+        $regPeriksa = Regperiksa::select('no_reg')->where('tgl_registrasi', $tanggal)
             ->where('kd_poli', $kd_poli)
             ->where('kd_dokter', $kd_dokter)->orderBy('no_reg', 'DESC')->first();
 
@@ -139,7 +142,7 @@ class RegPeriksaController extends Controller
     public function ambil(Request $request)
     {
         if ($request->no_rawat) {
-            $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien', 'dokter.spesialis', 'kamarInap.kamar.bangsal', 'suratKontrol', 'poliklinik')->first();
+            $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien', 'dokter.spesialis', 'kamarInap.kamar.bangsal', 'suratKontrol', 'poliklinik', 'suratKontrol')->first();
         } else {
             $regPeriksa = RegPeriksa::where('tgl_registrasi', $request->tgl_registrasi)->where('status_lanjut', 'Ralan')->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'suratKontrol')->get();
         }
@@ -199,7 +202,7 @@ class RegPeriksaController extends Controller
     public function ambilTable(Request $request)
     {
         $regPeriksa = RegPeriksa::where('tgl_registrasi', date('Y-m-d'))
-            ->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai', 'sep')->orderBy('no_rawat', 'DESC')->get();
+            ->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai', 'sep', 'suratKontrol')->orderBy('no_rawat', 'DESC')->get();
         return DataTables::of($regPeriksa)->make(true);
     }
     public function ubahDpjp(Request $request)

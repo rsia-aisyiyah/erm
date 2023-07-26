@@ -10,6 +10,7 @@ use App\Services\Bpjs\Vclaim\ManageService;
 class ConfigVclaim extends ManageService
 {
     protected $urlEndpoint;
+    protected $icareUrl;
     protected $consId;
     protected $secretKey;
     protected $userKey;
@@ -18,17 +19,20 @@ class ConfigVclaim extends ManageService
 
     public function __construct()
     {
-        $this->urlEndpoint = 'https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev/';
-        $this->consId = '16748';
-        $this->secretKey = '7cM8A9F546';
-        $this->userKey = '23cdf31249c696d807e7cb714f98a471';
-
-        // echo $this->userKey;
+        $this->urlEndpoint = config('app.bpjsUrl');
+        $this->consId = config('app.consId');
+        $this->secretKey = config('app.secretKey');
+        $this->userKey = config('app.userKey');
+        $this->icareUrl = config('app.icareUrl');
     }
 
     public function setUrl()
     {
         return $this->urlEndpoint;
+    }
+    public function setUrlIcare()
+    {
+        return $this->icareUrl;
     }
 
     public function setConsId()
@@ -85,6 +89,18 @@ class ConfigVclaim extends ManageService
             'X-signature' => $this->setSignature(),
             'user_key'    => $this->setUserKey(),
             'Content-Type'    => $this->setUrlEncode()
+        ];
+    }
+
+    public function setHeaderIcare()
+    {
+        return [
+            'Accept' => 'application/json',
+            'X-cons-id'   => $this->setConsid(),
+            'X-timestamp' => $this->setTimestamp(),
+            'X-signature' => $this->setSignature(),
+            'user_key'    => $this->setUserKey(),
+            'Content-Type'    => $this->setUrlJson()
         ];
     }
 
