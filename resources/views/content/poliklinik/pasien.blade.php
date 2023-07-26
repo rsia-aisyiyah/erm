@@ -630,10 +630,19 @@
             })
         }
 
+        function rujukanExpired(tanggal) {
+            let tglRujukan = new Date(tanggal)
+            tglRujukan.setDate(tglRujukan.getDate() + 90)
+            expiredRujukan = tglRujukan.toISOString().split('T')[0];
+            $('.rujukan-expired').append('<div class="alert alert-warning" style="padding:8px;border-radius:0px;font-size:12px;margin:5px" role="alert"><i class="bi bi-info-circle-fill"></i> Masa berlaku rujukan sampai : <strong>' + formatTanggal(expiredRujukan) + '</strong></div>');
+        }
+
         function kontrolUlang(noSep) {
             reloadTabelPoli();
 
             cekSep(noSep).done(function(response) {
+
+                rujukanExpired(response.tglrujukan)
                 $('.no_rawat').val(response.no_rawat)
                 $('.no_sep').val(response.no_sep)
                 $('.pasien').val(response.nomr + ' - ' + response.nama_pasien + '(' + response.reg_periksa.umurdaftar + ')');

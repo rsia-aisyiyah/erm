@@ -1,10 +1,10 @@
 <div class="modal fade" id="modalSoapRanap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content" style="border-radius:0px">
-            {{-- <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN S.O.A.P</h1>
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN PASIEN</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div> --}}
+            </div>
             <div class="modal-body">
                 @include('content.ranap.modal._form_soap')
             </div>

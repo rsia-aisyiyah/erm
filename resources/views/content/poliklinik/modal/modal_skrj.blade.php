@@ -6,6 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="rujukan-expired"></div>
                 <div class="row">
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="no_rawat" class="form-label mb-0">No. Rawat</label>
