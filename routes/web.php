@@ -235,6 +235,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('rencanaKontrol/insert', [BrigdgingRencanaKontrolController::class, 'create']);
+    Route::get('rencanaKontrol/print/{noSurat}', [BrigdgingRencanaKontrolController::class, 'print']);
     Route::post('rujukan/insert', [BridgingRujukanBpjsController::class, 'create']);
     Route::get('rujukan/print/{noRujukan}', [BridgingRujukanBpjsController::class, 'print']);
     Route::post('kontrol/umum/baru', [SuratKontrolUlangController::class, 'create']);

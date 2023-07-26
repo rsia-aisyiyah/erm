@@ -1,26 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('content.print.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SURAT RUJUKAN RUMAH SAKIT</title>
-    <style>
-        * {
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-            margin: px;
-        }
-
-        p {
-            font-size: 12px;
-            margin: 0px;
-        }
-    </style>
-    <script></script>
-</head>
-
-<body>
+@section('content')
+    {{-- @dd($rujukan) --}}
     <table>
         <tr>
             <td width="50%" style="padding-right: 75px">
@@ -28,7 +9,7 @@
             </td>
             <td style="text-align: center">
                 <h3 class="" style="margin-bottom:0px;">SURAT RUJUKAN RUMAH SAKIT</h3>
-                <p class="text-content" style="margin-top:0px">{{ explode('. ', $rujukan->tipeRujukan)[1] }}</p>
+                <p class="text-content" style="margin-top:0px">{{ explode('. ', $rujukan['tipeRujukan'])[1] }}</p>
             </td>
         </tr>
     </table>
@@ -40,7 +21,7 @@
             </td>
             <td>:</td>
             <td width="300px">
-                <p> <strong>{{ $rujukan->nm_ppkDirujuk }}</strong></p>
+                <p> <strong>{{ $rujukan['nm_ppkDirujuk'] }}</strong></p>
             </td>
             <td>
                 <p>No. Rujukan</p>
@@ -49,7 +30,7 @@
                 <p>:</p>
             </td>
             <td>
-                <p><strong>{{ $rujukan->no_rujukan }}</strong></p>
+                <p><strong>{{ $rujukan['no_rujukan'] }}</strong></p>
             </td>
         </tr>
         <tr>
@@ -79,16 +60,16 @@
                 <p>:</p>
             </td>
             <td width="350px">
-                <p>{{ $rujukan->sep->nama_pasien }}</p>
+                <p>{{ $rujukan['nama_pasien'] }}</p>
             </td>
             <td>
                 <p>Kelamin</p>
             </td>
-            <td>
+            <td width="5px">
                 <p>:</p>
             </td>
             <td>
-                <p>{{ $rujukan->sep->jkel == 'L' ? 'Laki-laki' : 'Perempuan' }}</p>
+                <p>{{ $rujukan['jkel'] }}</p>
             </td>
         </tr>
         <tr>
@@ -99,7 +80,7 @@
                 <p width="2px">:</p>
             </td>
             <td width="350px">
-                <p>{{ $rujukan->sep->no_kartu }}</p>
+                <p>{{ $rujukan['no_kartu'] }}</p>
             </td>
             <td>
                 <p>Rawat</p>
@@ -108,29 +89,29 @@
                 <p width="2px">:</p>
             </td>
             <td>
-                <p>{{ $rujukan->jnsPelayanan == '1' ? '1. Rawat Inap' : '2. Rawat Jalan' }}</p>
+                <p>{{ $rujukan['jnsPelayanan'] }}</p>
             </td>
         </tr>
         <tr>
             <td>
                 <p>Diagnosa</p>
             </td>
-            <td>
-                <p width="2px">:</p>
+            <td width="5px">
+                <p>:</p>
             </td>
             <td width="350px" colspan="4">
-                <p>{{ $rujukan->diagRujukan }} - {{ $rujukan->nama_diagRujukan }}</p>
+                <p>{{ $rujukan['diagRujuk'] }}</p>
             </td>
         </tr>
         <tr>
             <td>
                 <p>Keterangan</p>
             </td>
-            <td>
-                <p width="2px">:</p>
+            <td width="5px">
+                <p>:</p>
             </td>
             <td width="350px">
-                <p>{{ $rujukan->catatan }}</p>
+                <p>{{ $rujukan['catatan'] }}</p>
             </td>
         </tr>
     </table>
@@ -139,17 +120,24 @@
     <table>
         <tr>
             <td width="500px">
-
+                <p>
+                    *) Rujukan berlaku sampai dengan {{ $rujukan['masaBerlaku'] }}
+                </p>
+                <p>
+                    **) Tanggal rencana berkunjung {{ $rujukan['tglRujukan'] }}
+                </p>
             </td>
             <td>
                 <div>
-                    <p style="text-align: center">Pekalongan, {{ $rujukan->tglRujukan }} </p>
-                    <p style="text-align: center">MENGETAHUI</p>
+                    <p style="text-align: center">Pekalongan, {{ $rujukan['tglRujukan'] }}</p>
+                    <p style="text-align: center;margin-bottom:80px">MENGETAHUI</p>
+                    <hr>
                 </div>
             </td>
         </tr>
     </table>
-    {{-- <p>{{ $rujukan }}</p> --}}
-</body>
+    {{-- {{ $rujukan }} --}}
+@endsection
 
-</html>
+@push('script')
+@endpush

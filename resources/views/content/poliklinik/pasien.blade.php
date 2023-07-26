@@ -839,11 +839,11 @@
                                 html += '</ul>'
                                 $('#dropdown-sep-' + no_rawat).append(html)
                                 if (row.sep.surat_kontrol) {
-                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
+                                    badgeKontrol = '<a target="_blank" href="/erm/rencanaKontrol/print/' + row.sep.surat_kontrol.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
                                 } else if (row.sep.rujukan_keluar) {
                                     textRujukan = row.sep.rujukan_keluar.nm_ppkDirujuk.split(' - ')[0];
                                     rujukan = textRujukan.length > 10 ? textRujukan.substring(0, 10) + '...' : textRujukan
-                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Rujuk : ' + rujukan + '</span></a>';
+                                    badgeKontrol = '<a target="_blank" href="/erm/rujukan/print/' + row.sep.rujukan_keluar.no_rujukan + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Rujuk : ' + rujukan + '</span></a>';
                                 }
                             } else if (!row.sep && row.kd_pj != "A03") {
                                 $('#btn-rujuk-' + no_rawat).addClass('btn btn-danger dropdown-toggle');
