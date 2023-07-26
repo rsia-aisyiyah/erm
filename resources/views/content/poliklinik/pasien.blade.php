@@ -631,6 +631,7 @@
         }
 
         function rujukanExpired(tanggal) {
+            $('.rujukan-expired').empty()
             let tglRujukan = new Date(tanggal)
             tglRujukan.setDate(tglRujukan.getDate() + 90)
             expiredRujukan = tglRujukan.toISOString().split('T')[0];
