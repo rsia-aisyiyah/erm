@@ -655,7 +655,6 @@
 
             cekSep(noSep).done(function(response) {
                 geRujukanPcarePeserta(response.no_kartu).done(function(rujukan) {
-                    console.log(rujukan)
                     if (rujukan.metaData.code == 200 && rujukan.response) {
                         rujukanExpired(rujukan.response.rujukan.tglKunjungan)
                     } else {
@@ -1046,7 +1045,6 @@
                     no_rawat: no_rawat
                 },
                 success: function(response) {
-                    console.log(response)
                     if (response.surat_kontrol) {
                         tanggalKontrol = splitTanggal(response.surat_kontrol.tanggal);
                         $('.no_surat').val(response.surat_kontrol.no_surat)
