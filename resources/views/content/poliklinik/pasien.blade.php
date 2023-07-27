@@ -654,7 +654,6 @@
             reloadTabelPoli();
 
             cekSep(noSep).done(function(response) {
-                // console.log(response)
                 geRujukanPcarePeserta(response.no_kartu).done(function(rujukan) {
                     console.log(rujukan)
                     if (rujukan.metaData.code == 200 && rujukan.response) {
@@ -1047,6 +1046,7 @@
                     no_rawat: no_rawat
                 },
                 success: function(response) {
+                    console.log(response)
                     if (response.surat_kontrol) {
                         tanggalKontrol = splitTanggal(response.surat_kontrol.tanggal);
                         $('.no_surat').val(response.surat_kontrol.no_surat)
@@ -1056,6 +1056,7 @@
                         $('.no_surat').val('')
                         $('.btn-buat-kontrol-umum').css('display', 'inline')
                     }
+                    $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.pasien.no_peserta + '\')');
                     $('.no_rawat').val(response.no_rawat)
                     $('.no_rkm_medis').val(response.no_rkm_medis)
                     $('.pasien').val(response.pasien.no_rkm_medis + ' - ' + response.pasien.nm_pasien + ' (' + response.umurdaftar + ' ' + response.sttsumur + ')')

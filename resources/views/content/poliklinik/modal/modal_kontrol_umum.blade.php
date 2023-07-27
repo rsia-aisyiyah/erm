@@ -16,7 +16,10 @@
                         <input type="hidden" class="umurdaftar">
                         <input type="hidden" class="sttsumur">
                         <input type="hidden" class="no_rkm_medis">
-                        <input type="text" class="form-control form-control-sm pasien" id="pasien" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control form-control-sm pasien" id="pasien" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                            <button class="btn btn-secondary btn-sm btn-cari-peserta" type="button" style="font-size:12px"><i class="bi bi-eye"></i></button>
+                        </div>
                     </div>
                     <div class="col-md-3 col-sm-12 gy-2">
                         <label for="tgl_lahir" class="form-label mb-0">Tanggal Lahir</label>

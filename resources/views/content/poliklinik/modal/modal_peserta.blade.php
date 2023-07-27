@@ -50,6 +50,12 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>Status Peserta</th>
+                        <td>:</td>
+                        <td class="statusPeserta">
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Pisa</th>
                         <td>:</td>
                         <td class="pisaPeserta">
