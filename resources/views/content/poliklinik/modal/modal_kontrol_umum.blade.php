@@ -67,7 +67,7 @@
             bulan = ('0' + (date.getMonth() + 1)).slice(-2);
             tahun = date.getFullYear();
             dateStart = hari + '-' + bulan + '-' + tahun;
-            $('.tanggal').datepicker({
+            $('#tgl_kontrol_umum').datepicker({
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
                 autoclose: true,
