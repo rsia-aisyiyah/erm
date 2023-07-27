@@ -112,6 +112,7 @@
     @include('content.poliklinik.modal.modal_rujukan_keluar')
     @include('content.poliklinik.modal.modal_kontrol_umum')
     @include('content.poliklinik.modal.modal_icare')
+    @include('content.poliklinik.modal.modal_peserta')
 @endsection
 
 @push('script')
@@ -605,12 +606,13 @@
 
         function rujukanKeluar(noSep) {
             $('#modalRujukanKeluar').modal('show')
-
             cekSep(noSep).done(function(response) {
+                $('#no_kartu').val(response.no_kartu)
                 $('#no_sep_rujuk').val(response.no_sep)
                 $('#no_rawat_rujuk').val(response.no_rawat)
                 $('#pasien_rujuk').val(response.reg_periksa.no_rkm_medis + ' - ' + response.nama_pasien)
                 $('#tgl_lahir_rujuk').val(splitTanggal(response.tanggal_lahir))
+                $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.no_kartu + '\', \'' + response.tglsep + '\')');
                 if (response.rujukan_keluar) {
                     $('#ppk_rujuk').attr('disabled', '')
                     $('#poli_rujuk').attr('disabled', '')
@@ -630,6 +632,16 @@
             })
         }
 
+        function geRujukanPcarePeserta(noka) {
+            let rujukan = $.ajax({
+                url: '/erm/bridging/rujukan/pcare/peserta/' + noka,
+                dataType: 'JSON',
+                method: 'GET',
+            });
+
+            return rujukan;
+        }
+
         function rujukanExpired(tanggal) {
             $('.rujukan-expired').empty()
             let tglRujukan = new Date(tanggal)
@@ -642,18 +654,18 @@
             reloadTabelPoli();
 
             cekSep(noSep).done(function(response) {
-
-                cekSep(response.no_rujukan).done(function(res) {
-                    console.log(res)
-                    if (Object.keys(res).length == 0) {
-                        rujukanExpired(response.tglrujukan)
-                        console.log('TAMPIL MASA BERLAKU RUJUKAN ')
+                // console.log(response)
+                geRujukanPcarePeserta(response.no_kartu).done(function(rujukan) {
+                    console.log(rujukan)
+                    if (rujukan.metaData.code == 200 && rujukan.response) {
+                        rujukanExpired(rujukan.response.rujukan.tglKunjungan)
                     } else {
                         $('.rujukan-expired').empty()
-                        console.log('TIDAK TAMPIL ')
+                        $('.rujukan-expired').append('<div class="alert alert-danger" style="padding:8px;border-radius:0px;font-size:12px;margin:5px" role="alert"><i class="bi bi-info-circle-fill"></i> Tidak ada rujukan dari FKTP</div>');
                     }
                 })
 
+                $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.no_kartu + '\', \'' + response.tglsep + '\')');
                 $('.no_rawat').val(response.no_rawat)
                 $('.no_sep').val(response.no_sep)
                 $('.pasien').val(response.nomr + ' - ' + response.nama_pasien + '(' + response.reg_periksa.umurdaftar + ')');

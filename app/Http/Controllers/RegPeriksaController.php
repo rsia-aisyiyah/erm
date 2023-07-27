@@ -124,7 +124,7 @@ class RegPeriksaController extends Controller
                     }]);
                 }, 'detailPemeriksaanLab' => function ($q) {
                     $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
-                }, 'kamarInap'])->orderBy('tgl_registrasi', $request->sortir);
+                }, 'kamarInap'])->orderBy('no_rawat', $request->sortir);
             })
             ->first();
 

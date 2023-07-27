@@ -627,6 +627,78 @@
             template = res;
             return template;
         }
+
+        function getPeserta(noka, tglSep = '') {
+            let tanggal = tglSep ? tglSep : "{{ date('Y-m-d') }}";
+            let peserta = $.ajax({
+                beforeSend: function() {
+                    swal.fire({
+                        title: 'Sedang mengabil data peserta',
+                        text: 'Mohon Tunggu',
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            swal.showLoading();
+                        }
+                    })
+                },
+                url: '/erm/bridging/peserta/noka/' + noka + '/' + tanggal,
+                dataType: 'JSON',
+                method: 'GET',
+                success: function() {
+                    swal.fire({
+                        title: 'Berhasil',
+                        text: 'Data menampilkan data peserta',
+                        showConfirmButton: false,
+                        icon: 'success',
+                        timer: 500,
+                    })
+                }
+            });
+
+            return peserta;
+        }
+
+        function getPesertaDetail(noka, tglSep) {
+            getPeserta(noka, tglSep).done(function(response) {
+                $.map(response.response, function(p) {
+                    console.log(p)
+                    jkel = p.sex == 'L' ? 'LAKI-LAKI' : 'PEREMPUAN';
+                    $('.namaPeserta').text(p.nama + ' ( ' + jkel + ' )');
+                    $('.nikPeserta').text(p.nik);
+                    $('.tglLahirPeserta').text(formatTanggal(p.tglLahir));
+                    $('.nokaPeserta').text(p.noKartu);
+                    $('.nokaPeserta').text(p.noKartu);
+                    $('.pisaPeserta').text(p.pisa);
+                    $('.teleponPeserta').text(p.mr.noTelepon);
+                    $('.kelasPeserta').text(p.hakKelas.kode + '. ' + p.hakKelas.keterangan);
+                    $('.jenisPeserta').text(p.jenisPeserta.kode + '. ' + p.jenisPeserta.keterangan);
+                    $('.fktpPeserta').text(p.provUmum.kdProvider + '. ' + p.provUmum.nmProvider);
+                    $('.tglKartuPeserta').text(formatTanggal(p.tglCetakKartu));
+                    $('.tglTMTpeserta').text(formatTanggal(p.tglTMT));
+                    $('.tglTATpeserta').text(formatTanggal(p.tglTAT));
+                    $('.umurSekarangPeserta').text(p.umur.umurSekarang);
+                    $('.umurPelayananPeserta').text(p.umur.umurSaatPelayanan);
+                })
+                $('#modalPesertaBpjs').modal('show');
+            })
+        }
+        $('#modalPesertaBpjs').on('bs.modal.hidden', function() {
+            $('.namaPeserta').text('');
+            $('.nikPeserta').text('');
+            $('.tglLahirPeserta').text('');
+            $('.nokaPeserta').text('');
+            $('.nokaPeserta').text('');
+            $('.pisaPeserta').text('');
+            $('.teleponPeserta').text('');
+            $('.kelasPeserta').text('');
+            $('.jenisPeserta').text('');
+            $('.fktpPeserta').text('');
+            $('.tglKartuPeserta').text('');
+            $('.tglTMTpeserta').text('');
+            $('.tglTATpeserta').text('');
+            $('.umurSekarangPeserta').text('');
+            $('.umurPelayananPeserta').text('');
+        });
     </script>
     @stack('script')
 </body>

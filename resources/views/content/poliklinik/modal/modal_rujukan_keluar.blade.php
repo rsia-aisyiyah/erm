@@ -13,7 +13,11 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="pasien" class="form-label mb-0" style="font-size:12px;">Pasien</label>
-                        <input type="text" class="form-control form-control-sm pasien_rujuk" id="pasien_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="hidden" class="" id="no_kartu">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control form-control-sm pasien_rujuk" id="pasien_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                            <button class="btn btn-secondary btn-sm btn-cari-peserta" type="button" style="font-size:12px"><i class="bi bi-eye"></i></button>
+                        </div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="tgl_lahir" class="form-label mb-0" style="font-size:12px;">Tanggal Lahir</label>
@@ -45,7 +49,7 @@
                         <label for="ppj_rujuk" class="form-label mb-0" style="font-size:12px;">PPK Rujukan</label>
                         <div class="input-group mb-3">
                             <input type="hidden" id="kode_ppk" name="kode_ppk">
-                            <input type="search" class="form-control form-control-sm ppk_rujuk" id="ppk_rujuk" aria-label="PPK Rujukan" aria-describedby="ppk_rujuk">
+                            <input type="search" class="form-control form-control-sm ppk_rujuk" id="ppk_rujuk" aria-label="PPK Rujukan" aria-describedby="ppk_rujuk" autocomplete="off">
                             <button class="btn btn-secondary btn-sm btn-cari" type="button" style="font-size:12px" onclick="cariFaskes()"><i class="bi bi-paperclip"></i></button>
                         </div>
                     </div>
@@ -53,10 +57,8 @@
                         <label for="diagnosa_rujuk" class="form-label mb-0" style="font-size:12px;">Diagnosa</label>
                         <div class="input-group mb-3">
                             <input type="hidden" id="kode_diagnosa_rujuk" name="kode_diagnosa_rujuk">
-                            <input type="search" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk" onkeyup="cariDiagnosa(this)">
-                            <div id="list_diagnosa_rujuk"></div>
+                            <input type="search" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk" autocomplete="off">
                             <button class="btn btn-secondary btn-sm btn-cari" type="button" style="font-size:12px" onclick="cariDiagnosaRujuk()"><i class="bi bi-paperclip"></i></button>
-
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -69,7 +71,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <label for="catatan_rujuk" class="form-label mb-0" style="font-size:12px;">Catatan</label>
-                        <input type="search" class="form-control form-control-sm catatan_rujuk" id="catatan_rujuk" name="catatan_rujuk" placeholder="">
+                        <input type="search" class="form-control form-control-sm catatan_rujuk" id="catatan_rujuk" name="catatan_rujuk" placeholder="" autocomplete="off">
                         <div class="list_catatan"></div>
                     </div>
                     <input type="hidden" name="noka" class="noka">
@@ -129,10 +131,10 @@
         $('#tipe_rujuk').on('change', function(evt) {
             $('#jns_rujuk').val(this.value)
             if (this.value == 2) {
-                cekSep($('#no_sep_rujuk').val()).done(function(response) {
-                    $('#kode_ppk').val(response.kdppkrujukan)
-                    $('#ppk_rujuk').val(response.kdppkrujukan + ' - ' + response.nmppkrujukan)
-                });
+                getPeserta($('#no_kartu').val()).done(function(response) {
+                    $('#kode_ppk').val(response.response.peserta.provUmum.kdProvider)
+                    $('#ppk_rujuk').val(response.response.peserta.provUmum.kdProvider + ' - ' + response.response.peserta.provUmum.nmProvider)
+                })
             } else {
                 $('#kode_ppk').val('')
                 $('#ppk_rujuk').val('')
