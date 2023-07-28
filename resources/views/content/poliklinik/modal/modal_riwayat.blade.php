@@ -107,6 +107,7 @@
 
         function resume(d) {
             d.reg_periksa.forEach(function(i) {
+                // console.log(i.operasi)
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
                     class_status = 'background:rgb(152, 0, 175);color:white';
@@ -162,7 +163,7 @@
                         '</div>' +
                         '</td></tr>';
                 }
-
+                hasilOperasi(i.operasi, i.no_rawat)
                 detail +=
                     '<tr>' +
                     '<th colspan="2" style="' + class_status + '"><h6 align="center">' + status_lanjut +
