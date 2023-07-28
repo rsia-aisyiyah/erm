@@ -239,20 +239,51 @@
                     url: '/erm/operasi/laporan/' + textRawat(no_rawat, '-'),
                     dataType: 'JSON',
                     success: function(response) {
+                        console.log(response)
                         var html = '<table class="table borderless mb-0" style="background-color:#e1ffe3">';
                         html += '<tr>'
                         html += '<td width="30%"><strong>Jenis Operasi<strong></td>'
                         html += '<td>:</td>'
                         html += '<td>' + operasi.paket_operasi.nm_perawatan + '</td>'
                         html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Jam Mulai<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.tanggal + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Jam Mulai<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.selesaioperasi + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
                         html += '<td width="20%"><strong>Diagnosa Pre-Operasi<strong></td>'
                         html += '<td>:</td>'
                         html += '<td>' + response.diagnosa_preop + '</td>'
                         html += '</tr>'
+
+                        html += '<tr>'
                         html += '<td width="20%"><strong>Diagnosa Post-Operasi<strong></td>'
                         html += '<td>:</td>'
                         html += '<td>' + response.diagnosa_postop + '</td>'
                         html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="20%"><strong>Jaringan Dieksekusi<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.jaringan_dieksekusi + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="20%"><strong>Permintaan PA.<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.permintaan_pa + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
                         html += '<td width="20%"><strong>Laporan<strong></td>'
                         html += '<td>:</td>'
                         html += '<td>' + response.laporan_operasi + '</td>'

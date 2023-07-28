@@ -28,6 +28,8 @@ class LaporanOperasiController extends Controller
             'laporan_operasi' => nl2br($laporan->laporan_operasi),
             'diagnosa_preop' => $laporan->diagnosa_preop,
             'diagnosa_postop' => $laporan->diagnosa_postop,
+            'permintaan_pa' => $laporan->permintaan_pa,
+            'jaringan_dieksekusi' => $laporan->jaringan_dieksekusi,
             'selesai' => $laporan->diagnosa_postop,
         ];
     }
