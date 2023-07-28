@@ -104,9 +104,9 @@
             $('.popup').attr('src', src)
         }
 
+
         function resume(d) {
             d.reg_periksa.forEach(function(i) {
-                console.log
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
                     class_status = 'background:rgb(152, 0, 175);color:white';
@@ -178,6 +178,7 @@
                     '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
                     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
                     diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + pemeriksaan +
+                    '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
                     pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
                     fotoPemeriksaan(i.upload) +
@@ -228,6 +229,44 @@
                 return '<tr><th>Pemberian Obat</th><td>' + pemberian + '</td></tr>';
             }
             return '';
+        }
+
+
+        function hasilOperasi(operasi, no_rawat) {
+            if (operasi) {
+                $.ajax({
+                    url: '/erm/operasi/laporan/' + textRawat(no_rawat, '-'),
+                    dataType: 'JSON',
+                    success: function(response) {
+                        var html = '<table class="table borderless mb-0" style="background-color:#e1ffe3">';
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Jenis Operasi<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + operasi.paket_operasi.nm_perawatan + '</td>'
+                        html += '</tr>'
+                        html += '<td width="20%"><strong>Diagnosa Pre-Operasi<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.diagnosa_preop + '</td>'
+                        html += '</tr>'
+                        html += '<td width="20%"><strong>Diagnosa Post-Operasi<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.diagnosa_postop + '</td>'
+                        html += '</tr>'
+                        html += '<td width="20%"><strong>Laporan<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.laporan_operasi + '</td>'
+                        html += '</tr>'
+                        html += '</table>'
+                        $('.operasi-' + textRawat(no_rawat)).removeAttr('style');
+                        $('.laporan-op-' + textRawat(no_rawat)).append(html);
+                    }
+                })
+            } else {
+                // $('.operasi').css('display', 'hidden');
+                // $('.laporan-op').empty();
+            }
+
+
         }
 
         function petugasLab(no_rawat, lab) {

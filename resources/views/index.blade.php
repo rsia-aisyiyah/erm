@@ -221,11 +221,10 @@
         }
 
 
-        function textRawat(no_rawat) {
+        function textRawat(no_rawat, symbol = '') {
             let splitNoRawat = no_rawat.split('/');
-            textNoRawat = splitNoRawat.join('');
+            let textNoRawat = symbol ? splitNoRawat.join(symbol) : splitNoRawat.join('');
             return textNoRawat;
-
         }
 
         function detailPeriksa(no_rawat, status) {

@@ -112,19 +112,21 @@ class RegPeriksaController extends Controller
             ->with('regPeriksa', function ($q) use ($request) {
                 return $q->where(function ($q) {
                     $q->where('stts', 'Sudah')->orWhere('status_lanjut', '=', 'Ranap');
-                })->with(['upload', 'resepObat' => function ($q) {
-                    return $q->with('resepDokter', 'resepRacikan');
-                }, 'poliklinik', 'dokter', 'penjab', 'pemeriksaanRalan', 'catatanPerawatan', 'diagnosaPasien' => function ($q) {
-                    return $q->with('penyakit')->orderBy('prioritas', 'ASC');
-                }, 'prosedurPasien' => function ($q) {
-                    return $q->with('icd9');
-                }, 'detailPemberianObat' => function ($q) {
-                    return $q->with(['aturanPakai', 'dataBarang' => function ($q) {
-                        $q->with('kodeSatuan');
-                    }]);
-                }, 'detailPemeriksaanLab' => function ($q) {
-                    $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
-                }, 'kamarInap'])->orderBy('no_rawat', $request->sortir);
+                })->with([
+                    'upload', 'resepObat' => function ($q) {
+                        return $q->with('resepDokter', 'resepRacikan');
+                    }, 'poliklinik', 'dokter', 'penjab', 'pemeriksaanRalan', 'catatanPerawatan', 'diagnosaPasien' => function ($q) {
+                        return $q->with('penyakit')->orderBy('prioritas', 'ASC');
+                    }, 'prosedurPasien' => function ($q) {
+                        return $q->with('icd9');
+                    }, 'detailPemberianObat' => function ($q) {
+                        return $q->with(['aturanPakai', 'dataBarang' => function ($q) {
+                            $q->with('kodeSatuan');
+                        }]);
+                    }, 'detailPemeriksaanLab' => function ($q) {
+                        $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
+                    }, 'kamarInap', 'operasi.paketOperasi'
+                ])->orderBy('no_rawat', $request->sortir);
             })
             ->first();
 

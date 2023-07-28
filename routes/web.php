@@ -47,10 +47,12 @@ use App\Http\Controllers\Bridging\RencanaKontrolController;
 use App\Http\Controllers\Bridging\RujukanController;
 use App\Http\Controllers\BridgingRujukanBpjsController;
 use App\Http\Controllers\BrigdgingRencanaKontrolController;
+use App\Http\Controllers\LaporanOperasiController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
+use App\Models\LaporanOperasi;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -209,6 +211,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/prosedur/pasien/ambil', [ProsedurPasienController::class, 'ambil']);
     Route::post('/prosedur/pasien/tambah', [ProsedurPasienController::class, 'tambah']);
     Route::delete('/prosedur/pasien/hapus', [ProsedurPasienController::class, 'hapus']);
+
+    Route::get('/operasi/laporan/{noRawat}', [LaporanOperasiController::class, 'get']);
 
     Route::prefix('bridging')->group(function () {
         Route::prefix('referensi')->group(function () {

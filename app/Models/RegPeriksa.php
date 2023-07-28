@@ -97,4 +97,12 @@ class RegPeriksa extends Model
     {
         return $this->hasMany(AskepRalanAnak::class, 'no_rawat', 'no_rawat');
     }
+    public function operasi()
+    {
+        return $this->hasOne(Operasi::class, 'no_rawat', 'no_rawat');
+    }
+    function laporanOperasi()
+    {
+        return $this->hasOne(LaporanOperasi::class, 'no_rawat', 'no_rawat');
+    }
 }
