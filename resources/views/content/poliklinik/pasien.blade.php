@@ -313,8 +313,8 @@
                             .nm_pasien + ' / ' + hitungUmur(response.pasien.tgl_lahir) : '-')
                         $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
                         $('#p_jawab').val(response.p_jawab ? 'P. JAWAB : ' + response.p_jawab : '-')
-                        $('#nama').val(nama);
-                        $('#nik').val(nik);
+                        $('#nama').val(response.dokter.nm_dokter);
+                        $('#nik').val(response.dokter.kd_dokter);
 
                     }
 
