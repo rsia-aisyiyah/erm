@@ -241,10 +241,29 @@
                     success: function(response) {
                         console.log(response)
                         var html = '<table class="table borderless mb-0" style="background-color:#e1ffe3">';
+
                         html += '<tr>'
                         html += '<td width="30%"><strong>Jenis Operasi<strong></td>'
                         html += '<td>:</td>'
                         html += '<td>' + operasi.paket_operasi.nm_perawatan + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Operator<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + operasi.op1.nm_dokter + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Asisten 1<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + operasi.asisten_op1.nama + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Asisten 2<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + operasi.asisten_op2.nama + '</td>'
                         html += '</tr>'
 
                         html += '<tr>'
@@ -253,11 +272,11 @@
                         html += '<td>' + response.tanggal + '</td>'
                         html += '</tr>'
 
-                        html += '<tr>'
-                        html += '<td width="30%"><strong>Jam Mulai<strong></td>'
-                        html += '<td>:</td>'
-                        html += '<td>' + response.selesaioperasi + '</td>'
-                        html += '</tr>'
+                        // html += '<tr>'
+                        // html += '<td width="30%"><strong>Jam Selesai<strong></td>'
+                        // html += '<td>:</td>'
+                        // html += '<td>' + response.selesaioperasi + '</td>'
+                        // html += '</tr>'
 
                         html += '<tr>'
                         html += '<td width="20%"><strong>Diagnosa Pre-Operasi<strong></td>'
