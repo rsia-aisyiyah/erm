@@ -170,7 +170,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/resep/obat/ubah', [ResepObatController::class, 'ubah']);
     Route::get('/resep/obat/panggil', [ResepObatController::class, 'panggil']);
     Route::post('/resep/obat/simpan', [ResepObatController::class, 'simpan']);
-    Route::delete('/resep/obat/hapus', [ResepObatController::class, 'hapus']);
+    Route::delete('/resep/obat/hapus/{noResep}', [ResepObatController::class, 'hapus']);
 
     Route::post('/resep/umum/simpan', [ResepDokterController::class, 'simpan']);
     Route::post('/resep/umum/ubah', [ResepDokterController::class, 'ubah']);
