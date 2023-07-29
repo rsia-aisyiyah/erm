@@ -220,7 +220,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/diagnosa/{diagnosa}', [ReferensiController::class, 'getDiagnosa']);
             Route::get('/poli/{poli}', [ReferensiController::class, 'getPoli']);
             Route::get('/dokter/pelayanan/{jenis}/{tgl}/{kd_sps}', [ReferensiController::class, 'getDokterDpjp']);
-            Route::get('/faskes/{faskes}/{jnsFaskes}', [ReferensiController::class, 'getFaskes']);
+            Route::get('/faskes/{faskes}/{jnsFaskes?}', [ReferensiController::class, 'getFaskes']);
         });
         Route::prefix('rujukan')->group(function () {
             Route::post('insert', [RujukanController::class, 'insertRujukanKeluar']);

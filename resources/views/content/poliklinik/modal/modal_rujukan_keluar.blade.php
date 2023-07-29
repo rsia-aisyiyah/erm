@@ -132,8 +132,19 @@
             $('#jns_rujuk').val(this.value)
             if (this.value == 2) {
                 getPeserta($('#no_kartu').val()).done(function(response) {
-                    $('#kode_ppk').val(response.response.peserta.provUmum.kdProvider)
-                    $('#ppk_rujuk').val(response.response.peserta.provUmum.kdProvider + ' - ' + response.response.peserta.provUmum.nmProvider)
+                    kode_faskes = response.response.peserta.provUmum.kdProvider;
+                    $('#kode_ppk').val(kode_faskes)
+                    $.ajax({
+                        url: '/erm/bridging/referensi/faskes/' + response.response.peserta.provUmum.kdProvider,
+                        dataType: 'JSON',
+                        method: 'GET',
+                    }).done(function(fktp) {
+                        $.map(fktp.response.faskes, function(faskes) {
+                            if (faskes.kode == kode_faskes) {
+                                $('#ppk_rujuk').val(faskes.nama)
+                            }
+                        })
+                    })
                 })
             } else {
                 $('#kode_ppk').val('')
@@ -143,43 +154,55 @@
 
         function cariFaskes() {
             faskes = $('#ppk_rujuk').val();
-            for (let jenis = 2; jenis >= 1; jenis--) {
 
-                data = [];
-                no = 2;
-                html = '';
-                $.ajax({
-                    url: '/erm/bridging/referensi/faskes/' + faskes + '/' + jenis,
-                    dataType: 'JSON',
-                    method: 'GET',
-                }).done(function(response) {
+            if (faskes.length < 3) {
+                swal.fire({
+                    title: 'Gagal',
+                    text: 'Minimal 3 digit kata kunci FKTP',
+                    showConfirmButton: true,
+                    icon: 'error',
+                });
+            } else {
+                for (let jenis = 2; jenis >= 1; jenis--) {
+                    data = [];
+                    no = 2;
                     html = '';
-                    html += '<tr>'
-                    html += '<td></td>'
-                    html += '<td colspan="2">FASKES TINGKAT ' + jenis + ' </td></tr>'
-                    no--;
-                    console.log(response)
-                    if (response.metaData.code == 200 && response.response != null) {
-                        urut = 1;
-                        $.map(response.response.faskes, function(val) {
-                            html += '<tr class="urut" >'
-                            html += '<td>' + urut + '</td>'
-                            html += '<td><span style="cursor:pointer" class="badge text-bg-primary" onclick="setPpkRujukan(\'' + val.kode + '\', \'' + val.nama + '\')">' + val.kode + '</span></td>'
-                            html += '<td>' + val.nama + '</td>'
-                            html += '</tr>'
-                            urut++;
-                        })
-                    } else {
+                    $.ajax({
+                        url: '/erm/bridging/referensi/faskes/' + faskes + '/' + jenis,
+                        dataType: 'JSON',
+                        method: 'GET',
+                    }).done(function(response) {
+                        console.log(response)
+                        html = '';
                         html += '<tr>'
-                        html += '<td></td><td colspan="3" ><strong class="text-danger">' + response.metaData.message + '</strong></td>'
-                        html += '</tr>'
-                    }
-                    $('.table-faskes tbody').append(html);
+                        html += '<td></td>'
+                        html += '<td colspan="2">FASKES TINGKAT ' + jenis + ' </td></tr>'
+                        no--;
+                        console.log(response)
+                        if (response.metaData.code == 200 && response.response != null) {
+                            urut = 1;
+                            $.map(response.response.faskes, function(val) {
+                                html += '<tr class="urut" >'
+                                html += '<td>' + urut + '</td>'
+                                html += '<td><span style="cursor:pointer" class="badge text-bg-primary" onclick="setPpkRujukan(\'' + val.kode + '\', \'' + val.nama + '\')">' + val.kode + '</span></td>'
+                                html += '<td>' + val.nama + '</td>'
+                                html += '</tr>'
+                                urut++;
+                            })
+                        } else {
+                            html += '<tr>'
+                            html += '<td></td><td colspan="3" ><strong class="text-danger">' + response.metaData.message + '</strong></td>'
+                            html += '</tr>'
+                        }
+                        $('.table-faskes tbody').append(html);
+                        $('#modalFaskes').css('background-color', 'rgba(0,0,0,.25)')
+                        $('#modalFaskes').modal('show')
 
-                })
-                $('#modalFaskes').css('background-color', 'rgba(0,0,0,.25)')
-                $('#modalFaskes').modal('show')
+                    })
+                }
             }
+
+
         }
 
         function cariDiagnosaRujuk() {
