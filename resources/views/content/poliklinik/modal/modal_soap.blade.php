@@ -859,7 +859,23 @@
                                     'error'
                                 );
                             }
-                        }).done(function() {
+                        }).done(function(response) {
+                            ambilResep(no_resep).done(function(res) {
+                                resepDokter = Object.keys(res.resep_dokter).length
+                                resepRacik = Object.keys(res.resep_racikan).length
+                                if (resepDokter == 0 && resepDokter == 0) {
+                                    hapusResep(no_resep).done(function() {
+                                        Swal.fire({
+                                            title: 'Berhasil',
+                                            text: "Resep telah dihapus",
+                                            icon: 'success',
+                                            showCancelButton: false,
+                                            showConfirmButton: false,
+                                            timer: 1500,
+                                        })
+                                    })
+                                }
+                            })
                             tulisPlan();
                             riwayatResep($('#no_rm').val());
                         })
@@ -876,28 +892,29 @@
                                 $('#body_umum').empty();
                                 cekResep($('#nomor_rawat').val())
                             }
-                        }).done(function() {
+                        }).done(function(response) {
+                            ambilResep(no_resep).done(function(res) {
+                                resepDokter = Object.keys(res.resep_dokter).length
+                                resepRacik = Object.keys(res.resep_racikan).length
+                                if (resepDokter == 0 && resepDokter == 0) {
+                                    hapusResep(no_resep).done(function() {
+                                        Swal.fire({
+                                            title: 'Berhasil',
+                                            text: "Resep telah dihapus",
+                                            icon: 'success',
+                                            showCancelButton: false,
+                                            showConfirmButton: false,
+                                            timer: 1500,
+                                        })
+                                    })
+                                }
+                            })
                             tulisPlan();
                             riwayatResep($('#no_rm').val());
                         })
                     }
 
-                    ambilResep(no_resep).done(function(response) {
-                        resepDokter = Object.keys(response.resep_dokter).length
-                        resepRacik = Object.keys(response.resep_racikan).length
-                        if (resepDokter == 0 && resepDokter == 0) {
-                            hapusResep(no_resep).done(function() {
-                                Swal.fire({
-                                    title: 'Berhasil',
-                                    text: "Resep telah dihapus",
-                                    icon: 'success',
-                                    showCancelButton: false,
-                                    showConfirmButton: false,
-                                    timer: 1500,
-                                })
-                            })
-                        }
-                    })
+
 
 
                 }
@@ -1129,15 +1146,17 @@
                 },
                 dataType: 'JSON',
                 success: function(response) {
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
-                    $.map(response, function(data) {
-                        html +=
-                            '<li onclick="setNamaRacik(this)" data-nama="' + data.nm_racik + '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' + data.nm_racik + '</a></li>'
-                    })
-                    html += '</ul>';
-                    $('.list_racik').fadeIn();
-                    $('.list_racik').html(html);
+                    if (Object.keys(response).length > 0) {
+                        html =
+                            '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        $.map(response, function(data) {
+                            html +=
+                                '<li onclick="setNamaRacik(this)" data-nama="' + data.nm_racik + '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' + data.nm_racik + '</a></li>'
+                        })
+                        html += '</ul>';
+                        $('.list_racik').fadeIn();
+                        $('.list_racik').html(html);
+                    }
 
                 }
             })
@@ -1207,16 +1226,18 @@
                     'aturan_pakai': aturan.value,
                 },
                 success: function(response) {
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
-                    $.map(response, function(data) {
-                        html +=
-                            '<li onclick="ambilAturan(this)" ><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                            data.aturan_pakai + '</a></li>'
-                    })
-                    html += '</ul>';
-                    $('.list_aturan').fadeIn();
-                    $('.list_aturan').html(html);
+                    console.log(response)
+                    if (response) {
+                        html = '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        $.map(response, function(data) {
+                            html +=
+                                '<li onclick="ambilAturan(this)" ><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                                data.aturan_pakai + '</a></li>'
+                        })
+                        html += '</ul>';
+                        $('.list_aturan').fadeIn();
+                        $('.list_aturan').html(html);
+                    }
                 }
             })
         }
@@ -1303,7 +1324,7 @@
 
         function tambahRacikan() {
             no_resep = $('.no_resep').val();
-
+            no_rawat = $('#nomor_rawat').val();
             cekResep(no_rawat).done(function(response) {
                 resep = Object.keys(response).length
                 if (resep == 0) {
@@ -1328,7 +1349,7 @@
             html += '</td>';
             html += '<td>';
             html +=
-                '<input type="text" autocomplete="off" onkeyup="cariRacikan(this)" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/><input type="hidden" class="id_racik" /><div class="list_racik"></div>';
+                '<input type="search" autocomplete="off" onkeyup="cariRacikan(this)" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/><input type="hidden" class="id_racik" /><div class="list_racik"></div>';
             html += '</td>';
 
             html += '<td>';
@@ -1483,6 +1504,8 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
+
+                    console.log(response)
                     if (Object.keys(response).length > 0) {
                         $.map(response, function(res) {
                             if (Object.keys(res.resep_dokter).length > 0) {
@@ -1501,7 +1524,8 @@
                                     } else {
                                         $('.tambah_racik').css('visibility', 'visible')
                                         $('.tambah_umum').css('visibility', 'visible')
-                                        html += '<td class="aksi"><button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-resep="' + resep.no_resep + '" data-obat="' + resep.kode_brng + '"><i class="bi bi-trash-fill"></i></button><button style="font-size:12px" type="button" class="btn btn-warning btn-sm ubah-obat" data-id="' + no + '"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-primary simpan-obat-' + no +
+                                        html += '<td class="aksi"><button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-resep="' + resep.no_resep + '" data-obat="' + resep.kode_brng + '"><i class="bi bi-trash-fill"></i></button><button style="font-size:12px" type="button" class="btn btn-warning btn-sm ubah-obat" data-id="' + no +
+                                            '"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-primary simpan-obat-' + no +
                                             ' btn-sm" style="font-size:12;visibility:hidden" onclick="ubahObatDokter(' + resep.no_resep + ', \'' + resep.kode_brng + '\', ' + no + ')"><i class="bi bi-plus-circle"></i></button></td>';
                                     }
                                     html += '</tr>';

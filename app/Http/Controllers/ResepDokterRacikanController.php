@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ResepDokterRacikan;
-use App\Models\ResepDokterRacikanDetail;
 use Illuminate\Http\Request;
+use App\Models\ResepDokterRacikan;
+use App\Http\Controllers\Controller;
+use App\Models\ResepDokterRacikanDetail;
+use App\Http\Controllers\TrackerSqlController;
 
 class ResepDokterRacikanController extends Controller
 {
@@ -13,7 +15,7 @@ class ResepDokterRacikanController extends Controller
     public function __construct()
     {
         $this->track = new TrackerSqlController;
-        $this->resep = new ResepDokterRacikanController;
+        $this->resep = new ResepDokterRacikan();
     }
     public function ambil(Request $request)
     {
@@ -55,7 +57,7 @@ class ResepDokterRacikanController extends Controller
             'no_resep' => $request->no_resep
         ];
         $resep = ResepDokterRacikan::where($clause)->delete();
-        $this->track->create($this->track->deleteSql($this->track, $clause));
+        $this->track->create($this->track->deleteSql($this->resep, $clause));
         return response()->json($resep);
     }
     public function ubah(Request $request)
