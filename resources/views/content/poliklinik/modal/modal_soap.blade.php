@@ -860,22 +860,22 @@
                                 );
                             }
                         }).done(function(response) {
-                            ambilResep(no_resep).done(function(res) {
-                                resepDokter = Object.keys(res.resep_dokter).length
-                                resepRacik = Object.keys(res.resep_racikan).length
-                                if (resepDokter == 0 && resepDokter == 0) {
-                                    hapusResep(no_resep).done(function() {
-                                        Swal.fire({
-                                            title: 'Berhasil',
-                                            text: "Resep telah dihapus",
-                                            icon: 'success',
-                                            showCancelButton: false,
-                                            showConfirmButton: false,
-                                            timer: 1500,
-                                        })
-                                    })
-                                }
-                            })
+                            // ambilResep(no_resep).done(function(res) {
+                            //     resepDokter = Object.keys(res.resep_dokter).length
+                            //     resepRacik = Object.keys(res.resep_racikan).length
+                            //     if (resepDokter == 0 && resepDokter == 0) {
+                            //         hapusResep(no_resep).done(function() {
+                            //             Swal.fire({
+                            //                 title: 'Berhasil',
+                            //                 text: "Resep telah dihapus",
+                            //                 icon: 'success',
+                            //                 showCancelButton: false,
+                            //                 showConfirmButton: false,
+                            //                 timer: 1500,
+                            //             })
+                            //         })
+                            //     }
+                            // })
                             tulisPlan();
                             riwayatResep($('#no_rm').val());
                         })
@@ -893,22 +893,22 @@
                                 cekResep($('#nomor_rawat').val())
                             }
                         }).done(function(response) {
-                            ambilResep(no_resep).done(function(res) {
-                                resepDokter = Object.keys(res.resep_dokter).length
-                                resepRacik = Object.keys(res.resep_racikan).length
-                                if (resepDokter == 0 && resepDokter == 0) {
-                                    hapusResep(no_resep).done(function() {
-                                        Swal.fire({
-                                            title: 'Berhasil',
-                                            text: "Resep telah dihapus",
-                                            icon: 'success',
-                                            showCancelButton: false,
-                                            showConfirmButton: false,
-                                            timer: 1500,
-                                        })
-                                    })
-                                }
-                            })
+                            // ambilResep(no_resep).done(function(res) {
+                            //     resepDokter = Object.keys(res.resep_dokter).length
+                            //     resepRacik = Object.keys(res.resep_racikan).length
+                            //     if (resepDokter == 0 && resepDokter == 0) {
+                            //         hapusResep(no_resep).done(function() {
+                            //             Swal.fire({
+                            //                 title: 'Berhasil',
+                            //                 text: "Resep telah dihapus",
+                            //                 icon: 'success',
+                            //                 showCancelButton: false,
+                            //                 showConfirmButton: false,
+                            //                 timer: 1500,
+                            //             })
+                            //         })
+                            //     }
+                            // })
                             tulisPlan();
                             riwayatResep($('#no_rm').val());
                         })
