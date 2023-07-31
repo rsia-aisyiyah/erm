@@ -238,7 +238,6 @@
                     tanggal: '0000-00-00',
                 },
                 success: function(response) {
-                    console.log('reset panggil')
                     panggilResep(no_resep).delay(5000)
                 }
             })
@@ -265,7 +264,6 @@
                     jam: jam_panggil,
                 },
                 success: function(response) {
-                    console.log(response)
                     $('.status-' + no_resep).prop('onclick', '');
                     $('.status-' + no_resep).css('height', '50px');
                     $('.status-' + no_resep).removeClass('btn-primary');
@@ -282,7 +280,6 @@
         }
 
         function tampilResep(no_resep) {
-            // no_resep = $('#no_resep').val(no_resep)
             reloadTabelResep();
             $('#modalResepObat').modal('show');
             $.ajax({
@@ -291,40 +288,37 @@
                     no_resep: no_resep,
                 },
                 success: function(response) {
-                    $.map(response, function(res) {
-                        no = 1;
-                        $.map(res.resep_racikan, function(racik) {
-
-                            html = '<tr>';
-                            html += '<td>' + racik.no_racik + '</td>';
-                            html += '<td><strong>' + racik.metode.nm_racik + ' ' + racik
-                                .nama_racik +
-                                ' , Jumlah : ' + racik.jml_dr + ' Aturan Pakai ' + racik
-                                .aturan_pakai;
-                            html += '</strong><ul>';
-                            no_racik = 1;
-                            $.map(racik.detail_racikan, function(dr) {
-                                if (racik.no_racik == dr.no_racik) {
-                                    html += '<li>' + dr.p1 + '/' + dr.p2 + ' x ' + dr.databarang.nama_brng + ' = ' + dr.kandungan + ' mg, Jumlah : ' + dr.jml + '</li>'
-                                }
-                            })
-                            html += '</ul></td>';
-                            html += '</ul></td>';
-                            html += '</tr>';
-
-                            $('#tabel-racikan tbody').append(html)
+                    no = 1;
+                    $.map(response.resep_racikan, function(racik) {
+                        html = '<tr>';
+                        html += '<td>' + racik.no_racik + '</td>';
+                        html += '<td><strong>' + racik.metode.nm_racik + ' ' + racik
+                            .nama_racik +
+                            ' , Jumlah : ' + racik.jml_dr + ' Aturan Pakai ' + racik
+                            .aturan_pakai;
+                        html += '</strong><ul>';
+                        no_racik = 1;
+                        $.map(racik.detail_racikan, function(dr) {
+                            if (racik.no_racik == dr.no_racik) {
+                                html += '<li>' + dr.p1 + '/' + dr.p2 + ' x ' + dr.databarang.nama_brng + ' = ' + dr.kandungan + ' mg, Jumlah : ' + dr.jml + '</li>'
+                            }
                         })
+                        html += '</ul></td>';
+                        html += '</ul></td>';
+                        html += '</tr>';
 
-                        $.map(res.resep_dokter, function(umum) {
-                            html = '<tr>';
-                            html += '<td>' + no + '</td>';
-                            html += '<td>' + umum.data_barang.nama_brng + '</td>';
-                            html += '<td>' + umum.jml + '</td>';
-                            html += '<td>' + umum.aturan_pakai + '</td>';
-                            html += '</tr>';
-                            no++;
-                            $('#tabel-umum tbody').append(html)
-                        })
+                        $('#tabel-racikan tbody').append(html)
+                    })
+
+                    $.map(response.resep_dokter, function(umum) {
+                        html = '<tr>';
+                        html += '<td>' + no + '</td>';
+                        html += '<td>' + umum.data_barang.nama_brng + '</td>';
+                        html += '<td>' + umum.jml + '</td>';
+                        html += '<td>' + umum.aturan_pakai + '</td>';
+                        html += '</tr>';
+                        no++;
+                        $('#tabel-umum tbody').append(html)
                     })
                 }
             })

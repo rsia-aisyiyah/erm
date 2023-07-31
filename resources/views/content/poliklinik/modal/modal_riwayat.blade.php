@@ -61,8 +61,6 @@
                         $('#modalRiwayat').modal('hide');
                     } else {
                         resume(response);
-
-                        console.log(response)
                     }
                 }
             });
@@ -239,7 +237,6 @@
                     url: '/erm/operasi/laporan/' + textRawat(no_rawat, '-'),
                     dataType: 'JSON',
                     success: function(response) {
-                        console.log(response)
                         var html = '<table class="table borderless mb-0" style="background-color:#e1ffe3">';
 
                         html += '<tr>'

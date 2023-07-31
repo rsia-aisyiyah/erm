@@ -7,15 +7,18 @@ use App\Models\ResepDokterRacikan;
 use App\Http\Controllers\Controller;
 use App\Models\ResepDokterRacikanDetail;
 use App\Http\Controllers\TrackerSqlController;
+use App\Http\Controllers\ResepDokterRacikanDetailController;
 
 class ResepDokterRacikanController extends Controller
 {
     protected $track;
     protected $resep;
+    protected $resepDetail;
     public function __construct()
     {
         $this->track = new TrackerSqlController;
         $this->resep = new ResepDokterRacikan();
+        $this->resepDetail = new ResepDokterRacikanDetailController();
     }
     public function ambil(Request $request)
     {
@@ -56,6 +59,7 @@ class ResepDokterRacikanController extends Controller
             'no_racik' => $request->no_racik,
             'no_resep' => $request->no_resep
         ];
+        $resepDetail = $this->resepDetail->hapus($request);
         $resep = ResepDokterRacikan::where($clause)->delete();
         $this->track->create($this->track->deleteSql($this->resep, $clause));
         return response()->json($resep);

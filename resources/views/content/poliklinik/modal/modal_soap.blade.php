@@ -813,6 +813,53 @@
             return false;
         })
 
+        function hapusResepRacikan(no_resep, no_racik) {
+            let racikan = $.ajax({
+                url: '/erm/resep/racik/hapus',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: no_resep,
+                    no_racik: no_racik,
+                },
+                method: 'DELETE',
+            });
+
+            return racikan;
+        }
+
+        function hapusResepUmum(no_resep, kode_brng) {
+            let resepUmum = $.ajax({
+                url: '/erm/resep/umum/hapus',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: no_resep,
+                    kode_brng: kode_brng,
+                },
+                method: 'DELETE',
+            });
+
+            return resepUmum;
+        }
+
+        function hapusNomorResep(no_resep) {
+            ambilResep(no_resep).done(function(res) {
+                resepDokter = Object.keys(res.resep_dokter).length
+                resepRacik = Object.keys(res.resep_racikan).length
+                if (resepDokter == 0 && resepRacik == 0) {
+                    hapusResep(no_resep).done(function() {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            text: "Resep telah dihapus",
+                            icon: 'success',
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            timer: 1500,
+                        })
+                    })
+                }
+                console.log('HAPUS NOMOR RESEP', res)
+            })
+        }
         $('tbody').on('click', '.remove', function() {
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
@@ -829,94 +876,24 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (no_racik) {
-                        $.ajax({
-                            url: '/erm/resep/racik/detail/hapus',
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                no_resep: no_resep,
-                                no_racik: no_racik,
-                            },
-                            method: 'DELETE',
-                            success: function(response) {
-                                $.ajax({
-                                    url: '/erm/resep/racik/hapus',
-                                    data: {
-                                        _token: "{{ csrf_token() }}",
-                                        no_resep: no_resep,
-                                        no_racik: no_racik,
-                                    },
-                                    method: 'DELETE',
-                                })
-                                $('#body_racik').empty();
-                                $('#tb-resep-racikan tbody').empty();
-                                cekResep($('#nomor_rawat').val());
-                                riwayatResep($('#no_rm').val());
-                            },
-                            error: function(request, status, error) {
-                                Swal.fire(
-                                    'Gagal !',
-                                    'Obat tidak terhapus',
-                                    'error'
-                                );
-                            }
-                        }).done(function(response) {
-                            // ambilResep(no_resep).done(function(res) {
-                            //     resepDokter = Object.keys(res.resep_dokter).length
-                            //     resepRacik = Object.keys(res.resep_racikan).length
-                            //     if (resepDokter == 0 && resepDokter == 0) {
-                            //         hapusResep(no_resep).done(function() {
-                            //             Swal.fire({
-                            //                 title: 'Berhasil',
-                            //                 text: "Resep telah dihapus",
-                            //                 icon: 'success',
-                            //                 showCancelButton: false,
-                            //                 showConfirmButton: false,
-                            //                 timer: 1500,
-                            //             })
-                            //         })
-                            //     }
-                            // })
+                        hapusResepRacikan(no_resep, no_racik).done(function(response) {
+                            hapusNomorResep(no_resep)
                             tulisPlan();
+                            $('#body_racik').empty();
+                            $('#tb-resep-racikan tbody').empty();
                             riwayatResep($('#no_rm').val());
+                            cekResep($('#nomor_rawat').val());
+
                         })
                     } else {
-                        $.ajax({
-                            url: '/erm/resep/umum/hapus',
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                no_resep: no_resep,
-                                kode_brng: kode_brng,
-                            },
-                            method: 'DELETE',
-                            success: function(response) {
-                                $('#body_umum').empty();
-                                cekResep($('#nomor_rawat').val())
-                            }
-                        }).done(function(response) {
-                            // ambilResep(no_resep).done(function(res) {
-                            //     resepDokter = Object.keys(res.resep_dokter).length
-                            //     resepRacik = Object.keys(res.resep_racikan).length
-                            //     if (resepDokter == 0 && resepDokter == 0) {
-                            //         hapusResep(no_resep).done(function() {
-                            //             Swal.fire({
-                            //                 title: 'Berhasil',
-                            //                 text: "Resep telah dihapus",
-                            //                 icon: 'success',
-                            //                 showCancelButton: false,
-                            //                 showConfirmButton: false,
-                            //                 timer: 1500,
-                            //             })
-                            //         })
-                            //     }
-                            // })
+                        hapusResepUmum(no_resep, kode_brng).done(function(response) {
+                            hapusNomorResep(no_resep)
+                            $('#body_umum').empty();
+                            cekResep($('#nomor_rawat').val())
                             tulisPlan();
                             riwayatResep($('#no_rm').val());
                         })
                     }
-
-
-
-
                 }
             })
             return false;
@@ -1226,7 +1203,6 @@
                     'aturan_pakai': aturan.value,
                 },
                 success: function(response) {
-                    console.log(response)
                     if (response) {
                         html = '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
                         $.map(response, function(data) {

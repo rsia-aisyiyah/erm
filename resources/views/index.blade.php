@@ -671,7 +671,6 @@
             getPeserta(noka, tglSep).done(function(response) {
                 if (response.metaData.code == 200 && response.metaData.message == 'OK') {
                     $.map(response.response, function(p) {
-                        console.log(p)
                         jkel = p.sex == 'L' ? 'LAKI-LAKI' : 'PEREMPUAN';
                         p.statusPeserta.kode == 0 ? $('.statusPeserta').css('color', 'green') : $('.statusPeserta').css('color', 'red');
                         $('.namaPeserta').text(p.nama + ' ( ' + jkel + ' )');

@@ -172,13 +172,11 @@
                         dataType: 'JSON',
                         method: 'GET',
                     }).done(function(response) {
-                        console.log(response)
                         html = '';
                         html += '<tr>'
                         html += '<td></td>'
                         html += '<td colspan="2">FASKES TINGKAT ' + jenis + ' </td></tr>'
                         no--;
-                        console.log(response)
                         if (response.metaData.code == 200 && response.response != null) {
                             urut = 1;
                             $.map(response.response.faskes, function(val) {
@@ -356,7 +354,6 @@
                     }
 
                     if (response.metaData.code == 200) {
-                        console.log(response);
                         if (response.response != null) {
                             rujukan = {
                                 '_token': "{{ csrf_token() }}",
