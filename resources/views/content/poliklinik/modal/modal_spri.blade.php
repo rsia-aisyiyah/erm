@@ -147,7 +147,6 @@
                 dataType: 'JSON',
                 method: 'POST',
                 success: function(val) {
-                    console.log('RESPONSE BPJS', val)
                     let dataTarik = {
                         no_rawat: $('.no_rawat_inap').val(),
                         no_kartu: $('.no_kartu_inap').val(),

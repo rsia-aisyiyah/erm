@@ -263,7 +263,6 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            console.log(row)
                             baris = '<tr><td>Petugas </td><td>:</td><td>' + row.petugas.nama + '</td></tr>'
                             baris += '<tr><td>Subjek </td><td>:</td><td>' + row.keluhan + '</td></tr>'
                             baris += '<tr><td>Objek </td><td>:</td><td>' + row.pemeriksaan + '</td></tr>'

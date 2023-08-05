@@ -212,7 +212,7 @@
         })
 
         $("#cari-kamar").bind('keypress', function(e) {
-            console.log($(this).val())
+            // console.log($(this).val())
         })
 
         $('#cari-kamar').on('keyup', function() {

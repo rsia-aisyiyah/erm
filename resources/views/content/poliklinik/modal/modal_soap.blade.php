@@ -857,7 +857,6 @@
                         })
                     })
                 }
-                console.log('HAPUS NOMOR RESEP', res)
             })
         }
         $('tbody').on('click', '.remove', function() {
@@ -1260,7 +1259,6 @@
                 resep = Object.keys(response).length
                 if (resep == 0) {
                     simpanResepObat().done(function(res) {
-                        console.log('Hasil Simpan', res)
                         $('.no_resep_umum ').val(res.no_resep)
                     });
                 } else {
@@ -1485,7 +1483,6 @@
                 },
                 success: function(response) {
 
-                    console.log(response)
                     if (Object.keys(response).length > 0) {
                         $.map(response, function(res) {
                             if (Object.keys(res.resep_dokter).length > 0) {
