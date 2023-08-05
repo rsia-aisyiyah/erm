@@ -45,6 +45,7 @@ class BrigdgingRencanaKontrolController extends Controller
             return response()->json(['metaData' => ['Status' => 'FAILED', 'Code' => 400], 'response' => $e->errorInfo]);
         }
     }
+
     function print($noSurat)
     {
         $kontrol = $this->rencanaKontrol->where('no_surat', $noSurat)->with(['sep', 'mappingDokter.dokter'])->first();

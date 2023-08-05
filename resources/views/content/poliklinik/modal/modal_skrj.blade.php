@@ -10,35 +10,35 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="no_rawat" class="form-label mb-0">No. Rawat</label>
-                        <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="pasien" class="form-label mb-0">Pasien</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-sm pasien" id="pasien" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                            <input type="text" class="form-control form-control-sm pasien" id="pasien" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                             <button class="btn btn-secondary btn-sm btn-cari-peserta" type="button" style="font-size:12px"><i class="bi bi-eye"></i></button>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="tgl_lahir" class="form-label mb-0">Tanggal Lahir</label>
-                        <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="no_sep" class="form-label mb-0">No. SEP</label>
-                        <input type="text" class="form-control form-control-sm no_sep" id="no_sep" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm no_sep" id="no_sep" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
 
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="no_surat" class="form-label mb-0">No. Surat</label>
-                        <input type="text" class="form-control form-control-sm no_surat" id="no_surat" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm no_surat" id="no_surat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="no_surat" class="form-label mb-0">Diagnosa</label>
-                        <input type="text" class="form-control form-control-sm diagnosa" id="diagnosa" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm diagnosa" id="diagnosa" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="tgl_surat" class="form-label mb-0">Tgl. Surat</label>
-                        <input type="text" class="form-control form-control-sm tgl_surat" id="tgl_surat" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm tgl_surat" id="tgl_surat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="tgl_kontrol" class="form-label mb-0">Tgl. Kontrol</label>
@@ -47,15 +47,15 @@
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="dokter" class="form-label mb-0">Spesialis/Sub</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-sm kode_dokter" placeholder="" aria-label="" id="kode_dokter" aria-describedby="btn-spesialis" readonly style="background-color: #f0f0f0;cursor:not-allowed">
-                            <input type="text" style="margin-left: 10px;background-color: #f0f0f0;cursor:not-allowed" class="form-control form-control-sm nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
+                            <input type="text" class="form-control form-control-sm kode_dokter" placeholder="" aria-label="" id="kode_dokter" aria-describedby="btn-spesialis" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                            <input type="text" style="margin-left: 10px;background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12 gy-2">
                         <label for="poli" class="form-label mb-0">Unit/Poli</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-sm kode_poli" placeholder="" aria-label="" aria-describedby="kode_poli" readonly style="background-color: #f0f0f0;cursor:not-allowed">
-                            <input type="text" style="margin-left: 10px;background-color: #f0f0f0;cursor:not-allowed" class="form-control form-control-sm nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
+                            <input type="text" class="form-control form-control-sm kode_poli" placeholder="" aria-label="" aria-describedby="kode_poli" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                            <input type="text" style="margin-left: 10px;background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
                         </div>
 
                     </div>
@@ -168,7 +168,7 @@
                         } else {
                             tanggalKontrol = splitTanggal($('#tgl_kontrol').val())
                             noka = $('.noka').val()
-                            cariRencanaKontrol(bulan, tahun, noka, 1).done(function(response) {
+                            getListRencanaKontrol(bulan, tahun, noka, 1).done(function(response) {
                                 $('.nokontrol').val(data.noSuratKontrol)
                                 $.map(response.response.list, function(dataSkrj) {
                                     if (noSEP == dataSkrj.noSepAsalKontrol) {

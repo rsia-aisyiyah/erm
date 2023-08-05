@@ -15,7 +15,7 @@ class MappingPoliBpjsController extends Controller
     }
     public function ambil($kdPoli)
     {
-        $poli = $this->poli->where('kd_poli_bpjs', $kdPoli)->where('kd_poli_rs', '!=', 'U0002')->with('poliklinik.mappingPoli.dokter.mappingDokter')->get();
+        $poli = $this->poli->where('kd_poli_bpjs', $kdPoli)->orWhere('kd_poli_rs', $kdPoli)->where('kd_poli_rs', '!=', 'U0002')->with('poliklinik.mappingPoli.dokter.mappingDokter')->first();
         return response()->json($poli);
     }
 }

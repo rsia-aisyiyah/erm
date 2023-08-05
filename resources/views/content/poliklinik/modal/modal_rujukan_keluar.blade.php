@@ -9,23 +9,23 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="no_rawat" class="form-label mb-0" style="font-size:12px;">No. Rawat</label>
-                        <input type="text" class="form-control form-control-sm no_rawat_rujuk" id="no_rawat_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm no_rawat_rujuk" id="no_rawat_rujuk" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="pasien" class="form-label mb-0" style="font-size:12px;">Pasien</label>
                         <input type="hidden" class="" id="no_kartu">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-sm pasien_rujuk" id="pasien_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                            <input type="text" class="form-control form-control-sm pasien_rujuk" id="pasien_rujuk" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                             <button class="btn btn-secondary btn-sm btn-cari-peserta" type="button" style="font-size:12px"><i class="bi bi-eye"></i></button>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="tgl_lahir" class="form-label mb-0" style="font-size:12px;">Tanggal Lahir</label>
-                        <input type="text" class="form-control form-control-sm tgl_lahir_rujuk" id="tgl_lahir_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm tgl_lahir_rujuk" id="tgl_lahir_rujuk" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="tgl_surat" class="form-label mb-0" style="font-size:12px;">Tgl. Surat</label>
-                        <input type="text" class="form-control form-control-sm tgl_surat_rujuk" id="tgl_surat_rujuk" name="tgl_surat_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm tgl_surat_rujuk" id="tgl_surat_rujuk" name="tgl_surat_rujuk" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="tgl_kontrol" class="form-label mb-0" style="font-size:12px;">Tgl. R. Kunjungan</label>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="no_sep_rujuk" class="form-label mb-0" style="font-size:12px;">No. SEP</label>
-                        <input type="text" class="form-control form-control-sm no_sep_rujuk" id="no_sep_rujuk" name="no_sep_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm no_sep_rujuk" id="no_sep_rujuk" name="no_sep_rujuk" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <input type="hidden" value="2" id="jns_rujuk">
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">

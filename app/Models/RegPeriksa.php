@@ -2,11 +2,30 @@
 
 namespace App\Models;
 
+use App\Models\Dokter;
 use App\Models\Pasien;
+use App\Models\Penjab;
 use App\Models\Upload;
+use App\Models\Operasi;
 use App\Models\KamarInap;
+use App\Models\ResepObat;
+use App\Models\Poliklinik;
+use App\Models\BridgingSep;
+use App\Models\RanapGabung;
+use App\Models\BridgingSPRI;
+use App\Models\AskepRalanAnak;
+use App\Models\DiagnosaPasien;
+use App\Models\LaporanOperasi;
+use App\Models\ProsedurPasien;
+use App\Models\CatatanPerawatan;
+use App\Models\PemeriksaanRalan;
+use App\Models\SuratKontrolUlang;
 use App\Models\RsiaGeneralConsent;
+use App\Models\AskepRalanKebidanan;
+use App\Models\DetailPemberianObat;
+use App\Models\DetailPemeriksaanLab;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PenilaianMedisRalanKandungan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RegPeriksa extends Model
@@ -104,5 +123,9 @@ class RegPeriksa extends Model
     function laporanOperasi()
     {
         return $this->hasOne(LaporanOperasi::class, 'no_rawat', 'no_rawat');
+    }
+    function perintahInap()
+    {
+        return $this->hasOne(BridgingSPRI::class, 'no_rawat', 'no_rawat');
     }
 }

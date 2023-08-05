@@ -15,8 +15,8 @@ class Icd9Controller extends Controller
 
     public function cari(Request $request)
     {
-        $icd = $this->icd->where('kode', 'like', '%' . $request->kode)
-            ->orWhere('deskripsi_panjang', 'like', $request->kode . '%')
+        $icd = $this->icd->where('kode', 'like',  $request->kode . '%')
+            ->orWhere('deskripsi_panjang', 'like', '%' . $request->kode . '%')
             ->limit(10)
             ->get();
 

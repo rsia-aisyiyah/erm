@@ -376,6 +376,17 @@
         }
         var data = {};
 
+        function getDokter(dokter) {
+            let resDokter = $.ajax({
+                url: '/erm/dokter/cari',
+                data: {
+                    'nm_dokter': dokter,
+                },
+            });
+
+            return resDokter;
+        }
+
         function reloadTabelPoli() {
             tgl_registrasi = $('#tgl_registrasi').val();
             hitungPanggilan();
@@ -467,44 +478,51 @@
             $('#upload-image').css('visibility', 'hidden')
         }
 
+        function getPasienPeriksa(no_rkm_medis, tanggal) {
+
+            paramUrl = tanggal ? no_rkm_medis + '/' + tanggal : no_rkm_medis;
+            let pasien = $.ajax({
+                url: '/erm/periksa/show/' + paramUrl,
+                dataType: 'JSON',
+            });
+
+            return pasien;
+        }
+
         function showHistory() {
             var no_rkm_medis = $('.search option:selected').val();
             $('#upload-image').css('visibility', 'hidden');
-            $.ajax({
-                url: '/erm/periksa/show/' + no_rkm_medis,
-                dataType: 'JSON',
-                success: function(data) {
-                    $('#ralan tbody').empty();
-                    $('#ranap tbody').empty();
-                    $.map(data, function(item) {
-                        if (item.upload.length > 0) {
-                            button = '<a href="#form-upload" onclick="detailPeriksa(\'' + item
-                                .no_rawat
-                                .toString() + '\',\'' + item.status_lanjut +
-                                '\')" class="btn btn-success btn-sm"><i class="bi bi-check2-circle"></i></a>'
+            getPasienPeriksa(no_rkm_medis).done(function(data) {
+                $('#ralan tbody').empty();
+                $('#ranap tbody').empty();
+                $.map(data, function(item) {
+                    if (item.upload.length > 0) {
+                        button = '<a href="#form-upload" onclick="detailPeriksa(\'' + item
+                            .no_rawat
+                            .toString() + '\',\'' + item.status_lanjut +
+                            '\')" class="btn btn-success btn-sm"><i class="bi bi-check2-circle"></i></a>'
 
 
-                        } else {
-                            button = '<a href="#form-upload" onclick="detailPeriksa(\'' + item
-                                .no_rawat
-                                .toString() + '\',\'' + item.status_lanjut +
-                                '\')" class="btn btn-primary btn-sm"><i class="bi bi-cloud-upload"></i></a>'
-                        }
+                    } else {
+                        button = '<a href="#form-upload" onclick="detailPeriksa(\'' + item
+                            .no_rawat
+                            .toString() + '\',\'' + item.status_lanjut +
+                            '\')" class="btn btn-primary btn-sm"><i class="bi bi-cloud-upload"></i></a>'
+                    }
 
-                        html = '<tr>' +
-                            '<td>' + item.no_rawat + '</td>' +
-                            '<td>' + item.tgl_registrasi + '</td>' +
-                            '<td>' + button + '</td>' +
-                            '</tr>'
+                    html = '<tr>' +
+                        '<td>' + item.no_rawat + '</td>' +
+                        '<td>' + item.tgl_registrasi + '</td>' +
+                        '<td>' + button + '</td>' +
+                        '</tr>'
 
-                        if (item.status_lanjut == 'Ralan') {
-                            $('#ralan').append(html);
-                        } else {
-                            $('#ranap').append(html);
-                        }
-                    })
-                }
-            });
+                    if (item.status_lanjut == 'Ralan') {
+                        $('#ralan').append(html);
+                    } else {
+                        $('#ranap').append(html);
+                    }
+                })
+            })
 
         }
 

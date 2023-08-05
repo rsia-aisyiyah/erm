@@ -73,4 +73,12 @@ class RencanaKontrolController extends Controller
         $response = Http::withHeaders($this->config->setHeaderPost())->post($this->config->setUrl() . $endpoint, $data);
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }
+
+    public function insertPerintahInap(Request $request)
+    {
+        $data = ['request' => $request->all()];
+        $endpoint = "RencanaKontrol/InsertSPRI";
+        $response = Http::withHeaders($this->config->setHeaderPost())->post($this->config->setUrl() . $endpoint, $data);
+        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+    }
 }

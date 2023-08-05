@@ -88,10 +88,11 @@ class RegPeriksaController extends Controller
         }
         return sprintf('%03d', $noReg);
     }
-    public function show($no_rkm_medis)
+    public function show($no_rkm_medis, $tanggal = '')
     {
-        $regPeriksa = RegPeriksa::where('no_rkm_medis', $no_rkm_medis)
-            ->with('upload')
+        $data = $tanggal ? ['no_rkm_medis' => $no_rkm_medis, 'tgl_registrasi' => $tanggal] : ['no_rkm_medis' => $no_rkm_medis];
+        $regPeriksa = RegPeriksa::where($data)
+            ->with(['upload', 'pasien'])
             ->orderBy('tgl_registrasi', 'DESC')
             ->get();
         return response()->json($regPeriksa);

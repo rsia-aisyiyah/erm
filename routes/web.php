@@ -46,6 +46,7 @@ use App\Http\Controllers\PenilaianMedisRanapController;
 use App\Http\Controllers\Bridging\RencanaKontrolController;
 use App\Http\Controllers\Bridging\RujukanController;
 use App\Http\Controllers\BridgingRujukanBpjsController;
+use App\Http\Controllers\BridgingSPRIController;
 use App\Http\Controllers\BrigdgingRencanaKontrolController;
 use App\Http\Controllers\LaporanOperasiController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
@@ -75,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pasien/cari', [PasienController::class, 'search']);
     Route::get('/pasien/ambil/{no_rkm_medis}', [PasienController::class, 'ambil']);
 
-    Route::get('/periksa/show/{no_rkm_medis}', [
+    Route::get('/periksa/show/{no_rkm_medis}/{tanggal?}', [
         RegPeriksaController::class, 'show',
     ]);
     Route::get('periksa/detail', [
@@ -230,18 +231,27 @@ Route::middleware('auth')->group(function () {
             Route::get('peserta/{noka}', [RujukanController::class, 'getRujukanPeserta']);
             Route::get('list/peserta/{noka}', [RujukanController::class, 'getListRujukanPeserta']);
         });
+        Route::prefix('rencanaKontrol')->group(function () {
+            Route::get('{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
+            Route::get('jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);
+            Route::get('list/{bulan}/{tahun}/{noka}/{filter}', [RencanaKontrolController::class, 'getListRencana']);
+            Route::post('insert', [RencanaKontrolController::class, 'insertRencanaKontrol']);
+        });
+
+        Route::prefix('spri')->group(function () {
+            Route::post('insert', [RencanaKontrolController::class, 'insertPerintahInap']);
+        });
         Route::get('peserta/nik/{nik}/{tanggal}', [PesertaController::class, 'getPesertaNik']);
         Route::get('peserta/noka/{noka}/{tanggal}', [PesertaController::class, 'getPesertaNoka']);
-        Route::get('rencanaKontrol/{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
-        Route::get('rencanaKontrol/jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);
-        Route::get('rencanaKontrol/list/{bulan}/{tahun}/{noka}/{filter}', [RencanaKontrolController::class, 'getListRencana']);
-        Route::post('rencanaKontrol/insert', [RencanaKontrolController::class, 'insertRencanaKontrol']);
         Route::get('SEP/{sep}', [SepController::class, 'getSep']);
         Route::get('peserta/nokartu/{nokartu}/tglsep/{tglsep}', [ReferensiController::class, 'getPasien']);
         Route::post('/riwayat/icare', [IcareController::class, 'rsValidate']);
     });
 
 
+    Route::get('spri/get/{nokartu}/{tanggal}', [BridgingSPRIController::class, 'get']);
+    Route::post('spri/insert', [BridgingSPRIController::class, 'create']);
+    Route::get('spri/print/{noSurat}', [BridgingSPRIController::class, 'print']);
     Route::post('rencanaKontrol/insert', [BrigdgingRencanaKontrolController::class, 'create']);
     Route::get('rencanaKontrol/print/{noSurat}', [BrigdgingRencanaKontrolController::class, 'print']);
     Route::post('rujukan/insert', [BridgingRujukanBpjsController::class, 'create']);

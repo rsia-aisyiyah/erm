@@ -30,4 +30,8 @@ class BridgingSep extends Model
     {
         return $this->belongsTo(Pasien::class, 'no_peserta', 'no_kartu');
     }
+    public function spri()
+    {
+        return $this->hasOne(BridgingSPRI::class, 'no_kartu', 'no_kartu');
+    }
 }

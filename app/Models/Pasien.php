@@ -35,4 +35,8 @@ class Pasien extends Model
     {
         return $this->hasMany(BridgingSep::class, 'no_kartu', 'no_peserta');
     }
+    function spri()
+    {
+        return $this->hasOne(BridgingSPRI::class, 'no_kartu', 'no_peserta');
+    }
 }

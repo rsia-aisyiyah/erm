@@ -125,7 +125,7 @@
                                 <tr>
                                     <td>Diagnosa ICD</td>
                                     <td colspan="3">
-                                        <input type="search" class="form-control form-control-sm" onkeyup="cariDiagnosa(this)" name="diagnosa" id="diagnosa" style="font-size:12px;min-height:12px;border-radius:0" autocomplete="off">
+                                        <input type="search" class="form-control form-control-sm" onkeyup="cariDiagnosaSoap(this)" name="diagnosa" id="diagnosa" style="font-size:12px;min-height:12px;border-radius:0" autocomplete="off">
                                         <div class="list-diagnosa"></div>
                                         <input type="hidden" class="no_diagnosa" value="" />
                                     </td>
@@ -899,15 +899,20 @@
             return false;
         })
 
-        function cariDiagnosa(diagnosa) {
-            $.ajax({
+        function getDiagnosa(diagnosa) {
+            let dx = $.ajax({
                 url: '/erm/penyakit/cari',
                 data: {
-                    'kd_penyakit': diagnosa.value,
+                    'kd_penyakit': diagnosa,
                 },
                 dataType: 'JSON',
-                success: function(response) {
+            })
+            return dx
+        }
 
+        function cariDiagnosaSoap(diagnosa) {
+            getDiagnosa(diagnosa.value).done(function(response) {
+                if (response) {
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
                     no = 1;
@@ -919,36 +924,35 @@
                     html += '</ul>';
                     $('.list-diagnosa').fadeIn();
                     $('.list-diagnosa').html(html);
-
-
                 }
             })
         }
 
         function cariProsedur(kode) {
-            $.ajax({
-                url: '/erm/prosedur/cari',
-                data: {
-                    'kode': kode.value,
-                },
-                dataType: 'JSON',
-                success: function(response) {
-                    console.log(response)
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
-                    no = 1;
-                    $.map(response, function(data) {
-                        html +=
-                            '<li data-nama="' + data.deskripsi_pendek + '" data-id="' + data.kode + '" onclick="tambahProsedur(this)"><a class="dropdown-item" href="#" style="overflow:hidden"> ' + data.kode + ' - ' + data.deskripsi_pendek + '</a></li>'
-                        no++;
-                    })
-                    html += '</ul>';
-                    $('.list-prosedur').fadeIn();
-                    $('.list-prosedur').html(html);
-
-
-                }
-            })
+            if (kode.value.length) {
+                $.ajax({
+                    url: '/erm/prosedur/cari',
+                    data: {
+                        'kode': kode.value,
+                    },
+                    dataType: 'JSON',
+                    success: function(response) {
+                        if (response) {
+                            html =
+                                '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                            no = 1;
+                            $.map(response, function(data) {
+                                html +=
+                                    '<li data-nama="' + data.deskripsi_pendek + '" data-id="' + data.kode + '" onclick="tambahProsedur(this)"><a class="dropdown-item" href="#" style="overflow:hidden"> ' + data.kode + ' - ' + data.deskripsi_pendek + '</a></li>'
+                                no++;
+                            })
+                            html += '</ul>';
+                            $('.list-prosedur').fadeIn();
+                            $('.list-prosedur').html(html);
+                        }
+                    }
+                })
+            }
         }
 
         function tambahDiagnosa(param) {
@@ -1245,9 +1249,9 @@
             $('.list_racik').fadeOut();
             $('.list-diagnosa').fadeOut();
             $('.list-prosedur').fadeOut();
+            $('.list-dokter').fadeOut();
 
         });
-
 
         function tambahUmum() {
             no_resep = $('.no_resep_umum').val();
