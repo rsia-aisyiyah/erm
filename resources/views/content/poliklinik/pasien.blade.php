@@ -167,15 +167,14 @@
                 autoclose: true,
                 todayHighlight: true,
             }).on('changeDate', (e) => {
-                selectTgl = splitTanggal($('#tgl_registrasi').datepicker('getFormattedDate'));
+                selectTgl = splitTanggal($('#tgl_registrasi').datepicker('getFormattedDate')) ? splitTanggal($('#tgl_registrasi').datepicker('getFormattedDate')) : "{{ date('Y-m-d') }}";
                 localStorage.setItem('tanggal', selectTgl);
                 $('#tb_pasien').DataTable().destroy();
                 tb_pasien(selectTgl, nmpasien);
                 hitungPanggilan();
                 tgl_registrasi = localStorage.getItem('tanggal');
             });
-
-            tgl_registrasi = localStorage.getItem('tanggal');
+            tgl_registrasi = localStorage.getItem('tanggal') ? localStorage.getItem('tanggal') : "{{ date('Y-m-d') }}";
             $('#tb_pasien').DataTable().destroy();
             $('#pasien-cari').val(nmpasien)
             tb_pasien(tgl_registrasi, $('#pasien-cari').val());
