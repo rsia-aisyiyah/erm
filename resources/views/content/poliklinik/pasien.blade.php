@@ -131,7 +131,6 @@
             localStorage.setItem('pasien', $('#pasien-cari').val());
             nmpasien = localStorage.getItem('pasien');
             if (nmpasien.length >= 3 || nmpasien.length == 0) {
-                // console.log(nmpasien)
                 $('#tb_pasien').DataTable().destroy();
                 tb_pasien(tgl_registrasi, nmpasien, pembiayaan, status_periksa);
             }
@@ -1306,10 +1305,7 @@
                         $('#opt-rawat').append(
                             '<option value="" disabled selected>PILIH TANGGAL ASESMEN</option>')
                         $.map(response, function(data) {
-                            $('#opt-rawat').append('<option class="opt-asesmen-anak" value=' + data
-                                .no_rawat + '>' + formatTanggal(
-                                    data.tanggal) + ' - ' + data.no_rawat +
-                                '</option>')
+                            $('#opt-rawat').append('<option class="opt-asesmen-anak" value=' + data.no_rawat + '>' + formatTanggal(data.tanggal) + ' - ' + data.no_rawat + '</option>')
                             $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
                             $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' :
                                 ': Perempuan')
@@ -1485,9 +1481,9 @@
                 },
                 dataType: 'JSON',
                 success: function(response) {
-                    let data = response.data;
-
-                    if (data) {
+                    let option = '';
+                    response?.data?.map((data) => {
+                        $('#select-askep-bidan').append('<option class="opt-askep-bidan" value=' + textRawat(data.no_rawat, '-') + '>' + formatTanggal(data.tanggal) + ' - ' + data.no_rawat + '</option>')
                         $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
                         $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' : ': Perempuan')
                         $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa.tgl_registrasi));
@@ -1562,7 +1558,6 @@
                         $('.komplikasi').text(data.komplikasi + ', ' + data.ket_komplikasi);
                         $('.berhenti').text(data.berhenti);
                         $('.alasan').text(data.alasan);
-
                         no = 1;
                         data.reg_periksa.pasien.riwayat_persalinan.forEach(function(riwayat) {
                             html = '<tr>';
@@ -1584,13 +1579,7 @@
                             $('.r_persalinan').append(html)
                         })
                         $('#modalAskep').modal('show');
-                    } else {
-                        Swal.fire(
-                            'Kosong!', 'Belum ada data asesmen', 'error'
-                        );
-                    }
-
-
+                    })
                 }
             });
         }

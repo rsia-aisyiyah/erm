@@ -112,6 +112,7 @@ Route::middleware('auth')->group(function () {
     Route::get('poliklinik/status/periksa', [PoliklinikController::class, 'statusSoap']);
     Route::get('poliklinik/status/upload', [PoliklinikController::class, 'statusUpload']);
     Route::get('poliklinik/askep/kebidanan', [AskepRalanKebidananController::class, 'ambil']);
+    Route::get('poliklinik/askep/kebidanan/{noRawat}', [AskepRalanKebidananController::class, 'get']);
     Route::get('poliklinik/askep/anak', [AskepRalanAnakController::class, 'ambil']);
     Route::get('poliklinik/askep/anak/detail', [AskepRalanAnakController::class, 'ambilDetail']);
 
