@@ -10,22 +10,20 @@
                     style="padding-left:50px;"></table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                <button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i> Keluar</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-image" data-bs-backdrop="static" data-bs-closable="false" data-bs-keyboard="false"
-    aria-hidden="true" aria-labelledby="modal-image" tabindex="-1">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+<div class="modal fade" id="modal-image" aria-hidden="true" aria-labelledby="modal-image" tabindex="-1" style="background-color:#0006;box-shadow: inset 0px -1rem 20rem 20px #000;">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content" style="border-radius:0px">
             <div class="modal-body">
                 <img src="" class="img-thumbnails popup" width="100%" />
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger" data-bs-target="#modalRiwayat" data-bs-toggle="modal"><i
-                        class="bi bi-x-circle"></i></button>
+                <button class="btn btn-danger" data-bs-dismiss="modal" style="font-size:12px"><i class="bi bi-x-circle"></i> Tutup Gambar</button>
             </div>
         </div>
     </div>
@@ -80,13 +78,7 @@
                     arrFoto.forEach(function(fx) {
                         hasilFoto += '<td><img src="https://sim.rsiaaisyiyah.com/erm/public/erm/' + fx + '" class="img-thumbnail position-relative" width="300px" onclick="popup(\'' +
                             fx +
-                            '\')" data-bs-target="#modal-image" data-bs-toggle="modal"><figcaption align="center">' +
-                            kategori.toUpperCase() + '</figcaption></td>'
-                        // hasilFoto += '<td><img src="{{ asset('erm') }}/' + fx +
-                        //     '" class="img-thumbnail position-relative" width="300px" onclick="popup(\'' +
-                        //     fx +
-                        //     '\')" data-bs-target="#modal-image" data-bs-toggle="modal"><figcaption align="center">' +
-                        //     kategori.toUpperCase() + '</figcaption></td>'
+                            '\')" "><figcaption align="center">' + kategori.toUpperCase() + '</figcaption></td>'
                     })
                     hasilFoto += '</tr>'
                 })
