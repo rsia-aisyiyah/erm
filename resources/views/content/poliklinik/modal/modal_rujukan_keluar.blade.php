@@ -129,7 +129,6 @@
         })
 
         $('#tipe_rujuk').on('change', function(evt) {
-            $('#jns_rujuk').val(this.value)
             if (this.value == 2) {
                 getPeserta($('#no_kartu').val()).done(function(response) {
                     kode_faskes = response.response.peserta.provUmum.kdProvider;
