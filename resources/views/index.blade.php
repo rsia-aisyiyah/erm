@@ -388,10 +388,10 @@
         }
 
         function reloadTabelPoli() {
-            tgl_registrasi = $('#tgl_registrasi').val();
+            tanggal = localStorage.getItem('tanggal') ? localStorage.getItem('tanggal') : "{{ date('Y-m-d') }}"
             hitungPanggilan();
             $('#tb_pasien').DataTable().destroy();
-            tb_pasien(splitTanggal(tgl_registrasi));
+            tb_pasien(tanggal);
         }
 
         function simpan() {
