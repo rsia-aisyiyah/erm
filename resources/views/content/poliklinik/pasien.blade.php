@@ -1070,6 +1070,14 @@
                                 $('#icon-periksa-' + textRawat(row.no_rawat)).addClass(
                                     'bi bi-check2-circle')
                                 $('#btn-periksa-' + textRawat(row.no_rawat)).addClass('btn-success')
+                                $('.panggil-' + textRawat(row.no_rawat)).addClass('btn-success');
+                                $('.panggil-' + textRawat(row.no_rawat)).removeClass('btn-secondary');
+                                $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', false);
+                            } else {
+                                // console.log('.panggil' + textRawat(row.no_rawat));
+                                $('.panggil-' + textRawat(row.no_rawat)).removeClass('btn-success');
+                                $('.panggil-' + textRawat(row.no_rawat)).addClass('btn-secondary');
+                                $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', true);
                             }
 
                             $.map(row.pasien.reg_periksa, function(data) {
