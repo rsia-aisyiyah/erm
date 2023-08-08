@@ -123,56 +123,15 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Diagnosa ICD</td>
-                                    <td colspan="3">
-                                        <input type="search" class="form-control form-control-sm" onkeyup="cariDiagnosaSoap(this)" name="diagnosa" id="diagnosa" style="font-size:12px;min-height:12px;border-radius:0" autocomplete="off">
-                                        <div class="list-diagnosa"></div>
-                                        <input type="hidden" class="no_diagnosa" value="" />
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm" type="button" style="font-size: 12px" onclick="catatanPasien()"><i class="bi bi-pen"></i> Diagnosa & Catatan</button>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>Prosedur</td>
-                                    <td colspan="3">
-                                        <input type="search" class="form-control form-control-sm" onkeyup="cariProsedur(this)" name="prosedur" id="prosedur" style="font-size:12px;min-height:12px;border-radius:0" autocomplete="off">
-                                        <div class="list-prosedur"></div>
-                                        <input type="hidden" class="no_prosedur" value="" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <table class="table table-stripped table-diagnosa" style="margin-bottom: 30px;">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th width="25%">Kode ICD</th>
-                                                <th width="60%">Deskripsi</th>
-                                                <th width="15%"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </tr>
-                                <tr>
-                                    <table class="table table-stripped table-prosedur" style="margin-bottom: 30px;">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th width="25%">Kode Prosedur</th>
-                                                <th width="60%">Deskripsi</th>
-                                                <th width="15%"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
                                 </tr>
                             </table>
 
-
                             <input type="hidden" class="no_resep form-control form-control-sm" />
-                            <ul class="nav nav-tabs" id="myTab">
+                            <ul class="nav nav-tabs mt-4" id="myTab">
                                 <li class="nav-item">
                                     <a href="#umum" class="nav-link active" data-bs-toggle="tab">NON RACIKAN</a>
                                 </li>
@@ -1662,6 +1621,10 @@
             $('#nik').val($(param).data('id'));
             $('#nama').val($(param).text());
             $('.list_petugas').fadeOut();
+        }
+
+        function catatanPasien() {
+            $('#modalCatatan').modal('show')
         }
     </script>
 @endpush

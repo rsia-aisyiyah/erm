@@ -9,4 +9,6 @@ class CatatanPerawatan extends Model
 {
     use HasFactory;
     protected $table = 'catatan_perawatan';
+    public $timestamps = false;
+    protected $fillable = ['tanggal', 'jam', 'no_rawat', 'kd_dokter', 'catatan'];
 }

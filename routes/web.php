@@ -48,6 +48,7 @@ use App\Http\Controllers\Bridging\RujukanController;
 use App\Http\Controllers\BridgingRujukanBpjsController;
 use App\Http\Controllers\BridgingSPRIController;
 use App\Http\Controllers\BrigdgingRencanaKontrolController;
+use App\Http\Controllers\CatatanPerawatanController;
 use App\Http\Controllers\LaporanOperasiController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
@@ -260,6 +261,9 @@ Route::middleware('auth')->group(function () {
     Route::post('kontrol/umum/baru', [SuratKontrolUlangController::class, 'create']);
     Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
     Route::get('poliklinik/bpjs/{kdPoli}', [MappingPoliBpjsController::class, 'ambil']);
+    Route::get('catatan/perawatan/{noRawat}', [CatatanPerawatanController::class, 'get']);
+    Route::post('catatan/perawatan/insert', [CatatanPerawatanController::class, 'insert']);
+    Route::post('catatan/perawatan/create', [CatatanPerawatanController::class, 'insertOrUpdate']);
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 

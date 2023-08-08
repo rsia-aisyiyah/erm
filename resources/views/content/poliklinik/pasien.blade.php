@@ -114,6 +114,7 @@
     @include('content.poliklinik.modal.modal_kontrol_umum')
     @include('content.poliklinik.modal.modal_icare')
     @include('content.poliklinik.modal.modal_peserta')
+    @include('content.poliklinik.modal.modal_catatan')
 @endsection
 
 @push('script')
