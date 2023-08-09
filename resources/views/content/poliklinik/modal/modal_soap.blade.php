@@ -1592,36 +1592,8 @@
             id = no_rawat;
         }
 
-        function cariPetugas(nama) {
-            $.ajax({
-                url: '/erm/petugas/cari',
-                data: {
-                    'q': nama.value
-                },
-                success: function(response) {
 
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
-                    $.map(response, function(data) {
-                        html += '<li>'
-                        html += '<a data-id="' + data.nip +
-                            '" class="dropdown-item" onclick="setPetugas(this)">' + data
-                            .nama +
-                            '</a>'
-                        html += '</li>'
-                    })
-                    html += '</ul>';
-                    $('.list_petugas').fadeIn();
-                    $('.list_petugas').html(html);
-                },
-            })
-        }
 
-        function setPetugas(param) {
-            $('#nik').val($(param).data('id'));
-            $('#nama').val($(param).text());
-            $('.list_petugas').fadeOut();
-        }
 
         function catatanPasien() {
             $('#modalCatatan').modal('show')

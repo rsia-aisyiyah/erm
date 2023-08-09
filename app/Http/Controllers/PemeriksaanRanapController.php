@@ -10,9 +10,13 @@ use Yajra\DataTables\DataTables;
 class PemeriksaanRanapController extends Controller
 {
     private $tanggal;
+    private $pemeriksaan;
+    private $track;
     public function __construct()
     {
         $this->tanggal = new Carbon();
+        $this->pemeriksaan = new PemeriksaanRanap();
+        $this->track = new TrackerSqlController();
     }
 
     public function ambilSatu(Request $request)
@@ -34,6 +38,7 @@ class PemeriksaanRanapController extends Controller
     {
         $data = [
             'suhu_tubuh' => $request->suhu_tubuh,
+            'nip' => $request->nip,
             'tinggi' => $request->tinggi,
             'berat' => $request->berat,
             'respirasi' => $request->respirasi,
@@ -46,15 +51,16 @@ class PemeriksaanRanapController extends Controller
             'pemeriksaan' => $request->pemeriksaan,
             'penilaian' => $request->penilaian,
             'rtl' => $request->rtl,
-            'evaluasi' => $request->evaluasi,
+            'evaluasi' => '-',
             'instruksi' => $request->instruksi,
         ];
-        $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->where('tgl_perawatan', $request->tgl_perawatan)
-            ->where('jam_rawat', $request->jam_rawat)
-            ->update(
-                $data
-            );
+        $clause = [
+            'no_rawat' => $request->no_rawat,
+            'tgl_perawatan' => $request->tgl_perawatan,
+            'jam_rawat' => $request->jam_rawat,
+        ];
+        $pemeriksaan = PemeriksaanRanap::where($clause)->update($data);
+        $this->track->create($this->track->updateSql($this->pemeriksaan, $data, $clause));
         return response()->json($pemeriksaan);
     }
 
@@ -78,19 +84,22 @@ class PemeriksaanRanapController extends Controller
             'pemeriksaan' => $request->pemeriksaan,
             'penilaian' => $request->penilaian,
             'rtl' => $request->rtl,
-            'evaluasi' => $request->evaluasi,
+            'evaluasi' => '-',
             'instruksi' => $request->instruksi,
         ];
         $pemeriksaan = PemeriksaanRanap::create($data);
-
+        $this->track->create($this->track->insertSql($this->pemeriksaan, $data));
         return response()->json(['Berhasil', $pemeriksaan], 200);
     }
     public function hapus(Request $request)
     {
-        $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->where('tgl_perawatan', $request->tgl_perawatan)
-            ->where('jam_rawat', $request->jam_rawat)->delete();
-
+        $clause = [
+            'no_rawat' => $request->no_rawat,
+            'tgl_perawatan' => $request->tgl_perawatan,
+            'jam_rawat' => $request->jam_rawat,
+        ];
+        $pemeriksaan = PemeriksaanRanap::where($clause)->delete();
+        $this->track->create($this->track->deleteSql($this->pemeriksaan, $clause));
         return response()->json(['Berhasil', $pemeriksaan], 200);
     }
     public function ambil(Request $request)
@@ -105,8 +114,23 @@ class PemeriksaanRanapController extends Controller
             $pemeriksaan->where('tgl_perawatan', $this->tanggal->now()->toDateString());
         }
 
-        // return response()->json($pemeriksaan->get());
+        if ($request->petugas == 1) {
+            $pemeriksaan->whereHas('petugas', function ($q) use ($request) {
+                return $q->whereIn('kd_jbtn', ['J01', 'J024', 'J025', 'J002']);
+            });
+        } else if ($request->petugas == 2) {
+            $pemeriksaan->whereHas('petugas', function ($q) use ($request) {
+                return $q->whereNotIn('kd_jbtn', ['J01', 'J024', 'J025', 'J002']);
+            });
+        }
 
         return DataTables::of($pemeriksaan)->make(true);
+    }
+
+    function getTTV($noRawat)
+    {
+        $id = str_replace('-', '/', $noRawat);
+        return $this->pemeriksaan->select('suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'spo2')
+            ->where(['no_rawat' => $id]);
     }
 }

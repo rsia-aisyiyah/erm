@@ -125,11 +125,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/4.2.1/js/dataTables.fixedColumns.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.6.0/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
     <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
 
 
     <script src="{{ asset('js/dashboard.js') }}"></script>
-
 
     <script>
         $(document).ready(function() {
@@ -168,6 +168,83 @@
             let arrTgl = tanggal.split('-');
             let txtTanggal = arrTgl[2] + '-' + arrTgl[1] + '-' + arrTgl[0];
             return txtTanggal;
+        }
+
+        function hitungUmur(tgl_lahir) {
+            sekarang = new Date();
+            hari = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate());
+
+            var tahunSekarang = sekarang.getFullYear();
+            var bulanSekarang = sekarang.getMonth();
+            var tanggalSekarang = sekarang.getDate();
+
+            splitTgl = tgl_lahir.split('-');
+            lahir = new Date(splitTgl[0], splitTgl[1] - 1, splitTgl[2]);
+
+
+            tahunLahir = lahir.getFullYear();
+            bulanLahir = lahir.getMonth();
+            tanggalLahir = lahir.getDate();
+
+            umurTahun = tahunSekarang - tahunLahir;
+            if (bulanSekarang >= bulanLahir) {
+                umurBulan = bulanSekarang - bulanLahir;
+            } else {
+                umurTahun--;
+                umurBulan = 12 + bulanSekarang - bulanLahir;
+            }
+
+            if (tanggalSekarang >= tanggalLahir) {
+                umurTanggal = tanggalSekarang - tanggalLahir;
+            } else {
+                umurBulan--;
+                if (bulanSekarang == '1') {
+                    if (bulanSekarang % 4 == 0) {
+                        jmlHari = 29;
+                    } else {
+                        jmlHari = 28;
+                    }
+                } else if (bulanSekarang == '0' && bulanSekarang == '2' && bulanSekarang == '4' && bulanSekarang == '6' &&
+                    bulanSekarang == '8' && bulanSekarang == '9') {
+                    jmlHari = 31;
+                } else {
+                    jmlHari = 30;
+                }
+                umurTanggal = jmlHari + tanggalSekarang - tanggalLahir;
+            }
+
+            return umurTahun + ' Th ' + umurBulan + ' Bln ' + umurTanggal + ' Hari';
+        }
+
+        function cariPetugas(nama) {
+            $.ajax({
+                url: '/erm/petugas/cari',
+                data: {
+                    'q': nama.value
+                },
+                success: function(response) {
+
+                    html =
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                    $.map(response, function(data) {
+                        html += '<li>'
+                        html += '<a data-id="' + data.nip +
+                            '" class="dropdown-item" onclick="setPetugas(this)">' + data
+                            .nama +
+                            '</a>'
+                        html += '</li>'
+                    })
+                    html += '</ul>';
+                    $('.list_petugas').fadeIn();
+                    $('.list_petugas').html(html);
+                },
+            })
+        }
+
+        function setPetugas(param) {
+            $('#nik').val($(param).data('id'));
+            $('#nama').val($(param).text());
+            $('.list_petugas').fadeOut();
         }
 
         function formatTanggal(oldTgl) {
