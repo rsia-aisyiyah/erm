@@ -6,13 +6,41 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                @include('content.ranap.modal._form_soap')
+                <ul class="nav nav-tabs" id="tab-soap-ranap" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="tab-soap" data-bs-toggle="tab" data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane" aria-selected="true">SOAP</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-pane" type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Data Pemeriksaan</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-grafik" data-bs-toggle="tab" data-bs-target="#tab-grafik-pane" type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik Pasien</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-verifikasi" data-bs-toggle="tab" data-bs-target="#tab-verifikasi-pane" type="button" role="tab" aria-controls="tab-verifikasi-pane" aria-selected="false">Verifikasi SOAP</button>
+                    </li>
+
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                        @include('content.ranap.modal._form_soap')
+                    </div>
+                    <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel" tabindex="0">
+                        @include('content.ranap.modal._table_soap')
+                    </div>
+                    <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik" tabindex="0">
+                        <div>
+                            <canvas id="grafik-suhu"></canvas>
+                        </div>
+                    </div>
+                    {{-- <div class="tab-pane fade p-3" id="tab-verifikasi-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+                        VERIFIKASI PASIEN
+                    </div> --}}
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                        class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoap()"><i class="bi bi-save"></i>
-                    Simpan</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoapRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
                 <span id="ubah_soap"></span>
                 <span id="reset_soap"></span>
             </div>
@@ -25,6 +53,33 @@
         var tgl_pertama = '';
         var tgl_kedua = '';
 
+        $('#modalSoapRanap').on('shown.bs.modal', () => {
+            const canvasSuhu = $('#grafik-suhu');
+            grafikSuhu(canvasSuhu)
+        })
+
+        function grafikSuhu(ctx) {
+            console.log(ctx)
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
         function ambilSoap(no, tgl, jam) {
             $.ajax({
                 url: 'soap/ambil',
@@ -34,6 +89,8 @@
                     'jam_rawat': jam
                 },
                 success: function(response) {
+                    console.log(response)
+
                     let hidden = '<input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="' +
                         response.tgl_perawatan +
                         '">';
@@ -43,6 +100,8 @@
                         .no_rawat + '">'
                     $('.form-soap').append(hidden);
                     $('#suhu').val(response.suhu_tubuh);
+                    $('#nik').val(response.petugas.nip);
+                    $('#nama').val(response.petugas.nama);
                     $('#tinggi').val(response.tinggi);
                     $('#berat').val(response.berat);
                     $('#tensi').val(response.tensi);
@@ -60,10 +119,10 @@
                     $('#objek').val(response.pemeriksaan);
                     if ($('#btn-ubah').length == 0) {
                         $('#ubah_soap').append(
-                            '<button type="button" class="btn btn-success btn-sm" onclick="editSoap()" id="btn-ubah"><i class="bi bi-pencil-square"></i>Ubah</button>'
+                            '<button type="button" class="btn btn-success btn-sm" onclick="editSoap()" id="btn-ubah" style="font-size:12px"><i class="bi bi-pencil-square"></i> Ubah</button>'
                         )
                         $('#reset_soap').append(
-                            '<button type="button" class="btn btn-warning btn-sm" id="btn-reset"><i class="bi bi-arrow-clockwise"></i>Baru</button>'
+                            '<button type="button" class="btn btn-warning btn-sm" id="btn-reset" style="font-size:12px"><i class="bi bi-arrow-clockwise"></i> Baru</button>'
                         )
                     }
                     $('#btn-reset').on('click', function(event) {
@@ -88,6 +147,9 @@
                     });
 
                 }
+            }).done(() => {
+                var sel = document.querySelector('#tab-soap-ranap li:first-child button')
+                bootstrap.Tab.getInstance(sel).show()
             })
         }
 
@@ -135,7 +197,8 @@
                 data: {
                     '_token': '{{ csrf_token() }}',
                     'suhu_tubuh': $('#suhu').val(),
-                    'no_rawat': $('#no_rawat').val(),
+                    'nip': $('#nik').val(),
+                    'no_rawat': $('#nomor_rawat').val(),
                     'jam_rawat': $('#jam_rawat').val(),
                     'tgl_perawatan': $('#tgl_perawatan').val(),
                     'tinggi': $('#tinggi').val(),
@@ -191,16 +254,15 @@
         function cariSoap() {
             tgl_pertama = splitTanggal($('.tgl_pertama_soap').val());
             tgl_kedua = splitTanggal($('.tgl_kedua_soap').val());
+            petugas = $('#petugas option:selected').val();
             $('#tbSoap').DataTable().destroy();
-            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua, petugas);
         }
 
-        function tbSoapRanap(no_rawat = '', tgl_pertama = '', tgl_kedua = '') {
+        function tbSoapRanap(no_rawat = '', tgl_pertama = '', tgl_kedua = '', petugas = '') {
             no_rawat_soap = no_rawat;
             var tbSoapRanap = $('#tbSoap').DataTable({
                 processing: true,
-                scrollX: true,
-                scrollY: 610,
                 serverSide: true,
                 stateSave: true,
                 searching: false,
@@ -215,25 +277,15 @@
                         'no_rawat': no_rawat,
                         'tgl_pertama': tgl_pertama,
                         'tgl_kedua': tgl_kedua,
+                        'petugas': petugas,
                     },
-                },
-                fixedColumns: {
-                    left: 1,
                 },
                 scrollCollapse: true,
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
-                            button =
-                                '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' +
-                                row.no_rawat + '\',\'' + row.tgl_perawatan +
-                                '\', \'' + row.jam_rawat +
-                                '\')"><i class="bi bi-pencil-square"></i></button>';
-                            button +=
-                                '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' +
-                                row.no_rawat + '\',\'' + row.tgl_perawatan +
-                                '\', \'' + row.jam_rawat +
-                                '\')"><i class="bi bi-trash3-fill"></i></button>';
+                            button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
+                            button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
 
                             return button;
                         },
@@ -263,13 +315,13 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            baris = '<tr><td>Petugas </td><td>:</td><td>' + row.petugas.nama + '</td></tr>'
+                            baris = '<tr><td width="5%">Petugas </td><td width="5%">:</td><td>' + row.petugas.nama + '</td></tr>'
                             baris += '<tr><td>Subjek </td><td>:</td><td>' + row.keluhan + '</td></tr>'
                             baris += '<tr><td>Objek </td><td>:</td><td>' + row.pemeriksaan + '</td></tr>'
                             baris += '<tr><td>Assesment</td><td>:</td><td>' + row.penilaian + '</td></tr>'
                             baris += '<tr><td>Plan</td><td>:</td><td>' + row.rtl + '</td></tr>'
                             baris += '<tr><td>Instruksi</td><td>:</td><td>' + row.instruksi + '</td></tr>'
-                            baris += '<tr><td>Evaluasi</td><td>:</td><td>' + row.evaluasi + '</td></tr>'
+                            // baris += '<tr><td>Evaluasi</td><td>:</td><td>' + row.evaluasi + '</td></tr>'
                             html = '<table class="table table-striped">' + baris + '</table>'
                             return html;
                         },
@@ -283,71 +335,66 @@
             });
         }
 
-        // function simpanSoap() {
-        //     let pasien = $('#nomor_rawat').val();
-        //     let splitPasien = pasien.split(' - ');
-        //     let no = splitPasien[0];
+        function simpanSoapRanap() {
+            let pasien = $('#nomor_rawat').val();
+            let splitPasien = pasien.split(' - ');
+            let no = splitPasien[0];
 
-        //     $.ajax({
-        //         url: 'soap/simpan',
-        //         data: {
-        //             '_token': '{{ csrf_token() }}',
-        //             'suhu_tubuh': $('#suhu').val(),
-        //             'nip': "{{ session()->get('pegawai')->nik }}",
-        //             'no_rawat': no,
-        //             'jam_rawat': $('#jam_rawat').val(),
-        //             'tgl_perawatan': $('#tgl_perawatan').val(),
-        //             'tinggi': $('#tinggi').val(),
-        //             'berat': $('#berat').val(),
-        //             'respirasi': $('#respirasi').val(),
-        //             'nadi': $('#nadi').val(),
-        //             'tensi': $('#tensi').val(),
-        //             'spo2': $('#spo2').val(),
-        //             'gcs': $('#gcs').val(),
-        //             'alergi': $('#alergi').val(),
-        //             'keluhan': $('#subjek').val(),
-        //             'pemeriksaan': $('#objek').val(),
-        //             'penilaian': $('#asesmen').val(),
-        //             'rtl': $('#plan').val(),
-        //             'evaluasi': $('#plan').val(),
-        //             'instruksi': $('#instruksi').val(),
-        //             'kd_dokter': "{{ Request::get('dokter') }}"
-        //             'kd_poli': "{{ Request::segment(2) }}"
-        //             'no_rkm_medis': $('#no_rm').val()
-        //         },
-        //         method: 'POST',
-        //         beforeSend: function() {
-        //             swal.fire({
-        //                 title: 'Sedang mengirim data',
-        //                 text: 'Mohon Tunggu',
-        //                 showConfirmButton: false,
-        //                 didOpen: () => {
-        //                     swal.showLoading();
-        //                 }
-        //             })
-        //         },
-        //         success: function(response) {
-        //             if (response) {
-        //                 Swal.fire({
-        //                     icon: 'success',
-        //                     title: 'SUKSES !',
-        //                     text: 'Data Berhasil Ditambah',
-        //                     showConfirmButton: false,
-        //                     timer: 1500
-        //                 })
-        //                 $('#tbSoap').DataTable().destroy();
-        //                 tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
-        //             } else {
-        //                 Swal.fire({
-        //                     icon: 'danger',
-        //                     title: 'GAGAL !',
-        //                     text: 'Data Gagal Ditambah',
-        //                     showConfirmButton: false,
-        //                     timer: 1500
-        //                 })
-        //             }
-        //         }
-        //     })
-        // }
+            $.ajax({
+                url: '/erm/soap/simpan',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'suhu_tubuh': $('#suhu').val(),
+                    'nip': $('#nik').val(),
+                    'no_rawat': $('#nomor_rawat').val(),
+                    'tinggi': $('#tinggi').val(),
+                    'berat': $('#berat').val(),
+                    'respirasi': $('#respirasi').val(),
+                    'nadi': $('#nadi').val(),
+                    'tensi': $('#tensi').val(),
+                    'spo2': $('#spo2').val(),
+                    'gcs': $('#gcs').val(),
+                    'alergi': $('#alergi').val(),
+                    'keluhan': $('#subjek').val(),
+                    'pemeriksaan': $('#objek').val(),
+                    'penilaian': $('#asesmen').val(),
+                    'rtl': $('#plan').val(),
+                    'instruksi': $('#instruksi').val(),
+                },
+                method: 'POST',
+                beforeSend: function() {
+                    swal.fire({
+                        title: 'Sedang mengirim data',
+                        text: 'Mohon Tunggu',
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            swal.showLoading();
+                        }
+                    })
+                },
+                success: function(response) {
+                    console.log(response)
+                    if (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'SUKSES !',
+                            text: 'Data Berhasil Ditambah',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $('#tbSoap').DataTable().destroy();
+                        tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+                    } else {
+                        Swal.fire({
+                            icon: 'danger',
+                            title: 'GAGAL !',
+                            text: 'Data Gagal Ditambah',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                }
+            })
+        }
     </script>
 @endpush

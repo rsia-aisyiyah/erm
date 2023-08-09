@@ -308,21 +308,13 @@
                         data: 'reg_periksa',
                         render: function(data) {
 
-                            list =
-                                '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' +
-                                data
-                                .no_rawat + '\')">Laborat</a></li>';
-                            list +=
-                                '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' +
-                                data
-                                .no_rawat + '\')">S.O.A.P</a></li>';
-                            list +=
-                                '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' +
-                                data
-                                .no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
+                            list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data.no_rawat + '\')">Laborat</a></li>';
+                            list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
+                            list += '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
+                            list += '<li><a class="dropdown-item" href="javasript:void(0)" onclick="asmedRanapKandungan(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
                             list += '<li><a class="dropdown-item" href="#">EWS</a></li>';
                             button =
-                                '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" width="100px">Aksi</button><ul class="dropdown-menu">' +
+                                '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' +
                                 list + '</ul></div>'
                             return button;
                         }
@@ -407,19 +399,20 @@
         }
 
         function modalSoapRanap(no_rawat) {
-
             $.ajax({
                 url: 'periksa/detail',
                 data: {
                     'no_rawat': no_rawat,
                 },
                 success: function(response) {
-                    $('#nomor_rawat').val(response.no_rawat + ' - ' + response.pasien.nm_pasien);
+                    console.log(response)
+                    $('#nomor_rawat').val(response.no_rawat);
+                    $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
+                    $('#nik').val(response.kd_dokter)
+                    $('#nama').val(response.dokter.nm_dokter)
                 }
             })
             $('#modalSoapRanap').modal('show')
-            nik = "{{ session()->get('pegawai')->nik }}" + " - " + "{{ session()->get('pegawai')->nama }}";
-            $('#nik').val(nik)
             tbSoapRanap(no_rawat);
         }
         $('#modalSoapRanap').on('hidden.bs.modal', function() {

@@ -16,8 +16,9 @@
     <div class="col-md-12 col-lg-3 col-sm-12">
         <select name="petugas" id="petugas" class="form-select form-select-sm mb-3" style="font-size: 12px">
             <option value="" disabled selected>Pilih Petugas Medis</option>
-            <option value="dokter">Dokter</option>
-            <option value="petugas">Petugas Medis Lain</option>
+            <option value="">Semua</option>
+            <option value="1">Dokter</option>
+            <option value="2">Petugas Medis Lain</option>
         </select>
     </div>
     <div class="col-md-12 col-lg-3 col-sm-12">
@@ -29,16 +30,18 @@
         </div>
     </div>
 </div>
-<div>
-    <table class="table table-bordered table-striped" id="tbSoap" style="font-size: 10px">
-        <thead>
-            <tr>
-                <td>Aksi</td>
-                <td>TTV & Fisik</td>
-                <td>S.O.A.P</td>
-            </tr>
-        </thead>
-    </table>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-lg-12">
+        <table class="table table-bordered table-striped" id="tbSoap" style="font-size: 12px" width="100%">
+            <thead>
+                <tr>
+                    <td width="5%">Aksi</td>
+                    <td width="20%">TTV & Fisik</td>
+                    <td>S.O.A.P</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </div>
 
 @push('script')

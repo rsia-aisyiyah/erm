@@ -14,7 +14,7 @@
                     <tr>
                         <td>Nama</td>
                         <td>:</td>
-                        <td id="nama">
+                        <td id="nama_pasien">
 
                         </td>
                     </tr>
@@ -66,7 +66,7 @@
                     status_umur = response.sttsumur;
                     if (data.pasien) {
                         jk = res.reg_periksa.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
-                        $('#nama').html(res.reg_periksa.pasien.nm_pasien + ' ( No. RM ' + res
+                        $('#nama_pasien').html(res.reg_periksa.pasien.nm_pasien + ' ( No. RM ' + res
                             .reg_periksa
                             .no_rkm_medis + ')');
                         $('#umur').html(umur + ' ' + status_umur +
@@ -82,7 +82,7 @@
                                 $.map(response, function(data) {
                                     jk = data.jk == 'L' ?
                                         'Laki-laki' : 'Perempuan';
-                                    $('#nama').html(data.nm_pasien + ' ( No. RM ' + data
+                                    $('#nama_pasien').html(data.nm_pasien + ' ( No. RM ' + data
                                         .no_rkm_medis + ')');
                                     $('#umur').html(umur + ' ' + status_umur +
                                         ' / ' + jk)
