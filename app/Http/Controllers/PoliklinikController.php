@@ -37,12 +37,15 @@ class PoliklinikController extends Controller
             'poliklinik',
         ])->get();
     }
-    public function poliPasien($kd_poli, $kd_dokter, $tgl_registrasi)
+    public function poliPasien($kd_poli = '', $kd_dokter = '', $tgl_registrasi)
     {
         $tanggal = new Carbon();
 
         $sekarang = $tanggal->now()->toDateString();
-        $pasienPoli = RegPeriksa::with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter.mappingDokter', 'penjab', 'upload', 'pemeriksaanRalan', 'sep.suratKontrol', 'suratKontrol', 'sep.rujukanKeluar'])
+        $pasienPoli = RegPeriksa::with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter.mappingDokter', 'penjab', 'upload', 'pemeriksaanRalan', 'sep.suratKontrol', 'suratKontrol', 'sep.rujukanKeluar', 'pasien.spri' => function ($q) use ($tgl_registrasi) {
+            return $q->where('tgl_surat', $tgl_registrasi);
+        }])
+            ->whereNotIn('kd_poli', ['OPE', 'IGDK', '-', 'U0016', 'LAB'])
             ->where('kd_poli', $kd_poli)
             ->orderBy('no_reg', 'ASC');
 

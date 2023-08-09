@@ -109,9 +109,12 @@
     @include('content.poliklinik.modal.modal_askep_anak')
     @include('content.poliklinik.modal.modal_resep')
     @include('content.poliklinik.modal.modal_skrj')
+    @include('content.poliklinik.modal.modal_spri')
     @include('content.poliklinik.modal.modal_rujukan_keluar')
     @include('content.poliklinik.modal.modal_kontrol_umum')
     @include('content.poliklinik.modal.modal_icare')
+    @include('content.poliklinik.modal.modal_peserta')
+    @include('content.poliklinik.modal.modal_catatan')
 @endsection
 
 @push('script')
@@ -121,12 +124,13 @@
         var kd_poli = '{{ $poli->kd_poli }}';
         var kd_dokter = "{{ Request::get('dokter') }}";
         var tgl_registrasi = "";
-        var nmpasien = "";
+        var nmpasien = localStorage.getItem('pasien');
         var pembiayaan = "";
         var status_periksa = "";
 
         $('#pasien-cari').on('keyup', function() {
-            nmpasien = $('#pasien-cari').val();
+            localStorage.setItem('pasien', $('#pasien-cari').val());
+            nmpasien = localStorage.getItem('pasien');
             if (nmpasien.length >= 3 || nmpasien.length == 0) {
                 $('#tb_pasien').DataTable().destroy();
                 tb_pasien(tgl_registrasi, nmpasien, pembiayaan, status_periksa);
@@ -135,6 +139,7 @@
 
         $('#pasien-cari').on('search', function() {
             nmpasien = '';
+            localStorage.setItem('pasien', '');
             $('#tb_pasien').DataTable().destroy();
             tb_pasien(tgl_registrasi);
         })
@@ -156,22 +161,30 @@
             bulan = ('0' + (date.getMonth() + 1)).slice(-2);
             tahun = date.getFullYear();
             dateStart = hari + '-' + bulan + '-' + tahun;
+
             $('#tgl_registrasi').datepicker({
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
                 autoclose: true,
+                todayHighlight: true,
+            }).on('changeDate', (e) => {
+                selectTgl = splitTanggal($('#tgl_registrasi').datepicker('getFormattedDate')) ? splitTanggal($('#tgl_registrasi').datepicker('getFormattedDate')) : "{{ date('Y-m-d') }}";
+                localStorage.setItem('tanggal', selectTgl);
+                $('#tb_pasien').DataTable().destroy();
+                tb_pasien(selectTgl, nmpasien);
+                hitungPanggilan();
+                tgl_registrasi = localStorage.getItem('tanggal');
             });
-            $('#tgl_registrasi').datepicker('setDate', dateStart)
+            tgl_registrasi = localStorage.getItem('tanggal') ? localStorage.getItem('tanggal') : "{{ date('Y-m-d') }}";
             $('#tb_pasien').DataTable().destroy();
-            tb_pasien(tgl_registrasi);
+            $('#pasien-cari').val(nmpasien)
+            tb_pasien(tgl_registrasi, $('#pasien-cari').val());
             hitungPanggilan();
-        });
+            $('#tgl_registrasi').datepicker('setDate', splitTanggal(tgl_registrasi))
 
-        $('#tgl_registrasi').on('change', function(e) {
-            tanggal = splitTanggal(this.value)
-            $('#tb_pasien').DataTable().destroy();
-            tb_pasien(tanggal);
-        })
+
+
+        });
 
         function hitungPasien() {
             $.ajax({
@@ -312,13 +325,10 @@
                             .nm_pasien + ' / ' + hitungUmur(response.pasien.tgl_lahir) : '-')
                         $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
                         $('#p_jawab').val(response.p_jawab ? 'P. JAWAB : ' + response.p_jawab : '-')
-                        $('#nama').val(nama);
-                        $('#nik').val(nik);
+                        $('#nama').val(response.dokter.nm_dokter);
+                        $('#nik').val(response.dokter.kd_dokter);
 
                     }
-
-                    // $('#jabatan').val(jbtn);
-
                     $('#nomor_rawat').val(response.no_rawat ? response.no_rawat : '-')
                     $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '-')
                     $('#subjek').val(response.keluhan ? response.keluhan : '-')
@@ -341,6 +351,7 @@
                 }
             })
         }
+
 
         function riwayatResep(no_rm) {
             $('#tb-resep-riwayat tbody').empty()
@@ -584,7 +595,7 @@
 
         }
 
-        function cariRencanaKontrol(bulan, tahun, noka, filter) {
+        function getListRencanaKontrol(bulan, tahun, noka, filter) {
             rencana = $.ajax({
                 url: '/erm/bridging/rencanaKontrol/list/' + bulan + '/' + tahun + '/' + noka + '/' + filter,
                 dataType: 'JSON',
@@ -605,12 +616,13 @@
 
         function rujukanKeluar(noSep) {
             $('#modalRujukanKeluar').modal('show')
-
             cekSep(noSep).done(function(response) {
+                $('#no_kartu').val(response.no_kartu)
                 $('#no_sep_rujuk').val(response.no_sep)
                 $('#no_rawat_rujuk').val(response.no_rawat)
                 $('#pasien_rujuk').val(response.reg_periksa.no_rkm_medis + ' - ' + response.nama_pasien)
                 $('#tgl_lahir_rujuk').val(splitTanggal(response.tanggal_lahir))
+                $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.no_kartu + '\', \'' + response.tglsep + '\')');
                 if (response.rujukan_keluar) {
                     $('#ppk_rujuk').attr('disabled', '')
                     $('#poli_rujuk').attr('disabled', '')
@@ -630,10 +642,41 @@
             })
         }
 
+
+
+        function geRujukanPcarePeserta(noka) {
+            let rujukan = $.ajax({
+                url: '/erm/bridging/rujukan/pcare/peserta/' + noka,
+                dataType: 'JSON',
+                method: 'GET',
+            });
+
+            return rujukan;
+        }
+
+        function rujukanExpired(tanggal) {
+            $('.rujukan-expired').empty()
+            let tglRujukan = new Date(tanggal)
+            tglRujukan.setDate(tglRujukan.getDate() + 90)
+            expiredRujukan = tglRujukan.toISOString().split('T')[0];
+            $('.rujukan-expired').append('<div class="alert alert-warning" style="padding:8px;border-radius:0px;font-size:12px;margin:5px" role="alert"><i class="bi bi-info-circle-fill"></i> Masa berlaku rujukan sampai : <strong>' + formatTanggal(expiredRujukan) + '</strong></div>');
+        }
+
+
         function kontrolUlang(noSep) {
             reloadTabelPoli();
 
             cekSep(noSep).done(function(response) {
+                geRujukanPcarePeserta(response.no_kartu).done(function(rujukan) {
+                    if (rujukan.metaData.code == 200 && rujukan.response) {
+                        rujukanExpired(rujukan.response.rujukan.tglKunjungan)
+                    } else {
+                        $('.rujukan-expired').empty()
+                        $('.rujukan-expired').append('<div class="alert alert-danger" style="padding:8px;border-radius:0px;font-size:12px;margin:5px" role="alert"><i class="bi bi-info-circle-fill"></i> Tidak ada rujukan dari FKTP</div>');
+                    }
+                })
+
+                $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.no_kartu + '\', \'' + response.tglsep + '\')');
                 $('.no_rawat').val(response.no_rawat)
                 $('.no_sep').val(response.no_sep)
                 $('.pasien').val(response.nomr + ' - ' + response.nama_pasien + '(' + response.reg_periksa.umurdaftar + ')');
@@ -661,45 +704,133 @@
             })
         }
 
-        function setPoliBpjs(kode, nama) {
-            $('#modalSkrj').modal('show')
-            $('#modalPoli').modal('hide')
-            $('.kode_poli').val(kode);
-            $('.nama_poli').val(nama);
+        function getPerintahInap(nokartu, tanggal) {
+            let rawatInap = $.ajax({
+                url: '/erm/spri/get/' + nokartu + '/' + tanggal,
+                dataType: 'JSON',
+            });
+
+            return rawatInap;
         }
+
+
+        function rawatInap(noRm, tanggal) {
+            getPasienPeriksa(noRm, tanggal).done((response) => {
+                $.map(response, (periksa) => {
+                    getPerintahInap(periksa.pasien.no_peserta, tanggal).done((val) => {
+
+                        $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + val.no_kartu + '\')');
+                        $('.no_rawat_inap').val(periksa.no_rawat)
+                        $('.pasien_inap').val(periksa.no_rkm_medis + ' - ' + periksa.pasien.nm_pasien + ' (' + periksa.umurdaftar + ' ' + periksa.sttsumur + ' )');
+                        $('.tgl_lahir_inap').val(splitTanggal(periksa.pasien.tgl_lahir));
+                        $('.no_kartu_inap').val(periksa.pasien.no_peserta);
+                        $('.no_surat_inap').val(val.no_surat);
+
+                        if (Object.keys(val).length > 0) {
+                            $('.tgl_surat_inap').val(splitTanggal(val.tgl_surat));
+                            $('.tgl_inap').val(splitTanggal(val.tgl_rencana));
+                            $('.kode_dokter_inap').val(val.kd_dokter_bpjs);
+                            $('.nama_dokter_inap').val(val.nm_dokter_bpjs);
+                            $('.diagnosa_inap').val(val.diagnosa);
+                            $('.diagnosa_inap').attr('disabled', true);
+                            $('.tgl_inap').attr('disabled', true);
+                            $('.btn-buat-spri').css('display', 'none')
+                            $('.kode_poli_inap').val(val.kd_poli_bpjs);
+                            $('.nama_poli_inap').val(val.nm_poli_bpjs);
+                        } else {
+                            $('.diagnosa_inap').attr('disabled', false);
+                            $('.tgl_inap').attr('disabled', false);
+                            $('.btn-buat-spri').css('display', 'inline')
+                            $('.tgl_surat_inap').val("{{ date('d-m-Y') }}");
+                            $('.tgl_inap').val("{{ date('d-m-Y') }}");
+                            getPoliBpjs(periksa.kd_poli).done((response) => {
+                                $('.kode_poli_inap').val(response.kd_poli_bpjs)
+                                $('.nama_poli_inap').val(response.nm_poli_bpjs)
+                            })
+                            getDokter(periksa.kd_dokter).done((response) => {
+                                $.map(response, (data) => {
+                                    $('.kode_dokter_inap').val(data.mapping_dokter.kd_dokter_bpjs);
+                                    $('.nama_dokter_inap').val(data.nm_dokter);
+                                })
+                            })
+                        }
+
+                    })
+                })
+            })
+            $('#modalSpri').modal('show');
+        }
+
+        $('.diagnosa_inap').on('keyup', function() {
+            let dx = $(this).val();
+            if (dx.length >= 3) {
+                getDiagnosa(dx).done(function(response) {
+                    if (response) {
+                        html =
+                            '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        no = 1;
+                        $.map(response, function(data) {
+                            html +=
+                                '<li data-nama="' + data.nm_penyakit + '" data-id="' + data.kd_penyakit + '" onclick="setDiagnosaInap(this)"><a class="dropdown-item" href="javascript:void(0)" style="overflow:hidden"> ' + data.kd_penyakit + ' - ' + data.nm_penyakit + '</a></li>'
+                            no++;
+                        })
+                        html += '</ul>';
+                        $('.list-diagnosa').fadeIn();
+                        $('.list-diagnosa').html(html);
+                    }
+                })
+            }
+        })
+
+
+        function setDiagnosaInap(p) {
+            let kdDiagnosa = $(p).data('id');
+            let nmDiagnosa = $(p).data('nama');
+            $('.diagnosa_inap').val(kdDiagnosa + ' - ' + nmDiagnosa);
+            $('.kd_diagnosa_inap').val(kdDiagnosa);
+        }
+
         var tanggalKontrol = '';
 
         function setTanggalKontrol(param) {
             tanggalKontrol = $(param).val()
         }
 
-        function cariDokterPoli(kdPoli) {
-            $.ajax({
+        function getPoliBpjs(kdPoli) {
+            let poli = $.ajax({
                 url: '/erm/poliklinik/bpjs/' + kdPoli,
                 dataType: 'JSON',
-                success: function(response) {
-                    no = 1;
-                    html = '';
-                    kd_dokter = '';
-                    $.map(response, function(res) {
-                        $.map(res.poliklinik.mapping_poli, function(data) {
-                            if (kd_dokter != data.dokter.kd_dokter) {
-                                html += '<tr>'
-                                html += '<td>' + no + '</td>'
-                                html += '<td><a href="javascript:void(0)" onclick="setDokterSpesialis(\'' + data.dokter.mapping_dokter.kd_dokter_bpjs + '\', \'' + data.dokter.mapping_dokter.nm_dokter_bpjs + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.dokter.mapping_dokter.kd_dokter_bpjs + '</span></a></td>'
-                                html += '<td>' + data.dokter.nm_dokter + '</td>'
-                                html += '</tr>'
-                                no++;
-                                kd_dokter = data.dokter.kd_dokter;
-                            }
-                        })
+            });
+
+            return poli;
+        }
+
+        function cariDokterPoli(kdPoli) {
+
+            getPoliBpjs(kdPoli).done(function(response) {
+                no = 1;
+                html = '';
+                kd_dokter = '';
+                $.map(response, function(res) {
+                    $.map(res.poliklinik.mapping_poli, function(data) {
+                        if (kd_dokter != data.dokter.kd_dokter) {
+                            html += '<tr>'
+                            html += '<td>' + no + '</td>'
+                            html += '<td><a href="javascript:void(0)" onclick="setDokterSpesialis(\'' + data.dokter.mapping_dokter.kd_dokter_bpjs + '\', \'' + data.dokter.mapping_dokter.nm_dokter_bpjs + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.dokter.mapping_dokter.kd_dokter_bpjs + '</span></a></td>'
+                            html += '<td>' + data.dokter.nm_dokter + '</td>'
+                            html += '</tr>'
+                            no++;
+                            kd_dokter = data.dokter.kd_dokter;
+                        }
                     })
-                    $('.table-dokter tbody').append(html)
-                    $('#modalDokter').modal('show');
-                    tanggalKontrol = $('#tgl_kontrol').val();
-                    $('#modalSkrj').modal('hide');
-                }
+                })
+                $('.table-dokter tbody').append(html)
+                $('#modalDokter').modal('show');
+                tanggalKontrol = $('#tgl_kontrol').val();
+                $('#modalSkrj').modal('hide');
             })
+
+
         }
 
         function setDokterSpesialis(kode, nama) {
@@ -707,12 +838,9 @@
             $('#modalDokter').modal('hide')
             $('.kode_dokter').val(kode);
             $('.nama_dokter').val(nama);
-
-            // $('#btn-spesialis').attr('onclick', 'cariDokterSpesialisBpjs(2, \'' + kode + '\')');
         }
 
         function tb_pasien(tgl_registrasi, nama = '', pembiayaan = '', status) {
-
             tgl_registrasi = tgl_registrasi ? tgl_registrasi : "{{ date('Y-m-d') }}";
 
             var table = $('#tb_pasien').DataTable({
@@ -814,25 +942,33 @@
                                 $('#btn-rujuk-' + no_rawat).text('SEP Sudah Terbit');
                                 html = '<ul class="dropdown-menu" style="font-size:12px">'
                                 html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="kontrolUlang(\'' + row.sep.no_sep + '\')">Kontrol Ulang / SKRJ</a></li>'
+                                html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rkm_medis + '\', \'' + row.tgl_registrasi + '\')">Perintah Rawat Inap / SPRI</a></li>'
                                 html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rujukanKeluar(\'' + row.sep.no_sep + '\')">Rujukan Keluar</a></li>'
                                 html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
                                 html += '</ul>'
                                 $('#dropdown-sep-' + no_rawat).append(html)
                                 if (row.sep.surat_kontrol) {
-                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
+                                    badgeKontrol = '<a target="_blank" href="/erm/rencanaKontrol/print/' + row.sep.surat_kontrol.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
                                 } else if (row.sep.rujukan_keluar) {
                                     textRujukan = row.sep.rujukan_keluar.nm_ppkDirujuk.split(' - ')[0];
                                     rujukan = textRujukan.length > 10 ? textRujukan.substring(0, 10) + '...' : textRujukan
-                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Rujuk : ' + rujukan + '</span></a>';
+                                    badgeKontrol = '<a target="_blank" href="/erm/rujukan/print/' + row.sep.rujukan_keluar.no_rujukan + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Rujuk : ' + rujukan + '</span></a>';
+                                }
+
+                                if (row.pasien.spri?.tgl_surat == row.tgl_registrasi) {
+                                    badgeKontrol = '<a target="_blank" href="/erm/spri/print/' + row.pasien.spri.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">SPRI : ' + splitTanggal(row.pasien.spri.tgl_rencana) + '</span></a>';
                                 }
                             } else if (!row.sep && row.kd_pj != "A03") {
                                 $('#btn-rujuk-' + no_rawat).addClass('btn btn-danger dropdown-toggle');
                                 html = '<ul class="dropdown-menu" style="font-size:12px">'
+                                html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rkm_medis + '\', \'' + row.tgl_registrasi + '\')">Perintah Rawat Inap / SPRI</a></li>'
                                 html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
                                 html += '</ul>'
                                 $('#dropdown-sep-' + no_rawat).append(html)
                                 $('#btn-rujuk-' + no_rawat).text('Belum Terbit SEP');
-
+                                if (row.pasien.spri?.tgl_surat == row.tgl_registrasi) {
+                                    badgeKontrol = '<a target="_blank" href="/erm/spri/print/' + row.pasien.spri.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">SPRI : ' + splitTanggal(row.pasien.spri.tgl_rencana) + '</span></a>';
+                                }
                             } else {
                                 if (row.surat_kontrol) {
                                     badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" style="font-size:10px;border-radius:0px">Kontrol : ' + splitTanggal(row.surat_kontrol.tanggal) + '</span></a>';
@@ -934,6 +1070,14 @@
                                 $('#icon-periksa-' + textRawat(row.no_rawat)).addClass(
                                     'bi bi-check2-circle')
                                 $('#btn-periksa-' + textRawat(row.no_rawat)).addClass('btn-success')
+                                $('.panggil-' + textRawat(row.no_rawat)).addClass('btn-success');
+                                $('.panggil-' + textRawat(row.no_rawat)).removeClass('btn-secondary');
+                                $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', false);
+                            } else {
+                                // console.log('.panggil' + textRawat(row.no_rawat));
+                                $('.panggil-' + textRawat(row.no_rawat)).removeClass('btn-success');
+                                $('.panggil-' + textRawat(row.no_rawat)).addClass('btn-secondary');
+                                $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', true);
                             }
 
                             $.map(row.pasien.reg_periksa, function(data) {
@@ -1024,6 +1168,7 @@
                         $('.no_surat').val('')
                         $('.btn-buat-kontrol-umum').css('display', 'inline')
                     }
+                    $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.pasien.no_peserta + '\')');
                     $('.no_rawat').val(response.no_rawat)
                     $('.no_rkm_medis').val(response.no_rkm_medis)
                     $('.pasien').val(response.pasien.no_rkm_medis + ' - ' + response.pasien.nm_pasien + ' (' + response.umurdaftar + ' ' + response.sttsumur + ')')
@@ -1168,10 +1313,7 @@
                         $('#opt-rawat').append(
                             '<option value="" disabled selected>PILIH TANGGAL ASESMEN</option>')
                         $.map(response, function(data) {
-                            $('#opt-rawat').append('<option class="opt-asesmen-anak" value=' + data
-                                .no_rawat + '>' + formatTanggal(
-                                    data.tanggal) + ' - ' + data.no_rawat +
-                                '</option>')
+                            $('#opt-rawat').append('<option class="opt-asesmen-anak" value=' + data.no_rawat + '>' + formatTanggal(data.tanggal) + ' - ' + data.no_rawat + '</option>')
                             $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
                             $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' :
                                 ': Perempuan')
@@ -1347,9 +1489,9 @@
                 },
                 dataType: 'JSON',
                 success: function(response) {
-                    let data = response.data;
-
-                    if (data) {
+                    let option = '';
+                    response?.data?.map((data) => {
+                        $('#select-askep-bidan').append('<option class="opt-askep-bidan" value=' + textRawat(data.no_rawat, '-') + '>' + formatTanggal(data.tanggal) + ' - ' + data.no_rawat + '</option>')
                         $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
                         $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' : ': Perempuan')
                         $('.tgl_registrasi').html(': ' + formatTanggal(data.reg_periksa.tgl_registrasi));
@@ -1424,7 +1566,6 @@
                         $('.komplikasi').text(data.komplikasi + ', ' + data.ket_komplikasi);
                         $('.berhenti').text(data.berhenti);
                         $('.alasan').text(data.alasan);
-
                         no = 1;
                         data.reg_periksa.pasien.riwayat_persalinan.forEach(function(riwayat) {
                             html = '<tr>';
@@ -1446,13 +1587,7 @@
                             $('.r_persalinan').append(html)
                         })
                         $('#modalAskep').modal('show');
-                    } else {
-                        Swal.fire(
-                            'Kosong!', 'Belum ada data asesmen', 'error'
-                        );
-                    }
-
-
+                    })
                 }
             });
         }

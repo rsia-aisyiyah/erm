@@ -28,10 +28,6 @@
                 },
                 method: 'POST',
                 dataType: 'JSON',
-                success: function(response) {
-                    console.log('response', response)
-
-                }
             }).done(function(response) {
                 window.open(response.response.url)
             })

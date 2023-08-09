@@ -10,22 +10,20 @@
                     style="padding-left:50px;"></table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                <button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i> Keluar</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-image" data-bs-backdrop="static" data-bs-closable="false" data-bs-keyboard="false"
-    aria-hidden="true" aria-labelledby="modal-image" tabindex="-1">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+<div class="modal fade" id="modal-image" aria-hidden="true" aria-labelledby="modal-image" tabindex="-1" style="background-color:#0006;box-shadow: inset 0px -1rem 20rem 20px #000;">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content" style="border-radius:0px">
             <div class="modal-body">
                 <img src="" class="img-thumbnails popup" width="100%" />
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger" data-bs-target="#modalRiwayat" data-bs-toggle="modal"><i
-                        class="bi bi-x-circle"></i></button>
+                <button class="btn btn-danger" data-bs-dismiss="modal" style="font-size:12px"><i class="bi bi-x-circle"></i> Tutup Gambar</button>
             </div>
         </div>
     </div>
@@ -61,8 +59,6 @@
                         $('#modalRiwayat').modal('hide');
                     } else {
                         resume(response);
-
-                        console.log(response)
                     }
                 }
             });
@@ -82,13 +78,7 @@
                     arrFoto.forEach(function(fx) {
                         hasilFoto += '<td><img src="https://sim.rsiaaisyiyah.com/erm/public/erm/' + fx + '" class="img-thumbnail position-relative" width="300px" onclick="popup(\'' +
                             fx +
-                            '\')" data-bs-target="#modal-image" data-bs-toggle="modal"><figcaption align="center">' +
-                            kategori.toUpperCase() + '</figcaption></td>'
-                        // hasilFoto += '<td><img src="{{ asset('erm') }}/' + fx +
-                        //     '" class="img-thumbnail position-relative" width="300px" onclick="popup(\'' +
-                        //     fx +
-                        //     '\')" data-bs-target="#modal-image" data-bs-toggle="modal"><figcaption align="center">' +
-                        //     kategori.toUpperCase() + '</figcaption></td>'
+                            '\')" "><figcaption align="center">' + kategori.toUpperCase() + '</figcaption></td>'
                     })
                     hasilFoto += '</tr>'
                 })
@@ -104,9 +94,10 @@
             $('.popup').attr('src', src)
         }
 
+
         function resume(d) {
             d.reg_periksa.forEach(function(i) {
-                console.log
+                // console.log(i.operasi)
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
                     class_status = 'background:rgb(152, 0, 175);color:white';
@@ -162,7 +153,7 @@
                         '</div>' +
                         '</td></tr>';
                 }
-
+                hasilOperasi(i.operasi, i.no_rawat)
                 detail +=
                     '<tr>' +
                     '<th colspan="2" style="' + class_status + '"><h6 align="center">' + status_lanjut +
@@ -178,6 +169,7 @@
                     '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
                     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
                     diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + pemeriksaan +
+                    '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
                     pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
                     fotoPemeriksaan(i.upload) +
@@ -228,6 +220,93 @@
                 return '<tr><th>Pemberian Obat</th><td>' + pemberian + '</td></tr>';
             }
             return '';
+        }
+
+
+        function hasilOperasi(operasi, no_rawat) {
+            if (operasi) {
+                $.ajax({
+                    url: '/erm/operasi/laporan/' + textRawat(no_rawat, '-'),
+                    dataType: 'JSON',
+                    success: function(response) {
+                        var html = '<table class="table borderless mb-0" style="background-color:#e1ffe3">';
+
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Jenis Operasi<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + operasi.paket_operasi.nm_perawatan + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Operator<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + operasi.op1.nm_dokter + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Asisten 1<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + operasi.asisten_op1.nama + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Asisten 2<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + operasi.asisten_op2.nama + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="30%"><strong>Jam Mulai<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.tanggal + '</td>'
+                        html += '</tr>'
+
+                        // html += '<tr>'
+                        // html += '<td width="30%"><strong>Jam Selesai<strong></td>'
+                        // html += '<td>:</td>'
+                        // html += '<td>' + response.selesaioperasi + '</td>'
+                        // html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="20%"><strong>Diagnosa Pre-Operasi<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.diagnosa_preop + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="20%"><strong>Diagnosa Post-Operasi<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.diagnosa_postop + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="20%"><strong>Jaringan Dieksekusi<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.jaringan_dieksekusi + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="20%"><strong>Permintaan PA.<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.permintaan_pa + '</td>'
+                        html += '</tr>'
+
+                        html += '<tr>'
+                        html += '<td width="20%"><strong>Laporan<strong></td>'
+                        html += '<td>:</td>'
+                        html += '<td>' + response.laporan_operasi + '</td>'
+                        html += '</tr>'
+                        html += '</table>'
+                        $('.operasi-' + textRawat(no_rawat)).removeAttr('style');
+                        $('.laporan-op-' + textRawat(no_rawat)).append(html);
+                    }
+                })
+            } else {
+                // $('.operasi').css('display', 'hidden');
+                // $('.laporan-op').empty();
+            }
+
+
         }
 
         function petugasLab(no_rawat, lab) {

@@ -16,11 +16,8 @@ class TrackerSqlController extends Controller
     {
         $table = $table->getTable();
         $values = implode('|', $values);
-
-
         return "insert into $table values(|$values))";
     }
-
 
     function stringClause($clause)
     {
@@ -40,13 +37,19 @@ class TrackerSqlController extends Controller
         return $stringClause;
     }
 
+    function deleteSql($table, $clause)
+    {
+        $table = $table->getTable();
+        $stringClause = $this->stringClause($clause);
+        return "delete from $table where $stringClause";
+    }
     function updateSql($table, $values, $clause)
     {
         $table = $table->getTable();
         $val = implode('|', $values);
         $keys = implode('=?,', array_keys($values));
         $stringClause = $this->stringClause($clause);
-        return "update $table set $keys where $stringClause |$val ";
+        return "update $table set $keys=? where $stringClause |$val ";
     }
 
     public function create($sql)

@@ -9,18 +9,22 @@ use Yajra\DataTables\DataTables;
 class ResepObatController extends Controller
 {
     private $resepObat;
+    private $track;
     public function __construct()
     {
         $this->resepObat = new ResepObat();
+        $this->track = new TrackerSqlController();
     }
     public function index()
     {
         return view('content.farmasi.ralan.resep');
     }
-    public function hapus(Request $request)
+    public function hapus($noResep)
     {
         $resepObat = $this->resepObat;
-        $result = $resepObat->where('no_rawat', $request->no_rawat)->where('no_resep', $request->no_resep)->delete();
+        $data = ['no_resep' => $noResep];
+        $result = $resepObat->where($data)->delete();
+        $this->track->create($this->track->deleteSql($resepObat, $data));
         return response()->json($result);
     }
     public function ambil(Request $request)
@@ -31,19 +35,12 @@ class ResepObatController extends Controller
             $resepObat = $this->resepObat->where('no_rawat', $request->no_rawat)->where('status', 'ralan')->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang')->get();
         }
         if ($request->no_resep) {
-            $resepObat = $this->resepObat->where('no_resep', $request->no_resep)->where('status', 'ralan')->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang')->get();
+            $resepObat = $this->resepObat->where('no_resep', $request->no_resep)->where('status', 'ralan')->with('resepDokter.dataBarang', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang')->first();
         }
-
-        // $result = $resepObat->get();
-
         return response()->json($resepObat);
-    }
-    public function ubah()
-    {
     }
     public function panggil(Request $request)
     {
-        // return $request;
         $jam = $request->jam == 'true' ? date('H:i:s') : '00:00:00';
         $resepObat = $this->resepObat->where('no_resep', $request->no_resep)->update([
             'tgl_penyerahan' => $request->tanggal,
@@ -86,7 +83,7 @@ class ResepObatController extends Controller
     }
     public function simpan(Request $request)
     {
-        $resepObat = $this->resepObat->create([
+        $data = [
             'no_resep' => $request->no_resep,
             'kd_dokter' => $request->kd_dokter,
             'no_rawat' => $request->no_rawat,
@@ -97,8 +94,9 @@ class ResepObatController extends Controller
             'status' => 'ralan',
             'tgl_penyerahan' =>  '0000-00-00',
             'jam_penyerahan' => date('H:i:s', strtotime("00:00:00")),
-        ]);
-
+        ];
+        $resepObat = $this->resepObat->create($data);
+        $this->track->create($this->track->insertSql($this->resepObat, $data));
         return $resepObat;
     }
 

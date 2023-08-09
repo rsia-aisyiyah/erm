@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Pasien;
+use App\Models\RegPeriksa;
+use App\Models\RencanaKontrol;
+use App\Models\BridgingRujukanBpjs;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BridgingSep extends Model
 {
@@ -21,5 +25,13 @@ class BridgingSep extends Model
     public function rujukanKeluar()
     {
         return $this->hasOne(BridgingRujukanBpjs::class, 'no_sep', 'no_sep');
+    }
+    public function pasien()
+    {
+        return $this->belongsTo(Pasien::class, 'no_peserta', 'no_kartu');
+    }
+    public function spri()
+    {
+        return $this->hasOne(BridgingSPRI::class, 'no_kartu', 'no_kartu');
     }
 }

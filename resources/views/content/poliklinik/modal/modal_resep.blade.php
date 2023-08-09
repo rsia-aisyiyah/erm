@@ -20,7 +20,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
-                                <input type="text" autocomplete="off"
+                                <input type="search" autocomplete="off"
                                     class="form-control form-control-sm nm_racik mb-1" name="nm_racik" />
                             </div>
                             <div class="col-md-2">
@@ -35,8 +35,8 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="jml" style="font-size:12px">Aturan Pakai</label>
-                                <input type="text" autocomplete="off" onkeyup="cariAturan(this)"
-                                    class="form-control form-control-sm aturan_pakai_dr mb-1" name="aturan_pakai_dr" id="aturan_pakai" />
+                                <input type="search" autocomplete="off" onkeyup="cariAturan(this)"
+                                    class="form-control form-control-sm aturan_pakai mb-1" name="aturan_pakai" id="aturan_pakai" />
                                 <input type="hidden" class="nomor">
                                 <input type="hidden" value="" class="no_racik" />
                                 <div class="list_aturan" style="display: none;"></div>
@@ -118,7 +118,7 @@
                             response.responseJSON.message,
                             'error'
                         );
-                        hapusResep($('.no_resep').val(), $('#nomor_rawat'))
+                        hapusResep($('.no_resep').val())
                     }
                 }).done(function() {
                     tulisPlan();
@@ -197,7 +197,7 @@
                     nama_racik: $('.nm_racik').val(),
                     no_racik: $('.no_racik').val(),
                     // jml_dr: $('.jml_dr').val(),
-                    aturan_pakai: $('.aturan_pakai_dr').val(),
+                    aturan_pakai: $('.aturan_pakai').val(),
                 },
                 success: function(response) {
                     // respon = false;

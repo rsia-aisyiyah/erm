@@ -29,10 +29,16 @@ class AskepRalanKebidananController extends Controller
         }
 
         if ($askep->count() > 0) {
-            $response = response()->json(['success' => true, 'message' => 'Menampilkan data asesmen keperawatan awal', 'data' => $askep->orderBy('tanggal', 'DESC')->first()], 200);
+            $response = response()->json(['success' => true, 'message' => 'Menampilkan data asesmen keperawatan awal', 'data' => $askep->orderBy('tanggal', 'DESC')->get()], 200);
         } else {
             $response = response()->json(['success' => false, 'message' => 'Tidak ada data yang ditemukan', 'data' => NULL], 200);
         }
         return $response;
+    }
+    function get($noRawat)
+    {
+        $noRawat = str_replace('-', '/', $noRawat);
+        $askep = $this->askep->semua()->where('no_rawat', $noRawat)->first();
+        return response()->json($askep);
     }
 }

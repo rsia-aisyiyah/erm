@@ -40,16 +40,21 @@ use App\Http\Controllers\RsiaMappingRacikanController;
 use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\BookingRegistrasiController;
 use App\Http\Controllers\Bridging\IcareController;
+use App\Http\Controllers\Bridging\PesertaController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\PenilaianMedisRanapController;
 use App\Http\Controllers\Bridging\RencanaKontrolController;
 use App\Http\Controllers\Bridging\RujukanController;
 use App\Http\Controllers\BridgingRujukanBpjsController;
+use App\Http\Controllers\BridgingSPRIController;
 use App\Http\Controllers\BrigdgingRencanaKontrolController;
+use App\Http\Controllers\CatatanPerawatanController;
+use App\Http\Controllers\LaporanOperasiController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
+use App\Models\LaporanOperasi;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -72,7 +77,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pasien/cari', [PasienController::class, 'search']);
     Route::get('/pasien/ambil/{no_rkm_medis}', [PasienController::class, 'ambil']);
 
-    Route::get('/periksa/show/{no_rkm_medis}', [
+    Route::get('/periksa/show/{no_rkm_medis}/{tanggal?}', [
         RegPeriksaController::class, 'show',
     ]);
     Route::get('periksa/detail', [
@@ -108,6 +113,7 @@ Route::middleware('auth')->group(function () {
     Route::get('poliklinik/status/periksa', [PoliklinikController::class, 'statusSoap']);
     Route::get('poliklinik/status/upload', [PoliklinikController::class, 'statusUpload']);
     Route::get('poliklinik/askep/kebidanan', [AskepRalanKebidananController::class, 'ambil']);
+    Route::get('poliklinik/askep/kebidanan/{noRawat}', [AskepRalanKebidananController::class, 'get']);
     Route::get('poliklinik/askep/anak', [AskepRalanAnakController::class, 'ambil']);
     Route::get('poliklinik/askep/anak/detail', [AskepRalanAnakController::class, 'ambilDetail']);
 
@@ -167,7 +173,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/resep/obat/ubah', [ResepObatController::class, 'ubah']);
     Route::get('/resep/obat/panggil', [ResepObatController::class, 'panggil']);
     Route::post('/resep/obat/simpan', [ResepObatController::class, 'simpan']);
-    Route::delete('/resep/obat/hapus', [ResepObatController::class, 'hapus']);
+    Route::delete('/resep/obat/hapus/{noResep}', [ResepObatController::class, 'hapus']);
 
     Route::post('/resep/umum/simpan', [ResepDokterController::class, 'simpan']);
     Route::post('/resep/umum/ubah', [ResepDokterController::class, 'ubah']);
@@ -209,36 +215,55 @@ Route::middleware('auth')->group(function () {
     Route::post('/prosedur/pasien/tambah', [ProsedurPasienController::class, 'tambah']);
     Route::delete('/prosedur/pasien/hapus', [ProsedurPasienController::class, 'hapus']);
 
+    Route::get('/operasi/laporan/{noRawat}', [LaporanOperasiController::class, 'get']);
+
     Route::prefix('bridging')->group(function () {
         Route::prefix('referensi')->group(function () {
             Route::get('/propinsi', [ReferensiController::class, 'getPropinsi']);
             Route::get('/diagnosa/{diagnosa}', [ReferensiController::class, 'getDiagnosa']);
             Route::get('/poli/{poli}', [ReferensiController::class, 'getPoli']);
             Route::get('/dokter/pelayanan/{jenis}/{tgl}/{kd_sps}', [ReferensiController::class, 'getDokterDpjp']);
-            Route::get('/faskes/{faskes}/{jnsFaskes}', [ReferensiController::class, 'getFaskes']);
+            Route::get('/faskes/{faskes}/{jnsFaskes?}', [ReferensiController::class, 'getFaskes']);
         });
         Route::prefix('rujukan')->group(function () {
             Route::post('insert', [RujukanController::class, 'insertRujukanKeluar']);
             Route::get('keluar/list/{tglPertama}/{tglKedua}', [RujukanController::class, 'getListRujukanKeluarRs']);
             Route::get('keluar/{noRujukan}', [RujukanController::class, 'getRujukanKeluar']);
+            Route::get('pcare/peserta/{noka}', [RujukanController::class, 'geRujukanPcarePeserta']);
             Route::get('peserta/{noka}', [RujukanController::class, 'getRujukanPeserta']);
             Route::get('list/peserta/{noka}', [RujukanController::class, 'getListRujukanPeserta']);
         });
-        Route::get('rencanaKontrol/{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
-        Route::get('rencanaKontrol/jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);
-        Route::get('rencanaKontrol/list/{bulan}/{tahun}/{noka}/{filter}', [RencanaKontrolController::class, 'getListRencana']);
-        Route::post('rencanaKontrol/insert', [RencanaKontrolController::class, 'insertRencanaKontrol']);
+        Route::prefix('rencanaKontrol')->group(function () {
+            Route::get('{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
+            Route::get('jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);
+            Route::get('list/{bulan}/{tahun}/{noka}/{filter}', [RencanaKontrolController::class, 'getListRencana']);
+            Route::post('insert', [RencanaKontrolController::class, 'insertRencanaKontrol']);
+        });
+
+        Route::prefix('spri')->group(function () {
+            Route::post('insert', [RencanaKontrolController::class, 'insertPerintahInap']);
+        });
+        Route::get('peserta/nik/{nik}/{tanggal}', [PesertaController::class, 'getPesertaNik']);
+        Route::get('peserta/noka/{noka}/{tanggal}', [PesertaController::class, 'getPesertaNoka']);
         Route::get('SEP/{sep}', [SepController::class, 'getSep']);
         Route::get('peserta/nokartu/{nokartu}/tglsep/{tglsep}', [ReferensiController::class, 'getPasien']);
         Route::post('/riwayat/icare', [IcareController::class, 'rsValidate']);
     });
 
 
+    Route::get('spri/get/{nokartu}/{tanggal}', [BridgingSPRIController::class, 'get']);
+    Route::post('spri/insert', [BridgingSPRIController::class, 'create']);
+    Route::get('spri/print/{noSurat}', [BridgingSPRIController::class, 'print']);
     Route::post('rencanaKontrol/insert', [BrigdgingRencanaKontrolController::class, 'create']);
+    Route::get('rencanaKontrol/print/{noSurat}', [BrigdgingRencanaKontrolController::class, 'print']);
     Route::post('rujukan/insert', [BridgingRujukanBpjsController::class, 'create']);
+    Route::get('rujukan/print/{noRujukan}', [BridgingRujukanBpjsController::class, 'print']);
     Route::post('kontrol/umum/baru', [SuratKontrolUlangController::class, 'create']);
     Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
     Route::get('poliklinik/bpjs/{kdPoli}', [MappingPoliBpjsController::class, 'ambil']);
+    Route::get('catatan/perawatan/{noRawat}', [CatatanPerawatanController::class, 'get']);
+    Route::post('catatan/perawatan/insert', [CatatanPerawatanController::class, 'insert']);
+    Route::post('catatan/perawatan/create', [CatatanPerawatanController::class, 'insertOrUpdate']);
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 

@@ -221,11 +221,10 @@
         }
 
 
-        function textRawat(no_rawat) {
+        function textRawat(no_rawat, symbol = '') {
             let splitNoRawat = no_rawat.split('/');
-            textNoRawat = splitNoRawat.join('');
+            let textNoRawat = symbol ? splitNoRawat.join(symbol) : splitNoRawat.join('');
             return textNoRawat;
-
         }
 
         function detailPeriksa(no_rawat, status) {
@@ -377,11 +376,22 @@
         }
         var data = {};
 
+        function getDokter(dokter) {
+            let resDokter = $.ajax({
+                url: '/erm/dokter/cari',
+                data: {
+                    'nm_dokter': dokter,
+                },
+            });
+
+            return resDokter;
+        }
+
         function reloadTabelPoli() {
-            tgl_registrasi = $('#tgl_registrasi').val();
+            tanggal = localStorage.getItem('tanggal') ? localStorage.getItem('tanggal') : "{{ date('Y-m-d') }}"
             hitungPanggilan();
             $('#tb_pasien').DataTable().destroy();
-            tb_pasien(splitTanggal(tgl_registrasi));
+            tb_pasien(tanggal);
         }
 
         function simpan() {
@@ -468,44 +478,51 @@
             $('#upload-image').css('visibility', 'hidden')
         }
 
+        function getPasienPeriksa(no_rkm_medis, tanggal) {
+
+            paramUrl = tanggal ? no_rkm_medis + '/' + tanggal : no_rkm_medis;
+            let pasien = $.ajax({
+                url: '/erm/periksa/show/' + paramUrl,
+                dataType: 'JSON',
+            });
+
+            return pasien;
+        }
+
         function showHistory() {
             var no_rkm_medis = $('.search option:selected').val();
             $('#upload-image').css('visibility', 'hidden');
-            $.ajax({
-                url: '/erm/periksa/show/' + no_rkm_medis,
-                dataType: 'JSON',
-                success: function(data) {
-                    $('#ralan tbody').empty();
-                    $('#ranap tbody').empty();
-                    $.map(data, function(item) {
-                        if (item.upload.length > 0) {
-                            button = '<a href="#form-upload" onclick="detailPeriksa(\'' + item
-                                .no_rawat
-                                .toString() + '\',\'' + item.status_lanjut +
-                                '\')" class="btn btn-success btn-sm"><i class="bi bi-check2-circle"></i></a>'
+            getPasienPeriksa(no_rkm_medis).done(function(data) {
+                $('#ralan tbody').empty();
+                $('#ranap tbody').empty();
+                $.map(data, function(item) {
+                    if (item.upload.length > 0) {
+                        button = '<a href="#form-upload" onclick="detailPeriksa(\'' + item
+                            .no_rawat
+                            .toString() + '\',\'' + item.status_lanjut +
+                            '\')" class="btn btn-success btn-sm"><i class="bi bi-check2-circle"></i></a>'
 
 
-                        } else {
-                            button = '<a href="#form-upload" onclick="detailPeriksa(\'' + item
-                                .no_rawat
-                                .toString() + '\',\'' + item.status_lanjut +
-                                '\')" class="btn btn-primary btn-sm"><i class="bi bi-cloud-upload"></i></a>'
-                        }
+                    } else {
+                        button = '<a href="#form-upload" onclick="detailPeriksa(\'' + item
+                            .no_rawat
+                            .toString() + '\',\'' + item.status_lanjut +
+                            '\')" class="btn btn-primary btn-sm"><i class="bi bi-cloud-upload"></i></a>'
+                    }
 
-                        html = '<tr>' +
-                            '<td>' + item.no_rawat + '</td>' +
-                            '<td>' + item.tgl_registrasi + '</td>' +
-                            '<td>' + button + '</td>' +
-                            '</tr>'
+                    html = '<tr>' +
+                        '<td>' + item.no_rawat + '</td>' +
+                        '<td>' + item.tgl_registrasi + '</td>' +
+                        '<td>' + button + '</td>' +
+                        '</tr>'
 
-                        if (item.status_lanjut == 'Ralan') {
-                            $('#ralan').append(html);
-                        } else {
-                            $('#ranap').append(html);
-                        }
-                    })
-                }
-            });
+                    if (item.status_lanjut == 'Ralan') {
+                        $('#ralan').append(html);
+                    } else {
+                        $('#ranap').append(html);
+                    }
+                })
+            })
 
         }
 
@@ -627,6 +644,90 @@
             template = res;
             return template;
         }
+
+        function getPeserta(noka, tglSep = '') {
+            let tanggal = tglSep ? tglSep : "{{ date('Y-m-d') }}";
+            let peserta = $.ajax({
+                beforeSend: function() {
+                    swal.fire({
+                        title: 'Sedang mengabil data peserta',
+                        text: 'Mohon Tunggu',
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            swal.showLoading();
+                        }
+                    })
+                },
+                url: '/erm/bridging/peserta/noka/' + noka + '/' + tanggal,
+                dataType: 'JSON',
+                method: 'GET',
+                success: function(response) {
+                    if (response.metaData.code == 200 && response.metaData.message == 'OK') {
+                        swal.fire({
+                            title: 'Berhasil',
+                            text: 'Data menampilkan data peserta',
+                            showConfirmButton: false,
+                            icon: 'success',
+                            timer: 500,
+                        })
+
+                    } else {
+                        swal.fire({
+                            title: 'Tidak Ditemukam',
+                            text: 'Pasien tidak terdaftar sebagai peserta BPJS / ' + response.metaData.message,
+                            showConfirmButton: true,
+                            icon: 'error',
+                        })
+                    }
+                }
+            });
+
+            return peserta;
+        }
+
+        function getPesertaDetail(noka, tglSep) {
+            getPeserta(noka, tglSep).done(function(response) {
+                if (response.metaData.code == 200 && response.metaData.message == 'OK') {
+                    $.map(response.response, function(p) {
+                        jkel = p.sex == 'L' ? 'LAKI-LAKI' : 'PEREMPUAN';
+                        p.statusPeserta.kode == 0 ? $('.statusPeserta').css('color', 'green') : $('.statusPeserta').css('color', 'red');
+                        $('.namaPeserta').text(p.nama + ' ( ' + jkel + ' )');
+                        $('.nikPeserta').text(p.nik);
+                        $('.tglLahirPeserta').text(formatTanggal(p.tglLahir));
+                        $('.nokaPeserta').text(p.noKartu);
+                        $('.statusPeserta').text(p.statusPeserta.keterangan);
+                        $('.pisaPeserta').text(p.pisa);
+                        $('.teleponPeserta').text(p.mr.noTelepon);
+                        $('.kelasPeserta').text(p.hakKelas.kode + '. ' + p.hakKelas.keterangan);
+                        $('.jenisPeserta').text(p.jenisPeserta.kode + '. ' + p.jenisPeserta.keterangan);
+                        $('.fktpPeserta').text(p.provUmum.kdProvider + '. ' + p.provUmum.nmProvider);
+                        $('.tglKartuPeserta').text(formatTanggal(p.tglCetakKartu));
+                        $('.tglTMTpeserta').text(formatTanggal(p.tglTMT));
+                        $('.tglTATpeserta').text(formatTanggal(p.tglTAT));
+                        $('.umurSekarangPeserta').text(p.umur.umurSekarang);
+                        $('.umurPelayananPeserta').text(p.umur.umurSaatPelayanan);
+                    })
+                    $('#modalPesertaBpjs').modal('show');
+                }
+            })
+        }
+        $('#modalPesertaBpjs').on('bs.modal.hidden', function() {
+            $('.namaPeserta').text('');
+            $('.nikPeserta').text('');
+            $('.tglLahirPeserta').text('');
+            $('.nokaPeserta').text('');
+            $('.nokaPeserta').text('');
+            $('.pisaPeserta').text('');
+            $('.teleponPeserta').text('');
+            $('.kelasPeserta').text('');
+            $('.jenisPeserta').text('');
+            $('.fktpPeserta').text('');
+            $('.tglKartuPeserta').text('');
+            $('.tglTMTpeserta').text('');
+            $('.tglTATpeserta').text('');
+            $('.umurSekarangPeserta').text('');
+            $('.umurPelayananPeserta').text('');
+        });
     </script>
     @stack('script')
 </body>

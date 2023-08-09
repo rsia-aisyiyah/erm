@@ -99,5 +99,11 @@
         </form>
     </main>
 </body>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+        localStorage.removeItem('pasien')
+        localStorage.removeItem('tanggal')
+    });
+</script>
 
 </html>

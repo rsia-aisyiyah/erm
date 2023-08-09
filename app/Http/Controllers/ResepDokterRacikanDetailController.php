@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 class ResepDokterRacikanDetailController extends Controller
 {
     public $resep;
+    public $track;
     public function __construct()
     {
         $this->resep = new ResepDokterRacikanDetail();
+        $this->track = new TrackerSqlController();
     }
     public function ambil(Request $request)
     {
@@ -49,11 +51,9 @@ class ResepDokterRacikanDetailController extends Controller
     }
     public function ubah(Request $request)
     {
-        // return $request->all();
         $cekRacik = ResepDokterRacikanDetail::where('no_resep', $request->no_resep)
             ->where('no_racik', $request->no_racik)
             ->where('kode_brng', $request->kode_brng)->count();
-        // return 'cekracikan ' . $cekRacik;
         if ($cekRacik == 0) {
             $racik = $this->simpan($request);
         } else {

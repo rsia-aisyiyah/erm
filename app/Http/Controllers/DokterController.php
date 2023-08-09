@@ -32,8 +32,9 @@ class DokterController extends Controller
     public function cari(Request $request)
     {
         $dokter = Dokter::where('status', '1')
-        ->where('nm_dokter','like', '%'.$request->nm_dokter.'%')
-        ->with('pegawai', 'spesialis')->get();
+            ->where('nm_dokter', 'like', '%' . $request->nm_dokter . '%')
+            ->orWhere('kd_dokter', 'like', '%' . $request->nm_dokter . '%')
+            ->with('pegawai', 'spesialis', 'mappingDokter')->get();
 
         return response()->json($dokter);
     }

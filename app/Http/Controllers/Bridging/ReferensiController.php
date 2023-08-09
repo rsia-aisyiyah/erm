@@ -60,7 +60,7 @@ class ReferensiController extends Controller
         $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . "peserta/nokartu/{$nokartu}/tglSEP/{$tglsep}");
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }
-    public function getFaskes($faskes, $jnsFaskes)
+    public function getFaskes($faskes, $jnsFaskes = 1)
     {
         $endpoint = "referensi/faskes/{$faskes}/{$jnsFaskes}";
         $result = $this->bridge->getRequest($endpoint);

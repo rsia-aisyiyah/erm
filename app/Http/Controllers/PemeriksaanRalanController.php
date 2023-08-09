@@ -36,7 +36,7 @@ class PemeriksaanRalanController extends Controller
             return response()->json($pemeriksaan, 200);
         } else {
             $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)
-                ->with('pasien')->first();
+                ->with(['pasien', 'dokter'])->first();
             return response()->json($regPeriksa, 200);
         }
     }

@@ -9,19 +9,23 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="no_rawat" class="form-label mb-0" style="font-size:12px;">No. Rawat</label>
-                        <input type="text" class="form-control form-control-sm no_rawat_rujuk" id="no_rawat_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm no_rawat_rujuk" id="no_rawat_rujuk" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="pasien" class="form-label mb-0" style="font-size:12px;">Pasien</label>
-                        <input type="text" class="form-control form-control-sm pasien_rujuk" id="pasien_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="hidden" class="" id="no_kartu">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control form-control-sm pasien_rujuk" id="pasien_rujuk" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                            <button class="btn btn-secondary btn-sm btn-cari-peserta" type="button" style="font-size:12px"><i class="bi bi-eye"></i></button>
+                        </div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="tgl_lahir" class="form-label mb-0" style="font-size:12px;">Tanggal Lahir</label>
-                        <input type="text" class="form-control form-control-sm tgl_lahir_rujuk" id="tgl_lahir_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm tgl_lahir_rujuk" id="tgl_lahir_rujuk" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="tgl_surat" class="form-label mb-0" style="font-size:12px;">Tgl. Surat</label>
-                        <input type="text" class="form-control form-control-sm tgl_surat_rujuk" id="tgl_surat_rujuk" name="tgl_surat_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm tgl_surat_rujuk" id="tgl_surat_rujuk" name="tgl_surat_rujuk" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="tgl_kontrol" class="form-label mb-0" style="font-size:12px;">Tgl. R. Kunjungan</label>
@@ -29,7 +33,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="no_sep_rujuk" class="form-label mb-0" style="font-size:12px;">No. SEP</label>
-                        <input type="text" class="form-control form-control-sm no_sep_rujuk" id="no_sep_rujuk" name="no_sep_rujuk" placeholder="" readonly style="background-color: #f0f0f0;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm no_sep_rujuk" id="no_sep_rujuk" name="no_sep_rujuk" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <input type="hidden" value="2" id="jns_rujuk">
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
@@ -45,7 +49,7 @@
                         <label for="ppj_rujuk" class="form-label mb-0" style="font-size:12px;">PPK Rujukan</label>
                         <div class="input-group mb-3">
                             <input type="hidden" id="kode_ppk" name="kode_ppk">
-                            <input type="search" class="form-control form-control-sm ppk_rujuk" id="ppk_rujuk" aria-label="PPK Rujukan" aria-describedby="ppk_rujuk">
+                            <input type="search" class="form-control form-control-sm ppk_rujuk" id="ppk_rujuk" aria-label="PPK Rujukan" aria-describedby="ppk_rujuk" autocomplete="off">
                             <button class="btn btn-secondary btn-sm btn-cari" type="button" style="font-size:12px" onclick="cariFaskes()"><i class="bi bi-paperclip"></i></button>
                         </div>
                     </div>
@@ -53,10 +57,8 @@
                         <label for="diagnosa_rujuk" class="form-label mb-0" style="font-size:12px;">Diagnosa</label>
                         <div class="input-group mb-3">
                             <input type="hidden" id="kode_diagnosa_rujuk" name="kode_diagnosa_rujuk">
-                            <input type="search" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk" onkeyup="cariDiagnosa(this)">
-                            <div id="list_diagnosa_rujuk"></div>
+                            <input type="search" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk" autocomplete="off">
                             <button class="btn btn-secondary btn-sm btn-cari" type="button" style="font-size:12px" onclick="cariDiagnosaRujuk()"><i class="bi bi-paperclip"></i></button>
-
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -69,7 +71,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <label for="catatan_rujuk" class="form-label mb-0" style="font-size:12px;">Catatan</label>
-                        <input type="search" class="form-control form-control-sm catatan_rujuk" id="catatan_rujuk" name="catatan_rujuk" placeholder="">
+                        <input type="search" class="form-control form-control-sm catatan_rujuk" id="catatan_rujuk" name="catatan_rujuk" placeholder="" autocomplete="off">
                         <div class="list_catatan"></div>
                     </div>
                     <input type="hidden" name="noka" class="noka">
@@ -128,10 +130,21 @@
 
         $('#tipe_rujuk').on('change', function(evt) {
             if (this.value == 2) {
-                cekSep($('#no_sep_rujuk').val()).done(function(response) {
-                    $('#kode_ppk').val(response.kdppkrujukan)
-                    $('#ppk_rujuk').val(response.kdppkrujukan + ' - ' + response.nmppkrujukan)
-                });
+                getPeserta($('#no_kartu').val()).done(function(response) {
+                    kode_faskes = response.response.peserta.provUmum.kdProvider;
+                    $('#kode_ppk').val(kode_faskes)
+                    $.ajax({
+                        url: '/erm/bridging/referensi/faskes/' + response.response.peserta.provUmum.kdProvider,
+                        dataType: 'JSON',
+                        method: 'GET',
+                    }).done(function(fktp) {
+                        $.map(fktp.response.faskes, function(faskes) {
+                            if (faskes.kode == kode_faskes) {
+                                $('#ppk_rujuk').val(faskes.nama)
+                            }
+                        })
+                    })
+                })
             } else {
                 $('#kode_ppk').val('')
                 $('#ppk_rujuk').val('')
@@ -140,43 +153,53 @@
 
         function cariFaskes() {
             faskes = $('#ppk_rujuk').val();
-            for (let jenis = 2; jenis >= 1; jenis--) {
 
-                data = [];
-                no = 2;
-                html = '';
-                $.ajax({
-                    url: '/erm/bridging/referensi/faskes/' + faskes + '/' + jenis,
-                    dataType: 'JSON',
-                    method: 'GET',
-                }).done(function(response) {
+            if (faskes.length < 3) {
+                swal.fire({
+                    title: 'Gagal',
+                    text: 'Minimal 3 digit kata kunci FKTP',
+                    showConfirmButton: true,
+                    icon: 'error',
+                });
+            } else {
+                for (let jenis = 2; jenis >= 1; jenis--) {
+                    data = [];
+                    no = 2;
                     html = '';
-                    html += '<tr>'
-                    html += '<td></td>'
-                    html += '<td colspan="2">FASKES TINGKAT ' + jenis + ' </td></tr>'
-                    no--;
-                    console.log(response)
-                    if (response.metaData.code == 200 && response.response != null) {
-                        urut = 1;
-                        $.map(response.response.faskes, function(val) {
-                            html += '<tr class="urut" >'
-                            html += '<td>' + urut + '</td>'
-                            html += '<td><span style="cursor:pointer" class="badge text-bg-primary" onclick="setPpkRujukan(\'' + val.kode + '\', \'' + val.nama + '\')">' + val.kode + '</span></td>'
-                            html += '<td>' + val.nama + '</td>'
-                            html += '</tr>'
-                            urut++;
-                        })
-                    } else {
+                    $.ajax({
+                        url: '/erm/bridging/referensi/faskes/' + faskes + '/' + jenis,
+                        dataType: 'JSON',
+                        method: 'GET',
+                    }).done(function(response) {
+                        html = '';
                         html += '<tr>'
-                        html += '<td></td><td colspan="3" ><strong class="text-danger">' + response.metaData.message + '</strong></td>'
-                        html += '</tr>'
-                    }
-                    $('.table-faskes tbody').append(html);
+                        html += '<td></td>'
+                        html += '<td colspan="2">FASKES TINGKAT ' + jenis + ' </td></tr>'
+                        no--;
+                        if (response.metaData.code == 200 && response.response != null) {
+                            urut = 1;
+                            $.map(response.response.faskes, function(val) {
+                                html += '<tr class="urut" >'
+                                html += '<td>' + urut + '</td>'
+                                html += '<td><span style="cursor:pointer" class="badge text-bg-primary" onclick="setPpkRujukan(\'' + val.kode + '\', \'' + val.nama + '\')">' + val.kode + '</span></td>'
+                                html += '<td>' + val.nama + '</td>'
+                                html += '</tr>'
+                                urut++;
+                            })
+                        } else {
+                            html += '<tr>'
+                            html += '<td></td><td colspan="3" ><strong class="text-danger">' + response.metaData.message + '</strong></td>'
+                            html += '</tr>'
+                        }
+                        $('.table-faskes tbody').append(html);
+                        $('#modalFaskes').css('background-color', 'rgba(0,0,0,.25)')
+                        $('#modalFaskes').modal('show')
 
-                })
-                $('#modalFaskes').css('background-color', 'rgba(0,0,0,.25)')
-                $('#modalFaskes').modal('show')
+                    })
+                }
             }
+
+
         }
 
         function cariDiagnosaRujuk() {
@@ -322,6 +345,7 @@
                 success: function(response) {
                     delete data._token;
                     delete data.noSep;
+                    delete data.tipeRujukan;
                     detailData = {
                         'nm_ppkDirujuk': $('#ppk_rujuk').val(),
                         'nama_diagRujukan': $('#diagnosa_rujuk').val(),
@@ -329,12 +353,12 @@
                     }
 
                     if (response.metaData.code == 200) {
-                        console.log(response);
                         if (response.response != null) {
                             rujukan = {
                                 '_token': "{{ csrf_token() }}",
                                 'no_sep': $('#no_sep_rujuk').val(),
                                 'no_rujukan': response.response.rujukan.noRujukan,
+                                'tipeRujukan': $('#tipe_rujuk option:selected').text(),
                             }
 
                             dataRujukan = Object.assign(data, detailData, rujukan)
@@ -351,6 +375,7 @@
                                                 '_token': "{{ csrf_token() }}",
                                                 'no_sep': $('#no_sep_rujuk').val(),
                                                 'no_rujukan': response.response.rujukan.noRujukan,
+                                                'tipeRujukan': $('#tipe_rujuk option:selected').text(),
                                             }
                                             dataRujukan = Object.assign(data, detailData, rujukan)
                                             tarikRujukanKeluar(dataRujukan)

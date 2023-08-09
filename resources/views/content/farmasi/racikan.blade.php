@@ -132,27 +132,20 @@
         })
 
         function cariDokter(dokter) {
-            nm_dokter = dokter.value
-            $.ajax({
-                url: '/erm/dokter/cari',
-                data: {
-                    'nm_dokter': nm_dokter,
-                },
-                success: function(response) {
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
-                    $.map(response, function(data) {
-                        html += '<li>'
-                        html += '<a data-id="' + data.kd_dokter +
-                            '" class="dropdown-item" onclick="setDokter(this)">' + data
-                            .nm_dokter +
-                            '</a>'
-                        html += '</li>'
-                    })
-                    html += '</ul>';
-                    $('.list_dokter').fadeIn();
-                    $('.list_dokter').html(html);
-                }
+            getDokter(dokter.value).done(function(response) {
+                html =
+                    '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                $.map(response, function(data) {
+                    html += '<li>'
+                    html += '<a data-id="' + data.kd_dokter +
+                        '" class="dropdown-item" onclick="setDokter(this)">' + data
+                        .nm_dokter +
+                        '</a>'
+                    html += '</li>'
+                })
+                html += '</ul>';
+                $('.list_dokter').fadeIn();
+                $('.list_dokter').html(html);
             })
         }
 

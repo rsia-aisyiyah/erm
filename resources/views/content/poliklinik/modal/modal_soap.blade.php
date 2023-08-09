@@ -123,56 +123,15 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Diagnosa ICD</td>
-                                    <td colspan="3">
-                                        <input type="search" class="form-control form-control-sm" onkeyup="cariDiagnosa(this)" name="diagnosa" id="diagnosa" style="font-size:12px;min-height:12px;border-radius:0" autocomplete="off">
-                                        <div class="list-diagnosa"></div>
-                                        <input type="hidden" class="no_diagnosa" value="" />
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm" type="button" style="font-size: 12px" onclick="catatanPasien()"><i class="bi bi-pen"></i> Diagnosa & Catatan</button>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>Prosedur</td>
-                                    <td colspan="3">
-                                        <input type="search" class="form-control form-control-sm" onkeyup="cariProsedur(this)" name="prosedur" id="prosedur" style="font-size:12px;min-height:12px;border-radius:0" autocomplete="off">
-                                        <div class="list-prosedur"></div>
-                                        <input type="hidden" class="no_prosedur" value="" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <table class="table table-stripped table-diagnosa" style="margin-bottom: 30px;">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th width="25%">Kode ICD</th>
-                                                <th width="60%">Deskripsi</th>
-                                                <th width="15%"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </tr>
-                                <tr>
-                                    <table class="table table-stripped table-prosedur" style="margin-bottom: 30px;">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th width="25%">Kode Prosedur</th>
-                                                <th width="60%">Deskripsi</th>
-                                                <th width="15%"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
                                 </tr>
                             </table>
 
-
                             <input type="hidden" class="no_resep form-control form-control-sm" />
-                            <ul class="nav nav-tabs" id="myTab">
+                            <ul class="nav nav-tabs mt-4" id="myTab">
                                 <li class="nav-item">
                                     <a href="#umum" class="nav-link active" data-bs-toggle="tab">NON RACIKAN</a>
                                 </li>
@@ -185,7 +144,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="umum">
-                                    <table class="table table-stripped table-responsive" id="tb-resep" width="100%">
+                                    <table class="table table-stripped table-responsive table-sm" id="tb-resep" width="100%">
                                         <thead>
                                             <tr>
                                                 <th width="18%">No. Resep</th>
@@ -394,9 +353,9 @@
         }
 
         function simpanObat() {
-            no_resep = $('.no_resep').val()
-            kode_obat = $('.kode_obat').val()
-            jml = $('.jml').val()
+            no_resep = $('.no_resep_umum').val()
+            kode_obat = $('.kode_obat_umum').val()
+            jml = $('.jml_umum').val()
             aturan_pakai = $('.aturan_pakai').val()
             if (kode_obat && jml && aturan_pakai) {
                 $.ajax({
@@ -483,7 +442,7 @@
             kd_dokter = "{{ Request::get('dokter') }}";
             dokter = kd_dokter ? kd_dokter : $('#nik').val();
 
-            $.ajax({
+            let resep = $.ajax({
                 url: '/erm/resep/obat/simpan',
                 data: {
                     _token: "{{ csrf_token() }}",
@@ -501,6 +460,8 @@
 
                 }
             });
+
+            return resep;
         }
 
         function ambilRacikan(no_resep, no_racik) {
@@ -521,8 +482,7 @@
 
         function ambilResep(no_resep) {
             hasil = '';
-            $.ajax({
-                async: false,
+            let resep = $.ajax({
                 url: '/erm/resep/obat/ambil',
                 data: {
                     no_resep: no_resep,
@@ -531,7 +491,7 @@
                     hasil = response;
                 },
             })
-            return hasil;
+            return resep;
         }
 
         function tulisPlan() {
@@ -785,7 +745,7 @@
             $('.nm_racik').val(racikan.nama_racik);
             $('.no_racik').val(no_racik);
             $('.jml_dr').val(racikan.jml_dr);
-            $('.aturan_pakai_dr').val(racikan.aturan_pakai);
+            $('.aturan_pakai').val(racikan.aturan_pakai);
             ambilObatRacikan();
         })
 
@@ -812,6 +772,52 @@
             return false;
         })
 
+        function hapusResepRacikan(no_resep, no_racik) {
+            let racikan = $.ajax({
+                url: '/erm/resep/racik/hapus',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: no_resep,
+                    no_racik: no_racik,
+                },
+                method: 'DELETE',
+            });
+
+            return racikan;
+        }
+
+        function hapusResepUmum(no_resep, kode_brng) {
+            let resepUmum = $.ajax({
+                url: '/erm/resep/umum/hapus',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: no_resep,
+                    kode_brng: kode_brng,
+                },
+                method: 'DELETE',
+            });
+
+            return resepUmum;
+        }
+
+        function hapusNomorResep(no_resep) {
+            ambilResep(no_resep).done(function(res) {
+                resepDokter = Object.keys(res.resep_dokter).length
+                resepRacik = Object.keys(res.resep_racikan).length
+                if (resepDokter == 0 && resepRacik == 0) {
+                    hapusResep(no_resep).done(function() {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            text: "Resep telah dihapus",
+                            icon: 'success',
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            timer: 1500,
+                        })
+                    })
+                }
+            })
+        }
         $('tbody').on('click', '.remove', function() {
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
@@ -828,53 +834,20 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (no_racik) {
-                        $.ajax({
-                            url: '/erm/resep/racik/detail/hapus',
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                no_resep: no_resep,
-                                no_racik: no_racik,
-                            },
-                            method: 'DELETE',
-                            success: function(response) {
-                                $.ajax({
-                                    url: '/erm/resep/racik/hapus',
-                                    data: {
-                                        _token: "{{ csrf_token() }}",
-                                        no_resep: no_resep,
-                                        no_racik: no_racik,
-                                    },
-                                    method: 'DELETE',
-                                })
-                                $('#body_racik').empty();
-                                cekResep($('#nomor_rawat').val());
-                                riwayatResep($('#no_rm').val());
-                            },
-                            error: function(request, status, error) {
-                                Swal.fire(
-                                    'Gagal !',
-                                    'Obat tidak terhapus',
-                                    'error'
-                                );
-                            }
-                        }).done(function() {
+                        hapusResepRacikan(no_resep, no_racik).done(function(response) {
+                            hapusNomorResep(no_resep)
                             tulisPlan();
+                            $('#body_racik').empty();
+                            $('#tb-resep-racikan tbody').empty();
                             riwayatResep($('#no_rm').val());
+                            cekResep($('#nomor_rawat').val());
+
                         })
                     } else {
-                        $.ajax({
-                            url: '/erm/resep/umum/hapus',
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                no_resep: no_resep,
-                                kode_brng: kode_brng,
-                            },
-                            method: 'DELETE',
-                            success: function(response) {
-                                $('#body_umum').empty();
-                                cekResep($('#nomor_rawat').val())
-                            }
-                        }).done(function() {
+                        hapusResepUmum(no_resep, kode_brng).done(function(response) {
+                            hapusNomorResep(no_resep)
+                            $('#body_umum').empty();
+                            cekResep($('#nomor_rawat').val())
                             tulisPlan();
                             riwayatResep($('#no_rm').val());
                         })
@@ -884,15 +857,20 @@
             return false;
         })
 
-        function cariDiagnosa(diagnosa) {
-            $.ajax({
+        function getDiagnosa(diagnosa) {
+            let dx = $.ajax({
                 url: '/erm/penyakit/cari',
                 data: {
-                    'kd_penyakit': diagnosa.value,
+                    'kd_penyakit': diagnosa,
                 },
                 dataType: 'JSON',
-                success: function(response) {
+            })
+            return dx
+        }
 
+        function cariDiagnosaSoap(diagnosa) {
+            getDiagnosa(diagnosa.value).done(function(response) {
+                if (response) {
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
                     no = 1;
@@ -904,36 +882,35 @@
                     html += '</ul>';
                     $('.list-diagnosa').fadeIn();
                     $('.list-diagnosa').html(html);
-
-
                 }
             })
         }
 
         function cariProsedur(kode) {
-            $.ajax({
-                url: '/erm/prosedur/cari',
-                data: {
-                    'kode': kode.value,
-                },
-                dataType: 'JSON',
-                success: function(response) {
-                    console.log(response)
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
-                    no = 1;
-                    $.map(response, function(data) {
-                        html +=
-                            '<li data-nama="' + data.deskripsi_pendek + '" data-id="' + data.kode + '" onclick="tambahProsedur(this)"><a class="dropdown-item" href="#" style="overflow:hidden"> ' + data.kode + ' - ' + data.deskripsi_pendek + '</a></li>'
-                        no++;
-                    })
-                    html += '</ul>';
-                    $('.list-prosedur').fadeIn();
-                    $('.list-prosedur').html(html);
-
-
-                }
-            })
+            if (kode.value.length) {
+                $.ajax({
+                    url: '/erm/prosedur/cari',
+                    data: {
+                        'kode': kode.value,
+                    },
+                    dataType: 'JSON',
+                    success: function(response) {
+                        if (response) {
+                            html =
+                                '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                            no = 1;
+                            $.map(response, function(data) {
+                                html +=
+                                    '<li data-nama="' + data.deskripsi_pendek + '" data-id="' + data.kode + '" onclick="tambahProsedur(this)"><a class="dropdown-item" href="#" style="overflow:hidden"> ' + data.kode + ' - ' + data.deskripsi_pendek + '</a></li>'
+                                no++;
+                            })
+                            html += '</ul>';
+                            $('.list-prosedur').fadeIn();
+                            $('.list-prosedur').html(html);
+                        }
+                    }
+                })
+            }
         }
 
         function tambahDiagnosa(param) {
@@ -1108,15 +1085,17 @@
                 },
                 dataType: 'JSON',
                 success: function(response) {
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
-                    $.map(response, function(data) {
-                        html +=
-                            '<li onclick="setNamaRacik(this)" data-nama="' + data.nm_racik + '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' + data.nm_racik + '</a></li>'
-                    })
-                    html += '</ul>';
-                    $('.list_racik').fadeIn();
-                    $('.list_racik').html(html);
+                    if (Object.keys(response).length > 0) {
+                        html =
+                            '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        $.map(response, function(data) {
+                            html +=
+                                '<li onclick="setNamaRacik(this)" data-nama="' + data.nm_racik + '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' + data.nm_racik + '</a></li>'
+                        })
+                        html += '</ul>';
+                        $('.list_racik').fadeIn();
+                        $('.list_racik').html(html);
+                    }
 
                 }
             })
@@ -1186,16 +1165,17 @@
                     'aturan_pakai': aturan.value,
                 },
                 success: function(response) {
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
-                    $.map(response, function(data) {
-                        html +=
-                            '<li onclick="ambilAturan(this)" ><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                            data.aturan_pakai + '</a></li>'
-                    })
-                    html += '</ul>';
-                    $('.list_aturan').fadeIn();
-                    $('.list_aturan').html(html);
+                    if (response) {
+                        html = '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        $.map(response, function(data) {
+                            html +=
+                                '<li onclick="ambilAturan(this)" ><a class="dropdown-item" href="#" style="overflow:hidden">' +
+                                data.aturan_pakai + '</a></li>'
+                        })
+                        html += '</ul>';
+                        $('.list_aturan').fadeIn();
+                        $('.list_aturan').html(html);
+                    }
                 }
             })
         }
@@ -1227,30 +1207,38 @@
             $('.list_racik').fadeOut();
             $('.list-diagnosa').fadeOut();
             $('.list-prosedur').fadeOut();
+            $('.list-dokter').fadeOut();
 
         });
 
-
         function tambahUmum() {
-            no_resep = $('.no_resep').val();
+            no_resep = $('.no_resep_umum').val();
             no_rawat = $('#nomor_rawat').val();
-            cekResep(no_rawat);
-            if (Object.keys(ambilResep(no_resep)).length == 0) {
-                simpanResepObat();
-            }
-            // $('#modalResepUmum').modal('show');
+            cekResep(no_rawat).done(function(response) {
+                resep = Object.keys(response).length
+                if (resep == 0) {
+                    simpanResepObat().done(function(res) {
+                        $('.no_resep_umum ').val(res.no_resep)
+                    });
+                } else {
+                    $.map(response, function(res) {
+                        $('.no_resep_umum ').val(res.no_resep)
+                    })
+                }
+            });
+
             html = '<tr>';
-            html += '<td><input type="hidden" class="kode_obat"/>';
+            html += '<td><input type="hidden" class="kode_obat_umum"/>';
             html +=
-                '<input type="text" class="no_resep form-control form-control-sm form-underline" readonly/>';
+                '<input type="text" class="no_resep_umum form-control form-control-sm form-underline" readonly/>';
             html += '</td>';
             html += '<td>';
             html +=
-                '<input type="search" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat form-underline" name="nama_obat" /><div class="list_obat"></div>';
+                '<input type="search" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat_umum form-underline" name="nama_obat_umum" /><div class="list_obat"></div>';
             html += '</td>';
             html += '<td>';
             html +=
-                '<input type="search" class="jml form-control form-control-sm form-underline"/>';
+                '<input type="search" class="jml_umum form-control form-control-sm form-underline"/>';
             html += '</td>';
             html += '<td>';
             html +=
@@ -1267,15 +1255,25 @@
         }
 
         function ambilObat(param) {
-            $('.nama_obat').val($(param).data('nama'));
-            $('.kode_obat').val($(param).data('id'))
+            $('.nama_obat_umum').val($(param).data('nama'));
+            $('.kode_obat_umum').val($(param).data('id'))
         }
 
         function tambahRacikan() {
             no_resep = $('.no_resep').val();
-            if (Object.keys(ambilResep(no_resep)).length == 0) {
-                simpanResepObat();
-            }
+            no_rawat = $('#nomor_rawat').val();
+            cekResep(no_rawat).done(function(response) {
+                resep = Object.keys(response).length
+                if (resep == 0) {
+                    simpanResepObat().done(function(res) {
+                        $('.no_resep_umum ').val(res.no_resep)
+                    });
+                } else {
+                    $.map(response, function(res) {
+                        $('.no_resep_umum ').val(res.no_resep)
+                    })
+                }
+            });
 
             html = '<tr>';
             html += '<td>';
@@ -1288,7 +1286,7 @@
             html += '</td>';
             html += '<td>';
             html +=
-                '<input type="text" autocomplete="off" onkeyup="cariRacikan(this)" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/><input type="hidden" class="id_racik" /><div class="list_racik"></div>';
+                '<input type="search" autocomplete="off" onkeyup="cariRacikan(this)" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/><input type="hidden" class="id_racik" /><div class="list_racik"></div>';
             html += '</td>';
 
             html += '<td>';
@@ -1387,17 +1385,17 @@
             isModalShow = true;
         });
 
-        function hapusResep(no_resep, no_rawat) {
-            $.ajax({
-                url: '/erm/resep/obat/hapus',
+        function hapusResep(no_resep) {
+            let resep = $.ajax({
+                url: '/erm/resep/obat/hapus/' + no_resep,
                 data: {
                     _token: "{{ csrf_token() }}",
-                    no_rawat: no_rawat,
-                    no_resep: no_resep,
                 },
                 method: 'DELETE',
             })
+
             riwayatResep($('#no_rm').val())
+            return resep;
         }
 
         function ubahObatDokter(no_resep, kode_brng, no) {
@@ -1437,12 +1435,13 @@
             $('#body_umum').empty();
             $('#body_racikan').empty();
             $('#body_riwayat').empty();
-            $.ajax({
+            let resep = $.ajax({
                 url: '/erm/resep/obat/ambil',
                 data: {
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
+
                     if (Object.keys(response).length > 0) {
                         $.map(response, function(res) {
                             if (Object.keys(res.resep_dokter).length > 0) {
@@ -1455,23 +1454,15 @@
                                     html += '<td class="jml_' + no + '">' + resep.jml + '</td>'
                                     html += '<td class="aturan_pakai_' + no + '">' + resep.aturan_pakai + '</td>'
                                     if (res.tgl_perawatan != "0000-00-00") {
-                                        $('.tambah_racik').css('visibility',
-                                            'hidden')
-                                        $('.tambah_umum').css('visibility',
-                                            'hidden')
-                                        html +=
-                                            '<td class="aksi"><button type="button" class="btn btn-success btn-sm" style="font-size:12px"><i class="bi bi-check"></i></button></td>';
+                                        $('.tambah_racik').css('visibility', 'hidden')
+                                        $('.tambah_umum').css('visibility', 'hidden')
+                                        html += '<td class="aksi"><button type="button" class="btn btn-success btn-sm" style="font-size:12px"><i class="bi bi-check"></i></button></td>';
                                     } else {
-                                        $('.tambah_racik').css('visibility',
-                                            'visible')
-                                        $('.tambah_umum').css('visibility',
-                                            'visible')
-                                        html +=
-                                            '<td class="aksi"><button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-resep="' +
-                                            resep.no_resep + '" data-obat="' + resep
-                                            .kode_brng +
-                                            '"><i class="bi bi-trash-fill"></i></button><button style="font-size:12px" type="button" class="btn btn-warning btn-sm ubah-obat" data-id="' + no + '"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-primary simpan-obat-' + no + ' btn-sm" style="font-size:12;visibility:hidden" onclick="ubahObatDokter(' + resep.no_resep + ', \'' + resep.kode_brng + '\', ' + no +
-                                            ')"><i class="bi bi-plus-circle"></i></button></td>';
+                                        $('.tambah_racik').css('visibility', 'visible')
+                                        $('.tambah_umum').css('visibility', 'visible')
+                                        html += '<td class="aksi"><button type="button" class="btn btn-danger btn-sm remove" style="font-size:12px" data-resep="' + resep.no_resep + '" data-obat="' + resep.kode_brng + '"><i class="bi bi-trash-fill"></i></button><button style="font-size:12px" type="button" class="btn btn-warning btn-sm ubah-obat" data-id="' + no +
+                                            '"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-primary simpan-obat-' + no +
+                                            ' btn-sm" style="font-size:12;visibility:hidden" onclick="ubahObatDokter(' + resep.no_resep + ', \'' + resep.kode_brng + '\', ' + no + ')"><i class="bi bi-plus-circle"></i></button></td>';
                                     }
                                     html += '</tr>';
                                     $('#body_umum').append(html);
@@ -1559,9 +1550,9 @@
                         'error'
                     );
                 }
-            }).done(function(response) {
-
             })
+
+            return resep;
         }
 
         $('#modalSoap').on('hidden.bs.modal', function() {
@@ -1602,8 +1593,6 @@
         }
 
         function cariPetugas(nama) {
-            // console.log()
-            // alert(nama)
             $.ajax({
                 url: '/erm/petugas/cari',
                 data: {
@@ -1632,6 +1621,10 @@
             $('#nik').val($(param).data('id'));
             $('#nama').val($(param).text());
             $('.list_petugas').fadeOut();
+        }
+
+        function catatanPasien() {
+            $('#modalCatatan').modal('show')
         }
     </script>
 @endpush

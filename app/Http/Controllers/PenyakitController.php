@@ -18,9 +18,10 @@ class PenyakitController extends Controller
     {
         $penyakit = $this->penyakit::where('kd_penyakit', 'like', $request->kd_penyakit . '%')
             ->orWhere('nm_penyakit', 'like', $request->kd_penyakit . '%')
+            ->orWhere('keterangan', 'like', $request->kd_penyakit . '%')
+            ->whereNotIn('kd_penyakit', ['-'])
             ->limit(10)
             ->get();
-
         return response()->json($penyakit);
     }
 }

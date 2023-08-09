@@ -885,7 +885,6 @@
         $(document).ready(function() {
             loket = "{{ Request::segment(3) }}"
             no_rawat = $('#no_rawat').val()
-            console.log(loket)
             reloadConsent(loket)
 
 
@@ -911,7 +910,6 @@
                     nik: nik,
                 },
                 success: function(response) {
-                    console.log('Pegawai', response)
                     pegawai = response;
                 }
             })
@@ -1004,7 +1002,6 @@
                     loket: loket,
                 },
                 success: function(response) {
-                    console.log(response);
                     if (Object.keys(response).length > 0) {
                         ambilPasien(response.no_rawat)
 
@@ -1050,7 +1047,6 @@
                     no_rawat: no_rawat
                 },
                 success: function(response) {
-                    console.log(response)
 
                     $('#no_rkm_medis').text(response.no_rkm_medis)
                     $('#no_rawat').text(response.no_rawat)
@@ -1156,9 +1152,6 @@
                     no_rawat: no_rawat,
                     dokter: dokter,
                 },
-                success: function(response) {
-                    console.log(response)
-                }
             })
         }
 
