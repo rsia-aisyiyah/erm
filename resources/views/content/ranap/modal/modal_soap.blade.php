@@ -126,6 +126,17 @@
                     $('#nadi').val(response.nadi);
                     $('#spo2').val(response.spo2);
                     $('#gcs').val(response.gcs);
+                    console.log(response.grafik_harian);
+                    console.log(tgl);
+                    console.log(jam);
+                    $.map(response.grafik_harian,function(grafik){
+                                if(tgl == grafik.tgl_perawatan && jam == grafik.jam_rawat){
+                                    console.log(grafik.o2);
+                                    $('#o2').val(grafik.o2);
+                                } else {
+                                    $('#o2').val('-');
+                                }
+                            })
                     $('#kesadaran select').val(response.kesadaran);
                     $('#alergi').val(response.alergi);
                     $('#asesmen').val(response.penilaian);
@@ -224,6 +235,7 @@
                     'tensi': $('#tensi').val(),
                     'nadi': $('#nadi').val(),
                     'spo2': $('#spo2').val(),
+                    'o2': $('#o2').val(),
                     'gcs': $('#gcs').val(),
                     'alergi': $('#alergi').val(),
                     'keluhan': $('#subjek').val(),
@@ -318,10 +330,16 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-
+                            
                             list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
                                 '</strong></li>';
                             list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
+                            $.map(row.grafik_harian,function(grafik){
+                                if(row.tgl_perawatan == grafik.tgl_perawatan && row.jam_rawat == grafik.jam_rawat){
+                                    console.log(grafik.o2);
+                                    list += '<li> O2 : ' + grafik.o2 + '</li>';
+                                }
+                            })
                             list += '<li> GCS : ' + row.gcs + '</li>';
                             list += '<li> Tensi : ' + row.tensi + ' mmHg</li>';
                             list += '<li> Nadi : ' + row.nadi + ' /mnt</li>';
@@ -381,6 +399,8 @@
                     'tensi': $('#tensi').val(),
                     'spo2': $('#spo2').val(),
                     'gcs': $('#gcs').val(),
+                    'o2': $('#o2').val(),
+                    'kesadaran': $('#kesadaran option:selected').val(),
                     'alergi': $('#alergi').val(),
                     'keluhan': $('#subjek').val(),
                     'pemeriksaan': $('#objek').val(),
