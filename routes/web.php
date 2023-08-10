@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RsiaGrafikHarianController;
 use App\Models\Pasien;
 use App\Models\ResepObat;
 use App\Models\Poliklinik;
@@ -147,6 +148,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/soap/ubah', [PemeriksaanRanapController::class, 'ubah']);
     Route::post('/soap/simpan', [PemeriksaanRanapController::class, 'simpan']);
     Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
+    
+    Route::get('/soap/chart', [PemeriksaanRanapController::class, 'getTTV']);
+    Route::post('/grafik/store', [RsiaGrafikHarianController::class, 'store']);
+
     Route::get('/aturan', [DetailPemberianObatController::class, 'aturanPakai']);
     Route::get('lab/petugas', [LabController::class, 'petugas']);
     Route::get('lab/ambil', [LabController::class, 'ambil']);

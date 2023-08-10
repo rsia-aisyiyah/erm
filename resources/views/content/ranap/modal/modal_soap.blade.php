@@ -8,30 +8,48 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" id="tab-soap-ranap" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="tab-soap" data-bs-toggle="tab" data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane" aria-selected="true">SOAP</button>
+                        <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
+                            data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
+                            aria-selected="true">SOAP</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-pane" type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Data Pemeriksaan</button>
+                        <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-pane"
+                            type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Data
+                            Pemeriksaan</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab-grafik" data-bs-toggle="tab" data-bs-target="#tab-grafik-pane" type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik Pasien</button>
+                        <button class="nav-link" id="tab-grafik" data-bs-toggle="tab" data-bs-target="#tab-grafik-pane"
+                            type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik
+                            Pasien</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab-verifikasi" data-bs-toggle="tab" data-bs-target="#tab-verifikasi-pane" type="button" role="tab" aria-controls="tab-verifikasi-pane" aria-selected="false">Verifikasi SOAP</button>
+                        <button class="nav-link" id="tab-verifikasi" data-bs-toggle="tab"
+                            data-bs-target="#tab-verifikasi-pane" type="button" role="tab"
+                            aria-controls="tab-verifikasi-pane" aria-selected="false">Verifikasi SOAP</button>
+                    </li>
+
+
+                    {{-- align right --}}
+                    <li class="nav-item ms-auto" role="presentation">
+                        <div class="input-group input-group-sm">
+                            <button type="button" class="btn btn-success btn-sm btn-tambah-grafik-harin" onclick="modalGrafikHarian()"
+                                style="font-size: 12px"><i class="bi bi-bar-chart-line"></i> Tambah Grafik</button>
+                        </div>
                     </li>
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                    <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
+                        aria-labelledby="home-tab" tabindex="0">
                         @include('content.ranap.modal._form_soap')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel" tabindex="0">
+                    <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
+                        tabindex="0">
                         @include('content.ranap.modal._table_soap')
                     </div>
-                    <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik" tabindex="0">
-                        <div>
-                            <canvas id="grafik-suhu"></canvas>
-                        </div>
+                    <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
+                        tabindex="0">
+                        <canvas id="grafik-suhu" style="max-height: 400px;"></canvas>
                     </div>
                     {{-- <div class="tab-pane fade p-3" id="tab-verifikasi-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
                         VERIFIKASI PASIEN
@@ -39,8 +57,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoapRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
+                        class="bi bi-x-circle"></i> Keluar</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoapRanap()"
+                    style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
                 <span id="ubah_soap"></span>
                 <span id="reset_soap"></span>
             </div>
@@ -53,33 +73,6 @@
         var tgl_pertama = '';
         var tgl_kedua = '';
 
-        $('#modalSoapRanap').on('shown.bs.modal', () => {
-            const canvasSuhu = $('#grafik-suhu');
-            grafikSuhu(canvasSuhu)
-        })
-
-        function grafikSuhu(ctx) {
-            console.log(ctx)
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                    datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        }
-
         function ambilSoap(no, tgl, jam) {
             $.ajax({
                 url: 'soap/ambil',
@@ -88,16 +81,12 @@
                     'tgl_perawatan': tgl,
                     'jam_rawat': jam
                 },
-                success: function(response) {
-                    console.log(response)
 
-                    let hidden = '<input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="' +
-                        response.tgl_perawatan +
-                        '">';
-                    hidden += '<input type="hidden" name="jam_rawat" id="jam_rawat" value="' + response
-                        .jam_rawat + '">'
-                    hidden += '<input type="hidden" name="no_rawat" id="no_rawat" value="' + response
-                        .no_rawat + '">'
+                success: function(response) {
+                    let hidden = '<input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="' + response.tgl_perawatan + '">';
+                    hidden += '<input type="hidden" name="jam_rawat" id="jam_rawat" value="' + response.jam_rawat + '">';
+                    hidden += '<input type="hidden" name="no_rawat" id="no_rawat" value="' + response.no_rawat + '">';
+
                     $('.form-soap').append(hidden);
                     $('#suhu').val(response.suhu_tubuh);
                     $('#nik').val(response.petugas.nip);
@@ -278,15 +267,22 @@
                         'tgl_pertama': tgl_pertama,
                         'tgl_kedua': tgl_kedua,
                         'petugas': petugas,
-                    },
+                    }
                 },
                 scrollCollapse: true,
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
-                            button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
-                            button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
+                            button =
+                                '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' +
+                                row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat +
+                                '\')"><i class="bi bi-pencil-square"></i></button>';
+                            button +=
+                                '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' +
+                                row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat +
+                                '\')"><i class="bi bi-trash3-fill"></i></button>';
 
+                            // return button
                             return button;
                         },
                         name: 'tgl_perawatan',
@@ -308,6 +304,8 @@
                             list += '<li> Berat : ' + row.berat + ' Kg</li>';
                             list += '<li> alergi : ' + row.alergi + '</li>';
                             html = '<ul>' + list + '</ul>';
+
+                            // return html
                             return html;
                         },
                         name: 'ttv',
@@ -315,7 +313,8 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            baris = '<tr><td width="5%">Petugas </td><td width="5%">:</td><td>' + row.petugas.nama + '</td></tr>'
+                            baris = '<tr><td width="5%">Petugas </td><td width="5%">:</td><td>' + row
+                                .petugas.nama + '</td></tr>'
                             baris += '<tr><td>Subjek </td><td>:</td><td>' + row.keluhan + '</td></tr>'
                             baris += '<tr><td>Objek </td><td>:</td><td>' + row.pemeriksaan + '</td></tr>'
                             baris += '<tr><td>Assesment</td><td>:</td><td>' + row.penilaian + '</td></tr>'
@@ -373,7 +372,6 @@
                     })
                 },
                 success: function(response) {
-                    console.log(response)
                     if (response) {
                         Swal.fire({
                             icon: 'success',
