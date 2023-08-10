@@ -117,12 +117,33 @@
             @else
                 <input type="hidden" id="kd_dokter" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
             @endif
+        </div>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-striped table-responsive text-sm table-sm" id="tb_ranap" width="100%">
+                        <thead>
+                            <tr role="row">
+                                <th width="100px"></th>
+                                <th width="25%">No.Rawat</th>
+                                <th>Kamar</th>
+                                <th>Lama</th>
+                                <th>Dokter</th>
+                                <th>Diagnosa Awal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         </div>
         @include('content.ranap.modal.modal_lab')
         @include('content.ranap.modal.modal_soap')
         @include('content.ranap.modal.modal_penunjang')
         @include('content.ranap.modal.modal_asmed_anak')
+        @include('content.ranap.modal.modal_grafik_harian')
     @endsection
     @push('script')
         <script>
@@ -250,8 +271,7 @@
             })
 
             function tb_ranap() {
-
-                var tb_ranap = $('#tb_ranap').DataTable({
+                $('#tb_ranap').DataTable({
                     processing: true,
                     scrollX: false,
                     serverSide: true,
@@ -279,8 +299,6 @@
                             showConfirmButton: false,
                             timer: 1500
                         });
-                        console.log('sadsadasd')
-
                     },
                     columns: [{
                             data: 'reg_periksa',
@@ -293,7 +311,7 @@
                                     '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' +
                                     data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
                                 list +=
-                                    '<li><a class="dropdown-item" href="javasript:void(0)" onclick="asmedRanapKandungan(\'' +
+                                    '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak(\'' +
                                     data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
                                 list += '<li><a class="dropdown-item" href="#">EWS</a></li>';
                                 button =
@@ -379,6 +397,73 @@
                 })
             }
 
+            function getAsmedRanapAnak(noRawat) {
+                const asmed = $.ajax({
+                    url: '/erm/asmed/ranap/anak/' + noRawat,
+                    dataType: 'JSON',
+                    method: 'GET',
+                })
+
+                return asmed;
+            }
+
+            function asmedRanapAnak(noRawat) {
+                $.ajax({
+                    url: '/erm/registrasi/ambil',
+                    data: {
+                        no_rawat: textRawat(noRawat, '/'),
+                    },
+                }).done((response) => {
+                    $('#anak_no_rawat').val(response.no_rawat);
+                    $('#anak_pasien').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
+                    $('#anak_tgl_lahir').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
+                    $('#anak_kd_dokter').val(response.kd_dokter);
+                    $('#anak_dokter').val(response.dokter.nm_dokter);
+                });
+                getAsmedRanapAnak(textRawat(noRawat, '-')).done((response) => {
+                    if (Object.keys(response).length > 0) {
+                        $('#anak_anamnesis').val(response.anamnesis).change();
+                        $('#anak_hubungan').val(response.hubungan);
+                        $('#anak_keluhan_utama').val(response.keluhan_utama);
+                        $('#anak_rps').val(response.rps);
+                        $('#anak_rpd').val(response.rpd);
+                        $('#anak_rpk').val(response.rpk);
+                        $('#anak_rpo').val(response.rpo);
+                        $('#anak_alergi').val(response.alergi);
+                        $('#anak_keadaan').val(response.keadaan).change();
+                        $('#anak_gcs').val(response.gcs);
+                        $('#anak_kesadaran').val(response.kesadaran).change();
+                        $('#anak_td').val(response.td);
+                        $('#anak_nadi').val(response.nadi);
+                        $('#anak_rr').val(response.rr);
+                        $('#anak_suhu').val(response.suhu);
+                        $('#anak_spo').val(response.spo);
+                        $('#anak_bb').val(response.bb);
+                        $('#anak_tb').val(response.tb);
+                        $('#anak_kepala').val(response.kepala).change();
+                        $('#anak_mata').val(response.mata).change();
+                        $('#anak_gigi').val(response.gigi).change();
+                        $('#anak_tht').val(response.tht).change();
+                        $('#anak_mulut').val(response.mulut).change();
+                        $('#anak_jantung').val(response.jantung).change();
+                        $('#anak_paru').val(response.paru).change();
+                        $('#anak_abdomen').val(response.abdomen).change();
+                        $('#anak_genital').val(response.genital).change();
+                        $('#anak_ekstremitas').val(response.ekstremitas).change();
+                        $('#anak_kulit').val(response.kulit).change();
+                        $('#anak_ket_fisik').val(response.ket_fisik);
+                        $('#anak_ket_lokalis').val(response.ket_lokalis);
+                        $('#anak_lab').val(response.lab);
+                        $('#anak_rad').val(response.rad);
+                        $('#anak_penunjang').val(response.penunjang);
+                        $('#anak_diagnosis').val(response.diagnosis);
+                        $('#anak_tata').val(response.tata);
+                        $('#anak_edukasi').val(response.edukasi);
+                    }
+
+                })
+                $('#modalAsmedRanapAnak').modal('show')
+            }
 
             var ctx = document.getElementById('grafik-suhu').getContext('2d');
             var grafikPemeriksaan;
@@ -469,10 +554,6 @@
             }
 
             function modalSoapRanap(no_rawat) {
-                $('#modalSoapRanap').modal('toggle', {
-                    backdrop: 'true'
-                });
-
                 $.ajax({
                     url: 'periksa/detail',
                     data: {
@@ -488,7 +569,7 @@
                         $('.btn-tambah-grafik-harin').attr('data-nm-pasien', response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
                     }
                 });
-
+                $('#modalSoapRanap').modal('show')
                 buildGrafik(no_rawat);
                 tbSoapRanap(no_rawat);
             }
@@ -518,7 +599,7 @@
 
             // modal tambah grafik harian
             function modalGrafikHarian() {
-                $('#modalGrafikHarian').modal('toggle');
+                $('#modalGrafikHarian').modal('show');
                 var no_rawat = $(".btn-tambah-grafik-harin").data('no-rawat');
                 var nm_pasien = $(".btn-tambah-grafik-harin").data('nm-pasien');
 
@@ -557,9 +638,7 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            swal.close();
-
-                            $('#modalGrafikHarian').modal('toggle');
+                            $('#modalGrafikHarian').modal('show');
                             grafikPemeriksaan.destroy();
                             buildGrafik(response.no_rawat);
 

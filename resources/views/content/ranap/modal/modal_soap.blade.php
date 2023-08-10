@@ -29,7 +29,7 @@
                     </li>
 
 
-                    {{-- align right --}}
+
                     <li class="nav-item ms-auto" role="presentation">
                         <div class="input-group input-group-sm">
                             <button type="button" class="btn btn-success btn-sm btn-tambah-grafik-harin" onclick="modalGrafikHarian()"
@@ -51,9 +51,9 @@
                         tabindex="0">
                         <canvas id="grafik-suhu" style="max-height: 400px;"></canvas>
                     </div>
-                    {{-- <div class="tab-pane fade p-3" id="tab-verifikasi-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+                    <div class="tab-pane fade p-3" id="tab-verifikasi-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
                         VERIFIKASI PASIEN
-                    </div> --}}
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -72,6 +72,33 @@
         var no_rawat_soap = '';
         var tgl_pertama = '';
         var tgl_kedua = '';
+
+        $('#modalSoapRanap').on('shown.bs.modal', () => {
+            const canvasSuhu = $('#grafik-suhu');
+            // grafikSuhu(canvasSuhu)
+        })
+
+        // function grafikSuhu(ctx) {
+        //     console.log(ctx)
+        //     new Chart(ctx, {
+        //         type: 'bar',
+        //         data: {
+        //             labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        //             datasets: [{
+        //                 label: '# of Votes',
+        //                 data: [12, 19, 3, 5, 2, 3],
+        //                 borderWidth: 1
+        //             }]
+        //         },
+        //         options: {
+        //             scales: {
+        //                 y: {
+        //                     beginAtZero: true
+        //                 }
+        //             }
+        //         }
+        //     });
+        // }
 
         function ambilSoap(no, tgl, jam) {
             $.ajax({
