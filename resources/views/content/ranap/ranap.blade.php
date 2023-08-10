@@ -147,6 +147,7 @@
     @include('content.ranap.modal.modal_lab')
     @include('content.ranap.modal.modal_soap')
     @include('content.ranap.modal.modal_penunjang')
+    @include('content.ranap.modal.modal_asmed_anak')
 @endsection
 @push('script')
     <script>
@@ -271,7 +272,75 @@
 
             $('#tb_ranap').DataTable().destroy();
             tb_ranap();
-        })
+        });
+
+        function getAsmedRanapAnak(noRawat) {
+            const asmed = $.ajax({
+                url: '/erm/asmed/ranap/anak/' + noRawat,
+                dataType: 'JSON',
+                method: 'GET',
+            })
+
+            return asmed;
+        }
+
+        function asmedRanapAnak(noRawat) {
+            $.ajax({
+                url: '/erm/registrasi/ambil',
+                data: {
+                    no_rawat: textRawat(noRawat, '/'),
+                },
+            }).done((response) => {
+                $('#anak_no_rawat').val(response.no_rawat);
+                $('#anak_pasien').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
+                $('#anak_tgl_lahir').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
+                $('#anak_kd_dokter').val(response.kd_dokter);
+                $('#anak_dokter').val(response.dokter.nm_dokter);
+            });
+            getAsmedRanapAnak(textRawat(noRawat, '-')).done((response) => {
+                if (Object.keys(response).length > 0) {
+                    $('#anak_anamnesis').val(response.anamnesis).change();
+                    $('#anak_hubungan').val(response.hubungan);
+                    $('#anak_keluhan_utama').val(response.keluhan_utama);
+                    $('#anak_rps').val(response.rps);
+                    $('#anak_rpd').val(response.rpd);
+                    $('#anak_rpk').val(response.rpk);
+                    $('#anak_rpo').val(response.rpo);
+                    $('#anak_alergi').val(response.alergi);
+                    $('#anak_keadaan').val(response.keadaan).change();
+                    $('#anak_gcs').val(response.gcs);
+                    $('#anak_kesadaran').val(response.kesadaran).change();
+                    $('#anak_td').val(response.td);
+                    $('#anak_nadi').val(response.nadi);
+                    $('#anak_rr').val(response.rr);
+                    $('#anak_suhu').val(response.suhu);
+                    $('#anak_spo').val(response.spo);
+                    $('#anak_bb').val(response.bb);
+                    $('#anak_tb').val(response.tb);
+                    $('#anak_kepala').val(response.kepala).change();
+                    $('#anak_mata').val(response.mata).change();
+                    $('#anak_gigi').val(response.gigi).change();
+                    $('#anak_tht').val(response.tht).change();
+                    $('#anak_mulut').val(response.mulut).change();
+                    $('#anak_jantung').val(response.jantung).change();
+                    $('#anak_paru').val(response.paru).change();
+                    $('#anak_abdomen').val(response.abdomen).change();
+                    $('#anak_genital').val(response.genital).change();
+                    $('#anak_ekstremitas').val(response.ekstremitas).change();
+                    $('#anak_kulit').val(response.kulit).change();
+                    $('#anak_ket_fisik').val(response.ket_fisik);
+                    $('#anak_ket_lokalis').val(response.ket_lokalis);
+                    $('#anak_lab').val(response.lab);
+                    $('#anak_rad').val(response.rad);
+                    $('#anak_penunjang').val(response.penunjang);
+                    $('#anak_diagnosis').val(response.diagnosis);
+                    $('#anak_tata').val(response.tata);
+                    $('#anak_edukasi').val(response.edukasi);
+                }
+
+            })
+            $('#modalAsmedRanapAnak').modal('show')
+        }
 
         function tb_ranap() {
 
@@ -311,7 +380,7 @@
                             list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data.no_rawat + '\')">Laborat</a></li>';
                             list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
                             list += '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
-                            list += '<li><a class="dropdown-item" href="javasript:void(0)" onclick="asmedRanapKandungan(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
+                            list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
                             list += '<li><a class="dropdown-item" href="#">EWS</a></li>';
                             button =
                                 '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' +
