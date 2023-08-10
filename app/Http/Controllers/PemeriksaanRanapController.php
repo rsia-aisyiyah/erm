@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PemeriksaanRanap;
+use App\Models\RsiaGrafikHarian;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -12,11 +13,14 @@ class PemeriksaanRanapController extends Controller
     private $tanggal;
     private $pemeriksaan;
     private $track;
+    private $grafikHarian;
+
     public function __construct()
     {
         $this->tanggal = new Carbon();
         $this->pemeriksaan = new PemeriksaanRanap();
         $this->track = new TrackerSqlController();
+        $this->grafikHarian = new RsiaGrafikHarian();
     }
 
     public function ambilSatu(Request $request)
@@ -127,10 +131,12 @@ class PemeriksaanRanapController extends Controller
         return DataTables::of($pemeriksaan)->make(true);
     }
 
-    function getTTV($noRawat)
+    function getTTV(Request $request)
     {
-        $id = str_replace('-', '/', $noRawat);
-        return $this->pemeriksaan->select('suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'spo2')
-            ->where(['no_rawat' => $id]);
+        $id = str_replace('-', '/', $request->no_rawat);
+        $data = $this->grafikHarian->select('tgl_perawatan', 'jam_rawat', 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'spo2', 'o2', 'gcs', 'kesadaran', 'sumber', 'nip')->where(['no_rawat' => $id])->get();
+
+        // return json
+        return $data;
     }
 }
