@@ -53,5 +53,90 @@
         .table-wrapper-scroll-y {
             display: block;
         }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .step-button {
+            width: 30px;
+            height: 30px;
+            font-size: 12px;
+            border-radius: 50%;
+            border: none;
+            background-color: #f1f1f1;
+            border: 1px solid #0d6efd;
+            transition: .4s;
+        }
+
+        .step-button[aria-expanded="true"] {
+            width: 40px;
+            height: 40px;
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .done {
+            border: none;
+            background-color: #198754;
+            color: #fff;
+        }
+
+        .step-item {
+            z-index: 10;
+            text-align: center;
+        }
+
+        #progress {
+            -webkit-appearance: none;
+            position: absolute;
+            width: 97%;
+            z-index: 5;
+            height: 10px;
+            margin-left: 18px;
+            margin-bottom: 18px;
+        }
+
+        /* to customize progress bar */
+        #progress::-webkit-progress-value {
+            background-color: var(--prm-color);
+            transition: .5s ease;
+        }
+
+        #progress::-webkit-progress-bar {
+            background-color: var(--prm-gray);
+
+        }
+
+        .card-body asmed {
+            padding: 5px;
+        }
+
+        .separator {
+            font-size: 12px;
+            color: #6e6e6e;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ced4da;
+        }
+
+        .separator:not(:empty)::before {
+            margin-right: .25em;
+        }
+
+        .separator:not(:empty)::after {
+            margin-left: .25em;
+        }
     </style>
 </head>

@@ -127,15 +127,33 @@
     <script src="https://cdn.datatables.net/select/1.6.0/js/dataTables.select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
     <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
-
+    {{-- <script src="https://cdn.jsdelivr.net/npm/cdbootstrap/js/cdb.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-
-
     <script src="{{ asset('js/dashboard.js') }}"></script>
 
     <script>
         $(document).ready(function() {
             // hitungPanggilan();
+        })
+
+        const stepButtons = document.querySelectorAll('.step-button');
+        const progress = document.querySelector('#progress');
+        const progressBar = document.querySelector('.progress-bar');
+
+        Array.from(stepButtons).forEach((button, index) => {
+            button.addEventListener('click', () => {
+                progress.setAttribute('aria-valuenow', index * 100 / (stepButtons.length - 1)); //there are 3 buttons. 2 spaces.
+                progressBar.setAttribute('style', 'width:' + index * 100 / (stepButtons.length - 1) + '%'); //there are 3 buttons. 2 spaces.
+
+                stepButtons.forEach((item, secindex) => {
+                    if (index > secindex) {
+                        item.classList.add('done');
+                    }
+                    if (index < secindex) {
+                        item.classList.remove('done');
+                    }
+                })
+            })
         })
 
         function ambilNoRawat(no_rawat) {
