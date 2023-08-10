@@ -118,8 +118,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
         integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
-        integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+        integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
@@ -127,13 +127,33 @@
     <script src="https://cdn.datatables.net/select/1.6.0/js/dataTables.select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
     <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
-
+    {{-- <script src="https://cdn.jsdelivr.net/npm/cdbootstrap/js/cdb.min.js"></script> --}}
 
     <script src="{{ asset('js/dashboard.js') }}"></script>
 
     <script>
         $(document).ready(function() {
             // hitungPanggilan();
+        })
+
+        const stepButtons = document.querySelectorAll('.step-button');
+        const progress = document.querySelector('#progress');
+        const progressBar = document.querySelector('.progress-bar');
+
+        Array.from(stepButtons).forEach((button, index) => {
+            button.addEventListener('click', () => {
+                progress.setAttribute('aria-valuenow', index * 100 / (stepButtons.length - 1)); //there are 3 buttons. 2 spaces.
+                progressBar.setAttribute('style', 'width:' + index * 100 / (stepButtons.length - 1) + '%'); //there are 3 buttons. 2 spaces.
+
+                stepButtons.forEach((item, secindex) => {
+                    if (index > secindex) {
+                        item.classList.add('done');
+                    }
+                    if (index < secindex) {
+                        item.classList.remove('done');
+                    }
+                })
+            })
         })
 
         function ambilNoRawat(no_rawat) {
