@@ -15,6 +15,7 @@ use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\AntreanController;
+use App\Http\Controllers\AsesmenMedisAnakController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PenyakitController;
@@ -148,7 +149,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/soap/ubah', [PemeriksaanRanapController::class, 'ubah']);
     Route::post('/soap/simpan', [PemeriksaanRanapController::class, 'simpan']);
     Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
-    
+
     Route::get('/soap/chart', [PemeriksaanRanapController::class, 'getTTV']);
     Route::post('/grafik/store', [RsiaGrafikHarianController::class, 'store']);
 
@@ -163,6 +164,8 @@ Route::middleware('auth')->group(function () {
     Route::get('dokter/cari', [DokterController::class, 'cari']);
 
     Route::get('asmed/kebidanan', [PenilaianMedisKebidananController::class, 'index']);
+    Route::get('asmed/ranap/anak/{noRawat}', [AsesmenMedisAnakController::class, 'get']);
+    Route::post('asmed/ranap/anak', [AsesmenMedisAnakController::class, 'create']);
 
     Route::get('obat/', [DataBarangController::class, 'index']);
     Route::get('obat/cari', [DataBarangController::class, 'cari']);
@@ -254,7 +257,6 @@ Route::middleware('auth')->group(function () {
         Route::get('peserta/nokartu/{nokartu}/tglsep/{tglsep}', [ReferensiController::class, 'getPasien']);
         Route::post('/riwayat/icare', [IcareController::class, 'rsValidate']);
     });
-
 
     Route::get('spri/get/{nokartu}/{tanggal}', [BridgingSPRIController::class, 'get']);
     Route::post('spri/insert', [BridgingSPRIController::class, 'create']);
