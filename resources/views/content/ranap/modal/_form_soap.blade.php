@@ -106,6 +106,12 @@
                                     onblur="cekKosong(this)" value="-">
                             </td>
                             <td width="12%" style="font-size:11px">
+                                O2: <input type="text" class="form-control form-control-sm"
+                                    id="o2" name="o2" placeholder="" maxlength="10"
+                                    style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)"
+                                    onblur="cekKosong(this)" value="-">
+                            </td>
+                            <td width="12%" style="font-size:11px">
                                 Kesadaran :
                                 <select class="form-select" name="kesadaran" id="kesadaran"
                                     style="font-size:11px;min-height:20px;border-radius:0;>">

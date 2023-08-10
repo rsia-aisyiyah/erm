@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Petugas;
+use App\Models\RegPeriksa;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class GrafikHarian extends Model
+{
+    use HasFactory;
+    protected $table = 'rsia_grafik_harian';
+    public $timestamps = false;
+    protected $fillable = ['suhu_tubuh', 'no_rawat', 'tgl_perawatan', 'jam_rawat', 'tensi', 'nadi', 'respirasi', 'spo2', 'kesadaran', 'gcs', 'o2', 'nip','sumber'];
+    public function regPeriksa()
+    {
+        return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
+    }
+    public function petugas()
+    {
+        return $this->belongsTo(Petugas::class, 'nip', 'nip');
+    }
+}
