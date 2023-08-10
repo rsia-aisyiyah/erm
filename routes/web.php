@@ -149,7 +149,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/soap/ubah', [PemeriksaanRanapController::class, 'ubah']);
     Route::post('/soap/simpan', [PemeriksaanRanapController::class, 'simpan']);
     Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
-
     Route::get('/soap/chart', [PemeriksaanRanapController::class, 'getTTV']);
     Route::post('/grafik/store', [RsiaGrafikHarianController::class, 'store']);
 

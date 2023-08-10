@@ -29,6 +29,7 @@
                     </li>
 
 
+                    {{-- align right --}}
 
                     <li class="nav-item ms-auto" role="presentation">
                         <div class="input-group input-group-sm">
