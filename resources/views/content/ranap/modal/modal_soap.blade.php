@@ -27,17 +27,6 @@
                             data-bs-target="#tab-verifikasi-pane" type="button" role="tab"
                             aria-controls="tab-verifikasi-pane" aria-selected="false">Verifikasi SOAP</button>
                     </li>
-
-
-                    {{-- align right --}}
-
-                    <li class="nav-item ms-auto" role="presentation">
-                        <div class="input-group input-group-sm">
-                            <button type="button" class="btn btn-success btn-sm btn-tambah-grafik-harin" onclick="modalGrafikHarian()"
-                                style="font-size: 12px"><i class="bi bi-bar-chart-line"></i> Tambah Grafik</button>
-                        </div>
-                    </li>
-
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
@@ -48,8 +37,10 @@
                         tabindex="0">
                         @include('content.ranap.modal._table_soap')
                     </div>
-                    <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
-                        tabindex="0">
+                    <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik" tabindex="0">
+                        <div class="p-3 w-full d-flex justify-content-end">
+                            <button type="button" class="btn btn-success btn-sm btn-tambah-grafik-harin" onclick="modalGrafikHarian()" style="font-size: 12px"><i class="bi bi-bar-chart-line"></i> Tambah Grafik</button>
+                        </div>
                         <canvas id="grafik-suhu" style="max-height: 400px;"></canvas>
                     </div>
                     <div class="tab-pane fade p-3" id="tab-verifikasi-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
@@ -58,10 +49,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
-                        class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoapRanap()"
-                    style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoapRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
                 <span id="ubah_soap"></span>
                 <span id="reset_soap"></span>
             </div>
