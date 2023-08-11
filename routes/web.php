@@ -16,6 +16,7 @@ use App\Http\Controllers\PasienController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\AntreanController;
 use App\Http\Controllers\AsesmenMedisAnakController;
+use App\Http\Controllers\AsesmenMedisKandunganController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PenyakitController;
@@ -164,7 +165,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('asmed/kebidanan', [PenilaianMedisKebidananController::class, 'index']);
     Route::get('asmed/ranap/anak/{noRawat}', [AsesmenMedisAnakController::class, 'get']);
-    Route::post('asmed/ranap/anak', [AsesmenMedisAnakController::class, 'create']);
+    Route::post('asmed/ranap/anak/simpan', [AsesmenMedisAnakController::class, 'create']);
+    Route::post('asmed/ranap/anak/ubah', [AsesmenMedisAnakController::class, 'update']);
+    Route::get('asmed/ranap/kandungan/{noRawat}', [AsesmenMedisKandunganController::class, 'get']);
+    Route::post('asmed/ranap/kandungan/simpan', [AsesmenMedisKandunganController::class, 'create']);
+    Route::post('asmed/ranap/kandungan/ubah', [AsesmenMedisKandunganController::class, 'update']);
 
     Route::get('obat/', [DataBarangController::class, 'index']);
     Route::get('obat/cari', [DataBarangController::class, 'cari']);

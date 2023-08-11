@@ -120,8 +120,7 @@
                     <div class="mb-2 col-sm-12 col-md-6 col-lg-5">
                         <div class="input-group">
                             <select class="form-select form-select-sm" id="anak_anamnesis" style="font-size: 12px">
-                                <option selected disabled>Pilih Anamnessis</option>
-                                <option value="Autoanamnesis">Autoanamnesis</option>
+                                <option value="Autoanamnesis" selected>Autoanamnesis</option>
                                 <option value="Alloanamnesis">Alloanamnesis</option>
                             </select>
                             <input type="search" class="form-control form-control-sm anak_hubungan" placeholder="" aria-label="" id="anak_hubungan" style="margin-left: 10px;">
@@ -207,7 +206,7 @@
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                     <label for="td">TD (mmHg)</label>
-                    <input type="text" class="form-control form-control-sm" id="anak_bb" name="bb" placeholder="" maxlength="10" style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                    <input type="text" class="form-control form-control-sm" id="anak_td" name="td" placeholder="" maxlength="10" style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                     <label for="nadi">Nadi (x/menit)</label>
@@ -299,7 +298,7 @@
                 </div>
                 <div class="mb-1 col-sm-12 col-md-4 col-lg-6">
                     <label for="">Ekstrimitas :</label>
-                    <select class="form-select" name="ekstrimitas" id="anak_ekstrimitas" style="font-size:11px;min-height:20px;border-radius:0;">
+                    <select class="form-select" name="ekstremitas" id="anak_ekstremitas" style="font-size:11px;min-height:20px;border-radius:0;">
                         <option value="Normal">Normal</option>
                         <option value="Abnormal">Abnormal</option>
                         <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -378,14 +377,4 @@
     </div>
 </form>
 @push('script')
-    <script>
-        $('.anak_dokter').on('keyup', (e) => {
-            dokter = $('.anak_dokter').val();
-            if (dokter.length >= 3) {
-                getDokter(dokter).done((response) => {
-                    console.log(response)
-                })
-            }
-        })
-    </script>
 @endpush

@@ -76,30 +76,7 @@
 
         $('#modalSoapRanap').on('shown.bs.modal', () => {
             const canvasSuhu = $('#grafik-suhu');
-            // grafikSuhu(canvasSuhu)
         })
-
-        // function grafikSuhu(ctx) {
-        //     console.log(ctx)
-        //     new Chart(ctx, {
-        //         type: 'bar',
-        //         data: {
-        //             labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        //             datasets: [{
-        //                 label: '# of Votes',
-        //                 data: [12, 19, 3, 5, 2, 3],
-        //                 borderWidth: 1
-        //             }]
-        //         },
-        //         options: {
-        //             scales: {
-        //                 y: {
-        //                     beginAtZero: true
-        //                 }
-        //             }
-        //         }
-        //     });
-        // }
 
         function ambilSoap(no, tgl, jam) {
             $.ajax({
@@ -129,14 +106,14 @@
                     console.log(response.grafik_harian);
                     console.log(tgl);
                     console.log(jam);
-                    $.map(response.grafik_harian,function(grafik){
-                                if(tgl == grafik.tgl_perawatan && jam == grafik.jam_rawat){
-                                    console.log(grafik.o2);
-                                    $('#o2').val(grafik.o2);
-                                } else {
-                                    $('#o2').val('-');
-                                }
-                            })
+                    $.map(response.grafik_harian, function(grafik) {
+                        if (tgl == grafik.tgl_perawatan && jam == grafik.jam_rawat) {
+                            console.log(grafik.o2);
+                            $('#o2').val(grafik.o2);
+                        } else {
+                            $('#o2').val('-');
+                        }
+                    })
                     $('#kesadaran select').val(response.kesadaran);
                     $('#alergi').val(response.alergi);
                     $('#asesmen').val(response.penilaian);
@@ -330,12 +307,12 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            
+
                             list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
                                 '</strong></li>';
                             list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
-                            $.map(row.grafik_harian,function(grafik){
-                                if(row.tgl_perawatan == grafik.tgl_perawatan && row.jam_rawat == grafik.jam_rawat){
+                            $.map(row.grafik_harian, function(grafik) {
+                                if (row.tgl_perawatan == grafik.tgl_perawatan && row.jam_rawat == grafik.jam_rawat) {
                                     console.log(grafik.o2);
                                     list += '<li> O2 : ' + grafik.o2 + '</li>';
                                 }
