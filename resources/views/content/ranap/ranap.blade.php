@@ -566,6 +566,7 @@
 
         var ctx = document.getElementById('grafik-suhu').getContext('2d');
         var grafikPemeriksaan;
+        var tableGrafikHarian;
 
         $("#modalSoapRanap").on('hide.bs.modal', function() {
             grafikPemeriksaan.destroy();
@@ -573,7 +574,6 @@
         });
 
         function buildGrafik(no_rawat) {
-            console.log(no_rawat);
             $.ajax({
                 url: 'soap/chart',
                 data: {
@@ -660,7 +660,6 @@
                     'no_rawat': no_rawat,
                 },
                 success: function(response) {
-                    console.log(response)
                     $('#nomor_rawat').val(response.no_rawat);
                     $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
                     $('#nik').val(response.kd_dokter);

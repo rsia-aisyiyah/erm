@@ -174,9 +174,17 @@ class PemeriksaanRanapController extends Controller
     function getTTV(Request $request)
     {
         $id = str_replace('-', '/', $request->no_rawat);
-        $data = $this->grafikHarian->select('tgl_perawatan', 'jam_rawat', 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'spo2', 'o2', 'gcs', 'kesadaran', 'sumber', 'nip')->where(['no_rawat' => $id])->get();
+        // $data = $this->grafikHarian->select('tgl_perawatan', 'jam_rawat', 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'spo2', 'o2', 'gcs', 'kesadaran', 'sumber', 'nip')->where(['no_rawat' => $id])->get();
+        $data = $this->grafikHarian->where(['no_rawat' => $id])->get();
 
         // return json
         return $data;
+    }
+
+    function getTTVData(Request $request) 
+    {
+        $id = str_replace('-', '/', $request->no_rawat);
+        $data = $this->grafikHarian->where(['no_rawat' => $id])->get();    
+        return DataTables::of($data)->make(true);
     }
 }
