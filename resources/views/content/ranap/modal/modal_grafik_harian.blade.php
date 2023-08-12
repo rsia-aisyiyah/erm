@@ -143,7 +143,7 @@
                                             <th>O2</th>
                                             <th>GCS</th>
                                             <th>Kesadaran</th>
-                                            <th>#</th>
+                                            <th width='70'>#</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

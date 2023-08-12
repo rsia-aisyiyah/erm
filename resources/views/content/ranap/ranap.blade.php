@@ -12,7 +12,8 @@
                                 <div class="row gy-2">
                                     <div class="col col-sm-12">
                                         <div class="form-radio form-radio-inline mt-2">
-                                            <input class="form-radio-input" type="radio" id="belum" name="stts_pulang" value="Belum Pulang">
+                                            <input class="form-radio-input" type="radio" id="belum" name="stts_pulang"
+                                                value="Belum Pulang">
                                             <label class="form-radio-label" for="belum">Belum
                                                 Pulang</label>
                                         </div>
@@ -25,15 +26,20 @@
                                 <div class="row gy-2">
                                     <div class="col col-sm-4">
                                         <div class="form-radio form-radio-inline mt-2">
-                                            <input class="form-radio-input" type="radio" id="pulang" name="stts_pulang" value="pulang">
+                                            <input class="form-radio-input" type="radio" id="pulang" name="stts_pulang"
+                                                value="pulang">
                                             <label class="form-radio-label" for="pulang">Pulang</label>
                                         </div>
                                     </div>
                                     <div class="col col-sm-4" style="padding-left: 0px;padding-right: 4px;">
-                                        <input type="text" class="form-control form-control-sm tanggal tgl_pulang" id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off" style="border-radius:0px;font-size:12px" disabled>
+                                        <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
+                                            id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off"
+                                            style="border-radius:0px;font-size:12px" disabled>
                                     </div>
                                     <div class="col col-sm-4" style="padding-left: 4px;padding-right: 0px;">
-                                        <input type="text" class="form-control form-control-sm tanggal tgl_pulang" id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off" style="border-radius:0px;font-size:12px" disabled>
+                                        <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
+                                            id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off"
+                                            style="border-radius:0px;font-size:12px" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -43,22 +49,28 @@
                                 <div class="row gy-2">
                                     <div class="col col-sm-4">
                                         <div class="form-radio form-radio-inline mt-2">
-                                            <input class="form-radio-input" type="radio" id="masuk" name="stts_pulang" value="masuk">
+                                            <input class="form-radio-input" type="radio" id="masuk" name="stts_pulang"
+                                                value="masuk">
                                             <label class="form-radio-label" for="masuk">Masuk</label>
                                         </div>
                                     </div>
                                     <div class="col col-sm-4" style="padding-left: 0px;padding-right: 4px;">
-                                        <input type="text" class="form-control form-control-sm tanggal tgl_masuk" id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off" style="border-radius:0px;font-size:12px" disabled>
+                                        <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
+                                            id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off"
+                                            style="border-radius:0px;font-size:12px" disabled>
                                     </div>
                                     <div class="col col-sm-4" style="padding-left: 4px;padding-right: 0px;">
-                                        <input type="text" class="form-control form-control-sm tanggal tgl_masuk" id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off" style="border-radius:0px;font-size:12px" disabled>
+                                        <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
+                                            id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off"
+                                            style="border-radius:0px;font-size:12px" disabled>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-12 col-sm-12">
                             <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-success btn-sm" style="border-radius:0px" id="cari">
+                                <button type="button" class="btn btn-success btn-sm" style="border-radius:0px"
+                                    id="cari">
                                     <i class="bi bi-search"></i>
                                 </button>
                             </div>
@@ -69,14 +81,16 @@
                 <div class="form-group mb-2">
                     <div class="row gy-2">
                         <div class="col-lg-3 col-md-12 col-sm-12">
-                            <select name="spesialis" id="spesialis" class="form-select form-select-sm" style="width:100%">
+                            <select name="spesialis" id="spesialis" class="form-select form-select-sm"
+                                style="width:100%">
                                 <option value="">Kategori</option>
                                 <option value="S0001">Kebidanan & Kandungan</option>
                                 <option value="S0003">Anak</option>
                             </select>
                         </div>
                         <div class="col-lg-4 col-md-12 col-sm-12">
-                            <select name="dokter" id="dokter" class="form-select form-select-sm" style="width:100%" disabled>
+                            <select name="dokter" id="dokter" class="form-select form-select-sm" style="width:100%"
+                                disabled>
                                 <option value="">Semua Dokter</option>
                                 <option value="1.101.1112">dr. Himawan Budityastomo, Sp.OG</option>
                                 <option value="1.109.1119">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
@@ -88,7 +102,8 @@
                             <div class="mb-3 row">
                                 <label for="cari-kamar" class="col-sm-3 col-form-label">Cari Kamar : </label>
                                 <div class="col-sm-9">
-                                    <input type="search" id="cari-kamar" name="cari-kamar" class="form-control form-control-sm" width="100%">
+                                    <input type="search" id="cari-kamar" name="cari-kamar"
+                                        class="form-control form-control-sm" width="100%">
                                 </div>
                             </div>
                         </div>
@@ -131,8 +146,8 @@
 
 
 @push('script')
-    <script>
-        var stts_pulang = '-';
+<script>
+    var stts_pulang = '-';
         var tgl_awal = '';
         var tgl_akhir = '';
         var kamar = '';
@@ -824,8 +839,12 @@
                             showConfirmButton: false,
                             timer: 1500
                         });
+                        
+                        $("#tableGrafikHarian").DataTable().destroy();
 
                         buildGrafik(response.no_rawat);
+                        appendDataGrafikHarian(response.no_rawat);
+                        clearFormGrafikHarian();  
                     } else {
                         console.log(response);
                     }
@@ -932,5 +951,5 @@
             $('#formSaveGrafikHarian input[name="o2"]').val('-');
             $('#formSaveGrafikHarian input[name="gcs"]').val('-');
         }
-    </script>
+</script>
 @endpush
