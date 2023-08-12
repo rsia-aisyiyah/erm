@@ -20,7 +20,7 @@ class RsiaVerifPemeriksaanRanapController extends Controller
     {
         $data = [
             'no_rawat' => $request->no_rawat,
-            'tgl_perawtan' => $request->tgl_perawatan,
+            'tgl_perawatan' => $request->tgl_perawatan,
             'jam_rawat' => $request->jam_rawat,
             'tgl_verif' => date('Y-m-d'),
             'jam_verif' => date('H:i:s'),
