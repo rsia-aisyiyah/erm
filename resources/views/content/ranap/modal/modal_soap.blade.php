@@ -65,30 +65,7 @@
 
         $('#modalSoapRanap').on('shown.bs.modal', () => {
             const canvasSuhu = $('#grafik-suhu');
-            // grafikSuhu(canvasSuhu)
         })
-
-        // function grafikSuhu(ctx) {
-        //     console.log(ctx)
-        //     new Chart(ctx, {
-        //         type: 'bar',
-        //         data: {
-        //             labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        //             datasets: [{
-        //                 label: '# of Votes',
-        //                 data: [12, 19, 3, 5, 2, 3],
-        //                 borderWidth: 1
-        //             }]
-        //         },
-        //         options: {
-        //             scales: {
-        //                 y: {
-        //                     beginAtZero: true
-        //                 }
-        //             }
-        //         }
-        //     });
-        // }
 
         function ambilSoap(no, tgl, jam) {
             $.ajax({
@@ -118,14 +95,14 @@
                     console.log(response.grafik_harian);
                     console.log(tgl);
                     console.log(jam);
-                    $.map(response.grafik_harian,function(grafik){
-                                if(tgl == grafik.tgl_perawatan && jam == grafik.jam_rawat){
-                                    console.log(grafik.o2);
-                                    $('#o2').val(grafik.o2);
-                                } else {
-                                    $('#o2').val('-');
-                                }
-                            })
+                    $.map(response.grafik_harian, function(grafik) {
+                        if (tgl == grafik.tgl_perawatan && jam == grafik.jam_rawat) {
+                            console.log(grafik.o2);
+                            $('#o2').val(grafik.o2);
+                        } else {
+                            $('#o2').val('-');
+                        }
+                    })
                     $('#kesadaran select').val(response.kesadaran);
                     $('#alergi').val(response.alergi);
                     $('#asesmen').val(response.penilaian);
@@ -302,16 +279,8 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
-                            button =
-                                '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' +
-                                row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat +
-                                '\')"><i class="bi bi-pencil-square"></i></button>';
-                            button +=
-                                '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' +
-                                row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat +
-                                '\')"><i class="bi bi-trash3-fill"></i></button>';
-
-                            // return button
+                            button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
+                            button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
                             return button;
                         },
                         name: 'tgl_perawatan',
@@ -319,12 +288,12 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            
+
                             list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
                                 '</strong></li>';
                             list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
-                            $.map(row.grafik_harian,function(grafik){
-                                if(row.tgl_perawatan == grafik.tgl_perawatan && row.jam_rawat == grafik.jam_rawat){
+                            $.map(row.grafik_harian, function(grafik) {
+                                if (row.tgl_perawatan == grafik.tgl_perawatan && row.jam_rawat == grafik.jam_rawat) {
                                     console.log(grafik.o2);
                                     list += '<li> O2 : ' + grafik.o2 + '</li>';
                                 }
@@ -339,6 +308,7 @@
                             list += '<li> Berat : ' + row.berat + ' Kg</li>';
                             list += '<li> alergi : ' + row.alergi + '</li>';
                             html = '<ul>' + list + '</ul>';
+                            html += '<button type="button" style="font-size:12px" class="mx-auto btn btn-success btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i> Verifikasi </button>';
 
                             // return html
                             return html;
@@ -365,6 +335,41 @@
                 "language": {
                     "zeroRecords": "Tidak ada data pasien terdaftar",
                     "infoEmpty": "Tidak ada data pasien terdaftar",
+                }
+            });
+        }
+
+        function verifikasiSoap(no_rawat, tgl, jam) {
+            swal.fire({
+                title: 'Konfirmasi',
+                text: "Hasil pemeriksaan akan diverifikasi ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#0d6efd',
+                cancelButtonColor: '#dc3545',
+                confirmButtonText: 'Ya, Verifikasi',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/erm/soap/verifikasi',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_rawat: no_rawat,
+                            tgl_perawatan: tgl,
+                            jam_rawat: jam,
+                        },
+                        method: 'POST',
+                        dataType: 'JSON',
+                    }).done(() => {
+                        swal.fire({
+                            title: 'Berhasil',
+                            text: 'Hasil pemeriksaan telah diverivikasi',
+                            icon: 'success',
+                            timer: 1500,
+                        });
+                        cariSoap();
+                    })
                 }
             });
         }
