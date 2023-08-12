@@ -1,149 +1,135 @@
 @extends('index')
-
 @section('contents')
-    <div class="row gy-2">
-        <div class="col-sm-12">
-            @if (session()->get('pegawai')->bidang != 'Direksi' && session()->get('pegawai')->bidang != 'Spesialis')
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group mb-2">
-                            <div class="row gy-2">
-                                <div class="col-lg-2 col-md-12 col-sm-12">
-                                    <div class="input-group">
-                                        <div class="row gy-2">
-                                            <div class="col col-sm-12">
-                                                <div class="form-radio form-radio-inline mt-2">
-                                                    <input class="form-radio-input" type="radio" id="belum" name="stts_pulang"
-                                                        value="Belum Pulang">
-                                                    <label class="form-radio-label" for="belum">Belum
-                                                        Pulang</label>
-                                                </div>
-                                            </div>
+<div class="row gy-2">
+    <div class="col-sm-12">
+        @if (session()->get('pegawai')->bidang != 'Direksi' && session()->get('pegawai')->bidang != 'Spesialis')
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group mb-2">
+                    <div class="row gy-2">
+                        <div class="col-lg-2 col-md-12 col-sm-12">
+                            <div class="input-group">
+                                <div class="row gy-2">
+                                    <div class="col col-sm-12">
+                                        <div class="form-radio form-radio-inline mt-2">
+                                            <input class="form-radio-input" type="radio" id="belum" name="stts_pulang" value="Belum Pulang">
+                                            <label class="form-radio-label" for="belum">Belum
+                                                Pulang</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-md-12 col-sm-12">
-                                    <div class="input-group">
-                                        <div class="row gy-2">
-                                            <div class="col col-sm-4">
-                                                <div class="form-radio form-radio-inline mt-2">
-                                                    <input class="form-radio-input" type="radio" id="pulang" name="stts_pulang"
-                                                        value="pulang">
-                                                    <label class="form-radio-label" for="pulang">Pulang</label>
-                                                </div>
-                                            </div>
-                                            <div class="col col-sm-4" style="padding-left: 0px;padding-right: 4px;">
-                                                <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
-                                                    id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off"
-                                                    style="border-radius:0px;font-size:12px" disabled>
-                                            </div>
-                                            <div class="col col-sm-4" style="padding-left: 4px;padding-right: 0px;">
-                                                <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
-                                                    id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off"
-                                                    style="border-radius:0px;font-size:12px" disabled>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-12 col-sm-12">
-                                    <div class="input-group">
-                                        <div class="row gy-2">
-                                            <div class="col col-sm-4">
-                                                <div class="form-radio form-radio-inline mt-2">
-                                                    <input class="form-radio-input" type="radio" id="masuk" name="stts_pulang"
-                                                        value="masuk">
-                                                    <label class="form-radio-label" for="masuk">Masuk</label>
-                                                </div>
-                                            </div>
-                                            <div class="col col-sm-4" style="padding-left: 0px;padding-right: 4px;">
-                                                <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
-                                                    id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off"
-                                                    style="border-radius:0px;font-size:12px" disabled>
-                                            </div>
-                                            <div class="col col-sm-4" style="padding-left: 4px;padding-right: 0px;">
-                                                <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
-                                                    id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off"
-                                                    style="border-radius:0px;font-size:12px" disabled>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-12 col-sm-12">
-                                    <div class="d-grid gap-2">
-                                        <button type="button" class="btn btn-success btn-sm" style="border-radius:0px"
-                                            id="cari">
-                                            <i class="bi bi-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
-                        <div class="form-group mb-2">
-                            <div class="row gy-2">
-                                <div class="col-lg-3 col-md-12 col-sm-12">
-                                    <select name="spesialis" id="spesialis" class="form-select form-select-sm"
-                                        style="width:100%">
-                                        <option value="">Kategori</option>
-                                        <option value="S0001">Kebidanan & Kandungan</option>
-                                        <option value="S0003">Anak</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-4 col-md-12 col-sm-12">
-                                    <select name="dokter" id="dokter" class="form-select form-select-sm" style="width:100%"
-                                        disabled>
-                                        <option value="">Semua Dokter</option>
-                                        <option value="1.101.1112">dr. Himawan Budityastomo, Sp.OG</option>
-                                        <option value="1.109.1119">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
-                                        <option value="1.107.0317">dr. Dwi Riyanto, Sp.A</option>
-                                        <option value="1.111.1221">dr. Rendy Yoga Ardian, Sp.A</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-5 col-md-12 col-sm-12">
-                                    <div class="mb-3 row">
-                                        <label for="cari-kamar" class="col-sm-3 col-form-label">Cari Kamar : </label>
-                                        <div class="col-sm-9">
-                                            <input type="search" id="cari-kamar" name="cari-kamar"
-                                                class="form-control form-control-sm" width="100%">
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <div class="input-group">
+                                <div class="row gy-2">
+                                    <div class="col col-sm-4">
+                                        <div class="form-radio form-radio-inline mt-2">
+                                            <input class="form-radio-input" type="radio" id="pulang" name="stts_pulang" value="pulang">
+                                            <label class="form-radio-label" for="pulang">Pulang</label>
                                         </div>
                                     </div>
+                                    <div class="col col-sm-4" style="padding-left: 0px;padding-right: 4px;">
+                                        <input type="text" class="form-control form-control-sm tanggal tgl_pulang" id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off" style="border-radius:0px;font-size:12px" disabled>
+                                    </div>
+                                    <div class="col col-sm-4" style="padding-left: 4px;padding-right: 0px;">
+                                        <input type="text" class="form-control form-control-sm tanggal tgl_pulang" id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off" style="border-radius:0px;font-size:12px" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <div class="input-group">
+                                <div class="row gy-2">
+                                    <div class="col col-sm-4">
+                                        <div class="form-radio form-radio-inline mt-2">
+                                            <input class="form-radio-input" type="radio" id="masuk" name="stts_pulang" value="masuk">
+                                            <label class="form-radio-label" for="masuk">Masuk</label>
+                                        </div>
+                                    </div>
+                                    <div class="col col-sm-4" style="padding-left: 0px;padding-right: 4px;">
+                                        <input type="text" class="form-control form-control-sm tanggal tgl_masuk" id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off" style="border-radius:0px;font-size:12px" disabled>
+                                    </div>
+                                    <div class="col col-sm-4" style="padding-left: 4px;padding-right: 0px;">
+                                        <input type="text" class="form-control form-control-sm tanggal tgl_masuk" id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off" style="border-radius:0px;font-size:12px" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-12 col-sm-12">
+                            <div class="d-grid gap-2">
+                                <button type="button" class="btn btn-success btn-sm" style="border-radius:0px" id="cari">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                    <div class="row gy-2">
+                        <div class="col-lg-3 col-md-12 col-sm-12">
+                            <select name="spesialis" id="spesialis" class="form-select form-select-sm" style="width:100%">
+                                <option value="">Kategori</option>
+                                <option value="S0001">Kebidanan & Kandungan</option>
+                                <option value="S0003">Anak</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <select name="dokter" id="dokter" class="form-select form-select-sm" style="width:100%" disabled>
+                                <option value="">Semua Dokter</option>
+                                <option value="1.101.1112">dr. Himawan Budityastomo, Sp.OG</option>
+                                <option value="1.109.1119">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
+                                <option value="1.107.0317">dr. Dwi Riyanto, Sp.A</option>
+                                <option value="1.111.1221">dr. Rendy Yoga Ardian, Sp.A</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-5 col-md-12 col-sm-12">
+                            <div class="mb-3 row">
+                                <label for="cari-kamar" class="col-sm-3 col-form-label">Cari Kamar : </label>
+                                <div class="col-sm-9">
+                                    <input type="search" id="cari-kamar" name="cari-kamar" class="form-control form-control-sm" width="100%">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <input type="hidden" id="kd_dokter" value="" name="kd_dokter">
-            @else
-                <input type="hidden" id="kd_dokter" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
-            @endif
+            </div>
         </div>
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <table class="table table-striped table-responsive text-sm table-sm" id="tb_ranap" width="100%">
-                        <thead>
-                            <tr role="row">
-                                <th width="100px"></th>
-                                <th width="25%">No.Rawat</th>
-                                <th>Kamar</th>
-                                <th>Lama</th>
-                                <th>Dokter</th>
-                                <th>Diagnosa Awal</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+        <input type="hidden" id="kd_dokter" value="" name="kd_dokter">
+        @else
+        <input type="hidden" id="kd_dokter" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
+        @endif
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped table-responsive text-sm table-sm" id="tb_ranap" width="100%">
+                    <thead>
+                        <tr role="row">
+                            <th width="100px"></th>
+                            <th width="25%">No.Rawat</th>
+                            <th>Kamar</th>
+                            <th>Lama</th>
+                            <th>Dokter</th>
+                            <th>Diagnosa Awal</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
     </div>
-    @include('content.ranap.modal.modal_lab')
-    @include('content.ranap.modal.modal_soap')
-    @include('content.ranap.modal.modal_penunjang')
-    @include('content.ranap.modal.modal_asmed_anak')
-    @include('content.ranap.modal.modal_asmed_kandungan')
-    @include('content.ranap.modal.modal_grafik_harian')
+</div>
+@include('content.ranap.modal.modal_lab')
+@include('content.ranap.modal.modal_soap')
+@include('content.ranap.modal.modal_penunjang')
+@include('content.ranap.modal.modal_asmed_anak')
+@include('content.ranap.modal.modal_asmed_kandungan')
+@include('content.ranap.modal.modal_grafik_harian')
 @endsection
+
+
 @push('script')
     <script>
         var stts_pulang = '-';
@@ -161,6 +147,7 @@
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
                 autoclose: true,
+                defaultDate: null
             });
 
             kd_dokter = $('#kd_dokter').val();
@@ -304,10 +291,13 @@
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-                            console.log(row)
-                            list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data.no_rawat + '\')">Laborat</a></li>';
-                            list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
-                            list += '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
+                            list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data
+                                .no_rawat + '\')">Laborat</a></li>';
+                            list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' +
+                                data.no_rawat + '\')">S.O.A.P</a></li>';
+                            list +=
+                                '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' +
+                                data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak(\'' + data.no_rawat + '\')">Asesmen Medis Anak</a></li>';
@@ -564,13 +554,16 @@
         var grafikPemeriksaan;
         var tableGrafikHarian;
 
-        $("#modalSoapRanap").on('hide.bs.modal', function() {
+        $("#modalSoapRanap").on('hidden.bs.modal', function() {
             grafikPemeriksaan.destroy();
-            $('#tableGrafikHarian').DataTable().destroy();
             grafikPemeriksaan = null;
+            
+            tableGrafikHarian.fnDestroy();
+            tableGrafikHarian = null;
         });
 
         function buildGrafik(no_rawat) {
+            console.log(no_rawat);
             $.ajax({
                 url: 'soap/chart',
                 data: {
@@ -675,6 +668,7 @@
         }
 
         function appendDataGrafikHarian(no_rawat) {
+            
             tableGrafikHarian = $("#tableGrafikHarian").dataTable({
                 processing: true,
                 serverSide: true,
@@ -806,7 +800,6 @@
                     'o2': $('#formSaveGrafikHarian input[name="o2"]').val(),
                     'gcs': $('#formSaveGrafikHarian input[name="gcs"]').val(),
                     'kesadaran': $('#formSaveGrafikHarian select[name="kesadaran"]').val(),
-                    'action': $('#formSaveGrafikHarian input[name="action"]').val(),
                 },
                 type: 'POST',
                 beforeSend: function() {
@@ -843,8 +836,10 @@
                 }
             })
         });
+        
         $('#modalGrafikHarian').on('hidden.bs.modal', function() {
             clearFormGrafikHarian();
+
             $('#formSaveGrafikHarian input[name="action"]').remove();
             $('#formSaveGrafikHarian input[name="tgl_perawatan"]').remove();
             $('#formSaveGrafikHarian input[name="jam_rawat"]').remove();
@@ -911,7 +906,6 @@
         }
 
         function editGrafikHarian(no_rawat, tgl_perawatan, jam_rawat, suhu_tubuh, tensi, nadi, respirasi, spo2, o2, gcs, kesadaran) {
-            $('#formSaveGrafikHarian .editGrafik').empty();
             $('#formSaveGrafikHarian input[name="suhu_tubuh"]').val(suhu_tubuh);
             $('#formSaveGrafikHarian input[name="tensi"]').val(tensi);
             $('#formSaveGrafikHarian input[name="nadi"]').val(nadi);
@@ -920,12 +914,13 @@
             $('#formSaveGrafikHarian input[name="o2"]').val(o2);
             $('#formSaveGrafikHarian input[name="gcs"]').val(gcs);
             $('#formSaveGrafikHarian select[name="kesadaran"]').val(kesadaran);
-            // formSaveGrafikHarian attr input type hidden name action value update
+
             var htmlEdit = `
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="tgl_perawatan" value="${tgl_perawatan}">
             <input type="hidden" name="jam_rawat" value="${jam_rawat}">`;
-            $('#formSaveGrafikHarian .editGrafik').append(htmlEdit);
+
+            $('#formSaveGrafikHarian').append(htmlEdit);
         }
 
         function clearFormGrafikHarian() {

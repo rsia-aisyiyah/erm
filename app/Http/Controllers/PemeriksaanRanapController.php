@@ -149,14 +149,16 @@ class PemeriksaanRanapController extends Controller
     public function ambil(Request $request)
     {
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa', 'regPeriksa.pasien', 'petugas', 'grafikHarian'])->orderBy('tgl_perawatan', 'DESC')
+            ->with(['regPeriksa', 'regPeriksa.pasien', 'petugas', 'grafikHarian', 'verifikasi.petugas' => function ($q) {
+                return $q->select('nip', 'nama');
+            }])
+            ->orderBy('tgl_perawatan', 'DESC')
             ->orderBy('jam_rawat', 'DESC');
 
-        if ($request->tgl_pertama && $request->tgl_kedua) {
+        // if tanggal pertama and tanggal kedua is not empty string
+        if ($request->tgl_pertama != '' && $request->tgl_kedua != '') {
             $pemeriksaan->whereBetween('tgl_perawatan', [$request->tgl_pertama, $request->tgl_kedua]);
-        } else {
-            $pemeriksaan->where('tgl_perawatan', $this->tanggal->now()->toDateString());
-        }
+        }        
 
         if ($request->petugas == 1) {
             $pemeriksaan->whereHas('petugas', function ($q) use ($request) {
@@ -174,7 +176,6 @@ class PemeriksaanRanapController extends Controller
     function getTTV(Request $request)
     {
         $id = str_replace('-', '/', $request->no_rawat);
-        // $data = $this->grafikHarian->select('tgl_perawatan', 'jam_rawat', 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'spo2', 'o2', 'gcs', 'kesadaran', 'sumber', 'nip')->where(['no_rawat' => $id])->get();
         $data = $this->grafikHarian->where(['no_rawat' => $id])->get();
 
         // return json
