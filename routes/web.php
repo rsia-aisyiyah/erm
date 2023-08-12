@@ -57,6 +57,7 @@ use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
+use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Models\LaporanOperasi;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
@@ -150,6 +151,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/soap/ubah', [PemeriksaanRanapController::class, 'ubah']);
     Route::post('/soap/simpan', [PemeriksaanRanapController::class, 'simpan']);
     Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
+    Route::post('/soap/verifikasi', [RsiaVerifPemeriksaanRanapController::class, 'create']);
 
     Route::get('/soap/chart', [PemeriksaanRanapController::class, 'getTTV']);
     Route::get('/soap/grafik/data', [PemeriksaanRanapController::class, 'getTTVData']);

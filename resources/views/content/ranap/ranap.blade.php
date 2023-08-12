@@ -305,13 +305,9 @@
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
                             console.log(row)
-                            list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data
-                                .no_rawat + '\')">Laborat</a></li>';
-                            list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' +
-                                data.no_rawat + '\')">S.O.A.P</a></li>';
-                            list +=
-                                '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' +
-                                data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
+                            list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data.no_rawat + '\')">Laborat</a></li>';
+                            list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
+                            list += '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak(\'' + data.no_rawat + '\')">Asesmen Medis Anak</a></li>';
@@ -570,6 +566,7 @@
 
         $("#modalSoapRanap").on('hide.bs.modal', function() {
             grafikPemeriksaan.destroy();
+            $('#tableGrafikHarian').DataTable().destroy();
             grafikPemeriksaan = null;
         });
 
@@ -809,6 +806,7 @@
                     'o2': $('#formSaveGrafikHarian input[name="o2"]').val(),
                     'gcs': $('#formSaveGrafikHarian input[name="gcs"]').val(),
                     'kesadaran': $('#formSaveGrafikHarian select[name="kesadaran"]').val(),
+                    'action': $('#formSaveGrafikHarian input[name="action"]').val(),
                 },
                 type: 'POST',
                 beforeSend: function() {
@@ -913,6 +911,7 @@
         }
 
         function editGrafikHarian(no_rawat, tgl_perawatan, jam_rawat, suhu_tubuh, tensi, nadi, respirasi, spo2, o2, gcs, kesadaran) {
+            $('#formSaveGrafikHarian .editGrafik').empty();
             $('#formSaveGrafikHarian input[name="suhu_tubuh"]').val(suhu_tubuh);
             $('#formSaveGrafikHarian input[name="tensi"]').val(tensi);
             $('#formSaveGrafikHarian input[name="nadi"]').val(nadi);
@@ -926,7 +925,7 @@
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="tgl_perawatan" value="${tgl_perawatan}">
             <input type="hidden" name="jam_rawat" value="${jam_rawat}">`;
-            $('#formSaveGrafikHarian').append(htmlEdit);
+            $('#formSaveGrafikHarian .editGrafik').append(htmlEdit);
         }
 
         function clearFormGrafikHarian() {

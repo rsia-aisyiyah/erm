@@ -26,4 +26,8 @@ class PemeriksaanRanap extends Model
     {
         return $this->belongsTo(Petugas::class, 'nip', 'nip');
     }
+    function verifikasi()
+    {
+        return $this->belongsTo(RsiaVerifPemeriksaanRanap::class, 'no_rawat', 'no_rawat');
+    }
 }

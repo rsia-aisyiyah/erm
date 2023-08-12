@@ -279,16 +279,8 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
-                            button =
-                                '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' +
-                                row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat +
-                                '\')"><i class="bi bi-pencil-square"></i></button>';
-                            button +=
-                                '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' +
-                                row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat +
-                                '\')"><i class="bi bi-trash3-fill"></i></button>';
-
-                            // return button
+                            button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
+                            button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
                             return button;
                         },
                         name: 'tgl_perawatan',
@@ -316,6 +308,7 @@
                             list += '<li> Berat : ' + row.berat + ' Kg</li>';
                             list += '<li> alergi : ' + row.alergi + '</li>';
                             html = '<ul>' + list + '</ul>';
+                            html += '<button type="button" style="font-size:12px" class="mx-auto btn btn-success btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i> Verifikasi </button>';
 
                             // return html
                             return html;
@@ -342,6 +335,41 @@
                 "language": {
                     "zeroRecords": "Tidak ada data pasien terdaftar",
                     "infoEmpty": "Tidak ada data pasien terdaftar",
+                }
+            });
+        }
+
+        function verifikasiSoap(no_rawat, tgl, jam) {
+            swal.fire({
+                title: 'Konfirmasi',
+                text: "Hasil pemeriksaan akan diverifikasi ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#0d6efd',
+                cancelButtonColor: '#dc3545',
+                confirmButtonText: 'Ya, Verifikasi',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/erm/soap/verifikasi',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_rawat: no_rawat,
+                            tgl_perawatan: tgl,
+                            jam_rawat: jam,
+                        },
+                        method: 'POST',
+                        dataType: 'JSON',
+                    }).done(() => {
+                        swal.fire({
+                            title: 'Berhasil',
+                            text: 'Hasil pemeriksaan telah diverivikasi',
+                            icon: 'success',
+                            timer: 1500,
+                        });
+                        cariSoap();
+                    })
                 }
             });
         }

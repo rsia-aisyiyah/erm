@@ -29,7 +29,7 @@ class PemeriksaanRanapController extends Controller
     public function ambilSatu(Request $request)
     {
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa', 'regPeriksa.pasien', 'petugas','grafikHarian']);
+            ->with(['regPeriksa', 'regPeriksa.pasien', 'petugas', 'grafikHarian']);
 
         if ($request->tgl_perawatan) {
             $pemeriksaan->where('tgl_perawatan', $request->tgl_perawatan);
@@ -76,7 +76,7 @@ class PemeriksaanRanapController extends Controller
             'sumber' => 'SOAP',
         ];
 
-        
+
         $clause = [
             'no_rawat' => $request->no_rawat,
             'tgl_perawatan' => $request->tgl_perawatan,
@@ -86,7 +86,7 @@ class PemeriksaanRanapController extends Controller
         $grafikharian = GrafikHarian::where($clause)->update($data1);
         $this->track->create($this->track->updateSql($this->pemeriksaan, $data, $clause));
         $this->track->create($this->track->updateSql($this->grafikharian, $data1, $clause));
-        return response()->json([$pemeriksaan,$grafikharian]);
+        return response()->json([$pemeriksaan, $grafikharian]);
     }
 
     public function simpan(Request $request)
@@ -133,7 +133,7 @@ class PemeriksaanRanapController extends Controller
         $grafikharian = GrafikHarian::create($data1);
         $this->track->create($this->track->insertSql($this->pemeriksaan, $data));
         $this->track->create($this->track->insertSql($this->grafikharian, $data));
-        return response()->json(['Berhasil', $pemeriksaan,$grafikharian], 200);
+        return response()->json(['Berhasil', $pemeriksaan, $grafikharian], 200);
     }
     public function hapus(Request $request)
     {
@@ -149,7 +149,7 @@ class PemeriksaanRanapController extends Controller
     public function ambil(Request $request)
     {
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa', 'regPeriksa.pasien', 'petugas','grafikHarian'])->orderBy('tgl_perawatan', 'DESC')
+            ->with(['regPeriksa', 'regPeriksa.pasien', 'petugas', 'grafikHarian'])->orderBy('tgl_perawatan', 'DESC')
             ->orderBy('jam_rawat', 'DESC');
 
         if ($request->tgl_pertama && $request->tgl_kedua) {
@@ -181,10 +181,10 @@ class PemeriksaanRanapController extends Controller
         return $data;
     }
 
-    function getTTVData(Request $request) 
+    function getTTVData(Request $request)
     {
         $id = str_replace('-', '/', $request->no_rawat);
-        $data = $this->grafikHarian->where(['no_rawat' => $id])->get();    
+        $data = $this->grafikHarian->where(['no_rawat' => $id])->get();
         return DataTables::of($data)->make(true);
     }
 }
