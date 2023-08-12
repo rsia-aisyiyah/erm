@@ -116,16 +116,16 @@
                             }
 
                             if (res.keterangan == 'L') {
-                                warna = 'style="color:#0d6efd"';
+                                warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
                             } else if (res.keterangan == 'H' || res.keterangan == '*') {
-                                warna = 'style="color:#dc3545"';
+                                warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
                             } else {
                                 warna = '';
                             }
 
-                            hasil += '<tr>';
+                            hasil += '<tr ' + warna + '>';
                             hasil += '<td>' + res.template.Pemeriksaan + '</td>';
-                            hasil += '<td ' + warna + '>' + res.nilai + ' ' + res.template.satuan +
+                            hasil += '<td>' + res.nilai + ' ' + res.template.satuan +
                                 '</td>';
                             hasil += '<td>' + res.nilai_rujukan + '</td>';
                             hasil += '<td>' + res.keterangan + '</td>';
