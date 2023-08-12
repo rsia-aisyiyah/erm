@@ -339,6 +339,7 @@
                                                 html += '</span>';
                                             }
                                         })
+                                        html += '<br/>'
                                     })
                                     html += '</td>';
                                     html +=
