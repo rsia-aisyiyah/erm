@@ -26,4 +26,8 @@ class RsiaVerifPemeriksaanRanap extends Model
     {
         return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter');
     }
+
+    function petugas() {
+        return $this->belongsTo(Petugas::class, 'verifikator', 'nip');
+    }
 }

@@ -147,6 +147,7 @@
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
                 autoclose: true,
+                defaultDate: null
             });
 
             kd_dokter = $('#kd_dokter').val();
@@ -162,93 +163,11 @@
             }
         })
 
-    function getAsmedRanapAnak(noRawat) {
-        const asmed = $.ajax({
-            url: '/erm/asmed/ranap/anak/' + noRawat,
-            dataType: 'JSON',
-            method: 'GET',
-        })
-
-        return asmed;
-    }
-
-    function asmedRanapAnak(noRawat) {
-        $.ajax({
-            url: '/erm/registrasi/ambil',
-            data: {
-                no_rawat: textRawat(noRawat, '/'),
-            },
-        }).done((response) => {
-            $('#anak_no_rawat').val(response.no_rawat);
-            $('#anak_pasien').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
-            $('#anak_tgl_lahir').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-            $('#anak_kd_dokter').val(response.kd_dokter);
-            $('#anak_dokter').val(response.dokter.nm_dokter);
-        });
-        getAsmedRanapAnak(textRawat(noRawat, '-')).done((response) => {
-            if (Object.keys(response).length > 0) {
-                $('#anak_anamnesis').val(response.anamnesis).change();
-                $('#anak_hubungan').val(response.hubungan);
-                $('#anak_keluhan_utama').val(response.keluhan_utama);
-                $('#anak_rps').val(response.rps);
-                $('#anak_rpd').val(response.rpd);
-                $('#anak_rpk').val(response.rpk);
-                $('#anak_rpo').val(response.rpo);
-                $('#anak_alergi').val(response.alergi);
-                $('#anak_keadaan').val(response.keadaan).change();
-                $('#anak_gcs').val(response.gcs);
-                $('#anak_kesadaran').val(response.kesadaran).change();
-                $('#anak_td').val(response.td);
-                $('#anak_nadi').val(response.nadi);
-                $('#anak_rr').val(response.rr);
-                $('#anak_suhu').val(response.suhu);
-                $('#anak_spo').val(response.spo);
-                $('#anak_bb').val(response.bb);
-                $('#anak_tb').val(response.tb);
-                $('#anak_kepala').val(response.kepala).change();
-                $('#anak_mata').val(response.mata).change();
-                $('#anak_gigi').val(response.gigi).change();
-                $('#anak_tht').val(response.tht).change();
-                $('#anak_mulut').val(response.mulut).change();
-                $('#anak_jantung').val(response.jantung).change();
-                $('#anak_paru').val(response.paru).change();
-                $('#anak_abdomen').val(response.abdomen).change();
-                $('#anak_genital').val(response.genital).change();
-                $('#anak_ekstremitas').val(response.ekstremitas).change();
-                $('#anak_kulit').val(response.kulit).change();
-                $('#anak_ket_fisik').val(response.ket_fisik);
-                $('#anak_ket_lokalis').val(response.ket_lokalis);
-                $('#anak_lab').val(response.lab);
-                $('#anak_rad').val(response.rad);
-                $('#anak_penunjang').val(response.penunjang);
-                $('#anak_diagnosis').val(response.diagnosis);
-                $('#anak_tata').val(response.tata);
-                $('#anak_edukasi').val(response.edukasi);
-            }
-
-        })
-        $('#modalAsmedRanapAnak').modal('show')
-    }
-
-    var ctx = document.getElementById('grafik-suhu').getContext('2d');
-    var grafikPemeriksaan;
-    var tableGrafikHarian;
-
-    $("#modalSoapRanap").on('hide.bs.modal', function() {
-        grafikPemeriksaan.destroy();
-        grafikPemeriksaan = null;
-    });
-
-    function buildGrafik(no_rawat) {
-        $.ajax({
-            url: 'soap/chart',
-            data: {
-                'no_rawat': no_rawat
-            },
-            success: function(response) {
-                grafikPemeriksaan = new Chart(ctx, {
-                    type: 'line',
-                    plugins: [ChartDataLabels],
+        $('#spesialis').on('change', function() {
+            sps = $('#spesialis option:selected').val();
+            if (sps) {
+                $.ajax({
+                    url: 'dokter/ambil',
                     data: {
                         'sps': sps,
                     },
@@ -372,10 +291,13 @@
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-                            console.log(row)
-                            list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data.no_rawat + '\')">Laborat</a></li>';
-                            list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
-                            list += '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
+                            list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data
+                                .no_rawat + '\')">Laborat</a></li>';
+                            list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' +
+                                data.no_rawat + '\')">S.O.A.P</a></li>';
+                            list +=
+                                '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' +
+                                data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak(\'' + data.no_rawat + '\')">Asesmen Medis Anak</a></li>';
@@ -623,8 +545,8 @@
                     $('.btn-asmed-anak-ubah').css('display', 'none')
                     $('.btn-asmed-anak').css('display', 'inline')
                 }
+
             })
-            
             $('#modalAsmedRanapAnak').modal('show')
         }
 
@@ -632,13 +554,16 @@
         var grafikPemeriksaan;
         var tableGrafikHarian;
 
-        $("#modalSoapRanap").on('hide.bs.modal', function() {
+        $("#modalSoapRanap").on('hidden.bs.modal', function() {
             grafikPemeriksaan.destroy();
-            $('#tableGrafikHarian').DataTable().destroy();
             grafikPemeriksaan = null;
+            
+            tableGrafikHarian.fnDestroy();
+            tableGrafikHarian = null;
         });
 
         function buildGrafik(no_rawat) {
+            console.log(no_rawat);
             $.ajax({
                 url: 'soap/chart',
                 data: {
@@ -743,6 +668,7 @@
         }
 
         function appendDataGrafikHarian(no_rawat) {
+            
             tableGrafikHarian = $("#tableGrafikHarian").dataTable({
                 processing: true,
                 serverSide: true,
@@ -874,7 +800,6 @@
                     'o2': $('#formSaveGrafikHarian input[name="o2"]').val(),
                     'gcs': $('#formSaveGrafikHarian input[name="gcs"]').val(),
                     'kesadaran': $('#formSaveGrafikHarian select[name="kesadaran"]').val(),
-                    'action': $('#formSaveGrafikHarian input[name="action"]').val(),
                 },
                 type: 'POST',
                 beforeSend: function() {
@@ -911,8 +836,10 @@
                 }
             })
         });
+        
         $('#modalGrafikHarian').on('hidden.bs.modal', function() {
             clearFormGrafikHarian();
+
             $('#formSaveGrafikHarian input[name="action"]').remove();
             $('#formSaveGrafikHarian input[name="tgl_perawatan"]').remove();
             $('#formSaveGrafikHarian input[name="jam_rawat"]').remove();
@@ -979,7 +906,6 @@
         }
 
         function editGrafikHarian(no_rawat, tgl_perawatan, jam_rawat, suhu_tubuh, tensi, nadi, respirasi, spo2, o2, gcs, kesadaran) {
-            $('#formSaveGrafikHarian .editGrafik').empty();
             $('#formSaveGrafikHarian input[name="suhu_tubuh"]').val(suhu_tubuh);
             $('#formSaveGrafikHarian input[name="tensi"]').val(tensi);
             $('#formSaveGrafikHarian input[name="nadi"]').val(nadi);
@@ -988,12 +914,13 @@
             $('#formSaveGrafikHarian input[name="o2"]').val(o2);
             $('#formSaveGrafikHarian input[name="gcs"]').val(gcs);
             $('#formSaveGrafikHarian select[name="kesadaran"]').val(kesadaran);
-            // formSaveGrafikHarian attr input type hidden name action value update
+
             var htmlEdit = `
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="tgl_perawatan" value="${tgl_perawatan}">
             <input type="hidden" name="jam_rawat" value="${jam_rawat}">`;
-            $('#formSaveGrafikHarian .editGrafik').append(htmlEdit);
+
+            $('#formSaveGrafikHarian').append(htmlEdit);
         }
 
         function clearFormGrafikHarian() {

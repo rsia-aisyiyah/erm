@@ -37,20 +37,26 @@
                         tabindex="0">
                         @include('content.ranap.modal._table_soap')
                     </div>
-                    <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik" tabindex="0">
+                    <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
+                        tabindex="0">
                         <div class="p-3 w-full d-flex justify-content-end">
-                            <button type="button" class="btn btn-success btn-sm btn-tambah-grafik-harin" onclick="modalGrafikHarian()" style="font-size: 12px"><i class="bi bi-bar-chart-line"></i> Tambah Grafik</button>
+                            <button type="button" class="btn btn-success btn-sm btn-tambah-grafik-harin"
+                                onclick="modalGrafikHarian()" style="font-size: 12px"><i
+                                    class="bi bi-bar-chart-line"></i> Tambah Grafik</button>
                         </div>
                         <canvas id="grafik-suhu" style="max-height: 400px;"></canvas>
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-verifikasi-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+                    <div class="tab-pane fade p-3" id="tab-verifikasi-pane" role="tabpanel"
+                        aria-labelledby="disabled-tab" tabindex="0">
                         VERIFIKASI PASIEN
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoapRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
+                        class="bi bi-x-circle"></i> Keluar</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoapRanap()"
+                    style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
                 <span id="ubah_soap"></span>
                 <span id="reset_soap"></span>
             </div>
@@ -58,8 +64,8 @@
     </div>
 </div>
 @push('script')
-    <script>
-        var no_rawat_soap = '';
+<script>
+    var no_rawat_soap = '';
         var tgl_pertama = '';
         var tgl_kedua = '';
 
@@ -275,6 +281,10 @@
                         'petugas': petugas,
                     }
                 },
+                language: {
+                    loadingRecords: '&nbsp;',
+                    sProcessing: '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>'
+                },
                 scrollCollapse: true,
                 columns: [{
                         data: null,
@@ -288,7 +298,6 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-
                             list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
                                 '</strong></li>';
                             list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
@@ -308,9 +317,18 @@
                             list += '<li> Berat : ' + row.berat + ' Kg</li>';
                             list += '<li> alergi : ' + row.alergi + '</li>';
                             html = '<ul>' + list + '</ul>';
-                            html += '<button type="button" style="font-size:12px" class="mx-auto btn btn-success btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i> Verifikasi </button>';
 
-                            // return html
+                            var btnVerif = '';
+                            btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-warning btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square" style="margin-right:5px;"></i> Verifikasi </button>';
+                            $.map(row.verifikasi, function(verifikasi) {
+                                console.log(verifikasi);
+                                if (row.tgl_perawatan == verifikasi.tgl_perawatan && row.jam_rawat == verifikasi.jam_rawat) {
+                                    btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-success btn-sm mb-2">Telah Diverifikasi<br/>Oleh : <b>'+ verifikasi.petugas.nama +'</b></button>';
+                                }
+                            })
+
+                            html += btnVerif;
+
                             return html;
                         },
                         name: 'ttv',
@@ -368,7 +386,8 @@
                             icon: 'success',
                             timer: 1500,
                         });
-                        cariSoap();
+                        $('#tbSoap').DataTable().destroy();
+                        tbSoapRanap(no_rawat);
                     })
                 }
             });
@@ -436,5 +455,5 @@
                 }
             })
         }
-    </script>
+</script>
 @endpush
