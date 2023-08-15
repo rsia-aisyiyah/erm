@@ -30,6 +30,8 @@
                                 <tr>
                                     <td width="20%">Dilakukan Oleh :</td>
                                     <td width="30%" colspan="2">
+                                        <input type="hidden" id="jam_rawat">
+                                        <input type="hidden" id="tgl_perawatan">
                                         <input type="text" class="form-control form-control-sm" id="nik" name="nik" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
                                     </td>
                                     <td width="45%" colspan="2">

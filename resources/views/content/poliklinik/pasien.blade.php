@@ -227,6 +227,8 @@
                     kd_dokter: "{{ Request::get('dokter') }}",
                     kd_poli: "{{ Request::segment(2) }}",
                     no_rkm_medis: $('#no_rm').val(),
+                    jam_rawat: $('#jam_rawat').val(),
+                    tgl_perawatan: $('#tgl_perawatan').val(),
                 },
                 success: function(response) {
                     Swal.fire({
@@ -300,6 +302,8 @@
                     $('#respirasi').val(response.respirasi ? response.respirasi : '-')
                     $('#nadi').val(response.nadi ? response.nadi : '-')
                     $('#spo2').val(response.spo2 ? response.spo2 : '-')
+                    $('#jam_rawat').val(response.jam_rawat ? response.jam_rawat : '')
+                    $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '')
 
                 },
                 error: function(xhr, status, error) {

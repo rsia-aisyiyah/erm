@@ -44,6 +44,8 @@ class PemeriksaanRalanController extends Controller
     {
         $clause = [
             'no_rawat' => $request->no_rawat,
+            'jam_rawat' => $request->jam_rawat,
+            'tgl_perawatan' => $request->tgl_perawatan,
         ];
         $pemeriksaan = PemeriksaanRalan::where($clause)->first();
 
@@ -65,8 +67,6 @@ class PemeriksaanRalanController extends Controller
             'instruksi' => $request->instruksi,
             'evaluasi' => $request->evaluasi,
             'lingkar_perut' => '-',
-            'jam_rawat' => date('H:i:s'),
-            'tgl_perawatan' => $this->tanggal->now()->toDateString(),
         ];
 
         if ($pemeriksaan) {
@@ -76,6 +76,8 @@ class PemeriksaanRalanController extends Controller
             $dataTambah = [
                 'nip' => $request->nip,
                 'no_rawat' => $request->no_rawat,
+                'jam_rawat' => date('H:i:s'),
+                'tgl_perawatan' => $this->tanggal->now()->toDateString(),
             ];
 
             $create = array_merge($data, $dataTambah);
