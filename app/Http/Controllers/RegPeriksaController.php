@@ -214,4 +214,9 @@ class RegPeriksaController extends Controller
 
         return response()->json($dokterDpjp, 200);
     }
+    function get($noRawat)
+    {
+        $regPeriksa = $this->regPeriksa->where('no_rawat', $noRawat)->first();
+        return $regPeriksa;
+    }
 }

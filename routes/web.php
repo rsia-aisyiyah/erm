@@ -52,6 +52,7 @@ use App\Http\Controllers\BridgingRujukanBpjsController;
 use App\Http\Controllers\BridgingSPRIController;
 use App\Http\Controllers\BrigdgingRencanaKontrolController;
 use App\Http\Controllers\CatatanPerawatanController;
+use App\Http\Controllers\EwsController;
 use App\Http\Controllers\LaporanOperasiController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
@@ -146,6 +147,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
     Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
+    Route::get('/soap/get', [PemeriksaanRanapController::class, 'ambilPemeriksaan']);
     Route::get('/soap', [PemeriksaanRanapController::class, 'ambil']);
     Route::get('/soap/ambil', [PemeriksaanRanapController::class, 'ambilSatu']);
     Route::post('/soap/ubah', [PemeriksaanRanapController::class, 'ubah']);
@@ -164,6 +166,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('ranap', [RanapController::class, 'index']);
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
+    Route::get('ranap/ews/{noRawat}', [EwsController::class, 'get']);
 
     Route::get('dokter/ambil', [DokterController::class, 'ambil']);
     Route::get('dokter/cari', [DokterController::class, 'cari']);

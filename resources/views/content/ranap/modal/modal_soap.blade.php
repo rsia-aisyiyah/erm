@@ -22,11 +22,7 @@
                             type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik
                             Pasien</button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab-verifikasi" data-bs-toggle="tab"
-                            data-bs-target="#tab-verifikasi-pane" type="button" role="tab"
-                            aria-controls="tab-verifikasi-pane" aria-selected="false">Verifikasi SOAP</button>
-                    </li>
+
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
@@ -46,10 +42,6 @@
                         </div>
                         <canvas id="grafik-suhu" style="max-height: 400px;"></canvas>
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-verifikasi-pane" role="tabpanel"
-                        aria-labelledby="disabled-tab" tabindex="0">
-                        VERIFIKASI PASIEN
-                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -64,8 +56,8 @@
     </div>
 </div>
 @push('script')
-<script>
-    var no_rawat_soap = '';
+    <script>
+        var no_rawat_soap = '';
         var tgl_pertama = '';
         var tgl_kedua = '';
 
@@ -98,15 +90,10 @@
                     $('#nadi').val(response.nadi);
                     $('#spo2').val(response.spo2);
                     $('#gcs').val(response.gcs);
-                    console.log(response.grafik_harian);
-                    console.log(tgl);
-                    console.log(jam);
+
                     $.map(response.grafik_harian, function(grafik) {
-                        if (tgl == grafik.tgl_perawatan && jam == grafik.jam_rawat) {
-                            console.log(grafik.o2);
+                        if (response.tgl_perawatan == grafik.tgl_perawatan && response.jam_rawat == grafik.jam_rawat) {
                             $('#o2').val(grafik.o2);
-                        } else {
-                            $('#o2').val('-');
                         }
                     })
                     $('#kesadaran select').val(response.kesadaran);
@@ -146,6 +133,8 @@
                         return false;
                     });
 
+                    console.log('RESPONSE', response)
+
                 }
             }).done(() => {
                 var sel = document.querySelector('#tab-soap-ranap li:first-child button')
@@ -182,6 +171,8 @@
                                 );
                                 $('#tbSoap').DataTable().destroy();
                                 tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+                                grafikPemeriksaan.destroy();
+                                buildGrafik(no_rawat_soap)
                             }
                         }
                     })
@@ -239,6 +230,8 @@
                         })
                         $('#tbSoap').DataTable().destroy();
                         tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+                        grafikPemeriksaan.destroy();
+                        buildGrafik(no_rawat_soap)
                     } else {
                         Swal.fire({
                             icon: 'danger',
@@ -248,6 +241,8 @@
                             timer: 1500
                         })
                     }
+
+
                 }
             })
         }
@@ -260,102 +255,7 @@
             tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua, petugas);
         }
 
-        function tbSoapRanap(no_rawat = '', tgl_pertama = '', tgl_kedua = '', petugas = '') {
-            no_rawat_soap = no_rawat;
-            var tbSoapRanap = $('#tbSoap').DataTable({
-                processing: true,
-                serverSide: true,
-                stateSave: true,
-                searching: false,
-                lengthChange: false,
-                ordering: false,
-                paging: false,
-                info: false,
-                autoWidth: false,
-                ajax: {
-                    url: "soap",
-                    data: {
-                        'no_rawat': no_rawat,
-                        'tgl_pertama': tgl_pertama,
-                        'tgl_kedua': tgl_kedua,
-                        'petugas': petugas,
-                    }
-                },
-                language: {
-                    loadingRecords: '&nbsp;',
-                    sProcessing: '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>'
-                },
-                scrollCollapse: true,
-                columns: [{
-                        data: null,
-                        render: function(data, type, row, meta) {
-                            button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
-                            button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
-                            return button;
-                        },
-                        name: 'tgl_perawatan',
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row, meta) {
-                            list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
-                                '</strong></li>';
-                            list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
-                            $.map(row.grafik_harian, function(grafik) {
-                                if (row.tgl_perawatan == grafik.tgl_perawatan && row.jam_rawat == grafik.jam_rawat) {
-                                    console.log(grafik.o2);
-                                    list += '<li> O2 : ' + grafik.o2 + '</li>';
-                                }
-                            })
-                            list += '<li> GCS : ' + row.gcs + '</li>';
-                            list += '<li> Tensi : ' + row.tensi + ' mmHg</li>';
-                            list += '<li> Nadi : ' + row.nadi + ' /mnt</li>';
-                            list += '<li> SpO2 : ' + row.spo2 + ' %</li>';
-                            list += '<li> Respirasi : ' + row.respirasi + ' /mnt</li>';
-                            list += '<li> Suhu Tubuh : ' + row.suhu_tubuh + '  (<sup>o</sup>C)</li>';
-                            list += '<li> Tinggi : ' + row.tinggi + ' Cm</li>';
-                            list += '<li> Berat : ' + row.berat + ' Kg</li>';
-                            list += '<li> alergi : ' + row.alergi + '</li>';
-                            html = '<ul>' + list + '</ul>';
 
-                            var btnVerif = '';
-                            btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-warning btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square" style="margin-right:5px;"></i> Verifikasi </button>';
-                            $.map(row.verifikasi, function(verifikasi) {
-                                console.log(verifikasi);
-                                if (row.tgl_perawatan == verifikasi.tgl_perawatan && row.jam_rawat == verifikasi.jam_rawat) {
-                                    btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-success btn-sm mb-2">Telah Diverifikasi<br/>Oleh : <b>'+ verifikasi.petugas.nama +'</b></button>';
-                                }
-                            })
-
-                            html += btnVerif;
-
-                            return html;
-                        },
-                        name: 'ttv',
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row, meta) {
-                            baris = '<tr><td width="5%">Petugas </td><td width="5%">:</td><td>' + row
-                                .petugas.nama + '</td></tr>'
-                            baris += '<tr><td>Subjek </td><td>:</td><td>' + row.keluhan + '</td></tr>'
-                            baris += '<tr><td>Objek </td><td>:</td><td>' + row.pemeriksaan + '</td></tr>'
-                            baris += '<tr><td>Assesment</td><td>:</td><td>' + row.penilaian + '</td></tr>'
-                            baris += '<tr><td>Plan</td><td>:</td><td>' + row.rtl + '</td></tr>'
-                            baris += '<tr><td>Instruksi</td><td>:</td><td>' + row.instruksi + '</td></tr>'
-                            // baris += '<tr><td>Evaluasi</td><td>:</td><td>' + row.evaluasi + '</td></tr>'
-                            html = '<table class="table table-striped">' + baris + '</table>'
-                            return html;
-                        },
-                        name: 'soap',
-                    },
-                ],
-                "language": {
-                    "zeroRecords": "Tidak ada data pasien terdaftar",
-                    "infoEmpty": "Tidak ada data pasien terdaftar",
-                }
-            });
-        }
 
         function verifikasiSoap(no_rawat, tgl, jam) {
             swal.fire({
@@ -443,6 +343,9 @@
                         })
                         $('#tbSoap').DataTable().destroy();
                         tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+                        grafikPemeriksaan.destroy();
+                        buildGrafik(no_rawat_soap)
+
                     } else {
                         Swal.fire({
                             icon: 'danger',
@@ -455,5 +358,5 @@
                 }
             })
         }
-</script>
+    </script>
 @endpush

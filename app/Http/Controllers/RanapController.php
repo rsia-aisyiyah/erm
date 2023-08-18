@@ -22,7 +22,7 @@ class RanapController extends Controller
     public function ranap(Request $request)
     {
 
-        $ranap = KamarInap::with(['regPeriksa.pasien', 'regPeriksa.dokter', 'regPeriksa.dokter.spesialis', 'kamar', 'ranapGabung', 'ranapGabung.regPeriksa', 'kamar.bangsal', 'regPeriksa.penjab']);
+        $ranap = KamarInap::with(['regPeriksa.pasien', 'regPeriksa.dokter', 'regPeriksa.dokter.spesialis', 'kamar', 'ranapGabung', 'ranapGabung.regPeriksa', 'kamar.bangsal', 'regPeriksa.penjab'])->orderBy('no_rawat', 'DESC');
 
         if ($request->stts_pulang == '-') {
             $ranap->where('stts_pulang', $request->stts_pulang);

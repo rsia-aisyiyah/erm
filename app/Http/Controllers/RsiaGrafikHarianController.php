@@ -6,15 +6,17 @@ use Illuminate\Http\Request;
 
 class RsiaGrafikHarianController extends Controller
 {
-    protected $model;   
+    protected $model;
     protected $track;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->model = new \App\Models\RsiaGrafikHarian();
         $this->track = new \App\Http\Controllers\TrackerSqlController();
     }
 
-    function store(Request $request) {
+    function store(Request $request)
+    {
         $now = new \Illuminate\Support\Carbon();
         $timeNow = $now->format('H:i:s');
         $dateNow = $now->format('Y-m-d');
@@ -23,7 +25,7 @@ class RsiaGrafikHarianController extends Controller
         if (isset($request->action) && $request->action == 'update') {
             $timeNow = $request->jam_rawat;
             $dateNow = $request->tgl_perawatan;
-        } 
+        }
 
         $data = [
             'no_rawat' => $request->no_rawat,
@@ -41,13 +43,13 @@ class RsiaGrafikHarianController extends Controller
             'kesadaran' => $request->kesadaran,
         ];
 
-        if(!isset($request->action)) {
+        if (!isset($request->action)) {
             $data['sumber'] = "-";
-            
+
             // get session
             $session = session()->get('pegawai');
             $data['nip'] = $session['petugas']['nip'];
-            
+
             // insert to database
             $grafikHarian = $this->model->create($data);
             $this->track->create($this->track->insertSql($this->model, $data));
@@ -79,14 +81,14 @@ class RsiaGrafikHarianController extends Controller
             ], 400);
         }
     }
-    
-    function delete(Request $request) {
+
+    function delete(Request $request, $sumber = '-')
+    {
         $clause = [
             'no_rawat' => $request->no_rawat,
             'tgl_perawatan' => $request->tgl_perawatan,
             'jam_rawat' => $request->jam_rawat,
         ];
-
         $data = $this->model->where($clause)->delete();
         $this->track->create($this->track->deleteSql($this->model, $clause));
 

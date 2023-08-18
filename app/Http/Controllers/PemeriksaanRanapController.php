@@ -144,21 +144,35 @@ class PemeriksaanRanapController extends Controller
         ];
         $pemeriksaan = PemeriksaanRanap::where($clause)->delete();
         $this->track->create($this->track->deleteSql($this->pemeriksaan, $clause));
+
+        $clause = array_merge($clause, ['sumber' => 'SOAP']);
+        $grafikHarian = $this->grafikHarian->where($clause)->delete();
         return response()->json(['Berhasil', $pemeriksaan], 200);
     }
-    public function ambil(Request $request)
+
+    function ambilPemeriksaan(Request $request)
     {
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
             ->with(['regPeriksa', 'regPeriksa.pasien', 'petugas', 'grafikHarian', 'verifikasi.petugas' => function ($q) {
                 return $q->select('nip', 'nama');
-            }])
+            }])->whereHas('petugas', function ($q) {
+                return $q->whereNotIn('kd_jbtn', ['J01', 'J024', 'J025', 'J002']);
+            })
             ->orderBy('tgl_perawatan', 'DESC')
-            ->orderBy('jam_rawat', 'DESC');
+            ->orderBy('jam_rawat', 'DESC')->get();
+        return $pemeriksaan;
+    }
+    public function ambil(Request $request)
+    {
+
+        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $request->no_rawat)->with(['regPeriksa', 'regPeriksa.pasien', 'petugas', 'grafikHarian', 'verifikasi.petugas' => function ($q) {
+            return $q->select('nip', 'nama');
+        }]);
 
         // if tanggal pertama and tanggal kedua is not empty string
         if ($request->tgl_pertama != '' && $request->tgl_kedua != '') {
             $pemeriksaan->whereBetween('tgl_perawatan', [$request->tgl_pertama, $request->tgl_kedua]);
-        }        
+        }
 
         if ($request->petugas == 1) {
             $pemeriksaan->whereHas('petugas', function ($q) use ($request) {
@@ -187,5 +201,17 @@ class PemeriksaanRanapController extends Controller
         $id = str_replace('-', '/', $request->no_rawat);
         $data = $this->grafikHarian->where(['no_rawat' => $id])->get();
         return DataTables::of($data)->make(true);
+    }
+    function get($noRawat)
+    {
+        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $noRawat)->get();
+
+        return $pemeriksaan;
+    }
+    function getParamTTV($noRawat, $param)
+    {
+        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $noRawat)->select($param)->get();
+
+        return $pemeriksaan;
     }
 }
