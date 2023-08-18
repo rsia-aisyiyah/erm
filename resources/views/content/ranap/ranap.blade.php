@@ -320,7 +320,7 @@
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
                             }
 
-                            // list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="ewsRanap(\'' + data.no_rawat + '\')">EWS</a></li>';
+                            list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="ewsRanap(\'' + data.no_rawat + '\')">EWS</a></li>';
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
@@ -416,94 +416,65 @@
             return ews;
         }
 
-        // function ewsRanap(params) {
-        //     getPasienRanap(params).done((rawat) => {
-        //         console.log(rawat)
-        //     });
-        //     getEws(params).done(function(response) {
-        //         html = '';
-        //         style = '';
+        function ewsRanap(params) {
+            getPasienRanap(params).done((rawat) => {
+                jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
+                $('#no_rawat_ews').html(rawat.no_rawat);
+                $('#nama_pasien_ews').html(rawat.pasien.nm_pasien);
+                $('#umur_ews').html(rawat.umurdaftar + ' ' + rawat.sttsumur + ' / ' + jk);
+            });
+            getEws(params).done(function(response) {
+                html = '';
+                style = '';
 
-        //         $.map(response, (res) => {
-        //             $('#kategori-' + res.kategori).empty()
+                $.map(response, (res) => {
+                    $('#kategori-' + res.kategori).empty()
 
-        //             rowspan = res.data.length + 1
-        //             html += '<tr style="text-align:center">'
-        //             html += '<td rowspan="' + rowspan + '" style="padding:10px">' + res.judul + '</td>'
-        //             $.map(res.data, (data) => {
-        //                 let hasilPemeriksaan = '';
+                    rowspan = res.data.length + 1
+                    html += '<tr style="text-align:center">'
+                    html += '<td rowspan="' + rowspan + '" style="padding:10px">' + res.judul + '</td>'
+                    $.map(res.data, (data) => {
+                        let hasilPemeriksaan = '';
 
-        //                 if (data.hasil == 3) {
-        //                     style = "style='background-color:red;color:#fff'";
-        //                 } else if (data.hasil == 2) {
-        //                     style = "style='background-color:orange;color:#000'";
-        //                 } else if (data.hasil == 1) {
-        //                     style = "style='background-color:yellow;color:#000'";
-        //                 } else {
-        //                     style = "";
-        //                 }
+                        if (data.hasil == 3) {
+                            style = "style='background-color:red;color:#fff'";
+                        } else if (data.hasil == 2) {
+                            style = "style='background-color:orange;color:#000'";
+                        } else if (data.hasil == 1) {
+                            style = "style='background-color:yellow;color:#000'";
+                        } else {
+                            style = "";
+                        }
 
-        //                 html += '<tr class="ews-' + data.id + '" ' + style + ' id="kategori-' + res.kategori + '">'
-        //                 html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '">' + data.parameter + '</td>'
-        //                 // console.log(data)
-        //                 getPemeriksaanRanap(params).done((pemeriksaan) => {
-        //                     $('.tr-tanggal').empty()
-        //                     $('.tr-jam').empty()
-        //                     $('.tr-tanggal').append('<th width="15%" colspan="3">Tanggal</th>')
-        //                     $('.tr-jam').append('<th colspan="3">Jam</th>')
-        //                     $.map(pemeriksaan, (pem) => {
-        //                         console.log(pem[res.kategori] > 20 && pem[res.kategori] < 24)
-        //                         // if (pem[res.kategori] > 20 && pem[res.kategori] < 24) {
-        //                         // a = '<td>' + pem[res.kategori] + '</td>'
-        //                         // $('#kategori-' + res.kategori + ' .ews-' + data.id).append(a)
-        //                         // }
-        //                         tanggal = '<td>' + pem.tgl_perawatan + '</td>'
-        //                         jam = '<td>' + pem.jam_rawat + '</td>'
-        //                         $('.tr-tanggal').append(tanggal)
-        //                         $('.tr-jam').append(jam)
-        //                     })
+                        html += '<tr class="ews-' + data.id + '" ' + style + ' id="kategori-' + res.kategori + '">'
+                        html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '">' + data.parameter + '</td>'
 
-        //                 })
-        //                 html += '<td style="padding:5px" class="hasil">' + data.hasil + '</td>'
-        //                 html += '</tr>'
+                        $.map(data.hp, (hp) => {
+                            html += '<td width="5%"><strong>' + hp + '</strong></td>'
+                        })
+                        tanggal = '';
+                        $.map(data.tanggal, (tgl) => {
+                            tanggal += '<td width="5%" class="td-tanggal">' + splitTanggal(tgl) + '</td>';
+                        })
 
-        //             })
-        //             html += '</tr>'
+                        j = '';
+                        $.map(data.jam, (jam) => {
+                            j += '<td width="5%" class="td-jam">' + jam + '</td>';
+                        })
 
-        //             // if (res.kategori == 'oksigen') {
-        //             //     getTTVData(params).done((ttv) => {
-        //             //         $.map(ttv, (data) => {
-        //             //             if (data.sumber == 'SOAP') {
-        //             //                 console.log('ttv', data)
-        //             //                 hasilPemeriksaan = '<td>' + data.o2 + '</td>'
-        //             //                 $('#kategori-' + res.kategori).append(hasilPemeriksaan)
-        //             //             }
-        //             //         })
-        //             //     })
+                        html += '<td style="padding:5px" class="hasil">' + data.hasil + '</td>'
+                        html += '</tr>'
 
-        //             // } else {
-        //             //     getPemeriksaanRanap(params).done((pemeriksaan) => {
-        //             //         $('.tr-tanggal').empty()
-        //             //         $('.tr-jam').empty()
-        //             //         $('.tr-tanggal').append('<th width="15%" colspan="3">Tanggal</th>')
-        //             //         $('.tr-jam').append('<th colspan="3">Jam</th>')
-        //             //         $.map(pemeriksaan, (pem) => {
-        //             //             // console.log(pem)
-        //             //             hasilPemeriksaan = '<td>' + pem[res.kategori] + '</td>'
-        //             //             $('#kategori-' + res.kategori).append(hasilPemeriksaan)
-        //             //             tanggal = '<td>' + pem.tgl_perawatan + '</td>'
-        //             //             jam = '<td>' + pem.jam_rawat + '</td>'
-        //             //             $('.tr-tanggal').append(tanggal)
-        //             //             $('.tr-jam').append(jam)
-        //             //         })
+                    })
+                    html += '</tr>'
 
-        //             //     })
-        //             // }
-        //         })
-        //         $('#table-ews tbody').append(html)
-        //     })
-        //     $('#modalEwsRanap').modal('show')
-        // }
+                })
+                $('.tr-jam').append(j)
+                $('.tr-tanggal').append(tanggal)
+                $('#table-ews tbody').append(html)
+            })
+            $('#modalEwsRanap').modal('show')
+        }
 
         function getTTVData(params) {
             let ttv = $.ajax({

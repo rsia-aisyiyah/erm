@@ -6,21 +6,21 @@
                     <tr>
                         <td>Nomor Rawat</td>
                         <td>:</td>
-                        <td id="no_rawat">
+                        <td id="no_rawat_ews">
 
                         </td>
                     </tr>
                     <tr>
                         <td>Nama</td>
                         <td>:</td>
-                        <td id="nama_pasien">
+                        <td id="nama_pasien_ews">
 
                         </td>
                     </tr>
                     <tr>
                         <td>Umur / JK</td>
                         <td>:</td>
-                        <td id="umur">
+                        <td id="umur_ews">
 
                         </td>
                     </tr>
@@ -31,10 +31,10 @@
                 <table class="table table-sm table-bordered table-responsive" id="table-ews" with="100%">
                     <thead>
                         <tr class="tr-tanggal">
-                            <th width="15%" colspan="3">Tanggal</th>
+                            <th width="15%" colspan="2">Tanggal</th>
                         </tr>
                         <tr class="tr-jam">
-                            <th colspan="3">Jam</th>
+                            <th colspan="2">Jam</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,6 +54,8 @@
     <script>
         $('#modalEwsRanap').on('hidden.bs.modal', () => {
             $('#table-ews tbody').empty();
+            $('.td-jam').remove();
+            $('.td-tanggal').remove();
         })
     </script>
 @endpush
