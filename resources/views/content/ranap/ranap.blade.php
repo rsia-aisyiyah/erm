@@ -427,11 +427,12 @@
                 html = '';
                 style = '';
 
+                let no;
                 $.map(response, (res) => {
                     $('#kategori-' + res.kategori).empty()
 
                     rowspan = res.data.length + 1
-                    html += '<tr style="text-align:center">'
+                    html += '<tr style="text-align:center" class="judul-ews">'
                     html += '<td rowspan="' + rowspan + '" style="padding:10px">' + res.judul + '</td>'
                     $.map(res.data, (data) => {
                         let hasilPemeriksaan = '';
@@ -439,7 +440,7 @@
                         if (data.hasil == 3) {
                             style = "style='background-color:red;color:#fff'";
                         } else if (data.hasil == 2) {
-                            style = "style='background-color:orange;color:#000'";
+                            style = "style='background-color:orange;color:#fff'";
                         } else if (data.hasil == 1) {
                             style = "style='background-color:yellow;color:#000'";
                         } else {
@@ -449,8 +450,19 @@
                         html += '<tr class="ews-' + data.id + '" ' + style + ' id="kategori-' + res.kategori + '">'
                         html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '">' + data.parameter + '</td>'
 
+                        let inputHasil = '';
+                        no = 1;
                         $.map(data.hp, (hp) => {
-                            html += '<td width="5%"><strong>' + hp + '</strong></td>'
+
+                            if (hp) {
+                                inputHasil = '<input type="hidden" value="' + data.hasil + '" class="baris-' + no + ' " name="baris[' + no + '] "/>'
+                                html += '<td width="5%">' + inputHasil + '<strong>' + hp + '</strong></td>'
+                            } else {
+                                html += '<td width="5%"></td>';
+
+                            }
+                            no++;
+                            // console.log('HASIL AKHIR', hasilAkhir)
                         })
                         tanggal = '';
                         $.map(data.tanggal, (tgl) => {
@@ -468,12 +480,33 @@
                     })
                     html += '</tr>'
 
+
                 })
+                $('#table-ews tbody').append(html)
                 $('.tr-jam').append(j)
                 $('.tr-tanggal').append(tanggal)
-                $('#table-ews tbody').append(html)
+                hitungNilaiEws(no)
+
+
             })
             $('#modalEwsRanap').modal('show')
+        }
+
+        function hitungNilaiEws(no) {
+            html = '<tr>'
+            html += '<th colspan=2>NILAI EWS TOTAL</th>'
+            for (let index = 1; index < no; index++) {
+                let total = 0;
+                $('.baris-' + index).each(function(index, element) {
+                    total = total + parseFloat($(element).val());
+                });
+                html += '<td>'
+                html += total
+                html += '</td>'
+
+            }
+            html += '</tr>'
+            $('#table-ews tbody').append(html)
         }
 
         function getTTVData(params) {

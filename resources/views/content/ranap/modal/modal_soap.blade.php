@@ -197,6 +197,7 @@
                     'respirasi': $('#respirasi').val(),
                     'tensi': $('#tensi').val(),
                     'nadi': $('#nadi').val(),
+                    'kesadaran': $('#kesadaran option:selected').val(),
                     'spo2': $('#spo2').val(),
                     'o2': $('#o2').val(),
                     'gcs': $('#gcs').val(),

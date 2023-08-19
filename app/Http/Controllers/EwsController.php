@@ -47,198 +47,67 @@ class EwsController extends Controller
     {
         $value = [];
         $kategoriUmur = [];
-        $pemeriksaan = $parameter != 'oksigen' ? $this->pemeriksaan->where('no_rawat', $noRawat)->select($parameter, 'tgl_perawatan', 'jam_rawat')->get() : '';
-        $grafik = $this->grafikHarian->where(['no_rawat' => $noRawat, 'sumber' => 'SOAP'])->select('o2', 'tgl_perawatan', 'jam_rawat')->get();
+        $pemeriksaan = $parameter != 'oksigen' ? $this->pemeriksaan->where('no_rawat', $noRawat)->select($parameter, 'tgl_perawatan', 'jam_rawat')->get() :
+            $this->grafikHarian->where(['no_rawat' => $noRawat, 'sumber' => 'SOAP'])->select('o2', 'tgl_perawatan', 'jam_rawat')->get();
+
         $id = str_replace('-', '/', $noRawat);
         $regPeriksa = $this->regPeriksa->get($id);
-        $hp = [];
         foreach ($table as $s) {
             $nilai_1 = $s->nilai_1 ? $s->nilai_1 : '';
             $nilai_2 = $s->nilai_2 ? $s->nilai_2 : '';
-            if ($regPeriksa->sttsumur == 'Bl') {
+            if (
+                $regPeriksa->sttsumur == 'Bl' ||
+                $regPeriksa->sttsumur == 'Hr'
+            ) {
                 if ($s->kode_usia == '<') {
                     if ($s->kode_nilai == '>') {
-                        $hp = [];
-                        $tanggal = [];
-                        $jam = [];
-                        if ($parameter == 'oksigen') {
-                            foreach ($grafik as $g) {
-                                if ($g['o2'] >= $nilai_1) {
-                                    $hp[] = $g['o2'];
-                                } else {
-                                    $hp[] = '';
-                                }
-                                $tanggal[] = $g['tgl_perawatan'];
-                                $jam[] = $g['jam_rawat'];
-                            }
-                        } else {
-
-                            foreach ($pemeriksaan as $pem) {
-                                if ($parameter == 'tensi') {
-                                    $tensi = explode('/', $pem[$parameter]);
-                                    $pem[$parameter] = $tensi[0];
-                                }
-                                if ($parameter == 'kesadaran') {
-                                    if ($s->kode_nilai == $pem[$parameter]) {
-                                        $hp[] = $pem[$parameter];
-                                    } else {
-
-                                        $hp[] = '';
-                                    }
-                                } else if ($parameter == 'suhu_tubuh') {
-                                    if ($pem[$parameter] > $nilai_1) {
-                                        $hp[] = $pem[$parameter];
-                                    } else {
-                                        $hp[] = '';
-                                    }
-                                } else {
-                                    if ($pem[$parameter] > $nilai_1) {
-                                        $hp[] = $pem[$parameter];
-                                    } else {
-                                        $hp[] = '';
-                                    }
-                                }
-                                $tanggal[] = $pem['tgl_perawatan'];
-                                $jam[] = $pem['jam_rawat'];
-                            }
-                        }
-                        $val[] = [
+                        $arrVal = [
                             'id' => $s->kode,
                             'parameter' => $s->kode_nilai . ' ' . $nilai_1,
                             'hasil' => $s->hasil,
                             'nilai1' => $nilai_1,
                             'nilai2' => $nilai_2,
-                            'hp' => $hp,
-                            'tanggal' => $tanggal,
-                            'jam' => $jam,
                             'kategori' => "1 - 11 Bulan"
                         ];
+                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $pemeriksaan, $nilai_1, $nilai_2, $s->kode_nilai));
                     } else if ($s->kode_nilai == '<') {
-                        $hp = [];
-                        $tanggal = [];
-                        $jam = [];
-                        if ($parameter == 'oksigen') {
-                            foreach ($grafik as $g) {
-                                if ($g['o2'] < $nilai_1) {
-                                    $hp[] = $g['o2'];
-                                } else {
-                                    $hp[] = '';
-                                }
-                                $tanggal[] = $g['tgl_perawatan'];
-                                $jam[] = $g['jam_rawat'];
-                            }
-                        } else {
-                            foreach ($pemeriksaan as $pem) {
-                                if ($parameter == 'tensi') {
-                                    $tensi = explode('/', $pem[$parameter]);
-                                    $pem[$parameter] = $tensi[0];
-                                }
-                                if ($parameter == 'kesadaran') {
-                                    if ($s->kode_nilai == $pem[$parameter]) {
-                                        $hp[] = $pem[$parameter];
-                                    } else {
-
-                                        $hp[] = '';
-                                    }
-                                } else if ($parameter == 'suhu_tubuh') {
-                                    if ($pem[$parameter] < $nilai_1) {
-                                        $hp[] = $pem[$parameter];
-                                    } else {
-                                        $hp[] = '';
-                                    }
-                                } else {
-                                    if ($pem[$parameter] <= $nilai_1) {
-                                        $hp[] = $pem[$parameter];
-                                    } else {
-                                        $hp[] = '';
-                                    }
-                                }
-                                $tanggal[] = $pem['tgl_perawatan'];
-                                $jam[] = $pem['jam_rawat'];
-                            }
-                        }
-                        $val[] = [
+                        $arrVal = [
                             'id' => $s->kode,
                             'parameter' => $s->kode_nilai . ' ' . $nilai_1,
                             'hasil' => $s->hasil,
                             'nilai1' => $nilai_1,
                             'nilai2' => $nilai_2,
-                            'hp' => $hp,
-                            'tanggal' => $tanggal,
-                            'jam' => $jam,
                             'kategori' => "1 - 11 Bulan"
                         ];
+                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $pemeriksaan, $nilai_1, $nilai_2, $s->kode_nilai));
+                    } else if ($s->kode_nilai == '<=' || $s->kode_nilai == '>=') {
+                        $arrVal = [
+                            'id' => $s->kode,
+                            'parameter' => $s->kode_nilai . ' ' . $nilai_2,
+                            'hasil' => $s->hasil,
+                            'nilai1' => $nilai_1,
+                            'nilai2' => $nilai_2,
+                            'kategori' => "1 - 11 Bulan"
+                        ];
+                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $pemeriksaan, $nilai_1, $nilai_2, $s->kode_nilai));
                     } else {
-                        $hp = [];
-                        $tanggal = [];
-                        $jam = [];
-                        if ($parameter == 'oksigen') {
-                            foreach ($grafik as $g) {
-                                if ($s->kode_nilai == '>=') {
-                                    if ($g['o2'] >= $nilai_1) {
-                                        $hp[] = $g['o2'];
-                                    } else {
-                                        $hp[] = '';
-                                    }
-                                } else {
-                                    if ($g['o2'] > $nilai_1 && $g['o2'] <= $nilai_2) {
-                                        $hp[] = $g['o2'];
-                                    } else {
-                                        $hp[] = '';
-                                    }
-                                }
-                                $tanggal[] = $g['tgl_perawatan'];
-                                $jam[] = $g['jam_rawat'];
-                            }
-                        } else {
-                            foreach ($pemeriksaan as $pem) {
-                                if ($parameter == 'tensi') {
-                                    $tensi = explode('/', $pem[$parameter]);
-                                    $pem[$parameter] = $tensi[0];
-                                }
-                                if ($parameter == 'kesadaran') {
-                                    if ($s->kode_nilai == $pem[$parameter]) {
-                                        $hp[] = $pem[$parameter];
-                                    } else {
-                                        $hp[] = '';
-                                    }
-                                } else if ($parameter == 'suhu_tubuh') {
-
-                                    if ($pem[$parameter] <= $nilai_1 && $pem[$parameter] >= $nilai_2) {
-                                        $hp[] = $pem[$parameter];
-                                    } else {
-                                        $hp[] = '';
-                                    }
-                                } else {
-                                    if ($pem[$parameter] >= $nilai_1 && $pem[$parameter] <= $nilai_2) {
-                                        $hp[] = $pem[$parameter];
-                                    } else {
-                                        $hp[] = '';
-                                    }
-                                }
-                                $tanggal[] = $pem['tgl_perawatan'];
-                                $jam[] = $pem['jam_rawat'];
-                            }
-                        }
-                        $val[] = [
+                        $arrVal = [
                             'id' => $s->kode,
                             'parameter' => $nilai_1 . $s->kode_nilai . $nilai_2,
                             'hasil' => $s->hasil,
                             'nilai1' => $nilai_1,
                             'nilai2' => $nilai_2,
-                            'hp' => $hp,
-                            'tanggal' => $tanggal,
-                            'jam' => $jam,
                             'kategori' => "1 - 11 Bulan"
                         ];
+                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $pemeriksaan, $nilai_1, $nilai_2, $s->kode_nilai));
                     }
                 }
                 $value = $val;
-            } else {
+            } else if ($regPeriksa->sttsumur == 'Th') {
                 if ($s->kode_usia == '-') {
                     if ($regPeriksa->umurdaftar >= $s->usia_1 && $regPeriksa->umurdaftar <= $s->usia_2) {
-                        if ($s->kode_nilai == '>') {
-                            $val[] = [
+                        if ($s->kode_nilai == '>' || $s->kode_nilai == '<') {
+                            $arrVal = [
                                 'id' => $s->kode,
                                 'parameter' => $s->kode_nilai . ' ' . $nilai_1,
                                 'hasil' => $s->hasil,
@@ -246,8 +115,9 @@ class EwsController extends Controller
                                 'nilai2' => $nilai_2,
                                 'kategori' => $s->usia_1 . ' - ' . $s->usia_2
                             ];
-                        } else if ($s->kode_nilai == '<') {
-                            $val[] = [
+                            $val[] = array_merge($arrVal, $this->getNilai($parameter, $pemeriksaan, $nilai_1, $nilai_2, $s->kode_nilai));
+                        } else if ($s->kode_nilai == '>=' || $s->kode_nilai == '<=') {
+                            $arrVal = [
                                 'id' => $s->kode,
                                 'parameter' => $s->kode_nilai . ' ' . $nilai_1,
                                 'hasil' => $s->hasil,
@@ -255,8 +125,9 @@ class EwsController extends Controller
                                 'nilai2' => $nilai_2,
                                 'kategori' => $s->usia_1 . ' - ' . $s->usia_2
                             ];
+                            $val[] = array_merge($arrVal, $this->getNilai($parameter, $pemeriksaan, $nilai_1, $nilai_2, $s->kode_nilai));
                         } else {
-                            $val[] = [
+                            $arrVal = [
                                 'id' => $s->kode,
                                 'parameter' => $nilai_1 . $s->kode_nilai . $nilai_2,
                                 'nilai1' => $nilai_1,
@@ -264,6 +135,7 @@ class EwsController extends Controller
                                 'hasil' => $s->hasil,
                                 'kategori' => $s->usia_1 . ' - ' . $s->usia_2
                             ];
+                            $val[] = array_merge($arrVal, $this->getNilai($parameter, $pemeriksaan, $nilai_1, $nilai_2, $s->kode_nilai));
                         }
                         $value = $val;
                     }
@@ -272,39 +144,91 @@ class EwsController extends Controller
         }
         return $value;
     }
-    function getNilai($noRawat, $table, $parameter)
+    function getNilai($parameter, $pemeriksaan, $nilai1, $nilai2 = '', $kode_nilai = '')
     {
-        $param = $this->getParam($table, $noRawat);
-        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $noRawat)->select($parameter, 'tgl_perawatan', 'jam_rawat')->get();
-        $nilai = [];
-        foreach ($param as $p) {
-            $data = [];
-            foreach ($pemeriksaan as $pem) {
-                if ($p['nilai1'] == $p['nilai2']) {
-                    if ($p['kode_nilai'] == '<') {
-                        if ($pem[$parameter] < $p['nilai1']) {
-                            $data[] =  $pem[$parameter];
-                        } else {
-                            $data[] =  '-';
-                        }
-                    } else {
-                        if ($pem[$parameter] > $p['nilai1']) {
-                            $data[] =  $pem[$parameter];
-                        } else {
-                            $data[] =  '-';
-                        }
-                    }
+        $hp = [];
+        $tanggal = [];
+        $jam = [];
+        if ($parameter == 'oksigen') {
+            foreach ($pemeriksaan as $p) {
+                if ($p['o2'] < $nilai1) {
+                    $hp[] = $p['o2'];
                 } else {
-                    if ($pem[$parameter] >= $p['nilai1'] && $pem[$parameter] <= $p['nilai2']) {
-                        $data[] =  $pem[$parameter];
+                    $hp[] = '';
+                }
+                $tanggal[] = $p['tgl_perawatan'];
+                $jam[] = $p['jam_rawat'];
+            }
+        } else {
+            foreach ($pemeriksaan as $pem) {
+                if ($pem[$parameter] == '-') {
+                    $hp[] = '';
+                } else {
+                    if ($parameter == 'tensi') {
+                        $tensi = explode('/', $pem[$parameter]);
+                        $pem[$parameter] = $tensi[0];
+                    }
+                    if ($parameter == 'kesadaran') {
+                        if ($kode_nilai == $pem[$parameter]) {
+                            $hp[] = $pem[$parameter];
+                        } else {
+
+                            $hp[] = '';
+                        }
+                    } else if ($parameter == 'suhu_tubuh') {
+                        if ($kode_nilai == '<') {
+                            if ($pem[$parameter] < $nilai1) {
+                                $hp[] = $pem[$parameter];
+                            } else {
+                                $hp[] = '';
+                            }
+                        } else if ($kode_nilai == '>') {
+                            if ($pem[$parameter] > $nilai1) {
+                                $hp[] = $pem[$parameter];
+                            } else {
+                                $hp[] = '';
+                            }
+                        } else {
+                            if ($pem[$parameter] <= $nilai1 && $pem[$parameter] >= $nilai2) {
+                                $hp[] = $pem[$parameter];
+                            } else {
+                                $hp[] = '';
+                            }
+                        }
                     } else {
-                        $data[] =  '-';
+                        if ($kode_nilai == '<') {
+                            if ($pem[$parameter] < $nilai1) {
+                                $hp[] = $pem[$parameter];
+                            } else {
+                                $hp[] = '';
+                            }
+                        } else if ($kode_nilai == '>') {
+                            if ($pem[$parameter] > $nilai1) {
+                                $hp[] = $pem[$parameter];
+                            } else {
+                                $hp[] = '';
+                            }
+                        } else if ($kode_nilai == '>=') {
+                            if ($pem[$parameter] >= $nilai1) {
+                                $hp[] = $pem[$parameter];
+                            } else {
+                                $hp[] = '';
+                            }
+                        } else if ($kode_nilai == '-') {
+                            if ($pem[$parameter] >= $nilai1 && $pem[$parameter] <= $nilai2) {
+
+                                $hp[] = $pem[$parameter];
+                            } else {
+                                $hp[] = '';
+                            }
+                        }
                     }
                 }
+                $tanggal[] = $pem['tgl_perawatan'];
+                $jam[] = $pem['jam_rawat'];
             }
-            $nilai[$p['parameter']] = $data;
         }
-        return $nilai;
+        return ['hp' => $hp, 'tanggal' => $tanggal, 'jam' => $jam];
     }
 
 

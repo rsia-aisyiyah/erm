@@ -87,6 +87,18 @@
             transition: background-size .3s ease;
             ;
         }
+
+        #table-ews tr td,
+        #table-ews tr th,
+        #table-ews tbody,
+        #table-ews thead {
+            border: 1px solid #000;
+        }
+
+        #table-ews tr.judul-ews {
+
+            border: 3px solid #000;
+        }
     </style>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">{{ config('app.name') }}</a>

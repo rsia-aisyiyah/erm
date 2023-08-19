@@ -28,7 +28,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table table-sm table-bordered table-responsive" id="table-ews" with="100%">
+                <table class="table table-sm table-bordered table-responsive" id="table-ews" width="100%">
                     <thead>
                         <tr class="tr-tanggal">
                             <th width="15%" colspan="2">Tanggal</th>

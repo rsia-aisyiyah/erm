@@ -60,6 +60,7 @@ class PemeriksaanRanapController extends Controller
             'rtl' => $request->rtl,
             'evaluasi' => '-',
             'instruksi' => $request->instruksi,
+            'kesadaran' => $request->kesadaran,
         ];
 
         $data1 = [
@@ -111,6 +112,7 @@ class PemeriksaanRanapController extends Controller
             'rtl' => $request->rtl,
             'evaluasi' => '-',
             'instruksi' => $request->instruksi,
+            'kesadaran' => $request->kesadaran,
         ];
 
         $data1 = [
