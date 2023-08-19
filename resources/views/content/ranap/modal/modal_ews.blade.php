@@ -28,6 +28,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <h5 style="margin-bottom:0px">EARLY WARNING SYSTEM (EWS)</h5>
+                <h5 style="" class="kategori mb-3"></h5>
                 <table class="table table-sm table-bordered table-responsive" id="table-ews" width="100%">
                     <thead>
                         <tr class="tr-tanggal">

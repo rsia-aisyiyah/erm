@@ -201,7 +201,7 @@ class PemeriksaanRanapController extends Controller
     function getTTVData(Request $request)
     {
         $id = str_replace('-', '/', $request->no_rawat);
-        $data = $this->grafikHarian->where(['no_rawat' => $id])->get();
+        $data = $this->grafikHarian->where(['no_rawat' => $id, 'sumber' => '-'])->get();
         return DataTables::of($data)->make(true);
     }
     function get($noRawat)

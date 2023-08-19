@@ -435,6 +435,7 @@
                     html += '<tr style="text-align:center" class="judul-ews">'
                     html += '<td rowspan="' + rowspan + '" style="padding:10px">' + res.judul + '</td>'
                     $.map(res.data, (data) => {
+                        $('.kategori').text(data.kategori);
                         let hasilPemeriksaan = '';
 
                         if (data.hasil == 3) {
@@ -1039,6 +1040,9 @@
                     'o2': $('#formSaveGrafikHarian input[name="o2"]').val(),
                     'gcs': $('#formSaveGrafikHarian input[name="gcs"]').val(),
                     'kesadaran': $('#formSaveGrafikHarian select[name="kesadaran"]').val(),
+                    'action': $('#formSaveGrafikHarian input[name="action"]').val(),
+                    'tgl_perawatan': $('#formSaveGrafikHarian input[name="tgl_perawatan"]').val(),
+                    'jam_rawat': $('#formSaveGrafikHarian input[name="jam_rawat"]').val(),
                 },
                 type: 'POST',
                 beforeSend: function() {

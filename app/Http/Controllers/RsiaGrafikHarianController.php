@@ -27,6 +27,7 @@ class RsiaGrafikHarianController extends Controller
             $dateNow = $request->tgl_perawatan;
         }
 
+        // return $request->all();
         $data = [
             'no_rawat' => $request->no_rawat,
             'tgl_perawatan' => $dateNow,
@@ -66,7 +67,7 @@ class RsiaGrafikHarianController extends Controller
         }
 
 
-        // if success return success
+        // // if success return success
         if ($grafikHarian) {
             return response()->json([
                 'success' => true,
