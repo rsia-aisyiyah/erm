@@ -145,7 +145,7 @@
     @include('content.ranap.modal.modal_asmed_anak')
     @include('content.ranap.modal.modal_asmed_kandungan')
     @include('content.ranap.modal.modal_grafik_harian')
-    @include('content.ranap.modal.modal_ews')
+    {{-- @include('content.ranap.modal.modal_ews') --}}
 @endsection
 
 
@@ -320,7 +320,7 @@
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
                             }
 
-                            list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="ewsRanap(\'' + data.no_rawat + '\')">EWS</a></li>';
+                            // list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="ewsRanap(\'' + data.no_rawat + '\')">EWS</a></li>';
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
@@ -424,10 +424,13 @@
                 $('#umur_ews').html(rawat.umurdaftar + ' ' + rawat.sttsumur + ' / ' + jk);
             });
             getEws(params).done(function(response) {
+                let no = '';
+                j = '';
+                tanggal = '';
                 html = '';
                 style = '';
+                let rowspan = '';
 
-                let no;
                 $.map(response, (res) => {
                     $('#kategori-' + res.kategori).empty()
 
@@ -460,10 +463,9 @@
                                 html += '<td width="5%">' + inputHasil + '<strong>' + hp + '</strong></td>'
                             } else {
                                 html += '<td width="5%"></td>';
-
                             }
                             no++;
-                            // console.log('HASIL AKHIR', hasilAkhir)
+
                         })
                         tanggal = '';
                         $.map(data.tanggal, (tgl) => {
@@ -487,27 +489,44 @@
                 $('.tr-jam').append(j)
                 $('.tr-tanggal').append(tanggal)
                 hitungNilaiEws(no)
-
-
             })
-            $('#modalEwsRanap').modal('show')
         }
 
         function hitungNilaiEws(no) {
             html = '<tr>'
             html += '<th colspan=2>NILAI EWS TOTAL</th>'
-            for (let index = 1; index < no; index++) {
+            let index = 1;
+            for (index; index < no; index++) {
                 let total = 0;
                 $('.baris-' + index).each(function(index, element) {
                     total = total + parseFloat($(element).val());
                 });
-                html += '<td>'
+                html += '<td onclick="tindakanEws(' + total + ', ' + index + ')" class="nilai-' + index + '">'
                 html += total
                 html += '</td>'
-
+                tindakanEws(total, index)
             }
             html += '</tr>'
             $('#table-ews tbody').append(html)
+        }
+
+        function tindakanEws(total, index) {
+            let nilai = total;
+            $('.hasil-ews').empty();
+
+            ews = '';
+            if (nilai >= 7) {
+                ews = `<div class="alert alert-danger" role="alert" style="padding:12px"> Monitoring ulang tiap jam, <span class="text-danger"><i>call code blue</i></span>, Pindahkan perawatan ke level 2/3 (HCU)</div>`;
+            } else if (nilai >= 5 && nilai <= 6) {
+                ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 3-4 jam, Panggil dokter jaga</div>`;
+            } else if (nilai >= 1 && nilai <= 4) {
+                ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 6-8 jam</div>`;
+            } else if (nilai == 0) {
+                ews = `<div class="alert alert-primary" role="alert" style="padding:12px">Monitoring ulang minimal tiap 12 jam </div>`;
+            }
+
+            console.log('NILAI : ', nilai)
+            $('.hasil-ews').append(ews);
         }
 
         function getTTVData(params) {
@@ -804,6 +823,7 @@
             $('#modalSoapRanap').modal('toggle')
 
             // $('#modalSoapRanap').modal('toggle')
+            ewsRanap(no_rawat)
             tbSoapRanap(no_rawat);
             buildGrafik(no_rawat);
             appendDataGrafikHarian(no_rawat);
@@ -1010,6 +1030,9 @@
             $('#objek').val("-");
             $('#btn-reset').remove();
             $('#btn-ubah').remove();
+            $('#table-ews tbody').empty();
+            $('.td-jam').remove();
+            $('.td-tanggal').remove();
         });
 
 

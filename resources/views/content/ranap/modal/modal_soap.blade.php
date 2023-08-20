@@ -22,6 +22,10 @@
                             type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik
                             Pasien</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
+                            type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS</button>
+                    </li>
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -32,6 +36,28 @@
                     <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
                         tabindex="0">
                         @include('content.ranap.modal._table_soap')
+                    </div>
+                    <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
+                        tabindex="0">
+                        <h5 style="margin-bottom:0px">EARLY WARNING SYSTEM (EWS)</h5>
+                        <h5 style="" class="kategori mb-3"></h5>
+                        <table class="table table-sm table-bordered table-responsive" id="table-ews" width="100%">
+                            <thead>
+                                <tr class="tr-tanggal">
+                                    <th width="15%" colspan="2">Tanggal</th>
+                                </tr>
+                                <tr class="tr-jam">
+                                    <th colspan="2">Jam</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+
+                        </table>
+                        <div class="hasil-ews">
+
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
                         tabindex="0">
