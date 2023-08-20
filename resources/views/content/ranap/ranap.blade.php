@@ -525,7 +525,6 @@
                 ews = `<div class="alert alert-primary" role="alert" style="padding:12px">Monitoring ulang minimal tiap 12 jam </div>`;
             }
 
-            console.log('NILAI : ', nilai)
             $('.hasil-ews').append(ews);
         }
 
