@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <ul class="nav nav-tabs" id="tab-soap-ranap" role="tablist">
+                <ul class="nav nav-tabs" id="tab-soap-ugd" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
                             data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
@@ -52,7 +52,7 @@
                                             </td>
                                             <td colspan="2" width="40%">
                                                 <input type="search" class="form-control form-control-sm" id="nama" name="nama"
-                                                    placeholder="" style="font-size:11px;min-height:20px;border-radius:0;" onkeyup="cariPetugas(this)">
+                                                    placeholder="" style="font-size:11px;min-height:20px;border-radius:0;" onkeyup="cariPetugas(this)" autocomplete="off">
                                                 <div class="list_petugas"></div>
                                             </td>
                                         </tr>
@@ -236,7 +236,28 @@
                     jam_rawat: jam_rawat,
                 },
             }).done((response) => {
-                $('#formSoapUgd input[name="kd_dokter"]').val(response.pegawai.nik)
+                console.log(response)
+                $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
+                $('#formSoapUgd input[name="nama"]').val(response.pegawai.nama)
+                $('#formSoapUgd textarea[name="subjek"]').val(response.keluhan)
+                $('#formSoapUgd textarea[name="objek"]').val(response.pemeriksaan)
+                $('#formSoapUgd input[name="suhu"]').val(response.suhu_tubuh)
+                $('#formSoapUgd input[name="tinggi"]').val(response.tinggi)
+                $('#formSoapUgd input[name="berat"]').val(response.berat)
+                $('#formSoapUgd input[name="tensi"]').val(response.tensi)
+                $('#formSoapUgd input[name="respirasi"]').val(response.respirasi)
+                $('#formSoapUgd input[name="nadi"]').val(response.nadi)
+                $('#formSoapUgd input[name="spo2"]').val(response.spo2)
+                $('#formSoapUgd input[name="gcs"]').val(response.gcs)
+                $('#formSoapUgd input[name="o2"]').val(response.o2)
+                $('#formSoapUgd select[name="o2"] option:selected').val(response.kesadaran)
+                $('#formSoapUgd textarea[name="alergi"]').val(response.alergi)
+                $('#formSoapUgd textarea[name="asesmen"]').val(response.penilaian)
+                $('#formSoapUgd textarea[name="plan"]').val(response.rtl)
+                $('#formSoapUgd textarea[name="instruksi"]').val(response.instruksi)
+
+                var sel = document.querySelector('#tab-soap-ugd li:first-child button')
+                bootstrap.Tab.getInstance(sel).show()
             })
         }
     </script>
