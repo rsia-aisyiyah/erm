@@ -43,7 +43,7 @@
                                                 <option value="Autoanamnesis" selected>Autoanamnesis</option>
                                                 <option value="Alloanamnesis">Alloanamnesis</option>
                                             </select>
-                                            <input type="search" class="form-control form-control-sm anak_hubungan" placeholder="" aria-label="" id="anak_hubungan" style="margin-left: 10px;">
+                                            <input type="search" class="form-control form-control-sm anak_hubungan" placeholder="" aria-label="" id="anak_hubungan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" style="margin-left: 10px;">
                                         </div>
                                     </div>
                                 </div>

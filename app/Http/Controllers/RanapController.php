@@ -38,6 +38,12 @@ class RanapController extends Controller
             });
         }
 
+        if ($request->spesialis) {
+            $ranap->whereHas('regPeriksa.dokter', function ($q) use ($request) {
+                $q->where('kd_sps', $request->spesialis);
+            });
+        }
+
         if ($request->kamar) {
             $ranap->whereHas('kamar.bangsal', function ($q) use ($request) {
                 $q->where('nm_bangsal', 'like', '%' . $request->kamar . '%');

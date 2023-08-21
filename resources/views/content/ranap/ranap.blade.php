@@ -14,7 +14,7 @@
                                                 <div class="form-radio form-radio-inline mt-2">
                                                     <input class="form-radio-input" type="radio" id="belum" name="stts_pulang"
                                                         value="Belum Pulang">
-                                                    <label class="form-radio-label" for="belum">Belum
+                                                    <label class="form-radio-label" for="belum" style="font-size:12px">Belum
                                                         Pulang</label>
                                                 </div>
                                             </div>
@@ -28,18 +28,18 @@
                                                 <div class="form-radio form-radio-inline mt-2">
                                                     <input class="form-radio-input" type="radio" id="pulang" name="stts_pulang"
                                                         value="pulang">
-                                                    <label class="form-radio-label" for="pulang">Pulang</label>
+                                                    <label class="form-radio-label" for="pulang" style="font-size:12px">Pulang</label>
                                                 </div>
                                             </div>
                                             <div class="col col-sm-4" style="padding-left: 0px;padding-right: 4px;">
                                                 <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
                                                     id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off"
-                                                    style="border-radius:0px;font-size:12px" disabled>
+                                                    style="border-radius:0px;font-size:11px" disabled>
                                             </div>
                                             <div class="col col-sm-4" style="padding-left: 4px;padding-right: 0px;">
                                                 <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
                                                     id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off"
-                                                    style="border-radius:0px;font-size:12px" disabled>
+                                                    style="border-radius:0px;font-size:11px" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -51,18 +51,18 @@
                                                 <div class="form-radio form-radio-inline mt-2">
                                                     <input class="form-radio-input" type="radio" id="masuk" name="stts_pulang"
                                                         value="masuk">
-                                                    <label class="form-radio-label" for="masuk">Masuk</label>
+                                                    <label class="form-radio-label" for="masuk" style="font-size:12px">Masuk</label>
                                                 </div>
                                             </div>
                                             <div class="col col-sm-4" style="padding-left: 0px;padding-right: 4px;">
                                                 <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
                                                     id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off"
-                                                    style="border-radius:0px;font-size:12px" disabled>
+                                                    style="border-radius:0px;font-size:11px" disabled>
                                             </div>
                                             <div class="col col-sm-4" style="padding-left: 4px;padding-right: 0px;">
                                                 <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
                                                     id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off"
-                                                    style="border-radius:0px;font-size:12px" disabled>
+                                                    style="border-radius:0px;font-size:11px" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -81,15 +81,15 @@
                         <div class="form-group mb-2">
                             <div class="row gy-2">
                                 <div class="col-lg-3 col-md-12 col-sm-12">
-                                    <select name="spesialis" id="spesialis" class="form-select form-select-sm"
+                                    <select style="font-size:12px" name="spesialis" id="spesialis" class="form-select form-select-sm"
                                         style="width:100%">
-                                        <option value="">Kategori</option>
+                                        <option value="">Semua Spesialis</option>
                                         <option value="S0001">Kebidanan & Kandungan</option>
                                         <option value="S0003">Anak</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-4 col-md-12 col-sm-12">
-                                    <select name="dokter" id="dokter" class="form-select form-select-sm" style="width:100%"
+                                    <select style="font-size:12px" name="dokter" id="dokter" class="form-select form-select-sm" style="width:100%"
                                         disabled>
                                         <option value="">Semua Dokter</option>
                                         <option value="1.101.1112">dr. Himawan Budityastomo, Sp.OG</option>
@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="col-lg-5 col-md-12 col-sm-12">
                                     <div class="mb-3 row">
-                                        <label for="cari-kamar" class="col-sm-3 col-form-label">Cari Kamar : </label>
+                                        <label for="cari-kamar" class="col-sm-3 col-form-label" style="font-size:12px">Cari Kamar : </label>
                                         <div class="col-sm-9">
                                             <input type="search" id="cari-kamar" name="cari-kamar"
                                                 class="form-control form-control-sm" width="100%">
@@ -154,7 +154,8 @@
         var stts_pulang = '-';
         var tgl_awal = '';
         var tgl_akhir = '';
-        var kamar = '';
+        var kamar = localStorage.getItem('kamar');
+        var sps = '';
         var kd_dokter = $('#kd_dokter').val();
         $(document).ready(function() {
             date = new Date()
@@ -170,6 +171,7 @@
             });
 
             kd_dokter = $('#kd_dokter').val();
+            $('#cari-kamar').val(kamar)
             $('.tanggal').datepicker('setDate', dateStart)
             tb_ranap();
         });
@@ -183,6 +185,7 @@
         })
 
         $('#spesialis').on('change', function() {
+
             sps = $('#spesialis option:selected').val();
             if (sps) {
                 $.ajax({
@@ -209,10 +212,10 @@
                 option = '<option value="">Semua Dokter</option>'
                 $('#dokter').append(option);
                 kd_dokter = '';
-                $('#tb_ranap').DataTable().destroy();
-                tb_ranap();
 
             }
+            $('#tb_ranap').DataTable().destroy();
+            tb_ranap();
         })
 
         $("#cari-kamar").bind('keypress', function(e) {
@@ -221,8 +224,11 @@
 
         $('#cari-kamar').on('keyup', function() {
             kamar = $(this).val();
-            $('#tb_ranap').DataTable().destroy();
-            tb_ranap();
+            if (kamar.length >= 5) {
+                localStorage.setItem('kamar', kamar);
+                $('#tb_ranap').DataTable().destroy();
+                tb_ranap();
+            }
         })
 
         $('#dokter').on('change', function() {
@@ -280,7 +286,8 @@
         function tb_ranap() {
             $('#tb_ranap').DataTable({
                 processing: true,
-                scrollX: false,
+                scrollX: true,
+                scrollY: 1000,
                 serverSide: true,
                 stateSave: true,
                 ordering: false,
@@ -294,6 +301,7 @@
                         'tgl_kedua': tgl_akhir,
                         'kd_dokter': kd_dokter,
                         'kamar': kamar,
+                        'spesialis': sps,
                     },
                 },
                 initComplete: function() {
@@ -319,8 +327,6 @@
                             } else if (row.reg_periksa.dokter.kd_sps == 'S0001') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
                             }
-
-                            // list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="ewsRanap(\'' + data.no_rawat + '\')">EWS</a></li>';
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
@@ -329,7 +335,7 @@
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
                             if (data.pasien) {
-                                pasien = data.pasien.nm_pasien;
+                                pasien = data.pasien.nm_pasien + ' (' + data.umurdaftar + ' ' + data.sttsumur + ')';
                             } else {
                                 pasien = data.no_rkm_medis.replace(/\s/g, '');
                                 $.ajax({
@@ -424,13 +430,15 @@
                 $('#umur_ews').html(rawat.umurdaftar + ' ' + rawat.sttsumur + ' / ' + jk);
             });
             getEws(params).done(function(response) {
+                $('#table-ews tbody').empty()
+                $('.td-jam').remove()
+                $('.td-tanggal').remove()
                 let no = '';
                 j = '';
                 tanggal = '';
                 html = '';
                 style = '';
                 let rowspan = '';
-
                 $.map(response, (res) => {
                     $('#kategori-' + res.kategori).empty()
 
@@ -501,7 +509,7 @@
                 $('.baris-' + index).each(function(index, element) {
                     total = total + parseFloat($(element).val());
                 });
-                html += '<td onclick="tindakanEws(' + total + ', ' + index + ')" class="nilai-' + index + '">'
+                html += '<td onclick="tindakanEws(' + total + ', ' + index + ')" class="nilai-' + index + '" style="cursor:pointer" id="total-ews">'
                 html += total
                 html += '</td>'
                 tindakanEws(total, index)
@@ -513,16 +521,30 @@
         function tindakanEws(total, index) {
             let nilai = total;
             $('.hasil-ews').empty();
-
             ews = '';
+            let arrNilai = [];
+            $('.baris-' + index).each(function(index, element) {
+                a = $(element).val();
+                arrNilai[index] = a;
+            });
+
+
             if (nilai >= 7) {
                 ews = `<div class="alert alert-danger" role="alert" style="padding:12px"> Monitoring ulang tiap jam, <span class="text-danger"><i>call code blue</i></span>, Pindahkan perawatan ke level 2/3 (HCU)</div>`;
             } else if (nilai >= 5 && nilai <= 6) {
                 ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 3-4 jam, Panggil dokter jaga</div>`;
             } else if (nilai >= 1 && nilai <= 4) {
-                ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 6-8 jam</div>`;
+                cekArray = arrNilai.find((o) => {
+                    if (o == 3) {
+                        return ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 3-4 jam, <strong>Panggil dokter jaga</strong> <br/> Monitoring ulang minimal tiap 6-8 jam</div>`;
+                    } else {
+                        return ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 6-8 jam</div>`;
+                    }
+                });
             } else if (nilai == 0) {
                 ews = `<div class="alert alert-primary" role="alert" style="padding:12px">Monitoring ulang minimal tiap 12 jam </div>`;
+            } else {
+                $('.hasil-ews').empty(ews);
             }
 
             $('.hasil-ews').append(ews);
@@ -646,6 +668,7 @@
                 $('#anak_dokter').val(response.dokter.nm_dokter);
             });
             getAsmedRanapAnak(textRawat(noRawat, '-')).done((response) => {
+                console.log(response)
                 if (Object.keys(response).length > 0) {
                     $('.btn-asmed-anak').css('display', 'none')
                     $('.btn-asmed-anak-ubah').css('display', 'inline')

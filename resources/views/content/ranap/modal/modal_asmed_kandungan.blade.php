@@ -42,7 +42,7 @@
                                                 <option value="Autoanamnesis" selected>Autoanamnesis</option>
                                                 <option value="Alloanamnesis">Alloanamnesis</option>
                                             </select>
-                                            <input type="search" class="form-control form-control-sm kandungan_hubungan" placeholder="" aria-label="" id="kandungan_hubungan" style="margin-left: 10px;">
+                                            <input type="search" class="form-control form-control-sm kandungan_hubungan" placeholder="" aria-label="" id="kandungan_hubungan" style="margin-left: 10px;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -84,7 +84,7 @@
                                 <div class="mb-3 col-sm-12 col-md-6 col-lg-4">
                                     <label for="rpk">Alergi</label>
                                     <input type="text" class="form-control form-control-sm" id="kandungan_alergi" name="alergi" placeholder=""
-                                        style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
+                                        style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
 
 

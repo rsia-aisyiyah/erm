@@ -47,19 +47,19 @@
                                 Suhu (<sup>0</sup>C) : <input type="text" class="form-control form-control-sm"
                                     id="suhu" name="suhu" placeholder="" maxlength="5"
                                     style="font-size:11px;min-height:20px;border-radius:0;" value="-"
-                                    onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
+                                    onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                             <td width="12%" style="font-size:11px">
                                 Tinggi (Cm): <input type="text" class="form-control form-control-sm" id="tinggi"
                                     name="tinggi" placeholder="" maxlength="5"
                                     style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-">
+                                    onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                             <td width="12%" style="font-size:11px">
                                 Berat (Kg) : <input type="text" class="form-control form-control-sm" id="berat"
                                     name="berat" placeholder="" maxlength="5"
                                     style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-">
+                                    onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                         </table>
                     </td>
@@ -72,19 +72,19 @@
                                 Tensi : <input type="text" class="form-control form-control-sm" id="tensi"
                                     name="tensi" placeholder="" maxlength="8"
                                     style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-">
+                                    onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                             <td width="12%" style="font-size:11px">
                                 Respirasi (/mnt): <input type="text" class="form-control form-control-sm"
                                     id="respirasi" name="respirasi" placeholder="" maxlength="3"
                                     style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-">
+                                    onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                             <td width="12%" style="font-size:11px">
                                 Nadi (/mnt) : <input type="text" class="form-control form-control-sm"
                                     id="nadi" name="nadi" placeholder="" maxlength="3"
                                     style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-">
+                                    onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                         </table>
                     </td>
@@ -97,19 +97,19 @@
                                 SpO2 (%): <input type="text" class="form-control form-control-sm" id="spo2"
                                     name="spo2" placeholder="" maxlength="3"
                                     style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-">
+                                    onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                             <td width="12%" style="font-size:11px">
                                 GCS (E,V,M): <input type="text" class="form-control form-control-sm"
                                     id="gcs" name="gcs" placeholder="" maxlength="10"
                                     style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-">
+                                    onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                             <td width="12%" style="font-size:11px">
                                 O2: <input type="text" class="form-control form-control-sm"
                                     id="o2" name="o2" placeholder="" maxlength="10"
                                     style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-">
+                                    onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                             <td width="12%" style="font-size:11px">
                                 Kesadaran :
@@ -134,7 +134,7 @@
                     <td width="65%">
                         <input type="text" class="form-control form-control-sm" id="alergi" name="alergi"
                             placeholder="" style="font-size:11px;min-height:20px;border-radius:0;width:100%"
-                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
+                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                     </td>
                 </tr>
                 <tr>

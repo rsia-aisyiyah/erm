@@ -259,6 +259,7 @@
                         tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
                         grafikPemeriksaan.destroy();
                         buildGrafik(no_rawat_soap)
+                        ewsRanap(no_rawat_soap)
                     } else {
                         Swal.fire({
                             icon: 'danger',
@@ -372,6 +373,7 @@
                         tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
                         grafikPemeriksaan.destroy();
                         buildGrafik(no_rawat_soap)
+                        ewsRanap(no_rawat_soap)
 
                     } else {
                         Swal.fire({
