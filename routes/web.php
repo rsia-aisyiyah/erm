@@ -59,6 +59,7 @@ use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
+use App\Http\Controllers\UgdController;
 use App\Models\LaporanOperasi;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
@@ -85,10 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/periksa/show/{no_rkm_medis}/{tanggal?}', [
         RegPeriksaController::class, 'show',
     ]);
-    Route::get('periksa/detail', [
-        RegPeriksaController::class,
-        'detailPeriksa',
-    ]);
+    Route::get('periksa/detail', [RegPeriksaController::class, 'detailPeriksa']);
     Route::get('/upload', [UploadController::class, 'index']);
     Route::get('/upload/show', [UploadController::class, 'showUpload']);
     Route::delete('/upload/delete/{id}', [UploadController::class, 'delete']);
@@ -98,14 +96,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/petugas/cari', [PetugasController::class, 'cari']);
 
     Route::get('/poliklinik', [PoliklinikController::class, 'index'])->name('poliklinik');
-    Route::get('/poliklinik/dokter', [
-        PoliklinikController::class,
-        'poliDokter',
-    ]);
-    Route::get('/poliklinik/table', [
-        PoliklinikController::class,
-        'tbPoliPasien',
-    ]);
+    Route::get('/poliklinik/dokter', [PoliklinikController::class, 'poliDokter']);
+    Route::get('/poliklinik/table', [PoliklinikController::class, 'tbPoliPasien']);
     Route::get('/poliklinik/{kd_poli}', [
         PoliklinikController::class,
         'viewPoliPasien',
@@ -137,6 +129,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/booking/buat', [BookingRegistrasiController::class, 'create']);
 
+    Route::get('/ugd', [UgdController::class, 'index']);
+    Route::get('/ugd/get/table', [UgdController::class, 'getTable']);
+    Route::get('/ugd/soap/table', [PemeriksaanRalanController::class, 'getTable']);
 
 
     Route::get('persetujuan/loket/{loket}', [RsiaGeneralConsentController::class, 'index']);
@@ -146,7 +141,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('persetujuan/hapus', [RsiaGeneralConsentController::class, 'delete']);
 
     Route::get('/pemeriksaan', [PemeriksaanRalanController::class, 'ambil']);
+    Route::get('/pemeriksaan/get', [PemeriksaanRalanController::class, 'get']);
     Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
+
     Route::get('/soap/get', [PemeriksaanRanapController::class, 'ambilPemeriksaan']);
     Route::get('/soap', [PemeriksaanRanapController::class, 'ambil']);
     Route::get('/soap/ambil', [PemeriksaanRanapController::class, 'ambilSatu']);

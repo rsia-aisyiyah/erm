@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\PemeriksaanRalan;
 use App\Http\Controllers\ResepObatController;
 use App\Http\Controllers\TrackerSqlController;
+use Svg\Tag\Rect;
+use Yajra\DataTables\DataTables;
 
 class PemeriksaanRalanController extends Controller
 {
@@ -40,6 +42,24 @@ class PemeriksaanRalanController extends Controller
             return response()->json($regPeriksa, 200);
         }
     }
+    function getTable(Request $request)
+    {
+        $pemeriksaan = $this->pemeriksaan->where(['no_rawat' => $request->no_rawat])->with(['regPeriksa.penjab', 'regPeriksa.dokter', 'pegawai'])->get();
+        return DataTables::of($pemeriksaan)->make(true);
+    }
+
+    function get(Request $request)
+    {
+        $clause = [
+            'no_rawat' => $request->no_rawat,
+            'jam_rawat' => $request->jam_rawat,
+            'tgl_perawatan' => $request->tgl_perawatan
+        ];
+        $pemeriksaan = $this->pemeriksaan->where($clause)->with(['regPeriksa.penjab', 'regPeriksa.dokter', 'pegawai'])->first();
+        return response()->json($pemeriksaan);
+    }
+
+
     public function simpan(Request $request)
     {
         $clause = [
@@ -99,12 +119,6 @@ class PemeriksaanRalanController extends Controller
             }
             $trackSql  = $this->track->insertSql($this->pemeriksaan, $data);
         }
-
-
-        // if ($this->resepObat->isAvailable($request->no_rawat)) {
-        //     $resep = $this->resepObat->isAvailable($request->no_rawat);
-        //     $this->resepObat->updateTime($resep->no_resep);
-        // }
 
         $this->track->create($trackSql);
         return response()->json(['Berhasil', $update], 200);

@@ -159,7 +159,6 @@
                         return false;
                     });
 
-                    console.log('RESPONSE', response)
 
                 }
             }).done(() => {

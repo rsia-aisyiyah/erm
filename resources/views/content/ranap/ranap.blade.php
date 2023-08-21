@@ -423,7 +423,7 @@
         }
 
         function ewsRanap(params) {
-            getPasienRanap(params).done((rawat) => {
+            getRegPeriksa(params).done((rawat) => {
                 jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
                 $('#no_rawat_ews').html(rawat.no_rawat);
                 $('#nama_pasien_ews').html(rawat.pasien.nm_pasien);
@@ -810,16 +810,6 @@
             });
         }
 
-        function getPasienRanap(no_rawat) {
-            let pasien = $.ajax({
-                url: 'periksa/detail',
-                data: {
-                    'no_rawat': no_rawat,
-                },
-            })
-
-            return pasien;
-        }
 
         function getPemeriksaanRanap(no_rawat) {
             let perawatan = $.ajax({
@@ -833,7 +823,7 @@
         }
 
         function modalSoapRanap(no_rawat) {
-            getPasienRanap(no_rawat).done((response) => {
+            getRegPeriksa(no_rawat).done((response) => {
                 $('#nomor_rawat').val(response.no_rawat);
                 $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
                 $('#nik').val(response.kd_dokter);

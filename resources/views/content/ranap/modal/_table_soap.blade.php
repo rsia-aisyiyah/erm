@@ -30,19 +30,15 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12 col-sm-12 col-lg-12">
-        <table class="table table-bordered table-striped" id="tbSoap" style="font-size: 12px" width="100%">
-            <thead>
-                <tr>
-                    <td width="5%">Aksi</td>
-                    <td width="20%">TTV & Fisik</td>
-                    <td>S.O.A.P</td>
-                </tr>
-            </thead>
-        </table>
-    </div>
-</div>
+<table class="table table-bordered table-striped" id="tbSoap" style="font-size: 12px">
+    <thead>
+        <tr>
+            <td width="5%">Aksi</td>
+            <td>TTV & Fisik</td>
+            <td>S.O.A.P</td>
+        </tr>
+    </thead>
+</table>
 
 @push('script')
     <script></script>

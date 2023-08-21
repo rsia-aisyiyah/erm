@@ -99,6 +99,10 @@
 
             border: 3px solid #000;
         }
+
+        .ews-aktif {
+            background-color: #0d6efd;
+        }
     </style>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">{{ config('app.name') }}</a>
@@ -596,6 +600,17 @@
             });
 
             return pasien;
+        }
+
+        function getRegPeriksa(noRawat) {
+            let regPeriksa = $.ajax({
+                url: '/erm/periksa/detail',
+                data: {
+                    no_rawat: noRawat
+                },
+            });
+
+            return regPeriksa;
         }
 
         function showHistory() {
