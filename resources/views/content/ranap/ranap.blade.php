@@ -828,8 +828,10 @@
                 $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
                 $('#nik').val(response.kd_dokter);
                 $('#nama').val(response.dokter.nm_dokter);
-                $('.btn-tambah-grafik-harin').attr('data-no-rawat', response.no_rawat);
-                $('.btn-tambah-grafik-harin').attr('data-nm-pasien', response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
+                // $('.btn-tambah-grafik-harin').attr('data-no-rawat', response.no_rawat);
+                // $('.btn-tambah-grafik-harin').attr('data-nm-pasien', response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
+
+                $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
             })
 
             $('#modalSoapRanap').modal('toggle')
@@ -1049,10 +1051,8 @@
 
 
         // modal tambah grafik harian
-        function modalGrafikHarian() {
+        function modalGrafikHarian(no_rawat, nm_pasien) {
             $('#modalGrafikHarian').modal('toggle');
-            var no_rawat = $(".btn-tambah-grafik-harin").data('no-rawat');
-            var nm_pasien = $(".btn-tambah-grafik-harin").data('nm-pasien');
 
             // set data to modal
             $('#formSaveGrafikHarian input[name="no_rawat"]').val(no_rawat);
@@ -1201,6 +1201,11 @@
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="tgl_perawatan" value="${tgl_perawatan}">
             <input type="hidden" name="jam_rawat" value="${jam_rawat}">`;
+
+            // clear hidden input
+            $('#formSaveGrafikHarian input[name="action"]').remove();
+            $('#formSaveGrafikHarian input[name="tgl_perawatan"]').remove();
+            $('#formSaveGrafikHarian input[name="jam_rawat"]').remove();
 
             $('#formSaveGrafikHarian').append(htmlEdit);
         }
