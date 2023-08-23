@@ -34,12 +34,12 @@
                                             <div class="col col-sm-4" style="padding-left: 0px;padding-right: 4px;">
                                                 <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
                                                     id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off"
-                                                    style="border-radius:0px;font-size:11px" disabled>
+                                                    disabled>
                                             </div>
                                             <div class="col col-sm-4" style="padding-left: 4px;padding-right: 0px;">
                                                 <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
                                                     id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off"
-                                                    style="border-radius:0px;font-size:11px" disabled>
+                                                    disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -57,19 +57,19 @@
                                             <div class="col col-sm-4" style="padding-left: 0px;padding-right: 4px;">
                                                 <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
                                                     id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off"
-                                                    style="border-radius:0px;font-size:11px" disabled>
+                                                    disabled>
                                             </div>
                                             <div class="col col-sm-4" style="padding-left: 4px;padding-right: 0px;">
                                                 <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
                                                     id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off"
-                                                    style="border-radius:0px;font-size:11px" disabled>
+                                                    disabled>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-12 col-sm-12">
                                     <div class="d-grid gap-2">
-                                        <button type="button" class="btn btn-success btn-sm" style="border-radius:0px"
+                                        <button type="button" class="btn btn-success btn-sm"
                                             id="cari">
                                             <i class="bi bi-search"></i>
                                         </button>
