@@ -95,7 +95,7 @@
                                     <label for="">Keadaan Umum:</label>
                                     <select class="form-select" name="keadaan" id="kandungan_keadaan"
                                         style="font-size:11px;min-height:20px;border-radius:0;">
-                                        <option value="Compos Mentis">Sehat</option>
+                                        <option value="Sehat">Sehat</option>
                                         <option value="Sakit Ringan">Sakit Ringan</option>
                                         <option value="Sakit Sedang">Sakit Sedang</option>
                                         <option value="Sakit Berat">Sakit Berat</option>

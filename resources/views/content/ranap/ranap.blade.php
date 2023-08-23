@@ -412,143 +412,8 @@
             })
         }
 
-        function getEws(params) {
-            const ews = $.ajax({
-                url: '/erm/ranap/ews/' + textRawat(params, '-'),
-                dataType: 'JSON',
-                method: 'GET',
-            })
-
-            return ews;
-        }
-
-        function ewsRanap(params) {
-            getRegPeriksa(params).done((rawat) => {
-                jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
-                $('#no_rawat_ews').html(rawat.no_rawat);
-                $('#nama_pasien_ews').html(rawat.pasien.nm_pasien);
-                $('#umur_ews').html(rawat.umurdaftar + ' ' + rawat.sttsumur + ' / ' + jk);
-            });
-            getEws(params).done(function(response) {
-                $('#table-ews tbody').empty()
-                $('.td-jam').remove()
-                $('.td-tanggal').remove()
-                let no = '';
-                j = '';
-                tanggal = '';
-                html = '';
-                style = '';
-                let rowspan = '';
-                $.map(response, (res) => {
-                    $('#kategori-' + res.kategori).empty()
-
-                    rowspan = res.data.length + 1
-                    html += '<tr style="text-align:center" class="judul-ews">'
-                    html += '<td rowspan="' + rowspan + '" style="padding:10px">' + res.judul + '</td>'
-                    $.map(res.data, (data) => {
-                        $('.kategori').text(data.kategori);
-                        let hasilPemeriksaan = '';
-
-                        if (data.hasil == 3) {
-                            style = "style='background-color:red;color:#fff'";
-                        } else if (data.hasil == 2) {
-                            style = "style='background-color:orange;color:#fff'";
-                        } else if (data.hasil == 1) {
-                            style = "style='background-color:yellow;color:#000'";
-                        } else {
-                            style = "";
-                        }
-
-                        html += '<tr class="ews-' + data.id + '" ' + style + ' id="kategori-' + res.kategori + '">'
-                        html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '">' + data.parameter + '</td>'
-
-                        let inputHasil = '';
-                        no = 1;
-                        $.map(data.hp, (hp) => {
-
-                            if (hp) {
-                                inputHasil = '<input type="hidden" value="' + data.hasil + '" class="baris-' + no + ' " name="baris[' + no + '] "/>'
-                                html += '<td width="5%">' + inputHasil + '<strong>' + hp + '</strong></td>'
-                            } else {
-                                html += '<td width="5%"></td>';
-                            }
-                            no++;
-
-                        })
-                        tanggal = '';
-                        $.map(data.tanggal, (tgl) => {
-                            tanggal += '<td width="5%" class="td-tanggal">' + splitTanggal(tgl) + '</td>';
-                        })
-
-                        j = '';
-                        $.map(data.jam, (jam) => {
-                            j += '<td width="5%" class="td-jam">' + jam + '</td>';
-                        })
-
-                        html += '<td style="padding:5px" class="hasil">' + data.hasil + '</td>'
-                        html += '</tr>'
-
-                    })
-                    html += '</tr>'
 
 
-                })
-                $('#table-ews tbody').append(html)
-                $('.tr-jam').append(j)
-                $('.tr-tanggal').append(tanggal)
-                hitungNilaiEws(no)
-            })
-        }
-
-        function hitungNilaiEws(no) {
-            html = '<tr>'
-            html += '<th colspan=2>NILAI EWS TOTAL</th>'
-            let index = 1;
-            for (index; index < no; index++) {
-                let total = 0;
-                $('.baris-' + index).each(function(index, element) {
-                    total = total + parseFloat($(element).val());
-                });
-                html += '<td onclick="tindakanEws(' + total + ', ' + index + ')" class="nilai-' + index + '" style="cursor:pointer" id="total-ews">'
-                html += total
-                html += '</td>'
-                tindakanEws(total, index)
-            }
-            html += '</tr>'
-            $('#table-ews tbody').append(html)
-        }
-
-        function tindakanEws(total, index) {
-            let nilai = total;
-            $('.hasil-ews').empty();
-            ews = '';
-            let arrNilai = [];
-            $('.baris-' + index).each(function(index, element) {
-                a = $(element).val();
-                arrNilai[index] = a;
-            });
-
-
-            if (nilai >= 7) {
-                ews = `<div class="alert alert-danger" role="alert" style="padding:12px"> Monitoring ulang tiap jam, <span class="text-danger"><i>call code blue</i></span>, Pindahkan perawatan ke level 2/3 (HCU)</div>`;
-            } else if (nilai >= 5 && nilai <= 6) {
-                ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 3-4 jam, Panggil dokter jaga</div>`;
-            } else if (nilai >= 1 && nilai <= 4) {
-                cekArray = arrNilai.find((o) => {
-                    if (o == 3) {
-                        return ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 3-4 jam, <strong>Panggil dokter jaga</strong> <br/> Monitoring ulang minimal tiap 6-8 jam</div>`;
-                    } else {
-                        return ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 6-8 jam</div>`;
-                    }
-                });
-            } else if (nilai == 0) {
-                ews = `<div class="alert alert-primary" role="alert" style="padding:12px">Monitoring ulang minimal tiap 12 jam </div>`;
-            } else {
-                $('.hasil-ews').empty(ews);
-            }
-
-            $('.hasil-ews').append(ews);
-        }
 
         function getTTVData(params) {
             let ttv = $.ajax({
@@ -837,7 +702,7 @@
             $('#modalSoapRanap').modal('toggle')
 
             // $('#modalSoapRanap').modal('toggle')
-            ewsRanap(no_rawat)
+            setEws(no_rawat, 'ranap')
             tbSoapRanap(no_rawat);
             buildGrafik(no_rawat);
             appendDataGrafikHarian(no_rawat);

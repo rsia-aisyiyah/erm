@@ -6,21 +6,21 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST" class="form-soap">
+                <form action="" method="POST" class="">
                     <div class="row">
                         <label for="nomor_rawat" class="col-lg-2 col-sm-12 col-form-label" style="font-size:12px">No.
                             Rawat</label>
                         <div class="col-lg-2 col-sm-12 mb-2">
-                            <input type="text" class="form-control form-control-sm" id="nomor_rawat" name="nomor_rawat" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                            <input type="text" class="form-control form-control-sm" id="nomor_rawat" name="nomor_rawat" placeholder="" readonly>
                         </div>
                         <div class="col-lg-2 col-sm-12 mb-2">
-                            <input type="text" class="form-control form-control-sm" id="no_rm" name="no_rm" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                            <input type="text" class="form-control form-control-sm" id="no_rm" name="no_rm" placeholder="" readonly>
                         </div>
                         <div class="col-lg-3 col-sm-12 mb-2">
-                            <input type="text" class="form-control form-control-sm" id="nama_pasien" name="nama_pasien" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                            <input type="text" class="form-control form-control-sm" id="nama_pasien" name="nama_pasien" placeholder="" readonly>
                         </div>
                         <div class="col-lg-2 col-sm-12 mb-2">
-                            <input type="text" class="form-control form-control-sm" id="p_jawab" name="p_jawab" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                            <input type="text" class="form-control form-control-sm" id="p_jawab" name="p_jawab" placeholder="" readonly>
                         </div>
                     </div>
                     <hr style="margin:2px">
@@ -32,10 +32,10 @@
                                     <td width="30%" colspan="2">
                                         <input type="hidden" id="jam_rawat">
                                         <input type="hidden" id="tgl_perawatan">
-                                        <input type="text" class="form-control form-control-sm" id="nik" name="nik" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nik" name="nik" placeholder="" readonly>
                                     </td>
                                     <td width="45%" colspan="2">
-                                        <input type="search" class="form-control form-control-sm" id="nama" name="nama" placeholder="" style="font-size:12px;min-height:12px;border-radius:0" onkeyup="cariPetugas(this)" autocomplete="off">
+                                        <input type="search" class="form-control form-control-sm" id="nama" name="nama" placeholder="" onkeyup="cariPetugas(this)" autocomplete="off">
                                         <div class="list_petugas"></div>
 
                                     </td>
@@ -43,13 +43,13 @@
                                 <tr>
                                     <td>Subjek : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="4" style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
+                                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="4" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Objek : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="4" style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
+                                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="4" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -59,34 +59,34 @@
                                             <tr>
 
                                                 <td width="12%">
-                                                    Suhu (<sup>0</sup>C) : <input type="text" class="form-control form-control-sm" id="suhu" name="suhu" placeholder="" maxlength="5" style="font-size:12px;min-height:12px;border-radius:0;" value="-" onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Suhu (<sup>0</sup>C) : <input type="text" class="form-control form-control-sm" id="suhu" name="suhu" placeholder="" maxlength="5" value="-" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    Tinggi (Cm): <input type="text" class="form-control form-control-sm" id="tinggi" name="tinggi" placeholder="" maxlength="5" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Tinggi (Cm): <input type="text" class="form-control form-control-sm" id="tinggi" name="tinggi" placeholder="" maxlength="5" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    Berat (Kg) : <input type="text" class="form-control form-control-sm" id="berat" name="berat" placeholder="" maxlength="5" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Berat (Kg) : <input type="text" class="form-control form-control-sm" id="berat" name="berat" placeholder="" maxlength="5" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    Tensi : <input type="text" class="form-control form-control-sm" id="tensi" name="tensi" placeholder="" maxlength="8" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Tensi : <input type="text" class="form-control form-control-sm" id="tensi" name="tensi" placeholder="" maxlength="8" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    Respirasi (/mnt): <input type="text" class="form-control form-control-sm" id="respirasi" name="respirasi" placeholder="" maxlength="3" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Respirasi (/mnt): <input type="text" class="form-control form-control-sm" id="respirasi" name="respirasi" placeholder="" maxlength="3" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td width="12%">
-                                                    Nadi (/mnt) : <input type="text" class="form-control form-control-sm" id="nadi" name="nadi" placeholder="" maxlength="3" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    Nadi (/mnt) : <input type="text" class="form-control form-control-sm" id="nadi" name="nadi" placeholder="" maxlength="3" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    SpO2 (%): <input type="text" class="form-control form-control-sm" id="spo2" name="spo2" placeholder="" maxlength="3" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    SpO2 (%): <input type="text" class="form-control form-control-sm" id="spo2" name="spo2" placeholder="" maxlength="3" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
-                                                    GCS (E,V,M): <input type="text" class="form-control form-control-sm" id="gcs" name="gcs" placeholder="" maxlength="10" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    GCS (E,V,M): <input type="text" class="form-control form-control-sm" id="gcs" name="gcs" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                                 <td width="12%">
                                                     Kesadaran :
-                                                    <select class="form-select" name="kesadaran" id="kesadaran" style="font-size:12px;min-height:12px;border-radius:0;">
+                                                    <select class="form-select" name="kesadaran" id="kesadaran">
                                                         <option value="Compos Mentis">Compos Mentis</option>
                                                         <option value="Somnolence">Somnolence</option>
                                                         <option value="Sopor">Sopor</option>
@@ -95,7 +95,7 @@
                                                 </td>
                                                 <td width="12%">
                                                     Alergi :
-                                                    <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder="" style="font-size:12px;min-height:12px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)">
+                                                    <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)">
                                                 </td>
                                             </tr>
                                         </table>
@@ -104,14 +104,14 @@
                                 <tr>
                                     <td>Asesmen : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="4" style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
+                                        <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="4" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td>Instruksi : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="4" style="font-size:12px;min-height:12px;border-radius:0;resize:none" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
+                                        <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="4" onfocus="removeZero(this)" onblur="cekKosong(this)"></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -121,7 +121,7 @@
                                 <tr>
                                     <td>Plan : </td>
                                     <td colspan="3">
-                                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="8" style="font-size:12px;min-height:12px;border-radius:0;resize:none" readonly></textarea>
+                                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="8" readonly></textarea>
                                     </td>
                                 </tr>
                                 <tr>

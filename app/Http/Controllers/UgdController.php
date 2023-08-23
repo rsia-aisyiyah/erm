@@ -18,7 +18,7 @@ class UgdController extends Controller
     }
     function index()
     {
-        return view('content.ugd.index');
+        return view('content.ugd.ugd');
     }
 
     function getTable(Request $request)

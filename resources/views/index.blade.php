@@ -3,107 +3,6 @@
 @include('layout.head')
 
 <body>
-    <style>
-        /* .container-fluid {
-            background-image: url("https://sim.rsiaaisyiyah.com/rsiap/assets/images/wa7.png") !important;
-        } */
-
-        table {
-            font-size: 12px;
-        }
-
-        table td {
-            vertical-align: middle;
-        }
-
-        .borderless th,
-        .borderless td {
-            border: none;
-            height: 5px !important;
-            padding: 5px !important;
-        }
-
-        .form-soap .form-control {
-            border-color: #a5a5a5;
-        }
-
-        .modal-content {
-            border-radius: 0px;
-        }
-
-        .card,
-        .card-header {
-            border-radius: 0px !important;
-        }
-
-        .nav-tabs .nav-link {
-            border: 0px !important;
-            border-radius: 0px !important;
-        }
-
-        .nav-tabs .nav-link.active {
-            background-color: #0d6efd;
-            color: white;
-        }
-
-
-        .nav-link {
-            font-size: 12px;
-            padding: 8px;
-            border-radius: 0px !important;
-        }
-
-        @media (max-width: 400px) {
-            .tb-askep {
-                font-size: 9px !important;
-            }
-
-            .modal-riwayat table {
-                font-size: 9px !important;
-            }
-
-            #modalSoap table,
-            #modalSoap form input,
-            #modalSoap form select,
-            #modalSoap form textarea {
-                font-size: 10px !important;
-            }
-        }
-
-        .form-control-sm {
-            font-size: 12px;
-            min-height: 12px;
-            border-radius: 0;
-        }
-
-        .form-underline {
-            border: none;
-            border-bottom: 1px solid #e9e9e9;
-        }
-
-        .form-underline:focus {
-            border-bottom: 1px dashed #ececec;
-            box-shadow: none;
-            transition: background-size .3s ease;
-            ;
-        }
-
-        #table-ews tr td,
-        #table-ews tr th,
-        #table-ews tbody,
-        #table-ews thead {
-            border: 1px solid #000;
-        }
-
-        #table-ews tr.judul-ews {
-
-            border: 3px solid #000;
-        }
-
-        .ews-aktif {
-            background-color: #0d6efd;
-        }
-    </style>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">{{ config('app.name') }}</a>
         <button style="border-radius:0px" class="navbar-toggler position-absolute d-md-none collapsed" type="button"
@@ -117,8 +16,7 @@
         <div class="row">
             @include('layout.sidebar')
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div
-                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">
                         {{ (Request::segment(1) == null ? 'DASHBOARD' : Request::segment(1) == 'ranap') ? 'Rawat Inap' : strtoupper(Request::segment(1)) }}
                     </h1>
@@ -147,31 +45,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
 
-    <script>
-        $(document).ready(function() {
-            // hitungPanggilan();
-        })
-
-        const stepButtons = document.querySelectorAll('.step-button');
-        const progress = document.querySelector('#progress');
-        const progressBar = document.querySelector('.progress-bar');
-
-        Array.from(stepButtons).forEach((button, index) => {
-            button.addEventListener('click', () => {
-                progress.setAttribute('aria-valuenow', index * 100 / (stepButtons.length - 1)); //there are 3 buttons. 2 spaces.
-                progressBar.setAttribute('style', 'width:' + index * 100 / (stepButtons.length - 1) + '%'); //there are 3 buttons. 2 spaces.
-
-                stepButtons.forEach((item, secindex) => {
-                    if (index > secindex) {
-                        item.classList.add('done');
-                    }
-                    if (index < secindex) {
-                        item.classList.remove('done');
-                    }
-                })
-            })
-        })
-
+    <script type="text/javascript">
         function ambilNoRawat(no_rawat) {
             id = no_rawat;
         }
@@ -852,6 +726,144 @@
             $('.umurSekarangPeserta').text('');
             $('.umurPelayananPeserta').text('');
         });
+
+        function getEws(params, stts) {
+            const url = stts == 'ranap' ? '/erm/ews/ranap/' + textRawat(params, '-') : '/erm/ews/ralan/' + textRawat(params, '-');
+            const ews = $.ajax({
+                url: url,
+                dataType: 'JSON',
+                method: 'GET',
+            })
+
+            return ews;
+        }
+
+        function setEws(params, stts) {
+            getRegPeriksa(params).done((rawat) => {
+                jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
+                $('#no_rawat_ews').html(rawat.no_rawat);
+                $('#nama_pasien_ews').html(rawat.pasien.nm_pasien);
+                $('#umur_ews').html(rawat.umurdaftar + ' ' + rawat.sttsumur + ' / ' + jk);
+            });
+            getEws(params, stts).done(function(response) {
+                $('#table-ews tbody').empty()
+                $('.td-jam').remove()
+                $('.td-tanggal').remove()
+                let no = '';
+                j = '';
+                tanggal = '';
+                html = '';
+                style = '';
+                let rowspan = '';
+                $.map(response, (res) => {
+                    $('#kategori-' + res.kategori).empty()
+
+                    rowspan = res.data.length + 1
+                    html += '<tr style="text-align:center" class="judul-ews">'
+                    html += '<td rowspan="' + rowspan + '" style="padding:10px">' + res.judul + '</td>'
+                    $.map(res.data, (data) => {
+                        $('.kategori').text(data.kategori);
+                        let hasilPemeriksaan = '';
+
+                        if (data.hasil == 3) {
+                            style = "style='background-color:red;color:#fff'";
+                        } else if (data.hasil == 2) {
+                            style = "style='background-color:orange;color:#fff'";
+                        } else if (data.hasil == 1) {
+                            style = "style='background-color:yellow;color:#000'";
+                        } else {
+                            style = "";
+                        }
+
+                        html += '<tr class="ews-' + data.id + '" ' + style + ' id="kategori-' + res.kategori + '">'
+                        html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '">' + data.parameter + '</td>'
+
+                        let inputHasil = '';
+                        no = 1;
+                        $.map(data.hp, (hp) => {
+
+                            if (hp) {
+                                inputHasil = '<input type="hidden" value="' + data.hasil + '" class="baris-' + no + ' " name="baris[' + no + '] "/>'
+                                html += '<td width="5%">' + inputHasil + '<strong>' + hp + '</strong></td>'
+                            } else {
+                                html += '<td width="5%"></td>';
+                            }
+                            no++;
+
+                        })
+                        tanggal = '';
+                        $.map(data.tanggal, (tgl) => {
+                            tanggal += '<td width="5%" class="td-tanggal">' + splitTanggal(tgl) + '</td>';
+                        })
+
+                        j = '';
+                        $.map(data.jam, (jam) => {
+                            j += '<td width="5%" class="td-jam">' + jam + '</td>';
+                        })
+
+                        html += '<td style="padding:5px" class="hasil">' + data.hasil + '</td>'
+                        html += '</tr>'
+
+                    })
+                    html += '</tr>'
+
+
+                })
+                $('#table-ews tbody').append(html)
+                $('.tr-jam').append(j)
+                $('.tr-tanggal').append(tanggal)
+                hitungNilaiEws(no)
+            })
+        }
+
+        function hitungNilaiEws(no) {
+            html = '<tr>'
+            html += '<th colspan=2>NILAI EWS TOTAL</th>'
+            let index = 1;
+            for (index; index < no; index++) {
+                let total = 0;
+                $('.baris-' + index).each(function(index, element) {
+                    total = total + parseFloat($(element).val());
+                });
+                html += '<td onclick="tindakanEws(' + total + ', ' + index + ')" class="nilai-' + index + '" style="cursor:pointer" id="total-ews">'
+                html += total
+                html += '</td>'
+                tindakanEws(total, index)
+            }
+            html += '</tr>'
+            $('#table-ews tbody').append(html)
+        }
+
+        function tindakanEws(total, index) {
+            let nilai = total;
+            $('.hasil-ews').empty();
+            ews = '';
+            let arrNilai = [];
+            $('.baris-' + index).each(function(index, element) {
+                a = $(element).val();
+                arrNilai[index] = a;
+            });
+
+
+            if (nilai >= 7) {
+                ews = `<div class="alert alert-danger" role="alert" style="padding:12px"> Monitoring ulang tiap jam, <span class="text-danger"><i>call code blue</i></span>, Pindahkan perawatan ke level 2/3 (HCU)</div>`;
+            } else if (nilai >= 5 && nilai <= 6) {
+                ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 3-4 jam, Panggil dokter jaga</div>`;
+            } else if (nilai >= 1 && nilai <= 4) {
+                ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 6-8 jam</div>`;
+                cekArray = arrNilai.find((o) => {
+                    if (o == 3) {
+                        ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 3-4 jam, <strong>Panggil dokter jaga</strong> <br/> Monitoring ulang minimal tiap 6-8 jam</div>`;
+                    }
+                });
+            } else if (nilai == 0) {
+                ews = `<div class="alert alert-primary" role="alert" style="padding:12px">Monitoring ulang minimal tiap 12 jam </div>`;
+            } else {
+                $('.hasil-ews').empty(ews);
+            }
+
+            $('.hasil-ews').append(ews);
+        }
     </script>
     @stack('script')
 </body>

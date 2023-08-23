@@ -26,22 +26,50 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .card {
-            border-radius: 0px;
+            border-radius: 6px;
         }
 
         .btn {
+            border-radius: 6px;
+            box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05)
+        }
 
-            border-radius: 0px;
+        .btn-sm {
+            font-size: 11px;
+            box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05)
         }
 
         .dropdown-menu {
-            border-radius: 0px;
+            border-radius: 6px;
         }
 
         input[type=text],
         input[type=search],
         .form-select-sm {
-            border-radius: 0px;
+            border-radius: 6px;
+            font-size: 12px;
+            border-color: #bdbdbd;
+            transition: all .1s linear;
+        }
+
+
+
+
+        .form-select {
+            border-radius: 6px;
+            font-size: 11px;
+            height: 32px;
+        }
+
+        .form-select option {
+            padding: 2px;
+        }
+
+        textarea {
+            border-radius: 6px;
+            font-size: 12px;
+            resize: none;
+            border-color: #bdbdbd !important;
         }
 
         .my-custom-scrollbar {
@@ -137,6 +165,130 @@
 
         .separator:not(:empty)::after {
             margin-left: .25em;
+        }
+
+        /* .container-fluid {
+            background-image: url("https://sim.rsiaaisyiyah.com/rsiap/assets/images/wa7.png") !important;
+        } */
+
+        table {
+            font-size: 12px;
+        }
+
+        table td {
+            vertical-align: middle;
+        }
+
+        .borderless th,
+        .borderless td {
+            border: none;
+            height: 5px !important;
+            padding: 5px !important;
+        }
+
+        textarea .form-control {
+            border-color: #bdbdbd;
+        }
+
+        .modal-content {
+            border-radius: 6px;
+        }
+
+        .card,
+        .card-header {
+            border-radius: 0px !important;
+        }
+
+        .nav-tabs .nav-link {
+            /* border: 1px solid #0d6efd !important;
+            border-top-left-radius: 6px !important;
+            border-top-right-radius: 6px !important;
+            border-bottom-right-radius: 0px !important;
+            border-bottom-left-radius: 0px !important; */
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #0d6efd;
+            color: white;
+            transition: all .1s linear;
+        }
+
+        @media (max-width: 400px) {
+            .tb-askep {
+                font-size: 9px !important;
+            }
+
+            .modal-riwayat table {
+                font-size: 9px !important;
+            }
+
+            #modalSoap table,
+            #modalSoap form input,
+            #modalSoap form select,
+            #modalSoap form textarea {
+                font-size: 10px !important;
+            }
+        }
+
+        .form-control {
+            font-size: 12px;
+            border-radius: 6px;
+        }
+
+        .input-group-sm .input-group-text,
+        .input-group-sm .btn {
+            height: 28px;
+        }
+
+        .input-group select {
+            height: 28px;
+        }
+
+        .input-group-sm .btn {
+            font-size: 10px;
+            height: 28px;
+        }
+
+        .form-control-sm {
+            font-size: 12px;
+            height: 28px;
+            border-radius: 6px;
+        }
+
+        .form-underline {
+            border: none;
+            border-bottom: 1px solid #e9e9e9;
+        }
+
+        .form-underline:focus {
+            border-bottom: 1px dashed #ececec;
+            box-shadow: none;
+            transition: background-size .3s ease;
+            ;
+        }
+
+        #table-ews tr td,
+        #table-ews tr th,
+        #table-ews tbody,
+        #table-ews thead {
+            border: 1px solid #000;
+        }
+
+        #table-ews tr.judul-ews {
+
+            border: 3px solid #000;
+        }
+
+        .ews-aktif {
+            background-color: #0d6efd;
+        }
+
+
+        .form-control:focus,
+        .form-control-sm:focus {
+            /* transition: all .1s linear; */
         }
     </style>
 </head>
