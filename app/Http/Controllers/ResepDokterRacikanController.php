@@ -49,7 +49,7 @@ class ResepDokterRacikanController extends Controller
 
 
         $resep = ResepDokterRacikan::create($data);
-        $this->track->create($this->track->insertSql($this->resep, $data));
+        $this->track->insertSql($this->resep, $data);
         return response()->json($resep);
     }
 
@@ -61,7 +61,7 @@ class ResepDokterRacikanController extends Controller
         ];
         $resepDetail = $this->resepDetail->hapus($request);
         $resep = ResepDokterRacikan::where($clause)->delete();
-        $this->track->create($this->track->deleteSql($this->resep, $clause));
+        $this->track->deleteSql($this->resep, $clause);
         return response()->json($resep);
     }
     public function ubah(Request $request)
@@ -75,7 +75,7 @@ class ResepDokterRacikanController extends Controller
             'aturan_pakai' => $request->aturan_pakai,
         ];
         $resep = ResepDokterRacikan::where($clause)->update($data);
-        $this->track->create($this->track->updateSql($this->resep, $data, $clause));
+        $this->track->updateSql($this->resep, $data, $clause);
         return response()->json($request);
     }
 }

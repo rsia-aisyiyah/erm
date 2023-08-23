@@ -53,7 +53,7 @@ class RsiaGrafikHarianController extends Controller
 
             // insert to database
             $grafikHarian = $this->model->create($data);
-            $this->track->create($this->track->insertSql($this->model, $data));
+            $this->track->insertSql($this->model, $data);
         } else {
             $clause = [
                 'no_rawat' => $request->no_rawat,
@@ -63,7 +63,7 @@ class RsiaGrafikHarianController extends Controller
 
             // update to database
             $grafikHarian = $this->model->where($clause)->update($data);
-            $this->track->create($this->track->updateSql($this->model, $clause, $data));
+            $this->track->updateSql($this->model, $clause, $data);
         }
 
 
@@ -91,7 +91,7 @@ class RsiaGrafikHarianController extends Controller
             'jam_rawat' => $request->jam_rawat,
         ];
         $data = $this->model->where($clause)->delete();
-        $this->track->create($this->track->deleteSql($this->model, $clause));
+        $this->track->deleteSql($this->model, $clause);
 
         if ($data) {
             return response()->json([

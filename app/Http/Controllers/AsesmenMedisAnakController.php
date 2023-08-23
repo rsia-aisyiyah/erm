@@ -34,7 +34,7 @@ class AsesmenMedisAnakController extends Controller
 
 
         $asmed = $this->asmed->create($data);
-        $this->track->create($this->track->insertSql($this->asmed, $data));
+        $this->track->insertSql($this->asmed, $data);
 
         return $asmed;
     }
@@ -43,7 +43,7 @@ class AsesmenMedisAnakController extends Controller
         $data = $request->except(['_token']);
         $clause = ['no_rawat' => $request->no_rawat];
         $asmed = $this->asmed->where($clause)->update($data);
-        $this->track->create($this->track->updateSql($this->asmed, $data, $clause));
+        $this->track->updateSql($this->asmed, $data, $clause);
 
         return $asmed;
     }

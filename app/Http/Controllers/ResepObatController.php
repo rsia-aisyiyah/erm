@@ -24,7 +24,7 @@ class ResepObatController extends Controller
         $resepObat = $this->resepObat;
         $data = ['no_resep' => $noResep];
         $result = $resepObat->where($data)->delete();
-        $this->track->create($this->track->deleteSql($resepObat, $data));
+        $this->track->deleteSql($resepObat, $data);
         return response()->json($result);
     }
     public function ambil(Request $request)
@@ -96,7 +96,7 @@ class ResepObatController extends Controller
             'jam_penyerahan' => date('H:i:s', strtotime("00:00:00")),
         ];
         $resepObat = $this->resepObat->create($data);
-        $this->track->create($this->track->insertSql($this->resepObat, $data));
+        $this->track->insertSql($this->resepObat, $data);
         return $resepObat;
     }
 

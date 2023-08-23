@@ -76,8 +76,8 @@ class PemeriksaanRalanController extends Controller
         $pemeriksaan = $this->pemeriksaan->where($clause)->delete();
         $grafik = $this->grafik->where($clause)->delete();
 
-        $this->track->create($this->track->deleteSql($this->pemeriksaan, $clause));
-        $this->track->create($this->track->deleteSql($this->grafik, $clause));
+        $this->track->deleteSql($this->pemeriksaan, $clause);
+        $this->track->deleteSql($this->grafik, $clause);
 
         return $pemeriksaan;
     }
@@ -163,11 +163,9 @@ class PemeriksaanRalanController extends Controller
 
             if ($request->o2) {
                 GrafikHarian::create($createGrafik);
-                $this->track->create($this->track->insertSql($this->grafik, $grafik));
+                $this->track->insertSql($this->grafik, $grafik);
             }
         }
-
-        $this->track->create($trackSql);
         return response()->json(['Berhasil', $update], 200);
     }
 
@@ -216,8 +214,8 @@ class PemeriksaanRalanController extends Controller
         $pemeriksaan = PemeriksaanRalan::where($clause)->update($data);
         $grafik = GrafikHarian::where($clause)->update($dataGrafik);
 
-        $this->track->create($this->track->updateSql($this->pemeriksaan, $data, $clause));
-        $this->track->create($this->track->updateSql($this->grafik, $dataGrafik, $clause));
+        $this->track->updateSql($this->pemeriksaan, $data, $clause);
+        $this->track->updateSql($this->grafik, $dataGrafik, $clause);
 
         return response()->json($pemeriksaan);
     }

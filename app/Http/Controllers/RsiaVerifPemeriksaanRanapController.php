@@ -28,7 +28,7 @@ class RsiaVerifPemeriksaanRanapController extends Controller
         ];
 
         $verif = $this->verif->create($data);
-        $this->track->create($this->track->insertSql($this->verif, $data));
+        $this->track->insertSql($this->verif, $data);
 
         return response()->json($verif);
     }

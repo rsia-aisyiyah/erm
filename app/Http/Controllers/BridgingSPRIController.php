@@ -45,7 +45,7 @@ class BridgingSPRIController extends Controller
 
         try {
             $spri =  $this->pri->create($data);
-            $this->track->create($this->track->insertSql($this->pri, $data));
+            $this->track->insertSql($this->pri, $data);
             return response()->json($spri);
         } catch (QueryException $e) {
             return response()->json($e->errorInfo);

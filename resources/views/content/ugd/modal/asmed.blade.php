@@ -392,7 +392,6 @@
 
         $('#modalAsmedUgd').on('hidden.bs.modal', () => {
             $('#formAsmedUgd input').each((index, element) => {
-                console.log(element)
                 $(element).val('-');
             })
             $('#formAsmedUgd textarea').each((index, element) => {

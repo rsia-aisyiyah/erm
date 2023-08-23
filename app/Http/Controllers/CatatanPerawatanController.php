@@ -26,7 +26,7 @@ class CatatanPerawatanController extends Controller
         ];
 
         $catatan = $this->catatan->create($data);
-        $this->track->create($this->track->insertSql($this->catatan, $data));
+        $this->track->insertSql($this->catatan, $data);
 
         return response()->json($catatan);
     }
@@ -63,10 +63,10 @@ class CatatanPerawatanController extends Controller
         $getCatatan = $this->catatan->where('no_rawat', str_replace('-', '/', $data['no_rawat']))->count();
         if ($getCatatan) {
             $catatan = $this->catatan->where('no_rawat', $request->no_rawat)->update($data);
-            $this->track->create($this->track->updateSql($this->catatan, $data, ['no_rawat' => $request->no_rawat]));
+            $this->track->updateSql($this->catatan, $data, ['no_rawat' => $request->no_rawat]);
         } else {
             $catatan = $this->catatan->create($data);
-            $this->track->create($this->track->insertSql($this->catatan, $data));
+            $this->track->insertSql($this->catatan, $data);
         }
         return response()->json($catatan);
     }

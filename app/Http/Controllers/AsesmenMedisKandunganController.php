@@ -29,7 +29,7 @@ class AsesmenMedisKandunganController extends Controller
         $data['tanggal'] = date('Y-m-d H:i:s');
 
         $asmed = $this->asmed->create($data);
-        $this->track->create($this->track->insertSql($this->asmed, $data));
+        $this->track->insertSql($this->asmed, $data);
 
         return response()->json($asmed);
     }
@@ -38,7 +38,7 @@ class AsesmenMedisKandunganController extends Controller
         $data = $request->except(['_token']);
         $clause = ['no_rawat' => $request->no_rawat];
         $asmed = $this->asmed->where($clause)->update($data);
-        $this->track->create($this->track->updateSql($this->asmed, $data, $clause));
+        $this->track->updateSql($this->asmed, $data, $clause);
 
         return response()->json($asmed);
     }

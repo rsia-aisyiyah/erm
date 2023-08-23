@@ -85,8 +85,8 @@ class PemeriksaanRanapController extends Controller
         ];
         $pemeriksaan = PemeriksaanRanap::where($clause)->update($data);
         $grafikharian = GrafikHarian::where($clause)->update($data1);
-        $this->track->create($this->track->updateSql($this->pemeriksaan, $data, $clause));
-        $this->track->create($this->track->updateSql($this->grafikharian, $data1, $clause));
+        $this->track->updateSql($this->pemeriksaan, $data, $clause);
+        $this->track->updateSql($this->grafikharian, $data1, $clause);
         return response()->json([$pemeriksaan, $grafikharian]);
     }
 
@@ -133,8 +133,8 @@ class PemeriksaanRanapController extends Controller
 
         $pemeriksaan = PemeriksaanRanap::create($data);
         $grafikharian = GrafikHarian::create($data1);
-        $this->track->create($this->track->insertSql($this->pemeriksaan, $data));
-        $this->track->create($this->track->insertSql($this->grafikharian, $data));
+        $this->track->insertSql($this->pemeriksaan, $data);
+        $this->track->insertSql($this->grafikharian, $data);
         return response()->json(['Berhasil', $pemeriksaan, $grafikharian], 200);
     }
     public function hapus(Request $request)
@@ -145,7 +145,7 @@ class PemeriksaanRanapController extends Controller
             'jam_rawat' => $request->jam_rawat,
         ];
         $pemeriksaan = PemeriksaanRanap::where($clause)->delete();
-        $this->track->create($this->track->deleteSql($this->pemeriksaan, $clause));
+        $this->track->deleteSql($this->pemeriksaan, $clause);
 
         $clause = array_merge($clause, ['sumber' => 'SOAP']);
         $grafikHarian = $this->grafikHarian->where($clause)->delete();

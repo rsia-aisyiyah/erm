@@ -27,7 +27,7 @@ class BridgingRujukanBpjsController extends Controller
         $data = $request->all();
         try {
             $rujukan = $this->rujukan->create($data);
-            $this->track->create($this->track->insertSql($this->rujukan, $data));
+            $this->track->insertSql($this->rujukan, $data);
             return response()->json($rujukan);
         } catch (QueryException $e) {
             return response()->json($e->errorInfo);

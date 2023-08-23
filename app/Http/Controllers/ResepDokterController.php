@@ -36,7 +36,7 @@ class ResepDokterController extends Controller
             'aturan_pakai' => $request->aturan_pakai,
         ];
         $resepDokter = $this->resepDokter->create($data);
-        $this->track->create($this->track->insertSql($this->resepDokter, $data));
+        $this->track->insertSql($this->resepDokter, $data);
         return response()->json($resepDokter);
     }
     public function hapus(Request $request)
@@ -46,7 +46,7 @@ class ResepDokterController extends Controller
             'kode_brng' => $request->kode_brng,
         ];
         $resepDokter = $this->resepDokter->where($data)->delete();
-        $this->track->create($this->track->deleteSql($this->resepDokter, $data));
+        $this->track->deleteSql($this->resepDokter, $data);
         return response()->json($resepDokter, 200);
     }
 
@@ -62,7 +62,7 @@ class ResepDokterController extends Controller
         ];
 
         $resepDokter = $this->resepDokter->where($clause)->update($data);
-        $this->track->create($this->track->updateSql($this->resepDokter, $data, $clause));
+        $this->track->updateSql($this->resepDokter, $data, $clause);
         return response()->json('Data berhasil diubah');
     }
 }
