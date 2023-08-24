@@ -314,7 +314,7 @@
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-4">
                     <div class="separator m-2">7. Konsul / Rujuk</div>
-                    <textarea class="form-control" name="edukasi" id="konsul" cols="30" rows="8"
+                    <textarea class="form-control" name="konsul" id="konsul" cols="30" rows="8"
                         onfocus="removeZero(this)"
                         onblur="cekKosong(this)">-</textarea>
                 </div>

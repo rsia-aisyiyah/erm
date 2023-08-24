@@ -248,7 +248,7 @@
             })
         }
 
-        getPemeriksaanPoli(no_rawat) {
+        function getPemeriksaanPoli(no_rawat) {
             const pemeriksaan = $.ajax({
                 url: '/erm/pemeriksaan',
                 method: 'GET',

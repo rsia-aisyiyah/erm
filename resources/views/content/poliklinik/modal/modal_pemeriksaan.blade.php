@@ -1202,6 +1202,26 @@
                     })
                 }
             })
+
+            getPemeriksaanPoli(id).done((response) => {
+                if (Object.keys(response).length != 0) {
+                    console.log('Pemeriksaan', response);
+                    $('.form-asmed-kandungan select[name="kesadaran"]').val(response.kesadaran).change();
+                    $('.form-asmed-kandungan input[name="gcs"]').val(response.gcs);
+                    $('.form-asmed-kandungan input[name="tb"]').val(response.tinggi);
+                    $('.form-asmed-kandungan input[name="bb"]').val(response.berat);
+                    $('.form-asmed-kandungan input[name="td"]').val(response.tensi);
+                    $('.form-asmed-kandungan input[name="nadi"]').val(response.nadi);
+                    $('.form-asmed-kandungan input[name="rr"]').val(response.respirasi);
+                    $('.form-asmed-kandungan input[name="suhu"]').val(response.suhu_tubuh);
+                    $('.form-asmed-kandungan input[name="spo2"]').val(response.spo2);
+                    $('.form-asmed-kandungan textarea[name="keluhan_utama"]').val(response.keluhan);
+                    $('.form-asmed-kandungan textarea[name="ket_fisik"]').val(response.pemeriksaan);
+                    $('.form-asmed-kandungan textarea[name="diagnosis"]').val(response.penilaian);
+                    $('.form-asmed-kandungan textarea[name="konsul"]').val(response.instruksi);
+
+                }
+            })
             no = 1;
             isModalShow = true;
         });
