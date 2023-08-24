@@ -16,7 +16,8 @@ use App\Http\Controllers\PasienController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\AntreanController;
 use App\Http\Controllers\AsesmenMedisAnakController;
-use App\Http\Controllers\AsesmenMedisKandunganController;
+use App\Http\Controllers\AsesmenMedisRajalKandunganController;
+use App\Http\Controllers\AsesmenMedisRanapKandunganController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PenyakitController;
@@ -61,6 +62,7 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\UgdController;
 use App\Models\AsesmenMedisIgdController;
+use App\Models\AsesmenMedisRajalKandungan;
 use App\Models\LaporanOperasi;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
@@ -96,6 +98,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/petugas/cari', [PetugasController::class, 'cari']);
 
+
     Route::get('/poliklinik', [PoliklinikController::class, 'index'])->name('poliklinik');
     Route::get('/poliklinik/dokter', [PoliklinikController::class, 'poliDokter']);
     Route::get('/poliklinik/table', [PoliklinikController::class, 'tbPoliPasien']);
@@ -111,6 +114,10 @@ Route::middleware('auth')->group(function () {
     Route::get('poliklinik/askep/kebidanan/{noRawat}', [AskepRalanKebidananController::class, 'get']);
     Route::get('poliklinik/askep/anak', [AskepRalanAnakController::class, 'ambil']);
     Route::get('poliklinik/askep/anak/detail', [AskepRalanAnakController::class, 'ambilDetail']);
+
+    Route::get('poliklinik/asmed/kandungan/get/{noRawat}', [AsesmenMedisRajalKandunganController::class, 'get']);
+    Route::post('poliklinik/asmed/kandungan/simpan', [AsesmenMedisRajalKandunganController::class, 'insert']);
+    Route::post('poliklinik/asmed/kandungan/edit', [AsesmenMedisRajalKandunganController::class, 'edit']);
 
     Route::get('registrasi', [RegPeriksaController::class, 'index']);
     Route::get('registrasi/ambil', [RegPeriksaController::class, 'ambil']);
@@ -175,9 +182,9 @@ Route::middleware('auth')->group(function () {
     Route::get('asmed/ranap/anak/{noRawat}', [AsesmenMedisAnakController::class, 'get']);
     Route::post('asmed/ranap/anak/simpan', [AsesmenMedisAnakController::class, 'create']);
     Route::post('asmed/ranap/anak/ubah', [AsesmenMedisAnakController::class, 'update']);
-    Route::get('asmed/ranap/kandungan/{noRawat}', [AsesmenMedisKandunganController::class, 'get']);
-    Route::post('asmed/ranap/kandungan/simpan', [AsesmenMedisKandunganController::class, 'create']);
-    Route::post('asmed/ranap/kandungan/ubah', [AsesmenMedisKandunganController::class, 'update']);
+    Route::get('asmed/ranap/kandungan/{noRawat}', [AsesmenMedisRanapKandunganController::class, 'get']);
+    Route::post('asmed/ranap/kandungan/simpan', [AsesmenMedisRanapKandunganController::class, 'create']);
+    Route::post('asmed/ranap/kandungan/ubah', [AsesmenMedisRanapKandunganController::class, 'update']);
 
 
     Route::get('obat/', [DataBarangController::class, 'index']);

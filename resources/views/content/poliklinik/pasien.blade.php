@@ -103,7 +103,7 @@
         @include('content.upload.inforegistrasi')
         @include('content.upload.resume')
     </div>
-    @include('content.poliklinik.modal.modal_soap')
+    @include('content.poliklinik.modal.modal_pemeriksaan')
     @include('content.poliklinik.modal.modal_riwayat')
     @include('content.poliklinik.modal.modal_askep')
     @include('content.poliklinik.modal.modal_askep_anak')
@@ -248,7 +248,17 @@
             })
         }
 
-
+        getPemeriksaanPoli(no_rawat) {
+            const pemeriksaan = $.ajax({
+                url: '/erm/pemeriksaan',
+                method: 'GET',
+                dataType: 'JSON',
+                data: {
+                    no_rawat: no_rawat,
+                },
+            });
+            return pemeriksaan
+        }
 
         function modalsoap(no_rawat) {
             jbtn = "{{ session()->get('pegawai')->jbtn }}";

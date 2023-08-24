@@ -54,37 +54,37 @@
                                 <div class="mb-3 col-sm-12 col-md-6 col-lg-4">
                                     <label for="keluhan">Keluhan Utama</label>
                                     <textarea class="form-control" name="keluhan_utama" id="kandungan_keluhan_utama" cols="30" rows="5"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-6 col-lg-4">
                                     <label for="rps">Riwayat Penyakit Sekarang</label>
                                     <textarea class="form-control" name="rps" id="kandungan_rps" cols="30" rows="5"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-6 col-lg-4">
                                     <label for="rpd">Riwayat Penyakit Dahulu</label>
                                     <textarea class="form-control" name="rpd" id="kandungan_rpd" cols="30" rows="5"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-6 col-lg-4">
                                     <label for="rpk">Riwayat Penyakit Keluarga</label>
                                     <textarea class="form-control" name="rpk" id="kandungan_rpk" cols="30" rows="2"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-6 col-lg-4">
                                     <label for="rpo">Riwayat Penggunaan Obat</label>
                                     <textarea class="form-control" name="rpo" id="kandungan_rpo" cols="30" rows="2"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-6 col-lg-4">
                                     <label for="rpk">Alergi</label>
                                     <input type="text" class="form-control form-control-sm" id="kandungan_alergi" name="alergi" placeholder=""
-                                        style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
 
 
@@ -93,8 +93,7 @@
                             <div class="row">
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-3">
                                     <label for="">Keadaan Umum:</label>
-                                    <select class="form-select" name="keadaan" id="kandungan_keadaan"
-                                        style="font-size:11px;min-height:20px;border-radius:0;">
+                                    <select class="form-select" name="keadaan" id="kandungan_keadaan">
                                         <option value="Sehat">Sehat</option>
                                         <option value="Sakit Ringan">Sakit Ringan</option>
                                         <option value="Sakit Sedang">Sakit Sedang</option>
@@ -103,8 +102,7 @@
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-3">
                                     <label for="">Kesadaran :</label>
-                                    <select class="form-select" name="kesadaran" id="kandungan_kesadaran"
-                                        style="font-size:11px;min-height:20px;border-radius:0;">
+                                    <select class="form-select" name="kesadaran" id="kandungan_kesadaran">
                                         <option value="Compos Mentis">Compos Mentis</option>
                                         <option value="Somnolence">Somnolence</option>
                                         <option value="Sopor">Sopor</option>
@@ -113,42 +111,42 @@
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-3">
                                     <label for="gcs">GCS(E,V,M)</label>
-                                    <input type="text" class="form-control form-control-sm" id="kandungan_gcs" name="gcs" placeholder="" maxlength="10" style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="kandungan_gcs" name="gcs" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-3">
                                     <label for="tb">TB (cm)</label>
-                                    <input type="text" class="form-control form-control-sm" id="kandungan_tb" name="tb" placeholder="" maxlength="10" style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="kandungan_tb" name="tb" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                                     <label for="bb">BB (Kg)</label>
-                                    <input type="text" class="form-control form-control-sm" id="kandungan_bb" name="bb" placeholder="" maxlength="10" style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="kandungan_bb" name="bb" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                                     <label for="td">TD (mmHg)</label>
-                                    <input type="text" class="form-control form-control-sm" id="kandungan_td" name="td" placeholder="" maxlength="10" style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="kandungan_td" name="td" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                                     <label for="nadi">Nadi (x/menit)</label>
-                                    <input type="text" class="form-control form-control-sm" id="kandungan_nadi" name="nadi" placeholder="" maxlength="10" style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="kandungan_nadi" name="nadi" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                                     <label for="rr">RR (x/menit)</label>
-                                    <input type="text" class="form-control form-control-sm" id="kandungan_rr" name="rr" placeholder="" maxlength="10" style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="kandungan_rr" name="rr" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                                     <label for="suhu">Suhu (<sup>0</sup>C)</label>
-                                    <input type="text" class="form-control form-control-sm" id="kandungan_suhu" name="suhu" placeholder="" maxlength="10" style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="kandungan_suhu" name="suhu" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                                     <label for="spo2">SpO2(%)</label>
-                                    <input type="text" class="form-control form-control-sm" id="kandungan_spo" name="spo2" placeholder="" maxlength="10" style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="kandungan_spo" name="spo2" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-8">
                                         <div class="row">
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">Kepala :</label>
-                                                <select class="form-select" name="kepala" id="kandungan_kepala" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="kepala" id="kandungan_kepala">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -156,7 +154,7 @@
                                             </div>
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">Mata :</label>
-                                                <select class="form-select" name="mata" id="kandungan_mata" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="mata" id="kandungan_mata">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -164,7 +162,7 @@
                                             </div>
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">Gigi & Mulut :</label>
-                                                <select class="form-select" name="gigi" id="kandungan_gigi" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="gigi" id="kandungan_gigi">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -172,7 +170,7 @@
                                             </div>
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">THT :</label>
-                                                <select class="form-select" name="tht" id="kandungan_tht" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="tht" id="kandungan_tht">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -180,7 +178,7 @@
                                             </div>
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">Thorax :</label>
-                                                <select class="form-select" name="thorax" id="kandungan_thorax" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="thorax" id="kandungan_thorax">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -188,7 +186,7 @@
                                             </div>
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">Jantung :</label>
-                                                <select class="form-select" name="jantung" id="kandungan_jantung" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="jantung" id="kandungan_jantung">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -196,7 +194,7 @@
                                             </div>
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">Paru :</label>
-                                                <select class="form-select" name="paru" id="kandungan_paru" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="paru" id="kandungan_paru">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -204,7 +202,7 @@
                                             </div>
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">Abdomen :</label>
-                                                <select class="form-select" name="abdomen" id="kandungan_abdomen" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="abdomen" id="kandungan_abdomen">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -212,7 +210,7 @@
                                             </div>
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">Genital :</label>
-                                                <select class="form-select" name="genital" id="kandungan_genital" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="genital" id="kandungan_genital">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -220,7 +218,7 @@
                                             </div>
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">Ekstrimitas :</label>
-                                                <select class="form-select" name="ekstremitas" id="kandungan_ekstremitas" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="ekstremitas" id="kandungan_ekstremitas">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -228,7 +226,7 @@
                                             </div>
                                             <div class="mb-1 col-sm-12 col-md-4 col-lg-4">
                                                 <label for="">Kulit :</label>
-                                                <select class="form-select" name="kulit" id="kandungan_kulit" style="font-size:11px;min-height:20px;border-radius:0;">
+                                                <select class="form-select" name="kulit" id="kandungan_kulit">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Abnormal">Abnormal</option>
                                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -240,7 +238,7 @@
                                         <div class="row">
                                             <div class="col-sm-12 col-md-12 col-lg-12">
                                                 <label for="ket_fisik">Keterangan Fisik</label>
-                                                <textarea class="form-control" name="ket_fisik" id="kandungan_ket_fisik" cols="30" rows="10" style="font-size:11px;min-height:20px;border-radius:0;resize:none;" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                                                <textarea class="form-control" name="ket_fisik" id="kandungan_ket_fisik" cols="30" rows="10" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -254,21 +252,21 @@
                                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                                     <label for="tfu">TFU (cm)</label>
                                     <input type="text" class="form-control form-control-sm" id="kandungan_tfu" name="alergi" placeholder=""
-                                        style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
+                                        onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                                 </div>
                                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                                     <label for="tbj">TBJ (gram)</label>
                                     <input type="text" class="form-control form-control-sm" id="kandungan_tbj" name="alergi" placeholder=""
-                                        style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
+                                        onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                                 </div>
                                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                                     <label for="his">HIS (x/10 mnt)</label>
                                     <input type="text" class="form-control form-control-sm" id="kandungan_his" name="alergi" placeholder=""
-                                        style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
+                                        onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                                 </div>
                                 <div class="mb-2 col-sm-6 col-md-4 col-lg-4">
                                     <label for="kontraksi">Kontraksi</label>
-                                    <select class="form-select" name="kontraksi" id="kandungan_kontraksi" style="font-size:11px;min-height:20px;border-radius:0;padding-left:8px;padding-top:4px;padding-bottom:4px">
+                                    <select class="form-select" name="kontraksi" id="kandungan_kontraksi">
                                         <option value="Ada">Ada</option>
                                         <option value="Tidak">Tidak</option>
                                     </select>
@@ -276,30 +274,30 @@
                                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                                     <label for="djj">DJJ (Dpm)</label>
                                     <input type="text" class="form-control form-control-sm" id="kandungan_djj" name="alergi" placeholder=""
-                                        style="font-size:11px;min-height:20px;border-radius:0;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
+                                        onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <label for="inspeksi">Inspeksi</label>
                                     <textarea class="form-control" name="inspeksi" id="kandungan_inspeksi" cols="30" rows="3"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <label for="vt">VT</label>
                                     <textarea class="form-control" name="vt" id="kandungan_vt" cols="30" rows="3"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <label for="inspekulo">Inspekulo</label>
                                     <textarea class="form-control" name="inspekulo" id="kandungan_inspekulo" cols="30" rows="3"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <label for="rt">RT</label>
                                     <textarea class="form-control" name="rt" id="kandungan_rt" cols="30" rows="3"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
 
@@ -309,19 +307,19 @@
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="ultra">Ultrasonografi</label>
                                     <textarea class="form-control" name="ultra" id="kandungan_ultra" cols="30" rows="3"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="kardio">Kardiotografi</label>
                                     <textarea class="form-control" name="kardio" id="kandungan_kardio" cols="30" rows="3"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="lab">Laboratorium</label>
                                     <textarea class="form-control" name="lab" id="kandungan_lab" cols="30" rows="3"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                             </div>
@@ -329,19 +327,19 @@
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <div class="separator m-2">5. Diagnosis / Asesmen</div>
                                     <textarea class="form-control" name="diagnosis" id="kandungan_diagnosis" cols="30" rows="8"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <div class="separator m-2">6. Tata Laksana</div>
                                     <textarea class="form-control" name="tata" id="kandungan_tata" cols="30" rows="8"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-4">
                                     <div class="separator m-2">7. Edukasi</div>
                                     <textarea class="form-control" name="edukasi" id="kandungan_edukasi" cols="30" rows="8"
-                                        style="font-size:11px;min-height:20px;border-radius:0;resize:none" onfocus="removeZero(this)"
+                                        onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                             </div>

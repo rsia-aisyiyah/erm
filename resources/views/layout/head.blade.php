@@ -79,6 +79,10 @@
             overflow: auto;
         }
 
+        label {
+            font-size: 12px;
+        }
+
         .table-wrapper-scroll-y {
             display: block;
         }

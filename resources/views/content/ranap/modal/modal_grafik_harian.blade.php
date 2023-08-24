@@ -17,13 +17,13 @@
                                         <div class="col-md-4">
                                             <input type="text" class="form-control form-control-sm" id="no_rawat"
                                                 name="no_rawat" placeholder="" readonly
-                                                style="font-size:11px;min-height:20px;border-radius:0;"
+
                                                 onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                                         </div>
                                         <div class="col-md-8">
                                             <input class="form-control form-control-sm" id="nm_pasien"
                                                 name="nm_pasien" placeholder="" readonly
-                                                style="font-size:11px;min-height:20px;border-radius:0;"
+
                                                 onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                                         </div>
                                     </div>
@@ -40,7 +40,7 @@
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="suhu_tubuh" name="suhu_tubuh" placeholder=""
                                                         maxlength="8"
-                                                        style="font-size:11px;min-height:20px;border-radius:0;"
+
                                                         onfocus="removeZero(this)" onblur="cekKosong(this)"
                                                         value="-">
                                                 </td>
@@ -51,7 +51,7 @@
                                                 <td>
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="tensi" name="tensi" placeholder="" maxlength="8"
-                                                        style="font-size:11px;min-height:20px;border-radius:0;"
+
                                                         onfocus="removeZero(this)" onblur="cekKosong(this)"
                                                         value="-">
                                                 </td>
@@ -62,7 +62,7 @@
                                                 <td>
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="nadi" name="nadi" placeholder="" maxlength="8"
-                                                        style="font-size:11px;min-height:20px;border-radius:0;"
+
                                                         onfocus="removeZero(this)" onblur="cekKosong(this)"
                                                         value="-">
                                                 </td>
@@ -73,7 +73,7 @@
                                                 <td>
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="respirasi" name="respirasi" placeholder="" maxlength="8"
-                                                        style="font-size:11px;min-height:20px;border-radius:0;"
+
                                                         onfocus="removeZero(this)" onblur="cekKosong(this)"
                                                         value="-">
                                             </tr>
@@ -88,7 +88,7 @@
                                             <td>
                                                 <input type="text" class="form-control form-control-sm" id="spo2"
                                                     name="spo2" placeholder="" maxlength="8"
-                                                    style="font-size:11px;min-height:20px;border-radius:0;"
+
                                                     onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                                             </td>
                                         </tr>
@@ -98,7 +98,7 @@
                                             <td>
                                                 <input type="text" class="form-control form-control-sm" id="o2"
                                                     name="o2" placeholder="" maxlength="8"
-                                                    style="font-size:11px;min-height:20px;border-radius:0;"
+
                                                     onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                                             </td>
                                         </tr>
@@ -108,7 +108,7 @@
                                             <td>
                                                 <input type="text" class="form-control form-control-sm" id="gcs"
                                                     name="gcs" placeholder="" maxlength="8"
-                                                    style="font-size:11px;min-height:20px;border-radius:0;"
+
                                                     onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                                             </td>
                                         </tr>

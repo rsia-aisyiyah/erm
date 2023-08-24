@@ -2,44 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AsesmenMedisKandungan;
 use Illuminate\Http\Request;
+use App\Models\AsesmenMedisRajalKandungan;
 
-class AsesmenMedisKandunganController extends Controller
+class AsesmenMedisRajalKandunganController extends Controller
 {
-    protected $asmed;
     protected $track;
+    protected $asmed;
 
     public function __construct()
     {
-        $this->asmed = new AsesmenMedisKandungan();
+        $this->asmed = new AsesmenMedisRajalKandungan();
         $this->track = new TrackerSqlController();
     }
 
     function get($noRawat)
     {
-        $id = str_replace('-', '/', $noRawat);
-        $asmed = $this->asmed->where('no_rawat', $id)->with('regPeriksa', 'dokter')->first();
-
+        $id = str_replace($noRawat, '-', '/');
+        $asmed = $this->asmed->where('no_rawat', $id)->with(['regPeriksa.pasien', 'dokter'])->first();
         return response()->json($asmed);
     }
-    function create(Request $request)
+    function insert(Request $request)
     {
-        $data = $request->except(['_token']);
+        $data = $request->except(['_token', 'dokter', 'tgl_lahir']);
         $data['tanggal'] = date('Y-m-d H:i:s');
 
         $asmed = $this->asmed->create($data);
         $this->track->insertSql($this->asmed, $data);
-
         return response()->json($asmed);
     }
-    function update(Request $request)
+    function edit(Request $request)
     {
-        $data = $request->except(['_token']);
-        $clause = ['no_rawat' => $request->no_rawat];
+        $data = $request->except(['_token', 'dokter', 'tgl_lahir']);
+        $clause = ['no_rawat' => $data['no_rawat']];
+
         $asmed = $this->asmed->where($clause)->update($data);
         $this->track->updateSql($this->asmed, $data, $clause);
-
         return response()->json($asmed);
     }
 }
