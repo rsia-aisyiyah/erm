@@ -39,9 +39,12 @@
             box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05)
         }
 
+        .dropdown-item,
         .dropdown-menu {
             border-radius: 6px;
         }
+
+
 
         input[type=text],
         input[type=search],
@@ -61,8 +64,9 @@
             height: 32px;
         }
 
-        .form-select option {
+        option {
             padding: 2px;
+            border-radius: 6px;
         }
 
         textarea {
@@ -195,8 +199,8 @@
         }
 
         .card,
-        .card-header {
-            border-radius: 0px !important;
+        {
+        border-radius: 6px !important;
         }
 
         .nav-tabs .nav-link {

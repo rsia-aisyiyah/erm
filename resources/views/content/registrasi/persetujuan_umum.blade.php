@@ -779,7 +779,7 @@
 
     <div class="modal fade" id="modalTtd" tabindex="-1" aria-labelledby="modalTtd" aria-hidden="true">
         <div class="modal-dialog modal-md modal-dialog-centered">
-            <div class="modal-content" style="border-radius:0px">
+            <div class="modal-content">
                 <div class="modal-body">
                     <h5 class="text-center">Tanda Tangan</h5>
                     <div class="signature-pad" id="signature-pad">
@@ -807,7 +807,7 @@
     </div>
     <div class="modal fade" id="modalPenilaian" tabindex="-1" aria-labelledby="modalTtd" aria-hidden="true">
         <div class="modal-dialog modal-md modal-dialog-centered">
-            <div class="modal-content" style="border-radius:0px">
+            <div class="modal-content">
                 <div class="modal-body">
                     <div class="text-center">
                         <img id="img-pegawai" src="" class="rounded" alt="..." width="35%">

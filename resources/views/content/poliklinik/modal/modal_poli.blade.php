@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalPoli" tabindex="-1" aria-labelledby="modalPoli" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Poliklinik</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

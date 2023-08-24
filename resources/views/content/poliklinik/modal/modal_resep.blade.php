@@ -1,7 +1,7 @@
 <div class="modal fade" id="modalObatRacik" aria-labelledby="modalObatRacik" aria-hidden="true"
     style="background-color: #00000062!important;">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title fs-5" id="">Pilih Obat</h2>
             </div>

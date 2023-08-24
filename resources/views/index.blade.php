@@ -135,7 +135,7 @@
                 success: function(response) {
 
                     html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                     $.map(response, function(data) {
                         html += '<li>'
                         html += '<a data-id="' + data.nip +
@@ -582,7 +582,7 @@
                 },
                 success: function(response) {
                     html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                     $.map(response.data, function(data) {
                         $.map(data.gudang_barang, function(item) {
                             if (data) {

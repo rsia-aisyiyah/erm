@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalEwsRanap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-header">
                 <table class="borderless">
                     <tr>

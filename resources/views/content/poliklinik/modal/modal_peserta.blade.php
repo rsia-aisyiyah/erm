@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalPesertaBpjs" tabindex="-1" aria-labelledby="modalPesertaBpjs" aria-hidden="true" style="background-color: rgb(0 0 0 / 49%)">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">DETAIL DATA PESERTA</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

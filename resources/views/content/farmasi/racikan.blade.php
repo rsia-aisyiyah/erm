@@ -50,7 +50,7 @@
     <div class="modal fade" id="modalTemplate" aria-labelledby="modalTemplate" aria-hidden="true"
         style="background-color: #00000062!important;">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content" style="border-radius:0px">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="modal-title fs-5" id="">Pilih Obat</h2>
                 </div>
@@ -134,7 +134,7 @@
         function cariDokter(dokter) {
             getDokter(dokter.value).done(function(response) {
                 html =
-                    '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                    '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                 $.map(response, function(data) {
                     html += '<li>'
                     html += '<a data-id="' + data.kd_dokter +

@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalRujukanKeluar" tabindex="-1" aria-labelledby="modalSkrj" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-header text-bg-warning" style="border-radius:0px">
                 <h5 class="modal-title">FORM RUJUKAN KELUAR</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

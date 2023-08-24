@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalPoliRujuk" tabindex="-1" aria-labelledby="modalPoliRujuk" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title">REFERENSI POLI</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-center">Poli : {{ $poli->nm_poli }}</h5>
-                    <p style="background-color: #0067dd;color:white;padding:5px">
+                    <p style="background-color: var(--bs-blue);color:white;padding:5px;text-align:center;border-radius: 1em;">
                         <strong>{{ Request::get('dokter') ? 'Dokter : ' . $dokter->nm_dokter : '' }}</strong>
                     </p>
                     <table class="" style="margin-bottom : 10px">
@@ -728,7 +728,7 @@
                 getDiagnosa(dx).done(function(response) {
                     if (response) {
                         html =
-                            '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                            '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                         no = 1;
                         $.map(response, function(data) {
                             html +=

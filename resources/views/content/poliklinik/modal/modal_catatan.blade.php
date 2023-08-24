@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalCatatan" tabindex="-1" aria-labelledby="modalCatatan" aria-hidden="true" style="background-color: #00000085;">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-header" style="border-radius:0px;background-color: #ffd900;color:#000000">
                 <h5 class="modal-title" style="font-size: 1em">Diagnosa, Prosedur & Catatan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

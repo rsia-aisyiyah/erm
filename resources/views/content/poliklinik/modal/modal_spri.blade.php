@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalSpri" tabindex="-1" aria-labelledby="modalSpri" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-header" style="border-radius:0px;background-color: #8c00ff;color:#fff">
                 <h5 class="modal-title">FORM SURAT PERINTAH RAWAT INAP</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

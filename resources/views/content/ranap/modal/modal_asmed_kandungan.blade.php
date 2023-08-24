@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalAsmedRanapKandungan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title fs-5" id="exampleModalLabel">ASESMEN MEDIS KANDUNGAN</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -364,7 +364,7 @@
             if (dokter.length >= 3) {
                 getDokter(dokter).done((response) => {
                     html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                     $.map(response, function(data) {
                         html += '<li>'
                         html += '<a data-id="' + data.kd_dokter + '" data-nama="' + data.nm_dokter + '" class="dropdown-item" onclick="setDokterAsmed(this, \'#kandungan_kd_dokter\', \'#kandungan_dokter\')">' + data.nm_dokter + '</a>'

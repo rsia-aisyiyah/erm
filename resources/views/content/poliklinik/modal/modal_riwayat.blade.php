@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalRiwayat" tabindex="-1" aria-labelledby="modalRiwayat" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">RIWAYAT PASIEN</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -18,7 +18,7 @@
 </div>
 <div class="modal fade" id="modal-image" aria-hidden="true" aria-labelledby="modal-image" tabindex="-1" style="background-color:#0006;box-shadow: inset 0px -1rem 20rem 20px #000;">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             <div class="modal-body">
                 <img src="" class="img-thumbnails popup" width="100%" />
             </div>

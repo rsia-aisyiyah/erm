@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalAskepAnak" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
-        <div class="modal-content" style="border-radius:0px">
+        <div class="modal-content">
             @if (Request::segment(2) != 'P003' || Request::segment(2) != 'P008')
                 <div class="modal-header">
                     <h5 class="modal-title fs-6">ASESMEN PASIEN RAWAT

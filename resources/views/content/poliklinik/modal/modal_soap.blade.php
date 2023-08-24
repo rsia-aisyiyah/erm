@@ -860,7 +860,7 @@
             getDiagnosa(diagnosa.value).done(function(response) {
                 if (response) {
                     html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                     no = 1;
                     $.map(response, function(data) {
                         html +=
@@ -885,7 +885,7 @@
                     success: function(response) {
                         if (response) {
                             html =
-                                '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                                '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                             no = 1;
                             $.map(response, function(data) {
                                 html +=
@@ -1075,7 +1075,7 @@
                 success: function(response) {
                     if (Object.keys(response).length > 0) {
                         html =
-                            '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                            '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                         $.map(response, function(data) {
                             html +=
                                 '<li onclick="setNamaRacik(this)" data-nama="' + data.nm_racik + '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' + data.nm_racik + '</a></li>'
@@ -1109,7 +1109,7 @@
                 success: function(response) {
                     // console.log(response)
                     html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                     $.map(response.data, function(data) {
                         $.map(data.gudang_barang, function(item) {
                             if (data) {
@@ -1154,7 +1154,7 @@
                 },
                 success: function(response) {
                     if (response) {
-                        html = '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;border-radius:0;font-size:12px">';
+                        html = '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                         $.map(response, function(data) {
                             html +=
                                 '<li onclick="ambilAturan(this)" ><a class="dropdown-item" href="#" style="overflow:hidden">' +
