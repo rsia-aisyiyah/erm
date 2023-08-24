@@ -55,9 +55,6 @@
             transition: all .1s linear;
         }
 
-
-
-
         .form-select {
             border-radius: 6px;
             font-size: 11px;

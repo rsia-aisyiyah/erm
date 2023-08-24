@@ -33,7 +33,13 @@ class UgdController extends Controller
 
         if ($request->nm_pasien) {
             $regPeriksa->whereHas('pasien', function ($q) use ($request) {
-                return $q->where('nm_pasien', $request->nm_pasien);
+                return $q->where('nm_pasien', 'like', "%$request->nm_pasien%");
+            })->get();
+        }
+
+        if ($request->spesialis) {
+            $regPeriksa->whereHas('dokter', function ($q) use ($request) {
+                return $q->where('kd_sps', $request->spesialis);
             })->get();
         }
 

@@ -14,13 +14,21 @@
                                 <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
                                 <div class="input-group-text">ke</div>
                                 <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
-                                {{-- <div class="input-group-text">ke</div> --}}
                                 <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-3 col-sm-12">
                             <label for="" style="font-size: 12px;margin-bottom:0px">Pasien</label>
-                            <input type="search" class="form-control form-control-sm" id="nm_pasien" placeholder="" autocomplete="off">
+                            <input type="search" class="form-control form-control-sm" id="cari-pasien" placeholder="" autocomplete="off">
+                        </div>
+                        <div class="col-md-6 col-lg-3 col-sm-12">
+                            <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
+                            <select name="spesialis" id="spesialis" class="form-select form-select-sm">
+                                <option value="">Semua</option>
+                                <option value="S0007">Spesialis Umum</option>
+                                <option value="S0003">Spesialis Anak</option>
+                                <option value="S0001">Spesialis Kandungan & Kebidanan</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -50,9 +58,14 @@
         var tgl_awal = '';
         var tgl_akhir = '';
         var nm_pasien = '';
+        var spesialis = '';
         var tableUdg = '';
         var dateStart = '';
         $(document).ready(() => {
+            nm_pasien = localStorage.getItem('nm_pasien') ? localStorage.getItem('nm_pasien') : '';
+            spesialis = localStorage.getItem('spesialis') ? localStorage.getItem('spesialis') : '';
+            $('#cari-pasien').val(nm_pasien)
+            $('#spesialis option[value="' + spesialis + '"]').prop('selected', true);
             date = new Date()
             hari = ('0' + (date.getDate())).slice(-2);
             bulan = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -83,6 +96,13 @@
             tbUgd()
             $('.tgl_awal').datepicker('setDate', splitTanggal(tgl_awal))
             $('.tgl_akhir').datepicker('setDate', splitTanggal(tgl_akhir))
+
+        })
+        $('#spesialis').on('change', () => {
+            spesialis = $('#spesialis option:selected').val()
+            localStorage.setItem('spesialis', spesialis);
+            $('#tb_ugd').DataTable().destroy();
+            tbUgd()
         })
         $('#btn-filter-tgl').on('click', () => {
             t1 = $('.tgl_awal').datepicker('getFormattedDate')
@@ -110,7 +130,7 @@
             tableUdg = $('#tb_ugd').DataTable({
                 processing: true,
                 scrollX: true,
-                scrollY: 600,
+                scrollY: 400,
                 serverSide: true,
                 stateSave: true,
                 ordering: false,
@@ -123,6 +143,7 @@
                         tgl_awal: tgl_awal,
                         tgl_akhir: tgl_akhir,
                         nm_pasien: nm_pasien,
+                        spesialis: spesialis,
                     },
                 },
                 initComplete: function() {
@@ -170,9 +191,9 @@
                         data: 'kamar',
                         render: (data, type, row, meta) => {
                             if (Object.keys(row.kamar_inap).length > 0) {
-                                return '<span class="text-danger">Rawat Inap</span>';
+                                return '<button type="button" class="btn btn-danger btn-sm">Rawat Inap</button>';
                             } else {
-                                return '<span class="text-success">Rawat Jalan</span>';
+                                return '<button type="button" class="btn btn-warning btn-sm">Rawat Jalan</button>';
 
                             }
                         }
@@ -186,6 +207,25 @@
                 }
             })
         }
+
+        $('#cari-pasien').on('keyup', () => {
+            const nama = $('#cari-pasien').val()
+            if (nama.length >= 3) {
+                nm_pasien = nama;
+                localStorage.setItem('nm_pasien', nm_pasien)
+                $('#tb_ugd').DataTable().destroy()
+                tbUgd();
+            }
+        })
+        $('#cari-pasien').on('search', () => {
+            const nama = $('#cari-pasien').val()
+            if (nama.length == 0) {
+                localStorage.removeItem('nm_pasien', nm_pasien)
+                nm_pasien = '';
+                $('#tb_ugd').DataTable().destroy()
+                tbUgd();
+            }
+        })
 
         function modalSoapUgd(noRawat) {
 
