@@ -118,6 +118,7 @@ Route::middleware('auth')->group(function () {
     Route::get('poliklinik/asmed/kandungan/get/{noRawat}', [AsesmenMedisRajalKandunganController::class, 'get']);
     Route::post('poliklinik/asmed/kandungan/simpan', [AsesmenMedisRajalKandunganController::class, 'insert']);
     Route::post('poliklinik/asmed/kandungan/edit', [AsesmenMedisRajalKandunganController::class, 'edit']);
+    Route::get('poliklinik/asmed/kandungan/riwayat/{no_rkm_medis}', [PasienController::class, 'getAsmed']);
 
     Route::get('registrasi', [RegPeriksaController::class, 'index']);
     Route::get('registrasi/ambil', [RegPeriksaController::class, 'ambil']);

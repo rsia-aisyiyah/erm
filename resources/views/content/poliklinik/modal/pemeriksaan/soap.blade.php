@@ -120,6 +120,7 @@
                     <td></td>
                     <td>
                         <button class="btn btn-warning btn-sm" type="button" style="font-size: 12px" onclick="catatanPasien()"><i class="bi bi-pen"></i> Diagnosa & Catatan</button>
+                        <button type="button" class="btn btn-success btn-sm" onclick="simpanSoap()"><i class="bi bi-save"></i> Simpan SOAP</button>
                     </td>
                 </tr>
             </table>

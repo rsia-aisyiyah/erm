@@ -18,13 +18,13 @@ class AsesmenMedisRajalKandunganController extends Controller
 
     function get($noRawat)
     {
-        $id = str_replace($noRawat, '-', '/');
+        $id = str_replace('-', '/', $noRawat);
         $asmed = $this->asmed->where('no_rawat', $id)->with(['regPeriksa.pasien', 'dokter'])->first();
         return response()->json($asmed);
     }
     function insert(Request $request)
     {
-        $data = $request->except(['_token', 'dokter', 'tgl_lahir']);
+        $data = $request->except('_token');
         $data['tanggal'] = date('Y-m-d H:i:s');
 
         $asmed = $this->asmed->create($data);

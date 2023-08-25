@@ -128,4 +128,8 @@ class RegPeriksa extends Model
     {
         return $this->hasOne(BridgingSPRI::class, 'no_rawat', 'no_rawat');
     }
+    function asmedRajalKandungan()
+    {
+        return $this->hasMany(AsesmenMedisRajalKandungan::class, 'no_rawat', 'no_rawat');
+    }
 }

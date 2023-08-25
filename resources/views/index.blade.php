@@ -80,6 +80,26 @@
             return txtTanggal;
         }
 
+        function getDataForm(form, element, except) {
+            let data = {};
+            // get all data from input
+            for (let index = 0; index < element.length; index++) {
+                const e = element[index];
+                $(`${form} ${e}`).each((index, el) => {
+                    keys = $(el).prop('name');
+                    data[keys] = $(el).val();
+                })
+            }
+            // remove items on array data
+            for (let i = 0; i < except.length; i++) {
+                cek = data.hasOwnProperty(except[i])
+                if (cek) {
+                    delete data[except[i]]
+                }
+            }
+            return data;
+        }
+
         function hitungUmur(tgl_lahir) {
             sekarang = new Date();
             hari = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate());
