@@ -30,11 +30,11 @@
                     </div>
                     <div class="mb-2 col-sm-12 col-md-6 col-lg-5">
                         <div class="input-group">
-                            <select class="form-select form-select-sm" id="anamnesis">
+                            <select class="form-select form-select-sm" id="anamnesis" name="anamnesis">
                                 <option value="Autoanamnesis" selected>Autoanamnesis</option>
                                 <option value="Alloanamnesis">Alloanamnesis</option>
                             </select>
-                            <input type="search" class="form-control form-control-sm hubungan" placeholder="" aria-label="" id="hubungan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                            <input type="search" class="form-control form-control-sm hubungan" placeholder="" aria-label="" id="hubungan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" name="hubungan" autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                         onblur="cekKosong(this)">-</textarea>
                 </div>
                 <div class="mb-3 col-sm-12 col-md-6 col-lg-4">
-                    <label for="rpk">Alergi</label>
+                    <label for="alergi">Alergi</label>
                     <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder=""
                         onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
@@ -130,8 +130,8 @@
                     <input type="text" class="form-control form-control-sm" id="suhu" name="suhu" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
-                    <label for="spo2">SpO2(%)</label>
-                    <input type="text" class="form-control form-control-sm" id="spo" name="spo2" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                    <label for="spo">spo(%)</label>
+                    <input type="text" class="form-control form-control-sm" id="spo" name="spo" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
@@ -201,8 +201,8 @@
                                 </select>
                             </div>
                             <div class="mb-1 col-sm-12 col-md-6 col-lg-6">
-                                <label for="">Thorax :</label>
-                                <select class="form-select" name="thorax" id="thorax">
+                                <label for="">thoraks :</label>
+                                <select class="form-select" name="thoraks" id="thoraks">
                                     <option value="Normal">Normal</option>
                                     <option value="Abnormal">Abnormal</option>
                                     <option value="Tidak Diperiksa">Tidak Diperiksa</option>
@@ -227,17 +227,17 @@
             <div class="row">
                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                     <label for="tfu">TFU (cm)</label>
-                    <input type="text" class="form-control form-control-sm" id="tfu" name="alergi" placeholder=""
+                    <input type="text" class="form-control form-control-sm" id="tfu" name="tfu" placeholder=""
                         onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                     <label for="tbj">TBJ (gram)</label>
-                    <input type="text" class="form-control form-control-sm" id="tbj" name="alergi" placeholder=""
+                    <input type="text" class="form-control form-control-sm" id="tbj" name="tbj" placeholder=""
                         onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                     <label for="his">HIS (x/10 mnt)</label>
-                    <input type="text" class="form-control form-control-sm" id="his" name="alergi" placeholder=""
+                    <input type="text" class="form-control form-control-sm" id="his" name="his" placeholder=""
                         onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-2 col-sm-6 col-md-4 col-lg-4">
@@ -249,7 +249,7 @@
                 </div>
                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                     <label for="djj">DJJ (Dpm)</label>
-                    <input type="text" class="form-control form-control-sm" id="djj" name="alergi" placeholder=""
+                    <input type="text" class="form-control form-control-sm" id="djj" name="djj" placeholder=""
                         onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-6">
@@ -318,6 +318,11 @@
                         onfocus="removeZero(this)"
                         onblur="cekKosong(this)">-</textarea>
                 </div>
+                <div class="mt-3 col-sm-12 col-md-12 col-lg-4">
+                    <button type="button" class="btn btn-success btn-sm" name="simpan" onclick="simpanAsmedKandungan()"><i class="bi bi-save"></i> Simpan Asesmen</button>
+                    <button type="button" class="btn btn-warning btn-sm" name="edit" onclick="editAsmedKandungan()"><i class="bi bi-pencil"></i> Ubah Asesmen</button>
+                </div>
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </div>
         </div>
     </div>
@@ -353,113 +358,34 @@
             $('.list-dokter').fadeOut();
         }
 
-        $('#modalAsmedKandungan').on('hidden.bs.modal', () => {
-            $('#no_rawat').val('-');
-            $('#pasien').val('-');
-            $('#tgl_lahir').val('-');
-            $('#kd_dokter').val('-');
-            $('#dokter').val('-');
-            $('#anamnesis').val('Autoanamnesis').change();
-            $('#hubungan').val('-');
-            $('#keluhan_utama').val('-');
-            $('#rps').val('-');
-            $('#rpd').val('-');
-            $('#rpk').val('-');
-            $('#rpo').val('-');
-            $('#alergi').val('-');
-            $('#keadaan').val('Sehat').change();
-            $('#gcs').val('-');
-            $('#kesadaran').val('Compos Mentis').change();
-            $('#td').val('-');
-            $('#nadi').val('-');
-            $('#rr').val('-');
-            $('#suhu').val('-');
-            $('#spo').val('-');
-            $('#bb').val('-');
-            $('#tb').val('-');
-            $('#kepala').val('Normal').change();
-            $('#mata').val('Normal').change();
-            $('#gigi').val('Normal').change();
-            $('#tht').val('Normal').change();
-            $('#gigi').val('Normal').change();
-            $('#jantung').val('Normal').change();
-            $('#paru').val('Normal').change();
-            $('#abdomen').val('Normal').change();
-            $('#genital').val('Normal').change();
-            $('#ekstremitas').val('Normal').change();
-            $('#kulit').val('Normal').change();
-            $('#ket_fisik').val('-');
-            $('#tfu').val('-');
-            $('#tbj').val('-');
-            $('#kontraksi').val('Ada').change();
-            $('#his').val('-');
-            $('#djj').val('-');
-            $('#inspeksi').val('-');
-            $('#inspekulo').val('-');
-            $('#vt').val('-');
-            $('#rt').val('-');
-            $('#ultra').val('-');
-            $('#kardio').val('-');
-            $('#lab').val('-');
-            $('#diagnosis').val('-');
-            $('#tata').val('-');
-            $('#edukasi').val('-');
-        });
+        function simpanAsmedKandungan() {
+            element = ['input', 'select', 'textarea'];
+            except = ['dokter', 'tgl_lahir', 'pasien']
+            const data = getDataForm('.form-asmed-kandungan', element, except);
+            $.ajax({
+                url: '/erm/poliklinik/asmed/kandungan/simpan',
+                data: data,
+                method: 'POST',
+                dataType: 'JSON',
+            }).done((response) => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses !',
+                    text: 'Data asesmen ditambah',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                $('.form-asmed-kandungan .simpan').css('display', 'none')
+                $('.form-asmed-kandungan .edit').css('display', 'inline')
+            })
+        }
 
-        $('.btn-asmed-kandungan').on('click', () => {
-            data = {
-                no_rawat: $('#no_rawat').val(),
-                kd_dokter: $('#kd_dokter').val(),
-                anamnesis: $('#anamnesis option:selected').val(),
-                hubungan: $('#hubungan').val(),
-                keluhan_utama: $('#keluhan_utama').val(),
-                rps: $('#rps').val(),
-                rpd: $('#rpd').val(),
-                rpk: $('#rpk').val(),
-                rpo: $('#rpo').val(),
-                alergi: $('#alergi').val(),
-                keadaan: $('#keadaan option:selected').val(),
-                gcs: $('#gcs').val(),
-                kesadaran: $('#kesadaran option:selected').val(),
-                td: $('#td').val(),
-                nadi: $('#nadi').val(),
-                rr: $('#rr').val(),
-                suhu: $('#suhu').val(),
-                spo: $('#spo').val(),
-                bb: $('#bb').val(),
-                tb: $('#tb').val(),
-                kepala: $('#kepala').val(),
-                mata: $('#mata option:selected').val(),
-                gigi: $('#gigi option:selected').val(),
-                tht: $('#tht option:selected').val(),
-                gigi: $('#gigi option:selected').val(),
-                jantung: $('#jantung option:selected').val(),
-                paru: $('#paru option:selected').val(),
-                abdomen: $('#abdomen option:selected').val(),
-                genital: $('#genital option:selected').val(),
-                ekstremitas: $('#ekstremitas option:selected').val(),
-                kulit: $('#kulit option:selected').val(),
-                ket_fisik: $('#ket_fisik').val(),
-                tfu: $('#tfu').val(),
-                tbj: $('#tbj').val(),
-                his: $('#his').val(),
-                kontraksi: $('#kontraksi option:selected').val(),
-                djj: $('#djj').val(),
-                inspeksi: $('#inspeksi').val(),
-                vt: $('#vt').val(),
-                inspekulo: $('#inspekulo').val(),
-                rt: $('#rt').val(),
-                lab: $('#lab').val(),
-                ultra: $('#ultra').val(),
-                kardio: $('#kardio').val(),
-                diagnosis: $('#diagnosis').val(),
-                tata: $('#tata').val(),
-                edukasi: $('#edukasi').val(),
-            }
-            data._token = "{{ csrf_token() }}";
-            console.log(data)
+        function editAsmedKandungan() {
+            element = ['input', 'select', 'textarea'];
+            except = ['dokter', 'tgl_lahir', 'pasien']
+            const data = getDataForm('.form-asmed-kandungan', element, except);
             $.ajax({
-                url: '/erm/asmed/ranap/kandungan/simpan',
+                url: '/erm/poliklinik/asmed/kandungan/edit',
                 data: data,
                 method: 'POST',
                 dataType: 'JSON',
@@ -467,80 +393,11 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Sukses !',
-                    text: 'Data berhasil berhasil ditambah',
+                    text: 'Data asesmen diubah',
                     showConfirmButton: false,
                     timer: 1500
                 })
-                $('#modalAsmedKandungan').modal('hide')
-            });
-        })
-        $('.btn-asmed-kandungan-ubah').on('click', () => {
-            data = {
-                no_rawat: $('#no_rawat').val(),
-                kd_dokter: $('#kd_dokter').val(),
-                anamnesis: $('#anamnesis option:selected').val(),
-                hubungan: $('#hubungan').val(),
-                keluhan_utama: $('#keluhan_utama').val(),
-                rps: $('#rps').val(),
-                rpd: $('#rpd').val(),
-                rpk: $('#rpk').val(),
-                rpo: $('#rpo').val(),
-                alergi: $('#alergi').val(),
-                keadaan: $('#keadaan option:selected').val(),
-                gcs: $('#gcs').val(),
-                kesadaran: $('#kesadaran option:selected').val(),
-                td: $('#td').val(),
-                nadi: $('#nadi').val(),
-                rr: $('#rr').val(),
-                suhu: $('#suhu').val(),
-                spo: $('#spo').val(),
-                bb: $('#bb').val(),
-                tb: $('#tb').val(),
-                kepala: $('#kepala').val(),
-                mata: $('#mata option:selected').val(),
-                gigi: $('#gigi option:selected').val(),
-                tht: $('#tht option:selected').val(),
-                gigi: $('#gigi option:selected').val(),
-                jantung: $('#jantung option:selected').val(),
-                paru: $('#paru option:selected').val(),
-                abdomen: $('#abdomen option:selected').val(),
-                genital: $('#genital option:selected').val(),
-                ekstremitas: $('#ekstremitas option:selected').val(),
-                kulit: $('#kulit option:selected').val(),
-                ket_fisik: $('#ket_fisik').val(),
-                tfu: $('#tfu').val(),
-                tbj: $('#tbj').val(),
-                his: $('#his').val(),
-                kontraksi: $('#kontraksi option:selected').val(),
-                djj: $('#djj').val(),
-                inspeksi: $('#inspeksi').val(),
-                vt: $('#vt').val(),
-                inspekulo: $('#inspekulo').val(),
-                rt: $('#rt').val(),
-                lab: $('#lab').val(),
-                ultra: $('#ultra').val(),
-                kardio: $('#kardio').val(),
-                diagnosis: $('#diagnosis').val(),
-                tata: $('#tata').val(),
-                edukasi: $('#edukasi').val(),
-            }
-            data._token = "{{ csrf_token() }}";
-            console.log(data)
-            $.ajax({
-                url: '/erm/asmed/ranap/kandungan/ubah',
-                data: data,
-                method: 'POST',
-                dataType: 'JSON',
-            }).done((response) => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sukses !',
-                    text: 'Data berhasil diubah',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                $('#modalAsmedKandungan').modal('hide')
-            });
-        })
+            })
+        }
     </script>
 @endpush
