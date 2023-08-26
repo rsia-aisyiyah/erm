@@ -324,21 +324,18 @@
                     teksRd = '';
                     teksRr = '';
                     $.map(response, function(res) {
+                        console.log(res);
                         $.map(res.resep_dokter, function(rd) {
-                            teksRd += rd.data_barang.nama_brng + ' ' + rd.jml + ' ' + rd
-                                .aturan_pakai + '\n';
+                            teksRd += `${rd.data_barang.nama_brng}, jml : ${rd.jml} ${rd.data_barang.kode_satuan.satuan} aturan pakai ${rd.aturan_pakai} \n`;
                         })
 
                         $.map(res.resep_racikan, function(rr) {
-                            teksRr += rr.metode.nm_racik + ' ' + rr.nama_racik +
-                                ' ' + rr
-                                .aturan_pakai + '\n' + 'Isi : '
+                            teksRr += `${rr.metode.nm_racik} ${rr.nama_racik}, jml : ${rr.jml_dr} aturan pakai ${rr.aturan_pakai}, isian :  \n`
+                            let no = 1
                             $.map(rr.detail_racikan, function(dr) {
-                                // console.log('Detail Racikan', rr);
                                 if (rr.no_racik == dr.no_racik) {
-                                    teksRr += dr.databarang.nama_brng +
-                                        ' ' +
-                                        dr.kandungan + ' mg' + ', ';
+                                    teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, \n`
+                                    no++;
                                 }
                             })
                             teksRr += '\n';
