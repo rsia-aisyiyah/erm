@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 {{-- tabs --}}
-                <ul class="nav nav-tabs" id="tab-soap-ranap" role="tablist">
+                <ul class="nav nav-tabs" id="tab-soap-rajal" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
                             data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
@@ -27,7 +27,7 @@
                         aria-labelledby="home-tab" tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.soap')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-asmed-pane" role="tabpanel" aria-labelledby="tab-tabel"
+                    <div class="tab-pane fade p-3" id="tab-asmed-pane" role="tabpanel" aria-labelledby="tab-asmed"
                         tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.asmed_kandungan')
                     </div>
@@ -1197,7 +1197,9 @@
             ambilDiagnosaPasien(id);
             ambilProsedurPasien(id);
             getRegPeriksa(id).done((regPeriksa) => {
-                tbAsmedKandungan(regPeriksa.no_rkm_medis)
+                getListAsmedRajalKandungan(regPeriksa.no_rkm_medis).done((asmed) => {
+                    listAsmedKandungan(asmed)
+                })
                 $('.form-asmed-kandungan input[name="no_rawat"]').val(regPeriksa.no_rawat)
                 $('.form-asmed-kandungan input[name="pasien"]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
                 $('.form-asmed-kandungan input[name="tgl_lahir"]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)

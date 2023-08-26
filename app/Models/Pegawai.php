@@ -19,4 +19,8 @@ class Pegawai extends Model
     {
         return $this->hasOne(RsiaGeneralConsent::class, 'nik', 'nik');
     }
+    function sidikjari()
+    {
+        return $this->hasOne(SidikJari::class, 'id', 'id');
+    }
 }

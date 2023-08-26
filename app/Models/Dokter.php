@@ -41,7 +41,4 @@ class Dokter extends Model
     {
         return $this->belongsTo(Pegawai::class, 'kd_dokter', 'nik');
     }
-    // public function jadwal(){
-    //     return $this->hasMany()
-    // }
 }

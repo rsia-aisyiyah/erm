@@ -149,6 +149,14 @@
             padding: 5px;
         }
 
+        .card-text {
+            font-size: 12px;
+        }
+
+        .card-shadow {
+            box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
         .separator {
             font-size: 12px;
             color: #6e6e6e;
