@@ -109,6 +109,7 @@ class PemeriksaanRalanController extends Controller
             'penilaian' => $request->penilaian,
             'instruksi' => $request->instruksi,
             'evaluasi' => $request->evaluasi,
+            'lingkar_perut' => '-',
         ];
         $grafik = [
             'nip' => $request->nip,
@@ -194,6 +195,7 @@ class PemeriksaanRalanController extends Controller
             'penilaian' => $request->penilaian,
             'instruksi' => $request->instruksi,
             'evaluasi' => $request->evaluasi,
+            'lingkar_perut' => '-',
             'nip' => $request->nip,
         ];
         $dataGrafik = [

@@ -223,6 +223,7 @@
                     alergi: $('#alergi').val(),
                     instruksi: $('#instruksi').val(),
                     evaluasi: '-',
+                    lingkar_perut: '-',
                     nip: $('#nik').val(),
                     kd_dokter: "{{ Request::get('dokter') }}",
                     kd_poli: "{{ Request::segment(2) }}",
