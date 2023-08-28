@@ -13,13 +13,21 @@
                             data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
                             aria-selected="true">SOAP</button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab-asesmen" data-bs-toggle="tab" data-bs-target="#tab-asmed-pane"
-                            type="button" role="tab" aria-controls="tab-asmed-pane" aria-selected="false">Asesmen Medis</button>
+                    <li class="nav-item" role="presentation" id="li-asmed-obg" style="display:none">
+                        <button class="nav-link" id="tab-asesmen-obg" data-bs-toggle="tab" data-bs-target="#tab-asmed-obg"
+                            type="button" role="tab" aria-controls="tab-asmed-obg" aria-selected="false">Asesmen Medis Obgyn</button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item" role="presentation" id="li-asmed-ana" style="display:none">
+                        <button class="nav-link" id="tab-asesmen-anak" data-bs-toggle="tab" data-bs-target="#tab-asmed-ana"
+                            type="button" role="tab" aria-controls="tab-asmed-ana" aria-selected="false">Asesmen Medis Anak</button>
+                    </li>
+                    <li class="nav-item" role="presentation" id="li-data-obg" style="display:none">
                         <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-asmed"
                             type="button" role="tab" aria-controls="tab-tabel-asmed" aria-selected="false">Data Asesmen</button>
+                    </li>
+                    <li class="nav-item" role="presentation" id="li-data-anak" style="display:none">
+                        <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-anak"
+                            type="button" role="tab" aria-controls="tab-tabel-anak" aria-selected="false">Data Asesmen Anak</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -27,13 +35,21 @@
                         aria-labelledby="home-tab" tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.soap')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-asmed-pane" role="tabpanel" aria-labelledby="tab-asmed"
+                    <div class="tab-pane fade p-3" id="tab-asmed-obg" role="tabpanel" aria-labelledby="tab-asmed"
                         tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.asmed_kandungan')
+                    </div>
+                    <div class="tab-pane fade p-3" id="tab-asmed-ana" role="tabpanel" aria-labelledby="tab-asmed"
+                        tabindex="0">
+                        @include('content.poliklinik.modal.pemeriksaan.asmed_anak')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-tabel-asmed" role="tabpanel" aria-labelledby="tab-tabel"
                         tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.tabel_asmed_kandungan')
+                    </div>
+                    <div class="tab-pane fade p-3" id="tab-tabel-anak" role="tabpanel" aria-labelledby="tab-tabel"
+                        tabindex="0">
+                        @include('content.poliklinik.modal.pemeriksaan.list_asmed_anak')
                     </div>
                 </div>
             </div>
@@ -243,11 +259,7 @@
                             cekResep(id)
                         },
                         error: function() {
-                            Swal.fire(
-                                'Gagal !',
-                                'Obat tidak tersimpan',
-                                'error'
-                            )
+                            Swal.fire('Gagal !', 'Obat tidak tersimpan', 'error')
                         }
                     })
                 }
@@ -382,16 +394,8 @@
                         kandungan = res.kandungan != 0 ? res.kandungan : res.data_barang.kapasitas;
 
                         html += '<tr class="obat-' + no + '">'
-                        html +=
-                            '<td><input type="hidden" id="kode_brng' + no + '" value="' +
-                            res
-                            .kode_brng +
-                            '" name="kode_brng[]"/>' + res.data_barang.nama_brng + '</td>'
-                        html +=
-                            '<td><input type="hidden" id="kps' + no +
-                            '" name="kps[]" value="' +
-                            res.data_barang.kapasitas +
-                            '"/>' + res.data_barang.kapasitas + ' mg </td>'
+                        html += '<td><input type="hidden" id="kode_brng' + no + '" value="' + res.kode_brng + '" name="kode_brng[]"/>' + res.data_barang.nama_brng + '</td>'
+                        html += '<td><input type="hidden" id="kps' + no + '" name="kps[]" value="' + res.data_barang.kapasitas + '"/>' + res.data_barang.kapasitas + ' mg </td>'
                         html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' + no + '" name="p1[]" value="' + res.p1 + '" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
                         html += '<td>/</td>'
                         html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' + no + '"name="p2[]" onkeyup="hitungObatRacik(' + no + ')" value="' + res.p2 + '" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
@@ -1189,41 +1193,69 @@
 
         $('#modalSoap').on('shown.bs.modal', function() {
             $('.tambah_umum').css('visibility', 'visible')
+            let kd_dokter = "{{ Request::get('dokter') }}"
+
             modalsoap(id);
             cekResep(id);
             ambilDiagnosaPasien(id);
             ambilProsedurPasien(id);
             getRegPeriksa(id).done((regPeriksa) => {
-                getListAsmedRajalKandungan(regPeriksa.no_rkm_medis).done((asmed) => {
-                    listAsmedKandungan(asmed)
-                })
-                $('.form-asmed-kandungan input[name="no_rawat"]').val(regPeriksa.no_rawat)
-                $('.form-asmed-kandungan input[name="pasien"]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
-                $('.form-asmed-kandungan input[name="tgl_lahir"]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
-                $('.form-asmed-kandungan input[name="kd_dokter"]').val(regPeriksa.kd_dokter)
-                $('.form-asmed-kandungan input[name="dokter"]').val(regPeriksa.dokter.nm_dokter)
-            })
-            getPemeriksaanPoli(id).done((response) => {
-                if (Object.keys(response).length != 0) {
-                    $('.form-asmed-kandungan select[name="kesadaran"]').val(response.kesadaran).change();
-                    $('.form-asmed-kandungan input[name="gcs"]').val(response.gcs);
-                    $('.form-asmed-kandungan input[name="tb"]').val(response.tinggi);
-                    $('.form-asmed-kandungan input[name="bb"]').val(response.berat);
-                    $('.form-asmed-kandungan input[name="td"]').val(response.tensi);
-                    $('.form-asmed-kandungan input[name="nadi"]').val(response.nadi);
-                    $('.form-asmed-kandungan input[name="rr"]').val(response.respirasi);
-                    $('.form-asmed-kandungan input[name="suhu"]').val(response.suhu_tubuh);
-                    $('.form-asmed-kandungan input[name="spo"]').val(response.spo);
-                    $('.form-asmed-kandungan textarea[name="keluhan_utama"]').val(response.keluhan);
-                    $('.form-asmed-kandungan textarea[name="ket_fisik"]').val(response.pemeriksaan);
-                    $('.form-asmed-kandungan textarea[name="diagnosis"]').val(response.penilaian);
-                    $('.form-asmed-kandungan textarea[name="konsul"]').val(response.instruksi);
+                var form = '';
+                console.log('regPeriksa', regPeriksa)
 
+                if (regPeriksa.dokter.kd_sps == 'S0003') {
+                    $('#li-asmed-ana').css('display', 'inline');
+                    $('#li-data-anak').css('display', 'inline');
+                    $('#li-asmed-obg').css('display', 'none');
+                    $('#li-data-obg').css('display', 'none');
+                    setAsmedAnak(id);
+                    form = '.form-asmed-anak';
+                    getListAsmedRajalAnak(regPeriksa.no_rkm_medis).done((anak) => {
+                        listAsmedAnak(anak)
+                    })
+                } else if (regPeriksa.dokter.kd_sps == 'S0001') {
+                    getListAsmedRajalKandungan(regPeriksa.no_rkm_medis).done((asmed) => {
+                        listAsmedKandungan(asmed)
+                    })
+                    setAsmedKandungan(id);
+                    $('#li-asmed-ana').css('display', 'none');
+                    $('#li-data-anak').css('display', 'none');
+                    $('#li-asmed-obg').css('display', 'inline');
+                    $('#li-data-obg').css('display', 'inline');
+                    form = '.form-asmed-kandungan';
                 }
+                $(`${form} input[name="no_rawat"]`).val(regPeriksa.no_rawat)
+                $(`${form} input[name="pasien"]`).val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
+                $(`${form} input[name="tgl_lahir"]`).val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
+                $(`${form} input[name="kd_dokter"]`).val(regPeriksa.kd_dokter)
+                $(`${form} input[name="dokter"]`).val(regPeriksa.dokter.nm_dokter)
+                getPemeriksaanPoli(id).done((response) => {
+                    if (Object.keys(response).length != 0) {
+                        $(`${form} select[name="kesadaran"]`).val(response.kesadaran).change();
+                        $(`${form} input[name="gcs"]`).val(response.gcs);
+                        $(`${form} input[name="tb"]`).val(response.tinggi);
+                        $(`${form} input[name="bb"]`).val(response.berat);
+                        $(`${form} input[name="td"]`).val(response.tensi);
+                        $(`${form} input[name="nadi"]`).val(response.nadi);
+                        $(`${form} input[name="rr"]`).val(response.respirasi);
+                        $(`${form} input[name="suhu"]`).val(response.suhu_tubuh);
+                        $(`${form} input[name="spo"]`).val(response.spo2);
+                        $(`${form} textarea[name="keluhan_utama"]`).val(response.keluhan);
+                        $(`${form} textarea[name="ket_fisik"]`).val(response.pemeriksaan);
+                        $(`${form} textarea[name="diagnosis"]`).val(response.penilaian);
+                        $(`${form} textarea[name="konsul"]`).val(response.instruksi);
+
+                    }
+                })
             })
-            getAsmedKandungan(id).done((response) => {
 
 
+            no = 1;
+            isModalShow = true;
+        });
+
+        function setAsmedKandungan(no_rawat) {
+            getAsmedKandungan(no_rawat).done((response) => {
                 $('.form-asmed-kandungan button[name="simpan"]').css('display', 'inline')
                 $('.form-asmed-kandungan button[name="edit"]').css('display', 'none')
                 if (Object.keys(response).length != 0) {
@@ -1274,9 +1306,61 @@
 
                 }
             })
-            no = 1;
-            isModalShow = true;
-        });
+        }
+
+        function setAsmedAnak(no_rawat) {
+            getAsmedAnak(no_rawat).done((response) => {
+                $('.form-asmed-anak button[name="simpan"]').css('display', 'inline')
+                $('.form-asmed-anak button[name="edit"]').css('display', 'none')
+                if (Object.keys(response).length != 0) {
+                    $('.form-asmed-anak button[name="simpan"]').css('display', 'none')
+                    $('.form-asmed-anak button[name="edit"]').css('display', 'inline')
+                    $('.form-asmed-anak select[name="anamnesis"]').val(response.anamnesis).change()
+                    $('.form-asmed-anak input[name="hubungan"]').val(response.hubungan)
+                    $('.form-asmed-anak textarea[name="keluhan_utama"]').val(response.keluhan_utama)
+                    $('.form-asmed-anak textarea[name="rps"]').val(response.rps)
+                    $('.form-asmed-anak textarea[name="rpk"]').val(response.rpk)
+                    $('.form-asmed-anak textarea[name="rpd"]').val(response.rpd)
+                    $('.form-asmed-anak textarea[name="rpo"]').val(response.rpo)
+                    $('.form-asmed-anak input[name="alergi"]').val(response.alergi)
+                    $('.form-asmed-anak select[name="keadaan"]').val(response.keadaan).change()
+                    $('.form-asmed-anak select[name="kesadaran"]').val(response.kesadaran).change()
+                    $('.form-asmed-anak input[name="gcs"]').val(response.gcs)
+                    $('.form-asmed-anak input[name="tb"]').val(response.tb)
+                    $('.form-asmed-anak input[name="bb"]').val(response.bb)
+                    $('.form-asmed-anak input[name="td"]').val(response.td)
+                    $('.form-asmed-anak input[name="nadi"]').val(response.nadi)
+                    $('.form-asmed-anak input[name="rr"]').val(response.rr)
+                    $('.form-asmed-anak input[name="suhu"]').val(response.suhu)
+                    $('.form-asmed-anak input[name="spo"]').val(response.spo)
+                    $('.form-asmed-anak select[name="kepala"]').val(response.kepala).change()
+                    $('.form-asmed-anak select[name="mata"]').val(response.mata).change()
+                    $('.form-asmed-anak select[name="genital"]').val(response.genital).change()
+                    $('.form-asmed-anak select[name="gigi"]').val(response.gigi).change()
+                    $('.form-asmed-anak select[name="ekstremitas"]').val(response.ekstremitas).change()
+                    $('.form-asmed-anak select[name="tht"]').val(response.tht).change()
+                    $('.form-asmed-anak select[name="kulit"]').val(response.kulit).change()
+                    $('.form-asmed-anak select[name="thoraks"]').val(response.thoraks).change()
+                    $('.form-asmed-anak select[name="kontraksi"]').val(response.kontraksi).change()
+                    $('.form-asmed-anak textarea[name="ket_fisik"]').val(response.ket_fisik)
+                    $('.form-asmed-anak input[name="tfu"]').val(response.tfu)
+                    $('.form-asmed-anak input[name="tbj"]').val(response.tbj)
+                    $('.form-asmed-anak input[name="his"]').val(response.his)
+                    $('.form-asmed-anak input[name="djj"]').val(response.djj)
+                    $('.form-asmed-anak input[name="inspeksi"]').val(response.inspeksi)
+                    $('.form-asmed-anak input[name="vt"]').val(response.vt)
+                    $('.form-asmed-anak input[name="inspekulo"]').val(response.inspekulo)
+                    $('.form-asmed-anak input[name="rt"]').val(response.rt)
+                    $('.form-asmed-anak textarea[name="ultra"]').val(response.ultra)
+                    $('.form-asmed-anak textarea[name="kardio"]').val(response.kardio)
+                    $('.form-asmed-anak textarea[name="lab"]').val(response.lab)
+                    $('.form-asmed-anak textarea[name="diagnosis"]').val(response.diagnosis)
+                    $('.form-asmed-anak textarea[name="tata"]').val(response.tata)
+                    $('.form-asmed-anak textarea[name="konsul"]').val(response.konsul)
+
+                }
+            })
+        }
 
         function hapusResep(no_resep) {
             let resep = $.ajax({
@@ -1489,6 +1573,15 @@
             const id = textRawat(noRawat, '-')
             const asmed = $.ajax({
                 url: '/erm/poliklinik/asmed/kandungan/get/' + id,
+                metho: `GET`,
+            })
+            return asmed;
+        }
+
+        function getAsmedAnak(noRawat) {
+            const id = textRawat(noRawat, '-')
+            const asmed = $.ajax({
+                url: '/erm/poliklinik/asmed/anak/get/' + id,
                 metho: `GET`,
             })
             return asmed;

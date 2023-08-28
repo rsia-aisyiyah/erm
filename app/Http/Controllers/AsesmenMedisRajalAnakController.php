@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\AsesmenMedisRajalKandungan;
-use PDF;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use App\Models\AsesmenMedisRajalAnak;
+use App\Http\Controllers\TrackerSqlController;
+use PDF;
 
-class AsesmenMedisRajalKandunganController extends Controller
+class AsesmenMedisRajalAnakController extends Controller
 {
-    protected $track;
     protected $asmed;
     protected $carbon;
-
+    protected $track;
     public function __construct()
     {
-        $this->asmed = new AsesmenMedisRajalKandungan();
+        $this->asmed = new AsesmenMedisRajalAnak();
         $this->carbon = new Carbon();
         $this->track = new TrackerSqlController();
     }
@@ -23,7 +23,7 @@ class AsesmenMedisRajalKandunganController extends Controller
     function get($noRawat)
     {
         $id = str_replace('-', '/', $noRawat);
-        $asmed = $this->asmed->where('no_rawat', $id)->with(['regPeriksa.pasien', 'dokter'])->first();
+        $asmed = $this->asmed->with(['regPeriksa.pasien', 'dokter'])->where('no_rawat', $id)->first();
         return response()->json($asmed);
     }
     function insert(Request $request)
@@ -37,20 +37,19 @@ class AsesmenMedisRajalKandunganController extends Controller
     }
     function edit(Request $request)
     {
-        $data = $request->except(['_token', 'dokter', 'tgl_lahir']);
-        $clause = ['no_rawat' => $data['no_rawat']];
+        $data = $request->except('_token');
+        $clause = ['no_rawat' => $request->no_rawat];
 
-        $asmed = $this->asmed->where($clause)->update($data);
+        $asmed = $this->asmed->where('no_rawat', $request->no_rawat)->update($data);
         $this->track->updateSql($this->asmed, $data, $clause);
         return response()->json($asmed);
     }
-    function getByNoRm($no_rkm_medis)
+    function getByNoRm($noRkmMedis)
     {
-        $asmed = $this->asmed->with('regPeriksa.pasien', 'dokter')
-            ->whereHas('regPeriksa', function ($q) use ($no_rkm_medis) {
-                $q->where('no_rkm_medis', $no_rkm_medis);
+        $asmed = $this->asmed->with(['regPeriksa.pasien', 'dokter'])
+            ->whereHas('regPeriksa.pasien', function ($query) use ($noRkmMedis) {
+                return $query->where('no_rkm_medis', $noRkmMedis);
             })->get();
-
         return response()->json($asmed);
     }
     function setFingerOutput($dokter, $id, $tanggal)
@@ -97,25 +96,17 @@ class AsesmenMedisRajalKandunganController extends Controller
             'ekstremitas' => $asmed->ekstremitas,
             'kulit' => $asmed->kulit,
             'ket_fisik' => $asmed->ket_fisik,
-            'tfu' => $asmed->tfu,
-            'tbj' => $asmed->tbj,
-            'his' => $asmed->his,
-            'kontraksi' => $asmed->kontraksi,
-            'djj' => $asmed->djj,
-            'inspeksi' => $asmed->inspeksi,
-            'inspekulo' => $asmed->inspekulo,
-            'vt' => $asmed->vt,
-            'rt' => $asmed->rt,
-            'ultra' => $asmed->ultra,
-            'kardio' => $asmed->kardio,
-            'lab' => $asmed->lab,
+            'ket_lokalis' => $asmed->ket_lokalis,
+            'ket_lokalis' => $asmed->penunjang,
             'diagnosis' => $asmed->diagnosis,
             'tata' => $asmed->tata,
             'konsul' => $asmed->konsul,
         ];
         $dataAsmed['sidik'] = $this->setFingerOutput($dataAsmed['dokter'], $asmed->dokter->pegawai->sidikjari->sidikjari, $dataAsmed['tanggal']);
 
-        $file = PDF::loadView('content.print.asmed_rajal_kandungan', ['data' => $dataAsmed])->setOptions(['defaultFont' => 'serif', 'isRemoteEnabled' => true]);
+        $file = PDF::loadView('content.print.asmed_rajal_anak', ['data' => $dataAsmed])
+            ->setPaper(array(0, 0, 595, 935))
+            ->setOptions(['defaultFont' => 'serif', 'isRemoteEnabled' => true]);
 
         // $file = PDF::loadView('content.print.asmed_kandungan', ['data' => $dataAsmed])->setOptions(['defaultFont' => 'sherif', 'isRemoteEnabled' => true]);
         return $file->stream($asmed->no_rawat . '.pdf');

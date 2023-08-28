@@ -180,10 +180,7 @@
             $('#pasien-cari').val(nmpasien)
             tb_pasien(tgl_registrasi, $('#pasien-cari').val());
             hitungPanggilan();
-            $('#tgl_registrasi').datepicker('setDate', splitTanggal(tgl_registrasi))
-
-
-
+            $('#tgl_registrasi').datepicker('setDate', splitTanggal(tgl_registrasi));
         });
 
         function hitungPasien() {

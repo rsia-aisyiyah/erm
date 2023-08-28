@@ -1,4 +1,4 @@
-<div class="row" id="listAsmed">
+<div class="row" id="listAsmedKandungan">
 
 </div>
 @push('script')
@@ -12,7 +12,7 @@
         }
 
         function listAsmedKandungan(data) {
-            $('#listAsmed').empty()
+            $('#listAsmedKandungan').empty()
             $.map(data, (a) => {
                 html = `<div class="mb-3 col-lg-3 col-md-4 col-sm-12">
                        <div class="card card-shadow">
@@ -25,7 +25,7 @@
                             </div>
                             </div>
                          </div>`
-                $('#listAsmed').append(html)
+                $('#listAsmedKandungan').append(html)
             })
         }
 

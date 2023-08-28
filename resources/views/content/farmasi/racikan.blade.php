@@ -133,14 +133,10 @@
 
         function cariDokter(dokter) {
             getDokter(dokter.value).done(function(response) {
-                html =
-                    '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
+                html = '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                 $.map(response, function(data) {
                     html += '<li>'
-                    html += '<a data-id="' + data.kd_dokter +
-                        '" class="dropdown-item" onclick="setDokter(this)">' + data
-                        .nm_dokter +
-                        '</a>'
+                    html += '<a data-id="' + data.kd_dokter + '" class="dropdown-item" onclick="setDokter(this)">' + data.nm_dokter + '</a>'
                     html += '</li>'
                 })
                 html += '</ul>';
