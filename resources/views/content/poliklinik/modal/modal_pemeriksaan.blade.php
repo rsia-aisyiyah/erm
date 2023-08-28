@@ -55,6 +55,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Keluar</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="simpanSoap()"><i class="bi bi-save"></i> Simpan SOAP</button>
             </div>
         </div>
     </div>
