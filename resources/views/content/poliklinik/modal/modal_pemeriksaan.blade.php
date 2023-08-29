@@ -352,7 +352,6 @@
                     teksRd = '';
                     teksRr = '';
                     $.map(response, function(res) {
-                        console.log(res);
                         $.map(res.resep_dokter, function(rd) {
                             teksRd += `${rd.data_barang.nama_brng}, jml : ${rd.jml} ${rd.data_barang.kode_satuan.satuan} aturan pakai ${rd.aturan_pakai} \n`;
                         })
@@ -1217,7 +1216,6 @@
             ambilProsedurPasien(id);
             getRegPeriksa(id).done((regPeriksa) => {
                 var form = '';
-                console.log('regPeriksa', regPeriksa)
 
                 if (regPeriksa.dokter.kd_sps == 'S0003') {
                     $('#li-asmed-ana').css('display', 'inline');

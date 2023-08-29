@@ -281,8 +281,14 @@
                         cekAlergi(response.reg_periksa.no_rkm_medis)
                         riwayatResep(response.reg_periksa.no_rkm_medis)
 
-                        $('#nama').val(response.pegawai.nama);
-                        $('#nik').val(response.nip);
+                        if (response.nip === 'poli') {
+                            $('#nama').val('POLI');
+                            $('#nik').val('POLI');
+                        } else {
+                            $('#nama').val(response.pegawai.nama);
+                            $('#nik').val(response.nip);
+                        }
+
                     } else {
                         riwayatResep(response.no_rkm_medis)
                         cekAlergi(response.no_rkm_medis)
@@ -329,6 +335,7 @@
                 success: function(response) {
                     $.map(response.reg_periksa, function(reg) {
                         if (Object.keys(reg.resep_obat).length > 0) {
+                            console.log(reg.resep_obat);
                             $.map(reg.resep_obat, function(resep) {
                                 html = '<tr>';
                                 if (Object.keys(resep.resep_dokter).length > 0 || Object.keys(
@@ -336,7 +343,6 @@
                                     html += '<td>' + formatTanggal(resep.tgl_peresepan) + '</td>';
                                     html += '<td>' + resep.no_resep + '</td>';
                                     html += '<td class="align-top">';
-                                    // html += ;
                                     $.map(resep.resep_dokter, function(dokter) {
                                         html += '<b class="">' + dokter.data_barang.nama_brng + ' Jumlah : ' + dokter.jml + ', Aturan : ' + dokter.aturan_pakai + '</b><br/>';
                                     })
