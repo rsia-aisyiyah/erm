@@ -118,9 +118,6 @@
         </div>
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
-                    Pasien Rawat Inap
-                </div>
                 <div class="card-body">
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_ranap" width="100%">
                         <thead>
@@ -287,7 +284,7 @@
             $('#tb_ranap').DataTable({
                 processing: true,
                 scrollX: true,
-                scrollY: 1000,
+                scrollY: 325,
                 serverSide: true,
                 stateSave: true,
                 ordering: false,
