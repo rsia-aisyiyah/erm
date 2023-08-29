@@ -184,8 +184,7 @@
                         <thead>
                             <tr>
                                 <th>Tanggal</th>
-                                <th>No Resep</th>
-                                <th>Obat/Racikan</th>
+                                <th width="65%">Obat/Racikan</th>
                                 <th></th>
                             </tr>
                         </thead>

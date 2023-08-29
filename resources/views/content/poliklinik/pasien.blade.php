@@ -330,48 +330,35 @@
         function riwayatResep(no_rm) {
             $('#tb-resep-riwayat tbody').empty()
             $.ajax({
-                url: '/erm/pasien/ambil/' + no_rm,
+                url: `/erm/resep/riwayat/${no_rm}`,
                 method: 'GET',
-                success: function(response) {
-                    $.map(response.reg_periksa, function(reg) {
-                        if (Object.keys(reg.resep_obat).length > 0) {
-                            console.log(reg.resep_obat);
-                            $.map(reg.resep_obat, function(resep) {
-                                html = '<tr>';
-                                if (Object.keys(resep.resep_dokter).length > 0 || Object.keys(
-                                        resep.resep_racikan).length > 0) {
-                                    html += '<td>' + formatTanggal(resep.tgl_peresepan) + '</td>';
-                                    html += '<td>' + resep.no_resep + '</td>';
-                                    html += '<td class="align-top">';
-                                    $.map(resep.resep_dokter, function(dokter) {
-                                        html += '<b class="">' + dokter.data_barang.nama_brng + ' Jumlah : ' + dokter.jml + ', Aturan : ' + dokter.aturan_pakai + '</b><br/>';
-                                    })
-                                    $.map(resep.resep_racikan, function(racik) {
-                                        html += '<b class="">Racikan : ' + racik
-                                            .nama_racik + ' Jumlah : ' + racik.jml_dr + ', Aturan : ' + racik.aturan_pakai + '</b><br/>';
-                                        $.map(racik.detail_racikan, function(detail) {
-                                            if (racik.no_racik == detail.no_racik) {
-                                                html += '<span class="badge rounded-pill bg-success">';
-                                                html += detail.data_barang
-                                                    .nama_brng;
-                                                html += '</span>';
-                                            }
-                                        })
-                                        html += '<br/>'
-                                    })
-                                    html += '</td>';
-                                    html +=
-                                        '<td><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(\'' +
-                                        resep.no_resep +
-                                        '\')" type="button"><i class="bi bi-clipboard-check-fill"></i></button></td>';
-                                }
-                                html += '</tr>';
-                                $('#tb-resep-riwayat tbody').append(html)
+            }).done((response) => {
+                // console.log('RESEP', response);
+                $.map(response, (resep) => {
+                    // console.log('JUMLAH DOKTER', resep.resep_dokter.length);
+                    // console.log('JUMLAH Racikan', resep.resep_racikan.length);
+                    if (resep.resep_dokter.length > 0 || resep.resep_racikan.length > 0) {
+                        html = `<tr>`
+                        // html += `<td></td>`
+                        html += `<td width="15%">${formatTanggal(resep.tgl_peresepan)} <br>${resep.no_resep}</td>`
+                        html += `<td><ul style="disc inside">`
+                        $.map(resep.resep_dokter, (dokter) => {
+                            html += `<li>${dokter.data_barang.nama_brng}, ${dokter.jml} ${dokter.data_barang.kode_satuan.satuan}, aturan pakai ${dokter.aturan_pakai}</li>`
+                        })
+                        $.map(resep.resep_racikan, (racikan) => {
+                            console.log('RACIKAN', racikan);
+                            html += `<li>${racikan.nama_racik}, jumlah ${racikan.jml_dr} ${racikan.metode.nm_racik}, aturan pakai ${racikan.aturan_pakai}</li>`
+                            $.map(racikan.detail_racikan, (detail) => {
+                                html += `<span class="badge rounded-pill text-bg-success">${detail.databarang.nama_brng}</span>`
                             })
-                        }
-                    })
+                        })
 
-                }
+                        html += `</ul></td>`
+                        html += `<td><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(${resep.no_resep})" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy Resep</button></td>`;
+                        html += `<tr>`
+                        $('#tb-resep-riwayat tbody').append(html)
+                    }
+                })
             })
         }
 

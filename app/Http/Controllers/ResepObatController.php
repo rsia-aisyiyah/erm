@@ -111,4 +111,13 @@ class ResepObatController extends Controller
         $resep = $this->resepObat->where('no_rawat', $no_rawat)->first();
         return $resep;
     }
+
+    function getByNoRm($no_rkm_medis)
+    {
+        $resep = $this->resepObat->whereHas('regPeriksa.pasien', function ($query) use ($no_rkm_medis) {
+            return $query->where('no_rkm_medis', $no_rkm_medis);
+        })->with(['resepRacikan.detailRacikan.databarang.kodeSatuan', 'resepRacikan.metode', 'resepDokter.dataBarang.kodeSatuan'])->get();
+
+        return response()->json($resep);
+    }
 }
