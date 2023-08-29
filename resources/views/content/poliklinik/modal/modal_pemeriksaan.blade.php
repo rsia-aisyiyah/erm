@@ -68,16 +68,20 @@
             console.log($(this).parent().remove())
         }
 
-        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e, x, y) {
-            // activeTab = e.target;
-            let elemetId = $(e.target).attr('id')
-            if (elemetId == 'tab-soap') {
-                $('.btn-asmed').css('display', 'none')
-                $('.btn-soap').css('display', 'inline')
-            } else {
-                $('.btn-asmed').css('display', 'inline')
-                $('.btn-soap').css('display', 'none')
-            }
+        $('button[data-bs-target="#tab-soap-pane"]').on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed').css('display', 'none')
+            $('.btn-soap').css('display', 'inline')
+
+        })
+
+        $('button[data-bs-target="#tab-asmed-ana"]').on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed').css('display', 'inline')
+            $('.btn-soap').css('display', 'none')
+
+        })
+        $('button[data-bs-target="#tab-asmed-obg"]').on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed').css('display', 'inline')
+            $('.btn-soap').css('display', 'none')
 
         })
 
