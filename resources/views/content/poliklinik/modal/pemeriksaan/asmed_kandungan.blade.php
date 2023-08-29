@@ -318,10 +318,9 @@
                         onfocus="removeZero(this)"
                         onblur="cekKosong(this)">-</textarea>
                 </div>
-                <div class="mt-3 col-sm-12 col-md-12 col-lg-4">
-                    <button type="button" class="btn btn-success btn-sm" name="simpan" onclick="simpanAsmedKandungan()"><i class="bi bi-save"></i> Simpan Asesmen</button>
-                    <button type="button" class="btn btn-warning btn-sm" name="edit" onclick="editAsmedKandungan()"><i class="bi bi-pencil"></i> Ubah Asesmen</button>
-                </div>
+                {{-- <div class="mt-3 col-sm-12 col-md-12 col-lg-4">
+
+                </div> --}}
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </div>
         </div>

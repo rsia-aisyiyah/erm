@@ -55,7 +55,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-success btn-sm" onclick="simpanSoap()"><i class="bi bi-save"></i> Simpan SOAP</button>
+                <button type="button" class="btn btn-success btn-sm btn-soap" onclick="simpanSoap()"><i class="bi bi-save"></i> Simpan SOAP</button>
+                <button type="button" class="btn btn-success btn-sm btn-asmed" name="simpan" onclick="simpanAsmedKandungan()" style="display: none"><i class="bi bi-save"></i> Simpan Asesmen</button>
+                <button type="button" class="btn btn-warning btn-sm btn-asmed" name="edit" onclick="editAsmedKandungan()" style="display: none"><i class="bi bi-pencil"></i> Ubah Asesmen</button>
             </div>
         </div>
     </div>
@@ -65,6 +67,19 @@
         function hapusBaris(param) {
             console.log($(this).parent().remove())
         }
+
+        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e, x, y) {
+            // activeTab = e.target;
+            let elemetId = $(e.target).attr('id')
+            if (elemetId == 'tab-soap') {
+                $('.btn-asmed').css('display', 'none')
+                $('.btn-soap').css('display', 'inline')
+            } else {
+                $('.btn-asmed').css('display', 'inline')
+                $('.btn-soap').css('display', 'none')
+            }
+
+        })
 
         function setNoRacik(no_resep) {
             let no_racik = '';

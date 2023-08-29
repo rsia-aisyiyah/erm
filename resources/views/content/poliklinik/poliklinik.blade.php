@@ -56,19 +56,36 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-12 col-sm-12">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Poliklinik Umum</h5>
-                        <div class="d-grid gap-2">
-                            <a href="poliklinik/P006?dokter=" class="btn text-light"
-                                style="background-color: #dc3700;height:55px; padding-top:10px;font-size:20px">POLIKLINIK
-                                UMUM<br>
-                            </a>
+            <div class="mb-1 col-lg-3 col-md-12 col-sm-12">
+                <div class="row gy-2">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Lainnya</h5>
+                                <div class="d-grid gap-2 mb-2">
+                                    <a href="poliklinik/P006" class="btn text-light"
+                                        style="background-color: #dc3700;height:55px; padding-top:10px;font-size:20px">Poliklinik Umum<br>
+                                    </a>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="poliklinik/PKIA" class="btn text-light"
+                                        style="background-color:#d63384;height:55px; padding-top:10px;font-size:20px">Poliklinik KIA<br>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    {{-- <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Poliklinik Umum</h5>
+                            </div>
+                        </div>
+                    </div> --}}
                 </div>
+
             </div>
+
         </div>
     @else
         <div class="row gy-2">
