@@ -2,7 +2,7 @@
 @section('contents')
     <div class="row gy-2">
         <div class="col-sm-12">
-            @if (session()->get('pegawai')->bidang != 'Direksi' && session()->get('pegawai')->bidang != 'Spesialis')
+            @if (session()->get('pegawai')->nik != 'Direksi' && session()->get('pegawai')->bidang != 'Spesialis')
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group mb-2">
@@ -102,8 +102,7 @@
                                     <div class="mb-3 row">
                                         <label for="cari-kamar" class="col-sm-3 col-form-label" style="font-size:12px">Cari Kamar : </label>
                                         <div class="col-sm-9">
-                                            <input type="search" id="cari-kamar" name="cari-kamar"
-                                                class="form-control form-control-sm" width="100%">
+                                            <input type="search" id="cari-kamar" name="cari-kamar" class="form-control form-control-sm" width="100%" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -153,8 +152,19 @@
         var tgl_akhir = '';
         var kamar = localStorage.getItem('kamar');
         var sps = '';
+        var cekDepartement = `{{ session()->get('pegawai')->departemen }}`
         var kd_dokter = $('#kd_dokter').val();
         $(document).ready(function() {
+            console.log(cekDepartement);
+
+            if (cekDepartement == 'DM3') {
+                sps = 'S0001';
+            } else if (cekDepartement == 'DM1') {
+                sps = 'S0003';
+            }
+
+            console.log(sps)
+
             date = new Date()
             hari = ('0' + (date.getDate())).slice(-2);
             bulan = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -178,6 +188,7 @@
                 kamar = '';
                 $('#tb_ranap').DataTable().destroy();
                 tb_ranap();
+                localStorage.removeItem('kamar')
             }
         })
 
@@ -225,6 +236,10 @@
                 localStorage.setItem('kamar', kamar);
                 $('#tb_ranap').DataTable().destroy();
                 tb_ranap();
+            }
+
+            if (kamar.length == 0) {
+                localStorage.removeItem('kamar');
             }
         })
 
@@ -281,6 +296,7 @@
         })
 
         function tb_ranap() {
+
             $('#tb_ranap').DataTable({
                 processing: true,
                 scrollX: true,
@@ -299,6 +315,7 @@
                         'kd_dokter': kd_dokter,
                         'kamar': kamar,
                         'spesialis': sps,
+
                     },
                 },
                 initComplete: function() {

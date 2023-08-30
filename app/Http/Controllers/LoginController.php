@@ -36,17 +36,17 @@ class LoginController extends Controller
             $pegawai = Pegawai::where('nik', $request->get('username'))->with('petugas')->first();
             $request->session()->regenerate();
             Session::put('pegawai', $pegawai);
-            if (
-                $pegawai->petugas->kd_jbtn == 'J015' ||
-                $pegawai->petugas->kd_jbtn == 'J067' ||
-                $pegawai->petugas->kd_jbtn == 'J034'
-            ) {
+            if ($pegawai->departemen == 'DPM1') {
                 return redirect('/resep');
-            } else if ($pegawai->petugas->kd_jbtn == 'J017') {
+            } else if ($pegawai->departemen == 'DNM6') {
                 return redirect('/registrasi');
-            } else if ($pegawai->petugas->bidang == 'Dokter Umum') {
+            } else if ($pegawai->departemen == 'Dokter Umum') {
                 return redirect('/poliklinik/P006?dokter=' . $request->get('username'));
-            } else {
+            } else if ($pegawai->departemen == 'DM1') {
+                return redirect('ugd');
+            } else if ($pegawai->departemen == 'DM8' || $pegawai->departemen == 'DM3') {
+                return redirect('ranap');
+            } else if ($pegawai->nik == 'direksi' || $pegawai->departemen == 'DM6' || $pegawai->departemen == 'SPS' || $pegawai->jnj_jabatan == 'DIRU') {
                 return redirect('/poliklinik');
             }
         } else {
