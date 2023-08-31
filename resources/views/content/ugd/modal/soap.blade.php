@@ -45,8 +45,8 @@
                                                 <input type="text" class="form-control form-control-sm" id="nik" name="nik" placeholder="" readonly>
                                             </td>
                                             <td colspan="2" width="40%">
-                                                <input type="search" class="form-control form-control-sm" id="nama" name="nama" placeholder="" onkeyup="cariPetugas(this)" autocomplete="off">
-                                                <div class="list_petugas"></div>
+                                                <input class="form-control form-control-sm" id="nama" name="nama" placeholder=""  autocomplete="off" readonly>
+                                                
                                             </td>
                                         </tr>
                                         <tr>
@@ -329,6 +329,18 @@
                 },
             }).done((response) => {
                 console.log(response)
+                if (response.pegawai.nik != "{{ session()->get('pegawai')->nik }}") {
+                    $("#formSoapUgd :input").prop('readonly', true);
+                    $("#formSoapUgd select").prop('disabled', true);
+                    $("#formSoapUgd textarea").prop('readonly', true);   
+                    $('#btn-ubah').css('display', 'none');
+                    $('#btn-reset').css('display', 'none');
+                    $('.btn-simpan').css('display', 'none');
+                } else {
+                    $('#btn-ubah').css('display', 'inline');
+                    $('#btn-reset').css('display', 'inline');
+                    $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
+                }
                 $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
                 $('#formSoapUgd input[name="nama"]').val(response.pegawai.nama)
                 $('#formSoapUgd textarea[name="subjek"]').val(response.keluhan)
@@ -348,9 +360,7 @@
                 $('#formSoapUgd textarea[name="instruksi"]').val(response.instruksi)
                 $('#jam_rawat').val(response.jam_rawat)
                 $('#tgl_perawatan').val(response.tgl_perawatan)
-                $('#btn-ubah').css('display', 'inline');
-                $('#btn-reset').css('display', 'inline');
-                $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
+               
 
                 $.map(response.grafik, (grafik) => {
                     if (grafik.tgl_perawatan == tgl_pemeriksaan && grafik.jam_rawat == jam_rawat) {

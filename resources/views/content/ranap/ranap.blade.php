@@ -705,11 +705,17 @@
             getRegPeriksa(no_rawat).done((response) => {
                 $('#nomor_rawat').val(response.no_rawat);
                 $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-                $('#nik').val(response.kd_dokter);
-                $('#nama').val(response.dokter.nm_dokter);
+                $('#nik').val("{{ session()->get('pegawai')->nik }}");
+                $('#nama').val("{{ session()->get('pegawai')->nama }}");
                 // $('.btn-tambah-grafik-harin').attr('data-no-rawat', response.no_rawat);
                 // $('.btn-tambah-grafik-harin').attr('data-nm-pasien', response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-
+                getDokter("{{ session()->get('pegawai')->nama }}").done((response)=>{
+                    if (response.length) {
+                        $('.btn-tambah-grafik-harin').css('display','none')
+                    } else {
+                        $('.btn-tambah-grafik-harin').css('display','inline')
+                    }
+                })
                 $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
             })
 
@@ -936,6 +942,8 @@
             // set data to modal
             $('#formSaveGrafikHarian input[name="no_rawat"]').val(no_rawat);
             $('#formSaveGrafikHarian input[name="nm_pasien"]').val(nm_pasien);
+
+            
         }
 
         // form tambah grafik harian submit

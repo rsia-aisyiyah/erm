@@ -73,7 +73,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
                         class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="simpanSoapRanap()"
+                <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRanap()"
                     style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
                 <span id="ubah_soap"></span>
                 <span id="reset_soap"></span>
@@ -101,6 +101,15 @@
                 },
 
                 success: function(response) {
+
+                if (response.petugas.nip != "{{ session()->get('pegawai')->nik }}") {
+                    $("#formSoapRanap :input").prop('readonly', true);
+                    $("#formSoapRanap select").prop('disabled', true);
+                    $("#formSoapRanap textarea").prop('readonly', true);   
+
+                }
+
+
                     let hidden = '<input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="' + response.tgl_perawatan + '">';
                     hidden += '<input type="hidden" name="jam_rawat" id="jam_rawat" value="' + response.jam_rawat + '">';
                     hidden += '<input type="hidden" name="no_rawat" id="no_rawat" value="' + response.no_rawat + '">';
@@ -130,7 +139,12 @@
                     $('#evaluasi').val(response.evaluasi);
                     $('#subjek').val(response.keluhan);
                     $('#objek').val(response.pemeriksaan);
-                    if ($('#btn-ubah').length == 0) {
+                    if (response.petugas.nip != "{{ session()->get('pegawai')->nik }}") {
+                        $('#btn-ubah').css('display', 'none');
+                        $('#btn-reset').css('display', 'none');
+                        $('.btn-simpan').css('display', 'none');
+                    } else {
+                        if ($('#btn-ubah').length == 0) {
                         $('#ubah_soap').append(
                             '<button type="button" class="btn btn-success btn-sm" onclick="editSoap()" id="btn-ubah" style="font-size:12px"><i class="bi bi-pencil-square"></i> Ubah</button>'
                         )
@@ -138,6 +152,8 @@
                             '<button type="button" class="btn btn-warning btn-sm" id="btn-reset" style="font-size:12px"><i class="bi bi-arrow-clockwise"></i> Baru</button>'
                         )
                     }
+                    }
+                    
                     $('#btn-reset').on('click', function(event) {
                         $('#suhu').val("-");
                         $('#tinggi').val("-");

@@ -244,11 +244,18 @@
         }
 
         function modalAsmedUgd(params) {
-
             getAsmedUgd(params).done((response) => {
                 if (Object.keys(response).length == 0) {
                     return getRegPeriksa(params).done((regPeriksa) => {
-                        console.log(regPeriksa)
+                        if (response.kd_dokter != "{{ session()->get('pegawai')->nik }}") {
+                            $("#formAsmedUgd :input").prop('readonly', true);
+                            $("#formAsmedUgd select").prop('disabled', true);
+                            $("#formAsmedUgd textarea").prop('readonly', true);
+                            $('.btn-asmed-ugd-ubah').css('display', 'none')
+                            $('.btn-asmed-ugd').css('display', 'none')
+                        
+                        } else {
+
                         $('#formAsmedUgd input[name="no_rawat"]').val(regPeriksa.no_rawat)
                         $('#formAsmedUgd input[name="pasien"]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
                         $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
@@ -256,10 +263,19 @@
                         $('#formAsmedUgd input[name="dokter"]').val(regPeriksa.dokter.nm_dokter)
                         $('.btn-asmed-ugd-ubah').css('display', 'none')
                         $('.btn-asmed-ugd').css('display', 'inline')
+                    }
+
                     })
-                }
-                $('.btn-asmed-ugd').css('display', 'none')
-                $('.btn-asmed-ugd-ubah').css('display', 'inline')
+                } else {
+                if (response.kd_dokter != "{{ session()->get('pegawai')->nik }}") {
+                    $("#formAsmedUgd :input").prop('readonly', true);
+                    $("#formAsmedUgd select").prop('disabled', true);
+                    $("#formAsmedUgd textarea").prop('readonly', true);
+                    $('.btn-asmed-ugd-ubah').css('display', 'none')
+                    $('.btn-asmed-ugd').css('display', 'none')
+                   
+                } 
+
                 $('#formAsmedUgd input[name="no_rawat"]').val(response.no_rawat)
                 $('#formAsmedUgd input[name="pasien"]').val(`${response.reg_periksa.pasien.nm_pasien} (${response.reg_periksa.pasien.jk})`)
                 $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(response.reg_periksa.pasien.tgl_lahir)} (${hitungUmur(response.reg_periksa.pasien.tgl_lahir)})`)
@@ -299,6 +315,10 @@
                 $('#formAsmedUgd textarea[name="rad"]').val(response.rad)
                 $('#formAsmedUgd textarea[name="diagnosis"]').val(response.diagnosis)
                 $('#formAsmedUgd textarea[name="tata"]').val(response.tata)
+            
+            
+        }
+
             })
             $('#modalAsmedUgd').modal('show');
         }
