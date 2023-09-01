@@ -234,6 +234,19 @@
             return textNoRawat;
         }
 
+
+        function getPemeriksaanPoli(no_rawat) {
+            const pemeriksaan = $.ajax({
+                url: '/erm/pemeriksaan',
+                method: 'GET',
+                dataType: 'JSON',
+                data: {
+                    no_rawat: no_rawat,
+                },
+            });
+            return pemeriksaan
+        }
+
         function detailPeriksa(no_rawat, status) {
 
             $('#upload-image').css('visibility', 'hidden')

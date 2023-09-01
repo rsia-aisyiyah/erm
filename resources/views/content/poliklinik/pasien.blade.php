@@ -333,20 +333,15 @@
                 url: `/erm/resep/riwayat/${no_rm}`,
                 method: 'GET',
             }).done((response) => {
-                // console.log('RESEP', response);
                 $.map(response, (resep) => {
-                    // console.log('JUMLAH DOKTER', resep.resep_dokter.length);
-                    // console.log('JUMLAH Racikan', resep.resep_racikan.length);
                     if (resep.resep_dokter.length > 0 || resep.resep_racikan.length > 0) {
                         html = `<tr>`
-                        // html += `<td></td>`
                         html += `<td width="15%">${formatTanggal(resep.tgl_peresepan)} <br>${resep.no_resep}</td>`
                         html += `<td><ul style="disc inside">`
                         $.map(resep.resep_dokter, (dokter) => {
                             html += `<li>${dokter.data_barang.nama_brng}, ${dokter.jml} ${dokter.data_barang.kode_satuan.satuan}, aturan pakai ${dokter.aturan_pakai}</li>`
                         })
                         $.map(resep.resep_racikan, (racikan) => {
-                            console.log('RACIKAN', racikan);
                             html += `<li>${racikan.nama_racik}, jumlah ${racikan.jml_dr} ${racikan.metode.nm_racik}, aturan pakai ${racikan.aturan_pakai}</li>`
                             $.map(racikan.detail_racikan, (detail) => {
                                 html += `<span class="badge rounded-pill text-bg-success">${detail.databarang.nama_brng}</span>`

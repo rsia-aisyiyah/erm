@@ -1430,6 +1430,8 @@
             $('#body_umum').empty();
             $('#body_racikan').empty();
             $('#body_riwayat').empty();
+            $('.tambah_racik').css('visibility', 'visible')
+            $('.tambah_umum').css('visibility', 'visible')
             let resep = $.ajax({
                 url: '/erm/resep/obat/ambil',
                 data: {
@@ -1537,6 +1539,8 @@
                     } else {
                         $('.no_resep').val(setNoResep())
                     }
+
+                    console.log(response);
                 },
                 error: function(request, status, error) {
                     Swal.fire(

@@ -200,7 +200,7 @@
                                     $('.panggil-' + row.no_resep).css('display', 'inline')
                                     $('.selesai-' + row.no_resep).css('display', 'inline')
                                 } else if (row.jam_penyerahan != '00:00:00') {
-                                    $('.status-' + row.no_resep).prop('onclick', '');
+                                    // $('.status-' + row.no_resep).prop('onclick', '');
                                     $('.status-' + row.no_resep).css('height', '50px');
                                     $('.status-' + row.no_resep).removeClass('btn-primary');
                                     $('.status-' + row.no_resep).removeClass('mb-2');
@@ -280,45 +280,23 @@
         }
 
         function tampilResep(no_resep) {
-            reloadTabelResep();
+            // reloadTabelResep();
             $('#modalResepObat').modal('show');
+            $('.notif').empty()
             $.ajax({
                 url: 'resep/obat/ambil',
                 data: {
                     no_resep: no_resep,
                 },
                 success: function(response) {
-                    no = 1;
-                    $.map(response.resep_racikan, function(racik) {
-                        html = '<tr>';
-                        html += '<td>' + racik.no_racik + '</td>';
-                        html += '<td><strong>' + racik.metode.nm_racik + ' ' + racik
-                            .nama_racik +
-                            ' , Jumlah : ' + racik.jml_dr + ' Aturan Pakai ' + racik
-                            .aturan_pakai;
-                        html += '</strong><ul>';
-                        no_racik = 1;
-                        $.map(racik.detail_racikan, function(dr) {
-                            if (racik.no_racik == dr.no_racik) {
-                                html += '<li>' + dr.p1 + '/' + dr.p2 + ' x ' + dr.databarang.nama_brng + ' = ' + dr.kandungan + ' mg, Jumlah : ' + dr.jml + '</li>'
-                            }
-                        })
-                        html += '</ul></td>';
-                        html += '</ul></td>';
-                        html += '</tr>';
 
-                        $('#tabel-racikan tbody').append(html)
-                    })
+                    getPemeriksaanPoli(response.no_rawat).done((res) => {
+                        console.log('PEMERIKSAAN', res);
+                        plan = res.rtl.split('\n')
 
-                    $.map(response.resep_dokter, function(umum) {
-                        html = '<tr>';
-                        html += '<td>' + no + '</td>';
-                        html += '<td>' + umum.data_barang.nama_brng + '</td>';
-                        html += '<td>' + umum.jml + '</td>';
-                        html += '<td>' + umum.aturan_pakai + '</td>';
-                        html += '</tr>';
-                        no++;
-                        $('#tabel-umum tbody').append(html)
+                        for (let index = 0; index < plan.length; index++) {
+                            $('.notif').append(`${plan[index]} <br/>`)
+                        }
                     })
                 }
             })

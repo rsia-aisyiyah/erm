@@ -176,8 +176,7 @@
 
                         </tbody>
                     </table>
-                    <button class="btn btn-primary btn-sm tambah_racik" type="button" onclick="tambahRacikan()">Tambah
-                        Racikan</button>
+                    <button class="btn btn-primary btn-sm tambah_racik" type="button" onclick="tambahRacikan()">Tambah Racikan</button>
                 </div>
                 <div class="tab-pane fade" id="riwayat">
                     <table class="table table-responsive" id="tb-resep-riwayat" width="100%">

@@ -30,15 +30,23 @@ class ResepDokterRacikanDetailController extends Controller
     {
         $resep = $this->resep;
         if ($request->kode_brng) {
-            $hasil = $resep->where('no_resep', $request->no_resep)->where('no_racik', $request->no_racik)->where('kode_brng', $request->kode_brng)->delete();
+            $clause = [
+                'no_racik' => $request->no_racik,
+                'kode_brng' => $request->kode_brng
+            ];
         } else {
-            $hasil = $resep->where('no_resep', $request->no_resep)->where('no_racik', $request->no_racik)->delete();
+            $clause = [
+                'no_racik' => $request->no_racik,
+            ];
         }
+        $hasil = $resep->where($clause)->delete();
+
+        $this->track->deleteSql($this->resep, $clause);
         return response()->json($hasil);
     }
     public function simpan(Request $request)
     {
-        $racikan = ResepDokterRacikanDetail::create([
+        $data = [
             'no_resep' => $request->no_resep,
             'no_racik' => $request->no_racik,
             'kode_brng' => $request->kode_brng,
@@ -46,26 +54,32 @@ class ResepDokterRacikanDetailController extends Controller
             'p2' => $request->p2,
             'kandungan' => $request->kandungan,
             'jml' => $request->jml,
-        ]);
+        ];
+        $racikan = ResepDokterRacikanDetail::create($data);
+        $this->track->insertSql($this->resep, $data);
         return response()->json($racikan);
     }
     public function ubah(Request $request)
     {
-        $cekRacik = ResepDokterRacikanDetail::where('no_resep', $request->no_resep)
-            ->where('no_racik', $request->no_racik)
-            ->where('kode_brng', $request->kode_brng)->count();
+        $clause = [
+            'no_resep' => $request->no_resep,
+            'no_racik' => $request->no_racik,
+            'kode_brng' => $request->kode_brng
+        ];
+        $data = [
+            'kode_brng' => $request->kode_brng,
+            'p1' => $request->p1,
+            'p2' => $request->p2,
+            'kandungan' => $request->kandungan,
+            'jml' => $request->jml,
+        ];
+        $cekRacik = ResepDokterRacikanDetail::where($clause)->count();
         if ($cekRacik == 0) {
             $racik = $this->simpan($request);
+            $this->track->insertSql($this->resep, $request->except('_token'));
         } else {
-            $racik =  ResepDokterRacikanDetail::where('no_resep', $request->no_resep)
-                ->where('no_racik', $request->no_racik)
-                ->where('kode_brng', $request->kode_brng)->update([
-                    'kode_brng' => $request->kode_brng,
-                    'p1' => $request->p1,
-                    'p2' => $request->p2,
-                    'kandungan' => $request->kandungan,
-                    'jml' => $request->jml,
-                ]);
+            $racik =  ResepDokterRacikanDetail::where($clause)->update($data);
+            $this->track->updateSql($this->resep, $data, $clause);
         }
         return response()->json($racik);
     }

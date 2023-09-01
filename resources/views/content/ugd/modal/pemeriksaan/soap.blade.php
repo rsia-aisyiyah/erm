@@ -17,8 +17,8 @@
                         <input type="text" class="form-control form-control-sm" id="nik" name="nik" placeholder="" readonly>
                     </td>
                     <td colspan="2" width="40%">
-                        <input type="search" class="form-control form-control-sm" id="nama" name="nama" placeholder="" onkeyup="cariPetugas(this)" autocomplete="off">
-                        <div class="list_petugas"></div>
+                        <input class="form-control form-control-sm" id="nama" name="nama" placeholder="" autocomplete="off" readonly>
+
                     </td>
                 </tr>
                 <tr>
@@ -168,4 +168,5 @@
             </table>
         </div>
     </div>
+
 </form>

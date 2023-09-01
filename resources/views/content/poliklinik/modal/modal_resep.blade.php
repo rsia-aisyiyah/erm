@@ -145,14 +145,10 @@
             p1 = $('#p1' + no).val();
             jumlah = $('.jml_dr').val();
 
-            if (p1 && p2) {
-
+            if (p1 != 0 && p2 != 0) {
                 kandungan = parseFloat(kps) * (parseFloat(p1) / parseFloat(p2));
-
                 jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
-
                 $('#kandungan' + no).val(kandungan.toFixed(1));
-
                 $('#jml_obat' + no).val(jml_obat.toFixed(1));
             }
 
@@ -161,7 +157,7 @@
 
         function setNilaiPembagi(e) {
             pembagi = $(e).val();
-            if (pembagi == '') {
+            if (pembagi == '' || pembagi == 0) {
                 $(e).val(1);
             }
 
@@ -171,9 +167,14 @@
             kandungan = $('#kandungan' + no).val();
             jumlah = $('.jml_dr').val();
             kps = $('#kps' + no).val();
+            p1 = $('#p1' + no).val();
+            p2 = $('#p2' + no).val();
             if (parseInt(kandungan) <= parseInt(kps)) {
+
                 jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
                 $('#jml_obat' + no).val(jml_obat.toFixed(1));
+
+
                 $('#p2' + no).val('1');
                 $('#p1' + no).val('1');
             } else {

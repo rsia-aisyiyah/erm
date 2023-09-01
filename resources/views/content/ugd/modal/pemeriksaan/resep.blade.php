@@ -251,11 +251,42 @@
                         'Tidak bisa menambah resep<br/>' + request.responseJSON.message,
                         'error',
                     )
-
                 }
             });
-
             return resep;
+        }
+
+        function hapusObatUmum(no_resep, kode_brng) {
+            const no_rawat = $('#formResepUgd input[name=no_rawat]').val()
+            const data = {
+                'no_resep': no_resep,
+                'kode_brng': kode_brng,
+                '_token': "{{ csrf_token() }}",
+            };
+            Swal.fire({
+                title: 'Yakin ?',
+                text: "Anda tidak bisa mengembalikan lagi",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus saja!',
+                cancelButtonText: 'Jangan',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/erm/resep/umum/hapus',
+                        method: 'DELETE',
+                        data: data,
+                        error: function(request, status, error) {
+                            Swal.fire('Gagal !', 'Tidak menghapus obat<br/>' + request.responseJSON.message, 'error', )
+
+                        }
+                    }).done(function() {
+                        setListResep(no_rawat)
+                    })
+                }
+            })
         }
     </script>
 @endpush
