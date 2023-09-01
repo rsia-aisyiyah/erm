@@ -246,18 +246,6 @@
             })
         }
 
-        function getPemeriksaanPoli(no_rawat) {
-            const pemeriksaan = $.ajax({
-                url: '/erm/pemeriksaan',
-                method: 'GET',
-                dataType: 'JSON',
-                data: {
-                    no_rawat: no_rawat,
-                },
-            });
-            return pemeriksaan
-        }
-
         function modalsoap(no_rawat) {
             jbtn = "{{ session()->get('pegawai')->jbtn }}";
             nik = "{{ session()->get('pegawai')->nik }}";
