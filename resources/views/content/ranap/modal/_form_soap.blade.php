@@ -1,4 +1,4 @@
-<form action="" method="POST" class="">
+<form action="" method="POST" class="" id="formSoapRanap">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-6">
             <table class="borderless">
@@ -19,8 +19,8 @@
                     </td>
                     <td colspan="2" width="40%">
                         <input type="search" class="form-control form-control-sm" id="nama" name="nama"
-                            placeholder="" onkeyup="cariPetugas(this)">
-                        <div class="list_petugas"></div>
+                            placeholder="" readonly>
+                      
                     </td>
                 </tr>
                 <tr>
