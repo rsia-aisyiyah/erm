@@ -155,7 +155,7 @@
         var cekDepartement = `{{ session()->get('pegawai')->departemen }}`
         var kd_dokter = $('#kd_dokter').val();
         $(document).ready(function() {
-            console.log(cekDepartement);
+            // console.log(cekDepartement);
 
             if (cekDepartement == 'DM3') {
                 sps = 'S0001';
@@ -163,7 +163,7 @@
                 sps = 'S0003';
             }
 
-            console.log(sps)
+            // console.log(sps)
 
             date = new Date()
             hari = ('0' + (date.getDate())).slice(-2);
@@ -547,7 +547,7 @@
                 $('#anak_dokter').val(response.dokter.nm_dokter);
             });
             getAsmedRanapAnak(textRawat(noRawat, '-')).done((response) => {
-                console.log(response)
+                // console.log(response)
                 if (Object.keys(response).length > 0) {
                     $('.btn-asmed-anak').css('display', 'none')
                     $('.btn-asmed-anak-ubah').css('display', 'inline')
@@ -709,11 +709,11 @@
                 $('#nama').val("{{ session()->get('pegawai')->nama }}");
                 // $('.btn-tambah-grafik-harin').attr('data-no-rawat', response.no_rawat);
                 // $('.btn-tambah-grafik-harin').attr('data-nm-pasien', response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-                getDokter("{{ session()->get('pegawai')->nama }}").done((response)=>{
+                getDokter("{{ session()->get('pegawai')->nama }}").done((response) => {
                     if (response.length) {
-                        $('.btn-tambah-grafik-harin').css('display','none')
+                        $('.btn-tambah-grafik-harin').css('display', 'none')
                     } else {
-                        $('.btn-tambah-grafik-harin').css('display','inline')
+                        $('.btn-tambah-grafik-harin').css('display', 'inline')
                     }
                 })
                 $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
@@ -943,7 +943,7 @@
             $('#formSaveGrafikHarian input[name="no_rawat"]').val(no_rawat);
             $('#formSaveGrafikHarian input[name="nm_pasien"]').val(nm_pasien);
 
-            
+
         }
 
         // form tambah grafik harian submit

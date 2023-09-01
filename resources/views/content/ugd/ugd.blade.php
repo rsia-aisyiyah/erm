@@ -234,24 +234,32 @@
                 $.map(resep, (res) => {
                     no_resep = resep.length ? res.no_resep : '';
                     if (res.resep_dokter.length) {
+                        let no = 1;
                         $.map(res.resep_dokter, (rd) => {
-                            console.log(rd);
-                            html = `<tr>
+                            html = `<tr class="obat-${no}">
                                     <td>${rd.no_resep}</td>
                                     <td>${rd.data_barang.nama_brng}</td>
-                                    <td>${rd.jml}</td>
-                                    <td>${rd.aturan_pakai}</td>
+                                    <td class="jml-${no}">${rd.jml}</td>
+                                    <td class="aturan-${no}">${rd.aturan_pakai}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-danger" onclick="hapusObatUmum('${rd.kode_brng}')"><i class="bi bi-trash"></i></button>
-                                    </td>
-                                    </tr>`
+                                        <button class="btn btn-sm btn-danger" onclick="hapusObatUmum('${rd.no_resep}', '${rd.kode_brng}')"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                        </tr>`
+                            // <button class="btn btn-sm btn-warning" onclick="formUbahObat('${no}', '${rd.jml}', '${rd.aturan_pakai}')"><i class="bi bi-pencil"></i></button>
+                            no++;
                             $('#tb-resep-umum-ugd').append(html)
                         })
                     }
                 })
                 $('#formResepUgd input[name="no_resep"]').val(no_resep)
             })
+        }
+
+
+        function formUbahObat(row) {
+            jml = $('.jml_' + row).text()
+
+            console.log(row);
         }
 
         function modalSoapUgd(noRawat) {
@@ -268,7 +276,7 @@
             $('#modalSoapUgd').modal('show')
             $('#tbSoapUgd').DataTable().destroy();
             $('.btn-umum').attr('onclick', `tambahUmum('${noRawat}')`)
-            $('.btn-racikan').attr('onclick', `tambahUmum('${noRawat}')`)
+            $('.btn-racikan').attr('onclick', `tambahRacikan('${noRawat}')`)
             tbSoapUgd(noRawat);
             setEws(noRawat, 'ralan')
             // getLastNoResep().done((result) => {
@@ -289,74 +297,115 @@
                             $("#formAsmedUgd textarea").prop('readonly', true);
                             $('.btn-asmed-ugd-ubah').css('display', 'none')
                             $('.btn-asmed-ugd').css('display', 'none')
-                        
                         } else {
-
+                            $('.btn-asmed-ugd-ubah').css('display', 'none')
+                            $('.btn-asmed-ugd').css('display', 'inline')
+                        }
                         $('#formAsmedUgd input[name="no_rawat"]').val(regPeriksa.no_rawat)
                         $('#formAsmedUgd input[name="pasien"]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
                         $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
                         $('#formAsmedUgd input[name="kd_dokter"]').val(regPeriksa.kd_dokter)
                         $('#formAsmedUgd input[name="dokter"]').val(regPeriksa.dokter.nm_dokter)
-                        $('.btn-asmed-ugd-ubah').css('display', 'none')
-                        $('.btn-asmed-ugd').css('display', 'inline')
-                    }
+                        $('#formAsmedUgd input[name="tanggal"]').val(`${formatTanggal("{{ date('Y-m-d') }}")} {{ date('H:i:s') }}`)
 
                     })
                 } else {
-                if (response.kd_dokter != "{{ session()->get('pegawai')->nik }}") {
-                    $("#formAsmedUgd :input").prop('readonly', true);
-                    $("#formAsmedUgd select").prop('disabled', true);
-                    $("#formAsmedUgd textarea").prop('readonly', true);
-                    $('.btn-asmed-ugd-ubah').css('display', 'none')
-                    $('.btn-asmed-ugd').css('display', 'none')
-                   
-                } 
+                    if (response.kd_dokter != "{{ session()->get('pegawai')->nik }}") {
+                        $("#formAsmedUgd :input").prop('readonly', true);
+                        $("#formAsmedUgd select").prop('disabled', true);
+                        $("#formAsmedUgd textarea").prop('readonly', true);
+                        $('.btn-asmed-ugd-ubah').css('display', 'none')
+                        $('.btn-asmed-ugd').css('display', 'none')
 
-                $('#formAsmedUgd input[name="no_rawat"]').val(response.no_rawat)
-                $('#formAsmedUgd input[name="pasien"]').val(`${response.reg_periksa.pasien.nm_pasien} (${response.reg_periksa.pasien.jk})`)
-                $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(response.reg_periksa.pasien.tgl_lahir)} (${hitungUmur(response.reg_periksa.pasien.tgl_lahir)})`)
-                $('#formAsmedUgd input[name="kd_dokter"]').val(response.kd_dokter)
-                $('#formAsmedUgd input[name="dokter"]').val(response.dokter.nm_dokter)
-                $('#formAsmedUgd input[name="tanggal"]').val(response.tanggal)
-                $('#formAsmedUgd input[name="tanggal"]').attr('style', 'background-color: #e9ecef;cursor:not-allowed')
-                $('#formAsmedUgd select[name="anamnesis"]').val(response.anamnesis).change()
-                $('#formAsmedUgd input[name="hubungan"]').val(response.hubungan)
-                $('#formAsmedUgd textarea[name="keluhan_utama"]').val(response.keluhan_utama)
-                $('#formAsmedUgd textarea[name="rps"]').val(response.rps)
-                $('#formAsmedUgd textarea[name="rpd"]').val(response.rpd)
-                $('#formAsmedUgd textarea[name="rpk"]').val(response.rpk)
-                $('#formAsmedUgd textarea[name="rpo"]').val(response.rpo)
-                $('#formAsmedUgd input[name="alergi"]').val(response.alergi)
-                $('#formAsmedUgd select[name="keadaan"]').val(response.keadaan).change()
-                $('#formAsmedUgd select[name="kesadaran"]').val(response.kesadaran).change()
-                $('#formAsmedUgd input[name="gcs"]').val(response.gcs)
-                $('#formAsmedUgd input[name="tb"]').val(response.tb)
-                $('#formAsmedUgd input[name="bb"]').val(response.bb)
-                $('#formAsmedUgd input[name="td"]').val(response.td)
-                $('#formAsmedUgd input[name="nadi"]').val(response.nadi)
-                $('#formAsmedUgd input[name="rr"]').val(response.rr)
-                $('#formAsmedUgd input[name="suhu"]').val(response.suhu)
-                $('#formAsmedUgd input[name="spo"]').val(response.spo)
-                $('#formAsmedUgd select[name="kepala"]').val(response.kepala).change()
-                $('#formAsmedUgd select[name="mata"]').val(response.mata).change()
-                $('#formAsmedUgd select[name="gigi"]').val(response.gigi).change()
-                $('#formAsmedUgd select[name="leher"]').val(response.leher).change()
-                $('#formAsmedUgd select[name="thoraks"]').val(response.thoraks).change()
-                $('#formAsmedUgd select[name="abdomen"]').val(response.abdomen).change()
-                $('#formAsmedUgd select[name="ekstremitas"]').val(response.ekstremitas).change()
-                $('#formAsmedUgd textarea[name="ket_fisik"]').val(response.ket_fisik)
-                $('#formAsmedUgd textarea[name="ket_lokalis"]').val(response.ket_lokalis)
-                $('#formAsmedUgd textarea[name="ekg"]').val(response.ekg)
-                $('#formAsmedUgd textarea[name="lab"]').val(response.lab)
-                $('#formAsmedUgd textarea[name="rad"]').val(response.rad)
-                $('#formAsmedUgd textarea[name="diagnosis"]').val(response.diagnosis)
-                $('#formAsmedUgd textarea[name="tata"]').val(response.tata)
-            
-            
-        }
+                    }
+
+                    $('#formAsmedUgd input[name="no_rawat"]').val(response.no_rawat)
+                    $('#formAsmedUgd input[name="pasien"]').val(`${response.reg_periksa.pasien.nm_pasien} (${response.reg_periksa.pasien.jk})`)
+                    $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(response.reg_periksa.pasien.tgl_lahir)} (${hitungUmur(response.reg_periksa.pasien.tgl_lahir)})`)
+                    $('#formAsmedUgd input[name="kd_dokter"]').val(response.kd_dokter)
+                    $('#formAsmedUgd input[name="dokter"]').val(response.dokter.nm_dokter)
+                    $('#formAsmedUgd input[name="tanggal"]').val(response.tanggal)
+                    $('#formAsmedUgd input[name="tanggal"]').attr('style', 'background-color: #e9ecef;cursor:not-allowed')
+                    $('#formAsmedUgd select[name="anamnesis"]').val(response.anamnesis).change()
+                    $('#formAsmedUgd input[name="hubungan"]').val(response.hubungan)
+                    $('#formAsmedUgd textarea[name="keluhan_utama"]').val(response.keluhan_utama)
+                    $('#formAsmedUgd textarea[name="rps"]').val(response.rps)
+                    $('#formAsmedUgd textarea[name="rpd"]').val(response.rpd)
+                    $('#formAsmedUgd textarea[name="rpk"]').val(response.rpk)
+                    $('#formAsmedUgd textarea[name="rpo"]').val(response.rpo)
+                    $('#formAsmedUgd input[name="alergi"]').val(response.alergi)
+                    $('#formAsmedUgd select[name="keadaan"]').val(response.keadaan).change()
+                    $('#formAsmedUgd select[name="kesadaran"]').val(response.kesadaran).change()
+                    $('#formAsmedUgd input[name="gcs"]').val(response.gcs)
+                    $('#formAsmedUgd input[name="tb"]').val(response.tb)
+                    $('#formAsmedUgd input[name="bb"]').val(response.bb)
+                    $('#formAsmedUgd input[name="td"]').val(response.td)
+                    $('#formAsmedUgd input[name="nadi"]').val(response.nadi)
+                    $('#formAsmedUgd input[name="rr"]').val(response.rr)
+                    $('#formAsmedUgd input[name="suhu"]').val(response.suhu)
+                    $('#formAsmedUgd input[name="spo"]').val(response.spo)
+                    $('#formAsmedUgd select[name="kepala"]').val(response.kepala).change()
+                    $('#formAsmedUgd select[name="mata"]').val(response.mata).change()
+                    $('#formAsmedUgd select[name="gigi"]').val(response.gigi).change()
+                    $('#formAsmedUgd select[name="leher"]').val(response.leher).change()
+                    $('#formAsmedUgd select[name="thoraks"]').val(response.thoraks).change()
+                    $('#formAsmedUgd select[name="abdomen"]').val(response.abdomen).change()
+                    $('#formAsmedUgd select[name="ekstremitas"]').val(response.ekstremitas).change()
+                    $('#formAsmedUgd textarea[name="ket_fisik"]').val(response.ket_fisik)
+                    $('#formAsmedUgd textarea[name="ket_lokalis"]').val(response.ket_lokalis)
+                    $('#formAsmedUgd textarea[name="ekg"]').val(response.ekg)
+                    $('#formAsmedUgd textarea[name="lab"]').val(response.lab)
+                    $('#formAsmedUgd textarea[name="rad"]').val(response.rad)
+                    $('#formAsmedUgd textarea[name="diagnosis"]').val(response.diagnosis)
+                    $('#formAsmedUgd textarea[name="tata"]').val(response.tata)
+
+
+                }
 
             })
             $('#modalAsmedUgd').modal('show');
+        }
+
+        function tulisPlan(no_rawat) {
+            // no_rawat = $('#nomor_rawat').val();
+            $.ajax({
+                url: '/erm/resep/obat/ambil',
+                method: 'GET',
+                data: {
+                    no_rawat: no_rawat,
+                },
+                success: function(response) {
+                    teksRd = '';
+                    teksRr = '';
+                    $.map(response, function(res) {
+                        $.map(res.resep_dokter, function(rd) {
+                            teksRd += `${rd.data_barang.nama_brng}, jml : ${rd.jml} ${rd.data_barang.kode_satuan.satuan} aturan pakai ${rd.aturan_pakai} \n`;
+                        })
+
+                        $.map(res.resep_racikan, function(rr) {
+                            teksRr += `${rr.metode.nm_racik} ${rr.nama_racik}, jml : ${rr.jml_dr} aturan pakai ${rr.aturan_pakai}, isian :  \n`
+                            let no = 1
+                            $.map(rr.detail_racikan, function(dr) {
+                                if (rr.no_racik == dr.no_racik) {
+                                    teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, \n`
+                                    no++;
+                                }
+                            })
+                            teksRr += '\n';
+                        })
+
+                    })
+                    $('#formSoapUgd textarea[name=plan]').val(teksRd + '\n' + teksRr);
+                },
+                error: function(request, status, error) {
+                    Swal.fire(
+                        'Gagal !',
+                        'Tidak tertulis di PLAN<br/>' + request.responseJSON.message,
+                        'error',
+                    )
+
+                }
+            })
         }
     </script>
 @endpush

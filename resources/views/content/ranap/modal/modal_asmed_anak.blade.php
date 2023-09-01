@@ -421,7 +421,7 @@
                 edukasi: $('#anak_edukasi').val(),
             }
             data._token = "{{ csrf_token() }}";
-            console.log(data)
+            // console.log(data)
             $.ajax({
                 url: '/erm/asmed/ranap/anak/simpan',
                 data: data,
@@ -481,7 +481,7 @@
                 edukasi: $('#anak_edukasi').val(),
             }
             data._token = "{{ csrf_token() }}";
-            console.log(data)
+            // console.log(data)
             $.ajax({
                 url: '/erm/asmed/ranap/anak/ubah',
                 data: data,

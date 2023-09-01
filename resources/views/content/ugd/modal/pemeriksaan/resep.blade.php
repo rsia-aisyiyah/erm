@@ -8,12 +8,12 @@
     <li class="nav-item">
         <a href="#umum" class="nav-link active" data-bs-toggle="tab">NON RACIKAN</a>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a href="#racikan" class="nav-link" data-bs-toggle="tab">RACIKAN</a>
     </li>
     <li class="nav-item">
         <a href="#riwayat" class="nav-link" data-bs-toggle="tab">RIWAYAT RESEP</a>
-    </li>
+    </li> --}}
 </ul>
 <div class="tab-content">
     <div class="tab-pane fade show active" id="umum">
@@ -97,15 +97,11 @@
                         $('#tb-resep-umum-ugd tbody').hide().append(setRowUmum(noResep, row)).fadeIn(1000);
                         data = getDataForm('#formResepUgd', ['input'], ['']);
                         data['no_resep'] = noResep
-
-                        console.log(data);
                         createResepObat(data).done((response) => {
                             console.log(response);
                         })
                     })
                 }
-
-
             })
         }
 
@@ -122,7 +118,7 @@
             html += '<input type="search" name="jml" class="jml form-control form-control-sm form-underline"/>';
             html += '</td>';
             html += '<td>';
-            html += '<input type="search" name="aturan_pakai" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
+            html += '<input type="search" name="aturan_pakai" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" />';
             html += '</td>';
             html += '<td>';
             html += `<div class="status">
@@ -132,6 +128,70 @@
             html += '</td>';
             html += '</tr>';
             $('.btn-umum').fadeOut()
+
+            return html;
+        }
+
+        function tambahRacikan(noRawat) {
+            console.log(noRawat);
+            const resepByRawat = getResepByRawat(noRawat)
+            const getLast = getLastNoResep();
+            const row = $('#tb-resep-racikan tbody').children('tr').length;
+            resepByRawat.done((resep) => {
+                if (resep.length) {
+                    $.map(resep, (res) => {
+                        noResep = res.no_resep;
+                    })
+                    $('#formResepUgd input[name="no_resep"]').val(noResep)
+                    $('#tb-resep-racikan tbody').append(setRowRacikan(noResep));
+                } else {
+                    getLast.done((result) => {
+                        const date = new Date();
+                        noResep = result.length ? parseInt(result.no_resep) + 1 : `${date.getFullYear()}${date.getMonth()}${date.getDate()}0001`
+                        const dokter = $('#formResepUgd input[name="kd_dokter"]').val()
+                        const no_rawat = $('#formResepUgd input[name="no_rawat"]').val()
+                        const _token = $('#formResepUgd input[name="_token"]').val()
+                        $('#formResepUgd input[name="no_resep"]').val(noResep)
+                        $('#tb-resep-racikan tbody').hide().append(setRowRacikan(noResep));
+                        data = getDataForm('#formResepUgd', ['input'], ['']);
+                        data['no_resep'] = noResep
+                        createResepObat(data).done((response) => {
+                            console.log(response);
+                        })
+                    })
+                }
+            })
+        }
+
+        function setRowRacikan(no_resep) {
+            html = '<tr>';
+            html += '<td>';
+            html += '<input type="text" class="no_racik form-control form-control-sm form-underline" readonly/>';
+            html += '</td>';
+            html += '<td>';
+            html += `<input type="text" class="no_resep form-control form-control-sm form-underline" readonly value="${no_resep}"/>`;
+            html += '</td>';
+            html += '<td>';
+            html += '<input type="search" autocomplete="off" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/><input type="hidden" class="id_racik" /><div class="list_racik"></div>';
+            html += '</td>';
+
+            html += '<td>';
+            html +=
+                '<select name=kd_racik" id="" class="form-select form-select-sm kd_racik form-underline" style="font-size:12px"> <option value="R01" selected>Puyer</option> <option value="R02">Sirup</option> <option value="R03">Salep</option> <option value="R04">Kapsul</option> </select>';
+            html += '</td>';
+            html += '<td>';
+            html +=
+                '<input type="search" autocomplete="off" class="form-control form-control-sm jml_dr form-underline" name="jml_dr" onkeypress="return hanyaAngka(event)" />';
+            html += '</td>';
+            html += '<td>';
+            html +=
+                '<input type="search" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
+            html += '</td>';
+            html += '<td>';
+            html +=
+                '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanRacikan()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
+            html += '</td>';
+            html += '</tr>';
 
             return html;
         }
@@ -192,6 +252,7 @@
                     success: function(response) {
                         $('.btn-umum').css('display', 'inline')
                         setListResep(no_rawat);
+                        tulisPlan(no_rawat);
                     },
                     error: function(request, status, error) {
                         Swal.fire(
@@ -219,7 +280,6 @@
         $('#tb-resep-umum-ugd tbody').on('click', '.hapus-baris', function(e) {
             e.preventDefault();
             row = $(this).parents('td').parents('tr').remove();
-            // $('.btn-umum').css('display', 'inline')
             $('.btn-umum').fadeIn()
             return false;
         })
@@ -284,6 +344,7 @@
                         }
                     }).done(function() {
                         setListResep(no_rawat)
+                        tulisPlan(no_rawat)
                     })
                 }
             })

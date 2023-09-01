@@ -87,7 +87,6 @@
                                     list += '<li> O2 : ' + grafik.o2 + '</li>';
                                 }
                             })
-                            console.log(row)
                             list += '<li> GCS : ' + row.gcs + '</li>';
                             list += '<li> Tensi : ' + row.tensi + ' mmHg</li>';
                             list += '<li> Nadi : ' + row.nadi + ' /mnt</li>';
@@ -136,7 +135,18 @@
                     jam_rawat: jam_rawat,
                 },
             }).done((response) => {
-                console.log(response)
+                if (response.pegawai.nik != "{{ session()->get('pegawai')->nik }}") {
+                    $("#formSoapUgd :input").prop('readonly', true);
+                    $("#formSoapUgd select").prop('disabled', true);
+                    $("#formSoapUgd textarea").prop('readonly', true);
+                    $('#btn-ubah').css('display', 'none');
+                    $('#btn-reset').css('display', 'none');
+                    $('.btn-simpan').css('display', 'none');
+                } else {
+                    $('#btn-ubah').css('display', 'inline');
+                    $('#btn-reset').css('display', 'inline');
+                    $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
+                }
                 $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
                 $('#formSoapUgd input[name="nama"]').val(response.pegawai.nama)
                 $('#formSoapUgd textarea[name="subjek"]').val(response.keluhan)
@@ -156,9 +166,7 @@
                 $('#formSoapUgd textarea[name="instruksi"]').val(response.instruksi)
                 $('#jam_rawat').val(response.jam_rawat)
                 $('#tgl_perawatan').val(response.tgl_perawatan)
-                $('#btn-ubah').css('display', 'inline');
-                $('#btn-reset').css('display', 'inline');
-                $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
+
 
                 $.map(response.grafik, (grafik) => {
                     if (grafik.tgl_perawatan == tgl_pemeriksaan && grafik.jam_rawat == jam_rawat) {

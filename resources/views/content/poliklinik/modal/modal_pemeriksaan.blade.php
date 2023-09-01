@@ -1540,7 +1540,6 @@
                         $('.no_resep').val(setNoResep())
                     }
 
-                    console.log(response);
                 },
                 error: function(request, status, error) {
                     Swal.fire(
