@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-    @include('content.ugd.modal.soap')
+    @include('content.ugd.modal.pemeriksaan')
     @include('content.ugd.modal.asmed')
 @endsection
 
@@ -227,18 +227,54 @@
             }
         })
 
+
+        function setListResep(noRawat) {
+            return getResepByRawat(noRawat).done((resep) => {
+                $('#tb-resep-umum-ugd tbody').empty()
+                $.map(resep, (res) => {
+                    no_resep = resep.length ? res.no_resep : '';
+                    if (res.resep_dokter.length) {
+                        $.map(res.resep_dokter, (rd) => {
+                            console.log(rd);
+                            html = `<tr>
+                                    <td>${rd.no_resep}</td>
+                                    <td>${rd.data_barang.nama_brng}</td>
+                                    <td>${rd.jml}</td>
+                                    <td>${rd.aturan_pakai}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></button>
+                                        <button class="btn btn-sm btn-danger" onclick="hapusObatUmum('${rd.kode_brng}')"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                    </tr>`
+                            $('#tb-resep-umum-ugd').append(html)
+                        })
+                    }
+                })
+                $('#formResepUgd input[name="no_resep"]').val(no_resep)
+            })
+        }
+
         function modalSoapUgd(noRawat) {
 
             getRegPeriksa(noRawat).done((response) => {
                 $('#formSoapUgd input[name="no_rawat"]').val(response.no_rawat)
                 $('#formSoapUgd input[name="nm_pasien"]').val(`${response.pasien.nm_pasien} (${hitungUmur(response.pasien.tgl_lahir)})`)
+                $('#formResepUgd input[name="no_rawat"]').val(response.no_rawat)
+                $('#formResepUgd input[name="kd_dokter"]').val(response.kd_dokter)
+                setListResep(noRawat);
             })
             $('#formSoapUgd input[name="nama"]').val("{{ session()->get('pegawai')->nama }}")
             $('#formSoapUgd input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
             $('#modalSoapUgd').modal('show')
             $('#tbSoapUgd').DataTable().destroy();
+            $('.btn-umum').attr('onclick', `tambahUmum('${noRawat}')`)
+            $('.btn-racikan').attr('onclick', `tambahUmum('${noRawat}')`)
             tbSoapUgd(noRawat);
             setEws(noRawat, 'ralan')
+            // getLastNoResep().done((result) => {
+            //     const noResep = parseInt(result.no_resep) + 1;
+
+            // })
 
 
         }

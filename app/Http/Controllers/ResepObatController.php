@@ -27,6 +27,23 @@ class ResepObatController extends Controller
         $this->track->deleteSql($resepObat, $data);
         return response()->json($result);
     }
+
+    function getByNoRawat($no_rawat)
+    {
+        $id = str_replace('-', '/', $no_rawat);
+        $resepObat = $this->resepObat->where('no_rawat', $id)
+            ->with('resepDokter.dataBarang.kodeSatuan', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang.kodeSatuan')
+            ->get();
+
+        return response()->json($resepObat);
+    }
+    function get($no_resep)
+    {
+        $resepObat = $this->resepObat->where('no_resep', $no_resep)->where('status', 'ralan')
+            ->with('resepDokter.dataBarang.kodeSatuan', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang.kodeSatuan')
+            ->first();
+        return response()->json($resepObat);
+    }
     public function ambil(Request $request)
     {
         $resepObat = $this->resepObat;
@@ -70,6 +87,12 @@ class ResepObatController extends Controller
                 }
             })
             ->make(true);
+    }
+    public function getLast()
+    {
+        $resepObat = $this->resepObat->select('no_resep');
+        $result = $resepObat->where('tgl_peresepan', date('Y-m-d'))->orWhere('tgl_perawatan', date('Y-m-d'))->orderBy('no_resep', 'DESC')->first();
+        return response()->json($result);
     }
     public function akhir(Request $request)
     {

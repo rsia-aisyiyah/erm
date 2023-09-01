@@ -26,6 +26,10 @@
                         <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
                             type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
+                            type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep</button>
+                    </li>
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -58,6 +62,10 @@
                         <div class="hasil-ews">
 
                         </div>
+                    </div>
+                    <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
+                        tabindex="0">
+                        @include('content.ranap.modal._resep')
                     </div>
                     <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
                         tabindex="0">

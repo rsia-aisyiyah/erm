@@ -203,8 +203,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/resep', [ResepObatController::class, 'index']);
     Route::get('/resep/ambil/tabel', [ResepObatController::class, 'ambilTable']);
+    Route::get('/resep/get/rawat/{no_rawat}', [ResepObatController::class, 'getByNoRawat']);
     Route::get('/resep/ambil/sekarang', [ResepObatController::class, 'ambilSekarang']);
     Route::get('/resep/riwayat/{no_rkm_medis}', [ResepObatController::class, 'getByNoRm']);
+    Route::get('/resep/get/nomor/akhir', [ResepObatController::class, 'getLast']);
 
     Route::get('/resep/obat/akhir', [ResepObatController::class, 'akhir']);
     Route::get('/resep/obat/ambil', [ResepObatController::class, 'ambil']);
