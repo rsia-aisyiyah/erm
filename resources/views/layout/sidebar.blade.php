@@ -57,7 +57,7 @@
                     session()->get('pegawai')->departemen == 'DPM1' ||
                     session()->get('pegawai')->departemen == 'DNM5' ||
                     session()->get('pegawai')->departemen == 'DM4' ||
-                    session()->get('pegawai')->departemen == 'DM4')
+                    session()->get('pegawai')->departemen == 'DM2')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('ranap') ? 'active' : '' }}" href="/erm/ranap">
                         <i class="bi bi-hospital-fill align-text-bottom"></i>

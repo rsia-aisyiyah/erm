@@ -44,7 +44,10 @@ class LoginController extends Controller
                 return redirect('/poliklinik/P006?dokter=' . $request->get('username'));
             } else if ($pegawai->departemen == 'DM1') {
                 return redirect('ugd');
-            } else if ($pegawai->departemen == 'DM8' || $pegawai->departemen == 'DM3') {
+            } else if (
+                $pegawai->departemen == 'DM8' || $pegawai->departemen == 'DM3' || $pegawai->departemen == 'DM4' ||
+                $pegawai->departemen == 'DNM5' || $pegawai->departemen == 'DM2'
+            ) {
                 return redirect('ranap');
             } else if ($pegawai->nik == 'direksi' || $pegawai->departemen == 'DM6' || $pegawai->departemen == 'SPS' || $pegawai->jnj_jabatan == 'DIRU') {
                 return redirect('/');
