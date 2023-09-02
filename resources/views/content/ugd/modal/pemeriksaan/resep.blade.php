@@ -8,9 +8,9 @@
     <li class="nav-item">
         <a href="#umum" class="nav-link active" data-bs-toggle="tab">NON RACIKAN</a>
     </li>
-    {{-- <li class="nav-item">
+    <li class="nav-item">
         <a href="#racikan" class="nav-link" data-bs-toggle="tab">RACIKAN</a>
-    </li> --}}
+    </li>
     {{-- <li class="nav-item">
         <a href="#riwayat" class="nav-link" data-bs-toggle="tab">RIWAYAT RESEP</a>
     </li> --}}
@@ -252,15 +252,37 @@
 
 
 
-        function cariTemplateRacikan(kd_dokter = '', nm_racik = '') {
-            // $(this).val
-            console.log('AHAHAHHAHAHAHAHAH');
-            // console.log(nm_racik);
-            // getTemplateRacikan(kd_dokter, nm_racik) {
+        function cariTemplateRacikan(nm_racik) {
+            // key = $(nm_racik).val()
+            // getTemplateRacikan(kd_dokter, key).done((response) => {
+            //     console.log(response);
+            // })
+            $.ajax({
+                url: '/erm/resep/racik/cari',
+                data: {
+                    'nm_racik': nm_racik.value,
+                    'kd_dokter': "-",
+                },
+                dataType: 'JSON',
+                success: function(response) {
+                    if (Object.keys(response).length > 0) {
+                        html =
+                            '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
+                        $.map(response, function(data) {
+                            html +=
+                                '<li onclick="setNamaRacik(this)" data-nama="' + data.nm_racik + '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' + data.nm_racik + '</a></li>'
+                        })
+                        html += '</ul>';
+                        $('.list_racik').fadeIn();
+                        $('.list_racik').html(html);
+                    }
 
-            // }
-
+                }
+            })
         }
+
+
+
 
 
 
@@ -276,7 +298,7 @@
             html += `<input type="text" name="no_resep" class="no_resep form-control form-control-sm form-underline" readonly value="${no_resep}"/>`;
             html += '</td>';
             html += '<td>';
-            html += `<input type="search" autocomplete="off" class="form-control form-control-sm form-underline" name="nama_racik" onkeypress="cariTemplateRacikan('-', this)"/><input type="hidden" class="id_racik" name="id_racik"/><div class="list_racik"></div>`;
+            html += `<input type="search" autocomplete="off" class="form-control form-control-sm form-underline" name="nama_racik" onkeyup="cariTemplateRacikan('-', this)"/><input type="hidden" class="id_racik" name="id_racik"/><div class="list_racik"></div>`;
             html += '</td>';
 
             html += '<td>';
