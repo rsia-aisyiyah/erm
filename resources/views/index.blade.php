@@ -676,6 +676,22 @@
             return template;
         }
 
+
+        function hapusResepRacikan(no_resep, no_racik) {
+            let racikan = $.ajax({
+                url: '/erm/resep/racik/hapus',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: no_resep,
+                    no_racik: no_racik,
+                },
+                method: 'DELETE',
+            });
+
+            return racikan;
+        }
+
+
         function getPeserta(noka, tglSep = '') {
             let tanggal = tglSep ? tglSep : "{{ date('Y-m-d') }}";
             let peserta = $.ajax({

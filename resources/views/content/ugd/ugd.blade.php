@@ -231,6 +231,7 @@
         function setListResep(noRawat) {
             return getResepByRawat(noRawat).done((resep) => {
                 $('#tb-resep-umum-ugd tbody').empty()
+                let no_resep = '';
                 $.map(resep, (res) => {
                     no_resep = resep.length ? res.no_resep : '';
                     if (res.resep_dokter.length) {
@@ -248,6 +249,27 @@
                             // <button class="btn btn-sm btn-warning" onclick="formUbahObat('${no}', '${rd.jml}', '${rd.aturan_pakai}')"><i class="bi bi-pencil"></i></button>
                             no++;
                             $('#tb-resep-umum-ugd').append(html)
+                        })
+                    }
+
+                    console.log(res.resep_racikan)
+                    if (res.resep_racikan.length) {
+                        let no = 1;
+                        $.map(res.resep_racikan, (rr) => {
+                            html = `<tr class="racikan-${no}">
+                                    <td>${rr.no_racik}</td>
+                                    <td>${rr.no_resep}</td>
+                                    <td>${rr.nama_racik}</td>
+                                    <td>${rr.metode.nm_racik}</td>
+                                    <td class="jml_dr-${no}">${rr.jml_dr}</td>
+                                    <td class="aturan_dr-${no}">${rr.aturan_pakai}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger" onclick="hapusRacikan('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-trash"></i></button>
+                                        <button class="btn btn-sm btn-warning" onclick="tambahDetail('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-pencil"></i></button>
+                                    </td>
+                                    </tr>`
+                            no++;
+                            $('#tb-resep-racikan tbody').append(html)
                         })
                     }
                 })
@@ -275,8 +297,8 @@
             $('#formSoapUgd input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
             $('#modalSoapUgd').modal('show')
             $('#tbSoapUgd').DataTable().destroy();
-            $('.btn-umum').attr('onclick', `tambahUmum('${noRawat}')`)
-            $('.btn-racikan').attr('onclick', `tambahRacikan('${noRawat}')`)
+            $('.btn-umum').attr('onclick', `tambahResep('umum', '${noRawat}')`)
+            $('.btn-racikan').attr('onclick', `tambahResep('racikan','${noRawat}')`)
             tbSoapUgd(noRawat);
             setEws(noRawat, 'ralan')
             // getLastNoResep().done((result) => {

@@ -611,19 +611,6 @@
             return false;
         })
 
-        function hapusResepRacikan(no_resep, no_racik) {
-            let racikan = $.ajax({
-                url: '/erm/resep/racik/hapus',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    no_resep: no_resep,
-                    no_racik: no_racik,
-                },
-                method: 'DELETE',
-            });
-
-            return racikan;
-        }
 
         function hapusResepUmum(no_resep, kode_brng) {
             let resepUmum = $.ajax({

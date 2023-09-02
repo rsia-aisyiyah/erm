@@ -14,14 +14,16 @@
                     </a>
                 </li>
             @endif
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
-                    <i class="bi bi-people-fill align-text-bottom"></i>
-                    Pasien
-                </a>
-            </li>
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'CSM')
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
+                        <i class="bi bi-people-fill align-text-bottom"></i>
+                        Pasien
+                    </a>
+                </li>
+            @endif
 
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DPM1' || session()->get('pegawai')->departemen == 'DM6' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->jnj_jabatan == 'DIRU')
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DPM1' || session()->get('pegawai')->departemen == 'DM6' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM7')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('poliklinik') ? 'active' : '' }}" href="/erm/poliklinik">
                         <i class="bi bi-bandaid align-text-bottom"></i>

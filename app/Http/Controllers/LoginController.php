@@ -40,14 +40,14 @@ class LoginController extends Controller
                 return redirect('/resep');
             } else if ($pegawai->departemen == 'DNM6') {
                 return redirect('/registrasi');
-            } else if ($pegawai->departemen == 'Dokter Umum') {
+            } else if ($pegawai->departemen == 'DM7') {
                 return redirect('/poliklinik/P006?dokter=' . $request->get('username'));
             } else if ($pegawai->departemen == 'DM1') {
                 return redirect('ugd');
             } else if ($pegawai->departemen == 'DM8' || $pegawai->departemen == 'DM3') {
                 return redirect('ranap');
             } else if ($pegawai->nik == 'direksi' || $pegawai->departemen == 'DM6' || $pegawai->departemen == 'SPS' || $pegawai->jnj_jabatan == 'DIRU') {
-                return redirect('/poliklinik');
+                return redirect('/');
             }
         } else {
             return back()->with('error', 'Login Gagal, Periksa Kembali NIK dan Password');
