@@ -122,7 +122,7 @@
             var bidang = "{{ session()->get('pegawai')->bidang }}"
             var nik = "{{ session()->get('pegawai')->nik }}"
             var nama = "{{ session()->get('pegawai')->nama }}"
-            if (bidang == 'Spesialis') {
+            if (bidang == 'Spesialis' || "{{ session()->get('pegawai')->departemen }}" == "DM7") {
                 setTemplate(nik)
                 $('#kd_dokter').val(nik)
                 $('#dokter').val(nama)
