@@ -677,6 +677,18 @@
         }
 
 
+        function getTemplateRacikan(kd_dokter = '', nm_racik = '', id = '') {
+            let template = $.ajax({
+                url: '/erm/resep/racik/template/ambil',
+                data: {
+                    id: id,
+                    kd_dokter: kd_dokter,
+                    nm_racik: nm_racik,
+                }
+            })
+            return template;
+        }
+
         function hapusResepRacikan(no_resep, no_racik) {
             let racikan = $.ajax({
                 url: '/erm/resep/racik/hapus',

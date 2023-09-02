@@ -231,6 +231,7 @@
         function setListResep(noRawat) {
             return getResepByRawat(noRawat).done((resep) => {
                 $('#tb-resep-umum-ugd tbody').empty()
+                $('#tb-resep-racikan tbody').empty()
                 let no_resep = '';
                 $.map(resep, (res) => {
                     no_resep = resep.length ? res.no_resep : '';

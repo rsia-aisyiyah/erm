@@ -10,8 +10,8 @@
     </li>
     {{-- <li class="nav-item">
         <a href="#racikan" class="nav-link" data-bs-toggle="tab">RACIKAN</a>
-    </li>
-    <li class="nav-item">
+    </li> --}}
+    {{-- <li class="nav-item">
         <a href="#riwayat" class="nav-link" data-bs-toggle="tab">RIWAYAT RESEP</a>
     </li> --}}
 </ul>
@@ -168,10 +168,14 @@
                     })
                     $('#formResepUgd input[name="no_resep"]').val(noResep)
                     if (kategori == 'umum') {
-                        row = $('#tb-resep-umum-ugd tbody').children('tr').length;
+                        row = 1 + $('#tb-resep-umum-ugd tbody').children('tr').length;
                         $('#tb-resep-umum-ugd tbody').append(setRowUmum(noResep, row));
                     } else if (kategori == 'racikan') {
-                        row = $('#tb-resep-racikan tbody').children('tr').length;
+                        row = 1 + $('#tb-resep-racikan tbody').children('tr').length;
+
+                        console.log($('#tb-resep-racikan tbody').children('tr'));
+                        console.log(row);
+
                         $('#tb-resep-racikan tbody').append(setRowRacikan(noResep, row));
                         getResepRacikan().done((rr) => {
                             if (rr.length) {
@@ -247,6 +251,20 @@
         }
 
 
+
+        function cariTemplateRacikan(kd_dokter = '', nm_racik = '') {
+            // $(this).val
+            console.log('AHAHAHHAHAHAHAHAH');
+            // console.log(nm_racik);
+            // getTemplateRacikan(kd_dokter, nm_racik) {
+
+            // }
+
+        }
+
+
+
+
         function setRowRacikan(no_resep, id) {
             html = `<tr id="racikan-${id}">`;
             html += '<td>';
@@ -258,7 +276,7 @@
             html += `<input type="text" name="no_resep" class="no_resep form-control form-control-sm form-underline" readonly value="${no_resep}"/>`;
             html += '</td>';
             html += '<td>';
-            html += '<input type="search" autocomplete="off" class="form-control form-control-sm nm_racik form-underline" name="nama_racik"/><input type="hidden" class="id_racik" /><div class="list_racik"></div>';
+            html += `<input type="search" autocomplete="off" class="form-control form-control-sm form-underline" name="nama_racik" onkeypress="cariTemplateRacikan('-', this)"/><input type="hidden" class="id_racik" name="id_racik"/><div class="list_racik"></div>`;
             html += '</td>';
 
             html += '<td>';
@@ -421,7 +439,7 @@
         //ambil detail isi resep racikan 
         function getDetailRacikan(no_resep, no_racik) {
             const racikan = $.ajax({
-                url: '/erm/resep/detail/ambil',
+                url: '/erm/resep/racik/detail/ambil',
                 data: {
                     'no_resep': no_resep,
                     'no_racik': no_racik,
@@ -512,7 +530,7 @@
                     hapusResepRacikan(no_resep, no_racik).done((response) => {
                         setListResep(no_rawat)
                         tulisPlan(no_rawat)
-                    }).failed((request, status, error) => {
+                    }).fail((request, status, error) => {
                         Swal.fire('Gagal !', 'Tidak menghapus obat<br/>' + request.responseJSON.message, 'error', )
                     })
                 }
