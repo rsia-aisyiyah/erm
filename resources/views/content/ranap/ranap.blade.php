@@ -631,8 +631,8 @@
                                     }
                                     return parseFloat(e.suhu_tubuh);
                                 }),
-                                backgroundColor: 'rgba(255, 99, 132, 1)',
-                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(54, 162, 235, 1)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
                                 pointBackgroundColor: '#fff',
                                 hoverRadius: 10,
                                 borderWidth: 3,
@@ -647,8 +647,8 @@
                                 data: response.map(function(e) {
                                     return e.nadi;
                                 }),
-                                backgroundColor: 'rgba(54, 162, 235, 1)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 1)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
                                 pointBackgroundColor: '#fff',
                                 hoverRadius: 10,
                                 borderWidth: 3,
