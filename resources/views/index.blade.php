@@ -146,6 +146,16 @@
             return umurTahun + ' Th ' + umurBulan + ' Bln ' + umurTanggal + ' Hari';
         }
 
+        // merapikan enter teks soap
+         function stringSoap(value) {
+            const arrValue = value.split('\n');
+            let string ='';
+            for (let index = 0; index < arrValue.length; index++) {
+                string += `${arrValue[index]} <br/>`;
+            }
+            return string
+        }
+
         function cariPetugas(nama) {
             $.ajax({
                 url: '/erm/petugas/cari',

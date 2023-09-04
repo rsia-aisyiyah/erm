@@ -87,6 +87,11 @@
             display: block;
         }
 
+        .table tr td, 
+        .table tr th {
+            vertical-align : top;
+        }
+
         .steps {
             display: flex;
             justify-content: space-between;
@@ -195,6 +200,7 @@
         .borderless th,
         .borderless td {
             border: none;
+            vertical-align: top;
             height: 5px !important;
             padding: 5px !important;
         }
