@@ -52,7 +52,7 @@
                 dataType: 'JSON',
                 method: 'GET',
                 success: function(response) {
-                    console.log('MODAL', response);
+                    console.log(response);
                     if (response.reg_periksa.length == 0) {
                         Swal.fire('Kosong!', 'Belum ada riwayat perawatan', 'error');
                     } else {
@@ -149,7 +149,7 @@
                                         <tr>
                                             <th width="10%">Petugas</th>
                                             <th>:</th>
-                                            <th>${pemRanap.pegawai.nama}</th>
+                                            <th>${pemRanap.pegawai?.nama}</th>
                                         </tr>  
                                         <tr>
                                             <td>Tanggal </td>
