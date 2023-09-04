@@ -593,8 +593,11 @@
                             showForm(no_rawat, kategori);
                             if ($('#tb_pasien').length > 0) {
                                 $('#tb_pasien').DataTable().destroy();
-                                tb_pasien("{{ date('Y-m-d') }}");
-                                hitungUpload();
+                                if(localStorage.getItem('tanggal')){
+                                    tb_pasien(`${localStorage.getItem('tanggal')}`);
+                                }else{
+                                    tb_pasien(`{{date('Y-m-d')}}`);
+                                }
                             }
                             Swal.fire(
                                 'Berhasil!', 'Berkas telah dihapus', 'success'
