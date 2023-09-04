@@ -169,7 +169,8 @@ class PemeriksaanRanapController extends Controller
 
         $pemeriksaan = $this->pemeriksaan->where('no_rawat', $request->no_rawat)->with(['regPeriksa', 'regPeriksa.pasien', 'petugas', 'grafikHarian', 'verifikasi.petugas' => function ($q) {
             return $q->select('nip', 'nama');
-        }]);
+        }])->orderBy('tgl_perawatan', 'DESC')
+            ->orderBy('jam_rawat', 'DESC');
 
         // if tanggal pertama and tanggal kedua is not empty string
         if ($request->tgl_pertama != '' && $request->tgl_kedua != '') {
@@ -186,7 +187,7 @@ class PemeriksaanRanapController extends Controller
             });
         }
 
-        return DataTables::of($pemeriksaan)->make(true);
+        return DataTables::of($pemeriksaan->get())->make(true);
     }
 
     function getTTV(Request $request)
