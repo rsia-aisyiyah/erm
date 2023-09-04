@@ -26,6 +26,10 @@ class PemeriksaanRanap extends Model
     {
         return $this->belongsTo(Petugas::class, 'nip', 'nip');
     }
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'nip', 'nik');
+    }
     function verifikasi()
     {
         return $this->hasMany(RsiaVerifPemeriksaanRanap::class, 'no_rawat', 'no_rawat');

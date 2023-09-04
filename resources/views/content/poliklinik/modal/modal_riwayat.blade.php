@@ -33,7 +33,7 @@
         var no_rm = '';
         $('#modalRiwayat').on('shown.bs.modal', function() {
             isModalShow = true;
-            modalRiwayat(no_rm);
+            // modalRiwayat(no_rm);
         });
 
         $('#modalRiwayat').on('hidden.bs.modal', function() {
@@ -52,14 +52,13 @@
                 dataType: 'JSON',
                 method: 'GET',
                 success: function(response) {
-                    // console.log(response);
                     if (Object.keys(response).length == 0) {
                         Swal.fire(
                             'Kosong!', 'Belum ada riwayat perawatan', 'error'
                         );
                         $('#modalRiwayat').modal('hide');
                     } else {
-                        resume(response);
+                        riwayatPasien(response);
                         console.log('RIWAYAT', response);
                     }
                 }
@@ -97,7 +96,7 @@
         }
 
 
-        function resume(d) {
+        function riwayatPasien(d) {
             d.reg_periksa.forEach(function(i) {
                 // console.log(i.operasi)
                 if (i.status_lanjut == 'Ranap') {
@@ -113,64 +112,20 @@
                 } else {
                     catatan = i.catatan_perawatan.catatan.replace(/\n/g, '<br/>');
                 }
-                x = i.pemeriksaan_ralan;
-                if (x) {
-                    pemeriksaan += '<tr><th>Pemeriksaan</th><td>' +
-                        '<div class="row">' +
-                        '<div class="col-sm-4">' +
-                        '<table class="table table-sm text-sm borderless mb-2" style="background-color:#e1ffe3">' +
-                        '<tr><td style="width=12%">Tanggal Rawat</td><td>: ' + formatTanggal(x
-                            .tgl_perawatan) + ' ' + x
-                        .jam_rawat + '</td></tr>' +
-                        '<tr><td>Tinggi</td><td>: ' + isKosong(x.tinggi, ' cm') + '</td><tr>' +
-                        '<tr><td>Berat Badan</td><td>: ' + isKosong(x.berat, ' Kg') + '</td><tr>' +
-                        '<tr><td>Suhu</td><td>: ' + isKosong(x.suhu_tubuh, ' <sup>o</sup>C') +
-                        '</td><tr>' +
-                        '<tr><td>Tensi</td><td>: ' + isKosong(x.tensi) + '</td><tr>' +
-                        '<tr><td>Kesadaran</td><td>: ' + isKosong(x.kesadaran) + '</td><tr>' +
-                        '<tr><td>Respirasi</td><td>: ' + isKosong(x.respirasi) +
-                        '<tr><td>GCS(E,V,M)</td><td>: ' + isKosong(x.gcs) +
-                        '<tr><td>Alergi</td><td>: ' + isKosong(x.alergi) +
-                        '<tr><td>Imunisasi</td><td>: ' + isKosong(x.imun_ke) +
-                        '</td><tr>' +
-                        '</tr>' +
-                        '</table>' +
-                        '</div>' +
-                        '<div class="col-sm-8">' +
-                        '<table class="table table-sm text-sm borderless" style="background-color:#e1ffe3">' +
-                        '<tr>' +
-                        '<tr><td style="width:10%">Subject</td><td>: ' + isKosong(x.keluhan) +
-                        '</td><tr>' +
-                        '<tr><td>Object</td><td>: ' + isKosong(x.pemeriksaan) + '</td><tr>' +
-                        '<tr><td>Assesment</td><td>: ' + isKosong(x.penilaian) + '</td><tr>' +
-                        '<tr><td>Plan</td><td>: ' + isKosong(x.rtl) + '</td><tr>' +
-                        '<tr><td>Instruksi</td><td>: ' + isKosong(x.instruksi) + '</td><tr>' +
-                        '</table>' +
-                        '<table class="table table-sm text-sm borderless" style="background-color:#e1ffe3">' +
-                        '<tr>' +
-                        '<tr><td style="width:10%">Catatan Perawatan / Dokter </td><tr>' +
-                        '<tr><td> ' + isKosong(catatan) +
-                        '</td><tr>' +
-                        '</table>' +
-                        '</div>' +
-                        '</td></tr>';
-                }
                 hasilOperasi(i.operasi, i.no_rawat)
                 detail +=
                     '<tr>' +
                     '<th colspan="2" style="' + class_status + '"><h6 align="center">' + status_lanjut +
                     '</h6></th>' +
                     '</tr>' +
-                    '<tr><th style="width:15%">Tanggal Daftar</th><td>: ' + formatTanggal(i.tgl_registrasi) +
-                    ' ' +
-                    i.jam_reg +
+                    '<tr><th style="width:15%">Tanggal Daftar</th><td>: ' + formatTanggal(i.tgl_registrasi) + ' ' + i.jam_reg +
                     '<tr><th>Nama (Nomor RM)</th><td>: ' + d.nm_pasien + ' (' + i.no_rkm_medis + ')</td></tr>' +
                     '<tr><th>Nomor Rawat</th><td>: ' + i.no_rawat + '</td></tr>' +
                     '</td></tr>' +
                     '<tr><th>Unit/Poliklinik</th><td>: ' + i.poliklinik.nm_poli + '</td></tr>' +
                     '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
                     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
-                    diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + pemeriksaan +
+                    diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + setPemeriksaan('Rawat Jalan', i.pemeriksaan_ralan) + setPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
                     '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
                     pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
@@ -181,6 +136,106 @@
 
             });
             $('#tb_riwayat').append(detail);
+        }
+
+        function setPemeriksaan(jns, data) {
+            let html = '';
+            if (data.length) {
+                html = `<tr><th style="vertical-align: top;">Pemeriksaan ${jns}</th><td>`;
+                $.map(data, (pemRanap) => {
+                    console.log(pemRanap);
+                    html += `
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-4">
+                                    <table class="table table-sm borderless bm-2" style="background-color:#e1ffe3">
+                                        <tr>
+                                            <th width="10%">Petugas</th>
+                                            <th>:</th>
+                                            <th>${pemRanap.pegawai.nama}</th>
+                                        </tr>  
+                                        <tr>
+                                            <td>Tanggal </td>
+                                            <td>:</td>
+                                            <td>${formatTanggal(pemRanap.tgl_perawatan)} ${pemRanap.jam_rawat}</td>
+                                        </tr>    
+                                        <tr>
+                                            <td>Tinggi </td>
+                                            <td>:</td>
+                                            <td>${pemRanap.tinggi} cm</td>    
+                                        </tr>
+                                        <tr>
+                                            <td>Berat Badann </td>
+                                            <td>:</td>
+                                            <td>${pemRanap.berat} Kg</td>    
+                                        </tr>
+                                        <tr>
+                                            <td>Suhu </td>
+                                            <td>:</td>
+                                            <td>${pemRanap.suhu_tubuh} <sup>0</sup>C</td>    
+                                        </tr>
+                                        <tr>
+                                            <td>Tensi</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.tensi} mmHG</td>    
+                                        </tr>
+                                        <tr>
+                                            <td>Kesadaran</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.kesadaran}</td>    
+                                        </tr>
+                                        <tr>
+                                            <td>GCS</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.gcs} E,V,M</td>    
+                                        </tr>
+                                        <tr>
+                                            <td>Respirasi</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.respirasi} /menit</td>    
+                                        </tr>
+                                        <tr>
+                                            <td>Alergi</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.alergi}</td>    
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-sm-12 col-lg-8">
+                                    <table class="table table-sm borderless bm-2" style="background-color:#e1ffe3">  
+                                        <tr>
+                                            <td width="10%">Subjek</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.keluhan}</td>
+                                        </tr>    
+                                        <tr>
+                                            <td width="10%">Objek</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.pemeriksaan}</td>
+                                        </tr>    
+                                        <tr>
+                                            <td width="10%">Asesmen</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.penilaian}</td>
+                                        </tr>    
+                                        <tr>
+                                            <td width="10%">Plan</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.rtl}</td>
+                                        </tr>    
+                                        <tr>
+                                            <td width="10%">Instruksi</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.instruksi}</td>
+                                        </tr>    
+                                    </table>
+                                </div>
+                                
+                                
+                            </div>`
+                })
+                html += `</td></tr>`
+            }
+            return html;
         }
 
         function getAturanPakai(no_rawat, obat) {

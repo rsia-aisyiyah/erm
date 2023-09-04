@@ -58,7 +58,7 @@
                         );
                         $('#modalRiwayat').modal('hide');
                     } else {
-                        resume(response);
+                        riwayatPasien(response);
                     }
                 }
             });
@@ -95,7 +95,7 @@
         }
 
 
-        function resume(d) {
+        function riwayatPasien(d) {
             d.reg_periksa.forEach(function(i) {
                 // console.log(i.operasi)
                 if (i.status_lanjut == 'Ranap') {

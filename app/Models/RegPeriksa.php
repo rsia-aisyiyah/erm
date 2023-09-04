@@ -66,7 +66,11 @@ class RegPeriksa extends Model
     }
     public function pemeriksaanRalan()
     {
-        return $this->hasOne(PemeriksaanRalan::class, 'no_rawat', 'no_rawat');
+        return $this->hasMany(PemeriksaanRalan::class, 'no_rawat', 'no_rawat');
+    }
+    public function pemeriksaanRanap()
+    {
+        return $this->hasMany(PemeriksaanRanap::class, 'no_rawat', 'no_rawat');
     }
     public function catatanPerawatan()
     {
