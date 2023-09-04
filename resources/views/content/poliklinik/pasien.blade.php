@@ -995,10 +995,8 @@
                                 textRawat(row.no_rawat) +
                                 '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
                             html +=
-                                '<button style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRm(\'' +
-                                row.no_rkm_medis +
-                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="' +
-                                row.no_rkm_medis + '"><i class="bi bi-search"></i>RIWAYAT</button>';
+                                '<button class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" onclick="modalRiwayat(\'' + row.no_rkm_medis + '\')" data-bs-target="#modalRiwayat" data-id="' +
+                                row.no_rkm_medis + '"  style="width:80px;font-size:12px;text-align:left"><i class="bi bi-search"></i>RIWAYAT</button>';
 
                             if (row.upload.length > 0) {
                                 $('#upload-' + textRawat(row.no_rawat)).removeClass(
