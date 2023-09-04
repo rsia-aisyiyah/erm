@@ -52,6 +52,7 @@
     @include('content.ugd.modal.asmed')
     @include('content.ranap.modal.modal_penunjang')
     @include('content.poliklinik.modal.modal_riwayat')
+    @include('content.ranap.modal.modal_lab')
 @endsection
 
 
@@ -163,7 +164,9 @@
                         data: '',
                         render: function(data, type, row, meta) {
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">S.O.A.P</a></li>';
+                            list += `<li><a class="dropdown-item" href="#" onclick="modalLaborat('${row.no_rawat}')">Laborat</a></li>`
                             list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd(\'' + row.no_rawat + '\')">Asesmen Medis UGD</a></li>';
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Hasil Laborat</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Berkas Penunjang</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat</a></li>`;
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px;margin-left:15px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'

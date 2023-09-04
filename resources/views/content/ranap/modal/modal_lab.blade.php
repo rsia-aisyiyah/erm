@@ -51,12 +51,12 @@
 </div>
 @push('script')
     <script>
-        function modalLabRanap(no_rawat) {
+        function modalLaborat(no_rawat) {
             let hasil = '';
             let jenisPerawatan = '';
             let tglPeriksa = '';
             $.ajax({
-                url: 'registrasi/ambil',
+                url: '/erm/registrasi/ambil',
                 data: {
                     'no_rawat': no_rawat,
                 },
@@ -94,7 +94,7 @@
             })
 
             $.ajax({
-                url: 'lab/ambil',
+                url: '/erm/lab/ambil',
                 data: {
                     'no_rawat': no_rawat,
                 },

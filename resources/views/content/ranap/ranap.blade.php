@@ -111,8 +111,10 @@
                     </div>
                 </div>
                 <input type="hidden" id="kd_dokter" value="" name="kd_dokter">
-            @else
+                <input type="hidden" id="kd_sps" value="" name="kd_sps">
+                @else
                 <input type="hidden" id="kd_dokter" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
+                <input type="hidden" id="kd_sps" name="kd_sps" value="{{ session()->get('pegawai')->dokter->kd_sps }}">
             @endif
         </div>
         <div class="col-sm-12">
@@ -155,18 +157,19 @@
         var sps = '';
         var valScrollX= '';
         var cekDepartement = `{{ session()->get('pegawai')->departemen }}`
-        var getSpsId= `{{ session()->get('pegawai')->dokter->kd_sps }}`
         var kd_dokter = $('#kd_dokter').val();
+        var getSpsId = $('#kd_sps').val();
+        
+        
+        
         $(document).ready(function() {
-            // console.log(cekDepartement);
-
+            
             if (cekDepartement == 'DM3') {
                 sps = 'S0001';
             } else if (cekDepartement == 'DM1') {
                 sps = 'S0003';
             }
 
-            console.log(getSpsId)
 
             if(getSpsId == 'S0005'){
                 sps = `S0001`
@@ -345,7 +348,7 @@
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-                            list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data.no_rawat + '\')">Laborat</a></li>';
+                            list = '<li><a class="dropdown-item" href="#" onclick="modalLaborat(\'' + data.no_rawat + '\')">Laborat</a></li>';
                             list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
                             list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
                             
@@ -389,7 +392,7 @@
                             if (row.ranap_gabung) {
                                 namaBayi = `<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">${row.ranap_gabung.reg_periksa.pasien.nm_pasien}</a>
                                 <ul class="dropdown-menu dropdown-menu" style="font-size:12px">
-                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalLabRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Laborat</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalLaborat('${row.ranap_gabung.reg_periksa.no_rawat}')">Laborat</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">S.O.A.P</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Pemeriksaan Penunjang</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.ranap_gabung.reg_periksa.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.ranap_gabung.reg_periksa.no_rkm_medis}">Riwayat</a></li>
