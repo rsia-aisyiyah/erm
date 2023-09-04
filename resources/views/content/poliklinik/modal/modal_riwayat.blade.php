@@ -140,8 +140,7 @@
             let html = '';
             if (data.length) {
                 html = `<tr><th style="vertical-align: top;">Pemeriksaan ${jns}</th><td>`;
-                $.map(data, (pemRanap) => {
-                    console.log(pemRanap);
+                    $.map(data, (pemRanap) => {
                     html += `
                             <div class="row">
                                 <div class="col-sm-12 col-lg-4">
@@ -203,27 +202,27 @@
                                         <tr>
                                             <td width="10%">Subjek</td>
                                             <td>:</td>
-                                            <td>${pemRanap.keluhan}</td>
+                                            <td>${stringSoap(pemRanap.keluhan)}</td>
                                         </tr>    
                                         <tr>
                                             <td width="10%">Objek</td>
                                             <td>:</td>
-                                            <td>${pemRanap.pemeriksaan}</td>
+                                            <td>${stringSoap(pemRanap.pemeriksaan)}</td>
                                         </tr>    
                                         <tr>
                                             <td width="10%">Asesmen</td>
                                             <td>:</td>
-                                            <td>${pemRanap.penilaian}</td>
+                                            <td>${stringSoap(pemRanap.penilaian)}</td>
                                         </tr>    
                                         <tr>
                                             <td width="10%">Plan</td>
                                             <td>:</td>
-                                            <td>${pemRanap.rtl}</td>
+                                            <td>${stringSoap(pemRanap.rtl)}</td>
                                         </tr>    
                                         <tr>
                                             <td width="10%">Instruksi</td>
                                             <td>:</td>
-                                            <td>${pemRanap.instruksi}</td>
+                                            <td>${stringSoap(pemRanap.instruksi)}</td>
                                         </tr>    
                                     </table>
                                 </div>
