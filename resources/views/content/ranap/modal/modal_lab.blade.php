@@ -119,6 +119,8 @@
                                 warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
                             } else if (res.keterangan == 'H' || res.keterangan == '*') {
                                 warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
+                            } else if (res.keterangan == 'K' || res.keterangan == 'k') {
+                                warna = 'style="color:#fff;background-color:#dc3;font-weight:bold"';
                             } else {
                                 warna = '';
                             }
