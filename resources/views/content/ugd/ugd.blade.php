@@ -335,8 +335,8 @@
                         $('#formAsmedUgd input[name="no_rawat"]').val(regPeriksa.no_rawat)
                         $('#formAsmedUgd input[name="pasien"]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
                         $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
-                        $('#formAsmedUgd input[name="kd_dokter"]').val(regPeriksa.kd_dokter)
-                        $('#formAsmedUgd input[name="dokter"]').val(regPeriksa.dokter.nm_dokter)
+                        $('#formAsmedUgd input[name="kd_dokter"]').val("{{ session()->get('pegawai')->nik }}")
+                        $('#formAsmedUgd input[name="dokter"]').val("{{ session()->get('pegawai')->nama }}")
                         $('#formAsmedUgd input[name="tanggal"]').val(`${formatTanggal("{{ date('Y-m-d') }}")} {{ date('H:i:s') }}`)
 
                     })

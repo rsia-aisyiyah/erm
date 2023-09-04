@@ -488,12 +488,13 @@
                 $('#kandungan_no_rawat').val(response.no_rawat);
                 $('#kandungan_pasien').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
                 $('#kandungan_tgl_lahir').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-                $('#kandungan_kd_dokter').val(response.kd_dokter);
-                $('#kandungan_dokter').val(response.dokter.nm_dokter);
+                
             });
 
             getAsmedRanapKandungan(noRawat).done((response) => {
                 if (Object.keys(response).length > 0) {
+                    $('#kandungan_kd_dokter').val(response.kd_dokter);
+                    $('#kandungan_dokter').val(response.dokter.nm_dokter);
                     $('.btn-asmed-kandungan').css('display', 'none')
                     $('.btn-asmed-kandungan-ubah').css('display', 'inline')
                     $('#kandungan_anamnesis').val(response.anamnesis).change();
@@ -544,6 +545,8 @@
                     $('#kandungan_tata').val(response.tata);
                     $('#kandungan_edukasi').val(response.edukasi);
                 } else {
+                    $('#kandungan_kd_dokter').val("{{ session()->get('pegawai')->nik }}");
+                $('#kandungan_dokter').val("{{ session()->get('pegawai')->nama }}");
                     $('.btn-asmed-kandungan-ubah').css('display', 'none')
                     $('.btn-asmed-kandungan').css('display', 'inline')
                 }
