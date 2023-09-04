@@ -320,16 +320,16 @@
             getAsmedUgd(params).done((response) => {
                 if (Object.keys(response).length == 0) {
                     return getRegPeriksa(params).done((regPeriksa) => {
-                        if (response.kd_dokter != "{{ session()->get('pegawai')->nik }}") {
-                            $("#formAsmedUgd :input").prop('readonly', true);
-                            $("#formAsmedUgd select").prop('disabled', true);
-                            $("#formAsmedUgd textarea").prop('readonly', true);
-                            $('.btn-asmed-ugd-ubah').css('display', 'none')
-                            $('.btn-asmed-ugd').css('display', 'none')
-                        } else {
-                            $('.btn-asmed-ugd-ubah').css('display', 'none')
-                            $('.btn-asmed-ugd').css('display', 'inline')
-                        }
+                        // if (response.kd_dokter != "{{ session()->get('pegawai')->nik }}") {
+                        //     $("#formAsmedUgd :input").prop('readonly', true);
+                        //     $("#formAsmedUgd select").prop('disabled', true);
+                        //     $("#formAsmedUgd textarea").prop('readonly', true);
+                        //     $('.btn-asmed-ugd-ubah').css('display', 'none')
+                        //     $('.btn-asmed-ugd').css('display', 'none')
+                        // } else {
+                        $('.btn-asmed-ugd-ubah').css('display', 'none')
+                        $('.btn-asmed-ugd').css('display', 'inline')
+                        // }
                         $('#formAsmedUgd input[name="no_rawat"]').val(regPeriksa.no_rawat)
                         $('#formAsmedUgd input[name="pasien"]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
                         $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
