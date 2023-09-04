@@ -387,7 +387,7 @@
         }
 
         function hitungJumlahObat(kps, p1, p2, jumlah) {
-            jumlah = $('.jml_dr').val();
+            // jumlah = $('.jml_dr').val();
             kandungan = parseFloat(kps) * (parseFloat(p1) / parseFloat(p2));
             jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
             return parseFloat(jml_obat).toFixed(2);

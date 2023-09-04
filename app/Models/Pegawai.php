@@ -19,6 +19,10 @@ class Pegawai extends Model
     {
         return $this->hasOne(RsiaGeneralConsent::class, 'nik', 'nik');
     }
+    public function dokter()
+    {
+        return $this->hasOne(Dokter::class, 'kd_dokter', 'nik');
+    }
     function sidikjari()
     {
         return $this->hasOne(SidikJari::class, 'id', 'id');

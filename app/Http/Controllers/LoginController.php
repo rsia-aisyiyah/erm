@@ -33,9 +33,12 @@ class LoginController extends Controller
 
         if ($user) {
             Auth::login($user);
-            $pegawai = Pegawai::where('nik', $request->get('username'))->with('petugas')->first();
+            $pegawai = Pegawai::where('nik', $request->get('username'))->with(['petugas', 'dokter'])->first();
             $request->session()->regenerate();
             Session::put('pegawai', $pegawai);
+
+            // return $pegawai;
+
             if ($pegawai->departemen == 'DPM1') {
                 return redirect('/resep');
             } else if ($pegawai->departemen == 'DNM6') {

@@ -646,6 +646,37 @@
             })
         }
 
+        function hitungJumlahObat(kps, p1, p2, jumlah) {
+            // jumlah = $('.jml_dr').val();
+            kandungan = parseFloat(kps) * (parseFloat(p1) / parseFloat(p2));
+            jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
+            return parseFloat(jml_obat).toFixed(2);
+        }
+
+        function hitungObatRacik(no) {
+
+            kps = $('#kps' + no).val();
+            p2 = $('#p2' + no).val();
+            p1 = $('#p1' + no).val();
+            jumlah = $('.jml_dr').val();
+
+            if (p1 != 0 && p2 != 0) {
+                kandungan = parseFloat(kps) * (parseFloat(p1) / parseFloat(p2));
+                jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
+                $('#kandungan' + no).val(kandungan.toFixed(1));
+                $('#jml_obat' + no).val(jml_obat.toFixed(1));
+            }
+
+        }
+
+        function setNilaiPembagi(e) {
+            pembagi = $(e).val();
+            if (pembagi == '' || pembagi == 0) {
+                $(e).val(1);
+            }
+
+        }
+
         function setObat(param, no) {
             $('.nama_obat_' + no).val($(param).data('nama'));
             $('#kode_brng' + no).val($(param).data('id'))

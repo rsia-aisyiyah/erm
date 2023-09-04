@@ -253,12 +253,11 @@
                         })
                     }
 
-                    console.log(res.resep_racikan)
                     if (res.resep_racikan.length) {
                         let no = 1;
                         $.map(res.resep_racikan, (rr) => {
                             html = `<tr class="racikan-${no}">
-                                    <td>${rr.no_racik}</td>
+                                <td>${rr.no_racik}</td>
                                     <td>${rr.no_resep}</td>
                                     <td>${rr.nama_racik}</td>
                                     <td>${rr.metode.nm_racik}</td>
@@ -267,10 +266,18 @@
                                     <td>
                                         <button class="btn btn-sm btn-danger" onclick="hapusRacikan('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-trash"></i></button>
                                         <button class="btn btn-sm btn-warning" onclick="tambahDetail('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-pencil"></i></button>
-                                    </td>
-                                    </tr>`
-                            no++;
+                                        </td>
+                                        </tr>`
+                            if (rr.detail_racikan.length) {
+                                // console.log('RESEP RACIKAN', rr.detail_racikan.length);
+                                html += `<tr><td colspan="2"></td><td colspan="5">`
+                                $.map(rr.detail_racikan, (dr) => {
+                                    html += `<span class="badge text-bg-success">${dr.databarang.nama_brng} ${dr.kandungan} mg</span> `
+                                })
+                                html += `</td></tr>`
+                            }
                             $('#tb-resep-racikan tbody').append(html)
+                            no++;
                         })
                     }
                 })
@@ -279,11 +286,10 @@
         }
 
 
-        function formUbahObat(row) {
-            jml = $('.jml_' + row).text()
-
-            console.log(row);
-        }
+        // function formUbahObat(row) {
+        //     jml = $('.jml_' + row).text()
+        //     console.log(row);
+        // }
 
         function modalSoapUgd(noRawat) {
 

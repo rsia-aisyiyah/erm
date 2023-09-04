@@ -66,7 +66,7 @@
                 </li>
             @endif
 
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM1' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->departemen == 'SPS')
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM1' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->dokter)
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('ugd') ? 'active' : '' }}" href="/erm/ugd">
                         <i class="bi bi-clipboard-pulse align-text-bottom"></i>

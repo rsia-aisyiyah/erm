@@ -84,66 +84,74 @@
                     role="alert">
                     Anda dapat menghapus / menambah daftar obat yang tercantum
                 </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <label for="no_resep" style="font-size:12px">Nomor Resep</label>
-                                <input type="text" autocomplete="off"
-                                    class="form-control form-control-sm no_resep mb-1" name="no_resep" readonly />
+                <form action="" id="formDetailResep">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="no_resep" style="font-size:12px">Nomor Resep</label>
+                                    <input type="text" autocomplete="off"
+                                        class="form-control form-control-sm no_resep mb-1" name="no_resep" readonly />
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
+                                    <input type="search" autocomplete="off"
+                                        class="form-control form-control-sm nm_racik mb-1" name="nm_racik" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="metode" style="font-size:12px">Metode</label>
+                                    <select name="metode" id="" class="form-select form-select-sm kd_racik" style="font-size:12px">
+                                        <option value="R01" selected="">Puyer</option>
+                                        <option value="R02">Sirup</option>
+                                        <option value="R03">Salep</option>
+                                        <option value="R04">Kapsul</option>
+                                    </select>
+                                    {{-- <input type="text" autocomplete="off"
+                                        class="form-control form-control-sm metode mb-1" name="metode" readonly /> --}}
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="jml_dr" style="font-size:12px">Jumlah Racik</label>
+                                    <input type="text" autocomplete="off"
+                                        class="form-control form-control-sm jml_dr mb-1" name="jml_dr" readonly />
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="jml" style="font-size:12px">Aturan Pakai</label>
+                                    <input type="search" autocomplete="off" onkeyup="cariAturan(this)"
+                                        class="form-control form-control-sm aturan_pakai mb-1" name="aturan_pakai" id="aturan_pakai" />
+                                    <input type="hidden" class="nomor">
+                                    <input type="hidden" value="" class="no_racik" name="no_racik" />
+                                    <div class="list_aturan" style="display: none;"></div>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
-                                <input type="search" autocomplete="off"
-                                    class="form-control form-control-sm nm_racik mb-1" name="nm_racik" />
-                            </div>
-                            <div class="col-md-2">
-                                <label for="metode" style="font-size:12px">Metode</label>
-                                <input type="text" autocomplete="off"
-                                    class="form-control form-control-sm metode mb-1" name="metode" readonly />
-                            </div>
-                            <div class="col-md-2">
-                                <label for="jml_dr" style="font-size:12px">Jumlah Racik</label>
-                                <input type="text" autocomplete="off"
-                                    class="form-control form-control-sm jml_dr mb-1" name="jml_dr" readonly />
-                            </div>
-                            <div class="col-md-3">
-                                <label for="jml" style="font-size:12px">Aturan Pakai</label>
-                                <input type="search" autocomplete="off" onkeyup="cariAturan(this)"
-                                    class="form-control form-control-sm aturan_pakai mb-1" name="aturan_pakai" id="aturan_pakai" />
-                                <input type="hidden" class="nomor">
-                                <input type="hidden" value="" class="no_racik" />
-                                <div class="list_aturan" style="display: none;"></div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="container table-responsive">
-                                <table class="table table-racikan table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th width="35%">Nama Obat</th>
-                                            <th>Sediaan</th>
-                                            <th width="7%">P1</th>
-                                            <th width="3%"></th>
-                                            <th width="7%">P2</th>
-                                            <th width="8%">Dosis</th>
-                                            <th></th>
-                                            <th>Jumlah</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                            <div class="row">
+                                <div class="container table-responsive">
+                                    <table class="table table-racikan-detail table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th width="35%">Nama Obat</th>
+                                                <th>Sediaan</th>
+                                                <th width="7%">P1</th>
+                                                <th width="3%"></th>
+                                                <th width="7%">P2</th>
+                                                <th width="8%">Dosis</th>
+                                                <th></th>
+                                                <th>Jumlah</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                    </tbody>
-                                </table>
-                                <button type="button" class="btn btn-success btn-sm"
-                                    onclick="tambahDaftarRacik()"><i class="bi bi-plus-circle"></i> Tambah
-                                    Obat</button>
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-success btn-sm"
+                                        onclick="tambahDaftarRacik()"><i class="bi bi-plus-circle"></i> Tambah
+                                        Obat</button>
+                                </div>
                             </div>
                         </div>
+
                     </div>
-
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary btn-sm" onclick="simpanDosisObat()"><i
@@ -253,10 +261,6 @@
 
 
         function cariTemplateRacikan(nm_racik) {
-            // key = $(nm_racik).val()
-            // getTemplateRacikan(kd_dokter, key).done((response) => {
-            //     console.log(response);
-            // })
             $.ajax({
                 url: '/erm/resep/racik/cari',
                 data: {
@@ -269,8 +273,7 @@
                         html =
                             '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                         $.map(response, function(data) {
-                            html +=
-                                '<li onclick="setNamaRacik(this)" data-nama="' + data.nm_racik + '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' + data.nm_racik + '</a></li>'
+                            html += '<li onclick="setNamaRacik(this)" data-nama="' + data.nm_racik + '" data-id="' + data.id + '"><a class="dropdown-item" href="javascript:void(0)" style="overflow:hidden">' + data.nm_racik + '</a></li>'
                         })
                         html += '</ul>';
                         $('.list_racik').fadeIn();
@@ -281,11 +284,13 @@
             })
         }
 
-
-
-
-
-
+        function setNamaRacik(element) {
+            nama_racik = $(element).data('nama');
+            id_racik = $(element).data('id');
+            $('.nama_racik').val(nama_racik);
+            $('.id_racik').val(id_racik)
+            $('.list_racik').fadeOut();
+        }
 
         function setRowRacikan(no_resep, id) {
             html = `<tr id="racikan-${id}">`;
@@ -298,7 +303,7 @@
             html += `<input type="text" name="no_resep" class="no_resep form-control form-control-sm form-underline" readonly value="${no_resep}"/>`;
             html += '</td>';
             html += '<td>';
-            html += `<input type="search" autocomplete="off" class="form-control form-control-sm form-underline" name="nama_racik" onkeyup="cariTemplateRacikan('-', this)"/><input type="hidden" class="id_racik" name="id_racik"/><div class="list_racik"></div>`;
+            html += `<input type="search" autocomplete="off" class="form-control form-control-sm form-underline nama_racik" name="nama_racik" onkeyup="cariTemplateRacikan('-', this)"/><input type="hidden" class="id_racik" name="id_racik"/><div class="list_racik"></div>`;
             html += '</td>';
 
             html += '<td>';
@@ -329,7 +334,7 @@
                 method: 'GET',
                 dataType: 'JSON',
                 data: {
-                    no_resep: $('.no_resep').val(),
+                    no_resep: no_resep,
                 },
 
             })
@@ -385,6 +390,7 @@
 
         function simpanRacikan(id) {
             no_rawat = $('#formSoapUgd input[name="no_rawat"]').val();
+            id_racik = $(`#racikan-${id} input[name="id_racik"]`).val();
             data = getDataForm(`#racikan-${id}`, ['input', 'select'], [''])
             $.ajax({
                 url: '/erm/resep/racik/simpan',
@@ -392,6 +398,11 @@
                 method: 'POST',
             }).done((response) => {
                 $('.btn-umum').css('display', 'inline')
+                getTemplateRacikan('-', data.nama_racik, id_racik).done((template) => {
+                    $.map(template.detail_racik, (dr) => {
+                        simpanObatRacikanTemplate(dr.kode_brng, data.no_racik, data.no_resep)
+                    })
+                })
                 setListResep(no_rawat);
                 tulisPlan(no_rawat);
             }).fail((request, status, error) => {
@@ -401,6 +412,26 @@
                     'error',
                 )
             })
+        }
+
+        function simpanObatRacikanTemplate(kode_obat, no_racik, no_resep) {
+            let template = $.ajax({
+                url: '/erm/resep/racik/detail/simpan',
+                method: 'POST',
+                data: {
+
+                    '_token': '{{ csrf_token() }}',
+                    'no_resep': no_resep,
+                    'no_racik': no_racik,
+                    'kode_brng': kode_obat,
+                    'kandungan': 0,
+                    'p1': 1,
+                    'p2': 1,
+                    'jml': 0,
+                },
+            })
+
+            return template;
         }
 
         function simpanObat(id) {
@@ -438,12 +469,85 @@
         // modal tambah detail obat racikan
         function tambahDetail(no_resep, no_racik) {
             $('#modalObatRacik').modal('show')
-            getDetailRacikan(no_resep, no_racik).done((response) => {
-                console.log(response);
+            getResepRacikan(no_resep).done((racik) => {
+                $('.table-racikan-detail tbody').empty();
+                $.map(racik, (rr) => {
+                    if (rr.no_racik == no_racik) {
+                        $('#formDetailResep input[name=nm_racik]').val(rr.nama_racik)
+                        $('#formDetailResep input[name=no_resep]').val(rr.no_resep)
+                        $('#formDetailResep input[name=no_racik]').val(rr.no_racik)
+                        $('#formDetailResep select[name=metode]').val(rr.kd_racik).change()
+                        $('#formDetailResep input[name=jml_dr]').val(rr.jml_dr)
+                        $('#formDetailResep input[name=aturan_pakai]').val(rr.aturan_pakai)
+                    }
+                    getDetailRacikan(no_resep, no_racik).done((response) => {
+                        console.log(response);
+                        setRowDetailRacikan(response, rr.jml_dr);
+                    })
+                })
             })
         }
 
+        function setRowDetailRacikan(data, jml) {
+            let no = 1;
+            $.map(data, (res) => {
+                kandungan = res.kandungan != 0 ? res.kandungan : res.data_barang.kapasitas;
 
+                html = `<tr class="obat-${no}">`
+                html += `<td><input type="hidden" id="kode_brng${no}" value="${res.kode_brng}" name="kode_brng[]"/> ${res.data_barang.nama_brng}</td>`
+                html += `<td><input type="hidden" id="kps${no}" name="kps[]" value="${res.data_barang.kapasitas}"/>${res.data_barang.kapasitas} mg </td>`
+                html += `<td><input type="search" class="form-control form-control-sm form-underline" id="p1${no}" name="p1[]" value="${res.p1}" onkeyup="hitungObatRacik(${no})" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>`
+                html += '<td>/</td>'
+                html += `<td><input type="search" class="form-control form-control-sm form-underline" id="p2${no}"name="p2[]" onkeyup="hitungObatRacik(${no})" value="${res.p2}" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>`
+                html += `<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan${no}" name="kandungan[]" onkeypress="return hanyaAngka(event)" value="${kandungan}" onkeyup="hitungDosis(${no})" autocomplete="off"/></td>`
+                html += '<td>mg</td>'
+                html += `<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat${no}" name="jml[]" value="${hitungJumlahObat(res.data_barang.kapasitas, res.p1, res.p2, jml)}" readonly/></td>`
+                html += `<td><button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-resep="${res.no_resep}" data-racik="${res.no_racik}" data-obat="${res.kode_brng}" data-no="${no}" onclick="hapusObatRacikan(this)"><i class="bi bi-trash-fill"></i></button></td>`
+                html += '</tr>'
+                no++
+                $('.table-racikan-detail').append(html);
+            })
+            $('.nomor').val(no)
+        }
+
+
+        function hapusObatRacikan(element) {
+
+        }
+
+
+        function simpanDosisObat() {
+            const no_racik = $('#formDetailResep input[name=no_racik]').val()
+            const no_resep = $('#formDetailResep input[name=no_resep]').val()
+            const no_rawat = $('#formResepUgd input[name=no_rawat]').val()
+            let banyakBaris = $('.table-racikan-detail tbody tr').length
+            for (let no = 1; no <= banyakBaris; no++) {
+                $.ajax({
+                    url: '/erm/resep/racik/detail/ubah',
+                    data: {
+                        '_token': "{{ csrf_token() }}",
+                        'no_resep': no_resep,
+                        'no_racik': no_racik,
+                        'kode_brng': $('#kode_brng' + no).val(),
+                        'kandungan': $('#kandungan' + no).val(),
+                        'p1': $('#p1' + no).val(),
+                        'p2': $('#p2' + no).val(),
+                        'jml': $('#jml_obat' + no).val(),
+                    },
+                    method: 'POST',
+                    error: function(response) {
+                        Swal.fire(
+                            'Gagal !',
+                            response.responseJSON.message,
+                            'error'
+                        );
+                    }
+                }).done((response) => {
+                    setListResep(no_rawat);
+                    tulisPlan(no_rawat);
+                })
+            }
+        }
 
         $('#tb-resep-umum-ugd tbody').on('click', '.hapus-baris', function(e) {
             e.preventDefault();

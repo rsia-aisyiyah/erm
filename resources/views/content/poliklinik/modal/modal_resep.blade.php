@@ -197,11 +197,10 @@
                     no_resep: $('.no_resep').val(),
                     nama_racik: $('.nm_racik').val(),
                     no_racik: $('.no_racik').val(),
-                    // jml_dr: $('.jml_dr').val(),
+                    kd_racik: $('.kd_racik').val(),
                     aturan_pakai: $('.aturan_pakai').val(),
                 },
                 success: function(response) {
-                    // respon = false;
                     for (let no = 1; no <= banyakBaris; no++) {
                         $.ajax({
                             url: '/erm/resep/racik/detail/ubah',
