@@ -32,7 +32,7 @@
     <script>
         var no_rm = '';
         $('#modalRiwayat').on('shown.bs.modal', function() {
-            isModalShow = true;
+            // isModalShow = true;
             // modalRiwayat(no_rm);
         });
 
@@ -52,14 +52,12 @@
                 dataType: 'JSON',
                 method: 'GET',
                 success: function(response) {
-                    if (Object.keys(response).length == 0) {
-                        Swal.fire(
-                            'Kosong!', 'Belum ada riwayat perawatan', 'error'
-                        );
-                        $('#modalRiwayat').modal('hide');
+                    console.log('MODAL', response);
+                    if (response.reg_periksa.length == 0) {
+                        Swal.fire('Kosong!', 'Belum ada riwayat perawatan', 'error');
                     } else {
+                        $('#modalRiwayat').modal('show')
                         riwayatPasien(response);
-                        console.log('RIWAYAT', response);
                     }
                 }
             });

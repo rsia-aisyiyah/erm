@@ -942,6 +942,7 @@
                     {
                         data: '',
                         render: function(data, type, row, meta) {
+
                             let ambilAskep = '';
                             let no_rkm_medis = row.no_rkm_medis.replace(/\s/g, '');
                             if (row.dokter) {
@@ -995,7 +996,7 @@
                                 textRawat(row.no_rawat) +
                                 '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
                             html +=
-                                '<button class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" onclick="modalRiwayat(\'' + row.no_rkm_medis + '\')" data-bs-target="#modalRiwayat" data-id="' +
+                                '<button class="btn btn-primary btn-sm mb-2 mr-1" onclick="modalRiwayat(\'' + row.no_rkm_medis + '\')" data-id="' +
                                 row.no_rkm_medis + '"  style="width:80px;font-size:12px;text-align:left"><i class="bi bi-search"></i>RIWAYAT</button>';
 
                             if (row.upload.length > 0) {
@@ -1006,7 +1007,10 @@
                                     'bi bi-check2-circle')
                                 $('#btn-upload-' + textRawat(row.no_rawat)).addClass('btn-success')
                             }
-                            if (row.pemeriksaan_ralan) {
+
+
+
+                            if (row.pemeriksaan_ralan.lenght) {
                                 $('#icon-periksa-' + textRawat(row.no_rawat)).removeClass(
                                     'bi bi-pencil-square')
                                 $('#btn-periksa-' + textRawat(row.no_rawat)).removeClass('btn-primary')
