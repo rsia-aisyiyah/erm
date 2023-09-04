@@ -71,7 +71,9 @@
                         data: null,
                         render: (data, type, row, meta) => {
                             button = `<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>`;
-                            button += `<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`;
+                            if (row.pegawai.nip == "{{ session()->get('pegawai')->nik }}") {
+                                button += `<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`;
+                            }
                             return button;
                         },
                     },
@@ -139,15 +141,17 @@
                     $("#formSoapUgd select").prop('disabled', true);
                     $("#formSoapUgd textarea").prop('readonly', true);
                     $('#btn-ubah').css('display', 'none');
-                    $('#btn-reset').css('display', 'none');
-                    $('.btn-simpan').css('display', 'none');
+                    $('#btn-reset').css('display', 'inline');
+                    $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
+                    // $('.btn-simpan').css('display', 'none');
+                    // $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
                 } else {
                     $('#btn-ubah').css('display', 'inline');
                     $('#btn-reset').css('display', 'inline');
                     $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
+                    $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
+                    $('#formSoapUgd input[name="nama"]').val(response.pegawai.nama)
                 }
-                $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
-                $('#formSoapUgd input[name="nama"]').val(response.pegawai.nama)
                 $('#formSoapUgd textarea[name="subjek"]').val(response.keluhan)
                 $('#formSoapUgd textarea[name="objek"]').val(response.pemeriksaan)
                 $('#formSoapUgd input[name="suhu"]').val(response.suhu_tubuh)
