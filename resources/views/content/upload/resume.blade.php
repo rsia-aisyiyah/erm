@@ -26,7 +26,7 @@
                                 onchange="previewImage(this)" style="display: none" accept="image/png, image/jpeg, application/pdf">
                         </div>
                         <div class="d-grid gap-2">
-                            <label type="button" class="btn btn-success" width="100%" for="file">Tambah</label>
+                            <label type="button" class="btn btn-success" width="100%" for="file" style="font-size:12px">Tambah</label>
                             <button type="button" class="btn btn-primary btn-sm" id="submit"
                                 onclick="simpan()">Simpan</button>
                         </div>

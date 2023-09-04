@@ -253,11 +253,13 @@
             $('#form-upload').css('visibility', 'visible')
             $('#image .tmb').detach()
             $.ajax({
-                url: '/erm/periksa/detail?no_rawat=' + no_rawat,
+                url: '/erm/periksa/detail',
                 method: "GET",
+                data : {
+                    'no_rawat' : no_rawat,
+                },
                 dataType: 'JSON',
                 success: function(data) {
-                    // console.log(data)
                     $('#no_rawat').val(data.no_rawat)
                     $('#no_rkm_medis').val(data.no_rkm_medis)
                     $('#tgl_masuk').val(data.tgl_registrasi)
@@ -299,7 +301,10 @@
                             '<input type="radio" class="btn-check" name="kategori" id="opt-form-rujukan" autocomplete="off" onclick="showForm()" value="form-rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-form-rujukan">Form Rujukan</label>'
 
                         $('#button-form').append(html)
+
                     }
+
+                     $('#modalPenunjangRanap').modal('show')
                 }
             })
         }
@@ -483,7 +488,7 @@
                     Swal.fire(
                         'Berhasil!', 'Berkas sudah terupload di server', 'success'
                     )
-                    reloadTabelPoli();
+                    // reloadTabelPoli();
 
                 },
                 fail: function(jqXHR, status) {

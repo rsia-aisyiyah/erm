@@ -347,15 +347,14 @@
                         render: function(data, type, row, meta) {
                             list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data.no_rawat + '\')">Laborat</a></li>';
                             list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
-                            list += '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat</a></li>`;
-
+                            list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
+                            
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak(\'' + data.no_rawat + '\')">Asesmen Medis Anak</a></li>';
                             } else if (row.reg_periksa.dokter.kd_sps == 'S0001') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
                             }
-                            // Ranap gabung
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat</a></li>`;
 
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
