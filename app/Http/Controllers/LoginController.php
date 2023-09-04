@@ -49,7 +49,7 @@ class LoginController extends Controller
                 return redirect('ugd');
             } else if (
                 $pegawai->departemen == 'DM8' || $pegawai->departemen == 'DM3' || $pegawai->departemen == 'DM4' ||
-                $pegawai->departemen == 'DNM5' || $pegawai->departemen == 'DM2' || $pegawai->departemen == 'DPM2'
+                $pegawai->departemen == 'DNM5' || $pegawai->departemen == 'DM5' || $pegawai->departemen == 'DM2' || $pegawai->departemen == 'DPM2'
             ) {
                 return redirect('ranap');
             } else if ($pegawai->nik == 'direksi' || $pegawai->departemen == 'DM6' || $pegawai->departemen == 'SPS' || $pegawai->jnj_jabatan == 'DIRU') {

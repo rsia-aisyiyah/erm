@@ -57,6 +57,7 @@
                     session()->get('pegawai')->departemen == 'DPM1' ||
                     session()->get('pegawai')->departemen == 'DNM5' ||
                     session()->get('pegawai')->departemen == 'DM4' ||
+                    session()->get('pegawai')->departemen == 'DM5' ||
                     session()->get('pegawai')->departemen == 'DM2' ||
                     session()->get('pegawai')->departemen == 'DPM2')
                 <li class="nav-item">
