@@ -1010,7 +1010,7 @@
 
 
 
-                            if (row.pemeriksaan_ralan.lenght) {
+                            if (row.pemeriksaan_ralan.length) {
                                 $('#icon-periksa-' + textRawat(row.no_rawat)).removeClass(
                                     'bi bi-pencil-square')
                                 $('#btn-periksa-' + textRawat(row.no_rawat)).removeClass('btn-primary')
@@ -1021,7 +1021,6 @@
                                 $('.panggil-' + textRawat(row.no_rawat)).removeClass('btn-secondary');
                                 $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', false);
                             } else {
-                                // console.log('.panggil' + textRawat(row.no_rawat));
                                 $('.panggil-' + textRawat(row.no_rawat)).removeClass('btn-success');
                                 $('.panggil-' + textRawat(row.no_rawat)).addClass('btn-secondary');
                                 $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', true);
