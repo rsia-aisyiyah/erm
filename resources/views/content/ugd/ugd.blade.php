@@ -339,14 +339,14 @@
 
                     })
                 } else {
-                    if (response.kd_dokter != "{{ session()->get('pegawai')->nik }}") {
-                        $("#formAsmedUgd :input").prop('readonly', true);
-                        $("#formAsmedUgd select").prop('disabled', true);
-                        $("#formAsmedUgd textarea").prop('readonly', true);
-                        $('.btn-asmed-ugd-ubah').css('display', 'none')
-                        $('.btn-asmed-ugd').css('display', 'none')
+                    // if (response.kd_dokter != "{{ session()->get('pegawai')->nik }}") {
+                    //     $("#formAsmedUgd :input").prop('readonly', true);
+                    //     $("#formAsmedUgd select").prop('disabled', true);
+                    //     $("#formAsmedUgd textarea").prop('readonly', true);
+                    //     $('.btn-asmed-ugd-ubah').css('display', 'none')
+                    //     $('.btn-asmed-ugd').css('display', 'none')
 
-                    }
+                    // }
 
                     $('#formAsmedUgd input[name="no_rawat"]').val(response.no_rawat)
                     $('#formAsmedUgd input[name="pasien"]').val(`${response.reg_periksa.pasien.nm_pasien} (${response.reg_periksa.pasien.jk})`)
