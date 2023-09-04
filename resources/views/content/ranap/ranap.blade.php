@@ -153,7 +153,9 @@
         var tgl_akhir = '';
         var kamar = localStorage.getItem('kamar');
         var sps = '';
+        var valScrollX= '';
         var cekDepartement = `{{ session()->get('pegawai')->departemen }}`
+        var getSpsId= `{{ session()->get('pegawai')->dokter->kd_sps }}`
         var kd_dokter = $('#kd_dokter').val();
         $(document).ready(function() {
             // console.log(cekDepartement);
@@ -164,7 +166,18 @@
                 sps = 'S0003';
             }
 
-            // console.log(sps)
+            console.log(getSpsId)
+
+            if(getSpsId == 'S0005'){
+                sps = `S0001`
+                kd_dokter= '';
+            }
+
+            if(getSpsId == 'S0005' || getSpsId == 'S0003' || getSpsId == 'S0001'){
+                valScrollX = 425;
+            }else{
+                valScrollX = 325;
+            }
 
             date = new Date()
             hari = ('0' + (date.getDate())).slice(-2);
@@ -178,7 +191,6 @@
                 defaultDate: null
             });
 
-            kd_dokter = $('#kd_dokter').val();
             $('#cari-kamar').val(kamar)
             $('.tanggal').datepicker('setDate', dateStart)
             tb_ranap();
@@ -301,7 +313,7 @@
             $('#tb_ranap').DataTable({
                 processing: true,
                 scrollX: true,
-                scrollY: 325,
+                scrollY: valScrollX,
                 serverSide: true,
                 stateSave: true,
                 ordering: false,
