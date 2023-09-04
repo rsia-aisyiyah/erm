@@ -760,10 +760,11 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
-                            // console.log("{{ session()->get('pegawai')->nama }}")
-                            if (row.petugas['nip'] == "{{ session()->get('pegawai')->nik }}") {
+
+                            // console.log(row.petugas.nip == "{{ session()->get('pegawai')->nik }}");
+                            if (row.petugas.nip == "{{ session()->get('pegawai')->nik }}") {
                                 button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
-                            } 
+                            }
                             
                             return button;
                         },
