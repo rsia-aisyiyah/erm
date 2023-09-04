@@ -116,7 +116,7 @@ class RegPeriksaController extends Controller
                 })->with([
                     'upload', 'resepObat' => function ($q) {
                         return $q->with('resepDokter', 'resepRacikan');
-                    }, 'poliklinik', 'dokter', 'penjab', 'pemeriksaanRalan', 'catatanPerawatan', 'diagnosaPasien' => function ($q) {
+                    }, 'poliklinik', 'dokter', 'penjab', 'pemeriksaanRalan', 'pemeriksaanRanap', 'catatanPerawatan', 'diagnosaPasien' => function ($q) {
                         return $q->with('penyakit')->orderBy('prioritas', 'ASC');
                     }, 'prosedurPasien' => function ($q) {
                         return $q->with('icd9');

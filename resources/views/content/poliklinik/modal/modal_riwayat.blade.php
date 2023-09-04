@@ -52,13 +52,15 @@
                 dataType: 'JSON',
                 method: 'GET',
                 success: function(response) {
-                    if (Object.keys(response.reg_periksa).length == 0) {
+                    // console.log(response);
+                    if (Object.keys(response).length == 0) {
                         Swal.fire(
                             'Kosong!', 'Belum ada riwayat perawatan', 'error'
                         );
                         $('#modalRiwayat').modal('hide');
                     } else {
                         resume(response);
+                        console.log('RIWAYAT', response);
                     }
                 }
             });
