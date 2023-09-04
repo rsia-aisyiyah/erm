@@ -135,6 +135,7 @@
             </div>
         </div>
     </div>
+    @include('content.poliklinik.modal.modal_riwayat')
     @include('content.ranap.modal.modal_lab')
     @include('content.ranap.modal.modal_soap')
     @include('content.ranap.modal.modal_penunjang')
@@ -335,14 +336,15 @@
                             list = '<li><a class="dropdown-item" href="#" onclick="modalLabRanap(\'' + data.no_rawat + '\')">Laborat</a></li>';
                             list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
                             list += '<li><a class="dropdown-item" href="#" onclick="modalPenunjangRanap(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat</a></li>`;
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak(\'' + data.no_rawat + '\')">Asesmen Medis Anak</a></li>';
                             } else if (row.reg_periksa.dokter.kd_sps == 'S0001') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
                             }
-                            // console.log(data.no_rkm_medis)
-                            
+                            // Ranap gabung
+
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
@@ -371,7 +373,21 @@
                             } else {
                                 penjab = '<span class="text-success"><b>' + data.penjab.png_jawab + '</b></span>'
                             }
-                            return data.no_rawat + '<br/><strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + penjab;
+
+                            bayiGabung = '';
+                            if (row.ranap_gabung) {
+                                namaBayi = `<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">${row.ranap_gabung.reg_periksa.pasien.nm_pasien}</a>
+                                <ul class="dropdown-menu dropdown-menu" style="font-size:12px">
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalLabRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Laborat</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">S.O.A.P</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Pemeriksaan Penunjang</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.ranap_gabung.reg_periksa.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.ranap_gabung.reg_periksa.no_rkm_medis}">Riwayat</a></li>
+                                </ul>`
+                                bayiGabung = `<hr style="margin:0px"/>${row.ranap_gabung.reg_periksa.no_rawat} <br/> <strong>${namaBayi}</strong>  `
+
+                            }
+
+                            return data.no_rawat + '<br/><strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + penjab + bayiGabung;
 
                         },
                         name: 'reg_periksa',
@@ -765,7 +781,7 @@
                             if (row.petugas.nip == "{{ session()->get('pegawai')->nik }}") {
                                 button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
                             }
-                            
+
                             return button;
                         },
                         name: 'tgl_perawatan',
