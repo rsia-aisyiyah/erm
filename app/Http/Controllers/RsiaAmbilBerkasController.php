@@ -20,12 +20,13 @@ class RsiaAmbilBerkasController extends Controller
     public function create($data = [])
     {
         $jadwal = $this->jadwal->getJadwal($data['kd_dokter'], $data['kd_poli']);
+        $jam_mulai = $jadwal ? $jadwal->jam_mulai : date('H:i:s');
         $data = [
             'no_rawat' => $data['no_rawat'],
             'no_rkm_medis' => $data['no_rkm_medis'],
             'waktu' => $data['waktu'],
             'waktu_soap' => $data['waktu_soap'],
-            'jam_praktek' => date('Y-m-d') . ' ' . $jadwal->jam_mulai,
+            'jam_praktek' => date('Y-m-d') . ' ' . $jam_mulai,
         ];
         $create = $this->berkas->create($data);
         return response()->json($create);

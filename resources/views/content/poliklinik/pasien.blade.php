@@ -355,11 +355,12 @@
                 success: function(response) {
                     alergi = '-'
                     $.map(response.reg_periksa, function(val) {
-                        if (val.pemeriksaan_ralan) {
-                            if (val.pemeriksaan_ralan.alergi != '-' && val.pemeriksaan_ralan.alergi !=
-                                '') {
-                                alergi = val.pemeriksaan_ralan.alergi
-                            }
+                        if (val.pemeriksaan_ralan.length) {
+                            $.map(val.pemeriksaan_ralan, (pem) => {
+                                if (pem.alergi != '-' || pem.alergi != '' || pem.alergi) {
+                                    alergi = pem.alergi
+                                }
+                            })
                         }
                     })
                     $('#alergi').val(alergi)

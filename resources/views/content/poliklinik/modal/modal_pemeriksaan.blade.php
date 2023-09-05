@@ -1207,7 +1207,6 @@
             ambilProsedurPasien(id);
             getRegPeriksa(id).done((regPeriksa) => {
                 var form = '';
-
                 if (regPeriksa.dokter.kd_sps == 'S0003') {
                     $('#li-asmed-ana').css('display', 'inline');
                     $('#li-data-anak').css('display', 'inline');
@@ -1218,6 +1217,7 @@
                     getListAsmedRajalAnak(regPeriksa.no_rkm_medis).done((anak) => {
                         listAsmedAnak(anak)
                     })
+                    setSoapToAsmed(id, form);
                 } else if (regPeriksa.dokter.kd_sps == 'S0001') {
                     getListAsmedRajalKandungan(regPeriksa.no_rkm_medis).done((asmed) => {
                         listAsmedKandungan(asmed)
@@ -1228,36 +1228,39 @@
                     $('#li-asmed-obg').css('display', 'inline');
                     $('#li-data-obg').css('display', 'inline');
                     form = '.form-asmed-kandungan';
+                    setSoapToAsmedl(id, form);
                 }
                 $(`${form} input[name="no_rawat"]`).val(regPeriksa.no_rawat)
                 $(`${form} input[name="pasien"]`).val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
                 $(`${form} input[name="tgl_lahir"]`).val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
                 $(`${form} input[name="kd_dokter"]`).val(regPeriksa.kd_dokter)
                 $(`${form} input[name="dokter"]`).val(regPeriksa.dokter.nm_dokter)
-                getPemeriksaanPoli(id).done((response) => {
-                    if (Object.keys(response).length != 0) {
-                        $(`${form} select[name="kesadaran"]`).val(response.kesadaran).change();
-                        $(`${form} input[name="gcs"]`).val(response.gcs);
-                        $(`${form} input[name="tb"]`).val(response.tinggi);
-                        $(`${form} input[name="bb"]`).val(response.berat);
-                        $(`${form} input[name="td"]`).val(response.tensi);
-                        $(`${form} input[name="nadi"]`).val(response.nadi);
-                        $(`${form} input[name="rr"]`).val(response.respirasi);
-                        $(`${form} input[name="suhu"]`).val(response.suhu_tubuh);
-                        $(`${form} input[name="spo"]`).val(response.spo2);
-                        $(`${form} textarea[name="keluhan_utama"]`).val(response.keluhan);
-                        $(`${form} textarea[name="ket_fisik"]`).val(response.pemeriksaan);
-                        $(`${form} textarea[name="diagnosis"]`).val(response.penilaian);
-                        $(`${form} textarea[name="konsul"]`).val(response.instruksi);
 
-                    }
-                })
             })
-
-
             no = 1;
             isModalShow = true;
         });
+
+        function setSoapToAsmed(no_rawat, form) {
+            return getPemeriksaanPoli(no_rawat).done((response) => {
+                if (Object.keys(response).length != 0) {
+                    $(`${form} select[name="kesadaran"]`).val(response.kesadaran).change();
+                    $(`${form} input[name="gcs"]`).val(response.gcs);
+                    $(`${form} input[name="tb"]`).val(response.tinggi);
+                    $(`${form} input[name="bb"]`).val(response.berat);
+                    $(`${form} input[name="td"]`).val(response.tensi);
+                    $(`${form} input[name="nadi"]`).val(response.nadi);
+                    $(`${form} input[name="rr"]`).val(response.respirasi);
+                    $(`${form} input[name="suhu"]`).val(response.suhu_tubuh);
+                    $(`${form} input[name="spo"]`).val(response.spo2);
+                    $(`${form} textarea[name="keluhan_utama"]`).val(response.keluhan);
+                    $(`${form} textarea[name="ket_fisik"]`).val(response.pemeriksaan);
+                    $(`${form} textarea[name="diagnosis"]`).val(response.penilaian);
+                    $(`${form} textarea[name="konsul"]`).val(response.instruksi);
+
+                }
+            })
+        }
 
         function setAsmedKandungan(no_rawat) {
             getAsmedKandungan(no_rawat).done((response) => {
