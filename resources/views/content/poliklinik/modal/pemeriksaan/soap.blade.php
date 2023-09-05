@@ -113,7 +113,7 @@
                 <tr>
                     <td>Plan : </td>
                     <td colspan="3">
-                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="8" readonly></textarea>
+                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="8"></textarea>
                     </td>
                 </tr>
                 <tr>
