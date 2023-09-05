@@ -71,8 +71,9 @@
             var hasilFoto = '<table>';
             if (Object.keys(foto).length > 0) {
                 foto.forEach(function(f) {
-                    let arrFoto = f.file.split(',')
-                    let kategori = f.kategori;
+                    console.log(f);
+                    let arrFoto = f?.file.split(',')
+                    let kategori = f?.kategori;
                     hasilFoto += '<tr>'
                     arrFoto.forEach(function(fx) {
                         hasilFoto += '<td><img src="https://sim.rsiaaisyiyah.com/erm/public/erm/' + fx + '" class="img-thumbnail position-relative" width="300px" onclick="popup(\'' +
@@ -140,7 +141,7 @@
             let html = '';
             if (data.length) {
                 html = `<tr><th style="vertical-align: top;">Pemeriksaan ${jns}</th><td>`;
-                    $.map(data, (pemRanap) => {
+                $.map(data, (pemRanap) => {
                     html += `
                             <div class="row">
                                 <div class="col-sm-12 col-lg-4">
