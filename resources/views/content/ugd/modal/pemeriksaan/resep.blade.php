@@ -72,15 +72,14 @@
         </table>
     </div>
 </div>
-<div class="modal fade" id="modalObatRacik" aria-labelledby="modalObatRacik" aria-hidden="true"
-    style="background-color: #00000062!important;">
+<div class="modal fade" id="modalObatRacik" aria-labelledby="modalObatRacik" aria-hidden="true" style="background-color: #00000062!important;">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title fs-5" id="">Pilih Obat</h2>
+                <h2 class="modal-title fs-5" id="">Isian Obat Racikan</h2>
             </div>
             <div class="modal-body">
-                <div class="alert alert-primary" style="padding:10px;border-radius:0px;font-size:12px"
+                <div class="alert alert-primary"
                     role="alert">
                     Anda dapat menghapus / menambah daftar obat yang tercantum
                 </div>
@@ -164,6 +163,31 @@
 </div>
 @push('script')
     <script>
+        function tambahDaftarRacik() {
+            no = $('.nomor').val();
+            html = '<tr class="obat-' + no + '">'
+            html += '<td><input type="hidden" id="kode_brng' + no + '"/><input type="search" onkeyup="cariObatRacikan(this, ' + no + ')" autocomplete="off" class="form-control form-control-sm nama_obat_' + no + ' form-underline" name="nama_obat" /><div class="list_obat_' + no + '"></div></td>'
+            html += '<td><input type="search" autocomplete="off" class="form-control form-control-sm form-underline" id="kps' +
+                no + '" name="kps" readonly /></td>'
+            html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' + no + '" name="p1[]" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
+            html += '<td>/</td>'
+            html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' + no + '"name="p2[]" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
+            html += '<td><input type="search" onkeypress="return hanyaAngka(event)" class="form-control form-control-sm form-underline" id="kandungan' + no + '" name="kandungan[]" onkeyup="hitungDosis(' + no + ')" autocomplete="off"/></td>'
+            html += '<td>mg</td>'
+            html +=
+                '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +
+                no +
+                '" name="jml[]" readonly/></td>'
+            html +=
+                '<td><a href="#modal" data-no=' + no +
+                ' type="button" class="btn btn-danger btn-sm x"  style="font-size:12px"><i class="bi bi-trash-fill"></i></a></td>'
+            html += '</tr>'
+            $('.table-racikan-detail tbody').append(html);
+            no = parseInt(no) + 1;
+            $('.nomor').val(no)
+
+        }
+
         function tambahResep(kategori, noRawat) {
             const resepByRawat = getResepByRawat(noRawat)
             const getLast = getLastNoResep();
@@ -360,7 +384,7 @@
                                         data-stok="${item.stok}"
                                         data-kapasitas="${data.kapasitas}"
                                         data-nama="${data.nama_brng}"
-                                        onclick="setObat(this)"><a class="dropdown-item" href="#" style="overflow:hidden">${data.nama_brng}<span class="text-primary"><i><b> Stok (${item.stok})</b></i></span></a></li>`
+                                        onclick="setObatUmum(this)"><a class="dropdown-item" href="#" style="overflow:hidden">${data.nama_brng}<span class="text-primary"><i><b> Stok (${item.stok})</b></i></span></a></li>`
                                     } else {
                                         html += `<li class="disable"><i><a class="dropdown-item" href="javascript:void(0)" style="overflow:hidden;color:red">${data.nama_brng} - <b>Stok Kosong</b></a></i></li>`
                                     }
@@ -377,7 +401,7 @@
 
 
 
-        function setObat(param, form) {
+        function setObatUmum(param, form) {
             $(`input[name=cari-obat]`).val($(param).data('nama'));
             $(`input[name=kode_brng]`).val($(param).data('id'));
             $('.list_obat').fadeOut();
@@ -510,17 +534,79 @@
         }
 
 
-        function hapusObatRacikan(element) {
+        function hapusObatRacikan(param) {
+            no_resep = $(param).data('resep');
+            no_racik = $(param).data('racik');
+            kode_brng = $(param).data('obat');
+            no = $(param).data('no');
 
+            const no_rawat = $('#formResepUgd input[name=no_rawat]').val()
+
+            console.log(no);
+            Swal.fire({
+                title: 'Yakin ?',
+                text: "Anda tidak bisa mengembalikan lagi",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus saja!',
+                cancelButtonText: 'Jangan',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/erm/resep/racik/detail/hapus',
+                        method: 'DELETE',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_resep: no_resep,
+                            no_racik: no_racik,
+                            kode_brng: kode_brng,
+                        },
+                        error: function(request, status, error) {
+                            Swal.fire(
+                                'Gagal !',
+                                'Tidak menghapus obat<br/>' + request.responseJSON
+                                .message,
+                                'error',
+                            )
+
+                        }
+                    }).done(function() {
+                        $('.obat-' + no).remove();
+                        hitungBarisObat($('.table-racikan-detail'))
+                        setListResep(no_rawat);
+                        tulisPlan(no_rawat);
+                    })
+                }
+            })
         }
 
+        function hitungBarisObat(table) {
+            table.find('tr').each(function(index, element) {
+                $(element).attr('class', 'obat-' + index)
+                $(element).find('td:eq(0) input').attr('id', 'kode_brng' + index)
+                $(element).find('td:eq(1) input').attr('id', 'kps' + index)
+                $(element).find('td:eq(2) input').attr('id', 'p1' + index)
+                $(element).find('td:eq(2) input').attr('onchange', 'hitungObatRacik(' + index + ')')
+                $(element).find('td:eq(4) input').attr('id', 'p2' + index)
+                $(element).find('td:eq(4) input').attr('onchange', 'hitungObatRacik(' + index + ')')
+                $(element).find('td:eq(5) input').attr('id', 'kandungan' + index)
+                $(element).find('td:eq(5) input').attr('onchange', 'hitungDosis(' + index + ')')
+                $(element).find('td:eq(7) input').attr('id', 'jml_obat' + index)
+            });
+            $('.nomor').val(table.find('tr').length);
+            console.log(table.find('tr').length);
+        }
 
         function simpanDosisObat() {
             const no_racik = $('#formDetailResep input[name=no_racik]').val()
             const no_resep = $('#formDetailResep input[name=no_resep]').val()
             const no_rawat = $('#formResepUgd input[name=no_rawat]').val()
-            let banyakBaris = $('.table-racikan-detail tbody tr').length
-            for (let no = 1; no <= banyakBaris; no++) {
+            let banyakBaris = $('.nomor').val()
+
+            console.log(banyakBaris);
+            for (let no = 1; no < banyakBaris; no++) {
                 $.ajax({
                     url: '/erm/resep/racik/detail/ubah',
                     data: {
@@ -535,16 +621,13 @@
                     },
                     method: 'POST',
                     error: function(response) {
-                        Swal.fire(
-                            'Gagal !',
-                            response.responseJSON.message,
-                            'error'
-                        );
+                        Swal.fire('Gagal !', response.responseJSON.message, 'error');
                     }
                 }).done((response) => {
                     setListResep(no_rawat);
-                    tulisPlan(no_rawat);
+                    $('#modalObatRacik').modal('hide')
                 })
+                tulisPlan(no_rawat);
             }
         }
 

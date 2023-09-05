@@ -23,7 +23,7 @@ class ResepDokterRacikanController extends Controller
     public function ambil(Request $request)
     {
         $resepDokter = new ResepDokterRacikan();
-
+        $hasil = '';
         if ($request->no_resep) {
             if ($request->no_racik) {
                 $hasil = $resepDokter->where('no_resep', $request->no_resep)->where('no_racik', $request->no_racik)->with(['metode', 'detailRacikan' => function ($q) use ($request) {

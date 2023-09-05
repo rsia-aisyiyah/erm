@@ -441,7 +441,8 @@
                         })
 
                     })
-                    $('#formSoapUgd textarea[name=plan]').val(teksRd + '\n' + teksRr);
+                    $('#formSoapUgd textarea[name=plan]').val(`${teksRd} \n ${teksRr}`)
+
                 },
                 error: function(request, status, error) {
                     Swal.fire(

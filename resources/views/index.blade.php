@@ -147,9 +147,9 @@
         }
 
         // merapikan enter teks soap
-         function stringSoap(value) {
+        function stringSoap(value) {
             const arrValue = value.split('\n');
-            let string ='';
+            let string = '';
             for (let index = 0; index < arrValue.length; index++) {
                 string += `${arrValue[index]} <br/>`;
             }
@@ -265,8 +265,8 @@
             $.ajax({
                 url: '/erm/periksa/detail',
                 method: "GET",
-                data : {
-                    'no_rawat' : no_rawat,
+                data: {
+                    'no_rawat': no_rawat,
                 },
                 dataType: 'JSON',
                 success: function(data) {
@@ -314,7 +314,7 @@
 
                     }
 
-                     $('#modalPenunjangRanap').modal('show')
+                    $('#modalPenunjangRanap').modal('show')
                 }
             })
         }
@@ -603,10 +603,10 @@
                             showForm(no_rawat, kategori);
                             if ($('#tb_pasien').length > 0) {
                                 $('#tb_pasien').DataTable().destroy();
-                                if(localStorage.getItem('tanggal')){
+                                if (localStorage.getItem('tanggal')) {
                                     tb_pasien(`${localStorage.getItem('tanggal')}`);
-                                }else{
-                                    tb_pasien(`{{date('Y-m-d')}}`);
+                                } else {
+                                    tb_pasien(`{{ date('Y-m-d') }}`);
                                 }
                             }
                             Swal.fire(
