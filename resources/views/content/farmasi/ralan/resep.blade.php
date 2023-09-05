@@ -291,9 +291,7 @@
                 success: function(response) {
 
                     getPemeriksaanPoli(response.no_rawat).done((res) => {
-                        console.log('PEMERIKSAAN', res);
                         plan = res.rtl.split('\n')
-
                         for (let index = 0; index < plan.length; index++) {
                             $('.notif').append(`${plan[index]} <br/>`)
                         }

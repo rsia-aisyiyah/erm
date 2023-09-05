@@ -2,7 +2,7 @@
 @section('contents')
     <div class="row gy-2">
         <div class="col-sm-12">
-            @if (session()->get('pegawai')->nik != 'Direksi' && session()->get('pegawai')->bidang != 'Spesialis')
+            @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group mb-2">
@@ -112,7 +112,7 @@
                 </div>
                 <input type="hidden" id="kd_dokter" value="" name="kd_dokter">
                 <input type="hidden" id="kd_sps" value="" name="kd_sps">
-                @else
+            @else
                 <input type="hidden" id="kd_dokter" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
                 <input type="hidden" id="kd_sps" name="kd_sps" value="{{ session()->get('pegawai')->dokter->kd_sps }}">
             @endif
@@ -155,15 +155,15 @@
         var tgl_akhir = '';
         var kamar = localStorage.getItem('kamar');
         var sps = '';
-        var valScrollX= '';
+        var valScrollX = '';
         var cekDepartement = `{{ session()->get('pegawai')->departemen }}`
         var kd_dokter = $('#kd_dokter').val();
         var getSpsId = $('#kd_sps').val();
-        
-        
-        
+
+
+
         $(document).ready(function() {
-            
+
             if (cekDepartement == 'DM3') {
                 sps = 'S0001';
             } else if (cekDepartement == 'DM1') {
@@ -171,14 +171,14 @@
             }
 
 
-            if(getSpsId == 'S0005'){
+            if (getSpsId == 'S0005') {
                 sps = `S0001`
-                kd_dokter= '';
+                kd_dokter = '';
             }
 
-            if(getSpsId == 'S0005' || getSpsId == 'S0003' || getSpsId == 'S0001'){
+            if (getSpsId == 'S0005' || getSpsId == 'S0003' || getSpsId == 'S0001') {
                 valScrollX = 425;
-            }else{
+            } else {
                 valScrollX = 325;
             }
 
@@ -351,7 +351,7 @@
                             list = '<li><a class="dropdown-item" href="#" onclick="modalLaborat(\'' + data.no_rawat + '\')">Laborat</a></li>';
                             list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
                             list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
-                            
+
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak(\'' + data.no_rawat + '\')">Asesmen Medis Anak</a></li>';
                             } else if (row.reg_periksa.dokter.kd_sps == 'S0001') {
@@ -502,7 +502,7 @@
                 $('#kandungan_no_rawat').val(response.no_rawat);
                 $('#kandungan_pasien').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
                 $('#kandungan_tgl_lahir').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-                
+
             });
 
             getAsmedRanapKandungan(noRawat).done((response) => {
@@ -560,7 +560,7 @@
                     $('#kandungan_edukasi').val(response.edukasi);
                 } else {
                     $('#kandungan_kd_dokter').val("{{ session()->get('pegawai')->nik }}");
-                $('#kandungan_dokter').val("{{ session()->get('pegawai')->nama }}");
+                    $('#kandungan_dokter').val("{{ session()->get('pegawai')->nama }}");
                     $('.btn-asmed-kandungan-ubah').css('display', 'none')
                     $('.btn-asmed-kandungan').css('display', 'inline')
                 }

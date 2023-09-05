@@ -136,21 +136,21 @@
                     jam_rawat: jam_rawat,
                 },
             }).done((response) => {
-                if (response.pegawai.nik != "{{ session()->get('pegawai')->nik }}") {
+                console.log('UGD', response);
+                console.log(response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}");
+                if (response.pegawai.nik == "{{ session()->get('pegawai')->nik }}" || response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}") {
+                    $('#btn-ubah').css('display', 'inline');
+                    $('#btn-reset').css('display', 'inline');
+                    $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
+                    $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
+                    $('#formSoapUgd input[name="nama"]').val(response.pegawai.nama)
+                } else {
                     $("#formSoapUgd :input").prop('readonly', true);
                     $("#formSoapUgd select").prop('disabled', true);
                     $("#formSoapUgd textarea").prop('readonly', true);
                     $('#btn-ubah').css('display', 'none');
                     $('#btn-reset').css('display', 'inline');
                     $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
-                    // $('.btn-simpan').css('display', 'none');
-                    // $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
-                } else {
-                    $('#btn-ubah').css('display', 'inline');
-                    $('#btn-reset').css('display', 'inline');
-                    $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
-                    $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
-                    $('#formSoapUgd input[name="nama"]').val(response.pegawai.nama)
                 }
                 $('#formSoapUgd textarea[name="subjek"]').val(response.keluhan)
                 $('#formSoapUgd textarea[name="objek"]').val(response.pemeriksaan)
@@ -182,20 +182,31 @@
             })
         }
 
-        function resetSoap(param) {
+        function resetSoap(no_rawat) {
             $('#formSoapUgd input').each((index, element) => {
                 $(element).val('-');
+                $(element).removeAttr('readonly');
                 $('#jam_rawat').val('');
                 $('#tgl_perawatan').val('');
             })
             $('#formSoapUgd textarea').each((index, element) => {
                 $(element).val('-')
             });
-            getRegPeriksa(param).done((response) => {
+
+            $('#formSoapUgd textarea').removeAttr('readonly')
+            $('#formSoapUgd select').removeAttr('disabled', false)
+
+            getRegPeriksa(no_rawat).done((response) => {
+
                 $('#formSoapUgd input[name="no_rawat"]').val(response.no_rawat)
                 $('#formSoapUgd input[name="nm_pasien"]').val(response.pasien.nm_pasien)
                 $('#formSoapUgd input[name="nama"]').val("{{ session()->get('pegawai')->nama }}")
                 $('#formSoapUgd input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
+
+                $('#formSoapUgd input[name="no_rawat"]').attr('readonly', true)
+                $('#formSoapUgd input[name="nm_pasien"]').attr('readonly', true)
+                $('#formSoapUgd input[name="nama"]').attr('readonly', true)
+                $('#formSoapUgd input[name="nik"]').attr('readonly', true)
             })
 
 
@@ -203,6 +214,11 @@
             $('#btn-ubah').css('display', 'none')
 
         }
+
+        $('#modalSoapUgd').on('hidden.bs.modal', () => {
+            no_rawat = $('#formSoapUgd input[name="no_rawat"]').val()
+            resetSoap(no_rawat)
+        })
 
         function editSoapRalan() {
             $.ajax({

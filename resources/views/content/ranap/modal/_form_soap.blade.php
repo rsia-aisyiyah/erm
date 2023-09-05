@@ -20,7 +20,7 @@
                     <td colspan="2" width="40%">
                         <input type="search" class="form-control form-control-sm" id="nama" name="nama"
                             placeholder="" readonly>
-                      
+
                     </td>
                 </tr>
                 <tr>
@@ -154,6 +154,14 @@
                         <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="5"
                             onfocus="removeZero(this)"
                             onblur="cekKosong(this)">-</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+                        <button type="button" class="btn btn-warning btn-sm" id="btn-reset" style="font-size:12px;display:none"><i class="bi bi-arrow-clockwise"></i> Baru</button>
+                        <button type="button" class="btn btn-success btn-sm" onclick="editSoap()" id="btn-ubah" style="font-size:12px;display:none"><i class="bi bi-pencil-square"></i> Ubah</button>
                     </td>
                 </tr>
             </table>

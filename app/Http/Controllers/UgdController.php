@@ -42,6 +42,9 @@ class UgdController extends Controller
                 return $q->where('kd_sps', $request->spesialis);
             })->get();
         }
+        if ($request->kd_dokter) {
+            $regPeriksa->where('kd_dokter', $request->kd_dokter)->get();
+        }
 
         return DataTables::of($regPeriksa)->make(true);
     }

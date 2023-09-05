@@ -71,7 +71,6 @@
             var hasilFoto = '<table>';
             if (Object.keys(foto).length > 0) {
                 foto.forEach(function(f) {
-                    console.log(f);
                     let arrFoto = f?.file.split(',')
                     let kategori = f?.kategori;
                     hasilFoto += '<tr>'

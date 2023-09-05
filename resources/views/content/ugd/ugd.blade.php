@@ -7,30 +7,37 @@
                     Pasien UGD
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 col-lg-3 col-sm-12">
-                            <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Periode</label>
-                            <div class="input-group input-group-sm input-daterange">
-                                <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
-                                <div class="input-group-text">ke</div>
-                                <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
-                                <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
+                    <form action="" id="formFilterUgd">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-3 col-sm-12">
+                                <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Periode</label>
+                                <div class="input-group input-group-sm input-daterange">
+                                    <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
+                                    <div class="input-group-text">ke</div>
+                                    <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
+                                    <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
+                                </div>
                             </div>
+                            <div class="col-md-6 col-lg-3 col-sm-12">
+                                <label for="" style="font-size: 12px;margin-bottom:0px">Pasien</label>
+                                <input type="search" class="form-control form-control-sm" id="cari-pasien" placeholder="" autocomplete="off">
+                            </div>
+                            @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
+                                <div class="col-md-6 col-lg-3 col-sm-12">
+                                    <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
+                                    <select name="spesialis" id="spesialis" class="form-select form-select-sm">
+                                        <option value="">Semua</option>
+                                        <option value="S0007">Spesialis Umum</option>
+                                        <option value="S0003">Spesialis Anak</option>
+                                        <option value="S0001">Spesialis Kandungan & Kebidanan</option>
+                                    </select>
+                                </div>
+                                <input type="hidden" value="" name="kd_dokter">
+                            @else
+                                <input type="hidden" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
+                            @endif
                         </div>
-                        <div class="col-md-6 col-lg-3 col-sm-12">
-                            <label for="" style="font-size: 12px;margin-bottom:0px">Pasien</label>
-                            <input type="search" class="form-control form-control-sm" id="cari-pasien" placeholder="" autocomplete="off">
-                        </div>
-                        <div class="col-md-6 col-lg-3 col-sm-12">
-                            <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
-                            <select name="spesialis" id="spesialis" class="form-select form-select-sm">
-                                <option value="">Semua</option>
-                                <option value="S0007">Spesialis Umum</option>
-                                <option value="S0003">Spesialis Anak</option>
-                                <option value="S0001">Spesialis Kandungan & Kebidanan</option>
-                            </select>
-                        </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="container">
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_ugd" width="100%">
@@ -61,10 +68,12 @@
         var tgl_awal = '';
         var tgl_akhir = '';
         var nm_pasien = '';
+        var dokter = '';
         var spesialis = '';
         var tableUdg = '';
         var dateStart = '';
         $(document).ready(() => {
+            dokter = $('#formFilterUgd input[name=kd_dokter]').val();
             nm_pasien = localStorage.getItem('nm_pasien') ? localStorage.getItem('nm_pasien') : '';
             spesialis = localStorage.getItem('spesialis') ? localStorage.getItem('spesialis') : '';
             $('#cari-pasien').val(nm_pasien)
@@ -147,6 +156,7 @@
                         tgl_akhir: tgl_akhir,
                         nm_pasien: nm_pasien,
                         spesialis: spesialis,
+                        kd_dokter: dokter,
                     },
                 },
                 initComplete: function() {

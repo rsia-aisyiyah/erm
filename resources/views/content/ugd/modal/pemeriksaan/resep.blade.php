@@ -182,7 +182,6 @@
                         row = 1 + $('#tb-resep-racikan tbody').children('tr').length;
 
                         console.log($('#tb-resep-racikan tbody').children('tr'));
-                        console.log(row);
 
                         $('#tb-resep-racikan tbody').append(setRowRacikan(noResep, row));
                         getResepRacikan().done((rr) => {

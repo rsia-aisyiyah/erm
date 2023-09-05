@@ -81,10 +81,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
                         class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRanap()"
-                    style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
-                <button type="button" class="btn btn-warning btn-sm" id="btn-reset" style="font-size:12px;display:none"><i class="bi bi-arrow-clockwise"></i> Baru</button>
-                <button type="button" class="btn btn-success btn-sm" onclick="editSoap()" id="btn-ubah" style="font-size:12px;display:none"><i class="bi bi-pencil-square"></i> Ubah</button>
+
             </div>
         </div>
     </div>
@@ -99,90 +96,98 @@
             const canvasSuhu = $('#grafik-suhu');
         })
 
-        function ambilSoap(no, tgl, jam) {
-            $.ajax({
-                url: 'soap/ambil',
+        function getDetailPemeriksaanRanap(no_rawat, tgl, jam) {
+            const pemeriksaan = $.ajax({
+                url: '/erm/soap/ambil',
                 data: {
-                    'no_rawat': no,
+                    'no_rawat': no_rawat,
                     'tgl_perawatan': tgl,
                     'jam_rawat': jam
                 },
+            })
+            return pemeriksaan;
+        }
 
-                success: function(response) {
 
-                    if (response.petugas.nip != "{{ session()->get('pegawai')->nik }}") {
-                        $("#formSoapRanap :input").prop('readonly', true);
-                        $("#formSoapRanap select").prop('disabled', true);
-                        $("#formSoapRanap textarea").prop('readonly', true);
+        function ambilSoap(no_rawat, tgl, jam) {
+            getDetailPemeriksaanRanap(no_rawat, tgl, jam).done((response) => {
 
+                let hidden = '<input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="' + response.tgl_perawatan + '">';
+                hidden += '<input type="hidden" name="jam_rawat" id="jam_rawat" value="' + response.jam_rawat + '">';
+                hidden += '<input type="hidden" name="no_rawat" id="no_rawat" value="' + response.no_rawat + '">';
+
+                $('#formSoapRanap').append(hidden);
+                $('#suhu').val(response.suhu_tubuh);
+                $('#tinggi').val(response.tinggi);
+                $('#berat').val(response.berat);
+                $('#tensi').val(response.tensi);
+                $('#respirasi').val(response.respirasi);
+                $('#nadi').val(response.nadi);
+                $('#spo2').val(response.spo2);
+                $('#gcs').val(response.gcs);
+
+                $.map(response.grafik_harian, function(grafik) {
+                    if (response.tgl_perawatan == grafik.tgl_perawatan && response.jam_rawat == grafik.jam_rawat) {
+                        $('#o2').val(grafik.o2);
                     }
+                })
+                $('#kesadaran select').val(response.kesadaran);
+                $('#alergi').val(response.alergi);
+                $('#asesmen').val(response.penilaian);
+                $('#plan').val(response.rtl);
+                $('#instruksi').val(response.instruksi);
+                $('#evaluasi').val(response.evaluasi);
+                $('#subjek').val(response.keluhan);
+                $('#objek').val(response.pemeriksaan);
+                $('#reset_soap').append('')
 
-                    let hidden = '<input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="' + response.tgl_perawatan + '">';
-                    hidden += '<input type="hidden" name="jam_rawat" id="jam_rawat" value="' + response.jam_rawat + '">';
-                    hidden += '<input type="hidden" name="no_rawat" id="no_rawat" value="' + response.no_rawat + '">';
+                $('#btn-reset').css('display', 'inline');
 
-                    $('.form-soap').append(hidden);
-                    $('#suhu').val(response.suhu_tubuh);
-                    // $('#nik').val(response.petugas.nip);
-                    // $('#nama').val(response.petugas.nama);
-                    $('#tinggi').val(response.tinggi);
-                    $('#berat').val(response.berat);
-                    $('#tensi').val(response.tensi);
-                    $('#respirasi').val(response.respirasi);
-                    $('#nadi').val(response.nadi);
-                    $('#spo2').val(response.spo2);
-                    $('#gcs').val(response.gcs);
-
-                    $.map(response.grafik_harian, function(grafik) {
-                        if (response.tgl_perawatan == grafik.tgl_perawatan && response.jam_rawat == grafik.jam_rawat) {
-                            $('#o2').val(grafik.o2);
-                        }
-                    })
-                    $('#kesadaran select').val(response.kesadaran);
-                    $('#alergi').val(response.alergi);
-                    $('#asesmen').val(response.penilaian);
-                    $('#plan').val(response.rtl);
-                    $('#instruksi').val(response.instruksi);
-                    $('#evaluasi').val(response.evaluasi);
-                    $('#subjek').val(response.keluhan);
-                    $('#objek').val(response.pemeriksaan);
-                    $('#reset_soap').append('')
-                    if (response.petugas.nip != "{{ session()->get('pegawai')->nik }}") {
-                        $('#btn-ubah').css('display', 'none');
-                        $('#btn-reset').css('display', 'inline');
-                        $('.btn-simpan').css('display', 'inline');
-                    } else {
-                        $('#btn-ubah').css('display', 'inline');
-                    }
-
-                    $('#btn-reset').on('click', function(event) {
-                        $('#suhu').val("-");
-                        $('#tinggi').val("-");
-                        $('#berat').val("-");
-                        $('#tensi').val("-");
-                        $('#respirasi').val("-");
-                        $('#nadi').val("-");
-                        $('#spo2').val("-");
-                        $('#gcs').val("-");
-                        $('#alergi').val("-");
-                        $('#asesmen').val("-");
-                        $('#plan').val("-");
-                        $('#instruksi').val("-");
-                        $('#evaluasi').val("-");
-                        $('#subjek').val("-");
-                        $('#objek').val("-");
-                        $('#btn-reset').remove();
-                        $('#btn-ubah').remove();
-                        return false;
-                    });
-
-
+                if (response.petugas.nip == "{{ session()->get('pegawai')->nik }}" || response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}") {
+                    $('#btn-ubah').css('display', 'inline');
+                    $('#btn-ubah').css('display', 'inline');
+                } else {
+                    $('#btn-ubah').css('display', 'none');
+                    $('.btn-simpan').css('display', 'inline');
                 }
-            }).done(() => {
                 var sel = document.querySelector('#tab-soap-ranap li:first-child button')
                 bootstrap.Tab.getInstance(sel).show()
             })
         }
+
+        $('#btn-reset').on('click', function(event) {
+            no_rawat = $('#formSoapRanap input[name="nomor_rawat"]').val();
+            $('#formSoapRanap input').each((index, element) => {
+                $(element).val('-');
+                $(element).removeAttr('readonly');
+                $('#jam_rawat').val('');
+                $('#tgl_perawatan').val('');
+            })
+            $('#formSoapRanap textarea').each((index, element) => {
+                $(element).val('-')
+            });
+
+            $('#formSoapRanap textarea').removeAttr('readonly')
+            $('#formSoapRanap select').removeAttr('disabled', false)
+
+            getRegPeriksa(no_rawat).done((response) => {
+
+                $('#formSoapRanap input[name="nomor_rawat"]').val(response.no_rawat)
+                $('#formSoapRanap input[name="nm_pasien"]').val(`${response.pasien.nm_pasien} (${hitungUmur(response.pasien.tgl_lahir)})`)
+                $('#formSoapRanap input[name="nama"]').val("{{ session()->get('pegawai')->nama }}")
+                $('#formSoapRanap input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
+
+                $('#formSoapRanap input[name="nomor_rawat"]').attr('readonly', true)
+                $('#formSoapRanap input[name="nm_pasien"]').attr('readonly', true)
+                $('#formSoapRanap input[name="nama"]').attr('readonly', true)
+                $('#formSoapRanap input[name="nik"]').attr('readonly', true)
+            })
+
+
+            $('#btn-reset').css('display', 'none')
+            $('#btn-ubah').css('display', 'none')
+
+        });
 
         function hapusSoap(no, tgl, jam) {
             Swal.fire({
