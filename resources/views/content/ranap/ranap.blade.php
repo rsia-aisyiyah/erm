@@ -2,7 +2,7 @@
 @section('contents')
     <div class="row gy-2">
         <div class="col-sm-12">
-            @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
+            @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->departemen != 'SPS')
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group mb-2">
