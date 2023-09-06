@@ -653,7 +653,6 @@
                 success: function(response) {
                     grafikPemeriksaan = new Chart(ctx, {
                         type: 'line',
-                        plugins: [ChartDataLabels],
                         data: {
                             labels: response.map(function(e) {
                                 return e.tgl_perawatan + ' ' + e.jam_rawat;
@@ -673,10 +672,6 @@
                                 borderWidth: 3,
                                 lineTension: 0,
                                 radius: 5,
-                                datalabels: {
-                                    align: 'top',
-                                    anchor: 'end',
-                                }
                             }, {
                                 label: 'Nadi',
                                 data: response.map(function(e) {
@@ -689,10 +684,6 @@
                                 borderWidth: 3,
                                 lineTension: 0,
                                 radius: 5,
-                                datalabels: {
-                                    align: 'bottom',
-                                    anchor: 'start',
-                                }
                             }],
                         },
                         options: {
@@ -700,22 +691,8 @@
                                 y: {
                                     beginAtZero: true,
                                     ticks: {
-                                        stepSize: 100
+                                        stepSize: 50
                                     },
-                                }
-                            },
-                            plugins: {
-                                datalabels: {
-                                    backgroundColor: function(context) {
-                                        return context.dataset.backgroundColor;
-                                    },
-                                    borderRadius: 4,
-                                    color: 'white',
-                                    font: {
-                                        weight: 'bold'
-                                    },
-                                    formatter: Math.round,
-                                    padding: 6
                                 }
                             },
                         }
