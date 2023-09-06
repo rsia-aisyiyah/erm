@@ -52,7 +52,7 @@ class LoginController extends Controller
                 $pegawai->departemen == 'DNM5' || $pegawai->departemen == 'DM5' || $pegawai->departemen == 'DM2' || $pegawai->departemen == 'DPM2'
             ) {
                 return redirect('ranap');
-            } else if ($pegawai->nik == 'direksi' || $pegawai->departemen == 'DM6' || $pegawai->departemen == 'SPS' || $pegawai->jnj_jabatan == 'DIRU') {
+            } else if ($pegawai->nik == 'direksi' || $pegawai->departemen == 'DM6' || $pegawai->departemen == 'SPS' || $pegawai->jnj_jabatan == 'DIRU' || $pegawai->departemen == 'DIR') {
                 return redirect('/');
             }
         } else {

@@ -6,7 +6,7 @@
                 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
                 <span>MENU</span>
             </h6>
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DNM6')
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DNM6')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('registrasi') ? 'active' : '' }}" href="/erm/registrasi">
                         <i class="bi bi-pen  align-text-bottom"></i>
@@ -14,7 +14,7 @@
                     </a>
                 </li>
             @endif
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'CSM')
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'CSM')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
                         <i class="bi bi-people-fill align-text-bottom"></i>
@@ -23,7 +23,7 @@
                 </li>
             @endif
 
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DPM1' || session()->get('pegawai')->departemen == 'DM6' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM7')
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM1' || session()->get('pegawai')->departemen == 'DM6' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM7')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('poliklinik') ? 'active' : '' }}" href="/erm/poliklinik">
                         <i class="bi bi-bandaid align-text-bottom"></i>
@@ -39,7 +39,7 @@
                 </li>
             @endif
 
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DPM1')
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM1')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep">
                         <i class="bi bi-prescription align-text-bottom"></i>
@@ -49,6 +49,7 @@
             @endif
 
             @if (session()->get('pegawai')->nik == 'direksi' ||
+                    session()->get('pegawai')->departemen == 'DIR' ||
                     session()->get('pegawai')->jnj_jabatan == 'DIRU' ||
                     session()->get('pegawai')->departemen == 'DM8' ||
                     session()->get('pegawai')->departemen == 'DM3' ||
@@ -68,7 +69,7 @@
                 </li>
             @endif
 
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM1' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->dokter)
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM1' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->dokter)
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('ugd') ? 'active' : '' }}" href="/erm/ugd">
                         <i class="bi bi-clipboard-pulse align-text-bottom"></i>
