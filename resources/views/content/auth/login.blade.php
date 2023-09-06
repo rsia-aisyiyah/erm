@@ -102,6 +102,7 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", () => {
         localStorage.removeItem('pasien')
+        localStorage.removeItem('kamar')
         localStorage.removeItem('nm_pasien')
         localStorage.removeItem('tanggal')
         localStorage.removeItem('tgl_awal')
