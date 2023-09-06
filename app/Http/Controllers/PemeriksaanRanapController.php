@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\RsiaLogSoap;
 use App\Models\GrafikHarian;
+use Illuminate\Http\Request;
 use App\Models\PemeriksaanRanap;
 use App\Models\RsiaGrafikHarian;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\RsiaLogSoapController;
 
 class PemeriksaanRanapController extends Controller
 {
@@ -16,6 +18,7 @@ class PemeriksaanRanapController extends Controller
     private $grafikharian;
     private $track;
     private $grafikHarian;
+    private $log;
 
     public function __construct()
     {
@@ -24,6 +27,7 @@ class PemeriksaanRanapController extends Controller
         $this->grafikharian = new GrafikHarian();
         $this->track = new TrackerSqlController();
         $this->grafikHarian = new RsiaGrafikHarian();
+        $this->log = new RsiaLogSoapController();
     }
 
     public function ambilSatu(Request $request)
@@ -83,6 +87,9 @@ class PemeriksaanRanapController extends Controller
             'tgl_perawatan' => $request->tgl_perawatan,
             'jam_rawat' => $request->jam_rawat,
         ];
+
+
+        $log = $this->log->insert($clause, 'Ubah');
         $pemeriksaan = PemeriksaanRanap::where($clause)->update($data);
         $grafikharian = GrafikHarian::where($clause)->update($data1);
         $this->track->updateSql($this->pemeriksaan, $data, $clause);
@@ -148,6 +155,7 @@ class PemeriksaanRanapController extends Controller
         $this->track->deleteSql($this->pemeriksaan, $clause);
 
         $clause = array_merge($clause, ['sumber' => 'SOAP']);
+        $log = $this->log->insert($clause, 'Hapus');
         $grafikHarian = $this->grafikHarian->where($clause)->delete();
         return response()->json(['Berhasil', $pemeriksaan], 200);
     }
@@ -155,7 +163,7 @@ class PemeriksaanRanapController extends Controller
     function ambilPemeriksaan(Request $request)
     {
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa', 'regPeriksa.pasien', 'petugas', 'grafikHarian', 'verifikasi.petugas' => function ($q) {
+            ->with(['regPeriksa', 'log', 'regPeriksa.pasien', 'petugas', 'grafikHarian', 'verifikasi.petugas' => function ($q) {
                 return $q->select('nip', 'nama');
             }])->whereHas('petugas', function ($q) {
                 return $q->whereNotIn('kd_jbtn', ['J01', 'J024', 'J025', 'J002']);
@@ -167,7 +175,7 @@ class PemeriksaanRanapController extends Controller
     public function ambil(Request $request)
     {
 
-        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $request->no_rawat)->with(['regPeriksa', 'regPeriksa.pasien', 'petugas', 'grafikHarian', 'verifikasi.petugas' => function ($q) {
+        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $request->no_rawat)->with(['regPeriksa', 'regPeriksa.pasien', 'log.pegawai', 'petugas', 'grafikHarian', 'verifikasi.petugas' => function ($q) {
             return $q->select('nip', 'nama');
         }])->orderBy('tgl_perawatan', 'DESC')
             ->orderBy('jam_rawat', 'DESC');

@@ -34,7 +34,7 @@
     <thead>
         <tr>
             <td width="5%">Aksi</td>
-            <td>TTV & Fisik</td>
+            <td width="20%">TTV & Fisik</td>
             <td>S.O.A.P</td>
         </tr>
     </thead>

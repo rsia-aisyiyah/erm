@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Petugas;
 use App\Models\RegPeriksa;
+use App\Models\RsiaLogSoap;
 use App\Models\GrafikHarian;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,5 +34,9 @@ class PemeriksaanRanap extends Model
     function verifikasi()
     {
         return $this->hasMany(RsiaVerifPemeriksaanRanap::class, 'no_rawat', 'no_rawat');
+    }
+    function log()
+    {
+        return $this->hasMany(RsiaLogSoap::class, 'no_rawat', 'no_rawat');
     }
 }

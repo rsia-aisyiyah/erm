@@ -798,7 +798,6 @@
                             if (row.petugas.nip == "{{ session()->get('pegawai')->nik }}") {
                                 button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
                             }
-
                             return button;
                         },
                         name: 'tgl_perawatan',
@@ -836,8 +835,22 @@
                                         btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-success btn-sm mb-2">Telah Diverifikasi<br/>Oleh : <b>' + verifikasi.petugas.nama + '</b></button>';
                                     }
                                 })
-                                html += btnVerif;
+                            } else {
+                                $.map(row.log, function(log) {
+                                    if (row.tgl_perawatan == log.tgl_perawatan && row.jam_rawat == log.jam_rawat) {
+                                        btnVerif = `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai.nama} 
+                                            , ${formatTanggal(log.waktu)} ${log.waktu.split(' ')[1]}
+                                                </i></div>`
+                                    }
+                                })
+
                             }
+
+                            html += btnVerif;
+
+
+
+                            console.log('PEMERIKSAAN', row);
                             return html;
                         },
                         name: 'ttv',
