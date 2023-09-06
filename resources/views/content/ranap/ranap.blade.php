@@ -967,8 +967,8 @@
             $('#evaluasi').val("-");
             $('#subjek').val("-");
             $('#objek').val("-");
-            $('#btn-reset').remove();
-            $('#btn-ubah').remove();
+            $('#btn-reset').css('display', 'none');
+            $('#btn-ubah').css('display', 'none');
             $('#table-ews tbody').empty();
             $('.td-jam').remove();
             $('.td-tanggal').remove();

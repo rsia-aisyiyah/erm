@@ -145,7 +145,6 @@
 
                 if (response.petugas.nip == "{{ session()->get('pegawai')->nik }}" || response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}") {
                     $('#btn-ubah').css('display', 'inline');
-                    $('#btn-ubah').css('display', 'inline');
                 } else {
                     $('#btn-ubah').css('display', 'none');
                     $('.btn-simpan').css('display', 'inline');
