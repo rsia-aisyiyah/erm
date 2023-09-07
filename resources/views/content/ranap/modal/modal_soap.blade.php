@@ -112,11 +112,8 @@
         function ambilSoap(no_rawat, tgl, jam) {
             getDetailPemeriksaanRanap(no_rawat, tgl, jam).done((response) => {
 
-                let hidden = '<input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="' + response.tgl_perawatan + '">';
-                hidden += '<input type="hidden" name="jam_rawat" id="jam_rawat" value="' + response.jam_rawat + '">';
-                hidden += '<input type="hidden" name="no_rawat" id="no_rawat" value="' + response.no_rawat + '">';
-
-                $('#formSoapRanap').append(hidden);
+                $('#formSoapRanap input[name=tgl_perawatan]').val(response.tgl_perawatan);
+                $('#formSoapRanap input[name=jam_rawat]').val(response.jam_rawat);
                 $('#suhu').val(response.suhu_tubuh);
                 $('#tinggi').val(response.tinggi);
                 $('#berat').val(response.berat);
@@ -149,7 +146,7 @@
                     $('#btn-ubah').css('display', 'none');
                     $('.btn-simpan').css('display', 'inline');
                 }
-                var sel = document.querySelector('#tab-soap-ranap li:first-child button')
+                let sel = document.querySelector('#tab-soap-ranap li:first-child button')
                 bootstrap.Tab.getInstance(sel).show()
             })
         }
@@ -210,15 +207,17 @@
                         method: 'DELETE',
                         success: function(response) {
                             if (response) {
-                                Swal.fire(
-                                    'BERHASIL !',
-                                    'Data berhasil dihapus',
-                                    'success'
-                                );
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'BERHASIL !',
+                                    text: 'Data Berhasil dihapus',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
                                 $('#tbSoap').DataTable().destroy();
-                                tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+                                tbSoapRanap(no, tgl_pertama, tgl_kedua);
                                 grafikPemeriksaan.destroy();
-                                buildGrafik(no_rawat_soap)
+                                buildGrafik(no)
                             }
                         }
                     })
@@ -280,6 +279,26 @@
                         grafikPemeriksaan.destroy();
                         buildGrafik(no_rawat_soap)
                         setEws(no_rawat_soap, 'ranap')
+                        let sel = document.querySelector('#tab-soap-ranap button[data-bs-target="#tab-tabel-pane"]')
+                        bootstrap.Tab.getInstance(sel).show()
+                        $('#formSoapRanap textarea[name=subjek]').val('-');
+                        $('#formSoapRanap textarea[name=objek]').val('-');
+                        $('#formSoapRanap textarea[name=asesmen]').val('-');
+                        $('#formSoapRanap textarea[name=plan]').val('-');
+                        $('#formSoapRanap textarea[name=instruksi]').val('-');
+                        $('#formSoapRanap input[name=suhu]').val('-');
+                        $('#formSoapRanap input[name=tinggi]').val('-');
+                        $('#formSoapRanap input[name=berat]').val('-');
+                        $('#formSoapRanap input[name=tensi]').val('-');
+                        $('#formSoapRanap input[name=respirasi]').val('-');
+                        $('#formSoapRanap input[name=nadi]').val('-');
+                        $('#formSoapRanap input[name=spo2]').val('-');
+                        $('#formSoapRanap input[name=gcs]').val('-');
+                        $('#formSoapRanap input[name=o2]').val('-');
+                        $('#formSoapRanap input[name=alergi]').val('-');
+                        $('#formSoapRanap select[name=kesadaran]').val('Compos Mentis').change();
+                        $('#btn-ubah').css('display', 'none')
+                        $('#btn-reset').css('display', 'none')
                     } else {
                         Swal.fire({
                             icon: 'danger',
@@ -389,11 +408,29 @@
                             showConfirmButton: false,
                             timer: 1500
                         })
+                        let sel = document.querySelector('#tab-soap-ranap button[data-bs-target="#tab-tabel-pane"]')
+                        bootstrap.Tab.getInstance(sel).show()
                         $('#tbSoap').DataTable().destroy();
                         tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
                         grafikPemeriksaan.destroy();
                         buildGrafik(no_rawat_soap)
                         setEws(no_rawat_soap, 'ranap')
+                        $('#formSoapRanap textarea[name=subjek]').val('-');
+                        $('#formSoapRanap textarea[name=objek]').val('-');
+                        $('#formSoapRanap textarea[name=asesmen]').val('-');
+                        $('#formSoapRanap textarea[name=plan]').val('-');
+                        $('#formSoapRanap textarea[name=instruksi]').val('-');
+                        $('#formSoapRanap input[name=suhu]').val('-');
+                        $('#formSoapRanap input[name=tinggi]').val('-');
+                        $('#formSoapRanap input[name=berat]').val('-');
+                        $('#formSoapRanap input[name=tensi]').val('-');
+                        $('#formSoapRanap input[name=respirasi]').val('-');
+                        $('#formSoapRanap input[name=nadi]').val('-');
+                        $('#formSoapRanap input[name=spo2]').val('-');
+                        $('#formSoapRanap input[name=gcs]').val('-');
+                        $('#formSoapRanap input[name=o2]').val('-');
+                        $('#formSoapRanap input[name=alergi]').val('-');
+                        $('#formSoapRanap select[name=kesadaran]').val('Compos Mentis').change();
 
                     } else {
                         Swal.fire({

@@ -160,8 +160,8 @@
                         <input type="hidden" name="jam_rawat" id="jam_rawat">
                         <input type="hidden" name="tgl_perawatan" id="tgl_perawatan">
                         <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRalan()"><i class="bi bi-save"></i> Simpan</button>
-                        <button type="button" class="btn btn-success btn-sm" onclick="editSoapRalan()" id="btn-ubah" style="font-size:12px;display: none"><i class="bi bi-pencil-square"></i> Ubah</button>
                         <button type="button" class="btn btn-warning btn-sm" id="btn-reset" style="font-size:12px;display: none"><i class="bi bi-arrow-clockwise"></i> Baru</button>
+                        <button type="button" class="btn btn-success btn-sm" onclick="editSoapRalan()" id="btn-ubah" style="font-size:12px;display: none"><i class="bi bi-pencil-square"></i> Ubah</button>
 
                     </td>
                 </tr>

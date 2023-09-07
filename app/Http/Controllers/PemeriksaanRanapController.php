@@ -154,9 +154,9 @@ class PemeriksaanRanapController extends Controller
         $pemeriksaan = PemeriksaanRanap::where($clause)->delete();
         $this->track->deleteSql($this->pemeriksaan, $clause);
 
-        $clause = array_merge($clause, ['sumber' => 'SOAP']);
+        $grafik = array_merge($clause, ['sumber' => 'SOAP']);
         $log = $this->log->insert($clause, 'Hapus');
-        $grafikHarian = $this->grafikHarian->where($clause)->delete();
+        $grafikHarian = $this->grafikHarian->where($grafik)->delete();
         return response()->json(['Berhasil', $pemeriksaan], 200);
     }
 

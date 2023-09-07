@@ -154,6 +154,9 @@
                         <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="5"
                             onfocus="removeZero(this)"
                             onblur="cekKosong(this)">-</textarea>
+                        <input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="">
+                        <input type="hidden" name="jam_rawat" id="jam_rawat" value="">
+
                     </td>
                 </tr>
                 <tr>

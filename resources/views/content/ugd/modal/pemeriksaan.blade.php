@@ -71,7 +71,7 @@
                         data: null,
                         render: (data, type, row, meta) => {
                             button = `<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>`;
-                            if (row.pegawai.nip == "{{ session()->get('pegawai')->nik }}") {
+                            if (row.nip == "{{ session()->get('pegawai')->nik }}") {
                                 button += `<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`;
                             }
                             return button;
@@ -106,8 +106,6 @@
                             html = '<ul>' + list + '</ul>';
 
                             $.map(row.log, function(log) {
-                                console.log('tgl perawatan', row.tgl_perawatan);
-                                console.log('tgl LOG', log.tgl_perawatan);
                                 if (row.tgl_perawatan == log.tgl_perawatan && row.jam_rawat == log.jam_rawat) {
                                     html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai.nama} 
                                             , ${formatTanggal(log.waktu)} ${log.waktu.split(' ')[1]}
@@ -147,8 +145,6 @@
                     jam_rawat: jam_rawat,
                 },
             }).done((response) => {
-                console.log('UGD', response);
-                console.log(response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}");
                 if (response.pegawai.nik == "{{ session()->get('pegawai')->nik }}" || response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}") {
                     $('#btn-ubah').css('display', 'inline');
                     $('#btn-reset').css('display', 'inline');
@@ -156,9 +152,9 @@
                     $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
                     $('#formSoapUgd input[name="nama"]').val(response.pegawai.nama)
                 } else {
-                    $("#formSoapUgd :input").prop('readonly', true);
-                    $("#formSoapUgd select").prop('disabled', true);
-                    $("#formSoapUgd textarea").prop('readonly', true);
+                    // $("#formSoapUgd :input").prop('readonly', true);
+                    // $("#formSoapUgd select").prop('disabled', true);
+                    // $("#formSoapUgd textarea").prop('readonly', true);
                     $('#btn-ubah').css('display', 'none');
                     $('#btn-reset').css('display', 'inline');
                     $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
@@ -290,6 +286,7 @@
                     title: 'Berhasil',
                     text: 'Data berhasil dikirim',
                     icon: 'success',
+                    showConfirmButton: false,
                     timer: 1500,
                 })
                 resetSoap(no_rawat);
@@ -352,8 +349,11 @@
                     title: 'Berhasil',
                     text: 'Data berhasil dikirim',
                     icon: 'success',
+                    showConfirmButton: false,
                     timer: 1500,
                 })
+                let sel = document.querySelector('#tab-soap-ugd button[data-bs-target="#tab-tabel-pane"]')
+                bootstrap.Tab.getInstance(sel).show()
                 resetSoap(no_rawat);
             })
         }
@@ -383,6 +383,7 @@
                                 title: 'Gagal',
                                 text: 'Tidak berhasil menghapus data',
                                 icon: 'error',
+                                showConfirmButton: false,
                                 timer: 1500,
                             })
 

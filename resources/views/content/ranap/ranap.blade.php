@@ -907,10 +907,6 @@
                             }
 
                             html += btnVerif;
-
-
-
-                            console.log('PEMERIKSAAN', row);
                             return html;
                         },
                         name: 'ttv',
