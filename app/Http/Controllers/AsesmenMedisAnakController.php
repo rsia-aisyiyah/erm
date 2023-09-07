@@ -23,7 +23,7 @@ class AsesmenMedisAnakController extends Controller
     {
         $id = str_replace('-', '/', $noRawat);
 
-        $asmed = $this->asmed->where('no_rawat', $id)->with('regPeriksa.pasien', 'regPeriksa.dokter')->first();
+        $asmed = $this->asmed->where('no_rawat', $id)->with('regPeriksa.pasien', 'regPeriksa.dokter', 'dokter')->first();
         return response()->json($asmed);
     }
 
