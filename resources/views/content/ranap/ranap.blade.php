@@ -682,6 +682,7 @@
                             }),
                             datasets: [{
                                 label: 'Suhu Tubuh',
+                                yAxisID: 'left-y-axis',
                                 data: response.map(function(e) {
                                     if (e.suhu_tubuh.includes(',')) {
                                         e.suhu_tubuh = e.suhu_tubuh.replace(',', '.');
@@ -697,6 +698,7 @@
                                 radius: 5,
                             }, {
                                 label: 'Nadi',
+                                yAxisID: 'right-y-axis',
                                 data: response.map(function(e) {
                                     return e.nadi;
                                 }),
@@ -711,12 +713,51 @@
                         },
                         options: {
                             scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        stepSize: 50
+                                y: [{
+                                        id: 'left-y-axis',
+                                        type: 'linear',
+                                        position: 'left',
+                                        display: false,
+                                        gridLines: {
+                                            display: false,
+                                            color: 'rgba(219,219,219,0.3)',
+                                            zeroLineColor: 'rgba(219,219,219,0.3)',
+                                            drawBorder: false, // <---
+                                            lineWidth: 27,
+                                            zeroLineWidth: 1                 
+                                        },
+
+                                        ticks: {
+                                            display: false,
+                                            min: 35,
+                                            max: 45,
+                                        },
                                     },
-                                }
+                                    {
+                                        id: 'right-y-axis',
+                                        type: 'linear',
+                                        position: 'right',
+                                        display: false,
+                                        gridLines: {
+                                            display: false,
+                                            color: 'rgba(219,219,219,0.3)',
+                                            zeroLineColor: 'rgba(219,219,219,0.3)',
+                                            drawBorder: false, // <---
+                                            lineWidth: 27,
+                                            zeroLineWidth: 1                 
+                                        },
+
+                                        ticks: {
+                                            stepSize: 20,
+                                            display: false,
+                                        },
+                                    },
+                                ],
+                                x: {
+                                    gridLines: {
+                                        display: false,
+                                    },
+                                },
                             },
                         }
                     });
