@@ -59,10 +59,7 @@ class EwsController extends Controller
         foreach ($table as $s) {
             $nilai_1 = $s->nilai_1 ? $s->nilai_1 : '';
             $nilai_2 = $s->nilai_2 ? $s->nilai_2 : '';
-            if (
-                $regPeriksa->sttsumur == 'Bl' ||
-                $regPeriksa->sttsumur == 'Hr'
-            ) {
+            if ($regPeriksa->sttsumur == 'Bl') {
                 if ($s->kode_usia == '<') {
                     if ($s->kode_nilai == '>') {
                         $arrVal = [
@@ -102,6 +99,51 @@ class EwsController extends Controller
                             'nilai1' => $nilai_1,
                             'nilai2' => $nilai_2,
                             'kategori' => "1 - 11 Bulan"
+                        ];
+                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                    }
+                }
+                $value = $val;
+            } else if ($regPeriksa->sttsumur == 'Hr') {
+                if ($s->kode_usia == '<') {
+                    if ($s->kode_nilai == '>') {
+                        $arrVal = [
+                            'id' => $s->kode,
+                            'parameter' => $s->kode_nilai . ' ' . $nilai_1,
+                            'hasil' => $s->hasil,
+                            'nilai1' => $nilai_1,
+                            'nilai2' => $nilai_2,
+                            'kategori' => "Bayi/Neonatal"
+                        ];
+                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                    } else if ($s->kode_nilai == '<') {
+                        $arrVal = [
+                            'id' => $s->kode,
+                            'parameter' => $s->kode_nilai . ' ' . $nilai_1,
+                            'hasil' => $s->hasil,
+                            'nilai1' => $nilai_1,
+                            'nilai2' => $nilai_2,
+                            'kategori' => "Bayi/Neonatal"
+                        ];
+                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                    } else if ($s->kode_nilai == '<=' || $s->kode_nilai == '>=') {
+                        $arrVal = [
+                            'id' => $s->kode,
+                            'parameter' => $s->kode_nilai . ' ' . $nilai_2,
+                            'hasil' => $s->hasil,
+                            'nilai1' => $nilai_1,
+                            'nilai2' => $nilai_2,
+                            'kategori' => "Bayi/Neonatal"
+                        ];
+                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                    } else {
+                        $arrVal = [
+                            'id' => $s->kode,
+                            'parameter' => $nilai_1 . $s->kode_nilai . $nilai_2,
+                            'hasil' => $s->hasil,
+                            'nilai1' => $nilai_1,
+                            'nilai2' => $nilai_2,
+                            'kategori' => "Bayi/Neonatal"
                         ];
                         $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
                     }
