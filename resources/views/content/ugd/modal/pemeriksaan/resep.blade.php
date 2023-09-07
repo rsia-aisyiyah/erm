@@ -127,15 +127,15 @@
                                     <table class="table table-racikan-detail table-borderless">
                                         <thead>
                                             <tr>
-                                                <th width="35%">Nama Obat</th>
+                                                <th width="25%">Nama Obat</th>
                                                 <th>Sediaan</th>
-                                                <th width="7%">P1</th>
+                                                <th width="10%">P1</th>
                                                 <th width="3%"></th>
-                                                <th width="7%">P2</th>
-                                                <th width="8%">Dosis</th>
+                                                <th width="10%">P2</th>
+                                                <th width="10%">Dosis</th>
                                                 <th></th>
                                                 <th>Jumlah</th>
-                                                <th></th>
+                                                <th width="15%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -516,7 +516,7 @@
             $.map(data, (res) => {
                 kandungan = res.kandungan != 0 ? res.kandungan : res.data_barang.kapasitas;
 
-                html = `<tr class="obat-${no}">`
+                html = `<tr class="obat-${res.kode_brng}">`
                 html += `<td><input type="hidden" id="kode_brng${no}" value="${res.kode_brng}" name="kode_brng[]"/> ${res.data_barang.nama_brng}</td>`
                 html += `<td><input type="hidden" id="kps${no}" name="kps[]" value="${res.data_barang.kapasitas}"/>${res.data_barang.kapasitas} mg </td>`
                 html += `<td><input type="search" class="form-control form-control-sm form-underline" id="p1${no}" name="p1[]" value="${res.p1}" onkeyup="hitungObatRacik(${no})" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>`
@@ -573,7 +573,7 @@
 
                         }
                     }).done(function() {
-                        $('.obat-' + no).remove();
+                        $('.obat-' + kode_brng).remove();
                         hitungBarisObat($('.table-racikan-detail'))
                         setListResep(no_rawat);
                         tulisPlan(no_rawat);
@@ -598,6 +598,7 @@
             $('.nomor').val(table.find('tr').length);
             console.log(table.find('tr').length);
         }
+
 
         function simpanDosisObat() {
             const no_racik = $('#formDetailResep input[name=no_racik]').val()
@@ -641,6 +642,12 @@
             e.preventDefault();
             row = $(this).parents('td').parents('tr').remove();
             $('.btn-racikan').fadeIn()
+            return false;
+        })
+
+        $('.table-racikan-detail tbody').on('click', '.x', function(e) {
+            e.preventDefault();
+            row = $(this).parents('td').parents('tr').remove();
             return false;
         })
 

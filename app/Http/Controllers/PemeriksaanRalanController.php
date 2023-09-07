@@ -47,7 +47,7 @@ class PemeriksaanRalanController extends Controller
     }
     function getTable(Request $request)
     {
-        $pemeriksaan = $this->pemeriksaan->where(['no_rawat' => $request->no_rawat])->with(['regPeriksa.penjab', 'regPeriksa.dokter', 'pegawai', 'grafik'])
+        $pemeriksaan = $this->pemeriksaan->where(['no_rawat' => $request->no_rawat])->with(['regPeriksa.penjab', 'regPeriksa.dokter', 'pegawai', 'log', 'grafik'])
             ->orderBy('tgl_perawatan', 'DESC')
             ->orderBy('jam_rawat', 'DESC')->get();
         return DataTables::of($pemeriksaan)->make(true);
@@ -104,8 +104,8 @@ class PemeriksaanRalanController extends Controller
             'kesadaran' => $request->kesadaran,
             'keluhan' => $request->keluhan,
             'pemeriksaan' => $request->pemeriksaan,
-            'alergi' => $request->alergi,
-            'rtl' => $request->rtl ? $request->rtl : '',
+            'alergi' => $request->alergi ? $request->alergi : '-',
+            'rtl' => $request->rtl ? $request->rtl : '-',
             'penilaian' => $request->penilaian,
             'instruksi' => $request->instruksi,
             'evaluasi' => $request->evaluasi,

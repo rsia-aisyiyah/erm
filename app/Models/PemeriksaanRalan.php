@@ -24,4 +24,8 @@ class PemeriksaanRalan extends Model
     {
         return $this->hasMany(GrafikHarian::class, 'no_rawat', 'no_rawat');
     }
+    function log()
+    {
+        return $this->hasMany(RsiaLogSoap::class, 'no_rawat', 'no_rawat');
+    }
 }

@@ -104,6 +104,17 @@
                             list += '<li> Berat : ' + row.berat + ' Kg</li>';
                             list += '<li> Alergi : ' + row.alergi + '</li>';
                             html = '<ul>' + list + '</ul>';
+
+                            $.map(row.log, function(log) {
+                                console.log('tgl perawatan', row.tgl_perawatan);
+                                console.log('tgl LOG', log.tgl_perawatan);
+                                if (row.tgl_perawatan == log.tgl_perawatan && row.jam_rawat == log.jam_rawat) {
+                                    html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai.nama} 
+                                            , ${formatTanggal(log.waktu)} ${log.waktu.split(' ')[1]}
+                                                </i></div>`
+                                }
+                            })
+
                             return html;
                         }
                     },
