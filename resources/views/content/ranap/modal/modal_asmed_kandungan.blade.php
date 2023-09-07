@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" class="form-asmed-anak">
+                <form action="" id="formAsmedKandunganRanap">
                     <div class="row" style="font-size: 12px">
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-6">
@@ -42,7 +42,7 @@
                                                 <option value="Autoanamnesis" selected>Autoanamnesis</option>
                                                 <option value="Alloanamnesis">Alloanamnesis</option>
                                             </select>
-                                            <input type="search" class="form-control form-control-sm kandungan_hubungan" placeholder="" aria-label="" id="kandungan_hubungan" style="margin-left: 10px;" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                            <input type="search" class="form-control form-control-sm kandungan_hubungan" placeholder="" aria-label="" id="kandungan_hubungan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>

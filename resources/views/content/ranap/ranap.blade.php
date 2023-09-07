@@ -493,6 +493,8 @@
         }
 
         function asmedRanapKandungan(noRawat) {
+            $('#kandungan_kd_dokter').val(`session()->get('pegawai')->nik`);
+            $('#kandungan_dokter').val(`session()->get('pegawai')->nama`);
             $.ajax({
                 url: '/erm/registrasi/ambil',
                 data: {
@@ -506,11 +508,19 @@
             });
 
             getAsmedRanapKandungan(noRawat).done((response) => {
+
                 if (Object.keys(response).length > 0) {
-                    $('#kandungan_kd_dokter').val(response.kd_dokter);
-                    $('#kandungan_dokter').val(response.dokter.nm_dokter);
                     $('.btn-asmed-kandungan').css('display', 'none')
                     $('.btn-asmed-kandungan-ubah').css('display', 'inline')
+                    if (response.kd_dokter != `{{ session()->get('pegawai')->nik }}`) {
+                        $('#formAsmedKandunganRanap input').attr('readonly', true)
+                        $('#formAsmedKandunganRanap select').attr('disabled', true)
+                        $('#formAsmedKandunganRanap textarea').attr('readonly', true)
+                        $('.btn-asmed-kandungan-ubah').css('display', 'none')
+                        $('.btn-asmed-kandungan').css('display', 'none')
+                    }
+                    $('#kandungan_kd_dokter').val(response.kd_dokter);
+                    $('#kandungan_dokter').val(response.dokter.nm_dokter);
                     $('#kandungan_anamnesis').val(response.anamnesis).change();
                     $('#kandungan_hubungan').val(response.hubungan);
                     $('#kandungan_keluhan_utama').val(response.keluhan_utama);
@@ -569,6 +579,9 @@
         }
 
         function asmedRanapAnak(noRawat) {
+
+            $('#anak_kd_dokter').val(`{{ session()->get('pegawai')->nik }}`);
+            $('#anak_dokter').val(`{{ session()->get('pegawai')->nama }}`);
             $.ajax({
                 url: '/erm/registrasi/ambil',
                 data: {
@@ -578,14 +591,24 @@
                 $('#anak_no_rawat').val(response.no_rawat);
                 $('#anak_pasien').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
                 $('#anak_tgl_lahir').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-                $('#anak_kd_dokter').val(response.kd_dokter);
-                $('#anak_dokter').val(response.dokter.nm_dokter);
+                $('#anak_dokter').attr('readonly', true)
+                $('#anak_kd_dokter').attr('readonly', true)
             });
             getAsmedRanapAnak(textRawat(noRawat, '-')).done((response) => {
-                // console.log(response)
+                console.log(response);
                 if (Object.keys(response).length > 0) {
                     $('.btn-asmed-anak').css('display', 'none')
                     $('.btn-asmed-anak-ubah').css('display', 'inline')
+                    if (response.kd_dokter != `{{ session()->get('pegawai')->nik }}`) {
+                        $('#formAsmedAnakRanap input').attr('readonly', true)
+                        $('#formAsmedAnakRanap select').attr('disabled', true)
+                        $('#formAsmedAnakRanap textarea').attr('readonly', true)
+                        $('.btn-asmed-anak-ubah').css('display', 'none')
+                        $('.btn-asmed-anak').css('display', 'none')
+                    }
+
+                    $('#anak_kd_dokter').val(response.kd_dokter);
+                    $('#anak_dokter').val(response.dokter.nm_dokter);
                     $('#anak_anamnesis').val(response.anamnesis).change();
                     $('#anak_hubungan').val(response.hubungan);
                     $('#anak_keluhan_utama').val(response.keluhan_utama);

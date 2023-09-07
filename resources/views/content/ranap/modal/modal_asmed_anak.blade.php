@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 {{-- @include('content.ranap.modal.asmed.anak') --}}
-                <form action="" class="form-asmed-anak">
+                <form action="" id="formAsmedAnakRanap">
                     <div class="row" style="font-size: 12px">
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-6">
@@ -16,7 +16,7 @@
                                 </label>
                                 <div class="row">
                                     <div class="mb-2 col-sm-12 col-md-6 col-lg-3">
-                                        <input type="text" class="form-control form-control-sm no_rawat" placeholder="" aria-label="" id="anak_no_rawat" readonly="" style="background-color: #e9ecef;cursor:not-allowed;">
+                                        <input type="text" class="form-control form-control-sm no_rawat" placeholder="" aria-label="" id="anak_no_rawat" name="no_rawat" readonly="" style="background-color: #e9ecef;cursor:not-allowed;">
                                     </div>
                                     <div class="mb-2 col-sm-12 col-md-6 col-lg-5">
                                         <input type="search" style="background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm pasien" id="anak_pasien" placeholder="" aria-label="" aria-describedby="pasien" readonly="">
@@ -31,19 +31,19 @@
                                 <label for="dokter">Dokter</label>
                                 <div class="row">
                                     <div class="mb-2 col-sm-12 col-md-6 col-lg-3">
-                                        <input type="search" class="form-control form-control-sm anak_kd_dokter" placeholder="" aria-label="" id="anak_kd_dokter" readonly>
+                                        <input type="search" class="form-control form-control-sm anak_kd_dokter" placeholder="" aria-label="" id="anak_kd_dokter" name="kd_dokter" readonly>
                                     </div>
                                     <div class="mb-2 col-sm-12 col-md-6 col-lg-4">
-                                        <input type="search" class="form-control form-control-sm anak_dokter" placeholder="" aria-label="" id="anak_dokter">
+                                        <input type="search" class="form-control form-control-sm anak_dokter" placeholder="" aria-label="" id="anak_dokter" name="nm_dokter">
                                         <div class="list-dokter"></div>
                                     </div>
                                     <div class="mb-2 col-sm-12 col-md-6 col-lg-5">
                                         <div class="input-group">
-                                            <select class="form-select form-select-sm" id="anak_anamnesis" style="font-size: 12px">
+                                            <select class="form-select form-select-sm" id="anak_anamnesis" style="font-size: 12px" name="anamnesis">
                                                 <option value="Autoanamnesis" selected>Autoanamnesis</option>
                                                 <option value="Alloanamnesis">Alloanamnesis</option>
                                             </select>
-                                            <input type="search" class="form-control form-control-sm anak_hubungan" placeholder="" aria-label="" id="anak_hubungan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" style="margin-left: 10px;">
+                                            <input type="search" class="form-control form-control-sm anak_hubungan" placeholder="" aria-label="" id="anak_hubungan" name="hubungan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                                         </div>
                                     </div>
                                 </div>
@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                                     <label for="spo2">SpO2(%)</label>
-                                    <input type="text" class="form-control form-control-sm" id="anak_spo" name="spo2" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="anak_spo" name="spo" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-6">
                                     <label for="">Kepala :</label>
