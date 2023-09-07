@@ -273,7 +273,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Keluar</button>
                 <button type="button" class="btn btn-primary btn-sm btn-asmed-ugd" onclick="" style="display: inline"><i class="bi bi-save"></i> Simpan</button>
-                <button type="button" class="btn btn-warning btn-sm btn-asmed-ugd-ubah" onclick="" style="display: none"><i class="bi bi-pencil"></i> Ubah</button>
+                <button type="button" class="btn btn-warning btn-sm btn-asmed-ugd-ubah" onclick="" style="display: inline"><i class="bi bi-pencil"></i> Ubah</button>
             </div>
         </div>
     </div>
