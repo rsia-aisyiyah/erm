@@ -99,9 +99,11 @@
                 // console.log(i.operasi)
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
+                    ralan = 'UGD';
                     class_status = 'background:rgb(152, 0, 175);color:white';
                 } else {
                     status_lanjut = 'RAWAT JALAN';
+                    ralan = 'Poliklinik';
                     class_status = 'background:rgb(255 193 7);color:black';
                 }
 
@@ -123,7 +125,7 @@
                     '<tr><th>Unit/Poliklinik</th><td>: ' + i.poliklinik.nm_poli + '</td></tr>' +
                     '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
                     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
-                    diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + setPemeriksaan('Rawat Jalan', i.pemeriksaan_ralan) + setPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
+                    diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + setPemeriksaan(ralan, i.pemeriksaan_ralan) + setPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
                     '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
                     pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
