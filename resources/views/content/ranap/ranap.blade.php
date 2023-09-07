@@ -724,14 +724,16 @@
                                             zeroLineColor: 'rgba(219,219,219,0.3)',
                                             drawBorder: false, // <---
                                             lineWidth: 27,
-                                            zeroLineWidth: 1                 
+                                            zeroLineWidth: 1
                                         },
 
                                         ticks: {
                                             display: false,
-                                            min: 35,
-                                            max: 45,
+
                                         },
+                                        beginAtZero: true,
+                                        min: 35,
+                                        max: 42,
                                     },
                                     {
                                         id: 'right-y-axis',
@@ -744,13 +746,15 @@
                                             zeroLineColor: 'rgba(219,219,219,0.3)',
                                             drawBorder: false, // <---
                                             lineWidth: 27,
-                                            zeroLineWidth: 1                 
+                                            zeroLineWidth: 1
                                         },
 
                                         ticks: {
-                                            stepSize: 20,
                                             display: false,
                                         },
+                                        beginAtZero: true,
+                                        min: 40,
+                                        max: 180,
                                     },
                                 ],
                                 x: {
@@ -868,8 +872,8 @@
 
                             var btnVerif = '';
 
-                            isDokter = "{{ session()->get('pegawai')->bidang }}";
-                            if (isDokter == 'Direksi' || isDokter == 'Spesialis' || isDokter == '-') {
+                            isDokter = "{{ session()->get('pegawai')->departemen }}";
+                            if (isDokter == 'Direksi' || isDokter == 'SPS' || isDokter == '-') {
                                 btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-warning btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square" style="margin-right:5px;"></i> Verifikasi </button>';
                                 $.map(row.verifikasi, function(verifikasi) {
                                     if (row.tgl_perawatan == verifikasi.tgl_perawatan && row.jam_rawat == verifikasi.jam_rawat) {
