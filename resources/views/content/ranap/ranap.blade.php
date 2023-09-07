@@ -682,7 +682,7 @@
                             }),
                             datasets: [{
                                 label: 'Suhu Tubuh',
-                                yAxisID: 'left-y-axis',
+                                yAxisID: 'yAxis1',
                                 data: response.map(function(e) {
                                     if (e.suhu_tubuh.includes(',')) {
                                         e.suhu_tubuh = e.suhu_tubuh.replace(',', '.');
@@ -698,7 +698,7 @@
                                 radius: 5,
                             }, {
                                 label: 'Nadi',
-                                yAxisID: 'right-y-axis',
+                                yAxisID: 'yAxis2',
                                 data: response.map(function(e) {
                                     return e.nadi;
                                 }),
@@ -713,56 +713,71 @@
                         },
                         options: {
                             scales: {
-                                y: [{
-                                        id: 'left-y-axis',
-                                        type: 'linear',
-                                        position: 'left',
-                                        display: false,
-                                        gridLines: {
-                                            display: false,
-                                            color: 'rgba(219,219,219,0.3)',
-                                            zeroLineColor: 'rgba(219,219,219,0.3)',
-                                            drawBorder: false, // <---
-                                            lineWidth: 27,
-                                            zeroLineWidth: 1
-                                        },
-
-                                        ticks: {
-                                            display: false,
-
-                                        },
-                                        beginAtZero: true,
-                                        min: 35,
-                                        max: 42,
-                                    },
-                                    {
-                                        id: 'right-y-axis',
-                                        type: 'linear',
-                                        position: 'right',
-                                        display: false,
-                                        gridLines: {
-                                            display: false,
-                                            color: 'rgba(219,219,219,0.3)',
-                                            zeroLineColor: 'rgba(219,219,219,0.3)',
-                                            drawBorder: false, // <---
-                                            lineWidth: 27,
-                                            zeroLineWidth: 1
-                                        },
-
-                                        ticks: {
-                                            display: false,
-                                        },
-                                        beginAtZero: true,
-                                        min: 40,
-                                        max: 180,
-                                    },
-                                ],
-                                x: {
-                                    gridLines: {
-                                        display: false,
-                                    },
+                                yAxis1: {
+                                    min: 35,
+                                    max: 42,
+                                    beginAtZero: true,
                                 },
-                            },
+                                yAxis2: {
+                                    beginAtZero: true,
+                                    min: 40,
+                                    max: 180,
+                                }
+                            }
+                            // scales: {
+                            //     y: [{
+                            //             id: 'left-y-axis',
+                            //             type: 'linear',
+                            //             position: 'left',
+                            //             display: false,
+                            //             gridLines: {
+                            //                 // display: false,
+                            //                 color: 'rgba(219,219,219,0.3)',
+                            //                 zeroLineColor: 'rgba(219,219,219,0.3)',
+                            //                 drawBorder: false, // <---
+                            //                 lineWidth: 27,
+                            //                 // zeroLineWidth: 1
+                            //             },
+
+                            //             ticks: {
+                            //                 // display: false,
+
+                            //             },
+
+                            //             min: 35,
+                            //             max: 42,
+                            //             beginAtZero: true,
+                            //             grace: '20%',
+                            //         },
+                            //         {
+                            //             id: 'right-y-axis',
+                            //             type: 'linear',
+                            //             position: 'right',
+                            //             // display: false,
+                            //             gridLines: {
+                            //                 // display: false,
+                            //                 color: 'rgba(219,219,219,0.3)',
+                            //                 zeroLineColor: 'rgba(219,219,219,0.3)',
+                            //                 drawBorder: false, // <---
+                            //                 lineWidth: 27,
+                            //                 // zeroLineWidth: 1
+                            //             },
+
+                            //             ticks: {
+                            //                 // display: false,
+                            //             },
+                            //             beginAtZero: true,
+                            //             min: 40,
+                            //             max: 180,
+                            //             grace: '10%',
+                            //         },
+                            //     ],
+                            //     x: {
+                            //         gridLines: {
+                            //             display: false,
+                            //         },
+                            //     },
+                            // },
                         }
                     });
                 }
