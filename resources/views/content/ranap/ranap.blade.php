@@ -819,12 +819,17 @@
                     }
                 })
                 $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
+
+                if (response.dokter.kd_sps == 'S0003') {
+                    setEws(no_rawat, 'ranap')
+                } else {
+                    setEwsMaternal(no_rawat, 'ranap')
+                }
             })
 
             $('#modalSoapRanap').modal('toggle')
 
             // $('#modalSoapRanap').modal('toggle')
-            setEws(no_rawat, 'ranap')
             tbSoapRanap(no_rawat);
             buildGrafik(no_rawat);
             appendDataGrafikHarian(no_rawat);

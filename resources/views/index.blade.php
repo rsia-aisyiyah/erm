@@ -852,6 +852,7 @@
             return ews;
         }
 
+
         function setEws(params, stts) {
             getRegPeriksa(params).done((rawat) => {
                 jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
@@ -977,6 +978,95 @@
             }
 
             $('.hasil-ews').append(ews);
+        }
+
+        function getEwsMaternal(params, stts) {
+            const url = stts == 'ranap' ? '/erm/ews/maternal/ranap/' + textRawat(params, '-') : '/erm/ews/maternal/ralan/' + textRawat(params, '-');
+            const ews = $.ajax({
+                url: url,
+                dataType: 'JSON',
+                method: 'GET',
+            })
+
+            return ews;
+        }
+
+
+        function setEwsMaternal(params, stts) {
+            getRegPeriksa(params).done((rawat) => {
+                jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
+                $('#no_rawat_ews').html(rawat.no_rawat);
+                $('#nama_pasien_ews').html(rawat.pasien.nm_pasien);
+                $('#umur_ews').html(rawat.umurdaftar + ' ' + rawat.sttsumur + ' / ' + jk);
+            });
+            getEwsMaternal(params, stts).done(function(response) {
+                $('#table-ews tbody').empty()
+                $('.td-jam').remove()
+                $('.td-tanggal').remove()
+                let no = '';
+                j = '';
+                tanggal = '';
+                html = '';
+                style = '';
+                let rowspan = '';
+                $.map(response, (res) => {
+                    $('#kategori-' + res.kategori).empty()
+
+                    rowspan = res.data.length + 1
+                    html += '<tr style="text-align:center" class="judul-ews">'
+                    html += '<td rowspan="' + rowspan + '" style="padding:10px">' + res.judul + '</td>'
+                    $.map(res.data, (data) => {
+                        console.log(data);
+                        $('.kategori').text(data.kategori);
+                        let hasilPemeriksaan = '';
+
+                        if (data.hasil == 'Merah') {
+                            style = "style='background-color:red;color:#fff'";
+                        } else if (data.hasil == 'Kuning') {
+                            style = "style='background-color:yellow;color:#000'";
+                        } else {
+                            style = "style='background-color:#fff;color:#000'";
+                        }
+
+                        html += '<tr class="ews-' + data.id + '" ' + style + ' id="kategori-' + res.kategori + '">'
+                        html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '">' + data.parameter + '</td>'
+
+                        let inputHasil = '';
+                        no = 1;
+                        $.map(data.hp, (hp) => {
+
+                            if (hp) {
+                                inputHasil = '<input type="hidden" value="' + data.hasil + '" class="baris-' + no + ' " name="baris[' + no + '] "/>'
+                                html += '<td width="5%">' + inputHasil + '<strong>' + hp + '</strong></td>'
+                            } else {
+                                html += '<td width="5%"></td>';
+                            }
+                            no++;
+
+                        })
+                        tanggal = '';
+                        $.map(data.tanggal, (tgl) => {
+                            tanggal += '<td width="5%" class="td-tanggal">' + splitTanggal(tgl) + '</td>';
+                        })
+
+                        j = '';
+                        $.map(data.jam, (jam) => {
+                            j += '<td width="5%" class="td-jam">' + jam + '</td>';
+                        })
+
+                        html += '<td style="padding:5px" class="hasil">' + data.hasil + '</td>'
+                        html += '</tr>'
+
+                    })
+                    html += '</tr>'
+
+
+                })
+                $('#table-ews tbody').append(html)
+                $('.tr-jam').append(j)
+                $('.tr-tanggal').append(tanggal)
+                hitungNilaiEws(no)
+            })
         }
     </script>
     @stack('script')

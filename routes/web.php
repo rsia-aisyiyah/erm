@@ -27,6 +27,7 @@ use App\Http\Controllers\DataBarangController;
 use App\Http\Controllers\PoliklinikController;
 use App\Http\Controllers\RegPeriksaController;
 use App\Http\Controllers\BridgingSepController;
+use App\Http\Controllers\EwsMaternalController;
 use App\Http\Controllers\ResepDokterController;
 use App\Http\Controllers\SelesaiPoliController;
 use App\Http\Controllers\Bridging\SepController;
@@ -183,6 +184,7 @@ Route::middleware('auth')->group(function () {
     Route::get('ranap', [RanapController::class, 'index']);
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
     Route::get('ews/{sttsRawat}/{noRawat}', [EwsController::class, 'get']);
+    Route::get('ews/maternal/{sttsRawat}/{noRawat}', [EwsMaternalController::class, 'get']);
 
     Route::get('dokter/ambil', [DokterController::class, 'ambil']);
     Route::get('dokter/cari', [DokterController::class, 'cari']);
