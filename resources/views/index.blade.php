@@ -44,6 +44,8 @@
     {{-- <script src="https://cdn.jsdelivr.net/npm/cdbootstrap/js/cdb.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
+    <!-- Magnify Image Viewer JS -->
+    <script src="{{ asset('js/magnifier/jquery.magnify.min.js') }}"></script>
 
     <script type="text/javascript">
         function ambilNoRawat(no_rawat) {
@@ -256,6 +258,8 @@
             });
             return pemeriksaan
         }
+
+        $("[data-magnify=gallery]").magnify();
 
         function detailPeriksa(no_rawat, status) {
 

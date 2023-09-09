@@ -18,11 +18,14 @@
         rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/fixedcolumns/4.2.1/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.toast.min.css') }}">
     <link rel="icon" href="{{ asset('img/rsiap.ico') }}">
+    <!-- Magnify Image Viewer CSS -->
+    <link href="{{ asset('css/magnifier/jquery.magnify.css') }}" rel="stylesheet">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .card {
@@ -87,9 +90,9 @@
             display: block;
         }
 
-        .table tr td, 
+        .table tr td,
         .table tr th {
-            vertical-align : top;
+            vertical-align: top;
         }
 
         .steps {

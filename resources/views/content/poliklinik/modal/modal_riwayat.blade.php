@@ -75,9 +75,14 @@
                     let kategori = f?.kategori;
                     hasilFoto += '<tr>'
                     arrFoto.forEach(function(fx) {
-                        hasilFoto += '<td><img src="https://sim.rsiaaisyiyah.com/erm/public/erm/' + fx + '" class="img-thumbnail position-relative" width="300px" onclick="popup(\'' +
-                            fx +
-                            '\')" "><figcaption align="center">' + kategori.toUpperCase() + '</figcaption></td>'
+                        hasilFoto += `<td>
+                            <div class="image-set m-t-20">
+                                <a data-magnify="gallery" data-src="" data-caption="${kategori.toUpperCase()} ${formatTanggal(f.tgl_masuk)}" data-group="a" href="https://sim.rsiaaisyiyah.com/erm/public/erm/${fx}">
+                                    <img src="https://sim.rsiaaisyiyah.com/erm/public/erm/${fx}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                </a>
+                                <figcaption>${kategori.toUpperCase()}</figcaption>
+                            </div>
+                        </td>`
                     })
                     hasilFoto += '</tr>'
                 })
