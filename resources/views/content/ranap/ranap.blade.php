@@ -415,8 +415,15 @@
                     },
                     {
                         data: 'lama',
-                        render: function(data) {
-                            return data + ' Hari';
+                        render: function(data, type, row) {
+                            console.log('ROW', row);
+                            let lama = 0;
+                            $.map(row.reg_periksa.kamar_inap, (kamar) => {
+                                // console.log(kamar);
+                                lama += kamar.lama
+                            })
+                            console.log(lama);
+                            return lama + ' Hari';
                         },
                         name: 'lama',
                     },
