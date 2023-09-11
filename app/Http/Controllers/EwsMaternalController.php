@@ -10,7 +10,14 @@ use App\Models\RsiaEwsOksigenMaternal;
 use App\Models\RsiaEwsSaturasiMaternal;
 use App\Models\RsiaEwsSistolikMaternal;
 use App\Models\RsiaEwsDiastolikMaternal;
+use App\Models\RsiaEwsKesadaranMaternal;
+use App\Models\RsiaEwsAirKetubanMaternal;
+use App\Models\RsiaEwsKeluaranUrinMaternal;
+use App\Models\RsiaEwsLochiaMaternal;
 use App\Models\RsiaEwsPernafasanMaternal;
+use App\Models\RsiaEwsProteinueraMaternal;
+use App\Models\RsiaEwsSkalaNyeriMaternal;
+use App\Models\RsiaEwsTidakSehatMaternal;
 
 class EwsMaternalController extends Controller
 {
@@ -22,16 +29,29 @@ class EwsMaternalController extends Controller
     protected $diastolik;
     protected $nadi;
     protected $suhu;
+    protected $protein;
+    protected $ketuban;
+    protected $kesehatan;
+    protected $lochia;
+    protected $kesadaran;
+    protected $nyeri;
     protected $urin;
     protected $grafikHarian;
     public function __construct()
     {
         $this->oksigen = RsiaEwsOksigenMaternal::get();
+        $this->protein = RsiaEwsProteinueraMaternal::get();
+        $this->ketuban = RsiaEwsAirKetubanMaternal::get();
+        $this->kesadaran = RsiaEwsKesadaranMaternal::get();
+        $this->nyeri = RsiaEwsSkalaNyeriMaternal::get();
+        $this->lochia = RsiaEwsLochiaMaternal::get();
+        $this->kesehatan = RsiaEwsTidakSehatMaternal::get();
         $this->respirasi = RsiaEwsPernafasanMaternal::get();
         $this->saturasi = RsiaEwsSaturasiMaternal::get();
         $this->nadi = RsiaEwsNadiMaternal::get();
         $this->suhu = RsiaEwsSuhuMaternal::get();
         $this->sistolik = RsiaEwsSistolikMaternal::get();
+        $this->urin = [];
         $this->diastolik = RsiaEwsDiastolikMaternal::get();
         $this->grafikHarian = new RsiaGrafikHarian();
     }
@@ -40,34 +60,6 @@ class EwsMaternalController extends Controller
         $hp = [];
         $tanggal = [];
         $jam = [];
-        // if ($parameter == 'oksigen') {
-        //     foreach ($periksa as $p) {
-        //         if ($kode_nilai == ">=") {
-        //             if ($p['o2'] >= $nilai1) {
-        //                 $hp[] = $p['o2'];
-        //             } else {
-        //                 $hp[] = '';
-        //             }
-        //         } else if ($kode_nilai == '<') {
-        //             if ($p['o2'] < $nilai1) {
-        //                 $hp[] = $p['o2'];
-        //             } else {
-        //                 $hp[] = '';
-        //             }
-        //         } else {
-        //             if ($p['o2'] >= $nilai1 && $p['o2'] <= $nilai2) {
-        //                 $hp[] = $p['o2'];
-        //             } else {
-        //                 $hp[] = '';
-        //             }
-        //         }
-        //         $tanggal[] = $p['tgl_perawatan'];
-        //         $jam[] = $p['jam_rawat'];
-        //     }
-        // } else {
-
-        // return [$parameter];
-        // if($parameter == 'sistolik')
         foreach ($periksa as $pem) {
             if ($pem[$parameter] == '-') {
                 $hp[] = '';
@@ -103,7 +95,8 @@ class EwsMaternalController extends Controller
                     if ($parameter == 'sistolik') {
                         $pem[$parameter] = explode('/', $pem['tensi'])[0];
                     } else if ($parameter == 'diastolik') {
-                        $pem[$parameter] = explode('/', $pem['tensi'])[1];
+                        $arrTensi = explode('/', $pem['tensi']);
+                        $pem[$parameter] = count($arrTensi) > 1 ? $arrTensi[1] : '';
                     }
 
                     if ($kode_nilai == '>=') {
@@ -190,6 +183,9 @@ class EwsMaternalController extends Controller
             if ($parameter == 'oksigen') {
                 $labelParam = 'L/menit';
                 $indexPeriksa = 'o2';
+            } else if ($parameter == 'urin') {
+                $labelParam = 'Y/T';
+                $indexPeriksa = 'urin';
             }
             $hp = [];
             $arrVal = [
@@ -296,6 +292,41 @@ class EwsMaternalController extends Controller
         $nadi = $this->nadi;
         return $this->getParam($nadi, $noRawat, 'nadi', $sttsRawat);
     }
+    function getParamProtein($noRawat, $sttsRawat)
+    {
+        $table = $this->protein;
+        return $this->getParam($table, $noRawat, 'protein', $sttsRawat);
+    }
+    function getParamKetuban($noRawat, $sttsRawat)
+    {
+        $table = $this->ketuban;
+        return $this->getParam($table, $noRawat, 'ketuban', $sttsRawat);
+    }
+    function getParamKesadaran($noRawat, $sttsRawat)
+    {
+        $table = $this->kesadaran;
+        return $this->getParam($table, $noRawat, 'kesadaran', $sttsRawat);
+    }
+    function getParamNyeri($noRawat, $sttsRawat)
+    {
+        $table = $this->nyeri;
+        return $this->getParam($table, $noRawat, 'nyeri', $sttsRawat);
+    }
+    function getParamLochia($noRawat, $sttsRawat)
+    {
+        $table = $this->lochia;
+        return $this->getParam($table, $noRawat, 'locia', $sttsRawat);
+    }
+    function getParamKesehatan($noRawat, $sttsRawat)
+    {
+        $table = $this->kesehatan;
+        return $this->getParam($table, $noRawat, 'kesehatan', $sttsRawat);
+    }
+    function getParamUrin($noRawat, $sttsRawat)
+    {
+        $table = $this->urin;
+        return $this->getParam($table, $noRawat, 'urin', $sttsRawat);
+    }
     function get($sttsRawat, $noRawat)
     {
         $id = str_replace('-', '/', $noRawat);
@@ -334,6 +365,41 @@ class EwsMaternalController extends Controller
                 'kategori' => "diastolik",
                 'judul' => "DIASTOLIK (mmHg)",
                 'data' => $this->getParamDiastolik($id, $sttsRawat),
+            ],
+            'urin' => [
+                'kategori' => "urin",
+                'judul' => "KELUARAN URIN",
+                'data' => $this->getParamProtein($id, $sttsRawat),
+            ],
+            'proteinurea' => [
+                'kategori' => "proteinurea",
+                'judul' => "PROTEINUREA",
+                'data' => $this->getParamUrin($id, $sttsRawat),
+            ],
+            'ketuban' => [
+                'kategori' => "ketuban",
+                'judul' => "AIR KETUBAN",
+                'data' => $this->getParamKetuban($id, $sttsRawat),
+            ],
+            'kesadaran' => [
+                'kategori' => "kesadaran",
+                'judul' => "KESADARAN",
+                'data' => $this->getParamKesadaran($id, $sttsRawat),
+            ],
+            'nyeri' => [
+                'kategori' => "nyeri",
+                'judul' => "SKALA NYERI",
+                'data' => $this->getParamNyeri($id, $sttsRawat),
+            ],
+            'lochia' => [
+                'kategori' => "lochia",
+                'judul' => "LOCHIA",
+                'data' => $this->getParamNyeri($id, $sttsRawat),
+            ],
+            'kesehatan' => [
+                'kategori' => "kesehatan",
+                'judul' => "TERLIHAT TIDAK SEHAT",
+                'data' => $this->getParamKesehatan($id, $sttsRawat),
             ],
         ];
     }

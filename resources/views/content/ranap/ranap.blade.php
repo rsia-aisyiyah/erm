@@ -416,13 +416,10 @@
                     {
                         data: 'lama',
                         render: function(data, type, row) {
-                            console.log('ROW', row);
                             let lama = 0;
                             $.map(row.reg_periksa.kamar_inap, (kamar) => {
-                                // console.log(kamar);
                                 lama += kamar.lama
                             })
-                            console.log(lama);
                             return lama + ' Hari';
                         },
                         name: 'lama',
@@ -867,7 +864,7 @@
                             button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
 
                             // console.log(row.petugas.nip == "{{ session()->get('pegawai')->nik }}");
-                            if (row.petugas.nip == "{{ session()->get('pegawai')->nik }}") {
+                            if (row.petugas.nip == "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" == "direksi") {
                                 button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
                             }
                             return button;
