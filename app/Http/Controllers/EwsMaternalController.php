@@ -65,27 +65,52 @@ class EwsMaternalController extends Controller
                 $hp[] = '';
             } else {
                 if ($parameter == 'kesadaran') {
-                    if ($kode_nilai == $pem[$parameter]) {
-                        $hp[] = $pem[$parameter];
+                    if ($kode_nilai == 'Sa') {
+                        if ($pem[$parameter] == 'Compos Mentis') {
+                            $hp[] = "$pem[$parameter]";
+                        } else {
+                            $hp[] = '';
+                        }
                     } else {
-
                         $hp[] = '';
                     }
+                } else if ($parameter == 'terlihat_tidak_sehat') {
+                    if ($kode_nilai == 'Tidak') {
+                        if ($pem[$parameter] == 'Tidak') {
+                            $hp[] = "Tidak";
+                        } else {
+                            $hp[] = "";
+                        }
+                    } else if ($kode_nilai == 'Ya') {
+                        if ($pem[$parameter] == 'Ya') {
+                            $hp[] = "Ya";
+                        } else {
+                            $hp[] = "";
+                        }
+                    }
+                } else if ($parameter == 'proteinuria') {
+                    if ($kode_nilai == '+++') {
+                        if ($pem[$parameter] == '+++') {
+                            $hp[] = "+++";
+                        } else {
+                            $hp[] = "";
+                        }
+                    } else if ($kode_nilai == '++') {
+                        if ($pem[$parameter] == '++') {
+                            $hp[] = "++";
+                        } else {
+                            $hp[] = "";
+                        }
+                    }
                 } else if ($parameter == 'suhu_tubuh') {
-                    if ($kode_nilai == '<') {
-                        if ($pem[$parameter] < $nilai1) {
+                    if ($kode_nilai == '<=') {
+                        if ($pem[$parameter] <= $nilai1) {
                             $hp[] = $pem[$parameter];
                         } else {
                             $hp[] = '';
                         }
-                    } else if ($kode_nilai == '>') {
-                        if ($pem[$parameter] > $nilai1) {
-                            $hp[] = $pem[$parameter];
-                        } else {
-                            $hp[] = '';
-                        }
-                    } else {
-                        if ($pem[$parameter] <= $nilai1 && $pem[$parameter] >= $nilai2) {
+                    } else if ($kode_nilai == '-') {
+                        if ($pem[$parameter] >= $nilai1 && $pem[$parameter] <= $nilai2) {
                             $hp[] = $pem[$parameter];
                         } else {
                             $hp[] = '';
@@ -134,10 +159,51 @@ class EwsMaternalController extends Controller
                         }
                     } else if ($kode_nilai == '-') {
                         if ($pem[$parameter] >= $nilai1 && $pem[$parameter] <= $nilai2) {
-
                             $hp[] = $pem[$parameter];
                         } else {
                             $hp[] = '';
+                        }
+                    }
+                } else if ($parameter == 'air_ketuban') {
+                    if ($kode_nilai == 'Je') {
+                        if ($pem[$parameter] == 'Jernih') {
+                            $hp[] = "Jernih";
+                        } else {
+                            $hp[] = "";
+                        }
+                    } else if ($kode_nilai == 'Hi') {
+                        if ($pem[$parameter] == 'Hijau') {
+                            $hp[] = "Hijau";
+                        } else {
+                            $hp[] = "";
+                        }
+                    }
+                } else if ($parameter == 'proteinuria') {
+                    if ($kode_nilai == '+++') {
+                        if ($pem[$parameter] == '+++') {
+                            $hp[] = "+++";
+                        } else {
+                            $hp[] = "";
+                        }
+                    } else if ($kode_nilai == '++') {
+                        if ($pem[$parameter] == '++') {
+                            $hp[] = "++";
+                        } else {
+                            $hp[] = "";
+                        }
+                    }
+                } else if ($parameter == 'lochia') {
+                    if ($kode_nilai == 'No') {
+                        if ($pem[$parameter] == 'Normal') {
+                            $hp[] = "Normal";
+                        } else {
+                            $hp[] = "";
+                        }
+                    } else if ($kode_nilai == 'Ba') {
+                        if ($pem[$parameter] == 'Banyak') {
+                            $hp[] = "Banyak";
+                        } else {
+                            $hp[] = "";
                         }
                     }
                 } else {
@@ -185,7 +251,7 @@ class EwsMaternalController extends Controller
                 $indexPeriksa = 'o2';
             } else if ($parameter == 'urin') {
                 $labelParam = 'Y/T';
-                $indexPeriksa = 'urin';
+                $indexPeriksa = 'keluaran_urin';
             }
             $hp = [];
             $arrVal = [
@@ -208,8 +274,8 @@ class EwsMaternalController extends Controller
             ]);
         } else {
             foreach ($table as $s) {
-                $nilai_1 = $s->nilai_1 ? $s->nilai_1 : '';
-                $nilai_2 = $s->nilai_2 ? $s->nilai_2 : '';
+                $nilai_1 = $s->nilai_1 ? $s->nilai_1 : 0;
+                $nilai_2 = $s->nilai_2 ? $s->nilai_2 : 0;
                 if ($s->kode_nilai == '>') {
                     $arrVal = [
                         'id' => $s->kode,
@@ -240,10 +306,20 @@ class EwsMaternalController extends Controller
                         'kategori' => "Maternal"
                     ];
                     $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                } else if ($s->kode_nilai == '-') {
+                    $arrVal = [
+                        'id' => $s->kode,
+                        'parameter' => $nilai_1 . ' - ' . $nilai_2,
+                        'hasil' => $s->hasil,
+                        'nilai1' => $nilai_1,
+                        'nilai2' => $nilai_2,
+                        'kategori' => "Maternal"
+                    ];
+                    $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
                 } else {
                     $arrVal = [
                         'id' => $s->kode,
-                        'parameter' => $nilai_1 . $s->kode_nilai . $nilai_2,
+                        'parameter' => $nilai_1,
                         'hasil' => $s->hasil,
                         'nilai1' => $nilai_1,
                         'nilai2' => $nilai_2,
@@ -295,12 +371,12 @@ class EwsMaternalController extends Controller
     function getParamProtein($noRawat, $sttsRawat)
     {
         $table = $this->protein;
-        return $this->getParam($table, $noRawat, 'protein', $sttsRawat);
+        return $this->getParam($table, $noRawat, 'proteinuria', $sttsRawat);
     }
     function getParamKetuban($noRawat, $sttsRawat)
     {
         $table = $this->ketuban;
-        return $this->getParam($table, $noRawat, 'ketuban', $sttsRawat);
+        return $this->getParam($table, $noRawat, 'air_ketuban', $sttsRawat);
     }
     function getParamKesadaran($noRawat, $sttsRawat)
     {
@@ -310,17 +386,17 @@ class EwsMaternalController extends Controller
     function getParamNyeri($noRawat, $sttsRawat)
     {
         $table = $this->nyeri;
-        return $this->getParam($table, $noRawat, 'nyeri', $sttsRawat);
+        return $this->getParam($table, $noRawat, 'skala_nyeri', $sttsRawat);
     }
     function getParamLochia($noRawat, $sttsRawat)
     {
         $table = $this->lochia;
-        return $this->getParam($table, $noRawat, 'locia', $sttsRawat);
+        return $this->getParam($table, $noRawat, 'lochia', $sttsRawat);
     }
     function getParamKesehatan($noRawat, $sttsRawat)
     {
         $table = $this->kesehatan;
-        return $this->getParam($table, $noRawat, 'kesehatan', $sttsRawat);
+        return $this->getParam($table, $noRawat, 'terlihat_tidak_sehat', $sttsRawat);
     }
     function getParamUrin($noRawat, $sttsRawat)
     {
@@ -369,14 +445,14 @@ class EwsMaternalController extends Controller
             'urin' => [
                 'kategori' => "urin",
                 'judul' => "KELUARAN URIN",
-                'data' => $this->getParamProtein($id, $sttsRawat),
-            ],
-            'proteinurea' => [
-                'kategori' => "proteinurea",
-                'judul' => "PROTEINUREA",
                 'data' => $this->getParamUrin($id, $sttsRawat),
             ],
-            'ketuban' => [
+            'proteinuria' => [
+                'kategori' => "proteinuria",
+                'judul' => "PROTEINURIA",
+                'data' => $this->getParamProtein($id, $sttsRawat),
+            ],
+            'air_ketuban' => [
                 'kategori' => "ketuban",
                 'judul' => "AIR KETUBAN",
                 'data' => $this->getParamKetuban($id, $sttsRawat),
@@ -386,18 +462,18 @@ class EwsMaternalController extends Controller
                 'judul' => "KESADARAN",
                 'data' => $this->getParamKesadaran($id, $sttsRawat),
             ],
-            'nyeri' => [
-                'kategori' => "nyeri",
+            'skala_nyeri' => [
+                'kategori' => "skala_nyeri",
                 'judul' => "SKALA NYERI",
                 'data' => $this->getParamNyeri($id, $sttsRawat),
             ],
             'lochia' => [
                 'kategori' => "lochia",
                 'judul' => "LOCHIA",
-                'data' => $this->getParamNyeri($id, $sttsRawat),
+                'data' => $this->getParamLochia($id, $sttsRawat),
             ],
-            'kesehatan' => [
-                'kategori' => "kesehatan",
+            'terlihat_tidak_sehat' => [
+                'kategori' => "terlihat_tidak_sehat",
                 'judul' => "TERLIHAT TIDAK SEHAT",
                 'data' => $this->getParamKesehatan($id, $sttsRawat),
             ],

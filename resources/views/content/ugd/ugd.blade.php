@@ -72,7 +72,16 @@
         var spesialis = '';
         var tableUdg = '';
         var dateStart = '';
+        var sel = '';
+        var getInstance = '';
         $(document).ready(() => {
+            new bootstrap.Tab('#tab-resep')
+            new bootstrap.Tab('#tab-ews')
+            new bootstrap.Tab('#tab-tabel')
+
+            sel = document.querySelector('#tab-tabel')
+            getInstance = bootstrap.Tab.getInstance(sel);
+
             dokter = $('#formFilterUgd input[name=kd_dokter]').val();
             nm_pasien = localStorage.getItem('nm_pasien') ? localStorage.getItem('nm_pasien') : '';
             spesialis = localStorage.getItem('spesialis') ? localStorage.getItem('spesialis') : '';
@@ -264,7 +273,6 @@
                                         <button class="btn btn-sm btn-danger" onclick="hapusObatUmum('${rd.no_resep}', '${rd.kode_brng}')"><i class="bi bi-trash"></i></button>
                                         </td>
                                         </tr>`
-                            // <button class="btn btn-sm btn-warning" onclick="formUbahObat('${no}', '${rd.jml}', '${rd.aturan_pakai}')"><i class="bi bi-pencil"></i></button>
                             no++;
                             $('#tb-resep-umum-ugd').append(html)
                         })
@@ -302,20 +310,33 @@
             })
         }
 
-
-        // function formUbahObat(row) {
-        //     jml = $('.jml_' + row).text()
-        //     console.log(row);
-        // }
-
         function modalSoapUgd(noRawat) {
 
             getRegPeriksa(noRawat).done((response) => {
                 $('#formSoapUgd input[name="no_rawat"]').val(response.no_rawat)
                 $('#formSoapUgd input[name="nm_pasien"]').val(`${response.pasien.nm_pasien} (${hitungUmur(response.pasien.tgl_lahir)})`)
+                $('#formSoapUgd input[name="spesialis"]').val(response.dokter.kd_sps)
                 $('#formResepUgd input[name="no_rawat"]').val(response.no_rawat)
                 $('#formResepUgd input[name="kd_dokter"]').val(response.kd_dokter)
                 setListResep(noRawat);
+                setEws(noRawat, 'ralan', response.dokter.kd_sps)
+                if (response.dokter.kd_sps == 'S0001') {
+                    $('.formEws').removeAttr('style');
+                    $('.formEws select[name=keluaran_urin]').val('-').change()
+                    $('.formEws select[name=proteinuria]').val('-').change()
+                    $('.formEws select[name=air_ketuban]').val('-').change()
+                    $('.formEws select[name=skala_nyeri]').val('-').change()
+                    $('.formEws select[name=lochia]').val('-').change()
+                    $('.formEws select[name=terlihat_tidak_sehat]').val('-').change()
+                } else {
+                    $('.formEws').css('display', 'none');
+                    $('.formEws select[name=keluaran_urin]').val('').change()
+                    $('.formEws select[name=proteinuria]').val('').change()
+                    $('.formEws select[name=air_ketuban]').val('')
+                    $('.formEws select[name=skala_nyeri]').val('')
+                    $('.formEws select[name=lochia]').val('').change()
+                    $('.formEws select[name=terlihat_tidak_sehat]').val('').change()
+                }
             })
             $('#formSoapUgd input[name="nama"]').val("{{ session()->get('pegawai')->nama }}")
             $('#formSoapUgd input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
@@ -324,11 +345,6 @@
             $('.btn-umum').attr('onclick', `tambahResep('umum', '${noRawat}')`)
             $('.btn-racikan').attr('onclick', `tambahResep('racikan','${noRawat}')`)
             tbSoapUgd(noRawat);
-            setEws(noRawat, 'ralan')
-            // getLastNoResep().done((result) => {
-            //     const noResep = parseInt(result.no_resep) + 1;
-
-            // })
 
 
         }
@@ -337,16 +353,9 @@
             getAsmedUgd(params).done((response) => {
                 if (Object.keys(response).length == 0) {
                     return getRegPeriksa(params).done((regPeriksa) => {
-                        // if (response.kd_dokter != "{{ session()->get('pegawai')->nik }}") {
-                        //     $("#formAsmedUgd :input").prop('readonly', true);
-                        //     $("#formAsmedUgd select").prop('disabled', true);
-                        //     $("#formAsmedUgd textarea").prop('readonly', true);
-                        //     $('.btn-asmed-ugd-ubah').css('display', 'none')
-                        //     $('.btn-asmed-ugd').css('display', 'none')
-                        // } else {
+
                         $('.btn-asmed-ugd-ubah').css('display', 'none')
                         $('.btn-asmed-ugd').css('display', 'inline')
-                        // }
                         $('#formAsmedUgd input[name="no_rawat"]').val(regPeriksa.no_rawat)
                         $('#formAsmedUgd input[name="pasien"]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
                         $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
@@ -356,15 +365,6 @@
 
                     })
                 } else {
-                    // if (response.kd_dokter != "{{ session()->get('pegawai')->nik }}") {
-                    //     $("#formAsmedUgd :input").prop('readonly', true);
-                    //     $("#formAsmedUgd select").prop('disabled', true);
-                    //     $("#formAsmedUgd textarea").prop('readonly', true);
-                    //     $('.btn-asmed-ugd-ubah').css('display', 'none')
-                    //     $('.btn-asmed-ugd').css('display', 'none')
-
-                    // }
-
                     $('#formAsmedUgd input[name="no_rawat"]').val(response.no_rawat)
                     $('#formAsmedUgd input[name="pasien"]').val(`${response.reg_periksa.pasien.nm_pasien} (${response.reg_periksa.pasien.jk})`)
                     $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(response.reg_periksa.pasien.tgl_lahir)} (${hitungUmur(response.reg_periksa.pasien.tgl_lahir)})`)
@@ -413,7 +413,6 @@
         }
 
         function tulisPlan(no_rawat) {
-            // no_rawat = $('#nomor_rawat').val();
             $.ajax({
                 url: '/erm/resep/obat/ambil',
                 method: 'GET',

@@ -119,6 +119,64 @@
                         </table>
                     </td>
                 </tr>
+                <tr class="formEws">
+                    <td></td>
+                    <td colspan="3">
+                        <table>
+                            <td width="12%" style="font-size:11px">
+                                Keluaran Urin : <select class="form-select" name="keluaran_urin" id="keluaran_urin">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-">-</option>
+                                    <option value="Y">Y</option>
+                                    <option value="T">T</option>
+                                </select>
+                            </td>
+                            <td width="12%" style="font-size:11px">
+                                Proteinuria : <select class="form-select" name="proteinuria" id="proteinuria">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-">-</option>
+                                    <option value="++">++</option>
+                                    <option value="+++">+++</option>
+                                </select>
+                            </td>
+                            <td width="12%" style="font-size:11px">
+                                Air Ketuban : <select class="form-select" name="air_ketuban" id="air_ketuban">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-" selected>-</option>
+                                    <option value="Jernih">Jernih/Pink</option>
+                                    <option value="Hijau">Hijau</option>
+                                </select>
+                            </td>
+                            <td width="12%" style="font-size:11px">
+                                Skala Nyeri : <select class="form-select" name="skala_nyeri" id="skala_nyeri">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-">-</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </td>
+                            <td width="12%" style="font-size:11px">
+                                Lochia : <select class="form-select" name="lochia" id="lochia">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-">-</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="Banyak">Banyak</option>
+                                </select>
+                            </td>
+                            <td width="12%" style="font-size:11px">
+                                Tidak Sehat: <select class="form-select" name="terlihat_tidak_sehat" id="terlihat_tidak_sehat">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-" selected>-</option>
+                                    <option value="Tidak" selected>Tidak</option>
+                                    <option value="Ya">Ya</option>
+                                </select>
+                            </td>
+
+                        </table>
+                    </td>
+                </tr>
             </table>
             <input type="hidden" name="nik" id="nik" value={{ session()->get('pegawai')->nik }}>
         </div>
@@ -156,6 +214,7 @@
                             onblur="cekKosong(this)">-</textarea>
                         <input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="">
                         <input type="hidden" name="jam_rawat" id="jam_rawat" value="">
+                        <input type="hidden" name="spesialis" id="spesialis" value="">
 
                     </td>
                 </tr>

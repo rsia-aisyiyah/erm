@@ -145,16 +145,15 @@
                     jam_rawat: jam_rawat,
                 },
             }).done((response) => {
+                console.log(response);
                 if (response.pegawai.nik == "{{ session()->get('pegawai')->nik }}" || response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}") {
                     $('#btn-ubah').css('display', 'inline');
                     $('#btn-reset').css('display', 'inline');
                     $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
                     $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
                     $('#formSoapUgd input[name="nama"]').val(response.pegawai.nama)
+
                 } else {
-                    // $("#formSoapUgd :input").prop('readonly', true);
-                    // $("#formSoapUgd select").prop('disabled', true);
-                    // $("#formSoapUgd textarea").prop('readonly', true);
                     $('#btn-ubah').css('display', 'none');
                     $('#btn-reset').css('display', 'inline');
                     $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
@@ -202,11 +201,13 @@
 
             $('#formSoapUgd textarea').removeAttr('readonly')
             $('#formSoapUgd select').removeAttr('disabled', false)
+            $('#formSoapUgd .formEws select').val('-').change()
 
             getRegPeriksa(no_rawat).done((response) => {
 
                 $('#formSoapUgd input[name="no_rawat"]').val(response.no_rawat)
                 $('#formSoapUgd input[name="nm_pasien"]').val(response.pasien.nm_pasien)
+                $('#formSoapUgd input[name="spesialis"]').val(response.dokter.kd_sps)
                 $('#formSoapUgd input[name="nama"]').val("{{ session()->get('pegawai')->nama }}")
                 $('#formSoapUgd input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
 
@@ -254,6 +255,12 @@
                     tgl_perawatan: $('#formSoapUgd input[name="tgl_perawatan"]').val(),
                     jam_rawat: $('#formSoapUgd input[name="jam_rawat"]').val(),
                     evaluasi: '-',
+                    keluaran_urin: $('#formSoapUgd select[name="keluaran_urin"] option:selected').val(),
+                    proteinuria: $('#formSoapUgd select[name="proteinuria"] option:selected').val(),
+                    air_ketuban: $('#formSoapUgd select[name="air_ketuban"] option:selected').val(),
+                    skala_nyeri: $('#formSoapUgd select[name="skala_nyeri"] option:selected').val(),
+                    lochia: $('#formSoapUgd select[name="lochia"] option:selected').val(),
+                    terlihat_tidak_sehat: $('#formSoapUgd select[name="terlihat_tidak_sehat"] option:selected').val(),
                     kd_poli: 'IGDK',
                 },
                 beforeSend: () => {
@@ -278,10 +285,10 @@
             }).done((response) => {
                 $('#tbSoapUgd').DataTable().destroy();
                 no_rawat = $('#formSoapUgd input[name="no_rawat"]').val();
-                setEws(no_rawat, 'ralan')
+                spesialis = $('#formSoapUgd input[name="spesialis"]').val();
+                setEws(no_rawat, 'ralan', spesialis)
                 tbSoapUgd(no_rawat);
-                let sel = document.querySelector('#tab-soap-ugd button[data-bs-target="#tab-tabel-pane"]')
-                bootstrap.Tab.getInstance(sel).show()
+                getInstance.show()
                 swal.fire({
                     title: 'Berhasil',
                     text: 'Data berhasil dikirim',
@@ -319,6 +326,12 @@
                     rtl: $('#formSoapUgd textarea[name="plan"]').val(),
                     instruksi: $('#formSoapUgd textarea[name="instruksi"]').val(),
                     evaluasi: '-',
+                    keluaran_urin: $('#formSoapUgd select[name="keluaran_urin"] option:selected').val(),
+                    proteinuria: $('#formSoapUgd select[name="proteinuria"] option:selected').val(),
+                    air_ketuban: $('#formSoapUgd select[name="air_ketuban"] option:selected').val(),
+                    skala_nyeri: $('#formSoapUgd select[name="skala_nyeri"] option:selected').val(),
+                    lochia: $('#formSoapUgd select[name="lochia"] option:selected').val(),
+                    terlihat_tidak_sehat: $('#formSoapUgd select[name="terlihat_tidak_sehat"] option:selected').val(),
                     kd_poli: 'IGDK',
                 },
                 beforeSend: () => {
@@ -343,7 +356,8 @@
             }).done((response) => {
                 $('#tbSoapUgd').DataTable().destroy();
                 no_rawat = $('#formSoapUgd input[name="no_rawat"]').val();
-                setEws(no_rawat, 'ralan')
+                spesialis = $('#formSoapUgd input[name="no_rawat"]').val();
+                setEws(no_rawat, 'ralan', spesialis)
                 tbSoapUgd(no_rawat);
                 swal.fire({
                     title: 'Berhasil',
@@ -352,8 +366,7 @@
                     showConfirmButton: false,
                     timer: 1500,
                 })
-                let sel = document.querySelector('#tab-soap-ugd button[data-bs-target="#tab-tabel-pane"]')
-                bootstrap.Tab.getInstance(sel).show()
+                getInstance.show();
                 resetSoap(no_rawat);
             })
         }
@@ -389,7 +402,8 @@
 
                         }
                     }).done(() => {
-                        setEws(no_rawat, 'ralan')
+                        spesialis = $('#formSoapUgd input[name="spesialis"]').val();
+                        setEws(no_rawat, 'ralan', spesialis)
                         $('#tbSoapUgd').DataTable().destroy();
                         tbSoapUgd(no_rawat);
                         swal.fire({

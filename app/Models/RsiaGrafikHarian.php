@@ -11,9 +11,10 @@ class RsiaGrafikHarian extends Model
 
     protected $table = 'rsia_grafik_harian';
     public $timestamps = false;
+    public $guarded = [];
 
-    protected $fillable = [
-        'no_rawat','tgl_perawatan', 'jam_rawat', 'suhu_tubuh', 'tensi', 'nadi', 
-        'respirasi', 'spo2', 'o2', 'gcs', 'kesadaran', 'sumber', 'nip',
-    ];
+    // protected $fillable = [
+    //     'no_rawat','tgl_perawatan', 'jam_rawat', 'suhu_tubuh', 'tensi', 'nadi', 
+    //     'respirasi', 'spo2', 'o2', 'gcs', 'kesadaran', 'sumber', 'nip',
+    // ];
 }

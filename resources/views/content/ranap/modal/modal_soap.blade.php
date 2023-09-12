@@ -91,9 +91,19 @@
         var no_rawat_soap = '';
         var tgl_pertama = '';
         var tgl_kedua = '';
+        var getInstance = '';
+        var sel = '';
 
         $('#modalSoapRanap').on('shown.bs.modal', () => {
             const canvasSuhu = $('#grafik-suhu');
+            new bootstrap.Tab('#tab-resep')
+            new bootstrap.Tab('#tab-ews')
+            new bootstrap.Tab('#tab-grafik')
+            new bootstrap.Tab('#tab-tabel')
+
+            sel = document.querySelector('#tab-tabel')
+            getInstance = bootstrap.Tab.getInstance(sel);
+
         })
 
         function getDetailPemeriksaanRanap(no_rawat, tgl, jam) {
@@ -146,8 +156,8 @@
                     $('#btn-ubah').css('display', 'none');
                     $('.btn-simpan').css('display', 'inline');
                 }
-                let sel = document.querySelector('#tab-soap-ranap li:first-child button')
-                bootstrap.Tab.getInstance(sel).show()
+                let tabForm = document.querySelector('#tab-soap-ranap li:first-child button')
+                bootstrap.Tab.getInstance(tabForm).show()
             })
         }
 
@@ -191,9 +201,11 @@
                 text: "Data yang dihapus tidak dapat dikembalikan",
                 icon: 'warning',
                 showCancelButton: true,
+                showConfirmButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus saja!'
+                confirmButtonText: 'Ya, Hapus saja!',
+
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -218,6 +230,7 @@
                                 tbSoapRanap(no, tgl_pertama, tgl_kedua);
                                 grafikPemeriksaan.destroy();
                                 buildGrafik(no)
+                                setEws(no, 'ranap', $('#formSoapRanap input[name=spesialis]').val())
                             }
                         }
                     })
@@ -266,6 +279,7 @@
                     })
                 },
                 success: function(response) {
+                    console.log(response);
                     if (response) {
                         Swal.fire({
                             icon: 'success',
@@ -278,9 +292,8 @@
                         tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
                         grafikPemeriksaan.destroy();
                         buildGrafik(no_rawat_soap)
-                        setEws(no_rawat_soap, 'ranap')
-                        let sel = document.querySelector('#tab-soap-ranap button[data-bs-target="#tab-tabel-pane"]')
-                        bootstrap.Tab.getInstance(sel).show()
+                        setEws(no_rawat_soap, 'ranap', $('#formSoapRanap input[name=spesialis]').val())
+                        getInstance.show()
                         $('#formSoapRanap textarea[name=subjek]').val('-');
                         $('#formSoapRanap textarea[name=objek]').val('-');
                         $('#formSoapRanap textarea[name=asesmen]').val('-');
@@ -361,6 +374,7 @@
         }
 
         function simpanSoapRanap() {
+
             let pasien = $('#nomor_rawat').val();
             let splitPasien = pasien.split(' - ');
             let no = splitPasien[0];
@@ -387,6 +401,12 @@
                     'penilaian': $('#asesmen').val(),
                     'rtl': $('#plan').val(),
                     'instruksi': $('#instruksi').val(),
+                    'keluaran_urin': $('.formEws select[name=keluaran_urin]').val(),
+                    'proteinuria': $('.formEws select[name=proteinuria]').val(),
+                    'air_ketuban': $('.formEws select[name=air_ketuban]').val(),
+                    'skala_nyeri': $('.formEws select[name=skala_nyeri]').val(),
+                    'lochia': $('.formEws select[name=lochia]').val(),
+                    'terlihat_tidak_sehat': $('.formEws select[name=terlihat_tidak_sehat]').val(),
                 },
                 method: 'POST',
                 beforeSend: function() {
@@ -408,13 +428,12 @@
                             showConfirmButton: false,
                             timer: 1500
                         })
-                        let sel = document.querySelector('#tab-soap-ranap button[data-bs-target="#tab-tabel-pane"]')
-                        bootstrap.Tab.getInstance(sel).show()
+
                         $('#tbSoap').DataTable().destroy();
                         tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
                         grafikPemeriksaan.destroy();
                         buildGrafik(no_rawat_soap)
-                        setEws(no_rawat_soap, 'ranap')
+                        setEws(no_rawat_soap, 'ranap', $('#formSoapRanap input[name=spesialis]').val())
                         $('#formSoapRanap textarea[name=subjek]').val('-');
                         $('#formSoapRanap textarea[name=objek]').val('-');
                         $('#formSoapRanap textarea[name=asesmen]').val('-');
@@ -432,6 +451,7 @@
                         $('#formSoapRanap input[name=alergi]').val('-');
                         $('#formSoapRanap select[name=kesadaran]').val('Compos Mentis').change();
 
+                        getInstance.show()
                     } else {
                         Swal.fire({
                             icon: 'danger',

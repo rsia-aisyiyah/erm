@@ -12,7 +12,7 @@ class GrafikHarian extends Model
     use HasFactory;
     protected $table = 'rsia_grafik_harian';
     public $timestamps = false;
-    protected $fillable = ['suhu_tubuh', 'no_rawat', 'tgl_perawatan', 'jam_rawat', 'tensi', 'nadi', 'respirasi', 'spo2', 'kesadaran', 'gcs', 'o2', 'nip','sumber'];
+    protected $guarded = [];
     public function regPeriksa()
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');

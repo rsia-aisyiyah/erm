@@ -77,6 +77,12 @@ class PemeriksaanRanapController extends Controller
             'spo2' => $request->spo2,
             'gcs' => $request->gcs,
             'kesadaran' => $request->kesadaran,
+            'keluaran_urin' => $request->keluaran_urin,
+            'proteinuria' => $request->proteinuria,
+            'air_ketuban' => $request->air_ketuban,
+            'skala_nyeri' => $request->skala_nyeri,
+            'lochia' => $request->lochia,
+            'terlihat_tidak_sehat' => $request->terlihat_tidak_sehat,
             'o2' => $request->o2,
             'sumber' => 'SOAP',
         ];
@@ -134,9 +140,17 @@ class PemeriksaanRanapController extends Controller
             'spo2' => $request->spo2,
             'gcs' => $request->gcs,
             'kesadaran' => $request->kesadaran,
+            'keluaran_urin' => $request->keluaran_urin,
+            'proteinuria' => $request->proteinuria,
+            'air_ketuban' => $request->air_ketuban,
+            'skala_nyeri' => $request->skala_nyeri,
+            'lochia' => $request->lochia,
+            'terlihat_tidak_sehat' => $request->terlihat_tidak_sehat,
             'o2' => $request->o2,
             'sumber' => 'SOAP',
         ];
+
+
 
         $pemeriksaan = PemeriksaanRanap::create($data);
         $grafikharian = GrafikHarian::create($data1);

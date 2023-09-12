@@ -164,6 +164,8 @@
 
         $(document).ready(function() {
 
+
+
             if (cekDepartement == 'DM3') {
                 sps = 'S0001';
             } else if (cekDepartement == 'DM1') {
@@ -806,8 +808,26 @@
                 $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
                 $('#nik').val("{{ session()->get('pegawai')->nik }}");
                 $('#nama').val("{{ session()->get('pegawai')->nama }}");
-                // $('.btn-tambah-grafik-harin').attr('data-no-rawat', response.no_rawat);
-                // $('.btn-tambah-grafik-harin').attr('data-nm-pasien', response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
+                $('#formSoapRanap input[name=spesialis]').val(response.dokter.kd_sps);
+
+                if (response.dokter.kd_sps == 'S0001') {
+                    $('.formEws').removeAttr('style');
+                    $('.formEws select[name=keluaran_urin]').val('-').change()
+                    $('.formEws select[name=proteinuria]').val('-').change()
+                    $('.formEws select[name=air_ketuban]').val('-').change()
+                    $('.formEws select[name=skala_nyeri]').val('-').change()
+                    $('.formEws select[name=lochia]').val('-').change()
+                    $('.formEws select[name=terlihat_tidak_sehat]').val('-').change()
+                } else {
+                    $('.formEws').css('display', 'none');
+                    $('.formEws select[name=keluaran_urin]').val('').change()
+                    $('.formEws select[name=proteinuria]').val('').change()
+                    $('.formEws select[name=air_ketuban]').val('')
+                    $('.formEws select[name=skala_nyeri]').val('')
+                    $('.formEws select[name=lochia]').val('').change()
+                    $('.formEws select[name=terlihat_tidak_sehat]').val('').change()
+                }
+
                 getDokter("{{ session()->get('pegawai')->nama }}").done((response) => {
                     if (response.length) {
                         $('.btn-tambah-grafik-harin').css('display', 'none')
@@ -816,12 +836,8 @@
                     }
                 })
                 $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
+                setEws(no_rawat, 'ranap', response.dokter.kd_sps)
 
-                if (response.dokter.kd_sps == 'S0003') {
-                    setEws(no_rawat, 'ranap')
-                } else {
-                    setEwsMaternal(no_rawat, 'ranap')
-                }
             })
 
             $('#modalSoapRanap').modal('toggle')

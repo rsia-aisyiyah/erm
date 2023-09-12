@@ -853,7 +853,17 @@
         }
 
 
-        function setEws(params, stts) {
+        function setEws(no_rawat, stts, spesialis) {
+
+            console.log(no_rawat, stts, spesialis);
+            if (spesialis == 'S0003') {
+                setEwsAnak(no_rawat, stts)
+            } else if (spesialis == 'S0001') {
+                setEwsMaternal(no_rawat, stts)
+            }
+        }
+
+        function setEwsAnak(params, stts) {
             getRegPeriksa(params).done((rawat) => {
                 jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
                 $('#no_rawat_ews').html(rawat.no_rawat);
@@ -891,7 +901,7 @@
                         }
 
                         html += '<tr class="ews-' + data.id + '" ' + style + ' id="kategori-' + res.kategori + '">'
-                        html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '">' + data.parameter + '</td>'
+                        html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '" width="5%">' + data.parameter + '</td>'
 
                         let inputHasil = '';
                         no = 1;
@@ -930,6 +940,8 @@
                 hitungNilaiEws(no)
             })
         }
+
+
 
         function hitungNilaiEws(no) {
             html = '<tr>'
@@ -1016,7 +1028,6 @@
                     html += '<tr style="text-align:center" class="judul-ews">'
                     html += '<td rowspan="' + rowspan + '" style="padding:10px">' + res.judul + '</td>'
                     $.map(res.data, (data) => {
-                        console.log(data);
                         $('.kategori').text(data.kategori);
                         let hasilPemeriksaan = '';
 
@@ -1029,12 +1040,11 @@
                         }
 
                         html += '<tr class="ews-' + data.id + '" ' + style + ' id="kategori-' + res.kategori + '">'
-                        html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '">' + data.parameter + '</td>'
+                        html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '" width="5%">' + data.parameter + '</td>'
 
                         let inputHasil = '';
                         no = 1;
                         $.map(data.hp, (hp) => {
-
                             if (hp) {
                                 inputHasil = '<input type="hidden" value="' + data.hasil + '" class="baris-' + no + ' " name="baris[' + no + '] "/>'
                                 html += '<td width="5%">' + inputHasil + '<strong>' + hp + '</strong></td>'
@@ -1065,8 +1075,74 @@
                 $('#table-ews tbody').append(html)
                 $('.tr-jam').append(j)
                 $('.tr-tanggal').append(tanggal)
-                hitungNilaiEws(no)
+                hitungNilaiEwsMaternal(no)
             })
+        }
+
+        function hitungNilaiEwsMaternal(no) {
+            // console.log('wlwlwlwlw');
+            $('.hasil-ews').empty();
+            let kolom = 0;
+            html = '<tr style="background:yellow;" id="rowKuning">'
+            html += '<th colspan=2>JUMLAH KUNING</th>'
+            for (let index = 1; index < no; index++) {
+                let total = 0;
+                $('.baris-' + index).each(function(index, element) {
+                    warna = $(element).val();
+                    if (warna == 'Kuning') {
+                        total++
+                    }
+                    kolom++;
+                });
+                html += `<td class="kuning-${index}" id="" onclick="tindakanEwsMaternal(${index})">`
+                kuning = total;
+                html += total;
+                html += '</td>'
+            }
+            html += '</tr>'
+            html += '<tr style="background:red;color:#fff" id="rowMerah">'
+            html += '<th colspan=2>JUMLAH MERAH</th>'
+            for (let index = 1; index < no; index++) {
+                let total = 0;
+                $('.baris-' + index).each(function(index, element) {
+                    warna = $(element).val();
+                    if (warna == 'Merah') {
+                        total++
+                    }
+                });
+                html += `<td class="merah-${index}" id="" onclick="tindakanEwsMaternal(${index})">`
+                merah = total;
+                html += total;
+                html += '</td>'
+            }
+
+
+            if (merah >= 1 || kuning >= 2) {
+                tindakan = `<span><strong>LAPOR DPJP : Terdapat nilai <span class="text-danger">merah ${merah}</span> dan <span class="text-warning">kuning ${kuning}</span></strong></span>`
+            } else {
+                tindakan = `-`
+            }
+            html += '</tr>'
+            html += '<tr>'
+            html += `<th colspan=2>TINDAKAN</th>`
+            html += `<td class="tindakan" colspan=${kolom+1}>${tindakan}</td>`
+            html += '</tr>'
+
+            $('#table-ews tbody').append(html)
+        }
+
+        function tindakanEwsMaternal(index) {
+            merah = $('.merah-' + index).text();
+            kuning = $('.kuning-' + index).text();
+
+            if (merah >= 1 || kuning >= 2) {
+                tindakan = `<span><strong>LAPOR DPJP : Terdapat nilai <span class="text-danger">merah ${merah}</span> dan <span class="text-warning">kuning ${kuning}</span></strong></span>`
+            } else {
+                tindakan = `-`
+            }
+
+            $('.tindakan').html(tindakan)
+
         }
     </script>
     @stack('script')
