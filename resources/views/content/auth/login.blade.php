@@ -107,6 +107,9 @@
         localStorage.removeItem('tanggal')
         localStorage.removeItem('tgl_awal')
         localStorage.removeItem('tgl_akhir')
+        localStorage.removeItem('tanggal')
+        localStorage.removeItem('spesialis')
+        localStorage.removeItem('dokter')
     });
 </script>
 
