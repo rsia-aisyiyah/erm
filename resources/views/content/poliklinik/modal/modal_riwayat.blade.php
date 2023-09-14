@@ -168,7 +168,7 @@
                                             <td>${pemRanap.tinggi} cm</td>    
                                         </tr>
                                         <tr>
-                                            <td>Berat Badann </td>
+                                            <td>Berat Badan </td>
                                             <td>:</td>
                                             <td>${pemRanap.berat} Kg</td>    
                                         </tr>
@@ -201,6 +201,11 @@
                                             <td>Nadi</td>
                                             <td>:</td>
                                             <td>${pemRanap.nadi} /menit</td>    
+                                        </tr>
+                                        <tr>
+                                            <td>SpO2</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.spo2} /menit</td>    
                                         </tr>
                                         <tr>
                                             <td>Alergi</td>
