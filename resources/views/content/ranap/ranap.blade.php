@@ -420,7 +420,7 @@
 
                             bayiGabung = '';
                             if (row.ranap_gabung) {
-                                namaBayi = `<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">${row.ranap_gabung.reg_periksa.pasien.nm_pasien}</a>
+                                namaBayi = `<a class="nav-link dropdown-toggle btn btn-warning btn-sm" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">${row.ranap_gabung.reg_periksa.pasien.nm_pasien}</a>
                                 <ul class="dropdown-menu dropdown-menu" style="font-size:12px">
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalLaborat('${row.ranap_gabung.reg_periksa.no_rawat}')">Laborat</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">S.O.A.P</a></li>
@@ -456,7 +456,7 @@
                     },
                     {
                         data: 'reg_periksa',
-                        render: function(data) {
+                        render: function(data, type, row) {
                             let dokter = '';
                             if (data.dokter) {
                                 dokter = data.dokter.nm_dokter;
@@ -475,7 +475,13 @@
                                     }
                                 });
                             }
-                            return '<span class="nm_dokter">' + dokter + '</span>';
+                            dokterGabung = '';
+                            if (row.ranap_gabung) {
+                                namaBayi =
+                                    dokterGabung = `<hr style="margin:0px"/>${row.ranap_gabung.reg_periksa.dokter.nm_dokter}`
+
+                            }
+                            return `<span class="nm_dokter">${dokter} ${dokterGabung}</span>`;
                         },
                         name: 'dokter'
                     },
@@ -629,7 +635,6 @@
                 $('#anak_kd_dokter').attr('readonly', true)
             });
             getAsmedRanapAnak(textRawat(noRawat, '-')).done((response) => {
-                console.log(response);
                 if (Object.keys(response).length > 0) {
                     $('.btn-asmed-anak').css('display', 'none')
                     $('.btn-asmed-anak-ubah').css('display', 'inline')
@@ -906,8 +911,6 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
-
-                            // console.log(row.petugas.nip == "{{ session()->get('pegawai')->nik }}");
                             if (row.petugas.nip == "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" == "direksi") {
                                 button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
                             }
