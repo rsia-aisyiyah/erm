@@ -191,11 +191,16 @@
                                             <td>GCS</td>
                                             <td>:</td>
                                             <td>${pemRanap.gcs} E,V,M</td>    
-                                        </tr>
+                                            </tr>
                                         <tr>
                                             <td>Respirasi</td>
                                             <td>:</td>
                                             <td>${pemRanap.respirasi} /menit</td>    
+                                        </tr>
+                                        <tr>
+                                            <td>Nadi</td>
+                                            <td>:</td>
+                                            <td>${pemRanap.nadi} /menit</td>    
                                         </tr>
                                         <tr>
                                             <td>Alergi</td>
