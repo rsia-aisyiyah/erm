@@ -901,8 +901,6 @@
 
 
         function setEws(no_rawat, stts, spesialis) {
-
-            console.log(no_rawat, stts, spesialis);
             if (spesialis == 'S0003') {
                 setEwsAnak(no_rawat, stts)
             } else if (spesialis == 'S0001') {

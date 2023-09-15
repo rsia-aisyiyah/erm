@@ -341,7 +341,6 @@
                     })
                 },
                 error: (request, status, error) => {
-                    console.log(request);
                     Swal.fire(
                         'Gagal !',
                         `Tidak bisa mengubah pemeriksaan<br/> Kode ${request.status} : ${request.statusText} `,
