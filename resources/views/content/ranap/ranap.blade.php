@@ -158,6 +158,7 @@
         var tgl_awal = '';
         var tgl_akhir = '';
         var jamSekarang = '';
+        var cek = '';
         var kamar = localStorage.getItem('kamar');
         var sps = localStorage.getItem('spesialis') ? localStorage.getItem('spesialis') : '';
         var valScrollX = '';
@@ -168,7 +169,6 @@
 
 
         $(document).ready(function() {
-            checkJam();
             new bootstrap.Tab('#tab-resep')
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-grafik')
@@ -241,6 +241,23 @@
             $('.tanggal').datepicker('setDate', dateStart)
             tb_ranap();
         });
+
+
+        function checkJam() {
+            cek = $('#cekJam').is(':checked')
+            if (cek) {
+                clearInterval(jamSekarang)
+            } else {
+                jamSekarang = setInterval(() => {
+                    $('#jam_rawat_ubah').val(getJam())
+                }, 1000);
+            }
+        }
+        $('#cekJam').on('click', () => {
+            console.log(checkJam());
+        })
+
+
 
         $('#cari-kamar').on('search', function() {
             if ($(this).val() == '') {

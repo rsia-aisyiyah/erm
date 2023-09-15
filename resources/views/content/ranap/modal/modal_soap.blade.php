@@ -93,23 +93,9 @@
         var tgl_kedua = '';
         var getInstance = '';
         var sel = '';
-        var cek = '';
+
 
         var departemen = "{{ session()->get('pegawai')->departemen }}";
-
-        function checkJam() {
-            cek = $('#cekJam').is(':checked')
-            if (cek) {
-                clearInterval(jamSekarang)
-            } else {
-                jamSekarang = setInterval(() => {
-                    $('#jam_rawat_ubah').val(getJam())
-                }, 1000);
-            }
-        }
-        $('#cekJam').on('click', () => {
-            checkJam()
-        })
 
         $('#modalSoapRanap').on('shown.bs.modal', () => {
 
