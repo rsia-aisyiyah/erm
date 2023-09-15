@@ -93,7 +93,7 @@
         var tgl_kedua = '';
         var getInstance = '';
         var sel = '';
-        var jamSekarang = '';
+
         var departemen = "{{ session()->get('pegawai')->departemen }}";
 
         $('#jam_rawat_ubah').on('focus', () => {

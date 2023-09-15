@@ -157,6 +157,7 @@
         var stts_pulang = '-';
         var tgl_awal = '';
         var tgl_akhir = '';
+        var jamSekarang = '';
         var kamar = localStorage.getItem('kamar');
         var sps = localStorage.getItem('spesialis') ? localStorage.getItem('spesialis') : '';
         var valScrollX = '';
