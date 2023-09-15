@@ -184,9 +184,6 @@
                 }
             } else if (cekDepartement == 'CMS' || cekDepartement == '-') {
                 $('#formSoapRanap .waktuSoap').css('visibility', 'visible');
-                // jamSekarang = setInterval(() => {
-                //     $('#formSoapRanap input[name=jam_rawat_ubah]').val(getJam())
-                // }, 1000);
             } else {
                 $('#formSoapRanap .waktuSoap').css('visibility', 'hidden');
                 if (sps) {

@@ -108,7 +108,6 @@
             } else {
                 clearInterval(jamSekarang)
             }
-            console.log($('#jam_rawat_ubah').val());
         })
 
         $('#jam_rawat_ubah').on('keyup', (e) => {
