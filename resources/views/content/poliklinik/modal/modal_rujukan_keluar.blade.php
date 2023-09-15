@@ -402,6 +402,21 @@
                 url: '/erm/bridging/rujukan/keluar/list/' + tglPertama + '/' + tglKedua,
                 method: 'GET',
                 dataType: 'JSON',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
 
             });
 
@@ -413,6 +428,21 @@
                 url: '/erm/bridging/rujukan/keluar/' + noRujukan,
                 method: "GET",
                 dataType: 'JSON',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             });
 
             return rujukanKeluar;

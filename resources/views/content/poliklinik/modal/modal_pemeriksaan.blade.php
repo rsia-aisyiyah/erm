@@ -688,6 +688,21 @@
                     'kd_penyakit': diagnosa,
                 },
                 dataType: 'JSON',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             })
             return dx
         }
@@ -1585,6 +1600,21 @@
             const asmed = $.ajax({
                 url: '/erm/poliklinik/asmed/kandungan/get/' + id,
                 metho: `GET`,
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             })
             return asmed;
         }
@@ -1594,6 +1624,21 @@
             const asmed = $.ajax({
                 url: '/erm/poliklinik/asmed/anak/get/' + id,
                 metho: `GET`,
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             })
             return asmed;
         }

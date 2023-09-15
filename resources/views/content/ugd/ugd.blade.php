@@ -142,6 +142,21 @@
             const asmed = $.ajax({
                 url: '/erm/ugd/asesmen/medis/' + no_rawat,
                 method: 'GET',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             });
 
             return asmed;
@@ -166,6 +181,21 @@
                         nm_pasien: nm_pasien,
                         spesialis: spesialis,
                         kd_dokter: dokter,
+                    },
+                    error: (request) => {
+                        if (request.status == 401) {
+                            Swal.fire({
+                                title: 'Sesi login berakhir !',
+                                icon: 'info',
+                                text: 'Silahkan login kembali ',
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/erm';
+                                }
+                            })
+                        }
                     },
                 },
                 initComplete: function() {

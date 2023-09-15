@@ -46,6 +46,8 @@
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <!-- Magnify Image Viewer JS -->
     <script src="{{ asset('js/magnifier/jquery.magnify.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
     <script type="text/javascript">
         function ambilNoRawat(no_rawat) {
@@ -254,6 +256,21 @@
                 dataType: 'JSON',
                 data: {
                     no_rawat: no_rawat,
+                },
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
                 },
             });
             return pemeriksaan
@@ -791,7 +808,22 @@
                             icon: 'error',
                         })
                     }
-                }
+                },
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             });
 
             return peserta;
@@ -847,6 +879,21 @@
                 url: url,
                 dataType: 'JSON',
                 method: 'GET',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             })
 
             return ews;
@@ -941,6 +988,14 @@
             })
         }
 
+        function getJam() {
+            const waktu = new Date();
+            jam = waktu.getHours() >= 10 ? waktu.getHours() : '0' + waktu.getHours();
+            menit = waktu.getMinutes() >= 10 ? waktu.getMinutes() : '0' + waktu.getMinutes();
+            detik = waktu.getSeconds() >= 10 ? waktu.getSeconds() : '0' + waktu.getSeconds();
+            return `${jam}:${menit}:${detik}`;
+        }
+
 
 
         function hitungNilaiEws(no) {
@@ -998,6 +1053,21 @@
                 url: url,
                 dataType: 'JSON',
                 method: 'GET',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             })
 
             return ews;

@@ -183,16 +183,23 @@
         <div class="col-sm-12 col-md-12 col-lg-6">
             <table class="borderless">
                 <tr>
-                    <td width="5%" style="font-size:11px">Alergi :</td>
-                    <td width="65%">
+                    <td width="15%" style="font-size:11px;vertical-align:middle">Alergi :</td>
+                    <td width="20%">
                         <input type="text" class="form-control form-control-sm" id="alergi" name="alergi"
                             placeholder="" style="width:100%"
                             onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                     </td>
+                    <td width="10%" style="font-size:11px;text-align:right;vertical-align:middle" class="waktuSoap">Tanggal :</td>
+                    <td class="waktuSoap">
+                        <input type="text" class="form-control form-control-sm " id="tgl_perawatan_ubah" name="tgl_perawatan_ubah" placeholder="" style="width:100%" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" disabled>
+                    </td>
+                    <td class="waktuSoap">
+                        <input type="text" class="form-control form-control-sm " id="jam_rawat_ubah" name="jam_rawat" placeholder="" style="width:100%" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" disabled>
+                    </td>
                 </tr>
                 <tr>
                     <td style="font-size:11px" width="5%">Asesmen : </td>
-                    <td colspan="3" width="5%">
+                    <td colspan="4" width="5%">
                         <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="5"
                             onfocus="removeZero(this)"
                             onblur="cekKosong(this)">-</textarea>
@@ -200,7 +207,7 @@
                 </tr>
                 <tr>
                     <td style="font-size:11px">Plan : </td>
-                    <td colspan="3">
+                    <td colspan="4">
                         <textarea class="form-control" name="plan" id="plan" cols="30" rows="5"
                             onfocus="removeZero(this)"
                             onblur="cekKosong(this)">-</textarea>
@@ -208,7 +215,7 @@
                 </tr>
                 <tr>
                     <td style="font-size:11px">Instruksi : </td>
-                    <td colspan="3">
+                    <td colspan="4">
                         <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="5"
                             onfocus="removeZero(this)"
                             onblur="cekKosong(this)">-</textarea>
@@ -220,7 +227,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td>
+                    <td colspan="4">
                         <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
                         <button type="button" class="btn btn-warning btn-sm" id="btn-reset" style="font-size:12px;display:none"><i class="bi bi-arrow-clockwise"></i> Baru</button>
                         <button type="button" class="btn btn-success btn-sm" onclick="editSoap()" id="btn-ubah" style="font-size:12px;display:none"><i class="bi bi-pencil-square"></i> Ubah</button>

@@ -546,6 +546,21 @@
                 url: '/erm/bridging/rencanaKontrol/list/' + bulan + '/' + tahun + '/' + noka + '/' + filter,
                 dataType: 'JSON',
                 method: 'GET',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             });
 
             return rencana;
@@ -654,6 +669,21 @@
             let rawatInap = $.ajax({
                 url: '/erm/spri/get/' + nokartu + '/' + tanggal,
                 dataType: 'JSON',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             });
 
             return rawatInap;
@@ -746,6 +776,21 @@
             let poli = $.ajax({
                 url: '/erm/poliklinik/bpjs/' + kdPoli,
                 dataType: 'JSON',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             });
 
             return poli;

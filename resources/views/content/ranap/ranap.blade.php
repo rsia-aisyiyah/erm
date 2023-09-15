@@ -432,13 +432,13 @@
                             }
 
                             asmed = '';
-                            if (data.asmed_ranap_anak.length==0 && data.asmed_ranap_kandungan.length==0) {
+                            if (data.asmed_ranap_anak.length == 0 && data.asmed_ranap_kandungan.length == 0) {
                                 asmed = ' <button class="px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button>'
                             }
-                            
-                            
 
-                            return data.no_rawat + asmed + '<br/><strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + penjab + bayiGabung ;
+
+
+                            return data.no_rawat + asmed + '<br/><strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + penjab + bayiGabung;
 
                         },
                         name: 'reg_periksa',
@@ -515,6 +515,21 @@
                     'no_rawat': params,
                 },
                 dataType: 'JSON',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             })
             return ttv;
         }
@@ -524,6 +539,21 @@
                 url: '/erm/asmed/ranap/anak/' + textRawat(noRawat, '-'),
                 dataType: 'JSON',
                 method: 'GET',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             })
 
             return asmed;
@@ -534,6 +564,21 @@
                 url: '/erm/asmed/ranap/kandungan/' + textRawat(noRawat, '-'),
                 dataType: 'JSON',
                 method: 'GET',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             });
 
             return asmedKebidanan;
@@ -546,6 +591,21 @@
                 url: '/erm/registrasi/ambil',
                 data: {
                     no_rawat: noRawat,
+                },
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
                 },
             }).done((response) => {
                 $('#kandungan_no_rawat').val(response.no_rawat);
@@ -633,6 +693,21 @@
                 url: '/erm/registrasi/ambil',
                 data: {
                     no_rawat: noRawat,
+                },
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
                 },
             }).done((response) => {
                 $('#anak_no_rawat').val(response.no_rawat);
@@ -837,6 +912,21 @@
                 data: {
                     'no_rawat': no_rawat,
                 },
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             })
 
             return perawatan;
@@ -907,7 +997,22 @@
                         'tgl_pertama': tgl_pertama,
                         'tgl_kedua': tgl_kedua,
                         'petugas': petugas,
-                    }
+                    },
+                    error: (request) => {
+                        if (request.status == 401) {
+                            Swal.fire({
+                                title: 'Sesi login berakhir !',
+                                icon: 'info',
+                                text: 'Silahkan login kembali ',
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/erm';
+                                }
+                            })
+                        }
+                    },
                 },
                 language: {
                     loadingRecords: '&nbsp;',
@@ -994,7 +1099,7 @@
                 "language": {
                     "zeroRecords": "Tidak ada data pasien terdaftar",
                     "infoEmpty": "Tidak ada data pasien terdaftar",
-                }
+                },
             });
         }
 

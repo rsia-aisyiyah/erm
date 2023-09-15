@@ -47,6 +47,12 @@ class PemeriksaanRanapController extends Controller
 
     public function ubah(Request $request)
     {
+        $clause = [
+            'no_rawat' => $request->no_rawat,
+            'tgl_perawatan' => $request->tgl_perawatan,
+            'jam_rawat' => $request->jam_rawat,
+        ];
+
         $data = [
             'suhu_tubuh' => $request->suhu_tubuh,
             'nip' => $request->nip,
@@ -66,6 +72,9 @@ class PemeriksaanRanapController extends Controller
             'instruksi' => $request->instruksi,
             'kesadaran' => $request->kesadaran,
         ];
+
+        $data['tgl_perawatan_'] = $clause['tgl_perawatan'] == $request->tgl_perawatan_ubah ? $clause['tgl_perawatan'] : $request->tgl_perawatan_ubah;
+        $data['jam_rawat_'] = $clause['jam_rawat'] == $request->jam_rawat_ubah ? $clause['jam_rawat'] : $request->jam_rawat_ubah;
 
         $data1 = [
             'nip' => $request->nip,
@@ -88,11 +97,6 @@ class PemeriksaanRanapController extends Controller
         ];
 
 
-        $clause = [
-            'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => $request->tgl_perawatan,
-            'jam_rawat' => $request->jam_rawat,
-        ];
 
 
         $log = $this->log->insert($clause, 'Ubah');

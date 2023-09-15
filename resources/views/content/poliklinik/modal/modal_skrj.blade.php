@@ -93,6 +93,7 @@
             $('#tgl_surat').val(splitTanggal("{{ date('Y-m-d') }}"));
             $('#tgl_kontrol').datepicker('setDate', tanggal)
         })
+
         $('#modalSkrj').on('hidden.bs.modal', function() {
             isModalShow = false;
             $('.opt-rawat').empty();

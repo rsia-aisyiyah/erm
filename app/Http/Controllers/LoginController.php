@@ -36,6 +36,7 @@ class LoginController extends Controller
             $pegawai = Pegawai::where('nik', $request->get('username'))->with(['petugas', 'dokter'])->first();
             $request->session()->regenerate();
             Session::put('pegawai', $pegawai);
+            Session::put('status', 'ok');
 
             // return $pegawai;
 

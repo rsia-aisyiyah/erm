@@ -93,8 +93,35 @@
         var tgl_kedua = '';
         var getInstance = '';
         var sel = '';
+        var jamSekarang = '';
+        var departemen = "{{ session()->get('pegawai')->departemen }}";
+
+        $('#jam_rawat_ubah').on('focus', () => {
+            clearInterval(jamSekarang)
+        })
+
+        $('#jam_rawat_ubah').on('focusout', () => {
+            jamSekarang = setInterval(() => {
+                $('#jam_rawat_ubah').val(getJam())
+            }, 1000);
+        })
 
         $('#modalSoapRanap').on('shown.bs.modal', () => {
+
+            if (departemen == 'CSM' || departemen == '-') {
+                $('#tgl_perawatan_ubah').removeAttr('disabled');
+                $('#jam_rawat_ubah').removeAttr('disabled');
+            } else {
+                $('#tgl_perawatan_ubah').attr('disabled', 'true');
+                $('#jam_rawat_ubah').attr('disabled', 'true');
+            }
+
+            date = new Date()
+            hari = ('0' + (date.getDate())).slice(-2);
+            bulan = ('0' + (date.getMonth() + 1)).slice(-2);
+            tahun = date.getFullYear();
+            dateStart = hari + '-' + bulan + '-' + tahun;
+
             const canvasSuhu = $('#grafik-suhu');
             new bootstrap.Tab('#tab-resep')
             new bootstrap.Tab('#tab-ews')
@@ -103,6 +130,19 @@
 
             sel = document.querySelector('#tab-tabel')
             getInstance = bootstrap.Tab.getInstance(sel);
+            jamSekarang = setInterval(() => {
+                $('#jam_rawat_ubah').val(getJam())
+            }, 1000);
+
+            $('#tgl_perawatan_ubah').datepicker({
+                format: 'dd-mm-yyyy',
+                orientation: 'bottom',
+                autoclose: true,
+                setDate: dateStart,
+            });
+
+            $('#tgl_perawatan_ubah').datepicker('setDate', dateStart)
+
 
         })
 
@@ -114,14 +154,32 @@
                     'tgl_perawatan': tgl,
                     'jam_rawat': jam
                 },
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
             })
             return pemeriksaan;
         }
 
 
         function ambilSoap(no_rawat, tgl, jam) {
+            cekSession();
             getDetailPemeriksaanRanap(no_rawat, tgl, jam).done((response) => {
-
+                clearInterval(jamSekarang);
+                $('#formSoapRanap input[name=tgl_perawatan_ubah]').val(splitTanggal(response.tgl_perawatan));
+                $('#formSoapRanap input[name=jam_rawat_ubah]').val(response.tgl_perawatan);
                 $('#formSoapRanap input[name=tgl_perawatan]').val(response.tgl_perawatan);
                 $('#formSoapRanap input[name=jam_rawat]').val(response.jam_rawat);
                 $('#suhu').val(response.suhu_tubuh);
@@ -138,6 +196,7 @@
                         $('#o2').val(grafik.o2);
                     }
                 })
+
                 $('#kesadaran select').val(response.kesadaran);
                 $('#alergi').val(response.alergi);
                 $('#asesmen').val(response.penilaian);
@@ -266,6 +325,8 @@
                     'rtl': $('#plan').val(),
                     'evaluasi': $('#plan').val(),
                     'instruksi': $('#instruksi').val(),
+                    'tgl_perawatan_ubah': splitTanggal($('#tgl_perawatan_ubah').val()),
+                    'jam_rawat_ubah': $('#jam_rawat_ubah').val(),
                 },
                 method: 'POST',
                 beforeSend: function() {
@@ -278,8 +339,15 @@
                         }
                     })
                 },
+                error: (request, status, error) => {
+                    console.log(request);
+                    Swal.fire(
+                        'Gagal !',
+                        `Tidak bisa mengubah pemeriksaan<br/> Kode ${request.status} : ${request.statusText} `,
+                        'error',
+                    )
+                },
                 success: function(response) {
-                    console.log(response);
                     if (response) {
                         Swal.fire({
                             icon: 'success',
