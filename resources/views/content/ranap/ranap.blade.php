@@ -167,6 +167,10 @@
 
 
         $(document).ready(function() {
+            new bootstrap.Tab('#tab-resep')
+            new bootstrap.Tab('#tab-ews')
+            new bootstrap.Tab('#tab-grafik')
+            new bootstrap.Tab('#tab-tabel')
 
             if (cekDepartement == 'DM3' || cekDepartement == 'DM8') {
                 if (cekDepartement == 'DM3') {

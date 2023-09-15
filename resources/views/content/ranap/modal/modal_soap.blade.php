@@ -131,10 +131,6 @@
             dateStart = hari + '-' + bulan + '-' + tahun;
 
             const canvasSuhu = $('#grafik-suhu');
-            new bootstrap.Tab('#tab-resep')
-            new bootstrap.Tab('#tab-ews')
-            new bootstrap.Tab('#tab-grafik')
-            new bootstrap.Tab('#tab-tabel')
 
             sel = document.querySelector('#tab-tabel')
             getInstance = bootstrap.Tab.getInstance(sel);
