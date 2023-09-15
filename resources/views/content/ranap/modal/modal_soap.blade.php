@@ -100,10 +100,19 @@
             clearInterval(jamSekarang)
         })
 
-        $('#jam_rawat_ubah').on('focusout', () => {
-            jamSekarang = setInterval(() => {
-                $('#jam_rawat_ubah').val(getJam())
-            }, 1000);
+        $('#jam_rawat_ubah').on('focusout', (e) => {
+            if ($('#jam_rawat_ubah').val() == getJam() || $('#jam_rawat_ubah').val() == '') {
+                jamSekarang = setInterval(() => {
+                    $('#jam_rawat_ubah').val(getJam())
+                }, 1000);
+            } else {
+                clearInterval(jamSekarang)
+            }
+            console.log($('#jam_rawat_ubah').val());
+        })
+
+        $('#jam_rawat_ubah').on('keyup', (e) => {
+            clearInterval(jamSekarang)
         })
 
         $('#modalSoapRanap').on('shown.bs.modal', () => {
@@ -175,11 +184,10 @@
 
 
         function ambilSoap(no_rawat, tgl, jam) {
-            cekSession();
             getDetailPemeriksaanRanap(no_rawat, tgl, jam).done((response) => {
                 clearInterval(jamSekarang);
                 $('#formSoapRanap input[name=tgl_perawatan_ubah]').val(splitTanggal(response.tgl_perawatan));
-                $('#formSoapRanap input[name=jam_rawat_ubah]').val(response.tgl_perawatan);
+                $('#formSoapRanap input[name=jam_rawat_ubah]').val(response.jam_rawat);
                 $('#formSoapRanap input[name=tgl_perawatan]').val(response.tgl_perawatan);
                 $('#formSoapRanap input[name=jam_rawat]').val(response.jam_rawat);
                 $('#suhu').val(response.suhu_tubuh);

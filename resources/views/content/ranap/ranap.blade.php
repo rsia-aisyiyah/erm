@@ -182,7 +182,13 @@
                     $('#formFilterRanap select[name=dokter]').prop('disabled', false);
                     $('#formFilterRanap select[name=dokter]').val(kd_dokter);
                 }
+            } else if (cekDepartement == 'CMS' || cekDepartement == '-') {
+                $('#formSoapRanap .waktuSoap').css('visibility', 'visible');
+                // jamSekarang = setInterval(() => {
+                //     $('#formSoapRanap input[name=jam_rawat_ubah]').val(getJam())
+                // }, 1000);
             } else {
+                $('#formSoapRanap .waktuSoap').css('visibility', 'hidden');
                 if (sps) {
                     $('#formFilterRanap select[name=spesialis]').val(sps);
                     $('#formFilterRanap select[name=spesialis]').prop('disabled', false);
@@ -212,6 +218,9 @@
             } else {
                 valScrollX = 325;
             }
+
+
+
 
             date = new Date()
             hari = ('0' + (date.getDate())).slice(-2);
@@ -845,60 +854,6 @@
                                     max: 180,
                                 }
                             }
-                            // scales: {
-                            //     y: [{
-                            //             id: 'left-y-axis',
-                            //             type: 'linear',
-                            //             position: 'left',
-                            //             display: false,
-                            //             gridLines: {
-                            //                 // display: false,
-                            //                 color: 'rgba(219,219,219,0.3)',
-                            //                 zeroLineColor: 'rgba(219,219,219,0.3)',
-                            //                 drawBorder: false, // <---
-                            //                 lineWidth: 27,
-                            //                 // zeroLineWidth: 1
-                            //             },
-
-                            //             ticks: {
-                            //                 // display: false,
-
-                            //             },
-
-                            //             min: 35,
-                            //             max: 42,
-                            //             beginAtZero: true,
-                            //             grace: '20%',
-                            //         },
-                            //         {
-                            //             id: 'right-y-axis',
-                            //             type: 'linear',
-                            //             position: 'right',
-                            //             // display: false,
-                            //             gridLines: {
-                            //                 // display: false,
-                            //                 color: 'rgba(219,219,219,0.3)',
-                            //                 zeroLineColor: 'rgba(219,219,219,0.3)',
-                            //                 drawBorder: false, // <---
-                            //                 lineWidth: 27,
-                            //                 // zeroLineWidth: 1
-                            //             },
-
-                            //             ticks: {
-                            //                 // display: false,
-                            //             },
-                            //             beginAtZero: true,
-                            //             min: 40,
-                            //             max: 180,
-                            //             grace: '10%',
-                            //         },
-                            //     ],
-                            //     x: {
-                            //         gridLines: {
-                            //             display: false,
-                            //         },
-                            //     },
-                            // },
                         }
                     });
                 }

@@ -194,7 +194,7 @@
                         <input type="text" class="form-control form-control-sm " id="tgl_perawatan_ubah" name="tgl_perawatan_ubah" placeholder="" style="width:100%" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" disabled>
                     </td>
                     <td class="waktuSoap">
-                        <input type="text" class="form-control form-control-sm " id="jam_rawat_ubah" name="jam_rawat" placeholder="" style="width:100%" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" disabled>
+                        <input type="text" class="form-control form-control-sm " id="jam_rawat_ubah" name="jam_rawat_ubah" placeholder="" style="width:100%" onfocus="removeZero(this)" onblur="cekKosong(this)" value="" autocomplete="off" disabled>
                     </td>
                 </tr>
                 <tr>
