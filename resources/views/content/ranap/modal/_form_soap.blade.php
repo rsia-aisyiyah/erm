@@ -194,7 +194,12 @@
                         <input type="text" class="form-control form-control-sm " id="tgl_perawatan_ubah" name="tgl_perawatan_ubah" placeholder="" style="width:100%" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" disabled>
                     </td>
                     <td class="waktuSoap">
-                        <input type="text" class="form-control form-control-sm " id="jam_rawat_ubah" name="jam_rawat_ubah" placeholder="" style="width:100%" onfocus="removeZero(this)" onblur="cekKosong(this)" value="" autocomplete="off" disabled>
+                        <div class="input-group">
+                            <div class="input-group-text" style="padding: 4px">
+                                <input class="form-check-input" type="checkbox" value="" aria-label="Checkbox for following text input" style="width:.8em;height:.8em;margin:0px" id="cekJam">
+                            </div>
+                            <input type="text" class="form-control form-control-sm " id="jam_rawat_ubah" name="jam_rawat_ubah" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="" autocomplete="off" disabled>
+                        </div>
                     </td>
                 </tr>
                 <tr>

@@ -93,11 +93,30 @@
         var tgl_kedua = '';
         var getInstance = '';
         var sel = '';
+        var cek = '';
 
         var departemen = "{{ session()->get('pegawai')->departemen }}";
 
-        $('#jam_rawat_ubah').on('focus', () => {
-            clearInterval(jamSekarang)
+        function chekJam() {
+            cek = $('#cekJam').is(':checked')
+            if (cek) {
+                clearInterval(jamSekarang)
+            } else {
+                jamSekarang = setInterval(() => {
+                    $('#jam_rawat_ubah').val(getJam())
+                }, 1000);
+            }
+        }
+        $('#cekJam').on('click', () => {
+            chekJam()
+            // cek = $('#cekJam').is(':checked')
+            // if (cek) {
+            //     clearInterval(jamSekarang)
+            // } else {
+            //     jamSekarang = setInterval(() => {
+            //         $('#jam_rawat_ubah').val(getJam())
+            //     }, 1000);
+            // }
         })
 
         $('#jam_rawat_ubah').on('focusout', (e) => {
@@ -180,7 +199,8 @@
 
         function ambilSoap(no_rawat, tgl, jam) {
             getDetailPemeriksaanRanap(no_rawat, tgl, jam).done((response) => {
-                clearInterval(jamSekarang);
+                $('#formSoapRanap #cekJam').prop('checked', true)
+                chekJam()
                 $('#formSoapRanap input[name=tgl_perawatan_ubah]').val(splitTanggal(response.tgl_perawatan));
                 $('#formSoapRanap input[name=jam_rawat_ubah]').val(response.jam_rawat);
                 $('#formSoapRanap input[name=tgl_perawatan]').val(response.tgl_perawatan);
