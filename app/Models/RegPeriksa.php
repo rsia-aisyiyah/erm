@@ -136,4 +136,12 @@ class RegPeriksa extends Model
     {
         return $this->hasMany(AsesmenMedisRajalKandungan::class, 'no_rawat', 'no_rawat');
     }
+    function asmedRanapKandungan()
+    {
+        return $this->hasMany(AsesmenMedisRanapKandungan::class, 'no_rawat', 'no_rawat');
+    }
+    function asmedRanapAnak()
+    {
+        return $this->hasMany(AsesmenMedisAnak::class, 'no_rawat', 'no_rawat');
+    }
 }

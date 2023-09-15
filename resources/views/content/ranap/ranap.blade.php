@@ -431,7 +431,14 @@
 
                             }
 
-                            return data.no_rawat + '<br/><strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + penjab + bayiGabung;
+                            asmed = '';
+                            if (data.asmed_ranap_anak.length==0 && data.asmed_ranap_kandungan.length==0) {
+                                asmed = ' <button class="px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button>'
+                            }
+                            
+                            
+
+                            return data.no_rawat + asmed + '<br/><strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + penjab + bayiGabung ;
 
                         },
                         name: 'reg_periksa',
