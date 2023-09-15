@@ -109,28 +109,6 @@
         }
         $('#cekJam').on('click', () => {
             checkJam()
-            // cek = $('#cekJam').is(':checked')
-            // if (cek) {
-            //     clearInterval(jamSekarang)
-            // } else {
-            //     jamSekarang = setInterval(() => {
-            //         $('#jam_rawat_ubah').val(getJam())
-            //     }, 1000);
-            // }
-        })
-
-        $('#jam_rawat_ubah').on('focusout', (e) => {
-            if ($('#jam_rawat_ubah').val() == getJam() || $('#jam_rawat_ubah').val() == '') {
-                jamSekarang = setInterval(() => {
-                    $('#jam_rawat_ubah').val(getJam())
-                }, 1000);
-            } else {
-                clearInterval(jamSekarang)
-            }
-        })
-
-        $('#jam_rawat_ubah').on('keyup', (e) => {
-            clearInterval(jamSekarang)
         })
 
         $('#modalSoapRanap').on('shown.bs.modal', () => {

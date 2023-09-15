@@ -73,8 +73,17 @@ class PemeriksaanRanapController extends Controller
             'kesadaran' => $request->kesadaran,
         ];
 
-        $data['tgl_perawatan_'] = $clause['tgl_perawatan'] == $request->tgl_perawatan_ubah ? $clause['tgl_perawatan'] : $request->tgl_perawatan_ubah;
-        $data['jam_rawat_'] = $clause['jam_rawat'] == $request->jam_rawat_ubah ? $clause['jam_rawat'] : $request->jam_rawat_ubah;
+        if ($request->tgl_perawatan_ubah != '' || $clause['tgl_perawatan'] == $request->tgl_perawatan_ubah) {
+            $data['tgl_perawatan'] = $clause['tgl_perawatan'];
+        } else {
+            $data['tgl_perawatan'] = $request->tgl_perawatan_ubah;
+        }
+
+        if ($request->jam_rawat_ubah != '' || $clause['jam_rawat'] == $request->jam_rawat_ubah) {
+            $data['jam_rawat'] = $clause['jam_rawat'];
+        } else {
+            $data['jam_rawat'] = $request->jam_rawat_ubah;
+        }
 
         $data1 = [
             'nip' => $request->nip,
