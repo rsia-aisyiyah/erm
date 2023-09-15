@@ -168,6 +168,7 @@
 
 
         $(document).ready(function() {
+            checkJam();
             new bootstrap.Tab('#tab-resep')
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-grafik')
@@ -187,7 +188,7 @@
                     $('#formFilterRanap select[name=dokter]').prop('disabled', false);
                     $('#formFilterRanap select[name=dokter]').val(kd_dokter);
                 }
-            } else if (cekDepartement == 'CMS' || cekDepartement == '-') {
+            } else if (cekDepartement == 'CMS' || "{{ session()->get('pegawai')->nik }}" == 'direksi') {
                 $('#formSoapRanap .waktuSoap').css('visibility', 'visible');
             } else {
                 $('#formSoapRanap .waktuSoap').css('visibility', 'hidden');

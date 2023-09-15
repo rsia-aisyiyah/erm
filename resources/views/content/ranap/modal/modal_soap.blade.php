@@ -97,7 +97,7 @@
 
         var departemen = "{{ session()->get('pegawai')->departemen }}";
 
-        function chekJam() {
+        function checkJam() {
             cek = $('#cekJam').is(':checked')
             if (cek) {
                 clearInterval(jamSekarang)
@@ -108,7 +108,7 @@
             }
         }
         $('#cekJam').on('click', () => {
-            chekJam()
+            checkJam()
             // cek = $('#cekJam').is(':checked')
             // if (cek) {
             //     clearInterval(jamSekarang)
@@ -200,7 +200,7 @@
         function ambilSoap(no_rawat, tgl, jam) {
             getDetailPemeriksaanRanap(no_rawat, tgl, jam).done((response) => {
                 $('#formSoapRanap #cekJam').prop('checked', true)
-                chekJam()
+                checkJam()
                 $('#formSoapRanap input[name=tgl_perawatan_ubah]').val(splitTanggal(response.tgl_perawatan));
                 $('#formSoapRanap input[name=jam_rawat_ubah]').val(response.jam_rawat);
                 $('#formSoapRanap input[name=tgl_perawatan]').val(response.tgl_perawatan);
