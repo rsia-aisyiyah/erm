@@ -250,6 +250,8 @@
             jbtn = "{{ session()->get('pegawai')->jbtn }}";
             nik = "{{ session()->get('pegawai')->nik }}";
             nama = "{{ session()->get('pegawai')->nama }}";
+            $('#nama_user').val(nama);
+            $('#user').val(nik);
             $.ajax({
                 url: '/erm/pemeriksaan',
                 method: 'GET',
@@ -269,13 +271,13 @@
                         cekAlergi(response.reg_periksa.no_rkm_medis)
                         riwayatResep(response.reg_periksa.no_rkm_medis)
 
-                        if (response.nip === 'poli') {
-                            $('#nama').val('POLI');
-                            $('#nik').val('POLI');
-                        } else {
-                            $('#nama').val(response.pegawai.nama);
-                            $('#nik').val(response.nip);
-                        }
+                        // if (response.nip === 'poli') {
+                        //     $('#nama').val('POLI');
+                        //     $('#nik').val('POLI');
+                        // } else {
+                        //     $('#nama_user').val(response.pegawai.nama);
+                        $('#nik').val(response.nip);
+                        // }
 
                     } else {
                         riwayatResep(response.no_rkm_medis)

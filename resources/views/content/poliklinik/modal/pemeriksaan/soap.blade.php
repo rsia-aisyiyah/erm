@@ -24,10 +24,11 @@
                     <td width="30%" colspan="2">
                         <input type="hidden" id="jam_rawat">
                         <input type="hidden" id="tgl_perawatan">
-                        <input type="text" class="form-control form-control-sm" id="nik" name="nik" placeholder="" readonly>
+                        <input type="hidden" id="nik" name="nik" placeholder="" readonly>
+                        <input type="text" class="form-control form-control-sm" id="user" name="user" placeholder="" readonly>
                     </td>
                     <td width="45%" colspan="2">
-                        <input type="search" class="form-control form-control-sm" id="nama" name="nama" placeholder="" onkeyup="cariPetugas(this)" autocomplete="off">
+                        <input type="search" class="form-control form-control-sm" id="nama_user" name="nama_user" placeholder="" onkeyup="cariPetugas(this)" autocomplete="off">
                         <div class="list_petugas"></div>
 
                     </td>
