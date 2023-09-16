@@ -1243,7 +1243,7 @@
                     $('#li-asmed-obg').css('display', 'inline');
                     $('#li-data-obg').css('display', 'inline');
                     form = '.form-asmed-kandungan';
-                    setSoapToAsmedl(id, form);
+                    setSoapToAsmed(id, form);
                 }
                 $(`${form} input[name="no_rawat"]`).val(regPeriksa.no_rawat)
                 $(`${form} input[name="pasien"]`).val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
