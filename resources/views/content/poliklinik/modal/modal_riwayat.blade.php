@@ -205,7 +205,7 @@
                                         <tr>
                                             <td>SpO2</td>
                                             <td>:</td>
-                                            <td>${pemRanap.spo2} /menit</td>    
+                                            <td>${pemRanap.spo2} %</td>    
                                         </tr>
                                         <tr>
                                             <td>Alergi</td>
