@@ -66,6 +66,7 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\ResumePasienRanapController;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -178,6 +179,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/soap/grafik/delete', [RsiaGrafikHarianController::class, 'delete']);
 
     Route::get('/aturan', [DetailPemberianObatController::class, 'aturanPakai']);
+    Route::get('/obat/pemberian', [DetailPemberianObatController::class, 'get']);
     Route::get('lab/petugas', [LabController::class, 'petugas']);
     Route::get('lab/ambil', [LabController::class, 'ambil']);
 
@@ -305,6 +307,10 @@ Route::middleware('auth')->group(function () {
     Route::get('catatan/perawatan/{noRawat}', [CatatanPerawatanController::class, 'get']);
     Route::post('catatan/perawatan/insert', [CatatanPerawatanController::class, 'insert']);
     Route::post('catatan/perawatan/create', [CatatanPerawatanController::class, 'insertOrUpdate']);
+
+    Route::get('resume/ranap/get', [ResumePasienRanapController::class, 'get']);
+    Route::post('resume/ranap/insert', [ResumePasienRanapController::class, 'insert']);
+    Route::post('resume/ranap/edit', [ResumePasienRanapController::class, 'edit']);
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 

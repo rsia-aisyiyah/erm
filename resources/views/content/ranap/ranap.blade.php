@@ -148,7 +148,8 @@
     @include('content.ranap.modal.modal_asmed_anak')
     @include('content.ranap.modal.modal_asmed_kandungan')
     @include('content.ranap.modal.modal_grafik_harian')
-    {{-- @include('content.ranap.modal.modal_ews') --}}
+    @include('content.ranap.modal.modal_resume_ranap')
+    @include('content.ranap.modal.modal_list_pemeriksaan')
 @endsection
 
 
@@ -416,8 +417,15 @@
                             } else if (row.reg_periksa.dokter.kd_sps == 'S0001') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
                             }
+
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat</a></li>`;
 
+                            if (row.resume) {
+                                iconCheck = '<i class="bi bi-check-circle text-success"></i>';
+                            } else {
+                                iconCheck = '';
+                            }
+                            list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
@@ -881,11 +889,13 @@
         }
 
 
-        function getPemeriksaanRanap(no_rawat) {
+        function getPemeriksaanRanap(no_rawat, parameter = '', pemeriksaan = '') {
             let perawatan = $.ajax({
                 url: '/erm/soap/get',
                 data: {
                     'no_rawat': no_rawat,
+                    'parameter': parameter,
+                    'pemeriksaan': pemeriksaan,
                 },
                 error: (request) => {
                     if (request.status == 401) {

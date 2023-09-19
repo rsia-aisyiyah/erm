@@ -7,6 +7,7 @@
             </div>
             <div class="modal-body">
                 <form action="" id="formResumeRanap">
+                    <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">
                     <div class="row" style="font-size: 12px">
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-6">
@@ -28,11 +29,11 @@
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 <div class="row">
-                                    <div class="mb-2 col-sm-12 col-md-6 col-lg-2">
+                                    <div class="mb-2 col-sm-12 col-md-2 col-lg-2">
                                         <label for="dokter">Dokter</label>
                                         <input type="search" class="form-control form-control-sm kd_dokter" placeholder="" aria-label="" id="kd_dokter" name="kd_dokter" readonly>
                                     </div>
-                                    <div class="mb-2 col-sm-12 col-md-6 col-lg-4">
+                                    <div class="mb-2 col-sm-12 col-md-4 col-lg-4">
                                         <label for="kd_dokter"></label>
                                         <input type="search" class="form-control form-control-sm dokter" placeholder="" aria-label="" id="dokter" name="dokter" readonly>
                                     </div>
@@ -58,159 +59,221 @@
                                     </div>
                                     <div class="mb-2 col-sm-12 col-md-4 col-lg-3">
                                         <label for="alasan">Alasan Masuk Dirawat</label>
-                                        <input type="search" class="form-control form-control-sm alasan" placeholder="" aria-label="" id="alasan" name="alasan">
+                                        <input type="search" class="form-control form-control-sm alasan" placeholder="" aria-label="" id="alasan" name="alasan" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-2 col-sm-12 col-md-12 col-lg-6">
+                        <div class="mb-2 col-sm-12 col-md-12 col-lg-7">
                             <div class="separator m-2">1. Riwayat Kesehatan</div>
                             <div class="row">
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="keluhan">Keluhan Utama <a href="javascript:void(0)" id="srcKeluhan" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="keluhan_utama" id="keluhan_utama" cols="30" rows="5"
+                                    <textarea class="form-control" name="keluhan_utama" id="keluhan_utama" cols="30" rows="8"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="pemeriksaan_fisik">Pemeriksaan Fisik <a href="javascript:void(0)" id="srcPemeriksaan" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="pemeriksaan_fisik" id="pemeriksaan_fisik" cols="30" rows="5"
+                                    <textarea class="form-control" name="pemeriksaan_fisik" id="pemeriksaan_fisik" cols="30" rows="8"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
-                                    <label for="jalannya_penyakit">Jalannya Penyakit Selama Perawatan <a href="javascript:void(0)" id="srcPenyakit" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="jalannya_penyakit" id="jalannya_penyakit" cols="30" rows="5"
+                                    <label for="jalannya_penyakit">Jalannya Penyakit Selama Perawatan</label>
+                                    <textarea class="form-control" name="jalannya_penyakit" id="jalannya_penyakit" cols="30" rows="8"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
-                                    <label for="pemeriksaan_penunjang">Pemeriksaan Radiologi Terpenting <a href="javascript:void(0)" id="srcRadiologi" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="pemeriksaan_penunjang" id="pemeriksaan_penunjang" cols="30" rows="5"
+                                    <label for="pemeriksaan_penunjang">Pemeriksaan Radiologi Terpenting </label>
+                                    <textarea class="form-control" name="pemeriksaan_penunjang" id="pemeriksaan_penunjang" cols="30" rows="8"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="hasil_lanorat">Pemeriksaan Laborat Terpenting <a href="javascript:void(0)" id="srcLab" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="hasil_laborat" id="hasil_laborat" cols="30" rows="5"
+                                    <textarea class="form-control" name="hasil_laborat" id="hasil_laborat" cols="30" rows="8"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
-                                    <label for="tindakan_dan_operasi">Tindakan/Operasi Selama Perawatan <a href="javascript:void(0)" id="srcTindakan" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="tindakan_dan_operasi" id="tindakan_dan_operasi" cols="30" rows="5"
+                                    <label for="tindakan_dan_operasi">Tindakan/Operasi Selama Perawatan </label>
+                                    <textarea class="form-control" name="tindakan_dan_operasi" id="tindakan_dan_operasi" cols="30" rows="8"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-12 col-lg-12">
-                                    <label for="obat_di_rs">Obat-obatan Selama Perwatan <a href="javascript:void(0)" id="srcLab" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="obat_di_rs" id="obat_di_rs" cols="30" rows="5"
+                                    <label for="obat_di_rs">Obat-obatan Selama Perwatan <a href="javascript:void(0)" id="srcObat" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
+                                    <textarea class="form-control" name="obat_di_rs" id="obat_di_rs" cols="30" rows="8"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-12 col-lg-6">
+                        <div class="col-sm-12 col-md-12 col-lg-5">
                             <div class="separator m-2">2. Diagnosa</div>
                             <div class="row">
-                                <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
+                                <div class="col-sm-12 col-md-3 col-lg-3">
                                     <label for="diagnosa_utama" class="mt-2">Diagnosa Utama</label>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                                    <input class="form-control" name="diagnosa_utama" id="diagnosa_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="diagnosa_utama" id="diagnosa_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-                                    <input class="form-control" name="kode_diagnosa_utama" id="kode_diagnosa_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                </div>
-
-                                <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-                                    <label for="diagnosa_skunder1" class="mt-2">Diagnosa Skunder 1</label>
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                                    <input class="form-control" name="diagnosa_skunder1" id="diagnosa_skunder1" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-                                    <input class="form-control" name="kode_diagnosa_skunder1" id="kode_diagnosa_skunder1" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_diagnosa_utama" id="kd_diagnosa_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_utama', 'diagnosa_utama')"><i class="bi bi-search"></i></button>
+                                    </div>
                                 </div>
 
-                                <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-                                    <label for="diagnosa_skunder2" class="mt-2">Diagnosa Skunder 2</label>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder" class="mt-2">Diagnosa sekunder 1</label>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                                    <input class="form-control" name="diagnosa_skunder2" id="diagnosa_skunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="diagnosa_sekunder" id="diagnosa_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-                                    <input class="form-control" name="kode_diagnosa_skunder2" id="kode_diagnosa_skunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                </div>
-
-                                <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-                                    <label for="diagnosa_skunder3" class="mt-2">Diagnosa Skunder 3</label>
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                                    <input class="form-control" name="diagnosa_skunder3" id="diagnosa_skunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-                                    <input class="form-control" name="kode_diagnosa_skunder3" id="kode_diagnosa_skunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder" id="kd_diagnosa_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder', 'diagnosa_sekunder')"><i class="bi bi-search"></i></button>
+                                    </div>
                                 </div>
 
-                                <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-                                    <label for="diagnosa_skunder4" class="mt-2">Diagnosa Skunder 4</label>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder2" class="mt-2">Diagnosa sekunder 2</label>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                                    <input class="form-control" name="diagnosa_skunder4" id="diagnosa_skunder4" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="diagnosa_sekunder2" id="diagnosa_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-                                    <input class="form-control" name="kode_diagnosa_skunder4" id="kode_diagnosa_skunder4" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder2" id="kd_diagnosa_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder2', 'diagnosa_sekunder2')"><i class="bi bi-search"></i></button>
+                                    </div>
                                 </div>
 
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder3" class="mt-2">Diagnosa sekunder 3</label>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="diagnosa_sekunder3" id="diagnosa_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder3" id="kd_diagnosa_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder3', 'diagnosa_sekunder3')"><i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
 
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder4" class="mt-2">Diagnosa sekunder 4</label>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="diagnosa_sekunder4" id="diagnosa_sekunder4" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder4" id="kd_diagnosa_sekunder4" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder4', 'diagnosa_sekunder4')"><i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder5" class="mt-2">Diagnosa sekunder 5</label>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="diagnosa_sekunder5" id="diagnosa_sekunder5" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder5" id="kd_diagnosa_sekunder5" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder5', 'diagnosa_sekunder5')"><i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder6" class="mt-2">Diagnosa sekunder 6</label>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="diagnosa_sekunder6" id="diagnosa_sekunder6" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder6" id="kd_diagnosa_sekunder6" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder6', 'diagnosa_sekunder6')"><i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder7" class="mt-2">Diagnosa sekunder 7</label>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="diagnosa_sekunder7" id="diagnosa_sekunder7" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder7" id="kd_diagnosa_sekunder7" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder7', 'diagnosa_sekunder7')"><i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="separator m-2">3. Prosedur</div>
                             <div class="row">
-                                <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
+                                <div class="col-sm-12 col-md-3 col-lg-3">
                                     <label for="prosedur_utama" class="mt-2">Prosedur Utama</label>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                                    <input class="form-control" name="prosedur_utama" id="prosedur_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="prosedur_utama" id="prosedur_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-                                    <input class="form-control" name="kode_prosedur_utama" id="kode_prosedur_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                </div>
-
-                                <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-                                    <label for="prosedur_skunder1" class="mt-2">Prosedur Skunder 1</label>
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                                    <input class="form-control" name="prosedur_skunder1" id="prosedur_skunder1" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-                                    <input class="form-control" name="kode_prosedur_skunder1" id="kode_prosedur_skunder1" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_prosedur_utama" id="kd_prosedur_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_prosedur_utama', 'prosedur_utama')"><i class="bi bi-search"></i></button>
+                                    </div>
                                 </div>
 
-                                <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-                                    <label for="prosedur_skunder2" class="mt-2">Diagnosa Skunder 2</label>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="prosedur_sekunder1" class="mt-2">Prosedur sekunder 1</label>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                                    <input class="form-control" name="prosedur_skunder2" id="prosedur_skunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="prosedur_sekunder" id="prosedur_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-                                    <input class="form-control" name="kode_prosedur_skunder2" id="kode_prosedur_skunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_prosedur_sekunder" id="kd_prosedur_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_prosedur_sekunder', 'prosedur_sekunder')"><i class="bi bi-search"></i></button>
+                                    </div>
                                 </div>
 
-                                <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-                                    <label for="prosedur_skunder3" class="mt-2">Diagnosa Skunder 3</label>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="prosedur_sekunder2" class="mt-2">Prosedur sekunder 2</label>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                                    <input class="form-control" name="prosedur_skunder3" id="prosedur_skunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="prosedur_sekunder2" id="prosedur_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-                                    <input class="form-control" name="kode_prosedur_skunder3" id="kode_prosedur_skunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_prosedur_sekunder2" id="kd_prosedur_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_prosedur_sekunder2', 'prosedur_sekunder2')"><i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="prosedur_sekunder3" class="mt-2">Prosedur sekunder 3</label>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input class="form-control form-control-sm" name="prosedur_sekunder3" id="prosedur_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" name="kd_prosedur_sekunder3" id="kd_prosedur_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_prosedur_sekunder3', 'prosedur_sekunder3')"><i class="bi bi-search"></i></button>
+                                    </div>
                                 </div>
 
                             </div>
 
                             <div class="row">
-                                <div class="separator m-2"></div>
+                                <div class="separator mt-2 mb-2"></div>
                                 <div class="mb-2 col-sm-12 col-md-12 col-lg-12">
                                     <label for="edukasi">Instruksi/Anjuran dan Edukasi (Follow up)</label>
                                     <textarea class="form-control" name="edukasi" id="edukasi" cols="30" rows="5"
@@ -231,7 +294,7 @@
                                         <label for="ket_keadaan"></label>
                                         <select class="form-select" name="ket_keadaan" id="ket_keadaan">
                                             <option value="SANAM">SANAM</option>
-                                            <option value="BOLAM">BOLAM</option>
+                                            <option value="BONAM">BONAM</option>
                                             <option value="MALAM">MALAM</option>
                                             <option value="BUBIA">BUBIA</option>
                                         </select>
@@ -246,13 +309,13 @@
                                         </select>
                                     </div>
                                     <div class="mb-2 col-sm-12 col-md-6 col-lg-2">
-                                        <label for="ket_cara_keluar"></label>
-                                        <input class="form-control" name="ket_cara_keluar" id="ket_cara_keluar" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <label for="ket_keluar"></label>
+                                        <input class="form-control form-control-sm" name="ket_keluar" id="ket_keluar" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="mb-2 col-sm-12 col-md-6 col-lg-3">
+                                <div class="mb-2 col-sm-12 col-md-2 col-lg-3">
                                     <label for="dilanjutkan">Dilanjutkan</label>
                                     <select class="form-select" name="dilanjutkan" id="dilanjutkan">
                                         <option value="Kembali Ke RS">Kembali Ke RS</option>
@@ -262,18 +325,36 @@
                                         <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
-                                <div class="mb-2 col-sm-12 col-md-6 col-lg-4">
+                                <div class="mb-2 col-sm-12 col-md-4 col-lg-4">
                                     <label for="ket_dilanjutkan"></label>
-                                    <input class="form-control" name="ket_dilanjutkan" id="ket_dilanjutkan" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input class="form-control form-control-sm" name="ket_dilanjutkan" id="ket_dilanjutkan" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
-                                <div class="mb-2 col-sm-12 col-md-6 col-lg-5">
-                                    <label for="kontrol">Tanggal & Jam Kontrol</label>
-                                    <input class="form-control" name="kontrol" id="kontrol" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                <div class="mb-2 col-sm-12 col-md-3 col-lg-3">
+                                    <label for="tgl_kontrol">Tanggal Kontrol</label>
+                                    <input class="form-control form-control-sm" name="tgl_kontrol" id="tgl_kontrol" onfocus="removeZero(this)" onblur="cekKosong(this)" />
+                                </div>
+                                <div class="mb-2 col-sm-12 col-md-3 col-lg-2">
+                                    <label for="jam_kontrol">Jam Kontrol</label>
+                                    <input class="form-control form-control-sm" name="jam_kontrol" id="jam_kontrol" onfocus="removeZero(this)" onblur="cekKosong(this)" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mb-2 col-sm-12 col-md-2 col-lg-3">
+                                    <label for="shk">SHK</label>
+                                    <select class="form-select" name="shk" id="shk">
+                                        <option value="-" selected>-</option>
+                                        <option value="Belum">Belum</option>
+                                        <option value="Sudah">Sudah</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2 col-sm-12 col-md-10 col-lg-9">
+                                    <label for="shk_keterangan"></label>
+                                    <input class="form-control form-control-sm" name="shk_keterangan" id="shk_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="mb-2 col-sm-12 col-md-12 col-lg-12">
-                                    <label for="obat_pulang">Obat Pulang <a href="javascript:void(0)" id="srcObat" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
+                                    <label for="obat_pulang">Obat Pulang</label>
                                     <textarea class="form-control" name="obat_pulang" id="obat_pulang" cols="30" rows="5"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
@@ -287,25 +368,38 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm btn-asmed-anak" onclick="" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
-                <button type="button" class="btn btn-warning btn-sm btn-asmed-anak-ubah" onclick="" style="font-size: 12px"><i class="bi bi-pencil"></i> Ubah</button>
+                <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanResumeMedis()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+                {{-- <button type="button" class="btn btn-warning btn-sm btn-asmed-anak-ubah" onclick="" style="font-size: 12px"><i class="bi bi-pencil"></i> Ubah</button> --}}
             </div>
         </div>
     </div>
 </div>
 @push('script')
     <script>
+        $(document).ready(() => {
+            $('#tgl_kontrol').val("{{ date('d-m-Y') }}");
+            $('#jam_kontrol').val("{{ date('H:i:s') }}");
+            $('#tgl_kontrol').datepicker({
+                format: 'dd-mm-yyyy',
+                orientation: 'bottom',
+                autoclose: true,
+                todayHighlight: true,
+            })
+        })
+
         function resumeMedis(noRawat) {
-            console.log(noRawat);
             getRegPeriksa(noRawat).done((response) => {
-                console.log(response);
-
-
                 $('#formResumeRanap input[name=no_rawat]').val(response.no_rawat);
                 $('#formResumeRanap input[name=pasien]').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`);
                 $('#formResumeRanap input[name=tgl_lahir]').val(`${formatTanggal(response.pasien.tgl_lahir)} (${hitungUmur(response.pasien.tgl_lahir)})`);
                 $('#formResumeRanap input[name=kd_dokter]').val(`${response.dokter.kd_dokter}`);
                 $('#formResumeRanap input[name=dokter]').val(`${response.dokter.nm_dokter}`);
+                $.map(response.diagnosa_pasien, (diagnosa) => {
+                    if (diagnosa.prioritas == 1) {
+                        $('#formResumeRanap input[name=diagnosa_utama]').val(diagnosa.penyakit.nm_penyakit)
+                        $('#formResumeRanap input[name=kd_diagnosa_utama]').val(diagnosa.kd_penyakit)
+                    }
+                })
                 $.map(response.kamar_inap, (inap) => {
                     tgl_keluar = inap.tgl_keluar == '0000-00-00' ? `${inap.tgl_keluar} ${inap.jam_keluar}` : `${formatTanggal(inap.tgl_keluar)} ${inap.jam_keluar} `;
                     $('#formResumeRanap input[name=kamar]').val(`${inap.kamar.bangsal.nm_bangsal} ( ${response.penjab.png_jawab} )`);
@@ -314,20 +408,301 @@
                     $('#formResumeRanap input[name=diagnosa_awal]').val(`${inap.diagnosa_awal}`);
                 })
 
-                $.map(response.diagnosa_pasien, (diagnosa) => {
-                    if (diagnosa.prioritas == 1) {
-                        $('#formResumeRanap input[name=diagnosa_utama]').val(diagnosa.penyakit.nm_penyakit)
-                        $('#formResumeRanap input[name=kode_diagnosa_utama]').val(diagnosa.kd_penyakit)
+                getResumeMedis(noRawat).done((resume) => {
+                    if (resume) {
+                        $('#formResumeRanap input[name=alasan]').val(resume.alasan ? resume.alasan : '-')
+                        $('#formResumeRanap textarea[name=keluhan_utama]').val(resume.keluhan_utama ? resume.keluhan_utama : '-')
+                        $('#formResumeRanap textarea[name=pemeriksaan_fisik]').val(resume.pemeriksaan_fisik ? resume.pemeriksaan_fisik : '-')
+                        $('#formResumeRanap textarea[name=jalannya_penyakit]').val(resume.jalannya_penyakit ? resume.jalannya_penyakit : '-')
+                        $('#formResumeRanap textarea[name=hasil_laborat]').val(resume.hasil_laborat ? resume.hasil_laborat : '-')
+                        $('#formResumeRanap textarea[name=pemeriksaan_penunjang]').val(resume.pemeriksaan_penunjang ? resume.pemeriksaan_penunjang : '-')
+                        $('#formResumeRanap textarea[name=tindakan_dan_operasi]').val(resume.tindakan_dan_operasi ? resume.tindakan_dan_operasi : '-')
+                        $('#formResumeRanap textarea[name=obat_di_rs]').val(resume.obat_di_rs ? resume.obat_di_rs : '-')
+                        $('#formResumeRanap input[name=diagnosa_utama]').val(resume.diagnosa_utama ? resume.diagnosa_utama : '-')
+                        $('#formResumeRanap input[name=kd_diagnosa_utama]').val(resume.kd_diagnosa_utama ? resume.kd_diagnosa_utama : '-')
+                        $('#formResumeRanap input[name=diagnosa_sekunder]').val(resume.diagnosa_sekunder ? resume.diagnosa_sekunder : '-')
+                        $('#formResumeRanap input[name=kd_diagnosa_sekunder]').val(resume.kd_diagnosa_sekunder ? resume.kd_diagnosa_sekunder : '-')
+                        $('#formResumeRanap input[name=diagnosa_sekunder2]').val(resume.diagnosa_sekunder2 ? resume.diagnosa_sekunder2 : '-')
+                        $('#formResumeRanap input[name=kd_diagnosa_sekunder2]').val(resume.kd_diagnosa_sekunder2 ? resume.kd_diagnosa_sekunder2 : '-')
+                        $('#formResumeRanap input[name=diagnosa_sekunder3]').val(resume.diagnosa_sekunder3 ? resume.diagnosa_sekunder3 : '-')
+                        $('#formResumeRanap input[name=kd_diagnosa_sekunder3]').val(resume.kd_diagnosa_sekunder3 ? resume.kd_diagnosa_sekunder3 : '-')
+                        $('#formResumeRanap input[name=diagnosa_sekunder4]').val(resume.diagnosa_sekunder4 ? resume.diagnosa_sekunder4 : '-')
+                        $('#formResumeRanap input[name=kd_diagnosa_sekunder4]').val(resume.kd_diagnosa_sekunder4 ? resume.kd_diagnosa_sekunder4 : '-')
+                        $('#formResumeRanap input[name=diagnosa_sekunder5]').val(resume.diagnosa_sekunder5 ? resume.diagnosa_sekunder5 : '-')
+                        $('#formResumeRanap input[name=kd_diagnosa_sekunder5]').val(resume.kd_diagnosa_sekunder5 ? resume.kd_diagnosa_sekunder5 : '-')
+                        $('#formResumeRanap input[name=diagnosa_sekunder6]').val(resume.diagnosa_sekunder6 ? resume.diagnosa_sekunder6 : '-')
+                        $('#formResumeRanap input[name=kd_diagnosa_sekunder6]').val(resume.kd_diagnosa_sekunder6 ? resume.kd_diagnosa_sekunder6 : '-')
+                        $('#formResumeRanap input[name=diagnosa_sekunder7]').val(resume.diagnosa_sekunder7 ? resume.diagnosa_sekunder7 : '-')
+                        $('#formResumeRanap input[name=kd_diagnosa_sekunder7]').val(resume.kd_diagnosa_sekunder7 ? resume.kd_diagnosa_sekunder7 : '-')
+
+                        $('#formResumeRanap input[name=prosedur_utama]').val(resume.prosedur_utama ? resume.prosedur_utama : '-')
+                        $('#formResumeRanap input[name=kd_prosedur_utama]').val(resume.kd_prosedur_utama ? resume.kd_prosedur_utama : '-')
+                        $('#formResumeRanap input[name=prosedur_sekunder]').val(resume.prosedur_sekunder ? resume.prosedur_sekunder : '-')
+                        $('#formResumeRanap input[name=kd_prosedur_sekunder]').val(resume.kd_prosedur_sekunder ? resume.kd_prosedur_sekunder : '-')
+                        $('#formResumeRanap input[name=prosedur_sekunder2]').val(resume.prosedur_sekunder2 ? resume.prosedur_sekunder2 : "-")
+                        $('#formResumeRanap input[name=kd_prosedur_sekunder2]').val(resume.kd_prosedur_sekunder2 ? resume.kd_prosedur_sekunder2 : '-')
+                        $('#formResumeRanap input[name=prosedur_sekunder3]').val(resume.prosedur_sekunder3 ? resume.prosedur_sekunder3 : '-')
+                        $('#formResumeRanap input[name=kd_prosedur_sekunder3]').val(resume.kd_prosedur_sekunder3 ? resume.kd_prosedur_sekunder3 : '-')
+                        $('#formResumeRanap input[name=prosedur_sekunder4]').val(resume.prosedur_sekunder4 ? resume.prosedur_sekunder4 : '-')
+                        $('#formResumeRanap input[name=kd_prosedur_sekunder4]').val(resume.kd_prosedur_sekunder4 ? resume.kd_prosedur_sekunder4 : '-')
+
+                        $('#formResumeRanap textarea[name=edukasi]').val(resume.edukasi ? resume.edukasi : '-')
+
+                        $('#formResumeRanap select[name=keadaan]').val(resume.keadaan ? resume.keadaan : 'Membaik').change()
+                        $('#formResumeRanap select[name=ket_keadaan]').val(resume.ket_keadaan ? resume.ket_keadaan : 'SANAM').change()
+                        $('#formResumeRanap select[name=cara_keluar]').val(resume.cara_keluar ? resume.cara_keluar : 'Atas Izin Dokter').change()
+                        $('#formResumeRanap input[name=ket_keluar]').val(resume.ket_keluar ? resume.ket_keluar : '-')
+                        $('#formResumeRanap select[name=dilanjutkan]').val(resume.dilanjutkan ? resume.dilanjutkan : 'Kembali Ke RS').change()
+                        $('#formResumeRanap input[name=ket_dilanjutkan]').val(resume.ket_dilanjutkan ? resume.ket_dilanjutkan : '-')
+                        $('#formResumeRanap input[name=tgl_kontrol]').val(resume.kontrol ? splitTanggal(resume.kontrol.split(' ')[0]) : "{{ date('d-m-Y') }}")
+                        $('#formResumeRanap input[name=jam_kontrol]').val(resume.kontrol ? resume.kontrol.split(' ')[1] : "{{ date('H:i:s') }}")
+
+                        $('#formResumeRanap select[name=skh]').val(resume.shk).change()
+                        $('#formResumeRanap input[name=shk_keterangan]').val(resume.shk_keterangan ? resume.shk_keterangan : '-')
+                        $('#formResumeRanap textarea[name=obat_pulang]').val(resume.obat_pulang ? resume.obat_pulang : '-')
+
                     }
                 })
+
+
                 // set action pencarian
-                $('#formResumeRanap #srcKeluhan').attr('onclick', `listKeluhan('${response.no_rawat}')`);
-                $('#formResumeRanap #srcPemeriksaan').attr('onclick', `listPemeriksaan('${response.no_rawat}')`);
+                $('#formResumeRanap #srcKeluhan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'keluhan')`);
+                $('#formResumeRanap #srcPemeriksaan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'pemeriksaan')`);
+                $('#formResumeRanap #srcLab').attr('onclick', `listHasilLab('${response.no_rawat}')`);
+                $('#formResumeRanap #srcObat').attr('onclick', `listPemberianObat('${response.no_rawat}')`);
             })
             $('#modalResumeRanap').modal('show')
         }
-        $(function() {
-            $('#kontrol').datetimepicker();
-        });
+
+        function listRiwayatPemeriksaan(noRawat, parameter) {
+            getPemeriksaanRanap(noRawat, parameter).done((response) => {
+                no = 1;
+                $.map(response, (kel) => {
+                    row = `<tr class="${no}" onclick="setTextRiwayat('${parameter}', ${no} )" style="cursor:pointer">`
+                    row += `<td>${formatTanggal(kel.tgl_perawatan)}</td>`;
+                    row += `<td>${kel.jam_rawat}</td>`;
+                    if (parameter == 'pemeriksaan') {
+                        row += `<td>${kel[parameter]} \n Tanda Vital  : TD : ${kel.tensi} mmHG, Nadi : ${kel.nadi}/mnt, RR : ${kel.respirasi}/mnt, Suhu : ${kel.suhu_tubuh} C \nKesadaran : ${kel.kesadaran}, \nHasil Pemeriksaan : , </td>`;
+                    } else {
+                        row += `<td>${kel[parameter]}</td>`;
+                    }
+                    row += `</tr>`
+                    no++;
+                    $('#tbListResume tbody').append(row);
+                })
+
+                $('.parameter').text(`${parameter.toUpperCase()}`)
+                $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
+                $('#modalListResume #btn-pemeriksaan').attr(`onclick`, `cariPemeriksaan('${noRawat}', '${parameter}', this)`)
+                $('#modalListResume input[name=no_rawat]').val(noRawat)
+                $('#modalListResume input[name=parameter]').val(parameter)
+                $('#modalListResume').modal('show')
+
+            })
+        }
+
+        function listHasilLab(noRawat) {
+            parameter = 'laborat';
+            getHasilLab(noRawat).done((response) => {
+                no = 1;
+                $.map(response, (lab) => {
+                    row = `<tr class="${no}" onclick="setTextRiwayat('${parameter}', ${no} )" style="cursor:pointer">`
+                    row += `<td>${formatTanggal(lab.tgl_periksa)}</td>`;
+                    row += `<td>${lab.jam}</td>`;
+                    row += `<td>${lab.template.Pemeriksaan} : ${lab.nilai} ${lab.template.satuan}</td>`;
+                    row += `</tr>`
+                    no++;
+                    $('#tbListResume tbody').append(row);
+                })
+
+                $('.parameter').text(`${parameter.toUpperCase()}`)
+                $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
+                $('#modalListResume input[name=no_rawat]').val(noRawat)
+                $('#modalListResume input[name=parameter]').val(parameter)
+                $('#modalListResume #btn-pemeriksaan').attr(`onclick`, `cariPemeriksaanLab('${noRawat}', this)`)
+                $('#modalListResume').modal('show')
+            })
+        }
+
+        function listPemberianObat(noRawat) {
+            parameter = 'obat';
+            getPemberianObat(noRawat).done((response) => {
+                no = 1;
+                $.map(response, (obat) => {
+                    row = `<tr class="${no}" onclick="setTextRiwayat('${parameter}', ${no} )" style="cursor:pointer">`
+                    row += `<td>${formatTanggal(obat.tgl_perawatan)}</td>`;
+                    row += `<td>${obat.jam}</td>`;
+                    row += `<td>${obat.databarang.nama_brng} : ${obat.jml} ${obat.databarang.kd_satuan.satuan}</td>`;
+                    row += `</tr>`
+                    no++;
+                    $('#tbListResume tbody').append(row);
+                })
+            });
+            $('.parameter').text(`${parameter.toUpperCase()}`)
+            $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
+            $('#modalListResume input[name=no_rawat]').val(noRawat)
+            $('#modalListResume input[name=parameter]').val(parameter)
+            $('#modalListResume #btn-pemeriksaan').attr(`onclick`, `cariPemberianObat('${noRawat}', this)`)
+            $('#modalListResume').modal('show')
+        }
+
+        function setTextRiwayat(params, no) {
+            switch (params) {
+                case 'keluhan':
+                    value = $('#keluhan_utama').val() != '-' ? $('#keluhan_utama').val().replaceAll('&lt;', '<').replaceAll('&gt;', '>') + '\n' : '';
+                    value += $('#tbListResume tbody .' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+                    $('#keluhan_utama').val(value)
+                    break;
+                case 'pemeriksaan':
+                    value = $('#pemeriksaan_fisik').val() != '-' ? $('#pemeriksaan_fisik').val().replaceAll('&lt;', '<').replaceAll('&gt;', '>') + '\n' : '';
+                    value += $('#tbListResume tbody .' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+                    value += value.replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+                    $('#pemeriksaan_fisik').val(value)
+                    break;
+                case 'laborat':
+                    value = $('#hasil_laborat').val() != '-' ? $('#hasil_laborat').val() + ',\n' : '';
+                    value += $('#tbListResume tbody .' + no).find("td").eq(2).html();
+                    $('#hasil_laborat').val(value)
+                    break;
+                case 'obat':
+                    value = $('#obat_di_rs').val() != '-' ? $('#obat_di_rs').val() + ',\n ' : '';
+                    value += $('#tbListResume tbody .' + no).find("td").eq(2).html();
+                    $('#obat_di_rs').val(value)
+                    break;
+                default:
+                    break;
+            }
+
+            $('#modalListResume').modal('hide')
+        }
+
+        function insertResumeMedis(data) {
+            const resume = $.ajax({
+                url: '/erm/resume/ranap/insert',
+                data: data,
+                method: 'POST',
+                beforeSend: () => {
+                    $('#btn-simpan').prop('disabled', true);
+                    swal.fire({
+                        title: 'Memproses Data',
+                        text: 'Mohon Tunggu',
+                        showConfirmButton: false,
+                        footer: '<img width="25" src="http://192.168.100.33/simrsiav2/assets/gambar/rsiap.ico"><b>&nbsp;RSIA AISYIYAH PEKAJANGAN</b>',
+                        didOpen: () => {
+                            swal.showLoading();
+                        }
+                    })
+                },
+                success: () => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses !',
+                        text: 'Data Berhasil Diproses',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                },
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                }
+            })
+
+            return resume;
+        }
+
+        function editResumeMedis(data) {
+            const resume = $.ajax({
+                url: '/erm/resume/ranap/edit',
+                data: data,
+                method: 'POST',
+                beforeSend: () => {
+                    $('#btn-simpan').prop('disabled', true);
+                    swal.fire({
+                        title: 'Memproses Data',
+                        text: 'Mohon Tunggu',
+                        showConfirmButton: false,
+                        footer: '<img width="25" src="http://192.168.100.33/simrsiav2/assets/gambar/rsiap.ico"><b>&nbsp;RSIA AISYIYAH PEKAJANGAN</b>',
+                        didOpen: () => {
+                            swal.showLoading();
+                        }
+                    })
+                },
+                success: () => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses !',
+                        text: 'Data Berhasil Diproses',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                },
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Gagal !',
+                            icon: 'error',
+                            text: `Error Code ${request.status} ${request.statusText}`,
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        })
+                    }
+                }
+            })
+
+            return resume;
+
+        }
+
+
+
+        function simpanResumeMedis() {
+            except = ['tgl_keluar', 'dokter', 'tgl_lahir', 'tgl_masuk', 'pasien', 'kamar']
+            data = getDataForm('#formResumeRanap', ['input', 'textarea', 'select'], except)
+            data.kontrol = `${splitTanggal(data.tgl_kontrol)} ${data.jam_kontrol}`
+
+            getResumeMedis(data.no_rawat).done((response) => {
+
+                if (Object.keys(response).length == 0) {
+                    insertResumeMedis(data).done(() => {
+                        $('#tb_ranap').DataTable().destroy();
+                        tb_ranap();
+                        $('#modalResumeRanap').modal('hide');
+                    })
+                } else {
+                    editResumeMedis(data).done(() => {
+                        $('#tb_ranap').DataTable().destroy();
+                        tb_ranap();
+                        $('#modalResumeRanap').modal('hide');
+                    })
+                }
+            })
+
+        }
     </script>
 @endpush

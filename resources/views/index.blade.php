@@ -84,7 +84,7 @@
             return txtTanggal;
         }
 
-        function getDataForm(form, element, except) {
+        function getDataForm(form, element, except = []) {
             let data = {};
             // get all data from input
             for (let index = 0; index < element.length; index++) {
@@ -101,6 +101,7 @@
                     delete data[except[i]]
                 }
             }
+
             return data;
         }
 
@@ -187,7 +188,9 @@
 
         function setPetugas(param) {
             $('#nik').val($(param).data('id'));
+            $('#user').val($(param).data('id'));
             $('#nama').val($(param).text());
+            $('#nama_user').val($(param).text());
             $('.list_petugas').fadeOut();
         }
 
@@ -534,6 +537,31 @@
             $('#upload-image').css('visibility', 'hidden')
         }
 
+        function getHasilLab(no_rawat, pemeriksaan = '') {
+            let lab = $.ajax({
+                url: '/erm/lab/ambil',
+                data: {
+                    no_rawat: no_rawat,
+                    pemeriksaan: pemeriksaan
+                },
+            })
+
+            return lab;
+        }
+
+        function getPemberianObat(no_rawat, obat = '') {
+            let pemberian = $.ajax({
+                url: '/erm/obat/pemberian',
+                data: {
+                    no_rawat: no_rawat,
+                    obat: obat
+                },
+            })
+
+            return pemberian;
+
+        }
+
         function getPasienPeriksa(no_rkm_medis, tanggal) {
 
             paramUrl = tanggal ? no_rkm_medis + '/' + tanggal : no_rkm_medis;
@@ -543,6 +571,28 @@
             });
 
             return pasien;
+        }
+
+        function getDiagnosaPasien(no_rawat) {
+            let diagnosa = $.ajax({
+                url: '/erm/penyakit/pasien/ambil',
+                data: {
+                    no_rawat: noRawat
+                },
+            });
+
+            return diagnosa;
+        }
+
+        function getResumeMedis(noRawat) {
+            const resume = $.ajax({
+                url: '/erm/resume/ranap/get',
+                data: {
+                    no_rawat: noRawat,
+                }
+            });
+
+            return resume;
         }
 
         function getRegPeriksa(noRawat) {

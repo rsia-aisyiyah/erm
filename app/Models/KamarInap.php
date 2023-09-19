@@ -22,4 +22,8 @@ class KamarInap extends Model
     {
         return $this->belongsTo(Kamar::class, 'kd_kamar', 'kd_kamar');
     }
+    public function resume()
+    {
+        return $this->hasOne(ResumePasienRanap::class, 'no_rawat', 'no_rawat');
+    }
 }

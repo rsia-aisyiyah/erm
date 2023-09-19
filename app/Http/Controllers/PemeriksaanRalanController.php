@@ -111,6 +111,7 @@ class PemeriksaanRalanController extends Controller
             'evaluasi' => $request->evaluasi,
             'lingkar_perut' => '-',
         ];
+
         $grafik = [
             'nip' => $request->nip,
             'no_rawat' => $request->no_rawat,

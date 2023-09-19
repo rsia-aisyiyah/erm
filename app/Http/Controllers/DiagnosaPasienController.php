@@ -28,7 +28,10 @@ class DiagnosaPasienController extends Controller
 
     public function ambil(Request $request)
     {
-        $penyakit = $this->diagnosa->with('penyakit')->where('no_rawat', $request->no_rawat)->orderBy('prioritas', 'ASC')->get();
+
+        $penyakit = $this->diagnosa->with('penyakit')
+            ->where('no_rawat', $request->no_rawat)
+            ->orderBy('prioritas', 'ASC');
 
         return response()->json($penyakit);
     }

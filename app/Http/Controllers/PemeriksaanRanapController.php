@@ -192,12 +192,23 @@ class PemeriksaanRanapController extends Controller
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
             ->with(['regPeriksa', 'log', 'regPeriksa.pasien', 'petugas', 'grafikHarian', 'verifikasi.petugas' => function ($q) {
                 return $q->select('nip', 'nama');
-            }])->whereHas('petugas', function ($q) {
-                return $q->whereNotIn('kd_jbtn', ['J01', 'J024', 'J025', 'J002']);
-            })
+            }])
             ->orderBy('tgl_perawatan', 'DESC')
-            ->orderBy('jam_rawat', 'DESC')->get();
-        return $pemeriksaan;
+            ->orderBy('jam_rawat', 'DESC');
+        if ($request->parameter) {
+            if ($request->parameter == 'pemeriksaan') {
+                $pemeriksaan->select([$request->parameter, 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'kesadaran', 'jam_rawat', 'tgl_perawatan'])->orderBy('tgl_perawatan', 'ASC');
+            } else {
+                $pemeriksaan->select([$request->parameter, 'jam_rawat', 'tgl_perawatan'])->orderBy('tgl_perawatan', 'ASC');
+            }
+            if ($request->pemeriksaan) {
+                $pemeriksaan->where($request->parameter, 'like', '%' . $request->pemeriksaan . '%');
+            }
+        }
+
+
+
+        return $pemeriksaan->get();
     }
     public function ambil(Request $request)
     {

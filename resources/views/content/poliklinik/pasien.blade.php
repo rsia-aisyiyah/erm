@@ -221,7 +221,7 @@
                     instruksi: $('#instruksi').val(),
                     evaluasi: '-',
                     lingkar_perut: '-',
-                    nip: $('#nik').val(),
+                    nip: $('#nik').val() == '-' ? $('#user').val() : $('#nik').val(),
                     kd_dokter: "{{ Request::get('dokter') }}",
                     kd_poli: "{{ Request::segment(2) }}",
                     no_rkm_medis: $('#no_rm').val(),
