@@ -26,4 +26,12 @@ class KamarInap extends Model
     {
         return $this->hasOne(ResumePasienRanap::class, 'no_rawat', 'no_rawat');
     }
+    public function asmedKandungan()
+    {
+        return $this->hasOne(AsesmenMedisRanapKandungan::class, 'no_rawat', 'no_rawat');
+    }
+    function asmedAnak()
+    {
+        return $this->hasOne(AsesmenMedisAnak::class, 'no_rawat', 'no_rawat');
+    }
 }

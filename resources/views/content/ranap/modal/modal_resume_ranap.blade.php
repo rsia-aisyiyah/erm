@@ -58,7 +58,7 @@
                                         <input type="search" class="form-control form-control-sm diagnosa_awal" placeholder="" aria-label="" id="diagnosa_awal" name="diagnosa_awal">
                                     </div>
                                     <div class="mb-2 col-sm-12 col-md-4 col-lg-3">
-                                        <label for="alasan">Alasan Masuk Dirawat</label>
+                                        <label for="alasan">Indikasi Rawat</label>
                                         <input type="search" class="form-control form-control-sm alasan" placeholder="" aria-label="" id="alasan" name="alasan" onfocus="removeZero(this)"
                                             onblur="cekKosong(this)" value="-">
                                     </div>
@@ -84,7 +84,7 @@
                                     <label for="jalannya_penyakit">Jalannya Penyakit Selama Perawatan</label>
                                     <textarea class="form-control" name="jalannya_penyakit" id="jalannya_penyakit" cols="30" rows="8"
                                         onfocus="removeZero(this)"
-                                        onblur="cekKosong(this)">-</textarea>
+                                        onblur="cekKosong(this)" readonly>-</textarea>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="pemeriksaan_penunjang">Pemeriksaan Radiologi Terpenting </label>
@@ -116,7 +116,7 @@
                             <div class="separator m-2">2. Diagnosa</div>
                             <div class="row">
                                 <div class="col-sm-12 col-md-3 col-lg-3">
-                                    <label for="diagnosa_utama" class="mt-2">Diagnosa Utama</label>
+                                    <label for="diagnosa_utama" class="mt-2">Diagnosa Akhir</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
                                     <input class="form-control form-control-sm" name="diagnosa_utama" id="diagnosa_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
@@ -282,7 +282,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="mb-2 col-sm-12 col-md-6 col-lg-3">
-                                        <label for="keadaan">Keadaan Pulang</label>
+                                        <label for="keadaan">Kondisi Pulang</label>
                                         <select class="form-select" name="keadaan" id="keadaan">
                                             <option value="Membaik">Membaik</option>
                                             <option value="Sembuh">Sembuh</option>
@@ -329,14 +329,15 @@
                                     <label for="ket_dilanjutkan"></label>
                                     <input class="form-control form-control-sm" name="ket_dilanjutkan" id="ket_dilanjutkan" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
-                                <div class="mb-2 col-sm-12 col-md-3 col-lg-3">
+                                <div class="mb-2 col-sm-12 col-md-4 col-lg-5">
                                     <label for="tgl_kontrol">Tanggal Kontrol</label>
                                     <input class="form-control form-control-sm" name="tgl_kontrol" id="tgl_kontrol" onfocus="removeZero(this)" onblur="cekKosong(this)" />
+                                    <input name="jam_kontrol" id="jam_kontrol" type="hidden" />
                                 </div>
-                                <div class="mb-2 col-sm-12 col-md-3 col-lg-2">
+                                {{-- <div class="mb-2 col-sm-12 col-md-3 col-lg-2">
                                     <label for="jam_kontrol">Jam Kontrol</label>
                                     <input class="form-control form-control-sm" name="jam_kontrol" id="jam_kontrol" onfocus="removeZero(this)" onblur="cekKosong(this)" />
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="row">
                                 <div class="mb-2 col-sm-12 col-md-2 col-lg-3">
