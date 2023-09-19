@@ -409,8 +409,6 @@
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
 
-                            console.log(row);
-
                             list = '<li><a class="dropdown-item" href="#" onclick="modalLaborat(\'' + data.no_rawat + '\')">Laborat</a></li>';
                             list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
                             list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
