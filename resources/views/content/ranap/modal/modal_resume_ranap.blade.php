@@ -113,10 +113,10 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-5">
-                            <div class="separator m-2">2. Diagnosa</div>
+                            <div class="separator m-2">2. Diagnosa Akhir</div>
                             <div class="row">
                                 <div class="col-sm-12 col-md-3 col-lg-3">
-                                    <label for="diagnosa_utama" class="mt-2">Diagnosa Akhir</label>
+                                    <label for="diagnosa_utama" class="mt-2">Diagnosa Utama</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
                                     <input class="form-control form-control-sm" name="diagnosa_utama" id="diagnosa_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
