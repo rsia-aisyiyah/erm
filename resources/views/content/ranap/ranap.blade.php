@@ -174,7 +174,7 @@
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-grafik')
             new bootstrap.Tab('#tab-tabel')
-
+            console.log(cekDepartement);
             if (cekDepartement == 'DM3' || cekDepartement == 'DM8') {
                 if (cekDepartement == 'DM3') {
                     sps = 'S0001';
@@ -189,7 +189,7 @@
                     $('#formFilterRanap select[name=dokter]').prop('disabled', false);
                     $('#formFilterRanap select[name=dokter]').val(kd_dokter);
                 }
-            } else if (cekDepartement == 'CMS' || "{{ session()->get('pegawai')->nik }}" == 'direksi') {
+            } else if (cekDepartement == 'CSM' || "{{ session()->get('pegawai')->nik }}" == 'direksi') {
                 $('#formSoapRanap .waktuSoap').css('visibility', 'visible');
             } else {
                 $('#formSoapRanap .waktuSoap').css('visibility', 'hidden');
