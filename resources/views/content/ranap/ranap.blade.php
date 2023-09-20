@@ -174,7 +174,6 @@
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-grafik')
             new bootstrap.Tab('#tab-tabel')
-            console.log(cekDepartement);
             if (cekDepartement == 'DM3' || cekDepartement == 'DM8') {
                 if (cekDepartement == 'DM3') {
                     sps = 'S0001';
@@ -254,6 +253,7 @@
                 }, 1000);
             }
         }
+
         $('#cekJam').on('click', () => {
             console.log(checkJam());
         })
@@ -1265,13 +1265,17 @@
                         buildGrafik(response.no_rawat);
                         appendDataGrafikHarian(response.no_rawat);
                         clearFormGrafikHarian();
-                    } else {
-                        console.log(response);
                     }
 
                 },
                 error: function(request, status, error) {
-                    console.log(request.responseText);
+                    swal.fire({
+                        title: 'Gagal',
+                        text: request.message,
+                        icon: 'errir',
+                        showConfirmButton: true,
+                    });
+
                 }
             })
         });
