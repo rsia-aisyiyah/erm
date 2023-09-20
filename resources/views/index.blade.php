@@ -585,7 +585,7 @@
         }
 
 
-        function getDiagnosaRanap(diagnosa = '') {
+        function getDiagnosa(diagnosa = '-') {
             let dx = $.ajax({
                 url: '/erm/penyakit/cari',
                 data: {

@@ -552,7 +552,7 @@
             const keyword = $('#txt-diagnosa').val() ? $('#txt-diagnosa').val() : '';
             switch (dxpx) {
                 case 'diagnosa':
-                    getDiagnosaRanap(keyword).done((response) => {
+                    getDiagnosa(keyword).done((response) => {
                         let no = 1;
                         $.map(response, (dx) => {
                             console.log(dx);

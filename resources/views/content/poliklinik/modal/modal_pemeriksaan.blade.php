@@ -681,31 +681,7 @@
             return false;
         })
 
-        function getDiagnosa(diagnosa) {
-            let dx = $.ajax({
-                url: '/erm/penyakit/cari',
-                data: {
-                    'kd_penyakit': diagnosa,
-                },
-                dataType: 'JSON',
-                error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
-                },
-            })
-            return dx
-        }
+
 
         function cariDiagnosaSoap(diagnosa) {
             getDiagnosa(diagnosa.value).done(function(response) {
@@ -805,7 +781,6 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
-                    console.log(response);
                     nomor = 1;
                     $('.table-diagnosa tbody').empty();
                     if (Object.keys(response).length > 0) {
