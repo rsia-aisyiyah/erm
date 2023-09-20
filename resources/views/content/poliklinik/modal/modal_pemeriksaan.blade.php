@@ -805,6 +805,7 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
+                    console.log(response);
                     nomor = 1;
                     $('.table-diagnosa tbody').empty();
                     if (Object.keys(response).length > 0) {

@@ -150,6 +150,7 @@
     @include('content.ranap.modal.modal_grafik_harian')
     @include('content.ranap.modal.modal_resume_ranap')
     @include('content.ranap.modal.modal_list_pemeriksaan')
+    @include('content.ranap.modal.modal_list_diagnosa')
 @endsection
 
 
@@ -421,18 +422,22 @@
                                     iconCheck = '';
                                 }
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak(\'' + data.no_rawat + '\')">Asesmen Medis Anak ' + iconCheck + '</a></li>';
-                                // console.log(row.reg_periksa.asmed_ranap_anak.length);
                             } else if (row.reg_periksa.dokter.kd_sps == 'S0001') {
                                 list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
                             }
 
 
-                            if (row.resume) {
-                                iconCheck = '<i class="bi bi-check-circle text-success"></i>';
-                            } else {
-                                iconCheck = '';
+                            // resume medis aktif
+                            isDokter = "{{ session()->get('pegawai')->departemen }}";
+                            if (isDokter == 'Direksi' || isDokter == 'SPS' || isDokter == '-' || isDokter == 'CSM') {
+                                if (row.resume) {
+                                    iconCheck = '<i class="bi bi-check-circle text-success"></i>';
+                                } else {
+                                    iconCheck = '';
+                                }
+                                list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
                             }
-                            list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
+
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat</a></li>`;
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
@@ -441,6 +446,13 @@
                     {
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
+
+                            if (row.reg_periksa.asmed_ranap_anak.length) {
+                                iconCheck = '<i class="bi bi-check-circle text-success"></i>';
+                            } else {
+                                iconCheck = '';
+                            }
+
                             if (data.pasien) {
                                 pasien = data.pasien.nm_pasien + ' (' + data.umurdaftar + ' ' + data.sttsumur + ')';
                             } else {
@@ -465,11 +477,23 @@
 
                             bayiGabung = '';
                             if (row.ranap_gabung) {
+
+                                isDokter = "{{ session()->get('pegawai')->departemen }}";
+                                resume = '';
+                                if (isDokter == 'Direksi' || isDokter == 'SPS' || isDokter == '-' || isDokter == 'CSM') {
+                                    if (row.resume) {
+                                        iconCheck = '<i class="bi bi-check-circle text-success"></i>';
+                                    } else {
+                                        iconCheck = '';
+                                    }
+                                    resume = `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
+                                }
                                 namaBayi = `<a class="nav-link dropdown-toggle btn btn-warning btn-sm" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">${row.ranap_gabung.reg_periksa.pasien.nm_pasien}</a>
                                 <ul class="dropdown-menu dropdown-menu" style="font-size:12px">
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalLaborat('${row.ranap_gabung.reg_periksa.no_rawat}')">Laborat</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">S.O.A.P</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Pemeriksaan Penunjang</a></li>
+                                    ${resume}
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.ranap_gabung.reg_periksa.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.ranap_gabung.reg_periksa.no_rkm_medis}">Riwayat</a></li>
                                 </ul>`
                                 bayiGabung = `<hr style="margin:0px"/>${row.ranap_gabung.reg_periksa.no_rawat} <br/> <strong>${namaBayi}</strong>  `

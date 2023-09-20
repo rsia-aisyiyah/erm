@@ -584,6 +584,59 @@
             return diagnosa;
         }
 
+
+        function getDiagnosaRanap(diagnosa = '') {
+            let dx = $.ajax({
+                url: '/erm/penyakit/cari',
+                data: {
+                    'kd_penyakit': diagnosa,
+                },
+                dataType: 'JSON',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
+            })
+            return dx
+        }
+
+        function getProsedur(prosedur = '') {
+            let px = $.ajax({
+                url: '/erm/prosedur/cari',
+                data: {
+                    'kode': prosedur,
+                },
+                dataType: 'JSON',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
+            })
+            return px
+        }
+
         function getResumeMedis(noRawat) {
             const resume = $.ajax({
                 url: '/erm/resume/ranap/get',

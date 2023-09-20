@@ -31,7 +31,7 @@ class DiagnosaPasienController extends Controller
 
         $penyakit = $this->diagnosa->with('penyakit')
             ->where('no_rawat', $request->no_rawat)
-            ->orderBy('prioritas', 'ASC');
+            ->orderBy('prioritas', 'ASC')->get();
 
         return response()->json($penyakit);
     }

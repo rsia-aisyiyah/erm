@@ -119,12 +119,12 @@
                                     <label for="diagnosa_utama" class="mt-2">Diagnosa Utama</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="diagnosa_utama" id="diagnosa_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_utama" id="diagnosa_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_diagnosa_utama" id="kd_diagnosa_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_utama', 'diagnosa_utama')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_diagnosa_utama" id="kd_diagnosa_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_utama', 'diagnosa_utama')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
 
@@ -132,12 +132,12 @@
                                     <label for="diagnosa_sekunder" class="mt-2">Diagnosa sekunder 1</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="diagnosa_sekunder" id="diagnosa_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder" id="diagnosa_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder" id="kd_diagnosa_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder', 'diagnosa_sekunder')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_diagnosa_sekunder" id="kd_diagnosa_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder', 'diagnosa_sekunder')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
 
@@ -145,12 +145,12 @@
                                     <label for="diagnosa_sekunder2" class="mt-2">Diagnosa sekunder 2</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="diagnosa_sekunder2" id="diagnosa_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder2" id="diagnosa_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder2" id="kd_diagnosa_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder2', 'diagnosa_sekunder2')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_diagnosa_sekunder2" id="kd_diagnosa_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder2', 'diagnosa_sekunder2')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
 
@@ -158,12 +158,12 @@
                                     <label for="diagnosa_sekunder3" class="mt-2">Diagnosa sekunder 3</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="diagnosa_sekunder3" id="diagnosa_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder3" id="diagnosa_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
-                                    <div class="input-group">
+                                    <div type="search" class="input-group">
                                         <input class="form-control form-control-sm" name="kd_diagnosa_sekunder3" id="kd_diagnosa_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder3', 'diagnosa_sekunder3')"><i class="bi bi-search"></i></button>
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder3', 'diagnosa_sekunder3')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
 
@@ -171,48 +171,48 @@
                                     <label for="diagnosa_sekunder4" class="mt-2">Diagnosa sekunder 4</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="diagnosa_sekunder4" id="diagnosa_sekunder4" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder4" id="diagnosa_sekunder4" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder4" id="kd_diagnosa_sekunder4" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder4', 'diagnosa_sekunder4')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_diagnosa_sekunder4" id="kd_diagnosa_sekunder4" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder4', 'diagnosa_sekunder4')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-3 col-lg-3">
                                     <label for="diagnosa_sekunder5" class="mt-2">Diagnosa sekunder 5</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="diagnosa_sekunder5" id="diagnosa_sekunder5" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder5" id="diagnosa_sekunder5" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder5" id="kd_diagnosa_sekunder5" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder5', 'diagnosa_sekunder5')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_diagnosa_sekunder5" id="kd_diagnosa_sekunder5" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder5', 'diagnosa_sekunder5')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-3 col-lg-3">
                                     <label for="diagnosa_sekunder6" class="mt-2">Diagnosa sekunder 6</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="diagnosa_sekunder6" id="diagnosa_sekunder6" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder6" id="diagnosa_sekunder6" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder6" id="kd_diagnosa_sekunder6" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder6', 'diagnosa_sekunder6')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_diagnosa_sekunder6" id="kd_diagnosa_sekunder6" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder6', 'diagnosa_sekunder6')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-3 col-lg-3">
                                     <label for="diagnosa_sekunder7" class="mt-2">Diagnosa sekunder 7</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="diagnosa_sekunder7" id="diagnosa_sekunder7" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder7" id="diagnosa_sekunder7" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_diagnosa_sekunder7" id="kd_diagnosa_sekunder7" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_diagnosa_sekunder7', 'diagnosa_sekunder7')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_diagnosa_sekunder7" id="kd_diagnosa_sekunder7" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder7', 'diagnosa_sekunder7')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -222,12 +222,12 @@
                                     <label for="prosedur_utama" class="mt-2">Prosedur Utama</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="prosedur_utama" id="prosedur_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="prosedur_utama" id="prosedur_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_prosedur_utama" id="kd_prosedur_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_prosedur_utama', 'prosedur_utama')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_prosedur_utama" id="kd_prosedur_utama" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('prosedur','kd_prosedur_utama', 'prosedur_utama')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
 
@@ -235,12 +235,12 @@
                                     <label for="prosedur_sekunder1" class="mt-2">Prosedur sekunder 1</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="prosedur_sekunder" id="prosedur_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="prosedur_sekunder" id="prosedur_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_prosedur_sekunder" id="kd_prosedur_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_prosedur_sekunder', 'prosedur_sekunder')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_prosedur_sekunder" id="kd_prosedur_sekunder" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('prosedur','kd_prosedur_sekunder', 'prosedur_sekunder')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
 
@@ -248,12 +248,12 @@
                                     <label for="prosedur_sekunder2" class="mt-2">Prosedur sekunder 2</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="prosedur_sekunder2" id="prosedur_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="prosedur_sekunder2" id="prosedur_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_prosedur_sekunder2" id="kd_prosedur_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_prosedur_sekunder2', 'prosedur_sekunder2')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_prosedur_sekunder2" id="kd_prosedur_sekunder2" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('prosedur','kd_prosedur_sekunder2', 'prosedur_sekunder2')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
 
@@ -261,12 +261,12 @@
                                     <label for="prosedur_sekunder3" class="mt-2">Prosedur sekunder 3</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
-                                    <input class="form-control form-control-sm" name="prosedur_sekunder3" id="prosedur_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                    <input type="search" class="form-control form-control-sm" name="prosedur_sekunder3" id="prosedur_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
                                     <div class="input-group">
-                                        <input class="form-control form-control-sm" name="kd_prosedur_sekunder3" id="kd_prosedur_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
-                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="modalDiagnosa('kd_prosedur_sekunder3', 'prosedur_sekunder3')"><i class="bi bi-search"></i></button>
+                                        <input type="search" class="form-control form-control-sm" name="kd_prosedur_sekunder3" id="kd_prosedur_sekunder3" onfocus="removeZero(this)" onblur="cekKosong(this)" value='-' />
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id="" onclick="listDiagnosaRanap('prosedur','kd_prosedur_sekunder3', 'prosedur_sekunder3')"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
 
@@ -533,7 +533,7 @@
                     row = `<tr class="${no}" onclick="setTextRiwayat('${parameter}', ${no} )" style="cursor:pointer">`
                     row += `<td>${formatTanggal(obat.tgl_perawatan)}</td>`;
                     row += `<td>${obat.jam}</td>`;
-                    row += `<td>${obat.databarang.nama_brng} : ${obat.jml} ${obat.databarang.kd_satuan.satuan}</td>`;
+                    row += `<td>${obat.databarang.nama_brng} : ${obat.jml} ${obat.databarang.kode_satuan.satuan}</td>`;
                     row += `</tr>`
                     no++;
                     $('#tbListResume tbody').append(row);
@@ -547,34 +547,91 @@
             $('#modalListResume').modal('show')
         }
 
+        function listDiagnosaRanap(dxpx, kode, nama) {
+            parameter = 'diagnosa';
+            const keyword = $('#txt-diagnosa').val() ? $('#txt-diagnosa').val() : '';
+            switch (dxpx) {
+                case 'diagnosa':
+                    getDiagnosaRanap(keyword).done((response) => {
+                        let no = 1;
+                        $.map(response, (dx) => {
+                            console.log(dx);
+                            row = `<tr class="${no}" onclick="setTextRiwayat('${parameter}', ${no} )" style="cursor:pointer">`
+                            row += `<td>${dx.kd_penyakit}</td>`
+                            row += `<td>${dx.nm_penyakit}</td>`
+                            row += `<td>${dx.keterangan}</td>`
+                            row += `</tr>`
+                            no++;
+                            $('#tbListDiagnosa tbody').append(row);
+                        })
+                    });
+                    break;
+                case 'prosedur':
+                    getProsedur(keyword).done((response) => {
+                        let no = 1;
+                        $.map(response, (px) => {
+                            row = `<tr class="${no}" onclick="setTextRiwayat('${parameter}', ${no} )" style="cursor:pointer">`
+                            row += `<td>${px.kode}</td>`
+                            row += `<td>${px.deskripsi_pendek}</td>`
+                            row += `<td>${px.deskripsi_panjang}</td>`
+                            row += `</tr>`
+                            no++;
+                            $('#tbListDiagnosa tbody').append(row);
+                        })
+                    });
+                    break;
+                default:
+                    break;
+            }
+            $('#modalListDiagnosa').modal('show')
+            $('#modalListDiagnosa #btn-diagnosa').attr(`onclick`, `cariDiagnosa(this)`)
+            $('#modalListDiagnosa .modal-title').text(`DAFTAR  ${dxpx.toUpperCase()}`)
+            $('#modalListDiagnosa .dxpx').html(`KODE ${dxpx.toUpperCase()}`)
+            $('#modalListDiagnosa input[name=kode_diagnosa]').val(kode)
+            $('#modalListDiagnosa input[name=nama_diagnosa]').val(nama)
+            $('#modalListDiagnosa input[name=dxpx]').val(dxpx)
+        }
+
         function setTextRiwayat(params, no) {
             switch (params) {
                 case 'keluhan':
                     value = $('#keluhan_utama').val() != '-' ? $('#keluhan_utama').val().replaceAll('&lt;', '<').replaceAll('&gt;', '>') + '\n' : '';
                     value += $('#tbListResume tbody .' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
                     $('#keluhan_utama').val(value)
+                    $('#modalListResume').modal('hide')
                     break;
                 case 'pemeriksaan':
                     value = $('#pemeriksaan_fisik').val() != '-' ? $('#pemeriksaan_fisik').val().replaceAll('&lt;', '<').replaceAll('&gt;', '>') + '\n' : '';
                     value += $('#tbListResume tbody .' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
                     value += value.replaceAll('&lt;', '<').replaceAll('&gt;', '>');
                     $('#pemeriksaan_fisik').val(value)
+                    $('#modalListResume').modal('hide')
                     break;
                 case 'laborat':
                     value = $('#hasil_laborat').val() != '-' ? $('#hasil_laborat').val() + ',\n' : '';
                     value += $('#tbListResume tbody .' + no).find("td").eq(2).html();
                     $('#hasil_laborat').val(value)
+                    $('#modalListResume').modal('hide')
                     break;
                 case 'obat':
                     value = $('#obat_di_rs').val() != '-' ? $('#obat_di_rs').val() + ',\n ' : '';
                     value += $('#tbListResume tbody .' + no).find("td").eq(2).html();
                     $('#obat_di_rs').val(value)
+                    $('#modalListResume').modal('hide')
+                    break;
+                case 'diagnosa':
+                    valKode = $('#tbListDiagnosa tbody .' + no).find("td").eq(0).html();
+                    valNama = $('#tbListDiagnosa tbody .' + no).find("td").eq(1).html();
+                    fieldKode = $('.filterListDiagnosa input[name=kode_diagnosa]').val();
+                    fieldNama = $('.filterListDiagnosa input[name=nama_diagnosa]').val();
+                    $('#' + fieldKode).val(valKode)
+                    $('#' + fieldNama).val(valNama)
+                    $('#modalListDiagnosa').modal('hide')
                     break;
                 default:
                     break;
             }
 
-            $('#modalListResume').modal('hide')
         }
 
         function insertResumeMedis(data) {
@@ -679,8 +736,6 @@
             return resume;
 
         }
-
-
 
         function simpanResumeMedis() {
             except = ['tgl_keluar', 'dokter', 'tgl_lahir', 'tgl_masuk', 'pasien', 'kamar']

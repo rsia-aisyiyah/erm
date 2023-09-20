@@ -103,6 +103,6 @@
             if (pemeriksaan.length == 0) {
                 listRiwayatPemeriksaan(no_rawat, parameter)
             }
-        })
+        });
     </script>
 @endpush
