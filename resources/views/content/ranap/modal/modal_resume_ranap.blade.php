@@ -321,7 +321,7 @@
                                         <option value="Kembali Ke RS">Kembali Ke RS</option>
                                         <option value="RS Lain">RS Lain</option>
                                         <option value="Dokter Luar">Dokter Luar</option>
-                                        <option value="Puskesmas">Puskesmas</option>
+                                        <option value="Puskesmes">Puskesmas</option>
                                         <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
@@ -401,13 +401,25 @@
                         $('#formResumeRanap input[name=kd_diagnosa_utama]').val(diagnosa.kd_penyakit)
                     }
                 })
-                $.map(response.kamar_inap, (inap) => {
+
+                if (Object.keys(response.bayi_gabung).length) {
+                    inap = response.bayi_gabung.kamar_inap;
                     tgl_keluar = inap.tgl_keluar == '0000-00-00' ? `${inap.tgl_keluar} ${inap.jam_keluar}` : `${formatTanggal(inap.tgl_keluar)} ${inap.jam_keluar} `;
                     $('#formResumeRanap input[name=kamar]').val(`${inap.kamar.bangsal.nm_bangsal} ( ${response.penjab.png_jawab} )`);
                     $('#formResumeRanap input[name=tgl_masuk]').val(`${formatTanggal(inap.tgl_masuk)} ${inap.jam_masuk}`);
                     $('#formResumeRanap input[name=tgl_keluar]').val(`${tgl_keluar}`);
                     $('#formResumeRanap input[name=diagnosa_awal]').val(`${inap.diagnosa_awal}`);
-                })
+
+                } else if (response.kamar_inap.length) {
+                    kamarInap = response.kamar_inap;
+                    $.map(response.kamar_inap, (inap) => {
+                        tgl_keluar = inap.tgl_keluar == '0000-00-00' ? `${inap.tgl_keluar} ${inap.jam_keluar}` : `${formatTanggal(inap.tgl_keluar)} ${inap.jam_keluar} `;
+                        $('#formResumeRanap input[name=kamar]').val(`${inap.kamar.bangsal.nm_bangsal} ( ${response.penjab.png_jawab} )`);
+                        $('#formResumeRanap input[name=tgl_masuk]').val(`${formatTanggal(inap.tgl_masuk)} ${inap.jam_masuk}`);
+                        $('#formResumeRanap input[name=tgl_keluar]').val(`${tgl_keluar}`);
+                        $('#formResumeRanap input[name=diagnosa_awal]').val(`${inap.diagnosa_awal}`);
+                    })
+                }
 
                 getResumeMedis(noRawat).done((resume) => {
                     if (resume) {
@@ -552,10 +564,9 @@
             const keyword = $('#txt-diagnosa').val() ? $('#txt-diagnosa').val() : '';
             switch (dxpx) {
                 case 'diagnosa':
-                    getDiagnosa(keyword).done((response) => {
+                    getDiagnosaRanap(keyword).done((response) => {
                         let no = 1;
                         $.map(response, (dx) => {
-                            console.log(dx);
                             row = `<tr class="${no}" onclick="setTextRiwayat('${parameter}', ${no} )" style="cursor:pointer">`
                             row += `<td>${dx.kd_penyakit}</td>`
                             row += `<td>${dx.nm_penyakit}</td>`

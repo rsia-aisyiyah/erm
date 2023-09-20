@@ -48,6 +48,10 @@ class RegPeriksa extends Model
     {
         return $this->belongsTo(RanapGabung::class, 'no_rawat', 'no_rawat');
     }
+    public function bayiGabung()
+    {
+        return $this->belongsTo(RanapGabung::class, 'no_rawat', 'no_rawat2');
+    }
     public function pasien()
     {
         return $this->belongsTo(Pasien::class, 'no_rkm_medis', 'no_rkm_medis');
