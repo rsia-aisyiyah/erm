@@ -572,7 +572,7 @@
                 "language": {
                     "zeroRecords": "Tidak ada data pasien terdaftar",
                     "infoEmpty": "Tidak ada data pasien terdaftar",
-                    "search": "Pemcarian",
+                    "search": "Pencarian",
                 }
             })
         }
