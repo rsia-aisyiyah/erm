@@ -55,7 +55,6 @@ class PemeriksaanRanapController extends Controller
 
         $data = [
             'suhu_tubuh' => $request->suhu_tubuh,
-            'nip' => $request->nip,
             'tinggi' => $request->tinggi,
             'berat' => $request->berat,
             'respirasi' => $request->respirasi,
@@ -73,20 +72,19 @@ class PemeriksaanRanapController extends Controller
             'kesadaran' => $request->kesadaran,
         ];
 
-        if ($request->tgl_perawatan_ubah != '' || $clause['tgl_perawatan'] == $request->tgl_perawatan_ubah) {
+        if ($request->tgl_perawatan_ubah == '' && $clause['tgl_perawatan'] == $request->tgl_perawatan_ubah) {
             $data['tgl_perawatan'] = $clause['tgl_perawatan'];
         } else {
             $data['tgl_perawatan'] = $request->tgl_perawatan_ubah;
         }
 
-        if ($request->jam_rawat_ubah != '' || $clause['jam_rawat'] == $request->jam_rawat_ubah) {
+        if ($request->jam_rawat_ubah == '' && $clause['jam_rawat'] == $request->jam_rawat_ubah) {
             $data['jam_rawat'] = $clause['jam_rawat'];
         } else {
             $data['jam_rawat'] = $request->jam_rawat_ubah;
         }
 
         $data1 = [
-            'nip' => $request->nip,
             'no_rawat' => $request->no_rawat,
             'suhu_tubuh' => $request->suhu_tubuh,
             'tensi' => $request->tensi,
