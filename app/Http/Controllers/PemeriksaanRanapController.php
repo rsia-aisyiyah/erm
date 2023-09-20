@@ -106,7 +106,12 @@ class PemeriksaanRanapController extends Controller
 
 
 
-        $log = $this->log->insert($clause, 'Ubah');
+        $log = $this->log->insert([
+            'no_rawat' => $clause['no_rawat'],
+            'tgl_perawatan' => $data['tgl_perawatan'],
+            'jam_rawat' => $data['jam_rawat'],
+        ], 'Ubah');
+
         $pemeriksaan = PemeriksaanRanap::where($clause)->update($data);
         $grafikharian = GrafikHarian::where($clause)->update($data1);
         $this->track->updateSql($this->pemeriksaan, $data, $clause);
