@@ -408,7 +408,6 @@
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-                            console.log(row);
                             list = '<li><a class="dropdown-item" href="#" onclick="modalLaborat(\'' + data.no_rawat + '\')">Laborat</a></li>';
                             list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
                             list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
@@ -420,9 +419,14 @@
                                 } else {
                                     iconCheck = '';
                                 }
-                                list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak(\'' + data.no_rawat + '\')">Asesmen Medis Anak ' + iconCheck + '</a></li>';
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${iconCheck}</a></li>`;
                             } else if (row.reg_periksa.dokter.kd_sps == 'S0001') {
-                                list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan(\'' + data.no_rawat + '\')">Asesmen Medis Kandungan</a></li>';
+                                if (row.reg_periksa.asmed_ranap_kandungan.length) {
+                                    iconCheck = '<i class="bi bi-check-circle text-success"></i>';
+                                } else {
+                                    iconCheck = '';
+                                }
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${iconCheck}</a></li>`;
                             }
 
 
@@ -453,7 +457,7 @@
                             }
 
                             if (data.pasien) {
-                                pasien = data.pasien.nm_pasien + ' (' + data.umurdaftar + ' ' + data.sttsumur + ')';
+                                pasien = `${data.no_rkm_medis} <br/> ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})`;
                             } else {
                                 pasien = data.no_rkm_medis.replace(/\s/g, '');
                                 $.ajax({
@@ -568,7 +572,7 @@
                 "language": {
                     "zeroRecords": "Tidak ada data pasien terdaftar",
                     "infoEmpty": "Tidak ada data pasien terdaftar",
-                    "search": "Cari Nama Pasien",
+                    "search": "Pemcarian",
                 }
             })
         }

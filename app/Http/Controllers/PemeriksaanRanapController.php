@@ -200,9 +200,9 @@ class PemeriksaanRanapController extends Controller
             ->orderBy('jam_rawat', 'DESC');
         if ($request->parameter) {
             if ($request->parameter == 'pemeriksaan') {
-                $pemeriksaan->select([$request->parameter, 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'kesadaran', 'jam_rawat', 'tgl_perawatan'])->orderBy('tgl_perawatan', 'ASC');
+                $pemeriksaan->select([$request->parameter, 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'kesadaran', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
             } else {
-                $pemeriksaan->select([$request->parameter, 'jam_rawat', 'tgl_perawatan'])->orderBy('tgl_perawatan', 'ASC');
+                $pemeriksaan->select([$request->parameter, 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
             }
             if ($request->pemeriksaan) {
                 $pemeriksaan->where($request->parameter, 'like', '%' . $request->pemeriksaan . '%');

@@ -13,6 +13,7 @@
                             <th width="20%">TANGGAL</th>
                             <th width="10%">JAM</th>
                             <th class="parameter"></th>
+                            <th width="25%" class="petugas">PETUGAS</th>
                         </tr>
                     </thead>
                     <tbody>

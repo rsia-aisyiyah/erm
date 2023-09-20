@@ -57,6 +57,7 @@ class RanapController extends Controller
                         $query->where('nm_pasien', 'like', '%' . $request->get('search')['value'] . '%');
                     });
                 }
-            })->make(true);
+            })
+            ->make(true);
     }
 }

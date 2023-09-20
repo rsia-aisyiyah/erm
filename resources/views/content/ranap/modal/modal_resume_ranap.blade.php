@@ -402,7 +402,7 @@
                     }
                 })
 
-                if (Object.keys(response.bayi_gabung).length) {
+                if (response.bayi_gabung) {
                     inap = response.bayi_gabung.kamar_inap;
                     tgl_keluar = inap.tgl_keluar == '0000-00-00' ? `${inap.tgl_keluar} ${inap.jam_keluar}` : `${formatTanggal(inap.tgl_keluar)} ${inap.jam_keluar} `;
                     $('#formResumeRanap input[name=kamar]').val(`${inap.kamar.bangsal.nm_bangsal} ( ${response.penjab.png_jawab} )`);
@@ -499,6 +499,7 @@
                     } else {
                         row += `<td>${kel[parameter]}</td>`;
                     }
+                    row += `<td>${kel.petugas.nama}</td>`;
                     row += `</tr>`
                     no++;
                     $('#tbListResume tbody').append(row);
@@ -506,6 +507,7 @@
 
                 $('.parameter').text(`${parameter.toUpperCase()}`)
                 $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
+                $('#tbListResume .petugas').css('display', '')
                 $('#modalListResume #btn-pemeriksaan').attr(`onclick`, `cariPemeriksaan('${noRawat}', '${parameter}', this)`)
                 $('#modalListResume input[name=no_rawat]').val(noRawat)
                 $('#modalListResume input[name=parameter]').val(parameter)
@@ -530,6 +532,7 @@
 
                 $('.parameter').text(`${parameter.toUpperCase()}`)
                 $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
+                $('#tbListResume .petugas').css('display', 'none')
                 $('#modalListResume input[name=no_rawat]').val(noRawat)
                 $('#modalListResume input[name=parameter]').val(parameter)
                 $('#modalListResume #btn-pemeriksaan').attr(`onclick`, `cariPemeriksaanLab('${noRawat}', this)`)
