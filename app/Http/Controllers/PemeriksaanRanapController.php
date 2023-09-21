@@ -17,7 +17,6 @@ class PemeriksaanRanapController extends Controller
     private $pemeriksaan;
     private $grafikharian;
     private $track;
-    private $grafikHarian;
     private $log;
 
     public function __construct()
@@ -26,7 +25,6 @@ class PemeriksaanRanapController extends Controller
         $this->pemeriksaan = new PemeriksaanRanap();
         $this->grafikharian = new GrafikHarian();
         $this->track = new TrackerSqlController();
-        $this->grafikHarian = new RsiaGrafikHarian();
         $this->log = new RsiaLogSoapController();
     }
 
@@ -186,7 +184,7 @@ class PemeriksaanRanapController extends Controller
 
         $grafik = array_merge($clause, ['sumber' => 'SOAP']);
         $log = $this->log->insert($clause, 'Hapus');
-        $grafikHarian = $this->grafikHarian->where($grafik)->delete();
+        $grafikHarian = $this->grafikharian->where($grafik)->delete();
         return response()->json(['Berhasil', $pemeriksaan], 200);
     }
 
@@ -242,7 +240,11 @@ class PemeriksaanRanapController extends Controller
     function getTTV(Request $request)
     {
         $id = str_replace('-', '/', $request->no_rawat);
-        $data = $this->grafikHarian->where(['no_rawat' => $id])->get();
+        $data = $this->grafikharian->where(['no_rawat' => $id])
+        ->whereHas('pegawai', function ($q) {
+            return $q->where('jbtn', 'not like', '%direktur%')
+                    ->where('jbtn', 'not like', '%spesialis%');
+        })->get();
 
         // return json
         return $data;
@@ -251,7 +253,7 @@ class PemeriksaanRanapController extends Controller
     function getTTVData(Request $request)
     {
         $id = str_replace('-', '/', $request->no_rawat);
-        $data = $this->grafikHarian->where(['no_rawat' => $id, 'sumber' => '-'])->get();
+        $data = $this->grafikharian->where(['no_rawat' => $id, 'sumber' => '-'])->get();
         return DataTables::of($data)->make(true);
     }
     function get($noRawat)
