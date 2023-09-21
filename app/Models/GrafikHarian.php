@@ -13,6 +13,7 @@ class GrafikHarian extends Model
     protected $table = 'rsia_grafik_harian';
     public $timestamps = false;
     protected $guarded = [];
+
     public function regPeriksa()
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
@@ -20,5 +21,11 @@ class GrafikHarian extends Model
     public function petugas()
     {
         return $this->belongsTo(Petugas::class, 'nip', 'nip');
+    }
+
+    public function pegawai()
+    {
+        // pegawai nik
+        return $this->belongsTo(Pegawai::class, 'nip', 'nik');
     }
 }
