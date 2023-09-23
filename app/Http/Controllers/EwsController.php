@@ -236,7 +236,13 @@ class EwsController extends Controller
                             $hp[] = '';
                         }
                     } else if ($parameter == 'suhu_tubuh') {
-                        if ($kode_nilai == '<') {
+                        if ($kode_nilai == '-') {
+                            if ($pem[$parameter] >= $nilai1 && $pem[$parameter] <= $nilai2) {
+                                $hp[] = $pem[$parameter];
+                            } else {
+                                $hp[] = '';
+                            }
+                        } else if ($kode_nilai == '<') {
                             if ($pem[$parameter] < $nilai1) {
                                 $hp[] = $pem[$parameter];
                             } else {
@@ -248,13 +254,7 @@ class EwsController extends Controller
                             } else {
                                 $hp[] = '';
                             }
-                        } else {
-                            if ($pem[$parameter] <= $nilai1 && $pem[$parameter] >= $nilai2) {
-                                $hp[] = $pem[$parameter];
-                            } else {
-                                $hp[] = '';
-                            }
-                        }
+                        } 
                     } else {
                         if ($kode_nilai == '<') {
                             if ($pem[$parameter] < $nilai1) {
