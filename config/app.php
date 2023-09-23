@@ -239,8 +239,10 @@ return [
 
     'consId' => env('BPJS_CONSID'),
     'secretKey' => env('BPJS_SECRET_KEY'),
-    'userKey' => env('BPJS_USER_KEY'),
+    'bpjsUserKey' => env('BPJS_USER_KEY'),
     'bpjsUrl' => env('BPJS_URL'),
     'icareUrl' => env('ICARE_URL'),
+    'apotekUserKey' => env('APOTEK_USER_KEY'),
+    'apotekUrl' => env('APOTEK_URL'),
 
 ];
