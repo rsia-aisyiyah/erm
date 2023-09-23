@@ -104,13 +104,13 @@ class EwsMaternalController extends Controller
                     }
                 } else if ($parameter == 'suhu_tubuh') {
                     if ($kode_nilai == '<=') {
-                        if ($pem[$parameter] <= $nilai1) {
+                        if (floatval(str_replace(',','.',$pem[$parameter])) <= floatval($nilai1)) {
                             $hp[] = $pem[$parameter];
                         } else {
                             $hp[] = '';
                         }
                     } else if ($kode_nilai == '-') {
-                        if ($pem[$parameter] >= $nilai1 && $pem[$parameter] <= $nilai2) {
+                        if (floatval(str_replace(',','.',$pem[$parameter])) >= floatval($nilai1) && floatval(str_replace(',','.',$pem[$parameter])) <= floatval($nilai2)) {
                             $hp[] = $pem[$parameter];
                         } else {
                             $hp[] = '';
