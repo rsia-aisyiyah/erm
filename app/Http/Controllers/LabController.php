@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetailPemeriksaanLab;
 use App\Models\PeriksaLab;
+use App\Models\RegPeriksa;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use App\Models\DetailPemeriksaanLab;
 
 class LabController extends Controller
 {
@@ -26,6 +28,29 @@ class LabController extends Controller
                 return $query->where('Pemeriksaan', 'like', '%' . $request->pemeriksaan . '%');
             });
         }
-        return response()->json($lab->get());
+        return $lab->get();
+    }
+
+    function getDataTable(Request $request)
+    {
+        // return $request->kd_poli;
+
+        if ($request->kd_poli == 'OPE') {
+            $regPeriksa = RegPeriksa::where('no_rkm_medis', $request->no_rkm_medis)->orderBy('no_rawat', 'DESC')->limit(2)->with(
+                ['detailPemeriksaanLab.template', 'detailPemeriksaanLab.jnsPerawatanLab', 'detailPemeriksaanLab.periksaLab.petugas']
+            )->get();
+
+
+            $data = [];
+            foreach ($regPeriksa as $reg) {
+                foreach ($reg->detailPemeriksaanLab as $detail) {
+                    $data[] = $detail;
+                }
+            }
+            return DataTables::of($data)->make(true);
+        } else {
+            $data = $this->ambil($request);
+            return DataTables::of($data)->make(true);
+        }
     }
 }

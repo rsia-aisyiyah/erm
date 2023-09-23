@@ -481,79 +481,198 @@
                 // set action pencarian
                 $('#formResumeRanap #srcKeluhan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'keluhan')`);
                 $('#formResumeRanap #srcPemeriksaan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'pemeriksaan')`);
-                $('#formResumeRanap #srcLab').attr('onclick', `listHasilLab('${response.no_rawat}')`);
+                $('#formResumeRanap #srcLab').attr('onclick', `listHasilLab('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
                 $('#formResumeRanap #srcObat').attr('onclick', `listPemberianObat('${response.no_rawat}')`);
             })
             $('#modalResumeRanap').modal('show')
         }
 
         function listRiwayatPemeriksaan(noRawat, parameter) {
-            getPemeriksaanRanap(noRawat, parameter).done((response) => {
-                no = 1;
-                $.map(response, (kel) => {
-                    row = `<tr class="${no}" onclick="setTextRiwayat('${parameter}', ${no} )" style="cursor:pointer">`
-                    row += `<td>${formatTanggal(kel.tgl_perawatan)}</td>`;
-                    row += `<td>${kel.jam_rawat}</td>`;
-                    if (parameter == 'pemeriksaan') {
-                        row += `<td>${kel[parameter]} \n Tanda Vital  : TD : ${kel.tensi} mmHG, Nadi : ${kel.nadi}/mnt, RR : ${kel.respirasi}/mnt, Suhu : ${kel.suhu_tubuh} C \nKesadaran : ${kel.kesadaran}, \nHasil Pemeriksaan : , </td>`;
-                    } else {
-                        row += `<td>${kel[parameter]}</td>`;
-                    }
-                    row += `<td>${kel.petugas.nama}</td>`;
-                    row += `</tr>`
-                    no++;
-                    $('#tbListResume tbody').append(row);
-                })
+            pemeriksaan = '';
+            $('#tbListResume').DataTable({
+                destroy: true,
+                processing: true,
+                ordering: true,
+                paging: false,
+                scrollY: true,
+                info: false,
+                ajax: {
+                    url: "/erm/soap/get/table",
+                    data: {
+                        'no_rawat': noRawat,
+                        'parameter': parameter,
+                        'pemeriksaan': pemeriksaan,
+                    },
 
-                $('.parameter').text(`${parameter.toUpperCase()}`)
-                $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
-                $('#tbListResume .petugas').css('display', '')
-                $('#modalListResume #btn-pemeriksaan').attr(`onclick`, `cariPemeriksaan('${noRawat}', '${parameter}', this)`)
-                $('#modalListResume input[name=no_rawat]').val(noRawat)
-                $('#modalListResume input[name=parameter]').val(parameter)
-                $('#modalListResume').modal('show')
+                },
+                createdRow: function(row, data, dataIndex) {
+                    $(row).attr('class', 'row-' + dataIndex);
+                    $(row).attr('onclick', `setTextRiwayat('${parameter}', ${dataIndex})`);
+                },
 
+                columns: [{
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            return splitTanggal(row.tgl_perawatan)
+                        }
+                    },
+                    {
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            return row.jam_rawat
+                        }
+                    },
+                    {
+                        data: '',
+                        render: function(data, type, row, meta) {
+
+                            if (parameter == 'pemeriksaan') {
+                                hasilPeriksa = `${row[parameter]} \n Tanda Vital  : TD : ${row.tensi} mmHG, Nadi : ${row.nadi}/mnt, RR : ${row.respirasi}/mnt, Suhu : ${row.suhu_tubuh} C \nKesadaran : ${row.kesadaran}, \nHasil Pemeriksaan : ,`
+                            } else {
+                                hasilPeriksa = row[parameter]
+                            }
+                            return hasilPeriksa
+                        }
+                    },
+                    {
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            return row.petugas.nama
+                        }
+                    },
+
+                ],
+                "language": {
+                    "zeroRecords": "Tidak ada data pemeriksaan",
+                    "infoEmpty": "Tidak ada data pemeriksaan",
+                    "search": "Cari",
+                }
             })
+
+
+            $('.parameter').text(`${parameter.toUpperCase()}`)
+            $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
+            $('#tbListResume .petugas').css('display', '')
+            $('#modalListResume').modal('show')
         }
 
-        function listHasilLab(noRawat) {
-            parameter = 'laborat';
-            getHasilLab(noRawat).done((response) => {
-                no = 1;
-                $.map(response, (lab) => {
-                    row = `<tr class="${no}" onclick="setTextRiwayat('${parameter}', ${no} )" style="cursor:pointer">`
-                    row += `<td>${formatTanggal(lab.tgl_periksa)}</td>`;
-                    row += `<td>${lab.jam}</td>`;
-                    row += `<td>${lab.template.Pemeriksaan} : ${lab.nilai} ${lab.template.satuan}</td>`;
-                    row += `</tr>`
-                    no++;
-                    $('#tbListResume tbody').append(row);
-                })
+        function listHasilLab(noRawat, noRkmMedis, poli = '') {
+            parameter = 'laborat'
+            $('#tbListResume').DataTable({
+                destroy: true,
+                processing: true,
+                ordering: true,
+                paging: false,
+                scrollY: true,
+                info: false,
+                ajax: {
+                    url: "/erm/lab/ambil/table",
+                    data: {
+                        'no_rawat': noRawat,
+                        'no_rkm_medis': noRkmMedis,
+                        'kd_poli': poli,
+                    },
+                },
+                createdRow: function(row, data, dataIndex) {
+                    $(row).attr('class', 'row-' + dataIndex);
+                    $(row).attr('onclick', `setTextRiwayat('${parameter}', ${dataIndex})`);
+                },
 
-                $('.parameter').text(`${parameter.toUpperCase()}`)
-                $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
-                $('#tbListResume .petugas').css('display', 'none')
-                $('#modalListResume input[name=no_rawat]').val(noRawat)
-                $('#modalListResume input[name=parameter]').val(parameter)
-                $('#modalListResume #btn-pemeriksaan').attr(`onclick`, `cariPemeriksaanLab('${noRawat}', this)`)
-                $('#modalListResume').modal('show')
+                columns: [{
+                        data: '',
+                        render: function(data, type, row, meta) {
+
+                            return `${splitTanggal(row.tgl_periksa)} </br> <span style="font-size:10px;font-style:italic">${row.no_rawat}</span>`
+                        }
+                    },
+                    {
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            return row.jam
+                        }
+                    },
+                    {
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            return `${row.template.Pemeriksaan} : ${row.nilai}`
+                        }
+                    },
+                    {
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            return '-'
+                        }
+                    },
+
+                ],
+                "language": {
+                    "zeroRecords": "Tidak ada data pemeriksaan",
+                    "infoEmpty": "Tidak ada data pemeriksaan",
+                    "search": "Cari",
+                }
             })
+
+            $('.parameter').text(`${parameter.toUpperCase()}`)
+            $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
+            $('#modalListResume input[name=no_rawat]').val(noRawat)
+            $('#modalListResume input[name=parameter]').val(parameter)
+            $('#modalListResume #btn-pemeriksaan').attr(`onclick`, `cariPemeriksaanLab('${noRawat}', this)`)
+            $('#modalListResume').modal('show')
         }
 
         function listPemberianObat(noRawat) {
             parameter = 'obat';
-            getPemberianObat(noRawat).done((response) => {
-                no = 1;
-                $.map(response, (obat) => {
-                    row = `<tr class="${no}" onclick="setTextRiwayat('${parameter}', ${no} )" style="cursor:pointer">`
-                    row += `<td>${formatTanggal(obat.tgl_perawatan)}</td>`;
-                    row += `<td>${obat.jam}</td>`;
-                    row += `<td>${obat.databarang.nama_brng} : ${obat.jml} ${obat.databarang.kode_satuan.satuan}</td>`;
-                    row += `</tr>`
-                    no++;
-                    $('#tbListResume tbody').append(row);
-                })
-            });
+            $('#tbListResume').DataTable({
+                destroy: true,
+                processing: true,
+                ordering: true,
+                paging: false,
+                scrollY: true,
+                info: false,
+                ajax: {
+                    url: "/erm/obat/pemberian/table",
+                    data: {
+                        'no_rawat': noRawat,
+                        'parameter': parameter,
+                    },
+                },
+                createdRow: function(row, data, dataIndex) {
+                    $(row).attr('class', 'row-' + dataIndex);
+                    $(row).attr('onclick', `setTextRiwayat('${parameter}', ${dataIndex})`);
+                },
+
+                columns: [{
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            return splitTanggal(row.tgl_perawatan)
+                        }
+                    },
+                    {
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            return row.jam
+                        }
+                    },
+                    {
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            return `${row.databarang.nama_brng} : ${row.jml} ${row.databarang.kode_satuan.satuan}`
+                        }
+                    },
+                    {
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            return '-'
+                        }
+                    },
+
+                ],
+                "language": {
+                    "zeroRecords": "Tidak ada data pemeriksaan",
+                    "infoEmpty": "Tidak ada data pemeriksaan",
+                    "search": "Cari",
+                }
+            })
             $('.parameter').text(`${parameter.toUpperCase()}`)
             $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
             $('#modalListResume input[name=no_rawat]').val(noRawat)
@@ -609,28 +728,32 @@
         function setTextRiwayat(params, no) {
             switch (params) {
                 case 'keluhan':
-                    value = $('#keluhan_utama').val() != '-' ? $('#keluhan_utama').val().replaceAll('&lt;', '<').replaceAll('&gt;', '>') + '\n' : '';
-                    value += $('#tbListResume tbody .' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
-                    $('#keluhan_utama').val(value)
+                    element = $('#formResumeRanap textarea[name=keluhan_utama]');
+                    value = element.val() != '-' ? element.val().replaceAll('&lt;', '<').replaceAll('&gt;', '>') + '\n' : '';
+                    value += $('#tbListResume tbody .row-' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+                    element.val(value)
                     $('#modalListResume').modal('hide')
                     break;
                 case 'pemeriksaan':
-                    value = $('#pemeriksaan_fisik').val() != '-' ? $('#pemeriksaan_fisik').val().replaceAll('&lt;', '<').replaceAll('&gt;', '>') + '\n' : '';
-                    value += $('#tbListResume tbody .' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+                    element = $('#formResumeRanap textarea[name=pemeriksaan_fisik]');
+                    value = element.val() != '-' ? element.val().replaceAll('&lt;', '<').replaceAll('&gt;', '>') + '\n' : '';
+                    value += $('#tbListResume tbody .row-' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
                     value += value.replaceAll('&lt;', '<').replaceAll('&gt;', '>');
-                    $('#pemeriksaan_fisik').val(value)
+                    element.val(value)
                     $('#modalListResume').modal('hide')
                     break;
                 case 'laborat':
-                    value = $('#hasil_laborat').val() != '-' ? $('#hasil_laborat').val() + ',\n' : '';
-                    value += $('#tbListResume tbody .' + no).find("td").eq(2).html();
-                    $('#hasil_laborat').val(value)
+                    element = $('#formResumeRanap textarea[name=hasil_laborat]');
+                    value = element.val() != '-' ? element.val() + ', ' : '';
+                    value += $('#tbListResume tbody .row-' + no).find("td").eq(2).html();
+                    element.val(value)
                     $('#modalListResume').modal('hide')
                     break;
                 case 'obat':
-                    value = $('#obat_di_rs').val() != '-' ? $('#obat_di_rs').val() + ',\n ' : '';
-                    value += $('#tbListResume tbody .' + no).find("td").eq(2).html();
-                    $('#obat_di_rs').val(value)
+                    element = $('#formResumeRanap textarea[name=obat_di_rs]');
+                    value = element.val() != '-' ? element.val() + ', ' : '';
+                    value += $('#tbListResume tbody .row-' + no).find("td").eq(2).html();
+                    element.val(value)
                     $('#modalListResume').modal('hide')
                     break;
                 case 'diagnosa':

@@ -9,6 +9,7 @@ class PetugasController extends Controller
 {
     public function cari(Request $request)
     {
+
         $petugas = new Petugas();
         $hasil = '';
         if ($request->has('q')) {

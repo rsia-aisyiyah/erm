@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalListResume" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color:#00000082">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title fs-5" id="exampleModalLabel"></h5>
@@ -21,7 +21,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="modal-footer" style="justify-content:flex-start">
+            {{-- <div class="modal-footer" style="justify-content:flex-start">
                 <div class="col-sm-12 col-md-6 col-lg-6">
                     <form action="" class="filterListPemeriksaam">
                         <input type="hidden" name="parameter" id="parameter">
@@ -32,7 +32,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>

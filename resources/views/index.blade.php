@@ -161,6 +161,17 @@
             return string
         }
 
+        function getPetugas(nama, no = '') {
+            const petugas = $.ajax({
+                url: '/erm/petugas/cari',
+                data: {
+                    'q': nama
+                },
+            });
+
+            return petugas;
+        }
+
         function cariPetugas(nama) {
             $.ajax({
                 url: '/erm/petugas/cari',

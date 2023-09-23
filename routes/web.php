@@ -34,6 +34,7 @@ use App\Http\Controllers\Bridging\SepController;
 use App\Http\Controllers\BridgingSPRIController;
 use App\Http\Controllers\EstimasiPoliController;
 use App\Http\Controllers\AskepRalanAnakController;
+use App\Http\Controllers\AskepRanapAnakController;
 use App\Http\Controllers\Bridging\IcareController;
 use App\Http\Controllers\DiagnosaPasienController;
 use App\Http\Controllers\LaporanOperasiController;
@@ -47,6 +48,7 @@ use App\Http\Controllers\PemeriksaanRalanController;
 use App\Http\Controllers\PemeriksaanRanapController;
 use App\Http\Controllers\RsiaGrafikHarianController;
 use App\Http\Controllers\BookingRegistrasiController;
+use App\Http\Controllers\ResumePasienRanapController;
 use App\Http\Controllers\SuratKontrolUlangController;
 use App\Http\Controllers\Bridging\ReferensiController;
 use App\Http\Controllers\ResepDokterRacikanController;
@@ -57,6 +59,7 @@ use App\Http\Controllers\BridgingRujukanBpjsController;
 use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\PenilaianMedisRanapController;
 use App\Http\Controllers\AsesmenMedisRajalAnakController;
+use App\Http\Controllers\Apotek\ApotekReferensiController;
 use App\Http\Controllers\Bridging\RencanaKontrolController;
 use App\Http\Controllers\BrigdgingRencanaKontrolController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
@@ -66,7 +69,6 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
-use App\Http\Controllers\ResumePasienRanapController;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -166,6 +168,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/pemeriksaan/delete', [PemeriksaanRalanController::class, 'delete']);
 
     Route::get('/soap/get', [PemeriksaanRanapController::class, 'ambilPemeriksaan']);
+    Route::get('/soap/get/table', [PemeriksaanRanapController::class, 'getDataTable']);
     Route::get('/soap', [PemeriksaanRanapController::class, 'ambil']);
     Route::get('/soap/ambil', [PemeriksaanRanapController::class, 'ambilSatu']);
     Route::post('/soap/ubah', [PemeriksaanRanapController::class, 'ubah']);
@@ -180,11 +183,16 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/aturan', [DetailPemberianObatController::class, 'aturanPakai']);
     Route::get('/obat/pemberian', [DetailPemberianObatController::class, 'get']);
+    Route::get('/obat/pemberian/table', [DetailPemberianObatController::class, 'getDataTable']);
     Route::get('lab/petugas', [LabController::class, 'petugas']);
     Route::get('lab/ambil', [LabController::class, 'ambil']);
+    Route::get('lab/ambil/table', [LabController::class, 'getDataTable']);
 
     Route::get('ranap', [RanapController::class, 'index']);
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
+    Route::get('ranap/askep/anak', [AskepRanapAnakController::class, 'get']);
+
+
     Route::get('ews/{sttsRawat}/{noRawat}', [EwsController::class, 'get']);
     Route::get('ews/maternal/{sttsRawat}/{noRawat}', [EwsMaternalController::class, 'get']);
 
@@ -292,6 +300,8 @@ Route::middleware('auth')->group(function () {
         Route::get('SEP/{sep}', [SepController::class, 'getSep']);
         Route::get('peserta/nokartu/{nokartu}/tglsep/{tglsep}', [ReferensiController::class, 'getPasien']);
         Route::post('/riwayat/icare', [IcareController::class, 'rsValidate']);
+
+        Route::get('apotek/referensi/dhpo', [ApotekReferensiController::class, 'getDpho']);
     });
 
     Route::get('spri/get/{nokartu}/{tanggal}', [BridgingSPRIController::class, 'get']);

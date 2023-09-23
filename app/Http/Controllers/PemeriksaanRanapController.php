@@ -211,6 +211,14 @@ class PemeriksaanRanapController extends Controller
 
         return $pemeriksaan->get();
     }
+
+    function getDataTable(Request $request)
+    {
+        $data = $this->ambilPemeriksaan($request);
+
+        return DataTables::of($data)->make(true);
+    }
+
     public function ambil(Request $request)
     {
 
@@ -237,14 +245,16 @@ class PemeriksaanRanapController extends Controller
         return DataTables::of($pemeriksaan->get())->make(true);
     }
 
+
+
     function getTTV(Request $request)
     {
         $id = str_replace('-', '/', $request->no_rawat);
         $data = $this->grafikharian->where(['no_rawat' => $id])
-        ->whereHas('pegawai', function ($q) {
-            return $q->where('jbtn', 'not like', '%direktur%')
+            ->whereHas('pegawai', function ($q) {
+                return $q->where('jbtn', 'not like', '%direktur%')
                     ->where('jbtn', 'not like', '%spesialis%');
-        })->get();
+            })->get();
 
         // return json
         return $data;

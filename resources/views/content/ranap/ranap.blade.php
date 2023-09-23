@@ -146,6 +146,7 @@
     @include('content.ranap.modal.modal_soap')
     @include('content.ranap.modal.modal_penunjang')
     @include('content.ranap.modal.modal_asmed_anak')
+    @include('content.ranap.modal.modal_askep_anak')
     @include('content.ranap.modal.modal_asmed_kandungan')
     @include('content.ranap.modal.modal_grafik_harian')
     @include('content.ranap.modal.modal_resume_ranap')
@@ -372,6 +373,15 @@
             tb_ranap();
         })
 
+
+        function cekList(parameter) {
+            let isCheck = '';
+            if (parameter) {
+                isCheck = parameter ? '<i class="bi bi-check-circle text-success"></i>' : '';
+            }
+            return isCheck;
+        }
+
         function tb_ranap() {
 
             $('#tb_ranap').DataTable({
@@ -408,25 +418,17 @@
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
+
                             list = '<li><a class="dropdown-item" href="#" onclick="modalLaborat(\'' + data.no_rawat + '\')">Laborat</a></li>';
                             list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
                             list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
-
-                                if (row.reg_periksa.asmed_ranap_anak.length) {
-                                    iconCheck = '<i class="bi bi-check-circle text-success"></i>';
-                                } else {
-                                    iconCheck = '';
-                                }
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${iconCheck}</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak.length)}</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
                             } else if (row.reg_periksa.dokter.kd_sps == 'S0001') {
-                                if (row.reg_periksa.asmed_ranap_kandungan.length) {
-                                    iconCheck = '<i class="bi bi-check-circle text-success"></i>';
-                                } else {
-                                    iconCheck = '';
-                                }
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${iconCheck}</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan?.length)}</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan?.length)}</a></li>`;
                             }
 
 
