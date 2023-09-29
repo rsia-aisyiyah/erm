@@ -74,7 +74,11 @@
                                 onclick="modalGrafikHarian()" style="font-size: 12px"><i
                                     class="bi bi-bar-chart-line"></i> Tambah Grafik</button>
                         </div>
-                        <canvas id="grafik-suhu" style="max-height: 400px;"></canvas>
+                        <div class="table-responsive">  
+                            <div class="chart-container">
+                                <canvas id="grafik-suhu" class="grafikPemeriksaan"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

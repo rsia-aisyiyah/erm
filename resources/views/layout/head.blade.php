@@ -313,5 +313,18 @@
         .form-control-sm:focus {
             /* transition: all .1s linear; */
         }
+
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 60vh;
+            width: auto;
+        }
+
+        @media (max-width: 400px) {
+            .chart-container {
+                width: 600px;
+            }
+        }
     </style>
 </head>
