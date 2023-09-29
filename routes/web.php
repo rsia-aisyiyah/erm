@@ -63,6 +63,9 @@ use App\Http\Controllers\Apotek\ApotekReferensiController;
 use App\Http\Controllers\Bridging\RencanaKontrolController;
 use App\Http\Controllers\BrigdgingRencanaKontrolController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
+use App\Http\Controllers\MasterMasalahKeperawatanController;
+use App\Http\Controllers\MasterRancanaKeperawatanController;
+use App\Http\Controllers\MasterRencanaKeperawatanController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
@@ -191,6 +194,11 @@ Route::middleware('auth')->group(function () {
     Route::get('ranap', [RanapController::class, 'index']);
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
     Route::get('ranap/askep/anak', [AskepRanapAnakController::class, 'get']);
+
+    Route::get('master/masalah/keperawatan/table', [MasterMasalahKeperawatanController::class, 'getDataTable']);
+    Route::get('master/rencana/keperawatan/table', [MasterRencanaKeperawatanController::class, 'getDataTable']);
+
+
 
 
     Route::get('ews/{sttsRawat}/{noRawat}', [EwsController::class, 'get']);
