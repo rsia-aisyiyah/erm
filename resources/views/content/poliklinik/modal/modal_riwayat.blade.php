@@ -195,12 +195,12 @@
                                         <tr>
                                             <td>Respirasi</td>
                                             <td>:</td>
-                                            <td>${pemRanap.respirasi} /menit</td>    
+                                            <td>${pemRanap.respirasi} X/menit</td>    
                                         </tr>
                                         <tr>
                                             <td>Nadi</td>
                                             <td>:</td>
-                                            <td>${pemRanap.nadi} /menit</td>    
+                                            <td>${pemRanap.nadi} X/menit</td>    
                                         </tr>
                                         <tr>
                                             <td>SpO2</td>
