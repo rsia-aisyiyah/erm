@@ -2,6 +2,9 @@
     <div class="modal-dialog modal-fullscreen">
         {{-- <div class="modal-content" style="border-radius:0px; height:100vh;"> --}}
         <form method="post" class="modal-content" id="formSaveGrafikHarian" style="background: #f3f3f3;">
+            <div class="" id="kdDokter"></div>
+            <div class="" id="spesialisDOkter"></div>
+            <div class="" id="nmPasien"></div>
             <div class="modal-header" style="background: #dfdfdf;">
                 <h5 class="modal-title fs-5" id="exampleModalLabel">GRAFIK HARIAN</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

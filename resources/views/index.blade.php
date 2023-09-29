@@ -50,6 +50,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
     <script type="text/javascript">
+        const APIURL = 'http://sim.rsiaaisyiyah.com/rsiap-api/api';
+
         function ambilNoRawat(no_rawat) {
             id = no_rawat;
         }
@@ -1325,6 +1327,45 @@
 
             $('.tindakan').html(tindakan)
 
+        }
+
+        // {
+        //     "success": true,
+        //     "message": "notification sent",
+        //     "data": {
+        //         "data": {
+        //             "no_rawat": "2023/08/10/000001",
+        //             "kategori": "Ranap"
+        //         },
+        //         "notification": {
+        //             "title": "RSIA Mobile Dokter (kandungan)",
+        //             "body": "Test POST method API"
+        //         },
+        //         "topic": "1.206.0818"
+        //     }
+        // }
+
+        function notifSend(topics, title, body, no_rawat, kategori) {
+            $.ajax({
+                url: APIURL + '/notification/send',
+                data: {
+                    "topic" : topics,
+                    "title" : title,
+                    "body"  : body,
+                    "data"  : {
+                        "no_rawat"  : no_rawat,
+                        "kategori"  : kategori,
+                    }
+                },
+                method: 'POST',
+                dataType: 'JSON',
+                error: (request) => {
+                    console.log(request);
+                },
+                success: (response) => {
+                    console.log(response);
+                }
+            });
         }
     </script>
     @stack('script')

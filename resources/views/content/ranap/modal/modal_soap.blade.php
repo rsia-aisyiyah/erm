@@ -433,6 +433,11 @@
             let splitPasien = pasien.split(' - ');
             let no = splitPasien[0];
 
+            // get data-kd-dokter from form soap ranap #btn-simpan  kd_dokter
+            let kd_dokter = $('#formSoapRanap .btn-simpan').attr('data-kd-dokter');
+            let spesialis = $('#formSoapRanap .btn-simpan').attr('data-spesialis');
+            let nm_pasien = $('#formSoapRanap .btn-simpan').attr('data-nm-pasien');
+
             $.ajax({
                 url: '/erm/soap/simpan',
                 data: {
@@ -481,7 +486,35 @@
                             text: 'Data Berhasil Ditambah',
                             showConfirmButton: false,
                             timer: 1500
-                        })
+                        });
+
+                        if (spesialis.toLowerCase().includes('anak')) {
+                            console.log('anak');
+                            if ($('#suhu').val() < 35.5 || $('#suhu').val() > 39.5) {
+                                console.log('kirim notif');
+                                notifSend(
+                                    // FIXME : kd_dokter masih belum benar
+                                    kd_dokter, 
+                                    'Notifikasi Kondisi Pasien',
+                                    'Suhu tubuh ' + $('#suhu').val() + '°, pasien atas nama :' + nm_pasien,
+                                    $('#nomor_rawat').val(),
+                                    'Ranap'
+                                );
+                            }
+                        } else {
+                            console.log('bukan anak');
+                            if ($('#suhu').val() < 35.1 || $('#suhu').val() > 35.9) {
+                                console.log('kirim notif');
+                                notifSend(
+                                    // FIXME : kd_dokter masih belum benar
+                                    kd_dokter, 
+                                    'Notifikasi Kondisi Pasien',
+                                    'Suhu tubuh ' + $('#suhu').val() + '°, pasien atas nama :' + nm_pasien,
+                                    $('#nomor_rawat').val(),
+                                    'Ranap'
+                                );
+                            }
+                        }
 
                         $('#tbSoap').DataTable().destroy();
                         tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
