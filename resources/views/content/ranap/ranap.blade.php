@@ -420,7 +420,7 @@
                         render: function(data, type, row, meta) {
 
                             list = '<li><a class="dropdown-item" href="#" onclick="modalLaborat(\'' + data.no_rawat + '\')">Laborat</a></li>';
-                            list += '<li><a class="dropdown-item" href="#" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
+                            list += '<li><a class="dropdown-item" href="#" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
                             list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
@@ -496,7 +496,7 @@
                                 namaBayi = `<a class="nav-link dropdown-toggle btn btn-warning btn-sm" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">${row.ranap_gabung.reg_periksa.pasien.nm_pasien}</a>
                                 <ul class="dropdown-menu dropdown-menu" style="font-size:12px">
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalLaborat('${row.ranap_gabung.reg_periksa.no_rawat}')">Laborat</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">S.O.A.P</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${row.ranap_gabung.reg_periksa.kd_dokter}" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">S.O.A.P</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Pemeriksaan Penunjang</a></li>
                                     ${resume}
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.ranap_gabung.reg_periksa.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.ranap_gabung.reg_periksa.no_rkm_medis}">Riwayat</a></li>
@@ -990,6 +990,14 @@
                 $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
                 setEws(no_rawat, 'ranap', response.dokter.kd_sps)
 
+                // console.log(response.dokter);
+                $('#formSoapRanap .btn-simpan').attr('data-kd-dokter', response.dokter.kd_dokter);
+                $('#formSoapRanap .btn-simpan').attr('data-spesialis', response.dokter.spesialis.nm_sps);
+                $('#formSoapRanap .btn-simpan').attr('data-nm-pasien', response.pasien.nm_pasien);
+
+                $('#formSaveGrafikHarian #kdDokter').attr('data-kd-dokter', response.dokter.kd_dokter);
+                $('#formSaveGrafikHarian #spesialisDOkter').attr('data-spesialis', response.dokter.spesialis.nm_sps);
+                $('#formSaveGrafikHarian #nmPasien').attr('data-nm-pasien', response.pasien.nm_pasien);
             })
 
             $('#modalSoapRanap').modal('toggle')
@@ -1241,13 +1249,19 @@
             // set data to modal
             $('#formSaveGrafikHarian input[name="no_rawat"]').val(no_rawat);
             $('#formSaveGrafikHarian input[name="nm_pasien"]').val(nm_pasien);
-
-
         }
 
         // form tambah grafik harian submit
         $('#formSaveGrafikHarian').on('submit', function(e) {
             e.preventDefault();
+
+            var kd_dokter = $('#formSaveGrafikHarian #kdDokter').data('kd-dokter');
+            var spesialis = $('#formSaveGrafikHarian #spesialisDOkter').data('spesialis');
+            var nm_pasien = $('#formSaveGrafikHarian #nmPasien').data('nm-pasien');
+            
+            var suhu_tubuh = $('#formSaveGrafikHarian input[name="suhu_tubuh"]').val();
+            var no_rawat = $('#formSaveGrafikHarian input[name="no_rawat"]').val();
+
             $.ajax({
                 url: '/erm/soap/grafik/store',
                 data: {
@@ -1278,6 +1292,32 @@
                 },
                 success: function(response) {
                     if (response.success) {
+                        if (spesialis.toLowerCase().includes('anak')) {
+                            console.log('anak');
+                            if (suhu_tubuh < 35.5 || suhu_tubuh > 39.5) {
+                                console.log('kirim notif');
+                                notifSend(
+                                    kd_dokter, 
+                                    'Notifikasi Kondisi Pasien',
+                                    'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
+                                    no_rawat,
+                                    'Ranap'
+                                );
+                            }
+                        } else {
+                            console.log('bukan anak');
+                            if (suhu_tubuh < 35.1 || suhu_tubuh > 35.9) {
+                                console.log('kirim notif');
+                                notifSend(
+                                    kd_dokter, 
+                                    'Notifikasi Kondisi Pasien',
+                                    'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
+                                    no_rawat,
+                                    'Ranap'
+                                );
+                            }
+                        }
+                        
                         $('#modalGrafikHarian').modal('toggle');
                         grafikPemeriksaan.destroy();
 
@@ -1301,7 +1341,7 @@
                     swal.fire({
                         title: 'Gagal',
                         text: request.message,
-                        icon: 'errir',
+                        icon: 'error',
                         showConfirmButton: true,
                     });
 
@@ -1315,6 +1355,10 @@
             $('#formSaveGrafikHarian input[name="action"]').remove();
             $('#formSaveGrafikHarian input[name="tgl_perawatan"]').remove();
             $('#formSaveGrafikHarian input[name="jam_rawat"]').remove();
+
+            // reset data-*
+            $('#formSaveGrafikHarian #kdDokter').attr('data-kd-dokter', '');
+            $('#formSaveGrafikHarian #spesialisDOkter').attr('data-spesialis', '');
         });
 
         function deleteGrafikHarian(no_rawat, tgl_perawatan, jam_rawat) {
