@@ -176,53 +176,53 @@
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-grafik')
             new bootstrap.Tab('#tab-tabel')
-            if (cekDepartement == 'DM3' || cekDepartement == 'DM8') {
-                if (cekDepartement == 'DM3') {
-                    sps = 'S0001';
-                } else if (cekDepartement == 'DM8') {
-                    sps = 'S0003';
-                }
-                $('#formFilterRanap select[name=spesialis]').val(sps);
-                $('#formFilterRanap select[name=spesialis]').prop('disabled', true);
-                $('#formFilterRanap select[name=dokter]').prop('disabled', false);
-                $('#formFilterRanap select[name=dokter] .' + sps).css('display', 'none');
-                if (kd_dokter) {
-                    $('#formFilterRanap select[name=dokter]').prop('disabled', false);
-                    $('#formFilterRanap select[name=dokter]').val(kd_dokter);
-                }
-            } else if (cekDepartement == 'CSM' || "{{ session()->get('pegawai')->nik }}" == 'direksi') {
-                $('#formSoapRanap .waktuSoap').css('visibility', 'visible');
-            } else {
-                $('#formSoapRanap .waktuSoap').css('visibility', 'hidden');
-                if (sps) {
-                    $('#formFilterRanap select[name=spesialis]').val(sps);
-                    $('#formFilterRanap select[name=spesialis]').prop('disabled', false);
-                    $('#formFilterRanap select[name=dokter] .' + sps).css('display', 'none');
-                }
-                if (kd_dokter) {
-                    $('#formFilterRanap select[name=dokter]').prop('disabled', false);
-                    $('#formFilterRanap select[name=dokter]').val(kd_dokter);
-                } else {
-                    $('#formFilterRanap select[name=dokter]').prop('disabled', true);
-                    $('#formFilterRanap select[name=dokter] option').css('display', 'inline');
-                }
-            }
+            // if (cekDepartement == 'DM3' || cekDepartement == 'DM8') {
+            //     if (cekDepartement == 'DM3') {
+            //         sps = 'S0001';
+            //     } else if (cekDepartement == 'DM8') {
+            //         sps = 'S0003';
+            //     }
+            //     $('#formFilterRanap select[name=spesialis]').val(sps);
+            //     $('#formFilterRanap select[name=spesialis]').prop('disabled', true);
+            //     $('#formFilterRanap select[name=dokter]').prop('disabled', false);
+            //     $('#formFilterRanap select[name=dokter] .' + sps).css('display', 'none');
+            //     if (kd_dokter) {
+            //         $('#formFilterRanap select[name=dokter]').prop('disabled', false);
+            //         $('#formFilterRanap select[name=dokter]').val(kd_dokter);
+            //     }
+            // } else if (cekDepartement == 'CSM' || "{{ session()->get('pegawai')->nik }}" == 'direksi') {
+            //     $('#formSoapRanap .waktuSoap').css('visibility', 'visible');
+            // } else {
+            //     $('#formSoapRanap .waktuSoap').css('visibility', 'hidden');
+            //     if (sps) {
+            //         $('#formFilterRanap select[name=spesialis]').val(sps);
+            //         $('#formFilterRanap select[name=spesialis]').prop('disabled', false);
+            //         $('#formFilterRanap select[name=dokter] .' + sps).css('display', 'none');
+            //     }
+            //     if (kd_dokter) {
+            //         $('#formFilterRanap select[name=dokter]').prop('disabled', false);
+            //         $('#formFilterRanap select[name=dokter]').val(kd_dokter);
+            //     } else {
+            //         $('#formFilterRanap select[name=dokter]').prop('disabled', true);
+            //         $('#formFilterRanap select[name=dokter] option').css('display', 'inline');
+            //     }
+            // }
 
 
-            if (getSpsId == 'S0005') {
-                sps = `S0001`
-                kd_dokter = '';
-            }
+            // if (getSpsId == 'S0005') {
+            //     sps = `S0001`
+            //     kd_dokter = '';
+            // }
 
-            if (getSpsId == 'S0005' || getSpsId == 'S0003' || getSpsId == 'S0001') {
-                valScrollX = 425;
-                $('#formFilterRanap select[name=dokter]').prop('disabled', true);
-                $('#formFilterRanap select[name=spesialis]').prop('disabled', true);
-                $('#formFilterRanap select[name=dokter]').val(kd_dokter);
-                $('#formFilterRanap select[name=spesialis]').val(getSpsId);
-            } else {
-                valScrollX = 325;
-            }
+            // if (getSpsId == 'S0005' || getSpsId == 'S0003' || getSpsId == 'S0001') {
+            //     valScrollX = 425;
+            //     $('#formFilterRanap select[name=dokter]').prop('disabled', true);
+            //     $('#formFilterRanap select[name=spesialis]').prop('disabled', true);
+            //     $('#formFilterRanap select[name=dokter]').val(kd_dokter);
+            //     $('#formFilterRanap select[name=spesialis]').val(getSpsId);
+            // } else {
+            //     valScrollX = 325;
+            // }
 
 
 
@@ -387,7 +387,7 @@
             $('#tb_ranap').DataTable({
                 processing: true,
                 scrollX: true,
-                scrollY: valScrollX,
+                scrollY: 400,
                 stateSave: true,
                 ordering: false,
                 paging: false,
