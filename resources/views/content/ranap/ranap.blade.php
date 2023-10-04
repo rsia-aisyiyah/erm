@@ -851,6 +851,8 @@
                     $('.btn-asmed-anak').css('display', 'inline')
                 }
 
+                $('#formAsmedAnakRanap #srcPemeriksaanAsmed').attr('onclick', `listPemeriksaan('${response.no_rawat}', 'pemeriksaan')`);
+
             })
             $('#modalAsmedRanapAnak').modal('show')
         }
@@ -858,6 +860,7 @@
         var ctx = document.getElementById('grafik-suhu').getContext('2d');
         var grafikPemeriksaan;
         var tableGrafikHarian;
+
 
         $("#modalSoapRanap").on('hidden.bs.modal', function() {
             grafikPemeriksaan.destroy();
