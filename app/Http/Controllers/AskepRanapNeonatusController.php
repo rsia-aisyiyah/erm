@@ -2,30 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AskepRanapNeonatus;
 use Illuminate\Http\Request;
-use App\Models\AskepRanapAnak;
 
-class AskepRanapAnakController extends Controller
+class AskepRanapNeonatusController extends Controller
 {
     protected $askep;
     protected $track;
     public function __construct()
     {
-        $this->askep = new AskepRanapAnak();
+        $this->askep = new AskepRanapNeonatus();
         $this->track = new TrackerSqlController();
     }
 
     function get(Request $request)
     {
         return $this->askep->where('no_rawat', $request->no_rawat)->with('masalahKeperawatan.masterMasalah', 'masalahKeperawatan.rencanaKeperawatan.masterRencana', 'pengkaji1', 'pengkaji2')->first();
-    }
-
-    function insert(Request $request)
-    {
-        $data = $request->all();
-        $insert = $this->askep->create($data);
-        $this->track->insertSql($this->askep, $request->except('_token'));
-        return response()->json($insert);
     }
 
     function createOrUpdate(Request $request)
@@ -35,7 +27,7 @@ class AskepRanapAnakController extends Controller
 
         if ($askep) {
             $createOrUpdate =  $this->askep->where('no_rawat', $data['no_rawat'])->update($data);
-            $this->track->updateSql($this->askep, $data, ['no_rawat' => $data['no_rawat']]);
+            $this->track->updateSql($this->askep, $data, ['no_rawat', $data['no_rawat']]);
         } else {
             $createOrUpdate =  $this->askep->create($data);
             $this->track->insertSql($this->askep, $data);

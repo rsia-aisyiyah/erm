@@ -61,7 +61,7 @@
         }
 
         function removeZero(input) {
-            if (input.value == '-') {
+            if (input.value == '-' || input.value == '0') {
                 $(input).val('');
             }
         }
@@ -69,6 +69,12 @@
         function cekKosong(input) {
             if (input.value == '') {
                 $(input).val('-');
+            }
+        }
+
+        function isEmptyNumber(input) {
+            if (input.value == '') {
+                $(input).val('0');
             }
         }
 
@@ -1349,12 +1355,12 @@
             $.ajax({
                 url: APIURL + '/notification/send',
                 data: {
-                    "topic" : topics,
-                    "title" : title,
-                    "body"  : body,
-                    "data"  : {
-                        "no_rawat"  : no_rawat,
-                        "kategori"  : kategori,
+                    "topic": topics,
+                    "title": title,
+                    "body": body,
+                    "data": {
+                        "no_rawat": no_rawat,
+                        "kategori": kategori,
                     }
                 },
                 method: 'POST',

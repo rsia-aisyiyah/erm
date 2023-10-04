@@ -38,4 +38,8 @@ class KamarInap extends Model
     {
         return $this->hasOne(AskepRanapAnak::class, 'no_rawat', 'no_rawat');
     }
+    function askepNeonatus()
+    {
+        return $this->hasOne(AskepRanapNeonatus::class, 'no_rawat', 'no_rawat');
+    }
 }

@@ -1,12 +1,12 @@
-<div class="modal fade" id="modalAskepRanapAnak" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalAskepRanapNeonatus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fs-5" id="exampleModalLabel">ASESMEN KEPERAWATAN ANAK</h5>
+                <h5 class="modal-title fs-5" id="exampleModalLabel">ASESMEN KEPERAWATAN BAYI/NEONATUS</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" id="formAskepAnakRanap">
+                <form action="" id="formAskepRanapNeonatus">
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-6">
                             <div class="row mb-2">
@@ -35,11 +35,11 @@
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="tanggal">Tanggal</label>
-                                    <input type="text" class="form-control form-control-sm tanggal" name="tanggal" placeholder="" aria-label="" id="tanggal" value="{{ date('d-m-Y') }}">
+                                    <input type="text" class="form-control form-control-sm" name="tanggal" placeholder="" aria-label="" autocomplete="off">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="jam">Jam</label>
-                                    <input type="text" class="form-control form-control-sm jam" name="jam" placeholder="" aria-label="" id="jam" value="{{ date('H:i:s') }}">
+                                    <input type="text" class="form-control form-control-sm jam" name="jam" placeholder="" aria-label="" autocomplete="off">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="kasus_trauma">Kasus</label>
@@ -95,7 +95,7 @@
                                     <select class="form-select form-select-sm" id="cara_masuk" name="cara_masuk" style="font-size: 12px;height:28px">
                                         <option value="Poli" selected>Poli</option>
                                         <option value="IGD">IGD</option>
-                                        <option value="Lainnya">Lainnya</option>
+                                        <option value="Lain-lain">Lain-lain</option>
                                     </select>
                                 </div>
                             </div>
@@ -841,9 +841,6 @@
                                 </div>
 
                             </div>
-
-                        </div>
-                        <div class="mb-3 col-sm-12 col-md-12 col-lg-6">
                             <div class="separator m-2">4. Pengkajian Fungsi</div>
                             <div class="row">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
@@ -886,12 +883,12 @@
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
-                                        <label for="pengkajian_fungsi_ambulasi">d. Ambulansi</label>
+                                        <label for="pengkajian_fungsi_ambulasi">d. Ambulasi</label>
                                         <select class="form-select" name="pengkajian_fungsi_ambulasi" id="pengkajian_fungsi_ambulasi" style="border-radius:6px">
                                             <option value="Walker">Walker</option>
                                             <option value="Tongkat">Tongkat</option>
                                             <option value="Kursi Roda">Kursi Roda</option>
-                                            <option value="Tidak Ada">Tidak Ada</option>
+                                            <option value="Tidak Menggunakan">Tidak Menggunakan</option>
                                         </select>
                                     </div>
                                 </div>
@@ -953,6 +950,10 @@
                                     </div>
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="mb-3 col-sm-12 col-md-12 col-lg-6">
+
                             <div class="separator m-2">5. Riwayat Psikologis, Sosial, Ekonomi, Budaya</div>
                             <div class="row">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-5">
@@ -1136,7 +1137,7 @@
                             <div class="separator m-2">7. Riwayat Imunisasi</div>
                             <div class="row">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-12">
-                                    <table class="table table-bordered" width="100%" id="tbRiwayatImunisasi">
+                                    <table class="table table-bordered tbRiwayatImunisasi" width="100%" id="">
                                         <thead>
                                             <tr>
                                                 <th width="50%">Nama Imunisasi</th>
@@ -1151,7 +1152,7 @@
                                             <tr></tr>
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-sm btn-primary" id="riwayatVaksin" name="riwayatVaksin" type="button"> <i class="bi bi-plus"></i> Tambah</button>
+                                    <button class="btn btn-sm btn-primary" id="riwayatImunisasiNeo" name="riwayatImunisasiNeo" type="button"> <i class="bi bi-plus"></i> Tambah</button>
                                 </div>
                             </div>
                             <div class="separator m-2">8. Riwayat Tumbuh Kembang</div>
@@ -1272,6 +1273,78 @@
 
                             </div>
 
+                            <div class="separator m-2">11. Nilai APGAR</div>
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12 col-md-12">
+                                    <table width="100%" id="tbApgar" class="table table-bordered table-sm">
+                                        <thead class="table-primary" style="text-align:center;vertical-align:middle">
+                                            <tr>
+                                                <th>Tanda</th>
+                                                <th>0</th>
+                                                <th>1</th>
+                                                <th>2</th>
+                                                <th width="10%">N1'</th>
+                                                <th width="10%">N5'</th>
+                                                <th width="10%">N10'</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Frekensi Jantung</td>
+                                                <td>Tidak Ada</td>
+                                                <td>
+                                                    < 100</td>
+                                                <td> > 100</td>
+                                                <td><input type="text" name="f1" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('1')"></td>
+                                                <td><input type="text" name="f5" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('5')"></td>
+                                                <td><input type="text" name="f10" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('10')"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Usaha Nafas</td>
+                                                <td>Tidak Ada</td>
+                                                <td>Lambat Tak Teratur</td>
+                                                <td>Kuat Menangis</td>
+                                                <td><input type="text" name="u1" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('1')"></td>
+                                                <td><input type="text" name="u5" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('5')"></td>
+                                                <td><input type="text" name="u10" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('10')"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tanus Otot</td>
+                                                <td>Lumpuh</td>
+                                                <td>Ext. Flexi Sedikit</td>
+                                                <td>Gerakan Aktif</td>
+                                                <td><input type="text" name="t1" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('1')"></td>
+                                                <td><input type="text" name="t5" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('5')"></td>
+                                                <td><input type="text" name="t10" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('10')"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Reflek</td>
+                                                <td>Tidak Ada Respon</td>
+                                                <td>Pergerakan Sedikit</td>
+                                                <td>Menangis</td>
+                                                <td><input type="text" name="r1" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('1')"></td>
+                                                <td><input type="text" name="r5" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('5')"></td>
+                                                <td><input type="text" name="r10" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('10')"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Warna</td>
+                                                <td>Biru Pucat</td>
+                                                <td>Tubuh Kemerahan, Tangan & Kaki Biru</td>
+                                                <td>Kemerahan</td>
+                                                <td><input type="text" name="w1" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('1')"></td>
+                                                <td><input type="text" name="w5" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('5')"></td>
+                                                <td><input type="text" name="w10" class="form-control form-control-sm" value="0" onkeypress="return hanyaAngka(event)" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onchange="hitungApgar('10')"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">Jumlah : </td>
+                                                <td><input type="text" name="n1" class="form-control form-control-sm" value="0" readonly></td>
+                                                <td><input type="text" name="n5" class="form-control form-control-sm" value="0" readonly></td>
+                                                <td><input type="text" name="n10" class="form-control form-control-sm" value="0" readonly></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                             <div class="separator m-2">10. Penilaian Tingkat Nyeri</div>
                             <div class="row">
                                 <label for="" class="mb-2">Skala FLACCS : </label>
@@ -1399,7 +1472,7 @@
                             <div class="separator m-2">11. Masalah & Rencana Keperawtan</div>
                             <div class="row">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
-                                    <table id="tbMasalahKeperawatan" class="table table-striped">
+                                    <table id="tbMasalahKeperawatanNeo" class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>P</th>
@@ -1409,18 +1482,18 @@
                                     </table>
                                 </div>
                                 <div class="mb-1 mt-1 col-sm-12 col-md-12 col-lg-6">
-                                    <ul class="nav nav-tabs" id="tabMasalah" role="tablist">
+                                    <ul class="nav nav-tabs" id="tabMasalahNeonatus" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button style="font-size:10px;padding:6px" class="nav-link active" id="rancana" data-bs-toggle="tab" data-bs-target="#rancana-pane" type="button" role="tab" aria-controls="rancana-pane" aria-selected="true">Rencana Keperawatan</button>
+                                            <button style="font-size:10px;padding:6px" class="nav-link active" id="rencanaNeonatus" data-bs-toggle="tab" data-bs-target="#rencanaNeonatus-pane" type="button" role="tab" aria-controls="rencanaNeonatus-pane" aria-selected="true">Rencana Keperawatan</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button style="font-size:10px;padding:6px" class="nav-link" id="tindakan" data-bs-toggle="tab" data-bs-target="#tindakan-pane" type="button" role="tab" aria-controls="tindakan-pane" aria-selected="false">Tindakan Keperawatan</button>
+                                            <button style="font-size:10px;padding:6px" class="nav-link" id="tindakanNeonatus" data-bs-toggle="tab" data-bs-target="#tindakanNeonatus-pane" type="button" role="tab" aria-controls="tindakanNeonatus-pane" aria-selected="false">Tindakan Keperawatan</button>
                                         </li>
 
                                     </ul>
-                                    <div class="tab-content" id="tabIsiMasalah">
-                                        <div class="tab-pane fade show active p-2" id="rancana-pane" role="tabpanel" aria-labelledby="rancana" tabindex="0">
-                                            <table id="tbRencanaKeperawatan" class="table table-striped">
+                                    <div class="tab-content" id="tabIsiMasalahNeonatus">
+                                        <div class="tab-pane fade show active p-2" id="rencanaNeonatus-pane" role="tabpanel" aria-labelledby="rencanaNeonatus" tabindex="0">
+                                            <table id="tbRencanaKeperawatanNeo" class="table table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>P</th>
@@ -1432,7 +1505,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="tab-pane fade p-2" id="tindakan-pane" role="tabpanel" aria-labelledby="tindakan" tabindex="0">
+                                        <div class="tab-pane fade p-2" id="tindakanNeonatus-pane" role="tabpanel" aria-labelledby="tindakanNeonatus" tabindex="0">
                                             <textarea class="form-control" name="rencana" id="rencana" cols="30" rows="15"></textarea>
                                         </div>
                                     </div>
@@ -1444,7 +1517,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
-            <button type="button" class="btn btn-primary simpanAskepAnak" onclick="simpanAskepAnakRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+            <button type="button" class="btn btn-primary simpanAskepAnak" onclick="simpanAskepNeonatusRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
         </div>
     </div>
 </div>
@@ -1452,26 +1525,32 @@
 @push('script')
     <script>
         var kodeMasalah = []
-        var kodeRencana = []
+        var kodeRencanaNeo = []
 
-        $('#riwayatVaksin').click(() => {
-            $('#modalRiwayatImunisasi').modal('toggle')
+        $('#riwayatImunisasiNeo').click(() => {
+            $('#modalRiwayatImunisasi').modal('show')
         })
 
-        $('#modalAskepRanapAnak').on('hidden.bs.modal', () => {
-            document.getElementById("formAskepAnakRanap").reset();
-            tbRencanaKeperawatan()
+        $('#modalAskepRanapNeonatus').on('hidden.bs.modal', () => {
+            document.getElementById("formAskepRanapNeonatus").reset();
+            tbRencanaKeperawatanNeo()
             kodeMasalah = [];
-            kodeRencana = [];
+            kodeRencanaNeo = [];
         })
-        $('#modalAskepRanapAnak').on('shown.bs.modal', () => {
-            localStorage.removeItem('kodeRencana')
+        $('#modalAskepRanapNeonatus').on('shown.bs.modal', () => {
+            localStorage.removeItem('kodeRencanaNeo')
+            $('#formAskepRanapNeonatus input[name=tanggal]').datepicker({
+                format: 'dd-mm-yyyy',
+                orientation: 'bottom',
+                autoclose: true,
+                todayHighlight: true,
+            })
 
         })
 
-        function getAskepRanapAnak(no_rawat) {
+        function getAskepRanapNeonatus(no_rawat) {
             const askep = $.ajax({
-                url: '/erm/ranap/askep/anak',
+                url: '/erm/ranap/askep/neonatus',
                 method: 'GET',
                 data: {
                     no_rawat: no_rawat,
@@ -1481,360 +1560,60 @@
             return askep;
         }
 
-        function setRiwayatImunisasi(no_rkm_medis) {
-            getRiwayatImunisasi(no_rkm_medis).done((response) => {
-                console.log(response);
-                let kodeImun = ''
-                $('.tbRiwayatImunisasi tbody').empty();
-                $.map(response, (riwImun) => {
-                    if (kodeImun != riwImun.kode_imunisasi) {
-                        kodeImun = riwImun.kode_imunisasi;
-                        html = `<tr class="imun_${kodeImun}">
-                                        <td>${riwImun.master_imunisasi.nama_imunisasi}</td>
-                                        <td class="imun_${kodeImun}_1"></td>
-                                        <td class="imun_${kodeImun}_2"></td>
-                                        <td class="imun_${kodeImun}_3"></td>
-                                        <td class="imun_${kodeImun}_4"></td>
-                                        <td class="imun_${kodeImun}_5"></td>
-                                    </tr>`
-                        $('.tbRiwayatImunisasi tbody').append(html)
 
-                    }
-                    if (riwImun.no_imunisasi) {
-                        nomorImun = `<input class="form-check-input" type="checkbox" value="" checked onclick="hapusNoImunisasi('${no_rkm_medis}', '${riwImun.kode_imunisasi}', '${riwImun.no_imunisasi}', this)">`
-                        $('.imun_' + riwImun.kode_imunisasi + '_' + riwImun.no_imunisasi).html(nomorImun)
-                    }
-                })
-            })
-        }
-
-        function hapusNoImunisasi(no_rkm_medis, kode_imunisasi, no_imunisasi, p) {
-            Swal.fire({
-                title: 'Yakin ?',
-                text: "Hapus nomor imunisasi",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus saja!',
-                cancelButtonText: 'Jangan',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '/erm/imunisasi/riwayat/delete',
-                        data: {
-                            no_rkm_medis: no_rkm_medis,
-                            kode_imunisasi: kode_imunisasi,
-                            no_imunisasi: no_imunisasi,
-                            _token: "{{ csrf_token() }}",
-                        },
-                        method: 'DELETE',
-                    }).done((response) => {
-                        setRiwayatImunisasi(no_rkm_medis)
-                    })
-                } else if (result.isDismissed) {
-                    $(p).prop('checked', 'checked')
-                }
-            })
-
-        }
-
-        function askepRanapAnak(no_rawat) {
-            $('#modalAskepRanapAnak').modal('show')
-            tbMasalahKeperawatan()
+        function askepRanapNeonatus(no_rawat) {
+            $('#modalAskepRanapNeonatus').modal('show')
+            tbMasalahKeperawatanNeo()
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 jk = regPeriksa.pasien.jk == 'P' ? 'PEREMPUAN' : 'LAKI-LAKI';
-                $('#formAskepAnakRanap input[name=no_rawat]').val(no_rawat)
-                $('#formAskepAnakRanap input[name=pasien]').val(`${regPeriksa.pasien.nm_pasien} (${jk})`)
-                $('#formAskepAnakRanap input[name=tgl_lahir]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
-                $('#formAskepAnakRanap input[name=kd_dokter]').val(regPeriksa.kd_dokter)
-                $('#formAskepAnakRanap input[name=dokter]').val(regPeriksa.dokter.nm_dokter)
-                $('#formAskepAnakRanap input[name=agama]').val(regPeriksa.pasien.agama)
-                $('#formAskepAnakRanap input[name=penjab]').val(regPeriksa.penjab.png_jawab)
-                $('#formAskepAnakRanap input[name=pekerjaan]').val(regPeriksa.pasien.pekerjaan)
-                $('#formAskepAnakRanap input[name=bahasa]').val(regPeriksa.pasien.bahasa.nama_bahasa)
-                $('#formAskepAnakRanap input[name=riwayat_psiko_pendidikan]').val(regPeriksa.pasien.pnd)
-                $('#formAskepAnakRanap input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
-                $('#formAskepAnakRanap input[name=pengkaji1]').val("{{ session()->get('pegawai')->nama }}")
-                $('#formAskepAnakRanap input[name=tanggal]').val("{{ date('d-m-Y') }}")
-                $('#formAskepAnakRanap input[name=jam]').val("{{ date('H:i:s') }}")
-                $('#formAskepAnakRanap input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
+                $('#formAskepRanapNeonatus input[name=no_rawat]').val(no_rawat)
+                $('#formAskepRanapNeonatus input[name=pasien]').val(`${regPeriksa.pasien.nm_pasien} (${jk})`)
+                $('#formAskepRanapNeonatus input[name=tgl_lahir]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
+                $('#formAskepRanapNeonatus input[name=kd_dokter]').val(regPeriksa.kd_dokter)
+                $('#formAskepRanapNeonatus input[name=dokter]').val(regPeriksa.dokter.nm_dokter)
+                $('#formAskepRanapNeonatus input[name=agama]').val(regPeriksa.pasien.agama)
+                $('#formAskepRanapNeonatus input[name=penjab]').val(regPeriksa.penjab.png_jawab)
+                $('#formAskepRanapNeonatus input[name=pekerjaan]').val(regPeriksa.pasien.pekerjaan)
+                $('#formAskepRanapNeonatus input[name=bahasa]').val(regPeriksa.pasien.bahasa.nama_bahasa)
+                $('#formAskepRanapNeonatus input[name=riwayat_psiko_pendidikan]').val(regPeriksa.pasien.pnd)
+                $('#formAskepRanapNeonatus input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
+                $('#formAskepRanapNeonatus input[name=pengkaji1]').val("{{ session()->get('pegawai')->nama }}")
+                // $('#formAskepRanapNeonatus input[name=tanggal]').val("{{ date('d-m-Y') }}")
+                // $('#formAskepRanapNeonatus input[name=jam]').val("{{ date('H:i:s') }}")
+                $('#formAskepRanapNeonatus input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
                 setRiwayatImunisasi(regPeriksa.no_rkm_medis)
                 $('#formRiwayatImunisasi button[name=tambah-imunisasi]').attr('onclick', `insertRiwayatImunisasi('${regPeriksa.no_rkm_medis}')`)
 
             })
-            getAskepRanapAnak(no_rawat).done((response) => {
-                let no_rkm_medis = $('#formAskepAnakRanap input[name=no_rkm_medis]').val();
-                let pengkaji1 = response ? response.pengkaji1.nama : "{{ session()->get('pegawai')->nama }}";
-                let nip1 = response ? response.nip1 : "{{ session()->get('pegawai')->nik }}";
-                let pengkaji2 = response ? response.pengkaji2.nama : "-";
-                let nip2 = response ? response.nip2 : "-";
-                let tanggal = response ? splitTanggal(response.tanggal.split(' ')[0]) : "{{ date('d-m-Y') }}"
-                let jam = response ? response.tanggal.split(' ')[1] : "{{ date('H:i:s') }}"
-                let kasus = response ? response.kasus_trauma : "Trauma"
-                let informasi = response ? response.informasi : "Autoanamnesis"
-                let ket_informasi = response ? response.ket_informasi : "-"
-                let tiba_diruang_rawat = response ? response.tiba_diruang_rawat : "-"
-                let cara_masuk = response ? response.cara_masuk : "-"
-                let rps = response ? response.rps : "-"
-                let rpd = response ? response.rpd : "-"
-                let rpk = response ? response.rpk : "-"
-                let rpo = response ? response.rpo : "-"
-                let riwayat_riwayat_alergi = response ? response.riwayat_riwayat_alergi : "-"
-                let riwayat_pembedahan = response ? response.riwayat_pembedahan : "-"
-                let riwayat_dirawat_dirs = response ? response.riwayat_dirawat_dirs : "-"
-                let riwayat_alkohol = response ? response.riwayat_alkohol : "-"
-                let riwayat_alkohol_jumlah = response ? response.riwayat_alkohol_jumlah : "-"
-                let riwayat_rokok = response ? response.riwayat_rokok : "-"
-                let riwayat_rokok_jumlah = response ? response.riwayat_rokok_jumlah : "-"
-                let riwayat_narkoba = response ? response.riwayat_narkoba : "-"
-                let riwayat_olahraga = response ? response.riwayat_olahraga : "-"
-                let pemeriksaan_mental = response ? response.pemeriksaan_mental : "-"
-                let pemeriksaan_keadaan_umum = response ? response.pemeriksaan_keadaan_umum : "-"
-                let pemeriksaan_gcs = response ? response.pemeriksaan_gcs : "-"
-                let pemeriksaan_td = response ? response.pemeriksaan_td : "-"
-                let pemeriksaan_nadi = response ? response.pemeriksaan_nadi : "-"
-                let pemeriksaan_rr = response ? response.pemeriksaan_rr : "-"
-                let pemeriksaan_suhu = response ? response.pemeriksaan_suhu : "-"
-                let pemeriksaan_spo2 = response ? response.pemeriksaan_spo2 : "-"
-                let pemeriksaan_bb = response ? response.pemeriksaan_bb : "-"
-                let pemeriksaan_tb = response ? response.pemeriksaan_tb : "-"
-                let pemeriksaan_susunan_kepala = response ? response.pemeriksaan_susunan_kepala : "TAK"
-                let pemeriksaan_susunan_kepala_keterangan = response ? response.pemeriksaan_susunan_kepala_keterangan : "-"
-                let pemeriksaan_susunan_wajah = response ? response.pemeriksaan_susunan_wajah : "TAK"
-                let pemeriksaan_susunan_wajah_keterangan = response ? response.pemeriksaan_susunan_wajah_keterangan : "-"
-                let pemeriksaan_susunan_leher = response ? response.pemeriksaan_susunan_leher : "TAK"
-                let pemeriksaan_susunan_kejang = response ? response.pemeriksaan_susunan_kejang : "TAK"
-                let pemeriksaan_susunan_kejang_keterangan = response ? response.pemeriksaan_susunan_kejang_keterangan : "-"
-                let pemeriksaan_susunan_sensorik = response ? response.pemeriksaan_susunan_sensorik : "TAK"
 
+            getAskepRanapNeonatus(no_rawat).done((response) => {
+                console.log('RESPONSE', response);
                 if (response) {
+                    $.each(response, (index, value) => {
+                        select = $(`#formAskepRanapNeonatus select[name=${index}]`);
+                        input = $(`#formAskepRanapNeonatus input[name=${index}]`);
+                        textarea = $(`#formAskepRanapNeonatus textarea[name=${index}]`);
+                        if (select.length) {
+                            $(`#formAskepRanapNeonatus select[name=${index}]`).val(value)
+                        } else if (input.length) {
+                            $(`#formAskepRanapNeonatus input[name=${index}]`).val(value)
+                        } else {
+                            $(`#formAskepRanapNeonatus textarea[name=${index}]`).val(value)
+                        }
+                    })
+
+                    $(`#formAskepRanapNeonatus input[name=pengkaji2]`).val(response.pengkaji2.nama)
+                    $(`#formAskepRanapNeonatus input[name=pengkaji1]`).val(response.pengkaji1.nama)
+                    $(`#formAskepRanapNeonatus input[name=tanggal]`).val(splitTanggal(response.tanggal.split(' ')[0]))
+                    $(`#formAskepRanapNeonatus input[name=jam]`).val(response.tanggal.split(' ')[1])
+                    $('#formAskepRanapNeonatus input[name=tanggal]').datepicker('setDate', splitTanggal(response.tanggal.split(' ')[0]))
                     let arrMasalah = []
                     $.map(response.masalah_keperawatan, (msl) => {
-                        $('#kodeMasalah' + msl.kode_masalah).attr('checked', 'checked')
+                        $('#kodeMasalahNeo' + msl.kode_masalah).attr('checked', 'checked')
                         arrMasalah.push(msl.kode_masalah)
 
                     })
-
-                    tbRencanaKeperawatan(arrMasalah)
-
-                    $('#formAskepAnakRanap input[name=nip1]').val(nip1)
-                    $('#formAskepAnakRanap input[name=pengkaji1]').val(pengkaji1)
-                    $('#formAskepAnakRanap input[name=nip2]').val(nip2)
-                    $('#formAskepAnakRanap input[name=pengkaji2]').val(pengkaji2)
-                    $('#formAskepAnakRanap input[name=tanggal]').val(tanggal)
-                    $('#formAskepAnakRanap input[name=jam]').val(jam)
-                    $('#formAskepAnakRanap input[name=ket_informasi]').val(ket_informasi)
-                    $('#formAskepAnakRanap select[name=kasus_trauma]').val(kasus)
-                    $('#formAskepAnakRanap select[name=informasi]').val(informasi)
-                    $('#formAskepAnakRanap select[name=tiba_diruang_rawat]').val(tiba_diruang_rawat)
-                    $('#formAskepAnakRanap select[name=cara_masuk]').val(cara_masuk)
-                    $('#formAskepAnakRanap textarea[name=rps]').val(rps)
-                    $('#formAskepAnakRanap textarea[name=rpd]').val(rpd)
-                    $('#formAskepAnakRanap textarea[name=rpk]').val(rpk)
-                    $('#formAskepAnakRanap textarea[name=rpo]').val(rpo)
-                    $('#formAskepAnakRanap input[name=riwayat_riwayat_alergi]').val(riwayat_riwayat_alergi)
-                    $('#formAskepAnakRanap input[name=riwayat_pembedahan]').val(riwayat_pembedahan)
-                    $('#formAskepAnakRanap input[name=riwayat_dirawat_dirs]').val(riwayat_dirawat_dirs)
-                    $('#formAskepAnakRanap select[name=riwayat_alkohol]').val(riwayat_alkohol)
-                    $('#formAskepAnakRanap input[name=riwayat_alkohol_jumlah]').val(riwayat_alkohol_jumlah)
-                    $('#formAskepAnakRanap select[name=riwayat_rokok]').val(riwayat_rokok)
-                    $('#formAskepAnakRanap input[name=riwayat_rokok_jumlah]').val(riwayat_rokok_jumlah)
-                    $('#formAskepAnakRanap select[name=riwayat_narkoba]').val(riwayat_narkoba)
-                    $('#formAskepAnakRanap select[name=riwayat_olahraga]').val(riwayat_olahraga)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_mental]').val(pemeriksaan_mental == 'cm' ? 'Compos Mentis' : '-')
-                    $('#formAskepAnakRanap select[name=pemeriksaan_keadaan_umum]').val(pemeriksaan_keadaan_umum)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gcs]').val(pemeriksaan_gcs)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_td]').val(pemeriksaan_td)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_nadi]').val(pemeriksaan_nadi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_rr]').val(pemeriksaan_rr)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_suhu]').val(pemeriksaan_suhu)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_spo2]').val(pemeriksaan_spo2)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_bb]').val(pemeriksaan_bb)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_tb]').val(pemeriksaan_tb)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_susunan_kepala]').val(pemeriksaan_susunan_kepala)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_susunan_kepala_keterangan]').val(pemeriksaan_susunan_kepala_keterangan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_susunan_wajah]').val(pemeriksaan_susunan_wajah)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_susunan_wajah_keterangan]').val(pemeriksaan_susunan_wajah_keterangan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_susunan_leher]').val(pemeriksaan_susunan_leher)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_susunan_kejang]').val(pemeriksaan_susunan_kejang)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_susunan_kejang_keterangan]').val(pemeriksaan_susunan_kejang_keterangan)
-
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_kardiovaskuler_denyut_nadi]').val(response.pemeriksaan_kardiovaskuler_denyut_nadi)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_kardiovaskuler_sirkulasi]').val(response.pemeriksaan_kardiovaskuler_sirkulasi)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_kardiovaskuler_sirkulasi_keterangan]').val(response.pemeriksaan_kardiovaskuler_sirkulasi_keterangan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_kardiovaskuler_pulsasi]').val(response.pemeriksaan_kardiovaskuler_pulsasi)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_pola_nafas]').val(response.pemeriksaan_respirasi_pola_nafas)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_retraksi]').val(response.pemeriksaan_respirasi_retraksi)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_suara_nafas]').val(response.pemeriksaan_respirasi_suara_nafas)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_volume_pernafasan]').val(response.pemeriksaan_respirasi_volume_pernafasan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_jenis_pernafasan]').val(response.pemeriksaan_respirasi_jenis_pernafasan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_jenis_pernafasan_keterangan]').val(response.pemeriksaan_respirasi_jenis_pernafasan_keterangan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_irama_nafas]').val(response.pemeriksaan_respirasi_irama_nafas)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_batuk]').val(response.pemeriksaan_respirasi_batuk)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_mulut]').val(response.pemeriksaan_gastrointestinal_mulut)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gastrointestinal_mulut_keterangan]').val(response.pemeriksaan_gastrointestinal_mulut_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_lidah]').val(response.pemeriksaan_gastrointestinal_lidah)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gastrointestinal_lidah_keterangan]').val(response.pemeriksaan_gastrointestinal_lidah_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_gigi]').val(response.pemeriksaan_gastrointestinal_gigi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gastrointestinal_gigi_keterangan]').val(response.pemeriksaan_gastrointestinal_gigi_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_tenggorokan]').val(response.pemeriksaan_gastrointestinal_tenggorokan)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gastrointestinal_tenggorokan_keterangan]').val(response.pemeriksaan_gastrointestinal_tenggorokan_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_abdomen]').val(response.pemeriksaan_gastrointestinal_abdomen)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gastrointestinal_abdomen_keterangan]').val(response.pemeriksaan_gastrointestinal_abdomen_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_peistatik_usus]').val(response.pemeriksaan_gastrointestinal_peistatik_usus)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_anus]').val(response.pemeriksaan_gastrointestinal_anus)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_sensorik]').val(response.pemeriksaan_neurologi_sensorik)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_pengelihatan]').val(response.pemeriksaan_neurologi_pengelihatan)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_neurologi_pengelihatan_keterangan]').val(response.pemeriksaan_neurologi_pengelihatan_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_alat_bantu_penglihatan]').val(response.pemeriksaan_neurologi_alat_bantu_penglihatan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_pendengaran]').val(response.pemeriksaan_neurologi_pendengaran)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_bicara]').val(response.pemeriksaan_neurologi_bicara)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_neurologi_bicara_keterangan]').val(response.pemeriksaan_neurologi_bicara_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_sensorik]').val(response.pemeriksaan_neurologi_sensorik)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_motorik]').val(response.pemeriksaan_neurologi_motorik)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_kekuatan_otot]').val(response.pemeriksaan_neurologi_kekuatan_otot)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_integument_kulit]').val(response.pemeriksaan_integument_kulit)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_integument_turgor]').val(response.pemeriksaan_integument_turgor)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_integument_warnakulit]').val(response.pemeriksaan_integument_warnakulit)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_integument_dekubitas]').val(response.pemeriksaan_integument_dekubitas)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_muskuloskletal_fraktur]').val(response.pemeriksaan_muskuloskletal_fraktur)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_muskuloskletal_fraktur_keterangan]').val(response.pemeriksaan_muskuloskletal_fraktur_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_muskuloskletal_oedema]').val(response.pemeriksaan_muskuloskletal_oedema)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_muskuloskletal_oedema_keterangan]').val(response.pemeriksaan_muskuloskletal_oedema_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_muskuloskletal_nyeri_sendi]').val(response.pemeriksaan_muskuloskletal_nyeri_sendi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_muskuloskletal_nyeri_sendi_keterangan]').val(response.pemeriksaan_muskuloskletal_nyeri_sendi_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_muskuloskletal_pergerakan_sendi]').val(response.pemeriksaan_muskuloskletal_pergerakan_sendi)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_muskuloskletal_kekauatan_otot]').val(response.pemeriksaan_muskuloskletal_kekauatan_otot)
-
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bab_frekuensi_jumlah]').val(response.pemeriksaan_eliminasi_bab_frekuensi_jumlah)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bab_frekuensi_durasi]').val(response.pemeriksaan_eliminasi_bab_frekuensi_durasi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bab_konsistensi]').val(response.pemeriksaan_eliminasi_bab_konsistensi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bab_warna]').val(response.pemeriksaan_eliminasi_bab_warna)
-
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bak_frekuensi_jumlah]').val(response.pemeriksaan_eliminasi_bak_frekuensi_jumlah)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bak_frekuensi_durasi]').val(response.pemeriksaan_eliminasi_bak_frekuensi_durasi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bak_warna]').val(response.pemeriksaan_eliminasi_bak_warna)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bak_lainlain]').val(response.pemeriksaan_eliminasi_bak_lainlain)
-
-                    $('#formAskepAnakRanap select[name=pola_aktifitas_berpakaian]').val(response.pola_aktifitas_berpakaian)
-                    $('#formAskepAnakRanap select[name=pola_aktifitas_mandi]').val(response.pola_aktifitas_mandi)
-                    $('#formAskepAnakRanap select[name=pola_aktifitas_eliminasi]').val(response.pola_aktifitas_eliminasi)
-                    $('#formAskepAnakRanap select[name=pola_aktifitas_makanminum]').val(response.pola_aktifitas_makanminum)
-                    $('#formAskepAnakRanap select[name=pola_aktifitas_berpindah]').val(response.pola_aktifitas_berpindah)
-
-                    $('#formAskepAnakRanap input[name=pola_nutrisi_porsi_makan]').val(response.pola_nutrisi_porsi_makan)
-                    $('#formAskepAnakRanap input[name=pola_nutrisi_frekuesi_makan]').val(response.pola_nutrisi_frekuesi_makan)
-                    $('#formAskepAnakRanap input[name=pola_nutrisi_jenis_makan]').val(response.pola_nutrisi_jenis_makan)
-
-                    $('#formAskepAnakRanap input[name=pola_tidur_lama_tidur]').val(response.pola_tidur_lama_tidur)
-                    $('#formAskepAnakRanap select[name=pola_tidur_gangguan]').val(response.pola_tidur_gangguan)
-
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_kemampuan_sehari]').val(response.pengkajian_fungsi_kemampuan_sehari)
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_aktifitas]').val(response.pengkajian_fungsi_aktifitas)
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_berjalan]').val(response.pengkajian_fungsi_berjalan)
-                    $('#formAskepAnakRanap input[name=pengkajian_fungsi_berjalan_keterangan]').val(response.pengkajian_fungsi_berjalan_keterangan)
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_ambulansi]').val(response.pengkajian_fungsi_ambulansi)
-
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_ekstrimitas_atas]').val(response.pengkajian_fungsi_ekstrimitas_atas)
-                    $('#formAskepAnakRanap input[name=pengkajian_fungsi_ekstrimitas_atas_keterangan]').val(response.pengkajian_fungsi_ekstrimitas_atas_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_ekstrimitas_bawah]').val(response.pengkajian_fungsi_ekstrimitas_bawah)
-                    $('#formAskepAnakRanap input[name=pengkajian_fungsi_ekstrimitas_bawah_keterangan]').val(response.pengkajian_fungsi_ekstrimitas_bawah_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_menggenggam]').val(response.pengkajian_fungsi_menggenggam)
-                    $('#formAskepAnakRanap input[name=pengkajian_fungsi_menggenggam_keterangan]').val(response.pengkajian_fungsi_menggenggam_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_koordinasi]').val(response.pengkajian_fungsi_koordinasi)
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_koordinasi]').val(response.pengkajian_fungsi_koordinasi)
-
-                    $('#formAskepAnakRanap input[name=pengkajian_fungsi_kesimpulan]').val(response.pengkajian_fungsi_kesimpulan)
-
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_kondisi_psiko]').val(response.riwayat_psiko_kondisi_psiko)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_gangguan_jiwa]').val(response.riwayat_psiko_gangguan_jiwa)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_perilaku]').val(response.riwayat_psiko_perilaku)
-                    $('#formAskepAnakRanap input[name=riwayat_psiko_perilaku_keterangan]').val(response.riwayat_psiko_perilaku_keterangan)
-
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_hubungan_keluarga]').val(response.riwayat_psiko_hubungan_keluarga)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_tinggal]').val(response.riwayat_psiko_tinggal)
-                    $('#formAskepAnakRanap input[name=riwayat_psiko_tinggal_keterangan]').val(response.riwayat_psiko_tinggal_keterangan)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_nilai_kepercayaan]').val(response.riwayat_psiko_nilai_kepercayaan)
-                    $('#formAskepAnakRanap input[name=riwayat_psiko_nilai_kepercayaan_keterangan]').val(response.riwayat_psiko_nilai_kepercayaan_keterangan)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_pendidikan_pj]').val(response.riwayat_psiko_pendidikan_pj)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_edukasi_diberikan]').val(response.riwayat_psiko_edukasi_diberikan)
-                    $('#formAskepAnakRanap input[name=riwayat_psiko_edukasi_diberikan_keterangan]').val(response.riwayat_psiko_edukasi_diberikan_keterangan)
-
-                    $('#formAskepAnakRanap input[name=anakke]').val(response.anakke)
-                    $('#formAskepAnakRanap input[name=darisaudara]').val(response.darisaudara)
-                    $('#formAskepAnakRanap select[name=cara_lahir]').val(response.cara_lahir)
-                    $('#formAskepAnakRanap input[name=ket_caralahir]').val(response.ket_caralahir)
-                    $('#formAskepAnakRanap input[name=umurkelahiran]').val(response.umurkelahiran)
-                    $('#formAskepAnakRanap select[name=kelainanbawaan]').val(response.kelainanbawaan)
-                    $('#formAskepAnakRanap input[name=ket_kelainan_bawaan]').val(response.ket_kelainan_bawaan)
-
-                    $('#formAskepAnakRanap input[name=usiatengkurap]').val(response.usiatengkurap)
-                    $('#formAskepAnakRanap input[name=usiaduduk]').val(response.usiaduduk)
-                    $('#formAskepAnakRanap input[name=usiaberdiri]').val(response.usiaberdiri)
-                    $('#formAskepAnakRanap input[name=usiagigipertama]').val(response.usiagigipertama)
-                    $('#formAskepAnakRanap input[name=usiagigipertama]').val(response.usiagigipertama)
-                    $('#formAskepAnakRanap input[name=usiaberjalan]').val(response.usiaberjalan)
-                    $('#formAskepAnakRanap input[name=usiabicara]').val(response.usiabicara)
-                    $('#formAskepAnakRanap input[name=usiamembaca]').val(response.usiamembaca)
-                    $('#formAskepAnakRanap input[name=usiamenulis]').val(response.usiamenulis)
-                    $('#formAskepAnakRanap input[name=gangguanemosi]').val(response.gangguanemosi)
-
-                    $('#formAskepAnakRanap select[name=skrining_gizi1]').val(response.skrining_gizi1)
-                    $('#formAskepAnakRanap select[name=skrining_gizi2]').val(response.skrining_gizi2)
-                    $('#formAskepAnakRanap select[name=skrining_gizi3]').val(response.skrining_gizi3)
-                    $('#formAskepAnakRanap select[name=skrining_gizi4]').val(response.skrining_gizi4)
-                    $('#formAskepAnakRanap input[name=nilai_gizi1]').val(response.nilai_gizi1)
-                    $('#formAskepAnakRanap input[name=nilai_gizi2]').val(response.nilai_gizi2)
-                    $('#formAskepAnakRanap input[name=nilai_gizi3]').val(response.nilai_gizi3)
-                    $('#formAskepAnakRanap input[name=nilai_gizi4]').val(response.nilai_gizi4)
-                    $('#formAskepAnakRanap input[name=nilai_total_gizi]').val(response.nilai_total_gizi)
-
-                    $('#formAskepAnakRanap select[name=wajah]').val(response.wajah)
-                    $('#formAskepAnakRanap select[name=kaki]').val(response.kaki)
-                    $('#formAskepAnakRanap select[name=aktifitas]').val(response.aktifitas)
-                    $('#formAskepAnakRanap select[name=menangis]').val(response.menangis)
-                    $('#formAskepAnakRanap select[name=beruara]').val(response.beruara)
-
-                    $('#formAskepAnakRanap input[name=nilaikaki]').val(response.nilaikaki)
-                    $('#formAskepAnakRanap input[name=nilaiwajah]').val(response.nilaiwajah)
-                    $('#formAskepAnakRanap input[name=nilaiaktifitas]').val(response.nilaiaktifitas)
-                    $('#formAskepAnakRanap input[name=nilaimenangis]').val(response.nilaimenangis)
-                    $('#formAskepAnakRanap input[name=nilaibersuara]').val(response.nilaibersuara)
-                    $('#formAskepAnakRanap input[name=hasilnyeri]').val(response.hasilnyeri)
-
-                    $('#formAskepAnakRanap input[name=lokasi]').val(response.lokasi)
-                    $('#formAskepAnakRanap input[name=durasi]').val(response.durasi)
-                    $('#formAskepAnakRanap input[name=frekuensi]').val(response.frekuensi)
-                    $('#formAskepAnakRanap select[name=nyeri_hilang]').val(response.nyeri_hilang)
-                    $('#formAskepAnakRanap input[name=ket_nyeri]').val(response.ket_nyeri)
-                    $('#formAskepAnakRanap select[name=pada_dokter]').val(response.pada_dokter)
-                    $('#formAskepAnakRanap input[name=ket_dokter]').val(response.ket_dokter)
-                    $('#formAskepAnakRanap textarea[name=rencana]').val(response.rencana)
-
-
+                    tbRencanaKeperawatanNeo(arrMasalah)
                 }
             })
 
@@ -1849,42 +1628,42 @@
             return riwayatImunisasi;
         }
 
-        $('#formAskepAnakRanap select[name=menangis]').change((e) => {
-            const data = $('#formAskepAnakRanap select[name=menangis]').find(':selected').data('id')
-            $('#formAskepAnakRanap input[name=nilaimenangis]').val(data)
+        $('#formAskepRanapNeonatus select[name=menangis]').change((e) => {
+            const data = $('#formAskepRanapNeonatus select[name=menangis]').find(':selected').data('id')
+            $('#formAskepRanapNeonatus input[name=nilaimenangis]').val(data)
             hitungSkalaMyeri()
         })
-        $('#formAskepAnakRanap select[name=wajah]').change((e) => {
-            const data = $('#formAskepAnakRanap select[name=wajah]').find(':selected').data('id')
-            $('#formAskepAnakRanap input[name=nilaiwajah]').val(data)
+        $('#formAskepRanapNeonatus select[name=wajah]').change((e) => {
+            const data = $('#formAskepRanapNeonatus select[name=wajah]').find(':selected').data('id')
+            $('#formAskepRanapNeonatus input[name=nilaiwajah]').val(data)
             hitungSkalaMyeri()
         })
-        $('#formAskepAnakRanap select[name=kaki]').change((e) => {
-            const data = $('#formAskepAnakRanap select[name=kaki]').find(':selected').data('id')
-            $('#formAskepAnakRanap input[name=nilaikaki]').val(data)
+        $('#formAskepRanapNeonatus select[name=kaki]').change((e) => {
+            const data = $('#formAskepRanapNeonatus select[name=kaki]').find(':selected').data('id')
+            $('#formAskepRanapNeonatus input[name=nilaikaki]').val(data)
             hitungSkalaMyeri()
         })
-        $('#formAskepAnakRanap select[name=aktifitas]').change((e) => {
-            const data = $('#formAskepAnakRanap select[name=aktifitas]').find(':selected').data('id')
-            $('#formAskepAnakRanap input[name=nilaiaktifitas]').val(data)
+        $('#formAskepRanapNeonatus select[name=aktifitas]').change((e) => {
+            const data = $('#formAskepRanapNeonatus select[name=aktifitas]').find(':selected').data('id')
+            $('#formAskepRanapNeonatus input[name=nilaiaktifitas]').val(data)
             hitungSkalaMyeri()
         })
-        $('#formAskepAnakRanap select[name=bersuara]').change((e) => {
-            const data = $('#formAskepAnakRanap select[name=bersuara]').find(':selected').data('id')
-            $('#formAskepAnakRanap input[name=nilaibersuara]').val(data)
+        $('#formAskepRanapNeonatus select[name=bersuara]').change((e) => {
+            const data = $('#formAskepRanapNeonatus select[name=bersuara]').find(':selected').data('id')
+            $('#formAskepRanapNeonatus input[name=nilaibersuara]').val(data)
             hitungSkalaMyeri()
         })
 
         function hitungSkalaMyeri() {
-            bersuara = $('#formAskepAnakRanap input[name=nilaibersuara]').val();
-            menangis = $('#formAskepAnakRanap input[name=nilaimenangis]').val();
-            wajah = $('#formAskepAnakRanap input[name=nilaiwajah]').val();
-            kaki = $('#formAskepAnakRanap input[name=nilaikaki]').val();
-            aktifitas = $('#formAskepAnakRanap input[name=nilaiaktifitas]').val();
+            bersuara = $('#formAskepRanapNeonatus input[name=nilaibersuara]').val();
+            menangis = $('#formAskepRanapNeonatus input[name=nilaimenangis]').val();
+            wajah = $('#formAskepRanapNeonatus input[name=nilaiwajah]').val();
+            kaki = $('#formAskepRanapNeonatus input[name=nilaikaki]').val();
+            aktifitas = $('#formAskepRanapNeonatus input[name=nilaiaktifitas]').val();
 
             skalaNyeri = parseInt(bersuara) + parseInt(menangis) + parseInt(wajah) + parseInt(kaki) + parseInt(aktifitas);
 
-            $('#formAskepAnakRanap input[name=hasilnyeri]').val(skalaNyeri)
+            $('#formAskepRanapNeonatus input[name=hasilnyeri]').val(skalaNyeri)
 
             if (skalaNyeri >= 1 && skalaNyeri <= 3) {
                 nyeri = 'Nyeri Ringan'
@@ -1895,53 +1674,52 @@
             } else {
                 nyeri = 'Tidak Ada Nyeri'
             }
-            $('#formAskepAnakRanap select[name=nyeri]').val(nyeri)
+            $('#formAskepRanapNeonatus select[name=nyeri]').val(nyeri)
         }
 
         var nilaiGizi = 0;
-        $(`#formAskepAnakRanap select[name=skrining_gizi1]`).change(() => {
-            data = $(`#formAskepAnakRanap select[name=skrining_gizi1]`).find(':selected').data('id')
-            $(`#formAskepAnakRanap input[name=nilai_gizi1]`).val(data)
+        $(`#formAskepRanapNeonatus select[name=skrining_gizi1]`).change(() => {
+            data = $(`#formAskepRanapNeonatus select[name=skrining_gizi1]`).find(':selected').data('id')
+            $(`#formAskepRanapNeonatus input[name=nilai_gizi1]`).val(data)
             hitungSkriningGizi();
         })
-        $(`#formAskepAnakRanap select[name=skrining_gizi2]`).change(() => {
-            data = $(`#formAskepAnakRanap select[name=skrining_gizi2]`).find(':selected').data('id')
-            $(`#formAskepAnakRanap input[name=nilai_gizi2]`).val(data)
+        $(`#formAskepRanapNeonatus select[name=skrining_gizi2]`).change(() => {
+            data = $(`#formAskepRanapNeonatus select[name=skrining_gizi2]`).find(':selected').data('id')
+            $(`#formAskepRanapNeonatus input[name=nilai_gizi2]`).val(data)
             hitungSkriningGizi();
         })
-        $(`#formAskepAnakRanap select[name=skrining_gizi3]`).change(() => {
-            data = $(`#formAskepAnakRanap select[name=skrining_gizi3]`).find(':selected').data('id')
-            $(`#formAskepAnakRanap input[name=nilai_gizi3]`).val(data)
+        $(`#formAskepRanapNeonatus select[name=skrining_gizi3]`).change(() => {
+            data = $(`#formAskepRanapNeonatus select[name=skrining_gizi3]`).find(':selected').data('id')
+            $(`#formAskepRanapNeonatus input[name=nilai_gizi3]`).val(data)
             hitungSkriningGizi();
         })
-        $(`#formAskepAnakRanap select[name=skrining_gizi4]`).change(() => {
-            data = $(`#formAskepAnakRanap select[name=skrining_gizi4]`).find(':selected').data('id')
-            $(`#formAskepAnakRanap input[name=nilai_gizi4]`).val(data)
+        $(`#formAskepRanapNeonatus select[name=skrining_gizi4]`).change(() => {
+            data = $(`#formAskepRanapNeonatus select[name=skrining_gizi4]`).find(':selected').data('id')
+            $(`#formAskepRanapNeonatus input[name=nilai_gizi4]`).val(data)
             hitungSkriningGizi();
         })
 
         function hitungSkriningGizi() {
-            nilaiGizi1 = parseInt($(`#formAskepAnakRanap input[name=nilai_gizi1]`).val())
-            nilaiGizi2 = parseInt($(`#formAskepAnakRanap input[name=nilai_gizi2]`).val())
-            nilaiGizi3 = parseInt($(`#formAskepAnakRanap input[name=nilai_gizi3]`).val())
-            nilaiGizi4 = parseInt($(`#formAskepAnakRanap input[name=nilai_gizi4]`).val())
+            nilaiGizi1 = parseInt($(`#formAskepRanapNeonatus input[name=nilai_gizi1]`).val())
+            nilaiGizi2 = parseInt($(`#formAskepRanapNeonatus input[name=nilai_gizi2]`).val())
+            nilaiGizi3 = parseInt($(`#formAskepRanapNeonatus input[name=nilai_gizi3]`).val())
+            nilaiGizi4 = parseInt($(`#formAskepRanapNeonatus input[name=nilai_gizi4]`).val())
             nilaiGizi = nilaiGizi1 + nilaiGizi2 + nilaiGizi3 + nilaiGizi4
-            $('#formAskepAnakRanap input[name=nilai_total_gizi]').val(nilaiGizi)
+            $('#formAskepRanapNeonatus input[name=nilai_total_gizi]').val(nilaiGizi)
         }
 
-        function simpanAskepAnakRanap() {
+        function simpanAskepNeonatusRanap() {
             let except = ['no_rkm_medis', 'dokter', 'pengkaji1', 'pengkaji2', 'pasien', 'tgl_lahir', 'bahasa', 'agama', 'penjab', 'pekerjaan', 'rencana', ''];
-            data = getDataForm('#formAskepAnakRanap', ['input', 'select', 'textarea'], except)
+            data = getDataForm('#formAskepRanapNeonatus', ['input', 'select', 'textarea'], except)
             data['tanggal'] = `${splitTanggal(data.tanggal)} ${data.jam}`
             delete data.jam
 
 
             $.ajax({
-                url: '/erm/ranap/askep/anak/create',
+                url: '/erm/ranap/askep/neonatus/create',
                 data: data,
                 method: 'post',
                 success: (response) => {
-                    simpanMasalahKeperawatanAnak(data.no_rawat)
                     swal.fire({
                         title: 'Berhasil',
                         text: 'Berhasil menyimpan data asesmen',
@@ -1949,6 +1727,7 @@
                         icon: 'success',
                         timer: 1500,
                     });
+                    simpanMasalahKeperawatanNeo(data.no_rawat)
                 },
                 error: function(request, status, error) {
                     swal.fire(
@@ -1962,11 +1741,12 @@
         }
 
 
-        function simpanMasalahKeperawatanAnak(no_rawat) {
+        function simpanMasalahKeperawatanNeo(no_rawat) {
             let masalah = [];
             let dataMasalah = [];
             let dataRencana = []
-            $('.listMasalahKeperawatan').each((index, element) => {
+
+            $('.listMasalahKeperawatanNeo').each((index, element) => {
                 isChecked = $(element).is(':checked');
                 if (isChecked) {
                     idMasalah = $(element).val()
@@ -1977,7 +1757,7 @@
                 }
             })
 
-            $('.listRencanaKeperawatan').each((index, element) => {
+            $('.listRencanaKeperawatanNeo').each((index, element) => {
                 isChecked = $(element).is(':checked')
                 if (isChecked) {
                     idRencana = $(element).val()
@@ -1994,7 +1774,7 @@
                         insertMasalahKeperawatan(dataMasalah).done((response) => {})
                     })
                 } else {
-                    if (dataMasalah.lenght) {
+                    if (dataMasalah.length) {
                         insertMasalahKeperawatan(dataMasalah).done((response) => {})
                     }
                 }
@@ -2076,8 +1856,8 @@
             return masalah;
         }
 
-        function tbMasalahKeperawatan() {
-            $('#tbMasalahKeperawatan').dataTable({
+        function tbMasalahKeperawatanNeo() {
+            $('#tbMasalahKeperawatanNeo').dataTable({
                 destroy: true,
                 processing: true,
                 ordering: false,
@@ -2091,14 +1871,13 @@
                     data: '',
                     render: (data, type, row) => {
                         return `<div class="form-check masalahKeperawatan">
-                                    <input class="form-check-input listMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
+                                    <input class="form-check-input listMasalahKeperawatanNeo" type="checkbox" id="kodeMasalahNeo${row.kode_masalah}" onclick="cekMasalahKeperawatanNeo(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
                                 </div>`
                     }
                 }, {
                     data: '',
                     render: (data, type, row) => {
-
-                        return `<label onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')">${row.nama_masalah}</label>`
+                        return `<label onclick="cekMasalahKeperawatanNeo(this,'${row.kode_masalah}')">${row.nama_masalah}</label>`
                     }
                 }]
             })
@@ -2106,8 +1885,8 @@
 
 
 
-        function cekMasalahKeperawatan(element, params) {
-            const isChecked = $(`#kodeMasalah${params}`).is(':checked')
+        function cekMasalahKeperawatanNeo(element, params) {
+            const isChecked = $(`#kodeMasalahNeo${params}`).is(':checked')
             if (isChecked) {
                 kodeMasalah.push(params)
             } else {
@@ -2115,30 +1894,30 @@
                     return item != params
                 });
             }
-            tbRencanaKeperawatan(kodeMasalah)
+            tbRencanaKeperawatanNeo(kodeMasalah)
             if (kodeMasalah.length == 0) {
-                localStorage.removeItem(`kodeRencana`)
+                localStorage.removeItem(`kodeRencanaNeo`)
             }
         }
 
-        function cekRencanaKeperawatan(params) {
-            const isChecked = $(`#kodeRencana${params}`).is(':checked')
+        function cekRencanaKeperawatanNeo(params) {
+            const isChecked = $(`#kodeRencanaNeo${params}`).is(':checked')
             if (isChecked) {
-                kodeRencana.push(params)
+                kodeRencanaNeo.push(params)
             } else {
-                kodeRencana = kodeRencana.filter((item) => {
+                kodeRencanaNeo = kodeRencanaNeo.filter((item) => {
                     return item != params
                 });
             }
-            if (kodeRencana.length == 0) {
-                localStorage.removeItem(`kodeRencana`)
+            if (kodeRencanaNeo.length == 0) {
+                localStorage.removeItem(`kodeRencanaNeo`)
             } else {
-                localStorage.setItem(`kodeRencana`, JSON.stringify(kodeRencana))
+                localStorage.setItem(`kodeRencanaNeo`, JSON.stringify(kodeRencanaNeo))
             }
         }
 
-        function tbRencanaKeperawatan(kode) {
-            $('#tbRencanaKeperawatan').dataTable({
+        function tbRencanaKeperawatanNeo(kode) {
+            $('#tbRencanaKeperawatanNeo').dataTable({
                 destroy: true,
                 processing: true,
                 ordering: false,
@@ -2155,18 +1934,18 @@
                 columns: [{
                         data: '',
                         render: (data, type, row) => {
-                            kode = localStorage.kodeRencana ? JSON.parse(localStorage.kodeRencana) : ''
+                            kode = localStorage.kodeRencanaNeo ? JSON.parse(localStorage.kodeRencanaNeo) : ''
                             $.map(kode, (kd) => {
                                 if (kd == row.kode_rencana) {
-                                    $('#kodeRencana' + row.kode_rencana).attr('checked', 'checked')
+                                    $('#kodeRencanaNeo' + row.kode_rencana).attr('checked', 'checked')
                                 } else {
-                                    $('#kodeRencana' + row.kode_rencana).removeProp('checked')
+                                    $('#kodeRencanaNeo' + row.kode_rencana).removeProp('checked')
                                 }
 
                             })
 
                             return `<div class="form-check">
-                                    <input class="form-check-input listRencanaKeperawatan" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatan('${row.kode_rencana}')" id="kodeRencana${row.kode_rencana}" onclick="">
+                                    <input class="form-check-input listRencanaKeperawatanNeo" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatanNeo('${row.kode_rencana}')" id="kodeRencanaNeo${row.kode_rencana}" onclick="">
                                 </div>`
                         }
                     },
@@ -2178,58 +1957,64 @@
                     }
                 ],
                 initComplete: (response) => {
-                    no_rawat = $('#formAskepAnakRanap input[name=no_rawat]').val();
+                    no_rawat = $('#formAskepRanapNeonatus input[name=no_rawat]').val();
                     getRencanaKeperawatan(no_rawat).done((res) => {
                         $.map(res, (rencana) => {
-                            $('#kodeRencana' + rencana.kode_rencana).attr('checked', 'checked')
+                            $('#kodeRencanaNeo' + rencana.kode_rencana).attr('checked', 'checked')
                         })
                     })
                 }
             })
         }
 
-        $('#modalAskepRanapAnak').on('shown.bs.modal', () => {
+        // $('#modalAskepRanapNeonatus').on('shown.bs.modal', () => {
 
-            $('#tanggal').datepicker({
-                format: 'dd-mm-yyyy',
-                orientation: 'bottom',
-                autoclose: true,
-                todayHighlight: true,
-            })
-        })
+        // })
 
-        function cariPetugasAskep(p, no) {
-            getPetugas(p.value, no).done((response) => {
-                html = '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
-                $.map(response, function(data) {
-                    html += `<li><a data-id="${data.nip}" class="dropdown-item" onclick="setPetugasAskep(this, ${no})">${data.nama}</a><li>`
-                })
-                html += '</ul>';
-                $('.list_petugas' + no).fadeIn();
-                $('.list_petugas' + no).html(html);
-            })
-        }
+        // function cariPetugasAskep(p, no) {
+        //     getPetugas(p.value, no).done((response) => {
+        //         html = '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
+        //         $.map(response, function(data) {
+        //             html += `<li><a data-id="${data.nip}" class="dropdown-item" onclick="setPetugasAskep(this, ${no})">${data.nama}</a><li>`
+        //         })
+        //         html += '</ul>';
+        //         $('.list_petugas' + no).fadeIn();
+        //         $('.list_petugas' + no).html(html);
+        //     })
+        // }
 
-        function setPetugasAskep(p, no) {
-            const nip = $(p).data('id');
-            const nama = $(p).text();
+        // function setPetugasAskep(p, no) {
+        //     const nip = $(p).data('id');
+        //     const nama = $(p).text();
 
-            $('.nip' + no).val(nip)
-            $('.pengkaji' + no).val(nama)
+        //     $('.nip' + no).val(nip)
+        //     $('.pengkaji' + no).val(nama)
 
-            $('.list_petugas' + no).fadeOut();
-        }
+        //     $('.list_petugas' + no).fadeOut();
+        // }
 
-        function getRencanaKeperawatan(no_rawat) {
-            const rencana = $.ajax({
-                url: 'ranap/askep/anak/rencana',
-                data: {
-                    no_rawat: no_rawat
-                },
-                method: 'GET'
-            })
+        // function getRencanaKeperawatan(no_rawat) {
+        //     const rencana = $.ajax({
+        //         url: 'ranap/askep/anak/rencana',
+        //         data: {
+        //             no_rawat: no_rawat
+        //         },
+        //         method: 'GET'
+        //     })
 
-            return rencana
+        //     return rencana
+        // }
+
+        function hitungApgar(n) {
+            let f = $(`#formAskepRanapNeonatus input[name=f${n}]`).val() ? $(`#formAskepRanapNeonatus input[name=f${n}]`).val() : 0;
+            let u = $(`#formAskepRanapNeonatus input[name=u${n}]`).val() ? $(`#formAskepRanapNeonatus input[name=u${n}]`).val() : 0;
+            let t = $(`#formAskepRanapNeonatus input[name=t${n}]`).val() ? $(`#formAskepRanapNeonatus input[name=t${n}]`).val() : 0;
+            let r = $(`#formAskepRanapNeonatus input[name=r${n}]`).val() ? $(`#formAskepRanapNeonatus input[name=r${n}]`).val() : 0;
+            let w = $(`#formAskepRanapNeonatus input[name=w${n}]`).val() ? $(`#formAskepRanapNeonatus input[name=w${n}]`).val() : 0;
+
+            let nilaiApgar = parseInt(f) + parseInt(u) + parseInt(t) + parseInt(r) + parseInt(w)
+
+            $(`#formAskepRanapNeonatus input[name=n${n}]`).val(nilaiApgar)
         }
     </script>
 @endpush

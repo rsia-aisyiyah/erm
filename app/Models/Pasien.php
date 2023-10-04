@@ -39,4 +39,8 @@ class Pasien extends Model
     {
         return $this->hasOne(BridgingSPRI::class, 'no_kartu', 'no_peserta');
     }
+    function bahasa()
+    {
+        return $this->belongsTo(BahasaPasien::class, 'bahasa_pasien', 'id');
+    }
 }

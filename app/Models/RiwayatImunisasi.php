@@ -9,6 +9,8 @@ class RiwayatImunisasi extends Model
 {
     use HasFactory;
     protected $table = 'riwayat_imunisasi';
+    protected $guarded = [];
+    public $timestamps = false;
 
     public function masterImunisasi()
     {

@@ -9,10 +9,12 @@ class RencanaAskepRanap extends Model
 {
     use HasFactory;
     protected $table = 'penilaian_awal_keperawatan_ranap_rencana';
+    protected $guarded = [];
+    public $timestamps = false;
 
     function masterRencana()
     {
-        return $this->hasMany(MasterRencanaKeperawatan::class, 'kode_rencana', 'kode_rencana');
+        return $this->belongsTo(MasterRencanaKeperawatan::class, 'kode_rencana', 'kode_rencana');
     }
     function masterMasalah()
     {

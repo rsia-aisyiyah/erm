@@ -72,6 +72,11 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\AskepRanapNeonatusController;
+use App\Http\Controllers\MasalahAskepRanapController;
+use App\Http\Controllers\MasterImunisasiController;
+use App\Http\Controllers\RencanaAskepRanapController;
+use App\Http\Controllers\RiwayatImunisasiController;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -194,6 +199,17 @@ Route::middleware('auth')->group(function () {
     Route::get('ranap', [RanapController::class, 'index']);
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
     Route::get('ranap/askep/anak', [AskepRanapAnakController::class, 'get']);
+    Route::post('ranap/askep/anak/insert', [AskepRanapAnakController::class, 'insert']);
+    Route::post('ranap/askep/anak/create', [AskepRanapAnakController::class, 'createOrUpdate']);
+    Route::get('ranap/askep/anak/masalah', [MasalahAskepRanapController::class, 'get']);
+    Route::get('ranap/askep/anak/rencana', [RencanaAskepRanapController::class, 'get']);
+    Route::post('ranap/askep/anak/masalah/insert', [MasalahAskepRanapController::class, 'insert']);
+    Route::post('ranap/askep/anak/masalah/delete', [MasalahAskepRanapController::class, 'delete']);
+    Route::post('ranap/askep/anak/rencana/insert', [RencanaAskepRanapController::class, 'insert']);
+    Route::post('ranap/askep/anak/rencana/delete', [RencanaAskepRanapController::class, 'delete']);
+
+    Route::get('ranap/askep/neonatus', [AskepRanapNeonatusController::class, 'get']);
+    Route::post('ranap/askep/neonatus/create', [AskepRanapNeonatusController::class, 'createOrUpdate']);
 
     Route::get('master/masalah/keperawatan/table', [MasterMasalahKeperawatanController::class, 'getDataTable']);
     Route::get('master/rencana/keperawatan/table', [MasterRencanaKeperawatanController::class, 'getDataTable']);
@@ -277,6 +293,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/operasi/laporan/{noRawat}', [LaporanOperasiController::class, 'get']);
 
+    Route::get('imunisasi/master', [MasterImunisasiController::class, 'get']);
+    Route::post('imunisasi/riwayat/insert', [RiwayatImunisasiController::class, 'insert']);
+    Route::delete('imunisasi/riwayat/delete', [RiwayatImunisasiController::class, 'delete']);
+    Route::get('imunisasi/riwayat/get/{no_rkm_medis}', [RiwayatImunisasiController::class, 'get']);
+
     Route::prefix('bridging')->group(function () {
         Route::prefix('referensi')->group(function () {
             Route::get('/propinsi', [ReferensiController::class, 'getPropinsi']);
@@ -336,6 +357,7 @@ Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
 Route::get('/nosurat/{poli}', [SuratKontrolUlangController::class, 'setNoSurat']);
 Route::get('/noreg/{tanggal}/{poli}/{dokter}', [BookingRegistrasiController::class, 'setNoReg']);
 Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
+
 Route::get('/test/view', function () {
     return view('test');
 });

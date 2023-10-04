@@ -147,11 +147,13 @@
     @include('content.ranap.modal.modal_penunjang')
     @include('content.ranap.modal.modal_asmed_anak')
     @include('content.ranap.modal.modal_askep_anak')
+    @include('content.ranap.modal.modal_askep_neonatus')
     @include('content.ranap.modal.modal_asmed_kandungan')
     @include('content.ranap.modal.modal_grafik_harian')
     @include('content.ranap.modal.modal_resume_ranap')
     @include('content.ranap.modal.modal_list_pemeriksaan')
     @include('content.ranap.modal.modal_list_diagnosa')
+    @include('content.ranap.modal.modal_riwayat_vaksin')
 @endsection
 
 
@@ -418,17 +420,20 @@
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-
                             list = '<li><a class="dropdown-item" href="#" onclick="modalLaborat(\'' + data.no_rawat + '\')">Laborat</a></li>';
                             list += '<li><a class="dropdown-item" href="#" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
                             list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak.length)}</a></li>`;
-                                // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
+                                if (data.sttsumur == 'Hr') {
+                                    list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
+                                } else {
+                                    list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
+                                }
                             } else if (row.reg_periksa.dokter.kd_sps == 'S0001') {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan?.length)}</a></li>`;
-                                // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan?.length)}</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan?.length)}</a></li>`;
                             }
 
 
@@ -935,7 +940,7 @@
                                 },
                             }
                         },
-                        onAnimationComplete: function () {
+                        onAnimationComplete: function() {
                             var sourceCanvas = this.chart.ctx.canvas;
                             var copyWidth = this.scale.xScalePaddingLeft - 5;
                             var copyHeight = this.scale.endPoint + 5;
@@ -1281,7 +1286,7 @@
             var kd_dokter = $('#formSaveGrafikHarian #kdDokter').data('kd-dokter');
             var spesialis = $('#formSaveGrafikHarian #spesialisDOkter').data('spesialis');
             var nm_pasien = $('#formSaveGrafikHarian #nmPasien').data('nm-pasien');
-            
+
             var suhu_tubuh = $('#formSaveGrafikHarian input[name="suhu_tubuh"]').val();
             var no_rawat = $('#formSaveGrafikHarian input[name="no_rawat"]').val();
 
@@ -1315,12 +1320,15 @@
                 },
                 success: function(response) {
                     if (response.success) {
+                        if (suhu_tubuh.includes(',')) {
+                            suhu_tubuh = suhu_tubuh.replace(',', '.')
+                        }
                         if (spesialis.toLowerCase().includes('anak')) {
                             console.log('anak');
                             if (suhu_tubuh < 35.5 || suhu_tubuh > 39.5) {
                                 console.log('kirim notif');
                                 notifSend(
-                                    kd_dokter, 
+                                    kd_dokter,
                                     'Notifikasi Kondisi Pasien',
                                     'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
                                     no_rawat,
@@ -1329,10 +1337,10 @@
                             }
                         } else {
                             console.log('bukan anak');
-                            if (suhu_tubuh < 35.1 || suhu_tubuh > 35.9) {
+                            if (suhu_tubuh < 36 || suhu_tubuh > 38) {
                                 console.log('kirim notif');
                                 notifSend(
-                                    kd_dokter, 
+                                    kd_dokter,
                                     'Notifikasi Kondisi Pasien',
                                     'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
                                     no_rawat,
@@ -1340,7 +1348,7 @@
                                 );
                             }
                         }
-                        
+
                         $('#modalGrafikHarian').modal('toggle');
                         grafikPemeriksaan.destroy();
 

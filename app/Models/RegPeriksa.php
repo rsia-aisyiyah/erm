@@ -20,6 +20,7 @@ use App\Models\ProsedurPasien;
 use App\Models\CatatanPerawatan;
 use App\Models\PemeriksaanRalan;
 use App\Models\SuratKontrolUlang;
+use App\Models\AskepRanapNeonatus;
 use App\Models\RsiaGeneralConsent;
 use App\Models\AskepRalanKebidanan;
 use App\Models\DetailPemberianObat;
@@ -151,5 +152,9 @@ class RegPeriksa extends Model
     function askepRanapAnak()
     {
         return $this->hasOne(AskepRanapAnak::class, 'no_rawat', 'no_rawat');
+    }
+    function askepRanapNeonatus()
+    {
+        return $this->hasOne(AskepRanapNeonatus::class, 'no_rawat', 'no_rawat');
     }
 }

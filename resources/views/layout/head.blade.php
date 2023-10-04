@@ -269,6 +269,11 @@
             height: 28px;
         }
 
+        .input-group label {
+            font-size: 11;
+            padding: 5px;
+        }
+
         .input-group-sm .btn {
             font-size: 10px;
             height: 28px;

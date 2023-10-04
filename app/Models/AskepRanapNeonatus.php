@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\MasalahAskepRanap;
-use App\Models\RencanaAskepRanap;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class AskepRanapAnak extends Model
+class AskepRanapNeonatus extends Model
 {
     use HasFactory;
-    protected $table = 'penilaian_awal_keperawatan_ranap_anak';
+    protected $table = 'penilaian_awal_keperawatan_ranap_neonatus';
     protected $guarded = [];
     public $timestamps = false;
 
