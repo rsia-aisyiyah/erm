@@ -1564,51 +1564,28 @@
 
             })
             getAskepRanapAnak(no_rawat).done((response) => {
-                let no_rkm_medis = $('#formAskepAnakRanap input[name=no_rkm_medis]').val();
-                let pengkaji1 = response ? response.pengkaji1.nama : "{{ session()->get('pegawai')->nama }}";
-                let nip1 = response ? response.nip1 : "{{ session()->get('pegawai')->nik }}";
-                let pengkaji2 = response ? response.pengkaji2.nama : "-";
-                let nip2 = response ? response.nip2 : "-";
-                let tanggal = response ? splitTanggal(response.tanggal.split(' ')[0]) : "{{ date('d-m-Y') }}"
-                let jam = response ? response.tanggal.split(' ')[1] : "{{ date('H:i:s') }}"
-                let kasus = response ? response.kasus_trauma : "Trauma"
-                let informasi = response ? response.informasi : "Autoanamnesis"
-                let ket_informasi = response ? response.ket_informasi : "-"
-                let tiba_diruang_rawat = response ? response.tiba_diruang_rawat : "-"
-                let cara_masuk = response ? response.cara_masuk : "-"
-                let rps = response ? response.rps : "-"
-                let rpd = response ? response.rpd : "-"
-                let rpk = response ? response.rpk : "-"
-                let rpo = response ? response.rpo : "-"
-                let riwayat_riwayat_alergi = response ? response.riwayat_riwayat_alergi : "-"
-                let riwayat_pembedahan = response ? response.riwayat_pembedahan : "-"
-                let riwayat_dirawat_dirs = response ? response.riwayat_dirawat_dirs : "-"
-                let riwayat_alkohol = response ? response.riwayat_alkohol : "-"
-                let riwayat_alkohol_jumlah = response ? response.riwayat_alkohol_jumlah : "-"
-                let riwayat_rokok = response ? response.riwayat_rokok : "-"
-                let riwayat_rokok_jumlah = response ? response.riwayat_rokok_jumlah : "-"
-                let riwayat_narkoba = response ? response.riwayat_narkoba : "-"
-                let riwayat_olahraga = response ? response.riwayat_olahraga : "-"
-                let pemeriksaan_mental = response ? response.pemeriksaan_mental : "-"
-                let pemeriksaan_keadaan_umum = response ? response.pemeriksaan_keadaan_umum : "-"
-                let pemeriksaan_gcs = response ? response.pemeriksaan_gcs : "-"
-                let pemeriksaan_td = response ? response.pemeriksaan_td : "-"
-                let pemeriksaan_nadi = response ? response.pemeriksaan_nadi : "-"
-                let pemeriksaan_rr = response ? response.pemeriksaan_rr : "-"
-                let pemeriksaan_suhu = response ? response.pemeriksaan_suhu : "-"
-                let pemeriksaan_spo2 = response ? response.pemeriksaan_spo2 : "-"
-                let pemeriksaan_bb = response ? response.pemeriksaan_bb : "-"
-                let pemeriksaan_tb = response ? response.pemeriksaan_tb : "-"
-                let pemeriksaan_susunan_kepala = response ? response.pemeriksaan_susunan_kepala : "TAK"
-                let pemeriksaan_susunan_kepala_keterangan = response ? response.pemeriksaan_susunan_kepala_keterangan : "-"
-                let pemeriksaan_susunan_wajah = response ? response.pemeriksaan_susunan_wajah : "TAK"
-                let pemeriksaan_susunan_wajah_keterangan = response ? response.pemeriksaan_susunan_wajah_keterangan : "-"
-                let pemeriksaan_susunan_leher = response ? response.pemeriksaan_susunan_leher : "TAK"
-                let pemeriksaan_susunan_kejang = response ? response.pemeriksaan_susunan_kejang : "TAK"
-                let pemeriksaan_susunan_kejang_keterangan = response ? response.pemeriksaan_susunan_kejang_keterangan : "-"
-                let pemeriksaan_susunan_sensorik = response ? response.pemeriksaan_susunan_sensorik : "TAK"
-
+                nip = "{{ session()->get('pegawai')->nik }}";
                 if (response) {
+                    console.log(response);
+                    $.each(response, (index, value) => {
+                        select = $(`#formAskepAnakRanap select[name=${index}]`);
+                        input = $(`#formAskepAnakRanap input[name=${index}]`);
+                        textarea = $(`#formAskepAnakRanap textarea[name=${index}]`);
+                        if (select.length) {
+                            $(`#formAskepAnakRanap select[name=${index}]`).val(value)
+                        } else if (input.length) {
+                            $(`#formAskepAnakRanap input[name=${index}]`).val(value)
+                        } else {
+                            $(`#formAskepAnakRanap textarea[name=${index}]`).val(value)
+                        }
+                    })
+
+                    $(`#formAskepAnakRanap input[name=pengkaji2]`).val(response.pengkaji2.nama)
+                    $(`#formAskepAnakRanap input[name=pengkaji1]`).val(response.pengkaji1.nama)
+                    $(`#formAskepAnakRanap input[name=tanggal]`).val(splitTanggal(response.tanggal.split(' ')[0]))
+                    $(`#formAskepAnakRanap input[name=jam]`).val(response.tanggal.split(' ')[1])
+                    $('#formAskepAnakRanap input[name=tanggal]').datepicker('setDate', splitTanggal(response.tanggal.split(' ')[0]))
+
                     let arrMasalah = []
                     $.map(response.masalah_keperawatan, (msl) => {
                         $('#kodeMasalah' + msl.kode_masalah).attr('checked', 'checked')
@@ -1617,224 +1594,16 @@
                     })
 
                     tbRencanaKeperawatan(arrMasalah)
-
-                    $('#formAskepAnakRanap input[name=nip1]').val(nip1)
-                    $('#formAskepAnakRanap input[name=pengkaji1]').val(pengkaji1)
-                    $('#formAskepAnakRanap input[name=nip2]').val(nip2)
-                    $('#formAskepAnakRanap input[name=pengkaji2]').val(pengkaji2)
-                    $('#formAskepAnakRanap input[name=tanggal]').val(tanggal)
-                    $('#formAskepAnakRanap input[name=jam]').val(jam)
-                    $('#formAskepAnakRanap input[name=ket_informasi]').val(ket_informasi)
-                    $('#formAskepAnakRanap select[name=kasus_trauma]').val(kasus)
-                    $('#formAskepAnakRanap select[name=informasi]').val(informasi)
-                    $('#formAskepAnakRanap select[name=tiba_diruang_rawat]').val(tiba_diruang_rawat)
-                    $('#formAskepAnakRanap select[name=cara_masuk]').val(cara_masuk)
-                    $('#formAskepAnakRanap textarea[name=rps]').val(rps)
-                    $('#formAskepAnakRanap textarea[name=rpd]').val(rpd)
-                    $('#formAskepAnakRanap textarea[name=rpk]').val(rpk)
-                    $('#formAskepAnakRanap textarea[name=rpo]').val(rpo)
-                    $('#formAskepAnakRanap input[name=riwayat_riwayat_alergi]').val(riwayat_riwayat_alergi)
-                    $('#formAskepAnakRanap input[name=riwayat_pembedahan]').val(riwayat_pembedahan)
-                    $('#formAskepAnakRanap input[name=riwayat_dirawat_dirs]').val(riwayat_dirawat_dirs)
-                    $('#formAskepAnakRanap select[name=riwayat_alkohol]').val(riwayat_alkohol)
-                    $('#formAskepAnakRanap input[name=riwayat_alkohol_jumlah]').val(riwayat_alkohol_jumlah)
-                    $('#formAskepAnakRanap select[name=riwayat_rokok]').val(riwayat_rokok)
-                    $('#formAskepAnakRanap input[name=riwayat_rokok_jumlah]').val(riwayat_rokok_jumlah)
-                    $('#formAskepAnakRanap select[name=riwayat_narkoba]').val(riwayat_narkoba)
-                    $('#formAskepAnakRanap select[name=riwayat_olahraga]').val(riwayat_olahraga)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_mental]').val(pemeriksaan_mental == 'cm' ? 'Compos Mentis' : '-')
-                    $('#formAskepAnakRanap select[name=pemeriksaan_keadaan_umum]').val(pemeriksaan_keadaan_umum)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gcs]').val(pemeriksaan_gcs)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_td]').val(pemeriksaan_td)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_nadi]').val(pemeriksaan_nadi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_rr]').val(pemeriksaan_rr)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_suhu]').val(pemeriksaan_suhu)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_spo2]').val(pemeriksaan_spo2)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_bb]').val(pemeriksaan_bb)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_tb]').val(pemeriksaan_tb)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_susunan_kepala]').val(pemeriksaan_susunan_kepala)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_susunan_kepala_keterangan]').val(pemeriksaan_susunan_kepala_keterangan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_susunan_wajah]').val(pemeriksaan_susunan_wajah)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_susunan_wajah_keterangan]').val(pemeriksaan_susunan_wajah_keterangan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_susunan_leher]').val(pemeriksaan_susunan_leher)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_susunan_kejang]').val(pemeriksaan_susunan_kejang)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_susunan_kejang_keterangan]').val(pemeriksaan_susunan_kejang_keterangan)
-
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_kardiovaskuler_denyut_nadi]').val(response.pemeriksaan_kardiovaskuler_denyut_nadi)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_kardiovaskuler_sirkulasi]').val(response.pemeriksaan_kardiovaskuler_sirkulasi)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_kardiovaskuler_sirkulasi_keterangan]').val(response.pemeriksaan_kardiovaskuler_sirkulasi_keterangan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_kardiovaskuler_pulsasi]').val(response.pemeriksaan_kardiovaskuler_pulsasi)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_pola_nafas]').val(response.pemeriksaan_respirasi_pola_nafas)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_retraksi]').val(response.pemeriksaan_respirasi_retraksi)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_suara_nafas]').val(response.pemeriksaan_respirasi_suara_nafas)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_volume_pernafasan]').val(response.pemeriksaan_respirasi_volume_pernafasan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_jenis_pernafasan]').val(response.pemeriksaan_respirasi_jenis_pernafasan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_jenis_pernafasan_keterangan]').val(response.pemeriksaan_respirasi_jenis_pernafasan_keterangan)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_irama_nafas]').val(response.pemeriksaan_respirasi_irama_nafas)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_respirasi_batuk]').val(response.pemeriksaan_respirasi_batuk)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_mulut]').val(response.pemeriksaan_gastrointestinal_mulut)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gastrointestinal_mulut_keterangan]').val(response.pemeriksaan_gastrointestinal_mulut_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_lidah]').val(response.pemeriksaan_gastrointestinal_lidah)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gastrointestinal_lidah_keterangan]').val(response.pemeriksaan_gastrointestinal_lidah_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_gigi]').val(response.pemeriksaan_gastrointestinal_gigi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gastrointestinal_gigi_keterangan]').val(response.pemeriksaan_gastrointestinal_gigi_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_tenggorokan]').val(response.pemeriksaan_gastrointestinal_tenggorokan)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gastrointestinal_tenggorokan_keterangan]').val(response.pemeriksaan_gastrointestinal_tenggorokan_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_abdomen]').val(response.pemeriksaan_gastrointestinal_abdomen)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_gastrointestinal_abdomen_keterangan]').val(response.pemeriksaan_gastrointestinal_abdomen_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_peistatik_usus]').val(response.pemeriksaan_gastrointestinal_peistatik_usus)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_gastrointestinal_anus]').val(response.pemeriksaan_gastrointestinal_anus)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_sensorik]').val(response.pemeriksaan_neurologi_sensorik)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_pengelihatan]').val(response.pemeriksaan_neurologi_pengelihatan)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_neurologi_pengelihatan_keterangan]').val(response.pemeriksaan_neurologi_pengelihatan_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_alat_bantu_penglihatan]').val(response.pemeriksaan_neurologi_alat_bantu_penglihatan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_pendengaran]').val(response.pemeriksaan_neurologi_pendengaran)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_bicara]').val(response.pemeriksaan_neurologi_bicara)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_neurologi_bicara_keterangan]').val(response.pemeriksaan_neurologi_bicara_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_sensorik]').val(response.pemeriksaan_neurologi_sensorik)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_motorik]').val(response.pemeriksaan_neurologi_motorik)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_neurologi_kekuatan_otot]').val(response.pemeriksaan_neurologi_kekuatan_otot)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_integument_kulit]').val(response.pemeriksaan_integument_kulit)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_integument_turgor]').val(response.pemeriksaan_integument_turgor)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_integument_warnakulit]').val(response.pemeriksaan_integument_warnakulit)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_integument_dekubitas]').val(response.pemeriksaan_integument_dekubitas)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_muskuloskletal_fraktur]').val(response.pemeriksaan_muskuloskletal_fraktur)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_muskuloskletal_fraktur_keterangan]').val(response.pemeriksaan_muskuloskletal_fraktur_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_muskuloskletal_oedema]').val(response.pemeriksaan_muskuloskletal_oedema)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_muskuloskletal_oedema_keterangan]').val(response.pemeriksaan_muskuloskletal_oedema_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_muskuloskletal_nyeri_sendi]').val(response.pemeriksaan_muskuloskletal_nyeri_sendi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_muskuloskletal_nyeri_sendi_keterangan]').val(response.pemeriksaan_muskuloskletal_nyeri_sendi_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pemeriksaan_muskuloskletal_pergerakan_sendi]').val(response.pemeriksaan_muskuloskletal_pergerakan_sendi)
-                    $('#formAskepAnakRanap select[name=pemeriksaan_muskuloskletal_kekauatan_otot]').val(response.pemeriksaan_muskuloskletal_kekauatan_otot)
-
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bab_frekuensi_jumlah]').val(response.pemeriksaan_eliminasi_bab_frekuensi_jumlah)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bab_frekuensi_durasi]').val(response.pemeriksaan_eliminasi_bab_frekuensi_durasi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bab_konsistensi]').val(response.pemeriksaan_eliminasi_bab_konsistensi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bab_warna]').val(response.pemeriksaan_eliminasi_bab_warna)
-
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bak_frekuensi_jumlah]').val(response.pemeriksaan_eliminasi_bak_frekuensi_jumlah)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bak_frekuensi_durasi]').val(response.pemeriksaan_eliminasi_bak_frekuensi_durasi)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bak_warna]').val(response.pemeriksaan_eliminasi_bak_warna)
-                    $('#formAskepAnakRanap input[name=pemeriksaan_eliminasi_bak_lainlain]').val(response.pemeriksaan_eliminasi_bak_lainlain)
-
-                    $('#formAskepAnakRanap select[name=pola_aktifitas_berpakaian]').val(response.pola_aktifitas_berpakaian)
-                    $('#formAskepAnakRanap select[name=pola_aktifitas_mandi]').val(response.pola_aktifitas_mandi)
-                    $('#formAskepAnakRanap select[name=pola_aktifitas_eliminasi]').val(response.pola_aktifitas_eliminasi)
-                    $('#formAskepAnakRanap select[name=pola_aktifitas_makanminum]').val(response.pola_aktifitas_makanminum)
-                    $('#formAskepAnakRanap select[name=pola_aktifitas_berpindah]').val(response.pola_aktifitas_berpindah)
-
-                    $('#formAskepAnakRanap input[name=pola_nutrisi_porsi_makan]').val(response.pola_nutrisi_porsi_makan)
-                    $('#formAskepAnakRanap input[name=pola_nutrisi_frekuesi_makan]').val(response.pola_nutrisi_frekuesi_makan)
-                    $('#formAskepAnakRanap input[name=pola_nutrisi_jenis_makan]').val(response.pola_nutrisi_jenis_makan)
-
-                    $('#formAskepAnakRanap input[name=pola_tidur_lama_tidur]').val(response.pola_tidur_lama_tidur)
-                    $('#formAskepAnakRanap select[name=pola_tidur_gangguan]').val(response.pola_tidur_gangguan)
-
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_kemampuan_sehari]').val(response.pengkajian_fungsi_kemampuan_sehari)
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_aktifitas]').val(response.pengkajian_fungsi_aktifitas)
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_berjalan]').val(response.pengkajian_fungsi_berjalan)
-                    $('#formAskepAnakRanap input[name=pengkajian_fungsi_berjalan_keterangan]').val(response.pengkajian_fungsi_berjalan_keterangan)
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_ambulansi]').val(response.pengkajian_fungsi_ambulansi)
-
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_ekstrimitas_atas]').val(response.pengkajian_fungsi_ekstrimitas_atas)
-                    $('#formAskepAnakRanap input[name=pengkajian_fungsi_ekstrimitas_atas_keterangan]').val(response.pengkajian_fungsi_ekstrimitas_atas_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_ekstrimitas_bawah]').val(response.pengkajian_fungsi_ekstrimitas_bawah)
-                    $('#formAskepAnakRanap input[name=pengkajian_fungsi_ekstrimitas_bawah_keterangan]').val(response.pengkajian_fungsi_ekstrimitas_bawah_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_menggenggam]').val(response.pengkajian_fungsi_menggenggam)
-                    $('#formAskepAnakRanap input[name=pengkajian_fungsi_menggenggam_keterangan]').val(response.pengkajian_fungsi_menggenggam_keterangan)
-
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_koordinasi]').val(response.pengkajian_fungsi_koordinasi)
-                    $('#formAskepAnakRanap select[name=pengkajian_fungsi_koordinasi]').val(response.pengkajian_fungsi_koordinasi)
-
-                    $('#formAskepAnakRanap input[name=pengkajian_fungsi_kesimpulan]').val(response.pengkajian_fungsi_kesimpulan)
-
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_kondisi_psiko]').val(response.riwayat_psiko_kondisi_psiko)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_gangguan_jiwa]').val(response.riwayat_psiko_gangguan_jiwa)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_perilaku]').val(response.riwayat_psiko_perilaku)
-                    $('#formAskepAnakRanap input[name=riwayat_psiko_perilaku_keterangan]').val(response.riwayat_psiko_perilaku_keterangan)
-
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_hubungan_keluarga]').val(response.riwayat_psiko_hubungan_keluarga)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_tinggal]').val(response.riwayat_psiko_tinggal)
-                    $('#formAskepAnakRanap input[name=riwayat_psiko_tinggal_keterangan]').val(response.riwayat_psiko_tinggal_keterangan)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_nilai_kepercayaan]').val(response.riwayat_psiko_nilai_kepercayaan)
-                    $('#formAskepAnakRanap input[name=riwayat_psiko_nilai_kepercayaan_keterangan]').val(response.riwayat_psiko_nilai_kepercayaan_keterangan)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_pendidikan_pj]').val(response.riwayat_psiko_pendidikan_pj)
-                    $('#formAskepAnakRanap select[name=riwayat_psiko_edukasi_diberikan]').val(response.riwayat_psiko_edukasi_diberikan)
-                    $('#formAskepAnakRanap input[name=riwayat_psiko_edukasi_diberikan_keterangan]').val(response.riwayat_psiko_edukasi_diberikan_keterangan)
-
-                    $('#formAskepAnakRanap input[name=anakke]').val(response.anakke)
-                    $('#formAskepAnakRanap input[name=darisaudara]').val(response.darisaudara)
-                    $('#formAskepAnakRanap select[name=cara_lahir]').val(response.cara_lahir)
-                    $('#formAskepAnakRanap input[name=ket_caralahir]').val(response.ket_caralahir)
-                    $('#formAskepAnakRanap input[name=umurkelahiran]').val(response.umurkelahiran)
-                    $('#formAskepAnakRanap select[name=kelainanbawaan]').val(response.kelainanbawaan)
-                    $('#formAskepAnakRanap input[name=ket_kelainan_bawaan]').val(response.ket_kelainan_bawaan)
-
-                    $('#formAskepAnakRanap input[name=usiatengkurap]').val(response.usiatengkurap)
-                    $('#formAskepAnakRanap input[name=usiaduduk]').val(response.usiaduduk)
-                    $('#formAskepAnakRanap input[name=usiaberdiri]').val(response.usiaberdiri)
-                    $('#formAskepAnakRanap input[name=usiagigipertama]').val(response.usiagigipertama)
-                    $('#formAskepAnakRanap input[name=usiagigipertama]').val(response.usiagigipertama)
-                    $('#formAskepAnakRanap input[name=usiaberjalan]').val(response.usiaberjalan)
-                    $('#formAskepAnakRanap input[name=usiabicara]').val(response.usiabicara)
-                    $('#formAskepAnakRanap input[name=usiamembaca]').val(response.usiamembaca)
-                    $('#formAskepAnakRanap input[name=usiamenulis]').val(response.usiamenulis)
-                    $('#formAskepAnakRanap input[name=gangguanemosi]').val(response.gangguanemosi)
-
-                    $('#formAskepAnakRanap select[name=skrining_gizi1]').val(response.skrining_gizi1)
-                    $('#formAskepAnakRanap select[name=skrining_gizi2]').val(response.skrining_gizi2)
-                    $('#formAskepAnakRanap select[name=skrining_gizi3]').val(response.skrining_gizi3)
-                    $('#formAskepAnakRanap select[name=skrining_gizi4]').val(response.skrining_gizi4)
-                    $('#formAskepAnakRanap input[name=nilai_gizi1]').val(response.nilai_gizi1)
-                    $('#formAskepAnakRanap input[name=nilai_gizi2]').val(response.nilai_gizi2)
-                    $('#formAskepAnakRanap input[name=nilai_gizi3]').val(response.nilai_gizi3)
-                    $('#formAskepAnakRanap input[name=nilai_gizi4]').val(response.nilai_gizi4)
-                    $('#formAskepAnakRanap input[name=nilai_total_gizi]').val(response.nilai_total_gizi)
-
-                    $('#formAskepAnakRanap select[name=wajah]').val(response.wajah)
-                    $('#formAskepAnakRanap select[name=kaki]').val(response.kaki)
-                    $('#formAskepAnakRanap select[name=aktifitas]').val(response.aktifitas)
-                    $('#formAskepAnakRanap select[name=menangis]').val(response.menangis)
-                    $('#formAskepAnakRanap select[name=beruara]').val(response.beruara)
-
-                    $('#formAskepAnakRanap input[name=nilaikaki]').val(response.nilaikaki)
-                    $('#formAskepAnakRanap input[name=nilaiwajah]').val(response.nilaiwajah)
-                    $('#formAskepAnakRanap input[name=nilaiaktifitas]').val(response.nilaiaktifitas)
-                    $('#formAskepAnakRanap input[name=nilaimenangis]').val(response.nilaimenangis)
-                    $('#formAskepAnakRanap input[name=nilaibersuara]').val(response.nilaibersuara)
-                    $('#formAskepAnakRanap input[name=hasilnyeri]').val(response.hasilnyeri)
-
-                    $('#formAskepAnakRanap input[name=lokasi]').val(response.lokasi)
-                    $('#formAskepAnakRanap input[name=durasi]').val(response.durasi)
-                    $('#formAskepAnakRanap input[name=frekuensi]').val(response.frekuensi)
-                    $('#formAskepAnakRanap select[name=nyeri_hilang]').val(response.nyeri_hilang)
-                    $('#formAskepAnakRanap input[name=ket_nyeri]').val(response.ket_nyeri)
-                    $('#formAskepAnakRanap select[name=pada_dokter]').val(response.pada_dokter)
-                    $('#formAskepAnakRanap input[name=ket_dokter]').val(response.ket_dokter)
-                    $('#formAskepAnakRanap textarea[name=rencana]').val(response.rencana)
-
-
+                    if (response.nip1 == nip || response.nip2 == nip) {
+                        $('.simpanAskepAnak').css('display', 'inline');
+                    } else if (nip == 'direksi' || nip == 'verifikator') {
+                        $('.simpanAskepAnak').css('display', 'inline');
+                    } else {
+                        $('.simpanAskepAnak').css('display', 'none');
+                    }
+                } else {
+                    $('#formAskepRanapNeonatus input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
+                    $('#formAskepRanapNeonatus input[name=pengkaji1]').val("{{ session()->get('pegawai')->nama }}")
                 }
             })
 

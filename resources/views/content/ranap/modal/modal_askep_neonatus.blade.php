@@ -1532,12 +1532,14 @@
         })
 
         $('#modalAskepRanapNeonatus').on('hidden.bs.modal', () => {
+            $('.simpanAskepAnak').css('display', 'inline');
             document.getElementById("formAskepRanapNeonatus").reset();
             tbRencanaKeperawatanNeo()
             kodeMasalah = [];
             kodeRencanaNeo = [];
         })
         $('#modalAskepRanapNeonatus').on('shown.bs.modal', () => {
+            $('.simpanAskepAnak').css('display', 'none');
             localStorage.removeItem('kodeRencanaNeo')
             $('#formAskepRanapNeonatus input[name=tanggal]').datepicker({
                 format: 'dd-mm-yyyy',
@@ -1562,7 +1564,7 @@
 
 
         function askepRanapNeonatus(no_rawat) {
-            $('#modalAskepRanapNeonatus').modal('show')
+
             tbMasalahKeperawatanNeo()
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 jk = regPeriksa.pasien.jk == 'P' ? 'PEREMPUAN' : 'LAKI-LAKI';
@@ -1576,10 +1578,6 @@
                 $('#formAskepRanapNeonatus input[name=pekerjaan]').val(regPeriksa.pasien.pekerjaan)
                 $('#formAskepRanapNeonatus input[name=bahasa]').val(regPeriksa.pasien.bahasa.nama_bahasa)
                 $('#formAskepRanapNeonatus input[name=riwayat_psiko_pendidikan]').val(regPeriksa.pasien.pnd)
-                $('#formAskepRanapNeonatus input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
-                $('#formAskepRanapNeonatus input[name=pengkaji1]').val("{{ session()->get('pegawai')->nama }}")
-                // $('#formAskepRanapNeonatus input[name=tanggal]').val("{{ date('d-m-Y') }}")
-                // $('#formAskepRanapNeonatus input[name=jam]').val("{{ date('H:i:s') }}")
                 $('#formAskepRanapNeonatus input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
                 setRiwayatImunisasi(regPeriksa.no_rkm_medis)
                 $('#formRiwayatImunisasi button[name=tambah-imunisasi]').attr('onclick', `insertRiwayatImunisasi('${regPeriksa.no_rkm_medis}')`)
@@ -1587,7 +1585,7 @@
             })
 
             getAskepRanapNeonatus(no_rawat).done((response) => {
-                console.log('RESPONSE', response);
+                nip = "{{ session()->get('pegawai')->nik }}";
                 if (response) {
                     $.each(response, (index, value) => {
                         select = $(`#formAskepRanapNeonatus select[name=${index}]`);
@@ -1614,8 +1612,22 @@
 
                     })
                     tbRencanaKeperawatanNeo(arrMasalah)
+
+                    if (response.nip1 == nip || response.nip2 == nip) {
+                        $('.simpanAskepAnak').css('display', 'inline');
+                    } else if (nip == 'direksi' || nip == 'verifikator') {
+                        $('.simpanAskepAnak').css('display', 'inline');
+                    } else {
+                        $('.simpanAskepAnak').css('display', 'none');
+                    }
+
+                } else {
+                    $('#formAskepRanapNeonatus input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
+                    $('#formAskepRanapNeonatus input[name=pengkaji1]').val("{{ session()->get('pegawai')->nama }}")
                 }
             })
+
+            $('#modalAskepRanapNeonatus').modal('show')
 
         }
 
@@ -1967,43 +1979,6 @@
             })
         }
 
-        // $('#modalAskepRanapNeonatus').on('shown.bs.modal', () => {
-
-        // })
-
-        // function cariPetugasAskep(p, no) {
-        //     getPetugas(p.value, no).done((response) => {
-        //         html = '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
-        //         $.map(response, function(data) {
-        //             html += `<li><a data-id="${data.nip}" class="dropdown-item" onclick="setPetugasAskep(this, ${no})">${data.nama}</a><li>`
-        //         })
-        //         html += '</ul>';
-        //         $('.list_petugas' + no).fadeIn();
-        //         $('.list_petugas' + no).html(html);
-        //     })
-        // }
-
-        // function setPetugasAskep(p, no) {
-        //     const nip = $(p).data('id');
-        //     const nama = $(p).text();
-
-        //     $('.nip' + no).val(nip)
-        //     $('.pengkaji' + no).val(nama)
-
-        //     $('.list_petugas' + no).fadeOut();
-        // }
-
-        // function getRencanaKeperawatan(no_rawat) {
-        //     const rencana = $.ajax({
-        //         url: 'ranap/askep/anak/rencana',
-        //         data: {
-        //             no_rawat: no_rawat
-        //         },
-        //         method: 'GET'
-        //     })
-
-        //     return rencana
-        // }
 
         function hitungApgar(n) {
             let f = $(`#formAskepRanapNeonatus input[name=f${n}]`).val() ? $(`#formAskepRanapNeonatus input[name=f${n}]`).val() : 0;
