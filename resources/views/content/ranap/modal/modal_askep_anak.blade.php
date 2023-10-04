@@ -1136,7 +1136,7 @@
                             <div class="separator m-2">7. Riwayat Imunisasi</div>
                             <div class="row">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-12">
-                                    <table class="table table-bordered" width="100%" id="tbRiwayatImunisasi">
+                                    <table class="table table-bordered tbRiwayatImunisasi" width="100%">
                                         <thead>
                                             <tr>
                                                 <th width="50%">Nama Imunisasi</th>
@@ -1481,63 +1481,7 @@
             return askep;
         }
 
-        function setRiwayatImunisasi(no_rkm_medis) {
-            getRiwayatImunisasi(no_rkm_medis).done((response) => {
-                console.log(response);
-                let kodeImun = ''
-                $('.tbRiwayatImunisasi tbody').empty();
-                $.map(response, (riwImun) => {
-                    if (kodeImun != riwImun.kode_imunisasi) {
-                        kodeImun = riwImun.kode_imunisasi;
-                        html = `<tr class="imun_${kodeImun}">
-                                        <td>${riwImun.master_imunisasi.nama_imunisasi}</td>
-                                        <td class="imun_${kodeImun}_1"></td>
-                                        <td class="imun_${kodeImun}_2"></td>
-                                        <td class="imun_${kodeImun}_3"></td>
-                                        <td class="imun_${kodeImun}_4"></td>
-                                        <td class="imun_${kodeImun}_5"></td>
-                                    </tr>`
-                        $('.tbRiwayatImunisasi tbody').append(html)
 
-                    }
-                    if (riwImun.no_imunisasi) {
-                        nomorImun = `<input class="form-check-input" type="checkbox" value="" checked onclick="hapusNoImunisasi('${no_rkm_medis}', '${riwImun.kode_imunisasi}', '${riwImun.no_imunisasi}', this)">`
-                        $('.imun_' + riwImun.kode_imunisasi + '_' + riwImun.no_imunisasi).html(nomorImun)
-                    }
-                })
-            })
-        }
-
-        function hapusNoImunisasi(no_rkm_medis, kode_imunisasi, no_imunisasi, p) {
-            Swal.fire({
-                title: 'Yakin ?',
-                text: "Hapus nomor imunisasi",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus saja!',
-                cancelButtonText: 'Jangan',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '/erm/imunisasi/riwayat/delete',
-                        data: {
-                            no_rkm_medis: no_rkm_medis,
-                            kode_imunisasi: kode_imunisasi,
-                            no_imunisasi: no_imunisasi,
-                            _token: "{{ csrf_token() }}",
-                        },
-                        method: 'DELETE',
-                    }).done((response) => {
-                        setRiwayatImunisasi(no_rkm_medis)
-                    })
-                } else if (result.isDismissed) {
-                    $(p).prop('checked', 'checked')
-                }
-            })
-
-        }
 
         function askepRanapAnak(no_rawat) {
             $('#modalAskepRanapAnak').modal('show')
@@ -1566,7 +1510,6 @@
             getAskepRanapAnak(no_rawat).done((response) => {
                 nip = "{{ session()->get('pegawai')->nik }}";
                 if (response) {
-                    console.log(response);
                     $.each(response, (index, value) => {
                         select = $(`#formAskepAnakRanap select[name=${index}]`);
                         input = $(`#formAskepAnakRanap input[name=${index}]`);
@@ -1609,42 +1552,33 @@
 
         }
 
-        function getRiwayatImunisasi(no_rkm_medis) {
-            const riwayatImunisasi = $.ajax({
-                url: `/erm/imunisasi/riwayat/get/${no_rkm_medis}`,
-                method: 'GET',
-            })
-
-            return riwayatImunisasi;
-        }
-
         $('#formAskepAnakRanap select[name=menangis]').change((e) => {
             const data = $('#formAskepAnakRanap select[name=menangis]').find(':selected').data('id')
             $('#formAskepAnakRanap input[name=nilaimenangis]').val(data)
-            hitungSkalaMyeri()
+            hitungSkalaNyeriAnak()
         })
         $('#formAskepAnakRanap select[name=wajah]').change((e) => {
             const data = $('#formAskepAnakRanap select[name=wajah]').find(':selected').data('id')
             $('#formAskepAnakRanap input[name=nilaiwajah]').val(data)
-            hitungSkalaMyeri()
+            hitungSkalaNyeriAnak()
         })
         $('#formAskepAnakRanap select[name=kaki]').change((e) => {
             const data = $('#formAskepAnakRanap select[name=kaki]').find(':selected').data('id')
             $('#formAskepAnakRanap input[name=nilaikaki]').val(data)
-            hitungSkalaMyeri()
+            hitungSkalaNyeriAnak()
         })
         $('#formAskepAnakRanap select[name=aktifitas]').change((e) => {
             const data = $('#formAskepAnakRanap select[name=aktifitas]').find(':selected').data('id')
             $('#formAskepAnakRanap input[name=nilaiaktifitas]').val(data)
-            hitungSkalaMyeri()
+            hitungSkalaNyeriAnak()
         })
         $('#formAskepAnakRanap select[name=bersuara]').change((e) => {
             const data = $('#formAskepAnakRanap select[name=bersuara]').find(':selected').data('id')
             $('#formAskepAnakRanap input[name=nilaibersuara]').val(data)
-            hitungSkalaMyeri()
+            hitungSkalaNyeriAnak()
         })
 
-        function hitungSkalaMyeri() {
+        function hitungSkalaNyeriAnak() {
             bersuara = $('#formAskepAnakRanap input[name=nilaibersuara]').val();
             menangis = $('#formAskepAnakRanap input[name=nilaimenangis]').val();
             wajah = $('#formAskepAnakRanap input[name=nilaiwajah]').val();

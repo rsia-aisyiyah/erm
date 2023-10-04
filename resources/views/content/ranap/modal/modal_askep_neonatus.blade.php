@@ -1631,42 +1631,42 @@
 
         }
 
-        function getRiwayatImunisasi(no_rkm_medis) {
-            const riwayatImunisasi = $.ajax({
-                url: `/erm/imunisasi/riwayat/get/${no_rkm_medis}`,
-                method: 'GET',
-            })
+        // function getRiwayatImunisasi(no_rkm_medis) {
+        //     const riwayatImunisasi = $.ajax({
+        //         url: `/erm/imunisasi/riwayat/get/${no_rkm_medis}`,
+        //         method: 'GET',
+        //     })
 
-            return riwayatImunisasi;
-        }
+        //     return riwayatImunisasi;
+        // }
 
         $('#formAskepRanapNeonatus select[name=menangis]').change((e) => {
             const data = $('#formAskepRanapNeonatus select[name=menangis]').find(':selected').data('id')
             $('#formAskepRanapNeonatus input[name=nilaimenangis]').val(data)
-            hitungSkalaMyeri()
+            hitungSkalaNyeriNeonatus()
         })
         $('#formAskepRanapNeonatus select[name=wajah]').change((e) => {
             const data = $('#formAskepRanapNeonatus select[name=wajah]').find(':selected').data('id')
             $('#formAskepRanapNeonatus input[name=nilaiwajah]').val(data)
-            hitungSkalaMyeri()
+            hitungSkalaNyeriNeonatus()
         })
         $('#formAskepRanapNeonatus select[name=kaki]').change((e) => {
             const data = $('#formAskepRanapNeonatus select[name=kaki]').find(':selected').data('id')
             $('#formAskepRanapNeonatus input[name=nilaikaki]').val(data)
-            hitungSkalaMyeri()
+            hitungSkalaNyeriNeonatus()
         })
         $('#formAskepRanapNeonatus select[name=aktifitas]').change((e) => {
             const data = $('#formAskepRanapNeonatus select[name=aktifitas]').find(':selected').data('id')
             $('#formAskepRanapNeonatus input[name=nilaiaktifitas]').val(data)
-            hitungSkalaMyeri()
+            hitungSkalaNyeriNeonatus()
         })
         $('#formAskepRanapNeonatus select[name=bersuara]').change((e) => {
             const data = $('#formAskepRanapNeonatus select[name=bersuara]').find(':selected').data('id')
             $('#formAskepRanapNeonatus input[name=nilaibersuara]').val(data)
-            hitungSkalaMyeri()
+            hitungSkalaNyeriNeonatus()
         })
 
-        function hitungSkalaMyeri() {
+        function hitungSkalaNyeriNeonatus() {
             bersuara = $('#formAskepRanapNeonatus input[name=nilaibersuara]').val();
             menangis = $('#formAskepRanapNeonatus input[name=nilaimenangis]').val();
             wajah = $('#formAskepRanapNeonatus input[name=nilaiwajah]').val();
