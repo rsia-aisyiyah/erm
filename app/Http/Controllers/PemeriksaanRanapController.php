@@ -199,6 +199,10 @@ class PemeriksaanRanapController extends Controller
         if ($request->parameter) {
             if ($request->parameter == 'pemeriksaan') {
                 $pemeriksaan->select([$request->parameter, 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'kesadaran', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
+            } else if ($request->parameter == 'obat') {
+                $pemeriksaan->select(['rtl', 'jam_rawat', 'tgl_perawatan', 'nip'])->whereHas('pegawai', function ($query) {
+                    $query->whereIn('departemen', ['DM7', 'SPS', '-']);
+                })->orderBy('tgl_perawatan', 'ASC');
             } else {
                 $pemeriksaan->select([$request->parameter, 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
             }

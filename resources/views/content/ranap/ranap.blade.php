@@ -391,7 +391,7 @@
                 scrollX: true,
                 scrollY: 400,
                 stateSave: true,
-                ordering: false,
+                ordering: true,
                 paging: false,
                 info: false,
                 ajax: {

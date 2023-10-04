@@ -481,8 +481,9 @@
                 // set action pencarian
                 $('#formResumeRanap #srcKeluhan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'keluhan')`);
                 $('#formResumeRanap #srcPemeriksaan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'pemeriksaan')`);
+                $('#formResumeRanap #srcObat').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'obat')`);
                 $('#formResumeRanap #srcLab').attr('onclick', `listHasilLab('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
-                $('#formResumeRanap #srcObat').attr('onclick', `listPemberianObat('${response.no_rawat}')`);
+                // $('#formResumeRanap #srcObat').attr('onclick', `listPemberianObat('${response.no_rawat}')`);
             })
             $('#modalResumeRanap').modal('show')
         }
@@ -528,6 +529,8 @@
 
                             if (parameter == 'pemeriksaan') {
                                 hasilPeriksa = `${row[parameter]} \n Tanda Vital  : TD : ${row.tensi} mmHG, Nadi : ${row.nadi}/mnt, RR : ${row.respirasi}/mnt, Suhu : ${row.suhu_tubuh} C \nKesadaran : ${row.kesadaran}, \nHasil Pemeriksaan : ,`
+                            } else if (parameter == 'obat') {
+                                hasilPeriksa = row['rtl']
                             } else {
                                 hasilPeriksa = row[parameter]
                             }
