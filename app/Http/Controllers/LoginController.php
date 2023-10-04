@@ -22,6 +22,11 @@ class LoginController extends Controller
 
     public function authenticate(Request $request)
     {
+        // get domain name
+        $domain = $request->getHost();
+        $ip = $request->ip();
+        dd($ip);
+
         $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -32,6 +37,23 @@ class LoginController extends Controller
             ->first();
 
         if ($user) {
+
+            /** 
+             * Pembatasan login dari domain sim.rsiaaisyiyah.com
+            */
+            if ($domain == 'sim.rsiaaisyiyah.com') {
+                /**
+                 * Daftar user yang diizinkan login : 
+                 * direksi, verifikator
+                */
+                if (!in_array($user->username, ['direksi', 'verifikator']))  {
+                    /**
+                     * Selain user diatas, maka akan diarahkan ke halaman login dengan pesan error
+                     * */ 
+                    return back()->with('error', 'Anda tidak diizinkan login.'); 
+                }
+            }
+
             Auth::login($user);
             $pegawai = Pegawai::where('nik', $request->get('username'))->with(['petugas', 'dokter'])->first();
             $request->session()->regenerate();
