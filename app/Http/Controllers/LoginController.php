@@ -24,8 +24,6 @@ class LoginController extends Controller
     {
         // get domain name
         $domain = $request->getHost();
-        $ip = $request->ip();
-        dd($ip);
 
         $request->validate([
             'username' => 'required',
