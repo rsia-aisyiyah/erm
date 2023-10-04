@@ -303,6 +303,7 @@
         </div>
     </div>
 </div>
+@include('content.ranap.modal.modal_list_pemeriksaan_asmed')
 @push('script')
     <script>
         $('.anak_dokter').on('keyup', (e) => {
@@ -322,7 +323,6 @@
                 })
             }
         });
-
 
         function setDokterAsmed(param, id, dokter) {
             kd_dokter = $(param).data('id')

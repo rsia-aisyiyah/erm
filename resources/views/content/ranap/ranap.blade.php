@@ -851,7 +851,7 @@
                     $('.btn-asmed-anak').css('display', 'inline')
                 }
 
-                $('#formAsmedAnakRanap #srcPemeriksaanAsmed').attr('onclick', `listPemeriksaan('${response.no_rawat}', 'pemeriksaan')`);
+                $('#formAsmedAnakRanap #srcPemeriksaanAsmed').attr('onclick', `listRiwayatTtv('${noRawat}', 'ttv', 'formAsmedAnakRanap')`);
 
             })
             $('#modalAsmedRanapAnak').modal('show')
