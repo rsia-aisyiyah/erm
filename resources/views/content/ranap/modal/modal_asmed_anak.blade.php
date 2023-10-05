@@ -90,7 +90,7 @@
 
 
                             </div>
-                            <div class="separator m-2">2. Pemeriksaan Fisik <a href="javascript:void(0)" id="srcPemeriksaanAsmed" class="badge text-bg-primary" style="margin-left:10px"><i class="bi bi-search"></i></a></div>
+                            <div class="separator m-2">2. Pemeriksaan Fisik <a href="javascript:void(0)" class="badge text-bg-primary srcPemeriksaanAsmed" style="margin-left:10px"><i class="bi bi-search"></i></a></div>
                             <div class="row">
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-3">
                                     <label for="">Keadaan Umum:</label>
@@ -303,7 +303,6 @@
         </div>
     </div>
 </div>
-@include('content.ranap.modal.modal_list_pemeriksaan_asmed')
 @push('script')
     <script>
         $('.anak_dokter').on('keyup', (e) => {

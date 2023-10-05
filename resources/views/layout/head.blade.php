@@ -269,8 +269,20 @@
             height: 28px;
         }
 
+        .input-group .br-left {
+            border-radius: 6px 0 0 6px !important;
+        }
+
+        .input-group .br-right {
+            border-radius: 0 6px 6px 0 !important;
+        }
+
+        .input-group .br-full {
+            border-radius: 6px !important;
+        }
+
         .input-group label {
-            font-size: 11;
+            font-size: 11px;
             padding: 5px;
         }
 

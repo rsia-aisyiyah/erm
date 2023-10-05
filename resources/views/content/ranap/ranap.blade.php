@@ -146,12 +146,14 @@
     @include('content.ranap.modal.modal_soap')
     @include('content.ranap.modal.modal_penunjang')
     @include('content.ranap.modal.modal_asmed_anak')
+    @include('content.ranap.modal.modal_asmed_kandungan')
     @include('content.ranap.modal.modal_askep_anak')
     @include('content.ranap.modal.modal_askep_neonatus')
-    @include('content.ranap.modal.modal_asmed_kandungan')
+    @include('content.ranap.modal.modal_askep_kandungan')
     @include('content.ranap.modal.modal_grafik_harian')
     @include('content.ranap.modal.modal_resume_ranap')
     @include('content.ranap.modal.modal_list_pemeriksaan')
+    @include('content.ranap.modal.modal_list_pemeriksaan_asmed')
     @include('content.ranap.modal.modal_list_diagnosa')
     @include('content.ranap.modal.modal_riwayat_vaksin')
 @endsection
@@ -762,6 +764,7 @@
                 }
             })
             $('#modalAsmedRanapKandungan').modal('show')
+            $('#formAsmedKandunganRanap .srcPemeriksaanAsmed').attr('onclick', `listRiwayatTtv('${noRawat}', 'ttv', 'formAsmedKandunganRanap')`);
         }
 
         function asmedRanapAnak(noRawat) {
@@ -851,7 +854,7 @@
                     $('.btn-asmed-anak').css('display', 'inline')
                 }
 
-                $('#formAsmedAnakRanap #srcPemeriksaanAsmed').attr('onclick', `listRiwayatTtv('${noRawat}', 'ttv', 'formAsmedAnakRanap')`);
+                $('#formAsmedAnakRanap .srcPemeriksaanAsmed').attr('onclick', `listRiwayatTtv('${noRawat}', 'ttv', 'formAsmedAnakRanap')`);
 
             })
             $('#modalAsmedRanapAnak').modal('show')

@@ -145,7 +145,7 @@
                                     <input type="hidden" name="riwayat_kehamilan_perkiraan" value="-">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
-                                    <label for="rpk">riwayat_alergi</label>
+                                    <label for="rpk">Riwayat Alergi</label>
                                     <input type="text" class="form-control form-control-sm" id="riwayat_alergi" name="riwayat_alergi" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
