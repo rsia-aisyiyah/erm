@@ -54,7 +54,7 @@
         input[type=search],
         .form-select-sm {
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             border-color: #bdbdbd;
             transition: all .1s linear;
         }
@@ -307,6 +307,10 @@
             box-shadow: none;
             transition: background-size .3s ease;
             ;
+        }
+
+        form label {
+            font-size: 11px;
         }
 
         #table-ews tr td,

@@ -35,15 +35,15 @@
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="tanggal">Tanggal</label>
-                                    <input type="text" class="form-control form-control-sm" name="tanggal" placeholder="" aria-label="" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" name="tanggal" placeholder="" aria-label="" autocomplete="off" value="{{ date('d-m-Y') }}">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="jam">Jam</label>
-                                    <input type="text" class="form-control form-control-sm jam" name="jam" placeholder="" aria-label="" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm jam" name="jam" placeholder="" aria-label="" autocomplete="off" value="{{ date('H:i:s') }}">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="kasus_trauma">Kasus</label>
-                                    <select class="form-select form-select-sm" id="kasus_trauma" style="font-size: 12px;height:28px" name="kasus_trauma">
+                                    <select class="form-select form-select-sm" id="kasus_trauma" name="kasus_trauma">
                                         <option value="Trauma" selected>Trauma</option>
                                         <option value="Non Trauma">Non Trauma</option>
                                     </select>
@@ -74,14 +74,14 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-5 col-lg-5">
                                     <label for="nip2">Anamnesis</label>
-                                    <select class="form-select form-select-sm" id="anamnesis" name="informasi" style="font-size: 12px;height:28px">
+                                    <select class="form-select form-select-sm" id="anamnesis" name="informasi">
                                         <option value="Autoanamnesis" selected>Autoanamnesis</option>
                                         <option value="Alloanamnesis">Alloanamnesis</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-4">
                                     <label for="tiba_diruang_rawat">Tiba di ruang</label>
-                                    <select class="form-select form-select-sm" id="tiba_diruang_rawat" name="tiba_diruang_rawat" style="font-size: 12px;height:28px">
+                                    <select class="form-select form-select-sm" id="tiba_diruang_rawat" name="tiba_diruang_rawat">
                                         <option value="Jalan Tanpa Bantuan" selected>Jalan Tanpa Bantuan</option>
                                         <option value="Kursi Roda">Kursi Roda</option>
                                         <option value="Brankar">Brankar</option>
@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-3">
                                     <label for="cara_masuk">Cara Masuk</label>
-                                    <select class="form-select form-select-sm" id="cara_masuk" name="cara_masuk" style="font-size: 12px;height:28px">
+                                    <select class="form-select form-select-sm" id="cara_masuk" name="cara_masuk">
                                         <option value="Poli" selected>Poli</option>
                                         <option value="IGD">IGD</option>
                                         <option value="Lain-lain">Lain-lain</option>
@@ -100,7 +100,6 @@
                     </div>
                     <div class="row">
                         {{-- section : form kanan --}}
-
                         <div class="mb-3 col-sm-12 col-md-12 col-lg-6">
                             <div class="separator m-2">1. Riwayat Kesehatan</div>
                             {{-- section : riwayat kesehatan --}}
@@ -276,20 +275,20 @@
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-3">
                                     <div class="input-group">
                                         <label for="riwayat_hamil_hpht">HPHT</label>
-                                        <input type="text" class="form-control form-control-sm" id="riwayat_hamil_hpht" name="riwayat_hamil_hpht" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" id="riwayat_hamil_hpht" name="riwayat_hamil_hpht" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" autocomplete="off" style="border-radius: 6px" value="{{ date('d-m-Y') }}">
                                     </div>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-3">
                                     <div class="input-group">
                                         <label for="riwayat_hamil_usiahamil">Usia Hamil</label>
-                                        <input type="text" class="form-control form-control-sm" id="riwayat_hamil_usiahamil" name="riwayat_hamil_usiahamil" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" id="riwayat_hamil_usiahamil" name="riwayat_hamil_usiahamil" placeholder="" onfocus="removeZero(this)" value="-" onblur="cekKosong(this)" autocomplete="off" style="border-radius: 6px">
                                         <label for="riwayat_hamil_usiahamil">bln/mgg</label>
                                     </div>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-2">
                                     <div class="input-group">
                                         <label for="riwayat_hamil_tp">TP</label>
-                                        <input type="text" class="form-control form-control-sm" id="riwayat_hamil_tp" name="riwayat_hamil_tp" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" id="riwayat_hamil_tp" name="riwayat_hamil_tp" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" autocomplete="off" style="border-radius: 6px" value="{{ date('d-m-Y') }}">
                                     </div>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-4">
@@ -722,16 +721,671 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
+                                    <div class="input-group">
+                                        <label for="pemeriksaan_umum_hidung">Hidung</label>
+                                        <select class="form-select br-full" name="pemeriksaan_umum_hidung" id="pemeriksaan_umum_hidung">
+                                            <option value="Normal">Normal</option>
+                                            <option value="Sekret">Sekret</option>
+                                            <option value="Polip">Polip</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
+                                    <div class="input-group">
+                                        <label for="pemeriksaan_umum_telinga">Telinga</label>
+                                        <select class="form-select br-full" name="pemeriksaan_umum_telinga" id="pemeriksaan_umum_telinga">
+                                            <option value="Bersih">Bersih</option>
+                                            <option value="Serumen">Serumen</option>
+                                            <option value="Polip">Polip</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
+                                    <div class="input-group">
+                                        <label for="pemeriksaan_umum_mulut">Mulut</label>
+                                        <select class="form-select br-full" name="pemeriksaan_umum_mulut" id="pemeriksaan_umum_mulut">
+                                            <option value="Bersih">Bersih</option>
+                                            <option value="Kotor">Kotor</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
+                                    <div class="input-group">
+                                        <label for="pemeriksaan_umum_leher">Leher</label>
+                                        <select class="form-select br-full" name="pemeriksaan_umum_leher" id="pemeriksaan_umum_leher">
+                                            <option value="Normal">Normal</option>
+                                            <option value="Pembesaran KGB">Pembesaran KGB</option>
+                                            <option value="Pembesaran Kelenjar Tiroid">Pembesaran Kelenjar Tiroid</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
+                                    <div class="input-group">
+                                        <label for="pemeriksaan_umum_dada">Dada</label>
+                                        <select class="form-select br-full" name="pemeriksaan_umum_dada" id="pemeriksaan_umum_dada">
+                                            <option value="Mamae Simetris">Mamae Simetris</option>
+                                            <option value="Mamae Asimetris">Mamae Asimetris</option>
+                                            <option value="Aerola Hiperpigmentasi">Aerola Hiperpigmentasi</option>
+                                            <option value="Kolustrum (+)">Kolustrum (+)</option>
+                                            <option value="Tumor">Tumor</option>
+                                            <option value="Puting Susu Menonjol">Puting Susu Menonjol</option>
+                                            <option value="Pembesaran KGB">Pembesaran KGB</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
+                                    <div class="input-group">
+                                        <label for="pemeriksaan_umum_perut">Perut</label>
+                                        <select class="form-select br-full" name="pemeriksaan_umum_perut" id="pemeriksaan_umum_perut">
+                                            <option value="Luka Bekas Operasi">Luka Bekas Operasi</option>
+                                            <option value="Nyeri Tekan (Ya)">Nyeri Tekan (Ya)</option>
+                                            <option value="Nyeri Tekan (Tidak)">Nyeri Tekan (Tidak)</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
+                                    <div class="input-group">
+                                        <label for="pemeriksaan_umum_genitalia">Genitalia</label>
+                                        <select class="form-select br-full" name="pemeriksaan_umum_genitalia" id="pemeriksaan_umum_genitalia">
+                                            <option value="Bersih">Bersih</option>
+                                            <option value="Kotor">Kotor</option>
+                                            <option value="Varises">Varises</option>
+                                            <option value="Oedem">Oedem</option>
+                                            <option value="Hematoma">Hematoma</option>
+                                            <option value="Hemoroid">Hemoroid</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
+                                    <div class="input-group">
+                                        <label for="pemeriksaan_umum_ekstrimitas">Ekstrimitas</label>
+                                        <select class="form-select br-full" name="pemeriksaan_umum_ekstrimitas" id="pemeriksaan_umum_ekstrimitas">
+                                            <option value="Bersih">Bersih</option>
+                                            <option value="Oedem">Oedem</option>
+                                            <option value="Refleks Patella Ada">Refleks Patella Ada</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             {{-- endsection : pemeriksaan umum --}}
                         </div>
                         {{-- endsection : form kanan --}}
+                        {{-- section : form kiri --}}
+                        <div class="col-sm-12 col-md-12 col-lg-6">
+                            <div class="separator m-2">4. Pengkajian Fungsi</div>
+                            {{-- section : Pengkajian Fungsi --}}
+                            <div class="row">
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="pengkajian_fungsi_kemampuan_aktifitas">a. Kemampuan Aktivitas Sehari-hari</label>
+                                        <select class="form-select" name="pengkajian_fungsi_kemampuan_aktifitas" id="pengkajian_fungsi_kemampuan_aktifitas" style="border-radius:6px">
+                                            <option value="Mandiri">Mandiri</option>
+                                            <option value="Bantuan minimal">Bantuan Minimal</option>
+                                            <option value="Bantuan Sebagian">Bantuan Sebagian</option>
+                                            <option value="Ketergantungan Total">Ketergantungan Total</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="pengkajian_fungsi_berjalan">b. Berjalan</label>
+                                        <select class="form-select" name="pengkajian_fungsi_berjalan" id="pengkajian_fungsi_berjalan" style="border-radius:6px 0 0 6px ">
+                                            <option value="TAK">TAK</option>
+                                            <option value="Penurunan Kekuatan/ROM">Penurunan Kekuatan/ROM</option>
+                                            <option value="Paralisis">Paralisis</option>
+                                            <option value="Sering Jatuh">Sering Jatuh</option>
+                                            <option value="Sering Jatuh">Sering Jatuh</option>
+                                            <option value="Deformitas">Deformitas</option>
+                                            <option value="Hilang Keseimbangan">Hilang Keseimbangan</option>
+                                            <option value="Riwayat Patah Tulang">Riwayat Patah Tulang</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_ket_berjalan" name="pengkajian_fungsi_ket_berjalan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
+                                    <div class="input-group">
+                                        <label for="pengkajian_fungsi_aktivitas">c. Aktivitas</label>
+                                        <select class="form-select" name="pengkajian_fungsi_aktivitas" id="pengkajian_fungsi_aktivitas" style="border-radius:6px">
+                                            <option value="Tirah Baring">Tirah Baring</option>
+                                            <option value="Duduk">Duduk</option>
+                                            <option value="Berjalan">Berjalan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="input-group">
+                                        <label for="pengkajian_fungsi_ambulasi">d. Ambulansi</label>
+                                        <select class="form-select" name="pengkajian_fungsi_ambulasi" id="pengkajian_fungsi_ambulasi" style="border-radius:6px">
+                                            <option value="Walker">Walker</option>
+                                            <option value="Tongkat">Tongkat</option>
+                                            <option value="Kursi Roda">Kursi Roda</option>
+                                            <option value="Tidak Ada">Tidak Ada</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-5">
+                                    <div class="input-group">
+                                        <label for="pengkajian_fungsi_ekstrimitas_atas">e. Ekstrimitas Atas</label>
+                                        <select class="form-select" name="pengkajian_fungsi_ekstrimitas_atas" id="pengkajian_fungsi_ekstrimitas_atas" style="border-radius:6px 0 0 6px">
+                                            <option value="TAK">TAK</option>
+                                            <option value="Lemah">Lemah</option>
+                                            <option value="Oedema">Oedema</option>
+                                            <option value="Tidak Simetris">Tidak Simetris</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_ket_ekstrimitas_atas" name="pengkajian_fungsi_ket_ekstrimitas_atas" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="pengkajian_fungsi_ekstrimitas_bawah">f. Ekstrimitas Bawah</label>
+                                        <select class="form-select" name="pengkajian_fungsi_ekstrimitas_bawah" id="pengkajian_fungsi_ekstrimitas_bawah" style="border-radius:6px 0 0 6px">
+                                            <option value="TAK">TAK</option>
+                                            <option value="Lemah">Lemah</option>
+                                            <option value="Oedema">Oedema</option>
+                                            <option value="Tidak Simetris">Tidak Simetris</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_ket_ekstrimitas_bawah" name="pengkajian_fungsi_ket_ekstrimitas_bawah" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="pengkajian_fungsi_kemampuan_menggenggam">g. Kemampuan Menggenggam</label>
+                                        <select class="form-select" name="pengkajian_fungsi_kemampuan_menggenggam" id="pengkajian_fungsi_kemampuan_menggenggam" style="border-radius:6px 0 0 6px">
+                                            <option value="Tidak Ada Kesulitan">Tidak Ada Kesulitan</option>
+                                            <option value="Terakhir">Terakhir</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_ket_kemampuan_menggenggam" name="pengkajian_fungsi_ket_kemampuan_menggenggam" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="pengkajian_fungsi_koordinasi">h. Kemampuan Koordinasi</label>
+                                        <select class="form-select" name="pengkajian_fungsi_koordinasi" id="pengkajian_fungsi_koordinasi" style="border-radius:6px 0 0 6px">
+                                            <option value="Tidak Ada Kesulitan">Tidak Ada Kesulitan</option>
+                                            <option value="Ada Masalah">Ada Masalah</option>
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_ket_koordinasi" name="pengkajian_fungsi_ket_koordinasi" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="pengkajian_fungsi_gangguan_fungsi">i. Kesimpulan Gangguan Fungsi</label>
+                                        <select class="form-select" name="pengkajian_fungsi_gangguan_fungsi" id="pengkajian_fungsi_gangguan_fungsi" style="border-radius:6px">
+                                            <option value="Tidak (Tidak Perlu Co DPJP)">Tidak (Tidak Perlu Co DPJP)</option>
+                                            <option value="Ya (Co DPJP)">Ya (Co DPJP)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- endsection : Pengkajian Fungsi --}}
+                            <div class="separator m-2">5. Riwayat Psikologis, Sosial, Ekonomi, Budaya</div>
+                            {{-- section : Riwayat Psikologis Sosio Budaya --}}
+                            <div class="row">
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-5">
+                                    <div class="input-group">
+                                        <label for="riwayat_psiko_kondisipsiko">a. Kemampuan Psikologis</label>
+                                        <select class="form-select" name="riwayat_psiko_kondisipsiko" id="riwayat_psiko_kondisipsiko" style="border-radius:6px">
+                                            <option value="Tidak Ada Masalah">Tidak Ada Maslah</option>
+                                            <option value="Marah">Marah</option>
+                                            <option value="Takut">Takut</option>
+                                            <option value="Depresi">Depresi</option>
+                                            <option value="Cepat Lelah">Cepat Lelah</option>
+                                            <option value="Cemas">Cemas</option>
+                                            <option value="Gelisah">Gelisah</option>
+                                            <option value="Sulit Tidur">Sulit Tidur</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-7">
+                                    <div class="input-group">
+                                        <label for="riwayat_psiko_adakah_prilaku">b. Adakah Perilaku</label>
+                                        <select class="form-select" name="riwayat_psiko_adakah_prilaku" id="riwayat_psiko_adakah_prilaku" style="border-radius:6px 0 0 6px">
+                                            <option value="Tidak Ada Masalah">Tidak Ada Masalah</option>
+                                            <option value="Perilaku Kekerasan">Perilaku Kekerasan</option>
+                                            <option value="Gangguan Efek">Gangguan Efek</option>
+                                            <option value="Gangguan Memori">Gangguan Memori</option>
+                                            <option value="Halusinasi">Halusinasi</option>
+                                            <option value="Kecenderungan Percobaan Bunuh Diri">Kecenderungan Percobaan Bunuh Diri</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="riwayat_psiko_ket_adakah_prilaku" name="riwayat_psiko_ket_adakah_prilaku" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
+                                    <div class="input-group">
+                                        <label for="riwayat_psiko_gangguan_jiwa">c. Riwayat Gangguan Jiwa</label>
+                                        <select class="form-select" name="riwayat_psiko_gangguan_jiwa" id="riwayat_psiko_gangguan_jiwa" style="border-radius:6px">
+                                            <option value="Tidak">Tidak</option>
+                                            <option value="Ya">Ya</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-5">
+                                    <div class="input-group">
+                                        <label for="riwayat_psiko_hubungan_pasien">d. Hubungan dg. Keluarga</label>
+                                        <select class="form-select" name="riwayat_psiko_hubungan_pasien" id="riwayat_psiko_hubungan_pasien" style="border-radius:6px">
+                                            <option value="Harmonis">Harmonis</option>
+                                            <option value="Kurang Harmonis">Kurang Harmonis</option>
+                                            <option value="Tidak Harmonis">Tidak Harmonis</option>
+                                            <option value="Konflik Besar">Konflik Besar</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="input-group">
+                                        <label for="agama">e. Agama</label>
+                                        <input type="text" class="form-control form-control-sm" id="agama" name="agama" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="riwayat_psiko_tinggal">f. Tinggal dg.</label>
+                                        <select class="form-select" name="riwayat_psiko_tinggal" id="riwayat_psiko_tinggal" style="border-radius:6px 0 0 6px">
+                                            <option value="Keluarga">Keluarga</option>
+                                            <option value="Sendiri">Sendiri</option>
+                                            <option value="Orang Tua">Orang Tua</option>
+                                            <option value="Suami/Istri">Suami/Istri</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="riwayat_psiko_ket_tinggal_dengan" name="riwayat_psiko_ket_tinggal_dengan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="">
+                                    </div>
+                                </div>
+                                {{-- potong disini --}}
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="input-group">
+                                        <label for="pekerjaan">g. Pekerjaan</label>
+                                        <input type="text" class="form-control form-control-sm" id="pekerjaan" name="pekerjaan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="input-group">
+                                        <label for="penjab">h. Pembiayaan</label>
+                                        <input type="text" class="form-control form-control-sm" id="penjab" name="penjab" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-9">
+                                    <div class="input-group">
+                                        <label for="riwayat_psiko_budaya">i. Nilai Kepercayaan/Kebudayaan yang Perlu Diperhatikan</label>
+                                        <select class="form-select" name="riwayat_psiko_budaya" id="riwayat_psiko_budaya" style="border-radius:6px 0 0 6px">
+                                            <option value="Tidak Ada">Tidak Ada</option>
+                                            <option value="Ada">Ada</option>
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="riwayat_psiko_ket_budaya" name="riwayat_psiko_ket_budaya" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="input-group">
+                                        <label for="bahasa">j. Bahasa</label>
+                                        <input type="text" class="form-control form-control-sm" id="bahasa" name="bahasa" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="input-group">
+                                        <label for="riwayat_psiko_pendidikan">k. Pendidikan Pasien</label>
+                                        <input type="text" class="form-control form-control-sm" id="riwayat_psiko_pendidikan" name="riwayat_psiko_pend_pj" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="input-group">
+                                        <label for="riwayat_psiko_pend_pj">l. Pendidikan PJ</label>
+                                        <select class="form-select" name="riwayat_psiko_pend_pj" id="riwayat_psiko_pend_pj" style="border-radius:6px">
+                                            <option value="-">-</option>
+                                            <option value="TS">TS</option>
+                                            <option value="TK">TK</option>
+                                            <option value="SD">SD</option>
+                                            <option value="SMP">SMP</option>
+                                            <option value="SMA">SMA</option>
+                                            <option value="SLTA/Sederajat">SLTA/Sederajat</option>
+                                            <option value="D1">D1</option>
+                                            <option value="D2">D2</option>
+                                            <option value="D3">D3</option>
+                                            <option value="D4">D4</option>
+                                            <option value="S1">S1</option>
+                                            <option value="S2">S2</option>
+                                            <option value="S3">S3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="riwayat_psiko_edukasi_pada">m. Edukasi diberikan kepada</label>
+                                        <select class="form-select" name="riwayat_psiko_edukasi_pada" id="riwayat_psiko_edukasi_pada" style="border-radius:6px 0 0 6px">
+                                            <option value="Keluarga">Keluarga</option>
+                                            <option value="Pasien">Pasien</option>
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="riwayat_psiko_ket_edukasi_pada" name="riwayat_psiko_ket_edukasi_pada" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- endsection : Pengkajian Fungsi --}}
+
+                            {{-- section : Penilaian tingkat nyeri --}}
+                            <div class="separator m-2">6. Penilaian Tingkat Nyeri</div>
+                            <div class="row">
+                                <div class="mt-2 col-sm-12 col-md-12 col-lg-5">
+                                    <img src="{{ asset('/img/skala_nyeri_wong_baker.png') }}" alt="" class="mx-auto d-block" style="max-width:100%;height:auto">
+                                    <div class="mt-2 col-lg-12">
+                                        <label for="nyeri_hilang">Nyeri Hilang Bila : </label>
+                                        <div class="input-group">
+                                            <select class="form-select" name="nyeri_hilang" id="nyeri_hilang" style="border-radius:6px 0 0 6px">
+                                                <option value="Minum Obat">Minum Obat</option>
+                                                <option value="Istirahat">Istirahat</option>
+                                                <option value="Mendengarkan Musik">Mendengarkan Musik</option>
+                                                <option value="Berubah Posisi/Tidur">Berubah Posisi/Tidur</option>
+                                                <option value="Lain-lain">Lain-lain</option>
+                                            </select>
+                                            <input type="text" class="form-control form-control-sm" id="ket_nyeri" name="ket_nyeri" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 col-sm-12 col-md-12 col-lg-7" style="padding-left: 0px">
+                                    <div class="row">
+                                        <div class="mb-1 col-lg-4" style="padding-right: 0px">
+                                            <select class="form-select" name="penilaian_nyeri" id="penilaian_nyeri">
+                                                <option value="Tidak Ada Nyeri">Tidak Ada Nyeri</option>
+                                                <option value="Nyeri Akut">Nyeri Akut</option>
+                                                <option value="Nyeri Kronis">Nyeri Kronis</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-1 col-lg-8">
+                                            <div class="input-group">
+                                                <label for="penilaian_nyeri_penyebab">Penyebab</label>
+                                                <select class="form-select br-left" name="penilaian_nyeri_penyebab" id="penilaian_nyeri_penyebab">
+                                                    <option value="Proses Penyakit">Proses Penyakit</option>
+                                                    <option value="Benturan">Benturan</option>
+                                                    <option value="Lain-lain">Lain-lain</option>
+                                                </select>
+                                                <input type="text" class="form-control form-control-sm" id="penilaian_nyeri_ket_penyebab" name="penilaian_nyeri_ket_penyebab" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="mb-1 col-lg-12">
+                                            <div class="input-group">
+                                                <label for="penilaian_nyeri_kualitas">Kualitas</label>
+                                                <select class="form-select br-left" name="penilaian_nyeri_kualitas" id="penilaian_nyeri_kualitas">
+                                                    <option value="Seperti Tertusuk">Seperti Tertusuk</option>
+                                                    <option value="Berdenyut">Berdenyut</option>
+                                                    <option value="Teriris">Teriris</option>
+                                                    <option value="Tertindih">Tertindih</option>
+                                                    <option value="Tertiban">Tertiban</option>
+                                                    <option value="Lain-lain">Lain-lain</option>
+                                                </select>
+                                                <input type="text" class="form-control form-control-sm" id="penilaian_nyeri_ket_kualitas" name="penilaian_nyeri_ket_kualitas" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="mb-1 col-lg-7">
+                                            <div class="input-group">
+                                                <label for="penilaian_nyeri_lokasi">Lokasi : </label>
+                                                <input type="text" class="form-control form-control-sm" id="penilaian_nyeri_lokasi" name="penilaian_nyeri_lokasi" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                            </div>
+                                        </div>
+                                        <div class="mb-1 col-lg-5">
+                                            <div class="input-group">
+                                                <label for="penilaian_nyeri_menyebar">Menybar : </label>
+                                                <select class="form-select br-full" name="penilaian_nyeri_menyebar" id="penilaian_nyeri_menyebar">
+                                                    <option value="Tidak">Tidak</option>
+                                                    <option value="Ya">Ya</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1 col-lg-6">
+                                            <div class="input-group">
+                                                <label for="penilaian_nyeri_skala">Severity : Skala Nyeri </label>
+                                                <select class="form-select br-full" name="penilaian_nyeri_skala" id="penilaian_nyeri_skala">
+                                                    @for ($i = 0; $i < 11; $i++)
+                                                        <option value={{ $i }}>{{ $i }}</option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1 col-lg-6">
+                                            <div class="input-group">
+                                                <label for="penilaian_nyeri_waktu">Waktu/Durasi : </label>
+                                                <input type="text" class="form-control form-control-sm" id="penilaian_nyeri_waktu" name="penilaian_nyeri_waktu" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                                <label for="penilaian_nyeri_waktu">menit</label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1 col-lg-12">
+                                            <div class="input-group">
+                                                <label for="penilaian_nyeri_diberitahukan_dokter">Diberitahukan pada dokter ? </label>
+                                                <select class="form-select" name="penilaian_nyeri_diberitahukan_dokter" id="penilaian_nyeri_diberitahukan_dokter" style="border-radius:6px">
+                                                    <option value="Tidak">Tidak</option>
+                                                    <option value="Ya">Ya</option>
+                                                </select>
+                                                <label for="penilaian_nyeri_jam_diberitahukan_dokter">Jam : </label>
+                                                <input type="text" class="form-control form-control-sm" id="penilaian_nyeri_jam_diberitahukan_dokter" name="penilaian_nyeri_jam_diberitahukan_dokter" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- endsection : Penilaian tingkat nyeri --}}
+                            {{-- section : Penilaian resiko jatuh --}}
+                            <div class="separator m-2">7. Penilaian Resiko Jatuh</div>
+                            <div class="row">
+                                <div class="mb-1 col-lg-4">
+                                    <label for="">1. Riwayat Jatuh</label>
+                                </div>
+                                <div class="mb-1 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_skala1">Skala : </label>
+                                        <select class="form-select br-full" name="penilaian_jatuh_skala1" id="penilaian_jatuh_skala1">
+                                            <option value="Tidak" data-nilai="0">Tidak</option>
+                                            <option value="Ya" data-nilai="25">Ya</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-2">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_nilai1">Nilai : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="penilaian_jatuh_nilai1" name="penilaian_jatuh_nilai1" value="0" autocomplete="off" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-4">
+                                    <label for="">2. Diagnosis Skunder (≥2 Diagnosis Skunder )</label>
+                                </div>
+                                <div class="mb-1 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_skala2">Skala : </label>
+                                        <select class="form-select br-full" name="penilaian_jatuh_skala2" id="penilaian_jatuh_skala2">
+                                            <option value="Tidak" data-nilai="0">Tidak</option>
+                                            <option value="Ya" data-nilai="15">Ya</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-2">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_nilai2">Nilai : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="penilaian_jatuh_nilai2" name="penilaian_jatuh_nilai2" value="0" autocomplete="off" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-4">
+                                    <label for="">3. Alat Bantu</label>
+                                </div>
+                                <div class="mb-1 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_skala3">Skala : </label>
+                                        <select class="form-select br-full" name="penilaian_jatuh_skala3" id="penilaian_jatuh_skala3">
+                                            <option value="Tidak Ada/Kursi Roda/Perawat/Tirah Baring" data-nilai="0">Tidak Ada/Kursi Roda/Perawat/Tirah Baring</option>
+                                            <option value="Tongkat/Alat Penopang" data-nilai="15">Tongkat/Alat Penopang</option>
+                                            <option value="Berpegangan Pada Perabot" data-nilai="30">Berpegangan Pada Perabot</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-2">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_nilai3">Nilai : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="penilaian_jatuh_nilai3" name="penilaian_jatuh_nilai3" value="0" autocomplete="off" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-4">
+                                    <label for="">4. Terpasang Infuse</label>
+                                </div>
+                                <div class="mb-1 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_skala4">Skala : </label>
+                                        <select class="form-select br-full" name="penilaian_jatuh_skala4" id="penilaian_jatuh_skala4">
+                                            <option value="Tidak" data-nilai="0">Tidak</option>
+                                            <option value="Ya" data-nilai="20">Ya</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-2">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_nilai4">Nilai : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="penilaian_jatuh_nilai4" name="penilaian_jatuh_nilai4" value="0" autocomplete="off" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-4">
+                                    <label for="">5. Gaya Berjalan</label>
+                                </div>
+                                <div class="mb-1 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_skala5">Skala : </label>
+                                        <select class="form-select br-full" name="penilaian_jatuh_skala5" id="penilaian_jatuh_skala5">
+                                            <option value="Normal/Tirah Baring/Imobilisasi" data-nilai="0">Normal/Tirah Baring/Imobilisasi</option>
+                                            <option value="Lemah" data-nilai="10">Lemah</option>
+                                            <option value="Terganggu" data-nilai="20">Terganggu</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-2">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_nilai5">Nilai : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="penilaian_jatuh_nilai5" name="penilaian_jatuh_nilai5" value="0" autocomplete="off" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-4">
+                                    <label for="">6. Status Mental</label>
+                                </div>
+                                <div class="mb-1 col-lg-6">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_skala6">Skala : </label>
+                                        <select class="form-select br-full" name="penilaian_jatuh_skala6" id="penilaian_jatuh_skala6">
+                                            <option value="Sadar Akan Kemampuan Diri Sendiri" data-nilai="0">Sadar Akan Kemampuan Diri Sendiri</option>
+                                            <option value="Sering Lupa Akan Keterbatasan Yang Dimiliki" data-nilai="15">Sering Lupa Akan Keterbatasan Yang Dimiliki</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-2">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_nilai6">Nilai : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="penilaian_jatuh_nilai6" name="penilaian_jatuh_nilai6" value="0" autocomplete="off" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-10">
+                                    <label for="">Tingkat Resiko : <span class="hasilResiko" style="color:green;font-weight:bold">Resiko Rendah (0-24)</span>, Tindakan : <span class="tindakanResiko">Intervensi pencegahan resiko jatuh standar </span></label>
+                                </div>
+                                <div class="mb-1 col-lg-2">
+                                    <div class="input-group">
+                                        <label for="penilaian_jatuh_totalnilai">Total : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="penilaian_jatuh_totalnilai" name="penilaian_jatuh_totalnilai" value="0" autocomplete="off" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {{-- endsection : Penilaian resiko jatuh --}}
+                            {{-- section : Skrining Gizi --}}
+                            <div class="separator m-2">8. Skrining Gizi</div>
+                            <div class="row">
+                                <div class="mb-1 col-lg-5">
+                                    <label for="skrining_gizi1">1. Apakah ada penurunan BB yang tidak diinginkan selama 6 bulan terakhit ?</label>
+                                </div>
+                                <div class="mb-1 col-lg-5">
+                                    <select class="form-select br-full" name="skrining_gizi1" id="skrining_gizi1">
+                                        <option value="Tidak ada penurunan berat badan" data-nilai="0">Tidak ada penurunan berat badan</option>
+                                        <option value="Tidak yakin/ tidak tahu/ terasa baju lebih longgar" data-nilai="2">Tidak yakin/ tidak tahu/ terasa baju lebih longgar</option>
+                                        <option value="Ya 1-5 kg" data-nilai="1">Ya 1-5 kg</option>
+                                        <option value="Ya 6-10 kg" data-nilai="2">Ya 6-10 kg</option>
+                                        <option value="Ya 11-15 kg" data-nilai="3">Ya 11-15 kg</option>
+                                        <option value="Ya > 15 kg" data-nilai="4">Ya > 15 kg</option>
+                                    </select>
+                                </div>
+                                <div class="mb-1 col-lg-2">
+                                    <div class="input-group">
+                                        <label for="nilai_gizi1">Nilai : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="nilai_gizi1" name="nilai_gizi1" value="0" autocomplete="off" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-5">
+                                    <label for="skrining_gizi2">2. Apakah asupan makan berkurang karena tidak nafsu makan ?</label>
+                                </div>
+                                <div class="mb-1 col-lg-5">
+                                    <select class="form-select br-full" name="skrining_gizi2" id="skrining_gizi2">
+                                        <option value="Tidak" data-nilai="0">Tidak</option>
+                                        <option value="Ya" data-nilai="1">Ya</option>
+                                    </select>
+                                </div>
+                                <div class="mb-1 col-lg-2">
+                                    <div class="input-group">
+                                        <label for="nilai_gizi2">Nilai : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="nilai_gizi2" name="nilai_gizi2" value="0" autocomplete="off" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-2 offset-lg-10">
+                                    <div class="input-group">
+                                        <label for="nilai_total_gizi">Total : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="nilai_total_gizi" name="nilai_total_gizi" value="0" autocomplete="off" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-8">
+                                    <div class="input-group">
+                                        <label for="skrining_gizi_diagnosa_khusus">Pasien dengan diagnosis khusus : </label>
+                                        <select class="form-select br-left" name="skrining_gizi_diagnosa_khusus" id="skrining_gizi_diagnosa_khusus" style="max-width:22%">
+                                            <option value="Tidak">Tidak</option>
+                                            <option value="Ya">Ya</option>
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="skrining_gizi_ket_diagnosa_khusus" name="skrining_gizi_ket_diagnosa_khusus" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="mb-1 col-lg-8">
+                                    <div class="input-group">
+                                        <label for="skrining_gizi_diagnosa_khusus">Sudah dibaca dan diketahui oleh dietisen : </label>
+                                        <select class="form-select br-full" name="skrining_gizi_diagnosa_khusus" id="skrining_gizi_diagnosa_khusus" style="max-width:22%">
+                                            <option value="Tidak">Tidak</option>
+                                            <option value="Ya">Ya</option>
+                                        </select>
+                                        <label for="skrining_gizi_diagnosa_khusus">Jam : </label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="skrining_gizi_ket_diagnosa_khusus" name="skrining_gizi_ket_diagnosa_khusus" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- endsection : Skrining Gizi --}}
+                            <div class="separator m-2"></div>
+                            <div class="row">
+                                {{-- section : Penilaian Kebidanan & Rencana Kebidanan --}}
+                                <div class="mb-1 col-sm-12 col-md-6 col-lg-6">
+                                    <label for="masalah">Asesmen/Penilaian Kebidanan</label>
+                                    <textarea class="form-control" name="masalah" id="masalah" cols="30" rows="10" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                                </div>
+                                <div class="mb-1 col-sm-12 col-md-6 col-lg-6">
+                                    <label for="rencana">Rencana Kebidanan</label>
+                                    <textarea class="form-control" name="rencana" id="rencana" cols="30" rows="10" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                                </div>
+                                {{-- endsection : Penilaian Kebidanan & Rencana Kebidanan --}}
+                            </div>
+
+                        </div>
+                        {{-- endsection : form kiri --}}
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary simpanAskepAnak" onclick="simpanAskepNeonatusRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="simpanAskepNeonatusRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
             </div>
         </div>
     </div>
@@ -740,10 +1394,6 @@
     <script>
         var kodeMasalah = []
         var kodeRencanaNeo = []
-
-        $('#riwayatImunisasiNeo').click(() => {
-            $('#modalRiwayatImunisasi').modal('show')
-        })
 
         $('#modalAskepRanapKandungan').on('hidden.bs.modal', () => {
             $('.simpanAskepAnak').css('display', 'inline');
@@ -756,6 +1406,18 @@
             $('.simpanAskepAnak').css('display', 'none');
             localStorage.removeItem('kodeRencanaNeo')
             $('#formAskepRanapKandungan input[name=tanggal]').datepicker({
+                format: 'dd-mm-yyyy',
+                orientation: 'bottom',
+                autoclose: true,
+                todayHighlight: true,
+            })
+            $('#formAskepRanapKandungan input[name=riwayat_hamil_hpht]').datepicker({
+                format: 'dd-mm-yyyy',
+                orientation: 'bottom',
+                autoclose: true,
+                todayHighlight: true,
+            })
+            $('#formAskepRanapKandungan input[name=riwayat_hamil_tp]').datepicker({
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
                 autoclose: true,
@@ -793,7 +1455,7 @@
                 $('#formAskepRanapKandungan input[name=bahasa]').val(regPeriksa.pasien.bahasa.nama_bahasa)
                 $('#formAskepRanapKandungan input[name=riwayat_psiko_pendidikan]').val(regPeriksa.pasien.pnd)
                 $('#formAskepRanapKandungan input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
-                setRiwayatImunisasi(regPeriksa.no_rkm_medis)
+                setRiwayatPersalinan(regPeriksa.no_rkm_medis)
                 $('#formRiwayatImunisasi button[name=tambah-imunisasi]').attr('onclick', `insertRiwayatImunisasi('${regPeriksa.no_rkm_medis}')`)
 
             })
@@ -845,92 +1507,85 @@
 
         }
 
-        // function getRiwayatImunisasi(no_rkm_medis) {
-        //     const riwayatImunisasi = $.ajax({
-        //         url: `/erm/imunisasi/riwayat/get/${no_rkm_medis}`,
-        //         method: 'GET',
-        //     })
-
-        //     return riwayatImunisasi;
-        // }
-
-        $('#formAskepRanapKandungan select[name=menangis]').change((e) => {
-            const data = $('#formAskepRanapKandungan select[name=menangis]').find(':selected').data('id')
-            $('#formAskepRanapKandungan input[name=nilaimenangis]').val(data)
-            hitungSkalaNyeriNeonatus()
+        $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala1]').change((e) => {
+            const data = $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala1]').find(':selected').data('nilai')
+            $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai1]').val(data)
+            hitungSkalaNyeriKandungan()
         })
-        $('#formAskepRanapKandungan select[name=wajah]').change((e) => {
-            const data = $('#formAskepRanapKandungan select[name=wajah]').find(':selected').data('id')
-            $('#formAskepRanapKandungan input[name=nilaiwajah]').val(data)
-            hitungSkalaNyeriNeonatus()
-        })
-        $('#formAskepRanapKandungan select[name=kaki]').change((e) => {
-            const data = $('#formAskepRanapKandungan select[name=kaki]').find(':selected').data('id')
-            $('#formAskepRanapKandungan input[name=nilaikaki]').val(data)
-            hitungSkalaNyeriNeonatus()
-        })
-        $('#formAskepRanapKandungan select[name=aktifitas]').change((e) => {
-            const data = $('#formAskepRanapKandungan select[name=aktifitas]').find(':selected').data('id')
-            $('#formAskepRanapKandungan input[name=nilaiaktifitas]').val(data)
-            hitungSkalaNyeriNeonatus()
-        })
-        $('#formAskepRanapKandungan select[name=bersuara]').change((e) => {
-            const data = $('#formAskepRanapKandungan select[name=bersuara]').find(':selected').data('id')
-            $('#formAskepRanapKandungan input[name=nilaibersuara]').val(data)
-            hitungSkalaNyeriNeonatus()
+        $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala2]').change((e) => {
+            const data = $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala2]').find(':selected').data('nilai')
+            $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai2]').val(data)
+            hitungSkalaNyeriKandungan()
         })
 
-        function hitungSkalaNyeriNeonatus() {
-            bersuara = $('#formAskepRanapKandungan input[name=nilaibersuara]').val();
-            menangis = $('#formAskepRanapKandungan input[name=nilaimenangis]').val();
-            wajah = $('#formAskepRanapKandungan input[name=nilaiwajah]').val();
-            kaki = $('#formAskepRanapKandungan input[name=nilaikaki]').val();
-            aktifitas = $('#formAskepRanapKandungan input[name=nilaiaktifitas]').val();
+        $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala3]').change((e) => {
+            const data = $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala3]').find(':selected').data('nilai')
+            $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai3]').val(data)
+            hitungSkalaNyeriKandungan()
+        })
+        $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala4]').change((e) => {
+            const data = $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala4]').find(':selected').data('nilai')
+            $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai4]').val(data)
+            hitungSkalaNyeriKandungan()
+        })
+        $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala5]').change((e) => {
+            const data = $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala5]').find(':selected').data('nilai')
+            $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai5]').val(data)
+            hitungSkalaNyeriKandungan()
+        })
+        $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala6]').change((e) => {
+            const data = $('#formAskepRanapKandungan select[name=penilaian_jatuh_skala6]').find(':selected').data('nilai')
+            $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai6]').val(data)
+            hitungSkalaNyeriKandungan()
+        })
 
-            skalaNyeri = parseInt(bersuara) + parseInt(menangis) + parseInt(wajah) + parseInt(kaki) + parseInt(aktifitas);
 
-            $('#formAskepRanapKandungan input[name=hasilnyeri]').val(skalaNyeri)
+        function hitungSkalaNyeriKandungan() {
+            data1 = $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai1]').val();
+            data2 = $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai2]').val();
+            data3 = $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai3]').val();
+            data4 = $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai4]').val();
+            data5 = $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai5]').val();
+            data6 = $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai6]').val();
 
-            if (skalaNyeri >= 1 && skalaNyeri <= 3) {
-                nyeri = 'Nyeri Ringan'
-            } else if (skalaNyeri >= 4 && skalaNyeri <= 6) {
-                nyeri = 'Nyeri Sedang'
-            } else if (skalaNyeri >= 7 && skalaNyeri <= 10) {
-                nyeri = 'Nyeri Akut'
-            } else {
-                nyeri = 'Tidak Ada Nyeri'
+            skalaNyeri = parseInt(data1) + parseInt(data2) + parseInt(data3) + parseInt(data4) + parseInt(data5) + parseInt(data6);
+
+            if (skalaNyeri >= 0 && skalaNyeri <= 24) {
+                hasilResiko = 'Resiko Rendah (0-24)'
+                tindakanResiko = 'Intervensi pencegahan resiko jatuh standar'
+                textColor = 'green';
+            } else if (skalaNyeri >= 25 && skalaNyeri <= 44) {
+                hasilResiko = 'Resiko Sedang (25-44)'
+                tindakanResiko = 'Intervensi pencegahan resiko jatuh standar'
+                textColor = '#ff8b00';
+            } else if (skalaNyeri >= 45) {
+                hasilResiko = 'Resiko Tinggi (>45)'
+                tindakanResiko = 'Intervensi pencegahan resiko jatuh standar & Intervensi resiko jatuh tinggi'
+                textColor = 'red';
             }
-            $('#formAskepRanapKandungan select[name=nyeri]').val(nyeri)
+            $('#formAskepRanapKandungan .hasilResiko').html(hasilResiko)
+            $('#formAskepRanapKandungan .hasilResiko').css('color', textColor)
+            $('#formAskepRanapKandungan .tindakanResiko').html(tindakanResiko)
+            $('#formAskepRanapKandungan input[name=penilaian_jatuh_totalnilai]').val(skalaNyeri)
         }
 
         var nilaiGizi = 0;
         $(`#formAskepRanapKandungan select[name=skrining_gizi1]`).change(() => {
-            data = $(`#formAskepRanapKandungan select[name=skrining_gizi1]`).find(':selected').data('id')
+            data = $(`#formAskepRanapKandungan select[name=skrining_gizi1]`).find(':selected').data('nilai')
             $(`#formAskepRanapKandungan input[name=nilai_gizi1]`).val(data)
-            hitungSkriningGiziNeonatus();
+            hitungSkriningGiziKandungan();
         })
         $(`#formAskepRanapKandungan select[name=skrining_gizi2]`).change(() => {
-            data = $(`#formAskepRanapKandungan select[name=skrining_gizi2]`).find(':selected').data('id')
+            data = $(`#formAskepRanapKandungan select[name=skrining_gizi2]`).find(':selected').data('nilai')
             $(`#formAskepRanapKandungan input[name=nilai_gizi2]`).val(data)
-            hitungSkriningGiziNeonatus();
-        })
-        $(`#formAskepRanapKandungan select[name=skrining_gizi3]`).change(() => {
-            data = $(`#formAskepRanapKandungan select[name=skrining_gizi3]`).find(':selected').data('id')
-            $(`#formAskepRanapKandungan input[name=nilai_gizi3]`).val(data)
-            hitungSkriningGiziNeonatus();
-        })
-        $(`#formAskepRanapKandungan select[name=skrining_gizi4]`).change(() => {
-            data = $(`#formAskepRanapKandungan select[name=skrining_gizi4]`).find(':selected').data('id')
-            $(`#formAskepRanapKandungan input[name=nilai_gizi4]`).val(data)
-            hitungSkriningGiziNeonatus();
+            hitungSkriningGiziKandungan();
         })
 
-        function hitungSkriningGiziNeonatus() {
+
+        function hitungSkriningGiziKandungan() {
             nilaiGizi1 = parseInt($(`#formAskepRanapKandungan input[name=nilai_gizi1]`).val())
             nilaiGizi2 = parseInt($(`#formAskepRanapKandungan input[name=nilai_gizi2]`).val())
-            nilaiGizi3 = parseInt($(`#formAskepRanapKandungan input[name=nilai_gizi3]`).val())
-            nilaiGizi4 = parseInt($(`#formAskepRanapKandungan input[name=nilai_gizi4]`).val())
-            nilaiGizi = nilaiGizi1 + nilaiGizi2 + nilaiGizi3 + nilaiGizi4
+            nilaiGizi = nilaiGizi1 + nilaiGizi2
             $('#formAskepRanapKandungan input[name=nilai_total_gizi]').val(nilaiGizi)
         }
 

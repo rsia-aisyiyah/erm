@@ -77,6 +77,7 @@ use App\Http\Controllers\MasalahAskepRanapController;
 use App\Http\Controllers\MasterImunisasiController;
 use App\Http\Controllers\RencanaAskepRanapController;
 use App\Http\Controllers\RiwayatImunisasiController;
+use App\Http\Controllers\RiwayatPersalinanController;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -297,6 +298,10 @@ Route::middleware('auth')->group(function () {
     Route::post('imunisasi/riwayat/insert', [RiwayatImunisasiController::class, 'insert']);
     Route::delete('imunisasi/riwayat/delete', [RiwayatImunisasiController::class, 'delete']);
     Route::get('imunisasi/riwayat/get/{no_rkm_medis}', [RiwayatImunisasiController::class, 'get']);
+
+    Route::get('riwayat/persalinan/get/{no_rkm_medis}', [RiwayatPersalinanController::class, 'get']);
+    Route::delete('riwayat/persalinan/delete', [RiwayatPersalinanController::class, 'delete']);
+    Route::post('riwayat/persalinan/insert', [RiwayatPersalinanController::class, 'insert']);
 
     Route::prefix('bridging')->group(function () {
         Route::prefix('referensi')->group(function () {
