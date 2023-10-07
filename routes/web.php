@@ -72,6 +72,7 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\AskepRanapKandunganController;
 use App\Http\Controllers\AskepRanapNeonatusController;
 use App\Http\Controllers\MasalahAskepRanapController;
 use App\Http\Controllers\MasterImunisasiController;
@@ -215,6 +216,8 @@ Route::middleware('auth')->group(function () {
     Route::get('master/masalah/keperawatan/table', [MasterMasalahKeperawatanController::class, 'getDataTable']);
     Route::get('master/rencana/keperawatan/table', [MasterRencanaKeperawatanController::class, 'getDataTable']);
 
+    Route::get('ranap/askep/kandungan', [AskepRanapKandunganController::class, 'get']);
+    Route::post('ranap/askep/kandungan/create', [AskepRanapKandunganController::class, 'createOrUpdate']);
 
 
 

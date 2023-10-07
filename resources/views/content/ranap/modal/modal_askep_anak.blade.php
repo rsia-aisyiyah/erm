@@ -1527,7 +1527,7 @@
                     $(`#formAskepAnakRanap input[name=pengkaji1]`).val(response.pengkaji1.nama)
                     $(`#formAskepAnakRanap input[name=tanggal]`).val(splitTanggal(response.tanggal.split(' ')[0]))
                     $(`#formAskepAnakRanap input[name=jam]`).val(response.tanggal.split(' ')[1])
-                    $('#formAskepAnakRanap input[name=tanggal]').datepicker('setDate', splitTanggal(response.tanggal.split(' ')[0]))
+                    // $('#formAskepAnakRanap input[name=tanggal]').datepicker('setDate', splitTanggal(response.tanggal.split(' ')[0]))
 
                     let arrMasalah = []
                     $.map(response.masalah_keperawatan, (msl) => {
@@ -1537,13 +1537,13 @@
                     })
 
                     tbRencanaKeperawatan(arrMasalah)
-                    if (response.nip1 == nip || response.nip2 == nip) {
-                        $('.simpanAskepAnak').css('display', 'inline');
-                    } else if (nip == 'direksi' || nip == 'verifikator') {
-                        $('.simpanAskepAnak').css('display', 'inline');
-                    } else {
-                        $('.simpanAskepAnak').css('display', 'none');
-                    }
+                    // if (response.nip1 == nip || response.nip2 == nip) {
+                    //     $('.simpanAskepAnak').css('display', 'inline');
+                    // } else if (nip == 'direksi' || nip == 'verifikator') {
+                    //     $('.simpanAskepAnak').css('display', 'inline');
+                    // } else {
+                    //     $('.simpanAskepAnak').css('display', 'none');
+                    // }
                 } else {
                     $('#formAskepRanapNeonatus input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
                     $('#formAskepRanapNeonatus input[name=pengkaji1]').val("{{ session()->get('pegawai')->nama }}")
@@ -1651,15 +1651,13 @@
                         showConfirmButton: false,
                         icon: 'success',
                         timer: 1500,
+                    }).then(() => {
+                        $('#tb_ranap').DataTable().destroy()
+                        tb_ranap();
                     });
                 },
                 error: function(request, status, error) {
-                    swal.fire(
-                        'Gagal',
-                        `${error}, ERROR CODE : ${request.status}`,
-                        'error'
-                    )
-
+                    alertErrorAjax(request)
                 }
             })
         }

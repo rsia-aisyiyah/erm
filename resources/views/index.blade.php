@@ -113,6 +113,14 @@
             return data;
         }
 
+        function alertErrorAjax(request) {
+            Swal.fire(
+                'Gagal',
+                'Terjadi kesalahan <br/> Error Code : ' + request.status + ', ' + request.statusText + '<br/> <p style="padding:0 15px 0 15px;font-size:13px;color:red">' + request.responseJSON.message.split('(SQL')[0] + '</p>',
+                'error'
+            );
+        }
+
         function hitungUmur(tgl_lahir) {
             sekarang = new Date();
             hari = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate());

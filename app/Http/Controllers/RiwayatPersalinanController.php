@@ -22,7 +22,7 @@ class RiwayatPersalinanController extends Controller
     function insert(Request $request)
     {
         $data = $request->except('_token');
-        $persalinan = $this->persalinan->create();
+        $persalinan = $this->persalinan->create($data);
         $this->track->insertSql($this->persalinan, $data);
         return response()->json($persalinan);
     }

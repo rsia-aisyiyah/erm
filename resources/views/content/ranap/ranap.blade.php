@@ -156,6 +156,7 @@
     @include('content.ranap.modal.modal_list_pemeriksaan_asmed')
     @include('content.ranap.modal.modal_list_diagnosa')
     @include('content.ranap.modal.modal_riwayat_vaksin')
+    @include('content.ranap.modal.modal_riwayat_persalinan')
 @endsection
 
 
@@ -427,15 +428,15 @@
                             list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak.length)}</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
                                 if (data.sttsumur == 'Hr') {
                                     list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
                                 } else {
                                     list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
                                 }
                             } else if (row.reg_periksa.dokter.kd_sps == 'S0001') {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan?.length)}</a></li>`;
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan?.length)}</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
                             }
 
 
@@ -458,12 +459,6 @@
                     {
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-
-                            if (row.reg_periksa.asmed_ranap_anak.length) {
-                                iconCheck = '<i class="bi bi-check-circle text-success"></i>';
-                            } else {
-                                iconCheck = '';
-                            }
 
                             if (data.pasien) {
                                 pasien = `${data.no_rkm_medis} <br/> ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})`;
@@ -489,7 +484,6 @@
 
                             bayiGabung = '';
                             if (row.ranap_gabung) {
-
                                 isDokter = "{{ session()->get('pegawai')->departemen }}";
                                 resume = '';
                                 if (isDokter == 'Direksi' || isDokter == 'SPS' || isDokter == '-' || isDokter == 'CSM') {
@@ -504,6 +498,8 @@
                                 <ul class="dropdown-menu dropdown-menu" style="font-size:12px">
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalLaborat('${row.ranap_gabung.reg_periksa.no_rawat}')">Laborat</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${row.ranap_gabung.reg_periksa.kd_dokter}" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">S.O.A.P</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${row.ranap_gabung.reg_periksa.no_rawat}')">Asesmen Medis Anak ${cekList(row.ranap_gabung.reg_periksa.asmed_ranap_anak)}</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${row.ranap_gabung.reg_periksa.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.ranap_gabung.reg_periksa.askep_ranap_neonatus)}</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Pemeriksaan Penunjang</a></li>
                                     ${resume}
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.ranap_gabung.reg_periksa.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.ranap_gabung.reg_periksa.no_rkm_medis}">Riwayat</a></li>
@@ -513,7 +509,7 @@
                             }
 
                             asmed = '';
-                            if (data.asmed_ranap_anak.length == 0 && data.asmed_ranap_kandungan.length == 0) {
+                            if (data.asmed_ranap_anak == 0 && data.asmed_ranap_kandungan.length == 0) {
                                 asmed = ' <button class="px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button>'
                             }
 
@@ -1375,13 +1371,7 @@
 
                 },
                 error: function(request, status, error) {
-                    swal.fire({
-                        title: 'Gagal',
-                        text: request.message,
-                        icon: 'error',
-                        showConfirmButton: true,
-                    });
-
+                    alertErrorAjax(request)
                 }
             })
         });

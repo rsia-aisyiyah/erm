@@ -23,6 +23,7 @@ use App\Models\SuratKontrolUlang;
 use App\Models\AskepRanapNeonatus;
 use App\Models\RsiaGeneralConsent;
 use App\Models\AskepRalanKebidanan;
+use App\Models\AskepRanapKandungan;
 use App\Models\DetailPemberianObat;
 use App\Models\DetailPemeriksaanLab;
 use Illuminate\Database\Eloquent\Model;
@@ -143,11 +144,11 @@ class RegPeriksa extends Model
     }
     function asmedRanapKandungan()
     {
-        return $this->hasMany(AsesmenMedisRanapKandungan::class, 'no_rawat', 'no_rawat');
+        return $this->hasOne(AsesmenMedisRanapKandungan::class, 'no_rawat', 'no_rawat');
     }
     function asmedRanapAnak()
     {
-        return $this->hasMany(AsesmenMedisAnak::class, 'no_rawat', 'no_rawat');
+        return $this->hasOne(AsesmenMedisAnak::class, 'no_rawat', 'no_rawat');
     }
     function askepRanapAnak()
     {
@@ -156,5 +157,9 @@ class RegPeriksa extends Model
     function askepRanapNeonatus()
     {
         return $this->hasOne(AskepRanapNeonatus::class, 'no_rawat', 'no_rawat');
+    }
+    function askepRanapKandungan()
+    {
+        return $this->hasOne(AskepRanapKandungan::class, 'no_rawat', 'no_rawat');
     }
 }

@@ -35,11 +35,11 @@
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="tanggal">Tanggal</label>
-                                    <input type="text" class="form-control form-control-sm" name="tanggal" placeholder="" aria-label="" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" name="tanggal" placeholder="" aria-label="" autocomplete="off" value="{{ date('d-m-Y') }}">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="jam">Jam</label>
-                                    <input type="text" class="form-control form-control-sm jam" name="jam" placeholder="" aria-label="" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm jam" name="jam" placeholder="" aria-label="" autocomplete="off" value="{{ date('H:i:s') }}">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="kasus_trauma">Kasus</label>
@@ -1532,14 +1532,12 @@
         })
 
         $('#modalAskepRanapNeonatus').on('hidden.bs.modal', () => {
-            $('.simpanAskepAnak').css('display', 'inline');
             document.getElementById("formAskepRanapNeonatus").reset();
             tbRencanaKeperawatanNeo()
             kodeMasalah = [];
             kodeRencanaNeo = [];
         })
         $('#modalAskepRanapNeonatus').on('shown.bs.modal', () => {
-            $('.simpanAskepAnak').css('display', 'none');
             localStorage.removeItem('kodeRencanaNeo')
             $('#formAskepRanapNeonatus input[name=tanggal]').datepicker({
                 format: 'dd-mm-yyyy',
@@ -1604,7 +1602,7 @@
                     $(`#formAskepRanapNeonatus input[name=pengkaji1]`).val(response.pengkaji1.nama)
                     $(`#formAskepRanapNeonatus input[name=tanggal]`).val(splitTanggal(response.tanggal.split(' ')[0]))
                     $(`#formAskepRanapNeonatus input[name=jam]`).val(response.tanggal.split(' ')[1])
-                    $('#formAskepRanapNeonatus input[name=tanggal]').datepicker('setDate', splitTanggal(response.tanggal.split(' ')[0]))
+                    // $('#formAskepRanapNeonatus input[name=tanggal]').datepicker('setDate', splitTanggal(response.tanggal.split(' ')[0]))
                     let arrMasalah = []
                     $.map(response.masalah_keperawatan, (msl) => {
                         $('#kodeMasalahNeo' + msl.kode_masalah).attr('checked', 'checked')
@@ -1613,13 +1611,13 @@
                     })
                     tbRencanaKeperawatanNeo(arrMasalah)
 
-                    if (response.nip1 == nip || response.nip2 == nip) {
-                        $('.simpanAskepAnak').css('display', 'inline');
-                    } else if (nip == 'direksi' || nip == 'verifikator') {
-                        $('.simpanAskepAnak').css('display', 'inline');
-                    } else {
-                        $('.simpanAskepAnak').css('display', 'none');
-                    }
+                    // if (response.nip1 == nip || response.nip2 == nip) {
+                    //     $('.simpanAskepAnak').css('display', 'inline');
+                    // } else if (nip == 'direksi' || nip == 'verifikator') {
+                    //     $('.simpanAskepAnak').css('display', 'inline');
+                    // } else {
+                    //     $('.simpanAskepAnak').css('display', 'none');
+                    // }
 
                 } else {
                     $('#formAskepRanapNeonatus input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
@@ -1738,15 +1736,14 @@
                         showConfirmButton: false,
                         icon: 'success',
                         timer: 1500,
+                    }).then(() => {
+                        $('#tb_ranap').DataTable().destroy()
+                        tb_ranap();
                     });
                     simpanMasalahKeperawatanNeo(data.no_rawat)
                 },
                 error: function(request, status, error) {
-                    swal.fire(
-                        'Gagal',
-                        `${error}, ERROR CODE : ${request.status}`,
-                        'error'
-                    )
+                    alertErrorAjax(request)
 
                 }
             })

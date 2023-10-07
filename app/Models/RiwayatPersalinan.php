@@ -9,4 +9,6 @@ class RiwayatPersalinan extends Model
 {
     use HasFactory;
     protected $table = 'riwayat_persalinan_pasien';
+    protected $guarded = [];
+    public $timestamps = false;
 }

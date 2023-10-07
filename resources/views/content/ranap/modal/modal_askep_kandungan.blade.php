@@ -41,13 +41,6 @@
                                     <label for="jam">Jam</label>
                                     <input type="text" class="form-control form-control-sm jam" name="jam" placeholder="" aria-label="" autocomplete="off" value="{{ date('H:i:s') }}">
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-2">
-                                    <label for="kasus_trauma">Kasus</label>
-                                    <select class="form-select form-select-sm" id="kasus_trauma" name="kasus_trauma">
-                                        <option value="Trauma" selected>Trauma</option>
-                                        <option value="Non Trauma">Non Trauma</option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-6">
@@ -122,8 +115,8 @@
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <div class="input-group">
-                                        <label for="riwayat_alergi">Riwayat Alergi</label>
-                                        <input type="text" class="form-control form-control-sm" id="riwayat_alergi" name="riwayat_alergi" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <label for="alergi">Riwayat Alergi</label>
+                                        <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-8">
@@ -266,8 +259,10 @@
                                                 <th>J.K.</th>
                                                 <th>BB/PB</th>
                                                 <th>Keadaan</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
+                                        <tbody></tbody>
                                     </table>
                                     <button type="button" class="btn btn-primary btn-sm" id="btnRiwayatPersalinan">+ Tambah Riwayat</button>
                                 </div>
@@ -366,8 +361,8 @@
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-5">
                                     <div class="input-group">
-                                        <label for="riwayat_kb_ket_komplikasi">Komplikasi</label>
-                                        <select class="form-select br-left" name="riwayat_kb_ket_komplikasi" id="riwayat_kb_ket_komplikasi">
+                                        <label for="riwayat_kb_komplikasi">Komplikasi</label>
+                                        <select class="form-select br-left" name="riwayat_kb_komplikasi" id="riwayat_kb_komplikasi">
                                             <option value="Tidak Ada">Tidak Ada</option>
                                             <option value="Ada">Ada</option>
                                         </select>
@@ -388,8 +383,8 @@
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-5">
                                     <div class="input-group">
-                                        <label for="riwayat_kebiasaan_obat">Riwayat Ginekologi</label>
-                                        <select class="form-select br-left br-full" name="riwayat_kebiasaan_obat" id="riwayat_kebiasaan_obat">
+                                        <label for="riwayat_genekologi">Riwayat Ginekologi</label>
+                                        <select class="form-select br-left br-full" name="riwayat_genekologi" id="riwayat_genekologi">
                                             <option value="Tidak Ada">Tidak Ada</option>
                                             <option value="Infertilitas">Infertilitas</option>
                                             <option value="Infeksi Virus">Infeksi Virus</option>
@@ -552,8 +547,8 @@
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-2">
                                     <div class="input-group">
-                                        <label for="pemeriksaan_kebidanan_gd">GD</label>
-                                        <input type="text" class="form-control form-control-sm br-full" id="pemeriksaan_kebidanan_gd" name="pemeriksaan_kebidanan_gd" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <label for="gd">GD</label>
+                                        <input type="text" class="form-control form-control-sm br-full" id="gd" name="gd" placeholder="" maxlength="10" autocomplete="off" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-3">
@@ -658,7 +653,7 @@
                                         <label for="pemeriksaan_kebidanan_inspekulo">Inspekulo</label>
                                         <select class="form-select br-left" name="pemeriksaan_kebidanan_inspekulo" id="pemeriksaan_kebidanan_inspekulo">
                                             <option value="Dilakukan">Dilakukan</option>
-                                            <option value="Tidak Dilakukan">Tidak Dilakukan</option>
+                                            <option value="Tidak">Tidak Dilakukan</option>
                                         </select>
                                         <input type="text" class="form-control form-control-sm br-right" id="pemeriksaan_kebidanan_ket_inspekulo" name="pemeriksaan_kebidanan_ket_inspekulo" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                     </div>
@@ -668,7 +663,7 @@
                                         <label for="pemeriksaan_kebidanan_lakmus">Lakmus</label>
                                         <select class="form-select br-left" name="pemeriksaan_kebidanan_lakmus" id="pemeriksaan_kebidanan_lakmus">
                                             <option value="Dilakukan">Dilakukan</option>
-                                            <option value="Tidak Dilakukan">Tidak Dilakukan</option>
+                                            <option value="Tidak">Tidak Dilakukan</option>
                                         </select>
                                         <input type="text" class="form-control form-control-sm br-right" id="pemeriksaan_kebidanan_ket_lakmus" name="pemeriksaan_kebidanan_ket_lakmus" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                     </div>
@@ -678,7 +673,7 @@
                                         <label for="pemeriksaan_kebidanan_ctg">CTG</label>
                                         <select class="form-select br-left" name="pemeriksaan_kebidanan_ctg" id="pemeriksaan_kebidanan_ctg">
                                             <option value="Dilakukan">Dilakukan</option>
-                                            <option value="Tidak Dilakukan">Tidak Dilakukan</option>
+                                            <option value="Tidak">Tidak Dilakukan</option>
                                         </select>
                                         <input type="text" class="form-control form-control-sm br-right" id="pemeriksaan_kebidanan_ket_ctg" name="pemeriksaan_kebidanan_ket_ctg" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                     </div>
@@ -702,6 +697,7 @@
                                     <div class="input-group">
                                         <label for="pemeriksaan_umum_muka">Muka</label>
                                         <select name="pemeriksaan_umum_muka" class="form-select br-full" id="pemeriksaan_umum_muka">
+                                            <option value="Normal">Normal</option>
                                             <option value="Normocephale">Normocephale</option>
                                             <option value="Pucat">Pucat</option>
                                             <option value="Oedem">Oedem</option>
@@ -807,6 +803,7 @@
                                     <div class="input-group">
                                         <label for="pemeriksaan_umum_ekstrimitas">Ekstrimitas</label>
                                         <select class="form-select br-full" name="pemeriksaan_umum_ekstrimitas" id="pemeriksaan_umum_ekstrimitas">
+                                            <option value="Normal">Normal</option>
                                             <option value="Bersih">Bersih</option>
                                             <option value="Oedem">Oedem</option>
                                             <option value="Refleks Patella Ada">Refleks Patella Ada</option>
@@ -863,12 +860,12 @@
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
-                                        <label for="pengkajian_fungsi_ambulasi">d. Ambulansi</label>
+                                        <label for="pengkajian_fungsi_ambulasi">d. Ambulasi</label>
                                         <select class="form-select" name="pengkajian_fungsi_ambulasi" id="pengkajian_fungsi_ambulasi" style="border-radius:6px">
                                             <option value="Walker">Walker</option>
                                             <option value="Tongkat">Tongkat</option>
                                             <option value="Kursi Roda">Kursi Roda</option>
-                                            <option value="Tidak Ada">Tidak Ada</option>
+                                            <option value="Tidak Menggunakan">Tidak Menggunakan</option>
                                         </select>
                                     </div>
                                 </div>
@@ -993,8 +990,8 @@
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
-                                        <label for="riwayat_psiko_tinggal">f. Tinggal dg.</label>
-                                        <select class="form-select" name="riwayat_psiko_tinggal" id="riwayat_psiko_tinggal" style="border-radius:6px 0 0 6px">
+                                        <label for="riwayat_psiko_tinggal_dengan">f. Tinggal dg.</label>
+                                        <select class="form-select" name="riwayat_psiko_tinggal_dengan" id="riwayat_psiko_tinggal_dengan" style="border-radius:6px 0 0 6px">
                                             <option value="Keluarga">Keluarga</option>
                                             <option value="Sendiri">Sendiri</option>
                                             <option value="Orang Tua">Orang Tua</option>
@@ -1079,16 +1076,16 @@
                                 <div class="mt-2 col-sm-12 col-md-12 col-lg-5">
                                     <img src="{{ asset('/img/skala_nyeri_wong_baker.png') }}" alt="" class="mx-auto d-block" style="max-width:100%;height:auto">
                                     <div class="mt-2 col-lg-12">
-                                        <label for="nyeri_hilang">Nyeri Hilang Bila : </label>
+                                        <label for="penilaian_nyeri_hilang">Nyeri Hilang Bila : </label>
                                         <div class="input-group">
-                                            <select class="form-select" name="nyeri_hilang" id="nyeri_hilang" style="border-radius:6px 0 0 6px">
+                                            <select class="form-select" name="penilaian_nyeri_hilang" id="penilaian_nyeri_hilang" style="border-radius:6px 0 0 6px">
                                                 <option value="Minum Obat">Minum Obat</option>
                                                 <option value="Istirahat">Istirahat</option>
                                                 <option value="Mendengarkan Musik">Mendengarkan Musik</option>
                                                 <option value="Berubah Posisi/Tidur">Berubah Posisi/Tidur</option>
                                                 <option value="Lain-lain">Lain-lain</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" id="ket_nyeri" name="ket_nyeri" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" id="penilaian_nyeri_ket_hilang" name="penilaian_nyeri_ket_hilang" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -1385,7 +1382,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="simpanAskepNeonatusRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="simpanAskepKandunganRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
             </div>
         </div>
     </div>
@@ -1396,15 +1393,9 @@
         var kodeRencanaNeo = []
 
         $('#modalAskepRanapKandungan').on('hidden.bs.modal', () => {
-            $('.simpanAskepAnak').css('display', 'inline');
             document.getElementById("formAskepRanapKandungan").reset();
-            tbRencanaKeperawatanNeo()
-            kodeMasalah = [];
-            kodeRencanaNeo = [];
         })
         $('#modalAskepRanapKandungan').on('shown.bs.modal', () => {
-            $('.simpanAskepAnak').css('display', 'none');
-            localStorage.removeItem('kodeRencanaNeo')
             $('#formAskepRanapKandungan input[name=tanggal]').datepicker({
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
@@ -1423,12 +1414,18 @@
                 autoclose: true,
                 todayHighlight: true,
             })
+            $('#formRiwayatPersalinan input[name=tgl_thn]').datepicker({
+                format: 'dd-mm-yyyy',
+                orientation: 'bottom',
+                autoclose: true,
+                todayHighlight: true,
+            })
 
         })
 
         function getAskepRanapKandungan(no_rawat) {
             const askep = $.ajax({
-                url: '/erm/ranap/askep/neonatus',
+                url: '/erm/ranap/askep/kandungan',
                 method: 'GET',
                 data: {
                     no_rawat: no_rawat,
@@ -1441,7 +1438,6 @@
 
         function askepRanapKandungan(no_rawat) {
 
-            tbMasalahKeperawatanKandungan()
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 jk = regPeriksa.pasien.jk == 'P' ? 'PEREMPUAN' : 'LAKI-LAKI';
                 $('#formAskepRanapKandungan input[name=no_rawat]').val(no_rawat)
@@ -1456,7 +1452,10 @@
                 $('#formAskepRanapKandungan input[name=riwayat_psiko_pendidikan]').val(regPeriksa.pasien.pnd)
                 $('#formAskepRanapKandungan input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
                 setRiwayatPersalinan(regPeriksa.no_rkm_medis)
-                $('#formRiwayatImunisasi button[name=tambah-imunisasi]').attr('onclick', `insertRiwayatImunisasi('${regPeriksa.no_rkm_medis}')`)
+                $('#btnRiwayatPersalinan').attr('onclick', `modalRiwayatPersalinan('${regPeriksa.no_rkm_medis}')`)
+                $('#formRiwayatPersalinan input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
+                $('#formRiwayatPersalinan input[name=nm_pasien]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.umurdaftar} ${regPeriksa.sttsumur})`)
+                $('#formRiwayatPersalinan input[name=gd]').val(`${regPeriksa.pasien.gol_darah})`)
 
             })
 
@@ -1475,32 +1474,17 @@
                             $(`#formAskepRanapKandungan textarea[name=${index}]`).val(value)
                         }
                     })
-
                     $(`#formAskepRanapKandungan input[name=pengkaji2]`).val(response.pengkaji2.nama)
                     $(`#formAskepRanapKandungan input[name=pengkaji1]`).val(response.pengkaji1.nama)
                     $(`#formAskepRanapKandungan input[name=tanggal]`).val(splitTanggal(response.tanggal.split(' ')[0]))
                     $(`#formAskepRanapKandungan input[name=jam]`).val(response.tanggal.split(' ')[1])
-                    $('#formAskepRanapKandungan input[name=tanggal]').datepicker('setDate', splitTanggal(response.tanggal.split(' ')[0]))
-                    let arrMasalah = []
-                    $.map(response.masalah_keperawatan, (msl) => {
-                        $('#kodeMasalahNeo' + msl.kode_masalah).attr('checked', 'checked')
-                        arrMasalah.push(msl.kode_masalah)
-
-                    })
-                    tbRencanaKeperawatanNeo(arrMasalah)
-
-                    if (response.nip1 == nip || response.nip2 == nip) {
-                        $('.simpanAskepAnak').css('display', 'inline');
-                    } else if (nip == 'direksi' || nip == 'verifikator') {
-                        $('.simpanAskepAnak').css('display', 'inline');
-                    } else {
-                        $('.simpanAskepAnak').css('display', 'none');
-                    }
-
+                    $(`#formAskepRanapKandungan input[name=riwayat_hamil_tp]`).val(splitTanggal(response.riwayat_hamil_tp))
+                    $(`#formAskepRanapKandungan input[name=riwayat_hamil_hpht]`).val(splitTanggal(response.riwayat_hamil_hpht))
                 } else {
                     $('#formAskepRanapKandungan input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
                     $('#formAskepRanapKandungan input[name=pengkaji1]').val("{{ session()->get('pegawai')->nama }}")
                 }
+                hitungSkalaNyeriKandungan()
             })
 
             $('#modalAskepRanapKandungan').modal('show')
@@ -1539,6 +1523,45 @@
             hitungSkalaNyeriKandungan()
         })
 
+
+        function getRiwayatPersalinan(no_rkm_medis) {
+            const persalinan = $.ajax({
+                url: '/erm/riwayat/persalinan/get/' + no_rkm_medis,
+                method: 'get',
+            })
+
+            return persalinan;
+        }
+
+        function setRiwayatPersalinan(no_rkm_medis) {
+            $('#tbRiwayatPersalinan tbody').empty()
+            getRiwayatPersalinan(no_rkm_medis).done((response) => {
+                let no = 1;
+                $.map(response, (persalinan) => {
+                    html = `
+                        <tr>
+                            <td>${no}</td>
+                            <td>${persalinan.tgl_thn ? formatTanggal(persalinan.tgl_thn) : '-'}</td>
+                            <td>${persalinan.tempat_persalinan}</td>
+                            <td>${persalinan.usia_hamil}</td>
+                            <td>${persalinan.jenis_persalinan}</td>
+                            <td>${persalinan.penolong}</td>
+                            <td>${persalinan.penyulit}</td>
+                            <td>${persalinan.jk}</td>
+                            <td>${persalinan.bbpb}</td>
+                            <td>${persalinan.keadaan}</td>
+                            <td> <a href="javascript:void(0)" onclick="deleteRiwayatPersalinan('${no_rkm_medis}', '${persalinan.tgl_thn}')"><i class="text-danger bi bi-trash3"></i></a></td>
+                        </tr>
+                    `;
+                    no++;
+                    $('#tbRiwayatPersalinan tbody').append(html)
+                })
+            })
+        }
+
+        function modalRiwayatPersalinan(no_rkm_medis) {
+            $('#modalRiwayatPersalinan').modal('show')
+        }
 
         function hitungSkalaNyeriKandungan() {
             data1 = $('#formAskepRanapKandungan input[name=penilaian_jatuh_nilai1]').val();
@@ -1589,15 +1612,14 @@
             $('#formAskepRanapKandungan input[name=nilai_total_gizi]').val(nilaiGizi)
         }
 
-        function simpanAskepNeonatusRanap() {
-            let except = ['no_rkm_medis', 'dokter', 'pengkaji1', 'pengkaji2', 'pasien', 'tgl_lahir', 'bahasa', 'agama', 'penjab', 'pekerjaan', 'rencana', ''];
+        function simpanAskepKandunganRanap() {
+            let except = ['no_rkm_medis', 'dokter', 'pengkaji1', 'pengkaji2', 'pasien', 'tgl_lahir', 'bahasa', 'agama', 'penjab', 'pekerjaan', 'gd', ''];
             data = getDataForm('#formAskepRanapKandungan', ['input', 'select', 'textarea'], except)
             data['tanggal'] = `${splitTanggal(data.tanggal)} ${data.jam}`
             delete data.jam
 
-
             $.ajax({
-                url: '/erm/ranap/askep/neonatus/create',
+                url: '/erm/ranap/askep/kandungan/create',
                 data: data,
                 method: 'post',
                 success: (response) => {
@@ -1607,258 +1629,15 @@
                         showConfirmButton: false,
                         icon: 'success',
                         timer: 1500,
+                    }).then(() => {
+                        $('#tb_ranap').DataTable().destroy()
+                        tb_ranap();
                     });
-                    simpanMasalahKeperawatanNeo(data.no_rawat)
                 },
                 error: function(request, status, error) {
-                    swal.fire(
-                        'Gagal',
-                        `${error}, ERROR CODE : ${request.status}`,
-                        'error'
-                    )
-
+                    alertErrorAjax(request)
                 }
             })
-        }
-
-
-        function simpanMasalahKeperawatanNeo(no_rawat) {
-            let masalah = [];
-            let dataMasalah = [];
-            let dataRencana = []
-
-            $('.listMasalahKeperawatanNeo').each((index, element) => {
-                isChecked = $(element).is(':checked');
-                if (isChecked) {
-                    idMasalah = $(element).val()
-                    dataMasalah.push({
-                        'no_rawat': no_rawat,
-                        'kode_masalah': idMasalah,
-                    })
-                }
-            })
-
-            $('.listRencanaKeperawatanNeo').each((index, element) => {
-                isChecked = $(element).is(':checked')
-                if (isChecked) {
-                    idRencana = $(element).val()
-                    dataRencana.push({
-                        'no_rawat': no_rawat,
-                        'kode_rencana': idRencana
-                    })
-                }
-            })
-
-            getMasalahKeperawatan(no_rawat).done((response) => {
-                if (response.length) {
-                    deleteMasalahKeperawatan(no_rawat).done(() => {
-                        insertMasalahKeperawatan(dataMasalah).done((response) => {})
-                    })
-                } else {
-                    if (dataMasalah.length) {
-                        insertMasalahKeperawatan(dataMasalah).done((response) => {})
-                    }
-                }
-            })
-
-            getRencanaKeperawatan(no_rawat).done((resRencana) => {
-                if (resRencana.length) {
-                    deleteRencanaKeperawatan(no_rawat).done(() => {
-                        insertRencanaKeperawatan(dataRencana).done((response) => {})
-                    })
-                } else {
-                    if (dataRencana.length) {
-                        insertRencanaKeperawatan(dataRencana).done((dr) => {})
-                    }
-                }
-            })
-        }
-
-        function insertMasalahKeperawatan(dataMasalah) {
-            const masalah = $.ajax({
-                url: 'ranap/askep/anak/masalah/insert',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    masalah: dataMasalah
-                },
-                method: 'POST'
-            })
-
-            return masalah;
-        }
-
-        function deleteMasalahKeperawatan(no_rawat) {
-            const masalah = $.ajax({
-                url: 'ranap/askep/anak/masalah/delete',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    no_rawat: no_rawat
-                },
-                method: 'POST'
-            })
-
-            return masalah;
-        }
-
-        function insertRencanaKeperawatan(dataRencana) {
-            const rencana = $.ajax({
-                url: 'ranap/askep/anak/rencana/insert',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    rencana: dataRencana
-                },
-                method: 'POST'
-            })
-
-            return rencana;
-        }
-
-        function deleteRencanaKeperawatan(no_rawat) {
-            const rencana = $.ajax({
-                url: 'ranap/askep/anak/rencana/delete',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    no_rawat: no_rawat
-                },
-                method: 'POST'
-            })
-
-            return rencana;
-        }
-
-        function getMasalahKeperawatan(no_rawat) {
-            const masalah = $.ajax({
-                url: 'ranap/askep/anak/masalah',
-                data: {
-                    no_rawat: no_rawat,
-                }
-            })
-
-            return masalah;
-        }
-
-        function tbMasalahKeperawatanKandungan() {
-            $('#tbMasalahKeperawatanNeo').dataTable({
-                destroy: true,
-                processing: true,
-                ordering: false,
-                paging: false,
-                scrollY: 250,
-                info: false,
-                ajax: {
-                    url: '/erm/master/masalah/keperawatan/table',
-                },
-                columns: [{
-                    data: '',
-                    render: (data, type, row) => {
-                        return `<div class="form-check masalahKeperawatan">
-                                    <input class="form-check-input listMasalahKeperawatanNeo" type="checkbox" id="kodeMasalahNeo${row.kode_masalah}" onclick="cekMasalahKeperawatanNeo(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
-                                </div>`
-                    }
-                }, {
-                    data: '',
-                    render: (data, type, row) => {
-                        return `<label onclick="cekMasalahKeperawatanNeo(this,'${row.kode_masalah}')">${row.nama_masalah}</label>`
-                    }
-                }]
-            })
-        }
-
-
-
-        function cekMasalahKeperawatanNeo(element, params) {
-            const isChecked = $(`#kodeMasalahNeo${params}`).is(':checked')
-            if (isChecked) {
-                kodeMasalah.push(params)
-            } else {
-                kodeMasalah = kodeMasalah.filter((item) => {
-                    return item != params
-                });
-            }
-            tbRencanaKeperawatanNeo(kodeMasalah)
-            if (kodeMasalah.length == 0) {
-                localStorage.removeItem(`kodeRencanaNeo`)
-            }
-        }
-
-        function cekRencanaKeperawatanNeo(params) {
-            const isChecked = $(`#kodeRencanaNeo${params}`).is(':checked')
-            if (isChecked) {
-                kodeRencanaNeo.push(params)
-            } else {
-                kodeRencanaNeo = kodeRencanaNeo.filter((item) => {
-                    return item != params
-                });
-            }
-            if (kodeRencanaNeo.length == 0) {
-                localStorage.removeItem(`kodeRencanaNeo`)
-            } else {
-                localStorage.setItem(`kodeRencanaNeo`, JSON.stringify(kodeRencanaNeo))
-            }
-        }
-
-        function tbRencanaKeperawatanNeo(kode) {
-            $('#tbRencanaKeperawatanNeo').dataTable({
-                destroy: true,
-                processing: true,
-                ordering: false,
-                paging: false,
-                scrollY: 240,
-                info: false,
-                searching: false,
-                ajax: {
-                    url: '/erm/master/rencana/keperawatan/table/',
-                    data: {
-                        kode: kode,
-                    },
-                },
-                columns: [{
-                        data: '',
-                        render: (data, type, row) => {
-                            kode = localStorage.kodeRencanaNeo ? JSON.parse(localStorage.kodeRencanaNeo) : ''
-                            $.map(kode, (kd) => {
-                                if (kd == row.kode_rencana) {
-                                    $('#kodeRencanaNeo' + row.kode_rencana).attr('checked', 'checked')
-                                } else {
-                                    $('#kodeRencanaNeo' + row.kode_rencana).removeProp('checked')
-                                }
-
-                            })
-
-                            return `<div class="form-check">
-                                    <input class="form-check-input listRencanaKeperawatanNeo" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatanNeo('${row.kode_rencana}')" id="kodeRencanaNeo${row.kode_rencana}" onclick="">
-                                </div>`
-                        }
-                    },
-                    {
-                        data: '',
-                        render: (data, type, row) => {
-                            return row.rencana_keperawatan
-                        }
-                    }
-                ],
-                initComplete: (response) => {
-                    no_rawat = $('#formAskepRanapKandungan input[name=no_rawat]').val();
-                    getRencanaKeperawatan(no_rawat).done((res) => {
-                        $.map(res, (rencana) => {
-                            $('#kodeRencanaNeo' + rencana.kode_rencana).attr('checked', 'checked')
-                        })
-                    })
-                }
-            })
-        }
-
-
-        function hitungApgar(n) {
-            let f = $(`#formAskepRanapKandungan input[name=f${n}]`).val() ? $(`#formAskepRanapKandungan input[name=f${n}]`).val() : 0;
-            let u = $(`#formAskepRanapKandungan input[name=u${n}]`).val() ? $(`#formAskepRanapKandungan input[name=u${n}]`).val() : 0;
-            let t = $(`#formAskepRanapKandungan input[name=t${n}]`).val() ? $(`#formAskepRanapKandungan input[name=t${n}]`).val() : 0;
-            let r = $(`#formAskepRanapKandungan input[name=r${n}]`).val() ? $(`#formAskepRanapKandungan input[name=r${n}]`).val() : 0;
-            let w = $(`#formAskepRanapKandungan input[name=w${n}]`).val() ? $(`#formAskepRanapKandungan input[name=w${n}]`).val() : 0;
-
-            let nilaiApgar = parseInt(f) + parseInt(u) + parseInt(t) + parseInt(r) + parseInt(w)
-
-            $(`#formAskepRanapKandungan input[name=n${n}]`).val(nilaiApgar)
         }
     </script>
 @endpush

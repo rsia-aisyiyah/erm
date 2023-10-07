@@ -496,14 +496,18 @@
                 method: 'POST',
                 dataType: 'JSON',
             }).done((response) => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sukses !',
-                    text: 'Data berhasil berhasil ditambah',
+                swal.fire({
+                    title: 'Berhasil',
+                    text: 'Berhasil menyimpan data asesmen',
                     showConfirmButton: false,
-                    timer: 1500
-                })
-                $('#modalAsmedRanapKandungan').modal('hide')
+                    icon: 'success',
+                    timer: 1500,
+                }).then(() => {
+                    $('#tb_ranap').DataTable().destroy()
+                    tb_ranap();
+                    $('#modalAsmedRanapAnak').modal('hide')
+                    $('#modalAsmedRanapKandungan').modal('hide')
+                });
             });
         })
         $('.btn-asmed-kandungan-ubah').on('click', () => {
