@@ -492,28 +492,33 @@
                             timer: 1500
                         });
 
+                        var suhu_tubuh = $('#suhu').val();
+                        if (suhu_tubuh.includes(',')) {
+                            suhu_tubuh = suhu_tubuh.replace(',', '.');
+                        }
+
                         if (spesialis.toLowerCase().includes('anak')) {
                             console.log('anak');
-                            if ($('#suhu').val() < 35.5 || $('#suhu').val() > 39.5) {
+                            if (suhu_tubuh < 35.5 || suhu_tubuh > 39.5) {
                                 console.log('kirim notif');
                                 notifSend(
                                     // FIXME : kd_dokter masih belum benar
                                     kd_dokter, 
                                     'Notifikasi Kondisi Pasien',
-                                    'Suhu tubuh ' + $('#suhu').val() + '°, pasien atas nama :' + nm_pasien,
+                                    'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
                                     $('#nomor_rawat').val(),
                                     'Ranap'
                                 );
                             }
                         } else {
                             console.log('bukan anak');
-                            if ($('#suhu').val() < 35.1 || $('#suhu').val() > 35.9) {
+                            if (suhu_tubuh < 36 || suhu_tubuh > 38) {
                                 console.log('kirim notif');
                                 notifSend(
                                     // FIXME : kd_dokter masih belum benar
                                     kd_dokter, 
                                     'Notifikasi Kondisi Pasien',
-                                    'Suhu tubuh ' + $('#suhu').val() + '°, pasien atas nama :' + nm_pasien,
+                                    'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
                                     $('#nomor_rawat').val(),
                                     'Ranap'
                                 );
