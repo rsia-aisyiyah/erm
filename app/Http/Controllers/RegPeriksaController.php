@@ -126,7 +126,7 @@ class RegPeriksaController extends Controller
                         }]);
                     }, 'detailPemeriksaanLab' => function ($q) {
                         $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
-                    }, 'kamarInap', 'operasi.paketOperasi', 'operasi.op1', 'operasi.asistenOp1', 'operasi.asistenOp2', 'operasi.omloop'
+                    }, 'kamarInap', 'operasi.paketOperasi', 'operasi.op1', 'operasi.asistenOp1', 'operasi.asistenOp2', 'operasi.omloop', 'resumeMedis.regPeriksa.penjab', 'resumeMedis.dokter', 'resumeMedis.kamarInap.kamar.bangsal', 'resumeMedis.bayiGabung.kamarInap.kamar.bangsal'
                 ])->orderBy('no_rawat', $request->sortir);
             })
             ->first();

@@ -19,6 +19,7 @@ use App\Models\LaporanOperasi;
 use App\Models\ProsedurPasien;
 use App\Models\CatatanPerawatan;
 use App\Models\PemeriksaanRalan;
+use App\Models\ResumePasienRanap;
 use App\Models\SuratKontrolUlang;
 use App\Models\AskepRanapNeonatus;
 use App\Models\RsiaGeneralConsent;
@@ -65,6 +66,10 @@ class RegPeriksa extends Model
     public function kamarInap()
     {
         return $this->hasMany(KamarInap::class, 'no_rawat', 'no_rawat');
+    }
+    public function kamarPulang()
+    {
+        return $this->hasOne(KamarInap::class, 'no_rawat', 'no_rawat');
     }
     public function dokter()
     {
@@ -161,5 +166,9 @@ class RegPeriksa extends Model
     function askepRanapKandungan()
     {
         return $this->hasOne(AskepRanapKandungan::class, 'no_rawat', 'no_rawat');
+    }
+    function resumeMedis()
+    {
+        return $this->hasOne(ResumePasienRanap::class, 'no_rawat', 'no_rawat');
     }
 }

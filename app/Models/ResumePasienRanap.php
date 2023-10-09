@@ -20,4 +20,12 @@ class ResumePasienRanap extends Model
     {
         return $this->belongsTo(KamarInap::class, 'no_rawat', 'no_rawat');
     }
+    function regPeriksa()
+    {
+        return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
+    }
+    function bayiGabung()
+    {
+        return $this->belongsTo(RanapGabung::class, 'no_rawat', 'no_rawat2');
+    }
 }

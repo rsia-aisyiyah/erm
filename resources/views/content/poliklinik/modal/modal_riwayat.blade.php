@@ -52,12 +52,12 @@
                 dataType: 'JSON',
                 method: 'GET',
                 success: function(response) {
-                    console.log(response);
                     if (response.reg_periksa.length == 0) {
                         Swal.fire('Kosong!', 'Belum ada riwayat perawatan', 'error');
                     } else {
                         $('#modalRiwayat').modal('show')
                         riwayatPasien(response);
+                        // console.log(response.reg_periksa);
                     }
                 }
             });
@@ -130,7 +130,7 @@
                     '<tr><th>Unit/Poliklinik</th><td>: ' + i.poliklinik.nm_poli + '</td></tr>' +
                     '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
                     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
-                    diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + setPemeriksaan(ralan, i.pemeriksaan_ralan) + setPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
+                    diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + setResumeMedis(i.resume_medis) + setPemeriksaan(ralan, i.pemeriksaan_ralan) + setPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
                     '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
                     pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
@@ -252,6 +252,271 @@
             return html;
         }
 
+        function setResumeMedis(resumeMedis) {
+            if (resumeMedis) {
+                if (resumeMedis.kamar_inap) {
+                    tgl_masuk = formatTanggal(resumeMedis.kamar_inap.tgl_masuk)
+                    jam_masuk = resumeMedis.kamar_inap.jam_masuk
+                    tgl_keluar = formatTanggal(resumeMedis.kamar_inap.tgl_keluar)
+                    jam_keluar = resumeMedis.kamar_inap.jam_keluar
+                    lama = resumeMedis.kamar_inap.lama
+                    kamar = resumeMedis.kamar_inap.kamar.bangsal.nm_bangsal
+                } else {
+                    $.map(resumeMedis.bayi_gabung.kamar_inap, (kmr) => {
+                        if (kmr.stts_pulang != 'Pindah Kamar') {
+                            tgl_masuk = formatTanggal(kmr.tgl_masuk)
+                            jam_masuk = kmr.jam_masuk
+                            tgl_keluar = formatTanggal(kmr.tgl_keluar)
+                            jam_keluar = kmr.jam_keluar
+                            lama = kmr.lama
+                            kamar = kmr.kamar.bangsal.nm_bangsal
+                        }
+                    })
+                }
+                html = `<tr><th style="vertical-align: top;">Resume Medis</th><td>`;
+                html += `<div class="row">
+                    <div class="col-lg-5">
+                        <table class="table table-sm table-borderless" width="100%" style="background-color:#e1ffe3">
+                            <tr>
+                                <td>Tanggal Masuk</td>
+                                <td>: ${tgl_masuk} Jam : ${jam_masuk}</td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal Keluar</td>
+                                <td>: ${tgl_keluar} Jam : ${jam_keluar}</td>
+                            </tr>
+                            <tr>
+                                <td>Lama</td>
+                                <td>: ${lama}</td>
+                            </tr>
+                            <tr>
+                                <td>Kamar Rawat</td>
+                                <td>: ${kamar}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-lg-7" >
+                        <table class="table table-sm table-borderless " width="100%" style="background-color:#e1ffe3">
+                            <tr>
+                                <td>Cara Bayar</td>
+                                <td>: ${resumeMedis.reg_periksa.penjab.png_jawab}</td>
+                            </tr>
+                            <tr>
+                                <td>Indikasi Medis</td>
+                                <td>: ${resumeMedis.alasan}</td>
+                            </tr>
+                            <tr>
+                                <td>Diagnosa Awal</td>
+                                <td>: ${resumeMedis.diagnosa_awal}</td>
+                            </tr>
+                            <tr>
+                                <td>Dokter DPJP</td>
+                                <td>: ${resumeMedis.dokter.nm_dokter}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-lg-12" style="background-color:#e1ffe3;padding:5px">
+                        <table class="table table-sm" width="100%">
+                            <tr>
+                                <td><strong>ANAMNESIS</strong> <br/>
+                                    ${stringSoap(resumeMedis.keluhan_utama)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>PEMERIKSAAN FISIK</strong> <br/>
+                                    ${stringSoap(resumeMedis.pemeriksaan_fisik)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>PEMERIKSAAN PENUNJANG</strong> <br/>
+                                    ${stringSoap(resumeMedis.pemeriksaan_penunjang)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>PEMERIKSAAN LABORATORIUM</strong> <br/>
+                                    ${stringSoap(resumeMedis.hasil_laborat)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>DIAGNOSA AKHIR</strong> <br/>
+                                    <table width="100%" style="margin-left:20px">
+                                        <tr>
+                                            <th>
+                                                DIAGNOSA UTAMA
+                                            </th>
+                                            <td>
+                                                ICD 10
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                *. ${resumeMedis.diagnosa_utama}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_diagnosa_utama}
+                                            </td>    
+                                        </tr>
+                                          <tr>
+                                            <th>
+                                                DIAGNOSA SKUNDER
+                                            </th>
+                                            <td></td>
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                                1. ${resumeMedis.diagnosa_sekunder}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_diagnosa_sekunder}
+                                            </td>    
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                                2. ${resumeMedis.diagnosa_sekunder2}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_diagnosa_sekunder2}
+                                            </td>    
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                               3. ${resumeMedis.diagnosa_sekunder3}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_diagnosa_sekunder3}
+                                            </td>    
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                               4. ${resumeMedis.diagnosa_sekunder4}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_diagnosa_sekunder4}
+                                            </td>    
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                                5. ${resumeMedis.diagnosa_sekunder5}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_diagnosa_sekunder5}
+                                            </td>    
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                                6. ${resumeMedis.diagnosa_sekunder6}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_diagnosa_sekunder6}
+                                            </td>    
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                                7. ${resumeMedis.diagnosa_sekunder7}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_diagnosa_sekunder7}
+                                            </td>    
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td><strong>TINDAKAN / OPERASI </strong> <br/>
+                                    <table width="100%" style="margin-left:20px">
+                                        <tr>
+                                            <th>
+                                                
+                                            </th>
+                                            <td>
+                                                ICD 9
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                *. ${resumeMedis.prosedur_utama}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_prosedur_utama}
+                                            </td>    
+                                        </tr>
+                                          <tr>
+                                            <th>
+                                                
+                                            </th>
+                                            <td></td>
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                                1. ${resumeMedis.prosedur_sekunder}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_prosedur_sekunder}
+                                            </td>    
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                                2. ${resumeMedis.prosedur_sekunder2}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_prosedur_sekunder2}
+                                            </td>    
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                               3. ${resumeMedis.prosedur_sekunder3}
+                                            </td>    
+                                            <td>
+                                                ${resumeMedis.kd_prosedur_sekunder3}
+                                            </td>    
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>PEMERIKSAAN PENUNJANG</strong> <br/>
+                                ${resumeMedis.pemeriksaan_penunjang}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>OBAT SELAMA PERAWATAN</strong> <br/>
+                                ${resumeMedis.obat_di_rs}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>PROGNOSIS</strong> <br/>
+                                ${resumeMedis.ket_keadaan}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>KONDISI PULANG</strong> <br/>
+                                ${resumeMedis.keadaan}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>OBAT PULANG</strong> <br/>
+                                ${resumeMedis.obat_pulang}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>SKH</strong> <br/>
+                                ${resumeMedis.shk} Ket : ${resumeMedis.shk_keterangan} 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>INSTRUKSI TINDAK LANJUT</strong> <br/>
+                                KONTROL : ${formatTanggal(resumeMedis.kontrol.split(" ")[0])} 
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>`
+                html += `</td></tr>`;
+                return html;
+            }
+
+        }
+
         function getAturanPakai(no_rawat, obat) {
 
             var aturan = '';
@@ -292,7 +557,6 @@
             }
             return '';
         }
-
 
         function hasilOperasi(operasi, no_rawat) {
             if (operasi) {
