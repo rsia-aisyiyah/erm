@@ -105,6 +105,7 @@
                                     <label for="">Kesadaran :</label>
                                     <select class="form-select" name="kesadaran" id="kesadaran">
                                         <option value="Compos Mentis">Compos Mentis</option>
+                                        <option value="Apatis">Apatis</option>
                                         <option value="Somnolence">Somnolence</option>
                                         <option value="Sopor">Sopor</option>
                                         <option value="Coma">Coma</option>

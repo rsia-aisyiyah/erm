@@ -452,6 +452,7 @@
                                         <label for="pemeriksaan_kebidanan_mental">Kesadaran Mental:</label>
                                         <select class="form-select br-full" name="pemeriksaan_kebidanan_mental" id="pemeriksaan_kebidanan_mental">
                                             <option value="Compos Mentis">Compos Mentis</option>
+                                            <option value="Apatis">Apatis</option>
                                             <option value="Somnolence">Somnolence</option>
                                             <option value="Sopor">Sopor</option>
                                             <option value="Coma">Coma</option>
