@@ -287,7 +287,7 @@
                             </tr>
                             <tr>
                                 <td>Lama</td>
-                                <td>: ${lama}</td>
+                                <td>: ${lama} Hari</td>
                             </tr>
                             <tr>
                                 <td>Kamar Rawat</td>
