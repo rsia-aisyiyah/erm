@@ -941,7 +941,7 @@
                                             <option value="Tidak Ada Kesulitan">Tidak Ada Kesulitan</option>
                                             <option value="Ada Masalah">Ada Masalah</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_koordinasi_keterangan" name="pengkajian_fungsi_koordinasiketerangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_koordinasi_keterangan" name="pengkajian_fungsi_koordinasi_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
