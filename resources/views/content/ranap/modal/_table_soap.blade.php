@@ -30,7 +30,7 @@
         </div>
     </div>
 </div>
-<table class="table table-bordered table-striped" id="tbSoap" style="font-size: 12px">
+<table class="table table-bordered table-striped" id="tbSoap" style="font-size: 12px" width="100%">
     <thead>
         <tr>
             <td width="5%">Aksi</td>
@@ -38,6 +38,9 @@
             <td>S.O.A.P</td>
         </tr>
     </thead>
+    <tbody>
+
+    </tbody>
 </table>
 
 @push('script')

@@ -25,7 +25,7 @@
                             <button type="button" class="btn btn-primary btn-sm" style="font-size: 12px" id="buatTemplate">Buat Template Racikan</button>
                         </form>
                         <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                            <table class="table tale-responsive table-stripped table-" id="tb_template">
+                            <table class="table tale-responsive table-stripped " id="tb_template">
                                 <thead>
                                     <tr>
                                         <th>Nama Racikan</th>

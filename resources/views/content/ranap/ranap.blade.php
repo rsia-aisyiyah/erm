@@ -1040,16 +1040,10 @@
 
         function tbSoapRanap(no_rawat = '', tgl_pertama = '', tgl_kedua = '', petugas = '') {
             no_rawat_soap = no_rawat;
-            var tbSoapRanap = $('#tbSoap').DataTable({
+            var tbSoapRanap = $('#tbSoap').dataTable({
                 processing: true,
-                serverSide: true,
-                stateSave: true,
-                searching: false,
-                lengthChange: false,
-                ordering: false,
                 paging: false,
                 info: false,
-                autoWidth: false,
                 ajax: {
                     url: "soap",
                     data: {
@@ -1073,10 +1067,6 @@
                             })
                         }
                     },
-                },
-                language: {
-                    loadingRecords: '&nbsp;',
-                    sProcessing: '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>'
                 },
                 scrollCollapse: true,
                 columns: [{
@@ -1116,7 +1106,7 @@
                             var btnVerif = '';
 
                             isDokter = "{{ session()->get('pegawai')->departemen }}";
-                            if (isDokter == 'Direksi' || isDokter == 'SPS' || isDokter == '-') {
+                            if (isDokter == 'Direksi' || isDokter == 'SPS') {
                                 btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-warning btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square" style="margin-right:5px;"></i> Verifikasi </button>';
                                 $.map(row.verifikasi, function(verifikasi) {
                                     if (row.tgl_perawatan == verifikasi.tgl_perawatan && row.jam_rawat == verifikasi.jam_rawat) {
@@ -1157,8 +1147,9 @@
                     },
                 ],
                 "language": {
-                    "zeroRecords": "Tidak ada data pasien terdaftar",
-                    "infoEmpty": "Tidak ada data pasien terdaftar",
+                    "zeroRecords": "Tidak ada data  data pemeriksaan",
+                    "infoEmpty": "Tidak ada data data pemeriksaan",
+                    "search": "Pencarian",
                 },
             });
         }

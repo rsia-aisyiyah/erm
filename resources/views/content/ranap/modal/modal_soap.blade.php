@@ -74,7 +74,7 @@
                                 onclick="modalGrafikHarian()" style="font-size: 12px"><i
                                     class="bi bi-bar-chart-line"></i> Tambah Grafik</button>
                         </div>
-                        <div class="table-responsive">  
+                        <div class="table-responsive">
                             <div class="chart-container">
                                 <canvas id="grafik-suhu" class="grafikPemeriksaan"></canvas>
                             </div>
@@ -490,6 +490,29 @@
                             text: 'Data Berhasil Ditambah',
                             showConfirmButton: false,
                             timer: 1500
+                        }).then(() => {
+                            $('#tbSoap').DataTable().destroy();
+                            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+                            grafikPemeriksaan.destroy();
+                            buildGrafik(no_rawat_soap)
+                            setEws(no_rawat_soap, 'ranap', $('#formSoapRanap input[name=spesialis]').val())
+                            $('#formSoapRanap textarea[name=subjek]').val('-');
+                            $('#formSoapRanap textarea[name=objek]').val('-');
+                            $('#formSoapRanap textarea[name=asesmen]').val('-');
+                            $('#formSoapRanap textarea[name=plan]').val('-');
+                            $('#formSoapRanap textarea[name=instruksi]').val('-');
+                            $('#formSoapRanap input[name=suhu]').val('-');
+                            $('#formSoapRanap input[name=tinggi]').val('-');
+                            $('#formSoapRanap input[name=berat]').val('-');
+                            $('#formSoapRanap input[name=tensi]').val('-');
+                            $('#formSoapRanap input[name=respirasi]').val('-');
+                            $('#formSoapRanap input[name=nadi]').val('-');
+                            $('#formSoapRanap input[name=spo2]').val('-');
+                            $('#formSoapRanap input[name=gcs]').val('-');
+                            $('#formSoapRanap input[name=o2]').val('-');
+                            $('#formSoapRanap input[name=alergi]').val('-');
+                            $('#formSoapRanap select[name=kesadaran]').val('Compos Mentis').change();
+                            getInstance.show()
                         });
 
                         var suhu_tubuh = $('#suhu').val();
@@ -503,7 +526,7 @@
                                 console.log('kirim notif');
                                 notifSend(
                                     // FIXME : kd_dokter masih belum benar
-                                    kd_dokter, 
+                                    kd_dokter,
                                     'Notifikasi Kondisi Pasien',
                                     'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
                                     $('#nomor_rawat').val(),
@@ -516,7 +539,7 @@
                                 console.log('kirim notif');
                                 notifSend(
                                     // FIXME : kd_dokter masih belum benar
-                                    kd_dokter, 
+                                    kd_dokter,
                                     'Notifikasi Kondisi Pasien',
                                     'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
                                     $('#nomor_rawat').val(),
@@ -525,29 +548,7 @@
                             }
                         }
 
-                        $('#tbSoap').DataTable().destroy();
-                        tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
-                        grafikPemeriksaan.destroy();
-                        buildGrafik(no_rawat_soap)
-                        setEws(no_rawat_soap, 'ranap', $('#formSoapRanap input[name=spesialis]').val())
-                        $('#formSoapRanap textarea[name=subjek]').val('-');
-                        $('#formSoapRanap textarea[name=objek]').val('-');
-                        $('#formSoapRanap textarea[name=asesmen]').val('-');
-                        $('#formSoapRanap textarea[name=plan]').val('-');
-                        $('#formSoapRanap textarea[name=instruksi]').val('-');
-                        $('#formSoapRanap input[name=suhu]').val('-');
-                        $('#formSoapRanap input[name=tinggi]').val('-');
-                        $('#formSoapRanap input[name=berat]').val('-');
-                        $('#formSoapRanap input[name=tensi]').val('-');
-                        $('#formSoapRanap input[name=respirasi]').val('-');
-                        $('#formSoapRanap input[name=nadi]').val('-');
-                        $('#formSoapRanap input[name=spo2]').val('-');
-                        $('#formSoapRanap input[name=gcs]').val('-');
-                        $('#formSoapRanap input[name=o2]').val('-');
-                        $('#formSoapRanap input[name=alergi]').val('-');
-                        $('#formSoapRanap select[name=kesadaran]').val('Compos Mentis').change();
 
-                        getInstance.show()
                     } else {
                         Swal.fire({
                             icon: 'danger',
@@ -557,6 +558,9 @@
                             timer: 1500
                         })
                     }
+                },
+                error: (request) => {
+                    alertErrorAjax(request);
                 }
             })
         }
