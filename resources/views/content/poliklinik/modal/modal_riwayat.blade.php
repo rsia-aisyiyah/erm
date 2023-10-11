@@ -77,10 +77,10 @@
                     arrFoto.forEach(function(fx) {
                         hasilFoto += `<td>
                             <div class="image-set m-t-20">
-                                <a data-magnify="gallery" data-src="" data-caption="${kategori.toUpperCase()} ${formatTanggal(f.tgl_masuk)}" data-group="a" href="https://sim.rsiaaisyiyah.com/erm/public/erm/${fx}">
+                                <a data-magnify="gallery" data-src="" data-caption="${kategori?.toUpperCase()} ${formatTanggal(f.tgl_masuk)}" data-group="a" href="https://sim.rsiaaisyiyah.com/erm/public/erm/${fx}">
                                     <img src="https://sim.rsiaaisyiyah.com/erm/public/erm/${fx}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
                                 </a>
-                                <figcaption>${kategori.toUpperCase()}</figcaption>
+                                <figcaption>${kategori?.toUpperCase()}</figcaption>
                             </div>
                         </td>`
                     })
