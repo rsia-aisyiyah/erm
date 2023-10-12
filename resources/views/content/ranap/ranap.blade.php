@@ -509,8 +509,8 @@
                             }
 
                             asmed = '';
-                            if (data.asmed_ranap_anak == 0 && data.asmed_ranap_kandungan.length == 0) {
-                                asmed = ' <button class="px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button>'
+                            if (data.asmed_ranap_anak == null && data.asmed_ranap_kandungan == null) {
+                                asmed = ' <button class="ml-1 px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button>'
                             }
 
 
