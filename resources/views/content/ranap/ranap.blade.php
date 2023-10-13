@@ -424,7 +424,7 @@
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
                             list = '<li><a class="dropdown-item" href="#" onclick="modalLaborat(\'' + data.no_rawat + '\')">Laborat</a></li>';
-                            list += '<li><a class="dropdown-item" href="#" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">S.O.A.P</a></li>';
+                            list += '<li><a class="dropdown-item" href="#" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
                             list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
@@ -441,8 +441,8 @@
 
 
                             // resume medis aktif
-                            isDokter = "{{ session()->get('pegawai')->departemen }}";
-                            if (isDokter == 'Direksi' || isDokter == 'SPS' || isDokter == '-' || isDokter == 'CSM') {
+                            isSpesialis = "{{ session()->get('pegawai')->departemen }}";
+                            if (isSpesialis == 'Direksi' || isSpesialis == 'SPS' || isSpesialis == '-' || isSpesialis == 'CSM') {
                                 if (row.resume) {
                                     iconCheck = '<i class="bi bi-check-circle text-success"></i>';
                                 } else {
@@ -451,7 +451,7 @@
                                 list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
                             }
 
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
@@ -484,9 +484,9 @@
 
                             bayiGabung = '';
                             if (row.ranap_gabung) {
-                                isDokter = "{{ session()->get('pegawai')->departemen }}";
+                                isSpesialis = "{{ session()->get('pegawai')->departemen }}";
                                 resume = '';
-                                if (isDokter == 'Direksi' || isDokter == 'SPS' || isDokter == '-' || isDokter == 'CSM') {
+                                if (isSpesialis == 'Direksi' || isSpesialis == 'SPS' || isSpesialis == '-' || isSpesialis == 'CSM') {
                                     if (row.resume) {
                                         iconCheck = '<i class="bi bi-check-circle text-success"></i>';
                                     } else {
@@ -497,12 +497,12 @@
                                 namaBayi = `<a class="nav-link dropdown-toggle btn btn-warning btn-sm" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">${row.ranap_gabung.reg_periksa.pasien.nm_pasien}</a>
                                 <ul class="dropdown-menu dropdown-menu" style="font-size:12px">
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalLaborat('${row.ranap_gabung.reg_periksa.no_rawat}')">Laborat</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${row.ranap_gabung.reg_periksa.kd_dokter}" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">S.O.A.P</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${row.ranap_gabung.reg_periksa.kd_dokter}" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">CPPT</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${row.ranap_gabung.reg_periksa.no_rawat}')">Asesmen Medis Anak ${cekList(row.ranap_gabung.reg_periksa.asmed_ranap_anak)}</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${row.ranap_gabung.reg_periksa.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.ranap_gabung.reg_periksa.askep_ranap_neonatus)}</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Pemeriksaan Penunjang</a></li>
                                     ${resume}
-                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.ranap_gabung.reg_periksa.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.ranap_gabung.reg_periksa.no_rkm_medis}">Riwayat</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.ranap_gabung.reg_periksa.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.ranap_gabung.reg_periksa.no_rkm_medis}">Riwayat Pemeriksaan</a></li>
                                 </ul>`
                                 bayiGabung = `<hr style="margin:0px"/>${row.ranap_gabung.reg_periksa.no_rawat} <br/> <strong>${namaBayi}</strong>  `
 
@@ -581,9 +581,6 @@
                 }
             })
         }
-
-
-
 
         function getTTVData(params) {
             let ttv = $.ajax({
@@ -1020,13 +1017,12 @@
                 $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
                 setEws(no_rawat, 'ranap', response.dokter.kd_sps)
 
-                // console.log(response.dokter);
                 $('#formSoapRanap .btn-simpan').attr('data-kd-dokter', response.dokter.kd_dokter);
                 $('#formSoapRanap .btn-simpan').attr('data-spesialis', response.dokter.spesialis.nm_sps);
                 $('#formSoapRanap .btn-simpan').attr('data-nm-pasien', response.pasien.nm_pasien);
 
                 $('#formSaveGrafikHarian #kdDokter').attr('data-kd-dokter', response.dokter.kd_dokter);
-                $('#formSaveGrafikHarian #spesialisDOkter').attr('data-spesialis', response.dokter.spesialis.nm_sps);
+                $('#formSaveGrafikHarian #spesialisSpesialis').attr('data-spesialis', response.dokter.spesialis.nm_sps);
                 $('#formSaveGrafikHarian #nmPasien').attr('data-nm-pasien', response.pasien.nm_pasien);
             })
 
@@ -1105,8 +1101,9 @@
 
                             var btnVerif = '';
 
-                            isDokter = "{{ session()->get('pegawai')->departemen }}";
-                            if (isDokter == 'Direksi' || isDokter == 'SPS') {
+                            isSpesialis = "{{ session()->get('pegawai')->dokter->kd_sps }}";
+                            console.log(isSpesialis);
+                            if (isSpesialis == 'S0003' || isSpesialis == 'S0001') {
                                 btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-warning btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square" style="margin-right:5px;"></i> Verifikasi </button>';
                                 $.map(row.verifikasi, function(verifikasi) {
                                     if (row.tgl_perawatan == verifikasi.tgl_perawatan && row.jam_rawat == verifikasi.jam_rawat) {
@@ -1138,8 +1135,6 @@
                             baris += '<tr><td>Objek </td><td>:</td><td>' + stringSoap(row.pemeriksaan) + '</td></tr>'
                             baris += '<tr><td>Assesment</td><td>:</td><td>' + stringSoap(row.penilaian) + '</td></tr>'
                             baris += '<tr><td>Plan</td><td>:</td><td>' + stringSoap(row.rtl) + '</td></tr>'
-                            baris += '<tr><td>Instruksi</td><td>:</td><td>' + stringSoap(row.instruksi) + '</td></tr>'
-                            // baris += '<tr><td>Evaluasi</td><td>:</td><td>' + row.evaluasi + '</td></tr>'
                             html = '<table class="table table-striped">' + baris + '</table>'
                             return html;
                         },
@@ -1277,7 +1272,7 @@
             e.preventDefault();
 
             var kd_dokter = $('#formSaveGrafikHarian #kdDokter').data('kd-dokter');
-            var spesialis = $('#formSaveGrafikHarian #spesialisDOkter').data('spesialis');
+            var spesialis = $('#formSaveGrafikHarian #spesialisSpesialis').data('spesialis');
             var nm_pasien = $('#formSaveGrafikHarian #nmPasien').data('nm-pasien');
 
             var suhu_tubuh = $('#formSaveGrafikHarian input[name="suhu_tubuh"]').val();
@@ -1376,7 +1371,7 @@
 
             // reset data-*
             $('#formSaveGrafikHarian #kdDokter').attr('data-kd-dokter', '');
-            $('#formSaveGrafikHarian #spesialisDOkter').attr('data-spesialis', '');
+            $('#formSaveGrafikHarian #spesialisSpesialis').attr('data-spesialis', '');
         });
 
         function deleteGrafikHarian(no_rawat, tgl_perawatan, jam_rawat) {

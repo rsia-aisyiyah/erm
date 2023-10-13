@@ -3,7 +3,7 @@
         <tr role="row">
             <th width="5%">Aksi</th>
             <th width="15%">TTV & Fisik</th>
-            <th width="80%">S.O.A.P</th>
+            <th width="80%">CPPT</th>
         </tr>
     </thead>
     <tbody></tbody>

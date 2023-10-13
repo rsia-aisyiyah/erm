@@ -14,8 +14,7 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-pane"
-                            type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Data
-                            Pemeriksaan</button>
+                            type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Riwayat S.O.A.P</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-grafik" data-bs-toggle="tab" data-bs-target="#tab-grafik-pane"

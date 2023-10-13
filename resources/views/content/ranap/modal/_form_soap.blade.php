@@ -219,7 +219,7 @@
                             onblur="cekKosong(this)">-</textarea>
                     </td>
                 </tr>
-                <tr>
+                <tr class="d-none">
                     <td style="font-size:11px">Instruksi : </td>
                     <td colspan="4">
                         <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="5"

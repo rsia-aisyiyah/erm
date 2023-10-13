@@ -35,7 +35,7 @@
         <tr>
             <td width="5%">Aksi</td>
             <td width="20%">TTV & Fisik</td>
-            <td>S.O.A.P</td>
+            <td>CPPT</td>
         </tr>
     </thead>
     <tbody>

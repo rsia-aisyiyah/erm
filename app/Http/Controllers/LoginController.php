@@ -38,22 +38,22 @@ class LoginController extends Controller
 
             /** 
              * Pembatasan login dari domain sim.rsiaaisyiyah.com
-            */
+             */
             if ($domain == 'sim.rsiaaisyiyah.com') {
                 /**
                  * Daftar user yang diizinkan login : 
                  * direksi, verifikator
-                */
-                if (!in_array($user->username, ['direksi', 'verifikator']))  {
+                 */
+                if (!in_array($user->username, ['direksi', 'verifikator'])) {
                     /**
                      * Selain user diatas, maka akan diarahkan ke halaman login dengan pesan error
-                     * */ 
-                    return back()->with('error', 'Anda tidak diizinkan login.'); 
+                     * */
+                    return back()->with('error', 'Anda tidak diizinkan login.');
                 }
             }
 
             Auth::login($user);
-            $pegawai = Pegawai::where('nik', $request->get('username'))->with(['petugas', 'dokter'])->first();
+            $pegawai = Pegawai::where('nik', $request->get('username'))->with(['petugas', 'dokter.jadwal'])->first();
             $request->session()->regenerate();
             Session::put('pegawai', $pegawai);
             Session::put('status', 'ok');
