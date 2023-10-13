@@ -1023,7 +1023,7 @@
                 $('#formSoapRanap .btn-simpan').attr('data-nm-pasien', response.pasien.nm_pasien);
 
                 $('#formSaveGrafikHarian #kdDokter').attr('data-kd-dokter', response.dokter.kd_dokter);
-                $('#formSaveGrafikHarian #spesialisDOkter').attr('data-spesialis', response.dokter.spesialis.nm_sps);
+                $('#formSaveGrafikHarian #spesialisDokter').attr('data-spesialis', response.dokter.spesialis.nm_sps);
                 $('#formSaveGrafikHarian #nmPasien').attr('data-nm-pasien', response.pasien.nm_pasien);
             })
 
