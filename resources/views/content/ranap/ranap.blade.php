@@ -441,8 +441,8 @@
 
 
                             // resume medis aktif
-                            isSpesialis = "{{ session()->get('pegawai')->departemen }}";
-                            if (isSpesialis == 'Direksi' || isSpesialis == 'SPS' || isSpesialis == '-' || isSpesialis == 'CSM') {
+                            isDokter = "{{ session()->get('pegawai')->departemen }}";
+                            if (isDokter == 'Direksi' || isDokter == 'SPS' || isDokter == '-' || isDokter == 'CSM') {
                                 if (row.resume) {
                                     iconCheck = '<i class="bi bi-check-circle text-success"></i>';
                                 } else {
@@ -484,9 +484,9 @@
 
                             bayiGabung = '';
                             if (row.ranap_gabung) {
-                                isSpesialis = "{{ session()->get('pegawai')->departemen }}";
+                                isDokter = "{{ session()->get('pegawai')->departemen }}";
                                 resume = '';
-                                if (isSpesialis == 'Direksi' || isSpesialis == 'SPS' || isSpesialis == '-' || isSpesialis == 'CSM') {
+                                if (isDokter == 'Direksi' || isDokter == 'SPS' || isDokter == '-' || isDokter == 'CSM') {
                                     if (row.resume) {
                                         iconCheck = '<i class="bi bi-check-circle text-success"></i>';
                                     } else {
@@ -1017,12 +1017,13 @@
                 $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
                 setEws(no_rawat, 'ranap', response.dokter.kd_sps)
 
+                // console.log(response.dokter);
                 $('#formSoapRanap .btn-simpan').attr('data-kd-dokter', response.dokter.kd_dokter);
                 $('#formSoapRanap .btn-simpan').attr('data-spesialis', response.dokter.spesialis.nm_sps);
                 $('#formSoapRanap .btn-simpan').attr('data-nm-pasien', response.pasien.nm_pasien);
 
                 $('#formSaveGrafikHarian #kdDokter').attr('data-kd-dokter', response.dokter.kd_dokter);
-                $('#formSaveGrafikHarian #spesialisSpesialis').attr('data-spesialis', response.dokter.spesialis.nm_sps);
+                $('#formSaveGrafikHarian #spesialisDOkter').attr('data-spesialis', response.dokter.spesialis.nm_sps);
                 $('#formSaveGrafikHarian #nmPasien').attr('data-nm-pasien', response.pasien.nm_pasien);
             })
 
@@ -1101,9 +1102,9 @@
 
                             var btnVerif = '';
 
-                            isSpesialis = "{{ session()->get('pegawai')->dokter->kd_sps }}";
-                            console.log(isSpesialis);
-                            if (isSpesialis == 'S0003' || isSpesialis == 'S0001') {
+                            // isDokter = "{{ session()->get('pegawai')->departemen }}";
+                            // isDirektur = "{{ session()->get('pegawai')->jbtn }}";
+                            if (isDokter == 'Direksi' || isDokter == 'SPS' || isDirektur == 'Direktur') {
                                 btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-warning btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square" style="margin-right:5px;"></i> Verifikasi </button>';
                                 $.map(row.verifikasi, function(verifikasi) {
                                     if (row.tgl_perawatan == verifikasi.tgl_perawatan && row.jam_rawat == verifikasi.jam_rawat) {
@@ -1135,6 +1136,8 @@
                             baris += '<tr><td>Objek </td><td>:</td><td>' + stringSoap(row.pemeriksaan) + '</td></tr>'
                             baris += '<tr><td>Assesment</td><td>:</td><td>' + stringSoap(row.penilaian) + '</td></tr>'
                             baris += '<tr><td>Plan</td><td>:</td><td>' + stringSoap(row.rtl) + '</td></tr>'
+                            // baris += '<tr><td>Instruksi</td><td>:</td><td>' + stringSoap(row.instruksi) + '</td></tr>'
+                            // baris += '<tr><td>Evaluasi</td><td>:</td><td>' + row.evaluasi + '</td></tr>'
                             html = '<table class="table table-striped">' + baris + '</table>'
                             return html;
                         },
@@ -1272,7 +1275,7 @@
             e.preventDefault();
 
             var kd_dokter = $('#formSaveGrafikHarian #kdDokter').data('kd-dokter');
-            var spesialis = $('#formSaveGrafikHarian #spesialisSpesialis').data('spesialis');
+            var spesialis = $('#formSaveGrafikHarian #spesialisDokter').data('spesialis');
             var nm_pasien = $('#formSaveGrafikHarian #nmPasien').data('nm-pasien');
 
             var suhu_tubuh = $('#formSaveGrafikHarian input[name="suhu_tubuh"]').val();
