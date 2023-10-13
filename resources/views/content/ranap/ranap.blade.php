@@ -1102,8 +1102,8 @@
 
                             var btnVerif = '';
 
-                            // isDokter = "{{ session()->get('pegawai')->departemen }}";
-                            // isDirektur = "{{ session()->get('pegawai')->jbtn }}";
+                            isDokter = "{{ session()->get('pegawai')->departemen }}";
+                            isDirektur = "{{ session()->get('pegawai')->jbtn }}";
                             if (isDokter == 'Direksi' || isDokter == 'SPS' || isDirektur == 'Direktur') {
                                 btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-warning btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square" style="margin-right:5px;"></i> Verifikasi </button>';
                                 $.map(row.verifikasi, function(verifikasi) {
