@@ -121,6 +121,17 @@
             );
         }
 
+        function alertSuccessAjax(message) {
+            return Swal.fire({
+                title: 'Berhasil',
+                text: message,
+                showConfirmButton: false,
+                icon: 'success',
+                timer: 1000,
+            })
+
+        }
+
         function hitungUmur(tgl_lahir) {
             sekarang = new Date();
             hari = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate());
@@ -1343,6 +1354,96 @@
 
         }
 
+        function getListAsmedRajalKandungan(no_rkm_medis) {
+            const asmed = $.ajax({
+                url: `/erm/poliklinik/asmed/kandungan/riwayat/${no_rkm_medis}`,
+                method: 'GET',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
+            })
+            return asmed;
+        }
+
+        function listAsmedRajalKandungan(data) {
+            $('#listAsmedKandungan').empty()
+            $.map(data, (a) => {
+                html = `<div class="mb-3 col-lg-3 col-md-4 col-sm-12">
+                       <div class="card card-shadow">
+                        <p class="card-header" style="font-size:12px">Tgl. Asesmen ${formatTanggal(a.tanggal)} ${a.tanggal.split(' ')[1]} </p>
+                        <div class="card-body">
+                            <h6 class="card-title">${a.dokter.nm_dokter}</h6>
+                            <p class="card-text"><b>(${a.reg_periksa.no_rkm_medis} ) - ${a.reg_periksa.pasien.nm_pasien} </b> <br> ${a.no_rawat} <br/> Tgl. Periksa ${formatTanggal(a.reg_periksa.tgl_registrasi)}</p>
+                            <a href="/erm/poliklinik/asmed/kandungan/print/${textRawat(a.no_rawat, '-')}" target="_blank" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i> Lihat</a>
+                            <a href="javascript:void(0)" onclick="setAsmedRajalKandungan('${a.no_rawat}')" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Edit</a>
+                            </div>
+                            </div>
+                         </div>`
+                $('#listAsmedKandungan').append(html)
+            })
+        }
+
+        function getAsmedRanapKandungan(noRawat) {
+            const asmedKebidanan = $.ajax({
+                url: '/erm/asmed/ranap/kandungan/' + textRawat(noRawat, '-'),
+                dataType: 'JSON',
+                method: 'GET',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
+            });
+
+            return asmedKebidanan;
+        }
+
+        function getAsmedRanapAnak(noRawat) {
+            const asmed = $.ajax({
+                url: '/erm/asmed/ranap/anak/' + textRawat(noRawat, '-'),
+                dataType: 'JSON',
+                method: 'GET',
+                error: (request) => {
+                    if (request.status == 401) {
+                        Swal.fire({
+                            title: 'Sesi login berakhir !',
+                            icon: 'info',
+                            text: 'Silahkan login kembali ',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/erm';
+                            }
+                        })
+                    }
+                },
+            })
+
+            return asmed;
+        }
         // {
         //     "success": true,
         //     "message": "notification sent",

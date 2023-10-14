@@ -34,7 +34,7 @@ class CatatanPerawatanController extends Controller
     function get($noRawat)
     {
         $nomor = str_replace('-', '/', $noRawat);
-        $catatan = $this->catatan->where('no_rawat', $nomor)->first();
+        $catatan = $this->catatan->where('no_rawat', $nomor)->with('dokter')->first();
 
         return response()->json($catatan);
     }

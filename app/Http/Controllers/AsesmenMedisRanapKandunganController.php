@@ -35,11 +35,24 @@ class AsesmenMedisRanapKandunganController extends Controller
     }
     function update(Request $request)
     {
-        $data = $request->except(['_token']);
-        $clause = ['no_rawat' => $request->no_rawat];
+        if ($request->no_rawat_2) {
+            $data = $request->except(['_token', 'no_rawat_2']);
+            $data['tanggal'] = date('Y-m-d H:i:s');
+            $clause = ['no_rawat' => $request->no_rawat_2];
+        } else {
+            $data = $request->except(['_token']);
+            $clause = ['no_rawat' => $request->no_rawat];
+        }
         $asmed = $this->asmed->where($clause)->update($data);
         $this->track->updateSql($this->asmed, $data, $clause);
 
+        return response()->json($asmed);
+    }
+    function getByNoRm($no_rkm_medis)
+    {
+        $asmed = $this->asmed->whereHas('regPeriksa', function ($query) use ($no_rkm_medis) {
+            $query->where('no_rkm_medis', $no_rkm_medis);
+        })->with('dokter', 'regPeriksa.poliklinik')->get();
         return response()->json($asmed);
     }
 }

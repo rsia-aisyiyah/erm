@@ -229,9 +229,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('asmed/kebidanan', [PenilaianMedisKebidananController::class, 'index']);
     Route::get('asmed/ranap/anak/{noRawat}', [AsesmenMedisAnakController::class, 'get']);
+    Route::get('asmed/ranap/anak/rm/{no_rkm_medis}', [AsesmenMedisAnakController::class, 'getByNoRm']);
     Route::post('asmed/ranap/anak/simpan', [AsesmenMedisAnakController::class, 'create']);
     Route::post('asmed/ranap/anak/ubah', [AsesmenMedisAnakController::class, 'update']);
     Route::get('asmed/ranap/kandungan/{noRawat}', [AsesmenMedisRanapKandunganController::class, 'get']);
+    Route::get('asmed/ranap/kandungan/rm/{no_rkm_medis}', [AsesmenMedisRanapKandunganController::class, 'getByNoRm']);
     Route::post('asmed/ranap/kandungan/simpan', [AsesmenMedisRanapKandunganController::class, 'create']);
     Route::post('asmed/ranap/kandungan/ubah', [AsesmenMedisRanapKandunganController::class, 'update']);
 

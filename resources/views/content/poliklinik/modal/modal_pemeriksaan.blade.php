@@ -15,24 +15,31 @@
                     </li>
                     <li class="nav-item" role="presentation" id="li-asmed-obg" style="display:none">
                         <button class="nav-link" id="tab-asesmen-obg" data-bs-toggle="tab" data-bs-target="#tab-asmed-obg"
-                            type="button" role="tab" aria-controls="tab-asmed-obg" aria-selected="false">Asesmen Medis Obgyn</button>
+                            type="button" role="tab" aria-controls="tab-asmed-obg" aria-selected="false">Asesmen Medis Rajal Obgyn</button>
                     </li>
-                    <li class="nav-item" role="presentation" id="li-asmed-ana" style="display:none">
+                    <li class="nav-item" role="presentation" id="li-asmed-ana">
                         <button class="nav-link" id="tab-asesmen-anak" data-bs-toggle="tab" data-bs-target="#tab-asmed-ana"
-                            type="button" role="tab" aria-controls="tab-asmed-ana" aria-selected="false">Asesmen Medis Anak</button>
+                            type="button" role="tab" aria-controls="tab-asmed-ana" aria-selected="false">Asesmen Medis Rajal Anak</button>
                     </li>
-                    <li class="nav-item" role="presentation" id="li-data-obg" style="display:none">
+                    <li class="nav-item" role="presentation" id="li-asmed-ranap-obg">
+                        <button class="nav-link" id="tab-asesmen-ranap-obg" data-bs-toggle="tab" data-bs-target="#tab-asmed-ranap-obg"
+                            type="button" role="tab" aria-controls="tab-asmed-ranap-obg" aria-selected="false">Asesmen Medis Ranap Obgyn</button>
+                    </li>
+                    <li class="nav-item" role="presentation" id="li-asmed-ranap-ana">
+                        <button class="nav-link" id="tab-asesmen-ranap-anak" data-bs-toggle="tab" data-bs-target="#tab-asmed-ranap-ana"
+                            type="button" role="tab" aria-controls="tab-asmed-ranap-ana" aria-selected="false">Asesmen Medis Ranap Anak</button>
+                    </li>
+                    {{-- <li class="nav-item" role="presentation" id="li-data-obg" style="display:none">
                         <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-asmed"
                             type="button" role="tab" aria-controls="tab-tabel-asmed" aria-selected="false">Data Asesmen</button>
-                    </li>
-                    <li class="nav-item" role="presentation" id="li-data-anak" style="display:none">
+                    </li> --}}
+                    {{-- <li class="nav-item" role="presentation" id="li-data-anak" style="display:none">
                         <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-anak"
                             type="button" role="tab" aria-controls="tab-tabel-anak" aria-selected="false">Data Asesmen Anak</button>
-                    </li>
+                    </li> --}}
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
-                        aria-labelledby="home-tab" tabindex="0">
+                    <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.soap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-asmed-obg" role="tabpanel" aria-labelledby="tab-asmed"
@@ -43,21 +50,30 @@
                         tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.asmed_anak')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-tabel-asmed" role="tabpanel" aria-labelledby="tab-tabel"
+                    <div class="tab-pane fade p-3" id="tab-asmed-ranap-obg" role="tabpanel" aria-labelledby="tab-asmed-ranap"
+                        tabindex="0">
+                        @include('content.ranap.form.form_asmed_kandungan')
+                    </div>
+                    <div class="tab-pane fade p-3" id="tab-asmed-ranap-ana" role="tabpanel" aria-labelledby="tab-asmed-ranap"
+                        tabindex="0">
+                        @include('content.ranap.form.form_asemd_anak')
+                        {{-- @include('content.poliklinik.modal.pemeriksaan.asmed_anak') --}}
+                    </div>
+                    {{-- <div class="tab-pane fade p-3" id="tab-tabel-asmed" role="tabpanel" aria-labelledby="tab-tabel"
                         tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.tabel_asmed_kandungan')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-tabel-anak" role="tabpanel" aria-labelledby="tab-tabel"
                         tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.list_asmed_anak')
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Keluar</button>
                 <button type="button" class="btn btn-success btn-sm btn-soap" onclick="simpanSoap()"><i class="bi bi-save"></i> Simpan SOAP</button>
-                <button type="button" class="btn btn-success btn-sm btn-asmed" name="simpan" onclick="simpanAsmedKandungan()" style="display: none"><i class="bi bi-save"></i> Simpan Asesmen</button>
-                <button type="button" class="btn btn-warning btn-sm btn-asmed" name="edit" onclick="editAsmedKandungan()" style="display: none"><i class="bi bi-pencil"></i> Ubah Asesmen</button>
+                <button type="button" class="btn btn-success btn-sm btn-asmed" name="simpan" style="display: none"><i class="bi bi-save"></i> Simpan Asmed Rajal</button>
+                <button type="button" class="btn btn-success btn-sm btn-asmed-ranap" name="simpan" style="display: none"><i class="bi bi-save"></i> Simpan Asmed Ranap</button>
             </div>
         </div>
     </div>
@@ -69,20 +85,33 @@
         }
 
         $('button[data-bs-target="#tab-soap-pane"]').on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed-ranap').css('display', 'none')
             $('.btn-asmed').css('display', 'none')
             $('.btn-soap').css('display', 'inline')
 
         })
 
         $('button[data-bs-target="#tab-asmed-ana"]').on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed-ranap').css('display', 'none')
             $('.btn-asmed').css('display', 'inline')
             $('.btn-soap').css('display', 'none')
 
         })
         $('button[data-bs-target="#tab-asmed-obg"]').on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed-ranap').css('display', 'none')
             $('.btn-asmed').css('display', 'inline')
             $('.btn-soap').css('display', 'none')
 
+        })
+        $('button[data-bs-target="#tab-asmed-ranap-obg"]').on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed-ranap').css('display', 'inline')
+            $('.btn-asmed').css('display', 'none')
+            $('.btn-soap').css('display', 'none')
+        })
+        $('button[data-bs-target="#tab-asmed-ranap-ana"]').on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed-ranap').css('display', 'inline')
+            $('.btn-asmed').css('display', 'none')
+            $('.btn-soap').css('display', 'none')
         })
 
         function setNoRacik(no_resep) {
@@ -1200,32 +1229,37 @@
                 var form = '';
                 if (regPeriksa.dokter.kd_sps == 'S0003') {
                     $('#li-asmed-ana').css('display', 'inline');
+                    $('#li-asmed-ranap-ana').css('display', 'inline');
                     $('#li-data-anak').css('display', 'inline');
                     $('#li-asmed-obg').css('display', 'none');
+                    $('#li-asmed-ranap-obg').css('display', 'none');
                     $('#li-data-obg').css('display', 'none');
-                    setAsmedAnak(id);
+                    $('.btn-asmed-ranap').attr('onclick', 'simpanAsmedRanapAnak()')
+                    $('.btn-asmed').attr('onclick', 'simpanAsmedRajalAnak()')
                     form = '.form-asmed-anak';
-                    getListAsmedRajalAnak(regPeriksa.no_rkm_medis).done((anak) => {
-                        listAsmedAnak(anak)
-                    })
-                    setSoapToAsmed(id, form);
+                    setAsmedAnak(id);
+                    setAsmedRanapAnak(id)
+
                 } else if (regPeriksa.dokter.kd_sps == 'S0001') {
-                    getListAsmedRajalKandungan(regPeriksa.no_rkm_medis).done((asmed) => {
-                        listAsmedKandungan(asmed)
-                    })
-                    setAsmedKandungan(id);
                     $('#li-asmed-ana').css('display', 'none');
+                    $('#li-asmed-ranap-ana').css('display', 'none');
                     $('#li-data-anak').css('display', 'none');
                     $('#li-asmed-obg').css('display', 'inline');
+                    $('#li-asmed-ranap-obg').css('display', 'inline');
                     $('#li-data-obg').css('display', 'inline');
+                    $('.btn-asmed-ranap').attr('onclick', 'simpanAsmedRanapKandungan()')
+                    $('.btn-asmed').attr('onclick', 'simpanAsmedRajalKandungan()')
                     form = '.form-asmed-kandungan';
-                    setSoapToAsmed(id, form);
+
+                    setAsmedRajalKandungan(id);
+                    setAsmedRanapKandungan(id)
                 }
                 $(`${form} input[name="no_rawat"]`).val(regPeriksa.no_rawat)
                 $(`${form} input[name="pasien"]`).val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
                 $(`${form} input[name="tgl_lahir"]`).val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
                 $(`${form} input[name="kd_dokter"]`).val(regPeriksa.kd_dokter)
-                $(`${form} input[name="dokter"]`).val(regPeriksa.dokter.nm_dokter)
+                $(`${form} input[name="nm_dokter"]`).val(regPeriksa.dokter.nm_dokter)
+                $(`${form} input[name="nm_dokter"]`).attr('readonly', 'readonly')
 
             })
             no = 1;
@@ -1244,65 +1278,34 @@
                     $(`${form} input[name="rr"]`).val(response.respirasi);
                     $(`${form} input[name="suhu"]`).val(response.suhu_tubuh);
                     $(`${form} input[name="spo"]`).val(response.spo2);
-                    $(`${form} textarea[name="keluhan_utama"]`).val(response.keluhan);
+                    $(`${form} textarea[name="rps"]`).val(response.keluhan);
                     $(`${form} textarea[name="ket_fisik"]`).val(response.pemeriksaan);
                     $(`${form} textarea[name="diagnosis"]`).val(response.penilaian);
                     $(`${form} textarea[name="konsul"]`).val(response.instruksi);
+                    $(`${form} textarea[name="tata"]`).val(response.rtl);
 
                 }
             })
         }
 
-        function setAsmedKandungan(no_rawat) {
-            getAsmedKandungan(no_rawat).done((response) => {
-                $('.form-asmed-kandungan button[name="simpan"]').css('display', 'inline')
-                $('.form-asmed-kandungan button[name="edit"]').css('display', 'none')
-                if (Object.keys(response).length != 0) {
-                    $('.form-asmed-kandungan button[name="simpan"]').css('display', 'none')
-                    $('.form-asmed-kandungan button[name="edit"]').css('display', 'inline')
-                    $('.form-asmed-kandungan select[name="anamnesis"]').val(response.anamnesis).change()
-                    $('.form-asmed-kandungan input[name="hubungan"]').val(response.hubungan)
-                    $('.form-asmed-kandungan textarea[name="keluhan_utama"]').val(response.keluhan_utama)
-                    $('.form-asmed-kandungan textarea[name="rps"]').val(response.rps)
-                    $('.form-asmed-kandungan textarea[name="rpk"]').val(response.rpk)
-                    $('.form-asmed-kandungan textarea[name="rpd"]').val(response.rpd)
-                    $('.form-asmed-kandungan textarea[name="rpo"]').val(response.rpo)
-                    $('.form-asmed-kandungan input[name="alergi"]').val(response.alergi)
-                    $('.form-asmed-kandungan select[name="keadaan"]').val(response.keadaan).change()
-                    $('.form-asmed-kandungan select[name="kesadaran"]').val(response.kesadaran).change()
-                    $('.form-asmed-kandungan input[name="gcs"]').val(response.gcs)
-                    $('.form-asmed-kandungan input[name="tb"]').val(response.tb)
-                    $('.form-asmed-kandungan input[name="bb"]').val(response.bb)
-                    $('.form-asmed-kandungan input[name="td"]').val(response.td)
-                    $('.form-asmed-kandungan input[name="nadi"]').val(response.nadi)
-                    $('.form-asmed-kandungan input[name="rr"]').val(response.rr)
-                    $('.form-asmed-kandungan input[name="suhu"]').val(response.suhu)
-                    $('.form-asmed-kandungan input[name="spo"]').val(response.spo)
-                    $('.form-asmed-kandungan select[name="kepala"]').val(response.kepala).change()
-                    $('.form-asmed-kandungan select[name="mata"]').val(response.mata).change()
-                    $('.form-asmed-kandungan select[name="genital"]').val(response.genital).change()
-                    $('.form-asmed-kandungan select[name="gigi"]').val(response.gigi).change()
-                    $('.form-asmed-kandungan select[name="ekstremitas"]').val(response.ekstremitas).change()
-                    $('.form-asmed-kandungan select[name="tht"]').val(response.tht).change()
-                    $('.form-asmed-kandungan select[name="kulit"]').val(response.kulit).change()
-                    $('.form-asmed-kandungan select[name="thoraks"]').val(response.thoraks).change()
-                    $('.form-asmed-kandungan select[name="kontraksi"]').val(response.kontraksi).change()
-                    $('.form-asmed-kandungan textarea[name="ket_fisik"]').val(response.ket_fisik)
-                    $('.form-asmed-kandungan input[name="tfu"]').val(response.tfu)
-                    $('.form-asmed-kandungan input[name="tbj"]').val(response.tbj)
-                    $('.form-asmed-kandungan input[name="his"]').val(response.his)
-                    $('.form-asmed-kandungan input[name="djj"]').val(response.djj)
-                    $('.form-asmed-kandungan input[name="inspeksi"]').val(response.inspeksi)
-                    $('.form-asmed-kandungan input[name="vt"]').val(response.vt)
-                    $('.form-asmed-kandungan input[name="inspekulo"]').val(response.inspekulo)
-                    $('.form-asmed-kandungan input[name="rt"]').val(response.rt)
-                    $('.form-asmed-kandungan textarea[name="ultra"]').val(response.ultra)
-                    $('.form-asmed-kandungan textarea[name="kardio"]').val(response.kardio)
-                    $('.form-asmed-kandungan textarea[name="lab"]').val(response.lab)
-                    $('.form-asmed-kandungan textarea[name="diagnosis"]').val(response.diagnosis)
-                    $('.form-asmed-kandungan textarea[name="tata"]').val(response.tata)
-                    $('.form-asmed-kandungan textarea[name="konsul"]').val(response.konsul)
+        function setAsmedRajalKandungan(no_rawat) {
+            getAsmedRajalKandungan(no_rawat).done((response) => {
+                if (Object.keys(response).length) {
+                    $.each(response, (index, value) => {
+                        select = $(`#formAsmedRajalKandungan select[name=${index}]`);
+                        input = $(`#formAsmedRajalKandungan input[name=${index}]`);
+                        textarea = $(`#formAsmedRajalKandungan textarea[name=${index}]`);
 
+                        if (select.length) {
+                            $(`#formAsmedRajalKandungan select[name=${index}]`).val(value)
+                        } else if (input.length) {
+                            $(`#formAsmedRajalKandungan input[name=${index}]`).val(value)
+                        } else {
+                            $(`#formAsmedRajalKandungan textarea[name=${index}]`).val(value)
+                        }
+                    })
+                } else {
+                    setSoapToAsmed(no_rawat, '#formAsmedRajalKandungan');
                 }
             })
         }
@@ -1357,6 +1360,51 @@
                     $('.form-asmed-anak textarea[name="tata"]').val(response.tata)
                     $('.form-asmed-anak textarea[name="konsul"]').val(response.konsul)
 
+                }
+            })
+        }
+
+
+        function setAsmedRanapAnak(no_rawat) {
+            getAsmedRanapAnak(no_rawat).done((response) => {
+                if (Object.keys(response).length) {
+                    $.each(response, (index, value) => {
+                        select = $(`#formAsmedRanapAnak select[name=${index}]`);
+                        input = $(`#formAsmedRanapAnak input[name=${index}]`);
+                        textarea = $(`#formAsmedRanapAnak textarea[name=${index}]`);
+
+                        if (select.length) {
+                            $(`#formAsmedRanapAnak select[name=${index}]`).val(value)
+                        } else if (input.length) {
+                            $(`#formAsmedRanapAnak input[name=${index}]`).val(value)
+                        } else {
+                            $(`#formAsmedRanapAnak textarea[name=${index}]`).val(value)
+                        }
+                    })
+                } else {
+                    setSoapToAsmed(no_rawat, '#formAsmedRanapAnak');
+                }
+            })
+        }
+
+        function setAsmedRanapKandungan(no_rawat) {
+            getAsmedRanapKandungan(no_rawat).done((response) => {
+                if (Object.keys(response).length) {
+                    $.each(response, (index, value) => {
+                        select = $(`#formAsmedRanapKandungan select[name=${index}]`);
+                        input = $(`#formAsmedRanapKandungan input[name=${index}]`);
+                        textarea = $(`#formAsmedRanapKandungan textarea[name=${index}]`);
+
+                        if (select.length) {
+                            $(`#formAsmedRanapKandungan select[name=${index}]`).val(value)
+                        } else if (input.length) {
+                            $(`#formAsmedRanapKandungan input[name=${index}]`).val(value)
+                        } else {
+                            $(`#formAsmedRanapKandungan textarea[name=${index}]`).val(value)
+                        }
+                    })
+                } else {
+                    setSoapToAsmed(no_rawat, '#formAsmedRanapKandungan');
                 }
             })
         }
@@ -1571,7 +1619,7 @@
             $('#modalCatatan').modal('show')
         }
 
-        function getAsmedKandungan(noRawat) {
+        function getAsmedRajalKandungan(noRawat) {
             const id = textRawat(noRawat, '-')
             const asmed = $.ajax({
                 url: '/erm/poliklinik/asmed/kandungan/get/' + id,

@@ -156,6 +156,7 @@
     @include('content.ranap.modal.modal_list_pemeriksaan_asmed')
     @include('content.ranap.modal.modal_list_diagnosa')
     @include('content.ranap.modal.modal_riwayat_vaksin')
+    @include('content.ranap.modal.modal_riwayat_asmed_kandungan')
     @include('content.ranap.modal.modal_riwayat_persalinan')
 @endsection
 
@@ -608,248 +609,196 @@
             return ttv;
         }
 
-        function getAsmedRanapAnak(noRawat) {
-            const asmed = $.ajax({
-                url: '/erm/asmed/ranap/anak/' + textRawat(noRawat, '-'),
+        function showRiwayatAsmedKandungan(rawat, no_rkm_medis) {
+            $('#tbRiwayatAsmed tbody').empty()
+            const url = rawat == 'ranap' ? `asmed/ranap/kandungan/rm/${no_rkm_medis}` : '';
+            $.ajax({
+                url: url,
+                method: 'get',
                 dataType: 'JSON',
-                method: 'GET',
-                error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
-                },
-            })
+            }).done((response) => {
+                $.map(response, (asmed) => {
+                    console.log(response);
+                    html = '<tr>'
+                    html += `<td>${asmed.no_rawat}</td>
+                        <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
+                        <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
+                        <td>${asmed.dokter.nm_dokter}</td>
+                        <td><button class="btn btn-primary btn-sm" type="button" onclick="copyAsmedKandunganRanap('${asmed.no_rawat}')">Gunakan</button></td>`
+                    html += '<tr>'
+                    $('#tbRiwayatAsmed tbody').append(html)
+                })
+                $('#modalRiwayatAsmed').modal('show')
 
-            return asmed;
+
+            }).fail((request) => {
+                alertErrorAjax();
+            })
         }
 
-        function getAsmedRanapKandungan(noRawat) {
-            const asmedKebidanan = $.ajax({
-                url: '/erm/asmed/ranap/kandungan/' + textRawat(noRawat, '-'),
+        function showRiwayatAsmedAnak(rawat, no_rkm_medis) {
+            $('#tbRiwayatAsmed tbody').empty()
+            const url = rawat == 'ranap' ? `asmed/ranap/anak/rm/${no_rkm_medis}` : '';
+            $.ajax({
+                url: url,
+                method: 'get',
                 dataType: 'JSON',
-                method: 'GET',
-                error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
-                },
-            });
+            }).done((response) => {
+                $.map(response, (asmed) => {
+                    console.log(response);
+                    html = '<tr>'
+                    html += `<td>${asmed.no_rawat}</td>
+                        <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
+                        <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
+                        <td>${asmed.dokter.nm_dokter}</td>
+                        <td><button class="btn btn-success btn-sm" type="button" onclick="copyAsmedAnakRanap('${asmed.no_rawat}')"><i class="bi bi-download"></i> Gunakan</button></td>`
+                    html += '<tr>'
+                    $('#tbRiwayatAsmed tbody').append(html)
+                })
+                $('#modalRiwayatAsmed').modal('show')
 
-            return asmedKebidanan;
+
+            }).fail((request) => {
+                alertErrorAjax();
+            })
+        }
+
+        function copyAsmedKandunganRanap(no_rawat) {
+            getAsmedRanapKandungan(no_rawat).done((response) => {
+                if (Object.keys(response).length) {
+                    $.each(response, (index, value) => {
+                        select = $(`#formAsmedRanapKandungan select[name=${index}]`);
+                        input = $(`#formAsmedRanapKandungan input[name=${index}]`);
+                        textarea = $(`#formAsmedRanapKandungan textarea[name=${index}]`);
+                        if (select.length) {
+                            $(`#formAsmedRanapKandungan select[name=${index}]`).val(value)
+                        } else if (input.length) {
+                            if (index == 'no_rawat') {
+                                $(`#formAsmedRanapKandungan input[name=no_rawat_2]`).val(value)
+                                $(`#modalAsmedRanapKandungan button[name=simpan]`).attr('onclick', `replaceAsmedRanapKandungan('${value}')`)
+                            } else {
+                                $(`#formAsmedRanapKandungan input[name=${index}]`).val(value)
+                            }
+                        } else {
+                            $(`#formAsmedRanapKandungan textarea[name=${index}]`).val(value)
+                        }
+                    })
+                    $(`#formAsmedRanapKandungan input[name=nm_dokter]`).val(response.dokter.nm_dokter)
+                }
+                alertSuccessAjax('Berhasil tarik data asesmen').then(() => {
+                    $('#modalRiwayatAsmed').modal('hide')
+                })
+            })
+        }
+
+        function copyAsmedAnakRanap(no_rawat) {
+            getAsmedRanapAnak(no_rawat).done((response) => {
+                if (Object.keys(response).length) {
+                    $.each(response, (index, value) => {
+                        select = $(`#formAsmedRanapAnak select[name=${index}]`);
+                        input = $(`#formAsmedRanapAnak input[name=${index}]`);
+                        textarea = $(`#formAsmedRanapAnak textarea[name=${index}]`);
+                        if (select.length) {
+                            $(`#formAsmedRanapAnak select[name=${index}]`).val(value)
+                        } else if (input.length) {
+                            if (index == 'no_rawat') {
+                                $(`#formAsmedRanapAnak input[name=no_rawat_2]`).val(value)
+                                $(`#modalAsmedRanapAnak button[name=simpan]`).attr('onclick', `replaceAsmedRanapAnak('${value}')`)
+                            } else {
+                                $(`#formAsmedRanapAnak input[name=${index}]`).val(value)
+                            }
+                        } else {
+                            $(`#formAsmedRanapAnak textarea[name=${index}]`).val(value)
+                        }
+                    })
+                    $(`#formAsmedRanapAnak input[name=nm_dokter]`).val(response.dokter.nm_dokter)
+                }
+                alertSuccessAjax('Berhasil tarik data asesmen').then(() => {
+                    $('#modalRiwayatAsmed').modal('hide')
+                })
+            })
         }
 
         function asmedRanapKandungan(noRawat) {
-            $('#kandungan_kd_dokter').val(`session()->get('pegawai')->nik`);
-            $('#kandungan_dokter').val(`session()->get('pegawai')->nama`);
-            $.ajax({
-                url: '/erm/registrasi/ambil',
-                data: {
-                    no_rawat: noRawat,
-                },
-                error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
-                },
-            }).done((response) => {
-                $('#kandungan_no_rawat').val(response.no_rawat);
-                $('#kandungan_pasien').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
-                $('#kandungan_tgl_lahir').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-
-            });
-
-            getAsmedRanapKandungan(noRawat).done((response) => {
-
-                if (Object.keys(response).length > 0) {
-                    $('.btn-asmed-kandungan').css('display', 'none')
-                    $('.btn-asmed-kandungan-ubah').css('display', 'inline')
-                    if (response.kd_dokter != `{{ session()->get('pegawai')->nik }}`) {
-                        $('#formAsmedKandunganRanap input').attr('readonly', true)
-                        $('#formAsmedKandunganRanap select').attr('disabled', true)
-                        $('#formAsmedKandunganRanap textarea').attr('readonly', true)
-                        $('.btn-asmed-kandungan-ubah').css('display', 'none')
-                        $('.btn-asmed-kandungan').css('display', 'none')
-                    }
-                    $('#kandungan_kd_dokter').val(response.kd_dokter);
-                    $('#kandungan_dokter').val(response.dokter.nm_dokter);
-                    $('#kandungan_anamnesis').val(response.anamnesis).change();
-                    $('#kandungan_hubungan').val(response.hubungan);
-                    $('#kandungan_keluhan_utama').val(response.keluhan_utama);
-                    $('#kandungan_rps').val(response.rps);
-                    $('#kandungan_rpd').val(response.rpd);
-                    $('#kandungan_rpk').val(response.rpk);
-                    $('#kandungan_rpo').val(response.rpo);
-                    $('#kandungan_alergi').val(response.alergi);
-                    $('#kandungan_keadaan').val(response.keadaan).change();
-                    $('#kandungan_gcs').val(response.gcs);
-                    $('#kandungan_kesadaran').val(response.kesadaran).change();
-                    $('#kandungan_td').val(response.td);
-                    $('#kandungan_nadi').val(response.nadi);
-                    $('#kandungan_rr').val(response.rr);
-                    $('#kandungan_suhu').val(response.suhu);
-                    $('#kandungan_spo').val(response.spo);
-                    $('#kandungan_bb').val(response.bb);
-                    $('#kandungan_tb').val(response.tb);
-                    $('#kandungan_kepala').val(response.kepala).change();
-                    $('#kandungan_mata').val(response.mata).change();
-                    $('#kandungan_gigi').val(response.gigi).change();
-                    $('#kandungan_tht').val(response.tht).change();
-                    $('#kandungan_mulut').val(response.mulut).change();
-                    $('#kandungan_jantung').val(response.jantung).change();
-                    $('#kandungan_paru').val(response.paru).change();
-                    $('#kandungan_abdomen').val(response.abdomen).change();
-                    $('#kandungan_genital').val(response.genital).change();
-                    $('#kandungan_ekstremitas').val(response.ekstremitas).change();
-                    $('#kandungan_kulit').val(response.kulit).change();
-                    $('#kandungan_ket_fisik').val(response.ket_fisik);
-                    $('#kandungan_tfu').val(response.tfu);
-                    $('#kandungan_tbj').val(response.tbj);
-                    $('#kandungan_djj').val(response.djj);
-                    $('#kandungan_kontraksi').val(response.kontraksi).change();
-                    $('#kandungan_his').val(response.his);
-                    $('#kandungan_lab').val(response.lab);
-                    $('#kandungan_vt').val(response.vt);
-                    $('#kandungan_inspeksi').val(response.inspeksi);
-                    $('#kandungan_ultra').val(response.ultra);
-                    $('#kandungan_kardio').val(response.kardio);
-                    $('#kandungan_inspekulo').val(response.inspekulo);
-                    $('#kandungan_rt').val(response.rt);
-                    $('#kandungan_rad').val(response.rad);
-                    $('#kandungan_penunjang').val(response.penunjang);
-                    $('#kandungan_diagnosis').val(response.diagnosis);
-                    $('#kandungan_tata').val(response.tata);
-                    $('#kandungan_edukasi').val(response.edukasi);
-                } else {
-                    $('#kandungan_kd_dokter').val("{{ session()->get('pegawai')->nik }}");
-                    $('#kandungan_dokter').val("{{ session()->get('pegawai')->nama }}");
-                    $('.btn-asmed-kandungan-ubah').css('display', 'none')
-                    $('.btn-asmed-kandungan').css('display', 'inline')
+            const kd_dokter = "{{ session()->get('pegawai')->nik }}"
+            const nm_dokter = "{{ session()->get('pegawai')->nama }}"
+            $('#formAsmedRanapKandungan input[name=kd_dokter]').val(kd_dokter);
+            $('#formAsmedRanapKandungan input[name=nm_dokter]').val(nm_dokter);
+            getRegPeriksa(noRawat).done((response) => {
+                $('#formAsmedRanapKandungan input[name=no_rawat]').val(response.no_rawat);
+                $('#formAsmedRanapKandungan input[name=pasien]').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
+                $('#formAsmedRanapKandungan input[name=tgl_lahir]').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
+                $('#formAsmedRanapKandungan button[name=riwayatAsmedRanap]').attr('onclick', `showRiwayatAsmedAnak('ranap', '${response.no_rkm_medis}')`);
+            }).fail((request) => {
+                if (request.status == 401) {
+                    Swal.fire({
+                        title: 'Sesi login berakhir !',
+                        icon: 'info',
+                        text: 'Silahkan login kembali ',
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/erm';
+                        }
+                    })
                 }
             })
+
+            getAsmedRanapKandungan(noRawat).done((response) => {
+                if (Object.keys(response).length) {
+                    $.each(response, (index, value) => {
+                        select = $(`#formAsmedRanapKandungan select[name=${index}]`);
+                        input = $(`#formAsmedRanapKandungan input[name=${index}]`);
+                        textarea = $(`#formAsmedRanapKandungan textarea[name=${index}]`);
+
+                        if (select.length) {
+                            $(`#formAsmedRanapKandungan select[name=${index}]`).val(value)
+                        } else if (input.length) {
+                            $(`#formAsmedRanapKandungan input[name=${index}]`).val(value)
+                        } else {
+                            $(`#formAsmedRanapKandungan textarea[name=${index}]`).val(value)
+                        }
+                    })
+
+                }
+            })
+            $('#formAsmedRanapKandungan .srcPemeriksaanAsmed').attr('onclick', `listRiwayatTtv('${noRawat}', 'ttv', 'formAsmedRanapAnak')`);
             $('#modalAsmedRanapKandungan').modal('show')
-            $('#formAsmedKandunganRanap .srcPemeriksaanAsmed').attr('onclick', `listRiwayatTtv('${noRawat}', 'ttv', 'formAsmedKandunganRanap')`);
+            $('#modalAsmedRanapKandungan button[name=simpan]').attr('onclick', `simpanAsmedRanapKandungan()`)
         }
 
         function asmedRanapAnak(noRawat) {
-
-            $('#anak_kd_dokter').val(`{{ session()->get('pegawai')->nik }}`);
-            $('#anak_dokter').val(`{{ session()->get('pegawai')->nama }}`);
-            $.ajax({
-                url: '/erm/registrasi/ambil',
-                data: {
-                    no_rawat: noRawat,
-                },
-                error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
-                },
-            }).done((response) => {
-                $('#anak_no_rawat').val(response.no_rawat);
-                $('#anak_pasien').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
-                $('#anak_tgl_lahir').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-                $('#anak_dokter').attr('readonly', true)
-                $('#anak_kd_dokter').attr('readonly', true)
+            const kd_dokter = "{{ session()->get('pegawai')->nik }}"
+            const nm_dokter = "{{ session()->get('pegawai')->nama }}"
+            $('#formAsmedRanapAnak input[name=kd_dokter]').val(kd_dokter);
+            $('#formAsmedRanapAnak input[name=nm_dokter]').val(nm_dokter);
+            getRegPeriksa(noRawat).done((response) => {
+                $('#formAsmedRanapAnak input[name=no_rawat]').val(response.no_rawat);
+                $('#formAsmedRanapAnak input[name=pasien]').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
+                $('#formAsmedRanapAnak input[name=tgl_lahir]').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
+                $('#formAsmedRanapAnak button[name=riwayatAsmedRanap]').attr('onclick', `showRiwayatAsmedAnak('ranap', '${response.no_rkm_medis}')`);
             });
             getAsmedRanapAnak(textRawat(noRawat, '-')).done((response) => {
-                if (Object.keys(response).length > 0) {
-                    $('.btn-asmed-anak').css('display', 'none')
-                    $('.btn-asmed-anak-ubah').css('display', 'inline')
-                    if (response.kd_dokter != `{{ session()->get('pegawai')->nik }}`) {
-                        $('#formAsmedAnakRanap input').attr('readonly', true)
-                        $('#formAsmedAnakRanap select').attr('disabled', true)
-                        $('#formAsmedAnakRanap textarea').attr('readonly', true)
-                        $('.btn-asmed-anak-ubah').css('display', 'none')
-                        $('.btn-asmed-anak').css('display', 'none')
-                    }
+                if (Object.keys(response).length) {
+                    $.each(response, (index, value) => {
+                        select = $(`#formAsmedRanapAnak select[name=${index}]`);
+                        input = $(`#formAsmedRanapAnak input[name=${index}]`);
+                        textarea = $(`#formAsmedRanapAnak textarea[name=${index}]`);
 
-                    $('#anak_kd_dokter').val(response.kd_dokter);
-                    $('#anak_dokter').val(response.dokter.nm_dokter);
-                    $('#anak_anamnesis').val(response.anamnesis).change();
-                    $('#anak_hubungan').val(response.hubungan);
-                    $('#anak_keluhan_utama').val(response.keluhan_utama);
-                    $('#anak_rps').val(response.rps);
-                    $('#anak_rpd').val(response.rpd);
-                    $('#anak_rpk').val(response.rpk);
-                    $('#anak_rpo').val(response.rpo);
-                    $('#anak_alergi').val(response.alergi);
-                    $('#anak_keadaan').val(response.keadaan).change();
-                    $('#anak_gcs').val(response.gcs);
-                    $('#anak_kesadaran').val(response.kesadaran).change();
-                    $('#anak_td').val(response.td);
-                    $('#anak_nadi').val(response.nadi);
-                    $('#anak_rr').val(response.rr);
-                    $('#anak_suhu').val(response.suhu);
-                    $('#anak_spo').val(response.spo);
-                    $('#anak_bb').val(response.bb);
-                    $('#anak_tb').val(response.tb);
-                    $('#anak_kepala').val(response.kepala).change();
-                    $('#anak_mata').val(response.mata).change();
-                    $('#anak_gigi').val(response.gigi).change();
-                    $('#anak_tht').val(response.tht).change();
-                    $('#anak_mulut').val(response.mulut).change();
-                    $('#anak_jantung').val(response.jantung).change();
-                    $('#anak_paru').val(response.paru).change();
-                    $('#anak_abdomen').val(response.abdomen).change();
-                    $('#anak_genital').val(response.genital).change();
-                    $('#anak_ekstremitas').val(response.ekstremitas).change();
-                    $('#anak_kulit').val(response.kulit).change();
-                    $('#anak_ket_fisik').val(response.ket_fisik);
-                    $('#anak_ket_lokalis').val(response.ket_lokalis);
-                    $('#anak_lab').val(response.lab);
-                    $('#anak_rad').val(response.rad);
-                    $('#anak_penunjang').val(response.penunjang);
-                    $('#anak_diagnosis').val(response.diagnosis);
-                    $('#anak_tata').val(response.tata);
-                    $('#anak_edukasi').val(response.edukasi);
-                } else {
-                    $('.btn-asmed-anak-ubah').css('display', 'none')
-                    $('.btn-asmed-anak').css('display', 'inline')
+                        if (select.length) {
+                            $(`#formAsmedRanapAnak select[name=${index}]`).val(value)
+                        } else if (input.length) {
+                            $(`#formAsmedRanapAnak input[name=${index}]`).val(value)
+                        } else {
+                            $(`#formAsmedRanapAnak textarea[name=${index}]`).val(value)
+                        }
+                    })
+
                 }
-
-                $('#formAsmedAnakRanap .srcPemeriksaanAsmed').attr('onclick', `listRiwayatTtv('${noRawat}', 'ttv', 'formAsmedAnakRanap')`);
-
             })
+            $('#formAsmedRanapAnak .srcPemeriksaanAsmed').attr('onclick', `listRiwayatTtv('${noRawat}', 'ttv', 'formAsmedRanapAnak')`);
+            $('#modalAsmedRanapAnak button[name=simpan]').attr('onclick', 'simpanAsmedRanapAnak()')
             $('#modalAsmedRanapAnak').modal('show')
         }
 
@@ -1069,8 +1018,9 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
+                            console.log(row);
                             button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
-                            if (row.petugas.nip == "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" == "direksi") {
+                            if (row.nip == "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" == "direksi") {
                                 button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
                             }
                             return button;
@@ -1136,8 +1086,6 @@
                             baris += '<tr><td>Objek </td><td>:</td><td>' + stringSoap(row.pemeriksaan) + '</td></tr>'
                             baris += '<tr><td>Assesment</td><td>:</td><td>' + stringSoap(row.penilaian) + '</td></tr>'
                             baris += '<tr><td>Plan</td><td>:</td><td>' + stringSoap(row.rtl) + '</td></tr>'
-                            // baris += '<tr><td>Instruksi</td><td>:</td><td>' + stringSoap(row.instruksi) + '</td></tr>'
-                            // baris += '<tr><td>Evaluasi</td><td>:</td><td>' + row.evaluasi + '</td></tr>'
                             html = '<table class="table table-striped">' + baris + '</table>'
                             return html;
                         },

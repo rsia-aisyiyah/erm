@@ -11,4 +11,9 @@ class CatatanPerawatan extends Model
     protected $table = 'catatan_perawatan';
     public $timestamps = false;
     protected $fillable = ['tanggal', 'jam', 'no_rawat', 'kd_dokter', 'catatan'];
+
+    function dokter()
+    {
+        return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter');
+    }
 }

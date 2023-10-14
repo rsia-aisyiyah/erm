@@ -68,7 +68,11 @@
                         </div>
                     </div>
                     <div class="tab-pane fade p-3" id="catatan-dokter" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-                        <textarea class="form-control" name="catatan_dr" id="catatan_dr" cols="30" rows="11" style="font-size:12px;min-height:12px;border-radius:0;resize:none">
+                        <label for="">Tanggal & Jam</label>
+                        <input type="text" class="form-control form-control-sm" id="jamCatatan" value="-" readonly />
+                        <label for="">Dokter</label>
+                        <input type="text" class="form-control form-control-sm mb-2" id="kdDokter" value="-" readonly />
+                        <textarea class="form-control" name="catatan_dr" id="catatan_dr" cols="30" rows="11">
                         </textarea>
                         <button type="button" class="btn btn-sm btn-primary mt-2" style="font-size:12px" onclick="insertCatatanPerawatan()"><i class="bi bi-save"></i> Simpan Catatan</button>
                     </div>
@@ -98,15 +102,24 @@
             textCatatan += "\nICA : ";
             textCatatan += "\nKESAN : ";
             noRawat = $('#nomor_rawat').val();
-            getCatatanPerawatan(textRawat(noRawat, '-')).done((response) => {
+            setCatatanPerawatan(noRawat)
+
+        });
+
+        function setCatatanPerawatan(no_rawat) {
+            getCatatanPerawatan(textRawat(no_rawat, '-')).done((response) => {
+                console.log(response);
                 if (Object.keys(response).length != 0) {
                     $('textarea#catatan_dr').val(response.catatan)
+                    $('#kdDokter').val(response.dokter.nm_dokter)
+                    $('#jamCatatan').val(`${formatTanggal(response.tanggal)} ${response.jam}`)
                 } else {
+                    $('#kdDokter').val('-')
+                    $('#jamCatatan').val('-')
                     $('textarea#catatan_dr').val(textCatatan);
                 }
             })
-
-        });
+        }
 
         function insertCatatanPerawatan() {
             catatan = $('#catatan_dr').val();
@@ -121,7 +134,9 @@
                 data: data,
                 method: 'POST',
                 success: (response) => {
-                    swal.fire('Berhasil', 'Catatan dibuat', 'success')
+                    swal.fire('Berhasil', 'Catatan dibuat', 'success').then(() => {
+                        setCatatanPerawatan(data.no_rawat)
+                    })
                 }
             })
 
