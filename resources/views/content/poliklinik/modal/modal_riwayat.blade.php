@@ -701,6 +701,13 @@
                                 ${stringSoap(asmed.edukasi)}
                             </td>    
                         </tr>
+                        <tr>
+                            <td colspan="6">
+                                Dibuat oleh : <br/>
+                                <strong>${asmed.dokter.nm_dokter}</strong> <br/> 
+                                 Tanggal ${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}
+                            </td>    
+                        </tr>
                     </tbody>
                 </table>
                 `;
@@ -909,6 +916,13 @@
                         <tr>
                             <td>
                                 ${stringSoap(asmed.edukasi)}
+                            </td>    
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                Dibuat oleh : <br/>
+                                <strong>${asmed.dokter.nm_dokter}</strong> <br/> 
+                                 Tanggal ${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}
                             </td>    
                         </tr>
                     </tbody>
