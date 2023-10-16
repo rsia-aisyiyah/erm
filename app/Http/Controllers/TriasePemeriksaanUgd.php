@@ -7,6 +7,7 @@ use App\Models\RsiaDataTriaseUgdDetailSkala2;
 use App\Models\RsiaDataTriaseUgdDetailSkala3;
 use App\Models\RsiaDataTriaseUgdDetailSkala4;
 use App\Models\RsiaDataTriaseUgdDetailSkala5;
+use App\Models\RsiaTriaseUgd;
 use Illuminate\Http\Request;
 
 class TriasePemeriksaanUgd extends Controller
@@ -51,6 +52,14 @@ class TriasePemeriksaanUgd extends Controller
                             // create data
                             $value::create($valueTriase);
                         }
+
+                        $checkTriase = RsiaTriaseUgd::where('no_rawat', $valueTriase[$no_rawat])->first();
+                        if (!$checkTriase) {
+                            RsiaTriaseUgd::create([
+                                'no_rawat' => $valueTriase[$no_rawat],
+                                'tgl_kunjungan' => date('Y-m-d H:i:s'),
+                            ]);
+                        } 
                     }
                 }
             }
