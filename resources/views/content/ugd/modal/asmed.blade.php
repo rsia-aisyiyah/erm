@@ -724,7 +724,7 @@
                             $(element).prop('disabled', false);
                         })
 
-
+                        $("#ats_"+index).prop('checked', true);
                     }
                 }
             }, 1500);
