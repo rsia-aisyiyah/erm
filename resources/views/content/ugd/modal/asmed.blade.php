@@ -49,6 +49,42 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="mb-3 col-12">
+                            <div class="separator m-2">TRIASE ( AUSTRALIAN TRIAGE SCALE )</div>
+                            <table class="table table-bordered table-striped table-hover tblTriase">
+                                <thead>
+                                    <tr>
+                                        <th class="all">
+                                            <div class="text-nowrap">Prioritas</div>
+                                            <div class="text-xs text-nowrap">Waktu Tunggu</div>
+                                        </th>
+                                        <th class="text-center text-nowrap">
+                                            <div class="text-nowrap">ATS I</div>
+                                            <div class="text-xs text-nowrap">Segera</div>
+                                        </th>
+                                        <th class="text-center">
+                                            <div class="text-nowrap">ATS II</div>
+                                            <div class="text-xs text-nowrap">10 Menit</div>
+                                        </th>
+                                        <th class="text-center">
+                                            <div class="text-nowrap">ATS III</div>
+                                            <div class="text-xs text-nowrap">30 Menit</div>
+                                        </th>
+                                        <th class="text-center">
+                                            <div class="text-nowrap">ATS IV</div>
+                                            <div class="text-xs text-nowrap">60 Menit</div>
+                                        </th>
+                                        <th class="text-center">
+                                            <div class="text-nowrap">ATS V</div>
+                                            <div class="text-xs text-nowrap">120 Menit</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
                         <div class="mb-3 col-sm-12 col-md-12 col-lg-6">
                             <div class="separator m-2">1. Riwayat Kesehatan</div>
                             <div class="row">
@@ -279,8 +315,17 @@
         </div>
     </div>
 </div>
+
+@push('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+@endpush
+
+@push('js')
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+@endpush
+
 @push('script')
-    <script>
+<script>
         $('.dokter').on('keyup', (e) => {
             dokter = $('.dokter').val();
             if (dokter.length >= 3) {
@@ -313,12 +358,45 @@
 
         });
 
+        function simpanTriase(data)
+        {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
 
+            $.ajax({
+                url: '/erm/triase/simpan',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function (response) {
+                    return true;
+                },
+                error: function (response) {
+                    console.log(response);
+                    return false;
+                }
+            });
+        }
 
         $('.btn-asmed-ugd').on('click', () => {
             var data = {};
+            var dataTriase = {};
+
+            var no_rawat = '';
+
             $('#formAsmedUgd input').each((index, element) => {
                 keys = $(element).prop('name');
+                if ($(element).attr('type') == 'checkbox') {
+                    return true;
+                }
+                
+                if (keys == 'no_rawat') {
+                    no_rawat = $(element).val();
+                }
+
                 data[keys] = $(element).val();
 
             })
@@ -333,9 +411,34 @@
                 data[keys] = $(element).val();
             })
 
+            // checkbox
+            $('#formAsmedUgd input[type=checkbox]').each((index, element) => {
+                keys = $(element).prop('name').replaceAll('[', '_').replaceAll(']', '');
+                var isChecked = $(element).is(":checked");
+                
+                var expKeys = keys.split('_');
+
+                if (dataTriase[expKeys[0]] == undefined) {
+                    dataTriase[expKeys[0]] = [];
+                }
+
+                var kode_skala_keys = 'kode_'+expKeys[0];
+
+                // only push if checked
+                if (isChecked) {
+                    dataTriase[expKeys[0]].push({
+                        'no_rawat' : no_rawat,
+                        [kode_skala_keys] : $(element).val()
+                    });
+                } else {
+                    dataTriase[expKeys[0]].push({
+                        'no_rawat' : no_rawat,
+                        [kode_skala_keys] : null
+                    });
+                }
+            })
+
             data._token = "{{ csrf_token() }}"
-
-
 
             $.ajax({
                 url: '/erm/ugd/asesmen/medis/simpan',
@@ -343,6 +446,7 @@
                 method: 'POST',
                 dataType: 'JSON',
             }).done((response) => {
+                simpanTriase(dataTriase);
                 Swal.fire({
                     icon: 'success',
                     title: 'Sukses !',
@@ -356,8 +460,22 @@
 
         $('.btn-asmed-ugd-ubah').on('click', () => {
             var data = {};
+            var dataTriase = {};
+
+            var no_rawat = '';
+
             $('#formAsmedUgd input').each((index, element) => {
                 keys = $(element).prop('name');
+
+                if ($(element).attr('type') == 'checkbox') {
+                    return true;
+                }
+                
+                if (keys == 'no_rawat') {
+                    no_rawat = $(element).val();
+                }
+
+                data[keys] = $(element).val();
                 data[keys] = $(element).val();
 
             })
@@ -372,14 +490,42 @@
                 data[keys] = $(element).val();
             })
 
-            data._token = "{{ csrf_token() }}"
+            // checkbox
+            $('#formAsmedUgd input[type=checkbox]').each((index, element) => {
+                keys = $(element).prop('name').replaceAll('[', '_').replaceAll(']', '');
+                var isChecked = $(element).is(":checked");
+                
+                var expKeys = keys.split('_');
 
+                if (dataTriase[expKeys[0]] == undefined) {
+                    dataTriase[expKeys[0]] = [];
+                }
+
+                var kode_skala_keys = 'kode_'+expKeys[0];
+
+                // only push if checked
+                if (isChecked) {
+                    dataTriase[expKeys[0]].push({
+                        'no_rawat' : no_rawat,
+                        [kode_skala_keys] : $(element).val()
+                    });
+                } else {
+                    dataTriase[expKeys[0]].push({
+                        'no_rawat' : no_rawat,
+                        [kode_skala_keys] : null
+                    });
+                }
+            })
+
+            data._token = "{{ csrf_token() }}"
+            
             $.ajax({
                 url: '/erm/ugd/asesmen/medis/ubah',
                 data: data,
                 method: 'POST',
                 dataType: 'JSON',
             }).done((response) => {
+                simpanTriase(dataTriase);
                 Swal.fire({
                     icon: 'success',
                     title: 'Sukses !',
@@ -398,6 +544,144 @@
             $('#formAsmedUgd textarea').each((index, element) => {
                 $(element).val('-');
             })
+
+            $('.tblTriase').DataTable().destroy();
         })
-    </script>
+
+        $("#modalAsmedUgd").on('show.bs.modal', function(e) {
+            setTimeout(() => {
+                var no_rawat = $("#modalAsmedUgd #no_rawat").val();
+                
+                $('.tblTriase').DataTable({
+                    responsive: true,
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    ordering: false,
+                    ajax: {
+                        url: '/erm/triase/get/indikator',
+                        data: {
+                            no_rawat: no_rawat
+                        }
+                    },
+                    columns: [
+                        {
+                            data: 'nama_pemeriksaan'
+                        },
+                        {
+                            data: 'skala1',
+                            render: function (data) {
+                                var skala1 = JSON.parse(data); // Parse string JSON menjadi objek JavaScript
+                                var html = '<div class="d-flex flex-column">';
+                                skala1.forEach(function (item) {
+                                    
+                                    if (item.triase && item.triase.kode_skala1 == item.kode_skala1) {
+                                        var c = 'checked';
+                                    } else {
+                                        var c = '';
+                                    }
+
+                                    html += '<div class="form-check form-check-inline">';
+                                    html += '<input class="form-check-input" type="checkbox" name="skala1[' + item.kode_skala1 + ']" id="skala1_' + item.kode_skala1 + '" value="' + item.kode_skala1 + '" '+c+'>';
+                                    html += '<label class="form-check-label text-nowrap" for="skala1_' + item.kode_skala1 + '">' + item.pengkajian_skala1 + '</label>';
+                                    html += '</div>';
+                                });
+                                html += '</div>';
+                                return html;
+                            }
+                        },
+                        {
+                            data: 'skala2',
+                            render: function (data) {
+                                var skala2 = JSON.parse(data); // Parse string JSON menjadi objek JavaScript
+                                var html = '<div class="d-flex flex-column">';
+                                skala2.forEach(function (item) {
+
+                                    if (item.triase && item.triase.kode_skala1 == item.kode_skala1) {
+                                        var c = 'checked';
+                                    } else {
+                                        var c = '';
+                                    }
+                                    
+                                    html += '<div class="form-check form-check-inline">';
+                                    html += '<input class="form-check-input" type="checkbox" name="skala2[' + item.kode_skala2 + ']" id="skala2_' + item.kode_skala2 + '" value="' + item.kode_skala2 + '" '+c+'>';
+                                    html += '<label class="form-check-label text-nowrap" for="skala2_' + item.kode_skala2 + '">' + item.pengkajian_skala2 + '</label>';
+                                    html += '</div>';
+                                });
+                                html += '</div>';
+                                return html;
+                            }
+                        },
+                        {
+                            data: 'skala3',
+                            render: function (data) {
+                                var skala3 = JSON.parse(data); // Parse string JSON menjadi objek JavaScript
+                                var html = '<div class="d-flex flex-column">';
+                                skala3.forEach(function (item) {
+
+                                    if (item.triase && item.triase.kode_skala1 == item.kode_skala1) {
+                                        var c = 'checked';
+                                    } else {
+                                        var c = '';
+                                    }
+
+                                    html += '<div class="form-check form-check-inline">';
+                                    html += '<input class="form-check-input" type="checkbox" name="skala3[' + item.kode_skala3 + ']" id="skala3_' + item.kode_skala3 + '" value="' + item.kode_skala3 + '" '+c+'>';
+                                    html += '<label class="form-check-label text-nowrap" for="skala3_' + item.kode_skala3 + '">' + item.pengkajian_skala3 + '</label>';
+                                    html += '</div>';
+                                });
+                                html += '</div>';
+                                return html;
+                            }
+                        },
+                        {
+                            data: 'skala4',
+                            render: function (data) {
+                                var skala4 = JSON.parse(data); // Parse string JSON menjadi objek JavaScript
+                                var html = '<div class="d-flex flex-column">';
+                                skala4.forEach(function (item) {
+
+                                    if (item.triase && item.triase.kode_skala1 == item.kode_skala1) {
+                                        var c = 'checked';
+                                    } else {
+                                        var c = '';
+                                    }
+
+                                    html += '<div class="form-check form-check-inline">';
+                                    html += '<input class="form-check-input" type="checkbox" name="skala4[' + item.kode_skala4 + ']" id="skala4_' + item.kode_skala4 + '" value="' + item.kode_skala4 + '" '+c+'>';
+                                    html += '<label class="form-check-label text-nowrap" for="skala4_' + item.kode_skala4 + '">' + item.pengkajian_skala4 + '</label>';
+                                    html += '</div>';
+                                });
+                                html += '</div>';
+                                return html;
+                            }
+                        },
+                        {
+                            data: 'skala5',
+                            render: function (data) {
+                                var skala5 = JSON.parse(data); // Parse string JSON menjadi objek JavaScript
+                                var html = '<div class="d-flex flex-column">';
+                                skala5.forEach(function (item) {
+
+                                    if (item.triase && item.triase.kode_skala1 == item.kode_skala1) {
+                                        var c = 'checked';
+                                    } else {
+                                        var c = '';
+                                    }
+
+                                    html += '<div class="form-check form-check-inline">';
+                                    html += '<input class="form-check-input" type="checkbox" name="skala5[' + item.kode_skala5 + ']" id="skala5_' + item.kode_skala5 + '" value="' + item.kode_skala5 + '" '+c+'>';
+                                    html += '<label class="form-check-label text-nowrap" for="skala5_' + item.kode_skala5 + '">' + item.pengkajian_skala5 + '</label>';
+                                    html += '</div>';
+                                });
+                                html += '</div>';
+                                return html;
+                            }
+                        },
+                    ]
+                });
+            }, 1000);
+        });
+
+</script>
 @endpush

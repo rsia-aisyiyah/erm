@@ -49,6 +49,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
+    @stack('js')
+
     <script type="text/javascript">
         const APIURL = 'http://sim.rsiaaisyiyah.com/rsiap-api/api';
 
