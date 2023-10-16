@@ -81,10 +81,10 @@
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 {{-- <div class="mb-2 col-sm-12 col-md-6 col-lg-6"> --}}
-                                    {{-- <label for="jalannya_penyakit">Jalannya Penyakit Selama Perawatan</label> --}}
-                                    <textarea class="form-control" name="jalannya_penyakit" id="jalannya_penyakit" cols="30" rows="8"
-                                        onfocus="removeZero(this)"
-                                        onblur="cekKosong(this)" readonly>-</textarea>
+                                {{-- <label for="jalannya_penyakit">Jalannya Penyakit Selama Perawatan</label> --}}
+                                <textarea class="form-control" name="jalannya_penyakit" id="jalannya_penyakit" cols="30" rows="8"
+                                    onfocus="removeZero(this)"
+                                    onblur="cekKosong(this)" readonly>-</textarea>
                                 {{-- </div> --}}
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="pemeriksaan_penunjang">Pemeriksaan Radiologi Terpenting </label>
@@ -378,7 +378,7 @@
 @push('script')
     <script>
         $(document).ready(() => {
-            $('#formResumeRanap textarea[name=jalannya_penyakit]').css("display","none");
+            $('#formResumeRanap textarea[name=jalannya_penyakit]').css("display", "none");
             $('#tgl_kontrol').val("{{ date('d-m-Y') }}");
             $('#jam_kontrol').val("{{ date('H:i:s') }}");
             $('#tgl_kontrol').datepicker({
@@ -428,7 +428,7 @@
                         $('#formResumeRanap textarea[name=keluhan_utama]').val(resume.keluhan_utama ? resume.keluhan_utama : '-')
                         $('#formResumeRanap textarea[name=pemeriksaan_fisik]').val(resume.pemeriksaan_fisik ? resume.pemeriksaan_fisik : '-')
                         $('#formResumeRanap textarea[name=jalannya_penyakit]').val(resume.jalannya_penyakit ? resume.jalannya_penyakit : '-')
-                        $('#formResumeRanap textarea[name=jalannya_penyakit]').css("display","none");
+                        $('#formResumeRanap textarea[name=jalannya_penyakit]').css("display", "none");
                         $('#formResumeRanap textarea[name=hasil_laborat]').val(resume.hasil_laborat ? resume.hasil_laborat : '-')
                         $('#formResumeRanap textarea[name=pemeriksaan_penunjang]').val(resume.pemeriksaan_penunjang ? resume.pemeriksaan_penunjang : '-')
                         $('#formResumeRanap textarea[name=tindakan_dan_operasi]').val(resume.tindakan_dan_operasi ? resume.tindakan_dan_operasi : '-')
@@ -531,7 +531,7 @@
                         render: function(data, type, row, meta) {
 
                             if (parameter == 'pemeriksaan') {
-                                hasilPeriksa = `${row[parameter]} \n Tanda Vital  : TD : ${row.tensi} mmHG, Nadi : ${row.nadi}/mnt, RR : ${row.respirasi}/mnt, Suhu : ${row.suhu_tubuh} C \nKesadaran : ${row.kesadaran}, \nHasil Pemeriksaan : ,`
+                                hasilPeriksa = `Kesadaran : ${row.kesadaran} \n Tanda Vital  : GCS: ${row.gcs}, TD : ${row.tensi} mmHG, Nadi : ${row.nadi}/mnt, RR : ${row.respirasi}/mnt, Suhu : ${row.suhu_tubuh} C, \nHasil Pemeriksaan : ${row[parameter]}.\n`
                             } else if (parameter == 'obat' || parameter == "obatpulang") {
                                 hasilPeriksa = row['rtl']
                             } else {
@@ -743,8 +743,7 @@
                 case 'pemeriksaan':
                     element = $('#formResumeRanap textarea[name=pemeriksaan_fisik]');
                     value = element.val() != '-' ? element.val().replaceAll('&lt;', '<').replaceAll('&gt;', '>') + '\n' : '';
-                    value += $('#tbListResume tbody .row-' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
-                    value += value.replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+                    value = $('#tbListResume tbody .row-' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
                     element.val(value)
                     $('#modalListResume').modal('hide')
                     break;

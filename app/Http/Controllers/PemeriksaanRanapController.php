@@ -198,10 +198,10 @@ class PemeriksaanRanapController extends Controller
             ->orderBy('jam_rawat', 'DESC');
         if ($request->parameter) {
             if ($request->parameter == 'pemeriksaan') {
-                $pemeriksaan->select([$request->parameter, 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'kesadaran', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
+                $pemeriksaan->select([$request->parameter, 'gcs', 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'kesadaran', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
             } else if ($request->parameter == 'obat' || $request->parameter == 'obatpulang') {
-                $pemeriksaan->select(['rtl', 'jam_rawat', 'tgl_perawatan', 'nip'])->whereHas('pegawai', function ($query) {
-                    $query->whereIn('departemen', ['DM7', 'SPS', '-']);
+                $pemeriksaan->select(['rtl', 'pemeriksaan', 'jam_rawat', 'tgl_perawatan', 'nip'])->whereHas('pegawai', function ($query) {
+                    $query->whereIn('departemen', ['DM7', 'SPS', '-', 'DM2', 'DM3', 'DM4', 'DM5', 'DM8']);
                 })->orderBy('tgl_perawatan', 'ASC');
             } else if ($request->parameter == 'ttv') {
                 $pemeriksaan->select(['suhu_tubuh', 'tensi', 'berat', 'tinggi', 'spo2', 'nadi', 'respirasi', 'kesadaran', 'gcs', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
@@ -212,8 +212,6 @@ class PemeriksaanRanapController extends Controller
                 $pemeriksaan->where($request->parameter, 'like', '%' . $request->pemeriksaan . '%');
             }
         }
-
-
 
         return $pemeriksaan->get();
     }
