@@ -561,9 +561,7 @@
             })
 
             $('.tblTriase').DataTable().destroy();
-        })
-
-
+        });
 
         for (let index = 1; index <= 5; index++) {
             $('#modalAsmedUgd').on('change', '#ats_'+index, function() {
