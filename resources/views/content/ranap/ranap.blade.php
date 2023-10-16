@@ -624,7 +624,7 @@
                         <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
                         <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
                         <td>${asmed.dokter.nm_dokter}</td>
-                        <td><button class="btn btn-primary btn-sm" type="button" onclick="copyAsmedKandunganRanap('${asmed.no_rawat}')">Gunakan</button></td>`
+                        <td><button class="btn btn-success btn-sm" type="button" onclick="copyAsmedKandunganRanap('${asmed.no_rawat}')"><i class="bi bi-download"></i> Gunakan</button></td>`
                     html += '<tr>'
                     $('#tbRiwayatAsmed tbody').append(html)
                 })
@@ -728,7 +728,7 @@
                 $('#formAsmedRanapKandungan input[name=no_rawat]').val(response.no_rawat);
                 $('#formAsmedRanapKandungan input[name=pasien]').val(response.pasien.nm_pasien + ' (' + response.pasien.jk + ')');
                 $('#formAsmedRanapKandungan input[name=tgl_lahir]').val(formatTanggal(response.pasien.tgl_lahir) + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-                $('#formAsmedRanapKandungan button[name=riwayatAsmedRanap]').attr('onclick', `showRiwayatAsmedAnak('ranap', '${response.no_rkm_medis}')`);
+                $('#formAsmedRanapKandungan button[name=riwayatAsmedRanap]').attr('onclick', `showRiwayatAsmedKandungan('ranap', '${response.no_rkm_medis}')`);
             }).fail((request) => {
                 if (request.status == 401) {
                     Swal.fire({

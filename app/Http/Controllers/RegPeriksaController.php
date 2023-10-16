@@ -129,7 +129,7 @@ class RegPeriksaController extends Controller
                         $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
                     }, 'kamarInap', 'operasi.paketOperasi', 'operasi.op1', 'operasi.asistenOp1', 'operasi.asistenOp2',
                     'operasi.omloop', 'resumeMedis.regPeriksa.penjab', 'resumeMedis.dokter', 'resumeMedis.kamarInap.kamar.bangsal',
-                    'resumeMedis.bayiGabung.kamarInap.kamar.bangsal', 'asmedRanapAnak.regPeriksa.pasien', 'asmedRanapKandungan.regPeriksa.pasien'
+                    'resumeMedis.bayiGabung.kamarInap.kamar.bangsal', 'asmedRanapAnak.regPeriksa.pasien', 'asmedRanapAnak.dokter', 'asmedRanapKandungan.regPeriksa.pasien', 'asmedRanapKandungan.dokter',
                 ])->orderBy('no_rawat', $request->sortir);
             })
             ->first();
