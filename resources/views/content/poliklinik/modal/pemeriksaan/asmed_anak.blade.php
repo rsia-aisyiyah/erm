@@ -25,7 +25,7 @@
                         <input type="search" class="form-control form-control-sm kd_dokter" placeholder="" aria-label="" name="kd_dokter" readonly>
                     </div>
                     <div class="mb-2 col-sm-12 col-md-6 col-lg-4">
-                        <input type="search" class="form-control form-control-sm dokter" placeholder="" aria-label="" name="dokter" autocomplete="off">
+                        <input type="search" class="form-control form-control-sm dokter" placeholder="" aria-label="" name="nm_dokter" autocomplete="off">
                         <div class="list-dokter"></div>
                     </div>
                     <div class="mb-2 col-sm-12 col-md-6 col-lg-5">
