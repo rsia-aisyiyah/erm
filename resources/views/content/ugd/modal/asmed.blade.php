@@ -59,24 +59,39 @@
                                             <div class="text-nowrap">Prioritas</div>
                                             <div class="text-xs text-nowrap">Waktu Tunggu</div>
                                         </th>
-                                        <th class="text-center text-nowrap">
-                                            <div class="text-nowrap">ATS I</div>
+                                        <th class="text-center text-nowrap bg-danger text-white">
+                                            <div class="text-nowrap d-flex align-items-center justify-content-center">
+                                                <input type="checkbox" class="form-check-input me-2" name="ats_1" id="ats_1">
+                                                <span class="mt-1">ATS I</span>
+                                            </div>
                                             <div class="text-xs text-nowrap">Segera</div>
                                         </th>
-                                        <th class="text-center">
-                                            <div class="text-nowrap">ATS II</div>
+                                        <th class="text-center bg-warning text-white">
+                                            <div class="text-nowrap d-flex align-items-center justify-content-center">
+                                                <input type="checkbox" class="form-check-input me-2" name="ats_2" id="ats_2">
+                                                <span class="mt-1">ATS II</span>
+                                            </div>
                                             <div class="text-xs text-nowrap">10 Menit</div>
                                         </th>
-                                        <th class="text-center">
-                                            <div class="text-nowrap">ATS III</div>
+                                        <th class="text-center bg-success text-white">
+                                            <div class="text-nowrap d-flex align-items-center justify-content-center">
+                                                <input type="checkbox" class="form-check-input me-2" name="ats_3" id="ats_3">
+                                                <span class="mt-1">ATS III</span>
+                                            </div>
                                             <div class="text-xs text-nowrap">30 Menit</div>
                                         </th>
-                                        <th class="text-center">
-                                            <div class="text-nowrap">ATS IV</div>
+                                        <th class="text-center bg-primary text-white">
+                                            <div class="text-nowrap d-flex align-items-center justify-content-center">
+                                                <input type="checkbox" class="form-check-input me-2" name="ats_4" id="ats_4">
+                                                <span class="mt-1">ATS IV</span>
+                                            </div>
                                             <div class="text-xs text-nowrap">60 Menit</div>
                                         </th>
                                         <th class="text-center">
-                                            <div class="text-nowrap">ATS V</div>
+                                            <div class="text-nowrap d-flex align-items-center justify-content-center">
+                                                <input type="checkbox" class="form-check-input me-2" name="ats_5" id="ats_5">
+                                                <span class="mt-1">ATS V</span>
+                                            </div>
                                             <div class="text-xs text-nowrap">120 Menit</div>
                                         </th>
                                     </tr>
@@ -546,7 +561,22 @@
             })
 
             $('.tblTriase').DataTable().destroy();
-        })
+        });
+
+        for (let index = 1; index <= 5; index++) {
+            $('#modalAsmedUgd').on('change', '#ats_'+index, function() {
+                if ($(this).is(":checked")) {
+                    $('.item-skala'+index).each((i, element) => {
+                        $(element).prop('disabled', false);
+                    })
+                } else {
+                    $('.item-skala'+index).each((i, element) => {
+                        $(element).prop('disabled', true);
+                        $(element).prop('checked', false);
+                    })
+                }
+            });
+        }
 
         $("#modalAsmedUgd").on('show.bs.modal', function(e) {
             setTimeout(() => {
@@ -574,15 +604,16 @@
                                 var skala1 = JSON.parse(data); // Parse string JSON menjadi objek JavaScript
                                 var html = '<div class="d-flex flex-column">';
                                 skala1.forEach(function (item) {
-                                    
+                                    var c = '';
                                     if (item.triase && item.triase.kode_skala1 == item.kode_skala1) {
-                                        var c = 'checked';
+                                        $("#ats_1").prop('checked', true);
+                                        c = 'checked';
                                     } else {
-                                        var c = '';
+                                        $("#ats_1").prop('checked', false);
                                     }
 
                                     html += '<div class="form-check form-check-inline">';
-                                    html += '<input class="form-check-input" type="checkbox" name="skala1[' + item.kode_skala1 + ']" id="skala1_' + item.kode_skala1 + '" value="' + item.kode_skala1 + '" '+c+'>';
+                                    html += '<input class="form-check-input item-skala1" disabled type="checkbox" name="skala1[' + item.kode_skala1 + ']" id="skala1_' + item.kode_skala1 + '" value="' + item.kode_skala1 + '" '+c+'>';
                                     html += '<label class="form-check-label text-nowrap" for="skala1_' + item.kode_skala1 + '">' + item.pengkajian_skala1 + '</label>';
                                     html += '</div>';
                                 });
@@ -596,15 +627,16 @@
                                 var skala2 = JSON.parse(data); // Parse string JSON menjadi objek JavaScript
                                 var html = '<div class="d-flex flex-column">';
                                 skala2.forEach(function (item) {
-
+                                    var c = '';
                                     if (item.triase && item.triase.kode_skala1 == item.kode_skala1) {
-                                        var c = 'checked';
+                                        $("#ats_2").prop('checked', true);
+                                        c = 'checked';
                                     } else {
-                                        var c = '';
+                                        $("#ats_2").prop('checked', false);
                                     }
                                     
                                     html += '<div class="form-check form-check-inline">';
-                                    html += '<input class="form-check-input" type="checkbox" name="skala2[' + item.kode_skala2 + ']" id="skala2_' + item.kode_skala2 + '" value="' + item.kode_skala2 + '" '+c+'>';
+                                    html += '<input class="form-check-input item-skala2" disabled type="checkbox" name="skala2[' + item.kode_skala2 + ']" id="skala2_' + item.kode_skala2 + '" value="' + item.kode_skala2 + '" '+c+'>';
                                     html += '<label class="form-check-label text-nowrap" for="skala2_' + item.kode_skala2 + '">' + item.pengkajian_skala2 + '</label>';
                                     html += '</div>';
                                 });
@@ -618,15 +650,16 @@
                                 var skala3 = JSON.parse(data); // Parse string JSON menjadi objek JavaScript
                                 var html = '<div class="d-flex flex-column">';
                                 skala3.forEach(function (item) {
-
+                                    var c = '';
                                     if (item.triase && item.triase.kode_skala1 == item.kode_skala1) {
-                                        var c = 'checked';
+                                        $("#ats_3").prop('checked', true);
+                                        c = 'checked';
                                     } else {
-                                        var c = '';
+                                        $("#ats_3").prop('checked', false);
                                     }
 
                                     html += '<div class="form-check form-check-inline">';
-                                    html += '<input class="form-check-input" type="checkbox" name="skala3[' + item.kode_skala3 + ']" id="skala3_' + item.kode_skala3 + '" value="' + item.kode_skala3 + '" '+c+'>';
+                                    html += '<input class="form-check-input item-skala3" disabled type="checkbox" name="skala3[' + item.kode_skala3 + ']" id="skala3_' + item.kode_skala3 + '" value="' + item.kode_skala3 + '" '+c+'>';
                                     html += '<label class="form-check-label text-nowrap" for="skala3_' + item.kode_skala3 + '">' + item.pengkajian_skala3 + '</label>';
                                     html += '</div>';
                                 });
@@ -640,15 +673,16 @@
                                 var skala4 = JSON.parse(data); // Parse string JSON menjadi objek JavaScript
                                 var html = '<div class="d-flex flex-column">';
                                 skala4.forEach(function (item) {
-
+                                    var c = '';
                                     if (item.triase && item.triase.kode_skala1 == item.kode_skala1) {
-                                        var c = 'checked';
+                                        $("#ats_4").prop('checked', true);
+                                        c = 'checked';
                                     } else {
-                                        var c = '';
+                                        $("#ats_4").prop('checked', false);
                                     }
 
                                     html += '<div class="form-check form-check-inline">';
-                                    html += '<input class="form-check-input" type="checkbox" name="skala4[' + item.kode_skala4 + ']" id="skala4_' + item.kode_skala4 + '" value="' + item.kode_skala4 + '" '+c+'>';
+                                    html += '<input class="form-check-input item-skala4" disabled type="checkbox" name="skala4[' + item.kode_skala4 + ']" id="skala4_' + item.kode_skala4 + '" value="' + item.kode_skala4 + '" '+c+'>';
                                     html += '<label class="form-check-label text-nowrap" for="skala4_' + item.kode_skala4 + '">' + item.pengkajian_skala4 + '</label>';
                                     html += '</div>';
                                 });
@@ -662,15 +696,16 @@
                                 var skala5 = JSON.parse(data); // Parse string JSON menjadi objek JavaScript
                                 var html = '<div class="d-flex flex-column">';
                                 skala5.forEach(function (item) {
-
+                                    var c = '';
                                     if (item.triase && item.triase.kode_skala1 == item.kode_skala1) {
-                                        var c = 'checked';
+                                        $("#ats_5").prop('checked', true);
+                                        c = 'checked';
                                     } else {
-                                        var c = '';
+                                        $("#ats_5").prop('checked', false);
                                     }
 
                                     html += '<div class="form-check form-check-inline">';
-                                    html += '<input class="form-check-input" type="checkbox" name="skala5[' + item.kode_skala5 + ']" id="skala5_' + item.kode_skala5 + '" value="' + item.kode_skala5 + '" '+c+'>';
+                                    html += '<input class="form-check-input item-skala5" disabled type="checkbox" name="skala5[' + item.kode_skala5 + ']" id="skala5_' + item.kode_skala5 + '" value="' + item.kode_skala5 + '" '+c+'>';
                                     html += '<label class="form-check-label text-nowrap" for="skala5_' + item.kode_skala5 + '">' + item.pengkajian_skala5 + '</label>';
                                     html += '</div>';
                                 });
@@ -681,6 +716,18 @@
                     ]
                 });
             }, 1000);
+
+            setInterval(() => {
+                for (let index = 1; index <= 5; index++) {
+                    if ($('.item-skala'+index+':checked').length > 0) {
+                        $('.item-skala'+index).each((i, element) => {
+                            $(element).prop('disabled', false);
+                        })
+
+                        $("#ats_"+index).prop('checked', true);
+                    }
+                }
+            }, 1500);
         });
 
 </script>
