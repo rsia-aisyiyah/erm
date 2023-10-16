@@ -355,8 +355,11 @@
                 if (Object.keys(response).length) {
                     updateAsmedRanapKandungan(data).done((response) => {
                         alertSuccessAjax('Berhasil mengubah asesmen medis').then(() => {
-                            $('#tb_ranap').DataTable().destroy()
-                            tb_ranap();
+                            const tableRanap = $('#tb_ranap');
+                            if (tableRanap) {
+                                $('#tb_ranap').DataTable().destroy()
+                                tb_ranap();
+                            }
                         })
                     }).fail((request) => {
                         alertErrorAjax(request)
@@ -364,8 +367,11 @@
                 } else {
                     createAsmedRanapKandungan(data).done((response) => {
                         alertSuccessAjax('Berhasil menambah asesmen medis').then(() => {
-                            $('#tb_ranap').DataTable().destroy()
-                            tb_ranap();
+                            const tableRanap = $('#tb_ranap');
+                            if (tableRanap) {
+                                $('#tb_ranap').DataTable().destroy()
+                                tb_ranap();
+                            }
                         })
                     }).fail((request) => {
                         alertErrorAjax(request)

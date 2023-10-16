@@ -127,7 +127,7 @@
                     diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) +
                     setResumeMedis(i.resume_medis) +
                     setPemeriksaan(ralan, i.pemeriksaan_ralan) + setPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
-                    setAsmedAnak(i.asmed_ranap_anak) + setAsmedKandungan(i.asmed_ranap_kandungan) +
+                    setRiwayatAsmedAnak(i.asmed_ranap_anak) + setRiwayatAsmedKandungan(i.asmed_ranap_kandungan) +
                     '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
                     pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
@@ -514,7 +514,7 @@
 
         }
 
-        function setAsmedAnak(asmed) {
+        function setRiwayatAsmedAnak(asmed) {
             if (asmed) {
                 html = '<tr><th style="vertical-align: top;">Asesmen Medis</th><td>'
                 html += `
@@ -710,7 +710,7 @@
 
         }
 
-        function setAsmedKandungan(asmed) {
+        function setRiwayatAsmedKandungan(asmed) {
             if (asmed) {
                 html = '<tr><th style="vertical-align: top;">Asesmen Medis</th><td>'
                 html += `

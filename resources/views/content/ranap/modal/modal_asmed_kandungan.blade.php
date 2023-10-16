@@ -55,7 +55,17 @@
             const except = ['nm_dokter', 'pasien', 'tgl_lahir']
             let data = getDataForm('#formAsmedRanapKandungan', element, except);
             data['no_rawat_2'] = no_rawat;
-            updateAsmedRanapKandungan(data)
+            updateAsmedRanapKandungan(data).done((response) => {
+                alertSuccessAjax('Berhasil mengubah asesmen medis').then(() => {
+                    const tableRanap = $('#tb_ranap');
+                    if (tableRanap) {
+                        $('#tb_ranap').DataTable().destroy()
+                        tb_ranap();
+                    }
+                })
+            }).fail((request) => {
+                alertErrorAjax(request)
+            })
         }
     </script>
 @endpush
