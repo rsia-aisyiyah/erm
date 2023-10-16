@@ -31,11 +31,6 @@
 @push('script')
     <script>
         var no_rm = '';
-        $('#modalRiwayat').on('shown.bs.modal', function() {
-            // isModalShow = true;
-            // modalRiwayat(no_rm);
-        });
-
         $('#modalRiwayat').on('hidden.bs.modal', function() {
             $('#tb_riwayat').empty();
             detail = '';
@@ -101,7 +96,6 @@
 
         function riwayatPasien(d) {
             d.reg_periksa.forEach(function(i) {
-                // console.log(i.operasi)
                 if (i.status_lanjut == 'Ranap') {
                     status_lanjut = 'RAWAT INAP';
                     ralan = 'UGD';
@@ -130,7 +124,10 @@
                     '<tr><th>Unit/Poliklinik</th><td>: ' + i.poliklinik.nm_poli + '</td></tr>' +
                     '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
                     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
-                    diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) + setResumeMedis(i.resume_medis) + setPemeriksaan(ralan, i.pemeriksaan_ralan) + setPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
+                    diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) +
+                    setResumeMedis(i.resume_medis) +
+                    setPemeriksaan(ralan, i.pemeriksaan_ralan) + setPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
+                    setAsmedAnak(i.asmed_ranap_anak) + setAsmedKandungan(i.asmed_ranap_kandungan) +
                     '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
                     pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
@@ -515,6 +512,411 @@
                 return html;
             }
 
+        }
+
+        function setAsmedAnak(asmed) {
+            if (asmed) {
+                html = '<tr><th style="vertical-align: top;">Asesmen Medis</th><td>'
+                html += `
+                <table class="table-print" width="100%" style="background-color:#fff">
+                    <thead>
+                        <tr>
+                            <th colspan=6 style="font-size:14px;text-align:center">
+                                ASESMEN MEDIS RAWAT INAP ANAK
+                            </th>    
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan=2 >
+                                No. RM : ${asmed.reg_periksa.no_rkm_medis}<br>
+                                Nama : ${asmed.reg_periksa.pasien.nm_pasien}
+                            </td>
+                            <td colspan=2 >
+                                Jenis Kelamin : ${asmed.reg_periksa.pasien.jk=='L' ? 'Laki-laki' : 'Perempuan'} <br>
+                                Tanggal Lahir : ${formatTanggal(asmed.reg_periksa.pasien.tgl_lahir)}
+                            </td>
+                            <td colspan=2  class="td-border">
+                                Tanggal Asesmen : ${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]} <br>
+                                Anamnesis : ${asmed.anamnesis}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                               1. RIWAYAT KESEHATAN
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                 <strong>Keluhan Utama</strong> : <br> ${asmed.keluhan_utama}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                 <strong>Riwayat Penyakit Sekarang</strong> : <br> ${stringSoap(asmed.rps)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                 <strong>Riwayat Penyakit Dahulu</strong> : <br> ${stringSoap(asmed.rpd)}
+                            </td>
+                            <td colspan="3" class="td-border">
+                                 <strong>Riwayat Penyakit Keluarga</strong> : <br> ${stringSoap(asmed.rpk)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                 <strong>Riwayat Pemberian Obat</strong> : <br> ${stringSoap(asmed.rpo)}
+                            </td>
+                            <td colspan="3" class="td-border">
+                                 <strong>Riwayat Alergi</strong> : <br> ${asmed.alergi}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                               2. PEMERIKSAAN FISIK
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                 <strong>Keadaan Umum</strong> : ${asmed.keadaan}
+                            </td>
+                            <td colspan="2">
+                                 <strong>Kesadaran</strong> : ${asmed.kesadaran}
+                            </td>
+                            <td colspan="2">
+                                 <strong>GCS (E,V,M)</strong> : ${asmed.gcs}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center" colspan=6>
+                                TD : ${asmed.td} mmHg,
+                                Nadi : ${asmed.nadi} x/m,
+                                Respirasi : ${asmed.rr} x/m,
+                                Suhu : ${asmed.suhu} <sup>0</sup>C,
+                                SPO2: ${asmed.spo2} %,
+                                BB: ${asmed.bb} Kg,
+                                TB: ${asmed.tb} Cm    
+                            </td>    
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul style="list-style-type: none; text-align:left; margin:0px; padding:5px">
+                                    <li>Kepala</li>
+                                    <li>Mata</li>
+                                    <li>Gigi & Mulut</li>
+                                    <li>THT</li>
+                                    <li>Thoraks</li>
+                                    <li>Jantung</li>
+                                </ul>  
+                            </td>
+                            <td class="td-border">
+                                <ul style="list-style-type: none; text-align:left; margin:0px; padding:5px">
+                                    <li>${asmed.kepala}</li>
+                                    <li>${asmed.mata}</li>
+                                    <li>${asmed.gigi}</li>
+                                    <li>${asmed.tht}</li>
+                                    <li>${asmed.thoraks}</li>
+                                    <li>${asmed.jantung}</li>
+                                </ul>  
+                            </td>
+                            <td>
+                                <ul style="list-style-type: none; text-align:left; margin:0px; padding:5px">
+                                    <li>Paru</li>
+                                    <li>Abdomen</li>
+                                    <li>Genital & Anus</li>
+                                    <li>Ekstrimitas</li>
+                                    <li>Kulit</li>
+                                </ul>    
+                            </td>
+                            <td class="td-border">
+                                <ul style="list-style-type: none; text-align:left; margin:0px; padding:5px">
+                                     <li>${asmed.paru}</li>
+                                    <li>${asmed.abdomen}</li>
+                                    <li>${asmed.genital}</li>
+                                    <li>${asmed.ekstremitas}</li>
+                                    <li>${asmed.kulit}</li>
+                                </ul>    
+                            </td>
+                            <td colspan=2>
+                                <strong>Keterangan Fisik</strong> : <br> ${stringSoap(asmed.ket_fisik)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                               3. STATUS LOKALIS
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="3" width="50%">
+                                <img src="{{ asset('img/set-lokalis.jpg') }}" alt="" style="height: 220px;width:100%">
+                            </td>
+                            <td colspan="3" class="td-border">
+                                Keterangan Lokalis : ${asmed.ket_lokalis}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                                4. PEMERIKSAAN PENUNJANG
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <strong>Laboratorium : </strong> <br/> ${asmed.lab}
+                            </td>    
+                            <td colspan="2" class="td-border">
+                                <strong>Radiologi : </strong> <br/> ${asmed.rad}
+                            </td>    
+                            <td colspan="2" class="td-border">
+                                <strong>Penunjang Lainnya : </strong> <br/> ${asmed.penunjang}
+                            </td>    
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                                4. DIAGNOSIS
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                ${asmed.diagnosis}
+                            </td>    
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                                5. TATA LAKSANA
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                ${stringSoap(asmed.tata)}
+                            </td>    
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                                6. EDUKASI
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                ${stringSoap(asmed.edukasi)}
+                            </td>    
+                        </tr>
+                    </tbody>
+                </table>
+                `;
+                html += '</td></tr>'
+                return html;
+            }
+
+        }
+
+        function setAsmedKandungan(asmed) {
+            if (asmed) {
+                html = '<tr><th style="vertical-align: top;">Asesmen Medis</th><td>'
+                html += `
+                <table class="table-print" width="100%" style="background-color:#fff">
+                    <thead>
+                        <tr>
+                            <th colspan=6 style="font-size:14px;text-align:center">
+                                ASESMEN MEDIS RAWAT INAP KANDUNGAN
+                            </th>    
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan=2 >
+                                No. RM : ${asmed.reg_periksa.no_rkm_medis}<br>
+                                Nama : ${asmed.reg_periksa.pasien.nm_pasien}
+                            </td>
+                            <td colspan=2 >
+                                Jenis Kelamin : ${asmed.reg_periksa.pasien.jk=='L' ? 'Laki-laki' : 'Perempuan'} <br>
+                                Tanggal Lahir : ${formatTanggal(asmed.reg_periksa.pasien.tgl_lahir)}
+                            </td>
+                            <td colspan=2  class="td-border">
+                                Tanggal Asesmen : ${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]} <br>
+                                Anamnesis : ${asmed.anamnesis}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                               1. RIWAYAT KESEHATAN
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                 <strong>Keluhan Utama</strong> : <br> ${asmed.keluhan_utama}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                 <strong>Riwayat Penyakit Sekarang</strong> : <br> ${stringSoap(asmed.rps)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                 <strong>Riwayat Penyakit Dahulu</strong> : <br> ${stringSoap(asmed.rpd)}
+                            </td>
+                            <td colspan="3" class="td-border">
+                                 <strong>Riwayat Penyakit Keluarga</strong> : <br> ${stringSoap(asmed.rpk)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                 <strong>Riwayat Pemberian Obat</strong> : <br> ${stringSoap(asmed.rpo)}
+                            </td>
+                            <td colspan="3" class="td-border">
+                                 <strong>Riwayat Alergi</strong> : <br> ${asmed.alergi}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                               2. PEMERIKSAAN FISIK
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                 <strong>Keadaan Umum</strong> : ${asmed.keadaan}
+                            </td>
+                            <td colspan="2">
+                                 <strong>Kesadaran</strong> : ${asmed.kesadaran}
+                            </td>
+                            <td colspan="2">
+                                 <strong>GCS (E,V,M)</strong> : ${asmed.gcs}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center" colspan=6>
+                                TD : ${asmed.td} mmHg,
+                                Nadi : ${asmed.nadi} x/m,
+                                Respirasi : ${asmed.rr} x/m,
+                                Suhu : ${asmed.suhu} <sup>0</sup>C,
+                                SPO2: ${asmed.spo} %,
+                                BB: ${asmed.bb} Kg,
+                                TB: ${asmed.tb} Cm    
+                            </td>    
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul style="list-style-type: none; text-align:left; margin:0px; padding:5px">
+                                    <li>Kepala</li>
+                                    <li>Mata</li>
+                                    <li>Gigi & Mulut</li>
+                                    <li>THT</li>
+                                    <li>Thoraks</li>
+                                    <li>Jantung</li>
+                                </ul>  
+                            </td>
+                            <td class="td-border">
+                                <ul style="list-style-type: none; text-align:left; margin:0px; padding:5px">
+                                    <li>${asmed.kepala}</li>
+                                    <li>${asmed.mata}</li>
+                                    <li>${asmed.gigi}</li>
+                                    <li>${asmed.tht}</li>
+                                    <li>${asmed.thoraks}</li>
+                                    <li>${asmed.jantung}</li>
+                                </ul>  
+                            </td>
+                            <td>
+                                <ul style="list-style-type: none; text-align:left; margin:0px; padding:5px">
+                                    <li>Paru</li>
+                                    <li>Abdomen</li>
+                                    <li>Genital & Anus</li>
+                                    <li>Ekstrimitas</li>
+                                    <li>Kulit</li>
+                                </ul>    
+                            </td>
+                            <td class="td-border">
+                                <ul style="list-style-type: none; text-align:left; margin:0px; padding:5px">
+                                     <li>${asmed.paru}</li>
+                                    <li>${asmed.abdomen}</li>
+                                    <li>${asmed.genital}</li>
+                                    <li>${asmed.ekstremitas}</li>
+                                    <li>${asmed.kulit}</li>
+                                </ul>    
+                            </td>
+                            <td colspan=2>
+                                <strong>Keterangan Fisik</strong> : <br> ${stringSoap(asmed.ket_fisik)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                               3. STATUS OBSTETRI / GINEKOLOGI
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="text-align:center">
+                                TFU : ${asmed.tfu} Cm, TB : ${asmed.tbj} gram, HIS : ${asmed.his} x/10 Menit, Kontraksi : ${asmed.kontraksi}, DJJ : ${asmed.djj} dpm
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <strong>Inspeksi : </strong> <br/> ${asmed.inspeksi}
+                            </td>
+                            <td colspan="3" class="td-border">
+                                <strong>VT : </strong> <br/> ${asmed.vt}
+                            </td>
+                           
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <strong>Inspekulo : </strong> <br/> ${asmed.inspekulo}
+                            </td>
+                            <td colspan="3" class="td-border">
+                                <strong>RT : </strong> <br/> ${asmed.rt}
+                            </td>    
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                                4. PEMERIKSAAN PENUNJANG
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <strong>Ultrasonografi : </strong> <br/> ${asmed.ultra}
+                            </td>    
+                            <td colspan="2" class="td-border">
+                                <strong>Kardiotografi : </strong> <br/> ${asmed.kardio}
+                            </td>    
+                            <td colspan="2" class="td-border">
+                                <strong>Laboratorium : </strong> <br/> ${asmed.lab}
+                            </td>    
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                                4. DIAGNOSIS
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                ${asmed.diagnosis}
+                            </td>    
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                                5. TATA LAKSANA
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                ${stringSoap(asmed.tata)}
+                            </td>    
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="background-color:#e7e7e7 ">
+                                6. EDUKASI
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                ${stringSoap(asmed.edukasi)}
+                            </td>    
+                        </tr>
+                    </tbody>
+                </table>
+                `;
+                html += '</td></tr>'
+                return html;
+            }
         }
 
         function getAturanPakai(no_rawat, obat) {

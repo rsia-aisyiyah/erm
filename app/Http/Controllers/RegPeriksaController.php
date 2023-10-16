@@ -116,7 +116,8 @@ class RegPeriksaController extends Controller
                 })->with([
                     'upload', 'resepObat' => function ($q) {
                         return $q->with('resepDokter', 'resepRacikan');
-                    }, 'poliklinik', 'dokter', 'penjab', 'pemeriksaanRalan.pegawai', 'pemeriksaanRanap.pegawai', 'catatanPerawatan', 'diagnosaPasien' => function ($q) {
+                    }, 'poliklinik', 'dokter', 'penjab', 'pemeriksaanRalan.pegawai', 'pemeriksaanRanap.pegawai',
+                    'catatanPerawatan', 'diagnosaPasien' => function ($q) {
                         return $q->with('penyakit')->orderBy('prioritas', 'ASC');
                     }, 'prosedurPasien' => function ($q) {
                         return $q->with('icd9');
@@ -126,7 +127,9 @@ class RegPeriksaController extends Controller
                         }]);
                     }, 'detailPemeriksaanLab' => function ($q) {
                         $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
-                    }, 'kamarInap', 'operasi.paketOperasi', 'operasi.op1', 'operasi.asistenOp1', 'operasi.asistenOp2', 'operasi.omloop', 'resumeMedis.regPeriksa.penjab', 'resumeMedis.dokter', 'resumeMedis.kamarInap.kamar.bangsal', 'resumeMedis.bayiGabung.kamarInap.kamar.bangsal'
+                    }, 'kamarInap', 'operasi.paketOperasi', 'operasi.op1', 'operasi.asistenOp1', 'operasi.asistenOp2',
+                    'operasi.omloop', 'resumeMedis.regPeriksa.penjab', 'resumeMedis.dokter', 'resumeMedis.kamarInap.kamar.bangsal',
+                    'resumeMedis.bayiGabung.kamarInap.kamar.bangsal', 'asmedRanapAnak.regPeriksa.pasien', 'asmedRanapKandungan.regPeriksa.pasien'
                 ])->orderBy('no_rawat', $request->sortir);
             })
             ->first();

@@ -28,6 +28,7 @@
                 <td style="font-size:10px" class="border" colspan="2">
                     Tgl. Asesmen: {{ $data['tanggal'] }} <br>
                     Anamnesis: {{ $data['anamnesis'] }}
+                </td>
             </tr>
             <tr>
                 <td colspan="6" style="text-align: center;background-color:#e7e7e7 ">

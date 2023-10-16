@@ -96,6 +96,24 @@
             vertical-align: top;
         }
 
+        .table-print th,
+        .table-print td {
+            padding: 10px;
+        }
+
+        .table-print .td-border {
+            border: 1px solid #000;
+            border-collapse: collapse;
+
+        }
+
+        .table-print,
+        .table-print tr {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            vertical-align: top;
+        }
+
         .steps {
             display: flex;
             justify-content: space-between;
