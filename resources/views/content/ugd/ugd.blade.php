@@ -380,7 +380,7 @@
         }
 
         function modalAsmedUgd(params) {
-            getAsmedUgd(params).done((response) => {
+                        getAsmedUgd(params).done((response) => {
                 if (Object.keys(response).length == 0) {
                     return getRegPeriksa(params).done((regPeriksa) => {
 

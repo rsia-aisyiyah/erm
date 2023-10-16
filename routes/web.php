@@ -79,6 +79,7 @@ use App\Http\Controllers\MasterImunisasiController;
 use App\Http\Controllers\RencanaAskepRanapController;
 use App\Http\Controllers\RiwayatImunisasiController;
 use App\Http\Controllers\RiwayatPersalinanController;
+use App\Http\Controllers\TriasePemeriksaanUgd;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -163,6 +164,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/ugd/asesmen/medis/simpan', [AsesmenMedisIgdController::class, 'create']);
     Route::post('/ugd/asesmen/medis/ubah', [AsesmenMedisIgdController::class, 'edit']);
     Route::get('/ugd/asesmen/medis/{noRawat}', [AsesmenMedisIgdController::class, 'get']);
+
+    // triase UGD
+    Route::get('/triase/get/indikator', [TriasePemeriksaanUgd::class, 'getIndikator']);
+    route::post('/triase/simpan', [TriasePemeriksaanUgd::class, 'simpan']);
 
 
     Route::get('persetujuan/loket/{loket}', [RsiaGeneralConsentController::class, 'index']);
