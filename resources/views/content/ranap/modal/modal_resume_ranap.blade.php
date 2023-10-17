@@ -900,16 +900,10 @@
 
                 },
                 error: (request) => {
-                    alertSessionExpired(request.status)
-                    else {
-                        Swal.fire({
-                            title: 'Gagal !',
-                            icon: 'error',
-                            text: `Error Code ${request.status} ${request.statusText}`,
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        })
-                    }
+                    if (request.status == 401)
+                        alertSessionExpired(request.status)
+                    alertErrorAjax(request)
+
                 }
             })
 

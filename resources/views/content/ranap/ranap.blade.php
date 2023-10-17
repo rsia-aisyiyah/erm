@@ -772,7 +772,6 @@
                     $(`#formAsmedRanapAnak input[name=nm_dokter]`).val(response.dokter.nm_dokter)
                     $(`#formAsmedRanapAnak input[name=nm_dokter]`).attr('readonly', 'readonly')
                     $.each(response, (index, value) => {
-                        console.log('ASMED', response);
                         select = $(`#formAsmedRanapAnak select[name=${index}]`);
                         input = $(`#formAsmedRanapAnak input[name=${index}]`);
                         textarea = $(`#formAsmedRanapAnak textarea[name=${index}]`);
@@ -997,7 +996,6 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
-                            console.log(row);
                             button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
                             if (row.nip == "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" == "direksi") {
                                 button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
