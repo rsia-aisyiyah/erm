@@ -216,27 +216,27 @@
                                         <tr>
                                             <td width="10%">Subjek</td>
                                             <td>:</td>
-                                            <td>${stringSoap(pemRanap.keluhan)}</td>
+                                            <td>${stringPemeriksaan(pemRanap.keluhan)}</td>
                                         </tr>    
                                         <tr>
                                             <td width="10%">Objek</td>
                                             <td>:</td>
-                                            <td>${stringSoap(pemRanap.pemeriksaan)}</td>
+                                            <td>${stringPemeriksaan(pemRanap.pemeriksaan)}</td>
                                         </tr>    
                                         <tr>
                                             <td width="10%">Asesmen</td>
                                             <td>:</td>
-                                            <td>${stringSoap(pemRanap.penilaian)}</td>
+                                            <td>${stringPemeriksaan(pemRanap.penilaian)}</td>
                                         </tr>    
                                         <tr>
                                             <td width="10%">Plan</td>
                                             <td>:</td>
-                                            <td>${stringSoap(pemRanap.rtl)}</td>
+                                            <td>${stringPemeriksaan(pemRanap.rtl)}</td>
                                         </tr>    
                                         <tr>
                                             <td width="10%">Instruksi</td>
                                             <td>:</td>
-                                            <td>${stringSoap(pemRanap.instruksi)}</td>
+                                            <td>${stringPemeriksaan(pemRanap.instruksi)}</td>
                                         </tr>    
                                     </table>
                                 </div>
@@ -316,22 +316,22 @@
                         <table class="table table-sm" width="100%">
                             <tr>
                                 <td><strong>ANAMNESIS</strong> <br/>
-                                    ${stringSoap(resumeMedis.keluhan_utama)}
+                                    ${stringPemeriksaan(resumeMedis.keluhan_utama)}
                                 </td>
                             </tr>
                             <tr>
                                 <td><strong>PEMERIKSAAN FISIK</strong> <br/>
-                                    ${stringSoap(resumeMedis.pemeriksaan_fisik)}
+                                    ${stringPemeriksaan(resumeMedis.pemeriksaan_fisik)}
                                 </td>
                             </tr>
                             <tr>
                                 <td><strong>PEMERIKSAAN PENUNJANG</strong> <br/>
-                                    ${stringSoap(resumeMedis.pemeriksaan_penunjang)}
+                                    ${stringPemeriksaan(resumeMedis.pemeriksaan_penunjang)}
                                 </td>
                             </tr>
                             <tr>
                                 <td><strong>PEMERIKSAAN LABORATORIUM</strong> <br/>
-                                    ${stringSoap(resumeMedis.hasil_laborat)}
+                                    ${stringPemeriksaan(resumeMedis.hasil_laborat)}
                                 </td>
                             </tr>
                             <tr>
@@ -553,20 +553,20 @@
                         </tr>
                         <tr>
                             <td colspan="6">
-                                 <strong>Riwayat Penyakit Sekarang</strong> : <br> ${stringSoap(asmed.rps)}
+                                 <strong>Riwayat Penyakit Sekarang</strong> : <br> ${stringPemeriksaan(asmed.rps)}
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                 <strong>Riwayat Penyakit Dahulu</strong> : <br> ${stringSoap(asmed.rpd)}
+                                 <strong>Riwayat Penyakit Dahulu</strong> : <br> ${stringPemeriksaan(asmed.rpd)}
                             </td>
                             <td colspan="3" class="td-border">
-                                 <strong>Riwayat Penyakit Keluarga</strong> : <br> ${stringSoap(asmed.rpk)}
+                                 <strong>Riwayat Penyakit Keluarga</strong> : <br> ${stringPemeriksaan(asmed.rpk)}
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                 <strong>Riwayat Pemberian Obat</strong> : <br> ${stringSoap(asmed.rpo)}
+                                 <strong>Riwayat Pemberian Obat</strong> : <br> ${stringPemeriksaan(asmed.rpo)}
                             </td>
                             <td colspan="3" class="td-border">
                                  <strong>Riwayat Alergi</strong> : <br> ${asmed.alergi}
@@ -639,7 +639,7 @@
                                 </ul>    
                             </td>
                             <td colspan=2>
-                                <strong>Keterangan Fisik</strong> : <br> ${stringSoap(asmed.ket_fisik)}
+                                <strong>Keterangan Fisik</strong> : <br> ${stringPemeriksaan(asmed.ket_fisik)}
                             </td>
                         </tr>
                         <tr>
@@ -688,7 +688,7 @@
                         </tr>
                         <tr>
                             <td>
-                                ${stringSoap(asmed.tata)}
+                                ${stringPemeriksaan(asmed.tata)}
                             </td>    
                         </tr>
                         <tr>
@@ -698,7 +698,7 @@
                         </tr>
                         <tr>
                             <td>
-                                ${stringSoap(asmed.edukasi)}
+                                ${stringPemeriksaan(asmed.edukasi)}
                             </td>    
                         </tr>
                         <tr>
@@ -756,20 +756,20 @@
                         </tr>
                         <tr>
                             <td colspan="6">
-                                 <strong>Riwayat Penyakit Sekarang</strong> : <br> ${stringSoap(asmed.rps)}
+                                 <strong>Riwayat Penyakit Sekarang</strong> : <br> ${stringPemeriksaan(asmed.rps)}
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                 <strong>Riwayat Penyakit Dahulu</strong> : <br> ${stringSoap(asmed.rpd)}
+                                 <strong>Riwayat Penyakit Dahulu</strong> : <br> ${stringPemeriksaan(asmed.rpd)}
                             </td>
                             <td colspan="3" class="td-border">
-                                 <strong>Riwayat Penyakit Keluarga</strong> : <br> ${stringSoap(asmed.rpk)}
+                                 <strong>Riwayat Penyakit Keluarga</strong> : <br> ${stringPemeriksaan(asmed.rpk)}
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                 <strong>Riwayat Pemberian Obat</strong> : <br> ${stringSoap(asmed.rpo)}
+                                 <strong>Riwayat Pemberian Obat</strong> : <br> ${stringPemeriksaan(asmed.rpo)}
                             </td>
                             <td colspan="3" class="td-border">
                                  <strong>Riwayat Alergi</strong> : <br> ${asmed.alergi}
@@ -842,7 +842,7 @@
                                 </ul>    
                             </td>
                             <td colspan=2>
-                                <strong>Keterangan Fisik</strong> : <br> ${stringSoap(asmed.ket_fisik)}
+                                <strong>Keterangan Fisik</strong> : <br> ${stringPemeriksaan(asmed.ket_fisik)}
                             </td>
                         </tr>
                         <tr>
@@ -905,7 +905,7 @@
                         </tr>
                         <tr>
                             <td>
-                                ${stringSoap(asmed.tata)}
+                                ${stringPemeriksaan(asmed.tata)}
                             </td>    
                         </tr>
                         <tr>
@@ -915,7 +915,7 @@
                         </tr>
                         <tr>
                             <td>
-                                ${stringSoap(asmed.edukasi)}
+                                ${stringPemeriksaan(asmed.edukasi)}
                             </td>    
                         </tr>
                         <tr>

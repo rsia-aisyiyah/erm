@@ -134,6 +134,22 @@
 
         }
 
+        function alertSessionExpired(requestStatus) {
+            if (requestStatus == 401) {
+                Swal.fire({
+                    title: 'Sesi login berakhir !',
+                    icon: 'info',
+                    text: 'Silahkan login kembali ',
+                    showConfirmButton: true,
+                    confirmButtonText: 'OK',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/erm';
+                    }
+                })
+            }
+        }
+
         function hitungUmur(tgl_lahir) {
             sekarang = new Date();
             hari = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate());
@@ -181,7 +197,7 @@
         }
 
         // merapikan enter teks soap
-        function stringSoap(value) {
+        function stringPemeriksaan(value) {
             const arrValue = value.split('\n');
             let string = '';
             for (let index = 0; index < arrValue.length; index++) {
@@ -301,19 +317,7 @@
                     no_rawat: no_rawat,
                 },
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             });
             return pemeriksaan
@@ -633,19 +637,7 @@
                 },
                 dataType: 'JSON',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             })
             return dx
@@ -659,19 +651,7 @@
                 },
                 dataType: 'JSON',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             })
             return px
@@ -953,19 +933,7 @@
                     }
                 },
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             });
 
@@ -1023,19 +991,7 @@
                 dataType: 'JSON',
                 method: 'GET',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             })
 
@@ -1195,19 +1151,7 @@
                 dataType: 'JSON',
                 method: 'GET',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             })
 
@@ -1361,19 +1305,7 @@
                 url: `/erm/poliklinik/asmed/kandungan/riwayat/${no_rkm_medis}`,
                 method: 'GET',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             })
             return asmed;
@@ -1403,19 +1335,7 @@
                 dataType: 'JSON',
                 method: 'GET',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             });
 
@@ -1428,39 +1348,20 @@
                 dataType: 'JSON',
                 method: 'GET',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             })
 
             return asmed;
         }
-        // {
-        //     "success": true,
-        //     "message": "notification sent",
-        //     "data": {
-        //         "data": {
-        //             "no_rawat": "2023/08/10/000001",
-        //             "kategori": "Ranap"
-        //         },
-        //         "notification": {
-        //             "title": "RSIA Mobile Dokter (kandungan)",
-        //             "body": "Test POST method API"
-        //         },
-        //         "topic": "1.206.0818"
-        //     }
-        // }
+
+        function getAsmedUgd(no_rawat) {
+            const txtNoRawat = textRawat(no_rawat, '-');
+            const asmed = $.get(`/erm/ugd/asesmen/medis/${txtNoRawat}`).fail((request) => {
+                alertSessionExpired(request.status)
+            })
+            return asmed;
+        }
 
         function notifSend(topics, title, body, no_rawat, kategori) {
             $.ajax({

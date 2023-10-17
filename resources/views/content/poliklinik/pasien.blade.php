@@ -244,19 +244,8 @@
                     $('#modalSoap').modal('hide');
                 },
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    } else {
+                    alertSessionExpired(request.status)
+                    else {
                         Swal.fire({
                             title: 'Error',
                             icon: 'error',
@@ -572,19 +561,7 @@
                 dataType: 'JSON',
                 method: 'GET',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             });
 
@@ -695,19 +672,7 @@
                 url: '/erm/spri/get/' + nokartu + '/' + tanggal,
                 dataType: 'JSON',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             });
 
@@ -802,19 +767,7 @@
                 url: '/erm/poliklinik/bpjs/' + kdPoli,
                 dataType: 'JSON',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             });
 
