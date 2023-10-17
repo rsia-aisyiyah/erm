@@ -423,62 +423,22 @@
                 }
 
                 getResumeMedis(noRawat).done((resume) => {
-                    if (resume) {
-                        $('#formResumeRanap input[name=alasan]').val(resume.alasan ? resume.alasan : '-')
-                        $('#formResumeRanap textarea[name=keluhan_utama]').val(resume.keluhan_utama ? resume.keluhan_utama : '-')
-                        $('#formResumeRanap textarea[name=pemeriksaan_fisik]').val(resume.pemeriksaan_fisik ? resume.pemeriksaan_fisik : '-')
-                        $('#formResumeRanap textarea[name=jalannya_penyakit]').val(resume.jalannya_penyakit ? resume.jalannya_penyakit : '-')
-                        $('#formResumeRanap textarea[name=jalannya_penyakit]').css("display", "none");
-                        $('#formResumeRanap textarea[name=hasil_laborat]').val(resume.hasil_laborat ? resume.hasil_laborat : '-')
-                        $('#formResumeRanap textarea[name=pemeriksaan_penunjang]').val(resume.pemeriksaan_penunjang ? resume.pemeriksaan_penunjang : '-')
-                        $('#formResumeRanap textarea[name=tindakan_dan_operasi]').val(resume.tindakan_dan_operasi ? resume.tindakan_dan_operasi : '-')
-                        $('#formResumeRanap textarea[name=obat_di_rs]').val(resume.obat_di_rs ? resume.obat_di_rs : '-')
-                        $('#formResumeRanap input[name=diagnosa_utama]').val(resume.diagnosa_utama ? resume.diagnosa_utama : '-')
-                        $('#formResumeRanap input[name=kd_diagnosa_utama]').val(resume.kd_diagnosa_utama ? resume.kd_diagnosa_utama : '-')
-                        $('#formResumeRanap input[name=diagnosa_sekunder]').val(resume.diagnosa_sekunder ? resume.diagnosa_sekunder : '-')
-                        $('#formResumeRanap input[name=kd_diagnosa_sekunder]').val(resume.kd_diagnosa_sekunder ? resume.kd_diagnosa_sekunder : '-')
-                        $('#formResumeRanap input[name=diagnosa_sekunder2]').val(resume.diagnosa_sekunder2 ? resume.diagnosa_sekunder2 : '-')
-                        $('#formResumeRanap input[name=kd_diagnosa_sekunder2]').val(resume.kd_diagnosa_sekunder2 ? resume.kd_diagnosa_sekunder2 : '-')
-                        $('#formResumeRanap input[name=diagnosa_sekunder3]').val(resume.diagnosa_sekunder3 ? resume.diagnosa_sekunder3 : '-')
-                        $('#formResumeRanap input[name=kd_diagnosa_sekunder3]').val(resume.kd_diagnosa_sekunder3 ? resume.kd_diagnosa_sekunder3 : '-')
-                        $('#formResumeRanap input[name=diagnosa_sekunder4]').val(resume.diagnosa_sekunder4 ? resume.diagnosa_sekunder4 : '-')
-                        $('#formResumeRanap input[name=kd_diagnosa_sekunder4]').val(resume.kd_diagnosa_sekunder4 ? resume.kd_diagnosa_sekunder4 : '-')
-                        $('#formResumeRanap input[name=diagnosa_sekunder5]').val(resume.diagnosa_sekunder5 ? resume.diagnosa_sekunder5 : '-')
-                        $('#formResumeRanap input[name=kd_diagnosa_sekunder5]').val(resume.kd_diagnosa_sekunder5 ? resume.kd_diagnosa_sekunder5 : '-')
-                        $('#formResumeRanap input[name=diagnosa_sekunder6]').val(resume.diagnosa_sekunder6 ? resume.diagnosa_sekunder6 : '-')
-                        $('#formResumeRanap input[name=kd_diagnosa_sekunder6]').val(resume.kd_diagnosa_sekunder6 ? resume.kd_diagnosa_sekunder6 : '-')
-                        $('#formResumeRanap input[name=diagnosa_sekunder7]').val(resume.diagnosa_sekunder7 ? resume.diagnosa_sekunder7 : '-')
-                        $('#formResumeRanap input[name=kd_diagnosa_sekunder7]').val(resume.kd_diagnosa_sekunder7 ? resume.kd_diagnosa_sekunder7 : '-')
+                    if (Object.keys(resume).length) {
+                        $.each(resume, (index, value) => {
+                            select = $(`#formResumeRanap select[name=${index}]`);
+                            input = $(`#formResumeRanap input[name=${index}]`);
+                            textarea = $(`#formResumeRanap textarea[name=${index}]`);
 
-                        $('#formResumeRanap input[name=prosedur_utama]').val(resume.prosedur_utama ? resume.prosedur_utama : '-')
-                        $('#formResumeRanap input[name=kd_prosedur_utama]').val(resume.kd_prosedur_utama ? resume.kd_prosedur_utama : '-')
-                        $('#formResumeRanap input[name=prosedur_sekunder]').val(resume.prosedur_sekunder ? resume.prosedur_sekunder : '-')
-                        $('#formResumeRanap input[name=kd_prosedur_sekunder]').val(resume.kd_prosedur_sekunder ? resume.kd_prosedur_sekunder : '-')
-                        $('#formResumeRanap input[name=prosedur_sekunder2]').val(resume.prosedur_sekunder2 ? resume.prosedur_sekunder2 : "-")
-                        $('#formResumeRanap input[name=kd_prosedur_sekunder2]').val(resume.kd_prosedur_sekunder2 ? resume.kd_prosedur_sekunder2 : '-')
-                        $('#formResumeRanap input[name=prosedur_sekunder3]').val(resume.prosedur_sekunder3 ? resume.prosedur_sekunder3 : '-')
-                        $('#formResumeRanap input[name=kd_prosedur_sekunder3]').val(resume.kd_prosedur_sekunder3 ? resume.kd_prosedur_sekunder3 : '-')
-                        $('#formResumeRanap input[name=prosedur_sekunder4]').val(resume.prosedur_sekunder4 ? resume.prosedur_sekunder4 : '-')
-                        $('#formResumeRanap input[name=kd_prosedur_sekunder4]').val(resume.kd_prosedur_sekunder4 ? resume.kd_prosedur_sekunder4 : '-')
-
-                        $('#formResumeRanap textarea[name=edukasi]').val(resume.edukasi ? resume.edukasi : '-')
-
-                        $('#formResumeRanap select[name=keadaan]').val(resume.keadaan ? resume.keadaan : 'Membaik').change()
-                        $('#formResumeRanap select[name=ket_keadaan]').val(resume.ket_keadaan ? resume.ket_keadaan : 'SANAM').change()
-                        $('#formResumeRanap select[name=cara_keluar]').val(resume.cara_keluar ? resume.cara_keluar : 'Atas Izin Dokter').change()
-                        $('#formResumeRanap input[name=ket_keluar]').val(resume.ket_keluar ? resume.ket_keluar : '-')
-                        $('#formResumeRanap select[name=dilanjutkan]').val(resume.dilanjutkan ? resume.dilanjutkan : 'Kembali Ke RS').change()
-                        $('#formResumeRanap input[name=ket_dilanjutkan]').val(resume.ket_dilanjutkan ? resume.ket_dilanjutkan : '-')
-                        $('#formResumeRanap input[name=tgl_kontrol]').val(resume.kontrol ? splitTanggal(resume.kontrol.split(' ')[0]) : "{{ date('d-m-Y') }}")
-                        $('#formResumeRanap input[name=jam_kontrol]').val(resume.kontrol ? resume.kontrol.split(' ')[1] : "{{ date('H:i:s') }}")
-
-                        $('#formResumeRanap select[name=skh]').val(resume.shk).change()
-                        $('#formResumeRanap input[name=shk_keterangan]').val(resume.shk_keterangan ? resume.shk_keterangan : '-')
-                        $('#formResumeRanap textarea[name=obat_pulang]').val(resume.obat_pulang ? resume.obat_pulang : '-')
-
+                            if (select.length) {
+                                $(`#formResumeRanap select[name=${index}]`).val(value)
+                            } else if (input.length) {
+                                $(`#formResumeRanap input[name=${index}]`).val(value)
+                            } else {
+                                $(`#formResumeRanap textarea[name=${index}]`).val(value)
+                            }
+                        })
                     }
                 })
-
 
                 // set action pencarian
                 $('#formResumeRanap #srcKeluhan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'keluhan')`);
@@ -579,8 +539,6 @@
 
                 }
             })
-
-
             $('.parameter').text(`${parameter.toUpperCase()}`)
             $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
             $('#tbListResume .petugas').css('display', '')
@@ -653,7 +611,7 @@
                     {
                         data: '',
                         render: function(data, type, row, meta) {
-                            return `${row.template.Pemeriksaan} : ${row.nilai}`
+                            return `${row.template.Pemeriksaan} : ${row.nilai} ${row.template.satuan}`
                         }
                     },
                     {
@@ -854,16 +812,6 @@
                         }
                     })
                 },
-                success: () => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Sukses !',
-                        text: 'Data Berhasil Diproses',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-
-                },
                 error: (request) => {
                     alertSessionExpired(request.status)
                 }
@@ -920,15 +868,19 @@
 
                 if (Object.keys(response).length == 0) {
                     insertResumeMedis(data).done(() => {
-                        $('#tb_ranap').DataTable().destroy();
-                        tb_ranap();
-                        $('#modalResumeRanap').modal('hide');
+                        alertSuccessAjax('Berhasil menambahkan resume medis').then(() => {
+                            $('#tb_ranap').DataTable().destroy();
+                            tb_ranap();
+                            $('#modalResumeRanap').modal('hide');
+                        })
                     })
                 } else {
                     editResumeMedis(data).done(() => {
-                        $('#tb_ranap').DataTable().destroy();
-                        tb_ranap();
-                        $('#modalResumeRanap').modal('hide');
+                        alertSuccessAjax('Berhasil mengubah resume medis').then(() => {
+                            $('#tb_ranap').DataTable().destroy();
+                            tb_ranap();
+                            $('#modalResumeRanap').modal('hide');
+                        })
                     })
                 }
             })

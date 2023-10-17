@@ -424,9 +424,9 @@
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-                            list = '<li><a class="dropdown-item" href="#" onclick="modalLaborat(\'' + data.no_rawat + '\')">Laborat</a></li>';
-                            list += '<li><a class="dropdown-item" href="#" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
-                            list += `<li><a class="dropdown-item" href="#" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
+                            list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalLaborat(\'' + data.no_rawat + '\')">Hasil Laboratorium</a></li>';
+                            list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Berkas Penunjang</a></li>`;
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
@@ -606,7 +606,6 @@
                 dataType: 'JSON',
             }).done((response) => {
                 $.map(response, (asmed) => {
-                    console.log(response);
                     html = '<tr>'
                     html += `<td>${asmed.no_rawat}</td>
                         <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
@@ -633,7 +632,6 @@
                 dataType: 'JSON',
             }).done((response) => {
                 $.map(response, (asmed) => {
-                    console.log(response);
                     html = '<tr>'
                     html += `<td>${asmed.no_rawat}</td>
                         <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
@@ -1240,9 +1238,7 @@
                             suhu_tubuh = suhu_tubuh.replace(',', '.')
                         }
                         if (spesialis.toLowerCase().includes('anak')) {
-                            console.log('anak');
                             if (suhu_tubuh < 35.5 || suhu_tubuh > 39.5) {
-                                console.log('kirim notif');
                                 notifSend(
                                     kd_dokter,
                                     'Notifikasi Kondisi Pasien',
@@ -1252,9 +1248,7 @@
                                 );
                             }
                         } else {
-                            console.log('bukan anak');
                             if (suhu_tubuh < 36 || suhu_tubuh > 38) {
-                                console.log('kirim notif');
                                 notifSend(
                                     kd_dokter,
                                     'Notifikasi Kondisi Pasien',

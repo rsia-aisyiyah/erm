@@ -244,15 +244,10 @@
                     $('#modalSoap').modal('hide');
                 },
                 error: (request) => {
-                    alertSessionExpired(request.status)
-                    else {
-                        Swal.fire({
-                            title: 'Error',
-                            icon: 'error',
-                            text: request.status,
-                            showConfirmButton: true,
-                        })
-                    }
+                    if (request.status)
+                        alertSessionExpired(request.status)
+                    else
+                        alertErrorAjax(request)
 
                 }
             })

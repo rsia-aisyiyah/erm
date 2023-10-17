@@ -52,7 +52,6 @@
                     } else {
                         $('#modalRiwayat').modal('show')
                         riwayatPasien(response);
-                        // console.log(response.reg_periksa);
                     }
                 }
             });

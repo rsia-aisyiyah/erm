@@ -101,9 +101,9 @@ class RegPeriksaController extends Controller
     {
         $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)
             ->with('kamarInap', function ($q) {
-                $q->where('stts_pulang', '!=', 'Pindah Kamar');
+                return $q->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
             })
-            ->with('pasien.bahasa', 'dokter', 'dokter.spesialis', 'kamarInap.kamar.bangsal', 'penjab', 'diagnosaPasien.penyakit', 'bayiGabung.kamarInap.kamar.bangsal')
+            ->with('pasien.bahasa', 'dokter', 'dokter.spesialis', 'penjab', 'diagnosaPasien.penyakit', 'bayiGabung.kamarInap.kamar.bangsal')
             ->first();
         return response()->json($regPeriksa);
     }
@@ -128,7 +128,9 @@ class RegPeriksaController extends Controller
                     }, 'detailPemeriksaanLab' => function ($q) {
                         $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
                     }, 'kamarInap', 'operasi.paketOperasi', 'operasi.op1', 'operasi.asistenOp1', 'operasi.asistenOp2',
-                    'operasi.omloop', 'resumeMedis.regPeriksa.penjab', 'resumeMedis.dokter', 'resumeMedis.kamarInap.kamar.bangsal',
+                    'operasi.omloop', 'resumeMedis.regPeriksa.penjab', 'resumeMedis.dokter', 'resumeMedis.kamarInap' => function ($query) {
+                        return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
+                    },
                     'resumeMedis.bayiGabung.kamarInap.kamar.bangsal', 'asmedRanapAnak.regPeriksa.pasien', 'asmedRanapAnak.dokter', 'asmedRanapKandungan.regPeriksa.pasien', 'asmedRanapKandungan.dokter',
                 ])->orderBy('no_rawat', $request->sortir);
             })

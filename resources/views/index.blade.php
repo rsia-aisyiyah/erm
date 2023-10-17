@@ -129,7 +129,7 @@
                 text: message,
                 showConfirmButton: false,
                 icon: 'success',
-                timer: 1000,
+                timer: 1200,
             })
 
         }
