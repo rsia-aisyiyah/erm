@@ -70,43 +70,43 @@
                             <div class="row">
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="keluhan">Keluhan Utama <a href="javascript:void(0)" id="srcKeluhan" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="keluhan_utama" id="keluhan_utama" cols="30" rows="8"
+                                    <textarea class="form-control" name="keluhan_utama" id="keluhan_utama" cols="30" rows="10"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="pemeriksaan_fisik">Pemeriksaan Fisik <a href="javascript:void(0)" id="srcPemeriksaan" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="pemeriksaan_fisik" id="pemeriksaan_fisik" cols="30" rows="8"
+                                    <textarea class="form-control" name="pemeriksaan_fisik" id="pemeriksaan_fisik" cols="30" rows="10"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 {{-- <div class="mb-2 col-sm-12 col-md-6 col-lg-6"> --}}
                                 {{-- <label for="jalannya_penyakit">Jalannya Penyakit Selama Perawatan</label> --}}
-                                <textarea class="form-control" name="jalannya_penyakit" id="jalannya_penyakit" cols="30" rows="8"
+                                {{-- <textarea class="form-control" name="jalannya_penyakit" id="jalannya_penyakit" cols="30" rows="8"
                                     onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" readonly>-</textarea>
+                                    onblur="cekKosong(this)" readonly>-</textarea> --}}
                                 {{-- </div> --}}
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="pemeriksaan_penunjang">Pemeriksaan Radiologi Terpenting </label>
-                                    <textarea class="form-control" name="pemeriksaan_penunjang" id="pemeriksaan_penunjang" cols="30" rows="8"
+                                    <textarea class="form-control" name="pemeriksaan_penunjang" id="pemeriksaan_penunjang" cols="30" rows="10"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="hasil_lanorat">Pemeriksaan Laborat Terpenting <a href="javascript:void(0)" id="srcLab" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="hasil_laborat" id="hasil_laborat" cols="30" rows="8"
+                                    <textarea class="form-control" name="hasil_laborat" id="hasil_laborat" cols="30" rows="10"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="tindakan_dan_operasi">Tindakan/Operasi Selama Perawatan </label>
-                                    <textarea class="form-control" name="tindakan_dan_operasi" id="tindakan_dan_operasi" cols="30" rows="8"
+                                    <textarea class="form-control" name="tindakan_dan_operasi" id="tindakan_dan_operasi" cols="30" rows="10"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
-                                <div class="mb-2 col-sm-12 col-md-12 col-lg-12">
+                                <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                     <label for="obat_di_rs">Obat-obatan Selama Perwatan <a href="javascript:void(0)" id="srcObat" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
-                                    <textarea class="form-control" name="obat_di_rs" id="obat_di_rs" cols="30" rows="8"
+                                    <textarea class="form-control" name="obat_di_rs" id="obat_di_rs" cols="30" rows="10"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
                                 </div>
@@ -515,35 +515,55 @@
                 },
 
                 columns: [{
-                        data: '',
+                        data: 'tanggal',
                         render: function(data, type, row, meta) {
-                            return splitTanggal(row.tgl_perawatan)
-                        }
-                    },
-                    {
-                        data: '',
-                        render: function(data, type, row, meta) {
-                            return row.jam_rawat
-                        }
-                    },
-                    {
-                        data: '',
-                        render: function(data, type, row, meta) {
-
-                            if (parameter == 'pemeriksaan') {
-                                hasilPeriksa = `Kesadaran : ${row.kesadaran} \n Tanda Vital  : GCS: ${row.gcs}, TD : ${row.tensi} mmHG, Nadi : ${row.nadi}/mnt, RR : ${row.respirasi}/mnt, Suhu : ${row.suhu_tubuh} C, \nHasil Pemeriksaan : ${row[parameter]}.\n`
-                            } else if (parameter == 'obat' || parameter == "obatpulang") {
-                                hasilPeriksa = row['rtl']
+                            if (data) {
+                                // jika ada tanggal asmed
+                                return tanggal = splitTanggal(data)
                             } else {
-                                hasilPeriksa = row[parameter]
+                                return tanggal = splitTanggal(row.tgl_perawatan)
+                            }
+                            return tanggal
+                        }
+                    },
+                    {
+                        data: 'jam',
+                        render: function(data, type, row, meta) {
+                            if (data) {
+                                jam = data
+                            } else {
+                                jam = row.jam_rawat
+                            }
+
+                            return jam;
+                        }
+                    },
+                    {
+                        data: 'hasil',
+                        render: function(data, type, row, meta) {
+                            if (data) {
+                                hasilPeriksa = data;
+                            } else {
+                                if (parameter == 'pemeriksaan') {
+                                    hasilPeriksa = `Kesadaran : ${row.kesadaran} \nTanda Vital  : GCS: ${row.gcs}, TD : ${row.tensi} mmHG, Nadi : ${row.nadi} x/mnt, RR : ${row.respirasi} x/mnt, Suhu : ${row.suhu_tubuh} °C, \nHasil Pemeriksaan : ${row[parameter]}.\n`
+                                } else if (parameter == 'obat' || parameter == "obatpulang") {
+                                    hasilPeriksa = row['rtl']
+                                } else {
+                                    hasilPeriksa = row[parameter]
+                                }
                             }
                             return hasilPeriksa
                         }
                     },
                     {
-                        data: '',
+                        data: 'nm_petugas',
                         render: function(data, type, row, meta) {
-                            return row.petugas.nama
+                            if (data) {
+                                petugas = data;
+                            } else {
+                                petugas = row.petugas.nama
+                            }
+                            return petugas
                         }
                     },
 
@@ -552,6 +572,11 @@
                     "zeroRecords": "Tidak ada data pemeriksaan",
                     "infoEmpty": "Tidak ada data pemeriksaan",
                     "search": "Cari",
+                },
+                initComplete: (response) => {
+                    //menambahkan baris baru jika untuk mengambil asesmen medis UGD
+                    addPemeriksaanByAsmedUgd(parameter, noRawat)
+
                 }
             })
 
@@ -560,6 +585,34 @@
             $('#modalListResume .modal-title').text(`RIWAYAT ${parameter.toUpperCase()}`)
             $('#tbListResume .petugas').css('display', '')
             $('#modalListResume').modal('show')
+        }
+
+
+        function addPemeriksaanByAsmedUgd(parameter, no_rawat) {
+            // inisasi table listResume
+            const table = new DataTable('#tbListResume');
+            getAsmedUgd(no_rawat).done((response) => {
+                // memastikan ada data asmed ugd
+                if (Object.keys(response).length) {
+                    // inisiasi data yanag akan ditambahkan
+                    let dataRow = {
+                        'tanggal': response.tanggal.split(' ')[0],
+                        'jam': response.tanggal.split(' ')[1],
+                        'nm_petugas': `${response.dokter.nm_dokter}`,
+                    }
+                    // pengkondisian parameter data yang dicari
+                    if (parameter == 'pemeriksaan') {
+                        dataRow['hasil'] = `Kesadaran : ${response.kesadaran} \n Tanda Vital : GCS : ${response.gcs}, TD : ${response.td} mmHg, Nadi : ${response.nadi} x/menit, RR : ${response.rr}, Suhu : ${response.suhu} °C\nHasil Pemeriksaan : ${response.ket_fisik}\n `
+                    } else if (parameter == 'obat' || parameter == 'obatpulang') {
+                        dataRow['hasil'] = response.tata
+                    } else if (parameter == 'keluhan') {
+                        dataRow['hasil'] = response.rps
+                    }
+
+                    // tambah baris di datatable tbListResume
+                    table.row.add(dataRow).draw().node();
+                }
+            })
         }
 
         function listHasilLab(noRawat, noRkmMedis, poli = '') {
@@ -743,7 +796,7 @@
                 case 'pemeriksaan':
                     element = $('#formResumeRanap textarea[name=pemeriksaan_fisik]');
                     value = element.val() != '-' ? element.val().replaceAll('&lt;', '<').replaceAll('&gt;', '>') + '\n' : '';
-                    value = $('#tbListResume tbody .row-' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+                    value += $('#tbListResume tbody .row-' + no).find("td").eq(2).html().replaceAll('&lt;', '<').replaceAll('&gt;', '>');
                     element.val(value)
                     $('#modalListResume').modal('hide')
                     break;
@@ -782,6 +835,7 @@
             }
 
         }
+
 
         function insertResumeMedis(data) {
             const resume = $.ajax({

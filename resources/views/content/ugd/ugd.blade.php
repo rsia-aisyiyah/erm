@@ -136,32 +136,6 @@
             tbUgd()
         })
 
-
-        function getAsmedUgd(noRawat) {
-            const no_rawat = textRawat(noRawat, '-')
-            const asmed = $.ajax({
-                url: '/erm/ugd/asesmen/medis/' + no_rawat,
-                method: 'GET',
-                error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
-                },
-            });
-
-            return asmed;
-        }
-
         function tbUgd() {
             tableUdg = $('#tb_ugd').DataTable({
                 processing: true,
@@ -380,7 +354,7 @@
         }
 
         function modalAsmedUgd(params) {
-                        getAsmedUgd(params).done((response) => {
+            getAsmedUgd(params).done((response) => {
                 if (Object.keys(response).length == 0) {
                     return getRegPeriksa(params).done((regPeriksa) => {
 
