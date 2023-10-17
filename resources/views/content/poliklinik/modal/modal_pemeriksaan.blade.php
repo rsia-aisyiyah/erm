@@ -1625,19 +1625,7 @@
                 url: '/erm/poliklinik/asmed/kandungan/get/' + id,
                 metho: `GET`,
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             })
             return asmed;
@@ -1649,19 +1637,7 @@
                 url: '/erm/poliklinik/asmed/anak/get/' + id,
                 metho: `GET`,
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             })
             return asmed;

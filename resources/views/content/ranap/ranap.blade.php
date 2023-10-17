@@ -591,19 +591,7 @@
                 },
                 dataType: 'JSON',
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             })
             return ttv;
@@ -781,7 +769,10 @@
             });
             getAsmedRanapAnak(textRawat(noRawat, '-')).done((response) => {
                 if (Object.keys(response).length) {
+                    $(`#formAsmedRanapAnak input[name=nm_dokter]`).val(response.dokter.nm_dokter)
+                    $(`#formAsmedRanapAnak input[name=nm_dokter]`).attr('readonly', 'readonly')
                     $.each(response, (index, value) => {
+                        console.log('ASMED', response);
                         select = $(`#formAsmedRanapAnak select[name=${index}]`);
                         input = $(`#formAsmedRanapAnak input[name=${index}]`);
                         textarea = $(`#formAsmedRanapAnak textarea[name=${index}]`);
@@ -911,19 +902,7 @@
                     'pemeriksaan': pemeriksaan,
                 },
                 error: (request) => {
-                    if (request.status == 401) {
-                        Swal.fire({
-                            title: 'Sesi login berakhir !',
-                            icon: 'info',
-                            text: 'Silahkan login kembali ',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/erm';
-                            }
-                        })
-                    }
+                    alertSessionExpired(request.status)
                 },
             })
 
@@ -1082,10 +1061,10 @@
                         render: function(data, type, row, meta) {
                             baris = '<tr><td width="5%">Petugas </td><td width="5%">:</td><td>' + row
                                 .petugas.nama + '</td></tr>'
-                            baris += '<tr><td>Subjek </td><td>:</td><td>' + stringSoap(row.keluhan) + '</td></tr>'
-                            baris += '<tr><td>Objek </td><td>:</td><td>' + stringSoap(row.pemeriksaan) + '</td></tr>'
-                            baris += '<tr><td>Assesment</td><td>:</td><td>' + stringSoap(row.penilaian) + '</td></tr>'
-                            baris += '<tr><td>Plan</td><td>:</td><td>' + stringSoap(row.rtl) + '</td></tr>'
+                            baris += '<tr><td>Subjek </td><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
+                            baris += '<tr><td>Objek </td><td>:</td><td>' + stringPemeriksaan(row.pemeriksaan) + '</td></tr>'
+                            baris += '<tr><td>Assesment</td><td>:</td><td>' + stringPemeriksaan(row.penilaian) + '</td></tr>'
+                            baris += '<tr><td>Plan</td><td>:</td><td>' + stringPemeriksaan(row.rtl) + '</td></tr>'
                             html = '<table class="table table-striped">' + baris + '</table>'
                             return html;
                         },
