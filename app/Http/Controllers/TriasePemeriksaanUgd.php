@@ -12,6 +12,14 @@ use Illuminate\Http\Request;
 
 class TriasePemeriksaanUgd extends Controller
 {
+
+    protected $track;
+
+    public function __construct()
+    {
+        $this->track = new \App\Http\Controllers\TrackerSqlController;
+    }
+
     function simpan(Request $request) 
     {
 
@@ -59,7 +67,19 @@ class TriasePemeriksaanUgd extends Controller
                                 'no_rawat' => $valueTriase[$no_rawat],
                                 'tgl_kunjungan' => date('Y-m-d H:i:s'),
                             ]);
-                        } 
+
+                            $this->track->insertSql(new RsiaTriaseUgd(), [
+                                'no_rawat' => $valueTriase[$no_rawat],
+                                'tgl_kunjungan' => date('Y-m-d H:i:s'),
+                            ]);
+                        } else {
+                            $this->track->updateSql(new RsiaTriaseUgd(), [
+                                'no_rawat' => $valueTriase[$no_rawat],
+                                'tgl_kunjungan' => date('Y-m-d H:i:s'),
+                            ], [
+                                'no_rawat' => $valueTriase[$no_rawat],
+                            ]);
+                        }
                     }
                 }
             }
