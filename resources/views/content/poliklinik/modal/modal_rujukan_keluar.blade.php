@@ -49,7 +49,7 @@
                         <label for="ppj_rujuk" class="form-label mb-0" style="font-size:12px;">PPK Rujukan</label>
                         <div class="input-group mb-3">
                             <input type="hidden" id="kode_ppk" name="kode_ppk">
-                            <input type="search" class="form-control form-control-sm ppk_rujuk" id="ppk_rujuk" aria-label="PPK Rujukan" aria-describedby="ppk_rujuk" autocomplete="off">
+                            <input type="text" class="form-control form-control-sm ppk_rujuk" id="ppk_rujuk" aria-label="PPK Rujukan" aria-describedby="ppk_rujuk" autocomplete="off">
                             <button class="btn btn-secondary btn-sm btn-cari" type="button" style="font-size:12px" onclick="cariFaskes()"><i class="bi bi-paperclip"></i></button>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         <label for="diagnosa_rujuk" class="form-label mb-0" style="font-size:12px;">Diagnosa</label>
                         <div class="input-group mb-3">
                             <input type="hidden" id="kode_diagnosa_rujuk" name="kode_diagnosa_rujuk">
-                            <input type="search" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk" autocomplete="off">
+                            <input type="text" class="form-control form-control-sm diagnosa_rujuk" id="diagnosa_rujuk" aria-label="Diagnosa Rujukan" aria-describedby="diagnosa_rujuk" autocomplete="off">
                             <button class="btn btn-secondary btn-sm btn-cari" type="button" style="font-size:12px" onclick="cariDiagnosaRujuk()"><i class="bi bi-paperclip"></i></button>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <label for="catatan_rujuk" class="form-label mb-0" style="font-size:12px;">Catatan</label>
-                        <input type="search" class="form-control form-control-sm catatan_rujuk" id="catatan_rujuk" name="catatan_rujuk" placeholder="" autocomplete="off">
+                        <input type="text" class="form-control form-control-sm catatan_rujuk" id="catatan_rujuk" name="catatan_rujuk" placeholder="" autocomplete="off">
                         <div class="list_catatan"></div>
                     </div>
                     <input type="hidden" name="noka" class="noka">
