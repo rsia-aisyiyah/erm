@@ -7,10 +7,19 @@ use App\Models\RsiaDataTriaseUgdDetailSkala2;
 use App\Models\RsiaDataTriaseUgdDetailSkala3;
 use App\Models\RsiaDataTriaseUgdDetailSkala4;
 use App\Models\RsiaDataTriaseUgdDetailSkala5;
+use App\Models\RsiaTriaseUgd;
 use Illuminate\Http\Request;
 
 class TriasePemeriksaanUgd extends Controller
 {
+
+    protected $track;
+
+    public function __construct()
+    {
+        $this->track = new \App\Http\Controllers\TrackerSqlController;
+    }
+
     function simpan(Request $request) 
     {
 
@@ -50,6 +59,26 @@ class TriasePemeriksaanUgd extends Controller
                         } else {
                             // create data
                             $value::create($valueTriase);
+                        }
+
+                        $checkTriase = RsiaTriaseUgd::where('no_rawat', $valueTriase[$no_rawat])->first();
+                        if (!$checkTriase) {
+                            RsiaTriaseUgd::create([
+                                'no_rawat' => $valueTriase[$no_rawat],
+                                'tgl_kunjungan' => date('Y-m-d H:i:s'),
+                            ]);
+
+                            $this->track->insertSql(new RsiaTriaseUgd(), [
+                                'no_rawat' => $valueTriase[$no_rawat],
+                                'tgl_kunjungan' => date('Y-m-d H:i:s'),
+                            ]);
+                        } else {
+                            $this->track->updateSql(new RsiaTriaseUgd(), [
+                                'no_rawat' => $valueTriase[$no_rawat],
+                                'tgl_kunjungan' => date('Y-m-d H:i:s'),
+                            ], [
+                                'no_rawat' => $valueTriase[$no_rawat],
+                            ]);
                         }
                     }
                 }
