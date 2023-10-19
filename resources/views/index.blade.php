@@ -1363,7 +1363,7 @@
             return asmed;
         }
 
-        function notifSend(topics, title, body, no_rawat, kategori) {
+        function notifSend(topics, title, body, no_rawat, kategori, action) {
             $.ajax({
                 url: APIURL + '/notification/send',
                 data: {
@@ -1373,6 +1373,7 @@
                     "data": {
                         "no_rawat": no_rawat,
                         "kategori": kategori,
+                        "action": action
                     }
                 },
                 method: 'POST',

@@ -1244,7 +1244,8 @@
                                     'Notifikasi Kondisi Pasien',
                                     'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
                                     no_rawat,
-                                    'Ranap'
+                                    'Ranap',
+                                    'detail'
                                 );
                             }
                         } else {
@@ -1254,7 +1255,8 @@
                                     'Notifikasi Kondisi Pasien',
                                     'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
                                     no_rawat,
-                                    'Ranap'
+                                    'Ranap',
+                                    'detail'
                                 );
                             }
                         }
