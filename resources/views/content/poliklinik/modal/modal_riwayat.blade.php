@@ -142,10 +142,28 @@
 
         function pemeriksaanRadiologi(radiologi) {
             if (Object.keys(radiologi).length) {
-                console.log('RADIOLOGI', radiologi);
                 html = `<tr class=""><th style="vertical-align: top;">Radiologi</th><td>`;
                 radiologi.map((rad) => {
-                    const gambar = rad.gambar_radiologi ? `http://192.168.100.31/webapps/radiologi/${rad.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
+                    let hasiRadiologi = '';
+                    rad.hasil_radiologi.map((hasil) => {
+                        if (hasil.tgl_periksa == rad.tgl_periksa && hasil.jam == rad.jam) {
+                            hasiRadiologi = hasil.hasil
+                        }
+                    })
+
+                    if (Object.keys(rad.gambar_radiologi).length) {
+                        rad.gambar_radiologi.map((img) => {
+                            if (img.tgl_periksa == rad.tgl_periksa && img.jam == rad.jam) {
+                                gambar = `http://192.168.100.31/webapps/radiologi/${img.lokasi_gambar}`
+                            } else {
+                                gambar = "{{ asset('/img/default.png') }}"
+                            }
+                        })
+                    } else {
+                        gambar = "{{ asset('/img/default.png') }}"
+                    }
+
+                    // const gambar = rad.gambar_radiologi ? `http://192.168.100.31/webapps/radiologi/${rad.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
                     html += `
                             <div class="row">
                                 <div class="col-lg-4 col-sm-12 col-md-12">
@@ -208,7 +226,7 @@
                                                 Hasil Bacaan
                                             </td>
                                             <td>
-                                                : ${rad.hasil_radiologi ? stringPemeriksaan(rad.hasil_radiologi.hasil) : '-'}    
+                                                :   ${stringPemeriksaan(hasiRadiologi)}
                                             </td>        
                                         </tr>
                                     </table>

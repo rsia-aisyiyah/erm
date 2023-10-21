@@ -11,4 +11,9 @@ class HasilRadiologi extends Model
     protected $table = 'hasil_radiologi';
     protected $guarded = [];
     public $timestamps = false;
+
+    function periksaRadiologi()
+    {
+        return $this->hasMany(PeriksaRadiologi::class, 'no_rawat', 'no_rawat');
+    }
 }

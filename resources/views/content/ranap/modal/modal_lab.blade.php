@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalLabRanap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN PENUNJANG</h5>
@@ -60,7 +60,22 @@
                     <div class="tab-pane fade" id="radiologi-tab-pane" role="tabpanel" aria-labelledby="radiologi-tab" tabindex="0">
                         <small class="mb-3 px-2 py-1  fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilRadiologi" style="display: none">Belum / Tidak dilakukan pemeriksaan radiologi</small>
                         <div class="row" id="viewHasilRadiologi" style="display: none">
-                            <h3 class="fs-5 text-center">HASIL PEMERIKSAAN RADIOLOGI</h3>
+                            <table class="table text-sm table-bordered" id="tbHasilRadiologi">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal Sampel</th>
+                                        <th>Petugas</th>
+                                        <th>Jenis Pemeriksaan</th>
+                                        <th>Proyeksi & Dosis</th>
+                                        <th>Hasil</th>
+                                        <th>Gambar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            {{-- <h3 class="fs-5 text-center">HASIL PEMERIKSAAN RADIOLOGI</h3>
                             <div class="col-lg-6 col-md-12 col-sm-12">
                                 <div class="image-set">
                                     <a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" data-magnify="gallery" data-src="">
@@ -72,7 +87,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <form action="" id="formHasilRadiologi">
-                                    <div class="row">
+                                    <div class="row" id="pemeriksaanRadiologi">
 
                                         <div class="col-sm-12 col-md-12 col-lg-4">
                                             <label for="petugas">Petugas Radiologi</label>
@@ -108,7 +123,7 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -166,23 +181,57 @@
             })
             getPeriksaRadiologi(no_rawat).done((radiologi) => {
                 if (Object.keys(radiologi).length) {
+                    html = `<table class="table table-striped text-sm table-sm">
+                        <tr>
+                            <td>Tanggal Sampel</td>
+                            <td>Petugas</td>
+                            <td>Jenis Pemeriksaan</td>
+                            <td>Proyeksi & Dosis</td>
+                            <td>Hasil</td>
+                            <td>Gambar</td>
+                            </tr> 
+                            `
+                    radiologi.map((radItem, index) => {
+                        let hasilRadiologi = '';
+                        // let gambar = radItem.gambar_radiologi ? `http://192.168.100.31/webapps/radiologi/${response.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
 
-                    const gambar = radiologi.gambar_radiologi ? `http://192.168.100.31/webapps/radiologi/${response.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
-                    const hasilRadiologi = radiologi.hasil ? radiologi.hasil : '-'
-                    const tglPeriksa = radiologi.permintaan_radiologi ? radiologi.permintaan_radiologi.tgl_sampel : radiologi.tgl_periksa
-                    const jamPeriksa = radiologi.permintaan_radiologi ? radiologi.permintaan_radiologi.jam_sampel : radiologi.jam
+                        radItem.hasil_radiologi.map((hasil) => {
+                            if (hasil.tgl_periksa == radItem.tgl_periksa && hasil.jam == radItem.jam) {
+                                hasilRadiologi = stringPemeriksaan(hasil.hasil)
+                            }
+                        })
+                        html = `<tr>
+                                    <td>${splitTanggal(radItem.permintaan_radiologi.tgl_sampel)} ${radItem.permintaan_radiologi.jam_sampel}</td>
+                                    <td>${radItem.petugas.nama}</td>
+                                    <td>${radItem.jns_perawatan.nm_perawatan}</td>
+                                    <td>Proyeksi : ${radItem.proyeksi},<br/> kV : ${radItem.kV},<br/> Inak : ${radItem.inak},<br/> Jml. Penyinaran : ${radItem.jml_penyinaran},<br/> Dosis : ${radItem.dosis}</td>
+                                    <td>${hasilRadiologi}</td>
+                                    <td width="20%"><img id="img${index}" class="img-thumbnail" style="max-width:100%;height:auto"/></td>
+                                    </tr>`
+
+                        $('#tbHasilRadiologi tbody').append(html)
+
+                        let gambar = "";
+                        if (Object.keys(radItem.gambar_radiologi).length) {
+                            radItem.gambar_radiologi.map((imgx, i) => {
+                                if (imgx.tgl_periksa == radItem.tgl_periksa && imgx.jam == radItem.jam) {
+                                    gambar = `http://192.168.100.31/webapps/radiologi/${imgx.lokasi_gambar}`
+                                } else {
+                                    gambar = "{{ asset('img/default.png') }}"
+                                }
+                            })
+
+                        } else {
+                            gambar = "{{ asset('img/default.png') }}"
+                        }
+                        gbr = document.getElementById(`img${index}`);
+                        gbr.setAttribute('src', gambar)
+
+                    })
+
                     $('#viewHasilRadiologi').css('display', 'flex')
                     $('#alertHasilRadiologi').css('display', 'none')
-                    $('#formHasilRadiologi input[name=tgl_sampel]').val(`${splitTanggal(tglPeriksa)} ${jamPeriksa}`)
-                    $('#formHasilRadiologi input[name=petugas]').val(`${radiologi.petugas.nama}`)
-                    $('#formHasilRadiologi input[name=jns_perawatan]').val(`${radiologi.jns_perawatan.nm_perawatan}`)
-                    $('#formHasilRadiologi input[name=jml_penyinaran]').val(`${radiologi.jml_penyinaran}`)
-                    $('#formHasilRadiologi input[name=kV]').val(`${radiologi.kV}`)
-                    $('#formHasilRadiologi input[name=inak]').val(`${radiologi.inak}`)
-                    $('#formHasilRadiologi input[name=proyeksi]').val(`${radiologi.proyeksi}`)
-                    $('#formHasilRadiologi textarea[name=hasil]').val(`${hasilRadiologi}`)
-                    $('#gambarRadiologi').attr('src', `${gambar}`);
-                    $('#btnMagnifyImage').attr('href', `${gambar}`);
+
                 } else {
                     $('#viewHasilRadiologi').css('display', 'none')
                     $('#alertHasilRadiologi').css('display', 'inline')
@@ -193,6 +242,7 @@
 
         $('#modalLabRanap').on('hidden.bs.modal', function() {
             $('#tabel-lab').empty()
+            $('#tbHasilRadiologi tbody').empty()
         })
     </script>
 @endpush

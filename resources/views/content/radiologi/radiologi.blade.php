@@ -107,8 +107,8 @@
             dateStart = hari + '-' + bulan + '-' + tahun;
             let t1 = ''
             let t2 = ''
-            spesialis = localStorage.getItem('spesialis')
-            status = localStorage.getItem('status')
+            spesialis = localStorage.getItem('spesialis') ? localStorage.getItem('spesialis') : ''
+            status = localStorage.getItem('status') ? localStorage.getItem('status') : ''
             tgl_awal = localStorage.getItem('tgl_awal') ? localStorage.getItem('tgl_awal') : splitTanggal(dateStart)
             tgl_akhir = localStorage.getItem('tgl_akhir') ? localStorage.getItem('tgl_akhir') : splitTanggal(dateStart)
             $('.tgl_awal').datepicker({
@@ -159,14 +159,13 @@
                     "search": "Pencarian",
                 },
                 createdRow: (row, data, dataIndex) => {
-                    // $(row).attr('class', 'row-' + dataIndex);
                     $(row).css('cursor', 'pointer');
-                    $(row).attr('onclick', `modalHasilRadiologi('${data.no_rawat}')`);
+                    $(row).attr('onclick', `modalHasilRadiologi('${data.no_rawat}', '${data.tgl_periksa}', '${data.jam}')`);
                 },
                 columns: [{
                         data: 'no_rawat',
                         render: (data, type, row, meta) => {
-                            if (row.hasil_radiologi) {
+                            if (row.hasil_radiologi.length) {
                                 cek = `<i class="bi bi-check-circle-fill text-success"></i>`
                             } else {
                                 cek = '';
@@ -210,7 +209,6 @@
                         render: (data, type, row, meta) => {
                             if (data) {
                                 return data.nm_perawatan
-
                             } else {
                                 return '-'
 
@@ -220,7 +218,7 @@
                     {
                         data: 'status',
                         render: (data, type, row, meta) => {
-                            if (data == 'ranap') {
+                            if (data.toUpperCase() == 'RANAP') {
                                 html = `<button type="button" class="btn btn-danger btn-sm">Rawat Inap</button>`
                             } else {
                                 html = `<button type="button" class="btn btn-warning btn-sm">Rawat Jalan</button>`
@@ -233,16 +231,16 @@
             })
         }
 
-        function modalHasilRadiologi(no_rawat) {
-            getPeriksaRadiologi(no_rawat).done((response) => {
-                const gambar = response.gambar_radiologi ? `http://192.168.100.31/webapps/radiologi/${response.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
+        function modalHasilRadiologi(no_rawat, tgl_periksa, jam) {
+            getPeriksaRadiologi(no_rawat, tgl_periksa, jam).done((response) => {
+                let gambar = ''
                 const tglPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.tgl_sampel : response.tgl_periksa
                 const jamPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.jam_sampel : response.jam
-                $('#gambarRadiologi').attr('src', `${gambar}`);
-                $('#btnMagnifyImage').attr('href', `${gambar}`);
                 $('#btnDownloadImage').attr('href', `${gambar}`);
                 $('#btnDownloadImage').attr('download', `${splitTanggal(tglPeriksa)} ${response.reg_periksa.pasien.nm_pasien}`);
                 $('#formHasilRadiologi input[name=no_rawat]').val(response.no_rawat);
+                $('#formHasilRadiologi input[name=jam]').val(response.jam);
+                $('#formHasilRadiologi input[name=tgl_periksa]').val(response.tgl_periksa);
                 $('#formHasilRadiologi input[name=nm_pasien]').val(`${response.reg_periksa.pasien.nm_pasien} (${response.reg_periksa.no_rkm_medis})`);
                 $('#formHasilRadiologi input[name=tgl_lahir]').val(`${splitTanggal(response.reg_periksa.pasien.tgl_lahir)} (${response.reg_periksa.umurdaftar} ${response.reg_periksa.sttsumur})`);
                 $('#formHasilRadiologi input[name=poliklinik]').val(`${response.reg_periksa.poliklinik.nm_poli}`);
@@ -252,7 +250,27 @@
                 $('#formHasilRadiologi input[name=kv]').val(`${response.kV}`);
                 $('#formHasilRadiologi input[name=inak]').val(`${response.inak}`);
                 $('#formHasilRadiologi input[name=jml_penyinaran]').val(`${response.jml_penyinaran}`);
-                $('#formHasilRadiologi textarea[name=hasil]').val(`${response.hasil_radiologi ? response.hasil_radiologi.hasil : ''}`);
+                response.hasil_radiologi.map((hsx) => {
+                    if (tgl_periksa == hsx.tgl_periksa && jam == hsx.jam) {
+                        $('#formHasilRadiologi textarea[name=hasil]').val(`${hsx ? hsx.hasil : ''}`);
+                    }
+                })
+                if (Object.keys(response.gambar_radiologi).length) {
+                    response.gambar_radiologi.map((imgx) => {
+                        if (tgl_periksa == imgx.tgl_periksa && jam == imgx.jam) {
+                            gambar = `http://192.168.100.31/webapps/radiologi/${imgx.lokasi_gambar}`
+                        } else {
+                            gambar = "{{ asset('/img/default.png') }}";
+
+                        }
+                    })
+
+                } else {
+                    gambar = "{{ asset('/img/default.png') }}";
+
+                }
+                $('#gambarRadiologi').attr('src', `${gambar}`);
+                $('#btnMagnifyImage').attr('href', `${gambar}`);
             })
             $('#btnSimpanHasil').attr('onclick', `simpanHasilRadiologi('${no_rawat}')`);
             $('#modalHasilRadiologi').modal('show')
@@ -266,16 +284,38 @@
             return hasil;
         }
 
+        function createHasilRadiologi(data) {
+            const hasil = $.post('/erm/radiologi/hasil/create', data).fail((request) => {
+                alertErrorAjax(request)
+            })
+            return hasil;
+        }
+
         function simpanHasilRadiologi() {
             const data = {
                 no_rawat: $('#formHasilRadiologi input[name=no_rawat]').val(),
                 hasil: $('#formHasilRadiologi textarea[name=hasil]').val(),
+                tgl_periksa: $('#formHasilRadiologi input[name=tgl_periksa]').val(),
+                jam: $('#formHasilRadiologi input[name=jam]').val(),
                 _token: $('#formHasilRadiologi input[name=_token]').val(),
             };
-            updateHasilRadiologi(data).done(() => {
-                alertSuccessAjax('Hasil radiologi berhasil disimpan').then(() => {
-                    drawTbRadiologi()
-                })
+            getHasilRadiologi(data.no_rawat, data.tgl_periksa, data.jam).done((hasil) => {
+                if (Object.keys(hasil).length) {
+                    updateHasilRadiologi(data).done(() => {
+                        alertSuccessAjax('Hasil radiologi berhasil disimpan').then(() => {
+                            drawTbRadiologi()
+                            $('#modalHasilRadiologi').modal('hide')
+                        })
+                    })
+
+                } else {
+                    createHasilRadiologi(data).done(() => {
+                        alertSuccessAjax('Hasil radiologi berhasil ditambah').then(() => {
+                            drawTbRadiologi()
+                            $('#modalHasilRadiologi').modal('hide')
+                        })
+                    })
+                }
             })
         }
 

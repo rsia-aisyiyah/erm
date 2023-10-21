@@ -9,4 +9,6 @@ class GambarRadiologi extends Model
 {
     use HasFactory;
     protected $table = 'gambar_radiologi';
+    protected $guarded = [];
+    public $timestamps = false;
 }

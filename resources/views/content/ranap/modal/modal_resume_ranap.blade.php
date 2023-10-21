@@ -575,7 +575,7 @@
         }
 
         function listHasilRadiologi(no_rawat) {
-            getPeriksaRadiologi(no_rawat).done((response) => {
+            getHasilRadiologi(no_rawat).done((response) => {
                 $('#tbListResume').DataTable({
                     destroy: true,
                     processing: true,
@@ -601,16 +601,21 @@
                             }
                         },
                         {
-                            data: 'hasil_radiologi.hasil',
+                            data: 'hasil',
                             render: function(data, type, row, meta) {
                                 return data
                             }
 
                         },
                         {
-                            data: 'petugas.nama',
+                            data: 'periksa_radiologi',
                             render: function(data, type, row, meta) {
-                                return data ? data : '-'
+                                data.map((item) => {
+                                    if (item.tgl_periksa == row.tgl_periksa && item.jam == row.jam) {
+                                        nama = item.petugas.nama
+                                    }
+                                })
+                                return nama
                             }
                         },
 

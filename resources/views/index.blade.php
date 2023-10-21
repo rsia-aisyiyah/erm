@@ -612,9 +612,22 @@
             return lab;
         }
 
-        function getPeriksaRadiologi(no_rawat) {
+        function getPeriksaRadiologi(no_rawat, tgl_periksa = '', jam = '') {
             const periksa = $.get('/erm/radiologi/periksa', {
-                no_rawat: no_rawat
+                no_rawat: no_rawat,
+                tgl_periksa: tgl_periksa,
+                jam: jam,
+            }).fail((request) => {
+                alertErrorAjax(request)
+            })
+            return periksa;
+        }
+
+        function getHasilRadiologi(no_rawat, tgl_periksa = '', jam = '') {
+            const periksa = $.get('/erm/radiologi/hasil', {
+                no_rawat: no_rawat,
+                tgl_periksa: tgl_periksa,
+                jam: jam,
             }).fail((request) => {
                 alertErrorAjax(request)
             })
