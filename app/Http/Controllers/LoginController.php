@@ -58,7 +58,6 @@ class LoginController extends Controller
             Session::put('pegawai', $pegawai);
             Session::put('status', 'ok');
 
-            // return $pegawai;
 
             if ($pegawai->departemen == 'DPM1') {
                 return redirect('/resep');
@@ -73,7 +72,9 @@ class LoginController extends Controller
                 $pegawai->departemen == 'DNM5' || $pegawai->departemen == 'DM5' || $pegawai->departemen == 'DM2' || $pegawai->departemen == 'DPM2'
             ) {
                 return redirect('ranap');
-            } else if ($pegawai->nik == 'direksi' || $pegawai->departemen == 'DM6' || $pegawai->departemen == 'SPS' || $pegawai->jnj_jabatan == 'DIRU' || $pegawai->departemen == 'DIR' || $pegawai->departemen == 'CSM') {
+            } else if ($pegawai->departemen == 'RAD' || $pegawai->jbtn == 'Dokter Spesialis Radiologi') {
+                return redirect('radiologi');
+            } else if ($pegawai->nik == 'direksi' || $pegawai->departemen == 'DM6' || $pegawai->departemen == 'SPS' || $pegawai->jbtn != 'Dokter Spesialis Radiologi' || $pegawai->jnj_jabatan == 'DIRU' || $pegawai->departemen == 'DIR' || $pegawai->departemen == 'CSM') {
                 return redirect('/');
             }
         } else {

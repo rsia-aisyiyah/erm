@@ -74,8 +74,11 @@ use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
 use App\Http\Controllers\AskepRanapKandunganController;
 use App\Http\Controllers\AskepRanapNeonatusController;
+use App\Http\Controllers\HasilRadiologiController;
 use App\Http\Controllers\MasalahAskepRanapController;
 use App\Http\Controllers\MasterImunisasiController;
+use App\Http\Controllers\PeriksaRadiologiController;
+use App\Http\Controllers\PermintaanRadiologiController;
 use App\Http\Controllers\RencanaAskepRanapController;
 use App\Http\Controllers\RiwayatImunisasiController;
 use App\Http\Controllers\RiwayatPersalinanController;
@@ -312,6 +315,12 @@ Route::middleware('auth')->group(function () {
     Route::get('riwayat/persalinan/get/{no_rkm_medis}', [RiwayatPersalinanController::class, 'get']);
     Route::delete('riwayat/persalinan/delete', [RiwayatPersalinanController::class, 'delete']);
     Route::post('riwayat/persalinan/insert', [RiwayatPersalinanController::class, 'insert']);
+
+
+    Route::get('radiologi', [PeriksaRadiologiController::class, 'view']);
+    Route::get('radiologi/table', [PeriksaRadiologiController::class, 'getTableIndex']);
+    Route::get('radiologi/periksa', [PeriksaRadiologiController::class, 'getByNoRawat']);
+    Route::post('radiologi/hasil/update', [HasilRadiologiController::class, 'update']);
 
     Route::prefix('bridging')->group(function () {
         Route::prefix('referensi')->group(function () {

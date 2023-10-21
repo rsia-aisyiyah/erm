@@ -18,10 +18,10 @@
                                     <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-lg-3 col-sm-12">
+                            {{-- <div class="col-md-6 col-lg-3 col-sm-12">
                                 <label for="" style="font-size: 12px;margin-bottom:0px">Pasien</label>
                                 <input type="search" class="form-control form-control-sm" id="cari-pasien" placeholder="" autocomplete="off">
-                            </div>
+                            </div> --}}
                             @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
                                 <div class="col-md-6 col-lg-3 col-sm-12">
                                     <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
@@ -141,12 +141,12 @@
                 processing: true,
                 scrollX: true,
                 scrollY: 400,
-                serverSide: true,
+                serverSide: false,
                 stateSave: true,
-                ordering: false,
+                ordering: true,
                 paging: false,
                 info: false,
-                searching: false,
+                searching: true,
                 ajax: {
                     url: "/erm/ugd/get/table",
                     data: {
@@ -169,6 +169,8 @@
                                     window.location.href = '/erm';
                                 }
                             })
+                        } else {
+                            alertAjaxError(request)
                         }
                     },
                 },
@@ -187,9 +189,9 @@
                         data: '',
                         render: function(data, type, row, meta) {
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">CPPT</a></li>';
-                            list += `<li><a class="dropdown-item" href="#" onclick="modalLaborat('${row.no_rawat}')">Hasil Laboratorium</a></li>`
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')">Pemeriksaan Penunjang</a></li>`
                             list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd(\'' + row.no_rawat + '\')">Asesmen Medis UGD</a></li>';
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Berkas Penunjang</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px;margin-left:15px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
@@ -237,15 +239,15 @@
             })
         }
 
-        $('#cari-pasien').on('keyup', () => {
-            const nama = $('#cari-pasien').val()
-            if (nama.length >= 3) {
-                nm_pasien = nama;
-                localStorage.setItem('nm_pasien', nm_pasien)
-                $('#tb_ugd').DataTable().destroy()
-                tbUgd();
-            }
-        })
+        // $('#cari-pasien').on('keyup', () => {
+        //     const nama = $('#cari-pasien').val()
+        //     if (nama.length >= 3) {
+        //         nm_pasien = nama;
+        //         localStorage.setItem('nm_pasien', nm_pasien)
+        //         $('#tb_ugd').DataTable().destroy()
+        //         tbUgd();
+        //     }
+        // })
         $('#cari-pasien').on('search', () => {
             const nama = $('#cari-pasien').val()
             if (nama.length == 0) {

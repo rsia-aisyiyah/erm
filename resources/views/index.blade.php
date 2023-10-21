@@ -54,6 +54,21 @@
     <script type="text/javascript">
         const APIURL = 'http://sim.rsiaaisyiyah.com/rsiap-api/api';
 
+        window.onerror = function(msg, url, linenumber) {
+            Swal.fire({
+                title: 'Terjadi Masalah!',
+                icon: 'error',
+                text: 'Error message : ' + msg,
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
+            })
+            // return true;
+        }
+
         function ambilNoRawat(no_rawat) {
             id = no_rawat;
         }
@@ -323,7 +338,11 @@
             return pemeriksaan
         }
 
-        $("[data-magnify=gallery]").magnify();
+        $("[data-magnify=gallery]").magnify({
+            initMaximized: true,
+            multiInstances: false,
+        });
+
 
         function detailPeriksa(no_rawat, status) {
 
@@ -591,6 +610,15 @@
             })
 
             return lab;
+        }
+
+        function getPeriksaRadiologi(no_rawat) {
+            const periksa = $.get('/erm/radiologi/periksa', {
+                no_rawat: no_rawat
+            }).fail((request) => {
+                alertErrorAjax(request)
+            })
+            return periksa;
         }
 
         function getPemberianObat(no_rawat, obat = '') {
@@ -1363,7 +1391,7 @@
             return asmed;
         }
 
-        function notifSend(topics, title, body, no_rawat, kategori, action) {
+        function notifSend(topics, title, body, no_rawat, kategori) {
             $.ajax({
                 url: APIURL + '/notification/send',
                 data: {
@@ -1373,7 +1401,6 @@
                     "data": {
                         "no_rawat": no_rawat,
                         "kategori": kategori,
-                        "action": action
                     }
                 },
                 method: 'POST',

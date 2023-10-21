@@ -87,7 +87,7 @@
                                     onblur="cekKosong(this)" readonly>-</textarea> --}}
                                 {{-- </div> --}}
                                 <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
-                                    <label for="pemeriksaan_penunjang">Pemeriksaan Radiologi Terpenting </label>
+                                    <label for="pemeriksaan_penunjang" id="srcRadiologi">Pemeriksaan Radiologi Terpenting <a href="javascript:void(0)" id="srcRadiologi" class="badge text-bg-primary"><i class="bi bi-search"></i></a></label>
                                     <textarea class="form-control" name="pemeriksaan_penunjang" id="pemeriksaan_penunjang" cols="30" rows="10"
                                         onfocus="removeZero(this)"
                                         onblur="cekKosong(this)">-</textarea>
@@ -446,6 +446,7 @@
                 $('#formResumeRanap #srcObat').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'obat')`);
                 $('#formResumeRanap #srcObatPulang').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'obatpulang')`);
                 $('#formResumeRanap #srcLab').attr('onclick', `listHasilLab('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
+                $('#formResumeRanap #srcRadiologi').attr('onclick', `listHasilRadiologi('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
                 // $('#formResumeRanap #srcObat').attr('onclick', `listPemberianObat('${response.no_rawat}')`);
             })
             $('#modalResumeRanap').modal('show')
@@ -571,6 +572,62 @@
                     table.row.add(dataRow).draw().node();
                 }
             })
+        }
+
+        function listHasilRadiologi(no_rawat) {
+            getPeriksaRadiologi(no_rawat).done((response) => {
+                $('#tbListResume').DataTable({
+                    destroy: true,
+                    processing: true,
+                    ordering: true,
+                    paging: false,
+                    scrollY: true,
+                    info: false,
+                    data: response,
+                    createdRow: function(row, data, dataIndex) {
+                        $(row).attr('class', 'row-' + dataIndex);
+                        $(row).attr('onclick', `setTextRiwayat('radiologi', ${dataIndex})`);
+                    },
+                    columns: [{
+                            data: 'tgl_periksa',
+                            render: function(data, type, row, meta) {
+                                return splitTanggal(data)
+                            }
+                        },
+                        {
+                            data: 'jam',
+                            render: function(data, type, row, meta) {
+                                return data
+                            }
+                        },
+                        {
+                            data: 'hasil_radiologi.hasil',
+                            render: function(data, type, row, meta) {
+                                return data
+                            }
+
+                        },
+                        {
+                            data: 'petugas.nama',
+                            render: function(data, type, row, meta) {
+                                return data ? data : '-'
+                            }
+                        },
+
+                    ],
+                    "language": {
+                        "zeroRecords": "Tidak ada data pemeriksaan",
+                        "infoEmpty": "Tidak ada data pemeriksaan",
+                        "search": "Cari",
+                    }
+                })
+                // $('#modalListResume #btn-pemeriksaan').attr(`onclick`, `cariPemeriksaanLab('${no_rawat}', this)`)
+            })
+            $('.parameter').text(`HASIL RADIOLOGI`)
+            $('#modalListResume .modal-title').text(`RIWAYAT RADIOLOGI`)
+            $('#modalListResume input[name=no_rawat]').val(no_rawat)
+            $('#modalListResume input[name=parameter]').val('radiologi')
+            $('#modalListResume').modal('show')
         }
 
         function listHasilLab(noRawat, noRkmMedis, poli = '') {
@@ -765,6 +822,13 @@
                     element.val(value)
                     $('#modalListResume').modal('hide')
                     break;
+                case 'radiologi':
+                    element = $('#formResumeRanap textarea[name=pemeriksaan_penunjang]');
+                    value = element.val() != '-' ? element.val() + ', ' : '';
+                    value += $('#tbListResume tbody .row-' + no).find("td").eq(2).html();
+                    element.val(value)
+                    $('#modalListResume').modal('hide')
+                    break;
                 case 'obat':
                     element = $('#formResumeRanap textarea[name=obat_di_rs]');
                     value = element.val() != '-' ? element.val() + ', ' : '';
@@ -869,11 +933,11 @@
                 if (Object.keys(response).length == 0) {
                     insertResumeMedis(data).done(() => {
                         notifSend(
-                            $('#formResumeRanap input[name=kd_dokter]').val(), 
-                            "Notifikasi Resume Pasien", 
-                            `Resume pasien atas nama ${$('#formResumeRanap input[name=pasien]').val()}. Mohon segera cek dan verifikasi pengisian.`, 
-                            $('#formResumeRanap input[name=no_rawat]').val(), 
-                            "Ranap", 
+                            $('#formResumeRanap input[name=kd_dokter]').val(),
+                            "Notifikasi Resume Pasien",
+                            `Resume pasien atas nama ${$('#formResumeRanap input[name=pasien]').val()}. Mohon segera cek dan verifikasi pengisian.`,
+                            $('#formResumeRanap input[name=no_rawat]').val(),
+                            "Ranap",
                             "resume"
                         );
                         alertSuccessAjax('Berhasil menambahkan resume medis').then(() => {

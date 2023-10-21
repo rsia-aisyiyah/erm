@@ -130,6 +130,7 @@
                     '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
                     pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
+                    pemeriksaanRadiologi(i.periksa_radiologi) +
                     fotoPemeriksaan(i.upload) +
                     '</tr>';
 
@@ -137,6 +138,87 @@
 
             });
             $('#tb_riwayat').append(detail);
+        }
+
+        function pemeriksaanRadiologi(radiologi) {
+            if (Object.keys(radiologi).length) {
+                console.log('RADIOLOGI', radiologi);
+                html = `<tr class=""><th style="vertical-align: top;">Radiologi</th><td>`;
+                radiologi.map((rad) => {
+                    const gambar = rad.gambar_radiologi ? `http://192.168.100.31/webapps/radiologi/${rad.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
+                    html += `
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-12 col-md-12">
+                                    <a data-magnify="gallery" data-src=""  data-group="a" href="${gambar}">
+                                        <img src="${gambar}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                    </a>
+                                </div>
+                                <div class="col-lg-8 col-sm-12 col-md-12" style="background-color:#e1ffe3">
+                                    <table class="table table-sm table-borderless" width="100%">
+                                        <tr>
+                                            <td width="20%">
+                                                Tanggal Periksa
+                                            </td>
+                                            <td>
+                                                : ${formatTanggal(rad.tgl_periksa)} ${rad.jam}    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Dokter Radiologi
+                                            </td>
+                                            <td>
+                                                : ${rad.dokter.nm_dokter}    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Petugas Radiologi 
+                                            </td>
+                                            <td>
+                                                : ${rad.petugas.nama}    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Jenis Perawatan
+                                            </td>
+                                            <td>
+                                                : ${rad.jns_perawatan.nm_perawatan}    
+                                            </td>        
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Indikasi Medis
+                                            </td>
+                                            <td>
+                                                : ${rad.permintaan_radiologi ? rad.permintaan_radiologi.diagnosa_klinis : '-'}    
+                                            </td>        
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Informasi Tambahan
+                                            </td>
+                                            <td>
+                                                : ${rad.permintaan_radiologi ? rad.permintaan_radiologi.informasi_tambahan : '-'}    
+                                            </td>        
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Hasil Bacaan
+                                            </td>
+                                            <td>
+                                                : ${rad.hasil_radiologi ? stringPemeriksaan(rad.hasil_radiologi.hasil) : '-'}    
+                                            </td>        
+                                        </tr>
+                                    </table>
+                                </div>    
+                                 
+                            </div>`;
+                })
+                html += `</td></tr>`;
+                return html
+            }
         }
 
         function setPemeriksaan(jns, data) {

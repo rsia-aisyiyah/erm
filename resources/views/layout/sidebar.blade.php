@@ -1,6 +1,6 @@
 {{-- @dd(auth()->user()->nama) --}}
 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-    <div class="position-sticky pt-3 sidebar-sticky">
+    <div class="">
         <ul class="nav flex-column">
             <h6
                 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
@@ -23,7 +23,9 @@
                 </li>
             @endif
 
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM1' || session()->get('pegawai')->departemen == 'DM6' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->dokter)
+            @if (
+                (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM1' || session()->get('pegawai')->departemen == 'DM6' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->dokter) &&
+                    session()->get('pegawai')->jbtn != 'Dokter Spesialis Radiologi')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('poliklinik') ? 'active' : '' }}" href="/erm/poliklinik">
                         <i class="bi bi-bandaid align-text-bottom"></i>
@@ -47,8 +49,17 @@
                     </a>
                 </li>
             @endif
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->jbtn == 'Dokter Spesialis Radiologi' || session()->get('pegawai')->departemen == 'RAD')
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('radiologi') ? 'active' : '' }}" href="/erm/radiologi">
+                        <i class="bi bi-radioactive"></i>
+                        Radiologi
+                    </a>
+                </li>
+            @endif
 
-            @if (session()->get('pegawai')->nik == 'direksi' ||
+            @if (
+                (session()->get('pegawai')->nik == 'direksi' ||
                     session()->get('pegawai')->departemen == 'DIR' ||
                     session()->get('pegawai')->jnj_jabatan == 'DIRU' ||
                     session()->get('pegawai')->departemen == 'DM8' ||
@@ -63,7 +74,8 @@
                     session()->get('pegawai')->departemen == 'DPM2' ||
                     session()->get('pegawai')->departemen == 'DM1' ||
                     session()->get('pegawai')->departemen == 'CSM' ||
-                    session()->get('pegawai')->dokter)
+                    session()->get('pegawai')->dokter) &&
+                    session()->get('pegawai')->jbtn != 'Dokter Spesialis Radiologi')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('ranap') ? 'active' : '' }}" href="/erm/ranap">
                         <i class="bi bi-hospital-fill align-text-bottom"></i>
@@ -72,7 +84,9 @@
                 </li>
             @endif
 
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM1' || session()->get('pegawai')->departemen == 'CSM' ||  session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->dokter)
+            @if (
+                (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM1' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->dokter) &&
+                    session()->get('pegawai')->jbtn != 'Dokter Spesialis Radiologi')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('ugd') ? 'active' : '' }}" href="/erm/ugd">
                         <i class="bi bi-clipboard-pulse align-text-bottom"></i>

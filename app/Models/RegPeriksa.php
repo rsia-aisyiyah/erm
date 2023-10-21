@@ -171,4 +171,20 @@ class RegPeriksa extends Model
     {
         return $this->hasOne(ResumePasienRanap::class, 'no_rawat', 'no_rawat');
     }
+    function permintaanRadiologi()
+    {
+        return $this->hasMany(PermintaanRadiologi::class, 'no_rawat', 'no_rawat');
+    }
+    function periksaRadiologi()
+    {
+        return $this->hasMany(PeriksaRadiologi::class, 'no_rawat', 'no_rawat');
+    }
+    function hasilRadiologi()
+    {
+        return $this->hasMany(HasilRadiologi::class, 'no_rawat', 'no_rawat');
+    }
+    function gambarRadiologi()
+    {
+        return $this->hasMany(GambarRadiologi::class, 'no_rawat', 'no_rawat');
+    }
 }

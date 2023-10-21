@@ -131,7 +131,8 @@ class RegPeriksaController extends Controller
                     'operasi.omloop', 'resumeMedis.regPeriksa.penjab', 'resumeMedis.dokter', 'resumeMedis.kamarInap' => function ($query) {
                         return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
                     },
-                    'resumeMedis.bayiGabung.kamarInap.kamar.bangsal', 'asmedRanapAnak.regPeriksa.pasien', 'asmedRanapAnak.dokter', 'asmedRanapKandungan.regPeriksa.pasien', 'asmedRanapKandungan.dokter',
+                    'resumeMedis.bayiGabung.kamarInap.kamar.bangsal', 'asmedRanapAnak.regPeriksa.pasien', 'asmedRanapAnak.dokter', 'asmedRanapKandungan.regPeriksa.pasien',
+                    'asmedRanapKandungan.dokter', 'periksaRadiologi.hasilRadiologi', 'periksaRadiologi.gambarRadiologi', 'periksaRadiologi.dokterRujuk', 'periksaRadiologi.petugas', 'periksaRadiologi.permintaanRadiologi', 'periksaRadiologi.dokter', 'periksaRadiologi.jnsPerawatan', 'periksaRadiologi.hasilRadiologi'
                 ])->orderBy('no_rawat', $request->sortir);
             })
             ->first();
