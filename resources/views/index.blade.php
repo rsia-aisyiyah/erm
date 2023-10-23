@@ -58,9 +58,11 @@
             Swal.fire({
                 title: 'Terjadi Masalah!',
                 icon: 'error',
-                text: 'Error message : ' + msg,
+                text: 'Error message : ' + msg + '</br>' + 'Muat ulang halaman ?',
                 showConfirmButton: true,
-                confirmButtonText: 'OK',
+                showDenyButton: true,
+                confirmButtonText: 'Ya',
+                denyButtonText: 'Tidak',
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.reload();
