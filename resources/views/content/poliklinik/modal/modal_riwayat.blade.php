@@ -1169,7 +1169,7 @@
                 dataType: 'JSON',
                 method: 'GET',
                 success: function(response) {
-                    $('.dr-' + textRawat(no_rawat) + '-' + lab).text(response.dokter.nm_dokter);
+                    $('.dr-' + textRawat(no_rawat) + '-' + lab).text(response.dokter?.nm_dokter);
                     $('.petugas-' + textRawat(no_rawat) + '-' + lab).text(response.petugas.nama);
                 }
             })
