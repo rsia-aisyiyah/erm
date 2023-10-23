@@ -58,12 +58,7 @@
                 </li>
             @endif
 
-            @if (
-                (session()->get('pegawai')->nik == 'direksi' ||
-                    session()->get('pegawai')->departemen == 'DIR' ||
-                    session()->get('pegawai')->jnj_jabatan == 'DIRU' ||
-                    session()->get('pegawai')->departemen == 'DM8' ||
-                    session()->get('pegawai')->departemen == 'DM3' ||
+            @if (session()->get('pegawai')->departemen == 'DM3' ||
                     session()->get('pegawai')->departemen == 'DM7' ||
                     session()->get('pegawai')->departemen == 'SPS' ||
                     session()->get('pegawai')->departemen == 'DPM1' ||
@@ -74,8 +69,7 @@
                     session()->get('pegawai')->departemen == 'DPM2' ||
                     session()->get('pegawai')->departemen == 'DM1' ||
                     session()->get('pegawai')->departemen == 'CSM' ||
-                    session()->get('pegawai')->dokter) &&
-                    session()->get('pegawai')->jbtn != 'Dokter Spesialis Radiologi')
+                    session()->get('pegawai')->dokter)
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('ranap') ? 'active' : '' }}" href="/erm/ranap">
                         <i class="bi bi-hospital-fill align-text-bottom"></i>
