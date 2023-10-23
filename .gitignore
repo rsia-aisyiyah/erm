@@ -16,3 +16,8 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+
+# all image in public erm
+/public/erm/*.jpeg
+/public/erm/*.jpg
+/public/erm/*.png
