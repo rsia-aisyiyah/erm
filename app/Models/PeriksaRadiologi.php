@@ -21,6 +21,10 @@ class PeriksaRadiologi extends Model
     {
         return $this->hasOne(PermintaanRadiologi::class, 'no_rawat', 'no_rawat');
     }
+    function permintaan()
+    {
+        return $this->hasMany(PermintaanRadiologi::class, 'no_rawat', 'no_rawat');
+    }
     function jnsPerawatan()
     {
         return $this->belongsTo(JenisPerawatanRadiologi::class, 'kd_jenis_prw', 'kd_jenis_prw');

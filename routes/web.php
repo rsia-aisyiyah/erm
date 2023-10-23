@@ -318,7 +318,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('radiologi', [PeriksaRadiologiController::class, 'view']);
-    Route::get('radiologi/table', [PeriksaRadiologiController::class, 'getTableIndex']);
+    Route::get('radiologi/table', [PermintaanRadiologiController::class, 'getTableIndex']);
     Route::get('radiologi/periksa', [PeriksaRadiologiController::class, 'getByNoRawat']);
     Route::post('radiologi/periksa/update', [PeriksaRadiologiController::class, 'update']);
     Route::post('radiologi/hasil/update', [HasilRadiologiController::class, 'update']);
