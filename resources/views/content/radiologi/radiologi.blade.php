@@ -236,8 +236,8 @@
                 let gambar = ''
                 const tglPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.tgl_sampel : response.tgl_periksa
                 const jamPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.jam_sampel : response.jam
-                $('#btnDownloadImage').attr('href', `${gambar}`);
-                $('#btnDownloadImage').attr('download', `${splitTanggal(tglPeriksa)} ${response.reg_periksa.pasien.nm_pasien}`);
+                // $('#btnDownloadImage').attr('href', `${gambar}`);
+                // $('#btnDownloadImage').attr('download', `${splitTanggal(tglPeriksa)} ${response.reg_periksa.pasien.nm_pasien}`);
                 $('#formHasilRadiologi input[name=no_rawat]').val(response.no_rawat);
                 $('#formHasilRadiologi input[name=jam]').val(response.jam);
                 $('#formHasilRadiologi input[name=tgl_periksa]').val(response.tgl_periksa);
@@ -256,13 +256,23 @@
                     }
                 })
                 if (Object.keys(response.gambar_radiologi).length) {
-                    response.gambar_radiologi.map((imgx) => {
+                    response.gambar_radiologi.map((imgx, index) => {
                         if (tgl_periksa == imgx.tgl_periksa && jam == imgx.jam) {
-                            gambar = `http://192.168.100.31/webapps/radiologi/${imgx.lokasi_gambar}`
+                            gambar = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${imgx.lokasi_gambar}`
                         } else {
                             gambar = "{{ asset('/img/default.png') }}";
 
                         }
+                        html = `
+                             <a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gambar}">
+                                <i class="bi bi-eye"></i> LAYAR PENUH
+                            </a>
+                            <a class="btn btn-primary btn-sm mb-2" id="btnDownloadImage" class="downloadImg${index}" download="${textRawat(no_rawat)}" data-src="${gambar}">
+                                <i class="bi bi-download"></i> UNDUH GAMBAR
+                            </a>
+                            <img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative thumbnailImg${index}" src="${gambar}" style="padding: 10px" width="100%">
+                        `;
+                        $('.image-set').append(html);
                     })
 
                 } else {
@@ -322,6 +332,8 @@
         $('#modalHasilRadiologi').on('hidden.bs.modal', () => {
             $('#gambarRadiologi').attr('src', '');
             $('#btnMagnifyImage').attr('href', '');
+            $('.image-set').empty();
+            $('#formHasilRadiologi #hasil').val('');
         })
     </script>
 @endpush

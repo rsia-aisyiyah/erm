@@ -193,7 +193,7 @@
                             `
                     radiologi.map((radItem, index) => {
                         let hasilRadiologi = '';
-                        // let gambar = radItem.gambar_radiologi ? `http://192.168.100.31/webapps/radiologi/${response.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
+                        // let gambar = radItem.gambar_radiologi ? `https://sim.rsiaaisyiyah.com/webapps/radiologi/${response.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
 
                         radItem.hasil_radiologi.map((hasil) => {
                             if (hasil.tgl_periksa == radItem.tgl_periksa && hasil.jam == radItem.jam) {
@@ -215,7 +215,7 @@
                         if (Object.keys(radItem.gambar_radiologi).length) {
                             radItem.gambar_radiologi.map((imgx, i) => {
                                 if (imgx.tgl_periksa == radItem.tgl_periksa && imgx.jam == radItem.jam) {
-                                    gambar = `http://192.168.100.31/webapps/radiologi/${imgx.lokasi_gambar}`
+                                    gambar = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${imgx.lokasi_gambar}`
                                 } else {
                                     gambar = "{{ asset('img/default.png') }}"
                                 }

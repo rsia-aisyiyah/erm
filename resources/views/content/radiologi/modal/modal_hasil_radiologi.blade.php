@@ -6,16 +6,16 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="image-set">
-                            <a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" data-magnify="gallery" data-src="">
+                            {{-- <a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" data-magnify="gallery" data-src="">
                                 <i class="bi bi-eye"></i> LAYAR PENUH
                             </a>
                             <a class="btn btn-primary btn-sm mb-2" id="btnDownloadImage" download="" data-src="">
                                 <i class="bi bi-download"></i> UNDUH GAMBAR
                             </a>
                             <br />
-                            <img id="gambarRadiologi" class="img-thumbnail position-relative" style="padding: 10px" width="100%">
+                            <img id="gambarRadiologi" class="img-thumbnail position-relative" style="padding: 10px" width="100%"> --}}
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
