@@ -23,7 +23,7 @@ class PeriksaRadiologiController extends Controller
 
     function getByNoRawat(Request $request)
     {
-        $periksa = $this->pemeriksaan->with(['gambarRadiologi', 'petugas', 'hasilRadiologi', 'jnsPerawatan', 'regPeriksa.pasien', 'regPeriksa.penjab', 'permintaanRadiologi', 'regPeriksa.poliklinik']);
+        $periksa = $this->pemeriksaan->with(['gambarRadiologi', 'petugas', 'hasilRadiologi', 'jnsPerawatan', 'regPeriksa.pasien', 'regPeriksa.penjab',  'regPeriksa.poliklinik', 'permintaan.permintaanPemeriksaan']);
         if ($request->tgl_periksa) {
             return $periksa->where([
                 'no_rawat' => $request->no_rawat,
@@ -38,7 +38,7 @@ class PeriksaRadiologiController extends Controller
     {
         $pemeriksaan = $this->pemeriksaan->where([
             'tgl_periksa' => date('Y-m-d'),
-        ])->with(['regPeriksa.pasien', 'dokterRujuk', 'jnsPerawatan', 'hasilRadiologi', 'permintaanRadiologi'])->get();
+        ])->with(['regPeriksa.pasien', 'dokterRujuk', 'jnsPerawatan', 'hasilRadiologi', 'permintaan.permintaanPemeriksaan'])->get();
 
         return $pemeriksaan;
     }
@@ -76,7 +76,7 @@ class PeriksaRadiologiController extends Controller
         if ($request->status) {
             $pemeriksaan = $pemeriksaan->where('status', $request->status);
         }
-        return $pemeriksaan->with(['regPeriksa.pasien', 'dokterRujuk', 'jnsPerawatan', 'hasilRadiologi', 'permintaanRadiologi'])->get();
+        return $pemeriksaan->with(['regPeriksa.pasien', 'dokterRujuk', 'jnsPerawatan', 'hasilRadiologi', 'permintaan.permintaanPemeriksaan'])->get();
     }
     function getTableIndex(Request $request)
     {

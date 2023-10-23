@@ -47,7 +47,7 @@
                             <tr role="row">
                                 <th>No Rawat</th>
                                 <th>Nama / No. RM</th>
-                                <th>Tgl Periksa</th>
+                                <th>Tgl Permintaan</th>
                                 <th>Dokter Perujuk</th>
                                 <th>Diagnosa Klinis</th>
                                 <th>Informasi Klinis</th>
@@ -159,14 +159,22 @@
                     "search": "Pencarian",
                 },
                 createdRow: (row, data, dataIndex) => {
+                    console.log(data);
                     $(row).css('cursor', 'pointer');
-                    $(row).attr('onclick', `modalHasilRadiologi('${data.no_rawat}', '${data.tgl_periksa}', '${data.jam}')`);
+                    $(row).attr('onclick', `modalHasilRadiologi('${data.no_rawat}', '${data.tgl_hasil}', '${data.jam_hasil}', '${data.noorder}')`);
                 },
                 columns: [{
                         data: 'no_rawat',
                         render: (data, type, row, meta) => {
+                            // console.log(row);
+                            // console.log(cel);
+                            let cek = '';
                             if (row.hasil_radiologi.length) {
-                                cek = `<i class="bi bi-check-circle-fill text-success"></i>`
+                                row.hasil_radiologi.map((hasilRadiologi, index) => {
+                                    if (hasilRadiologi.tgl_periksa == row.tgl_periksa && hasilRadiologi.jam == row.jam) {
+                                        cek = `<i class="bi bi-check-circle-fill text-success"></i>`
+                                    }
+                                })
                             } else {
                                 cek = '';
                             }
@@ -183,7 +191,8 @@
                     {
                         data: 'tgl_permintaan',
                         render: (data, type, row, meta) => {
-                            return `${splitTanggal(row.tgl_periksa)} ${row.jam}`
+                            // return `-`
+                            return `${splitTanggal(data)} ${row.jam_permintaan}`
                         }
                     },
                     {
@@ -193,26 +202,27 @@
                         }
                     },
                     {
-                        data: 'permintaan_radiologi.diagnosa_klinis',
+                        data: 'diagnosa_klinis',
                         render: (data, type, row, meta) => {
-                            return data ? data : '';
+                            return data;
                         }
                     },
                     {
-                        data: 'permintaan_radiologi.informasi_tambahan',
+                        data: 'informasi_tambahan',
                         render: (data, type, row, meta) => {
-                            return data ? data : '';
+                            return data
                         }
                     },
                     {
-                        data: 'jns_perawatan',
+                        data: 'permintaan_pemeriksaan',
                         render: (data, type, row, meta) => {
-                            if (data) {
-                                return data.nm_perawatan
-                            } else {
-                                return '-'
+                            let jenisPeriksa = ''
+                            data.map((pemeriksaan, index) => {
+                                // console.log(pemeriksaan);
+                                jenisPeriksa += pemeriksaan.jns_pemeriksaan.nm_perawatan + ',<br/>';
+                            })
 
-                            }
+                            return jenisPeriksa;
                         }
                     },
                     {
@@ -224,20 +234,18 @@
                                 html = `<button type="button" class="btn btn-warning btn-sm">Rawat Jalan</button>`
                             }
                             return html
-                            // return row.jns_perawatan.nm_perawatan
                         }
                     },
                 ]
             })
         }
 
-        function modalHasilRadiologi(no_rawat, tgl_periksa, jam) {
+        function modalHasilRadiologi(no_rawat, tgl_periksa, jam, idOrder) {
             getPeriksaRadiologi(no_rawat, tgl_periksa, jam).done((response) => {
+                console.log(response);
                 let gambar = ''
                 const tglPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.tgl_sampel : response.tgl_periksa
                 const jamPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.jam_sampel : response.jam
-                // $('#btnDownloadImage').attr('href', `${gambar}`);
-                // $('#btnDownloadImage').attr('download', `${splitTanggal(tglPeriksa)} ${response.reg_periksa.pasien.nm_pasien}`);
                 $('#formHasilRadiologi input[name=no_rawat]').val(response.no_rawat);
                 $('#formHasilRadiologi input[name=jam]').val(response.jam);
                 $('#formHasilRadiologi input[name=tgl_periksa]').val(response.tgl_periksa);
@@ -250,6 +258,7 @@
                 $('#formHasilRadiologi input[name=kv]').val(`${response.kV}`);
                 $('#formHasilRadiologi input[name=inak]').val(`${response.inak}`);
                 $('#formHasilRadiologi input[name=jml_penyinaran]').val(`${response.jml_penyinaran}`);
+                $('#formHasilRadiologi input[name=noorder]').val(`${idOrder}`);
                 response.hasil_radiologi.map((hsx) => {
                     if (tgl_periksa == hsx.tgl_periksa && jam == hsx.jam) {
                         $('#formHasilRadiologi textarea[name=hasil]').val(`${hsx ? hsx.hasil : ''}`);
@@ -259,21 +268,22 @@
                     response.gambar_radiologi.map((imgx, index) => {
                         if (tgl_periksa == imgx.tgl_periksa && jam == imgx.jam) {
                             gambar = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${imgx.lokasi_gambar}`
+                            html = `
+                                 <a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gambar}">
+                                    <i class="bi bi-eye"></i> LAYAR PENUH
+                                </a>
+                                <a class="btn btn-primary btn-sm mb-2" id="btnDownloadImage" class="downloadImg${index}" download="${textRawat(no_rawat)}" href="${gambar}" target="_blank">
+                                    <i class="bi bi-download"></i> UNDUH GAMBAR
+                                </a>
+                                <img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative thumbnailImg${index}" src="${gambar}" style="padding: 10px" width="100%">
+                            `;
                         } else {
                             gambar = "{{ asset('/img/default.png') }}";
+                            html = `<img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative thumbnailImg${index}" src="${gambar}" style="padding: 10px" width="100%">`
 
                         }
-                        html = `
-                             <a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gambar}">
-                                <i class="bi bi-eye"></i> LAYAR PENUH
-                            </a>
-                            <a class="btn btn-primary btn-sm mb-2" id="btnDownloadImage" class="downloadImg${index}" download="${textRawat(no_rawat)}" href="${gambar}" target="_blank">
-                                <i class="bi bi-download"></i> UNDUH GAMBAR
-                            </a>
-                            <img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative thumbnailImg${index}" src="${gambar}" style="padding: 10px" width="100%">
-                        `;
-                        $('.image-set').append(html);
                     })
+                    $('.image-set').append(html);
 
                 } else {
                     gambar = "{{ asset('/img/default.png') }}";

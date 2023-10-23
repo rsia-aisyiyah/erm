@@ -47,6 +47,7 @@
                                     <input type="text" class="form-control form-control-sm" id="tgl_sampel" name="tgl_sampel" placeholder="" readonly>
                                     <input type="hidden" id="tgl_periksa" name="tgl_periksa">
                                     <input type="hidden" id="jam" name="jam">
+                                    <input type="hidden" id="noorder" name="noorder">
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3">
                                     <label for="proyeksi">Proyeksi</label>

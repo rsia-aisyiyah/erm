@@ -28,4 +28,8 @@ class PermintaanRadiologi extends Model
     {
         return $this->hasOne(HasilRadiologi::class, 'no_rawat', 'no_rawat');
     }
+    function permintaanPemeriksaan()
+    {
+        return $this->hasMany(PermintaanPemeriksaanRadiologi::class, 'noorder', 'noorder');
+    }
 }
