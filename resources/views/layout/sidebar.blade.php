@@ -58,7 +58,8 @@
                 </li>
             @endif
 
-            @if (session()->get('pegawai')->departemen == 'DM3' ||
+            @if (session()->get('pegawai')->nik == 'direksi' ||
+                    session()->get('pegawai')->departemen == 'DM3' ||
                     session()->get('pegawai')->departemen == 'DM7' ||
                     session()->get('pegawai')->departemen == 'SPS' ||
                     session()->get('pegawai')->departemen == 'DPM1' ||
