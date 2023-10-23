@@ -2,7 +2,8 @@
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fs-6">Hasil Pemeriksaan Radiologi</h5>
+                <h5 class="modal-title fs-6">PEMERIKSAAN RADIOLOGI</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -26,42 +27,50 @@
                                     <label for="no_rawat">No. Rawat</label>
                                     <input type="text" class="form-control form-control-sm" id="no_rawat" name="no_rawat" placeholder="" readonly>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-6">
+                                <div class="col-sm-12 col-md-12 col-lg-5">
                                     <label for="nm_pasien">Pasien</label>
                                     <input type="text" class="form-control form-control-sm" id="nm_pasien" name="nm_pasien" placeholder="" readonly>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-3">
+                                <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="tgl_lahir">Tanggal Lahir/Umur</label>
                                     <input type="text" class="form-control form-control-sm" id="tgl_lahir" name="tgl_lahir" placeholder="" readonly>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-4">
-                                    <label for="poliklinik">Poliklinik</label>
+                                <div class="col-sm-12 col-md-12 col-lg-3">
+                                    <label for="poliklinik">Poliklinik Asal</label>
                                     <input type="text" class="form-control form-control-sm" id="poliklinik" name="poliklinik" placeholder="" readonly>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-4">
+                                <div class="col-sm-12 col-md-12 col-lg-3">
+                                    <label for="kamarInap">Kamai Inap</label>
+                                    <input type="text" class="form-control form-control-sm" id="kamarInap" name="kamarInap" placeholder="" readonly>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-3">
                                     <label for="penjab">Pembiayaan</label>
                                     <input type="text" class="form-control form-control-sm" id="penjab" name="penjab" placeholder="" readonly>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-4">
+                                <div class="col-sm-12 col-md-12 col-lg-3">
                                     <label for="tgl_sampel">Tanggal & Jam Sampling</label>
                                     <input type="text" class="form-control form-control-sm" id="tgl_sampel" name="tgl_sampel" placeholder="" readonly>
                                     <input type="hidden" id="tgl_periksa" name="tgl_periksa">
                                     <input type="hidden" id="jam" name="jam">
                                     <input type="hidden" id="noorder" name="noorder">
                                 </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3">
+                                <div class="col-sm-6 col-md-6 col-lg-4">
+                                    <label for="petugas">Petugas Radiografer</label>
+                                    <input type="text" class="form-control form-control-sm" id="petugas" name="petugas" placeholder="" readonly>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-2">
                                     <label for="proyeksi">Proyeksi</label>
                                     <input type="text" class="form-control form-control-sm" id="proyeksi" name="proyeksi" placeholder="" readonly>
                                 </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3">
+                                <div class="col-sm-6 col-md-6 col-lg-2">
                                     <label for="kv">KV</label>
                                     <input type="text" class="form-control form-control-sm" id="kv" name="kv" placeholder="" readonly>
                                 </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3">
+                                <div class="col-sm-6 col-md-6 col-lg-2">
                                     <label for="inak">Inak</label>
                                     <input type="text" class="form-control form-control-sm" id="inak" name="inak" placeholder="" readonly>
                                 </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3">
+                                <div class="col-sm-6 col-md-6 col-lg-2">
                                     <label for="jml_penyinaran">Jml. Penyinaran</label>
                                     <input type="text" class="form-control form-control-sm" id="jml_penyinaran" name="jml_penyinaran" placeholder="" readonly>
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">

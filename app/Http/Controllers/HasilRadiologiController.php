@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GambarRadiologi;
 use App\Models\HasilRadiologi;
 use App\Models\PeriksaRadiologi;
+use App\Models\PermintaanRadiologi;
 use Illuminate\Http\Request;
 
 class HasilRadiologiController extends Controller
@@ -13,62 +14,77 @@ class HasilRadiologiController extends Controller
     protected $hasil;
     protected $periksa;
     protected $gambar;
+    protected $permintaan;
     public function __construct()
     {
-        $this->track = new TrackerSqlController;
+        $this->track = new TrackerSqlController();
         $this->hasil = new HasilRadiologi();
-        $this->periksa = new PeriksaRadiologi();
-        $this->gambar = new GambarRadiologi();
+        $this->periksa = new PeriksaRadiologiController();
+        $this->gambar = new GambarRadiologiController();
+        $this->permintaan = new PermintaanRadiologiController();
     }
     function create(Request $request)
     {
+        $dateTime = [
+            'tgl_periksa' => $request->tgl_hasil,
+            'jam' => $request->jam_hasil
+        ];
         $data = [
             'no_rawat' => $request->no_rawat,
             'hasil' => $request->hasil,
-            'tgl_periksa' => date('Y-m-d'),
-            'jam' => date('H:i:s'),
+            'tgl_periksa' => $dateTime['tgl_periksa'],
+            'jam' => $dateTime['jam'],
         ];
         $clause = [
             'no_rawat' => $request->no_rawat,
             'tgl_periksa' => $request->tgl_periksa,
             'jam' => $request->jam,
         ];
-        $this->periksa->where($clause)->update([
-            'tgl_periksa' => date('Y-m-d'),
-            'jam' => date('H:i:s')
-        ]);
-        $this->gambar->where($clause)->update([
-            'tgl_periksa' => date('Y-m-d'),
-            'jam' => date('H:i:s')
-        ]);
+        $clausePermintaan = [
+            'noorder' => $request->noorder
+        ];
+
 
         $create =  $this->hasil->create($data);
+
         if ($create) {
+            $this->periksa->updateDateTime($clause, $dateTime);
+            $this->gambar->updateDateTime($clause, $dateTime);
+            $this->permintaan->updateDateTime($clausePermintaan, [
+                'tgl_hasil' => $request->tgl_hasil,
+                'jam_hasil' => $request->jam_hasil
+            ]);
             $this->track->insertSql($this->hasil, $data, $clause);
         }
     }
     function update(Request $request)
     {
+        $dateTime = [
+            'tgl_periksa' => $request->tgl_hasil,
+            'jam' => $request->jam_hasil
+        ];
         $data = [
             'hasil' => $request->hasil,
-            'tgl_periksa' => date('Y-m-d'),
-            'jam' => date('H:i:s'),
+            'tgl_periksa' => $dateTime['tgl_periksa'],
+            'jam' => $dateTime['jam'],
         ];
         $clause = [
             'no_rawat' => $request->no_rawat,
             'tgl_periksa' => $request->tgl_periksa,
             'jam' => $request->jam,
         ];
-        $this->periksa->where($clause)->update([
-            'tgl_periksa' => date('Y-m-d'),
-            'jam' => date('H:i:s')
-        ]);
-        $this->gambar->where($clause)->update([
-            'tgl_periksa' => date('Y-m-d'),
-            'jam' => date('H:i:s')
-        ]);
+        $clausePermintaan = [
+            'noorder' => $request->noorder
+        ];
+
         $update = $this->hasil->where($clause)->update($data);
         if ($update) {
+            $this->periksa->updateDateTime($clause, $dateTime);
+            $this->gambar->updateDateTime($clause, $dateTime);
+            $this->permintaan->updateDateTime($clausePermintaan, [
+                'tgl_hasil' => $request->tgl_hasil,
+                'jam_hasil' => $request->jam_hasil
+            ]);
             $this->track->updateSql($this->hasil, $data, $clause);
         }
     }

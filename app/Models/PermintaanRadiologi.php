@@ -22,11 +22,15 @@ class PermintaanRadiologi extends Model
     }
     function periksaRadiologi()
     {
-        return $this->belongsTo(PeriksaRadiologi::class, 'no_rawat', 'no_rawat');
+        return $this->hasMany(PeriksaRadiologi::class, 'no_rawat', 'no_rawat');
     }
     function hasilRadiologi()
     {
-        return $this->hasOne(HasilRadiologi::class, 'no_rawat', 'no_rawat');
+        return $this->hasMany(HasilRadiologi::class, 'no_rawat', 'no_rawat');
+    }
+    function gambarRadiologi()
+    {
+        return $this->hasMany(GambarRadiologi::class, 'no_rawat', 'no_rawat');
     }
     function permintaanPemeriksaan()
     {

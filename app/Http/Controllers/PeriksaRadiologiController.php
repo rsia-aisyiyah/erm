@@ -23,7 +23,12 @@ class PeriksaRadiologiController extends Controller
 
     function getByNoRawat(Request $request)
     {
-        $periksa = $this->pemeriksaan->with(['gambarRadiologi', 'petugas', 'hasilRadiologi', 'jnsPerawatan', 'regPeriksa.pasien', 'regPeriksa.penjab',  'regPeriksa.poliklinik', 'permintaan.permintaanPemeriksaan']);
+        $periksa = $this->pemeriksaan->with([
+            'gambarRadiologi', 'petugas', 'hasilRadiologi', 'jnsPerawatan', 'regPeriksa.pasien', 'regPeriksa.penjab',
+            'regPeriksa.kamarInap' => function ($query) {
+                return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with(['kamar.bangsal']);
+            },  'regPeriksa.poliklinik', 'permintaan.permintaanPemeriksaan'
+        ]);
         if ($request->tgl_periksa) {
             return $periksa->where([
                 'no_rawat' => $request->no_rawat,
@@ -42,25 +47,12 @@ class PeriksaRadiologiController extends Controller
 
         return $pemeriksaan;
     }
-
-    function update(Request $request)
+    public function updateDateTime($clause = [], $data = [])
     {
-        $data = [
-            'tgl_periksa' => date('Y-m-d'),
-            'jam' => date('H:i:s'),
-        ];
-        $clause = [
-            'no_rawat' => $request->no_rawat,
-            'tgl_periksa' => $request->tgl_periksa,
-            'jam' => $request->jam,
-        ];
-
-        return $data;
-        // return $this->pemeriksaan->where([
-        //     'no_rawat' => $request->no_rawat,
-        //     'tgl_periksa' => $request->tgl_periksa,
-        //     'jam' => $request->jam,
-        // ])->update($request->all())
+        $update = $this->pemeriksaan->where($clause)->update($data);
+        if ($update) {
+            $this->track->updateSql($this->pemeriksaan, $data, $clause);
+        }
     }
     function getParameter(Request $request)
     {

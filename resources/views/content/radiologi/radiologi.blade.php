@@ -42,9 +42,10 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-striped table-responsive text-sm table-sm" id="tbRadiologi" width="100%">
+                    <table class="table table-striped table-responsive text-sm" id="tbRadiologi" width="100%">
                         <thead>
                             <tr role="row">
+                                <th></th>
                                 <th>No Rawat</th>
                                 <th>Nama / No. RM</th>
                                 <th>Tgl Permintaan</th>
@@ -64,6 +65,7 @@
         </div>
     </div>
     @include('content.radiologi.modal.modal_hasil_radiologi')
+    @include('content.poliklinik.modal.modal_riwayat')
 @endsection
 
 @push('script')
@@ -159,19 +161,39 @@
                     "search": "Pencarian",
                 },
                 createdRow: (row, data, dataIndex) => {
-                    console.log(data);
                     $(row).css('cursor', 'pointer');
-                    $(row).attr('onclick', `modalHasilRadiologi('${data.no_rawat}', '${data.tgl_hasil}', '${data.jam_hasil}', '${data.noorder}')`);
                 },
+                columnDefs: [{
+                    'targets': [1, 2, 3, 4, 5, 6, 7],
+                    'createdCell': (td, cellData, rowData, row, col) => {
+                        $(td).attr('onclick', `modalHasilRadiologi('${rowData.no_rawat}', '${rowData.tgl_hasil}', '${rowData.jam_hasil}', '${rowData.noorder}')`);
+                    }
+                }],
                 columns: [{
+                        data: 'reg_periksa',
+                        render: (data, type, row, meta) => {
+
+                            let no_rkm_medis = data.no_rkm_medis
+                            return `
+                                <div class="btn-group">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-list-ul"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" style="font-size:11px">
+                                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${no_rkm_medis}')">Riwayat Pemeriksaan</a></li>
+                                    </ul>
+                                </div>
+                            `;
+                        },
+                        name: 'action'
+                    },
+                    {
                         data: 'no_rawat',
                         render: (data, type, row, meta) => {
-                            // console.log(row);
-                            // console.log(cel);
-                            let cek = '';
+                            let cek = ''
                             if (row.hasil_radiologi.length) {
                                 row.hasil_radiologi.map((hasilRadiologi, index) => {
-                                    if (hasilRadiologi.tgl_periksa == row.tgl_periksa && hasilRadiologi.jam == row.jam) {
+                                    if (hasilRadiologi.tgl_periksa == row.tgl_hasil && hasilRadiologi.jam == row.jam_hasil) {
                                         cek = `<i class="bi bi-check-circle-fill text-success"></i>`
                                     }
                                 })
@@ -182,7 +204,7 @@
                         }
                     },
                     {
-                        data: 'pasien',
+                        data: 'noorder',
                         render: (data, type, row, meta) => {
 
                             return `${row.reg_periksa.pasien.nm_pasien} (${row.reg_periksa.no_rkm_medis})`
@@ -196,7 +218,7 @@
                         }
                     },
                     {
-                        data: 'dokter',
+                        data: 'dokter_rujuk',
                         render: (data, type, row, meta) => {
                             return row.dokter_rujuk.nm_dokter
                         }
@@ -218,7 +240,6 @@
                         render: (data, type, row, meta) => {
                             let jenisPeriksa = ''
                             data.map((pemeriksaan, index) => {
-                                // console.log(pemeriksaan);
                                 jenisPeriksa += pemeriksaan.jns_pemeriksaan.nm_perawatan + ',<br/>';
                             })
 
@@ -229,28 +250,29 @@
                         data: 'status',
                         render: (data, type, row, meta) => {
                             if (data.toUpperCase() == 'RANAP') {
-                                html = `<button type="button" class="btn btn-danger btn-sm">Rawat Inap</button>`
+                                html = `<span style="font-size:10px" class="badge text-bg-danger">Rawat Inap</span>`
                             } else {
-                                html = `<button type="button" class="btn btn-warning btn-sm">Rawat Jalan</button>`
+                                html = `<span style="font-size:10px" class="badge text-bg-warning">Rawat Jalan</span>`
                             }
                             return html
                         }
                     },
+
                 ]
             })
         }
 
         function modalHasilRadiologi(no_rawat, tgl_periksa, jam, idOrder) {
             getPeriksaRadiologi(no_rawat, tgl_periksa, jam).done((response) => {
-                console.log(response);
                 let gambar = ''
                 const tglPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.tgl_sampel : response.tgl_periksa
                 const jamPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.jam_sampel : response.jam
                 $('#formHasilRadiologi input[name=no_rawat]').val(response.no_rawat);
+                $('#formHasilRadiologi input[name=petugas]').val(response.petugas.nama);
                 $('#formHasilRadiologi input[name=jam]').val(response.jam);
                 $('#formHasilRadiologi input[name=tgl_periksa]').val(response.tgl_periksa);
                 $('#formHasilRadiologi input[name=nm_pasien]').val(`${response.reg_periksa.pasien.nm_pasien} (${response.reg_periksa.no_rkm_medis})`);
-                $('#formHasilRadiologi input[name=tgl_lahir]').val(`${splitTanggal(response.reg_periksa.pasien.tgl_lahir)} (${response.reg_periksa.umurdaftar} ${response.reg_periksa.sttsumur})`);
+                $('#formHasilRadiologi input[name=tgl_lahir]').val(`${formatTanggal(response.reg_periksa.pasien.tgl_lahir)} (${response.reg_periksa.umurdaftar} ${response.reg_periksa.sttsumur})`);
                 $('#formHasilRadiologi input[name=poliklinik]').val(`${response.reg_periksa.poliklinik.nm_poli}`);
                 $('#formHasilRadiologi input[name=penjab]').val(`${response.reg_periksa.penjab.png_jawab}`);
                 $('#formHasilRadiologi input[name=tgl_sampel]').val(`${splitTanggal(tglPeriksa)} ${jamPeriksa}`);
@@ -259,36 +281,44 @@
                 $('#formHasilRadiologi input[name=inak]').val(`${response.inak}`);
                 $('#formHasilRadiologi input[name=jml_penyinaran]').val(`${response.jml_penyinaran}`);
                 $('#formHasilRadiologi input[name=noorder]').val(`${idOrder}`);
+                if (Object.keys(response.reg_periksa.kamar_inap).length) {
+                    response.reg_periksa.kamar_inap.map((kamarInap) => {
+                        $('#formHasilRadiologi input[name=kamarInap]').val(`${kamarInap.kamar.bangsal.nm_bangsal}`)
+                    })
+                } else {
+                    $('#formHasilRadiologi input[name=kamarInap]').val(`-`)
+                }
                 response.hasil_radiologi.map((hsx) => {
                     if (tgl_periksa == hsx.tgl_periksa && jam == hsx.jam) {
                         $('#formHasilRadiologi textarea[name=hasil]').val(`${hsx ? hsx.hasil : ''}`);
                     }
                 })
+                let htmlImage = ''
                 if (Object.keys(response.gambar_radiologi).length) {
                     response.gambar_radiologi.map((imgx, index) => {
                         if (tgl_periksa == imgx.tgl_periksa && jam == imgx.jam) {
                             gambar = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${imgx.lokasi_gambar}`
-                            html = `
-                                 <a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gambar}">
+                            htmlImage += `
+                                 <a class="btn btn-success btn-sm m-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gambar}">
                                     <i class="bi bi-eye"></i> LAYAR PENUH
                                 </a>
-                                <a class="btn btn-primary btn-sm mb-2" id="btnDownloadImage" class="downloadImg${index}" download="${textRawat(no_rawat)}" href="${gambar}" target="_blank">
+                                <a class="btn btn-primary btn-sm m-2" id="btnDownloadImage" class="downloadImg${index}" download="${textRawat(no_rawat)}" href="${gambar}" target="_blank">
                                     <i class="bi bi-download"></i> UNDUH GAMBAR
                                 </a>
                                 <img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative thumbnailImg${index}" src="${gambar}" style="padding: 10px" width="100%">
                             `;
                         } else {
                             gambar = "{{ asset('/img/default.png') }}";
-                            html = `<img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative thumbnailImg${index}" src="${gambar}" style="padding: 10px" width="100%">`
-
+                            htmlImage += `<img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative " src="${gambar}" style="padding: 10px" width="100%">`
                         }
                     })
-                    $('.image-set').append(html);
 
                 } else {
                     gambar = "{{ asset('/img/default.png') }}";
+                    htmlImage += `<img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative src="${gambar}" style="padding: 10px" width="100%">`
 
                 }
+                $('.image-set').append(htmlImage);
                 $('#gambarRadiologi').attr('src', `${gambar}`);
                 $('#btnMagnifyImage').attr('href', `${gambar}`);
             })
@@ -315,8 +345,11 @@
             const data = {
                 no_rawat: $('#formHasilRadiologi input[name=no_rawat]').val(),
                 hasil: $('#formHasilRadiologi textarea[name=hasil]').val(),
+                noorder: $('#formHasilRadiologi input[name=noorder]').val(),
                 tgl_periksa: $('#formHasilRadiologi input[name=tgl_periksa]').val(),
                 jam: $('#formHasilRadiologi input[name=jam]').val(),
+                tgl_hasil: "{{ date('Y-m-d') }}",
+                jam_hasil: "{{ date('H:i:s') }}",
                 _token: $('#formHasilRadiologi input[name=_token]').val(),
             };
             getHasilRadiologi(data.no_rawat, data.tgl_periksa, data.jam).done((hasil) => {

@@ -64,9 +64,9 @@
                                 <thead>
                                     <tr>
                                         <th>Tanggal Sampel</th>
-                                        <th>Petugas</th>
+                                        <th>Diagnosa Klinis</th>
+                                        <th>Informasi Medis</th>
                                         <th>Jenis Pemeriksaan</th>
-                                        <th>Proyeksi & Dosis</th>
                                         <th>Hasil</th>
                                         <th>Gambar</th>
                                     </tr>
@@ -75,55 +75,6 @@
 
                                 </tbody>
                             </table>
-                            {{-- <h3 class="fs-5 text-center">HASIL PEMERIKSAAN RADIOLOGI</h3>
-                            <div class="col-lg-6 col-md-12 col-sm-12">
-                                <div class="image-set">
-                                    <a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" data-magnify="gallery" data-src="">
-                                        <i class="bi bi-eye"></i> LAYAR PENUH
-                                    </a>
-                                    <br />
-                                    <img id="gambarRadiologi" class="img-thumbnail position-relative" style="padding: 10px" width="100%">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <form action="" id="formHasilRadiologi">
-                                    <div class="row" id="pemeriksaanRadiologi">
-
-                                        <div class="col-sm-12 col-md-12 col-lg-4">
-                                            <label for="petugas">Petugas Radiologi</label>
-                                            <input type="text" class="form-control form-control-sm" id="petugas" name="petugas" placeholder="" readonly>
-                                        </div>
-                                        <div class="col-sm-12 col-md-12 col-lg-4">
-                                            <label for="jns_perawatan">Jenis Pemeriksaan</label>
-                                            <input type="text" class="form-control form-control-sm" id="jns_perawatan" name="jns_perawatan" placeholder="" readonly>
-                                        </div>
-                                        <div class="col-sm-12 col-md-12 col-lg-4">
-                                            <label for="tgl_sampel">Tanggal & Jam Sampling</label>
-                                            <input type="text" class="form-control form-control-sm" id="tgl_sampel" name="tgl_sampel" placeholder="" readonly>
-                                        </div>
-                                        <div class="col-sm-6 col-md-6 col-lg-3">
-                                            <label for="proyeksi">Proyeksi</label>
-                                            <input type="text" class="form-control form-control-sm" id="proyeksi" name="proyeksi" placeholder="" readonly>
-                                        </div>
-                                        <div class="col-sm-6 col-md-6 col-lg-3">
-                                            <label for="kv">KV</label>
-                                            <input type="text" class="form-control form-control-sm" id="kv" name="kv" placeholder="" readonly>
-                                        </div>
-                                        <div class="col-sm-6 col-md-6 col-lg-3">
-                                            <label for="inak">Inak</label>
-                                            <input type="text" class="form-control form-control-sm" id="inak" name="inak" placeholder="" readonly>
-                                        </div>
-                                        <div class="col-sm-6 col-md-6 col-lg-3">
-                                            <label for="jml_penyinaran">Jml. Penyinaran</label>
-                                            <input type="text" class="form-control form-control-sm" id="jml_penyinaran" name="jml_penyinaran" placeholder="" readonly>
-                                        </div>
-                                        <div class="col-sm-12 col-md-12 col-lg-12">
-                                            <label for="Hasil Radiologi">Hasil Radiologi</label>
-                                            <textarea class="form-control" id="hasil" name="hasil" cols="8" rows="18" name="hasil" readonly></textarea>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -179,54 +130,48 @@
                 })
                 $('#tabel-lab').append(hasil)
             })
-            getPeriksaRadiologi(no_rawat).done((radiologi) => {
-                if (Object.keys(radiologi).length) {
-                    html = `<table class="table table-striped text-sm table-sm">
-                        <tr>
-                            <td>Tanggal Sampel</td>
-                            <td>Petugas</td>
-                            <td>Jenis Pemeriksaan</td>
-                            <td>Proyeksi & Dosis</td>
-                            <td>Hasil</td>
-                            <td>Gambar</td>
-                            </tr> 
-                            `
-                    radiologi.map((radItem, index) => {
-                        let hasilRadiologi = '';
-                        // let gambar = radItem.gambar_radiologi ? `https://sim.rsiaaisyiyah.com/webapps/radiologi/${response.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
-
-                        radItem.hasil_radiologi.map((hasil) => {
-                            if (hasil.tgl_periksa == radItem.tgl_periksa && hasil.jam == radItem.jam) {
-                                hasilRadiologi = stringPemeriksaan(hasil.hasil)
+            getPermintaanRadiologi(no_rawat).done((permintaan) => {
+                if (Object.keys(permintaan).length) {
+                    permintaan.map((prm, index) => {
+                        html = `<tr><td>${splitTanggal(prm.tgl_hasil)} ${prm.jam_hasil}</td>
+                                <td>${prm.diagnosa_klinis}</td>
+                                <td>${prm.informasi_tambahan}</td>
+                                <td>
+                        `
+                        prm.periksa_radiologi.map((periksa) => {
+                            if (periksa.tgl_periksa == prm.tgl_hasil && periksa.jam == prm.jam_hasil) {
+                                html += `${periksa.jns_perawatan.nm_perawatan}, <br/>`
                             }
                         })
-                        html = `<tr>
-                                    <td>${splitTanggal(radItem.permintaan_radiologi.tgl_sampel)} ${radItem.permintaan_radiologi.jam_sampel}</td>
-                                    <td>${radItem.petugas.nama}</td>
-                                    <td>${radItem.jns_perawatan.nm_perawatan}</td>
-                                    <td>Proyeksi : ${radItem.proyeksi},<br/> kV : ${radItem.kV},<br/> Inak : ${radItem.inak},<br/> Jml. Penyinaran : ${radItem.jml_penyinaran},<br/> Dosis : ${radItem.dosis}</td>
-                                    <td>${hasilRadiologi}</td>
-                                    <td width="20%"><img id="img${index}" class="img-thumbnail" style="max-width:100%;height:auto"/></td>
-                                    </tr>`
 
-                        $('#tbHasilRadiologi tbody').append(html)
-
-                        let gambar = "";
-                        if (Object.keys(radItem.gambar_radiologi).length) {
-                            radItem.gambar_radiologi.map((imgx, i) => {
-                                if (imgx.tgl_periksa == radItem.tgl_periksa && imgx.jam == radItem.jam) {
-                                    gambar = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${imgx.lokasi_gambar}`
+                        html += `</td>`
+                        html += `<td>`
+                        prm.hasil_radiologi.map((hasil) => {
+                            if (hasil.tgl_periksa == prm.tgl_hasil && hasil.jam == prm.jam_hasil) {
+                                html += `${stringPemeriksaan(hasil.hasil)}`
+                            }
+                        })
+                        html += `</td>`
+                        html += `<td>`
+                        if (prm.gambar_radiologi.length) {
+                            prm.gambar_radiologi.map((gambar) => {
+                                if (gambar.tgl_periksa == prm.tgl_hasil && gambar.jam == prm.jam_hasil) {
+                                    gbr = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${gambar.lokasi_gambar}`
+                                    html += `<a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gbr}">
+                                                <i class="bi bi-eye"></i> BUKA GAMBAR
+                                            </a><br/>`
                                 } else {
-                                    gambar = "{{ asset('img/default.png') }}"
+                                    html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
+
                                 }
                             })
-
                         } else {
-                            gambar = "{{ asset('img/default.png') }}"
+                            html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
                         }
-                        gbr = document.getElementById(`img${index}`);
-                        gbr.setAttribute('src', gambar)
+                        html += `</td>`
+                        html += `<tr>`
 
+                        $('#tbHasilRadiologi tbody').append(html)
                     })
 
                     $('#viewHasilRadiologi').css('display', 'flex')

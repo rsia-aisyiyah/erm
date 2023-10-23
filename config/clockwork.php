@@ -12,7 +12,7 @@ return [
 	|
 	*/
 
-	'enable' => env('CLOCKWORK_ENABLE', false),
+	'enable' => env('CLOCKWORK_ENABLE', true),
 
 	/*
 	|------------------------------------------------------------------------------------------------------------------
@@ -28,13 +28,13 @@ return [
 
 		// Cache usage stats and cache queries including results
 		'cache' => [
-			'enabled' => env('CLOCKWORK_CACHE_ENABLED', false),
+			'enabled' => env('CLOCKWORK_CACHE_ENABLED', true),
 
 			// Collect cache queries
 			'collect_queries' => env('CLOCKWORK_CACHE_QUERIES', true),
 
 			// Collect values from cache queries (high performance impact with a very high number of queries)
-			'collect_values' => env('CLOCKWORK_CACHE_COLLECT_VALUES', false)
+			'collect_values' => env('CLOCKWORK_CACHE_COLLECT_VALUES', true)
 		],
 
 		// Database usage stats and queries

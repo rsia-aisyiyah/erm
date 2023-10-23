@@ -55,20 +55,22 @@
         const APIURL = 'http://sim.rsiaaisyiyah.com/rsiap-api/api';
 
         window.onerror = function(msg, url, linenumber) {
+            const messageError = 'Error message : ' + msg + '<br/>Muat ulang halaman ?';
             Swal.fire({
                 title: 'Terjadi Masalah!',
                 icon: 'error',
-                text: 'Error message : ' + msg + '</br>' + 'Muat ulang halaman ?',
+                html: messageError,
                 showConfirmButton: true,
+                confirmButtonColor: '#3085d6',
                 showDenyButton: true,
-                confirmButtonText: 'Ya',
+                confirmButtonText: 'Ya, Muat ulang',
                 denyButtonText: 'Tidak',
+                denyButtonColor: '#d33',
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.reload();
                 }
             })
-            // return true;
         }
 
         function ambilNoRawat(no_rawat) {
@@ -612,6 +614,17 @@
             })
 
             return lab;
+        }
+
+        function getPermintaanRadiologi(no_rawat, tgl_permintaan = '', jam_permintaan = '') {
+            const periksa = $.get('/erm/radiologi/permintaan', {
+                no_rawat: no_rawat,
+                tgl_permintaan: tgl_permintaan,
+                jam_permintaan: jam_permintaan,
+            }).fail((request) => {
+                alertErrorAjax(request)
+            })
+            return periksa;
         }
 
         function getPeriksaRadiologi(no_rawat, tgl_periksa = '', jam = '') {
