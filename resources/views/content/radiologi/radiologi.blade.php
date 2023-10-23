@@ -267,7 +267,7 @@
                              <a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gambar}">
                                 <i class="bi bi-eye"></i> LAYAR PENUH
                             </a>
-                            <a class="btn btn-primary btn-sm mb-2" id="btnDownloadImage" class="downloadImg${index}" download="${textRawat(no_rawat)}" data-src="${gambar}">
+                            <a class="btn btn-primary btn-sm mb-2" id="btnDownloadImage" class="downloadImg${index}" download="${textRawat(no_rawat)}" href="${gambar}" target="_blank">
                                 <i class="bi bi-download"></i> UNDUH GAMBAR
                             </a>
                             <img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative thumbnailImg${index}" src="${gambar}" style="padding: 10px" width="100%">
