@@ -72,12 +72,32 @@ class PeriksaRadiologiController extends Controller
     }
     function getTableIndex(Request $request)
     {
-        // return;
         if ($request->tgl_awal || $request->spesialis || $request->status) {
             $pemeriksaan = $this->getParameter($request);
         } else {
             $pemeriksaan = $this->index();
         }
         return DataTables::of($pemeriksaan)->make(true);
+    }
+    function update(Request $request)
+    {
+        $clause = [
+            'no_rawat' => $request->no_rawat,
+            'tgl_periksa' => $request->tgl_periksa,
+            'jam' => $request->jam,
+        ];
+
+        $data = [
+            'proyeksi' => $request->proyeksi,
+            'kV' => $request->kv,
+            'inak' => $request->inak,
+            'jml_penyinaran' => $request->jml_penyinaran,
+            'dosis' => $request->dosis,
+        ];
+        $pemeriksaan = $this->pemeriksaan->where($clause)->update($data);
+
+        if ($pemeriksaan) {
+            $this->track->updateSql($this->pemeriksaan, $data, $clause);
+        }
     }
 }

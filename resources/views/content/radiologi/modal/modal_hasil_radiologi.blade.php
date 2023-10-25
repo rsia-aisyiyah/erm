@@ -39,22 +39,28 @@
                                     <label for="poliklinik">Poliklinik Asal</label>
                                     <input type="text" class="form-control form-control-sm" id="poliklinik" name="poliklinik" placeholder="" readonly>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-3">
-                                    <label for="kamarInap">Kamai Inap</label>
+                                <div class="col-sm-12 col-md-12 col-lg-5">
+                                    <label for="kamarInap">Kamar Inap</label>
                                     <input type="text" class="form-control form-control-sm" id="kamarInap" name="kamarInap" placeholder="" readonly>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-3">
+                                <div class="col-sm-12 col-md-12 col-lg-4">
                                     <label for="penjab">Pembiayaan</label>
                                     <input type="text" class="form-control form-control-sm" id="penjab" name="penjab" placeholder="" readonly>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-3">
                                     <label for="tgl_sampel">Tanggal & Jam Sampling</label>
                                     <input type="text" class="form-control form-control-sm" id="tgl_sampel" name="tgl_sampel" placeholder="" readonly>
+                                    <input type="hidden" id="tgl_sampel" name="tgl_sampel">
+                                    <input type="hidden" id="jam_sampel" name="jam_sampel">
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-3">
+                                    <label for="tgl_pemeriksaan">Tanggal & Jam Pemeriksaan</label>
+                                    <input type="text" class="form-control form-control-sm" id="tgl_pemeriksaan" name="tgl_pemeriksaan" placeholder="" readonly>
                                     <input type="hidden" id="tgl_periksa" name="tgl_periksa">
                                     <input type="hidden" id="jam" name="jam">
                                     <input type="hidden" id="noorder" name="noorder">
                                 </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
                                     <label for="petugas">Petugas Radiografer</label>
                                     <input type="text" class="form-control form-control-sm" id="petugas" name="petugas" placeholder="" readonly>
                                 </div>
@@ -74,6 +80,10 @@
                                     <label for="jml_penyinaran">Jml. Penyinaran</label>
                                     <input type="text" class="form-control form-control-sm" id="jml_penyinaran" name="jml_penyinaran" placeholder="" readonly>
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-2">
+                                    <label for="dosis">Dosis</label>
+                                    <input type="text" class="form-control form-control-sm" id="dosis" name="dosis" placeholder="" readonly>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <label for="Hasil Radiologi">Hasil Radiologi</label>

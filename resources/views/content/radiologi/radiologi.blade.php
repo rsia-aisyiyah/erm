@@ -264,7 +264,9 @@
         }
 
         function modalHasilRadiologi(no_rawat, tgl_periksa, jam, idOrder) {
+            const departemen = "{{ session()->get('pegawai')->departemen }}"
             getPeriksaRadiologi(no_rawat, tgl_periksa, jam).done((response) => {
+                console.log(response);
                 let gambar = ''
                 const tglPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.tgl_sampel : response.tgl_periksa
                 const jamPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.jam_sampel : response.jam
@@ -276,12 +278,30 @@
                 $('#formHasilRadiologi input[name=tgl_lahir]').val(`${formatTanggal(response.reg_periksa.pasien.tgl_lahir)} (${response.reg_periksa.umurdaftar} ${response.reg_periksa.sttsumur})`);
                 $('#formHasilRadiologi input[name=poliklinik]').val(`${response.reg_periksa.poliklinik.nm_poli}`);
                 $('#formHasilRadiologi input[name=penjab]').val(`${response.reg_periksa.penjab.png_jawab}`);
-                $('#formHasilRadiologi input[name=tgl_sampel]').val(`${splitTanggal(tglPeriksa)} ${jamPeriksa}`);
+                $('#formHasilRadiologi input[name=tgl_pemeriksaan]').val(`${splitTanggal(tglPeriksa)} ${jamPeriksa}`);
                 $('#formHasilRadiologi input[name=proyeksi]').val(`${response.proyeksi}`);
                 $('#formHasilRadiologi input[name=kv]').val(`${response.kV}`);
                 $('#formHasilRadiologi input[name=inak]').val(`${response.inak}`);
                 $('#formHasilRadiologi input[name=jml_penyinaran]').val(`${response.jml_penyinaran}`);
+                $('#formHasilRadiologi input[name=dosis]').val(`${response.dosis}`);
                 $('#formHasilRadiologi input[name=noorder]').val(`${idOrder}`);
+
+                if (departemen == 'RAD') {
+                    $('#formHasilRadiologi textarea[name=hasil]').attr('readonly', 'readonly');
+                    $('#formHasilRadiologi input[name=inak]').attr('readonly', false);
+                    $('#formHasilRadiologi input[name=proyeksi]').attr('readonly', false);
+                    $('#formHasilRadiologi input[name=dosis]').attr('readonly', false);
+                    $('#formHasilRadiologi input[name=jml_penyinaran]').attr('readonly', false);
+                    $('#formHasilRadiologi input[name=kv]').attr('readonly', false);
+                }
+
+                if (response.permintaan.length) {
+                    response.permintaan.map((permintaan, index) => {
+                        if (tgl_periksa == permintaan.tgl_hasil && jam == permintaan.jam_hasil) {
+                            $('#formHasilRadiologi input[name=tgl_sampel]').val(`${splitTanggal(permintaan.tgl_sampel)} ${permintaan.jam_sampel}`)
+                        }
+                    })
+                }
                 if (Object.keys(response.reg_periksa.kamar_inap).length) {
                     response.reg_periksa.kamar_inap.map((kamarInap) => {
                         $('#formHasilRadiologi input[name=kamarInap]').val(`${kamarInap.kamar.bangsal.nm_bangsal}`)
@@ -342,35 +362,59 @@
             return hasil;
         }
 
+        function updatePeriksaRadiologi(data) {
+            const periksa = $.post('/erm/radiologi/periksa/update', data).fail((request) => {
+                alertErrorAjax(request)
+            })
+            return periksa;
+        }
+
         function simpanHasilRadiologi() {
+            const departemen = "{{ session()->get('pegawai')->departemen }}"
             const data = {
                 no_rawat: $('#formHasilRadiologi input[name=no_rawat]').val(),
                 hasil: $('#formHasilRadiologi textarea[name=hasil]').val(),
                 noorder: $('#formHasilRadiologi input[name=noorder]').val(),
                 tgl_periksa: $('#formHasilRadiologi input[name=tgl_periksa]').val(),
                 jam: $('#formHasilRadiologi input[name=jam]').val(),
+                proyeksi: $('#formHasilRadiologi input[name=proyeksi]').val(),
+                kv: $('#formHasilRadiologi input[name=kv]').val(),
+                inak: $('#formHasilRadiologi input[name=inak]').val(),
+                dosis: $('#formHasilRadiologi input[name=dosis]').val(),
+                jml_penyinaran: $('#formHasilRadiologi input[name=jml_penyinaran]').val(),
                 tgl_hasil: "{{ date('Y-m-d') }}",
                 jam_hasil: "{{ date('H:i:s') }}",
                 _token: $('#formHasilRadiologi input[name=_token]').val(),
             };
-            getHasilRadiologi(data.no_rawat, data.tgl_periksa, data.jam).done((hasil) => {
-                if (Object.keys(hasil).length) {
-                    updateHasilRadiologi(data).done(() => {
-                        alertSuccessAjax('Hasil radiologi berhasil disimpan').then(() => {
-                            drawTbRadiologi()
-                            $('#modalHasilRadiologi').modal('hide')
-                        })
-                    })
 
-                } else {
-                    createHasilRadiologi(data).done(() => {
-                        alertSuccessAjax('Hasil radiologi berhasil ditambah').then(() => {
-                            drawTbRadiologi()
-                            $('#modalHasilRadiologi').modal('hide')
-                        })
+            if (departemen == 'RAD' || departemen == '-') {
+                updatePeriksaRadiologi(data).done(() => {
+                    alertSuccessAjax('Mengubah data pemeriksaan radiologi').then(() => {
+                        drawTbRadiologi()
+                        $('#modalHasilRadiologi').modal('hide')
                     })
-                }
-            })
+                })
+            } else if (departemen == '-' || departemen == 'SPS') {
+                getHasilRadiologi(data.no_rawat, data.tgl_periksa, data.jam).done((hasil) => {
+                    if (Object.keys(hasil).length) {
+                        updateHasilRadiologi(data).done(() => {
+                            alertSuccessAjax('Hasil radiologi berhasil disimpan').then(() => {
+                                drawTbRadiologi()
+                                $('#modalHasilRadiologi').modal('hide')
+                            })
+                        })
+
+                    } else {
+                        createHasilRadiologi(data).done(() => {
+                            alertSuccessAjax('Hasil radiologi berhasil ditambah').then(() => {
+                                drawTbRadiologi()
+                                $('#modalHasilRadiologi').modal('hide')
+                            })
+                        })
+                    }
+                })
+            }
+            // console.log(data);
         }
 
         $('#modalHasilRadiologi').on('hidden.bs.modal', () => {
