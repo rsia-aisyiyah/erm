@@ -386,14 +386,14 @@
                 _token: $('#formHasilRadiologi input[name=_token]').val(),
             };
 
-            if (departemen == 'RAD' || departemen == '-') {
+            if (departemen == 'RAD') {
                 updatePeriksaRadiologi(data).done(() => {
                     alertSuccessAjax('Mengubah data pemeriksaan radiologi').then(() => {
                         drawTbRadiologi()
                         $('#modalHasilRadiologi').modal('hide')
                     })
                 })
-            } else if (departemen == '-' || departemen == 'SPS') {
+            } else if (departemen == 'SPS') {
                 getHasilRadiologi(data.no_rawat, data.tgl_periksa, data.jam).done((hasil) => {
                     if (Object.keys(hasil).length) {
                         updateHasilRadiologi(data).done(() => {

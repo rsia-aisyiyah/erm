@@ -66,24 +66,24 @@
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-2">
                                     <label for="proyeksi">Proyeksi</label>
-                                    <input type="text" class="form-control form-control-sm" id="proyeksi" name="proyeksi" placeholder="" readonly>
+                                    <input type="text" class="form-control form-control-sm" id="proyeksi" name="proyeksi" placeholder="" readonly autocomplete="off">
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-2">
                                     <label for="kv">KV</label>
-                                    <input type="text" class="form-control form-control-sm" id="kv" name="kv" placeholder="" readonly>
+                                    <input type="text" class="form-control form-control-sm" id="kv" name="kv" placeholder="" readonly autocomplete="off">
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-2">
                                     <label for="inak">Inak</label>
-                                    <input type="text" class="form-control form-control-sm" id="inak" name="inak" placeholder="" readonly>
+                                    <input type="text" class="form-control form-control-sm" id="inak" name="inak" placeholder="" readonly autocomplete="off">
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-2">
                                     <label for="jml_penyinaran">Jml. Penyinaran</label>
-                                    <input type="text" class="form-control form-control-sm" id="jml_penyinaran" name="jml_penyinaran" placeholder="" readonly>
+                                    <input type="text" class="form-control form-control-sm" id="jml_penyinaran" name="jml_penyinaran" placeholder="" readonly autocomplete="off">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-2">
                                     <label for="dosis">Dosis</label>
-                                    <input type="text" class="form-control form-control-sm" id="dosis" name="dosis" placeholder="" readonly>
+                                    <input type="text" class="form-control form-control-sm" id="dosis" name="dosis" placeholder="" readonly autocomplete="off">
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <label for="Hasil Radiologi">Hasil Radiologi</label>
