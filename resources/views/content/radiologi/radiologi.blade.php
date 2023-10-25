@@ -266,7 +266,6 @@
         function modalHasilRadiologi(no_rawat, tgl_periksa, jam, idOrder) {
             const departemen = "{{ session()->get('pegawai')->departemen }}"
             getPeriksaRadiologi(no_rawat, tgl_periksa, jam).done((response) => {
-                console.log(response);
                 let gambar = ''
                 const tglPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.tgl_sampel : response.tgl_periksa
                 const jamPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.jam_sampel : response.jam
