@@ -1055,14 +1055,9 @@
                 let tgl_sekarang = ''
                 obat.forEach(function(o) {
                     if (o.data_barang.kdjns != 'J024') {
-                        pemberian += '<tr><td width="20%">' + (tgl_sekarang != o.tgl_perawatan ? formatTanggal(o
-                                    .tgl_perawatan) +
-                                ', Jam ' +
-                                o.jam : '') +
-                            '</td><td>: <strong>' + o.data_barang.nama_brng +
-                            '</strong></td><td> ' + o.jml + '</td><td class="aturan-' + textRawat(o.no_rawat) +
-                            '-' + o
-                            .kode_brng + '"></td><tr>';
+                        pemberian += '<tr><td width="20%">' + (tgl_sekarang != o.tgl_perawatan ? formatTanggal(o.tgl_perawatan) + ', Jam ' + o.jam : '') +
+                            '</td><td>: <strong>' + o.data_barang.nama_brng + '</strong></td><td> ' + o.jml + '</td><td class="aturan-' + textRawat(o.no_rawat) +
+                            '-' + o.kode_brng + '"></td><tr>';
                         tgl_sekarang = o.tgl_perawatan;
                         getAturanPakai(o.no_rawat, o.kode_brng)
                     }
