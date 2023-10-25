@@ -28,6 +28,13 @@ return [
     */
 
     'disks' => [
+        // 'data' => [
+        //     'driver' => 'local',
+        //     'root'   => storage_path('app/public/TESTLINK'),
+        //     'visibility' => 'public',
+        //     'url' => env('APP_URL') . 'storage/app/public/TESTLINK',
+        //     'throw' => false,
+        // ],
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
@@ -77,6 +84,6 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('storage') => storage_path('/app/public'),
     ],
 ];

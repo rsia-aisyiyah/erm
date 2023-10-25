@@ -134,6 +134,18 @@
             return data;
         }
 
+        function toastReload(message, timer) {
+            Swal.fire({
+                title: message,
+                position: 'top-end',
+                toast: true,
+                icon: 'success',
+                timerProgressBar: true,
+                showConfirmButton: false,
+                timer: timer
+            })
+        }
+
         function alertErrorAjax(request) {
             Swal.fire(
                 'Gagal',

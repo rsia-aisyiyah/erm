@@ -83,6 +83,7 @@ use App\Http\Controllers\RencanaAskepRanapController;
 use App\Http\Controllers\RiwayatImunisasiController;
 use App\Http\Controllers\RiwayatPersalinanController;
 use App\Http\Controllers\TriasePemeriksaanUgd;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -389,4 +390,16 @@ Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 Route::get('/test/view', function () {
     return view('test');
 });
-// Route::get('/test/{no_rkm_medis}', [RegPeriksaController::class, 'riwayat']);
+
+
+Route::get('/file', function () {
+    $file = Storage::disk('custom')->url('LOGO RSIA (2).png');
+    // dd($file);
+    // dd($file);ln -s 
+    // return $file->put('muchron.tlnxt', 'SKSKSKSKSKSKSKSK');
+    // return $gbr = $file->download('DSCF0002.JPG');
+    // // echo $gbr;
+    // return $g = $file->download('DSCF0002.JPG');
+    return $html = "<br/><img src='" . $file . "' />";
+    // dd($file);
+});
