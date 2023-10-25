@@ -4,6 +4,7 @@
     <div class="row gy-2">
         <div class="col-sm-12">
             <div class="card">
+                <div class="card-header">Daftar Pasien Radiologi</div>
                 <div class="card-body">
                     <form id="formFilterRadiologi">
                         <div class="row">
@@ -36,12 +37,6 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
                     <table class="table table-striped table-responsive text-sm" id="tbRadiologi" width="100%">
                         <thead>
                             <tr role="row">
@@ -59,7 +54,6 @@
                         <tbody>
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
@@ -137,15 +131,22 @@
             $('.tgl_akhir').datepicker('setDate', splitTanggal(tgl_akhir))
 
             drawTbRadiologi()
+
+            setInterval(() => {
+                drawTbRadiologi()
+                toastReload('Memperbaharui data radiologi', 2000)
+            }, 20000);
         })
 
         function drawTbRadiologi() {
             tbRadiologi.dataTable({
                 destroy: true,
+                processing: true,
                 paging: false,
                 info: false,
                 responsive: true,
                 scrollX: true,
+                scrollY: 640,
                 ajax: {
                     url: '/erm/radiologi/table',
                     data: {

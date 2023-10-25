@@ -74,6 +74,7 @@
         var dateStart = '';
         var sel = '';
         var getInstance = '';
+
         $(document).ready(() => {
             new bootstrap.Tab('#tab-resep')
             new bootstrap.Tab('#tab-ews')
@@ -114,7 +115,13 @@
                 startDate: 0,
                 todayBtn: true,
             })
+
             tbUgd()
+            setInterval(() => {
+                tbUgd()
+                toastReload('Memperbaharui data pasien UGD', 2000)
+            }, 20000);
+
             $('.tgl_awal').datepicker('setDate', splitTanggal(tgl_awal))
             $('.tgl_akhir').datepicker('setDate', splitTanggal(tgl_akhir))
 
@@ -122,7 +129,7 @@
         $('#spesialis').on('change', () => {
             spesialis = $('#spesialis option:selected').val()
             localStorage.setItem('spesialis', spesialis);
-            $('#tb_ugd').DataTable().destroy();
+
             tbUgd()
         })
         $('#btn-filter-tgl').on('click', () => {
@@ -132,16 +139,16 @@
             tgl_akhir = splitTanggal(t2);
             localStorage.setItem('tgl_awal', tgl_awal)
             localStorage.setItem('tgl_akhir', tgl_akhir)
-            $('#tb_ugd').DataTable().destroy();
+
             tbUgd()
         })
 
         function tbUgd() {
             tableUdg = $('#tb_ugd').DataTable({
+                destroy: true,
                 processing: true,
                 scrollX: true,
                 scrollY: 400,
-                serverSide: false,
                 stateSave: true,
                 ordering: true,
                 paging: false,
@@ -175,15 +182,7 @@
                     },
                 },
                 initComplete: function() {
-                    Swal.fire({
-                        title: 'Menampilkan data rawat inap',
-                        position: 'top-end',
-                        toast: true,
-                        icon: 'success',
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                    toastReload('Menampilkan data pasien UGD', 2000)
                 },
                 columns: [{
                         data: '',

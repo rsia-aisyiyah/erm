@@ -1054,9 +1054,10 @@
                 var pemberian = '<table class="table borderless mb-0" style="background-color:#e1ffe3">';
                 let tgl_sekarang = ''
                 obat.forEach(function(o) {
+                    console.log(o);
                     if (o.data_barang.kdjns != 'J024') {
                         pemberian += '<tr><td width="20%">' + (tgl_sekarang != o.tgl_perawatan ? formatTanggal(o.tgl_perawatan) + ', Jam ' + o.jam : '') +
-                            '</td><td>: <strong>' + o.data_barang.nama_brng + '</strong></td><td> ' + o.jml + '</td><td class="aturan-' + textRawat(o.no_rawat) +
+                            '</td><td>: <strong>' + o.data_barang.nama_brng + '</strong></td><td> ' + o.jml + ' ' + o.data_barang.kode_satuan.satuan + '</td><td class="aturan-' + textRawat(o.no_rawat) +
                             '-' + o.kode_brng + '"></td><tr>';
                         tgl_sekarang = o.tgl_perawatan;
                         getAturanPakai(o.no_rawat, o.kode_brng)
