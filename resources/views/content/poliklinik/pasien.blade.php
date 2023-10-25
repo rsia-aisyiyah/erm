@@ -259,6 +259,8 @@
             nama = "{{ session()->get('pegawai')->nama }}";
             $('#nama_user').val(nama);
             $('#user').val(nik);
+            let kd_dokter = "{{ Request::get('dokter') }}"
+            let textObject = `Janin : \nPres : \nDJJ : \nTBJ : \nJK : \nPlacenta : \nAk : \n`
             $.ajax({
                 url: '/erm/pemeriksaan',
                 method: 'GET',
@@ -267,6 +269,7 @@
                     no_rawat: no_rawat,
                 },
                 success: function(response) {
+
                     if (response.reg_periksa) {
                         $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
                             .pasien.nm_pasien + ' / ' + hitungUmur(response.reg_periksa.pasien.tgl_lahir) :
@@ -301,7 +304,7 @@
                     $('#nomor_rawat').val(response.no_rawat ? response.no_rawat : '-')
                     $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '-')
                     $('#subjek').val(response.keluhan ? response.keluhan : '-')
-                    $('#objek').val(response.pemeriksaan ? response.pemeriksaan : '-')
+                    $('#objek').val(response.pemeriksaan ? response.pemeriksaan : (kd_dokter == '1.113.1023' ? textObject : '-'))
                     $('#asesmen').val(response.penilaian ? response.penilaian : '-')
                     $('#plan').val(response.rtl ? response.rtl : '')
                     $('#instruksi').val(response.instruksi ? response.instruksi : '-')
