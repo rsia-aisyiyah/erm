@@ -195,7 +195,7 @@
                                     </button>
                                     <ul class="dropdown-menu" style="font-size:11px">
                                         <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${no_rkm_medis}')">Riwayat Pemeriksaan</a></li>
-                                        <li><a class="dropdown-item" href="${getBaseUrl(`radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}'`)}" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>
+                                        <li><a class="dropdown-item" href="${getBaseUrl(`radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}`)}" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>
                                     </ul>
                                 </div>
                                 `;
