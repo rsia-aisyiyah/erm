@@ -181,10 +181,11 @@
                                     </button>
                                     <ul class="dropdown-menu" style="font-size:11px">
                                         <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${no_rkm_medis}')">Riwayat Pemeriksaan</a></li>
-                                        <li><a class="dropdown-item" href="{{ url('radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}') }}">Cetak Hasil</a></li>
+                                        <li><a class="dropdown-item" href="{{ url('radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}') }}" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>
                                     </ul>
                                 </div>
-                            `;
+                                `;
+                            // <li><a class="dropdown-item" href="{{ url('radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}') }}">Cetak Hasil</a></li>
                         },
                         name: 'action'
                     },
@@ -264,15 +265,29 @@
         }
 
         function printPeriksa(no_rawat, tgl_periksa, jam) {
-            const hasil = $.get('/erm/radiologi/periksa/print', {
-                'no_rawat': no_rawat,
-                'tgl_periksa': tgl_periksa,
-                'jam': jam,
-                'openWith': 'stream',
-            }).fail((request) => {
-                alertErrorAjax(request)
+            Swal.fire({
+                title: 'Mohon tunggu',
+                icon: 'info',
+                html: 'Sedang mengunduh berkas hasil radiologi',
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading()
+                    $.get('/erm/radiologi/periksa/print', {
+                        'no_rawat': no_rawat,
+                        'tgl_periksa': tgl_periksa,
+                        'jam': jam,
+                        'openWith': 'download',
+                    }).fail((request) => {
+                        alertErrorAjax(request)
+                    }).done((response, x, y, ) => {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            icon: 'success',
+                            html: 'Berkas telah diunduh',
+                        })
+                    })
+                },
             })
-            return hasil;
         }
 
 
