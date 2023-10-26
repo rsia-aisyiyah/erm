@@ -145,9 +145,8 @@
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"
             const domain = getUrl.split('/')[2];
-            console.log(domain == 'sim.rsaaisyiyah.com');
-            if (domain == 'sim.rsaaisyiyah.com') {
-                url = 'https://sim.rsaaisyiyah.com/erm' + urlSegments
+            if (domain == 'sim.rsiaaisyiyah.com') {
+                url = 'https://sim.rsiaaisyiyah.com/erm' + urlSegments
             } else {
                 url = `{{ url('${urlSegments}') }}`
             }
