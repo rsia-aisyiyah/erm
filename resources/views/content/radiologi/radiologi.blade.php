@@ -188,6 +188,11 @@
                         data: 'reg_periksa',
                         render: (data, type, row, meta) => {
                             let no_rkm_medis = data.no_rkm_medis
+                            if (row.hasil_radiologi.length) {
+                                listPrint = `<li><a class="dropdown-item" href="${getBaseUrl(`radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}`)}" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>`;
+                            } else {
+                                listPrint = ``
+                            }
                             return `
                                 <div class="btn-group">
                                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -195,7 +200,7 @@
                                     </button>
                                     <ul class="dropdown-menu" style="font-size:11px">
                                         <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${no_rkm_medis}')">Riwayat Pemeriksaan</a></li>
-                                        <li><a class="dropdown-item" href="${getBaseUrl(`radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}`)}" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>
+                                        ${listPrint}
                                     </ul>
                                 </div>
                                 `;
