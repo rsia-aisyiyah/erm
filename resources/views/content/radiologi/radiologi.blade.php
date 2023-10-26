@@ -145,7 +145,7 @@
             const getUrl = "{{ url('') }}"
             const domain = getUrl.split('/')[2];
             if (domain == 'sim.rsiaaisyiyah.com') {
-                url = 'https://sim.rsiaaisyiyah.com/erm' + urlSegments
+                url = 'https://sim.rsiaaisyiyah.com/erm/' + urlSegments
             } else {
                 url = `{{ url('${urlSegments}') }}`
             }
