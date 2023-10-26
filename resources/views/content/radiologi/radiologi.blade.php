@@ -144,8 +144,8 @@
 
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"
-            console.log(getUrl);
-            if (getBaseUrl == 'http://sim.rsaaisyiyah.com/erm') {
+            if (getUrl == 'http://sim.rsaaisyiyah.com/erm') {
+                console.log(getUrl);
                 url = 'https://sim.rsaaisyiyah.com/erm' + urlSegments
             } else {
                 url = `{{ url('${urlSegments}') }}`
