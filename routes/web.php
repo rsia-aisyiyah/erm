@@ -323,9 +323,11 @@ Route::middleware('auth')->group(function () {
     Route::get('radiologi/permintaan', [PermintaanRadiologiController::class, 'getByNoRawat']);
     Route::get('radiologi/periksa', [PeriksaRadiologiController::class, 'getByNoRawat']);
     Route::post('radiologi/periksa/update', [PeriksaRadiologiController::class, 'update']);
+    Route::get('radiologi/periksa/print', [PeriksaRadiologiController::class, 'print']);
     Route::post('radiologi/hasil/update', [HasilRadiologiController::class, 'update']);
     Route::post('radiologi/hasil/create', [HasilRadiologiController::class, 'create']);
     Route::get('radiologi/hasil', [HasilRadiologiController::class, 'get']);
+
 
     Route::prefix('bridging')->group(function () {
         Route::prefix('referensi')->group(function () {
@@ -403,3 +405,5 @@ Route::get('/file', function () {
     return $html = "<br/><img src='" . $file . "' />";
     // dd($file);
 });
+
+// Route::get('/print', [PeriksaRadiologiController::class, 'print']);

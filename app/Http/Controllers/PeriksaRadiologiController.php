@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PeriksaRadiologi;
+use Carbon\Carbon;
+use PDF;
 use Yajra\DataTables\DataTables;
 
 class PeriksaRadiologiController extends Controller
 {
     protected $track;
     protected $pemeriksaan;
+    protected $carbon;
     public function __construct()
     {
         $this->track = new TrackerSqlController;
         $this->pemeriksaan = new PeriksaRadiologi();
+        $this->carbon = new Carbon();
     }
 
     function view()
@@ -24,7 +28,7 @@ class PeriksaRadiologiController extends Controller
     function getByNoRawat(Request $request)
     {
         $periksa = $this->pemeriksaan->with([
-            'gambarRadiologi', 'petugas', 'hasilRadiologi', 'jnsPerawatan', 'regPeriksa.pasien', 'regPeriksa.penjab',
+            'gambarRadiologi', 'petugas', 'dokter', 'dokterRujuk', 'hasilRadiologi', 'jnsPerawatan', 'regPeriksa.pasien', 'regPeriksa.penjab',
             'regPeriksa.kamarInap' => function ($query) {
                 return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with(['kamar.bangsal']);
             },  'regPeriksa.poliklinik', 'permintaan.permintaanPemeriksaan'
@@ -99,5 +103,60 @@ class PeriksaRadiologiController extends Controller
         if ($pemeriksaan) {
             $this->track->updateSql($this->pemeriksaan, $data, $clause);
         }
+    }
+    function print(Request $request)
+    {
+        $data = [];
+        // return $hasil = $this->getByNoRawat($request);
+        $hasil = $this->getByNoRawat($request);
+        $data =  [
+            'no_rkm_medis' => $hasil->regPeriksa->no_rkm_medis,
+            'nama' => $hasil->regPeriksa->pasien->nm_pasien,
+            'tgl_lahir' => $this->carbon->parse($hasil->regPeriksa->pasien->tgl_lahir)->translatedFormat('d F Y'),
+            'umur' => $hasil->regPeriksa->pasien->umur,
+            'jk' => $hasil->regPeriksa->pasien->jk == 'L' ? 'Laki-laki' : 'Perempuan',
+            'alamat' => $hasil->regPeriksa->pasien->alamatpj . ', ' . $hasil->regPeriksa->pasien->kelurahanpj . ', ' . $hasil->regPeriksa->pasien->kecamatanpj . ', ',
+            'no_rawat' => $hasil->no_rawat,
+            'jns_pemeriksaan' => $hasil->jnsPerawatan->nm_perawatan,
+            'dokter' => $hasil->dokter->nm_dokter,
+            'id_dokter' => $hasil->dokter->kd_dokter,
+            'dpjp' => $hasil->dokterRujuk->nm_dokter,
+            'tgl_pemeriksaan' => $this->carbon->parse($hasil->tgl_periksa)->translatedFormat('d F Y'),
+            'jam' => $hasil->jam,
+            'petugas' => $hasil->petugas->nama,
+            'id_petugas' => $hasil->petugas->nip,
+            'ttd_dokter' => $this->setFingerOutput($hasil->dokter->nm_dokter, bcrypt($hasil->dokter->kd_dokter), $hasil->tgl_periksa),
+            'poli' => $hasil->regPeriksa->poliklinik->nm_poli,
+            // 'ttd_petugas' => $this->setFingerOutput($hasil->petugas->nama, bcrypt($hasil->petugas->nip), $hasil->tgl_periksa),
+        ];
+
+        foreach ($hasil->permintaan as $item => $permintaan) {
+            $data['tgl_sampling'] = $permintaan->tgl_sampel;
+            $data['jam_sampling'] = $permintaan->jam_sampel;
+            $data['ttd_petugas'] = $this->setFingerOutput($hasil->petugas->nama, bcrypt($hasil->petugas->nip), $permintaan->tgl_sampel);
+        }
+        foreach ($hasil->gambarRadiologi as $item => $gbr) {
+            // $data['gambar'] = $gbr->lokasi_gambar;
+            $data['gambar'] = "https://sim.rsiaaisyiyah.com/webapps/radiologi/" . $gbr->lokasi_gambar;
+        }
+        foreach ($hasil->regPeriksa->kamarInap as $item => $inap) {
+            $data['kamar'] = $inap ? $inap->kamar->bangsal->nm_bangsal : '-';
+        }
+        foreach ($hasil->hasilRadiologi as $item => $hsl) {
+            $data['hasil'] = $hsl->hasil;
+        }
+        $file = PDF::loadView('content.print.hasil_radiologi', ['data' => $data])
+            ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
+            ->setPaper(array(0, 0, 595, 935));
+        if ($request->openWith == 'stream') {
+            return $file->stream($data['nama'] . '.pdf');
+        } else {
+            return $file->download($data['nama'] . '.pdf');
+        }
+    }
+    function setFingerOutput($dokter, $id, $tanggal)
+    {
+        $strId = sha1($id);
+        return $str = "Ditandatangani di RSIA Aisiyiyah Pekajangan Kab. Pekalongan, Ditandatangani Elektronik Oleh $dokter, ID $strId, $tanggal";
     }
 }

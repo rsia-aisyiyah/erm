@@ -173,7 +173,6 @@
                 columns: [{
                         data: 'reg_periksa',
                         render: (data, type, row, meta) => {
-
                             let no_rkm_medis = data.no_rkm_medis
                             return `
                                 <div class="btn-group">
@@ -182,6 +181,7 @@
                                     </button>
                                     <ul class="dropdown-menu" style="font-size:11px">
                                         <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${no_rkm_medis}')">Riwayat Pemeriksaan</a></li>
+                                        <li><a class="dropdown-item" href="{{ url('radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}') }}">Cetak Hasil</a></li>
                                     </ul>
                                 </div>
                             `;
@@ -262,6 +262,19 @@
                 ]
             })
         }
+
+        function printPeriksa(no_rawat, tgl_periksa, jam) {
+            const hasil = $.get('/erm/radiologi/periksa/print', {
+                'no_rawat': no_rawat,
+                'tgl_periksa': tgl_periksa,
+                'jam': jam,
+                'openWith': 'stream',
+            }).fail((request) => {
+                alertErrorAjax(request)
+            })
+            return hasil;
+        }
+
 
         function modalHasilRadiologi(no_rawat, tgl_periksa, jam, idOrder) {
             const departemen = "{{ session()->get('pegawai')->departemen }}"
