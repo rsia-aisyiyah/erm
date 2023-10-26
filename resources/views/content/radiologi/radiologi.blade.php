@@ -131,7 +131,7 @@
             $('.tgl_akhir').datepicker('setDate', splitTanggal(tgl_akhir))
 
             drawTbRadiologi()
-
+            console.log(getBaseUrl());
             setInterval(() => {
                 drawTbRadiologi()
                 toastReload('Memperbaharui data radiologi', 2000)
@@ -146,7 +146,6 @@
             const getUrl = "{{ url('') }}"
             const domain = getUrl.split('/')[2];
 
-            console.log(domain);
             if (domain == 'sim.rsaaisyiyah.com') {
                 url = 'https://sim.rsaaisyiyah.com/erm' + urlSegments
             } else {
