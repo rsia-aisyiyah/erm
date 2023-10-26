@@ -143,7 +143,8 @@
         })
 
         function getBaseUrl(urlSegments = '') {
-            const getBaseUrl = "{{ url('') }}"
+            const getUrl = "{{ url('') }}"
+            console.log(getUrl);
             if (getBaseUrl == 'http://sim.rsaaisyiyah.com/erm') {
                 url = 'https://sim.rsaaisyiyah.com/erm' + urlSegments
             } else {
