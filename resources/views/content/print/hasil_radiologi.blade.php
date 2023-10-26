@@ -16,7 +16,7 @@
                 </th>
             </tr>
         </thead>
-        <tbody style="font-size: 11px">
+        <tbody style="font-size: 12px">
             <tr>
                 <td>No. RM</td>
                 <td>:</td>
@@ -65,10 +65,6 @@
         </tbody>
     </table>
 
-    <p>Foto Radiologi : </p>
-    <hr />
-    <img src="{{ $data['gambar'] }}" width="100%;" loading="lazy" />
-    <div class="page-break"></div>
     <p style="margin-top: 30px">Hasil Pemeriksaan : </p>
     <hr />
     <p style="white-space: pre;border:1px solid #000; padding: 10px">{{ $data['hasil'] }}</p>
@@ -100,4 +96,8 @@
             </td>
         </tr>
     </table>
+    <div class="page-break"></div>
+    <p style="margin-top: 40px">Foto Radiologi : </p>
+    <hr />
+    <img src="{{ $data['gambar'] }}" loading="lazy" style="max-width: 100%" />
 @endsection
