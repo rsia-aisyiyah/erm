@@ -144,11 +144,11 @@
 
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"
-            if (getUrl == 'http://sim.rsaaisyiyah.com/erm') {
-                console.log(getUrl);
-                url = 'https://sim.rsaaisyiyah.com/erm' + urlSegments
-            } else {
+            const domain = getUrl.split('/')[2];
+            if (domain == 'localhost') {
                 url = `{{ url('${urlSegments}') }}`
+            } else {
+                url = 'https://sim.rsaaisyiyah.com/erm' + urlSegments
             }
             return url;
         }
