@@ -131,7 +131,6 @@
             $('.tgl_akhir').datepicker('setDate', splitTanggal(tgl_akhir))
 
             drawTbRadiologi()
-            console.log(getBaseUrl());
             setInterval(() => {
                 drawTbRadiologi()
                 toastReload('Memperbaharui data radiologi', 2000)
