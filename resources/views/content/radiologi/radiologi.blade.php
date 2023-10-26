@@ -145,10 +145,10 @@
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"
             const domain = getUrl.split('/')[2];
-            if (domain == 'localhost') {
-                url = `{{ url('${urlSegments}') }}`
-            } else {
+            if (domain == 'sim.rsaaisyiyah.com') {
                 url = 'https://sim.rsaaisyiyah.com/erm' + urlSegments
+            } else {
+                url = `{{ url('${urlSegments}') }}`
             }
             return url;
         }
