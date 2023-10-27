@@ -50,7 +50,7 @@
                             </div>
                         </div>
 
-                        <div class="mb-3 col-12" style="display: none">
+                        <div class="mb-3 col-12">
                             <div class="separator m-2">TRIASE ( AUSTRALIAN TRIAGE SCALE )</div>
                             <table class="table table-bordered table-striped table-hover tblTriase">
                                 <thead>
