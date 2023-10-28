@@ -41,6 +41,7 @@
                         <thead>
                             <tr role="row">
                                 <th></th>
+                                <th></th>
                                 <th>No Rawat</th>
                                 <th>Nama / No. RM</th>
                                 <th>Tgl Permintaan</th>
@@ -209,11 +210,11 @@
                         name: 'action'
                     },
                     {
-                        data: 'no_rawat',
+                        data: 'hasil_radiologi',
                         render: (data, type, row, meta) => {
                             let cek = ''
-                            if (row.hasil_radiologi.length) {
-                                row.hasil_radiologi.map((hasilRadiologi, index) => {
+                            if (data.length) {
+                                data.map((hasilRadiologi, index) => {
                                     if (hasilRadiologi.tgl_periksa == row.tgl_hasil && hasilRadiologi.jam == row.jam_hasil) {
                                         cek = `<i class="bi bi-check-circle-fill text-success"></i>`
                                     }
@@ -221,7 +222,13 @@
                             } else {
                                 cek = '';
                             }
-                            return `${data} ${cek}`;
+                            return `${cek}`;
+                        }
+                    },
+                    {
+                        data: 'no_rawat',
+                        render: (data, type, row, meta) => {
+                            return `${data}`;
                         }
                     },
                     {
@@ -234,7 +241,6 @@
                     {
                         data: 'tgl_permintaan',
                         render: (data, type, row, meta) => {
-                            // return `-`
                             return `${splitTanggal(data)} ${row.jam_permintaan}`
                         }
                     },
@@ -268,7 +274,7 @@
                         }
                     },
                     {
-                        data: 'status',
+                        data: 'reg_periksa.status_lanjut',
                         render: (data, type, row, meta) => {
                             if (data.toUpperCase() == 'RANAP') {
                                 html = `<span style="font-size:10px" class="badge text-bg-danger">Rawat Inap</span>`
