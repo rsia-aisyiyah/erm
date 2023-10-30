@@ -344,16 +344,11 @@
         }
 
         function ambilRacikan(no_resep, no_racik) {
-            hasil = '';
-            $.ajax({
-                async: false,
+            const hasil = $.ajax({
                 url: '/erm/resep/racik/ambil',
                 data: {
                     no_resep: no_resep,
                     no_racik: no_racik,
-                },
-                success: function(response) {
-                    hasil = response;
                 },
             })
             return hasil;
@@ -416,10 +411,10 @@
         }
 
         function hitungJumlahObat(kps, p1, p2, jumlah) {
-            // jumlah = $('.jml_dr').val();
-            kandungan = parseFloat(kps) * (parseFloat(p1) / parseFloat(p2));
-            jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
-            return parseFloat(jml_obat).toFixed(2);
+            jumlah = $('.jml_dr').val();
+            kandungan = kps * p1 / p2;
+            jml_obat = kandungan * jumlah / kps
+            return parseFloat(jml_obat).toFixed(0);
         }
 
         function ambilObatRacikan() {
@@ -444,9 +439,9 @@
                         html += '<tr class="obat-' + no + '">'
                         html += '<td><input type="hidden" id="kode_brng' + no + '" value="' + res.kode_brng + '" name="kode_brng[]"/>' + res.data_barang.nama_brng + '</td>'
                         html += '<td><input type="hidden" id="kps' + no + '" name="kps[]" value="' + res.data_barang.kapasitas + '"/>' + res.data_barang.kapasitas + ' mg </td>'
-                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' + no + '" name="p1[]" value="' + res.p1 + '" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
+                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' + no + '" name="p1[]" value="' + res.p1 + '" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off" onkeypress="return hanyaAngka(event)"/></td>'
                         html += '<td>/</td>'
-                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' + no + '"name="p2[]" onkeyup="hitungObatRacik(' + no + ')" value="' + res.p2 + '" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
+                        html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' + no + '"name="p2[]" onkeyup="hitungObatRacik(' + no + ')" value="' + res.p2 + '" onfocusout="setNilaiPembagi(this)" autocomplete="off" onkeypress="return hanyaAngka(event)"/></td>'
                         html += '<td><input type="search" class="form-control form-control-sm form-underline" id="kandungan' + no + '" name="kandungan[]" onkeypress="return hanyaAngka(event)" value="' + kandungan + '" onkeyup="hitungDosis(' + no + ')" autocomplete="off"/></td>'
                         html += '<td>mg</td>'
                         html += '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' + no + '" name="jml[]" value="' + hitungJumlahObat(res.data_barang.kapasitas, res.p1, res.p2) + '" readonly/></td>'
@@ -607,14 +602,15 @@
             let no_racik = $(this).data('racik');
             // console.log('noracik', no_racik)
             $('#modalObatRacik').modal('show');
-            racikan = ambilRacikan(no_resep, no_racik)
-            $('.no_resep').val(racikan.no_resep);
-            $('.metode').val(racikan.metode.nm_racik);
-            $('.nm_racik').val(racikan.nama_racik);
-            $('.no_racik').val(no_racik);
-            $('.jml_dr').val(racikan.jml_dr);
-            $('.aturan_pakai').val(racikan.aturan_pakai);
-            ambilObatRacikan();
+            ambilRacikan(no_resep, no_racik).done((racikan) => {
+                $('.no_resep').val(racikan.no_resep);
+                $('.metode').val(racikan.metode.nm_racik);
+                $('.nm_racik').val(racikan.nama_racik);
+                $('.no_racik').val(no_racik);
+                $('.jml_dr').val(racikan.jml_dr);
+                $('.aturan_pakai').val(racikan.aturan_pakai);
+                ambilObatRacikan();
+            })
         })
 
         $('#modalObatRacik').on('shown.bs.modal', function() {

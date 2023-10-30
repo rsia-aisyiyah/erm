@@ -204,7 +204,6 @@
                     for (let no = 1; no <= banyakBaris; no++) {
                         $.ajax({
                             url: '/erm/resep/racik/detail/ubah',
-                            // async: false,
                             data: {
                                 '_token': "{{ csrf_token() }}",
                                 'no_resep': $('.no_resep').val(),
