@@ -1074,15 +1074,15 @@
             html += '</td>';
             html += '<td>';
             html +=
-                '<input type="search" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat_umum form-underline" name="nama_obat_umum" /><div class="list_obat"></div>';
+                '<input type="text" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat_umum form-underline" name="nama_obat_umum" /><div class="list_obat"></div>';
             html += '</td>';
             html += '<td>';
             html +=
-                '<input type="search" class="jml_umum form-control form-control-sm form-underline"/>';
+                '<input type="text" class="jml_umum form-control form-control-sm form-underline"/>';
             html += '</td>';
             html += '<td>';
             html +=
-                '<input type="search" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
+                '<input type="text" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
             html += '</td>';
             html += '<td>';
             html +=

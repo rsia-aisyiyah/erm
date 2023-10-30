@@ -170,11 +170,8 @@
             p1 = $('#p1' + no).val();
             p2 = $('#p2' + no).val();
             if (parseInt(kandungan) <= parseInt(kps)) {
-
                 jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
                 $('#jml_obat' + no).val(jml_obat.toFixed(1));
-
-
                 $('#p2' + no).val('1');
                 $('#p1' + no).val('1');
             } else {
@@ -243,20 +240,20 @@
             html = '<tr class="baris_' + no + '">'
             html +=
                 '<td><input type="hidden" id="kode_brng' + no +
-                '"/><input type="search" onkeyup="cariObatRacikan(this, ' + no +
+                '"/><input type="text" onkeyup="cariObatRacikan(this, ' + no +
                 ')" autocomplete="off" class="form-control form-control-sm nama_obat_' + no +
                 ' form-underline" name="nama_obat" /><div class="list_obat_' +
                 no + '"></div></td>'
             html +=
-                '<td><input type="search" autocomplete="off" class="form-control form-control-sm form-underline" id="kps' +
+                '<td><input type="text" autocomplete="off" class="form-control form-control-sm form-underline" id="kps' +
                 no + '" name="kps" readonly /></td>'
-            html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p1' + no + '" name="p1[]" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
+            html += '<td><input type="text" class="form-control form-control-sm form-underline" id="p1' + no + '" name="p1[]" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
             html += '<td>/</td>'
-            html += '<td><input type="search" class="form-control form-control-sm form-underline" id="p2' + no + '"name="p2[]" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
-            html += '<td><input type="search" onkeypress="return hanyaAngka(event)" class="form-control form-control-sm form-underline" id="kandungan' + no + '" name="kandungan[]" onkeyup="hitungDosis(' + no + ')" autocomplete="off"/></td>'
+            html += '<td><input type="text" class="form-control form-control-sm form-underline" id="p2' + no + '"name="p2[]" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
+            html += '<td><input type="text" onkeypress="return hanyaAngka(event)" class="form-control form-control-sm form-underline" id="kandungan' + no + '" name="kandungan[]" onkeyup="hitungDosis(' + no + ')" autocomplete="off"/></td>'
             html += '<td>mg</td>'
             html +=
-                '<td><input type="search" class="form-control form-control-sm form-underline" id="jml_obat' +
+                '<td><input type="text" class="form-control form-control-sm form-underline" id="jml_obat' +
                 no +
                 '" name="jml[]" readonly/></td>'
             html +=
