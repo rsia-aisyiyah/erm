@@ -151,26 +151,30 @@
                         }
                     })
 
+                    let gambar = '';
                     if (Object.keys(rad.gambar_radiologi).length) {
-                        let gambar = '';
                         rad.gambar_radiologi.map((img) => {
                             if (img.tgl_periksa == rad.tgl_periksa && img.jam == rad.jam) {
-                                gambar += `<img src="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">`
+                                gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}">
+                                                <img src="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                            </a>`
                             } else {
-                                gambar = "{{ asset('/img/default.png') }}"
+                                gambar = `<a data-magnify="gallery" data-src=""  data-group="a" href="{{ asset('/img/default.png') }}">
+                                                <img src="{{ asset('/img/default.png') }}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                            </a>`
                             }
                         })
                     } else {
-                        gambar = "{{ asset('/img/default.png') }}"
+                        gambar = `<a data-magnify="gallery" data-src=""  data-group="a" href="{{ asset('/img/default.png') }}">
+                                                <img src="{{ asset('/img/default.png') }}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                            </a>`
                     }
 
                     // const gambar = rad.gambar_radiologi ? `https://sim.rsiaaisyiyah.com/webapps/radiologi/${rad.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
                     html += `
                             <div class="row">
                                 <div class="col-lg-4 col-sm-12 col-md-12">
-                                    <a data-magnify="gallery" data-src=""  data-group="a" href="${gambar}">
                                         ${gambar}
-                                    </a>
                                 </div>
                                 <div class="col-lg-8 col-sm-12 col-md-12" style="background-color:#e1ffe3">
                                     <table class="table table-sm table-borderless" width="100%">
