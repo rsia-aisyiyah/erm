@@ -407,7 +407,7 @@
                     inap = response.bayi_gabung.kamar_inap;
                     tgl_keluar = inap.tgl_keluar == '0000-00-00' ? `${inap.tgl_keluar} ${inap.jam_keluar}` : `${formatTanggal(inap.tgl_keluar)} ${inap.jam_keluar} `;
                     $('#formResumeRanap input[name=kamar]').val(`${inap.kamar.bangsal.nm_bangsal} ( ${response.penjab.png_jawab} )`);
-                    $('#formResumeRanap input[name=tgl_masuk]').val(`${formatTanggal(inap.tgl_masuk)} ${inap.jam_masuk}`);
+                    $('#formResumeRanap input[name=tgl_masuk]').val(`${formatTanggal(response.tgl_registrasi)} ${response.jam_registrasi}`);
                     $('#formResumeRanap input[name=tgl_keluar]').val(`${tgl_keluar}`);
                     $('#formResumeRanap input[name=diagnosa_awal]').val(`${inap.diagnosa_awal}`);
 
@@ -416,7 +416,7 @@
                     $.map(response.kamar_inap, (inap) => {
                         tgl_keluar = inap.tgl_keluar == '0000-00-00' ? `${inap.tgl_keluar} ${inap.jam_keluar}` : `${formatTanggal(inap.tgl_keluar)} ${inap.jam_keluar} `;
                         $('#formResumeRanap input[name=kamar]').val(`${inap.kamar.bangsal.nm_bangsal} ( ${response.penjab.png_jawab} )`);
-                        $('#formResumeRanap input[name=tgl_masuk]').val(`${formatTanggal(inap.tgl_masuk)} ${inap.jam_masuk}`);
+                        $('#formResumeRanap input[name=tgl_masuk]').val(`${formatTanggal(response.tgl_registrasi)} ${response.jam_registrasi}`);
                         $('#formResumeRanap input[name=tgl_keluar]').val(`${tgl_keluar}`);
                         $('#formResumeRanap input[name=diagnosa_awal]').val(`${inap.diagnosa_awal}`);
                     })
