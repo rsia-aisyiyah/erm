@@ -156,17 +156,17 @@
                         rad.gambar_radiologi.map((img) => {
                             if (img.tgl_periksa == rad.tgl_periksa && img.jam == rad.jam) {
                                 gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}">
-                                                <img src="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                                <img src="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}" class="img-thumbnail position-relative" width="300px">
                                             </a>`
                             } else {
                                 gambar = `<a data-magnify="gallery" data-src=""  data-group="a" href="{{ asset('/img/default.png') }}">
-                                                <img src="{{ asset('/img/default.png') }}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                                <img src="{{ asset('/img/default.png') }}" class="img-thumbnail position-relative" width="300px">
                                             </a>`
                             }
                         })
                     } else {
                         gambar = `<a data-magnify="gallery" data-src=""  data-group="a" href="{{ asset('/img/default.png') }}">
-                                                <img src="{{ asset('/img/default.png') }}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                                <img src="{{ asset('/img/default.png') }}" class="img-thumbnail position-relative" width="300px">
                                             </a>`
                     }
 
