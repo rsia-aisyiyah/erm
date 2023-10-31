@@ -139,8 +139,13 @@ class PeriksaRadiologiController extends Controller
             // $data['gambar'] = $gbr->lokasi_gambar;
             $data['gambar'] = "https://sim.rsiaaisyiyah.com/webapps/radiologi/" . $gbr->lokasi_gambar;
         }
-        foreach ($hasil->regPeriksa->kamarInap as $item => $inap) {
-            $data['kamar'] = $inap ? $inap->kamar->bangsal->nm_bangsal : '-';
+        if ($hasil->regPeriksa->kamarInap) {
+            foreach ($hasil->regPeriksa->kamarInap as $item => $inap) {
+                $data['kamar'] = $inap ? $inap->kamar->bangsal->nm_bangsal : '-';
+            }
+        } else {
+
+            $data['kamar'] = '-';
         }
         foreach ($hasil->hasilRadiologi as $item => $hsl) {
             $data['hasil'] = $hsl->hasil;
