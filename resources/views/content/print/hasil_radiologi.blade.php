@@ -96,8 +96,10 @@
             </td>
         </tr>
     </table>
-    <div class="page-break"></div>
-    <p style="margin-top: 40px">Foto Radiologi : </p>
-    <hr />
-    <img src="{{ $data['gambar'] }}" loading="lazy" style="max-width: 100%" />
+    @foreach ($data['gambar'] as $gbr)
+        <div class="page-break"></div>
+        <p style="margin-top: 40px">Foto Radiologi : </p>
+        <hr />
+        <img src="{{ $gbr }}" loading="lazy" style="width: 100%" />
+    @endforeach
 @endsection

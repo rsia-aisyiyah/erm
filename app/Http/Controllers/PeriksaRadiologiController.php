@@ -137,8 +137,7 @@ class PeriksaRadiologiController extends Controller
             $data['ttd_petugas'] = $this->setFingerOutput($hasil->petugas->nama, bcrypt($hasil->petugas->nip), $permintaan->tgl_sampel);
         }
         foreach ($hasil->gambarRadiologi as $item => $gbr) {
-            // $data['gambar'] = $gbr->lokasi_gambar;
-            $data['gambar'] = "https://sim.rsiaaisyiyah.com/webapps/radiologi/" . $gbr->lokasi_gambar;
+            $data['gambar'][] = "https://sim.rsiaaisyiyah.com/webapps/radiologi/" . $gbr->lokasi_gambar;
         }
         if ($hasil->regPeriksa->kamarInap) {
             foreach ($hasil->regPeriksa->kamarInap as $item => $inap) {
@@ -152,8 +151,8 @@ class PeriksaRadiologiController extends Controller
         $file = PDF::loadView('content.print.hasil_radiologi', ['data' => $data])
             ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
             ->setPaper(array(0, 0, 595, 935));
+        return $file->stream($data['nama'] . '.pdf');
         if ($request->openWith == 'stream') {
-            return $file->stream($data['nama'] . '.pdf');
         } else {
             return $file->download($data['nama'] . '.pdf');
         }
