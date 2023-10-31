@@ -151,8 +151,8 @@ class PeriksaRadiologiController extends Controller
         $file = PDF::loadView('content.print.hasil_radiologi', ['data' => $data])
             ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
             ->setPaper(array(0, 0, 595, 935));
-        return $file->stream($data['nama'] . '.pdf');
         if ($request->openWith == 'stream') {
+            return $file->stream($data['nama'] . '.pdf');
         } else {
             return $file->download($data['nama'] . '.pdf');
         }
