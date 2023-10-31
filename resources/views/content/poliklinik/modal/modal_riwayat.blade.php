@@ -152,9 +152,10 @@
                     })
 
                     if (Object.keys(rad.gambar_radiologi).length) {
+                        let gambar = '';
                         rad.gambar_radiologi.map((img) => {
                             if (img.tgl_periksa == rad.tgl_periksa && img.jam == rad.jam) {
-                                gambar = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}`
+                                gambar += `<img src="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">`
                             } else {
                                 gambar = "{{ asset('/img/default.png') }}"
                             }
@@ -168,7 +169,7 @@
                             <div class="row">
                                 <div class="col-lg-4 col-sm-12 col-md-12">
                                     <a data-magnify="gallery" data-src=""  data-group="a" href="${gambar}">
-                                        <img src="${gambar}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                        ${gaambar}
                                     </a>
                                 </div>
                                 <div class="col-lg-8 col-sm-12 col-md-12" style="background-color:#e1ffe3">
