@@ -127,6 +127,7 @@ class PeriksaRadiologiController extends Controller
             'id_petugas' => $hasil->petugas->nip,
             'ttd_dokter' => $this->setFingerOutput($hasil->dokter->nm_dokter, bcrypt($hasil->dokter->kd_dokter), $hasil->tgl_periksa),
             'poli' => $hasil->regPeriksa->poliklinik->nm_poli,
+            'kamar' => '-',
             // 'ttd_petugas' => $this->setFingerOutput($hasil->petugas->nama, bcrypt($hasil->petugas->nip), $hasil->tgl_periksa),
         ];
 
@@ -143,9 +144,6 @@ class PeriksaRadiologiController extends Controller
             foreach ($hasil->regPeriksa->kamarInap as $item => $inap) {
                 $data['kamar'] = $inap ? $inap->kamar->bangsal->nm_bangsal : '-';
             }
-        } else {
-
-            $data['kamar'] = '-';
         }
         foreach ($hasil->hasilRadiologi as $item => $hsl) {
             $data['hasil'] = $hsl->hasil;
