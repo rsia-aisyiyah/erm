@@ -169,7 +169,7 @@
                             <div class="row">
                                 <div class="col-lg-4 col-sm-12 col-md-12">
                                     <a data-magnify="gallery" data-src=""  data-group="a" href="${gambar}">
-                                        ${gaambar}
+                                        ${gambar}
                                     </a>
                                 </div>
                                 <div class="col-lg-8 col-sm-12 col-md-12" style="background-color:#e1ffe3">
