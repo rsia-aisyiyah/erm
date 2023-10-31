@@ -385,15 +385,18 @@
                             htmlImage += `<img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative " src="${gambar}" style="padding: 10px" width="100%">`
                         }
                     })
+                    $('#gambarRadiologi').attr('src', `${gambar}`);
+                    $('#btnMagnifyImage').attr('href', `${gambar}`);
+                    $('.image-set').append(htmlImage);
 
                 } else {
                     gambar = "{{ asset('/img/default.png') }}";
                     htmlImage += `<img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative src="${gambar}" style="padding: 10px" width="100%">`
+                    $('#gambarRadiologi').attr('src', `${gambar}`);
+                    $('#btnMagnifyImage').attr('href', `${gambar}`);
+                    $('.image-set').append(htmlImage);
 
                 }
-                $('.image-set').append(htmlImage);
-                $('#gambarRadiologi').attr('src', `${gambar}`);
-                $('#btnMagnifyImage').attr('href', `${gambar}`);
             })
             $('#btnSimpanHasil').attr('onclick', `simpanHasilRadiologi('${no_rawat}')`);
             $('#modalHasilRadiologi').modal('show')
