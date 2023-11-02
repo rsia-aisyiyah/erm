@@ -26,8 +26,8 @@ class HasilRadiologiController extends Controller
     function create(Request $request)
     {
         $dateTime = [
-            'tgl_periksa' => $request->tgl_hasil,
-            'jam' => $request->jam_hasil
+            'tgl_periksa' => date('Y-m-d'),
+            'jam' => date('H:i:s')
         ];
         $data = [
             'no_rawat' => $request->no_rawat,

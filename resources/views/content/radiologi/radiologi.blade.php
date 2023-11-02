@@ -437,8 +437,6 @@
                 inak: $('#formHasilRadiologi input[name=inak]').val(),
                 dosis: $('#formHasilRadiologi input[name=dosis]').val(),
                 jml_penyinaran: $('#formHasilRadiologi input[name=jml_penyinaran]').val(),
-                tgl_hasil: "{{ date('Y-m-d') }}",
-                jam_hasil: "{{ date('H:i:s') }}",
                 _token: $('#formHasilRadiologi input[name=_token]').val(),
             };
 
