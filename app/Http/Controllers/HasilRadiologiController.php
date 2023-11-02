@@ -51,8 +51,8 @@ class HasilRadiologiController extends Controller
             $this->periksa->updateDateTime($clause, $dateTime);
             $this->gambar->updateDateTime($clause, $dateTime);
             $this->permintaan->updateDateTime($clausePermintaan, [
-                'tgl_hasil' => $request->tgl_hasil,
-                'jam_hasil' => $request->jam_hasil
+                'tgl_hasil' => $dateTime['tgl_periksa'],
+                'jam_hasil' => $dateTime['jam'],
             ]);
             $this->track->insertSql($this->hasil, $data, $clause);
         }
@@ -60,8 +60,8 @@ class HasilRadiologiController extends Controller
     function update(Request $request)
     {
         $dateTime = [
-            'tgl_periksa' => $request->tgl_hasil,
-            'jam' => $request->jam_hasil
+            'tgl_periksa' => date('Y-m-d'),
+            'jam' => date('H:i:s')
         ];
         $data = [
             'hasil' => $request->hasil,
@@ -82,8 +82,8 @@ class HasilRadiologiController extends Controller
             $this->periksa->updateDateTime($clause, $dateTime);
             $this->gambar->updateDateTime($clause, $dateTime);
             $this->permintaan->updateDateTime($clausePermintaan, [
-                'tgl_hasil' => $request->tgl_hasil,
-                'jam_hasil' => $request->jam_hasil
+                'tgl_hasil' => $dateTime['tgl_periksa'],
+                'jam_hasil' => $dateTime['jam'],
             ]);
             $this->track->updateSql($this->hasil, $data, $clause);
         }

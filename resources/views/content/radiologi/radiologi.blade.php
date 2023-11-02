@@ -447,7 +447,7 @@
                         $('#modalHasilRadiologi').modal('hide')
                     })
                 })
-            } else if (departemen == 'SPS') {
+            } else if (departemen == 'SPS' || "{{ session()->get('pegawai')->nik }}" == 'direksi') {
                 getHasilRadiologi(data.no_rawat, data.tgl_periksa, data.jam).done((hasil) => {
                     if (Object.keys(hasil).length) {
                         updateHasilRadiologi(data).done(() => {
@@ -467,7 +467,6 @@
                     }
                 })
             }
-            // console.log(data);
         }
 
         $('#modalHasilRadiologi').on('hidden.bs.modal', () => {
