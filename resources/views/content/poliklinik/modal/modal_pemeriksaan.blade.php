@@ -29,14 +29,14 @@
                         <button class="nav-link" id="tab-asesmen-ranap-anak" data-bs-toggle="tab" data-bs-target="#tab-asmed-ranap-ana"
                             type="button" role="tab" aria-controls="tab-asmed-ranap-ana" aria-selected="false">Asesmen Medis Ranap Anak</button>
                     </li>
-                    {{-- <li class="nav-item" role="presentation" id="li-data-obg" style="display:none">
-                        <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-asmed"
-                            type="button" role="tab" aria-controls="tab-tabel-asmed" aria-selected="false">Data Asesmen</button>
-                    </li> --}}
-                    {{-- <li class="nav-item" role="presentation" id="li-data-anak" style="display:none">
-                        <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-anak"
-                            type="button" role="tab" aria-controls="tab-tabel-anak" aria-selected="false">Data Asesmen Anak</button>
-                    </li> --}}
+                    <li class="nav-item" role="presentation" id="li-lab-ana">
+                        <button class="nav-link" id="tab-lab-anak" data-bs-toggle="tab" data-bs-target="#lab-ana"
+                            type="button" role="tab" aria-controls="lab-ana" aria-selected="false">Hasil Laboratorium</button>
+                    </li>
+                    <li class="nav-item" role="presentation" id="li-rad-ana">
+                        <button class="nav-link" id="tab-rad-anak" data-bs-toggle="tab" data-bs-target="#rad-ana"
+                            type="button" role="tab" aria-controls="rad-ana" aria-selected="false">Hasil Radiologi</button>
+                    </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
@@ -57,16 +57,47 @@
                     <div class="tab-pane fade p-3" id="tab-asmed-ranap-ana" role="tabpanel" aria-labelledby="tab-asmed-ranap"
                         tabindex="0">
                         @include('content.ranap.form.form_asemd_anak')
-                        {{-- @include('content.poliklinik.modal.pemeriksaan.asmed_anak') --}}
                     </div>
-                    {{-- <div class="tab-pane fade p-3" id="tab-tabel-asmed" role="tabpanel" aria-labelledby="tab-tabel"
+                    <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab"
                         tabindex="0">
-                        @include('content.poliklinik.modal.pemeriksaan.tabel_asmed_kandungan')
+                        <small class="mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilLab" style="display: none">Belum / Tidak dilakukan pemeriksaan laboratorium</small>
+                        <div class="container" id="viewHasilLaborat" style="display: none">
+                            <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
+                            <table class="table table-bordered" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Pemeriksaan</th>
+                                        <th>Hasil</th>
+                                        <th>Nilai Rujukan</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabel-lab">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-tabel-anak" role="tabpanel" aria-labelledby="tab-tabel"
+                    <div class="tab-pane fade p-3" id="rad-ana" role="tabpanel" aria-labelledby="tab-radiologi"
                         tabindex="0">
-                        @include('content.poliklinik.modal.pemeriksaan.list_asmed_anak')
-                    </div> --}}
+                        <small class="mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilRadiologi" style="display: none">Belum / Tidak dilakukan pemeriksaan radiologi</small>
+                        <div class="row" id="viewHasilRadiologi" style="display: none">
+                            <table class="table text-sm table-bordered" id="tbHasilRadiologi">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal Sampel</th>
+                                        <th>Diagnosa Klinis</th>
+                                        <th>Informasi Medis</th>
+                                        <th>Jenis Pemeriksaan</th>
+                                        <th>Hasil</th>
+                                        <th>Gambar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -112,6 +143,116 @@
             $('.btn-asmed-ranap').css('display', 'inline')
             $('.btn-asmed').css('display', 'none')
             $('.btn-soap').css('display', 'none')
+        })
+        $('button[data-bs-target="#lab-ana"]').on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed-ranap').css('display', 'none')
+            $('.btn-asmed').css('display', 'none')
+            $('.btn-soap').css('display', 'none')
+            const no_rawat = $('#nomor_rawat').val();
+            $('#tabel-lab').empty()
+            getHasilLab(no_rawat).done((lab) => {
+                // console.log(lab.length);
+                let jenisPerawatan = '';
+                let tglPeriksa = '';
+                let hasil = '';
+                if (lab.length) {
+                    lab.map((item, index) => {
+                        if (jenisPerawatan != item.jns_perawatan_lab.kd_jenis_prw || tglPeriksa != item.tgl_periksa) {
+                            hasil += `<tr class="borderless" style="background-color:#eee">
+                                <td colspan="3"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
+                                ${formatTanggal(item.tgl_periksa)} ${item.jam}</td>
+                                <td>${item.periksa_lab.petugas.nama}</td></tr>
+                                `
+                        }
+
+                        if (item.keterangan == 'L') {
+                            warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
+                        } else if (item.keterangan == 'H' || item.keterangan == '*' || item.keterangan == '**') {
+                            warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
+                        } else if (item.keterangan == 'K' || item.keterangan == 'k') {
+                            warna = 'style="color:#fff;background-color:#dc3;font-weight:bold"';
+                        } else {
+                            warna = '';
+                        }
+                        hasil += '<tr ' + warna + '>';
+                        hasil += '<td>' + item.template.Pemeriksaan + '</td>';
+                        hasil += '<td>' + item.nilai + ' ' + item.template.satuan +
+                            '</td>';
+                        hasil += '<td>' + item.nilai_rujukan + '</td>';
+                        hasil += '<td>' + item.keterangan + '</td>';
+                        hasil += '</tr>';
+
+                        jenisPerawatan = item.jns_perawatan_lab.kd_jenis_prw;
+                        tglPeriksa = item.tgl_periksa;
+                    })
+                    $('#tabel-lab').append(hasil)
+                    $('#viewHasilLaborat').css('display', 'inline')
+                    $('#alertHasilLab').css('display', 'none')
+                } else {
+                    $('#viewHasilLaborat').css('display', 'none')
+                    $('#alertHasilLab').css('display', 'inline')
+
+                }
+            })
+        })
+        $('button[data-bs-target="#rad-ana"]').on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed-ranap').css('display', 'none')
+            $('.btn-asmed').css('display', 'none')
+            $('.btn-soap').css('display', 'none')
+            const no_rawat = $('#nomor_rawat').val();
+            $('#tabel-lab').empty()
+            getPermintaanRadiologi(no_rawat).done((permintaan) => {
+                if (Object.keys(permintaan).length) {
+                    permintaan.map((prm, index) => {
+                        html = `<tr><td>${splitTanggal(prm.tgl_hasil)} ${prm.jam_hasil}</td>
+                                <td>${prm.diagnosa_klinis}</td>
+                                <td>${prm.informasi_tambahan}</td>
+                                <td>
+                        `
+                        prm.periksa_radiologi.map((periksa) => {
+                            if (periksa.tgl_periksa == prm.tgl_hasil && periksa.jam == prm.jam_hasil) {
+                                html += `${periksa.jns_perawatan.nm_perawatan}, <br/>`
+                            }
+                        })
+
+                        html += `</td>`
+                        html += `<td>`
+                        prm.hasil_radiologi.map((hasil) => {
+                            if (hasil.tgl_periksa == prm.tgl_hasil && hasil.jam == prm.jam_hasil) {
+                                html += `${stringPemeriksaan(hasil.hasil)}`
+                            }
+                        })
+                        html += `</td>`
+                        html += `<td>`
+                        if (prm.gambar_radiologi.length) {
+                            prm.gambar_radiologi.map((gambar) => {
+                                if (gambar.tgl_periksa == prm.tgl_hasil && gambar.jam == prm.jam_hasil) {
+                                    gbr = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${gambar.lokasi_gambar}`
+                                    html += `<a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gbr}">
+                                                <i class="bi bi-eye"></i> BUKA GAMBAR
+                                            </a><br/>`
+                                } else {
+                                    html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
+
+                                }
+                            })
+                        } else {
+                            html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
+                        }
+                        html += `</td>`
+                        html += `<tr>`
+
+                        $('#tbHasilRadiologi tbody').append(html)
+                    })
+
+                    $('#viewHasilRadiologi').css('display', 'flex')
+                    $('#alertHasilRadiologi').css('display', 'none')
+
+                } else {
+                    $('#viewHasilRadiologi').css('display', 'none')
+                    $('#alertHasilRadiologi').css('display', 'inline')
+                }
+            })
         })
 
         function setNoRacik(no_resep) {
@@ -1608,6 +1749,7 @@
             $('#body_umum').empty();
             $('#body_racikan').empty();
             $('#body_riwayat').empty();
+            $('button[data-bs-target="#tab-soap-pane"]').tab('show')
 
         });
 
