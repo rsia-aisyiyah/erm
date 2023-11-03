@@ -605,29 +605,37 @@
                 method: 'get',
                 dataType: 'JSON',
             }).done((response) => {
-                $.map(response, (asmed) => {
-                    if (asmed.reg_periksa.kd_poli != 'IGDK' && asmed.reg_periksa.kd_poli != 'U0016') {
-                        html = '<tr>'
-                        html += `<td>${asmed.no_rawat}</td>
-                        <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
-                        <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
-                        <td>${asmed.dokter.nm_dokter}</td>
-                        <td><button class="btn btn-success btn-sm" type="button" onclick="copyAsmedKandunganRanap('${asmed.no_rawat}')"><i class="bi bi-download"></i> Gunakan</button></td>`
-                        html += '<tr>'
-                        $('#tbRiwayatAsmed tbody').append(html)
-                        $('#modalRiwayatAsmed').modal('show')
-                    } else {
-                        alertErrorAjax({
-                            status: 404,
-                            statusText: 'TIDAK ADA ASMED DARI POLI',
-                            responseJSON: {
-                                message: ''
-                            }
-                        })
-                    }
-                })
-
-
+                if (Object.keys(response).length) {
+                    $.map(response, (asmed) => {
+                        if (asmed.reg_periksa.kd_poli != 'IGDK' && asmed.reg_periksa.kd_poli != 'U0016') {
+                            html = '<tr>'
+                            html += `<td>${asmed.no_rawat}</td>
+                            <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
+                            <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
+                            <td>${asmed.dokter.nm_dokter}</td>
+                            <td><button class="btn btn-success btn-sm" type="button" onclick="copyAsmedKandunganRanap('${asmed.no_rawat}')"><i class="bi bi-download"></i> Gunakan</button></td>`
+                            html += '<tr>'
+                            $('#tbRiwayatAsmed tbody').append(html)
+                            $('#modalRiwayatAsmed').modal('show')
+                        } else {
+                            alertErrorAjax({
+                                status: 404,
+                                statusText: 'TIDAK ADA ASMED DARI POLI',
+                                responseJSON: {
+                                    message: ''
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    alertErrorAjax({
+                        status: 404,
+                        statusText: 'TIDAK ADA ASMED DARI POLI',
+                        responseJSON: {
+                            message: ''
+                        }
+                    })
+                }
             }).fail((request) => {
                 alertErrorAjax();
             })
@@ -641,29 +649,37 @@
                 method: 'get',
                 dataType: 'JSON',
             }).done((response) => {
-                $.map(response, (asmed) => {
-                    if (asmed.reg_periksa.kd_poli != 'IGDK' && asmed.reg_periksa.kd_poli != 'U0016') {
-                        html = '<tr>'
-                        html += `<td>${asmed.no_rawat}</td>
-                            <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
-                            <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
-                            <td>${asmed.dokter.nm_dokter}</td>
-                            <td><button class="btn btn-success btn-sm" type="button" onclick="copyAsmedAnakRanap('${asmed.no_rawat}')"><i class="bi bi-download"></i> Gunakan</button></td>`
-                        html += '<tr>'
-                        $('#tbRiwayatAsmed tbody').append(html)
-                        $('#modalRiwayatAsmed').modal('show')
-                    } else {
-                        alertErrorAjax({
-                            status: 404,
-                            statusText: 'TIDAK ADA ASMED DARI POLI',
-                            responseJSON: {
-                                message: ''
-                            }
-                        })
-                    }
-                })
-
-
+                if (Object.keys(response).length) {
+                    $.map(response, (asmed) => {
+                        if (asmed.reg_periksa.kd_poli != 'IGDK' && asmed.reg_periksa.kd_poli != 'U0016') {
+                            html = '<tr>'
+                            html += `<td>${asmed.no_rawat}</td>
+                                <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
+                                <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
+                                <td>${asmed.dokter.nm_dokter}</td>
+                                <td><button class="btn btn-success btn-sm" type="button" onclick="copyAsmedAnakRanap('${asmed.no_rawat}')"><i class="bi bi-download"></i> Gunakan</button></td>`
+                            html += '<tr>'
+                            $('#tbRiwayatAsmed tbody').append(html)
+                            $('#modalRiwayatAsmed').modal('show')
+                        } else {
+                            alertErrorAjax({
+                                status: 404,
+                                statusText: 'TIDAK ADA ASMED DARI POLI',
+                                responseJSON: {
+                                    message: ''
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    alertErrorAjax({
+                        status: 404,
+                        statusText: 'TIDAK ADA ASMED DARI POLI',
+                        responseJSON: {
+                            message: ''
+                        }
+                    })
+                }
             }).fail((request) => {
                 alertErrorAjax();
             })
