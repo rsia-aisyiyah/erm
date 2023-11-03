@@ -606,7 +606,7 @@
                 dataType: 'JSON',
             }).done((response) => {
                 $.map(response, (asmed) => {
-                    if (asmed.reg_periksa.kd_poli != 'IGDK') {
+                    if (asmed.reg_periksa.kd_poli != 'IGDK' || asmed.reg_periksa.kd_poli != 'U0016') {
                         html = '<tr>'
                         html += `<td>${asmed.no_rawat}</td>
                         <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
@@ -642,7 +642,7 @@
                 dataType: 'JSON',
             }).done((response) => {
                 $.map(response, (asmed) => {
-                    if (asmed.reg_periksa.kd_poli != 'IGDK') {
+                    if (asmed.reg_periksa.kd_poli != 'IGDK' || asmed.reg_periksa.kd_poli != 'U0016') {
                         html = '<tr>'
                         html += `<td>${asmed.no_rawat}</td>
                             <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
