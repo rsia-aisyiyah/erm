@@ -200,7 +200,7 @@
             $('.btn-asmed').css('display', 'none')
             $('.btn-soap').css('display', 'none')
             const no_rawat = $('#nomor_rawat').val();
-            $('#tabel-lab').empty()
+            $('#tbHasilRadiologi tbody').empty()
             getPermintaanRadiologi(no_rawat).done((permintaan) => {
                 if (Object.keys(permintaan).length) {
                     permintaan.map((prm, index) => {
