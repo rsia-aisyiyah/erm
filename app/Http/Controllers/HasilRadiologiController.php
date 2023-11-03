@@ -90,7 +90,7 @@ class HasilRadiologiController extends Controller
     }
     function get(Request $request)
     {
-        $hasil = $this->hasil->with('periksaRadiologi.petugas');
+        $hasil = $this->hasil->with('periksaRadiologi.petugas', 'periksaRadiologi.dokter');
         if ($request->tgl_periksa) {
             return $hasil->where([
                 'no_rawat' => $request->no_rawat,

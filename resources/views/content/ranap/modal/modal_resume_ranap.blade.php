@@ -612,10 +612,10 @@
                             render: function(data, type, row, meta) {
                                 data.map((item) => {
                                     if (item.tgl_periksa == row.tgl_periksa && item.jam == row.jam) {
-                                        nama = item.petugas.nama
+                                        dokter = item.dokter.nm_dokter
                                     }
                                 })
-                                return nama
+                                return dokter
                             }
                         },
 
