@@ -14,7 +14,7 @@
                     </a>
                 </li>
             @endif
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'CSM')
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'DNM2')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
                         <i class="bi bi-people-fill align-text-bottom"></i>
