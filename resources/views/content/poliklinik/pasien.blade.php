@@ -198,58 +198,19 @@
         }
 
         function simpanSoap() {
-            $.ajax({
-                url: '/erm/pemeriksaan/simpan',
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    no_rawat: $('#nomor_rawat').val(),
-                    suhu_tubuh: $('#suhu').val(),
-                    tensi: $('#tensi').val(),
-                    nadi: $('#nadi').val(),
-                    respirasi: $('#respirasi').val(),
-                    tinggi: $('#tinggi').val(),
-                    berat: $('#berat').val(),
-                    spo2: $('#spo2').val(),
-                    gcs: $('#gcs').val(),
-                    kesadaran: $('#kesadaran').val(),
-                    rtl: $('#plan').val(),
-                    keluhan: $('#subjek').val(),
-                    penilaian: $('#asesmen').val(),
-                    pemeriksaan: $('#objek').val(),
-                    alergi: $('#alergi').val(),
-                    instruksi: $('#instruksi').val(),
-                    evaluasi: '-',
-                    lingkar_perut: '-',
-                    nip: $('#nik').val() == '-' ? $('#user').val() : $('#nik').val(),
-                    kd_dokter: "{{ Request::get('dokter') }}",
-                    kd_poli: "{{ Request::segment(2) }}",
-                    no_rkm_medis: $('#no_rm').val(),
-                    jam_rawat: $('#jam_rawat').val(),
-                    tgl_perawatan: $('#tgl_perawatan').val(),
-                },
-                success: function(response) {
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: 'Data SOAP disimpan',
-                        position: 'center',
-                        // toast: true,
-                        icon: 'success',
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
+
+            const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
+
+            console.log('DATA FORM', data);
+
+            $.post('/erm/pemeriksaan/simpan', data).done((response) => {
+                alertSuccessAjax('Data SOAP berhasil disimpan').then(() => {
                     hitungPanggilan();
                     reloadTabelPoli();
                     $('#modalSoap').modal('hide');
-                },
-                error: (request) => {
-                    if (request.status)
-                        alertSessionExpired(request.status)
-                    else
-                        alertErrorAjax(request)
-
-                }
+                })
+            }).fail((request) => {
+                alertErrorAjax(request)
             })
         }
 
@@ -261,68 +222,43 @@
             $('#user').val(nik);
             let kd_dokter = "{{ Request::get('dokter') }}"
             let textObject = `Janin : \nPres : \nDJJ : \nTBJ : \nJK : \nPlacenta : \nAk : \n`
-            $.ajax({
-                url: '/erm/pemeriksaan',
-                method: 'GET',
-                dataType: 'JSON',
-                data: {
-                    no_rawat: no_rawat,
-                },
-                success: function(response) {
 
-                    if (response.reg_periksa) {
-                        $('#nama_pasien').val(response.reg_periksa.pasien.nm_pasien ? response.reg_periksa
-                            .pasien.nm_pasien + ' / ' + hitungUmur(response.reg_periksa.pasien.tgl_lahir) :
-                            '-')
-                        $('#no_rm').val(response.reg_periksa.no_rkm_medis ? response.reg_periksa.no_rkm_medis :
-                            '-')
-                        $('#p_jawab').val(response.reg_periksa.p_jawab ? 'P. JAWAB : ' + response.reg_periksa
-                            .p_jawab : '-')
-                        cekAlergi(response.reg_periksa.no_rkm_medis)
-                        riwayatResep(response.reg_periksa.no_rkm_medis)
+            getRegPeriksa(no_rawat).done((regPeriksa) => {
+                console.log('REG PERIKSA', regPeriksa);
+                $('#formSoapPoli input[name=no_rawat]').val(no_rawat)
+                $('#formSoapPoli input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
+                $('#formSoapPoli input[name=nm_pasien]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk}) / ${regPeriksa.pasien.umur}`)
+                $('#formSoapPoli input[name=png_jawab]').val(`${regPeriksa.penjab.png_jawab}`)
+                riwayatResep(regPeriksa.no_rkm_medis)
+                cekAlergi(regPeriksa.no_rkm_medis)
+            }).fail((request) => {
+                alertErrorAjax(request);
+            })
 
-                        // if (response.nip === 'poli') {
-                        //     $('#nama').val('POLI');
-                        //     $('#nik').val('POLI');
-                        // } else {
-                        //     $('#nama_user').val(response.pegawai.nama);
-                        $('#nik').val(response.nip);
-                        // }
+            getPemeriksaanPoli(no_rawat).done((pemeriksaan) => {
+                console.log('PEMERIKSAAN ===', pemeriksaan);
+                if (Object.keys(pemeriksaan).length) {
+                    Object.keys(pemeriksaan).map((key, index) => {
+                        select = $(`#formSoapPoli select[name=${key}]`);
+                        input = $(`#formSoapPoli input[name=${key}]`);
+                        textarea = $(`#formSoapPoli textarea[name=${key}]`);
 
-                    } else {
-                        riwayatResep(response.no_rkm_medis)
-                        cekAlergi(response.no_rkm_medis)
-
-                        $('#nama_pasien').val(response.pasien.nm_pasien ? response.pasien
-                            .nm_pasien + ' / ' + hitungUmur(response.pasien.tgl_lahir) : '-')
-                        $('#no_rm').val(response.no_rkm_medis ? response.no_rkm_medis : '-')
-                        $('#p_jawab').val(response.p_jawab ? 'P. JAWAB : ' + response.p_jawab : '-')
-                        $('#nama').val(response.dokter.nm_dokter);
-                        $('#nik').val(response.dokter.kd_dokter);
-
-                    }
-                    $('#nomor_rawat').val(response.no_rawat ? response.no_rawat : '-')
-                    $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '-')
-                    $('#subjek').val(response.keluhan ? response.keluhan : '-')
-                    $('#objek').val(response.pemeriksaan ? response.pemeriksaan : (kd_dokter == '1.113.1023' ? textObject : '-'))
-                    $('#asesmen').val(response.penilaian ? response.penilaian : '-')
-                    $('#plan').val(response.rtl ? response.rtl : '')
-                    $('#instruksi').val(response.instruksi ? response.instruksi : '-')
-                    $('#suhu').val(response.suhu_tubuh ? response.suhu_tubuh : '-')
-                    $('#tensi').val(response.tensi ? response.tensi : '-')
-                    $('#tinggi').val(response.tinggi ? response.tinggi : '-')
-                    $('#berat').val(response.berat ? response.berat : '-')
-                    $('#gcs').val(response.gcs ? response.gcs : '-')
-                    $('#respirasi').val(response.respirasi ? response.respirasi : '-')
-                    $('#nadi').val(response.nadi ? response.nadi : '-')
-                    $('#spo2').val(response.spo2 ? response.spo2 : '-')
-                    $('#jam_rawat').val(response.jam_rawat ? response.jam_rawat : '')
-                    $('#tgl_perawatan').val(response.tgl_perawatan ? response.tgl_perawatan : '')
-
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr, status, error)
+                        if (textarea.length) {
+                            textarea.val(pemeriksaan[key])
+                        }
+                        if (input.length) {
+                            input.val(pemeriksaan[key])
+                        }
+                        if (input.length) {
+                            select.val(pemeriksaan[key])
+                        }
+                    })
+                    $('#formSoapPoli input[name=tgl_perawatan]').val(pemeriksaan.tgl_perawatan)
+                    $('#formSoapPoli input[name=jam_rawat]').val(pemeriksaan.jam_rawat)
+                    $('#formSoapPoli input[name=jam_rawat]').val(pemeriksaan.jam_rawat)
                 }
+            }).fail((request) => {
+                alertErrorAjax(request)
             })
         }
 

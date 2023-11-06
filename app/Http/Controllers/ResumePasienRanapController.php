@@ -18,7 +18,14 @@ class ResumePasienRanapController extends Controller
 
     function get(Request $request)
     {
-        $resume = $this->resume->where('no_rawat', $request->no_rawat)->first();
+        $resume = $this->resume->where('no_rawat', $request->no_rawat)->with([
+            'regPeriksa.pasien', 'dokter.spesialis', 'regPeriksa.penjab', 'regPeriksa.poliklinik',
+            'regPeriksa.kamarInap' => function ($query) {
+                return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with(['kamar.bangsal']);
+            }, 'bayiGabung.kamarIbu' => function ($query) {
+                return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with(['kamar.bangsal']);
+            }
+        ])->first();
 
         return response()->json($resume);
     }

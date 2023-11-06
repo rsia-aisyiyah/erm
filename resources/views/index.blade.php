@@ -689,11 +689,18 @@
             let diagnosa = $.ajax({
                 url: '/erm/penyakit/pasien/ambil',
                 data: {
-                    no_rawat: noRawat
+                    no_rawat: no_rawat
                 },
             });
 
             return diagnosa;
+        }
+
+        function getProsedurPasien(no_rawat) {
+            let prosedur = $.get('/erm/prosedur/pasien/ambil', {
+                no_rawat: no_rawat
+            });
+            return prosedur;
         }
 
 

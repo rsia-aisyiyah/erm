@@ -103,7 +103,7 @@ class RegPeriksaController extends Controller
             ->with('kamarInap', function ($q) {
                 return $q->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
             })
-            ->with('pasien.bahasa', 'dokter', 'dokter.spesialis', 'penjab', 'diagnosaPasien.penyakit', 'bayiGabung.kamarInap.kamar.bangsal')
+            ->with('pasien.bahasa', 'dokter', 'dokter.spesialis', 'penjab', 'diagnosaPasien.penyakit', 'bayiGabung.kamarInap.kamar.bangsal', 'poliklinik')
             ->first();
         return response()->json($regPeriksa);
     }

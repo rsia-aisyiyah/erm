@@ -18,10 +18,6 @@
                                     <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
                                 </div>
                             </div>
-                            {{-- <div class="col-md-6 col-lg-3 col-sm-12">
-                                <label for="" style="font-size: 12px;margin-bottom:0px">Pasien</label>
-                                <input type="search" class="form-control form-control-sm" id="cari-pasien" placeholder="" autocomplete="off">
-                            </div> --}}
                             @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
                                 <div class="col-md-6 col-lg-3 col-sm-12">
                                     <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
@@ -59,6 +55,7 @@
     @include('content.ugd.modal.asmed')
     @include('content.ranap.modal.modal_penunjang')
     @include('content.poliklinik.modal.modal_riwayat')
+    @include('content.ranap.modal.modal_riwayat')
     @include('content.ranap.modal.modal_lab')
 @endsection
 
@@ -192,6 +189,7 @@
                             list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd(\'' + row.no_rawat + '\')">Asesmen Medis UGD</a></li>';
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayatV2" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan 2</a></li>`;
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px;margin-left:15px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
@@ -237,16 +235,6 @@
                 }
             })
         }
-
-        // $('#cari-pasien').on('keyup', () => {
-        //     const nama = $('#cari-pasien').val()
-        //     if (nama.length >= 3) {
-        //         nm_pasien = nama;
-        //         localStorage.setItem('nm_pasien', nm_pasien)
-        //         $('#tb_ugd').DataTable().destroy()
-        //         tbUgd();
-        //     }
-        // })
         $('#cari-pasien').on('search', () => {
             const nama = $('#cari-pasien').val()
             if (nama.length == 0) {
@@ -256,6 +244,868 @@
                 tbUgd();
             }
         })
+
+        function listRiwayatPasien(no_rkm_medis) {
+            $('#navTabRiwayat').empty()
+            $('.tabListRiwayat').empty()
+            $('.content-riwayat').empty()
+            getRiwayatPasien(no_rkm_medis, 'DESC').done((riwayat) => {
+                let tabList = '';
+                let infoPasien = '';
+                let no_rawat = '';
+                riwayat.reg_periksa.map((regPeriksa, index) => {
+                    if (index == 0) {
+                        active = 'active';
+                        collapse = 'show active';
+                        setDetailRawat(regPeriksa.no_rawat)
+                    } else {
+                        active = '';
+                        collapse = '';
+                    }
+                    tabNav = `<li class="nav-item list">
+                        <a class="nav-link link-riwayat ${active}" aria-current="page" href="#" onclick="setDetailRawat('${regPeriksa.no_rawat}', this)">${regPeriksa.status_lanjut.toUpperCase() } : ${splitTanggal(regPeriksa.tgl_registrasi)} </a>
+                        </li>`;
+                    $('#navTabRiwayat').append(tabNav)
+                })
+                setNavTabsTitle()
+                $('.tabListRiwayat').append(tabList)
+            })
+        }
+
+        function setDetailRawat(no_rawat, e) {
+            $('button[data-bs-target="#nav-pemeriksaan"]').tab('show')
+            $('.link-riwayat').removeClass('active')
+            $(e).addClass('active')
+            $('.content-riwayat').empty()
+            let diagnosaPasien = '';
+            getRegPeriksa(no_rawat).done((regPeriksa) => {
+                console.log('REG PERIKSA===', regPeriksa);
+                // status lanjut pasien
+                if (regPeriksa.status_lanjut == 'Ralan') {
+                    $('#nav-resume-tab').hide()
+                    $('#nav-asmed-ranap-tab').hide()
+                    $('#nav-askep-ranap-tab').hide()
+                    $('#nav-asmed-rajal-tab').show()
+                    $('#nav-askep-rajal-tab').show()
+                    status_lanjut = 'Rawat Jalan';
+                    cardBg = 'text-bg-warning';
+                    $('.header-riwayat').removeClass('bg-purple')
+                } else {
+                    $('#nav-asmed-rajal-tab').hide()
+                    $('#nav-askep-rajal-tab').hide()
+                    $('#nav-asmed-ranap-tab').show()
+                    $('#nav-askep-ranap-tab').show()
+                    $('#nav-resume-tab').show()
+                    status_lanjut = 'Rawat Inap';
+                    cardBg = 'bg-purple';
+                    $('.header-riwayat').removeClass('text-bg-warning')
+                }
+
+                // status spesialisasi
+                if (regPeriksa.dokter.kd_sps == 'S0003') {
+                    // asmed & askep rawat jalan
+
+                    // asmed & askep rawat inap
+                    $('#nav-asesmen-rajal-tab').attr('onclick', `setRiwayatAsesmenAnakRajal('${no_rawat}')`);
+                    $('#nav-asesmen-ranap-tab').attr('onclick', `setRiwayatAsesmenAnakRanap('${no_rawat}')`)
+                }
+                $('.header-riwayat h6').html(status_lanjut)
+                $('.header-riwayat').addClass(cardBg)
+                $('#nav-resume-tab').attr('onclick', `setResumeMedis('${no_rawat}')`)
+                const infoPasien = `<div class="card position-relative">
+                                <div class="card-header">
+                                    <span>Informasi Registrasi</span>
+                                    <a class="position-absolute top-0 end-0 me-2 mt-2" style="color:#000" data-bs-toggle="collapse" href="#collapseInfo" role="button" aria-expanded="false" aria-controls="collapseInfo"><i class="bi bi-x"></i></a>
+                                    </div>
+                                    <div class="card-body collapse show" id="collapseInfo">
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-12">
+                                                <table class="table table-sm table-responsive" cellpadding="5" cellspacing="0">
+                                                    <tr>
+                                                        <th width="25%">Tgl. Registrasi</th>
+                                                        <td>:</td>
+                                                        <td>${formatTanggal(regPeriksa.tgl_registrasi)} ${regPeriksa.jam_reg}</td>
+                                                    </tr>    
+                                                    <tr>
+                                                        <th>No Rawat</th>
+                                                        <td>:</td>
+                                                        <td>${regPeriksa.no_rawat}</td>
+                                                    </tr>    
+                                                    <tr>
+                                                        <th>Nama (No. RM)</th>
+                                                        <td>:</td>
+                                                        <td>${regPeriksa.pasien.nm_pasien} (${regPeriksa.no_rkm_medis})</td>
+                                                    </tr>    
+                                                </table>    
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-12">
+                                                <table class="table table-sm table-responsive" cellpadding="5" cellspacing="0">
+                                                    <tr>
+                                                        <th width="25%">Unit / Poliklinik</th>
+                                                        <td>:</td>
+                                                        <td>${regPeriksa.poliklinik.nm_poli}</td>
+                                                    </tr>    
+                                                    <tr>
+                                                        <th>Dokter</th>
+                                                        <td>:</td>
+                                                        <td>${regPeriksa.dokter.nm_dokter}</td>
+                                                    </tr>    
+                                                    <tr>
+                                                        <th>Cara Bayar</th>
+                                                        <td>:</td>
+                                                        <td>${regPeriksa.penjab.png_jawab}</td>
+                                                    </tr>  
+                                                </table>    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+
+                $('#info').append(infoPasien).hide().fadeIn()
+                setDiagnosaPasien(no_rawat);
+                setRiwayatPemeriksaanRalan(no_rawat);
+                setRiwayatPemeriksaanRanap(no_rawat)
+                setRiwayatObat(no_rawat)
+                setRiwayatLaborat(no_rawat)
+                setRiwayatRadiologi(no_rawat)
+                setNavTabsTitle()
+            })
+        }
+
+
+        function setDiagnosaPasien(no_rawat) {
+            const cardDxPx = $('#dxpxPasien');
+            const cardDiagnosa = $('#cardDiagnosaPasien');
+            const cardProsedur = $('#cardProsedurPasien');
+            const bodyCardDiagnosa = $('#bodyDiagnosaPasien');
+            const bodyCardProsedur = $('#bodyProsedurPasien');
+            let listDiagnosa = '';
+            let listProsedur = '';
+            bodyCardDiagnosa.empty()
+            bodyCardProsedur.empty()
+            cardDiagnosa.hide();
+            cardProsedur.hide();
+            cardDxPx.hide();
+            getDiagnosaPasien(no_rawat).done((diagnosa, index) => {
+                if (diagnosa.length) {
+                    cardDxPx.show();
+                    cardDiagnosa.show()
+                    listDiagnosa += '<ol class="px-3 m-0">'
+                    diagnosa.map((dx, index) => {
+                        listDiagnosa += `<li ${dx.prioritas == 1 ? 'style="font-weight:bold;"':''}> ${dx.kd_penyakit} - ${dx.penyakit.nm_penyakit} ${dx.prioritas == 1 ? '<span class="text-danger">(*)</span>':''}</li>`
+                    })
+                    listDiagnosa += '</ol>'
+                    bodyCardDiagnosa.append(listDiagnosa).hide().fadeIn();
+                }
+            })
+
+            getProsedurPasien(no_rawat).done((prosedur) => {
+                if (prosedur.length) {
+                    cardDxPx.show();
+                    cardProsedur.show()
+                    listProsedur += '<ol class="px-3 m-0">'
+                    prosedur.map((px, index) => {
+                        listProsedur += `<li ${px.prioritas == 1 ? 'style="font-weight:bold;"':''}> ${px.kode} - ${px.icd9.deskripsi_panjang} ${px.prioritas == 1 ? '<span class="text-danger">(*)</span>':''}</li>`
+                    })
+                    listProsedur += '</ol>'
+                    bodyCardProsedur.append(listProsedur).hide().fadeIn();
+                }
+
+            })
+        }
+
+        function setRiwayatPemeriksaanRanap(no_rawat) {
+            const cardRiwayatPemeriksaanRanap = document.getElementById('periksaRawatInap');
+            const bodyCardPemeriksaanRanap = document.getElementById('collapsePemeriksaanRanap')
+            cardRiwayatPemeriksaanRanap.style.display = 'none';
+            getPemeriksaanRanap(no_rawat).done((periksa) => {
+                if (periksa.length) {
+                    cardRiwayatPemeriksaanRanap.style.display = 'inline';
+                    periksa.map((pemeriksaan, index) => {
+                        const listPemeriksaan = `<div class="row">
+
+                                    <div class="col-md-6 col-lg-5 col-sm-12 mb-1">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                Tanggal : ${formatTanggal(pemeriksaan.tgl_perawatan)} ${pemeriksaan.jam_rawat}
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table borderless table-sm table-responsive" cellpadding="5" cellspacing="0">
+                                                        <tr>
+                                                            <th width="20%">Tinggi</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.tinggi} cm</td>
+                                                            <th width="10%">Berat</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.berat} Kg</td>
+                                                        </tr>     
+                                                        <tr>
+                                                            <th width="20%">Suhu</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.suhu_tubuh} °C</td>
+                                                            <th width="10%">Tensi</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.tensi} mmHG</td>
+                                                        </tr>     
+                                                        <tr>
+                                                            <th width="10%">Kesadaran</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.kesadaran}</td>
+                                                            <th width="10%">GCS</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.gcs} E,V,M</td>
+                                                        </tr>     
+                                                        <tr>
+                                                            <th width="10%">Respirasi</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.respirasi} x/menit</td>
+                                                            <th width="10%">Nadi</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.nadi} x/menit</td>
+                                                        </tr>     
+                                                        <tr>
+                                                            <th width="10%">SpO2</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.spo2} %</td>
+                                                            <th width="10%">Alergi</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.alergi}</td>
+                                                        </tr>     
+                                                    </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-7 col-sm-12 mb-1">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                Petugas : ${pemeriksaan.petugas.nama}
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table table-sm table-responsive borderless" cellpadding="5" cellspacing="0">
+                                                    <tr>
+                                                        <th width="20%">Subyek</th>
+                                                        <td>:</td>
+                                                        <td>${stringPemeriksaan(pemeriksaan.keluhan)}</td>
+                                                    </tr>     
+                                                    <tr>
+                                                        <th width="20%">Obyek</th>
+                                                        <td>:</td>
+                                                        <td>${stringPemeriksaan(pemeriksaan.pemeriksaan)}</td>
+                                                    </tr>     
+                                                    <tr>
+                                                        <th width="20%">Asesmen</th>
+                                                        <td>:</td>
+                                                        <td>${stringPemeriksaan(pemeriksaan.penilaian)}</td>
+                                                    </tr>     
+                                                    <tr>
+                                                        <th width="20%">Plan</th>
+                                                        <td>:</td>
+                                                        <td>${stringPemeriksaan(pemeriksaan.rtl)}</td>
+                                                    </tr>     
+                                                    <tr>
+                                                        <th width="20%">Instruksi</th>
+                                                        <td>:</td>
+                                                        <td>${stringPemeriksaan(pemeriksaan.instruksi)}</td>
+                                                    </tr>     
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        bodyCardPemeriksaanRanap.innerHTML += listPemeriksaan
+                    })
+                }
+            })
+        }
+
+        function setRiwayatPemeriksaanRalan(no_rawat) {
+            const cardRiwayatPemeriksaanRajal = document.getElementById('periksaRawatJalan');
+            const bodyCardPemberianObat = document.getElementById('collapsePemeriksaanRajal')
+            cardRiwayatPemeriksaanRajal.style.display = 'none';
+            getPemeriksaanPoli(no_rawat).done((pemeriksaan) => {
+                if (Object.keys(pemeriksaan).length) {
+                    cardRiwayatPemeriksaanRajal.style.display = 'inline';
+                    $('#periksaRawatJalan').fadeIn()
+                    const listPemeriksaan = `<div class="row">
+
+                                    <div class="col-md-6 col-lg-5 col-sm-12 mb-1">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table borderless table-sm table-responsive" cellpadding="5" cellspacing="0">
+                                                        <thead style="height:50px">
+                                                            <tr class="borderless">
+                                                                <th width="20%">Petugas</th>
+                                                                <td>:</td>
+                                                                <td colspan=4>${pemeriksaan.pegawai?.nama}</td>
+                                                            </tr>     
+                                                            <tr style="height:50px">
+                                                                <th width="20%">TanggaL</th>
+                                                                <td>:</td>
+                                                                <td colspan=4>${formatTanggal(pemeriksaan.tgl_perawatan)} ${pemeriksaan.jam_rawat}</td>
+                                                            </tr>     
+                                                        </thead>
+    
+                                                        <tr>
+                                                            <th width="20%">Tinggi</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.tinggi} cm</td>
+                                                            <th width="10%">Berat</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.berat} Kg</td>
+                                                        </tr>     
+                                                        <tr>
+                                                            <th width="20%">Suhu</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.suhu_tubuh} °C</td>
+                                                            <th width="10%">Tensi</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.tensi} mmHG</td>
+                                                        </tr>     
+                                                        <tr>
+                                                            <th width="10%">Kesadaran</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.kesadaran}</td>
+                                                            <th width="10%">GCS</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.gcs} E,V,M</td>
+                                                        </tr>     
+                                                        <tr>
+                                                            <th width="10%">Respirasi</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.respirasi} x/menit</td>
+                                                            <th width="10%">Nadi</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.nadi} x/menit</td>
+                                                        </tr>     
+                                                        <tr>
+                                                            <th width="10%">SpO2</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.spo2} %</td>
+                                                            <th width="10%">Alergi</th>
+                                                            <td>:</td>
+                                                            <td>${pemeriksaan.alergi}</td>
+                                                        </tr>     
+                                                    </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-7 col-sm-12 mb-1">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table table-sm table-responsive borderless" cellpadding="5" cellspacing="0">
+                                                    <tr>
+                                                        <th width="20%">Subyek</th>
+                                                        <td>:</td>
+                                                        <td>${stringPemeriksaan(pemeriksaan.keluhan)}</td>
+                                                    </tr>     
+                                                    <tr>
+                                                        <th width="20%">Obyek</th>
+                                                        <td>:</td>
+                                                        <td>${stringPemeriksaan(pemeriksaan.pemeriksaan)}</td>
+                                                    </tr>     
+                                                    <tr>
+                                                        <th width="20%">Asesmen</th>
+                                                        <td>:</td>
+                                                        <td>${stringPemeriksaan(pemeriksaan.penilaian)}</td>
+                                                    </tr>     
+                                                    <tr>
+                                                        <th width="20%">Plan</th>
+                                                        <td>:</td>
+                                                        <td>${stringPemeriksaan(pemeriksaan.rtl)}</td>
+                                                    </tr>     
+                                                    <tr>
+                                                        <th width="20%">Instruksi</th>
+                                                        <td>:</td>
+                                                        <td>${stringPemeriksaan(pemeriksaan.instruksi)}</td>
+                                                    </tr>     
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                    bodyCardPemberianObat.innerHTML = listPemeriksaan
+                }
+            })
+        }
+
+        function setRiwayatObat(no_rawat) {
+            const cardRiwayatObat = document.getElementById('obat')
+            const bodyCardPemberianObat = document.getElementById('collapsePemberianObat')
+            let obat = {}
+            const groupPemberian = {}
+            let listPemberianObat = '';
+            $('#obat').hide();
+            getPemberianObat(no_rawat).done((pemberian) => {
+                if (Object.keys(pemberian).length) {
+                    pemberian.map(beri => {
+                        const key = `${beri.tgl_perawatan} ${beri.jam}`
+                        if (!groupPemberian[key]) {
+                            groupPemberian[key] = [];
+                        }
+                        groupPemberian[key].push(beri)
+                    })
+                    const resultGroup = Object.values(groupPemberian);
+                    const keysGroup = Object.keys(groupPemberian);
+
+                    listPemberianObat += '<div class="row">';
+                    resultGroup.forEach((obat, index) => {
+                        const tglPemberian = splitTanggal(keysGroup[index].split(' ')[0])
+                        const jamPemberian = keysGroup[index].split(' ')[1]
+                        listPemberianObat += `<div class="col-md-12 col-lg-12 col-sm-12">
+                                                <div class="card position-relative mt-2">
+                                                    <div class="card-header">
+                                                        Tanggal : ${tglPemberian} ${jamPemberian} 
+                                                    </div>
+                                                    <div class="card-body">
+                                                    <table class="table table-responsive">
+                                                        <tr>
+                                                            <th width="30%">
+                                                            Obat 
+                                                            </th>
+                                                            <th width="10%">
+                                                                Jumlah
+                                                            </th>    
+                                                            <th>
+                                                                Aturan Pakai
+                                                            </th>    
+                                                        </tr>`;
+                        obat.map((obs, index) => {
+                            listPemberianObat += `<tr>
+                                                    <td>
+                                                        ${obs.databarang.nama_brng} 
+                                                    </td>
+                                                    <td>
+                                                       ${obs.jml} ${obs.databarang.kode_satuan?.satuan}
+                                                    </td>
+                                                    <td>
+                                                        ${obs.aturan_pakai ? obs.aturan_pakai.aturan : '' }
+                                                    </td>
+                                                </tr>`
+                        })
+                        listPemberianObat += `          </table>
+                                                    </div> 
+                                                    </div> 
+                                            </div>`;
+                    })
+                    listPemberianObat += '</div>';
+                    bodyCardPemberianObat.innerHTML = listPemberianObat;
+                    $('#obat').show().fadeIn();
+                }
+            })
+        }
+
+        function setRiwayatLaborat(no_rawat) {
+            const cardRiwayatObat = document.getElementById('hasilLab')
+            const bodyCardHasilLab = document.getElementById('collapseHasilLab')
+            const groupLab = {};
+            let listHasilLab = '';
+            getHasilLab(no_rawat).done((hasil) => {
+                hasil.map((item, index) => {
+                    const key = `${item.tgl_periksa} ${item.jam}`
+                    if (!groupLab[key]) {
+                        groupLab[key] = [];
+                    }
+                    groupLab[key].push(item)
+                })
+
+                const resultGroup = Object.values(groupLab)
+                const keysGroup = Object.keys(groupLab)
+
+                listHasilLab += `<div class="row">`;
+                resultGroup.forEach((lab, index) => {
+                    const tglPemberian = splitTanggal(keysGroup[index].split(' ')[0])
+                    const jamPemberian = keysGroup[index].split(' ')[1]
+                    listHasilLab += `<div class="col-md-12 col-lg-12 col-sm-12">
+                                        <div class="card position-relative mt-2">
+                                            <div class="card-header">
+                                                <span>${tglPemberian} ${jamPemberian}</span>
+                                            </div>
+                                        <div class="card-body">
+                                            <table class="table table-responsive">
+                                                <tr>
+                                                    <th width="30%">
+                                                        Pemeriksaan 
+                                                    </th>
+                                                    <th width="30%">
+                                                        Hasil
+                                                    </th>    
+                                                    <th>
+                                                        Nilai Rujukan
+                                                    </th>        
+                                                </tr>`;
+                    lab.map((item, index) => {
+                        let jenisPemeriksaan = '';
+                        if (item.kd_jenis_prw != lab[index + 1]?.kd_jenis_prw) {
+                            jenisPemeriksaan = `<tr>
+                                                    <td colspan=3>
+                                                        <strong>${item.jns_perawatan_lab.nm_perawatan}</strong>
+                                                        <br/><small>Petugas : ${item.periksa_lab.petugas.nama}</small>
+                                                        </td>
+                                                    </tr>`
+                        }
+                        listHasilLab += `${jenisPemeriksaan}
+                                            <tr class="${item.keterangan === 'H' ? 'text-danger' : item.keterangan==='L' ? 'text-primary' : ''}">
+                                                <td>
+                                                    ${item.template.Pemeriksaan}
+                                                </td>
+                                                <td>
+                                                    ${item.nilai} ${item.template.satuan} ${item.keterangan ? `(${item.keterangan})` : ''}
+                                                </td>
+                                                <td>
+                                                    ${item.nilai_rujukan}
+                                                </td>
+                                            </tr>`
+                    })
+                    listHasilLab += `          </table>
+                                            </div>
+                                        </div>
+                                    </div>  `;
+                })
+                bodyCardHasilLab.innerHTML = listHasilLab;
+                $('#obat').show().fadeIn();
+            })
+        }
+
+        function setRiwayatRadiologi(no_rawat) {
+            const bodyRadiologi = document.getElementById('collapseHasilRadiologi')
+            const cardRadiologi = document.getElementById('radiologi')
+            $('#radiologi').hide();
+            getPeriksaRadiologi(no_rawat).done((periksa) => {
+                let listHasilRadiologi = '';
+                if (Object.keys(periksa).length) {
+                    let hasilRadiologi = '';
+                    let diagnosaKlinis = '';
+                    let informasiTambahan = '';
+                    periksa.map((radiologi) => {
+                        listHasilRadiologi += `<div class="row">`;
+                        let gambar = '';
+                        radiologi.gambar_radiologi.map((img, index) => {
+                            if (img.tgl_periksa == radiologi.tgl_periksa && img.jam == radiologi.jam) {
+                                gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}">
+                                        <img src="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}" class="img-thumbnail position-relative" width="100%">
+                                    </a>`
+                            }
+                            listHasilRadiologi += `<div class="col-sm-12 col-md-6 col-lg-4">
+                                                ${gambar}
+                                            </div>`;
+                        })
+
+                        radiologi.permintaan.map((permintaan, index) => {
+                            if (permintaan.tgl_hasil == radiologi.tgl_periksa && permintaan.jam_hasil == radiologi.jam) {
+                                diagnosaKlinis = permintaan.diagnosa_klinis;
+                                informasiTambahan = permintaan.informasi_tambahan;
+                            }
+                        })
+
+                        radiologi.hasil_radiologi.map((hasil, index) => {
+                            if (hasil.tgl_periksa == radiologi.tgl_periksa && hasil.jam == radiologi.jam) {
+                                hasilRadiologi = hasil.hasil
+                            }
+                            listHasilRadiologi += `<div class="col-sm-12 col-md-6 col-lg-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <table class="table borderless table-responsive text-sm">
+                                        <tr>
+                                            <th>Tanggal</th>    
+                                            <td>:</td>    
+                                            <td>${formatTanggal(hasil.tgl_periksa)} ${hasil.jam}</td>    
+                                        </tr>    
+                                        <tr>
+                                            <th>Dokter</th>    
+                                            <td>:</td>    
+                                            <td>${radiologi.dokter.nm_dokter}</td>    
+                                        </tr>    
+                                        <tr>
+                                            <th>Petugas</th>    
+                                            <td>:</td>    
+                                            <td>${radiologi.petugas.nama}</td>    
+                                        </tr>    
+                                        <tr>
+                                            <th>Pemeriksaan</th>    
+                                            <td>:</td>    
+                                            <td>${radiologi.jns_perawatan.nm_perawatan}</td>    
+                                        </tr>    
+                                        <tr>
+                                            <th>Diagnosa Klinis</th>    
+                                            <td>:</td>    
+                                            <td>${diagnosaKlinis}</td>    
+                                        </tr>    
+                                        <tr>
+                                            <th>Informasi Tambahan</th>    
+                                            <td>:</td>    
+                                            <td>${informasiTambahan}</td>    
+                                        </tr>    
+                                        <tr>
+                                            <th>Hasil</th>    
+                                            <td>:</td>    
+                                            <td>${stringPemeriksaan(hasilRadiologi)}</td>    
+                                        </tr>    
+                                    </table>
+                                </div>
+                            </div>
+                        </div>`;
+                        })
+                        listHasilRadiologi += '</div>';
+                    })
+                    bodyRadiologi.innerHTML = listHasilRadiologi;
+                    $('#radiologi').show().fadeIn();
+                }
+            })
+        }
+
+        function setResumeMedis(no_rawat) {
+            const bodyInfoLeft = $('#resume-info-left')
+            const bodyInfoRight = $('#resume-info-right')
+            const bodyContent = $('#resume-content')
+            const cardResumeMedis = $('#resumeMedis')
+            bodyInfoLeft.empty();
+            bodyInfoRight.empty();
+            bodyContent.empty();
+            cardResumeMedis.css('display', 'none')
+            getResumeMedis(no_rawat).done((resume) => {
+                if (Object.keys(resume).length) {
+                    cardResumeMedis.css('display', 'flex')
+                    const regPeriksa = resume.reg_periksa;
+                    const kamarInap = resume.bayi_gabung ? resume.bayi_gabung.kamar_ibu[0] : regPeriksa.kamar_inap[0];
+                    const infoLeft = `<table class="table table-sm table-responsive borderless">
+                        <tr>
+                            <th>No. Rawat</th>    
+                            <td width=2%>:</td>    
+                            <td>${regPeriksa.no_rawat}</td>    
+                        </tr>            
+                        <tr>
+                            <th>Pasien / Umur</th>    
+                            <td width=2%>:</td>    
+                            <td>${regPeriksa.no_rkm_medis} - ${regPeriksa.pasien.nm_pasien} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}</td>    
+                        </tr>            
+                        <tr>
+                            <th>Tanggal Masuk</th>    
+                            <td width=2%>:</td>    
+                            <td>${regPeriksa.tgl_registrasi}, Jam : ${regPeriksa.jam_reg}</td>    
+                        </tr>            
+                        <tr>
+                            <th>Tanggal Keluar</th>    
+                            <td width=2%>:</td>    
+                            <td>${kamarInap.tgl_keluar}, Jam : ${kamarInap.jam_keluar}</td>    
+                        </tr>  
+                        <tr>
+                            <th>Kamar / Lama</th>    
+                            <td width=2%>:</td>    
+                            <td>${kamarInap.kamar.bangsal.nm_bangsal}  / ${kamarInap.lama} Hari</td>    
+                        </tr>            
+                        <table>`
+
+                    const infoRight = `
+                    <table class="table table-responsive borderless">
+                        <tr>
+                            <th>Masuk Dari</th>    
+                            <td width=2%>:</td>    
+                            <td>${regPeriksa.poliklinik.nm_poli}</td>    
+                        </tr>            
+                        <tr>
+                            <th>Cara Bayar</th>    
+                            <td width=2%>:</td>    
+                            <td>${regPeriksa.penjab.png_jawab}</td>    
+                        </tr>            
+                        <tr>
+                            <th>Diagnosa Awal</th>    
+                            <td width=2%>:</td>    
+                            <td>${resume.diagnosa_awal}</td>    
+                        </tr>            
+                        <tr>
+                            <th>Indikasi Medis</th>    
+                            <td width=2%>:</td>    
+                            <td>${resume.alasan}</td>    
+                        </tr>            
+                        <tr>
+                            <th>Dokter Dpjp</th>    
+                            <td width=2%>:</td>    
+                            <td>${resume.dokter.nm_dokter}</td>    
+                        </tr>  
+                    <table>
+                    `;
+
+                    const resumeContent = `
+                    <table class="table table-responsive">
+                        <tr>
+                            <td colspan=2>
+                                <strong>ANAMNESIS</strong><br/>
+                                ${stringPemeriksaan(resume.keluhan_utama)}
+                            </td>    
+                        </tr>            
+                        <tr>
+                            <td colspan=2>
+                                <strong>PEMERIKSAAN FISIK</strong><br/>
+                                ${stringPemeriksaan(resume.pemeriksaan_fisik)}
+                            </td>    
+                        </tr>            
+                        <tr>
+                            <td colspan=2>
+                                <strong>PEMERIKSAAN PENUNJANG</strong><br/>
+                                ${stringPemeriksaan(resume.pemeriksaan_penunjang)}
+                            </td>    
+                        </tr>            
+                        <tr>
+                            <td colspan=2>
+                                <strong>PEMERIKSAAN LABORAT</strong><br/>
+                                ${stringPemeriksaan(resume.hasil_laborat)}
+                            </td>    
+                        </tr>            
+                        <tr>
+                            <td colspan=2>
+                                <strong>DIAGNOSA AKHIR</strong><br/>
+                            </td>    
+                        </tr>            
+                        <tr class="">
+                            <td>
+                                <strong>DIAGNOSA UTAMA</strong><br/>
+                                (*) ${resume.diagnosa_utama}
+                            </td>    
+                            <td>
+                                <strong>KODE ICD</strong><br/>
+                            </td>    
+                        </tr>            
+                        <tr>
+                            <td>
+                                <strong>DIAGNOSA SKUNDER</strong>
+                                <ol class="px-3 m-0">
+                                    <li>${resume.diagnosa_sekunder}</li>    
+                                    <li>${resume.diagnosa_sekunder2}</li>    
+                                    <li>${resume.diagnosa_sekunder3}</li>    
+                                    <li>${resume.diagnosa_sekunder4}</li>    
+                                    <li>${resume.diagnosa_sekunder5}</li>    
+                                    <li>${resume.diagnosa_sekunder6}</li>    
+                                    <li>${resume.diagnosa_sekunder7}</li>    
+                                </ol>
+                            </td>    
+                            <td>
+                                <strong>KODE ICD</strong>
+                                <ol class="px-2 m-0" style="list-style:none">
+                                    <li>${resume.kd_diagnosa_sekunder}</li>    
+                                    <li>${resume.kd_diagnosa_sekunder2}</li>    
+                                    <li>${resume.kd_diagnosa_sekunder3}</li>    
+                                    <li>${resume.kd_diagnosa_sekunder4}</li>    
+                                    <li>${resume.kd_diagnosa_sekunder5}</li>    
+                                    <li>${resume.kd_diagnosa_sekunder6}</li>    
+                                    <li>${resume.kd_diagnosa_sekunder7}</li>
+                                </ol>
+                            </td>    
+                        </tr>         
+                        <tr>
+                        <th colspan=2>TINDAKAN OPERASI</th>    
+                        </tr>         
+                        <tr>
+                            <td>
+                                <strong>TINDAKAN UTAMA</strong><br/>
+                                (*) ${resume.prosedur_utama}
+                            </td>    
+                            <td>
+                                <strong>KODE ICD</strong>
+                                ${resume.kd_prosedur_utama}
+                            </td>    
+                        </tr>   
+                        <tr>
+                            <td>
+                                <strong>TINDAKAN SKUNDER</strong><br/>
+                                <ol class="px-3 m-0">
+                                    <li>${resume.prosedur_sekunder}</li>    
+                                    <li>${resume.prosedur_sekunder2}</li>    
+                                    <li>${resume.prosedur_sekunder3}</li>    
+                                <ol>
+                            </td>    
+                            <td>
+                                <strong>KODE ICD</strong><br/>
+                                <ol class="px-2 m-0" style="list-style:none">
+                                    <li>${resume.kd_prosedur_sekunder}</li>    
+                                    <li>${resume.kd_prosedur_sekunder2}</li>    
+                                    <li>${resume.kd_prosedur_sekunder3}</li>    
+                                <ol>
+                            </td>    
+                        </tr>   
+                        <tr>
+                            <td colspan=2>
+                               <strong>PEMERIKSAAN PENUNJANG</strong><br/>
+                               ${resume.pemeriksaan_penunjang}
+                            </td>    
+                        </tr>   
+                        <tr>
+                            <td colspan=2>
+                               <strong>OBAT SELAMA PERAWATAN</strong><br/>
+                               ${resume.obat_di_rs}
+                            </td>    
+                        </tr>   
+                        <tr>
+                            <td colspan=2>
+                               <strong>KONDISI PULANG & PROGNOSIS</strong><br/>
+                               ${resume.keadaan} - ${resume.ket_keadaan}
+                            </td>    
+                        </tr>   
+                        <tr>
+                            <td colspan=2>
+                               <strong>OBAT PULANG</strong><br/>
+                               ${resume.obat_pulang}
+                            </td>    
+                        </tr>   
+                        <tr>
+                            <td colspan=2>
+                               <strong>SHK</strong><br/>
+                               ${resume.shk ? resume.shk : '-' }, Keterangan : ${resume.shk_keterangan} 
+                            </td>    
+                        </tr>   
+                        <tr>
+                            <td colspan=2>
+                               <strong>INSTRUKSI & TINDAK LANJUT</strong><br/>
+                               ${resume.dilanjutkan} : ${resume.ket_dilanjutkan}, Tanggal : ${formatTanggal(resume.kontrol.split(" ")[0])}
+                            </td>    
+                        </tr>   
+                    <table>`
+
+                    bodyInfoLeft.append(infoLeft).hide().fadeIn()
+                    bodyInfoRight.append(infoRight).hide().fadeIn()
+                    bodyContent.append(resumeContent).hide().fadeIn()
+                }
+            })
+        }
+
+        function setRiwayatAsesmenAnakRanap(no_rawat) {
+            getAsmedRanapAnak(no_rawat).done((asmed) => {
+                console.log('ASMED ANAK ===', asmed);
+                const regPeriksa = asmed.reg_periksa;
+                const dokter = asmed.dokter;
+
+                let infoAsmed = `<table class="table table-responsive borderless">
+                    <tr>
+                        <th>No. Rawat</th><td>:</td><td>${no_rawat}</td>
+                    </tr>    
+                    <tr>
+                        <th>Pasien</th><td>:</td><td>(${regPeriksa.no_rkm_medis}) ${regPeriksa.pasien.nm_pasien}</td>
+                    </tr>
+                    <tr>
+                        <th>Jenis Kelamin</th><td>:</td><td>${regPeriksa.pasien.jk === 'L' ? 'Laki-laki' : 'Perempuan'}</td>
+                    </tr>
+                    <tr>
+                        <th>Umur / Tgl Lahir</th><td>:</td><td>${regPeriksa.umurdaftar} ${regPeriksa.sttsumur} / ${formatTanggal(regPeriksa.pasien.tgl_lahir)}</td>        
+                    </tr>
+                </table>`
+
+                $('#info-asmed').append(infoAsmed).hide().fadeIn()
+            })
+            getAskepRanapAnak(no_rawat).done((asmed) => {
+                console.log('ASKEP ANAK ===', asmed);
+            })
+        }
+
+
+        function viewsAsmedAnak() {
+
+        }
+
+        function setNavTabsTitle() {
+            const element = document.querySelector('ul.nav-tab-riwayat > li > a.active');
+            $('.nav-brand').html(element.textContent)
+        }
 
 
         function setListResep(noRawat) {
@@ -298,7 +1148,6 @@
                                         </td>
                                         </tr>`
                             if (rr.detail_racikan.length) {
-                                // console.log('RESEP RACIKAN', rr.detail_racikan.length);
                                 html += `<tr><td colspan="2"></td><td colspan="5">`
                                 $.map(rr.detail_racikan, (dr) => {
                                     html += `<span class="badge text-bg-success">${dr.databarang.nama_brng} ${dr.kandungan} mg</span> `

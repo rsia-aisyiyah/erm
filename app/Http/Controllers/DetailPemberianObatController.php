@@ -20,7 +20,10 @@ class DetailPemberianObatController extends Controller
         $no_rawat = $request->no_rawat;
         $obat = $request->obat;
 
-        $pemberian = DetailPemberianObat::where('no_rawat', $no_rawat)->with(['databarang.kodeSatuan']);
+        $pemberian = DetailPemberianObat::where('no_rawat', $no_rawat)->with(['databarang.kodeSatuan', 'aturanPakai'])
+            ->whereHas('databarang', function ($query) {
+                return $query->where('kdjns', '!=', 'J033');
+            });
         if ($obat) {
             $pemberian->whereHas('databarang', function ($query) use ($obat) {
                 return $query->where('nama_brng', 'like', '%' . $obat . '%');

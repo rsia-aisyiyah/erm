@@ -16,7 +16,7 @@ class RanapGabung extends Model
     }
     function kamarIbu()
     {
-        return $this->belongsTo(KamarInap::class, 'no_rawat', 'no_rawat');
+        return $this->hasMany(KamarInap::class, 'no_rawat', 'no_rawat');
     }
     public function regPeriksa()
     {
