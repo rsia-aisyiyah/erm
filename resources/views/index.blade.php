@@ -354,6 +354,22 @@
             return pemeriksaan
         }
 
+        function getPemeriksaanRanap(no_rawat, parameter = '', pemeriksaan = '') {
+            let perawatan = $.ajax({
+                url: '/erm/soap/get',
+                data: {
+                    'no_rawat': no_rawat,
+                    'parameter': parameter,
+                    'pemeriksaan': pemeriksaan,
+                },
+                error: (request) => {
+                    alertSessionExpired(request.status)
+                },
+            })
+
+            return perawatan;
+        }
+
         $("[data-magnify=gallery]").magnify({
             initMaximized: true,
             multiInstances: false,
@@ -774,7 +790,7 @@
                             .toString() + '\',\'' + item.status_lanjut +
                             '\')" class="btn btn-primary btn-sm"><i class="bi bi-cloud-upload"></i></a>'
                     }
-
+                    button += `<button type="button" class="btn btn-info btn-sm" onclick="modalRiwayat('${no_rkm_medis}')"><i class="bi bi-info"></i></button>`;
                     html = '<tr>' +
                         '<td>' + item.no_rawat + '</td>' +
                         '<td>' + item.tgl_registrasi + '</td>' +
@@ -1160,6 +1176,14 @@
             })
         }
 
+        function getRiwayatPasien(no_rkm_medis, sortir = '') {
+            const riwayat = $.get('/erm/registrasi/riwayat', {
+                no_rkm_medis: no_rkm_medis,
+                sortir: sortir
+            })
+            return riwayat;
+        }
+
         function getJam() {
             const waktu = new Date();
             jam = waktu.getHours() >= 10 ? waktu.getHours() : '0' + waktu.getHours();
@@ -1384,6 +1408,18 @@
                 },
             })
             return asmed;
+        }
+
+        function getAskepRanapAnak(no_rawat) {
+            const askep = $.ajax({
+                url: '/erm/ranap/askep/anak',
+                method: 'GET',
+                data: {
+                    no_rawat: no_rawat,
+                },
+            })
+
+            return askep;
         }
 
         function listAsmedRajalKandungan(data) {
