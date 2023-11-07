@@ -339,13 +339,14 @@
         }
 
 
-        function getPemeriksaanPoli(no_rawat) {
+        function getPemeriksaanPoli(no_rawat, kd_poli = '') {
             const pemeriksaan = $.ajax({
                 url: '/erm/pemeriksaan',
                 method: 'GET',
                 dataType: 'JSON',
                 data: {
                     no_rawat: no_rawat,
+                    kd_poli: kd_poli,
                 },
                 error: (request) => {
                     alertSessionExpired(request.status)

@@ -18,6 +18,10 @@ class AskepRanapAnak extends Model
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
     }
+    function dokter()
+    {
+        return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter');
+    }
     function pengkaji1()
     {
         return $this->belongsTo(Petugas::class, 'nip1', 'nip');

@@ -33,17 +33,14 @@ class PemeriksaanRalanController extends Controller
     {
 
         $pemeriksaan = PemeriksaanRalan::where('no_rawat', $request->no_rawat)
-            ->with('regPeriksa', function ($q) {
-                $q->with('pasien');
-            })->with('pegawai')->first();
+            ->with(['regPeriksa.pasien', 'pegawai']);
 
-        // if ($pemeriksaan) {
-        return response()->json($pemeriksaan, 200);
-        // } else {
-        //     $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)
-        //         ->with(['pasien', 'dokter'])->first();
-        //     return response()->json($regPeriksa, 200);
-        // }
+        if ($request->kd_poli) {
+            $response =  response()->json($pemeriksaan->get(), 200);
+        } else {
+            $response =  response()->json($pemeriksaan->first(), 200);
+        }
+        return $response;
     }
     function getTable(Request $request)
     {

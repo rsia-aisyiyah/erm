@@ -173,26 +173,46 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="nav-asesmen-ranap" role="tabpanel" aria-labelledby="nav-asesmen-rajal-tab" tabindex="0">
-                                        <div class="card position-relative mt-2">
-                                            <div class="card-header" id="riwayat-asmed">
+                                        <div class="card position-relative mt-2" id="riwayatAsmedAnak">
+                                            <div class="card-header" data-bs-toggle="collapse" href="#collapseAsmedAnak" role="button" aria-expanded="false" aria-controls="collapseAsmedAnak">
                                                 <div class="card-text">
                                                     <span>Asesmen Awal Medis Anak</span>
-                                                    <a class="position-absolute top-0 end-0 me-2 mt-2" style="color:#000" data-bs-toggle="collapse" href="#collapseAsmedAnak" role="button" aria-expanded="false" aria-controls="collapseAsmedAnak"><i class="bi bi-x"></i></a>
                                                 </div>
                                             </div>
                                             <div class="card-body collapse show" id="collapseAsmedAnak">
                                                 <div class="card-text">
-                                                    <div class="col-sm-12 col-lg-6 col-md-6">
-                                                        <div class="card">
-                                                            <div class="card-header">
-                                                                Informasi Pasien
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <div class="card-text" id="info-asmed">
+                                                    <div class="card mb-2">
+                                                        <div class="card-body p-2">
+                                                            <div class="card-text" id="infoAsmedAnak">
 
-                                                                </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+
+                                                    <div class="card-text" id="contenAsmedAnak">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card position-relative mt-2" id="riwayatAskepAnak">
+                                            <div class="card-header" data-bs-toggle="collapse" href="#collapseAskepAnak" role="button" aria-expanded="false" aria-controls="collapseAskepAnak">
+                                                <div class="card-text">
+                                                    <span>Asesmen Awal Keperawatan Anak</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body collapse show" id="collapseAskepAnak">
+                                                <div class="card-text">
+                                                    <div class="card mb-2">
+                                                        <div class="card-body p-2">
+                                                            <div class="card-text" id="infoAskepAnak">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card-text" id="contenAskepAnak">
+
                                                     </div>
                                                 </div>
                                             </div>

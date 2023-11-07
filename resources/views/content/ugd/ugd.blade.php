@@ -364,7 +364,7 @@
 
                 $('#info').append(infoPasien).hide().fadeIn()
                 setDiagnosaPasien(no_rawat);
-                setRiwayatPemeriksaanRalan(no_rawat);
+                setRiwayatPemeriksaanRalan(no_rawat, regPeriksa.kd_poli);
                 setRiwayatPemeriksaanRanap(no_rawat)
                 setRiwayatObat(no_rawat)
                 setRiwayatLaborat(no_rawat)
@@ -519,113 +519,115 @@
             })
         }
 
-        function setRiwayatPemeriksaanRalan(no_rawat) {
+        function setRiwayatPemeriksaanRalan(no_rawat, kd_poli) {
             const cardRiwayatPemeriksaanRajal = document.getElementById('periksaRawatJalan');
-            const bodyCardPemberianObat = document.getElementById('collapsePemeriksaanRajal')
-            cardRiwayatPemeriksaanRajal.style.display = 'none';
-            getPemeriksaanPoli(no_rawat).done((pemeriksaan) => {
-                if (Object.keys(pemeriksaan).length) {
-                    cardRiwayatPemeriksaanRajal.style.display = 'inline';
-                    $('#periksaRawatJalan').fadeIn()
-                    const listPemeriksaan = `<div class="row">
+            const bodyCardRiwayatPemeriksaanRajal = document.getElementById('collapsePemeriksaanRajal')
+            bodyCardRiwayatPemeriksaanRajal.innerHTML = '';
+            cardRiwayatPemeriksaanRajal.style.display = 'none'
+            getPemeriksaanPoli(no_rawat, kd_poli).done((pemeriksaan) => {
+                if (pemeriksaan.length) {
+                    cardRiwayatPemeriksaanRajal.style.display = 'inline'
+                    // cardRiwayatPemeriksaanRajal.show()
+                    // cardRiwayatPemeriksaanRajal.css('display', '')
+                    pemeriksaan.map((periksa, index) => {
+                        const listPemeriksaan = `<div class="row">
+                                        <div class="col-md-6 col-lg-5 col-sm-12 mb-1">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <table class="table borderless table-sm table-responsive" cellpadding="5" cellspacing="0">
+                                                            <thead style="height:50px">
+                                                                <tr class="borderless">
+                                                                    <th width="20%">Petugas</th>
+                                                                    <td>:</td>
+                                                                    <td colspan=4>${periksa.pegawai?.nama}</td>
+                                                                </tr>     
+                                                                <tr style="height:50px">
+                                                                    <th width="20%">TanggaL</th>
+                                                                    <td>:</td>
+                                                                    <td colspan=4>${formatTanggal(periksa.tgl_perawatan)} ${periksa.jam_rawat}</td>
+                                                                </tr>     
+                                                            </thead>
 
-                                    <div class="col-md-6 col-lg-5 col-sm-12 mb-1">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <table class="table borderless table-sm table-responsive" cellpadding="5" cellspacing="0">
-                                                        <thead style="height:50px">
-                                                            <tr class="borderless">
-                                                                <th width="20%">Petugas</th>
+                                                            <tr>
+                                                                <th width="20%">Tinggi</th>
                                                                 <td>:</td>
-                                                                <td colspan=4>${pemeriksaan.pegawai?.nama}</td>
-                                                            </tr>     
-                                                            <tr style="height:50px">
-                                                                <th width="20%">TanggaL</th>
+                                                                <td>${periksa.tinggi} cm</td>
+                                                                <th width="10%">Berat</th>
                                                                 <td>:</td>
-                                                                <td colspan=4>${formatTanggal(pemeriksaan.tgl_perawatan)} ${pemeriksaan.jam_rawat}</td>
+                                                                <td>${periksa.berat} Kg</td>
                                                             </tr>     
-                                                        </thead>
-    
+                                                            <tr>
+                                                                <th width="20%">Suhu</th>
+                                                                <td>:</td>
+                                                                <td>${periksa.suhu_tubuh} °C</td>
+                                                                <th width="10%">Tensi</th>
+                                                                <td>:</td>
+                                                                <td>${periksa.tensi} mmHG</td>
+                                                            </tr>     
+                                                            <tr>
+                                                                <th width="10%">Kesadaran</th>
+                                                                <td>:</td>
+                                                                <td>${periksa.kesadaran}</td>
+                                                                <th width="10%">GCS</th>
+                                                                <td>:</td>
+                                                                <td>${periksa.gcs} E,V,M</td>
+                                                            </tr>     
+                                                            <tr>
+                                                                <th width="10%">Respirasi</th>
+                                                                <td>:</td>
+                                                                <td>${periksa.respirasi} x/menit</td>
+                                                                <th width="10%">Nadi</th>
+                                                                <td>:</td>
+                                                                <td>${periksa.nadi} x/menit</td>
+                                                            </tr>     
+                                                            <tr>
+                                                                <th width="10%">SpO2</th>
+                                                                <td>:</td>
+                                                                <td>${periksa.spo2} %</td>
+                                                                <th width="10%">Alergi</th>
+                                                                <td>:</td>
+                                                                <td>${periksa.alergi}</td>
+                                                            </tr>     
+                                                        </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-7 col-sm-12 mb-1">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <table class="table table-sm table-responsive borderless" cellpadding="5" cellspacing="0">
                                                         <tr>
-                                                            <th width="20%">Tinggi</th>
+                                                            <th width="20%">Subyek</th>
                                                             <td>:</td>
-                                                            <td>${pemeriksaan.tinggi} cm</td>
-                                                            <th width="10%">Berat</th>
-                                                            <td>:</td>
-                                                            <td>${pemeriksaan.berat} Kg</td>
+                                                            <td>${stringPemeriksaan(periksa.keluhan)}</td>
                                                         </tr>     
                                                         <tr>
-                                                            <th width="20%">Suhu</th>
+                                                            <th width="20%">Obyek</th>
                                                             <td>:</td>
-                                                            <td>${pemeriksaan.suhu_tubuh} °C</td>
-                                                            <th width="10%">Tensi</th>
-                                                            <td>:</td>
-                                                            <td>${pemeriksaan.tensi} mmHG</td>
+                                                            <td>${stringPemeriksaan(periksa.pemeriksaan)}</td>
                                                         </tr>     
                                                         <tr>
-                                                            <th width="10%">Kesadaran</th>
+                                                            <th width="20%">Asesmen</th>
                                                             <td>:</td>
-                                                            <td>${pemeriksaan.kesadaran}</td>
-                                                            <th width="10%">GCS</th>
-                                                            <td>:</td>
-                                                            <td>${pemeriksaan.gcs} E,V,M</td>
+                                                            <td>${stringPemeriksaan(periksa.penilaian)}</td>
                                                         </tr>     
                                                         <tr>
-                                                            <th width="10%">Respirasi</th>
+                                                            <th width="20%">Plan</th>
                                                             <td>:</td>
-                                                            <td>${pemeriksaan.respirasi} x/menit</td>
-                                                            <th width="10%">Nadi</th>
-                                                            <td>:</td>
-                                                            <td>${pemeriksaan.nadi} x/menit</td>
+                                                            <td>${stringPemeriksaan(periksa.rtl)}</td>
                                                         </tr>     
                                                         <tr>
-                                                            <th width="10%">SpO2</th>
+                                                            <th width="20%">Instruksi</th>
                                                             <td>:</td>
-                                                            <td>${pemeriksaan.spo2} %</td>
-                                                            <th width="10%">Alergi</th>
-                                                            <td>:</td>
-                                                            <td>${pemeriksaan.alergi}</td>
+                                                            <td>${stringPemeriksaan(periksa.instruksi)}</td>
                                                         </tr>     
                                                     </table>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-7 col-sm-12 mb-1">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <table class="table table-sm table-responsive borderless" cellpadding="5" cellspacing="0">
-                                                    <tr>
-                                                        <th width="20%">Subyek</th>
-                                                        <td>:</td>
-                                                        <td>${stringPemeriksaan(pemeriksaan.keluhan)}</td>
-                                                    </tr>     
-                                                    <tr>
-                                                        <th width="20%">Obyek</th>
-                                                        <td>:</td>
-                                                        <td>${stringPemeriksaan(pemeriksaan.pemeriksaan)}</td>
-                                                    </tr>     
-                                                    <tr>
-                                                        <th width="20%">Asesmen</th>
-                                                        <td>:</td>
-                                                        <td>${stringPemeriksaan(pemeriksaan.penilaian)}</td>
-                                                    </tr>     
-                                                    <tr>
-                                                        <th width="20%">Plan</th>
-                                                        <td>:</td>
-                                                        <td>${stringPemeriksaan(pemeriksaan.rtl)}</td>
-                                                    </tr>     
-                                                    <tr>
-                                                        <th width="20%">Instruksi</th>
-                                                        <td>:</td>
-                                                        <td>${stringPemeriksaan(pemeriksaan.instruksi)}</td>
-                                                    </tr>     
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`;
-
-                    bodyCardPemberianObat.innerHTML = listPemeriksaan
+                                    </div>`;
+                        bodyCardRiwayatPemeriksaanRajal.innerHTML += listPemeriksaan;
+                    })
                 }
             })
         }
@@ -863,7 +865,7 @@
             bodyInfoLeft.empty();
             bodyInfoRight.empty();
             bodyContent.empty();
-            cardResumeMedis.css('display', 'none')
+            cardResumeMedis.hide()
             getResumeMedis(no_rawat).done((resume) => {
                 if (Object.keys(resume).length) {
                     cardResumeMedis.css('display', 'flex')
@@ -1070,30 +1072,399 @@
         }
 
         function setRiwayatAsesmenAnakRanap(no_rawat) {
+            const cardAsmedAnak = $('#riwayatAsmedAnak')
+            const cardAskepAnak = $('#riwayatAskepAnak')
+            const bodyAsmedAnak = $('#collapseAsmedAnak')
+            const bodyInfoAsmedAnak = $('#infoAsmedAnak')
+            const bodyContentAsmedAnak = $('#contenAsmedAnak')
+            const bodyInfoAskepAnak = $('#infoAskepAnak')
+            const bodyContentAskepAnak = $('#contenAskepAnak')
+
+            cardAsmedAnak.hide()
+            cardAskepAnak.hide()
+            bodyInfoAsmedAnak.empty()
+            bodyContentAsmedAnak.empty()
+            bodyInfoAskepAnak.empty()
+            bodyContentAskepAnak.empty()
             getAsmedRanapAnak(no_rawat).done((asmed) => {
-                console.log('ASMED ANAK ===', asmed);
-                const regPeriksa = asmed.reg_periksa;
-                const dokter = asmed.dokter;
+                if (Object.keys(asmed).length) {
+                    cardAsmedAnak.show()
+                    const regPeriksa = asmed.reg_periksa;
+                    const dokter = asmed.dokter;
 
-                let infoAsmed = `<table class="table table-responsive borderless">
-                    <tr>
-                        <th>No. Rawat</th><td>:</td><td>${no_rawat}</td>
-                    </tr>    
-                    <tr>
-                        <th>Pasien</th><td>:</td><td>(${regPeriksa.no_rkm_medis}) ${regPeriksa.pasien.nm_pasien}</td>
-                    </tr>
-                    <tr>
-                        <th>Jenis Kelamin</th><td>:</td><td>${regPeriksa.pasien.jk === 'L' ? 'Laki-laki' : 'Perempuan'}</td>
-                    </tr>
-                    <tr>
-                        <th>Umur / Tgl Lahir</th><td>:</td><td>${regPeriksa.umurdaftar} ${regPeriksa.sttsumur} / ${formatTanggal(regPeriksa.pasien.tgl_lahir)}</td>        
-                    </tr>
-                </table>`
+                    let infoAsmed = `<div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <table class="table table-responsive borderless m-0">
+                                <tr>
+                                    <th width="35%">No. Rawat</th><td width="2%">:</td><td>${no_rawat}</td>
+                                </tr>    
+                                <tr>
+                                    <th>No. Rekam Medis</th><td>:</td><td>${regPeriksa.no_rkm_medis}</td>
+                                </tr>    
+                            </table>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <table class="table table-responsive borderless m-0">
+                                <tr>
+                                    <th width="35%">Nama / JK</th><td width="2%">:</td><td>${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})</td>
+                                </tr>
+                                <tr>
+                                    <th>Umur / Tgl Lahir</th><td>:</td><td>${regPeriksa.umurdaftar} ${regPeriksa.sttsumur} / ${formatTanggal(regPeriksa.pasien.tgl_lahir)}</td>        
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <table class="table table-responsive borderless m-0">
+                                <tr>
+                                    <th width="35%">Tgl Asesmen</th><td width="2%">:</td><td>${formatTanggal(asmed.tanggal.split(" ")[0])} ${asmed.tanggal.split(" ")[1]}</td>
+                                </tr>
+                                <tr>
+                                    <th>Anamnesis</th><td>:</td><td>${asmed.anamnesis} (hub : ${asmed.hubungan})</td>        
+                                </tr>
+                            </table>
+                        </div>
+                    </div>`;
 
-                $('#info-asmed').append(infoAsmed).hide().fadeIn()
+                    const riwayatKesehatan = `<div class="card mb-2">
+                            <div class="card-header">1. Riwayat Kesehatan</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 mb-2">
+                                        <div class="card-text border-bottom border-1">
+                                            <strong>KELUHAN</strong><br/>
+                                            ${asmed.keluhan_utama}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-md-12 mb-2">
+                                        <div class="card-text border-bottom border-1">
+                                            <strong>RIWAYAT PENYAKIT SEKARANG</strong><br/>
+                                            ${stringPemeriksaan(asmed.rps)}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12 col-md-12 mb-2">
+                                        <div class="card-text border-bottom border-1">
+                                            <strong>RIWAYAT PENYAKIT DAHULU</strong><br/>
+                                            ${stringPemeriksaan(asmed.rpd)}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12 col-md-12 mb-2">
+                                        <div class="card-text border-bottom border-1">
+                                            <strong>RIWAYAT PENYAKIT DAHULU</strong><br/>
+                                            ${stringPemeriksaan(asmed.rpk)}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12 col-md-12 mb-2">
+                                        <div class="card-text border-bottom border-1">
+                                            <strong>RIWAYAT PEMBERIAN OBAT</strong><br/>
+                                            ${stringPemeriksaan(asmed.rpo)}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12 col-md-12 mb-2">
+                                        <div class="card-text border-bottom border-1">
+                                            <strong>RIWAYAT ALERGI</strong><br/>
+                                            ${stringPemeriksaan(asmed.alergi)}
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>`
+
+                    const pemeriksaanFisik = `<div class="card mb-2">
+                            <div class="card-header">2. Pemeriksaan Fisik</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
+                                        <div class="card-text border-bottom border-1">
+                                            <strong>Keadaan Umum</strong> : ${asmed.keadaan}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
+                                        <div class="card-text border-bottom border-1">
+                                            <strong>Kesadaran</strong> : ${asmed.kesadaran}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
+                                        <div class="card-text border-bottom border-1">
+                                            <strong>GCS</strong> : ${asmed.gcs} E,V,M
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-md-12 mb-2">
+                                        <div class="card-text border-bottom border-1 text-center">
+                                            <strong>Tekanan Darah</strong> : ${asmed.td} mmHg,
+                                            <strong>Nadi</strong> : ${asmed.nadi} x/menit,
+                                            <strong>Respirasi</strong> : ${asmed.rr} x/menit,
+                                            <strong>Suhu</strong> : ${asmed.suhu} °C,
+                                            <strong>SpO2</strong> : ${asmed.spo} %,
+                                            <strong>BB</strong> : ${asmed.bb} Kg,
+                                            <strong>TB</strong> : ${asmed.tb} cm,
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12 col-md-4 mb-2">
+                                        <div class="card-text">
+                                            <table class="table table-responsive borderless mb-0">
+                                                <tr>
+                                                    <td>Kepala</td><td>:</td><td>[ ${asmed.kepala} ]</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Mata</td><td>:</td><td>[ ${asmed.mata} ]</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Gigi & Mulut</td><td>:</td><td>[ ${asmed.gigi} ]</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>THT</td><td>:</td><td>[ ${asmed.tht} ]</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Thoraks</td><td>:</td><td>[ ${asmed.thoraks} ]</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Jantung</td><td>:</td><td>[ ${asmed.jantung} ]</td>    
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12 col-md-4 mb-2">
+                                        <div class="card-text">
+                                            <table class="table table-responsive borderless mb-0">
+                                                <tr>
+                                                    <td>Paru</td><td>:</td><td>[ ${asmed.paru} ]</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Abdomen</td><td>:</td><td>[ ${asmed.abdomen} ]</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Genital & Usus</td><td>:</td><td>[ ${asmed.genital} ]</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Ekstrimitas</td><td>:</td><td>[ ${asmed.ekstremitas} ]</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Kulit</td><td>:</td><td>[ ${asmed.kulit} ]</td>    
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12 col-md-4 mb-2">
+                                        <div class="card-text">
+                                            <strong>Keterangan Fisik : </strong><br/>
+                                            ${asmed.ket_fisik}
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>`;
+
+                    const statusLokalis = `<div class="card mb-2">
+                        <div class="card-header">3. Status Lokalis</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-sm-12">
+                                    <img class="img-thumbnail" src="{{ asset('/img/set-lokalis.jpg') }}"/>    
+                                </div>    
+                                <div class="col-md-6 col-lg-6 col-sm-12">
+                                     <strong>Keterangan Lokalis : </strong><br/>
+                                    ${asmed.ket_lokalis}
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>`;
+
+                    const pemeriksaanPenunjang = `<div class="card mb-2">
+                        <div class="card-header">4. Pemeriksaan Penunjang</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                    <strong>Laboratorium: </strong><br/>
+                                   ${asmed.lab}
+                                    
+                                </div>    
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                     <strong>Radiologi : </strong><br/>
+                                    ${asmed.rad}
+                                </div>    
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                     <strong>Penunjang Lain : </strong><br/>
+                                    ${asmed.penunjang}
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>`;
+                    const diagnosis = `<div class="card mb-2">
+                        <div class="card-header">5. Diagnosa</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                   ${asmed.diagnosis}
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>`;
+                    const tataLaksana = `<div class="card mb-2">
+                        <div class="card-header">6. Tata Laksana</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                  ${stringPemeriksaan(asmed.tata)}
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>`;
+                    const edukasi = `<div class="card mb-2">
+                        <div class="card-header">7. Edukasi</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                  ${stringPemeriksaan(asmed.edukasi)}
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>`;
+                    const dibuatOleh = `<div class="card mb-2">
+                        <div class="card-header">8. Dibuat Oleh</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                  <strong>${asmed.dokter.nm_dokter}</strong><br/>
+                                  Pada ${formatTanggal(asmed.tanggal.split(" ")[0])} ${asmed.tanggal.split(" ")[1]}
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>`;
+                    bodyInfoAsmedAnak.append(infoAsmed).hide().fadeIn()
+                    bodyContentAsmedAnak.append([
+                        riwayatKesehatan, pemeriksaanFisik, statusLokalis, pemeriksaanPenunjang, diagnosis, tataLaksana, edukasi, dibuatOleh
+                    ]).hide().fadeIn()
+                }
             })
-            getAskepRanapAnak(no_rawat).done((asmed) => {
-                console.log('ASKEP ANAK ===', asmed);
+            getAskepRanapAnak(no_rawat).done((askep) => {
+                console.log('ASKEP ANAK ===', askep);
+                if (Object.keys(askep).length) {
+                    cardAskepAnak.show()
+                    const regPeriksa = askep.reg_periksa
+                    let infoAskep = `<div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <table class="table table-responsive borderless m-0">
+                                <tr>
+                                    <th width="35%">No. Rawat</th><td width="2%">:</td><td>${no_rawat}</td>
+                                </tr>    
+                                <tr>
+                                    <th>No. Rekam Medis</th><td>:</td><td>${regPeriksa.no_rkm_medis}</td>
+                                </tr>    
+                                <tr>
+                                    <th width="35%">Nama / JK</th><td width="2%">:</td><td>${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})</td>
+                                </tr>
+                                <tr>
+                                    <th>Umur / Tgl Lahir</th><td>:</td><td>${regPeriksa.umurdaftar} ${regPeriksa.sttsumur} / ${formatTanggal(regPeriksa.pasien.tgl_lahir)}</td>        
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <table class="table table-responsive borderless m-0">
+                                <tr>
+                                    <th>Bahasa</th><td>:</td><td>${regPeriksa.pasien.bahasa.nama_bahasa }</td>        
+                                </tr>
+                                <tr>
+                                    <th>Cara Masuk</th><td>:</td><td>${askep.cara_masuk}</td>        
+                                </tr>
+                                <tr>
+                                    <th>Kasus</th><td>:</td><td>${askep.kasus_trauma}</td>        
+                                </tr>
+                                <tr>
+                                    <th>Anamnesis</th><td>:</td><td>${askep.informasi} (hub : ${askep.ket_informasi})</td>        
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <table class="table table-responsive borderless m-0">
+                                <tr>
+                                    <th width="35%">Tgl Asesmen</th><td width="2%">:</td><td>${formatTanggal(askep.tanggal.split(" ")[0])} ${askep.tanggal.split(" ")[1]}</td>
+                                </tr>
+                                <tr>
+                                    <th width="35%">Dokter DPJP</th><td width="2%">:</td><td>${askep.dokter.nm_dokter}</td>
+                                </tr>
+                                <tr>
+                                    <th width="35%">Penkaji 1</th><td width="2%">:</td><td>${askep.pengkaji1.nama}</td>
+                                </tr>
+                                <tr>
+                                    <th width="35%">Penkaji 2</th><td width="2%">:</td><td>${askep.pengkaji2.nama}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>`;
+
+                    const riwayatKesehatan = `<div class="card">
+                        <div class="card-header">1. DATA SUBYEKTIF</div>
+                        <div class="card-body">
+                            <div class="card-text">
+                                <div class="row m-1">
+                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                        <p class=""><strong>RPS : </strong>${stringPemeriksaan(askep.rps)}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                        <p class=""><strong>RPD : </strong>${stringPemeriksaan(askep.rpd)}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                        <p class=""><strong>RPK : </strong>${stringPemeriksaan(askep.rpk)}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                        <p class=""><strong>RPO : </strong>${stringPemeriksaan(askep.rpo)}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                        <div class="card-text ">
+                                            <table class="table table-responsive borderless text-sm m-0">
+                                                <tr>
+                                                    <th width=30%>Riwayat Pembedahan</th><td width=2%>:</td><td>${askep.riwayat_pembedahan}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Alat Bantu yang Dipakai</th><td width=2%>:</td><td>${askep.alat_bantu_dipakai}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Riwayat Dirwat di RS</th><td width=2%>:</td><td>${askep.riwayat_dirawat_dirs}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Sedang Hami/Menyusui</th><td width=2%>:</td><td>${askep.riwayat_kehamilan}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Riwayat Tranfusi</th><td width=2%>:</td><td>${askep.riwayat_tranfusi}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Riwayat Alergi</th><td width=2%>:</td><td>${askep.riwayat_alergi}</td>    
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                        <div class="card-text ">
+                                            Kebiasaan Pasien :
+                                            <ol style="list-style:none" class="mb-0">
+                                                <li>Merokok : ${askep.riwayat_merokok} , Jumlah : ${askep.riwayat_merokok_jumlah} btg/hari</li>
+                                                <li>Alkohol : ${askep.riwayat_alkohol}, Jumlah : ${askep.riwayat_alkohol_jumlah} sloki/hari</li>
+                                                <li>Obat Tidur : ${askep.riwayat_narkoba}</li>
+                                                <li>Olahraga : ${askep.riwayat_olahraga}</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                        <div class="card-subtitle text-muted">Data Psikologis Sosial dan Kultural</div>
+                                        <div class="card-text ">
+                                            <ol style="list-style:none" class="mb-0">
+                                                <li>Kondisi Psikologis : ${askep.riwayat_psiko_kondisi_psiko}</li>
+                                                <li>Alkohol : ${askep.riwayat_alkohol}, Jumlah : ${askep.riwayat_alkohol_jumlah} sloki/hari</li>
+                                                <li>Obat Tidur : ${askep.riwayat_narkoba}</li>
+                                                <li>Olahraga : ${askep.riwayat_olahraga}</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                    bodyInfoAskepAnak.append(infoAskep).hide().fadeIn()
+                    bodyContentAskepAnak.append(
+                        [riwayatKesehatan]
+                    ).hide().fadeIn()
+
+                }
             })
         }
 
