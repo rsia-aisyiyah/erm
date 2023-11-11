@@ -44,7 +44,7 @@ class LoginController extends Controller
                  * Daftar user yang diizinkan login : 
                  * direksi, verifikator
                  */
-                if (!in_array($user->username, ['direksi', 'verifikator', '1.112.0823'])) {
+                if (!in_array($user->username, ['direksi', 'verifikator', '1.112.0823', '1.109.1119', '2.311.0314'])) {
                     /**
                      * Selain user diatas, maka akan diarahkan ke halaman login dengan pesan error
                      * */
