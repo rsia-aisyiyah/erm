@@ -74,6 +74,7 @@ use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
 use App\Http\Controllers\AskepRanapKandunganController;
 use App\Http\Controllers\AskepRanapNeonatusController;
+use App\Http\Controllers\AskepUgdController;
 use App\Http\Controllers\HasilRadiologiController;
 use App\Http\Controllers\MasalahAskepRanapController;
 use App\Http\Controllers\MasterImunisasiController;
@@ -83,6 +84,7 @@ use App\Http\Controllers\RencanaAskepRanapController;
 use App\Http\Controllers\RiwayatImunisasiController;
 use App\Http\Controllers\RiwayatPersalinanController;
 use App\Http\Controllers\TriasePemeriksaanUgd;
+use App\Models\AskepUgd;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
@@ -165,6 +167,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/ugd', [UgdController::class, 'index']);
     Route::get('/ugd/get/table', [UgdController::class, 'getTable']);
     Route::get('/ugd/soap/table', [PemeriksaanRalanController::class, 'getTable']);
+    Route::get('/ugd/asesmen/keperawatan', [AskepUgdController::class, 'get']);
     Route::post('/ugd/asesmen/medis/simpan', [AsesmenMedisIgdController::class, 'create']);
     Route::post('/ugd/asesmen/medis/ubah', [AsesmenMedisIgdController::class, 'edit']);
     Route::get('/ugd/asesmen/medis/{noRawat}', [AsesmenMedisIgdController::class, 'get']);

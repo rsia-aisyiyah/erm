@@ -122,6 +122,9 @@
             $('.tgl_awal').datepicker('setDate', splitTanggal(tgl_awal))
             $('.tgl_akhir').datepicker('setDate', splitTanggal(tgl_akhir))
 
+            // var contentScrolled = $('.content-scrolled');
+            // console.log('WIDTH CONTENT', contentScrolled.width());
+
         })
         $('#spesialis').on('change', () => {
             spesialis = $('#spesialis option:selected').val()
@@ -287,10 +290,12 @@
                     $('#nav-askep-ranap-tab').hide()
                     $('#nav-asmed-rajal-tab').show()
                     $('#nav-askep-rajal-tab').show()
+                    $('#nav-asesmen-rajal-tab').show()
                     status_lanjut = 'Rawat Jalan';
                     cardBg = 'text-bg-warning';
                     $('.header-riwayat').removeClass('bg-purple')
                 } else {
+                    $('#nav-asesmen-rajal-tab').hide()
                     $('#nav-asmed-rajal-tab').hide()
                     $('#nav-askep-rajal-tab').hide()
                     $('#nav-asmed-ranap-tab').show()
@@ -306,8 +311,8 @@
                     // asmed & askep rawat jalan
 
                     // asmed & askep rawat inap
-                    $('#nav-asesmen-rajal-tab').attr('onclick', `setRiwayatAsesmenAnakRajal('${no_rawat}')`);
-                    $('#nav-asesmen-ranap-tab').attr('onclick', `setRiwayatAsesmenAnakRanap('${no_rawat}')`)
+                    $('#nav-asesmen-ranap-tab').attr('onclick', `setRiwayatAsesmenAnakRanap('${no_rawat}')`);
+                    $('#nav-keperawatan-ranap-tab').attr('onclick', `setRiwayatAskepAnak('${no_rawat}')`)
                 }
                 $('.header-riwayat h6').html(status_lanjut)
                 $('.header-riwayat').addClass(cardBg)
@@ -1073,19 +1078,12 @@
 
         function setRiwayatAsesmenAnakRanap(no_rawat) {
             const cardAsmedAnak = $('#riwayatAsmedAnak')
-            const cardAskepAnak = $('#riwayatAskepAnak')
             const bodyAsmedAnak = $('#collapseAsmedAnak')
             const bodyInfoAsmedAnak = $('#infoAsmedAnak')
             const bodyContentAsmedAnak = $('#contenAsmedAnak')
-            const bodyInfoAskepAnak = $('#infoAskepAnak')
-            const bodyContentAskepAnak = $('#contenAskepAnak')
-
             cardAsmedAnak.hide()
-            cardAskepAnak.hide()
             bodyInfoAsmedAnak.empty()
             bodyContentAsmedAnak.empty()
-            bodyInfoAskepAnak.empty()
-            bodyContentAskepAnak.empty()
             getAsmedRanapAnak(no_rawat).done((asmed) => {
                 if (Object.keys(asmed).length) {
                     cardAsmedAnak.show()
@@ -1172,7 +1170,7 @@
                     const pemeriksaanFisik = `<div class="card mb-2">
                             <div class="card-header">2. Pemeriksaan Fisik</div>
                             <div class="card-body">
-                                <div class="row">
+                                <div class="row card-text">
                                     <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
                                         <div class="card-text border-bottom border-1">
                                             <strong>Keadaan Umum</strong> : ${asmed.keadaan}
@@ -1336,9 +1334,276 @@
                     ]).hide().fadeIn()
                 }
             })
+            setAsmedUgd(no_rawat)
+        }
+
+        function setRiwayatImunisasi(data) {
+            let tbImunisasi = ''
+            const groupImunisasi = {};
+            data.map((imunisasi, index) => {
+                const key = `${imunisasi.master_imunisasi.nama_imunisasi}`
+
+                if (!groupImunisasi[key]) {
+                    groupImunisasi[key] = [];
+                }
+
+                groupImunisasi[key].push(imunisasi.no_imunisasi)
+            })
+
+
+            const keysImunisasi = Object.keys(groupImunisasi)
+            const resultImunisasi = Object.values(groupImunisasi)
+
+            keysImunisasi.map((key) => {
+                tbImunisasi += `<tr><td>${key}</td>`
+                groupImunisasi[key].map((value) => {
+                    tbImunisasi += `<td><i class="bi bi-check text-success"></i></td>`
+                })
+                tbImunisasi += `</tr>`
+            })
+
+            return tbImunisasi;
+        }
+
+
+        function setAsmedUgd(no_rawat) {
+            const riwayatAsmedUgd = $('#riwayatAsmedUgd')
+            const infoAsmedUgd = $('#infoAsmedUgd')
+            const contentAsmedUgd = $('#contentAsmedUgd')
+
+            riwayatAsmedUgd.hide()
+            infoAsmedUgd.empty()
+            contentAsmedUgd.empty()
+            getAsmedUgd(no_rawat).done((asmed) => {
+                if (Object.keys(asmed).length) {
+                    const regPeriksa = asmed.reg_periksa;
+                    const pasien = regPeriksa.pasien;
+                    riwayatAsmedUgd.show()
+                    console.log('ASMED UGD ===', asmed);
+                    const infoAsmed = `<div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <table class="table table-responsive borderless mb-0">
+                                <tr>
+                                    <th>No. Rekam Medis</th>    
+                                    <td>:</td>    
+                                    <td>${regPeriksa.no_rkm_medis}</td>    
+                                </tr>
+                                <tr>
+                                    <th>No. Rawat</th>    
+                                    <td>:</td>    
+                                    <td>${no_rawat}</td>    
+                                </tr>
+                                 <tr>
+                                    <th>Nama</th>    
+                                    <td>:</td>    
+                                    <td>${pasien.nm_pasien}</td>    
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <table class="table table-responsive borderless mb-0">
+                                <tr>
+                                    <th>Jenis Kelamin</th>    
+                                    <td>:</td>    
+                                    <td>${pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan'}</td>    
+                                </tr>
+                                <tr>
+                                    <th>Tanggal Lahir</th>    
+                                    <td>:</td>    
+                                    <td>${formatTanggal(pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}</td>    
+                                </tr>
+                                <tr>
+                                    <th>Umur</th>    
+                                    <td>:</td>    
+                                    <td>${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}</td>    
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <table class="table table-responsive borderless mb-0">
+                                <tr>
+                                    <th>Dokter Jaga</th>    
+                                    <td>:</td>    
+                                    <td>${asmed.dokter.nm_dokter}</td>    
+                                </tr>
+                                <tr>
+                                    <th>Tgl. Asesmen</th>    
+                                    <td>:</td>    
+                                    <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>    
+                                </tr>
+                                <tr>
+                                    <th>Anamnesis</th>    
+                                    <td>:</td>    
+                                    <td>${asmed.anamnesis} (hub : ${asmed.hubungan})</td>    
+                                </tr>
+                            </table>
+                        </div>
+                    </div>`;
+
+                    const contentAsmed = `<div class="card mb-2">
+                                <div class="card-header">
+                                    1. RIWAYAT KESEHATAN
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <strong>Keluhan : </strong><br/>${asmed.keluhan_utama}
+                                        </div> 
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <strong>RPS : </strong><br/>${asmed.rps}
+                                        </div> 
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <strong>RPD : </strong><br/>${asmed.rpd}
+                                        </div> 
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <strong>RPK : </strong><br/>${asmed.rpk}
+                                        </div> 
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <strong>RPO : </strong><br/>${asmed.rpo}
+                                        </div> 
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <strong>Alergi : </strong><br/>${asmed.alergi}
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>`
+                    const pemeriksaanAsmed = ` <div class="card mb-2">
+                                <div class="card-header">
+                                    2. PEMERIKSAAN FISIK
+                                </div>
+                                <div class="card-body">
+                                    <div class="row border-bottom border-1 mx-1 p-2 mb-2">
+                                        <div class="col-lg-3 col-md-3 col-sm-12">
+                                            <strong>Keadaan Umum : </strong>${asmed.keadaan}
+                                        </div> 
+                                        <div class="col-lg-3 col-md-3 col-sm-12">
+                                            <strong>Kesadaran : </strong>${asmed.kesadaran}
+                                        </div> 
+                                        <div class="col-lg-3 col-md-3 col-sm-12">
+                                            <strong>GCS : </strong>${asmed.gcs} E,V,M
+                                        </div> 
+                                        <div class="col-lg-3 col-md-3 col-xs-6">
+                                            <strong>TD : </strong>${asmed.td} mmHg
+                                        </div> 
+                                        <div class="col-lg-3 col-md-3 col-xs-6">
+                                            <strong>Nadi : </strong>${asmed.nadi} x/menit
+                                        </div> 
+                                        <div class="col-lg-3 col-md-3 col-xs-6">
+                                            <strong>Respirasi : </strong>${asmed.rr} x/menit
+                                        </div> 
+                                        <div class="col-lg-3 col-md-3 col-xs-6">
+                                            <strong>Suhu : </strong>${asmed.suhu} °C
+                                        </div> 
+                                        <div class="col-lg-3 col-md-3 col-xs-6">
+                                            <strong>SpO2 : </strong>${asmed.spo} %
+                                        </div> 
+                                        <div class="col-lg-3 col-md-3 col-xs-6">
+                                            <strong>Berat : </strong>${asmed.bb} Kg
+                                        </div> 
+                                        <div class="col-lg-3 col-md-3 col-xs-6">
+                                            <strong>Tinggi : </strong>${asmed.tb} Cm
+                                        </div> 
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-xs-6">
+                                            <table class="table table-responsive borderless">
+                                                <tr><td>Kepala</td><td>:</td><td>[ ${asmed.kepala} ]</td></tr>    
+                                                <tr><td>Mata</td><td>:</td><td>[ ${asmed.mata} ]</td></tr>    
+                                                <tr><td>Gigi Mulut</td><td>:</td><td>[ ${asmed.gigi} ]</td></tr>    
+                                                <tr><td>Leher</td><td>:</td><td>[ ${asmed.leher} ]</td></tr>    
+                                            </table>
+                                        </div> 
+                                        <div class="col-lg-4 col-md-4 col-xs-6">
+                                            <table class="table table-responsive borderless">
+                                                <tr><td>Thoraks</td><td>:</td><td>[ ${asmed.thoraks} ]</td></tr>    
+                                                <tr><td>Abdomen</td><td>:</td><td>[ ${asmed.abdomen} ]</td></tr>    
+                                                <tr><td>Genital & Anus</td><td>:</td><td>[ ${asmed.genital} ]</td></tr>    
+                                                <tr><td>Ekstremitas</td><td>:</td><td>[ ${asmed.ekstremitas} ]</td></tr>    
+                                            </table>
+                                        </div> 
+                                        <div class="col-lg-4 col-md-4 col-xs-6">
+                                            <strong>Keterangan : </strong> ${asmed.ket_fisik}
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>`
+
+                    const statusLokalis = `<div class="card mb-2">
+                        <div class="card-header">3. STATUS LOKALIS</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-sm-12">
+                                    <img class="img-thumbnail" src="{{ asset('/img/set-lokalis.jpg') }}"/>    
+                                </div>    
+                                <div class="col-md-6 col-lg-6 col-sm-12">
+                                     <strong>Keterangan Lokalis : </strong><br/>
+                                    ${asmed.ket_lokalis}
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>`;
+
+                    const pemeriksaanPenunjang = `<div class="card mb-2">
+                        <div class="card-header">4.PEMERIKSAAN PENUNJANG</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                     <strong>EKG : </strong><br/>
+                                    ${asmed.ekg}
+                                </div> 
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                    <strong>Laboratorium: </strong><br/>
+                                   ${asmed.lab}
+                                    
+                                </div>    
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                     <strong>Radiologi : </strong><br/>
+                                    ${asmed.rad}
+                                </div>    
+                                  
+                            </div>    
+                        </div>
+                    </div>`;
+
+                    const diagnosa = `<div class="card mb-2">
+                        <div class="card-header">5. DIAGNOSA</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                  ${stringPemeriksaan(asmed.diagnosis)}
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>`;
+                    const tataLaksana = `<div class="card mb-2">
+                        <div class="card-header">6. TATA LAKSANA</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                  ${stringPemeriksaan(asmed.tata)}
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>`;
+
+
+                    infoAsmedUgd.append(infoAsmed).hide().fadeIn();
+                    contentAsmedUgd.append([contentAsmed, pemeriksaanAsmed, statusLokalis, pemeriksaanPenunjang, diagnosa, tataLaksana]).hide().fadeIn();
+                }
+            })
+        }
+
+        function setAskepRanapAnak(no_rawat) {
+            const cardAskepAnak = $('#riwayatAskepAnak')
+            const bodyInfoAskepAnak = $('#infoAskepAnak')
+            const bodyContentAskepAnak = $('#contenAskepAnak')
+            cardAskepAnak.hide()
+            bodyInfoAskepAnak.empty()
+            bodyContentAskepAnak.empty()
+
             getAskepRanapAnak(no_rawat).done((askep) => {
-                console.log('ASKEP ANAK ===', askep);
                 if (Object.keys(askep).length) {
+                    console.log('ASKEP ===', askep);
                     cardAskepAnak.show()
                     const regPeriksa = askep.reg_periksa
                     let infoAskep = `<div class="row">
@@ -1396,34 +1661,34 @@
                         <div class="card-header">1. DATA SUBYEKTIF</div>
                         <div class="card-body">
                             <div class="card-text">
-                                <div class="row m-1">
+                                <div class="row ">
                                     <div class="col-sm-12 col-md-6 col-lg-6">
-                                        <p class=""><strong>RPS : </strong>${stringPemeriksaan(askep.rps)}</p>
+                                        <strong>RPS : </strong>${stringPemeriksaan(askep.rps)}
                                     </div>
                                     <div class="col-sm-12 col-md-6 col-lg-6">
-                                        <p class=""><strong>RPD : </strong>${stringPemeriksaan(askep.rpd)}</p>
+                                        <strong>RPD : </strong>${stringPemeriksaan(askep.rpd)}
                                     </div>
                                     <div class="col-sm-12 col-md-6 col-lg-6">
-                                        <p class=""><strong>RPK : </strong>${stringPemeriksaan(askep.rpk)}</p>
+                                        <strong>RPK : </strong>${stringPemeriksaan(askep.rpk)}
                                     </div>
                                     <div class="col-sm-12 col-md-6 col-lg-6">
-                                        <p class=""><strong>RPO : </strong>${stringPemeriksaan(askep.rpo)}</p>
+                                        <strong>RPO : </strong>${stringPemeriksaan(askep.rpo)}
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <div class="col-sm-12 col-md-6 col-lg-6 p-2">
                                         <div class="card-text ">
                                             <table class="table table-responsive borderless text-sm m-0">
                                                 <tr>
                                                     <th width=30%>Riwayat Pembedahan</th><td width=2%>:</td><td>${askep.riwayat_pembedahan}</td>
                                                 </tr>
-                                                <tr>
-                                                    <th width=30%>Alat Bantu yang Dipakai</th><td width=2%>:</td><td>${askep.alat_bantu_dipakai}</td>
-                                                </tr>
-                                                <tr>
+                                                 <tr>
                                                     <th width=30%>Riwayat Dirwat di RS</th><td width=2%>:</td><td>${askep.riwayat_dirawat_dirs}</td>
                                                 </tr>
-                                                <tr>
-                                                    <th width=30%>Sedang Hami/Menyusui</th><td width=2%>:</td><td>${askep.riwayat_kehamilan}</td>
-                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+                                        <div class="card-text ">
+                                            <table class="table table-responsive borderless text-sm m-0">
                                                 <tr>
                                                     <th width=30%>Riwayat Tranfusi</th><td width=2%>:</td><td>${askep.riwayat_tranfusi}</td>
                                                 </tr>
@@ -1433,44 +1698,1011 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-6">
-                                        <div class="card-text ">
-                                            Kebiasaan Pasien :
-                                            <ol style="list-style:none" class="mb-0">
-                                                <li>Merokok : ${askep.riwayat_merokok} , Jumlah : ${askep.riwayat_merokok_jumlah} btg/hari</li>
-                                                <li>Alkohol : ${askep.riwayat_alkohol}, Jumlah : ${askep.riwayat_alkohol_jumlah} sloki/hari</li>
-                                                <li>Obat Tidur : ${askep.riwayat_narkoba}</li>
-                                                <li>Olahraga : ${askep.riwayat_olahraga}</li>
-                                            </ol>
+                                    <div class="card-subtitle text-muted">Data Psikologis Sosial dan Kultural</div>
+                                    <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+                                        <div class="card-text">
+                                             <table class="table table-responsive borderless text-sm m-0">
+                                                <tr>
+                                                    <th width=30%>Kondisi Psikologis</th><td width=2%>:</td><td>${askep.riwayat_psiko_kondisi_psiko}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Tempat Tinggal</th><td width=2%>:</td><td>${askep.riwayat_psiko_tinggal}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Tinggal Bersama</th><td width=2%>:</td><td>${askep.riwayat_psiko_tinggal_keterangan}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Hubungan Keluarga</th><td width=2%>:</td><td>${askep.riwayat_psiko_hubungan_keluarga}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Jaminan Kesehatan</th><td width=2%>:</td><td>${regPeriksa.penjab.png_jawab}</td>    
+                                                </tr>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-6">
-                                        <div class="card-subtitle text-muted">Data Psikologis Sosial dan Kultural</div>
-                                        <div class="card-text ">
-                                            <ol style="list-style:none" class="mb-0">
-                                                <li>Kondisi Psikologis : ${askep.riwayat_psiko_kondisi_psiko}</li>
-                                                <li>Alkohol : ${askep.riwayat_alkohol}, Jumlah : ${askep.riwayat_alkohol_jumlah} sloki/hari</li>
-                                                <li>Obat Tidur : ${askep.riwayat_narkoba}</li>
-                                                <li>Olahraga : ${askep.riwayat_olahraga}</li>
-                                            </ol>
+                                    <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+                                        <div class="card-text">
+                                             <table class="table table-responsive borderless text-sm m-0">
+                                                <tr>
+                                                    <th width=30%>Pendidikan Orangtua</th><td width=2%>:</td><td>${askep.riwayat_psiko_pendidikan_pj}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Agama</th><td width=2%>:</td><td>${regPeriksa.pasien.agama}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Nilai Budaya</th><td width=2%>:</td><td>${askep.riwayat_psiko_nilai_kepercayaan}, Ket : ${askep.riwayat_psiko_nilai_kepercayaan_keterangan}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Riwayat Gangguan Jiwa</th><td width=2%>:</td><td>${askep.riwayat_psiko_gangguan_jiwa}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=30%>Kondisi Perilaku</th><td width=2%>:</td><td>${askep.riwayat_psiko_perilaku}, Ket : ${askep.riwayat_psiko_perilaku_keterangan}</td>    
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 p-2">
+                                        <div class="card-subtitle text-muted ms-1">Skrining Risiko Nutrisional</div>
+                                        <div class="card-text">
+                                             <table class="table table-responsive text-sm m-0">
+                                                <tr>
+                                                    <td>a. Apakah pasien tampak kurus ? : </td><td width=2%>:</td><td width=12% style="text-align:end">${askep.nilai_gizi1 ? 'YA': 'TIDAK'} [ ${askep.nilai_gizi1} ] </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>b. Apakah terdapat penurunan berat badan sebulan terakhir? (berdasarkan nilai objektif data berat badan bila ada atau untuk bayi < 1 Tahun, berat badan tidak naik selama 3 bulan terakhir)</th><td width=2%>:</td><td width=12% style="text-align:end">${askep.nilai_gizi2 ? 'YA': 'TIDAK'} [ ${askep.nilai_gizi2} ] </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>c. Apakah terdapat salah satu dari kondisi tersebut ? Diare >5 kali/sehari, dan atau muntah > 3 kali/sehari dalam seminggu terakhir, asupan makanan berkurang selama 1 minggu terakhir</td><td width=2%>:</td><td width=12% style="text-align:end">${askep.nilai_gizi3 ? 'YA': 'TIDAK'} [ ${askep.nilai_gizi3} ] </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>d. Apakah terdapat penyakit atau keadaan yang menyebabkan pasien beresiko mengalami malnutrisi ?</td><td width=2%>:</td><td width=12% style="text-align:end">${askep.nilai_gizi4 ? 'YA': 'TIDAK'} [ ${askep.nilai_gizi4} ] </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>JUMLAH SKOR</th><td width=2%>:</td><td width=12% style="text-align:end">${askep.nilai_total_gizi >=4 ? 'Resiko Tinggi' : askep.nilai_total_gizi >=3 ? 'Resiko Sedang' : askep.nilai_total_gizi == 0 ? 'Resiko Rendah' :'' } [ ${askep.nilai_total_gizi} ]</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-subtitle text-muted ms-1">Asesmen Fungsional</div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 p-2">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-4 col-lg-4 p-2">
+                                                <div class="card-subtitle text-muted ms-1">a. Pola Nutrisi</div>
+                                                    <table class="table table-responsive borderless text-sm ms-3">
+                                                        <tr>
+                                                            <td>Diet Makanan</td><td width=2%>:</td><td>${askep.pola_nutrisi_jenis_makanan}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Pola Makan</td><td width=2%>:</td><td>${askep.pola_nutrisi_frekuesi_makan} kali/hari</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Porsi Makan</td><td width=2%>:</td><td>${askep.pola_nutrisi_porsi_makan}</td>
+                                                        </tr>
+                                                    </table>
+                                            </div>
+                                            <div class="col-sm-12 col-md-4 col-lg-4 p-2">
+                                                <div class="card-subtitle text-muted ms-1">b. Pola Eliminasi</div>
+                                                <table class="table table-responsive borderless text-sm ms-3">
+                                                    <tr>
+                                                        <td>BAK</td><td width=2%>:</td><td>${askep.pemeriksaan_eliminasi_bak_frekuensi_jumlah} x/${askep.pemeriksaan_eliminasi_bak_frekuensi_durasi}</td><td>Warna : ${askep.pemeriksaan_eliminasi_bak_warna} </td><td>Lain-lain : ${askep.pemeriksaan_eliminasi_bak_lainlain}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>BAB</td><td width=2%>:</td><td>${askep.pemeriksaan_eliminasi_bab_frekuensi_jumlah} x/${askep.pemeriksaan_eliminasi_bab_frekuensi_durasi}</td><td>Konsistensi : ${askep.pemeriksaan_eliminasi_bab_konsistensi} </td><td>Warna : ${askep.pemeriksaan_eliminasi_bab_warna}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="col-sm-12 col-md-4 col-lg-4 p-2">
+                                                <div class="card-subtitle text-muted ms-1">c. Pola Istirahat</div>
+                                                <table class="table table-responsive borderless text-sm ms-3">
+                                                    <tr>
+                                                        <td>Lama Tidur</td><td width=2%>:</td><td>${askep.pola_tidur_lama_tidur} jam/hari</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Ganguan Tidur</td><td>:</td><td>${askep.pola_tidur_gangguan}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+                                                <div class="card-subtitle text-muted ms-1">d. Pola Aktivitas</div>
+                                                <table class="table table-responsive borderless text-sm ms-3">
+                                                    <tr>
+                                                        <td>Mandi</td><td width=2%>:</td><td>${askep.pola_aktifitas_mandi}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Eliminasi</td><td width=2%>:</td><td>${askep.pola_aktifitas_eliminasi}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mobilisasi</td><td width=2%>:</td><td>${askep.pola_aktifitas_berpindah}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Makan & Minum</td><td width=2%>:</td><td>${askep.pola_aktifitas_makanminum}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Berpakaian</td><td width=2%>:</td><td>${askep.pola_aktifitas_berpakaian}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Alat Bantu yang Dipakai</td><td width=2%>:</td><td>${askep.alat_bantu_dipakai}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+                                                <div class="card-subtitle text-muted ms-1">e. Pola Sensorik & Kognitif</div>
+                                                <table class="table table-responsive borderless text-sm ms-3">
+                                                    <tr>
+                                                        <td>Sensorik</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_sensorik}</td><td>Ket </td><td>:</td><td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mototik</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_motorik}</td><td>Ket </td><td>:</td><td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Penglihatan</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_pengelihatan}</td><td>Alat Bantu</td><td>:</td><td>${askep.pemeriksaan_neurologi_alat_bantu_penglihatan}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pendengaran</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_pendengaran}</td><td>Alat Bantu</td><td>:</td><td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Bicara</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_bicara}</td><td>Ket </td><td>:</td><td>${askep.pemeriksaan_neurologi_bicara_keterangan}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Otot</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_kekuatan_otot}</td><td>Ket </td><td>:</td><td></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>`
+
+                    const riwayatKelahiran = `<div class="card mt-2">
+                        <div class="card-header">2. Riwayat Kelahiran & Tumbuh Kembang</div>
+                        <div class="card-body">
+                            <div class="card-subtitle text-muted ms-1">a. Riwayat Kelahiran</div>
+                            <div class="card-text">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                         <table class="table table-responsive borderless">
+                                            <tr>
+                                                <th>Anak Ke</th><td>:</td><td>${askep.anakke} dari ${askep.darisaudara} saudara</td>
+                                            </tr>    
+                                            <tr>
+                                                <th>Umur Kelahiran</th><td>:</td><td>${askep.umurkelahiran}</td>
+                                            </tr>    
+                                        </table>   
+                                    </div> 
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                         <table class="table table-responsive borderless">
+                                            <tr>
+                                                <th>Cara Lahir</th><td>:</td><td>${askep.caralahir}, Ket : ${askep.ket_caralahir}</td>
+                                            </tr>    
+                                            <tr>
+                                                <th>Kelainan Bawaan</th><td>:</td><td>${askep.kelainanbawaan}, Ket : ${askep.ket_kelainan_bawaan}</td>
+                                            </tr>    
+                                        </table>   
+                                    </div> 
+                                </div> 
+                                <div class="row">
+                                    <div class="card-subtitle text-muted ms-1">b. Riwayat Tumbuh Kembang</div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                         <table class="table table-responsive">
+                                            <tr>
+                                                <th>Usia Tengkurap</th><td>:</td><td>${askep.usiatengkurap}</td>
+                                            </tr>      
+                                            <tr>
+                                                <th>Usia Duduk</th><td>:</td><td>${askep.usiaduduk}</td>
+                                            </tr>      
+                                            <tr>
+                                                <th>Usia Berdiri</th><td>:</td><td>${askep.usiaberdiri}</td>
+                                            </tr>      
+                                        </table>   
+                                    </div> 
+                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                         <table class="table table-responsive">
+                                            <tr>
+                                                <th>Usia Berjalan</th><td>:</td><td>${askep.usiaberdiri}</td>
+                                            </tr> 
+                                            <tr>
+                                                <th>Usia Tumbuh Gigi</th><td>:</td><td>${askep.usiagigipertama}</td>
+                                            </tr>      
+                                            <tr>
+                                                <th>Usia Bicara</th><td>:</td><td>${askep.usiabicara}</td>
+                                            </tr>      
+                                        </table>   
+                                    </div> 
+                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                         <table class="table table-responsive">
+                                            <tr>
+                                                <th>Usia Membaca</th><td>:</td><td>${askep.usiamembaca}</td>
+                                            </tr>      
+                                            <tr>
+                                                <th>Usia Menulis</th><td>:</td><td>${askep.usiamenulis}</td>
+                                            </tr>      
+                                            <tr>
+                                                <th>Gangguan Perkembangan/Emosi</th><td>:</td><td>${askep.gangguanemosi}</td>
+                                            </tr>    
+                                        </table>   
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>`
+
+                    let masalahKeperawatan = `<ol class="mb-0">`
+                    let rencanaKeperawatan = `<ol class="mb-0">`
+
+                    askep.masalah_keperawatan.map((masalah, index) => {
+                        masalahKeperawatan += `<li>${masalah.master_masalah.nama_masalah}</li>`
+                        masalah.rencana_keperawatan.map((rencana, index) => {
+                            rencanaKeperawatan += `<li>${rencana.master_rencana.rencana_keperawatan}</li>`
+
+                        })
+                    })
+                    rencanaKeperawatan += `</ol>`
+                    masalahKeperawatan += `</ol>`
+
+                    const masalahRencana = `<div class="card mt-2">
+                    <div class="card-header">3. Masalah & Rencana & Tindakan Keperawatan</div>
+                    <div class="card-body">
+                        <div class="row card-text">
+                            <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
+                                <div class="card-subtitle text-muted ms-1">a. Masalah Keperawatan</div>
+                                <div class="card-text border border-1 rounded p-2">
+                                    ${masalahKeperawatan}
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
+                                <div class="card-subtitle text-muted ms-1">b. Rencana Keperawatan</div>
+                                <div class="card-text border border-1 rounded p-2">
+                                    ${rencanaKeperawatan}
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
+                                <div class="card-subtitle text-muted ms-1">c. Tindakan Keperawatan</div>
+                                <div class="card-text border border-1 rounded p-2">
+                                    ${stringPemeriksaan(askep.rencana)}
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>`
+
+
+                    const riwayatImunisasi = `<div class="card mt-2">
+                    <div class="card-header">4. Imunisasi</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="card-text">
+                                    <table class="table table-responsive table-bordered" id="tbImunisasi">
+                                        <thead class="text-bg-secondary">
+                                            <tr>
+                                                <th rowspan=2 style="vertical-align:middle">Nama Imunisasi</th>    
+                                                <th colspan=5 class="text-center">Imunisasi Ke</th>    
+                                            </tr>    
+                                            <tr class="text-center">
+                                                <td>1</td>
+                                                <td>2</td>
+                                                <td>3</td>
+                                                <td>4</td>
+                                                <td>5</td>
+                                            <tr>
+                                        </thead>
+                                        <tbody>
+                                            ${setRiwayatImunisasi(regPeriksa.pasien.riwayat_imunisasi)}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>`
+
                     bodyInfoAskepAnak.append(infoAskep).hide().fadeIn()
                     bodyContentAskepAnak.append(
-                        [riwayatKesehatan]
+                        [riwayatKesehatan, riwayatKelahiran, masalahRencana, riwayatImunisasi]
                     ).hide().fadeIn()
 
                 }
             })
         }
 
+        function setRiwayatAskepAnak(no_rawat) {
+            setAskepUgdAnak(no_rawat)
+            setAskepRanapAnak(no_rawat)
+        }
 
-        function viewsAsmedAnak() {
+        function setAskepUgdAnak(no_rawat) {
+            const cardAskepUgd = $('#riwayatAskepUgd')
+            const infoAskepUgd = $('#infoAskepUgd')
+            const contentAskepUgd = $('#contentAskepUgd')
 
+            cardAskepUgd.hide()
+            infoAskepUgd.empty()
+            contentAskepUgd.empty()
+            getAskepUgd(no_rawat).done((askep) => {
+                if (Object.keys(askep).length) {
+                    console.log('ASKEP UGD ===', askep);
+                    cardAskepUgd.show()
+                    const regPeriksa = askep.reg_periksa;
+                    const pasien = regPeriksa.pasien;
+                    const infoAskep = `<div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <table class="table table-responsive borderless m-0">
+                                <tr>
+                                    <th width="35%">No. Rawat</th><td width="2%">:</td><td>${no_rawat}</td>
+                                </tr>    
+                                <tr>
+                                    <th>No. Rekam Medis</th><td>:</td><td>${regPeriksa.no_rkm_medis}</td>
+                                </tr>    
+                                <tr>
+                                    <th width="35%">Nama / JK</th><td width="2%">:</td><td>${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <table class="table table-responsive borderless m-0">
+                               
+                                <tr>
+                                    <th>Umur / Tgl Lahir</th><td>:</td><td>${regPeriksa.umurdaftar} ${regPeriksa.sttsumur} / ${formatTanggal(regPeriksa.pasien.tgl_lahir)}</td>        
+                                </tr>
+                                <tr>
+                                    <th>Bahasa</th><td>:</td><td>${regPeriksa.pasien.bahasa.nama_bahasa }</td>        
+                                </tr>
+                                <tr>
+                                    <th>Anamnesis</th><td>:</td><td>${askep.informasi} (hub : ${askep.ket_informasi})</td>        
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <table class="table table-responsive borderless m-0">
+                                <tr>
+                                    <th width="35%">Tgl Asesmen</th><td width="2%">:</td><td>${formatTanggal(askep.tanggal.split(" ")[0])} ${askep.tanggal.split(" ")[1]}</td>
+                                </tr>
+                                <tr>
+                                    <th width="35%">Penkaji</th><td width="2%">:</td><td>${askep.pengkaji.nama}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>`;
+
+
+
+                    const riwayatKesehatan = `<div class="card mb-1">
+                        <div class="card-header">
+                            1. Riwayat Kesehatan    
+                        </div>
+                        <div class="card-body card-text">
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-6 col-md-6">
+                                       <strong>Keluhan Utama : </strong><br/>
+                                       ${askep.keluhan_utama}
+
+                                </div>
+                                <div class="col-sm-12 col-lg-6 col-md-6">
+                                       <strong>RPD : </strong><br/>
+                                       ${askep.rpd}
+                                </div>
+                                <div class="col-sm-12 col-lg-6 col-md-6">
+                                       <strong>RPO : </strong><br/>
+                                       ${askep.rpo}
+                                </div>
+                                <div class="col-sm-12 col-lg-6 col-md-6">
+                                       <strong class="">Status Kehamilan : </strong> <br/>
+                                       Hamil : ${askep.status_kehamilan}, Gravida : ${askep.gravida}, Para : ${askep.para}, Abortus : ${askep.abortus}, HPHT : ${askep.hpht} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+
+                    const riwayatPsikologi = `<div class="card mb-1">
+                        <div class="card-header">
+                            2. Riwayat Psikologi
+                        </div>
+                        <div class="card-body card-text">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-4 p-2">
+                                        <div class="card-text">
+                                             <table class="table table-responsive borderless text-sm m-0">
+                                                <tr>
+                                                    <th width=50%>Status Pernikahan</th><td width=2%>:</td><td>${pasien.stts_nikah}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width=50%>Kondisi Psikologis</th><td width=2%>:</td><td>${askep.psikologis}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width=50%>Tinggal Bersama</th><td width=2%>:</td><td>${askep.tinggal_dengan}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=50%>Tempat Tinggal</th><td width=2%>:</td><td>${askep.ket_tinggal}</td>    
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-4 p-2">
+                                        <div class="card-text">
+                                             <table class="table table-responsive borderless text-sm m-0">
+                                                <tr>
+                                                    <th width=50%>Hubungan Keluarga</th><td width=2%>:</td><td>${askep.hubungan}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=50%>Jaminan Kesehatan</th><td width=2%>:</td><td>${regPeriksa.penjab.png_jawab}</td>    
+                                                </tr>
+
+                                                <tr>
+                                                    <th width=50%>Edukasi Melalui</th><td width=2%>:</td><td>${askep.edukasi}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width=50%>Pendidikan Orangtua</th><td width=2%>:</td><td>${askep.pendidikan_pj}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-4 p-2">
+                                        <div class="card-text">
+                                             <table class="table table-responsive borderless text-sm m-0">
+                                                <tr>
+                                                    <th width=60%>Agama</th><td width=2%>:</td><td>${regPeriksa.pasien.agama}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=60%>Nilai Budaya</th><td width=2%>:</td><td>${askep.budaya}, Ket : ${askep.ket_budaya}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=60%>Riwayat Gangguan Jiwa</th><td width=2%>:</td><td>${askep.jiwa}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <th width=60%>Kondisi Perilaku</th><td width=2%>:</td><td>${askep.perilaku}, Ket : ${askep.ket_perilaku}</td>    
+                                                </tr>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>`
+
+                    const pemeriksaanFisik = `<div class="card mb-1">
+                        <div class="card-header">
+                            3. Pemeriksaan Fisik
+                        </div>
+                        <div class="card-body card-text">
+                             <div class="row">
+                                <div class="col-sm-12 col-lg-4 col-md-6">
+                                    <table class="table table-responsive borderless">
+                                        <tr>
+                                            <th width=40%>Tekanan Intrakranial</th><td> : ${askep.tekanan}</td>         
+                                        </tr>
+                                        <tr>
+                                            <th width=40%>Pupil</th><td> : ${askep.pupil}</td>         
+                                        </tr>
+                                        <tr>
+                                            <th width=40%>Edema</th><td> : ${askep.edema}</td>         
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-sm-12 col-lg-4 col-md-6">
+                                    <table class="table table-responsive borderless">
+                                        <tr>
+                                            <th width=40%>Integumen</th><td> : ${askep.integumen}</td>         
+                                        </tr>
+                                        <tr>
+                                            <th width=40%>Turgor Kulit</th><td> : ${askep.turgor}</td>         
+                                        </tr>
+                                        <tr>
+                                            <th width=40%>Mukosa Mulut</th><td> : ${askep.edema}</td>         
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-sm-12 col-lg-4 col-md-6">
+                                    <table class="table table-responsive borderless">
+                                        <tr>
+                                            <th width=40%>Perdarahan</th><td> : ${askep.perdarahan}, Jumlah : ${askep.jumlah_perdarahan}, Warna : ${askep.warna_perdarahan}</td>         
+                                        </tr>
+                                        <tr>
+                                            <th width=40%>Intoksikasi</th><td> : ${askep.intoksikasi}</td>         
+                                        </tr>
+                                        <tr>
+                                            <th width=40%>Neurosensorik/Muskulosketal</th><td> : ${askep.neurosensorik}</td>         
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-sm-12 col-lg-6 col-md-6">
+                                    <p class="text-muted mb-0">Pengkajian Fungsi</p>
+                                    <table class="table table-responsive borderless">
+                                        <tr>
+                                            <th width=40%>Kemampuan Aktivitas</th><td> : ${askep.kemampuan}</td>         
+                                        </tr>
+                                        <tr>
+                                            <th width=40%>Aktivitas</th><td> : ${askep.aktifitas}</td>         
+                                        </tr>
+                                        <tr>
+                                            <th width=40%>Alat Bantu</th><td> : ${askep.alat_bantu}, Ket : ${askep.ket_bantu}</td>         
+                                        </tr>
+                                        <tr>
+                                            <th width=40%>Cacat Tubuh</th><td> : ${pasien.cacat.nama_cacat}</td>         
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-sm-12 col-lg-6 col-md-6">
+                                    <p class="text-muted mb-0">Eliminasi</p>
+                                    <table class="table table-responsive borderless">
+                                        <tr>
+                                            <th width=40%>BAK</th><td> : ${askep.bak} x/${askep.xbak}, Warna : ${askep.wbak}, Lain-lain : ${askep.lbak}</td>         
+                                        </tr>
+                                        <tr>
+                                            <th width=40%>BAB</th><td> : ${askep.bab} x/${askep.xbab}, Konsistensi : ${askep.kbab}, Warna : ${askep.wbab}</td>         
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+
+                    let masalahUgd = ``;
+                    let rencanaUgd = ``;
+                    askep.masalah_keperawatan.map((masalah, index) => {
+                        masalahUgd += `<li>${masalah.master_masalah.nama_masalah}</li> `
+                    })
+                    askep.rencana_keperawatan.map((rencana, index) => {
+                        rencanaUgd += `<li>${rencana.master_rencana.rencana_keperawatan}</li> `
+                    })
+                    const masalahKeperawatan = `<div class="card mb-1">
+                        <div class="card-header">
+                            5. Masalah, Rencana & Tindakan Keperawtatan
+                        </div>
+                        <div class="card-body card-text">
+                             <div class="row">
+                                <div class="col-sm-12 col-lg-4 col-md-4">
+                                    <p class="text-muted mb-0">Masalah Keperawatan</p>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <ol>
+                                                ${masalahUgd}
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-4 col-md-4">
+                                    <p class="text-muted mb-0">Rencana Keperawatan</p>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <ol>
+                                                ${rencanaUgd}
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-sm-12 col-lg-4 col-md-4">
+                                    <p class="text-muted mb-0">Tindakan Keperawatan</p>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            ${stringPemeriksaan(askep.rencana)}
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                    infoAskepUgd.append(infoAskep).hide().fadeIn()
+                    contentAskepUgd.append([riwayatKesehatan, riwayatPsikologi, pemeriksaanFisik, masalahKeperawatan]).hide().fadeIn()
+
+                }
+            })
+            // const cardAskepAnak = $('#riwayatAskepAnak')
+            // const bodyInfoAskepAnak = $('#infoAskepAnak')
+            // const bodyContentAskepAnak = $('#contenAskepAnak')
+            // cardAskepAnak.hide()
+            // bodyInfoAskepAnak.empty()
+            // bodyContentAskepAnak.empty()
+
+            // getAskepRanapAnak(no_rawat).done((askep) => {
+            //     if (Object.keys(askep).length) {
+            //         console.log('ASKEP ===', askep);
+            //         cardAskepAnak.show()
+            //         const regPeriksa = askep.reg_periksa
+            //         let infoAskep = `<div class="row">
+        //             <div class="col-lg-4 col-md-6 col-sm-12">
+        //                 <table class="table table-responsive borderless m-0">
+        //                     <tr>
+        //                         <th width="35%">No. Rawat</th><td width="2%">:</td><td>${no_rawat}</td>
+        //                     </tr>    
+        //                     <tr>
+        //                         <th>No. Rekam Medis</th><td>:</td><td>${regPeriksa.no_rkm_medis}</td>
+        //                     </tr>    
+        //                     <tr>
+        //                         <th width="35%">Nama / JK</th><td width="2%">:</td><td>${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})</td>
+        //                     </tr>
+        //                     <tr>
+        //                         <th>Umur / Tgl Lahir</th><td>:</td><td>${regPeriksa.umurdaftar} ${regPeriksa.sttsumur} / ${formatTanggal(regPeriksa.pasien.tgl_lahir)}</td>        
+        //                     </tr>
+        //                 </table>
+        //             </div>
+        //             <div class="col-lg-4 col-md-6 col-sm-12">
+        //                 <table class="table table-responsive borderless m-0">
+        //                     <tr>
+        //                         <th>Bahasa</th><td>:</td><td>${regPeriksa.pasien.bahasa.nama_bahasa }</td>        
+        //                     </tr>
+        //                     <tr>
+        //                         <th>Cara Masuk</th><td>:</td><td>${askep.cara_masuk}</td>        
+        //                     </tr>
+        //                     <tr>
+        //                         <th>Kasus</th><td>:</td><td>${askep.kasus_trauma}</td>        
+        //                     </tr>
+        //                     <tr>
+        //                         <th>Anamnesis</th><td>:</td><td>${askep.informasi} (hub : ${askep.ket_informasi})</td>        
+        //                     </tr>
+        //                 </table>
+        //             </div>
+        //             <div class="col-lg-4 col-md-6 col-sm-12">
+        //                 <table class="table table-responsive borderless m-0">
+        //                     <tr>
+        //                         <th width="35%">Tgl Asesmen</th><td width="2%">:</td><td>${formatTanggal(askep.tanggal.split(" ")[0])} ${askep.tanggal.split(" ")[1]}</td>
+        //                     </tr>
+        //                     <tr>
+        //                         <th width="35%">Dokter DPJP</th><td width="2%">:</td><td>${askep.dokter.nm_dokter}</td>
+        //                     </tr>
+        //                     <tr>
+        //                         <th width="35%">Penkaji 1</th><td width="2%">:</td><td>${askep.pengkaji1.nama}</td>
+        //                     </tr>
+        //                     <tr>
+        //                         <th width="35%">Penkaji 2</th><td width="2%">:</td><td>${askep.pengkaji2.nama}</td>
+        //                     </tr>
+        //                 </table>
+        //             </div>
+        //         </div>`;
+
+            //         const riwayatKesehatan = `<div class="card">
+        //             <div class="card-header">1. DATA SUBYEKTIF</div>
+        //             <div class="card-body">
+        //                 <div class="card-text">
+        //                     <div class="row ">
+        //                         <div class="col-sm-12 col-md-6 col-lg-6">
+        //                             <strong>RPS : </strong>${stringPemeriksaan(askep.rps)}
+        //                         </div>
+        //                         <div class="col-sm-12 col-md-6 col-lg-6">
+        //                             <strong>RPD : </strong>${stringPemeriksaan(askep.rpd)}
+        //                         </div>
+        //                         <div class="col-sm-12 col-md-6 col-lg-6">
+        //                             <strong>RPK : </strong>${stringPemeriksaan(askep.rpk)}
+        //                         </div>
+        //                         <div class="col-sm-12 col-md-6 col-lg-6">
+        //                             <strong>RPO : </strong>${stringPemeriksaan(askep.rpo)}
+        //                         </div>
+        //                         <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+        //                             <div class="card-text ">
+        //                                 <table class="table table-responsive borderless text-sm m-0">
+        //                                     <tr>
+        //                                         <th width=30%>Riwayat Pembedahan</th><td width=2%>:</td><td>${askep.riwayat_pembedahan}</td>
+        //                                     </tr>
+        //                                      <tr>
+        //                                         <th width=30%>Riwayat Dirwat di RS</th><td width=2%>:</td><td>${askep.riwayat_dirawat_dirs}</td>
+        //                                     </tr>
+        //                                 </table>
+        //                             </div>
+        //                         </div>
+        //                         <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+        //                             <div class="card-text ">
+        //                                 <table class="table table-responsive borderless text-sm m-0">
+        //                                     <tr>
+        //                                         <th width=30%>Riwayat Tranfusi</th><td width=2%>:</td><td>${askep.riwayat_tranfusi}</td>
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <th width=30%>Riwayat Alergi</th><td width=2%>:</td><td>${askep.riwayat_alergi}</td>    
+        //                                     </tr>
+        //                                 </table>
+        //                             </div>
+        //                         </div>
+        //                         <div class="card-subtitle text-muted">Data Psikologis Sosial dan Kultural</div>
+        //                         <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+        //                             <div class="card-text">
+        //                                  <table class="table table-responsive borderless text-sm m-0">
+        //                                     <tr>
+        //                                         <th width=30%>Kondisi Psikologis</th><td width=2%>:</td><td>${askep.riwayat_psiko_kondisi_psiko}</td>
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <th width=30%>Tempat Tinggal</th><td width=2%>:</td><td>${askep.riwayat_psiko_tinggal}</td>    
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <th width=30%>Tinggal Bersama</th><td width=2%>:</td><td>${askep.riwayat_psiko_tinggal_keterangan}</td>    
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <th width=30%>Hubungan Keluarga</th><td width=2%>:</td><td>${askep.riwayat_psiko_hubungan_keluarga}</td>    
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <th width=30%>Jaminan Kesehatan</th><td width=2%>:</td><td>${regPeriksa.penjab.png_jawab}</td>    
+        //                                     </tr>
+        //                                 </table>
+        //                             </div>
+        //                         </div>
+        //                         <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+        //                             <div class="card-text">
+        //                                  <table class="table table-responsive borderless text-sm m-0">
+        //                                     <tr>
+        //                                         <th width=30%>Pendidikan Orangtua</th><td width=2%>:</td><td>${askep.riwayat_psiko_pendidikan_pj}</td>
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <th width=30%>Agama</th><td width=2%>:</td><td>${regPeriksa.pasien.agama}</td>    
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <th width=30%>Nilai Budaya</th><td width=2%>:</td><td>${askep.riwayat_psiko_nilai_kepercayaan}, Ket : ${askep.riwayat_psiko_nilai_kepercayaan_keterangan}</td>    
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <th width=30%>Riwayat Gangguan Jiwa</th><td width=2%>:</td><td>${askep.riwayat_psiko_gangguan_jiwa}</td>    
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <th width=30%>Kondisi Perilaku</th><td width=2%>:</td><td>${askep.riwayat_psiko_perilaku}, Ket : ${askep.riwayat_psiko_perilaku_keterangan}</td>    
+        //                                     </tr>
+        //                                 </table>
+        //                             </div>
+        //                         </div>
+        //                         <div class="col-sm-12 col-md-12 col-lg-12 p-2">
+        //                             <div class="card-subtitle text-muted ms-1">Skrining Risiko Nutrisional</div>
+        //                             <div class="card-text">
+        //                                  <table class="table table-responsive text-sm m-0">
+        //                                     <tr>
+        //                                         <td>a. Apakah pasien tampak kurus ? : </td><td width=2%>:</td><td width=12% style="text-align:end">${askep.nilai_gizi1 ? 'YA': 'TIDAK'} [ ${askep.nilai_gizi1} ] </td>
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <td>b. Apakah terdapat penurunan berat badan sebulan terakhir? (berdasarkan nilai objektif data berat badan bila ada atau untuk bayi < 1 Tahun, berat badan tidak naik selama 3 bulan terakhir)</th><td width=2%>:</td><td width=12% style="text-align:end">${askep.nilai_gizi2 ? 'YA': 'TIDAK'} [ ${askep.nilai_gizi2} ] </td>
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <td>c. Apakah terdapat salah satu dari kondisi tersebut ? Diare >5 kali/sehari, dan atau muntah > 3 kali/sehari dalam seminggu terakhir, asupan makanan berkurang selama 1 minggu terakhir</td><td width=2%>:</td><td width=12% style="text-align:end">${askep.nilai_gizi3 ? 'YA': 'TIDAK'} [ ${askep.nilai_gizi3} ] </td>
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <td>d. Apakah terdapat penyakit atau keadaan yang menyebabkan pasien beresiko mengalami malnutrisi ?</td><td width=2%>:</td><td width=12% style="text-align:end">${askep.nilai_gizi4 ? 'YA': 'TIDAK'} [ ${askep.nilai_gizi4} ] </td>
+        //                                     </tr>
+        //                                     <tr>
+        //                                         <th>JUMLAH SKOR</th><td width=2%>:</td><td width=12% style="text-align:end">${askep.nilai_total_gizi >=4 ? 'Resiko Tinggi' : askep.nilai_total_gizi >=3 ? 'Resiko Sedang' : askep.nilai_total_gizi == 0 ? 'Resiko Rendah' :'' } [ ${askep.nilai_total_gizi} ]</td>
+        //                                     </tr>
+        //                                 </table>
+        //                             </div>
+        //                         </div>
+        //                         <div class="card-subtitle text-muted ms-1">Asesmen Fungsional</div>
+        //                         <div class="col-sm-12 col-md-12 col-lg-12 p-2">
+        //                             <div class="row">
+        //                                 <div class="col-sm-12 col-md-4 col-lg-4 p-2">
+        //                                     <div class="card-subtitle text-muted ms-1">a. Pola Nutrisi</div>
+        //                                         <table class="table table-responsive borderless text-sm ms-3">
+        //                                             <tr>
+        //                                                 <td>Diet Makanan</td><td width=2%>:</td><td>${askep.pola_nutrisi_jenis_makanan}</td>
+        //                                             </tr>
+        //                                             <tr>
+        //                                                 <td>Pola Makan</td><td width=2%>:</td><td>${askep.pola_nutrisi_frekuesi_makan} kali/hari</td>
+        //                                             </tr>
+        //                                             <tr>
+        //                                                 <td>Porsi Makan</td><td width=2%>:</td><td>${askep.pola_nutrisi_porsi_makan}</td>
+        //                                             </tr>
+        //                                         </table>
+        //                                 </div>
+        //                                 <div class="col-sm-12 col-md-4 col-lg-4 p-2">
+        //                                     <div class="card-subtitle text-muted ms-1">b. Pola Eliminasi</div>
+        //                                     <table class="table table-responsive borderless text-sm ms-3">
+        //                                         <tr>
+        //                                             <td>BAK</td><td width=2%>:</td><td>${askep.pemeriksaan_eliminasi_bak_frekuensi_jumlah} x/${askep.pemeriksaan_eliminasi_bak_frekuensi_durasi}</td><td>Warna : ${askep.pemeriksaan_eliminasi_bak_warna} </td><td>Lain-lain : ${askep.pemeriksaan_eliminasi_bak_lainlain}</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>BAB</td><td width=2%>:</td><td>${askep.pemeriksaan_eliminasi_bab_frekuensi_jumlah} x/${askep.pemeriksaan_eliminasi_bab_frekuensi_durasi}</td><td>Konsistensi : ${askep.pemeriksaan_eliminasi_bab_konsistensi} </td><td>Warna : ${askep.pemeriksaan_eliminasi_bab_warna}</td>
+        //                                         </tr>
+        //                                     </table>
+        //                                 </div>
+        //                                 <div class="col-sm-12 col-md-4 col-lg-4 p-2">
+        //                                     <div class="card-subtitle text-muted ms-1">c. Pola Istirahat</div>
+        //                                     <table class="table table-responsive borderless text-sm ms-3">
+        //                                         <tr>
+        //                                             <td>Lama Tidur</td><td width=2%>:</td><td>${askep.pola_tidur_lama_tidur} jam/hari</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Ganguan Tidur</td><td>:</td><td>${askep.pola_tidur_gangguan}</td>
+        //                                         </tr>
+        //                                     </table>
+        //                                 </div>
+        //                                 <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+        //                                     <div class="card-subtitle text-muted ms-1">d. Pola Aktivitas</div>
+        //                                     <table class="table table-responsive borderless text-sm ms-3">
+        //                                         <tr>
+        //                                             <td>Mandi</td><td width=2%>:</td><td>${askep.pola_aktifitas_mandi}</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Eliminasi</td><td width=2%>:</td><td>${askep.pola_aktifitas_eliminasi}</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Mobilisasi</td><td width=2%>:</td><td>${askep.pola_aktifitas_berpindah}</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Makan & Minum</td><td width=2%>:</td><td>${askep.pola_aktifitas_makanminum}</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Berpakaian</td><td width=2%>:</td><td>${askep.pola_aktifitas_berpakaian}</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Alat Bantu yang Dipakai</td><td width=2%>:</td><td>${askep.alat_bantu_dipakai}</td>
+        //                                         </tr>
+        //                                     </table>
+        //                                 </div>
+        //                                 <div class="col-sm-12 col-md-6 col-lg-6 p-2">
+        //                                     <div class="card-subtitle text-muted ms-1">e. Pola Sensorik & Kognitif</div>
+        //                                     <table class="table table-responsive borderless text-sm ms-3">
+        //                                         <tr>
+        //                                             <td>Sensorik</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_sensorik}</td><td>Ket </td><td>:</td><td></td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Mototik</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_motorik}</td><td>Ket </td><td>:</td><td></td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Penglihatan</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_pengelihatan}</td><td>Alat Bantu</td><td>:</td><td>${askep.pemeriksaan_neurologi_alat_bantu_penglihatan}</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Pendengaran</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_pendengaran}</td><td>Alat Bantu</td><td>:</td><td></td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Bicara</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_bicara}</td><td>Ket </td><td>:</td><td>${askep.pemeriksaan_neurologi_bicara_keterangan}</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <td>Otot</td><td width=2%>:</td><td>${askep.pemeriksaan_neurologi_kekuatan_otot}</td><td>Ket </td><td>:</td><td></td>
+        //                                         </tr>
+        //                                     </table>
+        //                                 </div>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>`
+
+            //         const riwayatKelahiran = `<div class="card mt-2">
+        //             <div class="card-header">2. Riwayat Kelahiran & Tumbuh Kembang</div>
+        //             <div class="card-body">
+        //                 <div class="card-subtitle text-muted ms-1">a. Riwayat Kelahiran</div>
+        //                 <div class="card-text">
+        //                     <div class="row">
+        //                         <div class="col-lg-6 col-md-6 col-sm-12">
+        //                              <table class="table table-responsive borderless">
+        //                                 <tr>
+        //                                     <th>Anak Ke</th><td>:</td><td>${askep.anakke} dari ${askep.darisaudara} saudara</td>
+        //                                 </tr>    
+        //                                 <tr>
+        //                                     <th>Umur Kelahiran</th><td>:</td><td>${askep.umurkelahiran}</td>
+        //                                 </tr>    
+        //                             </table>   
+        //                         </div> 
+        //                         <div class="col-lg-6 col-md-6 col-sm-12">
+        //                              <table class="table table-responsive borderless">
+        //                                 <tr>
+        //                                     <th>Cara Lahir</th><td>:</td><td>${askep.caralahir}, Ket : ${askep.ket_caralahir}</td>
+        //                                 </tr>    
+        //                                 <tr>
+        //                                     <th>Kelainan Bawaan</th><td>:</td><td>${askep.kelainanbawaan}, Ket : ${askep.ket_kelainan_bawaan}</td>
+        //                                 </tr>    
+        //                             </table>   
+        //                         </div> 
+        //                     </div> 
+        //                     <div class="row">
+        //                         <div class="card-subtitle text-muted ms-1">b. Riwayat Tumbuh Kembang</div>
+        //                         <div class="col-lg-4 col-md-4 col-sm-12">
+        //                              <table class="table table-responsive">
+        //                                 <tr>
+        //                                     <th>Usia Tengkurap</th><td>:</td><td>${askep.usiatengkurap}</td>
+        //                                 </tr>      
+        //                                 <tr>
+        //                                     <th>Usia Duduk</th><td>:</td><td>${askep.usiaduduk}</td>
+        //                                 </tr>      
+        //                                 <tr>
+        //                                     <th>Usia Berdiri</th><td>:</td><td>${askep.usiaberdiri}</td>
+        //                                 </tr>      
+        //                             </table>   
+        //                         </div> 
+        //                         <div class="col-lg-4 col-md-4 col-sm-12">
+        //                              <table class="table table-responsive">
+        //                                 <tr>
+        //                                     <th>Usia Berjalan</th><td>:</td><td>${askep.usiaberdiri}</td>
+        //                                 </tr> 
+        //                                 <tr>
+        //                                     <th>Usia Tumbuh Gigi</th><td>:</td><td>${askep.usiagigipertama}</td>
+        //                                 </tr>      
+        //                                 <tr>
+        //                                     <th>Usia Bicara</th><td>:</td><td>${askep.usiabicara}</td>
+        //                                 </tr>      
+        //                             </table>   
+        //                         </div> 
+        //                         <div class="col-lg-4 col-md-4 col-sm-12">
+        //                              <table class="table table-responsive">
+        //                                 <tr>
+        //                                     <th>Usia Membaca</th><td>:</td><td>${askep.usiamembaca}</td>
+        //                                 </tr>      
+        //                                 <tr>
+        //                                     <th>Usia Menulis</th><td>:</td><td>${askep.usiamenulis}</td>
+        //                                 </tr>      
+        //                                 <tr>
+        //                                     <th>Gangguan Perkembangan/Emosi</th><td>:</td><td>${askep.gangguanemosi}</td>
+        //                                 </tr>    
+        //                             </table>   
+        //                         </div> 
+        //                     </div>
+        //                 </div>
+        //             </div>
+
+        //         </div>`
+
+            //         let masalahKeperawatan = `<ol class="mb-0">`
+            //         let rencanaKeperawatan = `<ol class="mb-0">`
+
+            //         askep.masalah_keperawatan.map((masalah, index) => {
+            //             masalahKeperawatan += `<li>${masalah.master_masalah.nama_masalah}</li>`
+            //             masalah.rencana_keperawatan.map((rencana, index) => {
+            //                 rencanaKeperawatan += `<li>${rencana.master_rencana.rencana_keperawatan}</li>`
+
+            //             })
+            //         })
+            //         rencanaKeperawatan += `</ol>`
+            //         masalahKeperawatan += `</ol>`
+
+            //         const masalahRencana = `<div class="card mt-2">
+        //         <div class="card-header">3. Masalah & Rencana & Tindakan Keperawatan</div>
+        //         <div class="card-body">
+        //             <div class="row card-text">
+        //                 <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
+        //                     <div class="card-subtitle text-muted ms-1">a. Masalah Keperawatan</div>
+        //                     <div class="card-text border border-1 rounded p-2">
+        //                         ${masalahKeperawatan}
+        //                     </div>
+        //                 </div>
+        //                 <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
+        //                     <div class="card-subtitle text-muted ms-1">b. Rencana Keperawatan</div>
+        //                     <div class="card-text border border-1 rounded p-2">
+        //                         ${rencanaKeperawatan}
+        //                     </div>
+        //                 </div>
+        //                 <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
+        //                     <div class="card-subtitle text-muted ms-1">c. Tindakan Keperawatan</div>
+        //                     <div class="card-text border border-1 rounded p-2">
+        //                         ${stringPemeriksaan(askep.rencana)}
+        //                     </div>
+        //                 </div>
+        //             </div> 
+        //         </div>
+        //     </div>`
+
+
+            //         const riwayatImunisasi = `<div class="card mt-2">
+        //         <div class="card-header">4. Imunisasi</div>
+        //         <div class="card-body">
+        //             <div class="row">
+        //                 <div class="col-lg-12 col-md-12 col-sm-12">
+        //                     <div class="card-text">
+        //                         <table class="table table-responsive table-bordered" id="tbImunisasi">
+        //                             <thead class="text-bg-secondary">
+        //                                 <tr>
+        //                                     <th rowspan=2 style="vertical-align:middle">Nama Imunisasi</th>    
+        //                                     <th colspan=5 class="text-center">Imunisasi Ke</th>    
+        //                                 </tr>    
+        //                                 <tr class="text-center">
+        //                                     <td>1</td>
+        //                                     <td>2</td>
+        //                                     <td>3</td>
+        //                                     <td>4</td>
+        //                                     <td>5</td>
+        //                                 <tr>
+        //                             </thead>
+        //                             <tbody>
+        //                                 ${setRiwayatImunisasi(regPeriksa.pasien.riwayat_imunisasi)}
+        //                             </tbody>
+        //                         </table>
+        //                     </div>
+        //                 </div>
+        //             </div> 
+        //         </div>
+        //     </div>`
+
+            //         bodyInfoAskepAnak.append(infoAskep).hide().fadeIn()
+            //         bodyContentAskepAnak.append(
+            //             [riwayatKesehatan, riwayatKelahiran, masalahRencana, riwayatImunisasi]
+            //         ).hide().fadeIn()
+
+            //     }
+            // })
         }
 
         function setNavTabsTitle() {

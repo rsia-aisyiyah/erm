@@ -17,7 +17,7 @@ class AskepRanapAnakController extends Controller
 
     function get(Request $request)
     {
-        return $this->askep->where('no_rawat', $request->no_rawat)->with('regPeriksa.pasien.bahasa', 'masalahKeperawatan.masterMasalah', 'masalahKeperawatan.rencanaKeperawatan.masterRencana', 'pengkaji1', 'pengkaji2', 'dokter')->first();
+        return $this->askep->where('no_rawat', $request->no_rawat)->with('regPeriksa.pasien.bahasa', 'regPeriksa.pasien.riwayatImunisasi.masterImunisasi', 'regPeriksa.penjab', 'masalahKeperawatan.masterMasalah', 'masalahKeperawatan.rencanaKeperawatan.masterRencana', 'pengkaji1', 'pengkaji2', 'dokter')->first();
     }
 
     function insert(Request $request)

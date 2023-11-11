@@ -1423,6 +1423,14 @@
             return askep;
         }
 
+        function getAskepUgd(no_rawat) {
+            const askep = $.get('/erm/ugd/asesmen/keperawatan', {
+                no_rawat: no_rawat
+            });
+
+            return askep;
+        }
+
         function listAsmedRajalKandungan(data) {
             $('#listAsmedKandungan').empty()
             $.map(data, (a) => {

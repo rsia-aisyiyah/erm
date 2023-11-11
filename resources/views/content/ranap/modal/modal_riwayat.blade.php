@@ -33,8 +33,10 @@
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <button class="nav-link active" id="nav-pemeriksaan-tab" data-bs-toggle="tab" data-bs-target="#nav-pemeriksaan" type="button" role="tab" aria-controls="nav-pemeriksaan" aria-selected="true">Pemeriksaan</button>
                                         <button class="nav-link" id="nav-resume-tab" data-bs-toggle="tab" data-bs-target="#nav-resume" type="button" role="tab" aria-controls="nav-resume" aria-selected="false">Resume Medis</button>
-                                        <button class="nav-link" id="nav-asesmen-ranap-tab" data-bs-toggle="tab" data-bs-target="#nav-asesmen-ranap" type="button" role="tab" aria-controls="nav-asesmen-ranap" aria-selected="false">Asesmen Awal</button>
-                                        <button class="nav-link" id="nav-asesmen-rajal-tab" data-bs-toggle="tab" data-bs-target="#nav-asesmen-rajal" type="button" role="tab" aria-controls="nav-asesmen-rajal" aria-selected="false">Asesmen Awal</button>
+                                        <button class="nav-link" id="nav-asesmen-ranap-tab" data-bs-toggle="tab" data-bs-target="#nav-asesmen-ranap" type="button" role="tab" aria-controls="nav-asesmen-ranap" aria-selected="false">Asesmen Medis</button>
+                                        <button class="nav-link" id="nav-asesmen-rajal-tab" data-bs-toggle="tab" data-bs-target="#nav-asesmen-rajal" type="button" role="tab" aria-controls="nav-asesmen-rajal" aria-selected="false">Asesmen Medis</button>
+                                        <button class="nav-link" id="nav-keperawatan-ranap-tab" data-bs-toggle="tab" data-bs-target="#nav-keperawatan-ranap" type="button" role="tab" aria-controls="nav-keperawatan-ranap" aria-selected="false">Asesmen Keperawatan</button>
+                                        <button class="nav-link" id="nav-triase-tab" data-bs-toggle="tab" data-bs-target="#nav-triase" type="button" role="tab" aria-controls="nav-triase" aria-selected="false">Triase</button>
                                     </div>
                                 </nav>
                                 <div class="tab-content p-2 content-scrolled" id="nav-tabContent">
@@ -179,7 +181,7 @@
                                                     <span>Asesmen Awal Medis Anak</span>
                                                 </div>
                                             </div>
-                                            <div class="card-body collapse show" id="collapseAsmedAnak">
+                                            <div class="card-body collapse" id="collapseAsmedAnak">
                                                 <div class="card-text">
                                                     <div class="card mb-2">
                                                         <div class="card-body p-2">
@@ -195,13 +197,39 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="card position-relative mt-2" id="riwayatAsmedUgd">
+                                            <div class="card-header" data-bs-toggle="collapse" href="#collapseAsmedUgd" role="button" aria-expanded="false" aria-controls="collapseAsmedUgd">
+                                                <div class="card-text">
+                                                    <span>Asesmen Awal Medis UGD</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body collapse" id="collapseAsmedUgd">
+                                                <div class="card-text">
+                                                    <div class="card mb-2">
+                                                        <div class="card-body p-2">
+                                                            <div class="card-text" id="infoAsmedUgd">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card-text" id="contentAsmedUgd">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-asesmen-rajal" role="tabpanel" aria-labelledby="nav-asesmen-ranap-tab" tabindex="0">ASESMEN AWAL RAWAT JALAN</div>
+                                    <div class="tab-pane fade" id="nav-keperawatan-ranap" role="tabpanel" aria-labelledby="nav-keperawatan-ranap-tab" tabindex="0">
                                         <div class="card position-relative mt-2" id="riwayatAskepAnak">
                                             <div class="card-header" data-bs-toggle="collapse" href="#collapseAskepAnak" role="button" aria-expanded="false" aria-controls="collapseAskepAnak">
                                                 <div class="card-text">
                                                     <span>Asesmen Awal Keperawatan Anak</span>
                                                 </div>
                                             </div>
-                                            <div class="card-body collapse show" id="collapseAskepAnak">
+                                            <div class="card-body collapse" id="collapseAskepAnak">
                                                 <div class="card-text">
                                                     <div class="card mb-2">
                                                         <div class="card-body p-2">
@@ -217,8 +245,29 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="card position-relative mt-2" id="riwayatAskepUgd">
+                                            <div class="card-header" data-bs-toggle="collapse" href="#collapseAskepUgd" role="button" aria-expanded="false" aria-controls="collapseAskepUgd">
+                                                <div class="card-text">
+                                                    <span>Asesmen Awal Keperawatan UGD</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body collapse" id="collapseAskepUgd">
+                                                <div class="card-text">
+                                                    <div class="card mb-2">
+                                                        <div class="card-body p-2">
+                                                            <div class="card-text" id="infoAskepUgd">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card-text" id="contentAskepUgd">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="tab-pane fade" id="nav-asesmen-rajal" role="tabpanel" aria-labelledby="nav-asesmen-ranap-tab" tabindex="0">ASESMEN AWAL RAWAT JALAN</div>
                                 </div>
 
                             </div>

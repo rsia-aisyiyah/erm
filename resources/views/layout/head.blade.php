@@ -224,7 +224,7 @@
             border: none;
             vertical-align: top;
             height: 5px !important;
-            padding: 5px !important;
+            padding: 3px !important;
         }
 
         textarea .form-control {
@@ -256,7 +256,7 @@
             transition: all .1s linear;
         }
 
-        @media (max-width: 400px) {
+        @media (max-width: 368px) {
             .tb-askep {
                 font-size: 9px !important;
             }
@@ -265,11 +265,20 @@
                 font-size: 9px !important;
             }
 
+            .card-text {
+
+                font-size: 9px !important;
+            }
+
             #modalSoap table,
             #modalSoap form input,
             #modalSoap form select,
             #modalSoap form textarea {
                 font-size: 10px !important;
+            }
+
+            .content-scrolled {
+                height: 670px !important;
             }
         }
 
@@ -385,7 +394,7 @@
         }
 
         .content-scrolled {
-            height: 430px;
+            height: calc(100vh - 278px);
             overflow-y: auto;
         }
 
@@ -401,26 +410,6 @@
 
             .nav-brand {
                 display: inherit !important;
-            }
-
-        }
-
-        @media (width:414px) {
-            .content-scrolled {
-                height: 500px;
-            }
-        }
-
-        @media (min-height:1024px) {
-            .content-scrolled {
-                height: 800px;
-            }
-
-        }
-
-        @media (min-height:1180px) {
-            .content-scrolled {
-                height: 950px;
             }
 
         }
