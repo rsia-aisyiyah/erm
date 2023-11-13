@@ -18,6 +18,7 @@ class PemeriksaanRalanController extends Controller
     private $berkas;
     private $resepObat;
     private $grafik;
+    private $regPeriksa;
     private $track;
     private $pemeriksaan;
     public function __construct()
@@ -27,6 +28,7 @@ class PemeriksaanRalanController extends Controller
         $this->resepObat = new ResepObatController();
         $this->track = new TrackerSqlController();
         $this->pemeriksaan = new PemeriksaanRalan();
+        $this->regPeriksa = new RegPeriksa();
         $this->grafik = new GrafikHarian();
     }
     public function ambil(Request $request)
@@ -174,6 +176,11 @@ class PemeriksaanRalanController extends Controller
                 $this->track->insertSql($this->grafik, $grafik);
             }
         }
+        if ($request->kd_poli == 'IGDK') {
+            $sttsPeriksa = ['stts' => 'Sudah'];
+            RegPeriksa::where('no_rawat', $request->no_rawat)->update($sttsPeriksa);
+            $this->track->insertSql($this->regPeriksa, $sttsPeriksa);
+        }
         return response()->json(['Berhasil', $update], 200);
     }
 
@@ -231,6 +238,13 @@ class PemeriksaanRalanController extends Controller
 
         $this->track->updateSql($this->pemeriksaan, $data, $clause);
         $this->track->updateSql($this->grafik, $dataGrafik, $clause);
+
+
+        if ($request->kd_poli == 'IGDK') {
+            $sttsPeriksa = ['stts' => 'Sudah'];
+            RegPeriksa::where('no_rawat', $request->no_rawat)->update($sttsPeriksa);
+            $this->track->insertSql($this->regPeriksa, $sttsPeriksa);
+        }
 
         return response()->json($pemeriksaan);
     }
