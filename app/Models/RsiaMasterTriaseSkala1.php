@@ -11,7 +11,12 @@ class RsiaMasterTriaseSkala1 extends Model
 
     protected $table = 'rsia_master_triase_skala1';
 
-    function triase() {
+    function triase()
+    {
         return $this->belongsTo(RsiaDataTriaseUgdDetailSkala1::class, 'kode_skala1', 'kode_skala1');
+    }
+    function pemeriksaan()
+    {
+        return $this->belongsTo(RsiaMasterTriasePemeriksaan::class, 'kode_pemeriksaan', 'kode_pemeriksaan');
     }
 }

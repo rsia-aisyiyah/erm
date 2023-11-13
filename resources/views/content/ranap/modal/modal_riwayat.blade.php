@@ -198,6 +198,8 @@
                                             </div>
                                         </div>
 
+
+
                                         <div class="card position-relative mt-2" id="riwayatAsmedUgd">
                                             <div class="card-header" data-bs-toggle="collapse" href="#collapseAsmedUgd" role="button" aria-expanded="false" aria-controls="collapseAsmedUgd">
                                                 <div class="card-text">
@@ -205,6 +207,8 @@
                                                 </div>
                                             </div>
                                             <div class="card-body collapse" id="collapseAsmedUgd">
+
+
                                                 <div class="card-text">
                                                     <div class="card mb-2">
                                                         <div class="card-body p-2">
@@ -213,6 +217,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="card mb-2" id="riwayatTriase">
+
+                                                    </div>
 
                                                     <div class="card-text" id="contentAsmedUgd">
 
@@ -220,6 +227,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                     <div class="tab-pane fade" id="nav-asesmen-rajal" role="tabpanel" aria-labelledby="nav-asesmen-ranap-tab" tabindex="0">ASESMEN AWAL RAWAT JALAN</div>
                                     <div class="tab-pane fade" id="nav-keperawatan-ranap" role="tabpanel" aria-labelledby="nav-keperawatan-ranap-tab" tabindex="0">

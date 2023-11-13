@@ -1431,6 +1431,13 @@
             return askep;
         }
 
+        function getTriase(no_rawat) {
+            const triase = $.get('/erm/triase/get', {
+                no_rawat: no_rawat
+            });
+            return triase;
+        }
+
         function listAsmedRajalKandungan(data) {
             $('#listAsmedKandungan').empty()
             $.map(data, (a) => {

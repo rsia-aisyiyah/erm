@@ -17,4 +17,8 @@ class RsiaDataTriaseUgdDetailSkala5 extends Model
     ];
 
     public $timestamps = false;
+    function skala5()
+    {
+        return $this->belongsTo(RsiaMasterTriaseSkala5::class, 'kode_skala5', 'kode_skala5');
+    }
 }

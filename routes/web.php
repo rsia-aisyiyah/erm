@@ -175,6 +175,7 @@ Route::middleware('auth')->group(function () {
     // triase UGD
     Route::get('/triase/get/indikator', [TriasePemeriksaanUgd::class, 'getIndikator']);
     route::post('/triase/simpan', [TriasePemeriksaanUgd::class, 'simpan']);
+    route::get('/triase/get', [TriasePemeriksaanUgd::class, 'get']);
 
 
     Route::get('persetujuan/loket/{loket}', [RsiaGeneralConsentController::class, 'index']);

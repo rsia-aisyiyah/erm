@@ -24,4 +24,9 @@ class RsiaDataTriaseUgdDetailSkala1 extends Model
     {
         return (new static)->getTable();
     }
+
+    function skala1()
+    {
+        return $this->belongsTo(RsiaMasterTriaseSkala1::class, 'kode_skala1', 'kode_skala1');
+    }
 }
