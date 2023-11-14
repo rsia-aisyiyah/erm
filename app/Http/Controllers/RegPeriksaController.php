@@ -112,7 +112,7 @@ class RegPeriksaController extends Controller
         $pemeriksaan = Pasien::where('no_rkm_medis', $request->no_rkm_medis)
             ->with('regPeriksa', function ($q) use ($request) {
                 return $q->where(function ($q) {
-                    $q->where('stts', 'Sudah')->orWhere('status_lanjut', '=', 'Ranap');
+                    $q->where('stts', 'Sudah')->orWhere('status_lanjut', '=', 'Ranap')->orWhere('kd_poli', 'IGDK');
                 })->with([
                     'upload', 'resepObat' => function ($q) {
                         return $q->with('resepDokter', 'resepRacikan');

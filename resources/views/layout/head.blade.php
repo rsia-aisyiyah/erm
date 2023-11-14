@@ -419,7 +419,7 @@
         }
 
         .text-purple {
-            color: var(--bs-puple);
+            color: #6f42c1;
         }
 
         .bg-indigo {

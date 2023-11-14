@@ -33,10 +33,8 @@
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <button class="nav-link active" id="nav-pemeriksaan-tab" data-bs-toggle="tab" data-bs-target="#nav-pemeriksaan" type="button" role="tab" aria-controls="nav-pemeriksaan" aria-selected="true">Pemeriksaan</button>
                                         <button class="nav-link" id="nav-resume-tab" data-bs-toggle="tab" data-bs-target="#nav-resume" type="button" role="tab" aria-controls="nav-resume" aria-selected="false">Resume Medis</button>
-                                        <button class="nav-link" id="nav-asesmen-ranap-tab" data-bs-toggle="tab" data-bs-target="#nav-asesmen-ranap" type="button" role="tab" aria-controls="nav-asesmen-ranap" aria-selected="false">Asesmen Medis</button>
-                                        <button class="nav-link" id="nav-asesmen-rajal-tab" data-bs-toggle="tab" data-bs-target="#nav-asesmen-rajal" type="button" role="tab" aria-controls="nav-asesmen-rajal" aria-selected="false">Asesmen Medis</button>
-                                        <button class="nav-link" id="nav-keperawatan-ranap-tab" data-bs-toggle="tab" data-bs-target="#nav-keperawatan-ranap" type="button" role="tab" aria-controls="nav-keperawatan-ranap" aria-selected="false">Asesmen Keperawatan</button>
-                                        <button class="nav-link" id="nav-triase-tab" data-bs-toggle="tab" data-bs-target="#nav-triase" type="button" role="tab" aria-controls="nav-triase" aria-selected="false">Triase</button>
+                                        <button class="nav-link" id="nav-asmed-tab" data-bs-toggle="tab" data-bs-target="#nav-asmed" type="button" role="tab" aria-controls="nav-asmed" aria-selected="false">Asesmen Medis</button>
+                                        <button class="nav-link" id="nav-askep-tab" data-bs-toggle="tab" data-bs-target="#nav-askep" type="button" role="tab" aria-controls="nav-askep" aria-selected="false">Asesmen Keperawatan</button>
                                     </div>
                                 </nav>
                                 <div class="tab-content p-2 content-scrolled" id="nav-tabContent">
@@ -174,7 +172,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="nav-asesmen-ranap" role="tabpanel" aria-labelledby="nav-asesmen-rajal-tab" tabindex="0">
+                                    <div class="tab-pane fade" id="nav-asmed" role="tabpanel" aria-labelledby="nav-asmed-tab" tabindex="0">
                                         <div class="card position-relative mt-2" id="riwayatAsmedAnak">
                                             <div class="card-header" data-bs-toggle="collapse" href="#collapseAsmedAnak" role="button" aria-expanded="false" aria-controls="collapseAsmedAnak">
                                                 <div class="card-text">
@@ -197,9 +195,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
-
                                         <div class="card position-relative mt-2" id="riwayatAsmedUgd">
                                             <div class="card-header" data-bs-toggle="collapse" href="#collapseAsmedUgd" role="button" aria-expanded="false" aria-controls="collapseAsmedUgd">
                                                 <div class="card-text">
@@ -229,8 +224,8 @@
                                         </div>
 
                                     </div>
-                                    <div class="tab-pane fade" id="nav-asesmen-rajal" role="tabpanel" aria-labelledby="nav-asesmen-ranap-tab" tabindex="0">ASESMEN AWAL RAWAT JALAN</div>
-                                    <div class="tab-pane fade" id="nav-keperawatan-ranap" role="tabpanel" aria-labelledby="nav-keperawatan-ranap-tab" tabindex="0">
+                                    <div class="tab-pane fade" id="nav-askep" role="tabpanel" aria-labelledby="nav-askep-tab" tabindex="0">
+                                        @include('content.ranap.riwayat._askepAnakRalan')
                                         <div class="card position-relative mt-2" id="riwayatAskepAnak">
                                             <div class="card-header" data-bs-toggle="collapse" href="#collapseAskepAnak" role="button" aria-expanded="false" aria-controls="collapseAskepAnak">
                                                 <div class="card-text">

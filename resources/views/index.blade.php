@@ -1438,6 +1438,13 @@
             return triase;
         }
 
+        function getAskepRalanAnak(no_rawat) {
+            const askep = $.get('/erm/poliklinik/askep/anak/detail', {
+                no_rawat: no_rawat
+            });
+            return askep;
+        }
+
         function listAsmedRajalKandungan(data) {
             $('#listAsmedKandungan').empty()
             $.map(data, (a) => {
