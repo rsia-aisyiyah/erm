@@ -11,64 +11,68 @@
                     Anda dapat menghapus / menambah daftar obat yang tercantum
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <label for="no_resep" style="font-size:12px">Nomor Resep</label>
-                                <input type="text" autocomplete="off"
-                                    class="form-control form-control-sm no_resep mb-1" name="no_resep" readonly />
+                    <form action="" id="formTabelRacikan">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="no_resep" style="font-size:12px">Nomor Resep</label>
+                                    <input type="text" autocomplete="off"
+                                        class="form-control form-control-sm no_resep mb-1" name="no_resep" readonly />
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
+                                    <input type="search" autocomplete="off"
+                                        class="form-control form-control-sm nm_racik mb-1" name="nm_racik" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="metode" style="font-size:12px">Metode</label>
+                                    <input type="text" autocomplete="off"
+                                        class="form-control form-control-sm metode mb-1" name="metode" readonly />
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="jml_dr" style="font-size:12px">Jumlah Racik</label>
+                                    <input type="text" autocomplete="off"
+                                        class="form-control form-control-sm jml_dr mb-1" name="jml_dr" readonly />
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="jml" style="font-size:12px">Aturan Pakai</label>
+                                    <input type="search" autocomplete="off" onkeyup="cariAturan(this)"
+                                        class="form-control form-control-sm aturan_pakai mb-1" name="aturan_pakai" id="aturan_pakai" />
+                                    <input type="hidden" class="nomor">
+                                    <input type="hidden" value="" name="no_racik" class="no_racik" />
+                                    <div class="list_aturan" style="display: none;"></div>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                <label for="nm_racik" style="font-size:12px">Nama Racikan</label>
-                                <input type="search" autocomplete="off"
-                                    class="form-control form-control-sm nm_racik mb-1" name="nm_racik" />
-                            </div>
-                            <div class="col-md-2">
-                                <label for="metode" style="font-size:12px">Metode</label>
-                                <input type="text" autocomplete="off"
-                                    class="form-control form-control-sm metode mb-1" name="metode" readonly />
-                            </div>
-                            <div class="col-md-2">
-                                <label for="jml_dr" style="font-size:12px">Jumlah Racik</label>
-                                <input type="text" autocomplete="off"
-                                    class="form-control form-control-sm jml_dr mb-1" name="jml_dr" readonly />
-                            </div>
-                            <div class="col-md-3">
-                                <label for="jml" style="font-size:12px">Aturan Pakai</label>
-                                <input type="search" autocomplete="off" onkeyup="cariAturan(this)"
-                                    class="form-control form-control-sm aturan_pakai mb-1" name="aturan_pakai" id="aturan_pakai" />
-                                <input type="hidden" class="nomor">
-                                <input type="hidden" value="" class="no_racik" />
-                                <div class="list_aturan" style="display: none;"></div>
+                            <div class="row">
+                                <div class="container table-responsive">
+
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <table class="table table-racikan table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th width="35%">Nama Obat</th>
+                                                <th>Sediaan</th>
+                                                <th width="7%">P1</th>
+                                                <th width="3%"></th>
+                                                <th width="7%">P2</th>
+                                                <th width="8%">Dosis</th>
+                                                <th></th>
+                                                <th>Jumlah</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+
+                                    <button type="button" class="btn btn-success btn-sm"
+                                        onclick="tambahDaftarRacik()"><i class="bi bi-plus-circle"></i> Tambah
+                                        Obat</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="container table-responsive">
-                                <table class="table table-racikan table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th width="35%">Nama Obat</th>
-                                            <th>Sediaan</th>
-                                            <th width="7%">P1</th>
-                                            <th width="3%"></th>
-                                            <th width="7%">P2</th>
-                                            <th width="8%">Dosis</th>
-                                            <th></th>
-                                            <th>Jumlah</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                                <button type="button" class="btn btn-success btn-sm"
-                                    onclick="tambahDaftarRacik()"><i class="bi bi-plus-circle"></i> Tambah
-                                    Obat</button>
-                            </div>
-                        </div>
-                    </div>
-
+                    </form>
                 </div>
             </div>
             <div class="modal-footer">
@@ -185,51 +189,42 @@
         }
 
         function simpanDosisObat() {
-            let banyakBaris = $('.table-racikan tbody tr').length
+            const form = $('#formTabelRacikan').serializeArray()
             $.ajax({
-                url: '/erm/resep/racik/ubah',
+                url: '/erm/resep/racik/detail/ubah',
+                data: form,
                 method: 'POST',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    no_resep: $('.no_resep').val(),
-                    nama_racik: $('.nm_racik').val(),
-                    no_racik: $('.no_racik').val(),
-                    kd_racik: $('.kd_racik').val(),
-                    aturan_pakai: $('.aturan_pakai').val(),
-                },
-                success: function(response) {
-                    for (let no = 1; no <= banyakBaris; no++) {
-                        $.ajax({
-                            url: '/erm/resep/racik/detail/ubah',
-                            data: {
-                                '_token': "{{ csrf_token() }}",
-                                'no_resep': $('.no_resep').val(),
-                                'no_racik': $('.no_racik').val(),
-                                'kode_brng': $('#kode_brng' + no).val(),
-                                'kandungan': $('#kandungan' + no).val(),
-                                'p1': $('#p1' + no).val(),
-                                'p2': $('#p2' + no).val(),
-                                'jml': $('#jml_obat' + no).val(),
-                            },
-                            method: 'POST',
-                            success: function(response) {
-                                // console.log(response);
-                                // respon = true
-                            },
-                            error: function(response) {
-                                Swal.fire(
-                                    'Gagal !',
-                                    response.responseJSON.message,
-                                    'error'
-                                );
-                            }
-                        })
-                    }
-                    riwayatResep($('#no_rm').val())
-                    cekResep($('#nomor_rawat').val());
-                    tulisPlan();
-                    $('#modalObatRacik').modal('hide');
+                error: function(response) {
+                    Swal.fire(
+                        'Gagal !',
+                        response.responseJSON.message,
+                        'error'
+                    );
                 }
+            }).done((response) => {
+                $.ajax({
+                    url: '/erm/resep/racik/ubah',
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        no_resep: $('.no_resep').val(),
+                        nama_racik: $('.nm_racik').val(),
+                        no_racik: $('.no_racik').val(),
+                        kd_racik: $('.kd_racik').val(),
+                        aturan_pakai: $('.aturan_pakai').val(),
+                    },
+                    error: function(response) {
+                        Swal.fire(
+                            'Gagal !',
+                            response.responseJSON.message,
+                            'error'
+                        );
+                    }
+                })
+                $('#modalObatRacik').modal('hide');
+                riwayatResep($('#no_rm').val())
+                cekResep($('#nomor_rawat').val());
+                tulisPlan();
             })
 
 
@@ -240,16 +235,16 @@
             html = '<tr class="baris_' + no + '">'
             html +=
                 '<td><input type="hidden" id="kode_brng' + no +
-                '"/><input type="text" onkeyup="cariObatRacikan(this, ' + no +
+                '"/ name="kode_brng[]"><input type="text" onkeyup="cariObatRacikan(this, ' + no +
                 ')" autocomplete="off" class="form-control form-control-sm nama_obat_' + no +
-                ' form-underline" name="nama_obat" /><div class="list_obat_' +
+                ' form-underline" /><div class="list_obat_' +
                 no + '"></div></td>'
             html +=
                 '<td><input type="text" autocomplete="off" class="form-control form-control-sm form-underline" id="kps' +
-                no + '" name="kps" readonly /></td>'
+                no + '" name="kps[]" readonly /></td>'
             html += '<td><input type="text" class="form-control form-control-sm form-underline" id="p1' + no + '" name="p1[]" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
             html += '<td>/</td>'
-            html += '<td><input type="text" class="form-control form-control-sm form-underline" id="p2' + no + '"name="p2[]" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
+            html += '<td><input type="text" class="form-control form-control-sm form-underline" id="p2' + no + '" name="p2[]" onkeyup="hitungObatRacik(' + no + ')" onfocusout="setNilaiPembagi(this)" autocomplete="off"/></td>'
             html += '<td><input type="text" onkeypress="return hanyaAngka(event)" class="form-control form-control-sm form-underline" id="kandungan' + no + '" name="kandungan[]" onkeyup="hitungDosis(' + no + ')" autocomplete="off"/></td>'
             html += '<td>mg</td>'
             html +=

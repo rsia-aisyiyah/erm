@@ -1677,7 +1677,10 @@
                                             'hidden')
                                         $('.' + resep.no_resep + resep.no_racik)
                                             .html(
-                                                '<button type="button" class="btn btn-success btn-sm" style="font-size:12px"><i class="bi bi-check"></i></button>'
+                                                '<button type="button" class="btn btn-success btn-sm  edit" style="font-size:12px" data-resep="' +
+                                                resep.no_resep + '" data-racik="' +
+                                                resep.no_racik +
+                                                '"><i class="bi bi-check"></i></button>'
                                             )
                                     } else {
                                         $('.tambah_racik').css('visibility',
