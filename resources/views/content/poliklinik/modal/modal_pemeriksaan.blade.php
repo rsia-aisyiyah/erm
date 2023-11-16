@@ -109,6 +109,7 @@
         </div>
     </div>
 </div>
+@include('content.poliklinik.modal.moda_detail_resep')
 @push('script')
     <script>
         function hapusBaris(param) {
@@ -1671,17 +1672,14 @@
                                         $('#body_racikan').append(d);
                                     }
                                     if (res.tgl_perawatan != "0000-00-00") {
-                                        $('.tambah_racik').css('visibility',
-                                            'hidden')
-                                        $('.tambah_umum').css('visibility',
-                                            'hidden')
-                                        $('.' + resep.no_resep + resep.no_racik)
-                                            .html(
-                                                '<button type="button" class="btn btn-success btn-sm  edit" style="font-size:12px" data-resep="' +
-                                                resep.no_resep + '" data-racik="' +
-                                                resep.no_racik +
-                                                '"><i class="bi bi-check"></i></button>'
-                                            )
+                                        $('.tambah_racik').css('visibility', 'hidden')
+                                        $('.tambah_umum').css('visibility', 'hidden')
+
+                                        const btnLihatDetail = `<button type="button" class="btn btn-success btn-sm" style="font-size:12px" onclick="showDetailRacikan('${resep.no_resep}', '${resep.no_racik}')">
+                                                    <i class="bi bi-check"></i>
+                                            </button>`
+
+                                        $('.' + resep.no_resep + resep.no_racik).html(btnLihatDetail)
                                     } else {
                                         $('.tambah_racik').css('visibility',
                                             'visible')

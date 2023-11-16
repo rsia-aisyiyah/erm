@@ -19,9 +19,9 @@ class ResepDokterRacikanDetailController extends Controller
         $resep = $this->resep;
         if ($request->no_resep) {
             if ($request->no_racik) {
-                $hasil = $resep->where('no_resep', $request->no_resep)->where('no_racik', $request->no_racik)->with('dataBarang')->get();
+                $hasil = $resep->where('no_resep', $request->no_resep)->where('no_racik', $request->no_racik)->with('dataBarang.kodeSatuan')->get();
             } else {
-                $hasil = $resep->where('no_resep', $request->no_resep)->with('dataBarang')->get();
+                $hasil = $resep->where('no_resep', $request->no_resep)->with('dataBarang.kodeSatuan')->get();
             }
         }
         return response()->json($hasil);
