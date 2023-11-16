@@ -48,10 +48,13 @@ class TrackerSqlController extends Controller
     function updateSql($table, $values, $clause)
     {
         $table = $table->getTable();
-        $val = implode('|', $values);
-        $keys = implode('=?,', array_keys($values));
+        $keys = [];
+        foreach ($values as $vals => $index) {
+            $keys[] = "$vals='$index'";
+        }
+        $stringKeys = implode(",", $keys);
         $stringClause = $this->stringClause($clause);
-        $str =  "update $table set $keys=? where $stringClause |$val ";
+        $str =  "update $table set $stringKeys where $stringClause";
         return $this->create($str);
     }
 

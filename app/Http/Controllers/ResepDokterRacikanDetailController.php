@@ -56,8 +56,10 @@ class ResepDokterRacikanDetailController extends Controller
             'jml' => $request->jml,
         ];
         $racikan = ResepDokterRacikanDetail::create($data);
-        $this->track->insertSql($this->resep, $data);
-        return response()->json($racikan);
+        if ($racikan) {
+            $this->track->insertSql($this->resep, $data);
+            return response()->json($racikan);
+        }
     }
     public function ubah(Request $request)
     {
@@ -76,10 +78,11 @@ class ResepDokterRacikanDetailController extends Controller
         $cekRacik = ResepDokterRacikanDetail::where($clause)->count();
         if ($cekRacik == 0) {
             $racik = $this->simpan($request);
-            $this->track->insertSql($this->resep, $request->except('_token'));
         } else {
             $racik =  ResepDokterRacikanDetail::where($clause)->update($data);
-            $this->track->updateSql($this->resep, $data, $clause);
+            if ($racik) {
+                $this->track->updateSql($this->resep, $data, $clause);
+            }
         }
         return response()->json($racik);
     }
