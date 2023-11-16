@@ -310,6 +310,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/prosedur/pasien/tambah', [ProsedurPasienController::class, 'tambah']);
     Route::delete('/prosedur/pasien/hapus', [ProsedurPasienController::class, 'hapus']);
 
+    Route::get('/operasi/laporan/detail', [LaporanOperasiController::class, 'show']);
     Route::get('/operasi/laporan/{noRawat}', [LaporanOperasiController::class, 'get']);
 
     Route::get('imunisasi/master', [MasterImunisasiController::class, 'get']);

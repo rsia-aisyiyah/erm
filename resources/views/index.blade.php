@@ -1445,6 +1445,13 @@
             return askep;
         }
 
+        function getLaporanOperasi(no_rawat) {
+            const laporan = $.get('/erm/operasi/laporan/detail', {
+                no_rawat: no_rawat,
+            });
+            return laporan
+        }
+
         function listAsmedRajalKandungan(data) {
             $('#listAsmedKandungan').empty()
             $.map(data, (a) => {

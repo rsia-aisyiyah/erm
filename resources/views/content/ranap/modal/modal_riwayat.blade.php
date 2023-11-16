@@ -77,6 +77,17 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="" id="laporanOperasi" style="display:none">
+                                                <div class="card position-relative mt-2">
+                                                    <div class="card-header" aria-controls="collapseLaporanOperasi" data-bs-toggle="collapse" data-bs-target="#collapseLaporanOperasi">
+                                                        <span>Laporan Operasi</span>
+                                                        <a class="position-absolute top-0 end-0 me-2 mt-2" style="color:#000" data-bs-toggle="collapse" href="#collapseLaporanOperasi" role="button" aria-expanded="false" aria-controls="collapseLaporanOperasi"><i class="bi bi-x"></i></a>
+                                                    </div>
+                                                    <div class="card-body collapse show" id="collapseLaporanOperasi">
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="" id="periksaRawatJalan" style="display:none">
                                                 <div class="card position-relative mt-2">
                                                     <div class="card-header" aria-controls="collapsePemeriksaanRajal" data-bs-toggle="collapse" data-bs-target="#collapsePemeriksaanRajal">
@@ -88,6 +99,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="" id="periksaRawatInap" style="display:none">
                                                 <div class="card position-relative mt-2">
                                                     <div class="card-header" aria-controls="collapsePemeriksaanRanap" data-bs-toggle="collapse" data-bs-target="#collapsePemeriksaanRanap">

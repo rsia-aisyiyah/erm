@@ -367,6 +367,7 @@
 
                 $('#info').append(infoPasien).hide().fadeIn()
                 setDiagnosaPasien(no_rawat);
+                setLaporanOperasi(no_rawat)
                 setRiwayatPemeriksaanRalan(no_rawat, regPeriksa.kd_poli);
                 setRiwayatPemeriksaanRanap(no_rawat)
                 setRiwayatObat(no_rawat)
@@ -415,6 +416,69 @@
                     bodyCardProsedur.append(listProsedur).hide().fadeIn();
                 }
 
+            })
+        }
+
+        function setLaporanOperasi(no_rawat) {
+            const laporanOperasi = $('#laporanOperasi')
+            const contentLaporan = $('#collapseLaporanOperasi')
+            laporanOperasi.hide()
+            contentLaporan.empty()
+            getLaporanOperasi(no_rawat).done((result) => {
+                let laporan = '';
+                if (Object.keys(result).length) {
+
+                    laporanOperasi.show()
+                    laporan += `<table class="table table-responsive">
+                        <tr>
+                            <th>Jenis Operasi</th>
+                            <td>:</td>
+                            <td>${result.operasi.paket_operasi.nm_perawatan}</td>
+                        </tr>
+                        <tr>
+                            <th>Operator</th>
+                            <td>:</td>
+                            <td>${result.operasi.op1.nm_dokter}</td>
+                        </tr>
+                        <tr>
+                            <th>Asisten 1</th>
+                            <td>:</td>
+                            <td>${result.operasi.asistenop1.nama}</td>
+                        </tr>
+                        <tr>
+                            <th>Asisten 2</th>
+                            <td>:</td>
+                            <td>${result.operasi.asistenop2.nama}</td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Operasi</th>
+                            <td>:</td>
+                            <td>${result.tanggal}</td>
+                        </tr>
+                        <tr>
+                            <th>Diagnosa Pre OP</th>
+                            <td>:</td>
+                            <td>${result.diagnosa_preop}</td>
+                        </tr>
+                        <tr>
+                            <th>Diagnosa Post OP</th>
+                            <td>:</td>
+                            <td>${result.diagnosa_postop}</td>
+                        </tr>
+                        <tr>
+                            <th>Jaringan Dieksekusi</th>
+                            <td>:</td>
+                            <td>${result.jaringan_dieksekusi}</td>
+                        </tr>
+                        <tr>
+                            <th>Laporan</th>
+                            <td>:</td>
+                            <td>${result.laporan_operasi}</td>
+                        </tr>
+                    </table>`
+                    console.log('OPERASI ===', result);
+                }
+                contentLaporan.append(laporan).hide().fadeIn()
             })
         }
 
@@ -1076,7 +1140,7 @@
 
         function setRiwayatAsmedAnak(no_rawat) {
             setAsmedRanapAnak(no_rawat)
-            setAsmedRalanAnak(no_rawat)
+            // setAsmedRalanAnak(no_rawat)
             setAsmedUgd(no_rawat)
         }
 
@@ -1346,9 +1410,12 @@
             bodyContentAsmedAnak.empty()
             getAsmedRanapAnak(no_rawat).done((asmed) => {
                 if (Object.keys(asmed).length) {
+
                     cardAsmedAnak.show()
                     const regPeriksa = asmed.reg_periksa;
                     const dokter = asmed.dokter;
+                    console.log('DOKTER ===', dokter);
+                    console.log('DOKTER ===', asmed);
 
                     let infoAsmed = `<div class="row">
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -1655,7 +1722,7 @@
                                     <th width="35%">Penkaji 1</th><td width="2%">:</td><td>${askep.pengkaji1.nama}</td>
                                 </tr>
                                 <tr>
-                                    <th width="35%">Penkaji 2</th><td width="2%">:</td><td>${askep.pengkaji2.nama}</td>
+                                    <th width="35%">Penkaji 2</th><td width="2%">:</td><td>${askep.pengkaji2?.nama}</td>
                                 </tr>
                             </table>
                         </div>

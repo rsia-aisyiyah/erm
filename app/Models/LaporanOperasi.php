@@ -9,4 +9,9 @@ class LaporanOperasi extends Model
 {
     use HasFactory;
     protected $table = 'laporan_operasi';
+
+    function operasi()
+    {
+        return $this->belongsTo(Operasi::class, 'no_rawat', 'no_rawat');
+    }
 }
