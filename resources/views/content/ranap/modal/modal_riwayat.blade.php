@@ -207,6 +207,28 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="card position-relative mt-2" id="riwayatAsmedKandungan">
+                                            <div class="card-header" data-bs-toggle="collapse" href="#collapseAsmedKandungan" role="button" aria-expanded="false" aria-controls="collapseAsmedKandungan">
+                                                <div class="card-text">
+                                                    <span>Asesmen Awal Medis Kandungan</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body collapse" id="collapseAsmedKandungan">
+                                                <div class="card-text">
+                                                    <div class="card mb-2">
+                                                        <div class="card-body p-2">
+                                                            <div class="card-text" id="infoAsmedKandungan">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card-text" id="contenAsmedKandungan">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="card position-relative mt-2" id="riwayatAsmedUgd">
                                             <div class="card-header" data-bs-toggle="collapse" href="#collapseAsmedUgd" role="button" aria-expanded="false" aria-controls="collapseAsmedUgd">
                                                 <div class="card-text">

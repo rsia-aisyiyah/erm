@@ -19,7 +19,7 @@ class AsesmenMedisRanapKandunganController extends Controller
     function get($noRawat)
     {
         $id = str_replace('-', '/', $noRawat);
-        $asmed = $this->asmed->where('no_rawat', $id)->with('regPeriksa', 'dokter')->first();
+        $asmed = $this->asmed->where('no_rawat', $id)->with('regPeriksa.pasien', 'dokter')->first();
 
         return response()->json($asmed);
     }
