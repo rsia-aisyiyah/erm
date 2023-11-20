@@ -31,7 +31,7 @@ class PemeriksaanRanapController extends Controller
     public function ambilSatu(Request $request)
     {
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa', 'regPeriksa.pasien', 'petugas', 'grafikHarian']);
+            ->with(['regPeriksa.dokter', 'regPeriksa.pasien', 'petugas', 'petugas.dokter', 'grafikHarian']);
 
         if ($request->tgl_perawatan) {
             $pemeriksaan->where('tgl_perawatan', $request->tgl_perawatan);

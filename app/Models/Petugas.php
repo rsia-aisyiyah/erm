@@ -14,4 +14,8 @@ class Petugas extends Model
     {
         return $this->hasMany(PeriksaLab::class, 'nip', 'nip');
     }
+    public function dokter()
+    {
+        return $this->belongsTo(Dokter::class, 'nip', 'kd_dokter');
+    }
 }

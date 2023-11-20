@@ -186,12 +186,16 @@
                 $('#reset_soap').append('')
 
                 $('#btn-reset').css('display', 'inline');
-
                 if (response.petugas.nip == "{{ session()->get('pegawai')->nik }}" || response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->departemen }}" == "CSM" || "{{ session()->get('pegawai')->nik }}" == "direksi") {
                     $('#btn-ubah').css('display', 'inline');
                 } else {
                     $('#btn-ubah').css('display', 'none');
                     $('.btn-simpan').css('display', 'inline');
+                }
+                if (response.petugas.dokter) {
+                    if (response.petugas.dokter.kd_sps == 'S0007') {
+                        $('#btn-ubah').css('display', 'inline');
+                    }
                 }
                 let tabForm = document.querySelector('#tab-soap-ranap li:first-child button')
                 bootstrap.Tab.getInstance(tabForm).show()
