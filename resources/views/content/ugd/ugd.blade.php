@@ -1588,30 +1588,14 @@
                             <div class="card-header">3. Status Obstetri & Ginekologi</div>
                             <div class="card-body">
                                 <div class="row card-text">
-                                    <div class="col-lg-4 col-sm-12 col-md-4 mb-2">
-                                        <table class="table borderless">
-                                            <tr>
-                                                <td>TFU</td><td>:</td><td>${asmed.tfu} cm</td>
-                                            </tr>
-                                            <tr>
-                                                <td>TBJ</td><td>:</td><td>${asmed.tbj} gram</td>
-                                            </tr>
-                                            <tr>
-                                                <td>HIS</td><td>:</td><td>${asmed.his}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Kontraksi</td><td>:</td><td>${asmed.kontraksi}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>DJJ</td><td>:</td><td>${asmed.djj} Dpm</td>
-                                            </tr>
-                                        </table>
+                                    <div class="col-lg-12 col-sm-12 col-md-12 mb-2">
+                                        <b>TFU : </b>${asmed.tfu} cm, <b>TBJ : </b>${asmed.tbj} gram, <b>HIS : </b>${asmed.his}, <b>Kontraksi : </b>${asmed.kontraksi}, <b>DJJ : </b>${asmed.djj} Dpm 
                                     </div>
-                                    <div class="col-lg-4 col-sm-12 col-md-4 mb-2">
+                                    <div class="col-lg-6 col-sm-12 col-md-6 mb-2">
                                       <strong>Inspeksi :</strong><br/>
                                       ${asmed.inspeksi}
                                     </div>
-                                    <div class="col-lg-4 col-sm-12 col-md-4 mb-2">
+                                    <div class="col-lg-6 col-sm-12 col-md-6 mb-2">
                                       <strong>VT :</strong><br/>
                                       ${asmed.vt}
                                     </div>
@@ -1626,8 +1610,27 @@
                                 </div>    
                             </div>
                         </div>`;
+                    const pemeriksaanPenunjang = `<div class="card mb-2">
+                            <div class="card-header">4. Pemeriksaan Penunjang</div>
+                            <div class="card-body">
+                                <div class="row card-text">
+                                    <div class="col-lg-4 col-sm-12 col-md-4 mb-2">
+                                      <strong>Ultrasonografi :</strong><br/>
+                                      ${asmed.ultra}
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12 col-md-4 mb-2">
+                                      <strong>Kardiotografi :</strong><br/>
+                                      ${asmed.kardio}
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12 col-md-4 mb-2">
+                                      <strong>Laboratorium :</strong><br/>
+                                      ${asmed.lab}
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>`;
                     bodyInfoAsmedKandungan.append(infoAsmed)
-                    bodyContentAsmedKandungan.append([riwayatKesehatan, pemeriksaanFisik, statusObstetri])
+                    bodyContentAsmedKandungan.append([riwayatKesehatan, pemeriksaanFisik, statusObstetri, pemeriksaanPenunjang])
                 }
             })
 
