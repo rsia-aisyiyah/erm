@@ -229,12 +229,16 @@
 
         // merapikan enter teks soap
         function stringPemeriksaan(value) {
-            const arrValue = value.split('\n');
-            let string = '';
-            for (let index = 0; index < arrValue.length; index++) {
-                string += `${arrValue[index]} <br/>`;
+            if (value) {
+                const arrValue = value.split('\n');
+                let string = '';
+                for (let index = 0; index < arrValue.length; index++) {
+                    string += `${arrValue[index]} <br/>`;
+                }
+                return string
+
             }
-            return string
+            return false;
         }
 
         function getPetugas(nama, no = '') {
