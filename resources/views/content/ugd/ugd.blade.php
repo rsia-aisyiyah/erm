@@ -1144,6 +1144,7 @@
         function setRiwayatAsmedAnak(no_rawat) {
             setAsmedRanapAnak(no_rawat)
             // setAsmedRalanAnak(no_rawat)
+            $('#riwayatAsmedKandungan').hide()
             setAsmedUgd(no_rawat)
         }
 
@@ -1420,11 +1421,11 @@
             bodyContentAsmedKandungan.empty()
 
             getAsmedRanapKandungan(no_rawat).done((asmed) => {
-                if (asmed) {
+                if (Object.keys(asmed).length) {
                     cardAsmedKandungan.show()
-                    console.log('AsMED ===', asmed);
                     const regPeriksa = asmed.reg_periksa
                     const pasien = regPeriksa.pasien
+                    console.log('REG PERIKSA ASEMED', asmed);
                     let infoAsmed = `<div class="row">
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <table class="table table-responsive borderless m-0">
@@ -1434,25 +1435,35 @@
                                 <tr>
                                     <th>No. Rekam Medis</th><td>:</td><td>${regPeriksa.no_rkm_medis}</td>
                                 </tr>    
+                                <tr>
+                                    <th width="35%">Nama</th><td width="2%">:</td><td>${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})</td>
+                                </tr>
                             </table>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <table class="table table-responsive borderless m-0">
+                                
                                 <tr>
-                                    <th width="35%">Nama / JK</th><td width="2%">:</td><td>${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})</td>
+                                    <th width="35%">JK</th><td width="2%">:</td><td>${regPeriksa.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan'}</td>
                                 </tr>
                                 <tr>
                                     <th>Umur / Tgl Lahir</th><td>:</td><td>${regPeriksa.umurdaftar} ${regPeriksa.sttsumur} / ${formatTanggal(regPeriksa.pasien.tgl_lahir)}</td>        
                                 </tr>
+                                  <tr>
+                                    <th width="35%">Dokter DPJP</th><td width="2%">:</td><td>${regPeriksa.dokter.nm_dokter}</td>
+                                </tr>
                             </table>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <table class="table table-responsive borderless m-0">
                                 <tr>
+                                    <th>Anamnesis</th><td>:</td><td>${asmed.anamnesis} (hub : ${asmed.hubungan})</td>        
+                                </tr>
+                                <tr>
                                     <th width="35%">Tgl Asesmen</th><td width="2%">:</td><td>${formatTanggal(asmed.tanggal.split(" ")[0])} ${asmed.tanggal.split(" ")[1]}</td>
                                 </tr>
                                 <tr>
-                                    <th>Anamnesis</th><td>:</td><td>${asmed.anamnesis} (hub : ${asmed.hubungan})</td>        
+                                    <th width="35%">Dokter Asesmen</th><td width="2%">:</td><td>${asmed.dokter.nm_dokter}</td>
                                 </tr>
                             </table>
                         </div>
@@ -1629,8 +1640,25 @@
                                 </div>    
                             </div>
                         </div>`;
+                    const diagnosa = `<div class="card mb-2">
+                            <div class="card-header">5. Diagnosa & Tata Laksana</div>
+                            <div class="card-body">
+                                <div class="row card-text">
+                                    <div class="col-lg-6 col-sm-12 col-md-6 mb-2">
+                                      <strong>Diagnosa :</strong><br/>
+                                      ${asmed.diagnosis}
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12 col-md-6 mb-2">
+                                      <strong>Tata Laksana :</strong><br/>
+                                      ${asmed.tata}
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>`;
+
+
                     bodyInfoAsmedKandungan.append(infoAsmed)
-                    bodyContentAsmedKandungan.append([riwayatKesehatan, pemeriksaanFisik, statusObstetri, pemeriksaanPenunjang])
+                    bodyContentAsmedKandungan.append([riwayatKesehatan, pemeriksaanFisik, statusObstetri, pemeriksaanPenunjang, diagnosa])
                 }
             })
 
