@@ -249,17 +249,17 @@
             <div class="row">
                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                     <label for="tfu">TFU (cm)</label>
-                    <input type="text" class="form-control form-control-sm" id="kandungan_tfu" name="alergi" placeholder=""
+                    <input type="text" class="form-control form-control-sm" id="kandungan_tfu" name="tfu" placeholder=""
                         onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                 </div>
                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                     <label for="tbj">TBJ (gram)</label>
-                    <input type="text" class="form-control form-control-sm" id="kandungan_tbj" name="alergi" placeholder=""
+                    <input type="text" class="form-control form-control-sm" id="kandungan_tbj" name="tbj" placeholder=""
                         onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                 </div>
                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                     <label for="his">HIS (x/10 mnt)</label>
-                    <input type="text" class="form-control form-control-sm" id="kandungan_his" name="alergi" placeholder=""
+                    <input type="text" class="form-control form-control-sm" id="kandungan_his" name="his" placeholder=""
                         onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                 </div>
                 <div class="mb-2 col-sm-6 col-md-4 col-lg-4">
@@ -271,7 +271,7 @@
                 </div>
                 <div class="mb-2 col-sm-6 col-md-4 col-lg-2">
                     <label for="djj">DJJ (Dpm)</label>
-                    <input type="text" class="form-control form-control-sm" id="kandungan_djj" name="alergi" placeholder=""
+                    <input type="text" class="form-control form-control-sm" id="kandungan_djj" name="djj" placeholder=""
                         onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-6">
