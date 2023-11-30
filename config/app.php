@@ -244,5 +244,6 @@ return [
     'icareUrl' => env('ICARE_URL'),
     'apotekUserKey' => env('APOTEK_USER_KEY'),
     'apotekUrl' => env('APOTEK_URL'),
+    'kyc' => env('APP_KYC'),
 
 ];
