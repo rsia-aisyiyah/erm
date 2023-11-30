@@ -201,7 +201,7 @@ class PemeriksaanRanapController extends Controller
                 $pemeriksaan->select([$request->parameter, 'gcs', 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'kesadaran', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
             } else if ($request->parameter == 'obat' || $request->parameter == 'obatpulang') {
                 $pemeriksaan->select(['rtl', 'pemeriksaan', 'jam_rawat', 'tgl_perawatan', 'nip'])->whereHas('pegawai', function ($query) {
-                    $query->whereIn('departemen', ['DM7', 'SPS', '-', 'DM2', 'DM3', 'DM4', 'DM5', 'DM8']);
+                    $query->whereIn('departemen', ['DM7', 'SPS', '-', 'DM2', 'DM3', 'DM4', 'DM5', 'DM8', 'CSM']);
                 })->orderBy('tgl_perawatan', 'ASC');
             } else if ($request->parameter == 'ttv') {
                 $pemeriksaan->select(['suhu_tubuh', 'tensi', 'berat', 'tinggi', 'spo2', 'nadi', 'respirasi', 'kesadaran', 'gcs', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
