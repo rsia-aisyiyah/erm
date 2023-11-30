@@ -89,6 +89,13 @@
                     </a>
                 </li>
             @endif
+
+            <li class="nav-item">
+                <a class="nav-link" target="_blank" href="http://localhost/kyc?nama={{ session()->get('pegawai')->nama }}&nik={{ session()->get('pegawai')->nik }}">
+                    <i class="bi bi-key-fill"></i>
+                    KYC
+                </a>
+            </li>
             <hr />
 
             <h6
