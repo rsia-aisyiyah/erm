@@ -70,6 +70,7 @@
                     session()->get('pegawai')->departemen == 'DPM2' ||
                     session()->get('pegawai')->departemen == 'DM1' ||
                     session()->get('pegawai')->departemen == 'CSM' ||
+                    session()->get('pegawai')->departemen == 'ICU' ||
                     session()->get('pegawai')->dokter)
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('ranap') ? 'active' : '' }}" href="/erm/ranap">
