@@ -49,7 +49,7 @@
                     </a>
                 </li>
             @endif
-            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->jbtn == 'Dokter Spesialis Radiologi' || session()->get('pegawai')->departemen == 'RAD')
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->jbtn == 'Dokter Spesialis Radiologi' || session()->get('pegawai')->departemen == 'RAD' || session()->get('pegawai')->departemen == 'CSM')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('radiologi') ? 'active' : '' }}" href="/erm/radiologi">
                         <i class="bi bi-radioactive"></i>
