@@ -98,9 +98,10 @@
             getHasilLab(no_rawat).done((lab) => {
                 let jenisPerawatan = '';
                 let tglPeriksa = '';
+                let jamPeriksa = '';
                 let hasil = '';
                 lab.map((item, index) => {
-                    if (jenisPerawatan != item.jns_perawatan_lab.kd_jenis_prw || tglPeriksa != item.tgl_periksa) {
+                    if (jenisPerawatan != item.jns_perawatan_lab.kd_jenis_prw || tglPeriksa != item.tgl_periksa || jamPeriksa != item.jam_periksa) {
                         hasil += `<tr class="borderless" style="background-color:#eee">
                             <td colspan="3"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
                             ${formatTanggal(item.tgl_periksa)} ${item.jam}</td>
