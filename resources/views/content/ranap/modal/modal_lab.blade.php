@@ -101,7 +101,7 @@
                 let jamPeriksa = '';
                 let hasil = '';
                 lab.map((item, index) => {
-                    if (jenisPerawatan != item.jns_perawatan_lab.kd_jenis_prw || tglPeriksa != item.tgl_periksa || jamPeriksa != item.jam_periksa) {
+                    if (jenisPerawatan != item.jns_perawatan_lab.kd_jenis_prw || tglPeriksa != item.tgl_periksa || jamPeriksa != item.jam) {
                         hasil += `<tr class="borderless" style="background-color:#eee">
                             <td colspan="3"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
                             ${formatTanggal(item.tgl_periksa)} ${item.jam}</td>
@@ -128,6 +128,7 @@
 
                     jenisPerawatan = item.jns_perawatan_lab.kd_jenis_prw;
                     tglPeriksa = item.tgl_periksa;
+                    jamPeriksa = item.jam;
                 })
                 $('#tabel-lab').append(hasil)
             })
