@@ -158,6 +158,7 @@
     @include('content.ranap.modal.modal_riwayat_vaksin')
     @include('content.ranap.modal.modal_riwayat_asmed_kandungan')
     @include('content.ranap.modal.modal_riwayat_persalinan')
+    @include('content.ranap.modal.modal_poc')
 @endsection
 
 
@@ -389,7 +390,6 @@
         }
 
         function tb_ranap() {
-
             $('#tb_ranap').DataTable({
                 processing: true,
                 scrollX: true,
@@ -440,6 +440,7 @@
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
                             }
 
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPlanOfCare('${data.no_rawat}')"><i>Plan of Care</i></a></li>`;
 
                             // resume medis aktif
                             isDokter = "{{ session()->get('pegawai')->departemen }}";
