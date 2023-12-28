@@ -259,6 +259,7 @@
         $('#modalPlanOfCare').on('hidden.bs.modal', () => {
             document.getElementById("formPlanOfCare").reset();
             $('#formPlanOfCare').find('.personil').remove();
+            $('.search').val('').trigger('change')
         })
 
         function simpanPoc() {
@@ -596,9 +597,7 @@
         function selectPetugas(params) {
             const select = params.select2({
                 dropdownParent: $('#formPlanOfCare'),
-                allowClear: true,
-                delay: 0,
-                scrollAfterSelect: true,
+                initSelection: function(element, callback) {},
                 ajax: {
                     url: 'petugas/cari',
                     dataType: 'json',
@@ -618,7 +617,6 @@
                             })
                         };
                     },
-                    cache: true
                 }
             });
 
