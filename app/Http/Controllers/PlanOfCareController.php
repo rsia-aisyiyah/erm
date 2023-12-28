@@ -25,7 +25,7 @@ class PlanOfCareController extends Controller
     function create(Request $request)
     {
         // $req =  $request->except('_token');
-        return  $data = [
+        $data = [
             'no_rawat' => $request->no_rawat,
             'petugas' => session()->get('pegawai')->nik,
             'anamnesa' => $request->anamnesa,
@@ -46,7 +46,17 @@ class PlanOfCareController extends Controller
             'tanggal' => date('Y-m-d H:i:s'),
         ];
 
+
+        $planOfCare = PlanOfCare::where('no_rawat', $data['no_rawat']);
+
         try {
+            if ($planOfCare->first()) {
+                $poc = $planOfCare->update($data);
+                if ($poc) {
+                    $this->track->updateSql(new PlanOfCare(), ['no_rawat', $data['no_rawat']], $data);
+                }
+                return response()->json('SUKSES', 200);
+            }
             $poc = PlanOfCare::create($data);
             if ($poc) {
                 $this->track->insertSql(new PlanOfCare(), $data);

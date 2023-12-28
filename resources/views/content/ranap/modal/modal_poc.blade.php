@@ -146,7 +146,7 @@
                                                 Ya
                                             </label>
                                             <input class="form-check-input mt-0" type="radio" value="Tidak" aria-label="" name="ket_batasan_cairan" id="Tidak">
-                                            <label class="form-check-label" for="batasan_cairan">
+                                            <label class="form-check-label" for="batasan_cairan" checked>
                                                 Tidak
                                             </label>
                                         </div>
@@ -258,6 +258,7 @@
         var formPlanOfCare = $('#formPlanOfCare')
         $('#modalPlanOfCare').on('hidden.bs.modal', () => {
             document.getElementById("formPlanOfCare").reset();
+            $('#formPlanOfCare').find('.personil').remove();
         })
 
         function simpanPoc() {
@@ -300,7 +301,7 @@
                     return periksa;
                 }).map((val) => {
                     return val;
-                }).join(', ')
+                }).join('; ')
             } else {
                 if (resultObject.pemeriksaan_penunjang == 'Laboratorium') {
                     periksa = resultObject.ket_laboratorium
@@ -316,7 +317,7 @@
             if (Array.isArray(resultObject.kewaspadaan)) {
                 const kewaspadaan = resultObject.kewaspadaan.map((val) => {
                     return val
-                }).join(', ')
+                }).join('; ')
 
                 resultObject.kewaspadaan = kewaspadaan;
             }
@@ -325,7 +326,7 @@
             if (Array.isArray(resultObject.aktivitas)) {
                 const aktivitas = resultObject.aktivitas.map((val) => {
                     return val
-                }).join(', ')
+                }).join('; ')
 
                 resultObject.aktivitas = aktivitas;
             }
@@ -343,7 +344,7 @@
                     return nutrisi;
                 }).map((val) => {
                     return val;
-                }).join(', ')
+                }).join('; ')
             } else {
                 if (resultObject.diet == 'Diet') {
                     nutrisi = resultObject.ket_diet
@@ -365,28 +366,27 @@
             if (Array.isArray(resultObject.keperawatan)) {
                 const keperawatan = resultObject.keperawatan.map((val) => {
                     return val
-                }).join(', ')
+                }).join('; ')
 
                 resultObject.keperawatan = keperawatan;
             }
 
-
-            console.log('RESULT OBJEK ===', resultObject);
-            // return false;
             $.post('poc/create',
                 resultObject
             ).done((response) => {
-                // if (Array.isArray(resultObject.petugas)) {
-
-                // }
-                $.post('poc/tim/create', {
-                    _token: resultObject._token,
-                    no_rawat: resultObject.no_rawat,
-                    petugas: resultObject.petugas,
+                if (resultObject.petugas) {
+                    $.post('poc/tim/create', {
+                        _token: resultObject._token,
+                        no_rawat: resultObject.no_rawat,
+                        petugas: resultObject.petugas,
+                    })
+                }
+                alertSuccessAjax().then(() => {
+                    $('#modalPlanOfCare').modal('hide')
+                    $('#tb_ranap').DataTable().destroy();
+                    tb_ranap();
                 })
-                $('#modalPlanOfCare').modal('hide')
             })
-            // console.log(resultObject);
         }
 
         $('#laboratorium').on('change', (e) => {
@@ -465,7 +465,6 @@
 
         function modalPlanOfCare(no_rawat) {
             getRegPeriksa(no_rawat).done((response) => {
-                console.log('RAWAT ===', response);
                 formPlanOfCare.find('input[name=no_rawat]').val(response.no_rawat)
                 formPlanOfCare.find('input[name=poli]').val(response.poliklinik.nm_poli)
                 formPlanOfCare.find('input[name=dokter]').val(response.dokter.nm_dokter)
@@ -493,16 +492,32 @@
 
                     })
 
-                    const arrKewaspadaan = response.kewaspadaan.split(', ')
-                    const arrPemeriksaan = response.pemeriksaan_penunjang.split(', ')
-                    const arrNutrisi = response.nutrisi.split(', ')
+                    const arrKewaspadaan = response.kewaspadaan ? response.kewaspadaan.split('; ') : [''];
+                    const arrPemeriksaan = response.pemeriksaan_penunjang ? response.pemeriksaan_penunjang.split(', ') : [''];
+                    const arrNutrisi = response.nutrisi ? response.nutrisi.split('; ') : [''];
+                    const arrAktivitas = response.aktivitas ? response.aktivitas.split('; ') : [''];
+                    const arrKeperawatan = response.keperawatan ? response.keperawatan.split('; ') : [''];
+
+                    const radioPengobatan = $(`#formPlanOfCare input[name=pengobatan]`);
                     const checkKewaspadaan = $(`#formPlanOfCare input[name=kewaspadaan]`);
                     const checkPemeriksaan = $(`#formPlanOfCare input[name=pemeriksaan_penunjang]`);
                     const checkNutrisi = $(`#formPlanOfCare input[name=diet]`);
+                    const checkAktivitas = $(`#formPlanOfCare input[name=aktivitas]`);
+                    const checkKeperawatan = $(`#formPlanOfCare input[name=keperawatan]`);
                     $(`#formPlanOfCare input[name=poli]`).val(`${response.reg_periksa.poliklinik.nm_poli}`)
                     $(`#formPlanOfCare input[name=dokter]`).val(`${response.reg_periksa.dokter.nm_dokter}`)
                     $(`#formPlanOfCare input[name=kd_dokter]`).val(`${response.reg_periksa.kd_dokter}`)
 
+
+                    radioPengobatan.each((index, element) => {
+                        const pengobatan = response.pengobatan ? response.pengobatan.split(' : ') : [''];
+                        if (element.value == pengobatan[0]) {
+                            $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
+                            $(`#formPlanOfCare input[id=ket_${element.id}]`).prop('disabled', false)
+                            $(`#formPlanOfCare input[id=ket_${element.id}]`).val(pengobatan[1])
+                        }
+
+                    })
                     checkKewaspadaan.each((index, element) => {
                         const find = arrKewaspadaan.find((el) => el == element.id)
                         $(`#formPlanOfCare input[id=${find}]`).prop('checked', true)
@@ -532,18 +547,41 @@
                             $(`#formPlanOfCare input[id=${batasan.split(' : ')[1]}]`).prop('checked', true)
 
                         }
-
-                        // if (pemeriksaan) {
-                        //     $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
-                        //     $(`#formPlanOfCare input[id=ket_${element.id}]`).val(pemeriksaan.split(' : ')[1])
-                        // }
                     });
+                    checkAktivitas.each((index, elemet) => {
+                        const aktivitas = arrAktivitas.find((el) => el == elemet.value)
+                        $(`#formPlanOfCare input[value='${aktivitas}']`).prop('checked', true)
+                    })
+                    checkKeperawatan.each((index, element) => {
+                        const keperawatan = arrKeperawatan.find((el) => el == element.value)
+                        $(`#formPlanOfCare input[value='${keperawatan}']`).prop('checked', true)
+                    })
+
+                    const tim = response.tim.map((personil, index) => {
+                        return `<div class="col-lg-12 personil" id="personil${personil.id}">
+                                <div class="input-group mb-1">
+                                    <input class="form-control form-control-sm" name="personil" readonly value="${personil.petugas.nama}">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="deletePersonilPoc('${personil.id}')"><i class="bi bi-trash"></i></button>
+                                </div>
+                            </div>`
+                    })
+                    $('#formPlanOfCare').find('#perawat').prepend(tim)
+
+
                 }
 
             })
             const petugas = $('#petugas1')
             selectPetugas(petugas)
             $('#modalPlanOfCare').modal('show');
+        }
+
+        function deletePersonilPoc(id) {
+            $.post(`poc/tim/personil/delete/${id}`, {
+                _token: "{{ csrf_token() }}"
+            }).done((response) => {
+                $('#formPlanOfCare').find(`#personil${id}`).remove();
+            })
         }
         $('#btnTimPerawat').on('click', (e) => {
             const select = $('#perawat');

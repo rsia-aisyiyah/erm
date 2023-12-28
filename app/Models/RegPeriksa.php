@@ -9,6 +9,7 @@ use App\Models\Upload;
 use App\Models\Operasi;
 use App\Models\KamarInap;
 use App\Models\ResepObat;
+use App\Models\PlanOfCare;
 use App\Models\Poliklinik;
 use App\Models\BridgingSep;
 use App\Models\RanapGabung;
@@ -186,5 +187,9 @@ class RegPeriksa extends Model
     function gambarRadiologi()
     {
         return $this->hasMany(GambarRadiologi::class, 'no_rawat', 'no_rawat');
+    }
+    function poc()
+    {
+        return $this->hasOne(PlanOfCare::class, 'no_rawat', 'no_rawat');
     }
 }

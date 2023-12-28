@@ -22,7 +22,7 @@ class RanapController extends Controller
     public function ranap(Request $request)
     {
 
-        $ranap = KamarInap::with(['regPeriksa.pasien', 'regPeriksa.dokter', 'regPeriksa.dokter.spesialis', 'kamar', 'ranapGabung.regPeriksa.dokter', 'ranapGabung.regPeriksa.pasien', 'ranapGabung.regPeriksa.askepRanapNeonatus', 'ranapGabung.regPeriksa.asmedRanapAnak', 'kamar.bangsal', 'regPeriksa.penjab', 'regPeriksa.kamarInap', 'regPeriksa.asmedRanapKandungan', 'regPeriksa.asmedRanapAnak', 'regPeriksa.askepRanapNeonatus', 'regPeriksa.askepRanapAnak', 'regPeriksa.askepRanapKandungan', 'resume'])->orderBy('no_rawat', 'DESC');
+        $ranap = KamarInap::with(['regPeriksa.poc', 'regPeriksa.pasien', 'regPeriksa.dokter', 'regPeriksa.dokter.spesialis', 'kamar', 'ranapGabung.regPeriksa.dokter', 'ranapGabung.regPeriksa.pasien', 'ranapGabung.regPeriksa.askepRanapNeonatus', 'ranapGabung.regPeriksa.asmedRanapAnak', 'kamar.bangsal', 'regPeriksa.penjab', 'regPeriksa.kamarInap', 'regPeriksa.asmedRanapKandungan', 'regPeriksa.asmedRanapAnak', 'regPeriksa.askepRanapNeonatus', 'regPeriksa.askepRanapAnak', 'regPeriksa.askepRanapKandungan', 'resume'])->orderBy('no_rawat', 'DESC');
 
         if ($request->stts_pulang == '-') {
             $ranap->where('stts_pulang', $request->stts_pulang);

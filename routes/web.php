@@ -334,6 +334,7 @@ Route::middleware('auth')->group(function () {
     Route::get('poc', [PlanOfCareController::class, 'get']);
     Route::post('poc/create', [PlanOfCareController::class, 'create']);
     Route::post('poc/tim/create', [PlanOfCareTimController::class, 'create']);
+    Route::post('poc/tim/personil/delete/{id}', [PlanOfCareTimController::class, 'delete']);
 
 
     Route::prefix('bridging')->group(function () {
