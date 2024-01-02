@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\RsiaMasterTriaseSkala2;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RsiaDataTriaseUgdDetailSkala2 extends Model
 {
@@ -17,4 +18,8 @@ class RsiaDataTriaseUgdDetailSkala2 extends Model
     ];
 
     public $timestamps = false;
+    function skala2()
+    {
+        return $this->belongsTo(RsiaMasterTriaseSkala2::class, 'kode_skala2', 'kode_skala2');
+    }
 }

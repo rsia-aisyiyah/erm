@@ -108,7 +108,6 @@
 
         function setCatatanPerawatan(no_rawat) {
             getCatatanPerawatan(textRawat(no_rawat, '-')).done((response) => {
-                console.log(response);
                 if (Object.keys(response).length != 0) {
                     $('textarea#catatan_dr').val(response.catatan)
                     $('#kdDokter').val(response.dokter.nm_dokter)
@@ -124,8 +123,8 @@
         function insertCatatanPerawatan() {
             catatan = $('#catatan_dr').val();
             data = {
-                no_rawat: $('#nomor_rawat').val(),
-                kd_dokter: $('#nik').val(),
+                no_rawat: $('#formSoapPoli input[name=no_rawat]').val(),
+                kd_dokter: $('#formSoapPoli input[name=kd_dokter]').val(),
                 catatan: catatan,
                 _token: "{{ csrf_token() }}",
             }

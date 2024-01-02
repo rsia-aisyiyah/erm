@@ -158,10 +158,11 @@
                 destroy: true,
                 processing: true,
                 paging: false,
-                info: false,
+                info: true,
                 responsive: true,
                 scrollX: true,
-                scrollY: 640,
+                scrollY: 340,
+                stateSave: true,
                 ajax: {
                     url: '/erm/radiologi/table',
                     data: {
@@ -172,9 +173,10 @@
                     }
                 },
                 language: {
-                    "zeroRecords": "Tidak ada data pasien terdaftar",
-                    "infoEmpty": "Tidak ada data pasien terdaftar",
+                    "zeroRecords": "Tidak ada data pasien",
+                    "infoEmpty": "Tidak ada data pasien radiologi",
                     "search": "Pencarian",
+                    "info": "Menampilkan _TOTAL_ pasien radiologi",
                 },
                 createdRow: (row, data, dataIndex) => {
                     $(row).css('cursor', 'pointer');

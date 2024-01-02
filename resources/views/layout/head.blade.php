@@ -224,7 +224,7 @@
             border: none;
             vertical-align: top;
             height: 5px !important;
-            padding: 5px !important;
+            padding: 3px !important;
         }
 
         textarea .form-control {
@@ -256,7 +256,7 @@
             transition: all .1s linear;
         }
 
-        @media (max-width: 400px) {
+        @media (max-width: 368px) {
             .tb-askep {
                 font-size: 9px !important;
             }
@@ -265,11 +265,20 @@
                 font-size: 9px !important;
             }
 
+            .card-text {
+
+                font-size: 9px !important;
+            }
+
             #modalSoap table,
             #modalSoap form input,
             #modalSoap form select,
             #modalSoap form textarea {
                 font-size: 10px !important;
+            }
+
+            .content-scrolled {
+                height: 670px !important;
             }
         }
 
@@ -364,6 +373,63 @@
             .chart-container {
                 width: 600px;
             }
+
+            .nav-brand {
+                display: inline;
+            }
+        }
+
+        .nav-brand {
+            display: none;
+        }
+
+        .nav-link.active {
+            font-weight: bold;
+        }
+
+        .nav-brand {
+            font-weight: bold;
+            text-decoration: none;
+            color: rgb(70, 70, 70)
+        }
+
+        .content-scrolled {
+            height: calc(100vh - 278px);
+            overflow-y: auto;
+        }
+
+
+        .navbar {
+            border-radius: 6px;
+        }
+
+        @media (max-width:820px) {
+            .tab-responsive {
+                display: none;
+            }
+
+            .nav-brand {
+                display: inherit !important;
+            }
+
+        }
+
+        .text-indigo {
+            color: var(--bs-indigo);
+        }
+
+        .text-purple {
+            color: #6f42c1;
+        }
+
+        .bg-indigo {
+            background-color: var(--bs-indigo);
+            color: #fff;
+        }
+
+        .bg-purple {
+            background-color: var(--bs-purple);
+            color: #fff !important;
         }
     </style>
 </head>

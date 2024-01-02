@@ -43,4 +43,8 @@ class Pasien extends Model
     {
         return $this->belongsTo(BahasaPasien::class, 'bahasa_pasien', 'id');
     }
+    function cacat()
+    {
+        return $this->belongsTo(CacatFisik::class, 'cacat_fisik', 'id');
+    }
 }

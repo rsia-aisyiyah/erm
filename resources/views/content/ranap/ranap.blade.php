@@ -924,23 +924,6 @@
             });
         }
 
-
-        function getPemeriksaanRanap(no_rawat, parameter = '', pemeriksaan = '') {
-            let perawatan = $.ajax({
-                url: '/erm/soap/get',
-                data: {
-                    'no_rawat': no_rawat,
-                    'parameter': parameter,
-                    'pemeriksaan': pemeriksaan,
-                },
-                error: (request) => {
-                    alertSessionExpired(request.status)
-                },
-            })
-
-            return perawatan;
-        }
-
         function modalSoapRanap(no_rawat) {
             getRegPeriksa(no_rawat).done((response) => {
                 $('#nomor_rawat').val(response.no_rawat);

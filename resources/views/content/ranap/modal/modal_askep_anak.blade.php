@@ -1470,17 +1470,7 @@
 
         })
 
-        function getAskepRanapAnak(no_rawat) {
-            const askep = $.ajax({
-                url: '/erm/ranap/askep/anak',
-                method: 'GET',
-                data: {
-                    no_rawat: no_rawat,
-                },
-            })
 
-            return askep;
-        }
 
 
 

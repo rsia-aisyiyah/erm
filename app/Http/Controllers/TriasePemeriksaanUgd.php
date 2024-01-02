@@ -14,13 +14,15 @@ class TriasePemeriksaanUgd extends Controller
 {
 
     protected $track;
+    protected $triase;
 
     public function __construct()
     {
         $this->track = new \App\Http\Controllers\TrackerSqlController;
+        $this->triase = new \App\Models\RsiaTriaseUgd;
     }
 
-    function simpan(Request $request) 
+    function simpan(Request $request)
     {
 
         $data = $request->all();
@@ -46,7 +48,7 @@ class TriasePemeriksaanUgd extends Controller
 
                     foreach ($dataTriase as $keyTriase => $valueTriase) {
                         [$no_rawat, $skala] = array_keys($valueTriase);
-                        
+
                         if ($valueTriase[$skala] == null) continue;
 
                         $check = $value::where('no_rawat', $valueTriase[$no_rawat])
@@ -86,7 +88,7 @@ class TriasePemeriksaanUgd extends Controller
 
             return response()->json(['message' => 'Data berhasil disimpan']);
         }
-        
+
         return response()->json(['message' => 'Tidak ada data yang disimpan']);
     }
 
@@ -94,35 +96,35 @@ class TriasePemeriksaanUgd extends Controller
     {
         $master = \App\Models\RsiaMasterTriasePemeriksaan::with([
             'skala1' => function ($query) use ($request) {
-                $query->with(['triase' => function($query) use ($request) {
+                $query->with(['triase' => function ($query) use ($request) {
                     if ($request->no_rawat) {
                         $query->where('no_rawat', $request->no_rawat);
                     }
                 }]);
             },
-            'skala2'=> function ($query) use ($request) {
-                $query->with(['triase' => function($query) use ($request) {
+            'skala2' => function ($query) use ($request) {
+                $query->with(['triase' => function ($query) use ($request) {
                     if ($request->no_rawat) {
                         $query->where('no_rawat', $request->no_rawat);
                     }
                 }]);
             },
-            'skala3'=> function ($query) use ($request) {
-                $query->with(['triase' => function($query) use ($request) {
+            'skala3' => function ($query) use ($request) {
+                $query->with(['triase' => function ($query) use ($request) {
                     if ($request->no_rawat) {
                         $query->where('no_rawat', $request->no_rawat);
                     }
                 }]);
             },
-            'skala4'=> function ($query) use ($request) {
-                $query->with(['triase' => function($query) use ($request) {
+            'skala4' => function ($query) use ($request) {
+                $query->with(['triase' => function ($query) use ($request) {
                     if ($request->no_rawat) {
                         $query->where('no_rawat', $request->no_rawat);
                     }
                 }]);
             },
-            'skala5'=> function ($query) use ($request) {
-                $query->with(['triase' => function($query) use ($request) {
+            'skala5' => function ($query) use ($request) {
+                $query->with(['triase' => function ($query) use ($request) {
                     if ($request->no_rawat) {
                         $query->where('no_rawat', $request->no_rawat);
                     }
@@ -148,5 +150,20 @@ class TriasePemeriksaanUgd extends Controller
                 return $master->skala5;
             })
             ->make(true);
+    }
+    function get(Request $request)
+    {
+        return $this->triase->where('no_rawat', $request->no_rawat)
+            ->with(['triaseDetail1' => function ($query) {
+                return $query->with(['skala1.pemeriksaan']);
+            }, 'triaseDetail2' => function ($query) {
+                return $query->with(['skala2.pemeriksaan']);
+            }, 'triaseDetail3' => function ($query) {
+                return $query->with(['skala3.pemeriksaan']);
+            }, 'triaseDetail4' => function ($query) {
+                return $query->with(['skala4.pemeriksaan']);
+            }, 'triaseDetail5' => function ($query) {
+                return $query->with(['skala5.pemeriksaan']);
+            }])->first();
     }
 }
