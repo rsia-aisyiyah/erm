@@ -1431,6 +1431,14 @@
             return asmed;
         }
 
+
+        function getLaporanOperasi(no_rawat) {
+            const laporan = $.get('/erm/operasi/laporan/detail', {
+                no_rawat: no_rawat,
+            });
+            return laporan
+        }
+
         function listAsmedRajalKandungan(data) {
             $('#listAsmedKandungan').empty()
             $.map(data, (a) => {
@@ -1481,6 +1489,40 @@
                 alertSessionExpired(request.status)
             })
             return asmed;
+        }
+
+        function getAskepRanapAnak(no_rawat) {
+            const askep = $.ajax({
+                url: '/erm/ranap/askep/anak',
+                method: 'GET',
+                data: {
+                    no_rawat: no_rawat,
+                },
+            })
+
+            return askep;
+        }
+
+        function getAskepUgd(no_rawat) {
+            const askep = $.get('/erm/ugd/asesmen/keperawatan', {
+                no_rawat: no_rawat
+            });
+
+            return askep;
+        }
+
+        function getTriase(no_rawat) {
+            const triase = $.get('/erm/triase/get', {
+                no_rawat: no_rawat
+            });
+            return triase;
+        }
+
+        function getAskepRalanAnak(no_rawat) {
+            const askep = $.get('/erm/poliklinik/askep/anak/detail', {
+                no_rawat: no_rawat
+            });
+            return askep;
         }
 
         function notifSend(topics, title, body, no_rawat, kategori) {
