@@ -390,8 +390,10 @@
                     // asmed & askep rawat inap
                     $('#nav-asmed-tab').attr('onclick', `setRiwayatAsmedAnak('${no_rawat}')`);
                     $('#nav-askep-tab').attr('onclick', `setRiwayatAskepAnak('${no_rawat}')`)
+                    $('#nav-askep-tab').removeClass('d-none')
                 } else if (regPeriksa.dokter.kd_sps == 'S0001') {
                     $('#nav-asmed-tab').attr('onclick', `setRiwayatAsmedKandungan('${no_rawat}')`);
+                    // $('#nav-askep-tab').addClass('d-none')
                     $('#nav-askep-tab').attr('onclick', `setRiwayatAskepKandungan('${no_rawat}')`)
                 }
                 $('.header-riwayat h6').html(status_lanjut)
@@ -559,7 +561,6 @@
                             <td>${result.laporan_operasi}</td>
                         </tr>
                     </table>`
-                    console.log('OPERASI ===', result);
                 }
                 contentLaporan.append(laporan).hide().fadeIn()
             })
@@ -1526,7 +1527,6 @@
                     cardAsmedKandungan.show()
                     const regPeriksa = asmed.reg_periksa
                     const pasien = regPeriksa.pasien
-                    console.log('REG PERIKSA ASEMED', asmed);
                     let infoAsmed = `<div class="row">
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <table class="table table-responsive borderless m-0">
@@ -2036,7 +2036,6 @@
 
             getAskepRanapAnak(no_rawat).done((askep) => {
                 if (Object.keys(askep).length) {
-                    console.log('ASKEP ===', askep);
                     cardAskepAnak.show()
                     const regPeriksa = askep.reg_periksa
                     let infoAskep = `<div class="row">
@@ -2448,6 +2447,20 @@
 
         }
 
+        function setRiwayatAskepKandungan(no_rawat) {
+            setAskepUgd(no_rawat)
+            // setAskepRanapKandungan(no_rawat)
+            // setAskepRalanKandungan(no_rawat)
+        }
+
+        function setAskepRanapKandungan(no_rawat) {
+            getAskepRanapKandungan(no_rawat).done((response) => {
+                console.log('ASKEP RANAP KANDUNGAN ===', response);
+            })
+        }
+
+
+
         function setAskepUgd(no_rawat) {
             const cardAskepUgd = $('#riwayatAskepUgd')
             const infoAskepUgd = $('#infoAskepUgd')
@@ -2458,7 +2471,6 @@
             contentAskepUgd.empty()
             getAskepUgd(no_rawat).done((askep) => {
                 if (Object.keys(askep).length) {
-                    console.log('ASKEP UGD ===', askep);
                     cardAskepUgd.show()
                     const regPeriksa = askep.reg_periksa;
                     const pasien = regPeriksa.pasien;
@@ -2746,7 +2758,6 @@
                     } else if (Object.keys(triases.triase_detail1).length) {
                         contentTriase = setDetailTriase('1', triases.triase_detail1)
                     }
-                    console.log('TRIASES ===', triases);
                     contentTriaseUgd.append(contentTriase).hide().fadeIn()
                 }
             })

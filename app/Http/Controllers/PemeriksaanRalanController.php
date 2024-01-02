@@ -113,7 +113,7 @@ class PemeriksaanRalanController extends Controller
 
 
         $grafik = [
-            'nip' => $request->nik,
+            'nip' => $request->nip,
             'no_rawat' => $request->no_rawat,
             'suhu_tubuh' => $request->suhu_tubuh,
             'tensi' => $request->tensi,
@@ -140,7 +140,7 @@ class PemeriksaanRalanController extends Controller
             }
         } else {
             $dataTambah = [
-                'nip' => $request->nip,
+                'nip' => $request->kd_dokter ? $request->kd_dokter : $request->nip,
                 'no_rawat' => $request->no_rawat,
                 'jam_rawat' => date('H:i:s'),
                 'tgl_perawatan' => $this->tanggal->now()->toDateString(),
