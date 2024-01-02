@@ -111,8 +111,9 @@ class PemeriksaanRalanController extends Controller
             'lingkar_perut' => '-',
         ];
 
+
         $grafik = [
-            'nip' => $request->nip,
+            'nip' => $request->nik,
             'no_rawat' => $request->no_rawat,
             'suhu_tubuh' => $request->suhu_tubuh,
             'tensi' => $request->tensi,
@@ -130,7 +131,6 @@ class PemeriksaanRalanController extends Controller
             'o2' => $request->o2,
             'sumber' => 'SOAP',
         ];
-
         if ($pemeriksaan) {
             $update = PemeriksaanRalan::where($clause)->update($data);
             $trackSql  = $this->track->updateSql($this->pemeriksaan, $data, $clause);
