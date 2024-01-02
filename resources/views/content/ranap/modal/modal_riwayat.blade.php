@@ -559,6 +559,7 @@
         function setRiwayatPemeriksaanRanap(no_rawat) {
             const cardRiwayatPemeriksaanRanap = document.getElementById('periksaRawatInap');
             const bodyCardPemeriksaanRanap = document.getElementById('collapsePemeriksaanRanap')
+            bodyCardPemeriksaanRanap.innerHTML = '';
             cardRiwayatPemeriksaanRanap.style.display = 'none';
             getPemeriksaanRanap(no_rawat).done((periksa) => {
                 if (periksa.length) {
