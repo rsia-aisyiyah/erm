@@ -575,11 +575,16 @@
                 if (periksa.length) {
                     cardRiwayatPemeriksaanRanap.style.display = 'inline';
                     periksa.map((pemeriksaan, index) => {
+                        let headColor = '';
+                        if (pemeriksaan.pegawai.dokter) {
+                            headColor = 'bg-primary text-white'
+                        } else {
+                            headColor = 'bg-warning'
+                        }
                         const listPemeriksaan = `<div class="row">
-
                                     <div class="col-md-6 col-lg-5 col-sm-12 mb-1">
                                         <div class="card">
-                                            <div class="card-header">
+                                            <div class="card-header ${headColor}">
                                                 Tanggal : ${formatTanggal(pemeriksaan.tgl_perawatan)} ${pemeriksaan.jam_rawat}
                                             </div>
                                             <div class="card-body">
@@ -630,7 +635,7 @@
                                     </div>
                                     <div class="col-md-6 col-lg-7 col-sm-12 mb-1">
                                         <div class="card">
-                                            <div class="card-header">
+                                            <div class="card-header ${headColor}">
                                                 Petugas : ${pemeriksaan.petugas.nama}
                                             </div>
                                             <div class="card-body">
@@ -679,27 +684,26 @@
             getPemeriksaanPoli(no_rawat, kd_poli).done((pemeriksaan) => {
                 if (pemeriksaan.length) {
                     cardRiwayatPemeriksaanRajal.style.display = 'inline'
-                    // cardRiwayatPemeriksaanRajal.show()
-                    // cardRiwayatPemeriksaanRajal.css('display', '')
+                    if (kd_poli == 'IGDK') {
+                        $('#periksaRawatJalan').find('span').html('Pemeriksaan UGD')
+                    } else {
+                        $('#periksaRawatJalan').find('span').html('Pemeriksaan Rawat Jalan')
+                    }
                     pemeriksaan.map((periksa, index) => {
+                        let headColor = '';
+                        if (periksa.pegawai.dokter) {
+                            headColor = 'bg-primary text-white'
+                        } else {
+                            headColor = 'bg-warning'
+                        }
                         const listPemeriksaan = `<div class="row">
                                         <div class="col-md-6 col-lg-5 col-sm-12 mb-1">
                                             <div class="card">
+                                               <div class="card-header card-text ${headColor}">
+                                                   Tanggal : ${formatTanggal(periksa.tgl_perawatan)} ${periksa.jam_rawat}
+                                                </div>
                                                 <div class="card-body">
                                                     <table class="table borderless table-sm table-responsive" cellpadding="5" cellspacing="0">
-                                                            <thead style="height:50px">
-                                                                <tr class="borderless">
-                                                                    <th width="20%">Petugas</th>
-                                                                    <td>:</td>
-                                                                    <td colspan=4>${periksa.pegawai?.nama}</td>
-                                                                </tr>     
-                                                                <tr style="height:50px">
-                                                                    <th width="20%">TanggaL</th>
-                                                                    <td>:</td>
-                                                                    <td colspan=4>${formatTanggal(periksa.tgl_perawatan)} ${periksa.jam_rawat}</td>
-                                                                </tr>     
-                                                            </thead>
-
                                                             <tr>
                                                                 <th width="20%">Tinggi</th>
                                                                 <td>:</td>
@@ -746,6 +750,9 @@
                                         </div>
                                         <div class="col-md-6 col-lg-7 col-sm-12 mb-1">
                                             <div class="card">
+                                                 <div class="card-header card-text ${headColor}">
+                                                   Petugas : ${periksa.pegawai.nama}
+                                                </div>
                                                 <div class="card-body">
                                                     <table class="table table-sm table-responsive borderless" cellpadding="5" cellspacing="0">
                                                         <tr>

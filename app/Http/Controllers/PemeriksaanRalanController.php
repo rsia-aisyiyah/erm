@@ -35,7 +35,9 @@ class PemeriksaanRalanController extends Controller
     {
 
         $pemeriksaan = PemeriksaanRalan::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa.pasien', 'pegawai']);
+            ->with(['regPeriksa.pasien', 'pegawai' => function ($query) {
+                $query->with('dokter');
+            }]);
 
         if ($request->kd_poli) {
             $response =  response()->json($pemeriksaan->get(), 200);
