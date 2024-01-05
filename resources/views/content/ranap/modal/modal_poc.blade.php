@@ -545,7 +545,7 @@
                             $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
                             $(`#formPlanOfCare input[id=keterangan_batasan]`).val(batasan.split(' : ')[2])
                             $(`#formPlanOfCare input[id=keterangan_batasan]`).prop('disabled', false)
-                            $(`#formPlanOfCare input[id=${batasan.split(' : ')[1]}]`).prop('checked', true)
+                            $(`#formPlanOfCare input[id=${batasan.split(':')[1]}]`).prop('checked', true)
 
                         }
                     });
