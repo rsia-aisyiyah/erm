@@ -5,14 +5,17 @@
         <div class="col-lg-2 col-sm-12 mb-2">
             <input type="text" class="form-control form-control-sm" id="nomor_rawat" name="no_rawat" placeholder="" readonly>
         </div>
-        <div class="col-lg-2 col-sm-12 mb-2">
+        <div class="col-lg-1 col-sm-12 mb-2">
             <input type="text" class="form-control form-control-sm" id="no_rm" name="no_rkm_medis" placeholder="" readonly>
         </div>
-        <div class="col-lg-4 col-sm-12 mb-2">
+        <div class="col-lg-3 col-sm-12 mb-2">
             <input type="text" class="form-control form-control-sm" id="nama_pasien" name="nm_pasien" placeholder="" readonly>
         </div>
         <div class="col-lg-2 col-sm-12 mb-2">
-            <input type="text" class="form-control form-control-sm" id="p_jawab" name="png_jawab" placeholder="" readonly>
+            <input type="text" class="form-control form-control-sm" id="p_jawab" name="p_jawab" placeholder="" readonly>
+        </div>
+        <div class="col-lg-2 col-sm-12 mb-2">
+            <input type="text" class="form-control form-control-sm" id="png_jawab" name="png_jawab" placeholder="" readonly>
         </div>
     </div>
     <hr style="margin:2px">
