@@ -265,6 +265,11 @@
         function simpanPoc() {
             const queryString = formPlanOfCare.serializeArray()
             const resultObject = {};
+            let periksa = '';
+            let kewaspadaan = '';
+            let aktivitas ='';
+            let keperawatan ='';
+            let nutrisi ='';
 
             queryString.forEach(item => {
                 const {
@@ -290,7 +295,6 @@
             // set pemeriksaan
             if (Array.isArray(resultObject.pemeriksaan_penunjang)) {
                 resultObject.pemeriksaan_penunjang = resultObject.pemeriksaan_penunjang.map((val) => {
-
                     if (val == 'Laboratorium') {
                         periksa = `${val} : ${resultObject.ket_laboratorium}`
                     } else if (val == 'ECG') {
@@ -316,7 +320,7 @@
 
             // setKewaspadaan
             if (Array.isArray(resultObject.kewaspadaan)) {
-                const kewaspadaan = resultObject.kewaspadaan.map((val) => {
+                kewaspadaan = resultObject.kewaspadaan.map((val) => {
                     return val
                 }).join('; ')
 
@@ -325,7 +329,7 @@
 
             // set aktivitas
             if (Array.isArray(resultObject.aktivitas)) {
-                const aktivitas = resultObject.aktivitas.map((val) => {
+              aktivitas = resultObject.aktivitas.map((val) => {
                     return val
                 }).join('; ')
 
@@ -365,7 +369,7 @@
 
             // keperawatan
             if (Array.isArray(resultObject.keperawatan)) {
-                const keperawatan = resultObject.keperawatan.map((val) => {
+                keperawatan = resultObject.keperawatan.map((val) => {
                     return val
                 }).join('; ')
 
@@ -540,13 +544,13 @@
                             $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
                             $(`#formPlanOfCare input[id=ket_${element.id}]`).val(nutrisi.split(' : ')[1])
                             $(`#formPlanOfCare input[id=ket_${element.id}]`).prop('disabled', false)
-                        }
-                        if (batasan) {
-                            $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
-                            $(`#formPlanOfCare input[id=keterangan_batasan]`).val(batasan.split(' : ')[2])
-                            $(`#formPlanOfCare input[id=keterangan_batasan]`).prop('disabled', false)
-                            $(`#formPlanOfCare input[id=${batasan.split(':')[1]}]`).prop('checked', true)
-
+                            if (batasan) {
+                                $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
+                                $(`#formPlanOfCare input[id=keterangan_batasan]`).val(batasan.split(' : ')[2])
+                                $(`#formPlanOfCare input[id=keterangan_batasan]`).prop('disabled', false)
+                                $(`#formPlanOfCare input[id=${batasan.split(':')[1]}]`).prop('checked', true)
+    
+                            }
                         }
                     });
                     checkAktivitas.each((index, elemet) => {
