@@ -198,16 +198,20 @@
         }
 
         function simpanSoap() {
-
             const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
-
-            console.log('DATA FORM', data);
-
             $.post('/erm/pemeriksaan/simpan', data).done((response) => {
+                if (data.ket_pasien) {
+                    $.post('/erm/pasien/keterangan', {
+                        no_rkm_medis: data.no_rkm_medis,
+                        ket_pasien: data.ket_pasien,
+                        _token: "{{ csrf_token() }}"
+                    })
+                }
                 alertSuccessAjax('Data SOAP berhasil disimpan').then(() => {
                     hitungPanggilan();
                     reloadTabelPoli();
                     $('#modalSoap').modal('hide');
+
                 })
             }).fail((request) => {
                 alertErrorAjax(request)
@@ -224,7 +228,9 @@
             let textObject = `Janin : \nPres : \nDJJ : \nTBJ : \nJK : \nPlacenta : \nAk : \n`
 
             getRegPeriksa(no_rawat).done((regPeriksa) => {
-                
+                if (regPeriksa.pasien.ket_pasien) {
+                    $('#formSoapPoli input[name=ket_pasien]').val(regPeriksa.pasien.ket_pasien.keterangan)
+                }
                 $('#formSoapPoli input[name=no_rawat]').val(no_rawat)
                 $('#formSoapPoli input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
                 $('#formSoapPoli input[name=nm_pasien]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk}) / ${regPeriksa.pasien.umur}`)
@@ -237,7 +243,6 @@
             })
 
             getPemeriksaanPoli(no_rawat).done((pemeriksaan) => {
-                console.log('PEMERIKSAAN ===', pemeriksaan);
                 if (Object.keys(pemeriksaan).length) {
                     Object.keys(pemeriksaan).map((key, index) => {
                         select = $(`#formSoapPoli select[name=${key}]`);

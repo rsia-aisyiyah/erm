@@ -103,7 +103,7 @@ class RegPeriksaController extends Controller
             ->with('kamarInap', function ($q) {
                 return $q->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
             })
-            ->with('pasien.bahasa', 'dokter', 'dokter.spesialis', 'penjab', 'diagnosaPasien.penyakit', 'bayiGabung.kamarInap.kamar.bangsal', 'poliklinik')
+            ->with('pasien.bahasa', 'dokter', 'dokter.spesialis', 'penjab', 'diagnosaPasien.penyakit', 'bayiGabung.kamarInap.kamar.bangsal', 'poliklinik', 'pasien.ketPasien')
             ->first();
         return response()->json($regPeriksa);
     }
@@ -151,9 +151,9 @@ class RegPeriksaController extends Controller
     public function ambil(Request $request)
     {
         if ($request->no_rawat) {
-            $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien', 'dokter.spesialis', 'kamarInap.kamar.bangsal', 'suratKontrol', 'poliklinik', 'suratKontrol')->first();
+            $regPeriksa = RegPeriksa::where('no_rawat', $request->no_rawat)->with('pasien.ketPasien', 'dokter.spesialis', 'kamarInap.kamar.bangsal', 'suratKontrol', 'poliklinik', 'suratKontrol')->first();
         } else {
-            $regPeriksa = RegPeriksa::where('tgl_registrasi', $request->tgl_registrasi)->where('status_lanjut', 'Ralan')->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'suratKontrol')->get();
+            $regPeriksa = RegPeriksa::where('tgl_registrasi', $request->tgl_registrasi)->where('status_lanjut', 'Ralan')->with('pasien.ketPasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'suratKontrol')->get();
         }
         return response()->json($regPeriksa);
     }

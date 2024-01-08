@@ -88,6 +88,7 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\RsiaKetPasienController;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -109,6 +110,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pasien', [PasienController::class, 'index']);
     Route::get('/pasien/cari', [PasienController::class, 'search']);
     Route::get('/pasien/ambil/{no_rkm_medis}', [PasienController::class, 'ambil']);
+
+    Route::get('/pasien/keterangan', [RsiaKetPasienController::class, 'get']);
+    Route::post('/pasien/keterangan', [RsiaKetPasienController::class, 'create']);
 
     Route::get('/periksa/show/{no_rkm_medis}/{tanggal?}', [
         RegPeriksaController::class, 'show',

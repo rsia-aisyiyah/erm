@@ -1750,6 +1750,7 @@
             $('#body_umum').empty();
             $('#body_racikan').empty();
             $('#body_riwayat').empty();
+            $('#ket_pasien').val('');
             $('button[data-bs-target="#tab-soap-pane"]').tab('show')
 
         });

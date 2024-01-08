@@ -47,4 +47,8 @@ class Pasien extends Model
     {
         return $this->belongsTo(CacatFisik::class, 'cacat_fisik', 'id');
     }
+    function ketPasien()
+    {
+        return $this->hasOne(RsiaKetPasien::class, 'no_rkm_medis', 'no_rkm_medis');
+    }
 }
