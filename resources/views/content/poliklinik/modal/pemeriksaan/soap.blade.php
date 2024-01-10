@@ -15,10 +15,10 @@
             <input type="text" class="form-control form-control-sm" id="nama_pasien" name="nm_pasien" placeholder="" readonly>
         </div>
         <div class="col-lg-1 col-sm-12 mb-2">
-            <input type="text" class="form-control form-control-sm" id="p_jawab" name="p_jawab" placeholder="" readonly>
+            <input type="text" class="form-control form-control-sm" id="png_jawab" name="png_jawab" placeholder="" readonly>
         </div>
         <div class="col-lg-2 col-sm-12 mb-2">
-            <input type="text" class="form-control form-control-sm" id="png_jawab" name="png_jawab" placeholder="" readonly>
+            <input type="text" class="form-control form-control-sm" id="p_jawab" name="p_jawab" placeholder="" readonly>
         </div>
         <div class="col-lg-2 col-sm-12 mb-2">
             <input type="text" class="form-control form-control-sm" id="ket_pasien" name="ket_pasien" placeholder="Keterangan">
