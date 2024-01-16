@@ -1198,32 +1198,6 @@
             no_rawat = $('#nomor_rawat').val();
             cekResep(no_rawat).done(function(response) {
                 resep = Object.keys(response).length
-                
-                html='<tr>';
-                html += '<td><input type="hidden" class="kode_obat_umum"/>';
-                html +=
-                    '<input type="text" class="no_resep_umum form-control form-control-sm form-underline" readonly/>';
-                html += '</td>';
-                html += '<td>';
-                html +=
-                    '<input type="text" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat_umum form-underline" name="nama_obat_umum" /><div class="list_obat"></div>';
-                html += '</td>';
-                html += '<td>';
-                html +=
-                    '<input type="text" class="jml_umum form-control form-control-sm form-underline"/>';
-                html += '</td>';
-                html += '<td>';
-                html +=
-                    '<input type="text" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
-                html += '</td>';
-                html += '<td>';
-                html +=
-                    '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanObat()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
-                html += '</td>';
-                html += '</tr>';
-                
-                $('#tb-resep tbody').append(html)
-                riwayatResep($('#no_rm').val()) 
                 if (resep == 0) {
                     simpanResepObat().done(function(res) {
                         $('.no_resep_umum ').val(res.no_resep)
@@ -1232,10 +1206,33 @@
                     $.map(response, function(res) {
                         $('.no_resep_umum ').val(res.no_resep)
                     })
-
                 }
-              
             });
+
+            html = '<tr>';
+            html += '<td><input type="hidden" class="kode_obat_umum"/>';
+            html +=
+                '<input type="text" class="no_resep_umum form-control form-control-sm form-underline" readonly/>';
+            html += '</td>';
+            html += '<td>';
+            html +=
+                '<input type="text" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat_umum form-underline" name="nama_obat_umum" /><div class="list_obat"></div>';
+            html += '</td>';
+            html += '<td>';
+            html +=
+                '<input type="text" class="jml_umum form-control form-control-sm form-underline"/>';
+            html += '</td>';
+            html += '<td>';
+            html +=
+                '<input type="text" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
+            html += '</td>';
+            html += '<td>';
+            html +=
+                '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanObat()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
+            html += '</td>';
+            html += '</tr>';
+            $('#tb-resep tbody').append(html)
+            riwayatResep($('#no_rm').val())
 
         }
 
@@ -1249,8 +1246,18 @@
             no_rawat = $('#nomor_rawat').val();
             cekResep(no_rawat).done(function(response) {
                 resep = Object.keys(response).length
-                
-                html = '<tr>';
+                if (resep == 0) {
+                    simpanResepObat().done(function(res) {
+                        $('.no_resep_umum ').val(res.no_resep)
+                    });
+                } else {
+                    $.map(response, function(res) {
+                        $('.no_resep_umum ').val(res.no_resep)
+                    })
+                }
+            });
+
+            html = '<tr>';
             html += '<td>';
             html +=
                 '<input type="text" class="no_racik form-control form-control-sm form-underline" readonly/>';
@@ -1281,19 +1288,7 @@
                 '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanRacikan()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
             html += '</td>';
             html += '</tr>';
-            if (resep == 0) {
-                    simpanResepObat().done(function(res) {
-                        $('.no_resep_umum ').val(res.no_resep)
-                    });
-                } else {
-                    $.map(response, function(res) {
-                        $('.no_resep_umum ').val(res.no_resep)
-                    })
-                }
             $('#tb-resep-racikan tbody').append(html)
-            });
-
-           
 
             no_racik = 0;
             $.ajax({
@@ -1335,16 +1330,28 @@
         function setNoResep() {
             let tanggal = "{{ date('Y-m-d') }}";
             let nomor = '';
-           const resep =  $.ajax({
+            $.ajax({
                 url: '/erm/resep/obat/akhir',
                 method: 'GET',
                 dataType: 'JSON',
+                async: false,
                 data: {
                     'tgl_peresepan': tanggal,
                     'tgl_perawatan': tanggal,
                 },
+                success: function(response) {
+                    if (Object.keys(response).length > 0) {
+                        if (response.tgl_perawatan == '0000-00-00' && response.no_rawat == $('#nomor_rawat').val()) {
+                            nomor = response.no_resep;
+                        } else {
+                            nomor = parseInt(response.no_resep) + 1
+                        }
+                    } else {
+                        nomor = "{{ date('Ymd') }}" + '0001';
+                    }
+                }
             })
-            return resep;
+            return nomor;
 
         }
 
@@ -1697,19 +1704,7 @@
                             $('.no_resep').val(res.no_resep)
                         })
                     } else {
-
-                        setNoResep().done((response)=>{
-                            if (Object.keys(response).length > 0) {
-                        if (response.tgl_perawatan == '0000-00-00' && response.no_rawat == $('#nomor_rawat').val()) {
-                            nomor = response.no_resep;
-                        } else {
-                            nomor = parseInt(response.no_resep) + 1
-                        }
-                    } else {
-                        nomor = "{{ date('Ymd') }}" + '0001';
-                    }
-                    $('.no_resep').val(nomor)
-                        })
+                        $('.no_resep').val(setNoResep())
                     }
 
                 },
