@@ -1196,8 +1196,34 @@
         function tambahUmum() {
             no_resep = $('.no_resep_umum').val();
             no_rawat = $('#nomor_rawat').val();
+            html='';
             cekResep(no_rawat).done(function(response) {
                 resep = Object.keys(response).length
+
+                html += '<td><input type="hidden" class="kode_obat_umum"/>';
+                html +=
+                    '<input type="text" class="no_resep_umum form-control form-control-sm form-underline" readonly/>';
+                html += '</td>';
+                html += '<td>';
+                html +=
+                    '<input type="text" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat_umum form-underline" name="nama_obat_umum" /><div class="list_obat"></div>';
+                html += '</td>';
+                html += '<td>';
+                html +=
+                    '<input type="text" class="jml_umum form-control form-control-sm form-underline"/>';
+                html += '</td>';
+                html += '<td>';
+                html +=
+                    '<input type="text" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
+                html += '</td>';
+                html += '<td>';
+                html +=
+                    '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanObat()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
+                html += '</td>';
+                html += '</tr>';
+                
+                $('#tb-resep tbody').append(html)
+                riwayatResep($('#no_rm').val()) 
                 if (resep == 0) {
                     simpanResepObat().done(function(res) {
                         $('.no_resep_umum ').val(res.no_resep)
@@ -1206,33 +1232,10 @@
                     $.map(response, function(res) {
                         $('.no_resep_umum ').val(res.no_resep)
                     })
-                }
-            });
 
-            html = '<tr>';
-            html += '<td><input type="hidden" class="kode_obat_umum"/>';
-            html +=
-                '<input type="text" class="no_resep_umum form-control form-control-sm form-underline" readonly/>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<input type="text" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat_umum form-underline" name="nama_obat_umum" /><div class="list_obat"></div>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<input type="text" class="jml_umum form-control form-control-sm form-underline"/>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<input type="text" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanObat()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
-            html += '</td>';
-            html += '</tr>';
-            $('#tb-resep tbody').append(html)
-            riwayatResep($('#no_rm').val())
+                }
+              
+            });
 
         }
 
@@ -1246,18 +1249,8 @@
             no_rawat = $('#nomor_rawat').val();
             cekResep(no_rawat).done(function(response) {
                 resep = Object.keys(response).length
-                if (resep == 0) {
-                    simpanResepObat().done(function(res) {
-                        $('.no_resep_umum ').val(res.no_resep)
-                    });
-                } else {
-                    $.map(response, function(res) {
-                        $('.no_resep_umum ').val(res.no_resep)
-                    })
-                }
-            });
-
-            html = '<tr>';
+                
+                html = '<tr>';
             html += '<td>';
             html +=
                 '<input type="text" class="no_racik form-control form-control-sm form-underline" readonly/>';
@@ -1288,7 +1281,19 @@
                 '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanRacikan()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
             html += '</td>';
             html += '</tr>';
+            if (resep == 0) {
+                    simpanResepObat().done(function(res) {
+                        $('.no_resep_umum ').val(res.no_resep)
+                    });
+                } else {
+                    $.map(response, function(res) {
+                        $('.no_resep_umum ').val(res.no_resep)
+                    })
+                }
             $('#tb-resep-racikan tbody').append(html)
+            });
+
+           
 
             no_racik = 0;
             $.ajax({
