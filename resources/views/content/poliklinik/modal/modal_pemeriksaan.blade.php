@@ -1196,10 +1196,10 @@
         function tambahUmum() {
             no_resep = $('.no_resep_umum').val();
             no_rawat = $('#nomor_rawat').val();
-            html='';
             cekResep(no_rawat).done(function(response) {
                 resep = Object.keys(response).length
-
+                
+                html='<tr>';
                 html += '<td><input type="hidden" class="kode_obat_umum"/>';
                 html +=
                     '<input type="text" class="no_resep_umum form-control form-control-sm form-underline" readonly/>';
@@ -1335,28 +1335,16 @@
         function setNoResep() {
             let tanggal = "{{ date('Y-m-d') }}";
             let nomor = '';
-            $.ajax({
+           const resep =  $.ajax({
                 url: '/erm/resep/obat/akhir',
                 method: 'GET',
                 dataType: 'JSON',
-                async: false,
                 data: {
                     'tgl_peresepan': tanggal,
                     'tgl_perawatan': tanggal,
                 },
-                success: function(response) {
-                    if (Object.keys(response).length > 0) {
-                        if (response.tgl_perawatan == '0000-00-00' && response.no_rawat == $('#nomor_rawat').val()) {
-                            nomor = response.no_resep;
-                        } else {
-                            nomor = parseInt(response.no_resep) + 1
-                        }
-                    } else {
-                        nomor = "{{ date('Ymd') }}" + '0001';
-                    }
-                }
             })
-            return nomor;
+            return resep;
 
         }
 
@@ -1709,7 +1697,19 @@
                             $('.no_resep').val(res.no_resep)
                         })
                     } else {
-                        $('.no_resep').val(setNoResep())
+
+                        setNoResep().done((response)=>{
+                            if (Object.keys(response).length > 0) {
+                        if (response.tgl_perawatan == '0000-00-00' && response.no_rawat == $('#nomor_rawat').val()) {
+                            nomor = response.no_resep;
+                        } else {
+                            nomor = parseInt(response.no_resep) + 1
+                        }
+                    } else {
+                        nomor = "{{ date('Ymd') }}" + '0001';
+                    }
+                    $('.no_resep').val(nomor)
+                        })
                     }
 
                 },
