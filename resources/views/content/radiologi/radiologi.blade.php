@@ -136,22 +136,9 @@
                 drawTbRadiologi()
                 toastReload('Memperbaharui data radiologi', 2000)
             }, 50000);
-
-
-
-
         })
 
-        function getBaseUrl(urlSegments = '') {
-            const getUrl = "{{ url('') }}"
-            const domain = getUrl.split('/')[2];
-            if (domain == 'sim.rsiaaisyiyah.com') {
-                url = 'https://sim.rsiaaisyiyah.com/erm/' + urlSegments
-            } else {
-                url = `{{ url('${urlSegments}') }}`
-            }
-            return url;
-        }
+
 
         function drawTbRadiologi() {
             tbRadiologi.dataTable({
@@ -192,7 +179,7 @@
                         render: (data, type, row, meta) => {
                             let no_rkm_medis = data.no_rkm_medis
                             if (row.hasil_radiologi.length) {
-                                listPrint = `<li><a class="dropdown-item" href="${getBaseUrl(`radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}`)}" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>`;
+                                listPrint = `<li><a class="dropdown-item" href="${getBaseUrl(`erm/radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}`)}" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>`;
                             } else {
                                 listPrint = ``
                             }
@@ -372,7 +359,7 @@
                 if (Object.keys(response.gambar_radiologi).length) {
                     response.gambar_radiologi.map((imgx, index) => {
                         if (tgl_periksa == imgx.tgl_periksa && jam == imgx.jam) {
-                            gambar = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${imgx.lokasi_gambar}`
+                            gambar = `${getBaseUrl()}/webapps/radiologi/${imgx.lokasi_gambar}`
                             htmlImage += `
                                  <a class="btn btn-success btn-sm m-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gambar}">
                                     <i class="bi bi-eye"></i> LAYAR PENUH

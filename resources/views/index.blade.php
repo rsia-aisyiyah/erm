@@ -73,6 +73,18 @@
             })
         }
 
+        function getBaseUrl(urlSegments = '') {
+            const getUrl = "{{ url('') }}"
+            const arrDomain = getUrl.split('/');
+            const segment = urlSegments ? `/${urlSegments}` : ''
+            if (arrDomain[2] == 'sim.rsiaaisyiyah.com') {
+                url = 'https://sim.rsiaaisyiyah.com' + segment;
+            } else {
+                url = `${arrDomain[0]}//${arrDomain[2]}${segment}`
+            }
+            return url;
+        }
+
         function ambilNoRawat(no_rawat) {
             id = no_rawat;
         }

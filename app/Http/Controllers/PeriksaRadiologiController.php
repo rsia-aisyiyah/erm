@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PeriksaRadiologi;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
-use PDF;
 use Yajra\DataTables\DataTables;
 
 class PeriksaRadiologiController extends Controller
@@ -131,13 +131,19 @@ class PeriksaRadiologiController extends Controller
             // 'ttd_petugas' => $this->setFingerOutput($hasil->petugas->nama, bcrypt($hasil->petugas->nip), $hasil->tgl_periksa),
         ];
 
+        $domain = $request->getHost();
+        if ($domain == 'localhost') {
+            $domain = "http://{$domain}";
+        } else {
+            $domain = "https://{$domain}";
+        }
         foreach ($hasil->permintaan as $item => $permintaan) {
             $data['tgl_sampling'] = $permintaan->tgl_sampel;
             $data['jam_sampling'] = $permintaan->jam_sampel;
             $data['ttd_petugas'] = $this->setFingerOutput($hasil->petugas->nama, bcrypt($hasil->petugas->nip), $permintaan->tgl_sampel);
         }
         foreach ($hasil->gambarRadiologi as $item => $gbr) {
-            $data['gambar'][] = "https://sim.rsiaaisyiyah.com/webapps/radiologi/" . $gbr->lokasi_gambar;
+            $data['gambar'][] = "{$domain}/webapps/radiologi/" . $gbr->lokasi_gambar;
         }
         if ($hasil->regPeriksa->kamarInap) {
             foreach ($hasil->regPeriksa->kamarInap as $item => $inap) {
@@ -148,7 +154,7 @@ class PeriksaRadiologiController extends Controller
             $data['hasil'] = $hsl->hasil;
         }
 
-        $file = PDF::loadView('content.print.hasil_radiologi', ['data' => $data])
+        $file = Pdf::loadView('content.print.hasil_radiologi', ['data' => $data])
             ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
             ->setPaper(array(0, 0, 595, 935));
         if ($request->openWith == 'stream') {
