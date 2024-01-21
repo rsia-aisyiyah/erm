@@ -207,7 +207,7 @@
                                 penjab = `<span class="text-success"><b>${row.penjab.png_jawab}</b></span>`
                             }
                             kamarInap = Object.keys(row.kamar_inap).length ? `<span class="badge text-bg-success">Pindah Kamar</span>` : '';
-                            return `${row.no_rawat} <br/> <strong>${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong> 
+                            return `${row.no_rawat} <br/> <strong>${row.no_rkm_medis} <br/> ${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong> 
                             <br/> ${penjab} <br/> ${kamarInap}`
                         }
                     },
