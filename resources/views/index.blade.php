@@ -80,7 +80,7 @@
             if (arrDomain[2] == 'sim.rsiaaisyiyah.com') {
                 url = 'https://sim.rsiaaisyiyah.com' + segment;
             } else {
-                url = `${arrDomain[0]}//${arrDomain[2]}${segment}`
+                url = `${arrDomain[0]}//192.168.100.33${segment}`
             }
             return url;
         }
