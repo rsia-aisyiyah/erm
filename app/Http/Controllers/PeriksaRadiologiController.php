@@ -34,11 +34,11 @@ class PeriksaRadiologiController extends Controller
             },  'regPeriksa.poliklinik', 'permintaan.permintaanPemeriksaan'
         ]);
         if ($request->tgl_periksa) {
+            $jam = explode(':', $request->jam); //split jam,
             return $periksa->where([
                 'no_rawat' => $request->no_rawat,
                 'tgl_periksa' => $request->tgl_periksa,
-                'jam' => $request->jam,
-            ])->first();
+            ])->where('jam', 'like', '%' . "{$jam[0]}:$jam[1]" . '%')->first(); // hanya ambil jam dan menit saja
         } else {
             return $periksa->where('no_rawat', $request->no_rawat)->get();
         }
