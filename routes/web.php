@@ -89,6 +89,7 @@ use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
 use App\Http\Controllers\RsiaKetPasienController;
+use App\Http\Controllers\SkriningTbController;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -344,6 +345,10 @@ Route::middleware('auth')->group(function () {
     Route::post('poc/tim/create', [PlanOfCareTimController::class, 'create']);
     Route::post('poc/tim/personil/delete/{id}', [PlanOfCareTimController::class, 'delete']);
 
+
+    Route::get('skrining/tb', [SkriningTbController::class, 'get']);
+    Route::post('skrining/tb', [SkriningTbController::class, 'create']);
+    Route::post('skrining/tb/delete', [SkriningTbController::class, 'delete']);
 
     Route::prefix('bridging')->group(function () {
         Route::prefix('referensi')->group(function () {
