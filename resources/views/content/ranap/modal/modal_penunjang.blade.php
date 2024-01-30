@@ -3,36 +3,10 @@
         <div class="modal-content">
             <div class="modal-body">
                 <h5 class="text-center">BERKAS PEMERIKSAAN PENUNJANG</h5>
-                {{-- <table class="borderless">
-                    <tr>
-                        <td>Nomor Rawat</td>
-                        <td>:</td>
-                        <td id="no_rawat">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nama</td>
-                        <td>:</td>
-                        <td id="nama">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Umur / JK</td>
-                        <td>:</td>
-                        <td id="umur">
-
-                        </td>
-                    </tr>
-                </table> --}}
-
-
                 <div id="berkas">
                     @include('content.upload.inforegistrasi')
                     @include('content.upload.resume')
                 </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i

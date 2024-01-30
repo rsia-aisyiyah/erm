@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body modal-riwayat ">
                 <div class="row">
-                    <div class="col-md-12 col-sm-12 col-lg-2 mb-2" style="max-height: 100px">
+                    <div class="col-md-12 col-sm-12 col-lg-2 mb-2">
                         <nav class="navbar navbar-expand-lg bg-light">
                             <div class="container-fluid">
                                 <a href="javascript:void(0)" class="nav-brand"></a>
@@ -268,6 +268,8 @@
                                     </div>
                                     <div class="tab-pane fade" id="nav-askep" role="tabpanel" aria-labelledby="nav-askep-tab" tabindex="0">
                                         @include('content.ranap.riwayat._askepAnakRalan')
+                                        @include('content.ranap.riwayat._askepKandunganRalan')
+                                        @include('content.ranap.riwayat._askepKandunganRanap')
                                         <div class="card position-relative mt-2" id="riwayatAskepAnak">
                                             <div class="card-header" data-bs-toggle="collapse" href="#collapseAskepAnak" role="button" aria-expanded="false" aria-controls="collapseAskepAnak">
                                                 <div class="card-text">
@@ -290,6 +292,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="card position-relative mt-2" id="riwayatAskepUgd">
                                             <div class="card-header" data-bs-toggle="collapse" href="#collapseAskepUgd" role="button" aria-expanded="false" aria-controls="collapseAskepUgd">
                                                 <div class="card-text">
@@ -2456,15 +2459,14 @@
 
         function setRiwayatAskepKandungan(no_rawat) {
             setAskepUgd(no_rawat)
-            // setAskepRanapKandungan(no_rawat)
-            // setAskepRalanKandungan(no_rawat)
+            // $('#riwayatAskepAnak').hide();
+            // $('#riwayatAskepRalanAnak').hide();
+            setAskepRanapKandungan(no_rawat)
+            setAskepRalanKandungan(no_rawat)
         }
 
-        function setAskepRanapKandungan(no_rawat) {
-            getAskepRanapKandungan(no_rawat).done((response) => {
-                console.log('ASKEP RANAP KANDUNGAN ===', response);
-            })
-        }
+
+
 
 
 

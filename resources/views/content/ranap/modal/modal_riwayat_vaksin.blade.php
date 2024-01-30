@@ -85,7 +85,7 @@
                 },
                 method: 'POST',
             }).done((response) => {
-                setRiwayatImunisasi(no_rkm_medis)
+                setTbImunisasi(no_rkm_medis)
             }).fail((request, status, error, x) => {
                 Swal.fire(
                     'Gagal',
@@ -117,7 +117,7 @@
                         },
                         method: 'DELETE',
                     }).done((response) => {
-                        setRiwayatImunisasi(no_rkm_medis)
+                        setTbImunisasi(no_rkm_medis)
                     })
                 } else if (result.isDismissed) {
                     $(p).prop('checked', 'checked')
@@ -126,7 +126,7 @@
 
         }
 
-        function setRiwayatImunisasi(no_rkm_medis) {
+        function setTbImunisasi(no_rkm_medis) {
             getRiwayatImunisasi(no_rkm_medis).done((response) => {
                 let kodeImun = ''
                 $('.tbRiwayatImunisasi tbody').empty();

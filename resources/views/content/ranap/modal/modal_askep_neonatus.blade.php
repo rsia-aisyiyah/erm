@@ -1578,7 +1578,7 @@
                 $('#formAskepRanapNeonatus input[name=bahasa]').val(regPeriksa.pasien.bahasa.nama_bahasa)
                 $('#formAskepRanapNeonatus input[name=riwayat_psiko_pendidikan]').val(regPeriksa.pasien.pnd)
                 $('#formAskepRanapNeonatus input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
-                setRiwayatImunisasi(regPeriksa.no_rkm_medis)
+                setTbImunisasi(regPeriksa.no_rkm_medis)
                 $('#formRiwayatImunisasi button[name=tambah-imunisasi]').attr('onclick', `insertRiwayatImunisasi('${regPeriksa.no_rkm_medis}')`)
 
             })

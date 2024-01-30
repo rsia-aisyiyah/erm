@@ -1494,7 +1494,7 @@
                 $('#formAskepAnakRanap input[name=tanggal]').val("{{ date('d-m-Y') }}")
                 $('#formAskepAnakRanap input[name=jam]').val("{{ date('H:i:s') }}")
                 $('#formAskepAnakRanap input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
-                setRiwayatImunisasi(regPeriksa.no_rkm_medis)
+                setTbImunisasi(regPeriksa.no_rkm_medis)
                 $('#formRiwayatImunisasi button[name=tambah-imunisasi]').attr('onclick', `insertRiwayatImunisasi('${regPeriksa.no_rkm_medis}')`)
 
             })

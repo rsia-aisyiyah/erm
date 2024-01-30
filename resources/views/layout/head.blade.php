@@ -377,6 +377,11 @@
             .nav-brand {
                 display: inline;
             }
+
+            #navbarSupportedContent {
+                max-height: 150px;
+                overflow-y: auto;
+            }
         }
 
         .nav-brand {
@@ -411,6 +416,8 @@
             .nav-brand {
                 display: inherit !important;
             }
+
+
 
         }
 

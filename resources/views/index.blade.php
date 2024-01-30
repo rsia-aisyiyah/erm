@@ -1537,6 +1537,11 @@
             return askep;
         }
 
+        function getAskepRalanKandungan(no_rawat) {
+            const askep = $.get(`/erm/poliklinik/askep/kebidanan/${textRawat(no_rawat)}`);
+            return askep;
+        }
+
         function notifSend(topics, title, body, no_rawat, kategori) {
             $.ajax({
                 url: APIURL + '/notification/send',
