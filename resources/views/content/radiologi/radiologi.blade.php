@@ -358,7 +358,7 @@
                 let htmlImage = ''
                 if (Object.keys(response.gambar_radiologi).length) {
                     response.gambar_radiologi.map((imgx, index) => {
-                        if (tgl_periksa == imgx.tgl_periksa && jam == imgx.jam) {
+                        if (tgl_periksa == imgx.tgl_periksa) {
                             gambar = `${getBaseUrl()}/webapps/radiologi/${imgx.lokasi_gambar}`
                             htmlImage += `
                                  <a class="btn btn-success btn-sm m-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gambar}">
