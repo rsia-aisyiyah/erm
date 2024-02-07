@@ -295,10 +295,22 @@
                 cancelButtonText: 'Tidak',
             }).then((result) => {
                 if (result.isConfirmed) {
+                    setNoResep().done((response) => {
+                        if (Object.keys(response).length > 0) {
+                            if (response.tgl_perawatan == '0000-00-00' && response.no_rawat == $('#nomor_rawat').val()) {
+                                nomor = response.no_resep;
+                            } else {
+                                nomor = parseInt(response.no_resep) + 1
+                            }
+                        } else {
+                            nomor = "{{ date('Ymd') }}" + '0001';
+                        }
+                        $('.no_resep').val(nomor)
+                    })
                     let dataResep;
                     let dataObat;
                     let dataRacikan;
-                    let no_resep = setNoResep();
+                    let no_resep = $('.no_resep').val();
                     let no_rawat = $('#nomor_rawat').val();
                     let no_racik = setNoRacik(no_resep)
                     cekResep(no_rawat).done((response) => {
