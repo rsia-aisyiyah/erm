@@ -82,7 +82,7 @@
                             <input type="hidden" id="kd_sps" name="kd_sps" value="{{ session()->get('pegawai')->dokter->kd_sps }}"> --}}
                             {{-- @endif --}}
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             <div class="row gy-2">
                                 <div class="col-lg-3 col-md-12 col-sm-12">
                                     <select style="font-size:12px" name="spesialis" id="spesialis" class="form-select form-select-sm"
@@ -113,17 +113,6 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-            {{-- <input type="hidden" id="kd_dokter" value="" name="kd_dokter">
-            <input type="hidden" id="kd_sps" value="" name="kd_sps"> --}}
-            {{-- <input type="hidden" id="kd_dokter" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
-            <input type="hidden" id="kd_sps" name="kd_sps" value="{{ session()->get('pegawai')->dokter->kd_sps }}"> --}}
-            {{-- @endif --}}
-        </div>
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_ranap" width="100%">
                         <thead>
                             <tr role="row">
@@ -160,6 +149,7 @@
     @include('content.ranap.modal.modal_riwayat_persalinan')
     @include('content.ranap.modal.modal_poc')
     @include('content.ranap.modal.modal_skrining_tb')
+    @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_riwayat')
 @endsection
 
@@ -395,7 +385,7 @@
             $('#tb_ranap').DataTable({
                 processing: true,
                 scrollX: true,
-                scrollY: 400,
+                scrollY: "60vh",
                 stateSave: true,
                 ordering: true,
                 paging: false,
@@ -427,6 +417,7 @@
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
                             list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Upload Berkas Penunjang</a></li>`;
 

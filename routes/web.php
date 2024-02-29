@@ -88,6 +88,7 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\RsiaHasilKritisController;
 use App\Http\Controllers\RsiaKetPasienController;
 use App\Http\Controllers\SkriningTbController;
 
@@ -345,6 +346,11 @@ Route::middleware('auth')->group(function () {
     Route::post('poc/tim/create', [PlanOfCareTimController::class, 'create']);
     Route::post('poc/tim/personil/delete/{id}', [PlanOfCareTimController::class, 'delete']);
 
+    // Route::get('/hasil/kritis', [RsiaHasilKritisController::class, 'get']);
+    Route::get('/hasil/kritis', [RsiaHasilKritisController::class, 'getHasil']);
+    Route::get('/hasil/kritis/{id}', [RsiaHasilKritisController::class, 'get']);
+    Route::post('/hasil/kritis', [RsiaHasilKritisController::class, 'create']);
+    Route::post('/hasil/kritis/delete/{id}', [RsiaHasilKritisController::class, 'delete']);
 
     Route::get('skrining/tb', [SkriningTbController::class, 'get']);
     Route::post('skrining/tb', [SkriningTbController::class, 'create']);
@@ -415,16 +421,18 @@ Route::get('/test/view', function () {
 });
 
 
-Route::get('/file', function () {
-    $file = Storage::disk('custom')->url('LOGO RSIA (2).png');
+
+
+// Route::get('/file', function () {
+    // $file = Storage::disk('custom')->url('LOGO RSIA (2).png');
     // dd($file);
     // dd($file);ln -s 
     // return $file->put('muchron.tlnxt', 'SKSKSKSKSKSKSKSK');
     // return $gbr = $file->download('DSCF0002.JPG');
     // // echo $gbr;
     // return $g = $file->download('DSCF0002.JPG');
-    return $html = "<br/><img src='" . $file . "' />";
+    // return $html = "<br/><img src='" . $file . "' />";
     // dd($file);
-});
+// });
 
 // Route::get('/print', [PeriksaRadiologiController::class, 'print']);
