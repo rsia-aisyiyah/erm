@@ -53,7 +53,7 @@
                         <button class="nav-link active" id="formPasienKritis-tab" data-bs-toggle="tab" data-bs-target="#tabHasilKritis" type="button" role="tab" aria-controls="tabHasilKritis" aria-selected="true">Form Hasil Kritis</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="hasilKritis-tab" data-bs-toggle="tab" data-bs-target="#hasilKritis" type="button" role="tab" aria-controls="hasilKritis" aria-selected="true">Hasil Skrining</button>
+                        <button class="nav-link" id="hasilKritis-tab" data-bs-toggle="tab" data-bs-target="#hasilKritis" type="button" role="tab" aria-controls="hasilKritis" aria-selected="true">Daftar Hasil</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -169,7 +169,7 @@
                     dataType: 'json',
                     data: (params) => {
                         const query = {
-                            q: params.term
+                            nm_dokter: params.term
                         }
                         return query
                     },

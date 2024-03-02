@@ -13,7 +13,7 @@ class PetugasController extends Controller
         $petugas = new Petugas();
         $hasil = '';
         if ($request->has('q')) {
-            $hasil = $petugas->where('nama', 'like', '%' . $request->q . '%')->limit(5)->get();
+            $hasil = $petugas->where('nama', 'like', '%' . $request->q . '%')->limit(10)->get();
         }
 
         return response()->json($hasil);
