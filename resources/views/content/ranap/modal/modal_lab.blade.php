@@ -92,7 +92,7 @@
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 $('#modalLabRanap').modal('show')
                 $('td#no_rawat').html(no_rawat)
-                $('td#nama_pasien').html(`${regPeriksa.pasien.nm_pasien} / ${regPeriksa.pasien.jk}`)
+                $('td#nama_pasien').html(`${regPeriksa.no_rkm_medis} ${regPeriksa.pasien.nm_pasien} / ${regPeriksa.pasien.jk}`)
                 $('td#umur').html(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
             })
             getHasilLab(no_rawat).done((lab) => {
