@@ -6,6 +6,51 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="row gy-2 mb-2" id="formInfoPasien">
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text">
+                                <label for="">No Rawat</label>
+                            </span>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="no_rawat" name="no_rawat" placeholder="" readonly>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text">
+                                <label for="">Pasien</label>
+                            </span>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm w-50" style="font-size: 11px" id="pasien" name="pasien" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="umur" name="umur" placeholder="" readonly>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text">
+                                <label for="">Kamar</label>
+                            </span>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="kamar" name="kamar" placeholder="" readonly>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text">
+                                <label for="">Dx Awal</label>
+                            </span>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="diagnosa_awal" name="diagnosa_awal" placeholder="" readonly>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text">
+                                <label for="">DPJP</label>
+                            </span>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
+                        </div>
+                    </div>
+                </div>
+
                 <ul class="nav nav-tabs" id="tab-soap-ranap" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
@@ -432,7 +477,6 @@
             let kd_dokter = $('#formSoapRanap .btn-simpan').attr('data-kd-dokter');
             let spesialis = $('#formSoapRanap .btn-simpan').attr('data-spesialis');
             let nm_pasien = $('#formSoapRanap .btn-simpan').attr('data-nm-pasien');
-
             $.ajax({
                 url: '/erm/soap/simpan',
                 data: {

@@ -923,7 +923,24 @@
         }
 
         function modalSoapRanap(no_rawat) {
+            var formInfoPasien = $('#formInfoPasien')
             getRegPeriksa(no_rawat).done((response) => {
+
+                console.log('RESPONSE ==', response);
+                formInfoPasien.find('input[name="no_rawat"]').val(no_rawat);
+                formInfoPasien.find('input[name="no_rkm_medis"]').val(response.no_rkm_medis);
+                formInfoPasien.find('input[name="pasien"]').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`);
+                formInfoPasien.find('input[name="umur"]').val(`${response.umurdaftar} ${response.sttsumur}`);
+                formInfoPasien.find('input[name="dokter_dpjp"]').val(`${response.dokter.nm_dokter}`);
+
+
+                const kamar = response.kamar_inap.map((item, index) => {
+                    formInfoPasien.find('input[name="kamar"]').val(item.kamar.bangsal.nm_bangsal);
+                    formInfoPasien.find('input[name="diagnosa_awal"]').val(item.diagnosa_awal);
+                })
+
+
+
                 $('#nomor_rawat').val(response.no_rawat);
                 $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
                 $('#nik').val("{{ session()->get('pegawai')->nik }}");
