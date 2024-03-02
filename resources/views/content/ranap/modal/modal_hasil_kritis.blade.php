@@ -61,7 +61,7 @@
                         <form action="" id="formHasilKritis">
                             <div class="row gy-2">
                                 <div class="col-lg-6">
-                                    <label for="" class="form-label">Kontak TB</label>
+                                    <label for="" class="form-label">Hasil Kritis</label>
                                     <textarea class="form-control" id="hasil" cols="30" rows="10" name="hasil"></textarea>
                                 </div>
                                 <div class="col-lg-6">
