@@ -1543,7 +1543,7 @@
             return askep;
         }
 
-        function notifSend(topics, title, body, no_rawat, kategori) {
+        function notifSend(topics, title, body, no_rawat, kategori, action, penjab = '') {
             $.ajax({
                 url: APIURL + '/notification/send',
                 data: {
@@ -1553,6 +1553,8 @@
                     "data": {
                         "no_rawat": no_rawat,
                         "kategori": kategori,
+                        "action": action,
+                        "penjab": penjab
                     }
                 },
                 method: 'POST',

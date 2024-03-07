@@ -941,9 +941,7 @@
                             $('#formResumeRanap input[name=kd_dokter]').val(),
                             "Notifikasi Resume Pasien",
                             `Resume pasien atas nama ${$('#formResumeRanap input[name=pasien]').val()}. Mohon segera cek dan verifikasi pengisian.`,
-                            $('#formResumeRanap input[name=no_rawat]').val(),
-                            "Ranap",
-                            "resume"
+                            $('#formResumeRanap input[name=no_rawat]').val(), "Ranap", "resume"
                         );
                         alertSuccessAjax('Berhasil menambahkan resume medis').then(() => {
                             $('#tb_ranap').DataTable().destroy();
