@@ -20,6 +20,7 @@ class LabController extends Controller
     {
         $lab = DetailPemeriksaanLab::where('no_rawat', $request->no_rawat)
             ->with('jnsPerawatanLab', 'regPeriksa.pasien', 'template', 'periksaLab.dokter', 'periksaLab.perujuk', 'periksaLab.petugas')
+            ->orderBy('id_template', 'ASC')
             ->orderBy('tgl_periksa', 'DESC')
             ->orderBy('jam', 'DESC');
 
