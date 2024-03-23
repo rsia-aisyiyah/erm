@@ -89,57 +89,43 @@
 @push('script')
     <script>
         function modalPemeriksaanPenunjang(no_rawat) {
+            getHasilLab(no_rawat).done((lab) => {
+                let hasilLab = '';
+                lab.forEach((item, index) => {
+                    if (item.detail.length) {
+                        hasilLab += `<tr class="borderless" style="background-color:#eee;padding:2px">
+                            <td colspan="3">
+                                <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
+                                ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
+                            </td>
+                            <td>${item.petugas.nama}</td></tr>`;
+                        item.detail.forEach((detail, index) => {
+                            hasilLab += `<tr ${setWarnaPemeriksaan(detail.keterangan)}>
+                                <td>${detail.template.Pemeriksaan}</td>
+                                <td>${detail.nilai} ${detail.template.satuan}</td>
+                                <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
+                                <td>${detail.keterangan}</td></tr>`
+                        })
+                    }
+                })
+                $('#tabel-lab').append(hasilLab)
+
+            })
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 $('#modalLabRanap').modal('show')
                 $('td#no_rawat').html(no_rawat)
                 $('td#nama_pasien').html(`${regPeriksa.no_rkm_medis} ${regPeriksa.pasien.nm_pasien} / ${regPeriksa.pasien.jk}`)
                 $('td#umur').html(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
             })
-            getHasilLab(no_rawat).done((lab) => {
-                let jenisPerawatan = '';
-                let tglPeriksa = '';
-                let jamPeriksa = '';
-                let hasil = '';
-                lab.map((item, index) => {
-                    if (jenisPerawatan != item.jns_perawatan_lab.kd_jenis_prw || tglPeriksa != item.tgl_periksa || jamPeriksa != item.jam) {
-                        hasil += `<tr class="borderless" style="background-color:#eee">
-                            <td colspan="3"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
-                            ${formatTanggal(item.tgl_periksa)} ${item.jam}</td>
-                            <td>${item.periksa_lab.petugas.nama}</td></tr>
-                            `
-                    }
 
-                    if (item.keterangan == 'L') {
-                        warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
-                    } else if (item.keterangan == 'H' || item.keterangan == '*' || item.keterangan == '**') {
-                        warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
-                    } else if (item.keterangan == 'K' || item.keterangan == 'k') {
-                        warna = 'style="color:#fff;background-color:#dc3;font-weight:bold"';
-                    } else {
-                        warna = '';
-                    }
-                    hasil += '<tr ' + warna + '>';
-                    hasil += '<td>' + item.template.Pemeriksaan + '</td>';
-                    hasil += '<td>' + item.nilai + ' ' + item.template.satuan +
-                        '</td>';
-                    hasil += '<td>' + item.nilai_rujukan + '</td>';
-                    hasil += '<td>' + item.keterangan + '</td>';
-                    hasil += '</tr>';
-
-                    jenisPerawatan = item.jns_perawatan_lab.kd_jenis_prw;
-                    tglPeriksa = item.tgl_periksa;
-                    jamPeriksa = item.jam;
-                })
-                $('#tabel-lab').append(hasil)
-            })
             getPermintaanRadiologi(no_rawat).done((permintaan) => {
                 if (Object.keys(permintaan).length) {
                     permintaan.map((prm, index) => {
                         html = `<tr><td>${splitTanggal(prm.tgl_hasil)} ${prm.jam_hasil}</td>
-                                <td>${prm.diagnosa_klinis}</td>
-                                <td>${prm.informasi_tambahan}</td>
-                                <td>
-                        `
+                            <td>${prm.diagnosa_klinis}</td>
+                            <td>${prm.informasi_tambahan}</td>
+                            <td>
+                    `
                         prm.periksa_radiologi.map((periksa) => {
                             if (periksa.tgl_periksa == prm.tgl_hasil && periksa.jam == prm.jam_hasil) {
                                 html += `${periksa.jns_perawatan.nm_perawatan}, <br/>`
@@ -160,8 +146,8 @@
                                 if (gambar.tgl_periksa == prm.tgl_hasil && gambar.jam == prm.jam_hasil) {
                                     gbr = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${gambar.lokasi_gambar}`
                                     html += `<a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gbr}">
-                                                <i class="bi bi-eye"></i> BUKA GAMBAR
-                                            </a><br/>`
+                                            <i class="bi bi-eye"></i> BUKA GAMBAR
+                                        </a><br/>`
                                 } else {
                                     html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
 
@@ -185,6 +171,18 @@
                 }
             })
 
+        }
+
+        function setWarnaPemeriksaan(keterangan) {
+            let warna = '';
+            if (keterangan == 'L') {
+                warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
+            } else if (keterangan == 'H' || keterangan == '*' || keterangan == '**') {
+                warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
+            } else if (keterangan == 'K' || keterangan == 'k') {
+                warna = 'style="color:#fff;background-color:#dc3;font-weight:bold"';
+            }
+            return warna;
         }
 
         $('#modalLabRanap').on('hidden.bs.modal', function() {
