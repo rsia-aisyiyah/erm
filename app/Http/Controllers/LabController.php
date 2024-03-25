@@ -38,14 +38,16 @@ class LabController extends Controller
 
     function getDataTable(Request $request)
     {
-        // return $request->kd_poli;
+        $lab = DetailPemeriksaanLab::where('no_rawat', $request->no_rawat)
+            ->with('jnsPerawatanLab', 'regPeriksa.pasien', 'template', 'periksaLab.dokter', 'periksaLab.perujuk', 'periksaLab.petugas')
+            ->orderBy('id_template', 'ASC')
+            ->orderBy('tgl_periksa', 'DESC')
+            ->orderBy('jam', 'DESC');
 
         if ($request->kd_poli == 'OPE') {
             $regPeriksa = RegPeriksa::where('no_rkm_medis', $request->no_rkm_medis)->orderBy('no_rawat', 'DESC')->limit(2)->with(
                 ['detailPemeriksaanLab.template', 'detailPemeriksaanLab.jnsPerawatanLab', 'detailPemeriksaanLab.periksaLab.petugas']
             )->get();
-
-
             $data = [];
             foreach ($regPeriksa as $reg) {
                 foreach ($reg->detailPemeriksaanLab as $detail) {
@@ -54,8 +56,7 @@ class LabController extends Controller
             }
             return DataTables::of($data)->make(true);
         } else {
-            $data = $this->ambil($request);
-            return DataTables::of($data)->make(true);
+            return DataTables::of($lab)->make(true);
         }
     }
 }
