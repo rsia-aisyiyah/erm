@@ -182,7 +182,7 @@
                     },
                 },
                 initComplete: function() {
-                    toastReload('Menampilkan data pasien UGD', 2000)
+                    // toastReload('Menampilkan data pasien UGD', 2000)
                 },
                 columns: [{
                         data: '',
@@ -200,6 +200,16 @@
                     {
                         data: 'pasien',
                         render: (data, type, row, meta) => {
+                            if (!data) {
+                                swal.fire({
+                                    icon: 'error',
+                                    html: `Gagal memuat pasien ${row.no_rawat} dengan No. RM ${row.no_rkm_medis}, periksa kembali data registrasi`,
+                                    title: 'Terjadi Kesalahan',
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                })
+                                return '';
+                            }
                             let penjab = '';
                             if (row.penjab.kd_pj == 'A03') {
                                 penjab = `<span class="text-danger"><b>${row.penjab.png_jawab}</b></span>`
@@ -214,7 +224,16 @@
                     {
                         data: 'dokter',
                         render: (data, type, row, meta) => {
-
+                            if (!data) {
+                                swal.fire({
+                                    icon: 'error',
+                                    html: `Gagal memuat pasien ${row.no_rawat} dengan No. ID Dokter ${row.kd_dokter}, periksa kembali data registrasi`,
+                                    title: 'Terjadi Kesalahan',
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                })
+                                return '';
+                            }
                             return row.dokter.nm_dokter;
                         }
                     },

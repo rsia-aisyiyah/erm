@@ -403,19 +403,30 @@
                     },
                 },
                 initComplete: function() {
-                    Swal.fire({
-                        title: 'Menampilkan data rawat inap',
-                        position: 'top-end',
-                        toast: true,
-                        icon: 'success',
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                    // Swal.fire({
+                    //     title: 'Menampilkan data rawat inap',
+                    //     position: 'top-end',
+                    //     toast: true,
+                    //     icon: 'success',
+                    //     timerProgressBar: true,
+                    //     showConfirmButton: false,
+                    //     timer: 1500
+                    // });
                 },
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
+
+                            if (!data.dokter) {
+                                swal.fire({
+                                    icon: 'error',
+                                    html: `Gagal memuat pasien ${row.no_rawat} dengan ID Dokter ${row}, periksa kembali data registrasi`,
+                                    title: 'Terjadi Kesalahan',
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                })
+                                return '';
+                            }
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
                             list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
@@ -457,7 +468,16 @@
                     {
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-
+                            if (!data.pasien) {
+                                swal.fire({
+                                    icon: 'error',
+                                    html: `Gagal memuat pasien ${row.no_rawat} dengan No. RM ${row.no_rkm_medis}, periksa kembali data registrasi`,
+                                    title: 'Terjadi Kesalahan',
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                })
+                                return '';
+                            }
                             if (data.pasien) {
                                 pasien = `${data.no_rkm_medis} <br/> ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})`;
                             } else {
@@ -540,6 +560,16 @@
                         data: 'reg_periksa',
                         render: function(data, type, row) {
                             let dokter = '';
+                            if (!data.dokter) {
+                                swal.fire({
+                                    icon: 'error',
+                                    html: `Gagal memuat pasien ${row.no_rawat} dengan ID Dokter ${data.kd_dokter}, periksa kembali data registrasi`,
+                                    title: 'Terjadi Kesalahan',
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                })
+                                return '';
+                            }
                             if (data.dokter) {
                                 dokter = data.dokter.nm_dokter;
                             } else {
