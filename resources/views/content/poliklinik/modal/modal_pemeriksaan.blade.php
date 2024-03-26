@@ -1127,14 +1127,14 @@
                                             '" data-stok="' + item.stok +
                                             '" data-kapasitas="' + data.kapasitas +
                                             '" data-nama="' + data.nama_brng + '" onclick="ambilObat(this)"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                            data.nama_brng + ' <span class="text-primary"><i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
+                                            data.nama_brng + ' <span class="text-primary">- Rp. '+toRupiah(data.ralan)+' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
                                     } else {
                                         html +=
                                             '<li class="disable" data-id="' + data
                                             .kode_brng +
                                             '" data-stok="' + item.stok +
                                             '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
-                                            data.nama_brng + ' - <b>Stok Kosong' +
+                                            data.nama_brng + ' - Rp. '+toRupiah(data.ralan)+' - <b>Stok Kosong' +
                                             '</b></a></i></li>'
                                     }
                                 }

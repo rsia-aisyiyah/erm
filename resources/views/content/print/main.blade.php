@@ -49,6 +49,7 @@
     @yield('content')
     @stack('script')
     <script>
+
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"
             const arrDomain = getUrl.split('/');

@@ -110,7 +110,9 @@
                 $(input).val('0');
             }
         }
-
+        function toRupiah(number) {
+            return rupiahFormat = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
         function hanyaAngka(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode
             if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
@@ -905,7 +907,7 @@
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                     $.map(response.data, function(data) {
                         $.map(data.gudang_barang, function(item) {
-                            if (data) {
+                           if (data) {
                                 if (data.status != "0") {
                                     if (item.stok != "0") {
                                         html +=
@@ -913,13 +915,13 @@
                                             data.kode_brng +
                                             '" data-stok="' + item.stok +
                                             '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok ="' + item.stok + '" onclick="setObat(this, ' + no + ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                            data.nama_brng + ' - <span class="text-primary"><b><i> Stok ' + item.stok + '</b></i></span></a></li>'
+                                            data.nama_brng + ' - <span class="text-primary">- Rp. '+toRupiah(data.ralan)+' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
                                     } else {
                                         html +=
                                             '<li class="disable" data-id="' + data
                                             .kode_brng +
                                             '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok="' + item.stok + '" onclick="setObat(this, ' + no + ')"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
-                                            data.nama_brng + ' - Stok Kosong' +
+                                            data.nama_brng + ' - Rp. '+toRupiah(data.ralan)+' - <b>Stok Kosong'  +
                                             '</a></i></li>'
                                     }
                                 }
