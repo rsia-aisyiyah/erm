@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\SkriningTb;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\DataTables;
+use Illuminate\Database\QueryException;
 
 class SkriningTbController extends Controller
 {
@@ -64,7 +65,13 @@ class SkriningTbController extends Controller
     {
         $skrining = new SkriningTb();
         if ($request->id) {
-            $skrining = $skrining->where('id', $request->id)->first();
+            $skrining = $skrining->where('id', $request->id)
+                ->with(['regPeriksa' => function ($query) {
+                    $query->select(['no_rawat', 'umurdaftar', 'sttsumur', 'p_jawab']);
+                }, 'penjab', 'pasien' => function ($query) {
+                    return $query->with(['kec', 'kab']);
+                }, 'dokter', 'kamar'])
+                ->first();
         }
         if ($request->no_rawat) {
             $skrining = $skrining->where('no_rawat', $request->no_rawat)->get();
@@ -121,5 +128,21 @@ class SkriningTbController extends Controller
         } catch (QueryException $e) {
             return response()->json($e->errorInfo);
         }
+    }
+
+    function print($id)
+    {
+        $skrining = $this->get(new \Illuminate\Http\Request(['id' => $id]))->getContent();
+        $data = json_decode($skrining);
+        $data->finger = $this->setFingerOutput($data->dokter->nm_dokter, bcrypt($data->dokter->kd_dokter), $data->tgl_skrining);
+        $file = Pdf::loadView('content.print.skriningTb', ['data' => $data])
+            ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
+            ->setPaper(array(0, 0, 595, 935));
+        return $file->stream('.pdf');
+    }
+    function setFingerOutput($dokter, $id, $tanggal)
+    {
+        $strId = sha1($id);
+        return $str = "Ditandatangani di RSIA Aisiyiyah Pekajangan Kab. Pekalongan, Ditandatangani Elektronik Oleh $dokter, ID $strId, $tanggal";
     }
 }

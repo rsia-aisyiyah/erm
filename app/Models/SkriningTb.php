@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class SkriningTb extends Model
 {
@@ -19,6 +21,21 @@ class SkriningTb extends Model
     }
     function dokter()
     {
-        return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter');
+        return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter')
+            ->select(['kd_dokter', 'nm_dokter']);
+    }
+    function pasien(): HasOneThrough
+    {
+        return $this->hasOneThrough(Pasien::class, RegPeriksa::class, 'no_rawat', 'no_rkm_medis', 'no_rawat', 'no_rkm_medis')
+            ->select(['nm_pasien', 'pasien.no_rkm_medis', 'alamat', 'tgl_lahir', 'no_tlp', 'jk', 'kd_kec', 'kd_kab']);
+    }
+    function penjab(): HasOneThrough
+    {
+        return $this->hasOneThrough(Penjab::class, RegPeriksa::class, 'no_rawat', 'kd_pj', 'no_rawat', 'kd_pj')
+            ->select(['penjab.kd_pj', 'png_jawab']);
+    }
+    function kamar(): HasOne
+    {
+        return $this->hasOne(KamarInap::class, 'no_rawat', 'no_rawat')->where('stts_pulang', '!=', 'Pindah Kamar')->select(['kd_kamar', 'no_rawat']);
     }
 }

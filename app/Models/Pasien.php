@@ -47,6 +47,14 @@ class Pasien extends Model
     {
         return $this->belongsTo(CacatFisik::class, 'cacat_fisik', 'id');
     }
+    function kec()
+    {
+        return $this->belongsTo(Kecamatan::class, 'kd_kec', 'kd_kec');
+    }
+    function kab()
+    {
+        return $this->belongsTo(Kabupaten::class, 'kd_kab', 'kd_kab');
+    }
     function ketPasien()
     {
         return $this->hasOne(RsiaKetPasien::class, 'no_rkm_medis', 'no_rkm_medis');

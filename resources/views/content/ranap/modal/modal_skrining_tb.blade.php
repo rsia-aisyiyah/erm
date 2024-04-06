@@ -172,7 +172,8 @@
                         title: '',
                         render: (data, type, row, meta) => {
                             return `<button type="button" class="btn btn-sm btn-danger" onclick="hapusSkriningTb(${data})"><i class="bi bi-trash"></i></button>
-                            <button type="button" class="btn btn-sm btn-warning" onclick="editSkriningTb(${data})"><i class="bi bi-pencil"></i></button>`;
+                            <button type="button" class="btn btn-sm btn-warning" onclick="editSkriningTb(${data})"><i class="bi bi-pencil"></i></button>
+                            <a href="{{ url('skrining/tb/print/${data}') }}" target="_blank" class="btn btn-sm btn-success" ><i class="bi bi-printer"></i></a>`;
                         }
                     },
                     {

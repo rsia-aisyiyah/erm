@@ -355,6 +355,7 @@ Route::middleware('auth')->group(function () {
     Route::get('skrining/tb', [SkriningTbController::class, 'get']);
     Route::post('skrining/tb', [SkriningTbController::class, 'create']);
     Route::post('skrining/tb/delete', [SkriningTbController::class, 'delete']);
+    Route::get('skrining/tb/print/{id}', [SkriningTbController::class, 'print']);
 
     Route::prefix('bridging')->group(function () {
         Route::prefix('referensi')->group(function () {

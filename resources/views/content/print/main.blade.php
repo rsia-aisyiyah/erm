@@ -41,6 +41,22 @@
         .page-break {
             page-break-after: always;
         }
+
+        .table-bordered {
+            border-collapse: collapse;
+        }
+
+        .table-bordered th {
+            background-color: #c2c2c2;
+            color: #000;
+            width: 50%;
+        }
+
+        .table-bordered td,
+        .table-bordered th {
+            padding: 10px;
+            border: 1px solid #000;
+        }
     </style>
 
 </head>
@@ -49,7 +65,6 @@
     @yield('content')
     @stack('script')
     <script>
-
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"
             const arrDomain = getUrl.split('/');
