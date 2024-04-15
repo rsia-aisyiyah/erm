@@ -1,37 +1,59 @@
 @extends('content.print.main')
 @section('content')
-    <img src="{{ asset('img/logo.png') }}" style="position: absolute;top:60px;left:20px;margin:0px;padding:0px" width="70" /><br />
-    <table class="borderless" style="margin-bottom: 10px;">
+    <img src="{{ asset('img/logo.png') }}" style="position: absolute;top:30px;left:20px;margin:0px;padding:0px" width="70" /><br />
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h3 style="margin-bottom: 0px">RSIA AISYIYAH PEKAJANGAN</h3>
+        <p style="font-size: 11px">Jl. Raya Pekajangan No. 610, Kabupaten Pekalongan, Jawa Tengah </p>
+        <p style="font-size: 11px">Telp. (0285) 785909, Email : rba610@gmail.com </p>
+    </div>
+    <hr style="margin:0;padding:0">
+    <h3 style="text-align: center"><u>HASIL SKRINING TB PADA ANAK</u></h3>
+    <table style="font-size: 13px" width="100%">
+        <tr>
+            <td width="20%">No. RM</td>
+            <td width="5%">:</td>
+            <td>{{ $data->pasien->no_rkm_medis }}</td>
+        </tr>
+        <tr>
+            <td>Nama</td>
+            <td>:</td>
+            <td>
+                {{ $data->pasien->nm_pasien }} ({{ $data->pasien->jk }})
+            </td>
+        </tr>
+        <tr>
+            <td>Tgl. Lahir /  Umur </td>
+            <td>: </td>
+            <td>
+                {{ date('d-m-Y', strtotime($data->pasien->tgl_lahir)) }} / {{ $data->reg_periksa->umurdaftar }} {{ $data->reg_periksa->sttsumur }}
+            </td>
+        </tr>
         <tr>
             <td>
-                <div style="text-align: center; margin-left:100px">
-                    <h3 style="margin-bottom: 0px">RSIA AISYIYAH PEKAJANGAN</h3>
-                    <p style="font-size: 11px">Jl. Raya Pekajangan No. 610, Kabupaten Pekalongan, Jawa Tengah </p>
-                    <p style="font-size: 11px">Telp. (0285) 785909, Email : rba610@gmail.com </p>
-                </div>
+                No. Hp/Telp
             </td>
-            <td style="max-width: 10%px;">
-                <ul style="list-style-type: none;font-size:11px;border:1px solid #000; padding:10px; width:120%">
-                    <li>No. RM : {{ $data->pasien->no_rkm_medis }}</li>
-                    <li>Nama : {{ $data->pasien->nm_pasien }} ({{ $data->pasien->jk }})</li>
-                    <li>Tgl. Lahir / Umur: {{ date('d-m-Y', strtotime($data->pasien->tgl_lahir)) }} / {{ $data->reg_periksa->umurdaftar }} {{ $data->reg_periksa->sttsumur }}</li>
-                    <li>Alamat : {{ $data->pasien->alamat }}, {{ $data->pasien->kec->nm_kec }}</li>
-                    <li>No. Hp/Telp : {{ $data->pasien->no_tlp }}</li>
-                </ul>
+            <td>:</td>
+            <td>
+                 {{ $data->pasien->no_tlp }}
+            </td>
+        </tr>
+        <tr>
+            <td>Alamat</td>
+            <td>:</td>
+            <td>
+              {{ $data->pasien->alamat }}, {{ $data->pasien->kec->nm_kec }}
+            </td>
+        </tr>
+        <tr>
+            <td>Penanggung Jawab</td>
+            <td>:</td>
+            <td>
+              {{ $data->reg_periksa->p_jawab }} ({{ $data->reg_periksa->hubunganpj }})
             </td>
         </tr>
     </table>
-    <hr style="margin:0;padding:0">
-    <h3 style="text-align: center"><u>HASIL SKRINING TB PADA ANAK</u></h3>
-    <table class="table-bordered" width="100%" style="margin-top:10px;margin-bottom:10px">
-        {{-- <thead>
-            <tr>
-                <th colspan="6" style="height: 30px;vertical-align:top">
-                    <u>HASIL SKRINING TB PADA ANAK</u>
 
-                </th>
-            </tr>
-        </thead> --}}
+    <table class="table-bordered" width="100%" style="margin-top:10px;margin-bottom:10px">
         <tbody style="font-size: 14px">
             <tr style="">
                 <th>Parameter</th>

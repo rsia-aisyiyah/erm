@@ -67,7 +67,7 @@ class SkriningTbController extends Controller
         if ($request->id) {
             $skrining = $skrining->where('id', $request->id)
                 ->with(['regPeriksa' => function ($query) {
-                    $query->select(['no_rawat', 'umurdaftar', 'sttsumur', 'p_jawab']);
+                    $query->select(['no_rawat', 'umurdaftar', 'sttsumur', 'p_jawab', 'hubunganpj']);
                 }, 'penjab', 'pasien' => function ($query) {
                     return $query->with(['kec', 'kab']);
                 }, 'dokter', 'kamar'])
@@ -138,7 +138,7 @@ class SkriningTbController extends Controller
         $file = Pdf::loadView('content.print.skriningTb', ['data' => $data])
             ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
             ->setPaper(array(0, 0, 595, 935));
-        return $file->stream('.pdf');
+        return $file->stream($data->pasien->no_rkm_medis.date('YmdHis').'.pdf');
     }
     function setFingerOutput($dokter, $id, $tanggal)
     {
