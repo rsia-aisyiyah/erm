@@ -1,12 +1,12 @@
-<div class="modal fade" id="modalSkriningTb" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalSkoringTb" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fs-5" id="exampleModalLabel">Skrining TB</h5>
+                <h5 class="modal-title fs-5" id="exampleModalLabel">Skoring & Skrining TB</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" id="formPasienSkriningTb">
+                <form action="" id="formPasienSkoringTb">
                     <div class="row gy-2">
                         <div class="col-lg-4">
                             <div class="input-group">
@@ -49,16 +49,28 @@
                     </div>
                 </form>
 
-                <ul class="nav nav-tabs mt-3" id="tabsSkriningTb" role="tablist">
+                <ul class="nav nav-tabs mt-3" id="tabsSkoringTb" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="formSkriningTb-tab" data-bs-toggle="tab" data-bs-target="#tabSkriningTb" type="button" role="tab" aria-controls="tabSkriningTb" aria-selected="true">Form Skrining</button>
+                        <button class="nav-link active" id="formSkoringTb-tab" data-bs-toggle="tab" data-bs-target="#tabSkoringTb" type="button" role="tab" aria-controls="tabSkoringTb" aria-selected="true">Form Skoring</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="SkoringTb-tab" data-bs-toggle="tab" data-bs-target="#SkoringTb" type="button" role="tab" aria-controls="SkoringTb" aria-selected="true">Hasil Skoring</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="formSkriningTb-tab" data-bs-toggle="tab" data-bs-target="#tabSkriningTb" type="button" role="tab" aria-controls="tabSkiringTb" aria-selected="true">Form Skrining</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="skriningTb-tab" data-bs-toggle="tab" data-bs-target="#skriningTb" type="button" role="tab" aria-controls="skriningTb" aria-selected="true">Hasil Skrining</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active p-3" id="tabSkriningTb" role="tabpanel" aria-labelledby="formSkriningTb-tab">
+                    <div class="tab-pane fade show active p-3" id="tabSkoringTb" role="tabpanel" aria-labelledby="formSkoringTb-tab">
+                        @include('content.ranap.modal.skriningTb._formSkoringTb')
+                    </div>
+                    <div class="tab-pane fade p-3" id="SkoringTb" role="tabpanel" aria-labelledby="SkoringTb-tab">
+                        <table class="table nowrap" id="tbSkoringTb" width="100%"></table>
+                    </div>
+                    <div class="tab-pane fade p-3" id="tabSkriningTb" role="tabpanel" aria-labelledby="formSkriningTb-tab">
                         @include('content.ranap.modal.skriningTb._formSkriningTb')
                     </div>
                     <div class="tab-pane fade p-3" id="skriningTb" role="tabpanel" aria-labelledby="skriningTb-tab">
@@ -68,10 +80,6 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" style="font-size: 12px" onclick="simpanSkriningTb()">
-                    <i class="bi bi-save">
-                    </i> Simpan
-                </button>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px">
                     <i class="bi bi-x-circle">
                     </i> Keluar
@@ -83,56 +91,55 @@
 </div>
 @push('script')
     <script>
-        var modalSkriningTb = $('#modalSkriningTb');
-        var formSkriningTb = $('#formSkriningTb');
-        var formPasienSkriningTb = $('#formPasienSkriningTb');
+        var modalSkoringTb = $('#modalSkoringTb');
+        var formSkoringTb = $('#formSkoringTb');
+        var formPasienSkoringTb = $('#formPasienSkoringTb');
         var formTab = '';
         var tableTab = '';
         var instanceFormTab = '';
         var instanceTableTab = '';
 
-        modalSkriningTb.on('shown.bs.modal', () => {
-            formTab = document.getElementById('formSkriningTb-tab')
-            tableTab = document.getElementById('skriningTb-tab')
+        modalSkoringTb.on('shown.bs.modal', () => {
+            formTab = document.getElementById('formSkoringTb-tab')
+            tableTab = document.getElementById('SkoringTb-tab')
             instanceFormTab = bootstrap.Tab.getInstance(formTab);
             instanceTableTab = new bootstrap.Tab(tableTab);
         })
 
-        function skriningTb(no_rawat) {
-            modalSkriningTb.modal('show')
+        function skoringTb(no_rawat) {
+            modalSkoringTb.modal('show')
+            drawTbSkoringTb(no_rawat)
             drawTbSkriningTb(no_rawat)
             getRegPeriksa(no_rawat).done((response) => {
                 const kamar = response.kamar_inap.map((item) => {
                     const valKamar = item.stts_pulang != 'Pindah Kamar' ? item.kamar.bangsal.nm_bangsal : '-';
                     return [valKamar, item.diagnosa_awal];
                 }).join(',');
-                formPasienSkriningTb.find('#no_rawat').val(no_rawat);
-                formPasienSkriningTb.find('#nm_pasien').val(`${response.no_rkm_medis} - ${response.pasien.nm_pasien} / ${response.umurdaftar} ${response.sttsumur}`);
-                formPasienSkriningTb.find('#dokter').val(response.dokter.nm_dokter);
-                formPasienSkriningTb.find('#kd_dokter').val(response.kd_dokter);
-                formPasienSkriningTb.find('#keluarga').val(`${response.p_jawab} (${response.hubunganpj})`);
-                formPasienSkriningTb.find('#kamar').val(kamar.split(',')[0]);
-                formPasienSkriningTb.find('#diagnosa').val(kamar.split(',')[1]);
+                formPasienSkoringTb.find('#no_rawat').val(no_rawat);
+                formPasienSkoringTb.find('#nm_pasien').val(`${response.no_rkm_medis} - ${response.pasien.nm_pasien} / ${response.umurdaftar} ${response.sttsumur}`);
+                formPasienSkoringTb.find('#dokter').val(response.dokter.nm_dokter);
+                formPasienSkoringTb.find('#kd_dokter').val(response.kd_dokter);
+                formPasienSkoringTb.find('#keluarga').val(`${response.p_jawab} (${response.hubunganpj})`);
+                formPasienSkoringTb.find('#kamar').val(kamar.split(',')[0]);
+                formPasienSkoringTb.find('#diagnosa').val(kamar.split(',')[1]);
             })
         }
 
-        function simpanSkriningTb() {
-            const data = getDataForm('#formSkriningTb', ['input', 'select']);
-            formSkriningTb.find(`select`).each((index, element) => {
-                const text = $(`select[name=${element.id}]`);
-                const value = text.find('option:selected').text();
+        function simpanSkoringTb() {
+            const data = getDataForm('#formSkoringTb', ['input', 'select']);
+            formSkoringTb.find(`select`).each((index, element) => {
+                const text = formSkoringTb.find(`select[name=${element.id}]`);
+                const valueText = text.find('option:selected').text();
                 const name = text.attr('name');
-                data[name] = value;
-
+                data[name] = valueText;
             })
-            data['no_rawat'] = formPasienSkriningTb.find('#no_rawat').val();
-            data['kd_dokter'] = formPasienSkriningTb.find('#kd_dokter').val();
-
-            $.post('/erm/skrining/tb', data).done((response) => {
+            data['no_rawat'] = formPasienSkoringTb.find('#no_rawat').val();
+            data['kd_dokter'] = formPasienSkoringTb.find('#kd_dokter').val();
+            $.post('/erm/skoring/tb', data).done((response) => {
                 alertSuccessAjax().then(() => {
-                    drawTbSkriningTb(data['no_rawat'])
-                    formSkriningTb.find('input[name=id]').remove();
-                    formSkriningTb.trigger('reset')
+                    drawTbSkoringTb(data['no_rawat'])
+                    formSkoringTb.find('input[name=id]').remove();
+                    formSkoringTb.trigger('reset')
                     instanceTableTab.show()
                 })
             })
@@ -141,27 +148,30 @@
 
         function setNilaiSkrining(e) {
             const target = $(e).data('target')
-            const value = $(e).find(':selected').val();
-            const text = formSkriningTb.find(`input[type=text]`)
-            formSkriningTb.find(`input[name=${target}]`).val(value);
+            const val = $(e).find(':selected').val();
+            const value = val === '-' ? 0 : val;
+
+            const text = formSkoringTb.find(`input[type=text]`)
             let total = 0;
-            formSkriningTb.find(`input[type=text]`).each((index, element) => {
+            formSkoringTb.find(`input[name=${target}]`).val(value);
+            formSkoringTb.find(`input[type=text]`).each((index, element) => {
                 if (element.id != 'total_skrining') {
                     total += parseInt(element.value);
                 }
+
             });
-            formSkriningTb.find('input[name=total_skrining]').val(total);
+            formSkoringTb.find('input[name=total_skrining]').val(total);
         }
 
-        function drawTbSkriningTb(no_rawat) {
-            const table = $('#tbSkriningTb').DataTable({
+        function drawTbSkoringTb(no_rawat) {
+            const table = $('#tbSkoringTb').DataTable({
                 scrollX: true,
                 searching: false,
                 paging: false,
                 info: false,
                 destroy: true,
                 ajax: {
-                    url: '/erm/skrining/tb',
+                    url: '/erm/skoring/tb',
                     data: {
                         no_rawat: no_rawat,
                         dataTable: true,
@@ -171,9 +181,9 @@
                         data: 'id',
                         title: '',
                         render: (data, type, row, meta) => {
-                            return `<button type="button" class="btn btn-sm btn-danger" onclick="hapusSkriningTb(${data})"><i class="bi bi-trash"></i></button>
-                            <button type="button" class="btn btn-sm btn-warning" onclick="editSkriningTb(${data})"><i class="bi bi-pencil"></i></button>
-                            <a href="{{ url('skrining/tb/print/${data}') }}" target="_blank" class="btn btn-sm btn-success" ><i class="bi bi-printer"></i></a>`;
+                            return `<button type="button" class="btn btn-sm btn-danger" onclick="hapusSkoringTb(${data})"><i class="bi bi-trash"></i></button>
+                            <button type="button" class="btn btn-sm btn-warning" onclick="editSkoringTb(${data})"><i class="bi bi-pencil"></i></button>
+                            <a href="{{ url('skoring/tb/print/${data}') }}" target="_blank" class="btn btn-sm btn-success" ><i class="bi bi-printer"></i></a>`;
                         }
                     },
                     {
@@ -260,7 +270,7 @@
             });
         }
 
-        function hapusSkriningTb(id) {
+        function hapusSkoringTb(id) {
             Swal.fire({
                 title: 'Anda yakin ?',
                 text: "Data yang dihapus tidak bisa dikembalikan",
@@ -272,13 +282,13 @@
                 cancelButtonText: 'Tidak',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.post(`/erm/skrining/tb/delete`, {
+                    $.post(`/erm/skoring/tb/delete`, {
                         id: id,
                         _token: "{{ csrf_token() }}",
                     }).done((response) => {
                         alertSuccessAjax().then(() => {
-                            drawTbSkriningTb(response.no_rawat)
-                            formSkriningTb.find('#id').remove();
+                            drawTbSkoringTb(response.no_rawat)
+                            formSkoringTb.find('#id').remove();
                         })
                     })
                 }
@@ -286,11 +296,11 @@
 
         }
 
-        function editSkriningTb(id) {
-            $.get('/erm/skrining/tb', {
+        function editSkoringTb(id) {
+            $.get('/erm/skoring/tb', {
                 id: id,
             }).done((response) => {
-                formSkriningTb.append($('<input>', {
+                formSkoringTb.append($('<input>', {
                     type: 'hidden',
                     value: id,
                     id: 'id',
@@ -298,8 +308,8 @@
                 }));
 
                 $.each(response, (index, value) => {
-                    const select = formSkriningTb.find(`select[name=${index}]`);
-                    const input = formSkriningTb.find(`input[name=${index}]`);
+                    const select = formSkoringTb.find(`select[name=${index}]`);
+                    const input = formSkoringTb.find(`input[name=${index}]`);
 
                     if (select.length) {
                         isSelected = select.find('option[class="appended"]');

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
-class SkriningTb extends Model
+class SkrinigTb extends Model
 {
     use HasFactory;
     protected $table = 'rsia_skrining_tb';
@@ -19,10 +19,10 @@ class SkriningTb extends Model
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat'); //
     }
-    function pegawai()
+    function dokter()
     {
-        return $this->belongsTo(Pegawai::class, 'nip', 'nik')
-            ->select('*');
+        return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter')
+            ->select(['kd_dokter', 'nm_dokter']);
     }
     function pasien(): HasOneThrough
     {

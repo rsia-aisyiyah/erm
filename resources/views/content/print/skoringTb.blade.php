@@ -7,7 +7,7 @@
         <p style="font-size: 11px">Telp. (0285) 785909, Email : rba610@gmail.com </p>
     </div>
     <hr style="margin:0;padding:0">
-    <h3 style="text-align: center"><u>HASIL SKRINING TB</u></h3>
+    <h3 style="text-align: center"><u>HASIL SKORING TB</u></h3>
     <table style="font-size: 13px" width="100%">
         <tr>
             <td width="20%">No. RM</td>
@@ -56,50 +56,54 @@
     <table class="table-bordered" width="100%" style="margin-top:10px;margin-bottom:10px">
         <tbody style="font-size: 14px">
             <tr style="">
-                <th>Gejala dan Tanda TB</th>
-                <th>Nilai</th>
+                <th>Parameter</th>
+                <th>Hasil</th>
+                <th>Skor</th>
             </tr>
             <tr>
-                <td>Batuk Berdahak</td>
-                <td>[ {{ $data->berdahak }} ]</td>
+                <td>Kontak TB</td>
+                <td>{{ $data->ket_kontak }}</td>
+                <td>{{ $data->kontak }}</td>
             </tr>
             <tr>
-                <td>Batuk berdahak lebih dari 2 minggu</td>
-                <td>[ {{ $data->berdahakB }} ]</td>
+                <td>Uji Tuberkulin (Mantoux)</td>
+                <td>{{ $data->ket_mantoux }}</td>
+                <td>{{ $data->mantoux }}</td>
             </tr>
             <tr>
-                <td>Demam hilang timbul lebih dari 1 Bulan</td>
-                <td>[ {{ $data->demam }} ]</td>
+                <td>Berat Badan/Keadaan Gizi</td>
+                <td>{{ $data->ket_berat }}</td>
+                <td>{{ $data->berat }}</td>
             </tr>
             <tr>
-                <td>Keringat malam tanpa aktivitas</td>
-                <td>[ {{ $data->keringat }} ]</td>
+                <td>Demam yang tidak diketahui penyebabnya</td>
+                <td>{{ $data->ket_demam }}</td>
+                <td>{{ $data->demam }}</td>
             </tr>
             <tr>
-                <td>Penurunan berat badan tanpa sebab yang jelas</td>
-                <td>[ {{ $data->berat }} ]</td>
+                <td>Batuk Kronik</td>
+                <td>{{ $data->ket_batul }}</td>
+                <td>{{ $data->batul }}</td>
             </tr>
             <tr>
-                <td>Pembesaran kelenjar getah bening (benjolan di daerah leher) dengan ukuran lebih dari 2 cm</td>
-                <td>[ {{ $data->kelenjar }} ]</td>
+                <td>Pembesaran kelenjar limfe kolli, aksila, inguinal</td>
+                <td>{{ $data->ket_pembesaran }}</td>
+                <td>{{ $data->pembesaran }}</td>
             </tr>
             <tr>
-                <td>Sesak nafas dan nyeri dada </td>
-                <td>[ {{ $data->sesak }} ]</td>
+                <td>Pembengkakan tulang/sendi panggul, lutut, falang</td>
+                <td>{{ $data->ket_pembengkakan }}</td>
+                <td>{{ $data->pembengkakan }}</td>
             </tr>
             <tr>
-                <td>Pernah minum obat paru dalam waktu lama sebelumnya </td>
-                <td>[ {{ $data->obat }} ]</td>
+                <td>Foto thorax</td>
+                <td>{{ $data->ket_thorax }}</td>
+                <td>{{ $data->thorax }}</td>
             </tr>
             <tr>
-                <td>Ada keluarga/tetangga yang pernah mengalami sakit paru-paru/TB/pengobatan paru-paru</td>
-                <td>[ {{ $data->keluarga }} ]</td>
+                <th colspan="2">Total : </th>
+                <td>{{ $data->total_skrining }}</td>
             </tr>
-            <tr>
-                <td>Penyakit lain : Asma / Diabetes Melitus </td>
-                <td>[ {{ $data->penyakit }} ]</td>
-            </tr>
-
         </tbody>
     </table>
     {{-- @dd($data) --}}
@@ -108,11 +112,8 @@
     <hr />
     <p style="white-space: pre;border:1px solid #000; padding: 10px">{{ $data['hasil'] }}</p> --}}
 
-    <table width="100%" style="text-align: center;margin-top:50px;margin-left:80px;font-size:12px;">
+    <table width="100%" style="text-align: center;margin-top:50px;font-size:12px;">
         <tr>
-            <td>
-                Petugas
-            </td>
             <td>
                 <small><i>Tanggal Cetak : {{ date('d/m/Y H:i:s') }}</i> <br></small>
                 Dokter DPJP
@@ -122,18 +123,11 @@
             <td>
                 <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG($data->finger, 'QRCODE') }}" height="80" width="80" /><br>
             </td>
-            <td>
-                <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG($data->finger, 'QRCODE') }}" height="80" width="80" /><br>
-            </td>
         </tr>
         <tr>
             <td>
-                <u>{{ $data->pegawai->nama }}</u><br>
-                NIP : {{ $data->pegawai->nik }}
-            </td>
-            <td>
-                <u>{{ $data->reg_periksa->dokter->nm_dokter }}</u><br>
-                NIP : {{ $data->reg_periksa->dokter->kd_dokter }}
+                <u>{{ $data->dokter->nm_dokter }}</u><br>
+                NIP : {{ $data->dokter->kd_dokter }}
             </td>
         </tr>
     </table>
