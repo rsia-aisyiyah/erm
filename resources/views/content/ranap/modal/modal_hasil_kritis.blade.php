@@ -83,7 +83,7 @@
                                             <input type='text' id='tgl_ruang' class="form-control form-control-sm datetimepicker" name="tgl_ruang" />
                                         </div>
                                         <div class="col-lg-8">
-                                            <label for="" class="form-label">Dokter DPJP</label>
+                                            <label for="" class="form-label">Dokter</label>
                                             <select class="form-select" id="selectDokterKritis" style="width: 100%" name="dokter"></select>
                                         </div>
                                         <div class="col-lg-4">
