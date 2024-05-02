@@ -92,6 +92,8 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\JnsPerawatabLabController;
+use App\Http\Controllers\TemplateLaboratoriumController;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -219,6 +221,12 @@ Route::middleware('auth')->group(function () {
     Route::get('lab/petugas', [LabController::class, 'petugas']);
     Route::get('lab/ambil', [LabController::class, 'ambil']);
     Route::get('lab/ambil/table', [LabController::class, 'getDataTable']);
+
+    Route::get('lab/jenis/get', [JnsPerawatabLabController::class, 'get']);
+
+    Route::get('lab/template/get', [TemplateLaboratoriumController::class, 'get']);
+
+
 
     Route::get('ranap', [RanapController::class, 'index']);
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
