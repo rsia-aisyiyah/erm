@@ -7,8 +7,8 @@
     <meta name="generator" content="Hugo 0.101.0">
 
     <title>{{ config('app.name') }}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
-    <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css') }}">
 
     <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet" />
@@ -161,6 +161,10 @@
             height: 10px;
             margin-left: 18px;
             margin-bottom: 18px;
+        }
+
+        #tabel-lab tr .low {
+            background-color: #0d6efd;
         }
 
         /* to customize progress bar */
