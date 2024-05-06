@@ -276,8 +276,8 @@
                         title: 'Petugas Lab',
                         render: (data, type, row, meta) => {
                             const petugas = data ? data : '-';
-                            const jam = row.tgl != '0000-00-00 00:00:00' ? `${formatTanggal(row.tgl)} ${row.tgl_dokter.split(' ')[1]}` : '';
-                            return `${petugas} <br/> <span class="text-muted" style="font-size:11px">${jam}</span>`
+                            const jamPetugas = row.tgl != '0000-00-00 00:00:00' ? `${formatTanggal(row.tgl)} ${row.tgl.split(' ')[1]}` : '';
+                            return `${petugas} <br/> <span class="text-muted" style="font-size:11px">${jamPetugas}</span>`
                         }
                     },
                     {
@@ -296,8 +296,8 @@
                         title: 'Dokter',
                         render: (data, type, row, meta) => {
                             const dokter = data ? data.nm_dokter : '-';
-                            const jam = row.tgl_dokter != '0000-00-00 00:00:00' ? `${formatTanggal(row.tgl_dokter)} ${row.tgl_dokter.split(' ')[1]}` : '';
-                            return `${dokter} <br/> <span class="text-muted" style="font-size:11px">${jam}</span>`
+                            const jamDokter = row.tgl_dokter != '0000-00-00 00:00:00' ? `${formatTanggal(row.tgl_dokter)} ${row.tgl_dokter.split(' ')[1]}` : '';
+                            return `${dokter} <br/> <span class="text-muted" style="font-size:11px">${jamDokter}</span>`
 
                         }
                     },

@@ -223,6 +223,7 @@ Route::middleware('auth')->group(function () {
     Route::get('lab/ambil/table', [LabController::class, 'getDataTable']);
 
     Route::get('lab/jenis/get', [JnsPerawatabLabController::class, 'get']);
+    Route::get('lab/jenis/template/get', [JnsPerawatabLabController::class, 'getTemplate']);
 
     Route::get('lab/template/get', [TemplateLaboratoriumController::class, 'get']);
 
