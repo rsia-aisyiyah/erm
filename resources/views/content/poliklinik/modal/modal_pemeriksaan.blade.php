@@ -29,6 +29,10 @@
                         <button class="nav-link" id="tab-asesmen-ranap-anak" data-bs-toggle="tab" data-bs-target="#tab-asmed-ranap-ana"
                             type="button" role="tab" aria-controls="tab-asmed-ranap-ana" aria-selected="false">Asesmen Medis Ranap Anak</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="permintaan-laborat-tab" data-bs-toggle="tab" data-bs-target="#permintaan-laborat-tab-pane"
+                            type="button" role="tab" aria-controls="permintaan-laborat-tab-pane" aria-selected="true">Permintaan Lab</button>
+                    </li>
                     <li class="nav-item" role="presentation" id="li-lab-ana">
                         <button class="nav-link" id="tab-lab-anak" data-bs-toggle="tab" data-bs-target="#lab-ana"
                             type="button" role="tab" aria-controls="lab-ana" aria-selected="false">Hasil Laboratorium</button>
@@ -57,6 +61,10 @@
                     <div class="tab-pane fade p-3" id="tab-asmed-ranap-ana" role="tabpanel" aria-labelledby="tab-asmed-ranap"
                         tabindex="0">
                         @include('content.ranap.form.form_asemd_anak')
+                    </div>
+                    <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
+                        <h5 class="text-center">PERMINTAAN LAB</h5>
+                        @include('content.ranap.modal.penunjang.permintaan_lab')
                     </div>
                     <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab"
                         tabindex="0">
@@ -1127,14 +1135,14 @@
                                             '" data-stok="' + item.stok +
                                             '" data-kapasitas="' + data.kapasitas +
                                             '" data-nama="' + data.nama_brng + '" onclick="ambilObat(this)"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                            data.nama_brng + ' <span class="text-primary">- Rp. '+toRupiah(data.ralan)+' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
+                                            data.nama_brng + ' <span class="text-primary">- Rp. ' + toRupiah(data.ralan) + ' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
                                     } else {
                                         html +=
                                             '<li class="disable" data-id="' + data
                                             .kode_brng +
                                             '" data-stok="' + item.stok +
                                             '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
-                                            data.nama_brng + ' - Rp. '+toRupiah(data.ralan)+' - <b>Stok Kosong' +
+                                            data.nama_brng + ' - Rp. ' + toRupiah(data.ralan) + ' - <b>Stok Kosong' +
                                             '</b></a></i></li>'
                                     }
                                 }

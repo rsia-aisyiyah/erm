@@ -5,7 +5,7 @@
                 <h5 class="modal-title fs-5" id="modalLabRanapLabel">PEMERIKSAAN PENUNJANG</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="height: 100vh">
                 <div class="card mb-2 p-0">
                     <div class="card-body">
                         <table class="borderless">
@@ -27,6 +27,13 @@
                                 <td>Tanggal Lahir / Umur</td>
                                 <td>:</td>
                                 <td id="umur">
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Dokter DPJP</td>
+                                <td>:</td>
+                                <td id="dokter">
 
                                 </td>
                             </tr>
@@ -121,6 +128,11 @@
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 $('#modalLabRanap').modal('show')
                 $('td#no_rawat').html(no_rawat)
+                $('td#dokter').html(regPeriksa.dokter.nm_dokter)
+                formPermintaanLab.find('#no_rawat').val(no_rawat)
+                formPermintaanLab.find('#dokter').val(regPeriksa.dokter.nm_dokter)
+                formPermintaanLab.find('#kd_dokter').val(regPeriksa.kd_dokter)
+                formPermintaanLab.find('#status').val(regPeriksa.status_lanjut.toLowerCase())
                 $('td#nama_pasien').html(`${regPeriksa.no_rkm_medis} ${regPeriksa.pasien.nm_pasien} / ${regPeriksa.pasien.jk}`)
                 $('td#umur').html(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
             })
@@ -131,8 +143,7 @@
                         html = `<tr><td>${splitTanggal(prm.tgl_hasil)} ${prm.jam_hasil}</td>
                             <td>${prm.diagnosa_klinis}</td>
                             <td>${prm.informasi_tambahan}</td>
-                            <td>
-                    `
+                            <td>`
                         prm.periksa_radiologi.map((periksa) => {
                             if (periksa.tgl_periksa == prm.tgl_hasil && periksa.jam == prm.jam_hasil) {
                                 html += `${periksa.jns_perawatan.nm_perawatan}, <br/>`
@@ -180,17 +191,7 @@
 
         }
 
-        function setWarnaPemeriksaan(keterangan) {
-            let warna = '';
-            if (keterangan == 'L') {
-                warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
-            } else if (keterangan == 'H' || keterangan == '*' || keterangan == '**') {
-                warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
-            } else if (keterangan == 'K' || keterangan == 'k') {
-                warna = 'style="color:#fff;background-color:#dc3;font-weight:bold"';
-            }
-            return warna;
-        }
+
 
         $('#modalLabRanap').on('hidden.bs.modal', function() {
             $('#tabel-lab').empty()

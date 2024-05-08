@@ -92,8 +92,13 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\DetailPermintaanLabController;
 use App\Http\Controllers\JnsPerawatabLabController;
+use App\Http\Controllers\PermintaanLabController;
+use App\Http\Controllers\PermintaanPemeriksaanLabController;
 use App\Http\Controllers\TemplateLaboratoriumController;
+use App\Models\PermintaanPemeriksaanLab;
+use App\Models\PermintaanPemeriksaanRadiologi;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -225,6 +230,13 @@ Route::middleware('auth')->group(function () {
     Route::get('lab/jenis/get', [JnsPerawatabLabController::class, 'get']);
     Route::get('lab/jenis/template/get', [JnsPerawatabLabController::class, 'getTemplate']);
 
+    Route::get('lab/permintaan/nomor', [PermintaanLabController::class, 'getNomor']);
+
+    Route::get('lab/permintaan', [PermintaanLabController::class, 'get']);
+    Route::post('lab/permintaan', [PermintaanLabController::class, 'create']);
+    Route::post('lab/permintaan/detail', [DetailPermintaanLabController::class, 'create']);
+    Route::post('lab/permintaan/pemeriksaan', [PermintaanPemeriksaanLabController::class, 'create']);
+
     Route::get('lab/template/get', [TemplateLaboratoriumController::class, 'get']);
 
 
@@ -339,7 +351,6 @@ Route::middleware('auth')->group(function () {
     Route::get('riwayat/persalinan/get/{no_rkm_medis}', [RiwayatPersalinanController::class, 'get']);
     Route::delete('riwayat/persalinan/delete', [RiwayatPersalinanController::class, 'delete']);
     Route::post('riwayat/persalinan/insert', [RiwayatPersalinanController::class, 'insert']);
-
 
     Route::get('radiologi', [PeriksaRadiologiController::class, 'view']);
     Route::get('radiologi/table', [PermintaanRadiologiController::class, 'getTableIndex']);

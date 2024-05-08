@@ -124,9 +124,9 @@
                     '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
                     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
                     diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) +
-                    setResumeMedis(i.resume_medis) +
-                    setPemeriksaan(ralan, i.pemeriksaan_ralan) + setPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
-                    setRiwayatAsmedAnak(i.asmed_ranap_anak) + setRiwayatAsmedKandungan(i.asmed_ranap_kandungan) +
+                    renderResumeMedis(i.resume_medis) +
+                    renderPemeriksaan(ralan, i.pemeriksaan_ralan) + renderPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
+                    renderRiwayatAsmedAnak(i.asmed_ranap_anak) + renderRiwayatAsmedKandungan(i.asmed_ranap_kandungan) +
                     '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
                     pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
@@ -244,7 +244,7 @@
             }
         }
 
-        function setPemeriksaan(jns, data) {
+        function renderPemeriksaan(jns, data) {
             let html = '';
             if (data.length) {
                 html = `<tr><th style="vertical-align: top;">Pemeriksaan ${jns}</th><td>`;
@@ -353,7 +353,7 @@
             return html;
         }
 
-        function setResumeMedis(resumeMedis) {
+        function renderResumeMedis(resumeMedis) {
             if (resumeMedis) {
                 if (resumeMedis.kamar_inap) {
                     tgl_masuk = formatTanggal(resumeMedis.kamar_inap.tgl_masuk)
@@ -618,7 +618,7 @@
 
         }
 
-        function setRiwayatAsmedAnak(asmed) {
+        function renderRiwayatAsmedAnak(asmed) {
             if (asmed) {
                 html = '<tr><th style="vertical-align: top;">Asesmen Medis</th><td>'
                 html += `
@@ -821,7 +821,7 @@
 
         }
 
-        function setRiwayatAsmedKandungan(asmed) {
+        function renderRiwayatAsmedKandungan(asmed) {
             if (asmed) {
                 html = '<tr><th style="vertical-align: top;">Asesmen Medis</th><td>'
                 html += `
