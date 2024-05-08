@@ -428,6 +428,7 @@ Route::middleware('auth')->group(function () {
     Route::post('kontrol/umum/baru', [SuratKontrolUlangController::class, 'create']);
     Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
     Route::get('poliklinik/bpjs/{kdPoli}', [MappingPoliBpjsController::class, 'ambil']);
+    Route::get('catatan/perawatan', [CatatanPerawatanController::class, 'getCatatan']);
     Route::get('catatan/perawatan/{noRawat}', [CatatanPerawatanController::class, 'get']);
     Route::post('catatan/perawatan/insert', [CatatanPerawatanController::class, 'insert']);
     Route::post('catatan/perawatan/create', [CatatanPerawatanController::class, 'insertOrUpdate']);
