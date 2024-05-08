@@ -63,7 +63,6 @@
                         @include('content.ranap.form.form_asemd_anak')
                     </div>
                     <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
-                        <h5 class="text-center">PERMINTAAN LAB</h5>
                         @include('content.ranap.modal.penunjang.permintaan_lab')
                     </div>
                     <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab"
