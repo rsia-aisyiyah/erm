@@ -142,7 +142,7 @@
     </div>
 
 
-    <script src="https://code.responsivevoice.org/responsivevoice.js?key=bJDDvdyZ"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=Sy6j48ws"></script>
     <script>
         $(document).ready(function() {
             getData();
