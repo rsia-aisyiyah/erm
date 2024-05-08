@@ -1,3 +1,4 @@
+<h5 class="text-center mt-4">PERMINTAAN LAB</h5>
 <form action="" id="formPermintaanLab">
     <div class="row gy-2 mb-3">
         <div class="col-md-2">
@@ -64,6 +65,8 @@
         const tableHasilPermintaan = $('#tableHasilPermintaan');
 
         $('button[id="permintaan-laborat-tab"]').on('shown.bs.tab', (e) => {
+            tableHasilPermintaan.find('tbody').empty();
+            tablePermintaanLab.find('tbody').empty();
             getNomorPermintaan();
             let no_rawat = '';
             if (formSoapPoli.length) {
