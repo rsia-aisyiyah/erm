@@ -164,6 +164,26 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="nav-penunjang" role="tabpanel" aria-labelledby="nav-penunjang-tab" tabindex="0">
+                                        <div class="" id="berkasPenunjang">
+                                            @include('content.ranap.modal.riwayat._berkas')
+                                        </div>
+                                        <div class="" id="catatanPerawatan">
+                                            <div class="card position-relative mt-2">
+                                                <div class="card-header" aria-controls="collapseCatatanPerawatan" data-bs-toggle="collapse" data-bs-target="#collapseCatatanPerawatan">
+                                                    <div class="card-text">
+                                                        <span>Catatan Keperawatan</span>
+                                                    </div>
+
+                                                </div>
+                                                <div class="card-body card-text collapse" id="collapseCatatanPerawatan">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="mt-2" id="contentCatatanPerawatan"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="" id="hasilLab">
                                             @include('content.ranap.modal.riwayat._lab')
                                         </div>
@@ -439,7 +459,9 @@
                 setRiwayatPemeriksaanRanap(no_rawat)
                 setRiwayatObat(no_rawat)
                 setRiwayatLaborat(no_rawat)
+                setBerkasPenunjang(no_rawat)
                 setRiwayatRadiologi(no_rawat)
+                setCatatanPerwatan(no_rawat)
                 // setLab(no_rawat);
                 // setNavTabsTitle()
             })
