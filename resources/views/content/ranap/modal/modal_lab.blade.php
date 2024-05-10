@@ -68,7 +68,6 @@
                         </table>
                     </div>
                     <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
-                        <h5 class="text-center">PERMINTAAN LAB</h5>
                         @include('content.ranap.modal.penunjang.permintaan_lab')
                     </div>
                     <div class="tab-pane fade" id="radiologi-tab-pane" role="tabpanel" aria-labelledby="radiologi-tab" tabindex="0">
@@ -196,6 +195,9 @@
         $('#modalLabRanap').on('hidden.bs.modal', function() {
             $('#tabel-lab').empty()
             $('#tbHasilRadiologi tbody').empty()
+            tableHasilPermintaan.find('tbody').empty();
+            tableHasilPermintaan.addClass('d-none');
+
         })
     </script>
 @endpush
