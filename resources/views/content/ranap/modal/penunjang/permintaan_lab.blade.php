@@ -65,8 +65,8 @@
         const tableHasilPermintaan = $('#tableHasilPermintaan');
 
         $('button[id="permintaan-laborat-tab"]').on('shown.bs.tab', (e) => {
-            tableHasilPermintaan.find('tbody').empty();
             tablePermintaanLab.find('tbody').empty();
+            tableHasilPermintaan.addClass('d-none');
             getNomorPermintaan();
             let no_rawat = '';
             if (formSoapPoli.length) {
@@ -82,6 +82,11 @@
 
         $('#btnDataPermintaan').on('click', () => {
             const no_rawat = formSoapPoli.length ? formSoapPoli.find('#nomor_rawat').val() : formPermintaanLab.find('#no_rawat').val();
+            // if (tableHasilPermintaan.hasClass('d-none')) {
+            //     tableHasilPermintaan.removeClass('d-none');
+            // } else {
+            //     tableHasilPermintaan.addClass('d-none');
+            // }
             tableHasilPermintaan.toggleClass('d-none');
             tableHasilPermintaan.find('tbody').empty();
             getPermintaanLab(no_rawat)
@@ -91,18 +96,24 @@
             $.get('/erm/lab/permintaan', {
                 no_rawat: no_rawat
             }).done((response) => {
-                const permintaan = response.map((item, index) => {
-                    return `<tr>
-                        <td>${index+1}</td>
-                        <td>${item.noorder}</td>
-                        <td>${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</td>
-                        <td>${item.informasi_tambahan}</td>
-                        <td>${item.diagnosa_klinis}</td>
-                        <td>${splitTanggal(item.tgl_sampel)} ${item.jam_sampel}</td>
-                        <td>${splitTanggal(item.tgl_hasil)} ${item.jam_hasil}</td>
-                        </tr>${getPermintaanPeriksa(item.pemeriksaan)}`
-                })
-                tableHasilPermintaan.find('tbody').append(permintaan.join(''))
+                let contentPermintaan = '';
+                if (Object.values(response).length) {
+                    const permintaan = response.map((item, index) => {
+                        return `<tr>
+                            <td>${index+1}</td>
+                            <td>${item.noorder}</td>
+                            <td>${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</td>
+                            <td>${item.informasi_tambahan}</td>
+                            <td>${item.diagnosa_klinis}</td>
+                            <td>${splitTanggal(item.tgl_sampel)} ${item.jam_sampel}</td>
+                            <td>${splitTanggal(item.tgl_hasil)} ${item.jam_hasil}</td>
+                            </tr>${getPermintaanPeriksa(item.pemeriksaan)}`
+                    }).join('');
+                    contentPermintaan = permintaan;
+                } else {
+                    contentPermintaan = `<tr><td colspan=7 class="text-center text-danger">Tidak ada history permintaan </td></tr>`
+                }
+                tableHasilPermintaan.find('tbody').append(contentPermintaan)
             })
         }
 
