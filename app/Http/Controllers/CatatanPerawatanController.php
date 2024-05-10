@@ -70,4 +70,9 @@ class CatatanPerawatanController extends Controller
         }
         return response()->json($catatan);
     }
+    function getCatatan(Request $request)
+    {
+        $catatan = $this->catatan->where('no_rawat', $request->no_rawat)->with('dokter')->first();
+        return response()->json($catatan);
+    }
 }
