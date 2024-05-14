@@ -41,6 +41,10 @@
                         <button class="nav-link" id="tab-rad-anak" data-bs-toggle="tab" data-bs-target="#rad-ana"
                             type="button" role="tab" aria-controls="rad-ana" aria-selected="false">Hasil Radiologi</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab" data-bs-target="#permintaan-radiologi-tab-pane"
+                            type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi</button>
+                    </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
@@ -83,6 +87,9 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class="tab-pane fade" id="permintaan-radiologi-tab-pane" role="tabpanel" aria-labelledby="permintaan-radiologi-tab" tabindex="0">
+                        @include('content.ranap.modal.penunjang.permintaan_radiologi')
                     </div>
                     <div class="tab-pane fade p-3" id="rad-ana" role="tabpanel" aria-labelledby="tab-radiologi"
                         tabindex="0">
@@ -1127,7 +1134,7 @@
                         $.map(data.gudang_barang, function(item) {
                             if (data) {
                                 if (data.status != "0") {
-                                    if (item.stok != "0") {
+                                    if (item.stok >= "0") {
                                         html +=
                                             '<li data-id="' +
                                             data.kode_brng +

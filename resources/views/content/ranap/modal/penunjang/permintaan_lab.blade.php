@@ -82,11 +82,6 @@
 
         $('#btnDataPermintaan').on('click', () => {
             const no_rawat = formSoapPoli.length ? formSoapPoli.find('#nomor_rawat').val() : formPermintaanLab.find('#no_rawat').val();
-            // if (tableHasilPermintaan.hasClass('d-none')) {
-            //     tableHasilPermintaan.removeClass('d-none');
-            // } else {
-            //     tableHasilPermintaan.addClass('d-none');
-            // }
             tableHasilPermintaan.toggleClass('d-none');
             tableHasilPermintaan.find('tbody').empty();
             getPermintaanLab(no_rawat)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PermintaanRadiologi;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -77,6 +78,49 @@ class PermintaanRadiologiController extends Controller
         $update = $this->radiologi->where($clause)->update($data);
         if ($update) {
             $this->track->updateSql($this->radiologi, $data, $clause);
+        }
+    }
+    function getNomor(): string
+    {
+        $permintaan = $this->radiologi
+            ->where('tgl_permintaan', date('Y-m-d'))
+            ->select('noorder')->orderBy('noorder', 'desc')->first();
+        if ($permintaan == null) {
+            $now = date('Ymd');
+            $nomor = "PR{$now}0001";
+        } else {
+            $arrString = explode('PR', $permintaan->noorder);
+            $nomor =  (int)$arrString[1] + 1;
+            $nomor = "PR{$nomor}";
+        }
+        return $nomor;
+    }
+
+    function create(Request $request)
+    {
+        $data = [
+            'noorder' => $request->noorder,
+            'no_rawat' => $request->no_rawat,
+            'tgl_permintaan' => date('Y-m-d'),
+            'jam_permintaan' => date('H:i:s'),
+            'dokter_perujuk' => $request->kd_dokter,
+            'status' => $request->status,
+            'informasi_tambahan' => $request->informasi_tambahan,
+            'diagnosa_klinis' => $request->diagnosa_klinis,
+            'tgl_sampel' => "0000-00-00",
+            'jam_sampel' => "00:00:00",
+            'tgl_hasil' => "0000-00-00",
+            'jam_hasil' => "00:00:00",
+        ];
+
+        try {
+            $create = $this->radiologi->create($data);
+            if ($create) {
+                $this->track->insertSql($this->radiologi, $data);
+            }
+            return response()->json('SUKSES');
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
         }
     }
 }

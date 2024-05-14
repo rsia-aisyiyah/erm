@@ -50,6 +50,9 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="radiologi-tab" data-bs-toggle="tab" data-bs-target="#radiologi-tab-pane" type="button" role="tab" aria-controls="radiologi-tab-pane" aria-selected="false">Radiologi</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab" data-bs-target="#permintaan-radiologi-tab-pane" type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi</button>
+                    </li>
                 </ul>
                 <div class="tab-content p-2" id="myTabContent">
                     <div class="tab-pane fade show active" id="laborat-tab-pane" role="tabpanel" aria-labelledby="laborat-tab" tabindex="0">
@@ -89,6 +92,9 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class="tab-pane fade" id="permintaan-radiologi-tab-pane" role="tabpanel" aria-labelledby="permintaan-radiologi-tab" tabindex="0">
+                        @include('content.ranap.modal.penunjang.permintaan_radiologi')
                     </div>
                 </div>
             </div>
@@ -132,6 +138,12 @@
                 formPermintaanLab.find('#dokter').val(regPeriksa.dokter.nm_dokter)
                 formPermintaanLab.find('#kd_dokter').val(regPeriksa.kd_dokter)
                 formPermintaanLab.find('#status').val(regPeriksa.status_lanjut.toLowerCase())
+
+                formPermintaanRadiologi.find('#no_rawat').val(no_rawat)
+                formPermintaanRadiologi.find('#kd_dokter').val(regPeriksa.kd_dokter)
+                formPermintaanRadiologi.find('#dokter').val(regPeriksa.dokter.nm_dokter)
+                formPermintaanRadiologi.find('#status').val(regPeriksa.status_lanjut.toLowerCase())
+
                 $('td#nama_pasien').html(`${regPeriksa.no_rkm_medis} ${regPeriksa.pasien.nm_pasien} / ${regPeriksa.pasien.jk}`)
                 $('td#umur').html(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
             })

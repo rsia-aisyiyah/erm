@@ -93,9 +93,11 @@ use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
 use App\Http\Controllers\DetailPermintaanLabController;
+use App\Http\Controllers\JenisPerawatanRadiologiController;
 use App\Http\Controllers\JnsPerawatabLabController;
 use App\Http\Controllers\PermintaanLabController;
 use App\Http\Controllers\PermintaanPemeriksaanLabController;
+use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
 use App\Http\Controllers\TemplateLaboratoriumController;
 use App\Models\PermintaanPemeriksaanLab;
 use App\Models\PermintaanPemeriksaanRadiologi;
@@ -355,12 +357,18 @@ Route::middleware('auth')->group(function () {
     Route::get('radiologi', [PeriksaRadiologiController::class, 'view']);
     Route::get('radiologi/table', [PermintaanRadiologiController::class, 'getTableIndex']);
     Route::get('radiologi/permintaan', [PermintaanRadiologiController::class, 'getByNoRawat']);
+    Route::post('radiologi/permintaan', [PermintaanRadiologiController::class, 'create']);
+    Route::get('radiologi/permintaan/nomor', [PermintaanRadiologiController::class, 'getNomor']);
     Route::get('radiologi/periksa', [PeriksaRadiologiController::class, 'getByNoRawat']);
     Route::post('radiologi/periksa/update', [PeriksaRadiologiController::class, 'update']);
     Route::get('radiologi/periksa/print', [PeriksaRadiologiController::class, 'print']);
     Route::post('radiologi/hasil/update', [HasilRadiologiController::class, 'update']);
     Route::post('radiologi/hasil/create', [HasilRadiologiController::class, 'create']);
     Route::get('radiologi/hasil', [HasilRadiologiController::class, 'get']);
+
+    Route::get('radiologi/jenis/get', [JenisPerawatanRadiologiController::class, 'get']);
+    Route::post('radiologi/permintaan/periksa', [PermintaanPemeriksaanRadiologiController::class, 'create']);
+
 
     Route::get('poc', [PlanOfCareController::class, 'get']);
     Route::post('poc/create', [PlanOfCareController::class, 'create']);
