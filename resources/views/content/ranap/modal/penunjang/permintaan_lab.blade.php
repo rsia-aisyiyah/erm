@@ -66,6 +66,7 @@
 
         $('button[id="permintaan-laborat-tab"]').on('shown.bs.tab', (e) => {
             tablePermintaanLab.find('tbody').empty();
+            tablePermintaanLab.find('input[type=checkbox]').prop('checked', false)
             tableHasilPermintaan.addClass('d-none');
             getNomorPermintaan();
             let no_rawat = '';
@@ -84,7 +85,7 @@
             const no_rawat = formSoapPoli.length ? formSoapPoli.find('#nomor_rawat').val() : formPermintaanLab.find('#no_rawat').val();
             tableHasilPermintaan.toggleClass('d-none');
             tableHasilPermintaan.find('tbody').empty();
-            getPermintaanLab(no_rawat)
+            getPermintaanLab(no_rawat);
         })
 
         function getPermintaanLab(no_rawat) {
@@ -253,6 +254,7 @@
                 }
             })
         }
+
         $('#btnKirimPermintaan').on('click', () => {
             const data = getDataForm('#formPermintaanLab', ['input']);
             const dataPermintaan = [];
@@ -291,7 +293,7 @@
                         }).done((response) => {
                             alertSuccessAjax('Berhasil membuat permintaan lab')
                             tablePermintaanLab.find('tbody').empty();
-                            $('#p').prop('checked', false);
+                            tablePermintaanLab.find('input[type=checkbox]').prop('checked', false)
                             formPermintaanLab.trigger('reset');
                             formPermintaanLab.find('#no_rawat').val(data.no_rawat);
                             selectJenisPeriksaLab.val("").trigger('change');

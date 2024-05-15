@@ -21,8 +21,8 @@
             <input type="text" class="form-control" name="informasi_tambahan" id="informasi_tambahan" value="-" onfocus="removeZero(this)" onblur="cekKosong(this)" />
         </div>
         <div class="col-md-12">
-            <label for="pemeriksaan" class="form-label">Pemeriksaan Lab</label>
-            <select name="pemeriksaan" id="pemeriksaan" class="form-select" multiple data-dropdown-parent="#formPermintaanRadiologi" style="width:100%"></select>
+            <label for="pemeriksaan_radiologi" class="form-label">Pemeriksaan Lab</label>
+            <select name="pemeriksaan_radiologi" id="pemeriksaan_radiologi" class="form-select" multiple data-dropdown-parent="#formPermintaanRadiologi" style="width:100%"></select>
         </div>
     </div>
     <button type="button" class="btn btn-sm btn-primary" id="btnKirimPermintaanRadiologi"> <i class="bi bi-send me-2"></i>Kirim Permintaan</button>
@@ -50,7 +50,7 @@
         const tablePermintaanRadiologi = $('#tablePermintaanRadiologi')
         const formPermintaanRadiologi = $('#formPermintaanRadiologi')
 
-        const selectPermintaanRadiologi = formPermintaanRadiologi.find('#pemeriksaan');
+        const selectPermintaanRadiologi = formPermintaanRadiologi.find('#pemeriksaan_radiologi');
 
         $('button[id="permintaan-radiologi-tab"]').on('shown.bs.tab', (e) => {
             tablePermintaanRadiologi.find('tbody').empty();
@@ -103,7 +103,7 @@
 
         $('#btnKirimPermintaanRadiologi').on('click', () => {
             const data = getDataForm('#formPermintaanRadiologi', ['input', 'select']);
-            if (!data.pemeriksaan.length) {
+            if (!data.pemeriksaan_radiologi.length) {
                 return Swal.fire({
                     icon: 'warning',
                     title: `Ooppss...`,
@@ -113,7 +113,7 @@
 
             $.post(`/erm/radiologi/permintaan`, data).done((response) => {
                 if (response === 'SUKSES') {
-                    data.pemeriksaan.forEach((item) => {
+                    data.pemeriksaan_radiologi.forEach((item) => {
                         $.post(`/erm/radiologi/permintaan/periksa`, {
                             _token: "{{ csrf_token() }}",
                             kd_jenis_prw: item,
