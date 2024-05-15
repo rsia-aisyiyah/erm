@@ -34,8 +34,6 @@
                             @endif
                         </div>
                     </form>
-                </div>
-                <div class="container">
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_ugd" width="100%">
                         <thead>
                             <tr role="row">
@@ -117,7 +115,7 @@
             setInterval(() => {
                 tbUgd()
                 toastReload('Memperbaharui data pasien UGD', 2000)
-            }, 20000);
+            }, 50000);
 
             $('.tgl_awal').datepicker('setDate', splitTanggal(tgl_awal))
             $('.tgl_akhir').datepicker('setDate', splitTanggal(tgl_akhir))
@@ -148,7 +146,7 @@
                 destroy: true,
                 processing: true,
                 scrollX: true,
-                scrollY: 400,
+                scrollY: '60vh',
                 stateSave: true,
                 ordering: true,
                 paging: false,
