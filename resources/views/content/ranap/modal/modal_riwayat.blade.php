@@ -756,7 +756,7 @@
                                         <div class="col-md-6 col-lg-7 col-sm-12 mb-1">
                                             <div class="card">
                                                  <div class="card-header card-text ${headColor}">
-                                                   Petugas : ${periksa.pegawai.nama}
+                                                   Dilakukan Oleh : ${periksa.pegawai.nama}
                                                 </div>
                                                 <div class="card-body">
                                                     <table class="table table-sm table-responsive borderless" cellpadding="5" cellspacing="0">
