@@ -27,8 +27,8 @@
                          let gambar = '';
                          radiologi.gambar_radiologi.map((img, index) => {
                              if (img.tgl_periksa == radiologi.tgl_periksa && img.jam == radiologi.jam) {
-                                 gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}">
-                                    <img src="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}" class="img-thumbnail position-relative" width="100%">
+                                 gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="${getBaseUrl(`/webapps/radiologi/${img.lokasi_gambar}`)}">
+                                    <img src="${getBaseUrl(`/webapps/radiologi/${img.lokasi_gambar}`)}" class="img-thumbnail position-relative" width="100%">
                                 </a>`
                              }
                              listHasilRadiologi += `<div class="col-sm-12 col-md-6 col-lg-4">
