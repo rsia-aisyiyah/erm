@@ -71,8 +71,8 @@
                     arrFoto.forEach(function(fx) {
                         hasilFoto += `<td>
                             <div class="image-set m-t-20">
-                                <a data-magnify="gallery" data-src="" data-caption="${kategori?.toUpperCase()} ${formatTanggal(f.tgl_masuk)}" data-group="a" href="https://sim.rsiaaisyiyah.com/erm/public/erm/${fx}">
-                                    <img src="https://sim.rsiaaisyiyah.com/erm/public/erm/${fx}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                <a data-magnify="gallery" data-src="" data-caption="${kategori?.toUpperCase()} ${formatTanggal(f.tgl_masuk)}" data-group="a" href="${getBaseUrl(`/erm/public/erm/${fx}`)}">
+                                    <img src="${getBaseUrl(`/erm/public/erm/${fx}`)}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
                                 </a>
                                 <figcaption>${kategori?.toUpperCase()}</figcaption>
                             </div>
@@ -88,7 +88,7 @@
 
         function popup(foto) {
             $('#modal-image').modal('show');
-            let src = "https://sim.rsiaaisyiyah.com/erm/public/erm/" + foto;
+            let src = `${getBaseUrl(`/erm/public/erm/${foto}`)}`;
             $('.popup').attr('src', src)
         }
 
@@ -155,8 +155,8 @@
                     if (Object.keys(rad.gambar_radiologi).length) {
                         rad.gambar_radiologi.map((img) => {
                             if (img.tgl_periksa == rad.tgl_periksa && img.jam == rad.jam) {
-                                gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}">
-                                                <img src="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}" class="img-thumbnail position-relative" width="300px">
+                                gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="${getBaseUrl(`/webapps/radiologi/${img.lokasi_gambar}`)}">
+                                                <img src="${getBaseUrl(`/webapps/radiologi/${img.lokasi_gambar}`)}" class="img-thumbnail position-relative" width="300px">
                                             </a>`
                             } else {
                                 gambar = `<a data-magnify="gallery" data-src=""  data-group="a" href="{{ asset('/img/default.png') }}">

@@ -173,7 +173,7 @@
                         if (prm.gambar_radiologi.length) {
                             prm.gambar_radiologi.map((gambar) => {
                                 if (gambar.tgl_periksa == prm.tgl_hasil && gambar.jam == prm.jam_hasil) {
-                                    gbr = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${gambar.lokasi_gambar}`
+                                    gbr = `${getBaseUrl(`/webapps/radiologi/${gambar.lokasi_gambar}`)}`
                                     html += `<a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gbr}">
                                             <i class="bi bi-eye"></i> BUKA GAMBAR
                                         </a><br/>`
