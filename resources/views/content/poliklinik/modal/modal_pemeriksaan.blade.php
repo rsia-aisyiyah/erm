@@ -68,6 +68,7 @@
                     </div>
                     <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
                         @include('content.ranap.modal.penunjang.permintaan_lab')
+
                     </div>
                     <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab"
                         tabindex="0">
@@ -87,6 +88,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <br><button type="button" class="mt-3 btn btn-warning btn-sm" id="btnHasilKritis"><i class="bi bi-pencil me-2"></i> Hasil Kritis</button>
                     </div>
                     <div class="tab-pane fade" id="permintaan-radiologi-tab-pane" role="tabpanel" aria-labelledby="permintaan-radiologi-tab" tabindex="0">
                         @include('content.ranap.modal.penunjang.permintaan_radiologi')
@@ -124,6 +126,7 @@
     </div>
 </div>
 @include('content.poliklinik.modal.moda_detail_resep')
+
 @push('script')
     <script>
         function hapusBaris(param) {
@@ -159,6 +162,7 @@
             $('.btn-asmed').css('display', 'none')
             $('.btn-soap').css('display', 'none')
         })
+
         $('button[data-bs-target="#lab-ana"]').on('shown.bs.tab', function(e, x, y) {
             $('.btn-asmed-ranap').css('display', 'none')
             $('.btn-asmed').css('display', 'none')
@@ -1808,5 +1812,10 @@
             })
             return asmed;
         }
+
+        $('#btnHasilKritis').on('click', () => {
+            const no_rawat = $('#nomor_rawat').val();
+            hasilKritis(no_rawat)
+        })
     </script>
 @endpush

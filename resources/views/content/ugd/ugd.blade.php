@@ -55,6 +55,7 @@
     @include('content.poliklinik.modal.modal_riwayat')
     @include('content.ranap.modal.modal_riwayat')
     @include('content.ranap.modal.modal_lab')
+    @include('content.ranap.modal.modal_hasil_kritis')
 @endsection
 
 
@@ -188,6 +189,7 @@
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">CPPT</a></li>';
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')">Pemeriksaan Penunjang</a></li>`
                             list += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd(\'' + row.no_rawat + '\')">Asesmen Medis UGD</a></li>';
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${row.no_rawat}')" data-id="${row.no_rawat}">Hasil Kritis</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
@@ -198,6 +200,7 @@
                     {
                         data: 'pasien',
                         render: (data, type, row, meta) => {
+                            let asmed = '';
                             if (!data) {
                                 swal.fire({
                                     icon: 'error',
@@ -214,8 +217,13 @@
                             } else if (row.penjab.kd_pj == 'A01' || row.penjab.kd_pj == 'A05') {
                                 penjab = `<span class="text-success"><b>${row.penjab.png_jawab}</b></span>`
                             }
+
+                            if (row.asmed_ranap_anak == null && row.asmed_ranap_kandungan == null) {
+                                asmed = ' <button class="ml-1 px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button><br/>'
+                            }
+
                             kamarInap = Object.keys(row.kamar_inap).length ? `<span class="badge text-bg-success">Pindah Kamar</span>` : '';
-                            return `${row.no_rawat} <br/> <strong>${row.no_rkm_medis} <br/> ${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong> 
+                            return `${asmed} ${row.no_rawat} <br/> <strong>${row.no_rkm_medis} <br/> ${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong> 
                             <br/> ${penjab} <br/> ${kamarInap}`
                         }
                     },

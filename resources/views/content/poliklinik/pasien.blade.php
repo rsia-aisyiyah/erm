@@ -116,6 +116,7 @@
     @include('content.poliklinik.modal.modal_icare')
     @include('content.poliklinik.modal.modal_peserta')
     @include('content.poliklinik.modal.modal_catatan')
+    @include('content.ranap.modal.modal_hasil_kritis')
 @endsection
 
 @push('script')
