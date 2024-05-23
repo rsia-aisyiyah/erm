@@ -218,7 +218,7 @@
                                 penjab = `<span class="text-success"><b>${row.penjab.png_jawab}</b></span>`
                             }
 
-                            if (row.asmed_ranap_anak == null && row.asmed_ranap_kandungan == null) {
+                            if (row.asmed_igd == null) {
                                 asmed = ' <button class="ml-1 px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button><br/>'
                             }
 
