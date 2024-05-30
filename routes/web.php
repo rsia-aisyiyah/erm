@@ -455,6 +455,9 @@ Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 Route::get('/test/view', function () {
     return view('test');
 });
+Route::get('/test/view', function () {
+    return view('test');
+});
 
 
 
