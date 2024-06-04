@@ -122,7 +122,7 @@
                         item.detail.sort((a, b) => a.template.urut - b.template.urut);
                         item.detail.forEach((detail, index) => {
                             hasilLab += `<tr ${setWarnaPemeriksaan(detail.keterangan)}>
-                                <td>${detail.template.Pemeriksaan} (${detail.template.urut})</td>
+                                <td>${detail.template.Pemeriksaan}</td>
                                 <td>${detail.nilai} ${detail.template.satuan}</td>
                                 <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
                                 <td>${detail.keterangan}</td></tr>`
