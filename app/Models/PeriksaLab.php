@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use SebastianBergmann\Template\Template;
 
 class PeriksaLab extends Model
 {
@@ -32,6 +33,7 @@ class PeriksaLab extends Model
     }
     function detail(): HasMany
     {
-        return $this->hasMany(DetailPemeriksaanLab::class, ['no_rawat', 'tgl_periksa', 'kd_jenis_prw', 'jam'], ['no_rawat', 'tgl_periksa', 'kd_jenis_prw', 'jam']);
+        return $this->hasMany(DetailPemeriksaanLab::class, ['no_rawat', 'tgl_periksa', 'kd_jenis_prw', 'jam'], ['no_rawat', 'tgl_periksa', 'kd_jenis_prw', 'jam'])
+            ->select(['no_rawat', 'tgl_periksa', 'kd_jenis_prw', 'jam', 'nilai', 'nilai_rujukan', 'keterangan', 'id_template']);
     }
 }

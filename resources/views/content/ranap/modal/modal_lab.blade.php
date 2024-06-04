@@ -111,6 +111,7 @@
             getHasilLab(no_rawat).done((lab) => {
                 let hasilLab = '';
                 lab.forEach((item, index) => {
+
                     if (item.detail.length) {
                         hasilLab += `<tr class="borderless" style="background-color:#eee;padding:2px">
                             <td colspan="3">
@@ -118,9 +119,10 @@
                                 ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
                             </td>
                             <td>${item.petugas.nama}</td></tr>`;
+                        item.detail.sort((a, b) => a.template.urut - b.template.urut);
                         item.detail.forEach((detail, index) => {
                             hasilLab += `<tr ${setWarnaPemeriksaan(detail.keterangan)}>
-                                <td>${detail.template.Pemeriksaan}</td>
+                                <td>${detail.template.Pemeriksaan} (${detail.template.urut})</td>
                                 <td>${detail.nilai} ${detail.template.satuan}</td>
                                 <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
                                 <td>${detail.keterangan}</td></tr>`
