@@ -14,16 +14,9 @@
 @endsection
 
 @push('scripts')
-    <script type="text/javascript">
-        import axios from 'axios';
-        document.addEventListener('DOMContentLoaded', () => {
-            // axios({
-            //     url: 'registrasi/ambil',
-            //     method: 'get',
-            // }).then((response) => {
-            //     console.log('response ===', response);
-            // })
-            axios.get('registrasi/ambil').then((response) => {
+    <script>
+        $(document).ready(() => {
+            $.get(`${url}/registrasi/ambil`).done((response) => {
                 console.log(response);
             })
         })

@@ -15,4 +15,3 @@
         <x-footer />
     </div>
 @endsection
-@stack('scripts')

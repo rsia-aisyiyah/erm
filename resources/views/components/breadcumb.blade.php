@@ -5,7 +5,7 @@
                  <h6 class="page-title" style="font-size:0.9rem">
                      @if (count(Request::segments()))
                          @for ($i = 1; $i <= count(Request::segments()); $i++)
-                             {{ ucfirst(Request::segment($i)) }}
+                             {{ ucfirst(Request::segment($i + 1)) }}
                              @if (($i < count(Request::segments())) & ($i >= 1))
                                  >
                              @endif

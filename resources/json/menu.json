@@ -1,0 +1,8 @@
+[
+    {
+        "id": 1,
+        "title": "Dashboard",
+        "icon": "ti ti-dashboard",
+        "url": "/dashboard"
+    }
+]

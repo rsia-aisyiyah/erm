@@ -30,6 +30,7 @@
                 </a>
 
             </div>
+
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
                     <span class="avatar avatar-sm" style="  background-position: top;background-image: url(http://192.168.100.31/rsiap/file/pegawai/{{ session()->get('pegawai')->photo }})"></span>

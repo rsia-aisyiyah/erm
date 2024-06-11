@@ -2,10 +2,7 @@
 
 @section('page')
     <div class="row g-0 flex-fill">
-        <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
-            <!-- Photo -->
-            <div class="bg-cover h-100 min-vh-100" style="background-image: url(data:image/png;base64,{{ base64_encode($data->wallpaper) }})"></div>
-        </div>
+
         <div class="col-12 col-lg-6 col-xl-4 border-top-wide border-primary d-flex flex-column justify-content-center">
             <div class="container container-tight my-5 px-lg-5">
                 <div class="text-center mb-4">
@@ -67,6 +64,9 @@
                 </form>
             </div>
         </div>
-
+        <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
+            <!-- Photo -->
+            <div class="bg-cover h-100 min-vh-100" style="background-image: url(data:image/png;base64,{{ base64_encode($data->wallpaper) }})"></div>
+        </div>
     </div>
 @endsection

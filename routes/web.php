@@ -464,23 +464,20 @@ Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 Route::get('/test/view', function () {
     return view('test');
 });
-// Route::get('/v2', function () {
-//     return view('v2.main');
-// });
 
 
 Route::prefix('v2')->group(function () {
     Route::get('/', function () {
-        return view('v2.main');
+        return view('v2.content.dashboard');
     });
 
     Route::get('auth', function () {
         return view('v2.content.auth', ['data' => Setting::first()]);
     });
 
-    Route::prefix('registrasi')->group(function () {
+    Route::prefix('ralan')->group(function () {
         Route::get('/', function () {
-            return view('v2.content.registrasi');
+            return view('v2.content.ralan.ralan');
         });
     });
 });
