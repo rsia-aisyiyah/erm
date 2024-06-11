@@ -101,6 +101,7 @@ use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
 use App\Http\Controllers\TemplateLaboratoriumController;
 use App\Models\PermintaanPemeriksaanLab;
 use App\Models\PermintaanPemeriksaanRadiologi;
+use App\Models\Setting;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -109,11 +110,19 @@ Route::get('/login', function () {
     return view('content.auth.login');
 });
 
+
+
 Route::post('/login', [LoginController::class, 'authenticate'])
     ->name('login')
     ->middleware('guest');
 
 Route::middleware('auth')->group(function () {
+
+    Route::get('/setting', function () {
+        return view('content.auth.login');
+    });
+
+
     Route::get('/logout', [LoginController::class, 'logout']);
     Route::get('/', function () {
         return redirect('/poliklinik');
@@ -454,6 +463,26 @@ Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 
 Route::get('/test/view', function () {
     return view('test');
+});
+// Route::get('/v2', function () {
+//     return view('v2.main');
+// });
+
+
+Route::prefix('v2')->group(function () {
+    Route::get('/', function () {
+        return view('v2.main');
+    });
+
+    Route::get('auth', function () {
+        return view('v2.content.auth', ['data' => Setting::first()]);
+    });
+
+    Route::prefix('registrasi')->group(function () {
+        Route::get('/', function () {
+            return view('v2.content.registrasi');
+        });
+    });
 });
 
 

@@ -21,4 +21,5 @@ class User extends Authenticatable
     //     return $this->isi = User::select('*', DB::raw("AES_DECRYPT(id_user, 'nur') as username, AES_DECRYPT(password, 'windi') as passwd"))
     //         ->get();
     // }
+
 }
