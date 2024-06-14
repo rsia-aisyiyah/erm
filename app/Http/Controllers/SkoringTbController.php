@@ -135,7 +135,7 @@ class SkoringTbController extends Controller
         $skrining = $this->get(new \Illuminate\Http\Request(['id' => $id]))->getContent();
         $data = json_decode($skrining);
         $data->finger = $this->setFingerOutput($data->dokter->nm_dokter, bcrypt($data->dokter->kd_dokter), $data->tgl_skrining);
-        $file = Pdf::loadView('content.print.SkoringTb', ['data' => $data])
+        $file = Pdf::loadView('content.print.skoringTb', ['data' => $data])
             ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
             ->setPaper(array(0, 0, 595, 935));
         return $file->stream($data->pasien->no_rkm_medis . date('YmdHis') . '.pdf');
