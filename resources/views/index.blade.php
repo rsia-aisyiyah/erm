@@ -51,6 +51,7 @@
     @stack('js')
 
     <script type="text/javascript">
+        const role = '{{ session()->get('role') }}'
         const APIURL = 'http://sim.rsiaaisyiyah.com/rsiap-api/api';
 
         window.onerror = function(msg, url, linenumber) {

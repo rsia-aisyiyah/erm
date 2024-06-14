@@ -238,6 +238,15 @@
                 $('#formSoapPoli input[name=nm_pasien]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk}) / ${hitungUmur(regPeriksa.pasien.tgl_lahir)}`)
                 $('#formSoapPoli input[name=p_jawab]').val(regPeriksa.p_jawab)
                 $('#formSoapPoli input[name=png_jawab]').val(`${regPeriksa.penjab.png_jawab}`)
+
+                if (role === 'dokter') {
+                    cekPanggilanPoli(no_rawat).done((response) => {
+                        if (!response.length) {
+                            panggil(textRawat(regPeriksa.no_rawat))
+                        }
+                    });
+                }
+
                 riwayatResep(regPeriksa.no_rkm_medis)
                 cekAlergi(regPeriksa.no_rkm_medis)
             }).fail((request) => {
@@ -270,6 +279,15 @@
             })
         }
 
+        function cekPanggilanPoli(no_rawat) {
+            return $.ajax({
+                url: '/erm/poli/panggil',
+                data: {
+                    no_rawat: no_rawat
+                },
+                method: 'GET',
+            })
+        }
 
         function riwayatResep(no_rm) {
             $('#tb-resep-riwayat tbody').empty()

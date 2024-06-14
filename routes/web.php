@@ -145,6 +145,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/poliklinik/{kd_poli}', [PoliklinikController::class, 'viewPoliPasien']);
     Route::get('/poliklinik/count/{kd_poli}', [PoliklinikController::class, 'countUpload']);
     Route::get('/pemeriksaan/jumlah', [PoliklinikController::class, 'jumlahPasienPoli']);
+    Route::get('/poli/panggil', [EstimasiPoliController::class, 'get']);
     Route::post('/poliklinik/panggil', [EstimasiPoliController::class, 'kirim']);
     Route::delete('/poliklinik/batal', [EstimasiPoliController::class, 'hapus']);
     Route::post('/poliklinik/selesai', [SelesaiPoliController::class, 'kirim']);

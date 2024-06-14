@@ -58,6 +58,11 @@ class LoginController extends Controller
             $request->session()->regenerate();
             Session::put('pegawai', $pegawai);
             Session::put('status', 'ok');
+            $role = '';
+            if ($pegawai->dokter) {
+                $role = 'dokter';
+            }
+            Session::put('role', $role);
 
 
             if ($pegawai->departemen == 'DPM1') {
