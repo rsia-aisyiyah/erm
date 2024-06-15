@@ -111,6 +111,8 @@
             }
         }
 
+        $('.form-select2').css('width', '100%').select2();
+
         function toRupiah(number) {
             return rupiahFormat = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         }

@@ -1373,54 +1373,164 @@
 
         }
 
-        $('#modalSoap').on('shown.bs.modal', function() {
-            $('.tambah_umum').css('visibility', 'visible')
-            let kd_dokter = "{{ Request::get('dokter') }}"
+        // $('#modalSoap').on('shown.bs.modal', function() {
+        //     $('.tambah_umum').css('visibility', 'visible')
+        //     let kd_dokter = "{{ Request::get('dokter') }}"
 
-            modalsoap(id);
-            cekResep(id);
-            ambilDiagnosaPasien(id);
-            ambilProsedurPasien(id);
-            getRegPeriksa(id).done((regPeriksa) => {
-                var form = '';
-                if (regPeriksa.dokter.kd_sps == 'S0003') {
-                    $('#li-asmed-ana').css('display', 'inline');
-                    $('#li-asmed-ranap-ana').css('display', 'inline');
-                    $('#li-data-anak').css('display', 'inline');
-                    $('#li-asmed-obg').css('display', 'none');
-                    $('#li-asmed-ranap-obg').css('display', 'none');
-                    $('#li-data-obg').css('display', 'none');
-                    $('.btn-asmed-ranap').attr('onclick', 'simpanAsmedRanapAnak()')
-                    $('.btn-asmed').attr('onclick', 'simpanAsmedRajalAnak()')
-                    form = '.form-asmed-anak';
-                    setAsmedAnak(id);
-                    setAsmedRanapAnak(id)
+        //     modalsoap(id);
+        //     cekResep(id);
+        //     ambilDiagnosaPasien(id);
+        //     ambilProsedurPasien(id);
+        //     getRegPeriksa(id).done((regPeriksa) => {
+        //         var form = '';
+        //         if (regPeriksa.dokter.kd_sps == 'S0003') {
+        //             $('#li-asmed-ana').css('display', 'inline');
+        //             $('#li-asmed-ranap-ana').css('display', 'inline');
+        //             $('#li-data-anak').css('display', 'inline');
+        //             $('#li-asmed-obg').css('display', 'none');
+        //             $('#li-asmed-ranap-obg').css('display', 'none');
+        //             $('#li-data-obg').css('display', 'none');
+        //             $('.btn-asmed-ranap').attr('onclick', 'simpanAsmedRanapAnak()')
+        //             $('.btn-asmed').attr('onclick', 'simpanAsmedRajalAnak()')
+        //             form = '.form-asmed-anak';
+        //             setAsmedAnak(id);
+        //             setAsmedRanapAnak(id)
 
-                } else if (regPeriksa.dokter.kd_sps == 'S0001') {
-                    $('#li-asmed-ana').css('display', 'none');
-                    $('#li-asmed-ranap-ana').css('display', 'none');
-                    $('#li-data-anak').css('display', 'none');
-                    $('#li-asmed-obg').css('display', 'inline');
-                    $('#li-asmed-ranap-obg').css('display', 'inline');
-                    $('#li-data-obg').css('display', 'inline');
-                    $('.btn-asmed-ranap').attr('onclick', 'simpanAsmedRanapKandungan()')
-                    $('.btn-asmed').attr('onclick', 'simpanAsmedRajalKandungan()')
-                    form = '.form-asmed-kandungan';
+        //         } else if (regPeriksa.dokter.kd_sps == 'S0001') {
+        //             $('#li-asmed-ana').css('display', 'none');
+        //             $('#li-asmed-ranap-ana').css('display', 'none');
+        //             $('#li-data-anak').css('display', 'none');
+        //             $('#li-asmed-obg').css('display', 'inline');
+        //             $('#li-asmed-ranap-obg').css('display', 'inline');
+        //             $('#li-data-obg').css('display', 'inline');
+        //             $('.btn-asmed-ranap').attr('onclick', 'simpanAsmedRanapKandungan()')
+        //             $('.btn-asmed').attr('onclick', 'simpanAsmedRajalKandungan()')
+        //             form = '.form-asmed-kandungan';
 
-                    setAsmedRajalKandungan(id);
-                    setAsmedRanapKandungan(id)
+        //             setAsmedRajalKandungan(id);
+        //             setAsmedRanapKandungan(id)
+        //         }
+        //         $(`${form} input[name="no_rawat"]`).val(regPeriksa.no_rawat)
+        //         $(`${form} input[name="pasien"]`).val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
+        //         $(`${form} input[name="tgl_lahir"]`).val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
+        //         $(`${form} input[name="kd_dokter"]`).val(regPeriksa.kd_dokter)
+        //         $(`${form} input[name="nm_dokter"]`).val(regPeriksa.dokter.nm_dokter)
+        //         $(`${form} input[name="nm_dokter"]`).attr('readonly', 'readonly')
+
+        //     })
+        //     no = 1;
+        //     isModalShow = true;
+        // });
+
+        function modalSoapRalan(no_rawat) {
+            const formSoapPoli = $('#formSoapPoli')
+            formSoapPoli.find('input[name="alergi"]').val('-').removeAttr('style');
+            if (role === 'dokter') {
+                cekPanggilanPoli(no_rawat).done((response) => {
+                    if (!response.length) {
+                        panggil(no_rawat)
+                    }
+                });
+            }
+            getRegPeriksa(no_rawat).done((response) => {
+                const {
+                    pasien,
+                    penjab,
+                    dokter
+                } = response;
+                console.log(response);
+                formSoapPoli.find('input[name="no_rawat"]').val(no_rawat)
+                formSoapPoli.find('input[name="no_rkm_medis"]').val(response.no_rkm_medis)
+                formSoapPoli.find('input[name="nm_pasien"]').val(`${pasien.nm_pasien} (${pasien.jk}) / ${hitungUmur(pasien.tgl_lahir)}`)
+                formSoapPoli.find('input[name="png_jawab"]').val(penjab.png_jawab)
+                formSoapPoli.find('input[name="p_jawab"]').val(`${pasien.namakeluarga} (${pasien.keluarga})`)
+                if (pasien.ket_pasien) {
+                    formSoapPoli.find('input[name=ket_pasien]').val(pasien.ket_pasien.keterangan)
                 }
-                $(`${form} input[name="no_rawat"]`).val(regPeriksa.no_rawat)
-                $(`${form} input[name="pasien"]`).val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
-                $(`${form} input[name="tgl_lahir"]`).val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`)
-                $(`${form} input[name="kd_dokter"]`).val(regPeriksa.kd_dokter)
-                $(`${form} input[name="nm_dokter"]`).val(regPeriksa.dokter.nm_dokter)
-                $(`${form} input[name="nm_dokter"]`).attr('readonly', 'readonly')
+                const itemDokter = new Option(dokter.nm_dokter, dokter.kd_dokter, true, true);
+                formSoapPoli.find('select[name="dokter"]').append(itemDokter).trigger('change');
+
+                getRiwayatAlergi(response.no_rkm_medis).done((data) => {
+                    data.map((item) => {
+                        return item.pemeriksaan_ralan.map((itemPemeriksaan, index) => {
+                            if (itemPemeriksaan.alergi.length > 1) {
+                                return formSoapPoli.find('input[name="alergi"]').val(itemPemeriksaan.alergi);
+                            }
+                        });
+
+                    })
+                    const alergi = formSoapPoli.find('input[name="alergi"]').val();
+                    if (alergi != '-') {
+                        formSoapPoli.find('input[name="alergi"]').val(alergi).css('border-color', 'red');
+                    } else {
+                        formSoapPoli.find('input[name="alergi"]').val('-').removeAttr('style');
+                    }
+
+                });
+
+                riwayatResep(response.no_rkm_medis)
+
+                getPemeriksaanPoli(no_rawat, response.kd_poli).done((dataPeriksa) => {
+                    dataPeriksa.forEach(item => {
+                        const {
+                            pegawai
+                        } = item;
+                        if (!pegawai.dokter) {
+                            const itemPetugas = new Option(pegawai.nama, pegawai.nik, true, true);
+                            formSoapPoli.find('select[name="petugas"]').append(itemPetugas).trigger('change');
+                            formSoapPoli.find('select[name="kesadaran"]').append(kesadaran).trigger('change');
+                            formSoapPoli.find('input[name="suhu_tubuh"]').val(item.suhu_tubuh);
+                            formSoapPoli.find('input[name="tinggi"]').val(item.tinggi);
+                            formSoapPoli.find('input[name="berat"]').val(item.berat);
+                            formSoapPoli.find('input[name="spo2"]').val(item.spo2);
+                            formSoapPoli.find('input[name="respirasi"]').val(item.respirasi);
+                            formSoapPoli.find('input[name="nadi"]').val(item.nadi);
+                            formSoapPoli.find('input[name="tensi"]').val(item.tensi);
+                            formSoapPoli.find('input[name="gcs"]').val(item.gcs);
+                            formSoapPoli.find('textarea[name="keluhan"]').val(item.keluhan);
+                        } else {
+                            formSoapPoli.find('textarea[name="pemeriksaan"]').val(item.pemeriksaan);
+                            formSoapPoli.find('textarea[name="penilaian"]').val(item.penilaian);
+                            formSoapPoli.find('textarea[name="instruksi"]').val(item.instruksi);
+                            formSoapPoli.find('textarea[name="rtl"]').val(item.rtl);
+                        }
+                    });
+                })
+
+
+                $('#modalSoap').modal('show');
+
 
             })
-            no = 1;
-            isModalShow = true;
-        });
+        }
+
+        function createSoapRalan(no_rawat) {
+            const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
+            data['_token'] = '{{ csrf_token() }}';
+            if (role === 'dokter') {
+                data['nip'] = data['dokter'];
+            } else {
+                data['nip'] = data['petugas'];
+            }
+            $.post(`${url}/pemeriksaan/ralan/create`, data).done((response) => {
+                console.log('RESPONSE');
+                if (data.ket_pasien) {
+                    $.post('/erm/pasien/keterangan', {
+                        no_rkm_medis: data.no_rkm_medis,
+                        ket_pasien: data.ket_pasien,
+                        _token: "{{ csrf_token() }}"
+                    })
+                }
+                alertSuccessAjax('Data SOAP berhasil disimpan').then(() => {
+                    hitungPanggilan();
+                    reloadTabelPoli();
+                    $('#modalSoap').modal('hide');
+
+                })
+            }).fail((request) => {
+                alertErrorAjax(request)
+            })
+        }
 
         function setSoapToAsmed(no_rawat, form) {
             return getPemeriksaanPoli(no_rawat).done((response) => {

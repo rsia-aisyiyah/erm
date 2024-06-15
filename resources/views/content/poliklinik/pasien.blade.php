@@ -100,8 +100,6 @@
             </div>
 
         </div>
-        @include('content.upload.inforegistrasi')
-        @include('content.upload.resume')
     </div>
     @include('content.poliklinik.modal.modal_pemeriksaan')
     @include('content.poliklinik.modal.modal_riwayat')
@@ -117,6 +115,7 @@
     @include('content.poliklinik.modal.modal_peserta')
     @include('content.poliklinik.modal.modal_catatan')
     @include('content.ranap.modal.modal_hasil_kritis')
+    @include('content.ranap.modal.modal_penunjang')
 @endsection
 
 @push('script')
@@ -199,26 +198,7 @@
             })
         }
 
-        function simpanSoap() {
-            const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
-            $.post('/erm/pemeriksaan/simpan', data).done((response) => {
-                if (data.ket_pasien) {
-                    $.post('/erm/pasien/keterangan', {
-                        no_rkm_medis: data.no_rkm_medis,
-                        ket_pasien: data.ket_pasien,
-                        _token: "{{ csrf_token() }}"
-                    })
-                }
-                alertSuccessAjax('Data SOAP berhasil disimpan').then(() => {
-                    hitungPanggilan();
-                    reloadTabelPoli();
-                    $('#modalSoap').modal('hide');
 
-                })
-            }).fail((request) => {
-                alertErrorAjax(request)
-            })
-        }
 
         function modalsoap(no_rawat) {
             jbtn = "{{ session()->get('pegawai')->jbtn }}";
@@ -298,20 +278,21 @@
                 $.map(response, (resep) => {
                     if (resep.resep_dokter.length > 0 || resep.resep_racikan.length > 0) {
                         html = `<tr>`
-                        html += `<td width="15%">${formatTanggal(resep.tgl_peresepan)} <br>${resep.no_resep}</td>`
-                        html += `<td><ul style="disc inside">`
+                        html += `<td width="15%">${formatTanggal(resep.tgl_peresepan)} </td>`
+                        html += `<td width="10%">${resep.no_resep}</td>`
+                        html += `<td width="75%"><ul style="disc inside">`
                         $.map(resep.resep_dokter, (dokter) => {
-                            html += `<li>${dokter.data_barang.nama_brng}, ${dokter.jml} ${dokter.data_barang.kode_satuan.satuan}, aturan pakai ${dokter.aturan_pakai}</li>`
+                            html += `<li>${dokter.data_barang.nama_brng} @ ${dokter.jml} ${dokter.data_barang.kode_satuan.satuan}, S: ${dokter.aturan_pakai}</li>`
                         })
                         $.map(resep.resep_racikan, (racikan) => {
-                            html += `<li>${racikan.nama_racik}, jumlah ${racikan.jml_dr} ${racikan.metode.nm_racik}, aturan pakai ${racikan.aturan_pakai}</li>`
+                            html += `<li>${racikan.nama_racik}, @ ${racikan.jml_dr} ${racikan.metode.nm_racik}, S: ${racikan.aturan_pakai}</li>`
                             $.map(racikan.detail_racikan, (detail) => {
                                 html += `<span class="badge rounded-pill text-bg-success">${detail.databarang.nama_brng}</span>`
                             })
                         })
 
                         html += `</ul></td>`
-                        html += `<td><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(${resep.no_resep})" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy Resep</button></td>`;
+                        html += `<td width="10%"><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(${resep.no_resep})" type="button"><i class="bi bi-clipboard-check-fill"></i></button></td>`;
                         html += `<tr>`
                         $('#tb-resep-riwayat tbody').append(html)
                     }
@@ -341,6 +322,15 @@
                 }
             })
             return false;
+        }
+
+        function getRiwayatAlergi(no_rkm_medis) {
+            return $.ajax({
+                url: '/erm/registrasi/riwayat/alergi',
+                data: {
+                    no_rkm_medis: no_rkm_medis,
+                },
+            })
         }
 
         function hitungPanggilan() {
@@ -382,29 +372,28 @@
             });
         }
 
-        function panggil(urut) {
+        function panggil(no_rawat) {
 
-            id = $('.panggil-' + urut).data('id');
-            hitung_panggilan = $('#hitung-panggil').val();
-            text_recall = $('.panggil-' + urut).text()
-            if (hitung_panggilan < 2 || text_recall == 'CALL') {
-                $('.selesai-' + urut).prop('disabled', false);
-                $('.selesai-' + urut).prop('class', 'btn btn-warning btn-sm mb-2 selesai-' + urut + '');
+            // id = $('#panggil-' + urut).data('id');
+            const strNoRawat = textRawat(no_rawat);
+            const jmlPanggilan = $('#hitung-panggil').val();
+            const isPanggil = $(`#panggil-${strNoRawat}`).html() == 'PANGGIL';
+            const selesai = $(`#selesai-${strNoRawat}`);
+            const batal = $(`#batal-${strNoRawat}`);
+            const panggil = $(`#panggil-${strNoRawat}`);
+            if (jmlPanggilan < 2 || isPanggil) {
+                selesai.prop('disabled', false);
+                selesai.removeClass('btn-secondary').addClass('btn-warning');
+                batal.prop('disabled', false);
+                batal.removeClass('btn-secondary').addClass('btn-danger');
+                panggil.removeClass('btn-secondary').addClass('btn-indigo');
+                panggil.html('RE-CALL');
 
-                $('.batal-' + urut).prop('disabled', false);
-                $('.batal-' + urut).prop('class', 'btn btn-danger btn-sm mb-2 batal-' + urut + '');
-
-                $('.panggil-' + urut).prop('class', 'btn btn-primary btn-sm mb-2 panggil-' + urut + '');
-                $('.panggil-' + urut).css({
-                    'background-color': 'rgb(152 0 175)',
-                    'border-color': 'rgb(142 6 163)'
-                });
-                $('.panggil-' + urut).text('RE-CALL');
                 $.ajax({
                     url: '/erm/poliklinik/panggil',
                     data: {
                         '_token': '{{ csrf_token() }}',
-                        'no_rawat': id,
+                        'no_rawat': no_rawat,
                     },
                     method: "POST",
                     success: function(data) {
@@ -476,28 +465,27 @@
             })
         }
 
-        function batal(urut) {
-            $('.panggil-' + urut).prop('class', 'btn btn-success btn-sm mb-2 panggil-' + urut + '');
-            $('.panggil-' + urut).removeAttr('style');
-            $('.panggil-' + urut).css({
-                'width': '80px'
-            });
+        function batal(no_rawat) {
+            const strNoRawat = textRawat(no_rawat);
+            const jmlPanggilan = $('#hitung-panggil').val();
+            const isPanggil = $(`#panggil-${strNoRawat}`).html() == 'PANGGIL';
+            const selesai = $(`#selesai-${strNoRawat}`);
+            const batal = $(`#batal-${strNoRawat}`);
+            const panggil = $(`#panggil-${strNoRawat}`);
 
-            $('.batal-' + urut).prop('disabled', true);
-            $('.batal-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 batal-' + urut + '');
+            selesai.prop('disabled', true);
+            selesai.addClass('btn-secondary').removeClass('btn-warning');
+            batal.prop('disabled', true);
+            batal.addClass('btn-secondary').removeClass('btn-danger');
+            panggil.addClass('btn-success').removeClass('btn-indigo');
+            panggil.html('PANGGIL');
 
-            $('.selesai-' + urut).prop('disabled', true);
-            $('.selesai-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 selesai-' + urut + '');
-
-            $('.panggil-' + urut).text('PANGGIL');
-
-            id = $('.batal-' + urut).data('id');
 
             $.ajax({
                 url: '/erm/poliklinik/batal',
                 data: {
                     '_token': '{{ csrf_token() }}',
-                    'no_rawat': id,
+                    'no_rawat': no_rawat,
                 },
                 method: "DELETE",
                 success: function(response) {
@@ -802,34 +790,36 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             let html = '';
-                            norawat = textRawat(row.no_rawat)
+                            strNoRawat = textRawat(row.no_rawat)
+                            const panggil = $(`#panggil-${strNoRawat}`)
+                            const selesai = $(`#selesai-${strNoRawat}`)
+                            const batal = $(`#batal-${strNoRawat}`)
                             if (row.stts == 'Batal') {
                                 html =
                                     '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
                             } else if (row.stts == 'Sudah') {
-                                html =
-                                    '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
+                                html = '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
                             } else {
 
                                 if (row.stts == 'Berkas Diterima' || row.stts == 'Periksa') {
-                                    $('.panggil-' + norawat).text('RE-CALL');
-                                    $('.selesai-' + norawat).addClass('btn-warning');
-                                    $('.panggil-' + norawat).prop('style',
-                                        'width:80px;background-color:#9800af;border-color:#8e06a3;color:white'
-                                    );
-                                    $('.batal-' + norawat).addClass('btn-danger');
+                                    panggil.html('RE-CALL');
+                                    panggil.removeClass('btn-secondary').addClass('btn-indigo');
+                                    selesai.addClass('btn-warning').prop('disabled', false);
+                                    batal.addClass('btn-danger').prop('disabled', false);
                                 } else {
-                                    $('.panggil-' + norawat).addClass('btn-success');
-                                    $('.batal-' + norawat).addClass('btn-secondary');
-                                    $('.selesai-' + norawat).addClass('btn-secondary');
-                                    $('.panggil-' + norawat).text('PANGGIL')
-                                    $('.batal-' + norawat).prop('disabled', true);
-                                    $('.selesai-' + norawat).prop('disabled', true);
+                                    panggil.removeClass('btn-secondary')
+                                        .removeClass('btn-indogo')
+                                        .addClass('btn-success');
+                                    panggil.text('PANGGIL')
+                                    batal.removeClass('btn-danger').addClass('btn-secondary');
+                                    batal.prop('disabled', true);
+                                    selesai.removeClass('btn-warning').addClass('btn-secondary');
+                                    selesai.prop('disabled', true);
                                 }
-                                html = '<div id="aksi-' + norawat + '">';
-                                html += ' <button onclick="panggil(\'' + norawat + '\')" class="btn btn-sm mb-2 panggil-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '"></button><br/>';
-                                html += ' <button onclick="selesai(\'' + norawat + '\')" class="btn btn-sm mb-2 selesai-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">SELESAI</button><br/>';
-                                html += ' <button onclick="batal(\'' + norawat + '\')" class="btn btn-sm mb-2 batal-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">BATAL</button><br/>';
+                                html = `<div id="aksi-${strNoRawat}">`;
+                                html += `<button onclick="panggil('${row.no_rawat}')" id="panggil-${strNoRawat}" class="btn btn-sm btn-secondary mb-2 btnPanggil" type="button" style="width:80px;" data-id="${row.no_rawat}">PANGGIL</button><br/>`;
+                                html += ` <button onclick="selesai('${row.no_rawat}')" id="selesai-${strNoRawat}" class="btn btn-sm btn-secondary mb-2 btnSelesai" type="button" style="width:80px;" data-id="${row.no_rawat}" disabled>SELESAI</button><br/>`;
+                                html += ` <button onclick="batal('${row.no_rawat}')" id="batal-${strNoRawat}" class="btn btn-sm btn-secondary mb-2 btnBatal" type="button" style="width:80px;" data-id="${row.no_rawat}" disabled>BATAL</button><br/`;
                                 html += '</div>';
                             }
                             return html
@@ -926,7 +916,7 @@
                     {
                         data: '',
                         render: function(data, type, row, meta) {
-
+                            const strNoRawat = textRawat(row.no_rawat)
                             let ambilAskep = '';
                             let no_rkm_medis = row.no_rkm_medis.replace(/\s/g, '');
                             if (row.dokter) {
@@ -957,20 +947,19 @@
                                 });
                             }
 
-                            html =
-                                '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1" style = "width:80px;font-size:12px;text-align:left" onclick = "detailPeriksa(\'' +
-                                row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' +
-                                textRawat(row.no_rawat) +
-                                '"><i id="upload-' +
-                                textRawat(row.no_rawat) +
-                                '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
+                            html = `<button class="btn btn-primary btn-sm mb-2" style="width:80px" onclick="detailPeriksa('${row.no_rawat}', '${row.status_lanjut}')">
+                                        <i class="bi bi-cloud-upload-fill me-1"></i> UPLOAD
+                                </button><br/>`
+                            // '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1" style = "width:80px;font-size:12px;text-align:left" onclick = "detailPeriksa(\'' +
+                            // row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' +
+                            // textRawat(row.no_rawat) +
+                            // '"><i id="upload-' +
+                            // textRawat(row.no_rawat) +
+                            // '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>'
+
                             html +=
-                                '<button id="btn-periksa-' + textRawat(row.no_rawat) +
-                                '" style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRawat(\'' +
-                                row.no_rawat +
-                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' +
-                                row.no_rawat + '"><i class="bi bi-pencil-square" id="icon-periksa-' +
-                                textRawat(row.no_rawat) + '"></i> SOAP</button><br/>';
+                                `<button id="btn-periksa-${strNoRawat}" class="btn btn-primary btn-sm mb-2 mr-1 text-start" style="width:80px" onclick="modalSoapRalan('${row.no_rawat}')">
+                                    <i class="bi bi-pencil-square me-1" id="icon-periksa-${strNoRawat}"></i> SOAP</button><br/>`;
                             html +=
                                 '<button id="btn-askep-' + textRawat(row.no_rawat) +
                                 '"style="width:80px;font-size:12px;text-align:left" onclick="' +
@@ -1547,23 +1536,6 @@
                     })
                 }
             });
-        }
-
-        function resep(no_rawat) {
-            $.ajax({
-                url: '/erm/registrasi/ambil',
-                data: {
-                    no_rawat: no_rawat,
-                },
-                method: 'GET',
-                dataType: 'JSON',
-                success: function(response) {
-                    $('.no_rawat').val(response.no_rawat);
-                    $('.nm_pasien').val(response.no_rkm_medis + ' / ' + response.pasien.nm_pasien + ' / ' +
-                        response.umurdaftar + ' ' + response.sttsumur)
-                }
-            })
-            $('#modalResep').modal('show');
         }
     </script>
 @endpush

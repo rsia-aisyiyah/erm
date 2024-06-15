@@ -518,7 +518,7 @@
                                     <li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${row.ranap_gabung.reg_periksa.kd_dokter}" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">CPPT</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${row.ranap_gabung.reg_periksa.no_rawat}')">Asesmen Medis Anak ${cekList(row.ranap_gabung.reg_periksa.asmed_ranap_anak)}</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${row.ranap_gabung.reg_periksa.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.ranap_gabung.reg_periksa.askep_ranap_neonatus)}</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Pemeriksaan Penunjang</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Pemeriksaan Penunjang</a></li>
                                     ${resume}
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${row.ranap_gabung.reg_periksa.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.ranap_gabung.reg_periksa.no_rkm_medis}">Riwayat Pemeriksaan</a></li>
                                 </ul>`

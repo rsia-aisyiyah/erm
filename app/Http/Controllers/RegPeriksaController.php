@@ -139,6 +139,20 @@ class RegPeriksaController extends Controller
 
         return response()->json($pemeriksaan);
     }
+    public function getRiwayatAlergi(Request $request)
+    {
+
+        $regPeriksa = RegPeriksa::where(
+            [
+                'no_rkm_medis' => $request->no_rkm_medis,
+                'stts' => 'Sudah'
+            ]
+        )->with([
+            'poliklinik', 'dokter', 'pemeriksaanRalan.pegawai'
+        ])->orderBy('no_rawat', 'ASC')->get();
+
+        return response()->json($regPeriksa);
+    }
 
 
     public function statusDaftar($no_rawat, $status)

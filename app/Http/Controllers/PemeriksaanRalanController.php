@@ -247,4 +247,9 @@ class PemeriksaanRalanController extends Controller
 
         return response()->json($pemeriksaan);
     }
+
+    public function create(Request $request)
+    {
+        return $request;
+    }
 }

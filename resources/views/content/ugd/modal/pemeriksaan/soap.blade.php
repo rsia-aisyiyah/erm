@@ -18,7 +18,6 @@
                     </td>
                     <td colspan="2" width="40%">
                         <input class="form-control form-control-sm" id="nama" name="nama" placeholder="" autocomplete="off" readonly>
-
                     </td>
                 </tr>
                 <tr>

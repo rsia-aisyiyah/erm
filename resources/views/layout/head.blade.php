@@ -45,6 +45,46 @@
             box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05)
         }
 
+        .btn-indigo {
+            color: #fff;
+            background-color: #6610f2;
+            border-color: #6610f2;
+        }
+
+        .btn-indigo:hover {
+            color: #fff !important;
+            background-color: #520dc2 !important;
+            border-color: #4c0baf !important;
+        }
+
+        .btn-indigo:focus,
+        .btn-indigo.focus {
+            color: #fff;
+            background-color: #520dc2;
+            border-color: #4c0baf;
+            box-shadow: 0 0 0 0.2rem rgba(102, 16, 242, 0.5);
+        }
+
+        .btn-indigo:disabled,
+        .btn-indigo.disabled {
+            color: #fff;
+            background-color: #6610f2;
+            border-color: #6610f2;
+        }
+
+        .btn-indigo:not(:disabled):not(.disabled):active,
+        .btn-indigo:not(:disabled):not(.disabled).active,
+        .show>.btn-indigo.dropdown-toggle {
+            color: #fff;
+            background-color: #4c0baf;
+            border-color: #440a9f;
+        }
+
+        .btn-indigo:not(:disabled):not(.disabled):active:focus,
+        .btn-indigo:not(:disabled):not(.disabled).active:focus {
+            box-shadow: 0 0 0 0.2rem rgba(102, 16, 242, 0.5);
+        }
+
         .dropdown-item,
         .dropdown-menu {
             border-radius: 6px;
@@ -65,6 +105,14 @@
             border-radius: 6px;
             font-size: 11px;
             height: 32px;
+        }
+
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            font-size: 12px;
+        }
+
+        .select2-results__options {
+            font-size: 12px;
         }
 
         option {

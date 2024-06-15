@@ -176,6 +176,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/registrasi/batal', [RegPeriksaController::class, 'hitungBatal']);
     Route::get('/registrasi/tunggu', [RegPeriksaController::class, 'hitungTunggu']);
     Route::get('/registrasi/riwayat', [RegPeriksaController::class, 'riwayat']);
+    Route::get('/registrasi/riwayat/alergi', [RegPeriksaController::class, 'getRiwayatAlergi']);
     Route::get('/registrasi/ubah/dokter', [RegPeriksaController::class, 'ubahDpjp']);
     Route::get('/registrasi/foto', [UploadController::class, 'ambilPeriksa']);
 
@@ -208,6 +209,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
     Route::post('/pemeriksaan/edit', [PemeriksaanRalanController::class, 'edit']);
     Route::delete('/pemeriksaan/delete', [PemeriksaanRalanController::class, 'delete']);
+
+    Route::post('/pemeriksaan/ralan/create', [PemeriksaanRalanController::class, 'create']);
+
 
     Route::get('/soap/get', [PemeriksaanRanapController::class, 'ambilPemeriksaan']);
     Route::get('/soap/get/table', [PemeriksaanRanapController::class, 'getDataTable']);
