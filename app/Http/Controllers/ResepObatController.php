@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\ResepObat;
+use App\Traits\JsonResponseTrait;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class ResepObatController extends Controller
 {
+    use JsonResponseTrait;
     private $resepObat;
     private $track;
     public function __construct()
@@ -142,5 +145,77 @@ class ResepObatController extends Controller
         })->with(['resepRacikan.detailRacikan.databarang.kodeSatuan', 'resepRacikan.metode', 'resepDokter.dataBarang.kodeSatuan'])->get();
 
         return response()->json($resep);
+    }
+
+    function getNoResep(): int
+    {
+        $resep = ResepObat::select('no_resep')
+            ->orderBy('no_resep', 'DESC')
+            ->where('tgl_peresepan', date('Y-m-d'))
+            ->orWhere('tgl_perawatan', date('Y-m-d'))
+            ->first();
+
+        if ($resep) {
+            $no_resep = $resep->no_resep + 1;
+        } else {
+            $no_resep = date('Ymd') . '0001';
+        }
+
+        $resepObat = ResepObat::where('no_resep', $no_resep)->first();
+        if ($resepObat) {
+            $no_resep = $resepObat->no_resep + 1;
+        }
+        return $no_resep;
+    }
+
+    function createResep(Request $request)
+    {
+
+        try {
+            $params = [
+                'no_resep' => $this->getNoResep(),
+                'tgl_perawatan' => "0000-00-00",
+                'jam_perawatan' => "00:00:00",
+                'no_rawat' => $request->no_rawat,
+                'kd_dokter' => $request->kd_dokter,
+                'tgl_peresepan' => date('Y-m-d'),
+                'jam_peresepan' => date('H:i:s'),
+                'tgl_penyerahan' => "0000-00-00",
+                'jam_penyerahan' => "00:00:00"
+            ];
+            $resep = ResepObat::create($params);
+        } catch (QueryException $e) {
+            return $this->errorResponse('Gagal membuat resep', 500, $e->errorInfo);
+        }
+
+        $this->track->insertSql(new ResepObat(), $params);
+        return $this->successResponse(['no_resep' => $params['no_resep'], 'no_rawat' => $request->no_rawat], 'Berhasil membuat resep');
+    }
+
+    function deleteResep($no_resep)
+    {
+        try {
+            $resep = $this->resepObat->where('no_resep', $no_resep)->delete();
+            $this->track->deleteSql($this->resepObat, ['no_resep' => $no_resep]);
+        } catch (QueryException $e) {
+            return $this->errorResponse('Gagal menghapus resep', 400, $e->errorInfo);
+        }
+        return $this->successResponse(null, 'Berhasil menghapus data resep');
+    }
+
+    function getResep(Request $request)
+    {
+        $resep = $this->resepObat->where('no_rawat', $request->no_rawat)
+            ->with([
+                'resepRacikan.detailRacikan.databarang.kodeSatuan',
+                'resepRacikan.metode',
+                'resepDokter' => function ($q) {
+                    return $q->with(['dataBarang' => function ($q) {
+                        return $q->with('kodeSatuan')->select(['kode_brng', 'nama_brng', 'kode_sat']);
+                    }]);
+                }
+            ])->first();
+
+        return $this->successResponse($resep);
     }
 }

@@ -36,6 +36,7 @@
                             <input type="hidden" id="tgl_perawatan" name="tgl_perawatan" value="{{ date('Y-m-d') }}" readonly>
                             <input type="hidden" id="jam_rawat" name="jam_rawat" value="{{ date('H:i:s') }}" readonly>
                             <input type="hidden" id="evaluasi" name="evaluasi" value="-" readonly>
+                            <input type="hidden" id="no_resep" name="no_resep" value="-" readonly>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <label for="petugas">Asisten</label>
@@ -124,80 +125,7 @@
                     <button class="btn btn-warning btn-sm mt-3" type="button" style="font-size: 12px" onclick="catatanPasien()"><i class="bi bi-pen"></i> Diagnosa & Catatan</button>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <input type="hidden" class="no_resep form-control form-control-sm" />
-                            <ul class="nav nav-tabs" id="myTab">
-                                <li class="nav-item">
-                                    <a href="#umum" class="nav-link active" data-bs-toggle="tab">NON RACIKAN</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#racikan" class="nav-link" data-bs-toggle="tab">RACIKAN</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#riwayat" class="nav-link" data-bs-toggle="tab">RIWAYAT RESEP</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="umum">
-                                    <table class="table table-stripped table-responsive table-sm" id="tb-resep" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th width="18%">No. Resep</th>
-                                                <th>Nama Obat</th>
-                                                <th width="10%">Jumlah</th>
-                                                <th>Aturan Pakai</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="body_umum">
-
-                                        </tbody>
-                                    </table>
-                                    <button class="btn btn-primary btn-sm tambah_umum" type="button" onclick="tambahUmum()">Tambah
-                                        Obat</button>
-                                    <button class="btn btn-success btn-sm btn_simpan_resep" type="button" style="visibility: hidden">Simpan
-                                        Resep</button>
-                                </div>
-                                <div class="tab-pane fade" id="racikan">
-                                    <table class="table table-responsive" id="tb-resep-racikan" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th width="10%">No Racik</th>
-                                                <th>No Resep</th>
-                                                <th>Nama Racikan</th>
-                                                <th>Metode Racikan</th>
-                                                <th width="10%">Jumlah</th>
-                                                <th>Aturan Pakai</th>
-
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="body_racikan">
-
-                                        </tbody>
-                                    </table>
-                                    <button class="btn btn-primary btn-sm tambah_racik" type="button" onclick="tambahRacikan()">Tambah Racikan</button>
-                                </div>
-                                <div class="tab-pane fade" id="riwayat" style="max-height: 250px; overflow-y: auto">
-                                    <table class="table table-responsive" id="tb-resep-riwayat" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>No. Resep</th>
-                                                <th width="65%">Obat/Racikan</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="body_riwayat" class="align-top">
-
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('content.poliklinik.resep')
                 </div>
             </div>
         </div>
@@ -232,6 +160,7 @@
         function simpanSoap() {
             const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
             data['_token'] = '{{ csrf_token() }}';
+
             if (role === 'dokter') {
                 data['nip'] = data['dokter'];
             } else {

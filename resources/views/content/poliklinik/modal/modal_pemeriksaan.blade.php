@@ -1223,48 +1223,48 @@
 
         });
 
-        function tambahUmum() {
-            no_resep = $('.no_resep_umum').val();
-            no_rawat = $('#nomor_rawat').val();
-            cekResep(no_rawat).done(function(response) {
-                resep = Object.keys(response).length
-                if (resep == 0) {
-                    simpanResepObat().done(function(res) {
-                        $('.no_resep_umum ').val(res.no_resep)
-                    });
-                } else {
-                    $.map(response, function(res) {
-                        $('.no_resep_umum ').val(res.no_resep)
-                    })
-                }
-            });
+        // function tambahUmum() {
+        //     no_resep = $('.no_resep_umum').val();
+        //     no_rawat = $('#nomor_rawat').val();
+        //     cekResep(no_rawat).done(function(response) {
+        //         resep = Object.keys(response).length
+        //         if (resep == 0) {
+        //             simpanResepObat().done(function(res) {
+        //                 $('.no_resep_umum ').val(res.no_resep)
+        //             });
+        //         } else {
+        //             $.map(response, function(res) {
+        //                 $('.no_resep_umum ').val(res.no_resep)
+        //             })
+        //         }
+        //     });
 
-            html = '<tr>';
-            html += '<td><input type="hidden" class="kode_obat_umum"/>';
-            html +=
-                '<input type="text" class="no_resep_umum form-control form-control-sm form-underline" readonly/>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<input type="text" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat_umum form-underline" name="nama_obat_umum" /><div class="list_obat"></div>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<input type="text" class="jml_umum form-control form-control-sm form-underline"/>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<input type="text" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanObat()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
-            html += '</td>';
-            html += '</tr>';
-            $('#tb-resep tbody').append(html)
-            riwayatResep($('#no_rm').val())
+        //     html = '<tr>';
+        //     html += '<td><input type="hidden" class="kode_obat_umum"/>';
+        //     html +=
+        //         '<input type="text" class="no_resep_umum form-control form-control-sm form-underline" readonly/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="text" onkeyup="cariObat(this)" autocomplete="off" class="form-control form-control-sm nama_obat_umum form-underline" name="nama_obat_umum" /><div class="list_obat"></div>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="text" class="jml_umum form-control form-control-sm form-underline"/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="text" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanObat()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
+        //     html += '</td>';
+        //     html += '</tr>';
+        //     $('#tb-resep tbody').append(html)
+        //     riwayatResep($('#no_rm').val())
 
-        }
+        // }
 
         function ambilObat(param) {
             $('.nama_obat_umum').val($(param).data('nama'));
@@ -1431,14 +1431,15 @@
                         panggil(no_rawat)
                     }
                 });
+                cekResep(no_rawat);
             }
+
             getRegPeriksa(no_rawat).done((response) => {
                 const {
                     pasien,
                     penjab,
                     dokter
                 } = response;
-                console.log(response);
                 formSoapPoli.find('input[name="no_rawat"]').val(no_rawat)
                 formSoapPoli.find('input[name="no_rkm_medis"]').val(response.no_rkm_medis)
                 formSoapPoli.find('input[name="nm_pasien"]').val(`${pasien.nm_pasien} (${pasien.jk}) / ${hitungUmur(pasien.tgl_lahir)}`)
@@ -1468,16 +1469,20 @@
 
                 });
 
+                getResepObat(no_rawat);
                 riwayatResep(response.no_rkm_medis)
 
                 getPemeriksaanPoli(no_rawat, response.kd_poli).done((dataPeriksa) => {
-                    dataPeriksa.forEach(item => {
-                        const {
-                            pegawai
-                        } = item;
-                        if (!pegawai.dokter) {
-                            const itemPetugas = new Option(pegawai.nama, pegawai.nik, true, true);
-                            formSoapPoli.find('select[name="petugas"]').append(itemPetugas).trigger('change');
+                    console.log('DATA PERIKSA===', dataPeriksa);
+                    if (dataPeriksa.length == 1) {
+                        dataPeriksa.forEach((item) => {
+                            const {
+                                pegawai
+                            } = item;
+                            if (!pegawai.dokter) {
+                                const itemPetugas = new Option(pegawai.nama, pegawai.nik, true, true);
+                                formSoapPoli.find('select[name="petugas"]').append(itemPetugas).trigger('change');
+                            }
                             formSoapPoli.find('select[name="kesadaran"]').append(kesadaran).trigger('change');
                             formSoapPoli.find('input[name="suhu_tubuh"]').val(item.suhu_tubuh);
                             formSoapPoli.find('input[name="tinggi"]').val(item.tinggi);
@@ -1488,13 +1493,47 @@
                             formSoapPoli.find('input[name="tensi"]').val(item.tensi);
                             formSoapPoli.find('input[name="gcs"]').val(item.gcs);
                             formSoapPoli.find('textarea[name="keluhan"]').val(item.keluhan);
-                        } else {
                             formSoapPoli.find('textarea[name="pemeriksaan"]').val(item.pemeriksaan);
                             formSoapPoli.find('textarea[name="penilaian"]').val(item.penilaian);
                             formSoapPoli.find('textarea[name="instruksi"]').val(item.instruksi);
                             formSoapPoli.find('textarea[name="rtl"]').val(item.rtl);
-                        }
-                    });
+
+                        })
+                    } else if (dataPeriksa.length > 1) {
+                        dataPeriksa.forEach(item => {
+                            const {
+                                pegawai
+                            } = item;
+                            console.log(item.pegawai.dokter);
+                            if (!pegawai.dokter) {
+                                const itemPetugas = new Option(pegawai.nama, pegawai.nik, true, true);
+                                formSoapPoli.find('select[name="petugas"]').append(itemPetugas).trigger('change');
+                            } else if (pegawai.dokter) {
+                                formSoapPoli.find('select[name="kesadaran"]').append(kesadaran).trigger('change');
+                                formSoapPoli.find('input[name="suhu_tubuh"]').val(item.suhu_tubuh);
+                                formSoapPoli.find('input[name="tgl_perawatan"]').val(item.tgl_perawatan);
+                                formSoapPoli.find('input[name="jam_rawat"]').val(item.jam_rawat);
+                                formSoapPoli.find('input[name="tinggi"]').val(item.tinggi);
+                                formSoapPoli.find('input[name="berat"]').val(item.berat);
+                                formSoapPoli.find('input[name="spo2"]').val(item.spo2);
+                                formSoapPoli.find('input[name="respirasi"]').val(item.respirasi);
+                                formSoapPoli.find('input[name="nadi"]').val(item.nadi);
+                                formSoapPoli.find('input[name="tensi"]').val(item.tensi);
+                                formSoapPoli.find('input[name="gcs"]').val(item.gcs);
+                                formSoapPoli.find('textarea[name="keluhan"]').val(item.keluhan);
+                                formSoapPoli.find('textarea[name="pemeriksaan"]').val(item.pemeriksaan);
+                                formSoapPoli.find('textarea[name="penilaian"]').val(item.penilaian);
+                                formSoapPoli.find('textarea[name="instruksi"]').val(item.instruksi);
+                                formSoapPoli.find('textarea[name="rtl"]').val(item.rtl);
+                            }
+                        });
+
+                    } else {
+                        const nik = `{{ session()->get('pegawai')->nik }}`;
+                        const pegawai = `{{ session()->get('pegawai')->nama }}`;
+                        const itemPetugas = new Option(pegawai, nik, true, true);
+                        formSoapPoli.find('select[name="petugas"]').append(itemPetugas).trigger('change');
+                    }
                 })
 
 
@@ -1860,37 +1899,13 @@
             return resep;
         }
 
+
+
         $('#modalSoap').on('hidden.bs.modal', function() {
             $('#tb-resep tbody').empty();
             $('#tb-resep-racikan tbody').empty();
             isModalShow = false;
-            $('#nomor_rawat').val('-');
-            $('#p_jawab').val('-');
-            $('#no_rm').val('-');
-            $('#nama_pasien').val('-');
-            $('#nama').val('-');
-            $('#nik').val('-');
-            $('#jabatan').val('-');
-            $('#nomor_rawat').val('-');
-            $('#tgl_perawatan').val('-');
-            $('#subjek').val('-');
-            $('#objek').val('-');
-            $('#asesmen').val('-');
-            $('#plan').val('-');
-            $('#instruksi').val('-');
-            $('#suhu').val('-');
-            $('#tensi').val('-');
-            $('#tinggi').val('-');
-            $('#berat').val('-');
-            $('#gcs').val('-');
-            $('#respirasi').val('-');
-            $('#alergi').val('-')
-            $('#nadi').val('-');
-            $('#spo2').val('-');
-            $('#body_umum').empty();
-            $('#body_racikan').empty();
-            $('#body_riwayat').empty();
-            $('#ket_pasien').val('');
+            formSoapPoli.trigger('reset');
             $('button[data-bs-target="#tab-soap-pane"]').tab('show')
 
         });

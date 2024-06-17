@@ -134,6 +134,9 @@ class PemeriksaanRalanController extends Controller
             'sumber' => 'SOAP',
         ];
         if ($pemeriksaan) {
+            if ($pemeriksaan->nip != session()->get('pegawai')->nik) {
+                return response()->json(['message' => 'Sudah dilakukan CPPT oleh DPJP, anda tidak diperbolehkan mengubah data ini'], 401);
+            }
             $update = PemeriksaanRalan::where($clause)->update($data);
             $trackSql  = $this->track->updateSql($this->pemeriksaan, $data, $clause);
             if ($pemGrafik) {
@@ -141,8 +144,11 @@ class PemeriksaanRalanController extends Controller
                 $trackSql  = $this->track->updateSql($this->grafik, $grafik, $clause);
             }
         } else {
+            if ($request->nip != session()->get('pegawai')->nik) {
+                return response()->json(['message' => 'User Tidak Sesuai, Anda tidak diperbolehkan mengubah data ini,'], 401);
+            }
             $dataTambah = [
-                'nip' => $request->kd_dokter ? $request->kd_dokter : $request->nip,
+                'nip' => $request->nip,
                 'no_rawat' => $request->no_rawat,
                 'jam_rawat' => date('H:i:s'),
                 'tgl_perawatan' => $this->tanggal->now()->toDateString(),

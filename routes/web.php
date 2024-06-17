@@ -292,6 +292,9 @@ Route::middleware('auth')->group(function () {
     Route::get('obat/cari', [DataBarangController::class, 'cari']);
 
 
+    Route::post('/resep/create', [ResepObatController::class, 'createResep']);
+    Route::delete('/resep/delete/{no_resep}', [ResepObatController::class, 'deleteResep']);
+    Route::get('/resep/get', [ResepObatController::class, 'getResep']);
 
     Route::get('/resep', [ResepObatController::class, 'index']);
     Route::get('/resep/ambil/tabel', [ResepObatController::class, 'ambilTable']);
