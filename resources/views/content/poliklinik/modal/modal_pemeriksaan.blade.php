@@ -1906,6 +1906,8 @@
             $('#tb-resep-racikan tbody').empty();
             isModalShow = false;
             formSoapPoli.trigger('reset');
+            tbResepDokter.find('tbody').empty();
+            tbResepRacikan.find('tbody').empty();
             $('button[data-bs-target="#tab-soap-pane"]').tab('show')
 
         });

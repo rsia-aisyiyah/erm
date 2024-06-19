@@ -9,4 +9,6 @@ class MasterAturan extends Model
 {
     use HasFactory;
     protected $table = 'master_aturan_pakai';
+    protected $guarded = [];
+    public $timestamps = false;
 }

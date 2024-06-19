@@ -24,7 +24,7 @@ class DataBarangController extends Controller
             return $q
                 ->where('kd_bangsal', 'RM7')
                 ->sum('stok');
-        }])->get();
+        }])->where('status', '1')->get();
 
         if ($hasil) {
             $response =

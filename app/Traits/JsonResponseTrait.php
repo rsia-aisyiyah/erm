@@ -12,7 +12,7 @@ trait JsonResponseTrait
      * @param int $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function successResponse($data, $message = 'Success', $code = 200)
+    protected function successResponse($data = null, $message = 'Success', $code = 200)
     {
         return response()->json([
             'status' => 'success',
