@@ -34,9 +34,9 @@ class EstimasiPoliController extends Controller
         $no_rawat = $request->no_rawat;
         $jam_periksa = $this->tanggal->now()->toDateTimeString();
 
-        if ($this->cari($no_rawat)) {
-            $estimasi = EstimasiPoli::where('no_rawat', $no_rawat)->update(['jam_periksa' => $jam_periksa]);
-        } else {
+        $getEstimasi = $this->cari($no_rawat);
+
+        if (!isset($getEstimasi)) {
             $estimasi = EstimasiPoli::create(
                 [
                     'no_rawat' => $no_rawat,
