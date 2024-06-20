@@ -24,7 +24,7 @@ class MasterAturanController extends Controller
                 'aturan' => $request->aturan,
             ]);
         } catch (QueryException $e) {
-            return $this->errorResponse('Gagal membuat aturan', 500, $e->errorInfo);
+            return $this->errorResponse(null, 200, $e->errorInfo);
         }
         return $this->successResponse($aturan, 'Sukses membuat aturan', 201);
     }

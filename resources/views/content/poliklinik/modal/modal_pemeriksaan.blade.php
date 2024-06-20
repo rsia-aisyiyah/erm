@@ -1271,78 +1271,78 @@
             $('.kode_obat_umum').val($(param).data('id'))
         }
 
-        function tambahRacikan() {
-            no_resep = $('.no_resep').val();
-            no_rawat = $('#nomor_rawat').val();
-            cekResep(no_rawat).done(function(response) {
-                resep = Object.keys(response).length
-                if (resep == 0) {
-                    simpanResepObat().done(function(res) {
-                        $('.no_resep_umum ').val(res.no_resep)
-                    });
-                } else {
-                    $.map(response, function(res) {
-                        $('.no_resep_umum ').val(res.no_resep)
-                    })
-                }
-            });
+        // function tambahRacikan() {
+        //     no_resep = $('.no_resep').val();
+        //     no_rawat = $('#nomor_rawat').val();
+        //     cekResep(no_rawat).done(function(response) {
+        //         resep = Object.keys(response).length
+        //         if (resep == 0) {
+        //             simpanResepObat().done(function(res) {
+        //                 $('.no_resep_umum ').val(res.no_resep)
+        //             });
+        //         } else {
+        //             $.map(response, function(res) {
+        //                 $('.no_resep_umum ').val(res.no_resep)
+        //             })
+        //         }
+        //     });
 
-            html = '<tr>';
-            html += '<td>';
-            html +=
-                '<input type="text" class="no_racik form-control form-control-sm form-underline" readonly/>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<input type="text" class="no_resep form-control form-control-sm form-underline" readonly/>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<input type="search" autocomplete="off" onkeyup="cariRacikan(this)" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/><input type="hidden" class="id_racik" /><div class="list_racik"></div>';
-            html += '</td>';
+        //     html = '<tr>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="text" class="no_racik form-control form-control-sm form-underline" readonly/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="text" class="no_resep form-control form-control-sm form-underline" readonly/>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="search" autocomplete="off" onkeyup="cariRacikan(this)" class="form-control form-control-sm nm_racik form-underline" name="nm_racik"/><input type="hidden" class="id_racik" /><div class="list_racik"></div>';
+        //     html += '</td>';
 
-            html += '<td>';
-            html +=
-                '<select name=kd_racik" id="" class="form-select form-select-sm kd_racik form-underline" style="font-size:12px"> <option value="R01" selected>Puyer</option> <option value="R02">Sirup</option> <option value="R03">Salep</option> <option value="R04">Kapsul</option> </select>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<input type="search" autocomplete="off" class="form-control form-control-sm jml_dr form-underline" name="jml_dr" onkeypress="return hanyaAngka(event)" />';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<input type="search" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
-            html += '</td>';
-            html += '<td>';
-            html +=
-                '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanRacikan()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
-            html += '</td>';
-            html += '</tr>';
-            $('#tb-resep-racikan tbody').append(html)
+        //     html += '<td>';
+        //     html +=
+        //         '<select name=kd_racik" id="" class="form-select form-select-sm kd_racik form-underline" style="font-size:12px"> <option value="R01" selected>Puyer</option> <option value="R02">Sirup</option> <option value="R03">Salep</option> <option value="R04">Kapsul</option> </select>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="search" autocomplete="off" class="form-control form-control-sm jml_dr form-underline" name="jml_dr" onkeypress="return hanyaAngka(event)" />';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<input type="search" onkeyup="cariAturan(this)" autocomplete="off" class="form-control form-control-sm aturan_pakai form-underline" name="aturan_pakai" /><div class="list_aturan"></div>';
+        //     html += '</td>';
+        //     html += '<td>';
+        //     html +=
+        //         '<div class="status"><button type="button" class="btn btn-primary btn-sm" onclick="simpanRacikan()" style="font-size:12px"><i class="bi bi-plus-circle"></i></button><button type="button" class="btn btn-danger btn-sm hapus-baris" style="font-size:12px"><i class="bi bi-trash"></i></button></div>';
+        //     html += '</td>';
+        //     html += '</tr>';
+        //     $('#tb-resep-racikan tbody').append(html)
 
-            no_racik = 0;
-            $.ajax({
-                url: '/erm/resep/racik/ambil',
-                method: 'GET',
-                dataType: 'JSON',
-                data: {
-                    no_resep: $('.no_resep').val(),
-                },
-                success: function(response) {
-                    if (response) {
-                        $.map(response, function(data) {
-                            no_racik = data.no_racik
-                        })
-                        no_racik = parseInt(no_racik) + 1;
-                    } else {
-                        no_racik = 1
-                    }
-                    // console.log(no_racik)
-                    $('.no_racik').val(no_racik)
-                    $('.no_resep').val(no_resep)
-                }
-            })
-        }
+        //     no_racik = 0;
+        //     $.ajax({
+        //         url: '/erm/resep/racik/ambil',
+        //         method: 'GET',
+        //         dataType: 'JSON',
+        //         data: {
+        //             no_resep: $('.no_resep').val(),
+        //         },
+        //         success: function(response) {
+        //             if (response) {
+        //                 $.map(response, function(data) {
+        //                     no_racik = data.no_racik
+        //                 })
+        //                 no_racik = parseInt(no_racik) + 1;
+        //             } else {
+        //                 no_racik = 1
+        //             }
+        //             // console.log(no_racik)
+        //             $('.no_racik').val(no_racik)
+        //             $('.no_resep').val(no_resep)
+        //         }
+        //     })
+        // }
 
         $('#modalResepRacikan').on('hidden.bs.modal', function() {
             $('.nm_racik').val('');
