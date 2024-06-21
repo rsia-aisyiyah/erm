@@ -8,9 +8,12 @@ use App\Http\Controllers\Controller;
 use App\Models\ResepDokterRacikanDetail;
 use App\Http\Controllers\TrackerSqlController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
+use App\Traits\JsonResponseTrait;
+use Illuminate\Database\QueryException;
 
 class ResepDokterRacikanController extends Controller
 {
+    use JsonResponseTrait;
     protected $track;
     protected $resep;
     protected $resepDetail;
@@ -47,9 +50,12 @@ class ResepDokterRacikanController extends Controller
             'keterangan' => $request->keterangan,
         ];
 
-
-        $resep = ResepDokterRacikan::create($data);
-        $this->track->insertSql($this->resep, $data);
+        try {
+            $resep = ResepDokterRacikan::create($data);
+            $this->track->insertSql($this->resep, $data);
+        } catch (QueryException $e) {
+            return $this->errorResponse('Error', 400, $e->errorInfo);
+        }
         return response()->json($resep);
     }
 
@@ -77,5 +83,10 @@ class ResepDokterRacikanController extends Controller
         $resep = ResepDokterRacikan::where($clause)->update($data);
         $this->track->updateSql($this->resep, $data, $clause);
         return response()->json($request);
+    }
+
+    function createBatch(Request $request)
+    {
+        return $request->data;
     }
 }

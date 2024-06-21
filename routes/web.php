@@ -101,6 +101,7 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\MetodeRacikController;
 use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
@@ -333,6 +334,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/resep/racik/ubah', [ResepDokterRacikanController::class, 'ubah']);
     Route::delete('/resep/racik/hapus', [ResepDokterRacikanController::class, 'hapus']);
 
+    Route::post('/resep/racik/create/batch', [ResepDokterRacikanController::class, 'createBatch']);
+
     Route::get('/resep/racik/detail/ambil', [ResepDokterRacikanDetailController::class, 'ambil']);
     Route::delete('/resep/racik/detail/hapus', [ResepDokterRacikanDetailController::class, 'hapus']);
     Route::post('/resep/racik/detail/simpan', [ResepDokterRacikanDetailController::class, 'simpan']);
@@ -345,6 +348,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/resep/racik/template/tambah', [RsiaMappingRacikanController::class, 'tambah']);
     Route::post('/resep/racik/template/detail/tambah', [RsiaMappingRacikanDetailController::class, 'tambah']);
     Route::delete('/resep/racik/template/detail/hapus', [RsiaMappingRacikanDetailController::class, 'hapus']);
+
+    Route::get('/resep/racik/metode', [MetodeRacikController::class, 'get']);
 
     Route::get('/pegawai/ambil', [PegawaiController::class, 'ambil']);
 

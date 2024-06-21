@@ -79,6 +79,7 @@
                 tbResepDokter,
                 tbResepRacikan,
                 btnTambahResepRacik,
+                btnCreateResepRacik,
                 btnTambahResepUmum,
                 btnSimpanResepUmum,
             ];
