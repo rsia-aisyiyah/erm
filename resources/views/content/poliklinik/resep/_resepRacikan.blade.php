@@ -18,7 +18,7 @@
 
 @push('script')
     <script>
-        const tbResepRacikan = $('#tbResepRacikan').find('tbody')
+        const tbResepRacikan = $('#tbResepRacikan')
         const btnTambahResepRacik = $('#btnTambahResepRacik')
 
         function tambahRacikan() {
