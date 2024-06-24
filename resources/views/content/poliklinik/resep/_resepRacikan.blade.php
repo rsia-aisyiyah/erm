@@ -6,7 +6,7 @@
             <th width="15%">Metode Racikan</th>
             <th width="10%" class="text-center">Jumlah</th>
             <th>Aturan Pakai</th>
-            <th width="10%"></th>
+            <th width="15%"></th>
         </tr>
     </thead>
     <tbody id="body_racikan">
@@ -41,8 +41,8 @@
                                     <select class="form-select2" name="aturan_pakai[]" id="aturan${rowCount}" data-id="${rowCount}" data-dropdown-parent="#modalSoap" style="width:100%"></select>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-success " data-id="row${rowCount}" onclick="createBarisResepDokter('${rowCount}')"><i class="bi bi-check"></i></button>    
-                                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="row${rowCount}" onclick="hapusBarisObat('${rowCount}')"><i class="bi bi-x"></i></button>    
+                                    <button type="button" class="btn btn-sm btn-success " data-id="row${rowCount}" onclick="createBarisResepRacikan('${rowCount}')"><i class="bi bi-check"></i></button>    
+                                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="row${rowCount}" onclick="hapusBarisRacikan('${rowCount}')"><i class="bi bi-x"></i></button>    
                                 </td>
                             </tr>`;
             tbResepRacikan.find('tbody').append(addRow);
@@ -114,36 +114,121 @@
         function createResepObatRacikan() {
             const row = tbResepRacikan.find('tbody').find('tr')
             const no_resep = formSoapPoli.find('#no_resep').val();
+            const no_rawat = formSoapPoli.find('#no_rawats').val();
             const kd_dokter = formSoapPoli.find('#dokter').val();
 
             const data = [];
 
+            if (!row.length) {
+                return Swal.fire({
+                    title: 'Peringatan',
+                    html: 'Tidak ada racikan yang dibuat',
+                    icon: 'warning'
+                });
+            }
+
             for (let index = 0; index < row.length; index++) {
-                // console.log();
                 const racikan = {
+                    '_token': "{{ csrf_token() }}",
                     'no_resep': no_resep,
                     'no_racik': row.find(`#no_racik${index}`).val(),
                     'id': row.find(`#nm_racik${index}`).val(),
-                    'nm_racik': row.find(`#nm_racik${index}`).find(":selected").text(),
+                    'nama_racik': row.find(`#nm_racik${index}`).find(":selected").text(),
                     'jml_dr': row.find(`#jml_dr${index}`).val(),
-                    'metode': row.find(`#metode${index}`).val(),
+                    'kd_racik': row.find(`#metode${index}`).val(),
                     'aturan_pakai': row.find(`#aturan${index}`).val(),
                 }
 
-                $.post.
+                $.post(`${url}/resep/racik/simpan`,
+                    racikan
+                ).done((response) => {
+                    $.get(`${url}/resep/racik/template/ambil`, {
+                        id: racikan.id
+                    }).done((response) => {
+                        const obat = response.detail_racik.map((item, index) => {
+                            return {
+                                no_resep: racikan.no_resep,
+                                no_racik: racikan.no_racik,
+                                kode_brng: item.kode_brng,
+                                p1: 1,
+                                p2: 1,
+                                kandungan: 0,
+                                jml: 0
+                            }
+                        });
 
-                $.get(`${url}/resep/racik/template/ambil`, {
-                    id: row.find(`#nm_racik${index}`).val()
-                }).done((response) => {
-                    console.log(response);
+                        $.post(`${url}/resep/racik/detail/create/batch`, {
+                            _token: "{{ csrf_token() }}",
+                            dataObat: obat
+                        }).done((response) => {
+                            toastReload(response.message, 2000)
+                            getResepRacikan(racikan.no_resep)
+                        })
+                    }).fail((error) => {
+                        alertErrorAjax(error)
+                    })
+                }).fail((error) => {
+                    alertErrorAjax(error)
                 })
-
-                console.log(`RACIKAN ${index}`, racikan);
-
             }
-            // $.get(`${url}/resep/racik/template/ambil`, {
-            //     id:
-            // })
+        }
+
+        function getResepRacikan(no_resep) {
+            console.log(no_resep);
+            $.get(`${url}/resep/racik/ambil`, {
+                no_resep: no_resep
+            }).done((response) => {
+                console.log('RESPONSE===', response);
+                setResepRacikan(response);
+            }).fail((error) => {
+                alertErrorAjax(error);
+            })
+        }
+
+        function setResepRacikan(data) {
+            if (data) {
+                const row = data.map((item, index) => {
+                    const detail = item.detail_racikan;
+                    let rowDetail = '';
+                    if (detail.length) {
+                        const isiDetail = detail.map((item, index) => {
+                            return `<span class="badge rounded-pill bg-warning text-dark" style="font-size:10px">${item.databarang.nama_brng} (${item.kandungan} mg)</span>`
+                        }).join(' ')
+                        rowDetail = `<tr><td></td><td colspan=5>${isiDetail}</td></tr>`;
+                    }
+                    return `<tr>
+                        <td>${item.no_racik}</td>
+                        <td>${item.nama_racik}</td>
+                        <td>${item.metode.nm_racik}</td>
+                        <td class="text-center">${item.jml_dr}</td>
+                        <td>${item.aturan_pakai}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" type="button" ><i class="bi bi-pencil"></i></button>    
+                            <button class="btn btn-sm btn-danger" type="button" onclick="deleteResepRacikan('${item.no_resep}', '${item.no_racik}')"><i class="bi bi-x"></i></button>    
+                        </td>
+                    </tr>${rowDetail}`
+                })
+                tbResepRacikan.find('tbody').empty().append(row)
+                return true;
+            }
+
+        }
+
+        function deleteResepRacikan(no_resep, no_racik) {
+            $.ajax({
+                url: `${url}/resep/racik/hapus`,
+                method: 'DELETE',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: no_resep,
+                    no_racik: no_racik,
+                }
+            }).done((response) => {
+                toastReload('Success', 2000)
+                getResepRacikan(no_resep)
+            }).fail((error) => {
+                alertErrorAjax(error)
+            })
         }
     </script>
 @endpush

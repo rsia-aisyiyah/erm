@@ -89,36 +89,7 @@
             reserveElements.forEach(element => element.toggleClass('d-none', hasData));
         }
 
-        function setResepRacikan(data) {
-            console.log('DATA RACIK ===', data);
-            if (data) {
-                const row = data.map((item, index) => {
-                    const detail = item.detail_racikan;
-                    let rowDetail = '';
-                    if (detail.length) {
-                        const isiDetail = detail.map((item, index) => {
-                            return `<span class="badge rounded-pill bg-warning text-dark" style="font-size:10px">${item.databarang.nama_brng} (${item.kandungan} mg)</span>`
-                        }).join(' ')
-                        rowDetail = `<tr><td></td><td colspan=5>${isiDetail}</td></tr>`;
-                    }
-                    return `<tr>
-                            <td>${item.no_racik}</td>
-                            <td>${item.nama_racik}</td>
-                            <td>${item.metode.nm_racik}</td>
-                            <td class="text-center">${item.jml_dr}</td>
-                            <td>${item.aturan_pakai}</td>
-                            <td>
-                                <button class="btn btn-sm btn-warning" type="button" ><i class="bi bi-pencil"></i></button>    
-                                <button class="btn btn-sm btn-danger" type="button" ><i class="bi bi-x"></i></button>    
-                            </td>
-                        </tr>${rowDetail}`
-                    console.log('DETAIL ===', item.detail_racikan);
-                })
-                tbResepRacikan.find('tbody').empty().append(row)
-                return true;
-            }
-
-        }
+        
 
         function createResep() {
             const formSoapPoli = $('#formSoapPoli');

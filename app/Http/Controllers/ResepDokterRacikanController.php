@@ -33,7 +33,11 @@ class ResepDokterRacikanController extends Controller
                     $q->where('no_racik', $request->no_racik);
                 }])->first();
             } else {
-                $hasil = $resepDokter->where('no_resep', $request->no_resep)->with(['metode', 'detailRacikan'])->get();
+                $hasil = $resepDokter->where('no_resep', $request->no_resep)->with(['metode', 'detailRacikan' => function ($query) {
+                    return $query->with(['databarang' => function ($query) {
+                        return $query->with('kodeSatuan')->select(['kode_brng', 'nama_brng', 'kode_sat']);
+                    }]);
+                }])->get();
             }
         }
         return response()->json($hasil, 200);
@@ -47,7 +51,7 @@ class ResepDokterRacikanController extends Controller
             'kd_racik' => $request->kd_racik,
             'jml_dr' => $request->jml_dr,
             'aturan_pakai' => $request->aturan_pakai,
-            'keterangan' => $request->keterangan,
+            'keterangan' => '-',
         ];
 
         try {
@@ -65,9 +69,13 @@ class ResepDokterRacikanController extends Controller
             'no_racik' => $request->no_racik,
             'no_resep' => $request->no_resep
         ];
-        $resepDetail = $this->resepDetail->hapus($request);
-        $resep = ResepDokterRacikan::where($clause)->delete();
-        $this->track->deleteSql($this->resep, $clause);
+        try {
+            $resepDetail = $this->resepDetail->hapus($request);
+            $resep = ResepDokterRacikan::where($clause)->delete();
+            $this->track->deleteSql($this->resep, $clause);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         return response()->json($resep);
     }
     public function ubah(Request $request)

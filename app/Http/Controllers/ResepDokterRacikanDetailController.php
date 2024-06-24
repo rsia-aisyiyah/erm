@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\ResepDokterRacikanDetail;
+use App\Traits\JsonResponseTrait;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class ResepDokterRacikanDetailController extends Controller
 {
+    use JsonResponseTrait;
     public $resep;
     public $track;
     public function __construct()
@@ -93,5 +96,19 @@ class ResepDokterRacikanDetailController extends Controller
             }
         }
         return response()->json($insert);
+    }
+
+    function createBatch(Request $request)
+    {
+        $data = $request->dataObat;
+        try {
+            for ($i = 0; $i < count($data); $i++) {
+                ResepDokterRacikanDetail::create($data[$i]);
+                $this->track->insertSql(new ResepDokterRacikanDetail(), $data[$i]);
+            }
+        } catch (QueryException $e) {
+            return $this->errorResponse('Error', 400, $e->errorInfo);
+        }
+        return $this->successResponse();
     }
 }

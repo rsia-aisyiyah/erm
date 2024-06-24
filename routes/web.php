@@ -341,6 +341,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/resep/racik/detail/simpan', [ResepDokterRacikanDetailController::class, 'simpan']);
     Route::post('/resep/racik/detail/ubah', [ResepDokterRacikanDetailController::class, 'ubah']);
 
+    Route::post('/resep/racik/detail/create/batch', [ResepDokterRacikanDetailController::class, 'createBatch']);
+
+
     Route::get('/resep/racik/cari', [RsiaMappingRacikanController::class, 'cari']);
     Route::get('/resep/racik/template/ambil', [RsiaMappingRacikanController::class, 'ambil']);
     Route::delete('/resep/racik/template/hapus', [RsiaMappingRacikanController::class, 'hapus']);
