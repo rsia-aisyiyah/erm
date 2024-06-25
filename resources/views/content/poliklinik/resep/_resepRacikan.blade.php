@@ -26,7 +26,8 @@
             const rowCount = tbResepRacikan.find('tbody').find('tr').length;
             const kd_dokter = formSoapPoli.find('#dokter').val()
             const addRow = `<tr id="row${rowCount}">
-                                <td>${rowCount+1} <input type="hidden" name="no_racik[]" id="no_racik${rowCount}" value="${rowCount + 1}" /></td>
+                                    <input type="hidden" name="no_racik[]" id="no_racik${rowCount}" value="${rowCount + 1}" />
+                                <td>${rowCount+1}</td>
                                 <td>
                                     <select class="form-select2" data-dropdown-parent="#modalSoap" name="nm_racik[]" id="nm_racik${rowCount}" data-id="${rowCount}" style="width:100%"></select>
                                 </td>
@@ -41,8 +42,8 @@
                                     <select class="form-select2" name="aturan_pakai[]" id="aturan${rowCount}" data-id="${rowCount}" data-dropdown-parent="#modalSoap" style="width:100%"></select>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-success " data-id="row${rowCount}" onclick="createBarisResepRacikan('${rowCount}')"><i class="bi bi-check"></i></button>    
-                                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="row${rowCount}" onclick="hapusBarisRacikan('${rowCount}')"><i class="bi bi-x"></i></button>    
+                                    <button type="button" class="btn btn-sm btn-success" id="btnCreateBarisRacik${rowCount}" data-id="row${rowCount}" onclick="createBarisResepRacikan('${rowCount}')"><i class="bi bi-check"></i></button>    
+                                    <button type="button" class="btn btn-sm btn-danger btn-delete-racik" id="btnDeleteBarisRacik${rowCount}" data-id="row${rowCount}" onclick="hapusBarisRacikan('${rowCount}')"><i class="bi bi-x"></i></button>    
                                 </td>
                             </tr>`;
             tbResepRacikan.find('tbody').append(addRow);
@@ -173,6 +174,44 @@
             }
         }
 
+        function createBarisResepRacikan(id) {
+            const row = tbResepRacikan.find('tbody').find('tr')
+            const no_resep = formSoapPoli.find('#no_resep')
+
+            const racikan = {
+                '_token': "{{ csrf_token() }}",
+                'no_resep': no_resep.val(),
+                'no_racik': row.find(`#no_racik${id}`).val(),
+                'id': row.find(`#nm_racik${id}`).val(),
+                'nama_racik': row.find(`#nm_racik${id}`).find(":selected").text(),
+                'jml_dr': row.find(`#jml_dr${id}`).val(),
+                'kd_racik': row.find(`#metode${id}`).val(),
+                'aturan_pakai': row.find(`#aturan${id}`).val(),
+            }
+
+            const isEmpty = Object.values(racikan).filter((item) => {
+                return item == null || item == '';
+            }).length
+
+            if (isEmpty) {
+                return Swal.fire({
+                    html: `Data racikan belum lengkap`,
+                    title: `Peringatan`,
+                    icon: 'warning',
+                    confirmButtonText: 'Oke',
+                })
+            }
+
+            $.post(`${url}/resep/racik/create`, racikan).done((response) => {
+                getResepRacikan(racikan.no_resep)
+                toastReload(response.message, 2000)
+            }).fail((error) => {
+                alertErrorAjax(error)
+            })
+
+
+        }
+
         function getResepRacikan(no_resep) {
             console.log(no_resep);
             $.get(`${url}/resep/racik/ambil`, {
@@ -182,6 +221,22 @@
                 setResepRacikan(response);
             }).fail((error) => {
                 alertErrorAjax(error);
+            })
+        }
+
+        function hapusBarisRacikan(id) {
+            const tbody = tbResepRacikan.find('tbody')
+            tbody.find(`#row${id}`).remove()
+            tbody.find('tr').each((index, item) => {
+                const id = Math.floor(index + 1)
+                const row = tbody.find('tr').eq(index).attr('id', `row${index}`);
+                const nomor = row.find(`td`).eq(0).text(`${id}`);
+
+                row.find(`#no_racik${index}`).val(id);
+                row.find('button').attr('data-id', index)
+                row.find(`#btnDeleteBarisRacik${index}`).attr('onclick', `hapusBarisRacikan('${index}')`)
+                row.find(`#btnCreateResepRacik${index}`).attr('onclick', `createBarisResepRacikan('${index}')`)
+                console.log(index, item);
             })
         }
 

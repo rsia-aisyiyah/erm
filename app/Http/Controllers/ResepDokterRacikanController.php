@@ -97,4 +97,25 @@ class ResepDokterRacikanController extends Controller
     {
         return $request->data;
     }
+
+    function create(Request $request)
+    {
+        $data = [
+            'no_resep' => $request->no_resep,
+            'no_racik' => $request->no_racik,
+            'nama_racik' => $request->nama_racik,
+            'kd_racik' => $request->kd_racik,
+            'jml_dr' => $request->jml_dr,
+            'aturan_pakai' => $request->aturan_pakai,
+            'keterangan' => '-',
+        ];
+
+        try {
+            $resep = ResepDokterRacikan::create($data);
+            $this->track->insertSql($this->resep, $data);
+        } catch (QueryException $e) {
+            return $this->errorResponse('Error', 400, $e->errorInfo);
+        }
+        return $this->successResponse($data);
+    }
 }

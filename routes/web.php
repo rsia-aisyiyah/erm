@@ -334,6 +334,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/resep/racik/ubah', [ResepDokterRacikanController::class, 'ubah']);
     Route::delete('/resep/racik/hapus', [ResepDokterRacikanController::class, 'hapus']);
 
+    Route::post('/resep/racik/create', [ResepDokterRacikanController::class, 'create']);
+
     Route::post('/resep/racik/create/batch', [ResepDokterRacikanController::class, 'createBatch']);
 
     Route::get('/resep/racik/detail/ambil', [ResepDokterRacikanDetailController::class, 'ambil']);
