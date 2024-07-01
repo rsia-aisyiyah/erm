@@ -21,15 +21,15 @@ class RsiaMappingRacikanController extends Controller
         $mapping = $this->mapping;
 
         $cari = $mapping->where('nm_racik', 'like', '%' . $request->nm_racik . '%')
-            ->where('kd_dokter', $request->kd_dokter)->with(['detailRacik'])->get();
+            ->where('kd_dokter', $request->kd_dokter)->with(['detail'])->get();
 
         return response()->json($cari);
     }
- 
+
     public function ambil(Request $request)
     {
         // return $request;
-        $mapping = $this->mapping->with(['dokter', 'detailRacik.dataBarang.gudangBarang.bangsal']);
+        $mapping = $this->mapping->with(['dokter', 'detail.dataBarang.gudangBarang.bangsal']);
 
         if ($request->nm_racik) {
             $ambil = $mapping->where('nm_racik', $request->nm_racik)->get();

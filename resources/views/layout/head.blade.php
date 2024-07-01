@@ -492,5 +492,10 @@
             background-color: var(--bs-purple);
             color: #fff !important;
         }
+
+        .input-group-text-sm {
+            padding: 5px;
+            font-size: 10px;
+        }
     </style>
 </head>

@@ -72,30 +72,36 @@ class ResepDokterRacikanDetailController extends Controller
     }
     public function ubah(Request $request)
     {
+
         $clause = [
             'no_resep' => $request->no_resep,
             'no_racik' => $request->no_racik,
         ];
         $cekRacik = ResepDokterRacikanDetail::where($clause);
+
         if ($cekRacik->count()) {
             $this->hapus($request);
         }
-        for ($i = 0; $i < sizeof($request->kode_brng); $i++) {
-            $data = [
-                'no_resep' => $request->no_resep,
-                'no_racik' => $request->no_racik,
-                'kode_brng' => $request->kode_brng[$i],
-                'p1' => $request->p1[$i],
-                'p2' => $request->p2[$i],
-                'kandungan' => $request->kandungan[$i],
-                'jml' => $request->jml[$i],
-            ];
-            $insert = ResepDokterRacikanDetail::insert($data);
-            if ($insert) {
+
+        try {
+            foreach ($request->data as $key => $value) {
+                $data = [
+                    'no_resep' => $request->no_resep,
+                    'no_racik' => $request->no_racik,
+                    'kode_brng' => $value['kode_brng'],
+                    'p1' => $value['p1'],
+                    'p2' => $value['p2'],
+                    'kandungan' => $value['kandungan'],
+                    'jml' => $value['jml']
+
+                ];
+                $insert = ResepDokterRacikanDetail::insert($data);
                 $this->track->insertSql($this->resep, $data);
             }
+        } catch (QueryException $e) {
+            return $this->errorResponse('Error', 400, $e->errorInfo);
         }
-        return response()->json($insert);
+        return $this->successResponse(count($request->data));
     }
 
     function createBatch(Request $request)

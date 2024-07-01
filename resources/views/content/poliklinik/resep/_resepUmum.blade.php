@@ -64,25 +64,18 @@
             </tr>`;
             tbResepDokter.find('tbody').append(addRow);
             const aturanPakai = $(`#aturan${rowCount}`);
-            selectDataBarang($(`#kdObat${rowCount}`))
-            selectAturanPakai(aturanPakai).on('select2:select', (e) => {
-                const aturan = e.currentTarget.value;
-                $.post(`${url}/aturan/create`, {
-                    '_token': "{{ csrf_token() }}",
-                    'aturan': aturan
-                }).done((response) => {
-                    if (response.status === 'success') {
-                        toastReload(response.message, 2000)
-                        const optAturan = new Option(aturan, aturan, true, true);
-                        aturanPakai.append(optAturan).trigger('change');
-                    }
-                })
+            const selectBarang = $(`#kdObat${rowCount}`);
+            selectDataBarang($(`#kdObat${rowCount}`)).on('select2:select', (e) => {
+                const selectedId = e.params.data.id;
+                isDuplicateObat(tbResepDokter.find('tbody'), selectedId, selectBarang)
             });
+            selectAturanPakai(aturanPakai)
         }
 
         function createObatUmum() {
             const rowCount = tbResepDokter.find('tbody').find('tr').length
-            const noResep = $(`#no_resep`).val();
+            const noResep = formSoapPoli.find('#no_resep').val();
+            const no_rawat = formSoapPoli.find('#no_rawat').val();
 
             let dataObat = [];
             for (let index = 0; index <= rowCount; index++) {
@@ -122,10 +115,7 @@
                 }).done((response) => {
                     toastReload(response.message, 2000)
                     getResepDokter(noResep)
-                    // const no_rawat = $('#formCpptRajal input[name=no_rawat]').val()
-                    // $('#btnCetakResep').attr('onclick', `cetakResep('${no_rawat}')`)
-                    // tulisPlan(noResep)
-                    // setResepDokter(noResep)
+                    setResepToPlan(no_rawat)
                 }).fail((error) => {
                     alertErrorAjax(error)
                 })
@@ -133,6 +123,7 @@
         }
 
         function deleteResepDokter(no_resep, kode_brng) {
+            const no_rawat = formSoapPoli.find(`#no_rawat`).val();
             $.ajax({
                 url: `${url}/resep/dokter/delete`,
                 method: 'DELETE',
@@ -143,6 +134,7 @@
                 }
             }).done((response) => {
                 getResepDokter(no_resep)
+                setResepToPlan(no_rawat)
             }).fail((error) => {
                 alertErrorAjax(error);
             })
@@ -157,6 +149,7 @@
 
         function createBarisResepDokter(id) {
             const kode_brng = $(`#kdObat${id}`).val();
+            const no_rawat = formSoapPoli.find('#no_rawat').val();
             const jml = $(`#jmlObat${id}`).val();
             const aturan = $(`#aturan${id}`).val();
             const no_resep = $(`#no_resep`).val();
@@ -169,22 +162,20 @@
                 '_token': "{{ csrf_token() }}",
             }).done((response) => {
                 getResepDokter(no_resep)
+                setResepToPlan(no_rawat)
             })
         }
 
         function editResepDokter(id, kode_brng) {
-            console.log('ID===', id);
             const row = tbResepDokter.find('tbody').find(`#rowObatDokter${id}`)
 
             const no_resep = $(`#no_resep`).val();
+            const no_rawat = formSoapPoli.find(`#no_rawat`).val();
 
             const colObat = row.find(`#colObatDokter${id}`)
             const colJml = row.find(`#colJmlObatDokter${id}`)
             const colAturan = row.find(`#colAturanPakaiDokter${id}`)
             const colAksi = row.find(`#aksiObatDokter${id}`)
-
-            // console.log(row.find('td').find(`#aturanPakaiDokter${id}`));
-
 
             const jumlah = colJml.html()
             const kdObat = row.data('id')
@@ -210,6 +201,7 @@
             const no_resep = $('#no_resep').val();
             const jumlah = row.find(`#jmlObatDokter${id}`).val()
             const aturan_pakai = row.find(`#aturanPakaiDokter${id}`).val()
+            const no_rawat = formSoapPoli.find(`#no_rawat`).val();
 
             const data = {
                 kode_brng: kode_brng,
@@ -231,11 +223,10 @@
             }).done((response) => {
                 toastReload(response.message, 2000)
                 getResepDokter(no_resep)
+                setResepToPlan(no_rawat)
             }).fail((error) => {
                 alertErrorAjax(error)
             })
-
-            console.log(data);
         }
     </script>
 @endpush

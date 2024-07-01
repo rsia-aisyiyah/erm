@@ -21,7 +21,7 @@ class RsiaMappingRacikan extends Model
     {
         return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter');
     }
-    public function detailRacik()
+    public function detail()
     {
         return $this->hasMany(RsiaMappingRacikanDetail::class, 'id_racik', 'id');
     }

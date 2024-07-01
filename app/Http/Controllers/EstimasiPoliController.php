@@ -49,10 +49,9 @@ class EstimasiPoliController extends Controller
         $estimasi = $this->cari($no_rawat);
         if (!isset($estimasi->no_rawat)) {
             $this->post(new \Illuminate\Http\Request($data));
-            return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $jam_periksa], 200);
         }
         $this->regPeriksa->statusDaftar($no_rawat, 'Berkas Diterima');
-        return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $estimasi->jam_periksa], 200);
+        return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $data['jam_periksa']], 200);
     }
     public function hapus(Request $request)
     {

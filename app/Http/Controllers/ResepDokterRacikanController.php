@@ -29,13 +29,16 @@ class ResepDokterRacikanController extends Controller
         $hasil = '';
         if ($request->no_resep) {
             if ($request->no_racik) {
-                $hasil = $resepDokter->where('no_resep', $request->no_resep)->where('no_racik', $request->no_racik)->with(['metode', 'detailRacikan' => function ($q) use ($request) {
-                    $q->where('no_racik', $request->no_racik);
-                }])->first();
+                $hasil = $resepDokter->where('no_resep', $request->no_resep)->where('no_racik', $request->no_racik)
+                    ->with(['metode', 'detail' => function ($q) use ($request) {
+                        $q->with(['databarang' => function ($query) {
+                            return $query->with('kodeSatuan')->select(['kode_brng', 'nama_brng', 'kapasitas', 'kode_sat']);
+                        }])->where('no_racik', $request->no_racik);
+                    }])->first();
             } else {
-                $hasil = $resepDokter->where('no_resep', $request->no_resep)->with(['metode', 'detailRacikan' => function ($query) {
+                $hasil = $resepDokter->where('no_resep', $request->no_resep)->with(['metode', 'detail' => function ($query) {
                     return $query->with(['databarang' => function ($query) {
-                        return $query->with('kodeSatuan')->select(['kode_brng', 'nama_brng', 'kode_sat']);
+                        return $query->with('kodeSatuan')->select(['kode_brng', 'nama_brng', 'kapasitas', 'kode_sat']);
                     }]);
                 }])->get();
             }
@@ -113,6 +116,33 @@ class ResepDokterRacikanController extends Controller
         try {
             $resep = ResepDokterRacikan::create($data);
             $this->track->insertSql($this->resep, $data);
+        } catch (QueryException $e) {
+            return $this->errorResponse('Error', 400, $e->errorInfo);
+        }
+        return $this->successResponse($data);
+    }
+
+    function update(Request $request)
+    {
+        $data = [
+            'no_resep' => $request->no_resep,
+            'no_racik' => $request->no_racik,
+            'nama_racik' => $request->nama_racik,
+            'kd_racik' => $request->kd_racik,
+            'jml_dr' => $request->jml_dr,
+            'aturan_pakai' => $request->aturan_pakai,
+            'keterangan' => '-',
+        ];
+
+        try {
+            $resep = ResepDokterRacikan::where([
+                'no_resep' => $request->no_resep,
+                'no_racik' => $request->no_racik,
+            ])->update($data);
+            $this->track->updateSql(new ResepDokterRacikan, $data, [
+                'no_resep' => $request->no_resep,
+                'no_racik' => $request->no_racik,
+            ]);
         } catch (QueryException $e) {
             return $this->errorResponse('Error', 400, $e->errorInfo);
         }

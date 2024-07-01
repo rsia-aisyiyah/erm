@@ -116,6 +116,7 @@
     @include('content.poliklinik.modal.modal_catatan')
     @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_penunjang')
+    @include('content.poliklinik.resep.modalTemplateRacikan')
 @endsection
 
 @push('script')
@@ -374,7 +375,6 @@
 
         function panggil(no_rawat) {
 
-            // id = $('#panggil-' + urut).data('id');
             const strNoRawat = textRawat(no_rawat);
             const jmlPanggilan = $('#hitung-panggil').val();
             const isPanggil = $(`#panggil-${strNoRawat}`).html() == 'PANGGIL';
@@ -423,9 +423,9 @@
 
         }
 
-        function selesai(urut) {
-            id = $('.panggil-' + urut).data('id');
-            reloadTabelPoli();
+        function selesai(no_rawat) {
+            const strNoRawat = textRawat(no_rawat);
+            const aksi = $('#aksi-' + strNoRawat)
             Swal.fire({
                 title: 'Yakin pemeriksaan selesai ?',
                 icon: 'warning',
@@ -436,31 +436,17 @@
                 confirmButtonText: 'Ya, Selesai !'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.ajax({
-                        url: '/erm/poliklinik/selesai',
-                        data: {
-                            '_token': '{{ csrf_token() }}',
-                            'no_rawat': id,
-                        },
-                        method: 'POST',
-                        success: function(response) {
-                            $.toast({
-                                text: 'Periksa : ' + response.no_rawat +
-                                    ' Selesai <br/> Jam Periksa : ' +
-                                    response.jam_periksa,
-                                position: 'bottom-center',
-                                bgColor: '#198754',
-                                loader: false,
-                                stack: false,
-                            });
-                            $('#aksi-' + urut).empty();
-                            $('#aksi-' + urut).append(
-                                '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>'
-                            );
-                            hitungPanggilan();
-                        }
-
-                    });
+                    $.post(`${url}/poliklinik/selesai`, {
+                        '_token': '{{ csrf_token() }}',
+                        'no_rawat': no_rawat,
+                    }).done((response) => {
+                        reloadTabelPoli();
+                        hitungPanggilan();
+                        toastReload(`Pemeriksaan Selesai ${response.jam_periksa}`, 2000)
+                        aksi.empty().append(
+                            '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>'
+                        );
+                    })
                 }
             })
         }
@@ -794,6 +780,7 @@
                             const panggil = $(`#panggil-${strNoRawat}`)
                             const selesai = $(`#selesai-${strNoRawat}`)
                             const batal = $(`#batal-${strNoRawat}`)
+
                             if (row.stts == 'Batal') {
                                 html =
                                     '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';

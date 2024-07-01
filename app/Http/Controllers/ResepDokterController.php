@@ -27,7 +27,7 @@ class ResepDokterController extends Controller
         if ($request->aturan_pakai) {
             $hasil = $resepDokter->where('aturan_pakai', 'like', '%' . $request->aturan_pakai . "%")->limit(10)->groupBy('aturan_pakai')->get();
         } else {
-            $resepDokter->limit(10)->get();
+            $hasil =  $resepDokter->limit(10)->get();
         }
 
         return response()->json($hasil, 200);

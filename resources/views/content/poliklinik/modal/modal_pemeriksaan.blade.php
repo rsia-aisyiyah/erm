@@ -1427,8 +1427,21 @@
             formSoapPoli.find('input[name="alergi"]').val('-').removeAttr('style');
             if (role === 'dokter') {
                 cekPanggilanPoli(no_rawat).done((response) => {
-                    if (!response.length) {
-                        panggil(no_rawat)
+                    if (!Object.keys(response).length) {
+                        Swal.fire({
+                            title: 'Info',
+                            text: 'Pasien belum dipanggil, apakah anda yakin ingin memanggilnya?',
+                            icon: 'info',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, Panggil',
+                            cancelButtonText: 'Tidak'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                panggil(no_rawat)
+                            }
+                        })
                     }
                 });
                 cekResep(no_rawat);

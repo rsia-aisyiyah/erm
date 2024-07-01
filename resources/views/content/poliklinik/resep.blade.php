@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-body" style="height:40vh">
+    <div class="card-body" style="max-height:40vh">
         <input type="hidden" class="no_resep form-control form-control-sm" />
         <ul class="nav nav-tabs" id="myTab">
             <li class="nav-item">
@@ -16,10 +16,10 @@
             <div class="tab-pane fade show active" id="umum" style="overflow-y: auto;max-height: 30vh">
                 @include('content.poliklinik.resep._resepUmum')
             </div>
-            <div class="tab-pane fade" id="racikan">
+            <div class="tab-pane fade" id="racikan" style="overflow-y: auto;max-height: 30vh">
                 @include('content.poliklinik.resep._resepRacikan')
             </div>
-            <div class="tab-pane fade" id="riwayat" style="max-height: 250px; overflow-y: auto">
+            <div class="tab-pane fade" id="riwayat" style="overflow-y: auto;max-height: 30vh">
                 <table class="table table-responsive" id="tb-resep-riwayat" width="100%">
                     <thead>
                         <tr>
@@ -61,6 +61,7 @@
             }).done((response) => {
                 const hasData = !!response.data
                 if (response.data) {
+                    setResepToPlan(no_rawat)
                     formSoapPoli.find('#no_resep').val(response.data.no_resep)
                     setResepDokter(response.data.resep_dokter)
                     setResepRacikan(response.data.resep_racikan)
@@ -89,27 +90,38 @@
             reserveElements.forEach(element => element.toggleClass('d-none', hasData));
         }
 
-        
+
 
         function createResep() {
             const formSoapPoli = $('#formSoapPoli');
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             const dokter = formSoapPoli.find('select[name="dokter"]').val();
 
-            console.log(role);
-
             if (role === 'dokter') {
-                $.post(`${url}/resep/create`, {
-                    '_token': "{{ csrf_token() }}",
-                    'no_rawat': no_rawat,
-                    'kd_dokter': dokter
-                }).done((response) => {
-                    toastReload(response.message, 2000)
-                    btnDeleteResep.attr('onclick', `deleteResep(${response.data.no_resep})`)
-                    toggleElementResep()
-                    formSoapPoli.find('input[name=no_resep]').val(response.data.no_resep);
-                }).fail((response) => {
-                    alertErrorAjax(response);
+                cekPanggilanPoli(no_rawat).done((response) => {
+                    if (!Object.keys(response).length) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: 'Pasien belum dipanggil, anda tidak diperbolehkan mebuat resep',
+                            icon: 'error',
+                            showCancelButton: false,
+                        })
+                        return false
+                    }
+                    $.post(`${url}/resep/create`, {
+                        '_token': "{{ csrf_token() }}",
+                        'no_rawat': no_rawat,
+                        'kd_dokter': dokter,
+                        'status': 'ralan',
+                    }).done((response) => {
+                        toastReload(response.message, 2000)
+                        btnDeleteResep.attr('onclick', `deleteResep(${response.data.no_resep})`)
+                        toggleElementResep()
+                        formSoapPoli.find('input[name=no_resep]').val(response.data.no_resep);
+                    }).fail((response) => {
+                        alertErrorAjax(response);
+                    });
+
                 });
 
             } else {
@@ -122,23 +134,35 @@
         }
 
         function deleteResep(no_resep) {
-            $.ajax({
-                url: `${url}/resep/delete/${no_resep}`,
-                method: 'DELETE',
-                data: {
-                    '_token': "{{ csrf_token() }}"
-                }
-            }).done((response) => {
-                toastReload(response.message, 2000)
-                toggleElementResep(false)
-                tbResepDokter.find('tbody').empty()
-                tbResepRacikan.find('tbody').empty()
+            Swal.fire({
+                title: 'Apakah anda yakin ?',
+                text: "Anda tidak bisa mengembalikan lagi",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus saja!',
+                cancelButtonText: 'Jangan',
+            }).then(() => {
+                $.ajax({
+                    url: `${url}/resep/delete/${no_resep}`,
+                    method: 'DELETE',
+                    data: {
+                        '_token': "{{ csrf_token() }}"
+                    }
+                }).done((response) => {
+                    toastReload(response.message, 2000)
+                    toggleElementResep(false)
+                    tbResepDokter.find('tbody').empty()
+                    tbResepRacikan.find('tbody').empty()
+                })
             })
+
         }
 
 
         function selectDataBarang(element) {
-            element.select2({
+            return element.select2({
                 delay: 2,
                 scrollAfterSelect: true,
                 ajax: {
@@ -152,14 +176,20 @@
                         return query
                     },
                     processResults: (result) => {
+
                         return {
                             results: result.data.map((item) => {
                                 const stok = getStokBarang(item);
                                 const ketStok = stok > 0 ? '' : 'text-danger';
                                 const items = {
                                     id: item.kode_brng,
-                                    text: `<span class="${ketStok}">${item.nama_brng}</span> <br/> Stok : ${stok}  <span class="text-muted">Rp.${toRupiah(item.ralan)}</span>`,
-                                    name: `${item.nama_brng}`,
+                                    name: `<span class="${ketStok}">${item.nama_brng}</span> <br/> Stok : ${stok}  <span class="text-muted">Rp.${toRupiah(item.ralan)}</span>`,
+                                    text: `${item.nama_brng}`,
+                                    detail: {
+                                        kapasitas: item.kapasitas,
+                                        id: item.kode_brng,
+                                        name: item.nama_brng,
+                                    },
                                 }
                                 return items;
 
@@ -168,7 +198,10 @@
                     }
 
                 },
-                templateSelection: (item) => {
+                templateSelection: (item, element) => {
+                    return item.text
+                },
+                templateResult: (item, option) => {
                     return item.name
                 },
                 escapeMarkup: (markup) => {
@@ -176,13 +209,12 @@
                 },
                 cache: true
 
-            }).on('select2:select', (e) => {
-                const selectedId = e.params.data.id;
-                isDuplicateObat(tbResepDokter.find('tbody'), selectedId, element)
-            });
+            })
         }
 
         function isDuplicateObat(element, kode_brng, target) {
+            let isDuplicate = false;
+
             element.find('tr').each((index, item) => {
                 const id = $(item).data('id');
                 const selectVal = $(item).find('select').val();
@@ -192,14 +224,21 @@
                     Swal.fire({
                         title: 'Peringatan',
                         html: 'Barang sudah ada di resep',
-                        icon: 'warning'
+                        icon: 'warning',
                     }).then(() => {
                         target.val('').trigger('change');
+                        target.select2('open');
                     });
 
-                    return false
+                    isDuplicate = true;
+                    return false; // Break the .each loop
                 }
             });
+
+            if (isDuplicate) {
+                return true;
+            }
+
             const obat = element.find('select[name="nm_obat[]"]').map((i, x) => x.value).get();
             const uniqueObat = [...new Set(obat)];
             if (uniqueObat.length !== obat.length) {
@@ -211,20 +250,22 @@
                     target.val('').trigger('change');
                 });
 
-                return false
+                return true;
             }
+
+            return false;
         }
 
         function selectAturanPakai(element) {
             return element.select2({
                 tags: true,
                 ajax: {
-                    url: `${url}/aturan/get`,
+                    url: `${url}/aturan/cari`,
                     dataType: 'JSON',
 
                     data: (params) => {
                         const query = {
-                            aturan: params.term
+                            aturan_pakai: params.term
                         }
                         return query
                     },
@@ -232,9 +273,8 @@
                         return {
                             results: result.map((item) => {
                                 const items = {
-                                    id: item.aturan,
-                                    text: item.aturan,
-                                    name: item.aturan,
+                                    id: item.aturan_pakai,
+                                    text: item.aturan_pakai,
                                 }
                                 return items;
                             })
@@ -242,19 +282,7 @@
                     }
 
                 },
-            }).on('select2:select', (e) => {
-                const aturan = e.currentTarget.value;
-                $.post(`${url}/aturan/create`, {
-                    '_token': "{{ csrf_token() }}",
-                    'aturan': aturan
-                }).done((response) => {
-                    if (response.status === 'success') {
-                        toastReload(response.message, 2000)
-                        const optAturan = new Option(aturan, aturan, true, true);
-                        element.append(optAturan).trigger('change');
-                    }
-                })
-            });
+            })
         }
 
         function getStokBarang(item) {
@@ -263,6 +291,37 @@
             }).map((filteredItem) => {
                 return filteredItem.stok
             }).join('');
+        }
+
+        function setResepToPlan(no_rawat) {
+            $.get(`${url}/resep/get`, {
+                no_rawat: no_rawat
+            }).done((response) => {
+                console.log('RESEP PLAN ===', response);
+                const {
+                    data
+                } = response;
+                let rd = '';
+                let rr = '';
+                if (data.resep_dokter) {
+                    rd = data.resep_dokter.map((item, index) => {
+                        return `${item.data_barang.nama_brng} @${item.jml}, S: ${item.aturan_pakai}`
+                    }).join('\n');
+
+                }
+
+                if (data.resep_racikan) {
+                    rr = data.resep_racikan.map((item, index) => {
+                        const dataObat = item.detail.map((barang, index) => {
+                            return `\t-${barang.databarang.nama_brng} @${barang.jml} (${barang.kandungan} mg)`
+                        }).join('\n')
+                        return `${item.metode.nm_racik} ${item.nama_racik} @${item.jml_dr}, S: ${item.aturan_pakai}` + '\n' + dataObat;
+                    }).join('\n')
+                }
+
+                formSoapPoli.find('#rtl').val(`${rd} \n\n ${rr}`)
+
+            })
         }
     </script>
 @endpush
