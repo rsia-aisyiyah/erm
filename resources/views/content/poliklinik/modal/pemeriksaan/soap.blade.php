@@ -122,7 +122,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 py-3">
                     <label for="rtl" class="form-label mb-0">Plan</label>
                     <x-cppt.textarea id="rtl" name="rtl" rows=7 />
-                    <button class="btn btn-warning btn-sm mt-3" type="button" style="font-size: 12px" onclick="catatanPasien()"><i class="bi bi-pen"></i> Diagnosa & Catatan</button>
+                    <button class="btn btn-warning btn-sm mt-3" type="button" style="font-size: 12px" id="btnCatatanPasien" onclick="catatanPasien()"><i class="bi bi-pen"></i> Diagnosa & Catatan</button>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     @include('content.poliklinik.resep')

@@ -90,8 +90,15 @@ class ResepDokterRacikanController extends Controller
         $data = [
             'nama_racik' => $request->nama_racik,
             'aturan_pakai' => $request->aturan_pakai,
+            'kd_racik' => $request->metode ? $request->metode : $request->kd_racik,
         ];
-        $resep = ResepDokterRacikan::where($clause)->update($data);
+
+        try {
+            $resep = ResepDokterRacikan::where($clause)->update($data);
+        } catch (QueryException $e) {
+            return $this->errorResponse('Error', 400, $e->errorInfo);
+        }
+
         $this->track->updateSql($this->resep, $data, $clause);
         return response()->json($request);
     }

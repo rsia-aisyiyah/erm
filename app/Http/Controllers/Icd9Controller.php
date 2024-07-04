@@ -17,6 +17,7 @@ class Icd9Controller extends Controller
     {
         $icd = $this->icd->where('kode', 'like',  $request->kode . '%')
             ->orWhere('deskripsi_panjang', 'like', '%' . $request->kode . '%')
+            ->orWhere('deskripsi_pendek', 'like', '%' . $request->kode . '%')
             ->limit(10)
             ->get();
 

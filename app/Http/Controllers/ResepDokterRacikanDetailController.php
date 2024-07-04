@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ResepDokterRacikanDetail;
+use Illuminate\Http\Request;
 use App\Traits\JsonResponseTrait;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
+use App\Models\ResepDokterRacikanDetail;
+use App\Http\Controllers\ResepDokterRacikanController;
 
 class ResepDokterRacikanDetailController extends Controller
 {
@@ -72,11 +73,11 @@ class ResepDokterRacikanDetailController extends Controller
     }
     public function ubah(Request $request)
     {
-
         $clause = [
             'no_resep' => $request->no_resep,
             'no_racik' => $request->no_racik,
         ];
+
         $cekRacik = ResepDokterRacikanDetail::where($clause);
 
         if ($cekRacik->count()) {
@@ -98,6 +99,8 @@ class ResepDokterRacikanDetailController extends Controller
                 $insert = ResepDokterRacikanDetail::insert($data);
                 $this->track->insertSql($this->resep, $data);
             }
+            $resepDokter = new ResepDokterRacikanController();
+            $resepDokter->ubah(new \Illuminate\Http\Request($request->dataResep));
         } catch (QueryException $e) {
             return $this->errorResponse('Error', 400, $e->errorInfo);
         }

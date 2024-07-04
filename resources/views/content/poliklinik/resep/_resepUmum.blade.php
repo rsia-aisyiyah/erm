@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>Nama Obat</th>
-            <th width="10%" class="text-center">Jumlah</th>
+            <th width="20%" class="text-center">Jumlah</th>
             <th width="35%">Aturan Pakai</th>
             <th></th>
         </tr>

@@ -11,7 +11,7 @@ class ResepDokterRacikan extends Model
     use Compoships;
     use HasFactory;
     protected $table = 'resep_dokter_racikan';
-    protected $fillable = ['no_resep', 'no_racik', 'nama_racik', 'kd_racik', 'jml_dr', 'aturan_pakai', 'keterangan'];
+    protected $guarded = [];
     public $timestamps = false;
 
     public function resepObat()

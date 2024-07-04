@@ -15,13 +15,13 @@
                             <div class="row">
                                 <div class="col-lg-2 col-md-6 col-sm-12">
                                     <label for="no_resep" class="form-label">No. Resep</label>
-                                    <input type="text" id="no_resep" class="form-control form-control-sm" readonly />
+                                    <input type="text" id="no_resep" name="no_resep" class="form-control form-control-sm" readonly />
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-sm-12">
-                                    <label for="nm_racik" class="form-label">Nama Racik</label>
+                                    <label for="nama_racik" class="form-label">Nama Racik</label>
                                     <div class="input-group">
-                                        <input type="text" id="no_racik" class="form-control form-control-sm" readonly />
-                                        <input type="text" id="nm_racik" class="form-control form-control-sm w-75" />
+                                        <input type="text" id="no_racik" name="no_racik" class="form-control form-control-sm" readonly />
+                                        <input type="text" id="nama_racik" name="nama_racik" class="form-control form-control-sm w-75" />
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-6 col-sm-12">
@@ -82,7 +82,7 @@
         function editResepRacikan(no_resep, no_racik) {
             const dokter = formSoapPoli.find('#dokter').val();
             const inptNoResep = formDetailRacikan.find('#no_resep')
-            const inptNmRacik = formDetailRacikan.find('#nm_racik')
+            const inptNmRacik = formDetailRacikan.find('#nama_racik')
             const inptMetode = formDetailRacikan.find('#metode')
             const inptJml = formDetailRacikan.find('#jml_dr')
             const inptAturan = formDetailRacikan.find('#aturan_pakai')
@@ -93,10 +93,8 @@
             }).done((response) => {
                 inptNoResep.val(no_resep)
                 inptNmRacik.val(response.nama_racik)
-                inptMetode.val(response.metode.nm_racik)
                 inptJml.val(response.jml_dr)
                 inptNoRacik.val(response.no_racik)
-
 
                 const optMetode = new Option(response.metode.nm_racik, response.kd_racik, true, true);
                 inptMetode.append(optMetode).trigger('change');
@@ -320,7 +318,9 @@
             const no_racik = formDetailRacikan.find('#no_racik').val();
             const no_rawat = formSoapPoli.find('#no_rawat').val();
             const rowLength = body.find('tr').length;
+            const dataResep = getDataForm('#formDetailRacikan', ['input', 'select']);
             let dataObat = []
+
             for (let index = 0; index < rowLength; index++) {
                 const kode_brng = body.find(`#obatDetailRacikan${index}`).val()
                 const jml = body.find(`#jml-${index}`).val()
@@ -356,12 +356,14 @@
                 no_resep: no_resep,
                 no_racik: no_racik,
                 _token: "{{ csrf_token() }}",
+                dataResep: dataResep,
                 data: dataObat
             }).done((response) => {
                 getResepRacikan(no_resep).done((response) => {
                     modalTemplateRacikan.modal('hide')
                     setResepToPlan(no_rawat)
                 })
+
                 toastReload(response.message, 2000)
             }).fail((error) => {
                 alertErrorAjax(error)

@@ -245,11 +245,18 @@
             const tbody = tbResepRacikan.find('tbody')
             tbody.find(`#row${id}`).remove()
             tbody.find('.rowRacikan').each((index, item) => {
-                const row = tbody.find('.rowRacikan').eq(index).attr('id', `row${index}`);
-
+                const row = tbody.find('.rowRacikan').attr('id', `row${index}`);
                 row.find('button').attr('data-id', index)
-                row.find(`#btnDeleteBarisRacik${index}`).attr('onclick', `hapusBarisRacikan('${index}')`)
-                row.find(`#btnCreateResepRacik${index}`).attr('onclick', `createBarisResepRacikan('${index}')`)
+
+
+                row.find(`.btn-danger`).
+                attr('onclick', `hapusBarisRacikan('${index}')`).
+                attr('id', `#btnDeleteBarisRacik${index}`)
+
+                row.find(`.btn-success`).
+                attr('id', `#btnCreateResepRacik${index}`).
+                attr('onclick', `createBarisResepRacikan(${index})`)
+
                 const id = Math.floor(index + 1)
                 const nomor = row.find(`td`).eq(0).text(`${id}`);
                 row.find(`#no_racik${index}`).val(id);

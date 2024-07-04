@@ -470,6 +470,7 @@ Route::middleware('auth')->group(function () {
     Route::get('catatan/perawatan/{noRawat}', [CatatanPerawatanController::class, 'get']);
     Route::post('catatan/perawatan/insert', [CatatanPerawatanController::class, 'insert']);
     Route::post('catatan/perawatan/create', [CatatanPerawatanController::class, 'insertOrUpdate']);
+    Route::post('catatan/perawatan/delete', [CatatanPerawatanController::class, 'delete']);
 
     Route::get('resume/ranap/get', [ResumePasienRanapController::class, 'get']);
     Route::post('resume/ranap/insert', [ResumePasienRanapController::class, 'insert']);

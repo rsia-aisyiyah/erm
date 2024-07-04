@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-body" style="max-height:40vh">
+    <div class="card-body" style="max-height:80vh;height:40vh">
         <input type="hidden" class="no_resep form-control form-control-sm" />
         <ul class="nav nav-tabs" id="myTab">
             <li class="nav-item">
@@ -13,13 +13,13 @@
             </li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane fade show active" id="umum" style="overflow-y: auto;max-height: 30vh">
+            <div class="tab-pane fade show active" id="umum" style="overflow: auto;max-height: 30vh">
                 @include('content.poliklinik.resep._resepUmum')
             </div>
-            <div class="tab-pane fade" id="racikan" style="overflow-y: auto;max-height: 30vh">
+            <div class="tab-pane fade" id="racikan" style="overflow: auto;max-height: 30vh">
                 @include('content.poliklinik.resep._resepRacikan')
             </div>
-            <div class="tab-pane fade" id="riwayat" style="overflow-y: auto;max-height: 30vh">
+            <div class="tab-pane fade" id="riwayat" style="overflow: auto;max-height: 30vh">
                 <table class="table table-responsive" id="tb-resep-riwayat" width="100%">
                     <thead>
                         <tr>
@@ -134,6 +134,7 @@
         }
 
         function deleteResep(no_resep) {
+            const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             Swal.fire({
                 title: 'Apakah anda yakin ?',
                 text: "Anda tidak bisa mengembalikan lagi",
@@ -152,7 +153,8 @@
                     }
                 }).done((response) => {
                     toastReload(response.message, 2000)
-                    toggleElementResep(false)
+                    toggleElementResep(false);
+                    setResepToPlan(no_rawat)
                     tbResepDokter.find('tbody').empty()
                     tbResepRacikan.find('tbody').empty()
                 })
@@ -294,32 +296,33 @@
         }
 
         function setResepToPlan(no_rawat) {
-            $.get(`${url}/resep/get`, {
+            return $.get(`${url}/resep/get`, {
                 no_rawat: no_rawat
             }).done((response) => {
-                console.log('RESEP PLAN ===', response);
                 const {
                     data
                 } = response;
                 let rd = '';
                 let rr = '';
-                if (data.resep_dokter) {
-                    rd = data.resep_dokter.map((item, index) => {
-                        return `${item.data_barang.nama_brng} @${item.jml}, S: ${item.aturan_pakai}`
-                    }).join('\n');
+                if (data) {
+                    if (data.resep_dokter) {
+                        rd += data.resep_dokter.map((item, index) => {
+                            return `${item.data_barang.nama_brng} @${item.jml}, S: ${item.aturan_pakai}`
+                        }).join('\n');
 
-                }
+                    }
 
-                if (data.resep_racikan) {
-                    rr = data.resep_racikan.map((item, index) => {
-                        const dataObat = item.detail.map((barang, index) => {
-                            return `\t-${barang.databarang.nama_brng} @${barang.jml} (${barang.kandungan} mg)`
+                    if (data.resep_racikan) {
+                        rr += data.resep_racikan.map((item, index) => {
+                            const dataObat = item.detail.map((barang, index) => {
+                                return `\t-${barang.databarang.nama_brng} @${barang.jml} (${barang.kandungan} mg)`
+                            }).join('\n')
+                            return `${item.metode.nm_racik} ${item.nama_racik} @${item.jml_dr}, S: ${item.aturan_pakai}` + '\n' + dataObat;
                         }).join('\n')
-                        return `${item.metode.nm_racik} ${item.nama_racik} @${item.jml_dr}, S: ${item.aturan_pakai}` + '\n' + dataObat;
-                    }).join('\n')
+                    }
                 }
 
-                formSoapPoli.find('#rtl').val(`${rd} \n\n ${rr}`)
+                formSoapPoli.find('#rtl').val(`${rd} \n ${rr}`)
 
             })
         }
