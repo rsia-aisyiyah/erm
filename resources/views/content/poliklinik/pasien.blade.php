@@ -169,6 +169,7 @@
                 orientation: 'bottom',
                 autoclose: true,
                 todayHighlight: true,
+                todayBtn: true,
             }).on('changeDate', (e) => {
                 selectTgl = splitTanggal($('#tgl_registrasi').datepicker('getFormattedDate')) ? splitTanggal($('#tgl_registrasi').datepicker('getFormattedDate')) : "{{ date('Y-m-d') }}";
                 localStorage.setItem('tanggal', selectTgl);
@@ -267,37 +268,6 @@
                     no_rawat: no_rawat
                 },
                 method: 'GET',
-            })
-        }
-
-        function riwayatResep(no_rm) {
-            $('#tb-resep-riwayat tbody').empty()
-            $.ajax({
-                url: `/erm/resep/riwayat/${no_rm}`,
-                method: 'GET',
-            }).done((response) => {
-                $.map(response, (resep) => {
-                    if (resep.resep_dokter.length > 0 || resep.resep_racikan.length > 0) {
-                        html = `<tr>`
-                        html += `<td width="15%">${formatTanggal(resep.tgl_peresepan)} </td>`
-                        html += `<td width="10%">${resep.no_resep}</td>`
-                        html += `<td width="75%"><ul style="disc inside">`
-                        $.map(resep.resep_dokter, (dokter) => {
-                            html += `<li>${dokter.data_barang.nama_brng} @ ${dokter.jml} ${dokter.data_barang.kode_satuan.satuan}, S: ${dokter.aturan_pakai}</li>`
-                        })
-                        $.map(resep.resep_racikan, (racikan) => {
-                            html += `<li>${racikan.nama_racik}, @ ${racikan.jml_dr} ${racikan.metode.nm_racik}, S: ${racikan.aturan_pakai}</li>`
-                            $.map(racikan.detail_racikan, (detail) => {
-                                html += `<span class="badge rounded-pill text-bg-success">${detail.databarang.nama_brng}</span>`
-                            })
-                        })
-
-                        html += `</ul></td>`
-                        html += `<td width="10%"><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(${resep.no_resep})" type="button"><i class="bi bi-clipboard-check-fill"></i></button></td>`;
-                        html += `<tr>`
-                        $('#tb-resep-riwayat tbody').append(html)
-                    }
-                })
             })
         }
 

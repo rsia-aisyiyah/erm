@@ -114,7 +114,7 @@
                     '_token': "{{ csrf_token() }}",
                 }).done((response) => {
                     toastReload(response.message, 2000)
-                    getResepDokter(noResep)
+                    getResepObat(no_rawat)
                     setResepToPlan(no_rawat)
                 }).fail((error) => {
                     alertErrorAjax(error)
@@ -133,7 +133,7 @@
                     kode_brng: kode_brng,
                 }
             }).done((response) => {
-                getResepDokter(no_resep)
+                getResepObat(no_rawat)
                 setResepToPlan(no_rawat)
             }).fail((error) => {
                 alertErrorAjax(error);
@@ -161,7 +161,7 @@
                 'aturan_pakai': aturan,
                 '_token': "{{ csrf_token() }}",
             }).done((response) => {
-                getResepDokter(no_resep)
+                getResepObat(no_rawat)
                 setResepToPlan(no_rawat)
             })
         }

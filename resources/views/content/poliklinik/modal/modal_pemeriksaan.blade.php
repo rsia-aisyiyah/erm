@@ -6,8 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {{-- tabs --}}
-                <ul class="nav nav-tabs" id="tab-soap-rajal" role="tablist">
+                <ul class="nav nav-tabs nav-tabs-expand" id="tab-soap-rajal" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
                             data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
@@ -129,9 +128,6 @@
 
 @push('script')
     <script>
-       
-
-
         function hapusBaris(param) {
             console.log($(this).parent().remove())
         }
@@ -144,6 +140,7 @@
         })
 
         $('button[data-bs-target="#tab-asmed-ana"]').on('shown.bs.tab', function(e, x, y) {
+
             $('.btn-asmed-ranap').css('display', 'none')
             $('.btn-asmed').css('display', 'inline')
             $('.btn-soap').css('display', 'none')
@@ -304,111 +301,7 @@
 
         }
 
-        function copyResep(kdResep) {
-            Swal.fire({
-                title: 'Yakin ?',
-                text: "Anda mengcopy resep ini",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya',
-                cancelButtonText: 'Tidak',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    setNoResep().done((response) => {
-                        if (Object.keys(response).length > 0) {
-                            if (response.tgl_perawatan == '0000-00-00' && response.no_rawat == $('#nomor_rawat').val()) {
-                                nomor = response.no_resep;
-                            } else {
-                                nomor = parseInt(response.no_resep) + 1
-                            }
-                        } else {
-                            nomor = "{{ date('Ymd') }}" + '0001';
-                        }
-                        $('.no_resep').val(nomor)
-                    })
-                    let dataResep;
-                    let dataObat;
-                    let dataRacikan;
-                    let no_resep = $('.no_resep').val();
-                    let no_rawat = $('#nomor_rawat').val();
-                    let no_racik = setNoRacik(no_resep)
-                    cekResep(no_rawat).done((response) => {
-                        jmlResep = Object.keys(response).length;
-                        if (jmlResep == 0) {
-                            simpanResepObat().done((response) => {
-                                console.log('BUAT RESEP', response)
-                            });
-                        }
-                        ambilResep(kdResep).done((resep) => {
-                            if (Object.keys(resep.resep_dokter).length > 0) {
-                                $.map(resep.resep_dokter, function(rd) {
-                                    $.ajax({
-                                        url: '/erm/resep/umum/simpan',
-                                        method: 'POST',
-                                        data: {
-                                            '_token': '{{ csrf_token() }}',
-                                            'no_resep': no_resep,
-                                            'kode_brng': rd.kode_brng,
-                                            'aturan_pakai': rd.aturan_pakai,
-                                            'jml': rd.jml,
-                                        },
-                                    }).done((response) => {
-                                        console.log('SUKSES')
-                                    })
-                                })
-                            }
-                            if (Object.keys(resep.resep_racikan).length > 0) {
-                                $.map(resep.resep_racikan, function(racik) {
-                                    $.ajax({
-                                        url: '/erm/resep/racik/simpan',
-                                        method: 'POST',
-                                        data: {
-                                            '_token': "{{ csrf_token() }}",
-                                            'no_resep': no_resep,
-                                            'no_racik': racik.no_racik,
-                                            'nama_racik': racik.nama_racik,
-                                            'kd_racik': racik.kd_racik,
-                                            'jml_dr': racik.jml_dr,
-                                            'aturan_pakai': racik.aturan_pakai,
-                                            'keterangan': racik.keterangan,
-                                        },
-                                        success: function(response) {
-                                            $.map(racik.detail_racikan, function(racikan) {
-                                                $.ajax({
-                                                    url: '/erm/resep/racik/detail/simpan',
-                                                    method: 'POST',
-                                                    data: {
-                                                        '_token': '{{ csrf_token() }}',
-                                                        'no_resep': no_resep,
-                                                        'no_racik': racikan.no_racik,
-                                                        'kode_brng': racikan.kode_brng,
-                                                        'p1': racikan.p1,
-                                                        'p2': racikan.p2,
-                                                        'jml': racikan.jml,
-                                                        'kandungan': racikan.kandungan,
-                                                    },
-                                                }).done((response) => {
-                                                    console.log('SUKSES')
-                                                })
-                                            })
-                                        }
-                                    }).done((response) => {
-                                        console.log('SUKSES')
-                                    })
-                                })
-                            }
-                            $('#tb-resep-riwayat tbody').empty()
-                            cekResep(no_rawat)
-                            riwayatResep($('#no_rm').val())
-                            tulisPlan();
-                        })
-                    });
-                }
 
-            })
-        }
 
         function simpanObat() {
             no_resep = $('.no_resep_umum').val()
@@ -886,7 +779,7 @@
             }
         }
 
-       
+
 
         function tambahProsedur(param) {
             no_rawat = $('#nomor_rawat').val();
@@ -911,7 +804,7 @@
 
         }
 
-       
+
 
         function ambilProsedurPasien(no_rawat) {
             $.ajax({
@@ -1159,6 +1052,8 @@
 
         }
 
+
+
         function modalSoapRalan(no_rawat) {
             const formSoapPoli = $('#formSoapPoli')
             const btnCatatanPasien = $('#btnCatatanPasien')
@@ -1221,8 +1116,6 @@
                 });
 
                 getResepObat(no_rawat);
-                riwayatResep(response.no_rkm_medis)
-
                 getPemeriksaanPoli(no_rawat, response.kd_poli).done((dataPeriksa) => {
                     if (dataPeriksa.length == 1) {
                         dataPeriksa.forEach((item) => {

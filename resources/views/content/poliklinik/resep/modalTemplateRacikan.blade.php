@@ -362,6 +362,7 @@
                 getResepRacikan(no_resep).done((response) => {
                     modalTemplateRacikan.modal('hide')
                     setResepToPlan(no_rawat)
+                    getResepObat(no_rawat)
                 })
 
                 toastReload(response.message, 2000)

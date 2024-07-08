@@ -147,7 +147,7 @@
                         racikan
                     ).done((response) => {
                         createObatTemplateRacikan(racikan.id, racikan.no_resep, racikan.no_racik).done(() => {
-                            getResepRacikan(racikan.no_resep)
+                            getResepObat(no_rawat)
                             setResepToPlan(no_rawat)
                         })
                     }).fail((error) => {
@@ -221,7 +221,7 @@
 
             $.post(`${url}/resep/racik/create`, racikan).done((response) => {
                 createObatTemplateRacikan(racikan.id, racikan.no_resep, racikan.no_racik).done(() => {
-                    getResepRacikan(racikan.no_resep)
+                    getResepObat(no_rawat)
                     setResepToPlan(no_rawat)
                 })
                 toastReload(response.message, 2000)

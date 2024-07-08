@@ -331,6 +331,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/resep/racik/ambil', [ResepDokterRacikanController::class, 'ambil']);
     Route::post('/resep/racik/simpan', [ResepDokterRacikanController::class, 'simpan']);
+    Route::post('/resep/racik/create/copy', [ResepDokterRacikanController::class, 'createCopy']);
     Route::post('/resep/racik/ubah', [ResepDokterRacikanController::class, 'ubah']);
     Route::delete('/resep/racik/hapus', [ResepDokterRacikanController::class, 'hapus']);
 

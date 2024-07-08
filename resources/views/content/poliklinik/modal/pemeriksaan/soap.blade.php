@@ -36,7 +36,7 @@
                             <input type="hidden" id="tgl_perawatan" name="tgl_perawatan" value="{{ date('Y-m-d') }}" readonly>
                             <input type="hidden" id="jam_rawat" name="jam_rawat" value="{{ date('H:i:s') }}" readonly>
                             <input type="hidden" id="evaluasi" name="evaluasi" value="-" readonly>
-                            <input type="hidden" id="no_resep" name="no_resep" value="-" readonly>
+                            <input type="hidden" id="no_resep" name="no_resep" value="" readonly>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <label for="petugas">Asisten</label>
@@ -195,36 +195,6 @@
             })
         }
 
-        function riwayatResep(no_rkm_medis) {
-            $('#tb-resep-riwayat tbody').empty()
-            $.ajax({
-                url: `/erm/resep/riwayat/${no_rkm_medis}`,
-                method: 'GET',
-            }).done((response) => {
-                $.map(response, (resep) => {
-                    if (resep.resep_dokter.length > 0 || resep.resep_racikan.length > 0) {
-                        html = `<tr>
-                            <td width="15%">${formatTanggal(resep.tgl_peresepan)}</td>
-                            <td>${resep.no_resep}</td>
-                            <td><ul style="disc inside;padding-left:15px">`
-                        $.map(resep.resep_dokter, (dokter) => {
-                            html += `<li>${dokter.data_barang.nama_brng}, ${dokter.jml} ${dokter.data_barang.kode_satuan.satuan}, S : ${dokter.aturan_pakai}</li>`
-                        })
-                        $.map(resep.resep_racikan, (racikan) => {
-                            html += `<li>${racikan.nama_racik}, jumlah ${racikan.jml_dr} ${racikan.metode.nm_racik}, aturan pakai ${racikan.aturan_pakai}</li>`
-                            $.map(racikan.detail_racikan, (detail) => {
-                                html += `<span class="badge rounded-pill text-bg-success">${detail.databarang.nama_brng}</span>`
-                            })
-                        })
-
-                        html += `</ul></td>
-                            <td><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(${resep.no_resep})" type="button"><i class="bi bi-clipboard-check-fill"></i></button></td>
-                        <tr>`
-                        $('#tb-resep-riwayat tbody').append(html)
-                    }
-                })
-            })
-        }
 
         function resep(no_rawat) {
             $.ajax({

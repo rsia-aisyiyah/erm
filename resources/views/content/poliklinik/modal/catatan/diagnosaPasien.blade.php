@@ -23,32 +23,6 @@
         const selectDiagnosaPasien = $('#diagnosa-pasien').find('#diagnosa')
         const tbDiagnosaPasien = $('#tbDiagnosaPasien').find('tbody')
 
-        function getDiagnosaPasien(no_rawat) {
-            return $.ajax({
-                url: `${url}/penyakit/pasien/ambil`,
-                data: {
-                    no_rawat: no_rawat,
-                },
-            })
-        }
-
-        function setDiagnosaPasien(no_rawat) {
-            return getDiagnosaPasien(no_rawat).done((response) => {
-                const diagnosa = response.map((item, index) => {
-                    return `
-                <tr>
-                    <td>${index+1}</td>
-                    <td>${item.kd_penyakit}</td>
-                    <td>${item.penyakit.nm_penyakit}</td>
-                    <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteDiagnosaPasien('${no_rawat}','${item.kd_penyakit}')"><i class="bi bi-x"></i></button>
-                    </td>
-                </tr>
-                `
-                })
-                tbDiagnosaPasien.empty().append(diagnosa)
-            });
-        }
 
         function createDiagnosaPasien(kd_penyakit) {
             no_rawat = formSoapPoli.find('input[name=no_rawat]').val();

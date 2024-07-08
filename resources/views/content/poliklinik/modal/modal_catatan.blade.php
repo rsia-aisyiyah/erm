@@ -26,7 +26,7 @@
                     </div>
                     <div class="tab-pane fade p-3" id="catatan-dokter" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
                         <div class="row">
-                            <div class="col-xl-4 col-md-12 col-sm-12">
+                            <div class="col-xl-4 col-md-6 col-sm-6">
                                 <label for="">Tanggal & Jam</label>
                                 <input type="text" class="form-control form-control-sm" id="jamCatatan" value="-" readonly />
                             </div>
@@ -209,6 +209,34 @@ INSERSI PLACENTA : `;
                 }
             })
 
+        }
+
+        function setDiagnosaPasien(no_rawat) {
+            return getDiagnosaPasien(no_rawat).done((response) => {
+                const diagnosa = response.map((item, index) => {
+                    return `
+                <tr>
+                    <td>${index+1}</td>
+                    <td>${item.kd_penyakit}</td>
+                    <td>${item.penyakit.nm_penyakit}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteDiagnosaPasien('${no_rawat}','${item.kd_penyakit}')"><i class="bi bi-x"></i></button>
+                    </td>
+                </tr>
+                `
+                })
+                tbDiagnosaPasien.empty().append(diagnosa)
+            });
+        }
+
+
+        function getDiagnosaPasien(no_rawat) {
+            return $.ajax({
+                url: `${url}/penyakit/pasien/ambil`,
+                data: {
+                    no_rawat: no_rawat,
+                },
+            })
         }
     </script>
 @endpush

@@ -103,9 +103,36 @@ class ResepDokterRacikanController extends Controller
         return response()->json($request);
     }
 
-    function createBatch(Request $request)
+    function createCopy(Request $request)
     {
-        return $request->data;
+        $count = count($request->data);
+
+        try {
+            for ($i = 0; $i < $count; $i++) {
+                $data = [
+                    'no_resep' => $request->data[$i]['no_resep'],
+                    'no_racik' => $request->data[$i]['no_racik'],
+                    'nama_racik' => $request->data[$i]['nama_racik'],
+                    'kd_racik' => $request->data[$i]['kd_racik'],
+                    'jml_dr' => $request->data[$i]['jml_dr'],
+                    'aturan_pakai' => $request->data[$i]['aturan_pakai'],
+                    'keterangan' => '-',
+                ];
+
+                $resep = ResepDokterRacikan::create($data);
+                if ($resep) {
+                    $detail = new ResepDokterRacikanDetailController();
+                    $detailObat = $request->data[$i]['detail'];
+                    if (count($detailObat) > 1) {
+                        $detail->createBatch(new \Illuminate\Http\Request(['dataObat' => $request->data[$i]['detail']]));
+                    }
+                    $this->track->insertSql(new ResepDokterRacikan(), $data);
+                }
+            }
+        } catch (QueryException $e) {
+            return $this->errorResponse('Error', 400, $e->errorInfo);
+        }
+        return $this->successResponse();
     }
 
     function create(Request $request)
