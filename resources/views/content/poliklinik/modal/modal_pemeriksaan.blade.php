@@ -402,7 +402,8 @@
                 if (dataPeriksa.length == 1) {
                     dataPeriksa.forEach((item) => {
                         const {
-                            pegawai
+                            pegawai,
+                            dokter
                         } = item;
                         if (!dokter) {
                             const itemPetugas = new Option(pegawai.nama, pegawai.nik, true, true);
