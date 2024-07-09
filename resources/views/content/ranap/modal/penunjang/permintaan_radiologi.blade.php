@@ -21,7 +21,7 @@
             <input type="text" class="form-control" name="informasi_tambahan" id="informasi_tambahan" value="-" onfocus="removeZero(this)" onblur="cekKosong(this)" />
         </div>
         <div class="col-md-12">
-            <label for="pemeriksaan_radiologi" class="form-label">Pemeriksaan Lab</label>
+            <label for="pemeriksaan_radiologi" class="form-label">Pemeriksaan Radiologi</label>
             <select name="pemeriksaan_radiologi" id="pemeriksaan_radiologi" class="form-select" multiple data-dropdown-parent="#formPermintaanRadiologi" style="width:100%"></select>
         </div>
     </div>
@@ -58,11 +58,14 @@
             getNoPermintaanRadiologi()
             let no_rawat = '';
             if (formSoapPoli.length) {
-                no_rawat = formSoapPoli.find('#nomor_rawat').val();
-                kd_dokter = formSoapPoli.find('#kd_dokter').val();
-                formPermintaanRadiologi.find('#no_rawat').val(no_rawat)
-                formPermintaanRadiologi.find('#kd_dokter').val(kd_dokter)
-                formPermintaanRadiologi.find('#status').val('Ralan')
+                no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
+                getRegPeriksa(no_rawat).done((response) => {
+                    const pasien = response.pasien
+                    kd_dokter = formSoapPoli.find('input[name="kd_dokter"]').val();
+                    formPermintaanRadiologi.find('#no_rawat').val(no_rawat)
+                    formPermintaanRadiologi.find('#kd_dokter').val(response.dokter.kd_dokter)
+                    formPermintaanRadiologi.find('#status').val('Ralan')
+                })
             } else {
                 no_rawat = formPermintaanRadiologi.find('#no_rawat').val()
             }
@@ -121,9 +124,9 @@
                         }).done((response) => {
                             alertSuccessAjax('Berhasil mengirim permintaan')
                             tableHasilPermintaanRadiologi.addClass('d-none');
-                            formPermintaanRadiologi.trigger('reset');
-                            formPermintaanRadiologi.find('#no_rawat').val(data.no_rawat);
                             selectPermintaanRadiologi.val("").trigger('change');
+                            formPermintaanRadiologi.find('#informasi_tambahan').val('-')
+                            formPermintaanRadiologi.find('#diagnosa_klinis').val('-')
                             getNoPermintaanRadiologi()
                         }).fail((error) => {
                             alertErrorAjax(error);
@@ -140,6 +143,8 @@
         })
 
         $('#btnDataPermintaanRadiologi').on('click', (e) => {
+            const no_rawat = formPermintaanRadiologi.find('#no_rawat').val();
+            console.log(no_rawat);
             tableHasilPermintaanRadiologi.toggleClass('d-none');
             $.get(`/erm/radiologi/permintaan`, {
                 no_rawat: formPermintaanRadiologi.find('#no_rawat').val()

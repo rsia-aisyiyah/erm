@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" onclick="createDetailResepRacik()"><i class="bi bi-save"></i> Simpan</button>
+                <button type="button" class="btn btn-primary btn-sm"id="btnDetailResepRacik" onclick="createDetailResepRacik()"><i class="bi bi-save"></i> Simpan</button>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Keluar</button>
             </div>
         </div>
@@ -73,7 +73,8 @@
     <script>
         const modalTemplateRacikan = $('#modalTemplateRacikan');
         const formDetailRacikan = $('#formDetailRacikan')
-        const tbDetailResepRacikan = $('#tbDetailResepRacikan')
+        const tbDetailResepRacikan = $('#tbDetailResepRacikan');
+        const btnDetailResepRacik = $('#btnDetailResepRacik')
         const btnAddBaris = $('#btnAddBaris')
         modalTemplateRacikan.on('hidden.bs.modal', () => [
             tbDetailResepRacikan.find('tbody').empty()
@@ -87,6 +88,8 @@
             const inptJml = formDetailRacikan.find('#jml_dr')
             const inptAturan = formDetailRacikan.find('#aturan_pakai')
             const inptNoRacik = formDetailRacikan.find('#no_racik')
+
+            btnDetailResepRacik.addClass(`${disableButtonResep()}`)
             $.get(`${url}/resep/racik/ambil`, {
                 no_resep: no_resep,
                 no_racik: no_racik,
@@ -109,7 +112,7 @@
                 response.detail.forEach((item, index) => {
                     const jml = item.jml === 0 ? response.jml_dr : item.jml;
                     const isLastRow = index === response.detail.length - 1;
-                    const addButton = isLastRow ? `<button class="btn btn-sm btn-success" id="btnTambahBarisDetailRacik${index}" onclick="addBarisDetailRacikan()"><i class="bi bi-plus"></i></button>` : '';
+                    const addButton = isLastRow ? `<button class="btn btn-sm btn-success ${disableButtonResep()}" id="btnTambahBarisDetailRacik${index}" onclick="addBarisDetailRacikan()"><i class="bi bi-plus"></i></button>` : '';
 
                     const row = `<tr data-id="${item.kode_brng}" id="rowDetail${index}">
                                 <td>
@@ -139,7 +142,7 @@
                                     <input type="text" class="form-control form-control-sm text-end" name="jml[]" id="jml-${index}" value="${jml}" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onkeypress="return hanyaAngka(this)" onchange="hitungJumlah(this, ${index})"/>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-danger" id="btnHapusBarisDetailRacik${index}" onclick="hapusBarisDetailRacik(${index})"><i class="bi bi-x"></i></button>
+                                    <button class="btn btn-sm btn-danger ${disableButtonResep()}" id="btnHapusBarisDetailRacik${index}" onclick="hapusBarisDetailRacik(${index})"><i class="bi bi-x"></i></button>
                                     ${addButton}
                                 </td>
                         </tr>`;

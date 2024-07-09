@@ -13,15 +13,17 @@
 
     </tbody>
 </table>
-<button class="btn btn-primary btn-sm d-none" id="btnTambahResepRacik" type="button" onclick="tambahRacikan()">Tambah Racikan</button>
-<button class="btn btn-success btn-sm d-none" id="btnCreateResepRacik" type="button" onclick="createResepObatRacikan()">Simpan</button>
+<div class="actionIsiResep">
+    <button class="btn btn-primary btn-sm d-none" id="btnTambahResepRacik" type="button" onclick="tambahRacikan()">Tambah Racikan</button>
+    <button class="btn btn-success btn-sm d-none" id="btnCreateResepRacik" type="button" onclick="createResepObatRacikan()">Simpan</button>
+</div>
 
 @push('script')
     <script>
         const tbResepRacikan = $('#tbResepRacikan')
         const btnTambahResepRacik = $('#btnTambahResepRacik')
         const btnCreateResepRacik = $('#btnCreateResepRacik')
-
+        const btnDeleteResepRacikan = $('.btnDeleteResepRacikan')
 
         function tambahRacikan() {
             const rowCount = tbResepRacikan.find('tbody').find('.rowRacikan').length;
@@ -285,7 +287,7 @@
                         <td>${item.aturan_pakai}</td>
                         <td>
                             <button class="btn btn-sm btn-warning" type="button" onclick="editResepRacikan('${item.no_resep}', '${item.no_racik}')" ><i class="bi bi-pencil"></i></button>    
-                            <button class="btn btn-sm btn-danger" type="button" onclick="deleteResepRacikan('${item.no_resep}', '${item.no_racik}')"><i class="bi bi-x"></i></button>    
+                            <button class="btn btn-sm btn-danger btnDeleteResepRacikan ${disableButtonResep()}" type="button" onclick="deleteResepRacikan('${item.no_resep}', '${item.no_racik}')"><i class="bi bi-x"></i></button>    
                         </td>
                     </tr>${rowDetail}`
                 })

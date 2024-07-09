@@ -1,34 +1,37 @@
-<form action="" class="form-asmed-anak">
+<form action="" class="form-asmed-anak" id="formAsmedAnak">
     <div class="row">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-6">
-                <label for="pasien">
-                    Pasien
-                </label>
                 <div class="row">
                     <div class="mb-2 col-sm-12 col-md-6 col-lg-3">
-                        <input type="text" class="form-control form-control-sm no_rawat" placeholder="" aria-label="" id="no_rawat" name="no_rawat" readonly="" style="background-color: #e9ecef;cursor:not-allowed;">
+                        <label for="pasien">No. Rawat</label>
+                        <input type="text" class="form-control form-control-sm no_rawat" placeholder="" aria-label="" id="no_rawat" name="no_rawat" readonly="">
                     </div>
-                    <div class="mb-2 col-sm-12 col-md-6 col-lg-5">
-                        <input type="search" style="background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm pasien" id="pasien" name="pasien" aria-label="" aria-describedby="pasien" readonly="">
+                    <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
+                        <label for="pasien">Pasien</label>
+                        <div class="input-group">
+                            <input type="input" class="form-control form-control-sm" id="no_rkm_medis" name="no_rkm_medis" readonly="">
+                            <input type="input" class="form-control form-control-sm w-50" id="pasien" name="pasien" readonly="">
+                        </div>
                     </div>
-                    <div class="mb-2 col-sm-12 col-md-6 col-lg-4">
-                        <input type="search" style="background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" name="tgl_lahir" placeholder="" aria-label="" aria-describedby="pasien" readonly="">
+                    <div class="mb-2 col-sm-12 col-md-6 col-lg-3">
+                        <label for="">Tgl. Lahir</label>
+                        <input type="search" class="form-control form-control-sm" id="tgl_lahir" name="tgl_lahir" readonly="">
                     </div>
                 </div>
 
             </div>
             <div class="col-sm-12 col-md-12 col-lg-6">
-                <label for="dokter">Dokter</label>
                 <div class="row">
-                    <div class="mb-2 col-sm-12 col-md-6 col-lg-3">
-                        <input type="search" class="form-control form-control-sm kd_dokter" placeholder="" aria-label="" name="kd_dokter" readonly>
+                    <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
+                        <label for="dokter">Dokter</label>
+                        <div class="input-group">
+                            <input type="input" class="form-control form-control-sm" id="kd_dokter" name="kd_dokter" readonly="">
+                            <input type="input" class="form-control form-control-sm w-50" id="dokter" name="nm_dokter" readonly="">
+                        </div>
                     </div>
-                    <div class="mb-2 col-sm-12 col-md-6 col-lg-4">
-                        <input type="search" class="form-control form-control-sm dokter" placeholder="" aria-label="" name="nm_dokter" autocomplete="off">
-                        <div class="list-dokter"></div>
-                    </div>
-                    <div class="mb-2 col-sm-12 col-md-6 col-lg-5">
+                    <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
+                        <label for="anamnesis">Anamnesa</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" id="anamnesis" name="anamnesis">
                                 <option value="Autoanamnesis" selected>Autoanamnesis</option>
@@ -78,8 +81,6 @@
                     <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder=""
                         onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
-
-
             </div>
             <div class="separator m-2">2. Pemeriksaan Fisik</div>
             <div class="row">
@@ -94,7 +95,7 @@
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-3">
                     <label for="">Kesadaran :</label>
-                    <select class="form-select" name="kesadaran" id="kesadaran">
+                    <select class="form-select" name="kesadaran" id="">
                         <option value="Compos Mentis">Compos Mentis</option>
                         <option value="Apatis">Apatis</option>
                         <option value="Somnolence">Somnolence</option>
@@ -104,35 +105,35 @@
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                     <label for="gcs">GCS(E,V,M)</label>
-                    <input type="text" class="form-control form-control-sm" id="gcs" name="gcs" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                    <input type="text" class="form-control form-control-sm" id="gcs" name="gcs" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                     <label for="tb">TB (cm)</label>
-                    <input type="text" class="form-control form-control-sm" id="tb" name="tb" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                    <input type="text" class="form-control form-control-sm" id="tb" name="tb" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                     <label for="bb">BB (Kg)</label>
-                    <input type="text" class="form-control form-control-sm" id="bb" name="bb" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                    <input type="text" class="form-control form-control-sm" id="bb" name="bb" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-3">
                     <label for="td">TD (mmHg)</label>
-                    <input type="text" class="form-control form-control-sm" id="td" name="td" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                    <input type="text" class="form-control form-control-sm" id="td" name="td" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-3">
                     <label for="nadi">Nadi (x/menit)</label>
-                    <input type="text" class="form-control form-control-sm" id="nadi" name="nadi" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                    <input type="text" class="form-control form-control-sm" id="nadi" name="nadi" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                     <label for="rr">RR (x/menit)</label>
-                    <input type="text" class="form-control form-control-sm" id="rr" name="rr" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                    <input type="text" class="form-control form-control-sm" id="rr" name="rr" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                     <label for="suhu">Suhu (<sup>0</sup>C)</label>
-                    <input type="text" class="form-control form-control-sm" id="suhu" name="suhu" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                    <input type="text" class="form-control form-control-sm" id="suhu" name="suhu" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                     <label for="spo">spo(%)</label>
-                    <input type="text" class="form-control form-control-sm" id="spo" name="spo" placeholder="" maxlength="10"onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                    <input type="text" class="form-control form-control-sm" id="spo" name="spo" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
                 </div>
                 <div class="row">
                     <div class="col-lg-6">

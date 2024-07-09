@@ -94,7 +94,7 @@
                 </div>
                 <div class="mb-3 col-sm-12 col-md-4 col-lg-3">
                     <label for="">Kesadaran :</label>
-                    <select class="form-select" name="kesadaran" id="kesadaran">
+                    <select class="form-select" name="kesadaran" id="">
                         <option value="Compos Mentis">Compos Mentis</option>
                         <option value="Apatis">Apatis</option>
                         <option value="Somnolence">Somnolence</option>

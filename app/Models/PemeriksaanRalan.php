@@ -28,4 +28,8 @@ class PemeriksaanRalan extends Model
     {
         return $this->hasMany(RsiaLogSoap::class, 'no_rawat', 'no_rawat');
     }
+    function dokter()
+    {
+        return $this->belongsTo(Dokter::class, 'nip', 'kd_dokter');
+    }
 }

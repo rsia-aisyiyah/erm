@@ -581,7 +581,7 @@
                     cardRiwayatPemeriksaanRanap.style.display = 'inline';
                     periksa.map((pemeriksaan, index) => {
                         let headColor = '';
-                        if (pemeriksaan.pegawai.dokter) {
+                        if (pemeriksaan.dokter) {
                             headColor = 'bg-primary text-white'
                         } else {
                             headColor = 'bg-warning'
@@ -696,7 +696,7 @@
                     }
                     pemeriksaan.map((periksa, index) => {
                         let headColor = '';
-                        if (periksa.pegawai.dokter) {
+                        if (periksa.dokter) {
                             headColor = 'bg-primary text-white'
                         } else {
                             headColor = 'bg-warning'

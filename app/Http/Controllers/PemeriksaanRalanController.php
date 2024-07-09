@@ -35,8 +35,16 @@ class PemeriksaanRalanController extends Controller
     {
 
         $pemeriksaan = PemeriksaanRalan::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa.pasien', 'pegawai' => function ($query) {
-                $query->with('dokter');
+            ->with(['regPeriksa' => function ($query) {
+                $query->select(['kd_dokter', 'kd_poli', 'no_rawat', 'no_rkm_medis', 'p_jawab', 'kd_pj'])
+                    ->with(['pasien' => function ($query) {
+                        $query->select(['no_rkm_medis', 'nm_pasien', 'no_ktp', 'jk', 'no_peserta', 'tgl_lahir', 'kd_pj'])
+                            ->with('penjab');
+                    }, 'penjab']);
+            }, 'dokter' => function ($query) {
+                $query->select(['kd_dokter', 'agama', 'nm_dokter']);
+            }, 'pegawai' => function ($query) {
+                $query->select(['nik', 'nama', 'departemen']);
             }]);
 
         if ($request->kd_poli) {

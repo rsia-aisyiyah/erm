@@ -59,4 +59,9 @@ class Pasien extends Model
     {
         return $this->hasOne(RsiaKetPasien::class, 'no_rkm_medis', 'no_rkm_medis');
     }
+
+    function penjab()
+    {
+        return $this->belongsTo(Penjab::class, 'kd_pj', 'kd_pj')->select(['kd_pj', 'png_jawab']);
+    }
 }

@@ -3,6 +3,7 @@
         <div class="col-lg-2 col-md-6 col-sm-12">
             <label for="no_rawat" class="form-label mb-0">No.Rawat</label>
             <input type="text" class="form-control form-control-sm" id="no_rawat" name="no_rawat" placeholder="" readonly>
+            <input type="hidden" id="status_bayar" name="status_bayar">
         </div>
         <div class="col-lg-1 col-sm-12 mb-2">
             <label for="no_rkm_medis" class="form-label mb-0">No. RM</label>
@@ -157,22 +158,12 @@
             return false;
         }
 
-        function simpanSoap() {
+        function createSoapRalan() {
             const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
             data['_token'] = '{{ csrf_token() }}';
 
             if (role === 'dokter') {
                 data['nip'] = data['dokter'];
-                cekPanggilanPoli(no_rawat).done((response) => {
-                    Swal.fire({
-                        title: 'Gagal',
-                        text: 'Pasien belum dipanggil, anda tidak diperbolehkan mebuat resep',
-                        icon: 'error',
-                        showCancelButton: false,
-                    });
-
-                    return false;
-                })
             } else {
                 data['nip'] = data['petugas'];
             }

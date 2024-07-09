@@ -1,26 +1,45 @@
 <h5 class="text-center mt-4">PERMINTAAN LAB</h5>
 <form action="" id="formPermintaanLab">
-    <div class="row gy-2 mb-3">
-        <div class="col-md-2">
+    <div class="row gy-2">
+        <div class="col-lg-2 col-md-3 col-sm-12">
             <label for="noorder" class="form-label">No. Permintaan</label>
             <input type="text" class="form-control" name="noorder" id="noorder" />
         </div>
-        <div class="col-md-2">
+        <div class="col-lg-2 col-md-3 col-sm-12">
             @csrf
             <label for="no_rawat" class="form-label">No. Rawat</label>
             <input type="text" class="form-control" name="no_rawat" id="no_rawat" readonly />
-            <input type="hidden" name="kd_dokter" id="kd_dokter" />
             <input type="hidden" name="status" id="status" />
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <label for="pasien" class="form-label">Pasien</label>
+            <div class="input-group">
+                <input type="input" class="form-control form-control-sm" id="no_rkm_medis" name="no_rkm_medis" readonly />
+                <input type="input" class="form-control form-control-sm w-50" id="nm_pasien" name="nm_pasien" readonly />
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-12">
+            <label for="pasien" class="form-label">Tgl. Lahir/Umur</label>
+            <input type="input" class="form-control form-control-sm" id="tgl_lahir" name="tgl_lahir" readonly />
+        </div>
+    </div>
+    <div class="row gy-2 mb-3">
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <label for="dokter" class="form-label">Dokter</label>
+            <div class="input-group">
+                <input type="input" class="form-control form-control-sm" id="kd_dokter" name="kd_dokter" readonly />
+                <input type="input" class="form-control form-control-sm w-50" id="nm_dokter" name="nm_dokter" readonly />
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-12">
             <label for="diagnosa_klinis" class="form-label">Indikasi/Klinis</label>
             <input type="text" class="form-control" name="diagnosa_klinis" id="diagnosa_klinis" value="-" onfocus="removeZero(this)" onblur="cekKosong(this)" />
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-4 col-sm-12">
             <label for="informasi_tambahan" class="form-label">Informasi Tambahan</label>
             <input type="text" class="form-control" name="informasi_tambahan" id="informasi_tambahan" value="-" onfocus="removeZero(this)" onblur="cekKosong(this)" />
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12 col-sm-12">
             <label for="pemeriksaan" class="form-label">Pemeriksaan Lab</label>
             <select name="pemeriksaan" id="pemeriksaan" class="form-select" multiple data-dropdown-parent="#formPermintaanLab" style="width:100%"></select>
         </div>
@@ -71,18 +90,24 @@
             getNomorPermintaan();
             let no_rawat = '';
             if (formSoapPoli.length) {
-                no_rawat = formSoapPoli.find('#nomor_rawat').val();
+                no_rawat = formSoapPoli.find('input[name=no_rawat]').val();
                 kd_dokter = formSoapPoli.find('#kd_dokter').val();
-                formPermintaanLab.find('#no_rawat').val(no_rawat)
-                formPermintaanLab.find('#kd_dokter').val(kd_dokter)
-                formPermintaanLab.find('#status').val('Ralan')
+                getRegPeriksa(no_rawat).done((response) => {
+                    formPermintaanLab.find('#no_rawat').val(no_rawat)
+                    formPermintaanLab.find('#no_rkm_medis').val(response.no_rkm_medis)
+                    formPermintaanLab.find('#nm_pasien').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`)
+                    formPermintaanLab.find('#tgl_lahir').val(`${formatTanggal(response.pasien.tgl_lahir)} / ${hitungUmur(response.pasien.tgl_lahir)}`)
+                    formPermintaanLab.find('#kd_dokter').val(response.kd_dokter)
+                    formPermintaanLab.find('#nm_dokter').val(response.dokter.nm_dokter)
+                    formPermintaanLab.find('#status').val('Ralan')
+                })
             } else {
                 no_rawat = formPermintaanLab.find('#no_rawat').val()
             }
         })
 
         $('#btnDataPermintaan').on('click', () => {
-            const no_rawat = formSoapPoli.length ? formSoapPoli.find('#nomor_rawat').val() : formPermintaanLab.find('#no_rawat').val();
+            const no_rawat = formSoapPoli.length ? formSoapPoli.find('input[name="no_rawat"]').val() : formPermintaanLab.find('#no_rawat').val();
             tableHasilPermintaan.toggleClass('d-none');
             tableHasilPermintaan.find('tbody').empty();
             getPermintaanLab(no_rawat);
@@ -294,8 +319,8 @@
                             alertSuccessAjax('Berhasil membuat permintaan lab')
                             tablePermintaanLab.find('tbody').empty();
                             tablePermintaanLab.find('input[type=checkbox]').prop('checked', false)
-                            formPermintaanLab.trigger('reset');
-                            formPermintaanLab.find('#no_rawat').val(data.no_rawat);
+                            formPermintaanLab.find('#informasi_tambahan').val('-')
+                            formPermintaanLab.find('#diagnosa_klinis').val('-')
                             selectJenisPeriksaLab.val("").trigger('change');
                             getNomorPermintaan();
                         }).fail((error) => {

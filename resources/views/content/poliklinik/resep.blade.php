@@ -84,6 +84,12 @@
             })
         }
 
+        function disableButtonResep() {
+            const statusBayar = formSoapPoli.find('input[name="status_bayar"]').val()
+            const isDisplay = statusBayar === 'Sudah Bayar' ? 'd-none' : '';
+            return isDisplay;
+        }
+
         function setListRiwayatResepUmum(data) {
             if (data.length) {
                 return data.map((item, index) => {

@@ -11,11 +11,16 @@
 
     </tbody>
 </table>
-<button class="btn btn-primary btn-sm d-none" id="btnTambahResepUmum" type="button" onclick="tambahObatUmum()">Tambah Obat</button>
-<button class="btn btn-success btn-sm d-none" id="btnSimpanResepUmum" type="button" onclick="createObatUmum()">Simpan</button>
+<div class="actionIsiResep">
+    <button class="btn btn-primary btn-sm d-none" id="btnTambahResepUmum" type="button" onclick="tambahObatUmum()">Tambah Obat</button>
+    <button class="btn btn-success btn-sm d-none" id="btnSimpanResepUmum" type="button" onclick="createObatUmum()">Simpan</button>
+</div>
 
 @push('script')
     <script>
+        const actionIsiResep = $('.actionIsiResep')
+        const actionListResepUmum = $('.actionListResepUmum')
+
         function setResepDokter(data) {
             if (data) {
                 const row = data.map((item, index) => {
@@ -23,7 +28,7 @@
                             <td id="colObatDokter${index}">${item.data_barang.nama_brng}</td>
                             <td class="text-center" id="colJmlObatDokter${index}">${item.jml}</td>
                             <td id="colAturanPakaiDokter${index}">${item.aturan_pakai}</td>
-                            <td id="aksiObatDokter${index}">
+                            <td id="aksiObatDokter${index}" class="actionListResepUmum ${disableButtonResep()}">
                                 <button class="btn btn-warning btn-sm" type="button" id="btnEditObatResepDokter" onclick="editResepDokter('${index}', '${item.kode_brng}')"><i class="bi bi-pencil"></i></button>    
                                 <button class="btn btn-danger btn-sm" type="button" id="btnDeleteObatResepDokter" onclick="deleteResepDokter('${item.no_resep}', '${item.kode_brng}')"><i class="bi bi-x"></i></button>    
                             </td>
