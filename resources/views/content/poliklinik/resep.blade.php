@@ -85,7 +85,7 @@
         }
 
         function disableButtonResep() {
-            const statusBayar = formSoapPoli.find(  'input[name="status_bayar"]').val()
+            const statusBayar = formSoapPoli.find('input[name="status_bayar"]').val()
             const isDisplay = statusBayar === 'Sudah Bayar' ? 'd-none' : '';
             return isDisplay;
         }
@@ -195,6 +195,15 @@
 
         function deleteResep(no_resep) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
+
+            if (role !== 'dokter') {
+                return Swal.fire({
+                    title: 'Gagal',
+                    html: 'Anda tidak diperbolehkan menghapus resep',
+                    icon: 'error',
+                })
+            }
+
             Swal.fire({
                 title: 'Apakah anda yakin ?',
                 text: "Anda tidak bisa mengembalikan lagi",
