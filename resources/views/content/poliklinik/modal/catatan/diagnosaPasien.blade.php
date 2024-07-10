@@ -61,6 +61,8 @@
             }).done((response) => {
                 toastReload(response.message, 2000)
                 setDiagnosaPasien(no_rawat)
+            }).fail((error) => {
+                alertErrorAjax(error)
             })
         }
     </script>

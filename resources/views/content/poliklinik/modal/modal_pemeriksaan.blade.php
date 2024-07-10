@@ -44,6 +44,10 @@
                         <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab" data-bs-target="#permintaan-radiologi-tab-pane"
                             type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="skriningTB" data-bs-toggle="tab" data-bs-target="#skriningTB-pane"
+                            type="button" role="tab" aria-controls="skriningTB-pane" aria-selected="true">Skrining/Skoring TB</button>
+                    </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
@@ -113,6 +117,79 @@
                             </table>
                         </div>
                     </div>
+                    <div class="tab-pane fade p-3" id="skriningTB-pane" role="tabpanel" aria-labelledby="tab-tb"
+                        tabindex="0">
+                        <form action="" id="formPasienSkoringTb">
+                            <div class="row gy-1">
+                                <div class="col-lg-2 col-md-4 col-sm-12">
+                                    <label for="no_rawat">No. Rawat</label>
+                                    <input type="text" class="form-control br-full" id="no_rawat" name="no_rawat" readonly>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-12">
+                                    <label for="nm_pasien">Pasien</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="no_rkm_medis" name="no_rkm_medis" readonly>
+                                        <input type="text" class="form-control w-50" id="nm_pasien" name="nm_pasien" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-12">
+                                    <label for="tgl_lahir">Tgl. Lahir/Umur</label>
+                                    <input type="text" class="form-control" id="tgl_lahir" name="tgl_lahir" readonly>
+                                </div>
+                            </div>
+                            <div class="row gy-1">
+                                <div class="col-lg-2 col-md-4 col-sm-12">
+                                    <label for="keluarga">Keluarga</label>
+                                    <input type="text" class="form-control br-full" id="p_jawab" name="p_jawab" readonly>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-12">
+                                    <label for="nm_poli">Poliklinik</label>
+                                    <input type="text" class="form-control br-full" id="nm_poli" name="nm_poli" readonly>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-12">
+                                    <label for="dokter">DPJP</label>
+                                    <div class="input-group">
+                                        <input type="text" id="kd_dokter" name="kd_dokter" class="form-control" readonly>
+                                        <input type="text" class="form-control w-50" id="nm_dokter" name="nm_dokter" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <ul class="nav nav-tabs mt-3" id="tabsSkoringTb" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="formSkoringTb-tab" data-bs-toggle="tab" data-bs-target="#tabSkoringTb" type="button" role="tab" aria-controls="tabSkoringTb" aria-selected="true">Form Skoring</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="SkoringTb-tab" data-bs-toggle="tab" data-bs-target="#SkoringTb" type="button" role="tab" aria-controls="SkoringTb" aria-selected="true">Hasil Skoring</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="formSkriningTb-tab" data-bs-toggle="tab" data-bs-target="#tabSkriningTb" type="button" role="tab" aria-controls="tabSkiringTb" aria-selected="true">Form Skrining</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="skriningTb-tab" data-bs-toggle="tab" data-bs-target="#skriningTb" type="button" role="tab" aria-controls="skriningTb" aria-selected="true">Hasil Skrining</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active p-3" id="tabSkoringTb" role="tabpanel" aria-labelledby="formSkoringTb-tab">
+                                <div style="background-color:whitesmoke;border-radius:10px;padding:10px">
+                                    @include('content.ranap.modal.skriningTb._formSkoringTb')
+                                </div>
+                            </div>
+                            <div class="tab-pane fade p-3" id="SkoringTb" role="tabpanel" aria-labelledby="SkoringTb-tab">
+                                <table class="table nowrap" id="tbSkoringTb" width="100%"></table>
+                            </div>
+                            <div class="tab-pane fade p-3" id="tabSkriningTb" role="tabpanel" aria-labelledby="formSkriningTb-tab">
+                                <div style="background-color:whitesmoke;border-radius:10px;padding:10px">
+                                    @include('content.ranap.modal.skriningTb._formSkriningTb')
+                                </div>
+                            </div>
+                            <div class="tab-pane fade p-3" id="skriningTb" role="tabpanel" aria-labelledby="skriningTb-tab">
+                                <table class="table nowrap" id="tbSkriningTb" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -141,6 +218,8 @@
         const formAsmedRanapKandungan = $('#formAsmedRanapKandungan');
 
         const btnTabPermintaanLab = $('button[data-bs-target="#permintaan-laborat-tab-pane"]');
+
+        const btnsSkriningTB = $('button[data-bs-target="#skriningTB-pane"]');
 
 
         $('button[data-bs-target="#tab-soap-pane"]').on('shown.bs.tab', function(e, x, y) {
@@ -178,6 +257,31 @@
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRanapKandungan)
             $('.btn-asmed-ranap').css('display', 'inline')
+            $('.btn-asmed').css('display', 'none')
+            $('.btn-soap').css('display', 'none')
+        });
+
+        btnsSkriningTB.on('shown.bs.tab', function(e, x, y) {
+            const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
+            drawTbSkriningTb(no_rawat)
+            drawTbSkoringTb(no_rawat)
+            getRegPeriksa(no_rawat).done((response) => {
+                const {
+                    pasien,
+                    dokter,
+                    poliklinik
+                } = response;
+                formPasienSkoringTb.find('input[name=no_rawat]').val(no_rawat)
+                formPasienSkoringTb.find('input[name=no_rkm_medis]').val(response.no_rkm_medis)
+                formPasienSkoringTb.find('input[name=nm_pasien]').val(`${pasien.nm_pasien} (${pasien.jk})`)
+                formPasienSkoringTb.find('input[name=tgl_lahir]').val(`${formatTanggal(pasien.tgl_lahir)} / ${hitungUmur(pasien.tgl_lahir)}`)
+                formPasienSkoringTb.find('input[name=nm_poli]').val(poliklinik.nm_poli)
+                formPasienSkoringTb.find('input[name=p_jawab]').val(`${response.p_jawab} (${response.hubunganpj})`)
+                formPasienSkoringTb.find('input[name=nm_dokter]').val(dokter.nm_dokter)
+                formPasienSkoringTb.find('input[name=kd_dokter]').val(response.kd_dokter)
+            })
+
+            $('.btn-asmed-ranap').css('display', 'none')
             $('.btn-asmed').css('display', 'none')
             $('.btn-soap').css('display', 'none')
         })

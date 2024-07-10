@@ -73,6 +73,8 @@
                     `
                 })
                 tbProsedurPasien.empty().append(prosedur)
+            }).fail((error) => {
+                alertErrorAjax(error)
             });
         }
 
@@ -88,6 +90,8 @@
             }).done((response) => {
                 toastReload(response.message, 2000)
                 setProsedurPasien(no_rawat)
+            }).fail((error) => {
+                alertErrorAjax(error)
             })
         }
     </script>

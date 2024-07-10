@@ -139,6 +139,8 @@
         const formSkriningTb = $('#formSkriningTb')
         const tableSkriningTbTab = document.getElementById('skriningTb-tab')
         const formSkriningTbTab = document.getElementById('formSkriningTb-tab')
+        var formSkoringTb = $('#formSkoringTb');
+        var formPasienSkoringTb = $('#formPasienSkoringTb');
 
         function simpanSkriningTb() {
             let data = {
@@ -283,6 +285,24 @@
                 })
 
             })
+        }
+
+
+        function setNilaiSkrining(e) {
+            const target = $(e).data('target')
+            const val = $(e).find(':selected').val();
+            const value = val === '-' ? 0 : val;
+
+            const text = formSkoringTb.find(`input[type=text]`)
+            let total = 0;
+            formSkoringTb.find(`input[name=${target}]`).val(value);
+            formSkoringTb.find(`input[type=text]`).each((index, element) => {
+                if (element.id != 'total_skrining') {
+                    total += parseInt(element.value);
+                }
+
+            });
+            formSkoringTb.find('input[name=total_skrining]').val(total);
         }
     </script>
 @endpush
