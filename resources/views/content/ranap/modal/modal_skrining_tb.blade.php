@@ -98,10 +98,7 @@
         var instanceTableTab = '';
 
         modalSkoringTb.on('shown.bs.modal', () => {
-            formTab = document.getElementById('formSkoringTb-tab')
-            tableTab = document.getElementById('SkoringTb-tab')
-            instanceFormTab = bootstrap.Tab.getInstance(formTab);
-            instanceTableTab = new bootstrap.Tab(tableTab);
+
         })
     </script>
 @endpush
