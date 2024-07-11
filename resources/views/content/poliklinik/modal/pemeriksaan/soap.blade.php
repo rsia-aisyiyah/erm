@@ -33,7 +33,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <label for="dokter">Dokter</label>
-                            <select name="dokter" class="form-select2" id="dokter" data-dropdown-parent="#modalSoap"></select>
+                            <select name="dokter" class="form-select2" id="dokter" data-dropdown-parent="#modalSoap" disabled></select>
                             <input type="hidden" id="tgl_perawatan" name="tgl_perawatan" value="{{ date('Y-m-d') }}" readonly>
                             <input type="hidden" id="jam_rawat" name="jam_rawat" value="{{ date('H:i:s') }}" readonly>
                             <input type="hidden" id="evaluasi" name="evaluasi" value="-" readonly>

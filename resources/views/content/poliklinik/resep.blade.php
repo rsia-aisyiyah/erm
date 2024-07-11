@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-body" style="max-height:80vh;height:40vh">
+    <div class="card-body" style="max-height:80vh;height:50vh">
         <input type="hidden" class="no_resep form-control form-control-sm" value="" />
         <ul class="nav nav-tabs" id="myTab">
             <li class="nav-item">

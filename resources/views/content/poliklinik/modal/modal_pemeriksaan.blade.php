@@ -402,7 +402,9 @@
             const btnCatatanPasien = $('#btnCatatanPasien')
             formSoapPoli.find('input[name="alergi"]').val('-').removeAttr('style');
             btnCatatanPasien.attr('onclick', `catatanPasien('${no_rawat}')`)
+            formSoapPoli.find('select[name="petugas"]').prop('disabled', false)
             if (role === 'dokter') {
+                formSoapPoli.find('select[name="petugas"]').prop('disabled', true)
                 cekPanggilanPoli(no_rawat).done((response) => {
                     if (!Object.keys(response).length) {
                         Swal.fire({
@@ -502,7 +504,6 @@
 
         function setPemeriksaanPoli(no_rawat, kd_poli) {
             getPemeriksaanPoli(no_rawat, kd_poli).done((dataPeriksa) => {
-
                 if (dataPeriksa.length == 1) {
                     dataPeriksa.forEach((item) => {
                         const {
@@ -530,6 +531,7 @@
 
                     })
                 } else if (dataPeriksa.length > 1) {
+
                     dataPeriksa.forEach(item => {
                         const {
                             pegawai,
@@ -539,6 +541,7 @@
                         if (!dokter) {
                             const itemPetugas = new Option(pegawai.nama, pegawai.nik, true, true);
                             formSoapPoli.find('select[name="petugas"]').append(itemPetugas).trigger('change');
+                            // formSoapPoli.find('select[name="petugas"]').prop('disabled', true);
                         } else if (dokter) {
                             formSoapPoli.find('select[name="kesadaran"]').append(kesadaran).trigger('change');
                             formSoapPoli.find('input[name="suhu_tubuh"]').val(item.suhu_tubuh);
