@@ -926,7 +926,7 @@
                                 textRawat(row.no_rawat) +
                                 '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
                             html +=
-                                '<button class="btn btn-primary btn-sm mb-2 mr-1" onclick="confirmUpdateRiwayat(\'' + row.no_rkm_medis + '\')" data-id="' +
+                                '<button class="btn btn-primary btn-sm mb-2 mr-1" onclick="listRiwayatPasien(\'' + row.no_rkm_medis + '\')" data-id="' +
                                 row.no_rkm_medis + '"  style="width:80px;font-size:12px;text-align:left"><i class="bi bi-search"></i>RIWAYAT</button>';
 
                             if (row.upload.length > 0) {
@@ -981,32 +981,32 @@
             });
         }
 
-        function confirmUpdateRiwayat(no_rkm_medis) {
-            if (localStorage.getItem('riwayat') === 'baru') {
-                listRiwayatPasien(no_rkm_medis);
-            } else if (localStorage.getItem('riwayat') === 'lama') {
-                modalRiwayat(no_rkm_medis);
-            } else {
-                Swal.fire({
-                    title: 'Update',
-                    text: "Pnambahan tampilan riwayat baru, apakah lanjut ke tampilan riwayat baru ?",
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, Gunakan yang baru',
-                    cancelButtonText: 'Tidak, Tetap yang lama',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        localStorage.setItem('riwayat', 'baru');
-                        listRiwayatPasien(no_rkm_medis);
-                    } else {
-                        localStorage.setItem('riwayat', 'lama');
-                        modalRiwayat(no_rkm_medis);
-                    }
-                })
-            }
-        }
+        // function confirmUpdateRiwayat(no_rkm_medis) {
+        //     listRiwayatPasien(no_rkm_medis);
+        //     if (localStorage.getItem('riwayat') === 'baru') {
+        //     } else if (localStorage.getItem('riwayat') === 'lama') {
+        //         modalRiwayat(no_rkm_medis);
+        //     } else {
+        //         Swal.fire({
+        //             title: 'Update',
+        //             text: "Pnambahan tampilan riwayat baru, apakah lanjut ke tampilan riwayat baru ?",
+        //             icon: 'info',
+        //             showCancelButton: true,
+        //             confirmButtonColor: '#3085d6',
+        //             cancelButtonColor: '#d33',
+        //             confirmButtonText: 'Ya, Gunakan yang baru',
+        //             cancelButtonText: 'Tidak, Tetap yang lama',
+        //         }).then((result) => {
+        //             if (result.isConfirmed) {
+        //                 localStorage.setItem('riwayat', 'baru');
+        //                 listRiwayatPasien(no_rkm_medis);
+        //             } else {
+        //                 localStorage.setItem('riwayat', 'lama');
+        //                 modalRiwayat(no_rkm_medis);
+        //             }
+        //         })
+        //     }
+        // }
 
         function riwayatIcare(noka, dokter) {
 
