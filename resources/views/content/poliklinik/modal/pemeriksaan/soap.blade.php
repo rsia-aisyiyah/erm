@@ -162,12 +162,13 @@
             const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
             data['_token'] = '{{ csrf_token() }}';
 
+            console.log('ROKE ===', role);
             if (role === 'dokter') {
                 data['nip'] = data['dokter'];
             } else {
                 data['nip'] = data['petugas'];
             }
-            $.post('/erm/pemeriksaan/simpan', data).done((response) => {
+            $.post(`${url}/pemeriksaan/simpan`, data).done((response) => {
                 if (data.ket_pasien) {
                     $.post('/erm/pasien/keterangan', {
                         no_rkm_medis: data.no_rkm_medis,

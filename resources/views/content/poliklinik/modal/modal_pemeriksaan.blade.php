@@ -454,12 +454,7 @@
                     actionResep.removeClass('d-none')
                     actionIsiResep.removeClass('d-none')
                 }
-
-
-
                 $('#modalSoap').modal('show');
-
-
             })
         }
 
@@ -503,7 +498,9 @@
         }
 
         function setPemeriksaanPoli(no_rawat, kd_poli) {
+            console.log('ROLE PEMERIKSAAN ===', role);
             getPemeriksaanPoli(no_rawat, kd_poli).done((dataPeriksa) => {
+                console.log(dataPeriksa.length, 'data periksa');
                 if (dataPeriksa.length == 1) {
                     dataPeriksa.forEach((item) => {
                         const {
@@ -513,7 +510,14 @@
                         if (!dokter) {
                             const itemPetugas = new Option(pegawai.nama, pegawai.nik, true, true);
                             formSoapPoli.find('select[name="petugas"]').append(itemPetugas).trigger('change');
+                            formSoapPoli.find('input[name="tgl_perawatan"]').val(item.tgl_perawatan);
+                            formSoapPoli.find('input[name="jam_rawat"]').val(item.jam_rawat);
                         }
+                        if (role === 'dokter') {
+                            formSoapPoli.find('input[name="tgl_perawatan"]').val("{{ date('Y-m-d') }}");
+                            formSoapPoli.find('input[name="jam_rawat"]').val("{{ date('H:i:s') }}");
+                        }
+
                         formSoapPoli.find('select[name="kesadaran"]').append(kesadaran).trigger('change');
                         formSoapPoli.find('input[name="suhu_tubuh"]').val(item.suhu_tubuh);
                         formSoapPoli.find('input[name="tinggi"]').val(item.tinggi);
@@ -541,7 +545,7 @@
                         if (!dokter) {
                             const itemPetugas = new Option(pegawai.nama, pegawai.nik, true, true);
                             formSoapPoli.find('select[name="petugas"]').append(itemPetugas).trigger('change');
-                            // formSoapPoli.find('select[name="petugas"]').prop('disabled', true);
+
                         } else if (dokter) {
                             formSoapPoli.find('select[name="kesadaran"]').append(kesadaran).trigger('change');
                             formSoapPoli.find('input[name="suhu_tubuh"]').val(item.suhu_tubuh);

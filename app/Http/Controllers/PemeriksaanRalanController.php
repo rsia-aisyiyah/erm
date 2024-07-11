@@ -11,6 +11,7 @@ use App\Models\PemeriksaanRalan;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\ResepObatController;
 use App\Http\Controllers\TrackerSqlController;
+use Illuminate\Database\QueryException;
 
 class PemeriksaanRalanController extends Controller
 {
@@ -98,6 +99,7 @@ class PemeriksaanRalanController extends Controller
             'jam_rawat' => $request->jam_rawat,
             'tgl_perawatan' => $request->tgl_perawatan,
         ];
+
         $pemeriksaan = PemeriksaanRalan::where($clause)->first();
         $pemGrafik = GrafikHarian::where($clause)->first();
 
@@ -197,6 +199,8 @@ class PemeriksaanRalanController extends Controller
         return response()->json(['Berhasil', $update], 200);
     }
 
+
+
     function edit(Request $request)
     {
         $clause = [
@@ -260,10 +264,5 @@ class PemeriksaanRalanController extends Controller
         }
 
         return response()->json($pemeriksaan);
-    }
-
-    public function create(Request $request)
-    {
-        return $request;
     }
 }

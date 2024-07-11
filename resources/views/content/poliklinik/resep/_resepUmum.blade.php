@@ -59,7 +59,7 @@
                 <td>
                     <input type="hidden" name="rowNext" id="rowNext" value="${rowCount+1}"/>
                     <input type="hidden" name="kode_brng[]" id="kdObat${rowCount}Val"/>
-                    <input type="number" class="form-control" name="jumlah[]" id="jmlObat${rowCount}"/>
+                    <input type="text" class="form-control" name="jumlah[]" id="jmlObat${rowCount}" onfocus="removeZero(this)" onblur="isEmptyNumber(this)" onkeypress="return hanyaAngka(this)" value="0"/>
                 </td>
                 <td><select class="" name="aturan_pakai[]" id="aturan${rowCount}" data-id="${rowCount}" data-dropdown-parent="#modalSoap" style="width:100%"></select></td>
                 <td>

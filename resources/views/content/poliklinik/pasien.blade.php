@@ -321,7 +321,7 @@
                     let tunggu = 0;
                     let sudah = 0;
                     let periksa = 0;
-                    $.map(response, function(val, index) {
+                    response.forEach((val, index) => {
                         if (val.stts == 'Belum') {
                             tunggu = val.jumlah;
                         } else if (val.stts == 'Sudah') {
@@ -347,10 +347,11 @@
 
             const strNoRawat = textRawat(no_rawat);
             const jmlPanggilan = $('#hitung-panggil').val();
-            const isPanggil = $(`#panggil-${strNoRawat}`).html() == 'PANGGIL';
+            const isPanggil = $(`#panggil-${strNoRawat}`).html() == 'RE-CALL';
             const selesai = $(`#selesai-${strNoRawat}`);
             const batal = $(`#batal-${strNoRawat}`);
             const panggil = $(`#panggil-${strNoRawat}`);
+
             if (jmlPanggilan < 2 || isPanggil) {
                 selesai.prop('disabled', false);
                 selesai.removeClass('btn-secondary').addClass('btn-warning');
@@ -379,8 +380,9 @@
                     }
                 })
             } else {
+
                 $.toast({
-                    text: 'Sedang ada pasien',
+                    text: 'Tidak dapat memanggil, Maksimal panggil 2 Pasien',
                     position: 'bottom-center',
                     bgColor: '#ffc107',
                     textColor: 'black',
