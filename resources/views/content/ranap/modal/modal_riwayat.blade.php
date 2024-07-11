@@ -118,7 +118,7 @@
                                                         <span>Pemberian Obat</span>
                                                         <a class="position-absolute top-0 end-0 me-2 mt-2" style="color:#000" data-bs-toggle="collapse" href="#collapsePemberianObat" role="button" aria-expanded="false" aria-controls="collapsePemberianObat"><i class="bi bi-x"></i></a>
                                                     </div>
-                                                    <div class="card-body collapse" id="collapsePemberianObat">
+                                                    <div class="card-body collapse show" id="collapsePemberianObat">
 
                                                     </div>
                                                 </div>
@@ -175,7 +175,7 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="card-body card-text collapse" id="collapseCatatanPerawatan">
+                                                <div class="card-body card-text collapse show" id="collapseCatatanPerawatan">
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <div class="mt-2" id="contentCatatanPerawatan"></div>
