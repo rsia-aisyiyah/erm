@@ -842,7 +842,7 @@
                             .toString() + '\',\'' + item.status_lanjut +
                             '\')" class="btn btn-primary btn-sm"><i class="bi bi-cloud-upload"></i></a>'
                     }
-                    button += `<button type="button" class="btn btn-info btn-sm" onclick="listRiwayatPasien('${no_rkm_medis}')"><i class="bi bi-info"></i></button>`;
+                    button += `<button type="button" class="btn btn-info btn-sm" onclick="confirmRiwayat('${no_rkm_medis}')"><i class="bi bi-info"></i></button>`;
                     html = '<tr>' +
                         '<td>' + item.no_rawat + '</td>' +
                         '<td>' + item.tgl_registrasi + '</td>' +
