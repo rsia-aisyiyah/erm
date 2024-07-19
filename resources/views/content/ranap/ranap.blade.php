@@ -381,6 +381,26 @@
             return isCheck;
         }
 
+        function confirmRiwayatRanap(no_rkm_medis) {
+            Swal.fire({
+                title: 'Update',
+                text: "Pnambahan tampilan riwayat baru, apakah lanjut ke tampilan riwayat baru ?",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Gunakan yang baru',
+                cancelButtonText: 'Tidak, Tetap yang lama',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    listRiwayatPasien(no_rkm_medis);
+                } else {
+                    modalRiwayat(no_rkm_medis);
+                }
+            })
+        }
+        }
+
         function tb_ranap() {
             $('#tb_ranap').DataTable({
                 processing: true,
@@ -458,9 +478,8 @@
                                 list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
                             }
 
-
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="confirmRiwayatRanap('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
