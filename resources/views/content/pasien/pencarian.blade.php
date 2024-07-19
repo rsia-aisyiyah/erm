@@ -54,7 +54,8 @@
         </div>
         <div class="col-sm-12">
             @include('content.upload.resume')
-            @include('content.poliklinik.modal.modal_riwayat')
+            {{-- @include('content.poliklinik.modal.modal_riwayat') --}}
+            @include('content.ranap.modal.modal_riwayat')
         </div>
     </div>
 @endsection
