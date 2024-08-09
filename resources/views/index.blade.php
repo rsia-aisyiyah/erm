@@ -73,6 +73,13 @@
             })
         }
 
+        $(document).ready(() => {
+            $('.datetimepicker').datetimepicker({
+                format: 'd-m-Y H:i:s',
+            })
+        })
+
+
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"
             const arrDomain = getUrl.split('/');
