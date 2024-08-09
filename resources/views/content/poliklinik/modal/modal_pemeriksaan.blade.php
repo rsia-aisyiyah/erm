@@ -175,36 +175,31 @@
                 let tglPeriksa = '';
                 let hasil = '';
                 if (lab.length) {
-                    lab.map((item, index) => {
-                        if (jenisPerawatan != item.jns_perawatan_lab.kd_jenis_prw || tglPeriksa != item.tgl_periksa) {
-                            hasil += `<tr class="borderless" style="background-color:#eee">
-                                <td colspan="3"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
-                                ${formatTanggal(item.tgl_periksa)} ${item.jam}</td>
-                                <td>${item.periksa_lab.petugas.nama}</td></tr>
-                                `
-                        }
+                    getHasilLab(no_rawat).done((lab) => {
+                        let hasilLab = '';
+                        lab.forEach((item, index) => {
 
-                        if (item.keterangan == 'L') {
-                            warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
-                        } else if (item.keterangan == 'H' || item.keterangan == '*' || item.keterangan == '**') {
-                            warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
-                        } else if (item.keterangan == 'K' || item.keterangan == 'k') {
-                            warna = 'style="color:#fff;background-color:#dc3;font-weight:bold"';
-                        } else {
-                            warna = '';
-                        }
-                        hasil += '<tr ' + warna + '>';
-                        hasil += '<td>' + item.template.Pemeriksaan + '</td>';
-                        hasil += '<td>' + item.nilai + ' ' + item.template.satuan +
-                            '</td>';
-                        hasil += '<td>' + item.nilai_rujukan + '</td>';
-                        hasil += '<td>' + item.keterangan + '</td>';
-                        hasil += '</tr>';
+                            if (item.detail.length) {
+                                hasilLab += `<tr class="borderless" style="background-color:#eee;padding:2px">
+                            <td colspan="3">
+                                <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
+                                ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
+                            </td>
+                            <td>${item.petugas.nama}</td></tr>`;
+                                item.detail.sort((a, b) => a.template.urut - b.template.urut);
+                                item.detail.forEach((detail, index) => {
+                                    hasilLab += `<tr ${setWarnaPemeriksaan(detail.keterangan)}>
+                                <td>${detail.template.Pemeriksaan}</td>
+                                <td>${detail.nilai} ${detail.template.satuan}</td>
+                                <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
+                                <td>${detail.keterangan}</td></tr>`
+                                })
+                            }
+                        })
+                        $('#tabel-lab').append(hasilLab)
 
-                        jenisPerawatan = item.jns_perawatan_lab.kd_jenis_prw;
-                        tglPeriksa = item.tgl_periksa;
                     })
-                    $('#tabel-lab').append(hasil)
+                    // $('#tabel-lab').append(hasil)
                     $('#viewHasilLaborat').css('display', 'inline')
                     $('#alertHasilLab').css('display', 'none')
                 } else {
