@@ -13,7 +13,8 @@
                         <select name="petugas" id="petugas" class="form-select-2 form-select"></select>
                     </div>
                 </div>
-                <div class="separator m-2">1. Data Antropometri</div>
+                <div class="separator m-2">A. Asesmen Gizi</div>
+                <label for=""><strong>1. Data Antropometri</strong></label>
                 <div class="row">
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <label for="antropometri_bb">Berat Badan</label>
@@ -63,14 +64,14 @@
                     </div>
 
                 </div>
-                <div class="separator m-2">2. Biokimia Terkait Gizi</div>
+                <label for=""><strong>2. Biokimia Terkait Gizi</strong></label>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label for="biokimia">Biokimia</label>
                         <x-textarea id="biokimia" name="biokimia">-</x-textarea>
                     </div>
                 </div>
-                <div class="separator m-2">3. Data Fisik/Klinis</div>
+                <label for=""><strong>3. Data Fisik/Klinis</strong></label>
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <label for="fisik_klinis_td">Tekanan Darah</label>
@@ -178,7 +179,7 @@
                         </x-input-group>
                     </div>
                 </div>
-                <div class="separator m-2">4. Data Riwayat Gizi</div>
+                <label for=""><strong>4. Data Riwayat Gizi</strong></label>
                 <div class="row">
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <label for="riwayat_gizi_alergi_makanan">Alergi Makanan</label>
@@ -188,13 +189,135 @@
                                     'riwayat_gizi_alergi_makanan1' => ['value' => 'Ada', 'label' => 'Ada'],
                                     'riwayat_gizi_alergi_makanan2' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]" />
-                            <x-input class="br-full" id="riwayat_gizi_keterangan_gizi" name="riwayat_gizi_keterangan_gizi" style="font-size: 11px" />
+                            <x-input class="br-full" id="riwayat_gizi_keterangan_alergi" name="riwayat_gizi_keterangan_alergi" style="font-size: 11px" />
+                        </x-input-group>
+
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <label for="riwayat_gizi_ketidaksukaan_makanan">Ketidaksukaan Makanan</label>
+                        <x-input-group class="input-group-sm">
+                            <x-radio-group name="riwayat_gizi_ketidaksukaan_makanan"
+                                :radios="[
+                                    'riwayat_gizi_ketidaksukaan_makanan1' => ['value' => 'Ada', 'label' => 'Ada'],
+                                    'riwayat_gizi_ketidaksukaan_makanan2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                ]" />
+                            <x-input class="br-full" id="riwayat_gizi_keterangan_ketidaksukaan_makanan" name="riwayat_gizi_keterangan_ketidaksukaan_makanan" style="font-size: 11px" />
+                        </x-input-group>
+
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <label for="riwayat_gizi_pantangan_makanan">Pantangan Makanan</label>
+                        <x-input-group class="input-group-sm">
+                            <x-radio-group name="riwayat_gizi_pantangan_makanan"
+                                :radios="[
+                                    'riwayat_gizi_pantangan_makanan1' => ['value' => 'Ada', 'label' => 'Ada'],
+                                    'riwayat_gizi_pantangan_makanan2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                ]" />
+                            <x-input class="br-full" id="riwayat_gizi_keterangan_pantangan_makanan" name="riwayat_gizi_keterangan_pantangan_makanan" style="font-size: 11px" />
+                        </x-input-group>
+
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <label for="riwayat_gizi_pola_makan">Pola Makan</label>
+                        <x-input-group class="input-group-sm">
+                            <x-radio-group name="riwayat_gizi_pantangan_makanan"
+                                :radios="[
+                                    'riwayat_gizi_pola_makan1' => ['value' => 'Ada', 'label' => 'Ada'],
+                                    'riwayat_gizi_pola_makan2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                ]" />
+                            <x-input class="br-full" id="riwayat_gizi_keterangan_pola_makan" name="riwayat_gizi_keterangan_pola_makan" style="font-size: 11px" />
                         </x-input-group>
 
                     </div>
                 </div>
+                <label for=""><strong>5. Data Riwayat Personal</strong></label>
+                <div class="row">
+                    <div class="col-lg">
+                        <x-textarea name="riwayat_persolan" id="riwayat_personal">-</x-textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="row">
+                    <div class="separator m-2">B. Diagnosis Gizi</div>
+                    <div class="col-12">
+                        <x-textarea name="diagnosis_gizi" id="diagnosis_gizi">-</x-textarea>
+                    </div>
+                    <div class="separator m-2">C. Intervensi Gizi</div>
+                    <div class="col-12">
+                        <div class="row">
+                            <label for="intervensi_gizi_tujuan"><strong>1. Tujuan</strong></label>
+                            <div class="col-12">
+                                <x-textarea name="intervensi_gizi_tujuan" id="intervensi_gizi_tujuan">-</x-textarea>
+                            </div>
+                        </div>
+                        <label for=""><strong>2. Interval</strong></label>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 col-sm-12">
+                                <label for=""><strong>Perhitungan Kebutuhan Zat Gizi</strong></label><br>
+                                <label for="intervensi_gizi_energi">Energi</label>
+                                <x-input-group class="input-group-sm">
+                                    <x-input id="intervensi_gizi_energi" name="intervensi_gizi_energi" style="font-size: 11px" />
+                                    <x-input-group-text for="intervensi_gizi_energi" label="Kkal"></x-input-group-text>
+                                </x-input-group>
+                                <label for="intervensi_gizi_protein">Protein</label>
+                                <x-input-group class="input-group-sm">
+                                    <x-input id="intervensi_gizi_protein" name="intervensi_gizi_protein" style="font-size: 11px" />
+                                    <x-input-group-text for="intervensi_gizi_proterin" label="gram"></x-input-group-text>
+                                </x-input-group>
+                                <label for="intervensi_gizi_protein">Lemak</label>
+                                <x-input-group class="input-group-sm">
+                                    <x-input id="intervensi_gizi_protein" name="intervensi_gizi_protein" style="font-size: 11px" />
+                                    <x-input-group-text for="intervensi_gizi_proterin" label="gram"></x-input-group-text>
+                                </x-input-group>
+                                <label for="intervensi_gizi_karbohidrat">Karbohidrat</label>
+                                <x-input-group class="input-group-sm">
+                                    <x-input id="intervensi_gizi_karbohidrat" name="intervensi_gizi_karbohidrat" style="font-size: 11px" />
+                                    <x-input-group-text for="intervensi_gizi_karbohidrat" label="gram"></x-input-group-text>
+                                </x-input-group>
+                            </div>
+                            <div class="col-lg-6 col-md-12 col-sm-12">
+                                <label for=""><strong>Pemberian Obat</strong></label><br>
+                                <label for="intervensi_gizi_jenis_diet">Jenis Diet</label>
+                                <x-input id="intervensi_gizi_jenis_diet" name="intervensi_gizi_jenis_diet" style="font-size: 11px" />
+                                <label for="intervensi_gizi_bentuk_makanan">Bentuk Makanan</label>
+                                <x-input-group class="input-group-sm">
+                                    <x-radio-group name="intervensi_gizi_bentuk_makanan"
+                                        :radios="[
+                                            'intervensi_gizi_bentuk_makanan1' => ['value' => 'Biasa', 'label' => 'Biasa'],
+                                            'intervensi_gizi_bentuk_makanan2' => ['value' => 'Lunak', 'label' => 'Lunak'],
+                                            'intervensi_gizi_bentuk_makanan2' => ['value' => 'Cair', 'label' => 'Cair'],
+                                        ]" />
+                                </x-input-group>
+                                <label for="intervensi_gizi_rute_pemberian">Rute Pemberian</label>
+                                <x-input-group class="input-group-sm">
+                                    <x-radio-group name="intervensi_gizi_rute_pemberian"
+                                        :radios="[
+                                            'intervensi_gizi_rute_pemberian1' => ['value' => 'Oral', 'label' => 'Oral'],
+                                            'intervensi_gizi_rute_pemberian2' => ['value' => 'Enteral', 'label' => 'Enteral'],
+                                            'intervensi_gizi_rute_pemberian3' => ['value' => 'Panteral', 'label' => 'Panteral'],
+                                        ]" />
+                                </x-input-group>
+                                <label for="intervensi_gizi_frekuensi">Frekuensi</label>
+                                <x-input-group class="input-group-sm">
+                                    <x-input id="intervensi_gizi_frekuensi" name="intervensi_gizi_frekuensi" style="font-size: 11px" />
+                                    <x-input-group-text for="intervensi_gizi_frekuensi" label="gram"></x-input-group-text>
+                                </x-input-group>
+                            </div>
+                        </div>
+                        <label for=""><strong>3. Konseling Gizi/Edukasi</strong></label>
+                        <div class="row">
+                            <div class="col-12">
+                                <x-textarea name="konseling_gizi_konseling" id="konseling_gizi_konseling">-</x-textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="separator m-2">D. Rencana Monitoring dan Evaluasi Gizi </div>
+                    <div class="col-12">
+                        <x-textarea name="monitoring_evaluasi" id="monitoring_evaluasi">-</x-textarea>
+                    </div>
+                </div>
             </div>
         </div>
-
     </form>
 </div>
