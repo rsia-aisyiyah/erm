@@ -444,5 +444,13 @@
             background-color: var(--bs-purple);
             color: #fff !important;
         }
+
+        .select2-container--default .select2-results__option {
+            font-size: 11px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: 11px;
+        }
     </style>
 </head>

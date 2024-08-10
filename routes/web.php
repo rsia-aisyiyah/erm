@@ -98,6 +98,7 @@ use App\Http\Controllers\JnsPerawatabLabController;
 use App\Http\Controllers\PermintaanLabController;
 use App\Http\Controllers\PermintaanPemeriksaanLabController;
 use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
+use App\Http\Controllers\RsiaAsuhanGiziDewasaController;
 use App\Http\Controllers\TemplateLaboratoriumController;
 use App\Models\PermintaanPemeriksaanLab;
 use App\Models\PermintaanPemeriksaanRadiologi;
@@ -127,7 +128,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/pasien/keterangan', [RsiaKetPasienController::class, 'create']);
 
     Route::get('/periksa/show/{no_rkm_medis}/{tanggal?}', [
-        RegPeriksaController::class, 'show',
+        RegPeriksaController::class,
+        'show',
     ]);
     Route::get('periksa/detail', [RegPeriksaController::class, 'detailPeriksa']);
     Route::get('/upload', [UploadController::class, 'index']);
@@ -218,6 +220,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
     Route::post('/soap/verifikasi', [RsiaVerifPemeriksaanRanapController::class, 'create']);
 
+
     Route::get('/soap/chart', [PemeriksaanRanapController::class, 'getTTV']);
     Route::get('/soap/grafik/data', [PemeriksaanRanapController::class, 'getTTVData']);
     Route::post('/soap/grafik/store', [RsiaGrafikHarianController::class, 'store']);
@@ -258,6 +261,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('ranap/askep/neonatus', [AskepRanapNeonatusController::class, 'get']);
     Route::post('ranap/askep/neonatus/create', [AskepRanapNeonatusController::class, 'createOrUpdate']);
+
+    Route::post('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'create']);
+    Route::get('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'get']);
 
     Route::get('master/masalah/keperawatan/table', [MasterMasalahKeperawatanController::class, 'getDataTable']);
     Route::get('master/rencana/keperawatan/table', [MasterRencanaKeperawatanController::class, 'getDataTable']);

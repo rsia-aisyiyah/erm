@@ -125,8 +125,10 @@
 
 
         var departemen = "{{ session()->get('pegawai')->departemen }}";
+        const formInfoPasien = $('#formInfoPasien')
 
         $('#modalSoapRanap').on('shown.bs.modal', () => {
+
 
             if (departemen == 'CSM' || departemen == '-') {
                 $('#tgl_perawatan_ubah').removeAttr('disabled');

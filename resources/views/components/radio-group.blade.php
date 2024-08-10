@@ -4,6 +4,7 @@
             :id="$id"
             :name="$name"
             :value="$radio['value']"
-            :label="$radio['label']" />
+            :label="$radio['label']"
+            :checked="$radio['checked'] ?? false" />
     </div>
 @endforeach
