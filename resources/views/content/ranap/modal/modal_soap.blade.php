@@ -123,13 +123,19 @@
         var getInstance = '';
         var sel = '';
 
+        const tabSoapRanap = document.querySelector('#tab-soap-ranap li:first-child button')
+        const modalSoapRanap = $('#modalSoapRanap')
 
         var departemen = "{{ session()->get('pegawai')->departemen }}";
         const formInfoPasien = $('#formInfoPasien')
 
-        $('#modalSoapRanap').on('shown.bs.modal', () => {
+        modalSoapRanap.on('hidden.bs.modal', () => {
+            bootstrap.Tab.getInstance(tabSoapRanap).show()
+            $('input').hasClass('is-valid') && $('input').removeClass('is-valid');
+            formAsuhanGiziDewasa.trigger('reset')
+        })
 
-
+        modalSoapRanap.on('shown.bs.modal', () => {
             if (departemen == 'CSM' || departemen == '-') {
                 $('#tgl_perawatan_ubah').removeAttr('disabled');
                 $('#jam_rawat_ubah').removeAttr('disabled');
@@ -158,6 +164,7 @@
                 autoclose: true,
                 setDate: dateStart,
             });
+
 
             $('#tgl_perawatan_ubah').datepicker('setDate', dateStart)
 
@@ -225,8 +232,7 @@
                         $('#btn-ubah').css('display', 'inline');
                     }
                 }
-                let tabForm = document.querySelector('#tab-soap-ranap li:first-child button')
-                bootstrap.Tab.getInstance(tabForm).show()
+                bootstrap.Tab.getInstance(tabSoapRanap).show()
             })
         }
 

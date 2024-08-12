@@ -136,26 +136,65 @@
             return txtTanggal;
         }
 
+        // function getDataForm(form, element, except = []) {
+        //     let data = {};
+        //     // get all data from input
+        //     for (let index = 0; index < element.length; index++) {
+        //         const e = element[index];
+        //         $(`${form} ${e}`).each((index, el) => {
+        //             keys = $(el).prop('name');
+        //             data[keys] = $(el).val();
+        //         })
+        //     }
+        //     // remove items on array data
+        //     for (let i = 0; i < except.length; i++) {
+        //         cek = data.hasOwnProperty(except[i])
+        //         if (cek) {
+        //             delete data[except[i]]
+        //         }
+        //     }
+
+        //     return data;
+        // }
         function getDataForm(form, element, except = []) {
             let data = {};
             // get all data from input
             for (let index = 0; index < element.length; index++) {
                 const e = element[index];
                 $(`${form} ${e}`).each((index, el) => {
-                    keys = $(el).prop('name');
-                    data[keys] = $(el).val();
-                })
+                    const name = $(el).prop('name');
+                    const type = $(el).attr('type');
+
+                    if (type === 'radio') {
+                        // Handle radio buttons: only add the selected radio button's value
+                        if ($(el).is(':checked')) {
+                            data[name] = $(el).val();
+                        }
+                    } else if (type === 'checkbox') {
+                        // Handle checkboxes: add all checked checkboxes with the same name
+                        if ($(el).is(':checked')) {
+                            if (!data[name]) {
+                                data[name] = [];
+                            }
+                            data[name].push($(el).val());
+                        }
+                    } else {
+                        // Handle other input types
+                        data[name] = $(el).val();
+                    }
+                });
             }
+
             // remove items on array data
             for (let i = 0; i < except.length; i++) {
-                cek = data.hasOwnProperty(except[i])
-                if (cek) {
-                    delete data[except[i]]
+                if (data.hasOwnProperty(except[i])) {
+                    delete data[except[i]];
                 }
             }
 
             return data;
         }
+
 
         function toastReload(message, timer) {
             Swal.fire({

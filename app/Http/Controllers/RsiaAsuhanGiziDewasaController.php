@@ -22,11 +22,38 @@ class RsiaAsuhanGiziDewasaController extends Controller
     {
         $data = $request->except('_token');
         $data['tanggal'] = Carbon::parse($data['tanggal'])->toDateTimeString();
+
+        $isExist = $this->rsiaAsuhanGiziDewasa->where('no_rawat', $data['no_rawat'])->first();
+
+        if ($isExist) {
+            return $this->update($request);
+        }
+
         try {
             $rsiaAsuhanGiziDewasa = $this->rsiaAsuhanGiziDewasa->create($data);
 
             if ($rsiaAsuhanGiziDewasa) {
                 $this->track->insertSql($this->rsiaAsuhanGiziDewasa, $data);
+            }
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
+        return response()->json('Berhasil', 200);
+    }
+
+    function update(Request $request): JsonResponse | array
+    {
+        $data = $request->except('_token');
+        $data['tanggal'] = Carbon::parse($data['tanggal'])->toDateTimeString();
+
+        try {
+            $rsiaAsuhanGiziDewasa = $this
+                ->rsiaAsuhanGiziDewasa
+                ->where('no_rawat', $data['no_rawat'])
+                ->update($data);
+
+            if ($rsiaAsuhanGiziDewasa) {
+                $this->track->updateSql($this->rsiaAsuhanGiziDewasa, $data, ['no_rawat' => $data['no_rawat']]);
             }
         } catch (QueryException $e) {
             return response()->json($e->errorInfo, 500);

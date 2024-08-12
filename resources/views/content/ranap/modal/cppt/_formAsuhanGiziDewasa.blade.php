@@ -65,14 +65,14 @@
                     </div>
 
                 </div>
-                <label for=""><strong>2. Biokimia Terkait Gizi</strong> <a href="javascript:void(0)" onclick=""><i class="fa fa-search"></i></a></label>
+                <label for=""><strong>2. Biokimia Terkait Gizi</strong> <a href="javascript:void(0)" onclick="" id="searchBiometri"><i class="fa fa-search"></i></a></label>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label for="biokimia">Biokimia</label>
                         <x-textarea id="biokimia" name="biokimia">-</x-textarea>
                     </div>
                 </div>
-                <label for=""><strong>3. Data Fisik/Klinis</strong> <a href="javascript:void(0)" onclick=""><i class="fa fa-search"></i></a></label>
+                <label for=""><strong>3. Data Fisik/Klinis</strong></label>
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <label for="fisik_klinis_td">Tekanan Darah</label>
@@ -302,7 +302,7 @@
                                         :radios="[
                                             'intervensi_gizi_rute_pemberian1' => ['value' => 'Oral', 'label' => 'Oral', 'checked' => true],
                                             'intervensi_gizi_rute_pemberian2' => ['value' => 'Enteral', 'label' => 'Enteral'],
-                                            'intervensi_gizi_rute_pemberian3' => ['value' => 'Panteral', 'label' => 'Panteral'],
+                                            'intervensi_gizi_rute_pemberian3' => ['value' => 'Parenteral', 'label' => 'Parenteral'],
                                         ]" />
                                 </x-input-group>
                                 <label for="intervensi_gizi_frekuensi">Frekuensi</label>
@@ -322,10 +322,8 @@
                     <div class="separator m-2">D. Rencana Monitoring dan Evaluasi Gizi </div>
                     <div class="col-12">
                         <x-textarea name="monitoring_evaluasi" id="monitoring_evaluasi">-</x-textarea>
-                        <button class="btn btn-success btn-sm mt-3" type="button" id="btnSimpanAsuhanGizi" onclick="simpanAsuhanGizi()">
+                        <button class="btn btn-primary btn-sm mt-3" type="button" id="btnSimpanAsuhanGizi" onclick="simpanAsuhanGizi()">
                             <i class="bi bi-save"></i> Simpan Asuhan Gizi</button>
-                        <button class="btn btn-primary btn-sm mt-3 d-none" type="button" id="btnUbahAsuhanGizi" onclick="updateAsuhanGizi()">
-                            <i class="bi bi-save"></i> Ubah Asuhan Gizi</button>
                     </div>
                 </div>
             </div>
@@ -344,11 +342,13 @@
         const btnUbahAsuhanGizi = formAsuhanGiziDewasa.find('#btnUbahAsuhanGizi');
         const imtGizi = formAsuhanGiziDewasa.find('#antropometri_imt');
         const searchAntropometri = formAsuhanGiziDewasa.find('#searchAntropometri');
+        const searchBiometri = formAsuhanGiziDewasa.find('#searchBiometri');
+        const biokimiaGizi = formAsuhanGiziDewasa.find('#biokimia');
         const optPetugas = new Option('{{ session()->get('pegawai')->nik }}', '{{ session()->get('pegawai')->nama }}', false, false);
         selectPetugasGizi.append(optPetugas).trigger('change');
 
         const tabAsuhanGizi = $('#tabAsuhanGiziDewasa');
-        const tbListAntropometri = $('#tbListAntropometri');
+
 
         tabAsuhanGizi.on('click', function(e) {
             const target = e.target.dataset.bsTarget
@@ -356,19 +356,18 @@
             const no_rawat = formInfoPasien.find('input[name="no_rawat"]').val();
 
             searchAntropometri.attr('onclick', `getListCpptRanap('${no_rawat}')`)
+            searchBiometri.attr('onclick', `getListBiokimia('${no_rawat}')`)
 
             $.get(`${url}/ranap/gizi/asuhan/dewasa`, {
                 no_rawat: no_rawat
             }).done((response) => {
-                if (response) {
+                const isDataAvailable = Object.values(response).length
 
-
-
-                    btnUbahAsuhanGizi.removeClass('d-none')
-                    btnSimpanAsuhanGizi.addClass('d-none')
+                if (isDataAvailable) {
+                    setFormData(response)
+                    btnSimpanAsuhanGizi.html('<i class="bi bi-save"></i> Ubah Asuhan Gizi')
                 } else {
-                    btnUbahAsuhanGizi.addClass('d-none')
-                    btnSimpanAsuhanGizi.removeClass('d-none')
+                    btnSimpanAsuhanGizi.html('<i class="bi bi-save"></i> Simpan Asuhan Gizi')
                 }
             })
 
@@ -444,31 +443,22 @@
             })
         }
 
-        function getListCpptRanap(no_rawat) {
-            $.get(`${url}/soap/get`, {
-                'no_rawat': no_rawat
-            }).done((response) => {
-                response.length ??
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal !',
-                        text: 'Data pemeriksaan tidak ditemukan',
-                    }).then((e) => {
-                        console.log('e', e);
+        function setFormData(data) {
+            for (let key in data) {
+                if (data.hasOwnProperty(key)) {
+                    let fields = document.querySelectorAll(`[name="${key}"]`);
 
-                    })
-
-                const pemeriksaan = response.map((item, index) => {
-                    return `<tr>
-                            <td>${index+1}</td>
-                            <td>${item.tgl_perawatan} ${item.jam_rawat}</td>
-                            <td>${item.petugas.nama}</td>
-                            <td>${item.tinggi} ${item.tensi} ${item.suhu_tubuh}</td>
-                        </tr>`
-                });
-                tbListAntropometri.find('tbody').empty().append(pemeriksaan)
-                $('#modalListAntropometri').modal('show')
-            })
+                    if (fields.length > 0) {
+                        fields.forEach(field => {
+                            if (field.type === 'checkbox' || field.type === 'radio') {
+                                field.checked = data[key] == field.value;
+                            } else {
+                                field.value = data[key];
+                            }
+                        });
+                    }
+                }
+            }
         }
     </script>
 @endpush

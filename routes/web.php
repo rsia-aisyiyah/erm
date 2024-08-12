@@ -92,6 +92,7 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\DetailPemeriksaanLabController;
 use App\Http\Controllers\DetailPermintaanLabController;
 use App\Http\Controllers\JenisPerawatanRadiologiController;
 use App\Http\Controllers\JnsPerawatabLabController;
@@ -244,7 +245,7 @@ Route::middleware('auth')->group(function () {
     Route::post('lab/permintaan/pemeriksaan', [PermintaanPemeriksaanLabController::class, 'create']);
 
     Route::get('lab/template/get', [TemplateLaboratoriumController::class, 'get']);
-
+    Route::get('lab/hasil', [DetailPemeriksaanLabController::class, 'get']);
 
 
     Route::get('ranap', [RanapController::class, 'index']);
