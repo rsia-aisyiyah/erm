@@ -48,7 +48,7 @@ class EstimasiPoliController extends Controller
         ];
         $estimasi = $this->cari($no_rawat);
         if (!isset($estimasi->no_rawat)) {
-            $this->post(new \Illuminate\Http\Request($data));
+            $this->post(Request($data));
         }
         $this->regPeriksa->statusDaftar($no_rawat, 'Berkas Diterima');
         return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $data['jam_periksa']], 200);
