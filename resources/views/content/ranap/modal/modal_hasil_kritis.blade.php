@@ -202,10 +202,6 @@
 
             instanceFormTabKritis = bootstrap.Tab.getInstance(formTabKritis);
             instansceHasilTabKritis = new bootstrap.Tab(hasilTabKritis);
-
-            $('.datetimepicker').datetimepicker({
-                format: 'd-m-Y H:i:s',
-            })
         })
 
         function hasilKritis(no_rawat) {

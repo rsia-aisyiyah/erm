@@ -55,6 +55,7 @@
         <div class="col-sm-12">
             @include('content.upload.resume')
             @include('content.poliklinik.modal.modal_riwayat')
+            @include('content.ranap.modal.modal_riwayat')
         </div>
     </div>
 @endsection
@@ -98,5 +99,24 @@
                 $('#submit').hide()
             }
         })
+
+        function confirmRiwayat(no_rkm_medis) {
+            Swal.fire({
+                title: 'Update',
+                text: "Pnambahan tampilan riwayat baru, apakah lanjut ke tampilan riwayat baru ?",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Gunakan yang baru',
+                cancelButtonText: 'Tidak, Tetap yang lama',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    listRiwayatPasien(no_rkm_medis);
+                } else {
+                    modalRiwayat(no_rkm_medis);
+                }
+            })
+        }
     </script>
 @endpush

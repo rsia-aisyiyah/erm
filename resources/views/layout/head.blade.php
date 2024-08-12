@@ -310,6 +310,14 @@
             transition: all .1s linear;
         }
 
+        .modal.fade.show {
+            background-color: rgb(0 0 0 / 49%)
+        }
+
+        .modal {
+            background-color: none;
+        }
+
         @media (max-width: 368px) {
             .tb-askep {
                 font-size: 9px !important;
@@ -493,9 +501,12 @@
             color: #fff !important;
         }
 
-        .input-group-text-sm {
-            padding: 5px;
-            font-size: 10px;
+        .select2-container--default .select2-results__option {
+            font-size: 11px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: 11px;
         }
     </style>
 </head>

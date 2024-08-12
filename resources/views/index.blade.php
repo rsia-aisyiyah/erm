@@ -73,6 +73,13 @@
             })
         }
 
+        $(document).ready(() => {
+            $('.datetimepicker').datetimepicker({
+                format: 'd-m-Y H:i:s',
+            })
+        })
+
+
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"
             const arrDomain = getUrl.split('/');
@@ -131,26 +138,65 @@
             return txtTanggal;
         }
 
+        // function getDataForm(form, element, except = []) {
+        //     let data = {};
+        //     // get all data from input
+        //     for (let index = 0; index < element.length; index++) {
+        //         const e = element[index];
+        //         $(`${form} ${e}`).each((index, el) => {
+        //             keys = $(el).prop('name');
+        //             data[keys] = $(el).val();
+        //         })
+        //     }
+        //     // remove items on array data
+        //     for (let i = 0; i < except.length; i++) {
+        //         cek = data.hasOwnProperty(except[i])
+        //         if (cek) {
+        //             delete data[except[i]]
+        //         }
+        //     }
+
+        //     return data;
+        // }
         function getDataForm(form, element, except = []) {
             let data = {};
             // get all data from input
             for (let index = 0; index < element.length; index++) {
                 const e = element[index];
                 $(`${form} ${e}`).each((index, el) => {
-                    keys = $(el).prop('name');
-                    data[keys] = $(el).val();
-                })
+                    const name = $(el).prop('name');
+                    const type = $(el).attr('type');
+
+                    if (type === 'radio') {
+                        // Handle radio buttons: only add the selected radio button's value
+                        if ($(el).is(':checked')) {
+                            data[name] = $(el).val();
+                        }
+                    } else if (type === 'checkbox') {
+                        // Handle checkboxes: add all checked checkboxes with the same name
+                        if ($(el).is(':checked')) {
+                            if (!data[name]) {
+                                data[name] = [];
+                            }
+                            data[name].push($(el).val());
+                        }
+                    } else {
+                        // Handle other input types
+                        data[name] = $(el).val();
+                    }
+                });
             }
+
             // remove items on array data
             for (let i = 0; i < except.length; i++) {
-                cek = data.hasOwnProperty(except[i])
-                if (cek) {
-                    delete data[except[i]]
+                if (data.hasOwnProperty(except[i])) {
+                    delete data[except[i]];
                 }
             }
 
             return data;
         }
+
 
         function toastReload(message, timer) {
             Swal.fire({
@@ -469,6 +515,7 @@
                             '<input type="radio" class="btn-check" name="kategori" id="opt-radiologi" autocomplete="off" onclick="showForm()" value="radiologi"><label class="btn btn-outline-primary btn-sm" for="opt-radiologi">Radiologi</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-legalisasi" autocomplete="off" onclick="showForm()" value="legalisasi"><label class="btn btn-outline-primary btn-sm" for="opt-legalisasi">Surat Legalisasi</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-km" autocomplete="off" onclick="showForm()" value="km"><label class="btn btn-outline-primary btn-sm" for="opt-km">Foto KM</label>' +
+                            '<input type="radio" class="btn-check" name="kategori" id="opt-ekg" autocomplete="off" onclick="showForm()" value="ekg"><label class="btn btn-outline-primary btn-sm" for="opt-ekg">Berkas EKG</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-form-rujukan" autocomplete="off" onclick="showForm()" value="form-rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-form-rujukan">Form Rujukan</label>'
 
                         $('#button-form').append(html)
@@ -486,6 +533,7 @@
                             '<input type="radio" class="btn-check" name="kategori" id="opt-lain" autocomplete="off" onclick="showForm()" value="lainnya"><label class="btn btn-outline-primary btn-sm" for="opt-lain">Lainnya</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-legalisasi" autocomplete="off" onclick="showForm()" value="legalisasi"><label class="btn btn-outline-primary btn-sm" for="opt-legalisasi">Surat Legalisasi</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-km" autocomplete="off" onclick="showForm()" value="km"><label class="btn btn-outline-primary btn-sm" for="opt-km">Foto KM</label>' +
+                            '<input type="radio" class="btn-check" name="kategori" id="opt-ekg" autocomplete="off" onclick="showForm()" value="ekg"><label class="btn btn-outline-primary btn-sm" for="opt-ekg">Berkas EKG</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-form-rujukan" autocomplete="off" onclick="showForm()" value="form-rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-form-rujukan">Form Rujukan</label>'
 
                         $('#button-form').append(html)
@@ -849,7 +897,7 @@
                             .toString() + '\',\'' + item.status_lanjut +
                             '\')" class="btn btn-primary btn-sm"><i class="bi bi-cloud-upload"></i></a>'
                     }
-                    button += `<button type="button" class="btn btn-info btn-sm" onclick="modalRiwayat('${no_rkm_medis}')"><i class="bi bi-info"></i></button>`;
+                    button += `<button type="button" class="btn btn-info btn-sm" onclick="confirmRiwayat('${no_rkm_medis}')"><i class="bi bi-info"></i></button>`;
                     html = '<tr>' +
                         '<td>' + item.no_rawat + '</td>' +
                         '<td>' + item.tgl_registrasi + '</td>' +

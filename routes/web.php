@@ -101,8 +101,10 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\DetailPemeriksaanLabController;
 use App\Http\Controllers\MetodeRacikController;
 use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
+use App\Http\Controllers\RsiaAsuhanGiziDewasaController;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -129,7 +131,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/pasien/keterangan', [RsiaKetPasienController::class, 'create']);
 
     Route::get('/periksa/show/{no_rkm_medis}/{tanggal?}', [
-        RegPeriksaController::class, 'show',
+        RegPeriksaController::class,
+        'show',
     ]);
     Route::get('periksa/detail', [RegPeriksaController::class, 'detailPeriksa']);
     Route::get('/upload', [UploadController::class, 'index']);
@@ -224,6 +227,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
     Route::post('/soap/verifikasi', [RsiaVerifPemeriksaanRanapController::class, 'create']);
 
+
     Route::get('/soap/chart', [PemeriksaanRanapController::class, 'getTTV']);
     Route::get('/soap/grafik/data', [PemeriksaanRanapController::class, 'getTTVData']);
     Route::post('/soap/grafik/store', [RsiaGrafikHarianController::class, 'store']);
@@ -252,7 +256,7 @@ Route::middleware('auth')->group(function () {
     Route::post('lab/permintaan/pemeriksaan', [PermintaanPemeriksaanLabController::class, 'create']);
 
     Route::get('lab/template/get', [TemplateLaboratoriumController::class, 'get']);
-
+    Route::get('lab/hasil', [DetailPemeriksaanLabController::class, 'get']);
 
 
     Route::get('ranap', [RanapController::class, 'index']);
@@ -269,6 +273,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('ranap/askep/neonatus', [AskepRanapNeonatusController::class, 'get']);
     Route::post('ranap/askep/neonatus/create', [AskepRanapNeonatusController::class, 'createOrUpdate']);
+
+    Route::post('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'create']);
+    Route::get('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'get']);
 
     Route::get('master/masalah/keperawatan/table', [MasterMasalahKeperawatanController::class, 'getDataTable']);
     Route::get('master/rencana/keperawatan/table', [MasterRencanaKeperawatanController::class, 'getDataTable']);

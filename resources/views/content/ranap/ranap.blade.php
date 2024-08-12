@@ -151,8 +151,9 @@
     @include('content.ranap.modal.modal_skrining_tb')
     @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_riwayat')
+    @include('content.ranap.modal.cppt.gizi._modalListAntropometri')
+    @include('content.ranap.modal.cppt.gizi._modalListBiokimia')
 @endsection
-
 
 @push('script')
     <script>
@@ -429,7 +430,7 @@
                             }
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
-                            list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="modalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
+                            list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="showModalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Upload Berkas Penunjang</a></li>`;
 
                             if (row.reg_periksa.dokter.kd_sps == 'S0003') {
@@ -515,7 +516,7 @@
                                 namaBayi = `<a class="nav-link dropdown-toggle btn btn-warning btn-sm" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">${row.ranap_gabung.reg_periksa.pasien.nm_pasien}</a>
                                 <ul class="dropdown-menu dropdown-menu" style="font-size:12px">
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.ranap_gabung.reg_periksa.no_rawat}')">Laborat</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${row.ranap_gabung.reg_periksa.kd_dokter}" onclick="modalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">CPPT</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${row.ranap_gabung.reg_periksa.kd_dokter}" onclick="showModalSoapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">CPPT</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${row.ranap_gabung.reg_periksa.no_rawat}')">Asesmen Medis Anak ${cekList(row.ranap_gabung.reg_periksa.asmed_ranap_anak)}</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${row.ranap_gabung.reg_periksa.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.ranap_gabung.reg_periksa.askep_ranap_neonatus)}</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanapRanap('${row.ranap_gabung.reg_periksa.no_rawat}')">Pemeriksaan Penunjang</a></li>
@@ -853,11 +854,6 @@
             $('#modalAsmedRanapAnak').modal('show')
         }
 
-        var ctx = document.getElementById('grafik-suhu').getContext('2d');
-        var grafikPemeriksaan;
-        var tableGrafikHarian;
-
-
         $("#modalSoapRanap").on('hidden.bs.modal', function() {
             grafikPemeriksaan.destroy();
             grafikPemeriksaan = null;
@@ -866,110 +862,22 @@
             tableGrafikHarian = null;
         });
 
-        function buildGrafik(no_rawat) {
-            $.ajax({
-                url: 'soap/chart',
-                data: {
-                    'no_rawat': no_rawat
-                },
-                success: function(response) {
-                    grafikPemeriksaan = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: response.map(function(e) {
-                                return e.tgl_perawatan + ' ' + e.jam_rawat;
-                            }),
-                            datasets: [{
-                                label: 'Suhu Tubuh',
-                                yAxisID: 'yAxis1',
-                                data: response.map(function(e) {
-                                    if (e.suhu_tubuh.includes(',')) {
-                                        e.suhu_tubuh = e.suhu_tubuh.replace(',', '.');
-                                    }
-                                    return parseFloat(e.suhu_tubuh);
-                                }),
-                                backgroundColor: 'rgba(54, 162, 235, 1)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                pointBackgroundColor: '#fff',
-                                hoverRadius: 10,
-                                borderWidth: 3,
-                                lineTension: 0,
-                                radius: 5,
-                            }, {
-                                label: 'Nadi',
-                                yAxisID: 'yAxis2',
-                                data: response.map(function(e) {
-                                    return e.nadi;
-                                }),
-                                backgroundColor: 'rgba(255, 99, 132, 1)',
-                                borderColor: 'rgba(255, 99, 132, 1)',
-                                pointBackgroundColor: '#fff',
-                                hoverRadius: 10,
-                                borderWidth: 3,
-                                lineTension: 0,
-                                radius: 5,
-                            }],
-                        },
-                        options: {
-                            maintainAspectRatio: false,
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'chartArea',
-                                    align: 'end',
-                                },
-                            },
-                            scales: {
-                                xAxes: {
-                                    ticks: {
-                                        display: false,
-                                        minRotation: 90,
-                                        maxRotation: 90,
-                                    }
-                                },
-                                yAxis1: {
-                                    min: 35,
-                                    max: 42,
-                                    beginAtZero: true,
-                                },
-                                yAxis2: {
-                                    beginAtZero: true,
-                                    min: 40,
-                                    max: 180,
-                                },
-                            }
-                        },
-                        onAnimationComplete: function() {
-                            var sourceCanvas = this.chart.ctx.canvas;
-                            var copyWidth = this.scale.xScalePaddingLeft - 5;
-                            var copyHeight = this.scale.endPoint + 5;
-                            var targetCtx = document.getElementById("grafik-suhu").getContext("2d");
-                            targetCtx.canvas.width = copyWidth;
-                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
-                        }
-                    });
-                }
-            });
-        }
 
-        function modalSoapRanap(no_rawat) {
+
+        function showModalSoapRanap(no_rawat) {
             var formInfoPasien = $('#formInfoPasien')
             getRegPeriksa(no_rawat).done((response) => {
 
-                console.log('RESPONSE ==', response);
                 formInfoPasien.find('input[name="no_rawat"]').val(no_rawat);
                 formInfoPasien.find('input[name="no_rkm_medis"]').val(response.no_rkm_medis);
                 formInfoPasien.find('input[name="pasien"]').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`);
                 formInfoPasien.find('input[name="umur"]').val(`${response.umurdaftar} ${response.sttsumur}`);
                 formInfoPasien.find('input[name="dokter_dpjp"]').val(`${response.dokter.nm_dokter}`);
 
-
                 const kamar = response.kamar_inap.map((item, index) => {
                     formInfoPasien.find('input[name="kamar"]').val(item.kamar.bangsal.nm_bangsal);
                     formInfoPasien.find('input[name="diagnosa_awal"]').val(item.diagnosa_awal);
                 })
-
-
 
                 $('#nomor_rawat').val(response.no_rawat);
                 $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
@@ -1005,7 +913,6 @@
                 $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
                 setEws(no_rawat, 'ranap', response.dokter.kd_sps)
 
-                // console.log(response.dokter);
                 $('#formSoapRanap .btn-simpan').attr('data-kd-dokter', response.dokter.kd_dokter);
                 $('#formSoapRanap .btn-simpan').attr('data-spesialis', response.dokter.spesialis.nm_sps);
                 $('#formSoapRanap .btn-simpan').attr('data-nm-pasien', response.pasien.nm_pasien);
@@ -1017,7 +924,6 @@
 
             $('#modalSoapRanap').modal('toggle')
 
-            // $('#modalSoapRanap').modal('toggle')
             tbSoapRanap(no_rawat);
             buildGrafik(no_rawat);
             appendDataGrafikHarian(no_rawat);
