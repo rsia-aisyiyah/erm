@@ -262,6 +262,14 @@
             transition: all .1s linear;
         }
 
+        .modal.fade.show {
+            background-color: rgb(0 0 0 / 49%)
+        }
+
+        .modal {
+            background-color: none;
+        }
+
         @media (max-width: 368px) {
             .tb-askep {
                 font-size: 9px !important;

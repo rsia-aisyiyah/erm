@@ -151,8 +151,8 @@
     @include('content.ranap.modal.modal_skrining_tb')
     @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_riwayat')
+    @include('content.ranap.modal.cppt.gizi._modalListAntropometri')
 @endsection
-
 
 @push('script')
     <script>

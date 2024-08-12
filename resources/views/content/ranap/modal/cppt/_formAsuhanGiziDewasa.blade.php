@@ -348,6 +348,7 @@
         selectPetugasGizi.append(optPetugas).trigger('change');
 
         const tabAsuhanGizi = $('#tabAsuhanGiziDewasa');
+        const tbListAntropometri = $('#tbListAntropometri');
 
         tabAsuhanGizi.on('click', function(e) {
             const target = e.target.dataset.bsTarget
@@ -447,7 +448,26 @@
             $.get(`${url}/soap/get`, {
                 'no_rawat': no_rawat
             }).done((response) => {
+                response.length ??
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal !',
+                        text: 'Data pemeriksaan tidak ditemukan',
+                    }).then((e) => {
+                        console.log('e', e);
 
+                    })
+
+                const pemeriksaan = response.map((item, index) => {
+                    return `<tr>
+                            <td>${index+1}</td>
+                            <td>${item.tgl_perawatan} ${item.jam_rawat}</td>
+                            <td>${item.petugas.nama}</td>
+                            <td>${item.tinggi} ${item.tensi} ${item.suhu_tubuh}</td>
+                        </tr>`
+                });
+                tbListAntropometri.find('tbody').empty().append(pemeriksaan)
+                $('#modalListAntropometri').modal('show')
             })
         }
     </script>
