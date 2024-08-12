@@ -17,8 +17,6 @@ class PetugasController extends Controller
                 ->where('status', '1')->limit(10)->get();
         } else {
             $hasil = $petugas->where('status', '1')->limit(10)->get();
-        } else {
-            $hasil = $petugas->limit(10)->get();
         }
 
         return response()->json($hasil);
