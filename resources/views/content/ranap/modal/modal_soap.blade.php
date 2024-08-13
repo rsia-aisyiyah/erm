@@ -74,55 +74,36 @@
                         <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
                             type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tabAsuhanGiziDewasa" data-bs-toggle="tab" data-bs-target="#tabAsuhanGiziDewasa-pane"
+                            type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">Asuhan Gizi</button>
+                    </li>
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
                         aria-labelledby="home-tab" tabindex="0">
-                        @include('content.ranap.modal._form_soap')
+                        @include('content.ranap.modal.cppt._form_soap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
                         tabindex="0">
-                        @include('content.ranap.modal._table_soap')
+                        @include('content.ranap.modal.cppt._table_soap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
                         tabindex="0">
-                        <h5 style="margin-bottom:0px">EARLY WARNING SYSTEM (EWS)</h5>
-                        <h5 style="" class="kategori mb-3"></h5>
-                        <table class="table table-sm table-bordered table-responsive" id="table-ews" width="100%">
-                            <thead>
-                                <tr class="tr-tanggal">
-                                    <th width="15%" colspan="2">Tanggal</th>
-                                </tr>
-                                <tr class="tr-jam">
-                                    <th colspan="2">Jam</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-
-                        </table>
-                        <div class="hasil-ews">
-
-                        </div>
+                        @include('content.ranap.modal.cppt._ewsRanap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
                         tabindex="0">
-                        @include('content.ranap.modal._resep')
+                        @include('content.ranap.modal.cppt._resep')
                     </div>
                     <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
                         tabindex="0">
-                        <div class="p-3 w-full d-flex justify-content-end">
-                            <button type="button" class="btn btn-success btn-sm btn-tambah-grafik-harin"
-                                onclick="modalGrafikHarian()" style="font-size: 12px"><i
-                                    class="bi bi-bar-chart-line"></i> Tambah Grafik</button>
-                        </div>
-                        <div class="table-responsive">
-                            <div class="chart-container">
-                                <canvas id="grafik-suhu" class="grafikPemeriksaan"></canvas>
-                            </div>
-                        </div>
+                        @include('content.ranap.modal.cppt._grafikPemeriksaan')
+                    </div>
+                    <div class="tab-pane fade" id="tabAsuhanGiziDewasa-pane" role="tabpanel" aria-labelledby="tabAsuhanGiziDewasa"
+                        tabindex="0">
+                        @include('content.ranap.modal.cppt._formAsuhanGiziDewasa')
                     </div>
                 </div>
             </div>
@@ -142,11 +123,19 @@
         var getInstance = '';
         var sel = '';
 
+        const tabSoapRanap = document.querySelector('#tab-soap-ranap li:first-child button')
+        const modalSoapRanap = $('#modalSoapRanap')
 
         var departemen = "{{ session()->get('pegawai')->departemen }}";
+        const formInfoPasien = $('#formInfoPasien')
 
-        $('#modalSoapRanap').on('shown.bs.modal', () => {
+        modalSoapRanap.on('hidden.bs.modal', () => {
+            bootstrap.Tab.getInstance(tabSoapRanap).show()
+            $('input').hasClass('is-valid') && $('input').removeClass('is-valid');
+            formAsuhanGiziDewasa.trigger('reset')
+        })
 
+        modalSoapRanap.on('shown.bs.modal', () => {
             if (departemen == 'CSM' || departemen == '-') {
                 $('#tgl_perawatan_ubah').removeAttr('disabled');
                 $('#jam_rawat_ubah').removeAttr('disabled');
@@ -175,6 +164,7 @@
                 autoclose: true,
                 setDate: dateStart,
             });
+
 
             $('#tgl_perawatan_ubah').datepicker('setDate', dateStart)
 
@@ -242,8 +232,7 @@
                         $('#btn-ubah').css('display', 'inline');
                     }
                 }
-                let tabForm = document.querySelector('#tab-soap-ranap li:first-child button')
-                bootstrap.Tab.getInstance(tabForm).show()
+                bootstrap.Tab.getInstance(tabSoapRanap).show()
             })
         }
 

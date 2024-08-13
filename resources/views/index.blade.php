@@ -27,31 +27,31 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
-        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script> --}}
     {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
         integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script> --}}
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/4.2.1/js/dataTables.fixedColumns.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.6.0/js/dataTables.select.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
     <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/cdbootstrap/js/cdb.min.js"></script> --}}
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <!-- Magnify Image Viewer JS -->
     <script src="{{ asset('js/magnifier/jquery.magnify.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
+
     @stack('js')
 
     <script type="text/javascript">
+        const role = '{{ session()->get('role') }}'
         const APIURL = 'http://sim.rsiaaisyiyah.com/rsiap-api/api';
 
         window.onerror = function(msg, url, linenumber) {
@@ -72,6 +72,13 @@
                 }
             })
         }
+
+        $(document).ready(() => {
+            $('.datetimepicker').datetimepicker({
+                format: 'd-m-Y H:i:s',
+            })
+        })
+
 
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"
@@ -111,6 +118,10 @@
             }
         }
 
+        function toRupiah(number) {
+            return rupiahFormat = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
         function hanyaAngka(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode
             if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
@@ -125,26 +136,65 @@
             return txtTanggal;
         }
 
+        // function getDataForm(form, element, except = []) {
+        //     let data = {};
+        //     // get all data from input
+        //     for (let index = 0; index < element.length; index++) {
+        //         const e = element[index];
+        //         $(`${form} ${e}`).each((index, el) => {
+        //             keys = $(el).prop('name');
+        //             data[keys] = $(el).val();
+        //         })
+        //     }
+        //     // remove items on array data
+        //     for (let i = 0; i < except.length; i++) {
+        //         cek = data.hasOwnProperty(except[i])
+        //         if (cek) {
+        //             delete data[except[i]]
+        //         }
+        //     }
+
+        //     return data;
+        // }
         function getDataForm(form, element, except = []) {
             let data = {};
             // get all data from input
             for (let index = 0; index < element.length; index++) {
                 const e = element[index];
                 $(`${form} ${e}`).each((index, el) => {
-                    keys = $(el).prop('name');
-                    data[keys] = $(el).val();
-                })
+                    const name = $(el).prop('name');
+                    const type = $(el).attr('type');
+
+                    if (type === 'radio') {
+                        // Handle radio buttons: only add the selected radio button's value
+                        if ($(el).is(':checked')) {
+                            data[name] = $(el).val();
+                        }
+                    } else if (type === 'checkbox') {
+                        // Handle checkboxes: add all checked checkboxes with the same name
+                        if ($(el).is(':checked')) {
+                            if (!data[name]) {
+                                data[name] = [];
+                            }
+                            data[name].push($(el).val());
+                        }
+                    } else {
+                        // Handle other input types
+                        data[name] = $(el).val();
+                    }
+                });
             }
+
             // remove items on array data
             for (let i = 0; i < except.length; i++) {
-                cek = data.hasOwnProperty(except[i])
-                if (cek) {
-                    delete data[except[i]]
+                if (data.hasOwnProperty(except[i])) {
+                    delete data[except[i]];
                 }
             }
 
             return data;
         }
+
 
         function toastReload(message, timer) {
             Swal.fire({
@@ -262,6 +312,18 @@
             });
 
             return petugas;
+        }
+
+        function setWarnaPemeriksaan(keterangan) {
+            let warna = '';
+            if (keterangan == 'L') {
+                warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
+            } else if (keterangan == 'H' || keterangan == '*' || keterangan == '**') {
+                warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
+            } else if (keterangan == 'K' || keterangan == 'k') {
+                warna = 'style="color:#fff;background-color:#dc3;font-weight:bold"';
+            }
+            return warna;
         }
 
         function cariPetugas(nama) {
@@ -444,6 +506,7 @@
                             '<input type="radio" class="btn-check" name="kategori" id="opt-radiologi" autocomplete="off" onclick="showForm()" value="radiologi"><label class="btn btn-outline-primary btn-sm" for="opt-radiologi">Radiologi</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-legalisasi" autocomplete="off" onclick="showForm()" value="legalisasi"><label class="btn btn-outline-primary btn-sm" for="opt-legalisasi">Surat Legalisasi</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-km" autocomplete="off" onclick="showForm()" value="km"><label class="btn btn-outline-primary btn-sm" for="opt-km">Foto KM</label>' +
+                            '<input type="radio" class="btn-check" name="kategori" id="opt-ekg" autocomplete="off" onclick="showForm()" value="ekg"><label class="btn btn-outline-primary btn-sm" for="opt-ekg">Berkas EKG</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-form-rujukan" autocomplete="off" onclick="showForm()" value="form-rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-form-rujukan">Form Rujukan</label>'
 
                         $('#button-form').append(html)
@@ -461,6 +524,7 @@
                             '<input type="radio" class="btn-check" name="kategori" id="opt-lain" autocomplete="off" onclick="showForm()" value="lainnya"><label class="btn btn-outline-primary btn-sm" for="opt-lain">Lainnya</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-legalisasi" autocomplete="off" onclick="showForm()" value="legalisasi"><label class="btn btn-outline-primary btn-sm" for="opt-legalisasi">Surat Legalisasi</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-km" autocomplete="off" onclick="showForm()" value="km"><label class="btn btn-outline-primary btn-sm" for="opt-km">Foto KM</label>' +
+                            '<input type="radio" class="btn-check" name="kategori" id="opt-ekg" autocomplete="off" onclick="showForm()" value="ekg"><label class="btn btn-outline-primary btn-sm" for="opt-ekg">Berkas EKG</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-form-rujukan" autocomplete="off" onclick="showForm()" value="form-rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-form-rujukan">Form Rujukan</label>'
 
                         $('#button-form').append(html)
@@ -824,7 +888,7 @@
                             .toString() + '\',\'' + item.status_lanjut +
                             '\')" class="btn btn-primary btn-sm"><i class="bi bi-cloud-upload"></i></a>'
                     }
-                    button += `<button type="button" class="btn btn-info btn-sm" onclick="modalRiwayat('${no_rkm_medis}')"><i class="bi bi-info"></i></button>`;
+                    button += `<button type="button" class="btn btn-info btn-sm" onclick="confirmRiwayat('${no_rkm_medis}')"><i class="bi bi-info"></i></button>`;
                     html = '<tr>' +
                         '<td>' + item.no_rawat + '</td>' +
                         '<td>' + item.tgl_registrasi + '</td>' +
@@ -913,13 +977,13 @@
                                             data.kode_brng +
                                             '" data-stok="' + item.stok +
                                             '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok ="' + item.stok + '" onclick="setObat(this, ' + no + ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                            data.nama_brng + ' - <span class="text-primary"><b><i> Stok ' + item.stok + '</b></i></span></a></li>'
+                                            data.nama_brng + ' - <span class="text-primary">- Rp. ' + toRupiah(data.ralan) + ' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
                                     } else {
                                         html +=
                                             '<li class="disable" data-id="' + data
                                             .kode_brng +
                                             '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok="' + item.stok + '" onclick="setObat(this, ' + no + ')"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
-                                            data.nama_brng + ' - Stok Kosong' +
+                                            data.nama_brng + ' - Rp. ' + toRupiah(data.ralan) + ' - <b>Stok Kosong' +
                                             '</a></i></li>'
                                     }
                                 }

@@ -26,10 +26,12 @@ use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\AskepUgdController;
 use App\Http\Controllers\PenyakitController;
 use App\Http\Controllers\ResepObatController;
+use App\Http\Controllers\SkoringTbController;
 use App\Http\Controllers\DataBarangController;
 use App\Http\Controllers\PlanOfCareController;
 use App\Http\Controllers\PoliklinikController;
 use App\Http\Controllers\RegPeriksaController;
+use App\Http\Controllers\SkriningTbController;
 use App\Http\Controllers\TriasePemeriksaanUgd;
 use App\Http\Controllers\BridgingSepController;
 use App\Http\Controllers\EwsMaternalController;
@@ -39,6 +41,7 @@ use App\Http\Controllers\Bridging\SepController;
 use App\Http\Controllers\BridgingSPRIController;
 use App\Http\Controllers\EstimasiPoliController;
 use App\Http\Controllers\PlanOfCareTimController;
+use App\Http\Controllers\RsiaKetPasienController;
 use App\Http\Controllers\AskepRalanAnakController;
 use App\Http\Controllers\AskepRanapAnakController;
 use App\Http\Controllers\Bridging\IcareController;
@@ -48,6 +51,7 @@ use App\Http\Controllers\LaporanOperasiController;
 use App\Http\Controllers\ProsedurPasienController;
 use App\Http\Controllers\MappingPoliBpjsController;
 use App\Http\Controllers\MasterImunisasiController;
+use App\Http\Controllers\RsiaHasilKritisController;
 use App\Http\Controllers\AsesmenMedisAnakController;
 use App\Http\Controllers\Bridging\PesertaController;
 use App\Http\Controllers\Bridging\RujukanController;
@@ -88,9 +92,17 @@ use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
-use App\Http\Controllers\RsiaHasilKritisController;
-use App\Http\Controllers\RsiaKetPasienController;
-use App\Http\Controllers\SkriningTbController;
+use App\Http\Controllers\DetailPemeriksaanLabController;
+use App\Http\Controllers\DetailPermintaanLabController;
+use App\Http\Controllers\JenisPerawatanRadiologiController;
+use App\Http\Controllers\JnsPerawatabLabController;
+use App\Http\Controllers\PermintaanLabController;
+use App\Http\Controllers\PermintaanPemeriksaanLabController;
+use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
+use App\Http\Controllers\RsiaAsuhanGiziDewasaController;
+use App\Http\Controllers\TemplateLaboratoriumController;
+use App\Models\PermintaanPemeriksaanLab;
+use App\Models\PermintaanPemeriksaanRadiologi;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -117,7 +129,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/pasien/keterangan', [RsiaKetPasienController::class, 'create']);
 
     Route::get('/periksa/show/{no_rkm_medis}/{tanggal?}', [
-        RegPeriksaController::class, 'show',
+        RegPeriksaController::class,
+        'show',
     ]);
     Route::get('periksa/detail', [RegPeriksaController::class, 'detailPeriksa']);
     Route::get('/upload', [UploadController::class, 'index']);
@@ -135,6 +148,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/poliklinik/{kd_poli}', [PoliklinikController::class, 'viewPoliPasien']);
     Route::get('/poliklinik/count/{kd_poli}', [PoliklinikController::class, 'countUpload']);
     Route::get('/pemeriksaan/jumlah', [PoliklinikController::class, 'jumlahPasienPoli']);
+    Route::get('/poli/panggil', [EstimasiPoliController::class, 'get']);
     Route::post('/poliklinik/panggil', [EstimasiPoliController::class, 'kirim']);
     Route::delete('/poliklinik/batal', [EstimasiPoliController::class, 'hapus']);
     Route::post('/poliklinik/selesai', [SelesaiPoliController::class, 'kirim']);
@@ -207,6 +221,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
     Route::post('/soap/verifikasi', [RsiaVerifPemeriksaanRanapController::class, 'create']);
 
+
     Route::get('/soap/chart', [PemeriksaanRanapController::class, 'getTTV']);
     Route::get('/soap/grafik/data', [PemeriksaanRanapController::class, 'getTTVData']);
     Route::post('/soap/grafik/store', [RsiaGrafikHarianController::class, 'store']);
@@ -218,6 +233,20 @@ Route::middleware('auth')->group(function () {
     Route::get('lab/petugas', [LabController::class, 'petugas']);
     Route::get('lab/ambil', [LabController::class, 'ambil']);
     Route::get('lab/ambil/table', [LabController::class, 'getDataTable']);
+
+    Route::get('lab/jenis/get', [JnsPerawatabLabController::class, 'get']);
+    Route::get('lab/jenis/template/get', [JnsPerawatabLabController::class, 'getTemplate']);
+
+    Route::get('lab/permintaan/nomor', [PermintaanLabController::class, 'getNomor']);
+
+    Route::get('lab/permintaan', [PermintaanLabController::class, 'get']);
+    Route::post('lab/permintaan', [PermintaanLabController::class, 'create']);
+    Route::post('lab/permintaan/detail', [DetailPermintaanLabController::class, 'create']);
+    Route::post('lab/permintaan/pemeriksaan', [PermintaanPemeriksaanLabController::class, 'create']);
+
+    Route::get('lab/template/get', [TemplateLaboratoriumController::class, 'get']);
+    Route::get('lab/hasil', [DetailPemeriksaanLabController::class, 'get']);
+
 
     Route::get('ranap', [RanapController::class, 'index']);
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
@@ -233,6 +262,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('ranap/askep/neonatus', [AskepRanapNeonatusController::class, 'get']);
     Route::post('ranap/askep/neonatus/create', [AskepRanapNeonatusController::class, 'createOrUpdate']);
+
+    Route::post('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'create']);
+    Route::get('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'get']);
 
     Route::get('master/masalah/keperawatan/table', [MasterMasalahKeperawatanController::class, 'getDataTable']);
     Route::get('master/rencana/keperawatan/table', [MasterRencanaKeperawatanController::class, 'getDataTable']);
@@ -330,16 +362,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('riwayat/persalinan/delete', [RiwayatPersalinanController::class, 'delete']);
     Route::post('riwayat/persalinan/insert', [RiwayatPersalinanController::class, 'insert']);
 
-
     Route::get('radiologi', [PeriksaRadiologiController::class, 'view']);
     Route::get('radiologi/table', [PermintaanRadiologiController::class, 'getTableIndex']);
     Route::get('radiologi/permintaan', [PermintaanRadiologiController::class, 'getByNoRawat']);
+    Route::post('radiologi/permintaan', [PermintaanRadiologiController::class, 'create']);
+    Route::get('radiologi/permintaan/nomor', [PermintaanRadiologiController::class, 'getNomor']);
     Route::get('radiologi/periksa', [PeriksaRadiologiController::class, 'getByNoRawat']);
     Route::post('radiologi/periksa/update', [PeriksaRadiologiController::class, 'update']);
     Route::get('radiologi/periksa/print', [PeriksaRadiologiController::class, 'print']);
     Route::post('radiologi/hasil/update', [HasilRadiologiController::class, 'update']);
     Route::post('radiologi/hasil/create', [HasilRadiologiController::class, 'create']);
     Route::get('radiologi/hasil', [HasilRadiologiController::class, 'get']);
+
+    Route::get('radiologi/jenis/get', [JenisPerawatanRadiologiController::class, 'get']);
+    Route::post('radiologi/permintaan/periksa', [PermintaanPemeriksaanRadiologiController::class, 'create']);
+
 
     Route::get('poc', [PlanOfCareController::class, 'get']);
     Route::post('poc/create', [PlanOfCareController::class, 'create']);
@@ -352,9 +389,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/hasil/kritis', [RsiaHasilKritisController::class, 'create']);
     Route::post('/hasil/kritis/delete/{id}', [RsiaHasilKritisController::class, 'delete']);
 
+    Route::get('skoring/tb', [SkoringTbController::class, 'get']);
+    Route::post('skoring/tb', [SkoringTbController::class, 'create']);
+    Route::post('skoring/tb/delete', [SkoringTbController::class, 'delete']);
+    Route::get('skoring/tb/print/{id}', [SkoringTbController::class, 'print']);
+
     Route::get('skrining/tb', [SkriningTbController::class, 'get']);
     Route::post('skrining/tb', [SkriningTbController::class, 'create']);
     Route::post('skrining/tb/delete', [SkriningTbController::class, 'delete']);
+    Route::get('skrining/tb/print/{id}', [SkriningTbController::class, 'print']);
 
     Route::prefix('bridging')->group(function () {
         Route::prefix('referensi')->group(function () {
@@ -401,6 +444,7 @@ Route::middleware('auth')->group(function () {
     Route::post('kontrol/umum/baru', [SuratKontrolUlangController::class, 'create']);
     Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
     Route::get('poliklinik/bpjs/{kdPoli}', [MappingPoliBpjsController::class, 'ambil']);
+    Route::get('catatan/perawatan', [CatatanPerawatanController::class, 'getCatatan']);
     Route::get('catatan/perawatan/{noRawat}', [CatatanPerawatanController::class, 'get']);
     Route::post('catatan/perawatan/insert', [CatatanPerawatanController::class, 'insert']);
     Route::post('catatan/perawatan/create', [CatatanPerawatanController::class, 'insertOrUpdate']);
@@ -416,6 +460,9 @@ Route::get('/nosurat/{poli}', [SuratKontrolUlangController::class, 'setNoSurat']
 Route::get('/noreg/{tanggal}/{poli}/{dokter}', [BookingRegistrasiController::class, 'setNoReg']);
 Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 
+Route::get('/test/view', function () {
+    return view('test');
+});
 Route::get('/test/view', function () {
     return view('test');
 });

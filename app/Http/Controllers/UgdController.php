@@ -23,7 +23,7 @@ class UgdController extends Controller
 
     function getTable(Request $request)
     {
-        $regPeriksa = $this->regPeriksa->with(['pasien', 'dokter', 'kamarInap', 'penjab'])->where('kd_poli', 'IGDK');
+        $regPeriksa = $this->regPeriksa->with(['pasien', 'dokter', 'kamarInap', 'penjab', 'asmedRanapAnak', 'asmedRanapKandungan', 'asmedIgd'])->where('kd_poli', 'IGDK');
 
         if ($request->tgl_awal || $request->tgl_akhir) {
             $regPeriksa->whereBetween('tgl_registrasi', [$request->tgl_awal, $request->tgl_akhir])->get();

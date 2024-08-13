@@ -7,13 +7,11 @@
     <meta name="generator" content="Hugo 0.101.0">
 
     <title>{{ config('app.name') }}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
-        integrity="sha384-xeJqLiuOvjUBq3iGOjvSQSIlwrpqjSHXpduPd6rQpuiM3f5/ijby8pCsnbu5S81n" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css') }}">
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
         rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -27,7 +25,11 @@
     <link rel="icon" href="{{ asset('img/rsiap.ico') }}">
     <!-- Magnify Image Viewer CSS -->
     <link href="{{ asset('css/magnifier/jquery.magnify.css') }}" rel="stylesheet">
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+    {{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.2.7/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.2.7/sweetalert2.min.css"> --}}
+    <script src="https://unpkg.com/sweetalert2@11"></script>
     <style>
         .card {
             border-radius: 6px;
@@ -161,6 +163,10 @@
             margin-bottom: 18px;
         }
 
+        #tabel-lab tr .low {
+            background-color: #0d6efd;
+        }
+
         /* to customize progress bar */
         #progress::-webkit-progress-value {
             background-color: var(--prm-color);
@@ -254,6 +260,14 @@
             background-color: #0d6efd;
             color: white;
             transition: all .1s linear;
+        }
+
+        .modal.fade.show {
+            background-color: rgb(0 0 0 / 49%)
+        }
+
+        .modal {
+            background-color: none;
         }
 
         @media (max-width: 368px) {
@@ -437,6 +451,14 @@
         .bg-purple {
             background-color: var(--bs-purple);
             color: #fff !important;
+        }
+
+        .select2-container--default .select2-results__option {
+            font-size: 11px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: 11px;
         }
     </style>
 </head>

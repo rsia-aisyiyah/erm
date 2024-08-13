@@ -9,6 +9,8 @@ class PermintaanPemeriksaanRadiologi extends Model
 {
     use HasFactory;
     protected $table = 'permintaan_pemeriksaan_radiologi';
+    protected $guarded = [];
+    public $timestamps = false;
     function jnsPemeriksaan()
     {
         return $this->belongsTo(JenisPerawatanRadiologi::class, 'kd_jenis_prw', 'kd_jenis_prw');

@@ -164,31 +164,31 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="nav-penunjang" role="tabpanel" aria-labelledby="nav-penunjang-tab" tabindex="0">
-                                        <div class="" id="hasilLab">
+                                        <div class="" id="berkasPenunjang">
+                                            @include('content.ranap.modal.riwayat._berkas')
+                                        </div>
+                                        <div class="" id="catatanPerawatan">
                                             <div class="card position-relative mt-2">
-                                                <div class="card-header" aria-controls="collapseHasilLab" data-bs-toggle="collapse" data-bs-target="#collapseHasilLab">
+                                                <div class="card-header" aria-controls="collapseCatatanPerawatan" data-bs-toggle="collapse" data-bs-target="#collapseCatatanPerawatan">
                                                     <div class="card-text">
-                                                        <span>Hasil Laborat</span>
+                                                        <span>Catatan Keperawatan</span>
                                                     </div>
 
                                                 </div>
-                                                <div class="card-body card-text collapse" id="collapseHasilLab">
-
+                                                <div class="card-body card-text collapse" id="collapseCatatanPerawatan">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="mt-2" id="contentCatatanPerawatan"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="" id="hasilLab">
+                                            @include('content.ranap.modal.riwayat._lab')
+                                        </div>
                                         <div class="" id="hasilRadiologi">
-                                            <div class="card position-relative mt-2">
-                                                <div class="card-header" aria-controls="collapseHasilRadiologi" data-bs-toggle="collapse" data-bs-target="#collapseHasilRadiologi">
-                                                    <div class="card-text">
-                                                        <span>Hasil Radiologi</span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="card-body card-text collapse" id="collapseHasilRadiologi">
-
-                                                </div>
-                                            </div>
+                                            @include('content.ranap.modal.riwayat._radiologi')
                                         </div>
                                     </div>
 
@@ -459,7 +459,9 @@
                 setRiwayatPemeriksaanRanap(no_rawat)
                 setRiwayatObat(no_rawat)
                 setRiwayatLaborat(no_rawat)
+                setBerkasPenunjang(no_rawat)
                 setRiwayatRadiologi(no_rawat)
+                setCatatanPerwatan(no_rawat)
                 // setLab(no_rawat);
                 // setNavTabsTitle()
             })
@@ -639,7 +641,7 @@
                                     <div class="col-md-6 col-lg-7 col-sm-12 mb-1">
                                         <div class="card">
                                             <div class="card-header ${headColor}">
-                                                Petugas : ${pemeriksaan.petugas.nama}
+                                                Dilakukan Oleh : ${pemeriksaan.petugas.nama}
                                             </div>
                                             <div class="card-body">
                                                 <table class="table table-sm table-responsive borderless" cellpadding="5" cellspacing="0">
@@ -754,7 +756,7 @@
                                         <div class="col-md-6 col-lg-7 col-sm-12 mb-1">
                                             <div class="card">
                                                  <div class="card-header card-text ${headColor}">
-                                                   Petugas : ${periksa.pegawai.nama}
+                                                   Dilakukan Oleh : ${periksa.pegawai.nama}
                                                 </div>
                                                 <div class="card-body">
                                                     <table class="table table-sm table-responsive borderless" cellpadding="5" cellspacing="0">
@@ -856,185 +858,6 @@
                     listPemberianObat += '</div>';
                     bodyCardPemberianObat.innerHTML = listPemberianObat;
                     $('#obat').show().fadeIn();
-                }
-            })
-        }
-
-        function setRiwayatLaborat(no_rawat) {
-            const cardRiwayatObat = document.getElementById('hasilLab')
-            const bodyCardHasilLab = document.getElementById('collapseHasilLab')
-            const groupLab = {};
-            let listHasilLab = '';
-            getHasilLab(no_rawat).done((hasil) => {
-                if (hasil.length) {
-
-
-                    hasil.map((item, index) => {
-                        const key = `${item.tgl_periksa} ${item.jam}`
-                        if (!groupLab[key]) {
-                            groupLab[key] = [];
-                        }
-                        groupLab[key].push(item)
-                    })
-
-                    const resultGroup = Object.values(groupLab)
-                    const keysGroup = Object.keys(groupLab)
-
-                    listHasilLab += `<div class="row">`;
-                    resultGroup.forEach((lab, index) => {
-                        const tglPemberian = splitTanggal(keysGroup[index].split(' ')[0])
-                        const jamPemberian = keysGroup[index].split(' ')[1]
-                        listHasilLab += `<div class="col-md-12 col-lg-12 col-sm-12">
-                                        <div class="card position-relative mt-2">
-                                            <div class="card-header">
-                                                <span>${tglPemberian} ${jamPemberian}</span>
-                                            </div>
-                                        <div class="card-body">
-                                            <table class="table table-responsive">
-                                                <tr>
-                                                    <th width="30%">
-                                                        Pemeriksaan 
-                                                    </th>
-                                                    <th width="30%">
-                                                        Hasil
-                                                    </th>    
-                                                    <th>
-                                                        Nilai Rujukan
-                                                    </th>        
-                                                </tr>`;
-                        lab.map((item, index) => {
-                            if (item.keterangan == 'L') {
-                                warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
-                            } else if (item.keterangan == 'H' || item.keterangan == '*' || item.keterangan == '**') {
-                                warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
-                            } else if (item.keterangan == 'K' || item.keterangan == 'k') {
-                                warna = 'style="color:#fff;background-color:#dc3;font-weight:bold"';
-                            } else {
-                                warna = '';
-                            }
-                            let jenisPemeriksaan = '';
-                            if (item.kd_jenis_prw != lab[index + 1]?.kd_jenis_prw) {
-                                jenisPemeriksaan = `<tr>
-                                                    <td colspan=3>
-                                                        <strong>${item.jns_perawatan_lab.nm_perawatan}</strong>
-                                                        <br/><small>Petugas : ${item.periksa_lab.petugas.nama}</small>
-                                                        </td>
-                                                    </tr>`
-                            }
-                            listHasilLab += `${jenisPemeriksaan}
-                                            <tr class="" ${warna}>
-                                                <td>
-                                                    ${item.template.Pemeriksaan}
-                                                </td>
-                                                <td>
-                                                    ${item.nilai} ${item.template.satuan} ${item.keterangan ? `(${item.keterangan})` : ''}
-                                                </td>
-                                                <td>
-                                                    ${item.nilai_rujukan}
-                                                </td>
-                                            </tr>`
-                        })
-                        listHasilLab += `          </table>
-                                            </div>
-                                        </div>
-                                    </div>  `;
-                    })
-                    bodyCardHasilLab.innerHTML = listHasilLab;
-                    $('#hasilLab').show().fadeIn();
-                    $('#hasilLab').removeClass('d-none')
-                } else {
-                    $('#hasilLab').addClass('d-none')
-                }
-            })
-        }
-
-        function setRiwayatRadiologi(no_rawat) {
-            const bodyRadiologi = document.getElementById('collapseHasilRadiologi')
-            const cardRadiologi = document.getElementById('hasilRadiologi')
-            $('#radiologi').hide();
-
-            getPeriksaRadiologi(no_rawat).done((periksa) => {
-                let listHasilRadiologi = '';
-                if (periksa.length != 0) {
-                    let hasilRadiologi = '';
-                    let diagnosaKlinis = '';
-                    let informasiTambahan = '';
-                    periksa.map((radiologi) => {
-                        listHasilRadiologi += `<div class="row">`;
-                        let gambar = '';
-                        radiologi.gambar_radiologi.map((img, index) => {
-                            if (img.tgl_periksa == radiologi.tgl_periksa && img.jam == radiologi.jam) {
-                                gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}">
-                                    <img src="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}" class="img-thumbnail position-relative" width="100%">
-                                </a>`
-                            }
-                            listHasilRadiologi += `<div class="col-sm-12 col-md-6 col-lg-4">
-                                            ${gambar}
-                                        </div>`;
-                        })
-
-                        radiologi.permintaan.map((permintaan, index) => {
-                            if (permintaan.tgl_hasil == radiologi.tgl_periksa && permintaan.jam_hasil == radiologi.jam) {
-                                diagnosaKlinis = permintaan.diagnosa_klinis;
-                                informasiTambahan = permintaan.informasi_tambahan;
-                            }
-                        })
-
-                        radiologi.hasil_radiologi.map((hasil, index) => {
-                            if (hasil.tgl_periksa == radiologi.tgl_periksa && hasil.jam == radiologi.jam) {
-                                hasilRadiologi = hasil.hasil
-                            }
-                            listHasilRadiologi += `<div class="col-sm-12 col-md-6 col-lg-8">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <table class="table borderless table-responsive text-sm">
-                                                <tr>
-                                                    <th>Tanggal</th>    
-                                                    <td>:</td>    
-                                                    <td>${formatTanggal(hasil.tgl_periksa)} ${hasil.jam}</td>    
-                                                </tr>    
-                                                <tr>
-                                                    <th>Dokter</th>    
-                                                    <td>:</td>    
-                                                    <td>${radiologi.dokter.nm_dokter}</td>    
-                                                </tr>    
-                                                <tr>
-                                                    <th>Petugas</th>    
-                                                    <td>:</td>    
-                                                    <td>${radiologi.petugas.nama}</td>    
-                                                </tr>    
-                                                <tr>
-                                                    <th>Pemeriksaan</th>    
-                                                    <td>:</td>    
-                                                    <td>${radiologi.jns_perawatan.nm_perawatan}</td>    
-                                                </tr>    
-                                                <tr>
-                                                    <th>Diagnosa Klinis</th>    
-                                                    <td>:</td>    
-                                                    <td>${diagnosaKlinis}</td>    
-                                                </tr>    
-                                                <tr>
-                                                    <th>Informasi Tambahan</th>    
-                                                    <td>:</td>    
-                                                    <td>${informasiTambahan}</td>    
-                                                </tr>    
-                                                <tr>
-                                                    <th>Hasil</th>    
-                                                    <td>:</td>    
-                                                    <td>${stringPemeriksaan(hasilRadiologi)}</td>    
-                                                </tr>    
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>`;
-                        })
-                        listHasilRadiologi += '</div>';
-                    })
-                    bodyRadiologi.innerHTML = listHasilRadiologi;
-                    $('#hasilRadiologi').show().fadeIn();
-                    $('#hasilRadiologi').removeClass('d-none');
-                } else {
-                    $('#hasilRadiologi').addClass('d-none');
                 }
             })
         }

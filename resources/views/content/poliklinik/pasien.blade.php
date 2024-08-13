@@ -105,6 +105,7 @@
     </div>
     @include('content.poliklinik.modal.modal_pemeriksaan')
     @include('content.poliklinik.modal.modal_riwayat')
+    @include('content.ranap.modal.modal_riwayat')
     @include('content.poliklinik.modal.modal_askep')
     @include('content.poliklinik.modal.modal_askep_anak')
     @include('content.poliklinik.modal.modal_resep')
@@ -115,6 +116,7 @@
     @include('content.poliklinik.modal.modal_icare')
     @include('content.poliklinik.modal.modal_peserta')
     @include('content.poliklinik.modal.modal_catatan')
+    @include('content.ranap.modal.modal_hasil_kritis')
 @endsection
 
 @push('script')
@@ -236,6 +238,15 @@
                 $('#formSoapPoli input[name=nm_pasien]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk}) / ${hitungUmur(regPeriksa.pasien.tgl_lahir)}`)
                 $('#formSoapPoli input[name=p_jawab]').val(regPeriksa.p_jawab)
                 $('#formSoapPoli input[name=png_jawab]').val(`${regPeriksa.penjab.png_jawab}`)
+
+                if (role === 'dokter') {
+                    cekPanggilanPoli(no_rawat).done((response) => {
+                        if (!response.length) {
+                            panggil(textRawat(regPeriksa.no_rawat))
+                        }
+                    });
+                }
+
                 riwayatResep(regPeriksa.no_rkm_medis)
                 cekAlergi(regPeriksa.no_rkm_medis)
             }).fail((request) => {
@@ -268,6 +279,15 @@
             })
         }
 
+        function cekPanggilanPoli(no_rawat) {
+            return $.ajax({
+                url: '/erm/poli/panggil',
+                data: {
+                    no_rawat: no_rawat
+                },
+                method: 'GET',
+            })
+        }
 
         function riwayatResep(no_rm) {
             $('#tb-resep-riwayat tbody').empty()
@@ -960,7 +980,7 @@
                                 textRawat(row.no_rawat) +
                                 '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
                             html +=
-                                '<button class="btn btn-primary btn-sm mb-2 mr-1" onclick="modalRiwayat(\'' + row.no_rkm_medis + '\')" data-id="' +
+                                '<button class="btn btn-primary btn-sm mb-2 mr-1" onclick="confirmUpdateRiwayat(\'' + row.no_rkm_medis + '\')" data-id="' +
                                 row.no_rkm_medis + '"  style="width:80px;font-size:12px;text-align:left"><i class="bi bi-search"></i>RIWAYAT</button>';
 
                             if (row.upload.length > 0) {
@@ -1013,6 +1033,33 @@
                     "infoEmpty": "Tidak ada data pasien terdaftar",
                 }
             });
+        }
+
+        function confirmUpdateRiwayat(no_rkm_medis) {
+            if (localStorage.getItem('riwayat') === 'baru') {
+                listRiwayatPasien(no_rkm_medis);
+            } else if (localStorage.getItem('riwayat') === 'lama') {
+                modalRiwayat(no_rkm_medis);
+            } else {
+                Swal.fire({
+                    title: 'Update',
+                    text: "Pnambahan tampilan riwayat baru, apakah lanjut ke tampilan riwayat baru ?",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Gunakan yang baru',
+                    cancelButtonText: 'Tidak, Tetap yang lama',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        localStorage.setItem('riwayat', 'baru');
+                        listRiwayatPasien(no_rkm_medis);
+                    } else {
+                        localStorage.setItem('riwayat', 'lama');
+                        modalRiwayat(no_rkm_medis);
+                    }
+                })
+            }
         }
 
         function riwayatIcare(noka, dokter) {

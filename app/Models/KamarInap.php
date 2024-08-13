@@ -42,8 +42,8 @@ class KamarInap extends Model
     {
         return $this->hasOne(AskepRanapNeonatus::class, 'no_rawat', 'no_rawat');
     }
-    function skriningTb()
+    function skoringTb()
     {
-        return $this->belongsTo(SkriningTb::class, 'no_rawat', 'no_rawat');
+        return $this->belongsTo(SkoringTb::class, 'no_rawat', 'no_rawat');
     }
 }

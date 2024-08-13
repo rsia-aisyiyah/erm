@@ -29,6 +29,10 @@
                         <button class="nav-link" id="tab-asesmen-ranap-anak" data-bs-toggle="tab" data-bs-target="#tab-asmed-ranap-ana"
                             type="button" role="tab" aria-controls="tab-asmed-ranap-ana" aria-selected="false">Asesmen Medis Ranap Anak</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="permintaan-laborat-tab" data-bs-toggle="tab" data-bs-target="#permintaan-laborat-tab-pane"
+                            type="button" role="tab" aria-controls="permintaan-laborat-tab-pane" aria-selected="true">Permintaan Lab</button>
+                    </li>
                     <li class="nav-item" role="presentation" id="li-lab-ana">
                         <button class="nav-link" id="tab-lab-anak" data-bs-toggle="tab" data-bs-target="#lab-ana"
                             type="button" role="tab" aria-controls="lab-ana" aria-selected="false">Hasil Laboratorium</button>
@@ -36,6 +40,10 @@
                     <li class="nav-item" role="presentation" id="li-rad-ana">
                         <button class="nav-link" id="tab-rad-anak" data-bs-toggle="tab" data-bs-target="#rad-ana"
                             type="button" role="tab" aria-controls="rad-ana" aria-selected="false">Hasil Radiologi</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab" data-bs-target="#permintaan-radiologi-tab-pane"
+                            type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -58,6 +66,10 @@
                         tabindex="0">
                         @include('content.ranap.form.form_asemd_anak')
                     </div>
+                    <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
+                        @include('content.ranap.modal.penunjang.permintaan_lab')
+
+                    </div>
                     <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab"
                         tabindex="0">
                         <small class="mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilLab" style="display: none">Belum / Tidak dilakukan pemeriksaan laboratorium</small>
@@ -76,6 +88,10 @@
                                 </tbody>
                             </table>
                         </div>
+                        <br><button type="button" class="mt-3 btn btn-warning btn-sm" id="btnHasilKritis"><i class="bi bi-pencil me-2"></i> Hasil Kritis</button>
+                    </div>
+                    <div class="tab-pane fade" id="permintaan-radiologi-tab-pane" role="tabpanel" aria-labelledby="permintaan-radiologi-tab" tabindex="0">
+                        @include('content.ranap.modal.penunjang.permintaan_radiologi')
                     </div>
                     <div class="tab-pane fade p-3" id="rad-ana" role="tabpanel" aria-labelledby="tab-radiologi"
                         tabindex="0">
@@ -110,6 +126,7 @@
     </div>
 </div>
 @include('content.poliklinik.modal.moda_detail_resep')
+
 @push('script')
     <script>
         function hapusBaris(param) {
@@ -145,6 +162,7 @@
             $('.btn-asmed').css('display', 'none')
             $('.btn-soap').css('display', 'none')
         })
+
         $('button[data-bs-target="#lab-ana"]').on('shown.bs.tab', function(e, x, y) {
             $('.btn-asmed-ranap').css('display', 'none')
             $('.btn-asmed').css('display', 'none')
@@ -157,36 +175,31 @@
                 let tglPeriksa = '';
                 let hasil = '';
                 if (lab.length) {
-                    lab.map((item, index) => {
-                        if (jenisPerawatan != item.jns_perawatan_lab.kd_jenis_prw || tglPeriksa != item.tgl_periksa) {
-                            hasil += `<tr class="borderless" style="background-color:#eee">
-                                <td colspan="3"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
-                                ${formatTanggal(item.tgl_periksa)} ${item.jam}</td>
-                                <td>${item.periksa_lab.petugas.nama}</td></tr>
-                                `
-                        }
+                    getHasilLab(no_rawat).done((lab) => {
+                        let hasilLab = '';
+                        lab.forEach((item, index) => {
 
-                        if (item.keterangan == 'L') {
-                            warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
-                        } else if (item.keterangan == 'H' || item.keterangan == '*' || item.keterangan == '**') {
-                            warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
-                        } else if (item.keterangan == 'K' || item.keterangan == 'k') {
-                            warna = 'style="color:#fff;background-color:#dc3;font-weight:bold"';
-                        } else {
-                            warna = '';
-                        }
-                        hasil += '<tr ' + warna + '>';
-                        hasil += '<td>' + item.template.Pemeriksaan + '</td>';
-                        hasil += '<td>' + item.nilai + ' ' + item.template.satuan +
-                            '</td>';
-                        hasil += '<td>' + item.nilai_rujukan + '</td>';
-                        hasil += '<td>' + item.keterangan + '</td>';
-                        hasil += '</tr>';
+                            if (item.detail.length) {
+                                hasilLab += `<tr class="borderless" style="background-color:#eee;padding:2px">
+                            <td colspan="3">
+                                <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
+                                ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
+                            </td>
+                            <td>${item.petugas.nama}</td></tr>`;
+                                item.detail.sort((a, b) => a.template.urut - b.template.urut);
+                                item.detail.forEach((detail, index) => {
+                                    hasilLab += `<tr ${setWarnaPemeriksaan(detail.keterangan)}>
+                                <td>${detail.template.Pemeriksaan}</td>
+                                <td>${detail.nilai} ${detail.template.satuan}</td>
+                                <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
+                                <td>${detail.keterangan}</td></tr>`
+                                })
+                            }
+                        })
+                        $('#tabel-lab').append(hasilLab)
 
-                        jenisPerawatan = item.jns_perawatan_lab.kd_jenis_prw;
-                        tglPeriksa = item.tgl_periksa;
                     })
-                    $('#tabel-lab').append(hasil)
+                    // $('#tabel-lab').append(hasil)
                     $('#viewHasilLaborat').css('display', 'inline')
                     $('#alertHasilLab').css('display', 'none')
                 } else {
@@ -228,7 +241,7 @@
                         if (prm.gambar_radiologi.length) {
                             prm.gambar_radiologi.map((gambar) => {
                                 if (gambar.tgl_periksa == prm.tgl_hasil && gambar.jam == prm.jam_hasil) {
-                                    gbr = `https://sim.rsiaaisyiyah.com/webapps/radiologi/${gambar.lokasi_gambar}`
+                                    gbr = `${getBaseUrl(`/webapps/radiologi/${gambar.lokasi_gambar}`)}`
                                     html += `<a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gbr}">
                                                 <i class="bi bi-eye"></i> BUKA GAMBAR
                                             </a><br/>`
@@ -1120,21 +1133,21 @@
                         $.map(data.gudang_barang, function(item) {
                             if (data) {
                                 if (data.status != "0") {
-                                    if (item.stok != "0") {
+                                    if (item.stok >= "0") {
                                         html +=
                                             '<li data-id="' +
                                             data.kode_brng +
                                             '" data-stok="' + item.stok +
                                             '" data-kapasitas="' + data.kapasitas +
                                             '" data-nama="' + data.nama_brng + '" onclick="ambilObat(this)"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                            data.nama_brng + ' <span class="text-primary"><i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
+                                            data.nama_brng + ' <span class="text-primary">- Rp. ' + toRupiah(data.ralan) + ' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
                                     } else {
                                         html +=
                                             '<li class="disable" data-id="' + data
                                             .kode_brng +
                                             '" data-stok="' + item.stok +
                                             '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
-                                            data.nama_brng + ' - <b>Stok Kosong' +
+                                            data.nama_brng + ' - Rp. ' + toRupiah(data.ralan) + ' - <b>Stok Kosong' +
                                             '</b></a></i></li>'
                                     }
                                 }
@@ -1794,5 +1807,10 @@
             })
             return asmed;
         }
+
+        $('#btnHasilKritis').on('click', () => {
+            const no_rawat = $('#nomor_rawat').val();
+            hasilKritis(no_rawat)
+        })
     </script>
 @endpush

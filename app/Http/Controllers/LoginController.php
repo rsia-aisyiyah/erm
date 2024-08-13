@@ -45,7 +45,7 @@ class LoginController extends Controller
                  * Daftar user yang diizinkan login : 
                  * direksi, verifikator
                  */
-                if (!in_array($user->username, ['direksi', 'verifikator', '1.112.0823', '1.218.0921', '2.311.0314'])) {
+                if (!in_array($user->username, ['direksi', 'verifikator', '1.112.0823', '1.218.0921', '2.311.0314', '1.101.1112'])) {
                     /**
                      * Selain user diatas, maka akan diarahkan ke halaman login dengan pesan error
                      * */
@@ -58,6 +58,11 @@ class LoginController extends Controller
             $request->session()->regenerate();
             Session::put('pegawai', $pegawai);
             Session::put('status', 'ok');
+            $role = '';
+            if ($pegawai->dokter) {
+                $role = 'dokter';
+            }
+            Session::put('role', $role);
 
 
             if ($pegawai->departemen == 'DPM1') {

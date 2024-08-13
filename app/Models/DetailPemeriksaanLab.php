@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DetailPemeriksaanLab extends Model
 {
-    use HasFactory;
+    use HasFactory, Compoships;
     protected $table = 'detail_periksa_lab';
     public function regPeriksa()
     {
@@ -19,7 +20,8 @@ class DetailPemeriksaanLab extends Model
     }
     public function template()
     {
-        return $this->belongsTo(TemplateLaboratorium::class, 'id_template', 'id_template');
+        return $this->belongsTo(TemplateLaboratorium::class, 'id_template', 'id_template')
+            ->select('id_template', 'Pemeriksaan', 'satuan', 'urut');
     }
     public function periksaLab()
     {

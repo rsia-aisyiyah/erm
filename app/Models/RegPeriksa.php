@@ -192,4 +192,8 @@ class RegPeriksa extends Model
     {
         return $this->hasOne(PlanOfCare::class, 'no_rawat', 'no_rawat');
     }
+    function asmedIgd()
+    {
+        return $this->hasOne(AsesmenMedisIgd::class, 'no_rawat', 'no_rawat');
+    }
 }

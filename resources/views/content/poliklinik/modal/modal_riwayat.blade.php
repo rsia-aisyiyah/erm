@@ -71,8 +71,8 @@
                     arrFoto.forEach(function(fx) {
                         hasilFoto += `<td>
                             <div class="image-set m-t-20">
-                                <a data-magnify="gallery" data-src="" data-caption="${kategori?.toUpperCase()} ${formatTanggal(f.tgl_masuk)}" data-group="a" href="https://sim.rsiaaisyiyah.com/erm/public/erm/${fx}">
-                                    <img src="https://sim.rsiaaisyiyah.com/erm/public/erm/${fx}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                <a data-magnify="gallery" data-src="" data-caption="${kategori?.toUpperCase()} ${formatTanggal(f.tgl_masuk)}" data-group="a" href="${getBaseUrl(`/erm/public/erm/${fx}`)}">
+                                    <img src="${getBaseUrl(`/erm/public/erm/${fx}`)}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
                                 </a>
                                 <figcaption>${kategori?.toUpperCase()}</figcaption>
                             </div>
@@ -88,7 +88,7 @@
 
         function popup(foto) {
             $('#modal-image').modal('show');
-            let src = "https://sim.rsiaaisyiyah.com/erm/public/erm/" + foto;
+            let src = `${getBaseUrl(`/erm/public/erm/${foto}`)}`;
             $('.popup').attr('src', src)
         }
 
@@ -124,9 +124,9 @@
                     '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
                     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
                     diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) +
-                    setResumeMedis(i.resume_medis) +
-                    setPemeriksaan(ralan, i.pemeriksaan_ralan) + setPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
-                    setRiwayatAsmedAnak(i.asmed_ranap_anak) + setRiwayatAsmedKandungan(i.asmed_ranap_kandungan) +
+                    renderResumeMedis(i.resume_medis) +
+                    renderPemeriksaan(ralan, i.pemeriksaan_ralan) + renderPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
+                    renderRiwayatAsmedAnak(i.asmed_ranap_anak) + renderRiwayatAsmedKandungan(i.asmed_ranap_kandungan) +
                     '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
                     pemberianObat(i.detail_pemberian_obat) +
                     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
@@ -155,8 +155,8 @@
                     if (Object.keys(rad.gambar_radiologi).length) {
                         rad.gambar_radiologi.map((img) => {
                             if (img.tgl_periksa == rad.tgl_periksa && img.jam == rad.jam) {
-                                gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}">
-                                                <img src="https://sim.rsiaaisyiyah.com/webapps/radiologi/${img.lokasi_gambar}" class="img-thumbnail position-relative" width="300px">
+                                gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="${getBaseUrl(`/webapps/radiologi/${img.lokasi_gambar}`)}">
+                                                <img src="${getBaseUrl(`/webapps/radiologi/${img.lokasi_gambar}`)}" class="img-thumbnail position-relative" width="300px">
                                             </a>`
                             } else {
                                 gambar = `<a data-magnify="gallery" data-src=""  data-group="a" href="{{ asset('/img/default.png') }}">
@@ -244,7 +244,7 @@
             }
         }
 
-        function setPemeriksaan(jns, data) {
+        function renderPemeriksaan(jns, data) {
             let html = '';
             if (data.length) {
                 html = `<tr><th style="vertical-align: top;">Pemeriksaan ${jns}</th><td>`;
@@ -353,7 +353,7 @@
             return html;
         }
 
-        function setResumeMedis(resumeMedis) {
+        function renderResumeMedis(resumeMedis) {
             if (resumeMedis) {
                 if (resumeMedis.kamar_inap) {
                     tgl_masuk = formatTanggal(resumeMedis.kamar_inap.tgl_masuk)
@@ -618,7 +618,7 @@
 
         }
 
-        function setRiwayatAsmedAnak(asmed) {
+        function renderRiwayatAsmedAnak(asmed) {
             if (asmed) {
                 html = '<tr><th style="vertical-align: top;">Asesmen Medis</th><td>'
                 html += `
@@ -821,7 +821,7 @@
 
         }
 
-        function setRiwayatAsmedKandungan(asmed) {
+        function renderRiwayatAsmedKandungan(asmed) {
             if (asmed) {
                 html = '<tr><th style="vertical-align: top;">Asesmen Medis</th><td>'
                 html += `

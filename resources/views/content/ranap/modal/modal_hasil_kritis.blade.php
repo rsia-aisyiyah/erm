@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalHasilKritis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalHasilKritis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgb(0 0 0 / 49%)">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -83,7 +83,7 @@
                                             <input type='text' id='tgl_ruang' class="form-control form-control-sm datetimepicker" name="tgl_ruang" />
                                         </div>
                                         <div class="col-lg-8">
-                                            <label for="" class="form-label">Dokter DPJP</label>
+                                            <label for="" class="form-label">Dokter</label>
                                             <select class="form-select" id="selectDokterKritis" style="width: 100%" name="dokter"></select>
                                         </div>
                                         <div class="col-lg-4">
@@ -202,10 +202,6 @@
 
             instanceFormTabKritis = bootstrap.Tab.getInstance(formTabKritis);
             instansceHasilTabKritis = new bootstrap.Tab(hasilTabKritis);
-
-            $('.datetimepicker').datetimepicker({
-                format: 'd-m-Y H:i:s',
-            })
         })
 
         function hasilKritis(no_rawat) {
@@ -282,8 +278,8 @@
                         title: 'Petugas Lab',
                         render: (data, type, row, meta) => {
                             const petugas = data ? data : '-';
-                            const jam = row.tgl != '0000-00-00 00:00:00' ? `${formatTanggal(row.tgl)} ${row.tgl_dokter.split(' ')[1]}` : '';
-                            return `${petugas} <br/> <span class="text-muted" style="font-size:11px">${jam}</span>`
+                            const jamPetugas = row.tgl != '0000-00-00 00:00:00' ? `${formatTanggal(row.tgl)} ${row.tgl.split(' ')[1]}` : '';
+                            return `${petugas} <br/> <span class="text-muted" style="font-size:11px">${jamPetugas}</span>`
                         }
                     },
                     {
@@ -302,8 +298,8 @@
                         title: 'Dokter',
                         render: (data, type, row, meta) => {
                             const dokter = data ? data.nm_dokter : '-';
-                            const jam = row.tgl_dokter != '0000-00-00 00:00:00' ? `${formatTanggal(row.tgl_dokter)} ${row.tgl_dokter.split(' ')[1]}` : '';
-                            return `${dokter} <br/> <span class="text-muted" style="font-size:11px">${jam}</span>`
+                            const jamDokter = row.tgl_dokter != '0000-00-00 00:00:00' ? `${formatTanggal(row.tgl_dokter)} ${row.tgl_dokter.split(' ')[1]}` : '';
+                            return `${dokter} <br/> <span class="text-muted" style="font-size:11px">${jamDokter}</span>`
 
                         }
                     },

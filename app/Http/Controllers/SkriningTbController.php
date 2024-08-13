@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\SkriningTb;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\DataTables;
+use Illuminate\Database\QueryException;
 
 class SkriningTbController extends Controller
 {
@@ -20,26 +21,17 @@ class SkriningTbController extends Controller
     {
         $data = [
             'no_rawat' => $request->no_rawat,
-            'kd_dokter' => $request->kd_dokter,
-            'kontak' => $request->kontak,
-            'demam' => $request->demam,
             'berat' => $request->berat,
-            'batul' => $request->batul,
-            'pembesaran' => $request->pembesaran,
-            'pembengkakan' => $request->pembengkakan,
-            'thorax' => $request->thorax,
-            'mantoux' => $request->mantoux,
-            'ket_kontak' => $request->ket_kontak,
-            'ket_mantoux' => $request->ket_mantoux,
-            'ket_berat' => $request->ket_berat,
-            'ket_demam' => $request->ket_demam,
-            'ket_batul' => $request->ket_batul,
-            'ket_pembesaran' => $request->ket_pembesaran,
-            'ket_pembengkakan' => $request->ket_pembengkakan,
-            'ket_thorax' => $request->ket_thorax,
-            'total_skrining' => $request->total_skrining,
-            'tgl_skrining' => date('Y-m-d'),
-            'jam_skrining' => date('H:i:s'),
+            'berdahak' => $request->berdahak,
+            'berdahakB' => $request->berdahakB,
+            'demam' => $request->demam,
+            'nip' => session()->get('pegawai')->nik,
+            'kelenjar' => $request->kelenjar,
+            'keluarga' => $request->keluarga,
+            'keringat' => $request->keringat,
+            'obat' => $request->obat,
+            'penyakit' => $request->penyakit,
+            'sesak' => $request->sesak,
         ];
         if ($request->id) {
             $find = SkriningTb::where('id', $request->id)->first();
@@ -64,10 +56,14 @@ class SkriningTbController extends Controller
     {
         $skrining = new SkriningTb();
         if ($request->id) {
-            $skrining = $skrining->where('id', $request->id)->first();
+            $skrining = $skrining->where('id', $request->id)
+                ->with(['pegawai', 'regPeriksa.dokter', 'pasien' => function ($query) {
+                    return $query->with(['kec', 'kab']);
+                }])->first();
         }
         if ($request->no_rawat) {
-            $skrining = $skrining->where('no_rawat', $request->no_rawat)->get();
+            $skrining = $skrining->where('no_rawat', $request->no_rawat)
+                ->with('pegawai', 'regPeriksa')->get();
         }
 
         if ($request->dataTable) {
@@ -80,24 +76,19 @@ class SkriningTbController extends Controller
     function update(Request $request)
     {
         $data = [
-            'kontak' => $request->kontak,
-            'demam' => $request->demam,
+            'nip' => session()->get('pegawai')->nik,
             'berat' => $request->berat,
-            'batul' => $request->batul,
-            'pembesaran' => $request->pembesaran,
-            'pembengkakan' => $request->pembengkakan,
-            'thorax' => $request->thorax,
-            'mantoux' => $request->mantoux,
-            'ket_kontak' => $request->ket_kontak,
-            'ket_mantoux' => $request->ket_mantoux,
-            'ket_berat' => $request->ket_berat,
-            'ket_demam' => $request->ket_demam,
-            'ket_batul' => $request->ket_batul,
-            'ket_pembesaran' => $request->ket_pembesaran,
-            'ket_pembengkakan' => $request->ket_pembengkakan,
-            'ket_thorax' => $request->ket_thorax,
-            'total_skrining' => $request->total_skrining,
+            'berdahak' => $request->berdahak,
+            'berdahakB' => $request->berdahakB,
+            'demam' => $request->demam,
+            'kelenjar' => $request->kelenjar,
+            'keluarga' => $request->keluarga,
+            'keringat' => $request->keringat,
+            'obat' => $request->obat,
+            'penyakit' => $request->penyakit,
+            'sesak' => $request->sesak,
         ];
+
         try {
             $skrining = SkriningTb::where('id', $request->id)->update($data);
             if ($skrining) {
@@ -121,5 +112,23 @@ class SkriningTbController extends Controller
         } catch (QueryException $e) {
             return response()->json($e->errorInfo);
         }
+    }
+
+    function print($id)
+    {
+        $skrining = $this->get(new \Illuminate\Http\Request(['id' => $id]))->getContent();
+        $data = json_decode($skrining);
+        // return $data;
+        $data->finger = $this->setFingerOutput($data->pegawai->nama, bcrypt($data->pegawai->nik), date('Y-m-d H:i:s'));
+        $data->fingerDokter = $this->setFingerOutput($data->reg_periksa->dokter->nm_dokter, bcrypt($data->reg_periksa->dokter->kd_dokter), date('Y-m-d H:i:s'));
+        $file = Pdf::loadView('content.print.skriningTb', ['data' => $data])
+            ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
+            ->setPaper(array(0, 0, 595, 935));
+        return $file->stream($data->pasien->no_rkm_medis . date('YmdHis') . '.pdf');
+    }
+    function setFingerOutput($dokter, $id, $tanggal)
+    {
+        $strId = sha1($id);
+        return $str = "Ditandatangani di RSIA Aisiyiyah Pekajangan Kab. Pekalongan, Ditandatangani Elektronik Oleh $dokter, ID $strId, $tanggal";
     }
 }

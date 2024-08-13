@@ -654,6 +654,7 @@
                 },
                 createdRow: function(row, data, dataIndex) {
                     $(row).attr('class', 'row-' + dataIndex);
+                    $(row).css('cursor', 'pointer');
                     $(row).attr('onclick', `setTextRiwayat('${parameter}', ${dataIndex})`);
                 },
 

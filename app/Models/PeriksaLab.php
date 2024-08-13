@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use SebastianBergmann\Template\Template;
 
 class PeriksaLab extends Model
 {
-    use HasFactory;
+    use HasFactory, Compoships;
     protected $table = 'periksa_lab';
 
 
@@ -21,10 +25,15 @@ class PeriksaLab extends Model
     }
     public function jnsPerawatanLab()
     {
-        return $this->hasMany(JnsPerawatanLab::class, 'kd_jenis_prw', 'kd_jenis_prw');
+        return $this->belongsTo(JnsPerawatanLab::class, 'kd_jenis_prw', 'kd_jenis_prw');
     }
     public function perujuk()
     {
         return $this->belongsTo(Dokter::class, 'dokter_perujuk', 'kd_dokter');
+    }
+    function detail(): HasMany
+    {
+        return $this->hasMany(DetailPemeriksaanLab::class, ['no_rawat', 'tgl_periksa', 'kd_jenis_prw', 'jam'], ['no_rawat', 'tgl_periksa', 'kd_jenis_prw', 'jam'])
+            ->select(['no_rawat', 'tgl_periksa', 'kd_jenis_prw', 'jam', 'nilai', 'nilai_rujukan', 'keterangan', 'id_template']);
     }
 }
