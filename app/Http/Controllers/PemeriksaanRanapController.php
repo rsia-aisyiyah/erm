@@ -138,7 +138,7 @@ class PemeriksaanRanapController extends Controller
             'penilaian' => $request->penilaian,
             'rtl' => $request->rtl,
             'evaluasi' => '-',
-            'instruksi' => $request->instruksi,
+            'instruksi' => $request->instruksi ? $request->instruksi : '',
             'kesadaran' => $request->kesadaran,
         ];
 
