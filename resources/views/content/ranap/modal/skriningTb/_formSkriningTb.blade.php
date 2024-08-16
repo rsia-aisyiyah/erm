@@ -10,7 +10,7 @@
                 <label class="form-check-label" for="berdahak1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="berdahak" id="berdahak2" value="Tidak">
+                <input class="form-check-input" type="radio" name="berdahak" id="berdahak2" value="Tidak" checked>
                 <label class="form-check-label" for="berdahak2">Tidak</label>
             </div>
         </div>
@@ -23,7 +23,7 @@
                 <label class="form-check-label" for="berdahakB1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="berdahakB" id="berdahakB2" value="Tidak">
+                <input class="form-check-input" type="radio" name="berdahakB" id="berdahakB2" value="Tidak" checked>
                 <label class="form-check-label" for="berdahakB2">Tidak</label>
             </div>
         </div>
@@ -35,7 +35,7 @@
                 <label class="form-check-label" for="demam1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="demam" id="demam2" value="Tidak">
+                <input class="form-check-input" type="radio" name="demam" id="demam2" value="Tidak" checked>
                 <label class="form-check-label" for="demam2">Tidak</label>
             </div>
         </div>
@@ -47,7 +47,7 @@
                 <label class="form-check-label" for="keringat1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="keringat" id="keringat2" value="Tidak">
+                <input class="form-check-input" type="radio" name="keringat" id="keringat2" value="Tidak" checked>
                 <label class="form-check-label" for="keringat2">Tidak</label>
             </div>
         </div>
@@ -59,7 +59,7 @@
                 <label class="form-check-label" for="berat1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="berat" id="berat2" value="Tidak">
+                <input class="form-check-input" type="radio" name="berat" id="berat2" value="Tidak" checked>
                 <label class="form-check-label" for="berat2">Tidak</label>
             </div>
         </div>
@@ -71,7 +71,7 @@
                 <label class="form-check-label" for="kelenjar1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="kelenjar" id="kelenjar2" value="Tidak">
+                <input class="form-check-input" type="radio" name="kelenjar" id="kelenjar2" value="Tidak" checked>
                 <label class="form-check-label" for="kelenjar2">Tidak</label>
             </div>
         </div>
@@ -83,7 +83,7 @@
                 <label class="form-check-label" for="sesak1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="sesak" id="sesak2" value="Tidak">
+                <input class="form-check-input" type="radio" name="sesak" id="sesak2" value="Tidak" checked>
                 <label class="form-check-label" for="sesak2">Tidak</label>
             </div>
         </div>
@@ -95,7 +95,7 @@
                 <label class="form-check-label" for="obat1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="obat" id="obat2" value="Tidak">
+                <input class="form-check-input" type="radio" name="obat" id="obat2" value="Tidak" checked>
                 <label class="form-check-label" for="obat2">Tidak</label>
             </div>
         </div>
@@ -107,7 +107,7 @@
                 <label class="form-check-label" for="keluarga1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="keluarga" id="keluarga2" value="Tidak">
+                <input class="form-check-input" type="radio" name="keluarga" id="keluarga2" value="Tidak" checked>
                 <label class="form-check-label" for="keluarga2">Tidak</label>
             </div>
         </div>
@@ -119,7 +119,7 @@
                 <label class="form-check-label" for="penyakit1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="penyakit" id="penyakit2" value="Tidak">
+                <input class="form-check-input" type="radio" name="penyakit" id="penyakit2" value="Tidak" checked>
                 <label class="form-check-label" for="penyakit2">Tidak</label>
             </div>
         </div>
@@ -155,7 +155,7 @@
                 data
             ).done((response) => {
                 alertSuccessAjax().then(() => {
-                    bootstrap.Tab.getInstance(tableSkriningTbTab).show()
+                    new bootstrap.Tab(tableSkriningTbTab).show();
                     formSkriningTb.find('input[name=id]').remove();
                     formSkriningTb.trigger('reset')
                     drawTbSkriningTb(data['no_rawat'])

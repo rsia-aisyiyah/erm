@@ -373,15 +373,6 @@
             tb_ranap();
         })
 
-
-        function cekList(parameter) {
-            let isCheck = '';
-            if (parameter) {
-                isCheck = parameter ? '<i class="bi bi-check-circle text-success"></i>' : '';
-            }
-            return isCheck;
-        }
-
         function tb_ranap() {
             $('#tb_ranap').DataTable({
                 processing: true,
