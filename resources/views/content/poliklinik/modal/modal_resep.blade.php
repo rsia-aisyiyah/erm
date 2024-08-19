@@ -173,6 +173,11 @@
             kps = $('#kps' + no).val();
             p1 = $('#p1' + no).val();
             p2 = $('#p2' + no).val();
+
+            if (kandungan === '') {
+                return false;
+            }
+
             if (parseInt(kandungan) <= parseInt(kps)) {
                 jml_obat = (parseFloat(kandungan) * parseFloat(jumlah)) / parseFloat(kps)
                 $('#jml_obat' + no).val(jml_obat.toFixed(1));
