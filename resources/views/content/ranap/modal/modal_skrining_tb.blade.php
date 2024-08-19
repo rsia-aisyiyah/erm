@@ -93,18 +93,6 @@
     <script>
         const modalSkoringTb = $('#modalSkoringTb');
 
-        // var formTab = '';
-        // var tableTab = '';
-        // var instanceFormTab = '';
-        // var instanceTableTab = '';
-
-        // modalSkoringTb.on('shown.bs.modal', () => {
-        //     formTab = document.getElementById('formSkoringTb-tab')
-        //     tableTab = document.getElementById('SkoringTb-tab')
-        //     instanceFormTab = bootstrap.Tab.getInstance(formTab);
-        //     instanceTableTab = new bootstrap.Tab(tableTab);
-        // })
-
         modalSkoringTb.on('hidden.bs.modal', () => {
             formSkoringTb.trigger('reset')
             formSkriningTb.trigger('reset')

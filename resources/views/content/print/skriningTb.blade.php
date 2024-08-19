@@ -76,7 +76,7 @@
                 <td>[ {{ $data->keringat }} ]</td>
             </tr>
             <tr>
-                <td>Penurunan berat badan tanpa sebab yang jelas</td>
+                <td>Penurunan BB tanpa sebab yang jelas atau BB sulit naik dalam satu bulan terakhir</td>
                 <td>[ {{ $data->berat }} ]</td>
             </tr>
             <tr>
@@ -96,7 +96,7 @@
                 <td>[ {{ $data->keluarga }} ]</td>
             </tr>
             <tr>
-                <td>Penyakit lain : Asma / Diabetes Melitus </td>
+                <td>Penyakit lain : Asma / Diabetes Melitus / HIV / Penyakit imunokompromised lainnya</td>
                 <td>[ {{ $data->penyakit }} ]</td>
             </tr>
 

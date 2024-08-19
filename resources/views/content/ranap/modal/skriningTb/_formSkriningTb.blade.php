@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        <div class="col-lg-6"><label for="" class="form-label">Penurunan berat badan tanpa sebab yang jelas</label></div>
+        <div class="col-lg-6"><label for="" class="form-label">Penurunan BB tanpa sebab yang jelas atau BB sulit naik dalam satu bulan terakhir</label></div>
         <div class="col-lg-6">
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="berat" id="berat1" value="Ya">
@@ -112,7 +112,7 @@
             </div>
         </div>
 
-        <div class="col-lg-6"><label for="" class="form-label">Penyakit lain : Asma / Diabetes Melitus</label></div>
+        <div class="col-lg-6"><label for="" class="form-label">Penyakit lain : Asma / Diabetes Melitus / HIV / Penyakit imunokompromised lainnya</label></div>
         <div class="col-lg-6">
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="penyakit" id="penyakit1" value="Ya">
@@ -218,12 +218,12 @@
                                     <li>Batuk berdahak lebih dari 2 minggu : [${setKeteranganSkrining(row.berdahakB)}]</li>
                                     <li>Demam hilang timbul lebih dari 1 Bulan : [${setKeteranganSkrining(row.demam)}]</li>
                                     <li>Keringat malam tanpa aktivitas : [${setKeteranganSkrining(row.keringat)}]</li>
-                                    <li>Penurunan berat badan tanpa sebab yang jelas : [${setKeteranganSkrining(row.berat)}]</li>
+                                    <li>Penurunan BB tanpa sebab yang jelas atau BB sulit naik dalam satu bulan terakhir : [${setKeteranganSkrining(row.berat)}]</li>
                                     <li>Pembesaran kelenjar getah bening (benjolan di daerah leher) dengan ukuran lebih dari 2 cm : [${setKeteranganSkrining(row.kelenjar)}]</li>
                                     <li>Sesak nafas dan nyeri dada : [${setKeteranganSkrining(row.sesak)}]</li>
                                     <li>Pernah minum obat paru dalam waktu lama sebelumnya : [${setKeteranganSkrining(row.obat)}]</li>
                                     <li>Ada keluarga/tetangga yang pernah mengalami sakit paru-paru/TB/pengobatan paru-paru : [${setKeteranganSkrining(row.keluarga)}]</li>
-                                    <li>Penyakit lain : Asma / Diabetes Melitus : [${setKeteranganSkrining(row.penyakit)}]</li>
+                                    <li>>Penyakit lain : Asma / Diabetes Melitus / HIV / Penyakit imunokompromised lainnya : [${setKeteranganSkrining(row.penyakit)}]</li>
                                 </ul>`;
                         }
                     },
