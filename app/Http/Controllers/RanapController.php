@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\KamarInap;
-use App\Models\RegPeriksa;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -57,6 +56,12 @@ class RanapController extends Controller
                         $query->where('nm_pasien', 'like', '%' . $request->get('search')['value'] . '%');
                     });
                 }
+            })
+            ->addColumn('lama', function ($ranap) {
+                $date1 = $ranap->regPeriksa->tgl_registrasi; // Adjust this to your date columns
+                $date2 = date('Y-m-d'); // Adjust this to your date columns
+                return Carbon::parse($date1)->diffInDays($date2) + 1;
+                // return $date1->diffInDays($date2);
             })
             ->make(true);
     }

@@ -540,11 +540,7 @@
                     {
                         data: 'lama',
                         render: function(data, type, row) {
-                            let lama = 0;
-                            $.map(row.reg_periksa.kamar_inap, (kamar) => {
-                                lama += kamar.lama
-                            })
-                            return lama + ' Hari';
+                            return `${data} Hari`;
                         },
                         name: 'lama',
                     },
