@@ -59,7 +59,7 @@ class RanapController extends Controller
             })
             ->addColumn('lama', function ($ranap) {
                 $date1 = $ranap->regPeriksa->tgl_registrasi; // Adjust this to your date columns
-                $date2 = date('Y-m-d'); // Adjust this to your date columns
+                $date2 = $ranap->tgl_keluar === '0000-00-00' ? date('Y-m-d') : $ranap->tgl_keluar; // Adjust this to your date columns
                 return Carbon::parse($date1)->diffInDays($date2) + 1;
                 // return $date1->diffInDays($date2);
             })
