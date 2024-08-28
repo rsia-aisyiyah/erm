@@ -335,16 +335,16 @@
 @push('script')
     <script>
         const formAsuhanGiziDewasa = $('#formAsuhanGiziDewasa');
-        const selectPetugasGiziDewasa = formAsuhanGiziDewasa.find('#nip');
-        const beratBadanGizi = formAsuhanGiziDewasa.find('#antropometri_bb');
-        const tinggiBadanGizi = formAsuhanGiziDewasa.find('#antropometri_tb');
+        const selectPetugasGiziDewasa = formAsuhanGiziDewasa.find('select[name=nip]');
+        const beratBadanGizi = formAsuhanGiziDewasa.find('input[name=antropometri_bb]');
+        const tinggiBadanGizi = formAsuhanGiziDewasa.find('input[name=antropometri_tb]');
         const btnSimpanAsuhanGizi = formAsuhanGiziDewasa.find('#btnSimpanAsuhanGizi');
         const btnUbahAsuhanGizi = formAsuhanGiziDewasa.find('#btnUbahAsuhanGizi');
-        const imtGizi = formAsuhanGiziDewasa.find('#antropometri_imt');
+        const imtGizi = formAsuhanGiziDewasa.find('input[name=antropometri_imt]');
         const searchAntropometri = formAsuhanGiziDewasa.find('#searchAntropometri');
         const searchBiometri = formAsuhanGiziDewasa.find('#searchBiometri');
-        const biokimiaGizi = formAsuhanGiziDewasa.find('#biokimia');
-        const optPetugasGiziDewasa = new Option('{{ session()->get('pegawai')->nik }}', '{{ session()->get('pegawai')->nama }}', false, false);
+        const biokimiaGizi = formAsuhanGiziDewasa.find('textarea[name=biokimia]');
+        const optPetugasGiziDewasa = new Option('{{ session()->get('pegawai')->nama }}', '{{ session()->get('pegawai')->nik }}', false, false);
         selectPetugasGiziDewasa.append(optPetugasGiziDewasa).trigger('change');
 
         const tabAsuhanGizi = $('#tabAsuhanGiziDewasa');
@@ -408,21 +408,21 @@
             const berat = beratBadanGizi.val();
             const tinggi = tinggiBadanGizi.val();
             const imt = countIMT(berat, tinggi);
-            imtGizi.val(imt.toFixed(2));
+            imtGizi.val(imt);
         })
 
         tinggiBadanGizi.on('change', function() {
             const berat = beratBadanGizi.val();
             const tinggi = tinggiBadanGizi.val();
             const imt = countIMT(berat, tinggi);
-            imtGizi.val(imt.toFixed(2));
+            imtGizi.val(imt);
         })
 
         function countIMT(berat, tinggi) {
             if (tinggi !== 0) {
                 const tinggiOnMeter = tinggi.replace(/,/g, '.') / 100
                 const imt =  berat.replace(/,/g, '.') / (tinggiOnMeter * tinggiOnMeter);
-                return imt.toFixed(2);
+                return imt && imt.toFixed(2);
             }
             return 0;
         }

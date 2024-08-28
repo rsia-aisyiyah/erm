@@ -142,6 +142,7 @@
             bootstrap.Tab.getInstance(tabSoapRanap).show()
             elementInput.hasClass('is-valid') && elementInput.removeClass('is-valid');
             formAsuhanGiziDewasa.trigger('reset')
+            formAsuhanGiziAnak.trigger('reset')
         })
 
         modalSoapRanap.on('shown.bs.modal', () => {

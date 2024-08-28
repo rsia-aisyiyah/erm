@@ -370,16 +370,16 @@
 @push('script')
     <script>
         const formAsuhanGiziAnak = $('#formAsuhanGiziAnak');
-        const selectPetugasGiziAnak = formAsuhanGiziAnak.find('#nip');
-        const bbGiziAnak = formAsuhanGiziAnak.find('#antropometri_bb');
-        const tbGiziAnak = formAsuhanGiziAnak.find('#antropometri_tb');
+        const selectPetugasGiziAnak = formAsuhanGiziAnak.find('select[name=nip]');
+        const bbGiziAnak = formAsuhanGiziAnak.find('input[name=antropometri_bb]');
+        const tbGiziAnak = formAsuhanGiziAnak.find('input[name=antropometri_tb]');
         const btnSimpanAsuhanGiziAnak = formAsuhanGiziAnak.find('#btnSimpanAsuhanGiziAnak');
         const btnUbahAsuhanGiziAnak = formAsuhanGiziAnak.find('#btnUbahAsuhanGiziAnak');
-        const imgGiziAnak = formAsuhanGiziAnak.find('#antropometri_imt');
+        const imgGiziAnak = formAsuhanGiziAnak.find('input[name=antropometri_imt]');
         const searchAntropometriAnak = formAsuhanGiziAnak.find('#searchAntropometriAnak');
         const searchBiometriAnak = formAsuhanGiziAnak.find('#searchBiometriAnak');
-        const biokimiaGiziAnak = formAsuhanGiziAnak.find('#biokimia');
-        const optPetugasGiziAnak = new Option('{{ session()->get('pegawai')->nik }}', '{{ session()->get('pegawai')->nama }}', false, false);
+        const biokimiaGiziAnak = formAsuhanGiziAnak.find('textarea[name=biokimia]');
+        const optPetugasGiziAnak = new Option('{{ session()->get('pegawai')->nama }}', '{{ session()->get('pegawai')->nik }}', false, false);
         selectPetugasGiziAnak.append(optPetugasGiziAnak).trigger('change');
 
         const tabAsuhanGiziAnak = $('#tabAsuhanGiziAnak');
@@ -444,14 +444,14 @@
             const berat = bbGiziAnak.val();
             const tinggi = tbGiziAnak.val();
             const imt = countIMT(berat, tinggi);
-            imgGiziAnak.val(imt.toFixed(2));
+            imgGiziAnak.val(imt);
         })
 
         tbGiziAnak.on('change', function () {
             const berat = bbGiziAnak.val();
             const tinggi = tbGiziAnak.val();
             const imt = countIMT(berat, tinggi);
-            imgGiziAnak.val(imt.toFixed(2));
+            imgGiziAnak.val(imt);
         })
 
         function simpanAsuhanGiziAnak() {
