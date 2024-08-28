@@ -74,11 +74,11 @@
                         <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
                             type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep</button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item d-none" role="presentation">
                         <button class="nav-link" id="tabAsuhanGiziDewasa" data-bs-toggle="tab" data-bs-target="#tabAsuhanGiziDewasa-pane"
                             type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">Asuhan Gizi Dewasa</button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item d-none" role="presentation">
                         <button class="nav-link" id="tabAsuhanGiziAnak" data-bs-toggle="tab" data-bs-target="#tabAsuhanGiziAnak-pane"
                             type="button" role="tab" aria-controls="tabAsuhanGiziAnak-pane" aria-selected="false">Asuhan Gizi Anak</button>
                     </li>
@@ -125,26 +125,29 @@
 </div>
 @push('script')
     <script>
-        var no_rawat_soap = '';
-        var tgl_pertama = '';
-        var tgl_kedua = '';
-        var getInstance = '';
-        var sel = '';
+        let no_rawat_soap = '';
+        const tgl_pertama = '';
+        const tgl_kedua = '';
+        const getInstance = '';
+        const sel = '';
 
         const tabSoapRanap = document.querySelector('#tab-soap-ranap li:first-child button')
         const modalSoapRanap = $('#modalSoapRanap')
 
-        var departemen = "{{ session()->get('pegawai')->departemen }}";
+        const departemen = "{{ session()->get('pegawai')->departemen }}";
         const formInfoPasien = $('#formInfoPasien')
 
         modalSoapRanap.on('hidden.bs.modal', () => {
+            const elementInput = $('input');
             bootstrap.Tab.getInstance(tabSoapRanap).show()
-            $('input').hasClass('is-valid') && $('input').removeClass('is-valid');
+            elementInput.hasClass('is-valid') && elementInput.removeClass('is-valid');
             formAsuhanGiziDewasa.trigger('reset')
         })
 
         modalSoapRanap.on('shown.bs.modal', () => {
-            if (departemen == 'CSM' || departemen == '-') {
+
+
+            if (departemen === 'CSM' || departemen === '-') {
                 $('#tgl_perawatan_ubah').removeAttr('disabled');
                 $('#jam_rawat_ubah').removeAttr('disabled');
             } else {
@@ -153,15 +156,15 @@
             }
 
             date = new Date()
-            hari = ('0' + (date.getDate())).slice(-2);
-            bulan = ('0' + (date.getMonth() + 1)).slice(-2);
-            tahun = date.getFullYear();
+            const hari = ('0' + (date.getDate())).slice(-2);
+            const bulan = ('0' + (date.getMonth() + 1)).slice(-2);
+            const tahun = date.getFullYear();
             dateStart = hari + '-' + bulan + '-' + tahun;
 
             const canvasSuhu = $('#grafik-suhu');
 
-            sel = document.querySelector('#tab-tabel')
-            getInstance = bootstrap.Tab.getInstance(sel);
+            const sel = document.querySelector('#tab-tabel')
+            const getInstance = bootstrap.Tab.getInstance(sel);
             jamSekarang = setInterval(() => {
                 $('#jam_rawat_ubah').val(getJam())
             }, 1000);
@@ -173,10 +176,7 @@
                 setDate: dateStart,
             });
 
-
             $('#tgl_perawatan_ubah').datepicker('setDate', dateStart)
-
-
         })
 
         function getDetailPemeriksaanRanap(no_rawat, tgl, jam) {
@@ -419,14 +419,12 @@
         }
 
         function cariSoap() {
-            tgl_pertama = splitTanggal($('.tgl_pertama_soap').val());
-            tgl_kedua = splitTanggal($('.tgl_kedua_soap').val());
+            const tgl_pertama = splitTanggal($('.tgl_pertama_soap').val());
+            const tgl_kedua = splitTanggal($('.tgl_kedua_soap').val());
             petugas = $('#petugas option:selected').val();
             $('#tbSoap').DataTable().destroy();
             tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua, petugas);
         }
-
-
 
         function verifikasiSoap(no_rawat, tgl, jam) {
             swal.fire({

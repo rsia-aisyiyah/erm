@@ -176,61 +176,11 @@
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-grafik')
             new bootstrap.Tab('#tab-tabel')
-            // if (cekDepartement == 'DM3' || cekDepartement == 'DM8') {
-            //     if (cekDepartement == 'DM3') {
-            //         sps = 'S0001';
-            //     } else if (cekDepartement == 'DM8') {
-            //         sps = 'S0003';
-            //     }
-            //     $('#formFilterRanap select[name=spesialis]').val(sps);
-            //     $('#formFilterRanap select[name=spesialis]').prop('disabled', true);
-            //     $('#formFilterRanap select[name=dokter]').prop('disabled', false);
-            //     $('#formFilterRanap select[name=dokter] .' + sps).css('display', 'none');
-            //     if (kd_dokter) {
-            //         $('#formFilterRanap select[name=dokter]').prop('disabled', false);
-            //         $('#formFilterRanap select[name=dokter]').val(kd_dokter);
-            //     }
-            // } else if (cekDepartement == 'CSM' || "{{ session()->get('pegawai')->nik }}" == 'direksi') {
-            //     $('#formSoapRanap .waktuSoap').css('visibility', 'visible');
-            // } else {
-            //     $('#formSoapRanap .waktuSoap').css('visibility', 'hidden');
-            //     if (sps) {
-            //         $('#formFilterRanap select[name=spesialis]').val(sps);
-            //         $('#formFilterRanap select[name=spesialis]').prop('disabled', false);
-            //         $('#formFilterRanap select[name=dokter] .' + sps).css('display', 'none');
-            //     }
-            //     if (kd_dokter) {
-            //         $('#formFilterRanap select[name=dokter]').prop('disabled', false);
-            //         $('#formFilterRanap select[name=dokter]').val(kd_dokter);
-            //     } else {
-            //         $('#formFilterRanap select[name=dokter]').prop('disabled', true);
-            //         $('#formFilterRanap select[name=dokter] option').css('display', 'inline');
-            //     }
-            // }
-
-
-            // if (getSpsId == 'S0005') {
-            //     sps = `S0001`
-            //     kd_dokter = '';
-            // }
-
-            // if (getSpsId == 'S0005' || getSpsId == 'S0003' || getSpsId == 'S0001') {
-            //     valScrollX = 425;
-            //     $('#formFilterRanap select[name=dokter]').prop('disabled', true);
-            //     $('#formFilterRanap select[name=spesialis]').prop('disabled', true);
-            //     $('#formFilterRanap select[name=dokter]').val(kd_dokter);
-            //     $('#formFilterRanap select[name=spesialis]').val(getSpsId);
-            // } else {
-            //     valScrollX = 325;
-            // }
-
-
-
 
             date = new Date()
-            hari = ('0' + (date.getDate())).slice(-2);
-            bulan = ('0' + (date.getMonth() + 1)).slice(-2);
-            tahun = date.getFullYear();
+            const hari = ('0' + (date.getDate())).slice(-2);
+            const bulan = ('0' + (date.getMonth() + 1)).slice(-2);
+            const tahun = date.getFullYear();
             dateStart = hari + '-' + bulan + '-' + tahun;
             $('.tanggal').datepicker({
                 format: 'dd-mm-yyyy',
@@ -872,7 +822,12 @@
                 $('#nama').val("{{ session()->get('pegawai')->nama }}");
                 $('#formSoapRanap input[name=spesialis]').val(response.dokter.kd_sps);
 
-                if (response.dokter.kd_sps == 'S0001') {
+                const tabAsuhanGiziAnakParent = $('#tabAsuhanGiziAnak').parent()
+                const tabAsuhanGiziDewasaParent = $('#tabAsuhanGiziDewasa').parent()
+                if (response.dokter.kd_sps === 'S0001') {
+
+                    tabAsuhanGiziAnakParent.addClass('d-none')
+                    tabAsuhanGiziDewasaParent.removeClass('d-none')
                     $('.formEws').removeAttr('style');
                     $('.formEws select[name=keluaran_urin]').val('-').change()
                     $('.formEws select[name=proteinuria]').val('-').change()
@@ -881,6 +836,8 @@
                     $('.formEws select[name=lochia]').val('-').change()
                     $('.formEws select[name=terlihat_tidak_sehat]').val('-').change()
                 } else {
+                    tabAsuhanGiziDewasaParent.addClass('d-none')
+                    tabAsuhanGiziAnakParent.removeClass('d-none')
                     $('.formEws').css('display', 'none');
                     $('.formEws select[name=keluaran_urin]').val('').change()
                     $('.formEws select[name=proteinuria]').val('').change()
