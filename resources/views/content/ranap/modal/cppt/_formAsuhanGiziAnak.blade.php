@@ -7,12 +7,12 @@
                     <div class="col-lg-4 col-md-12 col-sm-12">
                         @csrf
                         <label for="nip" class="form-label">Petugas</label>
-                        <select name="nip" id="nip" data-dropdown-parent="#formAsuhanGiziAnak" class="form-select"
+                        <select name="nip" id="nip_anak" data-dropdown-parent="#formAsuhanGiziAnak" class="form-select"
                                 style="width:100%"></select>
                     </div>
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <label for="tanggal" class="form-label">Tanggal</label>
-                        <x-input id="tanggal" name="tanggal" class="datetimepicker" value="{{ date('d-m-Y H:i:s') }}"/>
+                        <x-input id="tanggal_anak" name="tanggal" class="datetimepicker" value="{{ date('d-m-Y H:i:s') }}"/>
                     </div>
                 </div>
                 <div class="separator m-2">A. Asesmen Gizi</div>
@@ -400,8 +400,12 @@
 
                 if (isDataAvailable) {
                     setFormData(response)
+                    formAsuhanGiziAnak.find('select[name=nip]').addClass('is-valid')
+                    formAsuhanGiziAnak.find('input[name=tanggal]').addClass('is-valid')
                     btnSimpanAsuhanGiziAnak.html('<i class="bi bi-save"></i> Ubah Asuhan Gizi')
                 } else {
+                    formAsuhanGiziAnak.find('select[name=nip]').removeClass('is-valid')
+                    formAsuhanGiziAnak.find('input[name=tanggal]').removeClass('is-valid')
                     btnSimpanAsuhanGiziAnak.html('<i class="bi bi-save"></i> Simpan Asuhan Gizi')
                 }
             })
@@ -459,6 +463,8 @@
             $.post(`${url}/ranap/gizi/asuhan/anak`, data).done((response) => {
                 alertSuccessAjax().then(() => {
                     btnSimpanAsuhanGiziAnak.prop('disabled', false);
+                    formAsuhanGiziAnak.find('select[name=nip]').addClass('is-valid')
+                    formAsuhanGiziAnak.find('input[name=tanggal]').addClass('is-valid')
                 })
             }).fail((error) => {
                 Swal.fire({

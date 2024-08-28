@@ -335,7 +335,7 @@
 @push('script')
     <script>
         const formAsuhanGiziDewasa = $('#formAsuhanGiziDewasa');
-        const selectPetugasGizi = formAsuhanGiziDewasa.find('#nip');
+        const selectPetugasGiziDewasa = formAsuhanGiziDewasa.find('#nip');
         const beratBadanGizi = formAsuhanGiziDewasa.find('#antropometri_bb');
         const tinggiBadanGizi = formAsuhanGiziDewasa.find('#antropometri_tb');
         const btnSimpanAsuhanGizi = formAsuhanGiziDewasa.find('#btnSimpanAsuhanGizi');
@@ -344,8 +344,8 @@
         const searchAntropometri = formAsuhanGiziDewasa.find('#searchAntropometri');
         const searchBiometri = formAsuhanGiziDewasa.find('#searchBiometri');
         const biokimiaGizi = formAsuhanGiziDewasa.find('#biokimia');
-        const optPetugas = new Option('{{ session()->get('pegawai')->nik }}', '{{ session()->get('pegawai')->nama }}', false, false);
-        selectPetugasGizi.append(optPetugas).trigger('change');
+        const optPetugasGiziDewasa = new Option('{{ session()->get('pegawai')->nik }}', '{{ session()->get('pegawai')->nama }}', false, false);
+        selectPetugasGiziDewasa.append(optPetugasGiziDewasa).trigger('change');
 
         const tabAsuhanGizi = $('#tabAsuhanGiziDewasa');
 
@@ -365,15 +365,19 @@
 
                 if (isDataAvailable) {
                     setFormData(response)
+                    formAsuhanGiziDewasa.find('select[name=nip]').addClass('is-valid')
+                    formAsuhanGiziDewasa.find('input[name=tanggal]').addClass('is-valid')
                     btnSimpanAsuhanGizi.html('<i class="bi bi-save"></i> Ubah Asuhan Gizi')
                 } else {
+                    formAsuhanGiziDewasa.find('select[name=nip]').removeClass('is-valid')
+                    formAsuhanGiziDewasa.find('input[name=tanggal]').removeClass('is-valid')
                     btnSimpanAsuhanGizi.html('<i class="bi bi-save"></i> Simpan Asuhan Gizi')
                 }
             })
 
         })
 
-        selectPetugasGizi.select2({
+        selectPetugasGiziDewasa.select2({
             allowClear: false,
             delay: 0,
             scrollAfterSelect: false,
@@ -382,10 +386,9 @@
                 url: `${url}/petugas/cari`,
                 dataType: 'json',
                 data: (params) => {
-                    const query = {
+                   return {
                         q: params.term
                     }
-                    return query
                 },
                 processResults: function(data) {
                     return {
@@ -432,6 +435,8 @@
             $.post(`${url}/ranap/gizi/asuhan/dewasa`, data).done((response) => {
                 alertSuccessAjax().then(() => {
                     btnSimpanAsuhanGizi.prop('disabled', false);
+                    formAsuhanGiziDewasa.find('select[name=nip]').addClass('is-valid')
+                    formAsuhanGiziDewasa.find('input[name=tanggal]').addClass('is-valid')
                 })
             }).fail((error) => {
                 Swal.fire({
