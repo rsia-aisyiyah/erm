@@ -293,7 +293,7 @@
                                         :radios="[
                                             'intervensi_gizi_bentuk_makanan1' => ['value' => 'Biasa', 'label' => 'Biasa', 'checked' => true],
                                             'intervensi_gizi_bentuk_makanan2' => ['value' => 'Lunak', 'label' => 'Lunak'],
-                                            'intervensi_gizi_bentuk_makanan2' => ['value' => 'Cair', 'label' => 'Cair'],
+                                            'intervensi_gizi_bentuk_makanan3' => ['value' => 'Cair', 'label' => 'Cair'],
                                         ]" />
                                 </x-input-group>
                                 <label for="intervensi_gizi_rute_pemberian">Rute Pemberian</label>
