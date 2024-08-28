@@ -129,8 +129,8 @@
                             <x-radio-group
                                     name="fisik_klinis_nafsu_makan"
                                     :radios="[
-                                    'fisik_klinis_nafsu_makan1' => ['value' => 'Baik', 'label' => 'Baik', 'checked' => true],
-                                    'fisik_klinis_nafsu_makan2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'fisik_klinis_nafsu_makan1_anak' => ['value' => 'Baik', 'label' => 'Baik', 'checked' => true],
+                                    'fisik_klinis_nafsu_makan2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                         </x-input-group>
                         <label for="fisik_klinis_hilang_lemak">Hilang Lemak Subkutan</label><br/>
@@ -138,8 +138,8 @@
                             <x-radio-group
                                     name="fisik_klinis_hilang_lemak"
                                     :radios="[
-                                    'fisik_klinis_hilang_lemak1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'fisik_klinis_hilang_lemak2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'fisik_klinis_hilang_lemak1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'fisik_klinis_hilang_lemak2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                         </x-input-group>
                         <label for="fisik_klinis_gangguan_telan">Gangguan Menelan</label><br/>
@@ -147,8 +147,8 @@
                             <x-radio-group
                                     name="fisik_klinis_gangguan_telan"
                                     :radios="[
-                                    'fisik_klinis_gangguan_telan1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'fisik_klinis_gangguan_telan2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'fisik_klinis_gangguan_telan1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'fisik_klinis_gangguan_telan2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                         </x-input-group>
                         <label for="fisik_klinis_gangguan_kunyah">Gangguan Mengunyah</label><br/>
@@ -156,8 +156,8 @@
                             <x-radio-group
                                     name="fisik_klinis_gangguan_kunyah"
                                     :radios="[
-                                    'fisik_klinis_gangguan_kunyah1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'fisik_klinis_gangguan_kunyah2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'fisik_klinis_gangguan_kunyah1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'fisik_klinis_gangguan_kunyah2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                         </x-input-group>
                         <label for="fisik_klinisu_dem">Udem</label><br/>
@@ -165,8 +165,8 @@
                             <x-radio-group
                                     name="fisik_klinis_udem"
                                     :radios="[
-                                    'fisik_klinis_udem1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'fisik_klinis_udem2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'fisik_klinis_udem1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'fisik_klinis_udem2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                         </x-input-group>
                     </div>
@@ -175,32 +175,32 @@
                         <x-input-group class="input-group-sm">
                             <x-radio-group name="fisik_klinis_diare"
                                            :radios="[
-                                    'fisik_klinis_diare1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'fisik_klinis_diare2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'fisik_klinis_diare1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'fisik_klinis_diare2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                         </x-input-group>
                         <label for="fisik_klinis_konstipasi">Konstipasi</label>
                         <x-input-group>
                             <x-radio-group name="fisik_klinis_konstipasi"
                                            :radios="[
-                                    'fisik_klinis_konstipasi1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'fisik_klinis_konstipasi2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'fisik_klinis_konstipasi1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'fisik_klinis_konstipasi2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                         </x-input-group>
                         <label for="fisik_klinis_mual">Mual</label>
                         <x-input-group>
                             <x-radio-group name="fisik_klinis_mual"
                                            :radios="[
-                                    'fisik_klinis_mual1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'fisik_klinis_mual2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'fisik_klinis_mual1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'fisik_klinis_mual2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                         </x-input-group>
                         <label for="fisik_klinis_muntah">Muntah</label>
                         <x-input-group>
                             <x-radio-group name="fisik_klinis_muntah"
                                            :radios="[
-                                    'fisik_klinis_muntah1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'fisik_klinis_muntah2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'fisik_klinis_muntah1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'fisik_klinis_muntah2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                         </x-input-group>
                     </div>
@@ -212,8 +212,8 @@
                         <x-input-group class="input-group-sm">
                             <x-radio-group name="riwayat_gizi_alergi_makanan"
                                            :radios="[
-                                    'riwayat_gizi_alergi_makanan1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'riwayat_gizi_alergi_makanan2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'riwayat_gizi_alergi_makanan1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'riwayat_gizi_alergi_makanan2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                             <x-input class="br-full" id="riwayat_gizi_keterangan_alergi"
                                      name="riwayat_gizi_keterangan_alergi" style="font-size: 11px"/>
@@ -225,8 +225,8 @@
                         <x-input-group class="input-group-sm">
                             <x-radio-group name="riwayat_gizi_ketidaksukaan_makanan"
                                            :radios="[
-                                    'riwayat_gizi_ketidaksukaan_makanan1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'riwayat_gizi_ketidaksukaan_makanan2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'riwayat_gizi_ketidaksukaan_makanan1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'riwayat_gizi_ketidaksukaan_makanan2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                             <x-input class="br-full" id="riwayat_gizi_keterangan_ketidaksukaan_makanan"
                                      name="riwayat_gizi_keterangan_ketidaksukaan_makanan" style="font-size: 11px"/>
@@ -238,8 +238,8 @@
                         <x-input-group class="input-group-sm">
                             <x-radio-group name="riwayat_gizi_pantangan_makanan"
                                            :radios="[
-                                    'riwayat_gizi_pantangan_makanan1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'riwayat_gizi_pantangan_makanan2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'riwayat_gizi_pantangan_makanan1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'riwayat_gizi_pantangan_makanan2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                             <x-input class="br-full" id="riwayat_gizi_keterangan_pantangan_makanan"
                                      name="riwayat_gizi_keterangan_pantangan_makanan" style="font-size: 11px"/>
@@ -251,8 +251,8 @@
                         <x-input-group class="input-group-sm">
                             <x-radio-group name="riwayat_gizi_pola_makan"
                                            :radios="[
-                                    'riwayat_gizi_pola_makan1' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
-                                    'riwayat_gizi_pola_makan2' => ['value' => 'Tidak', 'label' => 'Tidak'],
+                                    'riwayat_gizi_pola_makan1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
+                                    'riwayat_gizi_pola_makan2_anak' => ['value' => 'Tidak', 'label' => 'Tidak'],
                                 ]"/>
                             <x-input class="br-full" id="riwayat_gizi_keterangan_pola_makan"
                                      name="riwayat_gizi_keterangan_pola_makan" style="font-size: 11px"/>
@@ -321,18 +321,18 @@
                                 <x-input-group class="input-group-sm">
                                     <x-radio-group name="intervensi_gizi_bentuk_makanan"
                                                    :radios="[
-                                            'intervensi_gizi_bentuk_makanan1' => ['value' => 'Biasa', 'label' => 'Biasa', 'checked' => true],
-                                            'intervensi_gizi_bentuk_makanan2' => ['value' => 'Lunak', 'label' => 'Lunak'],
-                                            'intervensi_gizi_bentuk_makanan3' => ['value' => 'Cair', 'label' => 'Cair'],
+                                            'intervensi_gizi_bentuk_makanan1_anak' => ['value' => 'Biasa', 'label' => 'Biasa', 'checked' => true],
+                                            'intervensi_gizi_bentuk_makanan2_anak' => ['value' => 'Lunak', 'label' => 'Lunak'],
+                                            'intervensi_gizi_bentuk_makanan3_anak' => ['value' => 'Cair', 'label' => 'Cair'],
                                         ]"/>
                                 </x-input-group>
                                 <label for="intervensi_gizi_rute_pemberian">Rute Pemberian</label>
                                 <x-input-group class="input-group-sm">
                                     <x-radio-group name="intervensi_gizi_rute_pemberian"
                                                    :radios="[
-                                            'intervensi_gizi_rute_pemberian1' => ['value' => 'Oral', 'label' => 'Oral', 'checked' => true],
-                                            'intervensi_gizi_rute_pemberian2' => ['value' => 'Enteral', 'label' => 'Enteral'],
-                                            'intervensi_gizi_rute_pemberian3' => ['value' => 'Parenteral', 'label' => 'Parenteral'],
+                                            'intervensi_gizi_rute_pemberian1_anak' => ['value' => 'Oral', 'label' => 'Oral', 'checked' => true],
+                                            'intervensi_gizi_rute_pemberian2_anak' => ['value' => 'Enteral', 'label' => 'Enteral'],
+                                            'intervensi_gizi_rute_pemberian3_anak' => ['value' => 'Parenteral', 'label' => 'Parenteral'],
                                         ]"/>
                                 </x-input-group>
                                 <label for="intervensi_gizi_frekuensi">Frekuensi</label>
