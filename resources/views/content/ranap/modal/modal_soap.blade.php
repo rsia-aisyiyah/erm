@@ -76,7 +76,11 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tabAsuhanGiziDewasa" data-bs-toggle="tab" data-bs-target="#tabAsuhanGiziDewasa-pane"
-                            type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">Asuhan Gizi</button>
+                            type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">Asuhan Gizi Dewasa</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tabAsuhanGiziAnak" data-bs-toggle="tab" data-bs-target="#tabAsuhanGiziAnak-pane"
+                            type="button" role="tab" aria-controls="tabAsuhanGiziAnak-pane" aria-selected="false">Asuhan Gizi Anak</button>
                     </li>
 
                 </ul>
@@ -104,6 +108,10 @@
                     <div class="tab-pane fade" id="tabAsuhanGiziDewasa-pane" role="tabpanel" aria-labelledby="tabAsuhanGiziDewasa"
                         tabindex="0">
                         @include('content.ranap.modal.cppt._formAsuhanGiziDewasa')
+                    </div>
+                    <div class="tab-pane fade" id="tabAsuhanGiziAnak-pane" role="tabpanel" aria-labelledby="tabAsuhanGiziAnak"
+                        tabindex="0">
+                        @include('content.ranap.modal.cppt._formAsuhanGiziAnak')
                     </div>
                 </div>
             </div>
@@ -589,6 +597,23 @@
                     alertErrorAjax(request);
                 }
             })
+        }
+        function setFormData(data) {
+            for (let key in data) {
+                if (data.hasOwnProperty(key)) {
+                    let fields = document.querySelectorAll(`[name="${key}"]`);
+
+                    if (fields.length > 0) {
+                        fields.forEach(field => {
+                            if (field.type === 'checkbox' || field.type === 'radio') {
+                                field.checked = data[key] == field.value;
+                            } else {
+                                field.value = data[key];
+                            }
+                        });
+                    }
+                }
+            }
         }
     </script>
 @endpush

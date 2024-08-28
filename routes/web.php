@@ -100,6 +100,7 @@ use App\Http\Controllers\PermintaanLabController;
 use App\Http\Controllers\PermintaanPemeriksaanLabController;
 use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
 use App\Http\Controllers\RsiaAsuhanGiziDewasaController;
+use App\Http\Controllers\RsiaAsuhanGiziAnakController;
 use App\Http\Controllers\TemplateLaboratoriumController;
 use App\Models\PermintaanPemeriksaanLab;
 use App\Models\PermintaanPemeriksaanRadiologi;
@@ -263,8 +264,18 @@ Route::middleware('auth')->group(function () {
     Route::get('ranap/askep/neonatus', [AskepRanapNeonatusController::class, 'get']);
     Route::post('ranap/askep/neonatus/create', [AskepRanapNeonatusController::class, 'createOrUpdate']);
 
-    Route::post('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'create']);
-    Route::get('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'get']);
+//    Route::post('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'create']);
+//    Route::get('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'get']);
+
+	Route::prefix('ranap')->group(function($route){
+		$route->prefix('gizi')->group(function($route){
+			$route->get('asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'get']);
+			$route->post('asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'create']);
+
+			$route->get('asuhan/anak', [RsiaAsuhanGiziAnakController::class, 'get']);
+			$route->post('asuhan/anak', [RsiaAsuhanGiziAnakController::class, 'create']);
+		});
+	});
 
     Route::get('master/masalah/keperawatan/table', [MasterMasalahKeperawatanController::class, 'getDataTable']);
     Route::get('master/rencana/keperawatan/table', [MasterRencanaKeperawatanController::class, 'getDataTable']);
