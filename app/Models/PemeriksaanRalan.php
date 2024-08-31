@@ -28,4 +28,6 @@ class PemeriksaanRalan extends Model
     {
         return $this->hasMany(RsiaLogSoap::class, 'no_rawat', 'no_rawat');
     }
+
+
 }
