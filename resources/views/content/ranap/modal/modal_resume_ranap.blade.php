@@ -35,7 +35,7 @@
                                     </div>
                                     <div class="mb-2 col-sm-12 col-md-4 col-lg-4">
                                         <label for="kd_dokter"></label>
-                                        <input type="search" class="form-control form-control-sm dokter" placeholder="" aria-label="" id="dokter" name="dokter" readonly>
+                                        <input type="search" class="form-control form-control-sm dokter" placeholder="" aria-label="" id="dokter" name="nm_dokter" readonly>
                                     </div>
                                     <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                         <label for="kamar">Kamar & Pembiayaan</label>
@@ -395,7 +395,7 @@
                 $('#formResumeRanap input[name=pasien]').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`);
                 $('#formResumeRanap input[name=tgl_lahir]').val(`${formatTanggal(response.pasien.tgl_lahir)} (${hitungUmur(response.pasien.tgl_lahir)})`);
                 $('#formResumeRanap input[name=kd_dokter]').val(`${response.dokter.kd_dokter}`);
-                $('#formResumeRanap input[name=dokter]').val(`${response.dokter.nm_dokter}`);
+                $('#formResumeRanap input[name=nm_dokter]').val(`${response.dokter.nm_dokter}`);
                 $.map(response.diagnosa_pasien, (diagnosa) => {
                     if (diagnosa.prioritas == 1) {
                         $('#formResumeRanap input[name=diagnosa_utama]').val(diagnosa.penyakit.nm_penyakit)
@@ -403,13 +403,19 @@
                     }
                 })
 
+
                 if (response.bayi_gabung) {
-                    inap = response.bayi_gabung.kamar_inap;
-                    tgl_keluar = inap.tgl_keluar == '0000-00-00' ? `${inap.tgl_keluar} ${inap.jam_keluar}` : `${formatTanggal(inap.tgl_keluar)} ${inap.jam_keluar} `;
-                    $('#formResumeRanap input[name=kamar]').val(`${inap.kamar.bangsal.nm_bangsal} ( ${response.penjab.png_jawab} )`);
-                    $('#formResumeRanap input[name=tgl_masuk]').val(`${formatTanggal(response.tgl_registrasi)} ${response.jam_registrasi}`);
-                    $('#formResumeRanap input[name=tgl_keluar]').val(`${tgl_keluar}`);
-                    $('#formResumeRanap input[name=diagnosa_awal]').val(`${inap.diagnosa_awal}`);
+                    const {
+                        kamar_inap
+                    } = response.bayi_gabung
+                    kamar_inap.filter((item) => item.stts_pulang != 'Pindah Kamar').map((inap) => {
+                        tgl_keluar = inap?.tgl_keluar == '0000-00-00' ? `${inap.tgl_keluar} ${inap.jam_keluar}` : `${formatTanggal(inap.tgl_keluar)} ${inap.jam_keluar} `;
+                        $('#formResumeRanap input[name=kamar]').val(`${inap.kamar.bangsal.nm_bangsal} ( ${response.penjab.png_jawab} )`);
+                        $('#formResumeRanap input[name=tgl_masuk]').val(`${formatTanggal(response.tgl_registrasi)} ${response.jam_reg}`);
+                        $('#formResumeRanap input[name=tgl_keluar]').val(`${tgl_keluar}`);
+                        $('#formResumeRanap input[name=diagnosa_awal]').val(`${inap.diagnosa_awal}`);
+
+                    })
 
                 } else if (response.kamar_inap.length) {
                     kamarInap = response.kamar_inap;
@@ -448,7 +454,7 @@
                 $('#formResumeRanap #srcLab').attr('onclick', `listHasilLab('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
                 $('#formResumeRanap #srcRadiologi').attr('onclick', `listHasilRadiologi('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
                 // $('#formResumeRanap #srcObat').attr('onclick', `listPemberianObat('${response.no_rawat}')`);
-            })
+            });
             $('#modalResumeRanap').modal('show')
         }
 

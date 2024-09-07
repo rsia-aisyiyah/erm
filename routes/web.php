@@ -99,6 +99,7 @@ use App\Http\Controllers\JnsPerawatabLabController;
 use App\Http\Controllers\PermintaanLabController;
 use App\Http\Controllers\PermintaanPemeriksaanLabController;
 use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
+use App\Http\Controllers\RanapGabungController;
 use App\Http\Controllers\RsiaAsuhanGiziDewasaController;
 use App\Http\Controllers\RsiaAsuhanGiziAnakController;
 use App\Http\Controllers\TemplateLaboratoriumController;
@@ -260,6 +261,8 @@ Route::middleware('auth')->group(function () {
     Route::post('ranap/askep/anak/masalah/delete', [MasalahAskepRanapController::class, 'delete']);
     Route::post('ranap/askep/anak/rencana/insert', [RencanaAskepRanapController::class, 'insert']);
     Route::post('ranap/askep/anak/rencana/delete', [RencanaAskepRanapController::class, 'delete']);
+
+    Route::get('ranap/gabung/bayi', [RanapGabungController::class, 'get']);
 
     Route::get('ranap/askep/neonatus', [AskepRanapNeonatusController::class, 'get']);
     Route::post('ranap/askep/neonatus/create', [AskepRanapNeonatusController::class, 'createOrUpdate']);
