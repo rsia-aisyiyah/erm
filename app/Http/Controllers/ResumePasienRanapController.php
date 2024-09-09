@@ -32,14 +32,14 @@ class ResumePasienRanapController extends Controller
 
     function insert(Request $request)
     {
-        $data =  $request->except(['tgl_kontrol', 'jam_kontrol', '_token']);
+        $data =  $request->except(['tgl_kontrol', 'jam_kontrol', '_token', 'nm_dokter']);
         $this->track->insertSql($this->resume, $data);
         return $this->resume->create($data);
     }
 
     function edit(Request $request)
     {
-        $data =  $request->except(['tgl_kontrol', 'jam_kontrol', '_token']);
+        $data =  $request->except(['tgl_kontrol', 'jam_kontrol', '_token', 'nm_dokter']);
         $this->track->updateSql($this->resume, $data, ['no_rawat', $data['no_rawat']]);
         return $this->resume->where('no_rawat', $data['no_rawat'])->update($data);
     }
