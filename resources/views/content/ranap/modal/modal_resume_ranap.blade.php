@@ -936,7 +936,7 @@
         }
 
         function simpanResumeMedis() {
-            except = ['tgl_keluar', 'dokter', 'tgl_lahir', 'tgl_masuk', 'pasien', 'kamar']
+            except = ['tgl_keluar', 'nm_dokter', 'tgl_lahir', 'tgl_masuk', 'pasien', 'kamar']
             data = getDataForm('#formResumeRanap', ['input', 'textarea', 'select'], except)
             data.kontrol = `${splitTanggal(data.tgl_kontrol)} ${data.jam_kontrol}`
 
