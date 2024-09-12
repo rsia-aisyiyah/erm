@@ -12,7 +12,8 @@
                             <span class="input-group-text">
                                 <label for="">No Rawat</label>
                             </span>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="no_rawat" name="no_rawat" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px"
+                                   id="no_rawat" name="no_rawat" placeholder="" readonly>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
@@ -20,9 +21,12 @@
                             <span class="input-group-text">
                                 <label for="">Pasien</label>
                             </span>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
-                            <input type="text" class="form-control form-control-sm w-50" style="font-size: 11px" id="pasien" name="pasien" placeholder="" readonly>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="umur" name="umur" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px"
+                                   id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm w-50" style="font-size: 11px"
+                                   id="pasien" name="pasien" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="umur"
+                                   name="umur" placeholder="" readonly>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
@@ -30,7 +34,8 @@
                             <span class="input-group-text">
                                 <label for="">Kamar</label>
                             </span>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="kamar" name="kamar" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="kamar"
+                                   name="kamar" placeholder="" readonly>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
@@ -38,7 +43,8 @@
                             <span class="input-group-text">
                                 <label for="">Dx Awal</label>
                             </span>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="diagnosa_awal" name="diagnosa_awal" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px"
+                                   id="diagnosa_awal" name="diagnosa_awal" placeholder="" readonly>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
@@ -46,7 +52,8 @@
                             <span class="input-group-text">
                                 <label for="">DPJP</label>
                             </span>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 11px"
+                                   id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
                         </div>
                     </div>
                 </div>
@@ -54,70 +61,85 @@
                 <ul class="nav nav-tabs" id="tab-soap-ranap" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
-                            data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
-                            aria-selected="true">SOAP</button>
+                                data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
+                                aria-selected="true">SOAP
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-pane"
-                            type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Riwayat S.O.A.P</button>
+                                type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Riwayat
+                            S.O.A.P
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-grafik" data-bs-toggle="tab" data-bs-target="#tab-grafik-pane"
-                            type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik
-                            Pasien</button>
+                                type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik
+                            Pasien
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
-                            type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS</button>
+                                type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
-                            type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep</button>
+                                type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
+                        </button>
                     </li>
                     <li class="nav-item d-none" role="presentation">
-                        <button class="nav-link" id="tabAsuhanGiziDewasa" data-bs-toggle="tab" data-bs-target="#tabAsuhanGiziDewasa-pane"
-                            type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">Asuhan Gizi Dewasa</button>
+                        <button class="nav-link" id="tabAsuhanGiziDewasa" data-bs-toggle="tab"
+                                data-bs-target="#tabAsuhanGiziDewasa-pane"
+                                type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">
+                            Asuhan Gizi Dewasa
+                        </button>
                     </li>
                     <li class="nav-item d-none" role="presentation">
-                        <button class="nav-link" id="tabAsuhanGiziAnak" data-bs-toggle="tab" data-bs-target="#tabAsuhanGiziAnak-pane"
-                            type="button" role="tab" aria-controls="tabAsuhanGiziAnak-pane" aria-selected="false">Asuhan Gizi Anak</button>
+                        <button class="nav-link" id="tabAsuhanGiziAnak" data-bs-toggle="tab"
+                                data-bs-target="#tabAsuhanGiziAnak-pane"
+                                type="button" role="tab" aria-controls="tabAsuhanGiziAnak-pane" aria-selected="false">
+                            Asuhan Gizi Anak
+                        </button>
                     </li>
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
-                        aria-labelledby="home-tab" tabindex="0">
+                         aria-labelledby="home-tab" tabindex="0">
                         @include('content.ranap.modal.cppt._form_soap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
-                        tabindex="0">
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._table_soap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
-                        tabindex="0">
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._ewsRanap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
-                        tabindex="0">
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._resep')
                     </div>
                     <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
-                        tabindex="0">
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._grafikPemeriksaan')
                     </div>
-                    <div class="tab-pane fade" id="tabAsuhanGiziDewasa-pane" role="tabpanel" aria-labelledby="tabAsuhanGiziDewasa"
-                        tabindex="0">
+                    <div class="tab-pane fade" id="tabAsuhanGiziDewasa-pane" role="tabpanel"
+                         aria-labelledby="tabAsuhanGiziDewasa"
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._formAsuhanGiziDewasa')
                     </div>
-                    <div class="tab-pane fade" id="tabAsuhanGiziAnak-pane" role="tabpanel" aria-labelledby="tabAsuhanGiziAnak"
-                        tabindex="0">
+                    <div class="tab-pane fade" id="tabAsuhanGiziAnak-pane" role="tabpanel"
+                         aria-labelledby="tabAsuhanGiziAnak"
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._formAsuhanGiziAnak')
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
-                        class="bi bi-x-circle"></i> Keluar</button>
+                            class="bi bi-x-circle"></i> Keluar
+                </button>
 
             </div>
         </div>
@@ -128,8 +150,10 @@
         let no_rawat_soap = '';
         const tgl_pertama = '';
         const tgl_kedua = '';
-        const getInstance = '';
-        const sel = '';
+        let getInstance = '';
+        let sel = '';
+
+        const formSoapRanap = $('#formSoapRanap')
 
         const tabSoapRanap = document.querySelector('#tab-soap-ranap li:first-child button')
         const modalSoapRanap = $('#modalSoapRanap')
@@ -147,7 +171,6 @@
 
         modalSoapRanap.on('shown.bs.modal', () => {
 
-
             if (departemen === 'CSM' || departemen === '-') {
                 $('#tgl_perawatan_ubah').removeAttr('disabled');
                 $('#jam_rawat_ubah').removeAttr('disabled');
@@ -164,8 +187,8 @@
 
             const canvasSuhu = $('#grafik-suhu');
 
-            const sel = document.querySelector('#tab-tabel')
-            const getInstance = bootstrap.Tab.getInstance(sel);
+            sel = document.querySelector('#tab-tabel')
+            getInstance = bootstrap.Tab.getInstance(sel);
             jamSekarang = setInterval(() => {
                 $('#jam_rawat_ubah').val(getJam())
             }, 1000);
@@ -198,12 +221,12 @@
 
         function ambilSoap(no_rawat, tgl, jam) {
             getDetailPemeriksaanRanap(no_rawat, tgl, jam).done((response) => {
-                $('#formSoapRanap #cekJam').prop('checked', true)
+               formSoapRanap.find('#cekJam').prop('checked', true)
                 checkJam()
-                $('#formSoapRanap input[name=tgl_perawatan_ubah]').val(splitTanggal(response.tgl_perawatan));
-                $('#formSoapRanap input[name=jam_rawat_ubah]').val(response.jam_rawat);
-                $('#formSoapRanap input[name=tgl_perawatan]').val(response.tgl_perawatan);
-                $('#formSoapRanap input[name=jam_rawat]').val(response.jam_rawat);
+               formSoapRanap.find('input[name=tgl_perawatan_ubah]').val(splitTanggal(response.tgl_perawatan));
+               formSoapRanap.find('input[name=jam_rawat_ubah]').val(response.jam_rawat);
+               formSoapRanap.find('input[name=tgl_perawatan]').val(response.tgl_perawatan);
+               formSoapRanap.find('input[name=jam_rawat]').val(response.jam_rawat);
                 $('#suhu').val(response.suhu_tubuh);
                 $('#tinggi').val(response.tinggi);
                 $('#berat').val(response.berat);
@@ -213,7 +236,7 @@
                 $('#spo2').val(response.spo2);
                 $('#gcs').val(response.gcs);
 
-                $.map(response.grafik_harian, function(grafik) {
+                $.map(response.grafik_harian, function (grafik) {
                     if (response.tgl_perawatan == grafik.tgl_perawatan && response.jam_rawat == grafik.jam_rawat) {
                         $('#o2').val(grafik.o2);
                     }
@@ -245,32 +268,32 @@
             })
         }
 
-        $('#btn-reset').on('click', function(event) {
-            no_rawat = $('#formSoapRanap input[name="nomor_rawat"]').val();
-            $('#formSoapRanap input').each((index, element) => {
+        $('#btn-reset').on('click', function (event) {
+            no_rawat =formSoapRanap.find('input[name="nomor_rawat"]').val();
+           formSoapRanap.find('input').each((index, element) => {
                 $(element).val('-');
                 $(element).removeAttr('readonly');
                 $('#jam_rawat').val('');
                 $('#tgl_perawatan').val('');
             })
-            $('#formSoapRanap textarea').each((index, element) => {
+           formSoapRanap.find('textarea').each((index, element) => {
                 $(element).val('-')
             });
 
-            $('#formSoapRanap textarea').removeAttr('readonly')
-            $('#formSoapRanap select').removeAttr('disabled', false)
+           formSoapRanap.find('textarea').removeAttr('readonly')
+           formSoapRanap.find('select').removeAttr('disabled', false)
 
             getRegPeriksa(no_rawat).done((response) => {
 
-                $('#formSoapRanap input[name="nomor_rawat"]').val(response.no_rawat)
-                $('#formSoapRanap input[name="nm_pasien"]').val(`${response.pasien.nm_pasien} (${hitungUmur(response.pasien.tgl_lahir)})`)
-                $('#formSoapRanap input[name="nama"]').val("{{ session()->get('pegawai')->nama }}")
-                $('#formSoapRanap input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
+               formSoapRanap.find('input[name="nomor_rawat"]').val(response.no_rawat)
+               formSoapRanap.find('input[name="nm_pasien"]').val(`${response.pasien.nm_pasien} (${hitungUmur(response.pasien.tgl_lahir)})`)
+               formSoapRanap.find('input[name="nama"]').val("{{ session()->get('pegawai')->nama }}")
+               formSoapRanap.find('input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
 
-                $('#formSoapRanap input[name="nomor_rawat"]').attr('readonly', true)
-                $('#formSoapRanap input[name="nm_pasien"]').attr('readonly', true)
-                $('#formSoapRanap input[name="nama"]').attr('readonly', true)
-                $('#formSoapRanap input[name="nik"]').attr('readonly', true)
+               formSoapRanap.find('input[name="nomor_rawat"]').attr('readonly', true)
+               formSoapRanap.find('input[name="nm_pasien"]').attr('readonly', true)
+               formSoapRanap.find('input[name="nama"]').attr('readonly', true)
+               formSoapRanap.find('input[name="nik"]').attr('readonly', true)
             })
 
 
@@ -301,7 +324,7 @@
                             'jam_rawat': jam,
                         },
                         method: 'DELETE',
-                        success: function(response) {
+                        success: function (response) {
                             if (response) {
                                 Swal.fire({
                                     icon: 'success',
@@ -314,7 +337,7 @@
                                 tbSoapRanap(no, tgl_pertama, tgl_kedua);
                                 grafikPemeriksaan.destroy();
                                 buildGrafik(no)
-                                setEws(no, 'ranap', $('#formSoapRanap input[name=spesialis]').val())
+                                setEws(no, 'ranap',formSoapRanap.find('input[name=spesialis]').val())
                             }
                         }
                     })
@@ -325,6 +348,10 @@
         }
 
         function editSoap() {
+            const triggerResetForm = formSoapRanap.trigger('reset') ;
+            if(triggerResetForm){
+
+            }
             $.ajax({
                 url: 'soap/ubah',
                 data: {
@@ -354,7 +381,7 @@
                     'jam_rawat_ubah': $('#jam_rawat_ubah').val(),
                 },
                 method: 'POST',
-                beforeSend: function() {
+                beforeSend: function () {
                     swal.fire({
                         title: 'Sedang mengirim data',
                         text: 'Mohon Tunggu',
@@ -371,7 +398,7 @@
                         'error',
                     )
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response) {
                         Swal.fire({
                             icon: 'success',
@@ -384,24 +411,9 @@
                         tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
                         grafikPemeriksaan.destroy();
                         buildGrafik(no_rawat_soap)
-                        setEws(no_rawat_soap, 'ranap', $('#formSoapRanap input[name=spesialis]').val())
-                        getInstance.show()
-                        $('#formSoapRanap textarea[name=subjek]').val('-');
-                        $('#formSoapRanap textarea[name=objek]').val('-');
-                        $('#formSoapRanap textarea[name=asesmen]').val('-');
-                        $('#formSoapRanap textarea[name=plan]').val('-');
-                        $('#formSoapRanap textarea[name=instruksi]').val('-');
-                        $('#formSoapRanap input[name=suhu]').val('-');
-                        $('#formSoapRanap input[name=tinggi]').val('-');
-                        $('#formSoapRanap input[name=berat]').val('-');
-                        $('#formSoapRanap input[name=tensi]').val('-');
-                        $('#formSoapRanap input[name=respirasi]').val('-');
-                        $('#formSoapRanap input[name=nadi]').val('-');
-                        $('#formSoapRanap input[name=spo2]').val('-');
-                        $('#formSoapRanap input[name=gcs]').val('-');
-                        $('#formSoapRanap input[name=o2]').val('-');
-                        $('#formSoapRanap input[name=alergi]').val('-');
-                        $('#formSoapRanap select[name=kesadaran]').val('Compos Mentis').change();
+                        setEws(no_rawat_soap, 'ranap',formSoapRanap.find('input[name=spesialis]').val())
+                        getInstance.show();
+                        const isTriggering = formSoapRanap.reset('triger');
                         $('#btn-ubah').css('display', 'none')
                         $('#btn-reset').css('display', 'none')
                     } else {
@@ -470,9 +482,9 @@
             let no = splitPasien[0];
 
             // get data-kd-dokter from form soap ranap #btn-simpan  kd_dokter
-            let kd_dokter = $('#formSoapRanap .btn-simpan').attr('data-kd-dokter');
-            let spesialis = $('#formSoapRanap .btn-simpan').attr('data-spesialis');
-            let nm_pasien = $('#formSoapRanap .btn-simpan').attr('data-nm-pasien');
+            let kd_dokter =formSoapRanap.find('.btn-simpan').attr('data-kd-dokter');
+            let spesialis =formSoapRanap.find('.btn-simpan').attr('data-spesialis');
+            let nm_pasien =formSoapRanap.find('.btn-simpan').attr('data-nm-pasien');
             $.ajax({
                 url: '/erm/soap/simpan',
                 data: {
@@ -503,7 +515,7 @@
                     'terlihat_tidak_sehat': $('.formEws select[name=terlihat_tidak_sehat]').val(),
                 },
                 method: 'POST',
-                beforeSend: function() {
+                beforeSend: function () {
                     swal.fire({
                         title: 'Sedang mengirim data',
                         text: 'Mohon Tunggu',
@@ -513,7 +525,7 @@
                         }
                     })
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response) {
                         Swal.fire({
                             icon: 'success',
@@ -526,23 +538,23 @@
                             tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
                             grafikPemeriksaan.destroy();
                             buildGrafik(no_rawat_soap)
-                            setEws(no_rawat_soap, 'ranap', $('#formSoapRanap input[name=spesialis]').val())
-                            $('#formSoapRanap textarea[name=subjek]').val('-');
-                            $('#formSoapRanap textarea[name=objek]').val('-');
-                            $('#formSoapRanap textarea[name=asesmen]').val('-');
-                            $('#formSoapRanap textarea[name=plan]').val('-');
-                            $('#formSoapRanap textarea[name=instruksi]').val('-');
-                            $('#formSoapRanap input[name=suhu]').val('-');
-                            $('#formSoapRanap input[name=tinggi]').val('-');
-                            $('#formSoapRanap input[name=berat]').val('-');
-                            $('#formSoapRanap input[name=tensi]').val('-');
-                            $('#formSoapRanap input[name=respirasi]').val('-');
-                            $('#formSoapRanap input[name=nadi]').val('-');
-                            $('#formSoapRanap input[name=spo2]').val('-');
-                            $('#formSoapRanap input[name=gcs]').val('-');
-                            $('#formSoapRanap input[name=o2]').val('-');
-                            $('#formSoapRanap input[name=alergi]').val('-');
-                            $('#formSoapRanap select[name=kesadaran]').val('Compos Mentis').change();
+                            setEws(no_rawat_soap, 'ranap',formSoapRanap.find('input[name=spesialis]').val())
+                           formSoapRanap.find('textarea[name=subjek]').val('-');
+                           formSoapRanap.find('textarea[name=objek]').val('-');
+                           formSoapRanap.find('textarea[name=asesmen]').val('-');
+                           formSoapRanap.find('textarea[name=plan]').val('-');
+                           formSoapRanap.find('textarea[name=instruksi]').val('-');
+                           formSoapRanap.find('input[name=suhu]').val('-');
+                           formSoapRanap.find('input[name=tinggi]').val('-');
+                           formSoapRanap.find('input[name=berat]').val('-');
+                           formSoapRanap.find('input[name=tensi]').val('-');
+                           formSoapRanap.find('input[name=respirasi]').val('-');
+                           formSoapRanap.find('input[name=nadi]').val('-');
+                           formSoapRanap.find('input[name=spo2]').val('-');
+                           formSoapRanap.find('input[name=gcs]').val('-');
+                           formSoapRanap.find('input[name=o2]').val('-');
+                           formSoapRanap.find('input[name=alergi]').val('-');
+                           formSoapRanap.find('select[name=kesadaran]').val('Compos Mentis').change();
                             getInstance.show()
                         });
 
@@ -597,6 +609,7 @@
                 }
             })
         }
+
         function setFormData(data) {
             for (let key in data) {
                 if (data.hasOwnProperty(key)) {

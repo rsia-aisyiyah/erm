@@ -212,6 +212,10 @@
             }
         }
 
+        $('#cekJam').on('change', function(){
+            checkJam();
+        })
+
         $('#cari-kamar').on('search', function () {
             if ($(this).val() === '') {
                 kamar = '';
