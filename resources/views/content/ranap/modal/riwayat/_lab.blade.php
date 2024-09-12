@@ -5,7 +5,7 @@
         </div>
 
     </div>
-    <div class="card-body card-text collapse" id="collapseHasilLab">
+    <div class="card-body card-text collapse show" id="collapseHasilLab">
 
     </div>
 </div>

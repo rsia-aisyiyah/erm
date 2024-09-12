@@ -5,10 +5,11 @@
         </div>
 
     </div>
-    <div class="card-body card-text collapse" id="collapseBerkasPenunjang">
+    <div class="card-body card-text collapse show" id="collapseBerkasPenunjang">
         <div class="row gy-2" id="containerBerkas"></div>
     </div>
 </div>
+
 
 @push('script')
     <script>

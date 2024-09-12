@@ -5,7 +5,7 @@
          </div>
 
      </div>
-     <div class="card-body card-text collapse" id="collapseHasilRadiologi">
+     <div class="card-body card-text collapse show" id="collapseHasilRadiologi">
 
      </div>
  </div>

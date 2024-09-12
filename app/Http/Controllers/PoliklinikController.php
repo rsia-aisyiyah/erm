@@ -35,7 +35,7 @@ class PoliklinikController extends Controller
         return $poliklinik = MappingPoliklinik::with([
             'dokter',
             'poliklinik',
-        ])->get();
+        ])->whereHas('jadwal')->get();
     }
     public function poliPasien($kd_poli = '', $kd_dokter = '', $tgl_registrasi)
     {
