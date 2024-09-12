@@ -477,11 +477,7 @@
 
         function simpanSoapRanap() {
 
-            let pasien = $('#nomor_rawat').val();
-            let splitPasien = pasien.split(' - ');
-            let no = splitPasien[0];
-
-            // get data-kd-dokter from form soap ranap #btn-simpan  kd_dokter
+            const no_rawat = modalSoapRanap.find('input[name=no_rawat]').val();
             let kd_dokter =formSoapRanap.find('.btn-simpan').attr('data-kd-dokter');
             let spesialis =formSoapRanap.find('.btn-simpan').attr('data-spesialis');
             let nm_pasien =formSoapRanap.find('.btn-simpan').attr('data-nm-pasien');
@@ -491,7 +487,7 @@
                     '_token': '{{ csrf_token() }}',
                     'suhu_tubuh': $('#suhu').val(),
                     'nip': $('#nik').val(),
-                    'no_rawat': $('#nomor_rawat').val(),
+                    'no_rawat': no_rawat,
                     'tinggi': $('#tinggi').val(),
                     'berat': $('#berat').val(),
                     'respirasi': $('#respirasi').val(),
