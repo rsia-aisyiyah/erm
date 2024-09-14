@@ -566,9 +566,7 @@
                                     kd_dokter,
                                     'Notifikasi Kondisi Pasien',
                                     'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
-                                    $('#nomor_rawat').val(),
-                                    'Ranap',
-                                    'detail'
+                                    $('#nomor_rawat').val(), 'Ranap', 'detail'
                                 );
                             }
                         } else {
@@ -580,9 +578,7 @@
                                     kd_dokter,
                                     'Notifikasi Kondisi Pasien',
                                     'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
-                                    $('#nomor_rawat').val(),
-                                    'Ranap',
-                                    'detail'
+                                    $('#nomor_rawat').val(), 'Ranap', 'detail'
                                 );
                             }
                         }

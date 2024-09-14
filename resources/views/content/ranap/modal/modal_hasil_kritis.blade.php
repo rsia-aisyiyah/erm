@@ -98,7 +98,7 @@
                         </form>
                     </div>
                     <div class="tab-pane fade p-3" id="hasilKritis" role="tabpanel" aria-labelledby="hasilKritis-tab">
-                        <table class="table nowrap" id="tbHasilKritis" width="100%"></table>
+                        <table class="nowrap table" id="tbHasilKritis" width="100%"></table>
                     </div>
                 </div>
 
@@ -233,6 +233,12 @@
                 alertSuccessAjax()
                 drawHasilKritis(data['no_rawat']);
                 $('#formHasilKritis').trigger('reset')
+                notifSend(
+                    data['dokter'],
+                    'Notifikasi Kondisi Kritis Pasien',
+                    'Pasien dalam kondisi kritis, silahkan cek hasil lab/radiologi',
+                    data['no_rawat'], 'Ranap',  'detail'
+                );
                 instansceHasilTabKritis.show()
             }).fail((error) => {
                 alertErrorAjax(error)
