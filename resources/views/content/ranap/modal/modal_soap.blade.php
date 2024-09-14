@@ -348,17 +348,14 @@
         }
 
         function editSoap() {
-            const triggerResetForm = formSoapRanap.trigger('reset') ;
-            if(triggerResetForm){
-
-            }
+            const no_rawat = modalSoapRanap.find('input[name=no_rawat]').val();
             $.ajax({
                 url: 'soap/ubah',
                 data: {
                     '_token': '{{ csrf_token() }}',
                     'suhu_tubuh': $('#suhu').val(),
                     'nip': $('#nik').val(),
-                    'no_rawat': $('#nomor_rawat').val(),
+                    'no_rawat':no_rawat,
                     'jam_rawat': $('#jam_rawat').val(),
                     'tgl_perawatan': $('#tgl_perawatan').val(),
                     'tinggi': $('#tinggi').val(),
@@ -406,16 +403,17 @@
                             text: 'Data Berhasil Diubah',
                             showConfirmButton: false,
                             timer: 1500
+                        }).then(()=>{
+                            $('#tbSoap').DataTable().destroy();
+                            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+                            grafikPemeriksaan.destroy();
+                            buildGrafik(no_rawat_soap)
+                            setEws(no_rawat_soap, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
+                            getInstance.show();
+                            const isTriggering = formSoapRanap.reset('triger');
+                            $('#btn-ubah').css('display', 'none')
+                            $('#btn-reset').css('display', 'none')
                         })
-                        $('#tbSoap').DataTable().destroy();
-                        tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
-                        grafikPemeriksaan.destroy();
-                        buildGrafik(no_rawat_soap)
-                        setEws(no_rawat_soap, 'ranap',formSoapRanap.find('input[name=spesialis]').val())
-                        getInstance.show();
-                        const isTriggering = formSoapRanap.reset('triger');
-                        $('#btn-ubah').css('display', 'none')
-                        $('#btn-reset').css('display', 'none')
                     } else {
                         Swal.fire({
                             icon: 'danger',
