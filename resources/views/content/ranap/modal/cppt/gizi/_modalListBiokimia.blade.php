@@ -8,9 +8,11 @@
             <div class="modal-body">
                 <table class="table table-hover table-striped table-responsive" id="tbListBiokimia">
                     <thead>
-                        <th>No.</th>
-                        <th>Tanggal</th>
-                        <th>Hasil</th>
+                        <tr>
+                            <th>No.</th>
+                            <th>Tanggal</th>
+                            <th>Hasil</th>
+                        </tr>
                     </thead>
                     <tbody>
 
@@ -33,12 +35,10 @@
             tbListBiokimia.empty();
         })
 
-        function getListBiokimia(no_rawat) {
+        function getListBiokimia(no_rawat, target) {
             $.get(`${url}/lab/ambil`, {
                 'no_rawat': no_rawat
             }).done((response) => {
-                console.log('BIOKIMIA ===', response);
-
                 if (!response.length) {
                     return Swal.fire({
                         icon: 'error',
@@ -57,7 +57,7 @@
 
                     return `<tr>
                         <td>${index+1}</td>
-                        <td><a href="javascript:void(0)" onclick="setBiokimia('${pemeriksaan}')"><span class="badge bg-primary text-white">${formatTanggal(item.tgl_periksa)} ${item.jam}</span></a></td>
+                        <td><a href="javascript:void(0)" onclick="setBiokimia('${pemeriksaan}', '${target}')"><span class="badge bg-primary text-white">${formatTanggal(item.tgl_periksa)} ${item.jam}</span></a></td>
                         <td>${item.petugas.nama}</td>
                         <td>${pemeriksaan}</td>
                     </tr>`
@@ -67,10 +67,12 @@
             })
         }
 
-        function setBiokimia(value) {
-            const textBiokima = biokimiaGizi.val() !== '-' ? `${biokimiaGizi.val()}; ${value}` : value;
-            biokimiaGizi.val(textBiokima)
-
+        function setBiokimia(value, target) {
+            const targetElement = $(target);
+            const biokimia = targetElement.find('#biokimia');
+            const textBiokima = biokimia.val() !== '-' ? `${biokimia.val()}; ${value}` : value;
+            biokimia.val(textBiokima);
+            modalListBiokimia.modal('hide');
         }
     </script>
 @endpush

@@ -241,7 +241,7 @@
             border-radius: 6px;
         }
 
-        .card,
+        .card
         {
         border-radius: 6px !important;
         }
@@ -336,6 +336,10 @@
             font-size: 12px;
             height: 28px;
             border-radius: 6px;
+        }
+
+        .input-group .form-control-sm {
+            font-size: 11px;
         }
 
         .form-underline {
@@ -459,6 +463,10 @@
 
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             font-size: 11px;
+        }
+        .is-valid + .select2-container .select2-selection {
+            border-color: #28a745; /* Green border color for valid state */
+            color: #155724; /* Dark green text */
         }
     </style>
 </head>

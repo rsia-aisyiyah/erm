@@ -216,6 +216,14 @@
             );
         }
 
+        function cekList(parameter) {
+            let isCheck = '';
+            if (parameter) {
+                isCheck = parameter ? '<i class="bi bi-check-circle text-success"></i>' : '';
+            }
+            return isCheck;
+        }
+
         function alertSuccessAjax(message) {
             return Swal.fire({
                 title: 'Berhasil',

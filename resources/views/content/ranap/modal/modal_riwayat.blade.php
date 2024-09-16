@@ -39,9 +39,10 @@
                                     </div>
                                 </nav>
                                 <div class="tab-content p-2 content-scrolled" id="nav-tabContent">
+                                    <div class="content-riwayat" id="info"></div>
                                     <div class="tab-pane fade show active" id="nav-pemeriksaan" role="tabpanel" aria-labelledby="nav-pemeriksaan-tab" tabindex="0">
                                         <div class="card-text">
-                                            <div class="content-riwayat" id="info"></div>
+
                                             <div class="" id="dxpxPasien" style="display: none">
                                                 <div class="card position-relative mt-2">
                                                     <div class="card-header" aria-controls="collapseDiagnosaPasien" data-bs-toggle="collapse" data-bs-target="#collapseDiagnosaPasien">
@@ -167,6 +168,7 @@
                                         <div class="" id="berkasPenunjang">
                                             @include('content.ranap.modal.riwayat._berkas')
                                         </div>
+
                                         <div class="" id="catatanPerawatan">
                                             <div class="card position-relative mt-2">
                                                 <div class="card-header" aria-controls="collapseCatatanPerawatan" data-bs-toggle="collapse" data-bs-target="#collapseCatatanPerawatan">
@@ -189,6 +191,9 @@
                                         </div>
                                         <div class="" id="hasilRadiologi">
                                             @include('content.ranap.modal.riwayat._radiologi')
+                                        </div>
+                                        <div class="" id="skriningTb">
+                                            @include('content.ranap.modal.riwayat._skriningTB')
                                         </div>
                                     </div>
 
@@ -462,6 +467,8 @@
                 setBerkasPenunjang(no_rawat)
                 setRiwayatRadiologi(no_rawat)
                 setCatatanPerwatan(no_rawat)
+                setSkriningTb(no_rawat)
+                setSkoringTb(no_rawat)
                 // setLab(no_rawat);
                 // setNavTabsTitle()
             })

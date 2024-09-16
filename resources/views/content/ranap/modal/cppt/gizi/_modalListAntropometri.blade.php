@@ -1,4 +1,5 @@
-<div class="modal fade" id="modalListAntropometri" tabindex="-1" aria-modal="true" aria-labelledby="modalListAntropometriLabel" aria-hidden="true">
+<div class="modal fade" id="modalListAntropometri" tabindex="-1" aria-modal="true"
+     aria-labelledby="modalListAntropometriLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg modal-fullscreen-md-down">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,15 +9,17 @@
             <div class="modal-body">
                 <table class="table table-hover table-striped table-responsive" id="tbListAntropometri">
                     <thead>
-                        <th>No.</th>
-                        <th>Tanggal</th>
-                        <th>Petugas</th>
-                        <th>TB</th>
-                        <th>BB</th>
-                        <th>TD</th>
-                        <th>Suhu</th>
-                        <th>Respirasi</th>
-                        <th>Kesadatan</th>
+                        <tr>
+                            <th>No.</th>
+                            <th>Tanggal</th>
+                            <th>Petugas</th>
+                            <th>TB</th>
+                            <th>BB</th>
+                            <th>TD</th>
+                            <th>Suhu</th>
+                            <th>Respirasi</th>
+                            <th>Kesadatan</th>
+                        </tr>
                     </thead>
                     <tbody>
 
@@ -35,11 +38,11 @@
         const tbListAntropometri = $('#tbListAntropometri').find('tbody');
         const modalListAntropometri = $('#modalListAntropometri');
 
-        modalListAntropometri.on('hidden.bs.modal', function(e) {
+        modalListAntropometri.on('hidden.bs.modal', function (e) {
             tbListAntropometri.empty();
         })
 
-        function getListCpptRanap(no_rawat) {
+        function getListCpptRanap(no_rawat, target) {
             $.get(`${url}/soap/get`, {
                 'no_rawat': no_rawat
             }).done((response) => {
@@ -54,9 +57,10 @@
                     });
                 }
                 const pemeriksaan = response.map((item, index) => {
+
                     return `<tr>
-                            <td>${index+1}</td>
-                            <td><a href="javascript:void(0)" onclick="setAntropometriRanap('${item.no_rawat}', '${item.tgl_perawatan}', '${item.jam_rawat}')"><span class="badge bg-primary text-white">${formatTanggal(item.tgl_perawatan)} ${item.jam_rawat}</span></a></td>
+                            <td>${index + 1}</td>
+                            <td><a href="javascript:void(0)" onclick="setAntropometriRanap('${target}', '${item.no_rawat}', '${item.tgl_perawatan}', '${item.jam_rawat}' )"><span class="badge bg-primary text-white">${formatTanggal(item.tgl_perawatan)} ${item.jam_rawat}</span></a></td>
                             <td>${item.petugas.nama}</td>
                             <td>${item.tinggi} Cm</td>
                             <td>${item.berat} Kg</td>
@@ -71,8 +75,9 @@
             })
         }
 
-        function setAntropometriRanap(no_rawat, tanggal, jam) {
-            getDetailPemeriksaanRanap(no_rawat, tanggal, jam).done((response) => {
+        function setAntropometriRanap(target, ...params) {
+            const targetElement = $(target);
+            getDetailPemeriksaanRanap(params[0], params[1], params[2]).done((response) => {
                 const berat = response.berat
                 const tinggi = response.tinggi === '-' ? 0 : response.tinggi
                 const imt = countIMT(berat, tinggi)
@@ -81,13 +86,13 @@
                 const suhu = response.suhu_tubuh
                 const pernapasan = response.respirasi
 
-                beratBadanGizi.addClass('is-valid').val(berat)
-                tinggiBadanGizi.addClass('is-valid').val(tinggi)
-                imtGizi.addClass('is-valid').val(imt)
-                formAsuhanGiziDewasa.find('#fisik_klinis_td').addClass('is-valid').val(tensi)
-                formAsuhanGiziDewasa.find('#fisik_klinis_nadi').addClass('is-valid').val(nadi)
-                formAsuhanGiziDewasa.find('#fisik_klinis_suhu').addClass('is-valid').val(suhu)
-                formAsuhanGiziDewasa.find('#fisik_klinis_pernapasan').addClass('is-valid').val(pernapasan)
+                targetElement.find('#antropometri_bb').addClass('is-valid').val(berat)
+                targetElement.find('#antropometri_tb').addClass('is-valid').val(tinggi)
+                targetElement.find('#antropometri_imt').addClass('is-valid').val(imt)
+                targetElement.find('#fisik_klinis_td').addClass('is-valid').val(tensi)
+                targetElement.find('#fisik_klinis_nadi').addClass('is-valid').val(nadi)
+                targetElement.find('#fisik_klinis_suhu').addClass('is-valid').val(suhu)
+                targetElement.find('#fisik_klinis_pernapasan').addClass('is-valid').val(pernapasan)
 
                 modalListAntropometri.modal('hide')
             })

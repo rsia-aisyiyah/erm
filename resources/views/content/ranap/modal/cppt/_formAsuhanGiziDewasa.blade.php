@@ -293,7 +293,7 @@
                                         :radios="[
                                             'intervensi_gizi_bentuk_makanan1' => ['value' => 'Biasa', 'label' => 'Biasa', 'checked' => true],
                                             'intervensi_gizi_bentuk_makanan2' => ['value' => 'Lunak', 'label' => 'Lunak'],
-                                            'intervensi_gizi_bentuk_makanan2' => ['value' => 'Cair', 'label' => 'Cair'],
+                                            'intervensi_gizi_bentuk_makanan3' => ['value' => 'Cair', 'label' => 'Cair'],
                                         ]" />
                                 </x-input-group>
                                 <label for="intervensi_gizi_rute_pemberian">Rute Pemberian</label>
@@ -335,17 +335,17 @@
 @push('script')
     <script>
         const formAsuhanGiziDewasa = $('#formAsuhanGiziDewasa');
-        const selectPetugasGizi = formAsuhanGiziDewasa.find('#nip');
-        const beratBadanGizi = formAsuhanGiziDewasa.find('#antropometri_bb');
-        const tinggiBadanGizi = formAsuhanGiziDewasa.find('#antropometri_tb');
+        const selectPetugasGiziDewasa = formAsuhanGiziDewasa.find('select[name=nip]');
+        const beratBadanGizi = formAsuhanGiziDewasa.find('input[name=antropometri_bb]');
+        const tinggiBadanGizi = formAsuhanGiziDewasa.find('input[name=antropometri_tb]');
         const btnSimpanAsuhanGizi = formAsuhanGiziDewasa.find('#btnSimpanAsuhanGizi');
         const btnUbahAsuhanGizi = formAsuhanGiziDewasa.find('#btnUbahAsuhanGizi');
-        const imtGizi = formAsuhanGiziDewasa.find('#antropometri_imt');
+        const imtGizi = formAsuhanGiziDewasa.find('input[name=antropometri_imt]');
         const searchAntropometri = formAsuhanGiziDewasa.find('#searchAntropometri');
         const searchBiometri = formAsuhanGiziDewasa.find('#searchBiometri');
-        const biokimiaGizi = formAsuhanGiziDewasa.find('#biokimia');
-        const optPetugas = new Option('{{ session()->get('pegawai')->nik }}', '{{ session()->get('pegawai')->nama }}', false, false);
-        selectPetugasGizi.append(optPetugas).trigger('change');
+        const biokimiaGizi = formAsuhanGiziDewasa.find('textarea[name=biokimia]');
+        const optPetugasGiziDewasa = new Option('{{ session()->get('pegawai')->nama }}', '{{ session()->get('pegawai')->nik }}', false, false);
+        selectPetugasGiziDewasa.append(optPetugasGiziDewasa).trigger('change');
 
         const tabAsuhanGizi = $('#tabAsuhanGiziDewasa');
 
@@ -355,8 +355,8 @@
             const tabFormAsuhanGizi = $(target)
             const no_rawat = formInfoPasien.find('input[name="no_rawat"]').val();
 
-            searchAntropometri.attr('onclick', `getListCpptRanap('${no_rawat}')`)
-            searchBiometri.attr('onclick', `getListBiokimia('${no_rawat}')`)
+            searchAntropometri.attr('onclick', `getListCpptRanap('${no_rawat}', '#formAsuhanGiziDewasa')`)
+            searchBiometri.attr('onclick', `getListBiokimia('${no_rawat}', '#formAsuhanGiziDewasa')`)
 
             $.get(`${url}/ranap/gizi/asuhan/dewasa`, {
                 no_rawat: no_rawat
@@ -365,15 +365,19 @@
 
                 if (isDataAvailable) {
                     setFormData(response)
+                    formAsuhanGiziDewasa.find('select[name=nip]').addClass('is-valid')
+                    formAsuhanGiziDewasa.find('input[name=tanggal]').addClass('is-valid')
                     btnSimpanAsuhanGizi.html('<i class="bi bi-save"></i> Ubah Asuhan Gizi')
                 } else {
+                    formAsuhanGiziDewasa.find('select[name=nip]').removeClass('is-valid')
+                    formAsuhanGiziDewasa.find('input[name=tanggal]').removeClass('is-valid')
                     btnSimpanAsuhanGizi.html('<i class="bi bi-save"></i> Simpan Asuhan Gizi')
                 }
             })
 
         })
 
-        selectPetugasGizi.select2({
+        selectPetugasGiziDewasa.select2({
             allowClear: false,
             delay: 0,
             scrollAfterSelect: false,
@@ -382,10 +386,9 @@
                 url: `${url}/petugas/cari`,
                 dataType: 'json',
                 data: (params) => {
-                    const query = {
+                   return {
                         q: params.term
                     }
-                    return query
                 },
                 processResults: function(data) {
                     return {
@@ -405,34 +408,35 @@
             const berat = beratBadanGizi.val();
             const tinggi = tinggiBadanGizi.val();
             const imt = countIMT(berat, tinggi);
-            imtGizi.val(imt.toFixed(2));
+            imtGizi.val(imt);
         })
 
         tinggiBadanGizi.on('change', function() {
             const berat = beratBadanGizi.val();
             const tinggi = tinggiBadanGizi.val();
             const imt = countIMT(berat, tinggi);
-            imtGizi.val(imt.toFixed(2));
+            imtGizi.val(imt);
         })
 
         function countIMT(berat, tinggi) {
-            if (tinggi != 0) {
-                const tinggiOnMeter = tinggi / 100
-                const imt = berat / (tinggiOnMeter * tinggiOnMeter);
-                return imt
+            if (tinggi !== 0) {
+                const tinggiOnMeter = tinggi.replace(/,/g, '.') / 100
+                const imt =  berat.replace(/,/g, '.') / (tinggiOnMeter * tinggiOnMeter);
+                return imt && imt.toFixed(2);
             }
             return 0;
         }
 
         function simpanAsuhanGizi() {
             const data = getDataForm('#formAsuhanGiziDewasa', ['input', 'textarea', 'select']);
-            const no_rawat = formInfoPasien.find('input[name="no_rawat"]').val();
-            data['no_rawat'] = no_rawat
+            data['no_rawat'] = formInfoPasien.find('input[name="no_rawat"]').val();
             btnSimpanAsuhanGizi.prop('disabled', true);
 
             $.post(`${url}/ranap/gizi/asuhan/dewasa`, data).done((response) => {
                 alertSuccessAjax().then(() => {
                     btnSimpanAsuhanGizi.prop('disabled', false);
+                    formAsuhanGiziDewasa.find('select[name=nip]').addClass('is-valid')
+                    formAsuhanGiziDewasa.find('input[name=tanggal]').addClass('is-valid')
                 })
             }).fail((error) => {
                 Swal.fire({
@@ -443,22 +447,6 @@
             })
         }
 
-        function setFormData(data) {
-            for (let key in data) {
-                if (data.hasOwnProperty(key)) {
-                    let fields = document.querySelectorAll(`[name="${key}"]`);
 
-                    if (fields.length > 0) {
-                        fields.forEach(field => {
-                            if (field.type === 'checkbox' || field.type === 'radio') {
-                                field.checked = data[key] == field.value;
-                            } else {
-                                field.value = data[key];
-                            }
-                        });
-                    }
-                }
-            }
-        }
     </script>
 @endpush

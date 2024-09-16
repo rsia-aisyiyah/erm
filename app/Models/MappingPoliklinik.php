@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MappingPoliklinik extends Model
 {
-    use HasFactory;
+    use HasFactory, Compoships;
     protected $table = 'rsia_mapping_poli';
     public function dokter()
     {
@@ -17,4 +18,9 @@ class MappingPoliklinik extends Model
     {
         return $this->belongsTo(Poliklinik::class, 'kd_poli', 'kd_poli');
     }
+
+	public function jadwal()
+	{
+		return $this->hasMany(Jadwal::class, ['kd_poli', 'kd_dokter'], ['kd_poli','kd_dokter']);
+	}
 }

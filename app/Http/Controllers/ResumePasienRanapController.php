@@ -32,15 +32,31 @@ class ResumePasienRanapController extends Controller
 
     function insert(Request $request)
     {
-        $data =  $request->except(['tgl_kontrol', 'jam_kontrol', '_token']);
-        $this->track->insertSql($this->resume, $data);
-        return $this->resume->create($data);
+        try {
+            $data = $request->except(['tgl_kontrol', 'jam_kontrol', '_token']);
+            $resume = $this->resume->create($data);
+            if ($resume) {
+                $this->track->insertSql($this->resume, $data);
+
+            }
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
+        return response()->json('Sukses');
     }
 
     function edit(Request $request)
     {
-        $data =  $request->except(['tgl_kontrol', 'jam_kontrol', '_token']);
-        $this->track->updateSql($this->resume, $data, ['no_rawat', $data['no_rawat']]);
-        return $this->resume->where('no_rawat', $data['no_rawat'])->update($data);
+        $data = $request->except(['tgl_kontrol', 'jam_kontrol', '_token']);
+        try {
+            $update = $this->resume->where('no_rawat', $data['no_rawat'])->update($data);
+            if ($update) {
+                $this->track->updateSql($this->resume, $data, ['no_rawat', $data['no_rawat']]);
+            }
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
+
+        return response()->json('Sukses');
     }
 }

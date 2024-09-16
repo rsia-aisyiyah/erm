@@ -10,7 +10,7 @@
                 <label class="form-check-label" for="berdahak1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="berdahak" id="berdahak2" value="Tidak">
+                <input class="form-check-input" type="radio" name="berdahak" id="berdahak2" value="Tidak" checked>
                 <label class="form-check-label" for="berdahak2">Tidak</label>
             </div>
         </div>
@@ -23,7 +23,7 @@
                 <label class="form-check-label" for="berdahakB1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="berdahakB" id="berdahakB2" value="Tidak">
+                <input class="form-check-input" type="radio" name="berdahakB" id="berdahakB2" value="Tidak" checked>
                 <label class="form-check-label" for="berdahakB2">Tidak</label>
             </div>
         </div>
@@ -35,7 +35,7 @@
                 <label class="form-check-label" for="demam1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="demam" id="demam2" value="Tidak">
+                <input class="form-check-input" type="radio" name="demam" id="demam2" value="Tidak" checked>
                 <label class="form-check-label" for="demam2">Tidak</label>
             </div>
         </div>
@@ -47,19 +47,19 @@
                 <label class="form-check-label" for="keringat1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="keringat" id="keringat2" value="Tidak">
+                <input class="form-check-input" type="radio" name="keringat" id="keringat2" value="Tidak" checked>
                 <label class="form-check-label" for="keringat2">Tidak</label>
             </div>
         </div>
 
-        <div class="col-lg-6"><label for="" class="form-label">Penurunan berat badan tanpa sebab yang jelas</label></div>
+        <div class="col-lg-6"><label for="" class="form-label">Penurunan BB tanpa sebab yang jelas atau BB sulit naik dalam satu bulan terakhir</label></div>
         <div class="col-lg-6">
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="berat" id="berat1" value="Ya">
                 <label class="form-check-label" for="berat1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="berat" id="berat2" value="Tidak">
+                <input class="form-check-input" type="radio" name="berat" id="berat2" value="Tidak" checked>
                 <label class="form-check-label" for="berat2">Tidak</label>
             </div>
         </div>
@@ -71,7 +71,7 @@
                 <label class="form-check-label" for="kelenjar1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="kelenjar" id="kelenjar2" value="Tidak">
+                <input class="form-check-input" type="radio" name="kelenjar" id="kelenjar2" value="Tidak" checked>
                 <label class="form-check-label" for="kelenjar2">Tidak</label>
             </div>
         </div>
@@ -83,7 +83,7 @@
                 <label class="form-check-label" for="sesak1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="sesak" id="sesak2" value="Tidak">
+                <input class="form-check-input" type="radio" name="sesak" id="sesak2" value="Tidak" checked>
                 <label class="form-check-label" for="sesak2">Tidak</label>
             </div>
         </div>
@@ -95,7 +95,7 @@
                 <label class="form-check-label" for="obat1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="obat" id="obat2" value="Tidak">
+                <input class="form-check-input" type="radio" name="obat" id="obat2" value="Tidak" checked>
                 <label class="form-check-label" for="obat2">Tidak</label>
             </div>
         </div>
@@ -107,19 +107,19 @@
                 <label class="form-check-label" for="keluarga1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="keluarga" id="keluarga2" value="Tidak">
+                <input class="form-check-input" type="radio" name="keluarga" id="keluarga2" value="Tidak" checked>
                 <label class="form-check-label" for="keluarga2">Tidak</label>
             </div>
         </div>
 
-        <div class="col-lg-6"><label for="" class="form-label">Penyakit lain : Asma / Diabetes Melitus</label></div>
+        <div class="col-lg-6"><label for="" class="form-label">Penyakit lain : Asma / Diabetes Melitus / HIV / Penyakit imunokompromised lainnya</label></div>
         <div class="col-lg-6">
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="penyakit" id="penyakit1" value="Ya">
                 <label class="form-check-label" for="penyakit1">Ya</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="penyakit" id="penyakit2" value="Tidak">
+                <input class="form-check-input" type="radio" name="penyakit" id="penyakit2" value="Tidak" checked>
                 <label class="form-check-label" for="penyakit2">Tidak</label>
             </div>
         </div>
@@ -155,7 +155,7 @@
                 data
             ).done((response) => {
                 alertSuccessAjax().then(() => {
-                    bootstrap.Tab.getInstance(tableSkriningTbTab).show()
+                    new bootstrap.Tab(tableSkriningTbTab).show();
                     formSkriningTb.find('input[name=id]').remove();
                     formSkriningTb.trigger('reset')
                     drawTbSkriningTb(data['no_rawat'])
@@ -218,12 +218,12 @@
                                     <li>Batuk berdahak lebih dari 2 minggu : [${setKeteranganSkrining(row.berdahakB)}]</li>
                                     <li>Demam hilang timbul lebih dari 1 Bulan : [${setKeteranganSkrining(row.demam)}]</li>
                                     <li>Keringat malam tanpa aktivitas : [${setKeteranganSkrining(row.keringat)}]</li>
-                                    <li>Penurunan berat badan tanpa sebab yang jelas : [${setKeteranganSkrining(row.berat)}]</li>
+                                    <li>Penurunan BB tanpa sebab yang jelas atau BB sulit naik dalam satu bulan terakhir : [${setKeteranganSkrining(row.berat)}]</li>
                                     <li>Pembesaran kelenjar getah bening (benjolan di daerah leher) dengan ukuran lebih dari 2 cm : [${setKeteranganSkrining(row.kelenjar)}]</li>
                                     <li>Sesak nafas dan nyeri dada : [${setKeteranganSkrining(row.sesak)}]</li>
                                     <li>Pernah minum obat paru dalam waktu lama sebelumnya : [${setKeteranganSkrining(row.obat)}]</li>
                                     <li>Ada keluarga/tetangga yang pernah mengalami sakit paru-paru/TB/pengobatan paru-paru : [${setKeteranganSkrining(row.keluarga)}]</li>
-                                    <li>Penyakit lain : Asma / Diabetes Melitus : [${setKeteranganSkrining(row.penyakit)}]</li>
+                                    <li>>Penyakit lain : Asma / Diabetes Melitus / HIV / Penyakit imunokompromised lainnya : [${setKeteranganSkrining(row.penyakit)}]</li>
                                 </ul>`;
                         }
                     },

@@ -74,7 +74,12 @@ class SkoringTbController extends Controller
                 ->first();
         }
         if ($request->no_rawat) {
-            $skrining = $skrining->where('no_rawat', $request->no_rawat)->get();
+            $skrining = $skrining->where('no_rawat', $request->no_rawat)
+	            ->with(['regPeriksa' => function ($query) {
+		            $query->select(['no_rawat', 'umurdaftar', 'sttsumur', 'p_jawab', 'hubunganpj']);
+	            }, 'penjab', 'pasien' => function ($query) {
+		            return $query->with(['kec', 'kab']);
+	            }, 'dokter', 'kamar'])->get();
         }
 
         if ($request->dataTable) {
