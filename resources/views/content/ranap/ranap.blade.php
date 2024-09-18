@@ -337,7 +337,7 @@
                 paging: false,
                 info: false,
                 ajax: {
-                    url: "/erm/ranap/pasien",
+                    url: `${url}/ranap/pasien`,
                     data: {
                         'stts_pulang': stts_pulang,
                         'tgl_pertama': tgl_awal,

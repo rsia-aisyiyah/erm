@@ -266,7 +266,7 @@
         }
 
         function editSkriningTb(id) {
-            $.get('/erm/skrining/tb', {
+            $.get(`${url}/skrining/tb`, {
                 id: id,
             }).done((response) => {
                 formSkriningTb.append($('<input>', {
