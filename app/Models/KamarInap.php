@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\RegPeriksa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class KamarInap extends Model
 {
@@ -42,8 +43,12 @@ class KamarInap extends Model
     {
         return $this->hasOne(AskepRanapNeonatus::class, 'no_rawat', 'no_rawat');
     }
-    function skoringTb()
+    function skoringTb():BelongsTo
     {
         return $this->belongsTo(SkoringTb::class, 'no_rawat', 'no_rawat');
+    }
+	function skriningTb():BelongsTo
+    {
+        return $this->belongsTo(SkriningTb::class, 'no_rawat', 'no_rawat');
     }
 }

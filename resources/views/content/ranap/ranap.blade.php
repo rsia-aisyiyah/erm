@@ -348,17 +348,6 @@
 
                     },
                 },
-                initComplete: function () {
-                    // Swal.fire({
-                    //     title: 'Menampilkan data rawat inap',
-                    //     position: 'top-end',
-                    //     toast: true,
-                    //     icon: 'success',
-                    //     timerProgressBar: true,
-                    //     showConfirmButton: false,
-                    //     timer: 1500
-                    // });
-                },
                 columns: [{
                     data: 'reg_periksa',
                     render: function (data, type, row, meta) {
@@ -403,8 +392,6 @@
                             }
                             list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
                         }
-
-
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
