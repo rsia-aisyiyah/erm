@@ -913,7 +913,7 @@
                             }
 
                             html = '<h5 class="mb-1">' + row.no_reg + '</h5>';
-                            html += '<p style="margin:0px"><span class="pasien-' + row.no_reg + '">' + pasien +
+                            html += '<p style="margin:0px"><span class="pasien-' + row.no_reg + '">' + pasien + cekList(row.skrining_tb) +
                                 '</span></br>' +
                                 row.no_rawat +
                                 '</br><i><strong class="' + classTeksPenjab + '">' + textPenjab + '</strong></i></p>' + btnSep + ' ' + badgeKontrol;

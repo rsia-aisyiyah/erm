@@ -31,6 +31,8 @@ use App\Models\DetailPemeriksaanLab;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PenilaianMedisRalanKandungan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class RegPeriksa extends Model
 {
@@ -196,4 +198,8 @@ class RegPeriksa extends Model
     {
         return $this->hasOne(AsesmenMedisIgd::class, 'no_rawat', 'no_rawat');
     }
+	function skriningTb() : BelongsTo
+	{
+		return $this->belongsTo(SkriningTb::class, 'no_rawat', 'no_rawat');
+	}
 }
