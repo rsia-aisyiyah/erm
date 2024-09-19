@@ -192,7 +192,7 @@
                                         <div class="" id="hasilRadiologi">
                                             @include('content.ranap.modal.riwayat._radiologi')
                                         </div>
-                                        <div class="" id="skriningTb">
+                                        <div class="" id="riwayatSkriningTb">
                                             @include('content.ranap.modal.riwayat._skriningTB')
                                         </div>
                                     </div>

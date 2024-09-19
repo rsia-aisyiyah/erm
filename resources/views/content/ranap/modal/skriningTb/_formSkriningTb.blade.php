@@ -172,8 +172,10 @@
 
         }
 
+        const tbSkriningTb = $('#tbSkriningTb')
+
         function drawTbSkriningTb(no_rawat) {
-            const table = $('#tbSkriningTb').DataTable({
+            tbSkriningTb.DataTable({
                 scrollX: false,
                 searching: false,
                 paging: false,

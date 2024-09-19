@@ -114,14 +114,15 @@
         const instanceTableSkoringTb = new bootstrap.Tab(tabTableSkoringTb);
 
         function drawTbSkoringTb(no_rawat) {
-            const table = $('#tbSkoringTb').DataTable({
+
+           $('#tbSkoringTb').DataTable({
                 scrollX: true,
                 searching: false,
                 paging: false,
                 info: false,
                 destroy: true,
                 ajax: {
-                    url: '/erm/skoring/tb',
+                    url: `${url}/skoring/tb`,
                     data: {
                         no_rawat: no_rawat,
                         dataTable: true,
@@ -222,8 +223,6 @@
 
         function skoringTb(no_rawat) {
             modalSkoringTb.modal('show')
-            drawTbSkoringTb(no_rawat)
-            drawTbSkriningTb(no_rawat)
             getRegPeriksa(no_rawat).done((response) => {
                 const kamar = response.kamar_inap.map((item) => {
                     const valKamar = item.stts_pulang != 'Pindah Kamar' ? item.kamar.bangsal.nm_bangsal : '-';
@@ -237,6 +236,8 @@
                 formPasienSkoringTb.find('#kamar').val(kamar.split(',')[0]);
                 formPasienSkoringTb.find('#diagnosa').val(kamar.split(',')[1]);
             })
+                drawTbSkriningTb(no_rawat)
+                drawTbSkoringTb(no_rawat)
         }
 
         function simpanSkoringTb() {
