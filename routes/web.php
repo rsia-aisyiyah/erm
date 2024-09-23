@@ -466,6 +466,11 @@ Route::middleware('auth')->group(function () {
     Route::get('resume/ranap/get', [ResumePasienRanapController::class, 'get']);
     Route::post('resume/ranap/insert', [ResumePasienRanapController::class, 'insert']);
     Route::post('resume/ranap/edit', [ResumePasienRanapController::class, 'edit']);
+
+	Route::get('catatan/pelaksanaan/edukasi/pasien', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'get']);
+	Route::post('catatan/pelaksanaan/edukasi/pasien', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'create']);
+	Route::post('catatan/pelaksanaan/edukasi/pasien/delete', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'delete']);
+
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 

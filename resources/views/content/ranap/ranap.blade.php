@@ -158,6 +158,7 @@
     @include('content.ranap.modal.modal_skrining_tb')
     @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_riwayat')
+    @include('content.ranap.modal.modal_catatan_edukasi_pasien')
     @include('content.ranap.modal.cppt.gizi._modalListAntropometri')
     @include('content.ranap.modal.cppt.gizi._modalListBiokimia')
 @endsection
@@ -366,6 +367,7 @@
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
                         list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="showModalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Upload Berkas Penunjang</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="catatanEdukasiPasien('${data.no_rawat}')">Catatan Edukasi Pasien</a></li>`;
 
                         if (row.reg_periksa.dokter.kd_sps === 'S0003') {
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
