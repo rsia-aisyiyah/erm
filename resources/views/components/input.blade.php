@@ -2,6 +2,7 @@
        {{ $attributes->merge(['class' => 'form-control form-control-sm']) }}
        @if ($attributes->has('style') && !empty($attributes->get('style')))
            {{ $attributes->merge(['style' => $attributes->get('style')]) }}
+
        @endif
        id="{{ $id }}"
        name="{{ $name }}"

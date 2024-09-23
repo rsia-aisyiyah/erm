@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fs-5" id="exampleModalLabel">Hasil Kritis</h5>
+                <h5 class="modal-title fs-5" id="exampleModalLabel">Catatan Pelaksanaan Edukasi Pasien</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -308,6 +308,8 @@
                     formCatatanEdukasiPasien.find('input[name=nip]').val(nip)
                     formCatatanEdukasiPasien.find('input[name=nama]').val(nm_petugas)
                     formCatatanEdukasiPasien.find('input[name=tanggal]').val(tanggal)
+                    formCatatanEdukasiPasien.find('#hambatan_lain').attr('disabled', 'disabled')
+                    formCatatanEdukasiPasien.find('#intervensi_lain').attr('disabled', 'disabled')
 
                 })
             }).fail((error) => {
