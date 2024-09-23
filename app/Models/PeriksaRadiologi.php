@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Models\JenisPerawatanRadiologi;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PeriksaRadiologi extends Model
 {
-    use HasFactory;
+    use HasFactory, Compoships;
     protected $table = 'periksa_radiologi';
     protected $guarded = [];
     public $timestamps = false;
@@ -31,7 +32,7 @@ class PeriksaRadiologi extends Model
     }
     function gambarRadiologi()
     {
-        return $this->hasMany(GambarRadiologi::class, 'no_rawat', 'no_rawat');
+        return $this->hasMany(GambarRadiologi::class, ['no_rawat', 'tgl_periksa'], ['no_rawat', 'tgl_periksa']);
     }
     function hasilRadiologi()
     {
