@@ -16,14 +16,14 @@ class UgdController extends Controller
         $this->regPeriksa = new RegPeriksa();
         $this->carbon = new Carbon();
     }
-    function index()
+    public function index()
     {
         return view('content.ugd.ugd');
     }
 
-    function getTable(Request $request)
+    public function getTable(Request $request)
     {
-        $regPeriksa = $this->regPeriksa->with(['pasien', 'dokter', 'kamarInap', 'penjab', 'asmedRanapAnak', 'asmedRanapKandungan', 'asmedIgd'])->where('kd_poli', 'IGDK');
+        $regPeriksa = $this->regPeriksa->with(['pasien', 'dokter', 'kamarInap', 'penjab', 'asmedRanapAnak', 'asmedRanapKandungan', 'asmedIgd', 'skriningTb'])->where('kd_poli', 'IGDK');
 
         if ($request->tgl_awal || $request->tgl_akhir) {
             $regPeriksa->whereBetween('tgl_registrasi', [$request->tgl_awal, $request->tgl_akhir])->get();

@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use App\Http\Controllers\TrackerSqlController;
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class AsesmenMedisIgdController extends Model
 {
@@ -19,26 +20,51 @@ class AsesmenMedisIgdController extends Model
         $this->track = new TrackerSqlController();
     }
 
-    function get($noRawat)
+    public function get($noRawat)
     {
         $id = str_replace('-', '/', $noRawat);
         $asmed = $this->asesmen->where('no_rawat', $id)->with(['regPeriksa.pasien', 'dokter'])->first();
         return response()->json($asmed);
     }
-    function create(Request $request)
+    public function create(Request $request)
     {
         $data = $request->except(['_token', 'pasien', 'tgl_lahir', 'dokter']);
         $data['tanggal'] = date('Y-m-d H:i:s');
 
-        $asmed = $this->asesmen->create($data);
-        $this->track->insertSql($this->asesmen, $data);
-        return response()->json($asmed);
+        $isExist = $this->asesmen->where([
+            'no_rawat' => $data['no_rawat'],
+        ])->first();
+
+        if ($isExist) {
+            return $this->edit($request);
+        }
+
+        try {
+            $created = $this->asesmen->create($data);
+            if ($created) {
+                $this->track->insertSql($this->asesmen, $data);
+            }
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
+
+        return response()->json('Berhasil membuat asesmen medis ugd', 201);
     }
-    function edit(Request $request)
+    public function edit(Request $request)
     {
         $data = $request->except(['_token', 'pasien', 'tgl_lahir', 'dokter']);
-        $asmed = $this->asesmen->where('no_rawat', $data['no_rawat'])->update($data);
-        $this->track->updateSql($this->asesmen, $data, ['no_rawat' => $data['no_rawat']]);
-        return response()->json($asmed);
+        $data['tanggal'] = date('Y-m-d H:i:s');
+
+        try {
+            $clause = ['no_rawat' => $data['no_rawat']];
+            $updated = $this->asesmen->where($clause)->update($data);
+            if ($updated) {
+                $this->track->updateSql($this->asesmen, $data, $clause);
+            }
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
+        return response()->json('Berhasil mengubah asesmen medis', 200);
+
     }
 }
