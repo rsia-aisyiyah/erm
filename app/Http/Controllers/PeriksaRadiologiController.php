@@ -153,8 +153,6 @@ class PeriksaRadiologiController extends Controller
             $data['hasil'] = $hsl->hasil;
         }
 
-        return $data;
-
         $file = Pdf::loadView('content.print.hasil_radiologi', ['data' => $data])
             ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
             ->setPaper(array(0, 0, 595, 935));
