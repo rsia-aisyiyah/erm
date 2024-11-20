@@ -876,6 +876,12 @@
             return regPeriksa;
         }
 
+        function getRanapPasien(no_rawat) {
+            return $.get(`${url}/ranap/pasien/get`, {
+                no_rawat: no_rawat
+            })
+        }
+
         function showHistory() {
             var no_rkm_medis = $('.search option:selected').val();
             $('#upload-image').css('visibility', 'hidden');

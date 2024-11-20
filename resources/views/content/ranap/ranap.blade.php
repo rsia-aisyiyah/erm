@@ -1,6 +1,5 @@
 @extends('index')
 @section('contents')
-
     <div class="row gy-2">
         <div class="col-sm-12">
             <div class="card">
@@ -14,8 +13,8 @@
                                             <div class="col col-sm-12">
                                                 <div class="form-radio form-radio-inline">
                                                     <input class="form-radio-input" type="radio" id="belum"
-                                                           name="stts_pulang"
-                                                           value="Belum Pulang">
+                                                        name="stts_pulang"
+                                                        value="Belum Pulang">
                                                     <label class="form-radio-label" for="belum">Belum
                                                         Pulang</label>
                                                 </div>
@@ -28,22 +27,22 @@
                                         <div class="col-lg-4 col-md-4 col-sm-12">
                                             <div class="form-radio form-radio-inline">
                                                 <input class="form-radio-input" type="radio" id="pulang"
-                                                       name="stts_pulang"
-                                                       value="pulang">
+                                                    name="stts_pulang"
+                                                    value="pulang">
                                                 <label class="form-radio-label" for="pulang">Pulang</label>
                                             </div>
                                         </div>
                                         <div class="col-lg-8 col-md-8 col-sm-12">
                                             <div class="input-group input-group-sm">
                                                 <input type="text"
-                                                                                            class="form-control form-control-sm tanggal tgl_pulang"
-                                                                                            id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off"
-                                                                                            disabled>
+                                                    class="form-control form-control-sm tanggal tgl_pulang"
+                                                    id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off"
+                                                    disabled>
                                                 <span class="input-group-text"><label for="">s/d</label></span>
                                                 <input type="text"
-                                                                                             class="form-control form-control-sm tanggal tgl_pulang"
-                                                                                             id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off"
-                                                                                             disabled>
+                                                    class="form-control form-control-sm tanggal tgl_pulang"
+                                                    id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off"
+                                                    disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -53,20 +52,20 @@
                                         <div class="col-lg-4 col-md-4 col-sm-12">
                                             <div class="form-radio form-radio-inline">
                                                 <input class="form-radio-input" type="radio" id="masuk"
-                                                       name="stts_pulang"
-                                                       value="masuk">
+                                                    name="stts_pulang"
+                                                    value="masuk">
                                                 <label class="form-radio-label" for="masuk">Masuk</label>
                                             </div>
                                         </div>
                                         <div class="col-lg-8 col-md-4 col-sm-12">
                                             <div class="input-group input-group-sm">
                                                 <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
-                                                                                           id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off"
-                                                                                           disabled>
+                                                    id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off"
+                                                    disabled>
 
                                                 <span class="input-group-text"><label for="">s/d</label></span>
                                                 <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
-                                                       id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off" disabled>
+                                                    id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off" disabled>
 
                                             </div>
                                         </div>
@@ -75,7 +74,7 @@
                                 <div class="col-lg-2 col-md-12 col-sm-12">
                                     <div class="d-grid gap-2">
                                         <button type="button" class="btn btn-success btn-sm"
-                                                id="cari">
+                                            id="cari">
                                             <i class="bi bi-search"></i>
                                         </button>
                                     </div>
@@ -86,7 +85,7 @@
                             <div class="row gy-2">
                                 <div class="col-lg-3 col-md-12 col-sm-12">
                                     <select name="spesialis" id="spesialis" class="form-select form-select-sm"
-                                            style="width:100%">
+                                        style="width:100%">
                                         <option value="">Semua Spesialis</option>
                                         <option value="S0001">Spesialis Kebidanan & Kandungan</option>
                                         <option value="S0003">Spesialis Anak</option>
@@ -122,14 +121,14 @@
 
                     <table class="table table-striped table-responsive text-sm table-sm" id="tb_ranap" width="100%">
                         <thead>
-                        <tr role="row">
-                            <th></th>
-                            <th width="25%">No.Rawat</th>
-                            <th>Kamar</th>
-                            <th>Lama</th>
-                            <th>Dokter</th>
-                            <th>Diagnosa Awal</th>
-                        </tr>
+                            <tr role="row">
+                                <th></th>
+                                <th width="25%">No.Rawat</th>
+                                <th>Kamar</th>
+                                <th>Lama</th>
+                                <th>Dokter</th>
+                                <th>Diagnosa Awal</th>
+                            </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -161,6 +160,7 @@
     @include('content.ranap.modal.modal_catatan_edukasi_pasien')
     @include('content.ranap.modal.cppt.gizi._modalListAntropometri')
     @include('content.ranap.modal.cppt.gizi._modalListBiokimia')
+    @include('content.ranap.modal.modal_monitoring_cairan')
 @endsection
 
 @push('script')
@@ -178,7 +178,7 @@
         var getSpsId = $('#kd_sps').val();
 
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             new bootstrap.Tab('#tab-resep')
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-grafik')
@@ -213,11 +213,11 @@
             }
         }
 
-        $('#cekJam').on('change', function(){
+        $('#cekJam').on('change', function() {
             checkJam();
         })
 
-        $('#cari-kamar').on('search', function () {
+        $('#cari-kamar').on('search', function() {
             if ($(this).val() === '') {
                 kamar = '';
                 $('#tb_ranap').DataTable().destroy();
@@ -226,7 +226,7 @@
             }
         })
 
-        $('#spesialis').on('change', function () {
+        $('#spesialis').on('change', function() {
             sps = $('#spesialis option:selected').val();
             localStorage.setItem('spesialis', sps);
             if (sps) {
@@ -235,9 +235,9 @@
                     data: {
                         'sps': sps,
                     },
-                    success: function (response) {
+                    success: function(response) {
                         let option = `<option value="" disabled selected>Pilih Dokter Spesialis</option>`;
-                        response.data.forEach(function (res) {
+                        response.data.forEach(function(res) {
                             $('#dokter').prop('disabled', false)
                             $('#dokter').empty();
                             option += `<option value="${res.kd_dokter}">${res.nm_dokter}</option>`;
@@ -258,11 +258,11 @@
             tb_ranap();
         })
 
-        $("#cari-kamar").bind('keypress', function (e) {
+        $("#cari-kamar").bind('keypress', function(e) {
             // console.log($(this).val())
         })
 
-        $('#cari-kamar').on('keyup', function () {
+        $('#cari-kamar').on('keyup', function() {
             kamar = $(this).val();
             if (kamar.length >= 5) {
                 localStorage.setItem('kamar', kamar);
@@ -275,14 +275,14 @@
             }
         })
 
-        $('#dokter').on('change', function () {
+        $('#dokter').on('change', function() {
             kd_dokter = $(this).val();
             localStorage.setItem('dokter', kd_dokter)
             $('#tb_ranap').DataTable().destroy();
             tb_ranap();
         })
 
-        $('#pulang').on('click', function () {
+        $('#pulang').on('click', function() {
             stts_pulang = 'Pulang';
             if ($('#pulang').is(':checked')) {
                 $('.tgl_pulang').prop('disabled', false)
@@ -292,7 +292,7 @@
                 $('.tgl_masuk').prop('disabled', false)
             }
         })
-        $('#masuk').on('click', function () {
+        $('#masuk').on('click', function() {
             stts_pulang = 'Masuk';
             if ($('#masuk').is(':checked')) {
                 $('.tgl_pulang').prop('disabled', true)
@@ -304,13 +304,13 @@
         })
 
 
-        $('#belum').on('click', function () {
+        $('#belum').on('click', function() {
             stts_pulang = '-';
             $('.tgl_pulang').prop('disabled', true)
             $('.tgl_masuk').prop('disabled', true)
         });
 
-        $('#cari').on('click', function () {
+        $('#cari').on('click', function() {
             let a = '';
             let b = '';
             if (stts_pulang === 'Pulang') {
@@ -350,50 +350,51 @@
                     },
                 },
                 columns: [{
-                    data: 'reg_periksa',
-                    render: function (data, type, row, meta) {
+                        data: 'reg_periksa',
+                        render: function(data, type, row, meta) {
 
-                        if (!data.dokter) {
-                            swal.fire({
-                                icon: 'error',
-                                html: `Gagal memuat pasien ${row.no_rawat} dengan ID Dokter ${row}, periksa kembali data registrasi`,
-                                title: 'Terjadi Kesalahan',
-                                showConfirmButton: true,
-                                confirmButtonColor: '#3085d6',
-                            })
-                            return '';
-                        }
-                        list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
-                        list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="showModalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Upload Berkas Penunjang</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="catatanEdukasiPasien('${data.no_rawat}')">Catatan Edukasi Pasien</a></li>`;
+                            if (!data.dokter) {
+                                swal.fire({
+                                    icon: 'error',
+                                    html: `Gagal memuat pasien ${row.no_rawat} dengan ID Dokter ${row}, periksa kembali data registrasi`,
+                                    title: 'Terjadi Kesalahan',
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                })
+                                return '';
+                            }
+                            list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
+                            list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="showModalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Upload Berkas Penunjang</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="catatanEdukasiPasien('${data.no_rawat}')">Catatan Edukasi Pasien</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')">Monitoring Cairan Pasien</a></li>`;
 
-                        if (row.reg_periksa.dokter.kd_sps === 'S0003') {
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
-                            if (data.sttsumur === 'Hr') {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
-                            } else {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
+                            if (row.reg_periksa.dokter.kd_sps === 'S0003') {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
+                                if (data.sttsumur === 'Hr') {
+                                    list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
+                                } else {
+                                    list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
+                                }
+                            } else if (row.reg_periksa.dokter.kd_sps === 'S0001') {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
                             }
-                        } else if (row.reg_periksa.dokter.kd_sps === 'S0001') {
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
-                        }
-                        // resume medis aktif
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${data.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
-                        isDokter = "{{ session()->get('pegawai')->departemen }}";
-                        if (isDokter === 'DM7' || isDokter === 'Direksi' || isDokter === 'SPS' || isDokter === '-' || isDokter === 'CSM') {
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPlanOfCare('${data.no_rawat}')"><i>Plan of Care</i> ${cekList(row.reg_periksa.poc)}</a></li>`;
-                        }
-                        if (isDokter === 'Direksi' || isDokter === 'SPS' || isDokter === '-' || isDokter === 'CSM') {
-                            if (row.resume) {
-                                iconCheck = '<i class="bi bi-check-circle text-success"></i>';
-                            } else {
-                                iconCheck = '';
+                            // resume medis aktif
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${data.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
+                            isDokter = "{{ session()->get('pegawai')->departemen }}";
+                            if (isDokter === 'DM7' || isDokter === 'Direksi' || isDokter === 'SPS' || isDokter === '-' || isDokter === 'CSM') {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPlanOfCare('${data.no_rawat}')"><i>Plan of Care</i> ${cekList(row.reg_periksa.poc)}</a></li>`;
                             }
-                            list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
-                        }
+                            if (isDokter === 'Direksi' || isDokter === 'SPS' || isDokter === '-' || isDokter === 'CSM') {
+                                if (row.resume) {
+                                    iconCheck = '<i class="bi bi-check-circle text-success"></i>';
+                                } else {
+                                    iconCheck = '';
+                                }
+                                list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
+                            }
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
@@ -402,7 +403,7 @@
                     },
                     {
                         data: 'reg_periksa',
-                        render: function (data, type, row, meta) {
+                        render: function(data, type, row, meta) {
                             if (!data.pasien) {
                                 swal.fire({
                                     icon: 'error',
@@ -422,8 +423,8 @@
                                     data: {
                                         'q': pasien,
                                     },
-                                    success: function (response) {
-                                        $.map(response, function (data) {
+                                    success: function(response) {
+                                        $.map(response, function(data) {
                                             $('#pasien').text(data.nm_pasien);
                                         })
                                     }
@@ -474,21 +475,21 @@
                     },
                     {
                         data: 'kamar',
-                        render: function (data) {
+                        render: function(data) {
                             return data.bangsal.nm_bangsal;
                         },
                         name: 'kamar',
                     },
                     {
                         data: 'lama',
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             return `${data} Hari`;
                         },
                         name: 'lama',
                     },
                     {
                         data: 'reg_periksa',
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             let dokter = '';
                             if (!data.dokter) {
                                 swal.fire({
@@ -510,8 +511,8 @@
                                     data: {
                                         'nik': kd_dokter,
                                     },
-                                    success: function (response) {
-                                        $.map(response.data, function (res) {
+                                    success: function(response) {
+                                        $.map(response.data, function(res) {
                                             $('.nm_dokter').text(res.nm_dokter);
                                         })
                                     }
@@ -783,7 +784,7 @@
             $('#modalAsmedRanapAnak').modal('show')
         }
 
-        $("#modalSoapRanap").on('hidden.bs.modal', function () {
+        $("#modalSoapRanap").on('hidden.bs.modal', function() {
             grafikPemeriksaan.destroy();
             grafikPemeriksaan = null;
 
@@ -896,23 +897,23 @@
                 },
                 scrollCollapse: true,
                 columns: [{
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
-                        if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
-                            button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
-                        }
-                        return button;
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
+                            if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
+                                button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
+                            }
+                            return button;
+                        },
+                        name: 'tgl_perawatan',
                     },
-                    name: 'tgl_perawatan',
-                },
                     {
                         data: null,
-                        render: function (data, type, row, meta) {
+                        render: function(data, type, row, meta) {
                             list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
                                 '</strong></li>';
                             list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
-                            $.map(row.grafik_harian, function (grafik) {
+                            $.map(row.grafik_harian, function(grafik) {
                                 if (row.tgl_perawatan === grafik.tgl_perawatan && row.jam_rawat === grafik.jam_rawat) {
                                     list += '<li> O2 : ' + grafik.o2 + '</li>';
                                 }
@@ -935,13 +936,13 @@
                             isDirektur = "{{ session()->get('pegawai')->jbtn }}";
                             if (isDokter === 'Direksi' || isDokter === 'SPS' || isDirektur === 'Direktur') {
                                 btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-warning btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square" style="margin-right:5px;"></i> Verifikasi </button>';
-                                $.map(row.verifikasi, function (verifikasi) {
+                                $.map(row.verifikasi, function(verifikasi) {
                                     if (row.tgl_perawatan === verifikasi.tgl_perawatan && row.jam_rawat === verifikasi.jam_rawat) {
                                         btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-success btn-sm mb-2">Telah Diverifikasi<br/>Oleh : <b>' + verifikasi.petugas.nama + '</b></button>';
                                     }
                                 })
                             } else {
-                                $.map(row.log, function (log) {
+                                $.map(row.log, function(log) {
                                     if (row.tgl_perawatan === log.tgl_perawatan && row.jam_rawat === log.jam_rawat) {
                                         btnVerif = `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai.nama} 
                                             , ${formatTanggal(log.waktu)} ${log.waktu.split(' ')[1]}
@@ -958,7 +959,7 @@
                     },
                     {
                         data: null,
-                        render: function (data, type, row, meta) {
+                        render: function(data, type, row, meta) {
                             baris = '<tr><td width="5%">Petugas </td><td width="5%">:</td><td>' + row
                                 .petugas.nama + '</td></tr>'
                             baris += '<tr><td>Subjek </td><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
@@ -1000,7 +1001,7 @@
                 ajax: {
                     url: 'soap/grafik/data',
                     type: 'GET',
-                    data: function (data) {
+                    data: function(data) {
                         data.no_rawat = no_rawat;
                     },
                     "language": {
@@ -1011,7 +1012,7 @@
                     // waktu perawatan, suhu, tensi, nadi, respirasi, spo2, o2, GCS, kesadaran
                     {
                         data: null,
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             return data.tgl_perawatan + ' ' + data.jam_rawat;
                         },
                         name: 'tgl_perawatan'
@@ -1050,7 +1051,7 @@
                     },
                     {
                         data: null,
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             var htmlButton = `<button type="button" class="btn btn-sm btn-danger btn-hapus-grafik-harian" onClick="deleteGrafikHarian('` + data.no_rawat + `','` + data.tgl_perawatan + `','` + data.jam_rawat + `')"><i class="bi bi-trash"></i></button>`;
                             htmlButton += `<button type="button" class="btn btn-sm btn-warning btn-edit-grafik-harian" onClick="editGrafikHarian('` + data.no_rawat + `','` + data.tgl_perawatan + `','` + data.jam_rawat + `','` + data.suhu_tubuh + `','` + data.tensi + `','` + data.nadi + `','` + data.respirasi + `','` + data.spo2 + `','` + data.o2 + `','` + data.gcs + `','` + data.kesadaran + `')"><i class="bi bi-pencil-square"></i></button>`;
 
@@ -1062,7 +1063,7 @@
             });
         }
 
-        $('#modalSoapRanap').on('hidden.bs.modal', function () {
+        $('#modalSoapRanap').on('hidden.bs.modal', function() {
             $('#tbSoap').DataTable().destroy();
             $('#ubah_soap').empty();
             $('#suhu').val("-");
@@ -1098,7 +1099,7 @@
         }
 
         // form tambah grafik harian submit
-        $('#formSaveGrafikHarian').on('submit', function (e) {
+        $('#formSaveGrafikHarian').on('submit', function(e) {
             e.preventDefault();
 
             var kd_dokter = $('#formSaveGrafikHarian #kdDokter').data('kd-dokter');
@@ -1126,7 +1127,7 @@
                     'jam_rawat': $('#formSaveGrafikHarian input[name="jam_rawat"]').val(),
                 },
                 type: 'POST',
-                beforeSend: function () {
+                beforeSend: function() {
                     swal.fire({
                         title: 'Sedang mengirim data',
                         text: 'Mohon Tunggu',
@@ -1136,7 +1137,7 @@
                         }
                     })
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         if (suhu_tubuh.includes(',')) {
                             suhu_tubuh = suhu_tubuh.replace(',', '.')
@@ -1184,13 +1185,13 @@
                     }
 
                 },
-                error: function (request, status, error) {
+                error: function(request, status, error) {
                     alertErrorAjax(request)
                 }
             })
         });
 
-        $('#modalGrafikHarian').on('hidden.bs.modal', function () {
+        $('#modalGrafikHarian').on('hidden.bs.modal', function() {
             clearFormGrafikHarian();
 
             $('#formSaveGrafikHarian input[name="action"]').remove();
@@ -1223,7 +1224,7 @@
                             'jam_rawat': jam_rawat
                         },
                         type: 'DELETE',
-                        beforeSend: function () {
+                        beforeSend: function() {
                             $("#tableGrafikHarian").DataTable().destroy();
                             swal.fire({
                                 title: 'Sedang menghapus data',
@@ -1234,7 +1235,7 @@
                                 }
                             })
                         },
-                        success: function (response) {
+                        success: function(response) {
                             if (response.success) {
                                 tableGrafikHarian.fnDestroy();
                                 grafikPemeriksaan.destroy();
@@ -1254,7 +1255,7 @@
                                 console.log(response);
                             }
                         },
-                        error: function (request, status, error) {
+                        error: function(request, status, error) {
                             console.log(request.responseText);
                         }
                     });
