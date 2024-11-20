@@ -672,7 +672,7 @@
                 no_rkm_medis: $('#no_rkm_medis').val(),
                 images: images,
                 tgl_masuk: $('#tgl_masuk').val(),
-                kategori: $('input[type="radio"]:checked').val(),
+                kategori: $('#button-form').find('input[type="radio"]:checked').val(),
                 username: "{{ session()->get('pegawai')->nik }}",
                 _token: "{{ csrf_token() }}"
             }
