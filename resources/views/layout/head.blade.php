@@ -29,7 +29,7 @@
     {{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.2.7/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.2.7/sweetalert2.min.css"> --}}
-    <script src="https://unpkg.com/sweetalert2@11"></script>
+    {{-- <script src="https://unpkg.com/sweetalert2@11"></script> --}}
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
 
     <style>
