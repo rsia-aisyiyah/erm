@@ -28,6 +28,20 @@
 </head>
 
 <body>
+    <!-- Modal -->
+    <div id="start-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-[90%] sm:w-[400px] text-center">
+            <p class="text-xl font-bold mb-4">Selamat Datang di Loket Antrian Farmasi</p>
+            <p class="text-base mb-6">
+                Klik tombol "Start" untuk memulai.
+            </p>
+            <button id="start-button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                Start
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
     <div class="w-full h-[100vh] flex items-center align-items-center">
         <div class="w-[98%] h-auto m-auto flex flex-col gap-0">
             <div>
@@ -142,54 +156,39 @@
     </div>
 
 
-    <!-- <script src="https://code.responsivevoice.org/responsivevoice.js?key=Sy6j48ws"></script> -->
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=bJDDvdyZ"></script>
     <script>
-        $(document).ready(function() {
-
-            function ngomong(text) {
-                if (window.speechSynthesis.speaking) {
-                    window.speechSynthesis.cancel();
-                }
-
-                if (text.trim() === "") {
-                    console.warn("Teks kosong, tidak ada yang bisa diucapkan.");
-                    return;
-                }
-
-                const speech = new SpeechSynthesisUtterance(text);
-
-                // Set properties for pitch and rate
-                speech.pitch = 1; // Range: 0 to 2
-                speech.rate = 0.9;  // Range: 0.1 to 10
-
-                const voices = window.speechSynthesis.getVoices();
-                const indonesianVoice = voices.find(voice => voice.lang === 'id-ID');
-
-                if (indonesianVoice) {
-                    speech.voice = indonesianVoice
-                } else {
-                    console.warn("Suara bahasa Indonesia tidak ditemukan, menggunakan suara default.");
-                }
-
-                // Speak the text
-                setTimeout(() => {
-                    window.speechSynthesis.speak(speech);
-                }, 1000);
+        function ngomong(text) {
+            if (text.trim() === "") {
+                console.warn("Teks kosong, tidak ada yang bisa diucapkan.");
+                return;
             }
 
+            // Speak the text
+            responsiveVoice.speak(text, "Indonesian Male", {
+                pitch: 1,
+                rate: .85,
+                volume: 1
+            });
+        }
+
+
+
+        $(document).ready(function() {
+            // Check if "start" has been clicked before
+            if (!sessionStorage.getItem('app_started')) {
+                $('#start-modal').removeClass('hidden');
+            }
+
+            // Handle Start button click
+            $('#start-button').on('click', function () {
+                sessionStorage.setItem('app_started', 'true');
+                $('#start-modal').addClass('hidden');
+                
+                ngomong("Selamat datang di loket antrian farmasi. Silahkan tunggu panggilan nomor resep anda.");
+            });
+
             getData();
-
-            // responsiveVoice.speak("Welcome", "Indonesian Female", {
-            //     pitch: 1,
-            //     rate: .85,
-            //     volume: 1
-            // });
-            
-            // Panggil fungsi ngomong setelah suara di-load
-            window.speechSynthesis.onvoiceschanged = () => {
-                ngomong("Selamat datang di loket antrian farmasi");
-            };
-
 
             $("#no_resep").html(localStorage.getItem('no_panggil'));
             $("#nm_pasien").html(localStorage.getItem('nm_pasien'));
@@ -213,16 +212,8 @@
                     var nm_pasien = localStorage.getItem('nm_pasien').toLowerCase();
                     var splitname = nm_pasien.split(",");
 
-                    // responsiveVoice.speak(splitname[0] + ". silahkan menuju loket penyerahan obat", "Indonesian Female", {
-                    //     pitch: 1,
-                    //     rate: .85,
-                    //     volume: 1
-                    // });
-
                     // Panggil fungsi ngomong setelah suara di-load
-                    window.speechSynthesis.onvoiceschanged = () => {
-                        ngomong(splitname[0] + ". silahkan menuju loket penyerahan obat");
-                    };
+                    ngomong(splitname[0] + ". silahkan menuju loket penyerahan obat");
                 }, 1000);
             }
 
@@ -235,6 +226,10 @@
 
             var no_resep = localStorage.getItem('no_panggil');
             var element = document.getElementById(no_resep);
+
+            if (element == null) {
+                return;
+            }
 
             $("#" + no_resep).addClass("bg-yellow-400");
 
