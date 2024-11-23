@@ -29,7 +29,9 @@
     {{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.2.7/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.2.7/sweetalert2.min.css"> --}}
-    <script src="https://unpkg.com/sweetalert2@11"></script>
+    {{-- <script src="https://unpkg.com/sweetalert2@11"></script> --}}
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+
     <style>
         .card {
             border-radius: 6px;
@@ -241,9 +243,8 @@
             border-radius: 6px;
         }
 
-        .card
-        {
-        border-radius: 6px !important;
+        .card {
+            border-radius: 6px !important;
         }
 
         .nav-tabs .nav-link {
@@ -464,9 +465,12 @@
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             font-size: 11px;
         }
-        .is-valid + .select2-container .select2-selection {
-            border-color: #28a745; /* Green border color for valid state */
-            color: #155724; /* Dark green text */
+
+        .is-valid+.select2-container .select2-selection {
+            border-color: #28a745;
+            /* Green border color for valid state */
+            color: #155724;
+            /* Dark green text */
         }
     </style>
 </head>
