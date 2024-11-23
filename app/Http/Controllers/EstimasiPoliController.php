@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\EstimasiPoli;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -12,9 +12,11 @@ class EstimasiPoliController extends Controller
 {
     // public $regPeriksa = app('App\Http\Controllers\RegPeriksaController')->status();
     private $tanggal;
+    private $tracker;
     public function __construct()
     {
         $this->tanggal = new Carbon();
+        $this->tracker = new TrackerSqlController();
     }
     public function cari($no_rawat)
     {
@@ -22,7 +24,7 @@ class EstimasiPoliController extends Controller
         return $estimasi;
     }
 
-    function get(Request $request): JsonResponse
+    public function get(Request $request): JsonResponse
     {
         $no_rawat = $request->no_rawat;
         $estimasi = EstimasiPoli::where('no_rawat', $no_rawat)->first();
@@ -37,12 +39,18 @@ class EstimasiPoliController extends Controller
         $getEstimasi = $this->cari($no_rawat);
 
         if (!isset($getEstimasi)) {
+            $data = [
+                'no_rawat' => $no_rawat,
+                'jam_periksa' => $jam_periksa,
+            ];
+
             $estimasi = EstimasiPoli::create(
-                [
-                    'no_rawat' => $no_rawat,
-                    'jam_periksa' => $jam_periksa,
-                ]
+                $data
             );
+
+            if ($estimasi) {
+                $this->tracker->insertSql(new EstimasiPoli(), $data);
+            }
         }
         app('App\Http\Controllers\RegPeriksaController')->statusDaftar($no_rawat, 'Berkas Diterima');
         return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $jam_periksa], 200);
@@ -53,7 +61,11 @@ class EstimasiPoliController extends Controller
         $estimasi = EstimasiPoli::where('no_rawat', $no_rawat);
 
         if ($estimasi) {
-            $estimasi->delete();
+            $isDelete = $estimasi->delete();
+            if ($isDelete) {
+                $this->tracker->deleteSql(new EstimasiPoli(), ['no_rawat' => $no_rawat]);
+            }
+
             app('App\Http\Controllers\RegPeriksaController')->statusDaftar($no_rawat, 'Belum');
             $response = response()->json(['pesan' => 'Batal Panggil Pasien', 'no_rawat' => $no_rawat], 200);
         } else {
