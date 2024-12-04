@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\EstimasiPoli;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
@@ -24,12 +23,16 @@ class EstimasiPoliController extends Controller
         return $estimasi;
     }
 
-    public function get(Request $request): JsonResponse
+    public function get(Request $request): bool
     {
         $no_rawat = $request->no_rawat;
         $estimasi = EstimasiPoli::where('no_rawat', $no_rawat)->first();
 
-        return response()->json($estimasi);
+        if ($estimasi) {
+            return true;
+        }
+
+        return false;
     }
     public function kirim(Request $request)
     {
@@ -38,7 +41,7 @@ class EstimasiPoliController extends Controller
 
         $getEstimasi = $this->cari($no_rawat);
 
-        if (!isset($getEstimasi)) {
+        if (!$getEstimasi) {
             $data = [
                 'no_rawat' => $no_rawat,
                 'jam_periksa' => $jam_periksa,

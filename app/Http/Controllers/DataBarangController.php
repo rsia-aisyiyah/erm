@@ -13,9 +13,15 @@ class DataBarangController extends Controller
         $this->dataBarang = new DataBarang();
         $this->data = $this->dataBarang->semua();
     }
-    public function index()
+    public function index(Request $request)
     {
-        $hasil = $this->data->get();
+        $query = $this->data;
+        if ($request->nama) {
+            $query = $query->where('nama_brng', 'like', '%' . $request->nama . '%');
+        }
+
+        $hasil = $query->get();
+
         return response()->json($hasil, 200);
     }
     public function cari(Request $request)
@@ -28,17 +34,17 @@ class DataBarangController extends Controller
 
         if ($hasil) {
             $response =
-                response()->json([
-                    'success' => true,
-                    'message' => 'Data obat dan alkes berdasarkan pencarian = ' . $request->nama,
-                    'data' => $hasil,
-                ], 200);
+            response()->json([
+                'success' => true,
+                'message' => 'Data obat dan alkes berdasarkan pencarian = ' . $request->nama,
+                'data' => $hasil,
+            ], 200);
         } else {
             $response =
-                response()->json([
-                    'success' => false,
-                    'message' => 'Tidak menemukan obat/alkes'
-                ], 404);
+            response()->json([
+                'success' => false,
+                'message' => 'Tidak menemukan obat/alkes',
+            ], 404);
         }
         return $response;
     }

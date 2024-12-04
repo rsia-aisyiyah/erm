@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class Input extends Component
+class CheckboxGroup extends Component
 {
     /**
      * Create a new component instance.
@@ -12,21 +12,13 @@ class Input extends Component
      * @return void
      */
 
-    public $id;
-    public $name;
-    public $placeholder;
-    public $type;
+    public string $name;
+    public array $checkboxes;
 
-    public function __construct(
-        $id,
-        $name,
-        $type = 'text',
-        $placeholder = ''
-    ) {
-        $this->id = $id;
+    public function __construct(string $name, array $checkboxes = [])
+    {
         $this->name = $name;
-        $this->type = $type;
-        $this->placeholder = $placeholder;
+        $this->checkboxes = $checkboxes;
     }
 
     /**
@@ -36,6 +28,6 @@ class Input extends Component
      */
     public function render()
     {
-        return view('components.input');
+        return view('components.checkbox-group');
     }
 }

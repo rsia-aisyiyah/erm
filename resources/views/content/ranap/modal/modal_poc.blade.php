@@ -267,9 +267,9 @@
             const resultObject = {};
             let periksa = '';
             let kewaspadaan = '';
-            let aktivitas ='';
-            let keperawatan ='';
-            let nutrisi ='';
+            let aktivitas = '';
+            let keperawatan = '';
+            let nutrisi = '';
 
             queryString.forEach(item => {
                 const {
@@ -329,7 +329,7 @@
 
             // set aktivitas
             if (Array.isArray(resultObject.aktivitas)) {
-              aktivitas = resultObject.aktivitas.map((val) => {
+                aktivitas = resultObject.aktivitas.map((val) => {
                     return val
                 }).join('; ')
 
@@ -549,7 +549,7 @@
                                 $(`#formPlanOfCare input[id=keterangan_batasan]`).val(batasan.split(' : ')[2])
                                 $(`#formPlanOfCare input[id=keterangan_batasan]`).prop('disabled', false)
                                 $(`#formPlanOfCare input[id=${batasan.split(':')[1]}]`).prop('checked', true)
-    
+
                             }
                         }
                     });

@@ -38,6 +38,7 @@ use App\Http\Controllers\Icd9Controller;
 use App\Http\Controllers\JenisPerawatanRadiologiController;
 use App\Http\Controllers\JnsPerawatabLabController;
 use App\Http\Controllers\KamarInapController;
+use App\Http\Controllers\KomunikasiEdukasiObatPulangController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\LaporanOperasiController;
 use App\Http\Controllers\LoginController;
@@ -72,6 +73,7 @@ use App\Http\Controllers\ResepDokterController;
 use App\Http\Controllers\ResepDokterRacikanController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
 use App\Http\Controllers\ResepObatController;
+use App\Http\Controllers\ResepPulangController;
 use App\Http\Controllers\ResumePasienRanapController;
 use App\Http\Controllers\RiwayatImunisasiController;
 use App\Http\Controllers\RiwayatPersalinanController;
@@ -454,6 +456,11 @@ Route::middleware('auth')->group(function () {
     Route::post('monitoring/cairan/pasien', [MonitoringCairanPasienController::class, 'create']);
     Route::get('monitoring/cairan/pasien', [MonitoringCairanPasienController::class, 'get']);
     Route::post('monitoring/cairan/pasien/delete', [MonitoringCairanPasienController::class, 'delete']);
+
+    Route::get('edukasi-obat-pulang', [KomunikasiEdukasiObatPulangController::class, 'get']);
+    Route::post('edukasi-obat-pulang', [KomunikasiEdukasiObatPulangController::class, 'create']);
+    Route::post('edukasi-obat-pulang/delete', [KomunikasiEdukasiObatPulangController::class, 'delete']);
+    Route::get('resep-pulang', [ResepPulangController::class, 'get']);
 
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);

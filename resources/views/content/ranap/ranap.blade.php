@@ -161,6 +161,7 @@
     @include('content.ranap.modal.cppt.gizi._modalListAntropometri')
     @include('content.ranap.modal.cppt.gizi._modalListBiokimia')
     @include('content.ranap.modal.modal_monitoring_cairan')
+    @include('content.ranap.modal.modal_edukasi_obat_pulang')
 @endsection
 
 @push('script')
@@ -369,6 +370,7 @@
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Upload Berkas Penunjang</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="catatanEdukasiPasien('${data.no_rawat}')">Catatan Edukasi Pasien</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')">Monitoring Cairan Pasien</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')">Edukasi Obat Pulang</a></li>`;
 
                             if (row.reg_periksa.dokter.kd_sps === 'S0003') {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
