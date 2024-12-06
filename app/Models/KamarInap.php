@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\RegPeriksa;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class KamarInap extends Model
@@ -31,24 +31,28 @@ class KamarInap extends Model
     {
         return $this->hasOne(AsesmenMedisRanapKandungan::class, 'no_rawat', 'no_rawat');
     }
-    function asmedAnak()
+    public function asmedAnak()
     {
         return $this->hasOne(AsesmenMedisAnak::class, 'no_rawat', 'no_rawat');
     }
-    function askepAnak()
+    public function askepAnak()
     {
         return $this->hasOne(AskepRanapAnak::class, 'no_rawat', 'no_rawat');
     }
-    function askepNeonatus()
+    public function askepNeonatus()
     {
         return $this->hasOne(AskepRanapNeonatus::class, 'no_rawat', 'no_rawat');
     }
-    function skoringTb():BelongsTo
+    public function skoringTb(): BelongsTo
     {
         return $this->belongsTo(SkoringTb::class, 'no_rawat', 'no_rawat');
     }
-	function skriningTb():BelongsTo
+    public function skriningTb(): BelongsTo
     {
         return $this->belongsTo(SkriningTb::class, 'no_rawat', 'no_rawat');
+    }
+    public function edukasiObatPulang(): BelongsTo
+    {
+        return $this->belongsTo(KomunikasiEdukasiObatPulang::class, 'no_rawat', 'no_rawat');
     }
 }
