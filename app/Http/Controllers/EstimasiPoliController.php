@@ -31,7 +31,6 @@ class EstimasiPoliController extends Controller
         if ($estimasi) {
             return true;
         }
-
         return false;
     }
     public function kirim(Request $request)
@@ -39,9 +38,9 @@ class EstimasiPoliController extends Controller
         $no_rawat = $request->no_rawat;
         $jam_periksa = $this->tanggal->now()->toDateTimeString();
 
-        $getEstimasi = $this->cari($no_rawat);
+        $getEstimasi = $this->get($request);
 
-        if (!$getEstimasi) {
+        if ($getEstimasi) {
             $data = [
                 'no_rawat' => $no_rawat,
                 'jam_periksa' => $jam_periksa,
