@@ -40,7 +40,7 @@ class EstimasiPoliController extends Controller
 
         $getEstimasi = $this->get($request);
 
-        if ($getEstimasi) {
+        if (!$getEstimasi) {
             $data = [
                 'no_rawat' => $no_rawat,
                 'jam_periksa' => $jam_periksa,
