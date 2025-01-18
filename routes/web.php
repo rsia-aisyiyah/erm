@@ -473,9 +473,7 @@ Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 Route::get('/test/view', function () {
     return view('test');
 });
-Route::get('/test/view', function () {
-    return view('test');
-});
+Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}',[PoliklinikController::class, 'poliPasien']);
 
 // Route::get('/file', function () {
 // $file = Storage::disk('custom')->url('LOGO RSIA (2).png');

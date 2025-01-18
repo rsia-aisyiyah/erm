@@ -845,24 +845,7 @@
                                 classTeksPenjab = 'text-danger';
                             }
 
-                            if (row.pasien) {
-                                pasien = data.pasien.nm_pasien;
-                            } else {
-                                pasien = data.no_rkm_medis.replace(/\s/g, '');
-                                $.ajax({
-                                    url: '/erm/pasien/cari',
-                                    data: {
-                                        'q': pasien,
-                                    },
-                                    success: function(response) {
-                                        $.map(response, function(data) {
-                                            $('.pasien-' + row.no_reg).text(data
-                                                .nm_pasien);
-                                        })
-                                    }
-                                })
-                            }
-
+                            pasien = data.pasien.nm_pasien;
                             no_rawat = textRawat(row.no_rawat);
                             badgeKontrol = '';
                             btnSep = '<div class="dropdown mb-1 mt-1" id="dropdown-sep-' + no_rawat + '"> <button id="btn-rujuk-' + no_rawat + '" class="btn-sm" style="font-size:10px;width:112px" type="button" data-bs-toggle="dropdown" aria-expanded="false" ><ul class="dropdown-menu" style="font-size:12px"></button></div>';
@@ -936,26 +919,27 @@
                                 } else {
                                     ambilAskep = 'ambilAskepAnak(\'' + no_rkm_medis + '\')';
                                 }
-                            } else {
-                                kd_dokter = row.kd_dokter.replace(/\s/g, '');
-                                $.ajax({
-                                    url: '/erm/dokter/ambil',
-                                    dataType: 'JSON',
-                                    data: {
-                                        'nik': kd_dokter,
-                                    },
-                                    success: function(response) {
-                                        $.map(response.data, function(res) {
-                                            if (res.kd_dokter == 'S0001') {
-                                                $('#btn-askep-' + row.no_reg).attr('onclick', 'ambilAskepAnak(\'' + no_rkm_medis + '\')');
-
-                                            } else {
-                                                $('#btn-askep-' + row.no_reg).attr('onclick', 'ambilAskepKebidanan(\'' + no_rkm_medis + '\')');
-                                            }
-                                        })
-                                    }
-                                });
                             }
+                            // else {
+                            //     kd_dokter = row.kd_dokter.replace(/\s/g, '');
+                            //     $.ajax({
+                            //         url: '/erm/dokter/ambil',
+                            //         dataType: 'JSON',
+                            //         data: {
+                            //             'nik': kd_dokter,
+                            //         },
+                            //         success: function(response) {
+                            //             $.map(response.data, function(res) {
+                            //                 if (res.kd_dokter == 'S0001') {
+                            //                     $('#btn-askep-' + row.no_reg).attr('onclick', 'ambilAskepAnak(\'' + no_rkm_medis + '\')');
+
+                            //                 } else {
+                            //                     $('#btn-askep-' + row.no_reg).attr('onclick', 'ambilAskepKebidanan(\'' + no_rkm_medis + '\')');
+                            //                 }
+                            //             })
+                            //         }
+                            //     });
+                            // }
 
                             html =
                                 '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1" style = "width:80px;font-size:12px;text-align:left" onclick = "detailPeriksa(\'' +
@@ -971,10 +955,7 @@
                                 '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' +
                                 row.no_rawat + '"><i class="bi bi-pencil-square" id="icon-periksa-' +
                                 textRawat(row.no_rawat) + '"></i> SOAP</button><br/>';
-                            html +=
-                                '<button id="btn-askep-' + textRawat(row.no_rawat) +
-                                '"style="width:80px;font-size:12px;text-align:left" onclick="' +
-                                ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
+                            html += '<button id="btn-askep-' + textRawat(row.no_rawat) + '"style="width:80px;font-size:12px;text-align:left" onclick="' + ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
                                 row.no_rkm_medis +
                                 '"><i id="icon-askep-' +
                                 textRawat(row.no_rawat) +

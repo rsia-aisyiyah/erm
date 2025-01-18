@@ -10,6 +10,7 @@ use App\Models\PemeriksaanRanap;
 use App\Models\RsiaGrafikHarian;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\RsiaLogSoapController;
+use Illuminate\Support\Facades\DB;
 
 class PemeriksaanRanapController extends Controller
 {
@@ -31,7 +32,16 @@ class PemeriksaanRanapController extends Controller
     public function ambilSatu(Request $request)
     {
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa.dokter', 'regPeriksa.pasien', 'petugas', 'petugas.dokter', 'grafikHarian']);
+            ->with(['regPeriksa' => function($query){
+                return $query->select(
+                    DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+                    DB::raw('TRIM(kd_poli) as kd_poli'),
+                    DB::raw('TRIM(kd_dokter) as kd_dokter'),
+                   'tgl_registrasi', 'jam_reg', 'status_bayar', 'status_poli', 'stts_daftar', 'no_rawat'
+                )->with(['dokter', 'pasien']);
+            }, 'petugas' => function($query){
+                return $query->with('petugas');
+            }, 'grafikHarian']);
 
         if ($request->tgl_perawatan) {
             $pemeriksaan->where('tgl_perawatan', $request->tgl_perawatan);

@@ -117,17 +117,18 @@
         </div>
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-body">
-
-                    <table class="table table-striped table-responsive text-sm table-sm" id="tb_ranap" width="100%">
+                <div class="card-body table-responsive">
+                    <table class="table table-striped table-hover text-sm table-sm" id="tb_ranap" width="100%">
                         <thead>
                             <tr role="row">
                                 <th></th>
-                                <th width="25%">No.Rawat</th>
+                                <th>No. Rawat</th>
+                                <th>Pasien</th>
+                                <th>Pembiayaan</th>
                                 <th>Kamar</th>
                                 <th>Lama</th>
                                 <th>Dokter</th>
-                                <th>Diagnosa Awal</th>
+                                <th>Diag. Awal</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -353,7 +354,6 @@
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-
                             if (!data.dokter) {
                                 swal.fire({
                                     icon: 'error',
@@ -362,8 +362,11 @@
                                     showConfirmButton: true,
                                     confirmButtonColor: '#3085d6',
                                 })
-                                return '';
+                                return false;
                             }
+
+                            const textNoRawat = textRawat(row.no_rawat);
+
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
                             list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="showModalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
@@ -399,44 +402,17 @@
                             }
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
-                            button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
+                            button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px" id="dropdownAksi${meta.row}" onclick="toggleDropdownAksi(this)" data-id="${row.no_rawat}">Aksi</button><ul class="dropdown-menu" style="font-size:12px">${list}</ul></div>`
                             return button;
                         }
                     },
                     {
+                        data: 'no_rawat',
+                    },
+                    {
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-                            if (!data.pasien) {
-                                swal.fire({
-                                    icon: 'error',
-                                    html: `Gagal memuat pasien ${row.no_rawat} dengan No. RM ${row.no_rkm_medis}, periksa kembali data registrasi`,
-                                    title: 'Terjadi Kesalahan',
-                                    showConfirmButton: true,
-                                    confirmButtonColor: '#3085d6',
-                                })
-                                return '';
-                            }
-                            if (data.pasien) {
-                                pasien = `${data.no_rkm_medis} <br/> ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})`;
-                            } else {
-                                pasien = data.no_rkm_medis.replace(/\s/g, '');
-                                $.ajax({
-                                    url: 'pasien/cari',
-                                    data: {
-                                        'q': pasien,
-                                    },
-                                    success: function(response) {
-                                        $.map(response, function(data) {
-                                            $('#pasien').text(data.nm_pasien);
-                                        })
-                                    }
-                                })
-                            }
-                            if (data.penjab.kd_pj === 'A03') {
-                                penjab = '<span class="text-danger"><b>' + data.penjab.png_jawab + '</b></span>'
-                            } else {
-                                penjab = '<span class="text-success"><b>' + data.penjab.png_jawab + '</b></span>'
-                            }
+                            pasien = `${data.no_rkm_medis} <br/> ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})`;
 
                             bayiGabung = '';
                             if (row.ranap_gabung) {
@@ -466,14 +442,22 @@
 
                             asmed = '';
                             if (data.asmed_ranap_anak == null && data.asmed_ranap_kandungan == null) {
-                                asmed = ' <button class="ml-1 px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button>'
+                                asmed = ' <button class="ml-1 px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button><br/>'
                             }
 
 
-                            return data.no_rawat + asmed + '<br/><strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + penjab + bayiGabung;
+                            return asmed + '<strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + bayiGabung;
 
                         },
                         name: 'reg_periksa',
+                    },
+                    {
+                        data: 'reg_periksa.penjab',
+                        render: function(data) {
+                            penjab = `<span class="${data.kd_pj === 'A03' ? 'text-danger' : 'text-success'}"><b>${data.png_jawab}</b></span>`
+                            return penjab;
+                        },
+                        name: 'penjab',
                     },
                     {
                         data: 'kamar',
@@ -1296,6 +1280,17 @@
             $('#formSaveGrafikHarian input[name="spo2"]').val('-');
             $('#formSaveGrafikHarian input[name="o2"]').val('-');
             $('#formSaveGrafikHarian input[name="gcs"]').val('-');
+        }
+
+        function toggleDropdownAksi(e) {
+            const isShow = $(e).hasClass('show');
+            const no_rawat = $(e).data('id');
+            const id = $(e).attr('id');
+            if (isShow) {
+                $(`#${id}`).removeClass('show');
+            } else {
+                $(`#${id}`).addClass('show');
+            }
         }
     </script>
 @endpush

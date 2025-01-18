@@ -11,6 +11,7 @@ use Yajra\DataTables\DataTables;
 use App\Models\MappingPoliklinik;
 use App\Models\PemeriksaanRalan;
 use App\Models\Upload;
+use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -42,7 +43,15 @@ class PoliklinikController extends Controller
         $tanggal = new Carbon();
 
         $sekarang = $tanggal->now()->toDateString();
-        $pasienPoli = RegPeriksa::with(['pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter.mappingDokter', 'penjab','skriningTb' , 'upload', 'pemeriksaanRalan', 'sep.suratKontrol', 'suratKontrol', 'sep.rujukanKeluar', 'pasien.spri' => function ($q) use ($tgl_registrasi) {
+        $pasienPoli = RegPeriksa::select(['no_rawat', 'stts', 'kd_pj', 'tgl_registrasi', 'jam_reg', 'no_reg',
+            DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+            DB::raw('TRIM(kd_dokter) as kd_dokter'),
+            DB::raw('TRIM(kd_poli) as kd_poli'),
+        ])
+            ->with([
+                'pasien' => function ($query) {
+                    $query->with(['askepRalanAnak', 'askepRalanKebidanan']);
+        },'pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter.mappingDokter', 'penjab','skriningTb' , 'upload', 'pemeriksaanRalan', 'sep.suratKontrol', 'suratKontrol', 'sep.rujukanKeluar', 'pasien.spri' => function ($q) use ($tgl_registrasi) {
             return $q->where('tgl_surat', $tgl_registrasi);
         }])
             ->whereNotIn('kd_poli', ['OPE', 'IGDK', '-', 'U0016', 'LAB'])

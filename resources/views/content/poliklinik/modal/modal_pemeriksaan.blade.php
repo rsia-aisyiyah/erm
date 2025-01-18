@@ -1543,20 +1543,20 @@
         function setSoapToAsmed(no_rawat, form) {
             return getPemeriksaanPoli(no_rawat).done((response) => {
                 if (Object.keys(response).length != 0) {
-                    $(`${form} select[name="kesadaran"]`).val(response.kesadaran).change();
-                    $(`${form} input[name="gcs"]`).val(response.gcs);
-                    $(`${form} input[name="tb"]`).val(response.tinggi);
-                    $(`${form} input[name="bb"]`).val(response.berat);
-                    $(`${form} input[name="td"]`).val(response.tensi);
-                    $(`${form} input[name="nadi"]`).val(response.nadi);
-                    $(`${form} input[name="rr"]`).val(response.respirasi);
-                    $(`${form} input[name="suhu"]`).val(response.suhu_tubuh);
-                    $(`${form} input[name="spo"]`).val(response.spo2);
-                    $(`${form} textarea[name="rps"]`).val(response.keluhan);
-                    $(`${form} textarea[name="ket_fisik"]`).val(response.pemeriksaan);
-                    $(`${form} textarea[name="diagnosis"]`).val(response.penilaian);
-                    $(`${form} textarea[name="konsul"]`).val(response.instruksi);
-                    $(`${form} textarea[name="tata"]`).val(response.rtl);
+                    form.find(`select[name="kesadaran"]`).val(response.kesadaran).change();
+                    form.find(`input[name="gcs"]`).val(response.gcs);
+                    form.find(`input[name="tb"]`).val(response.tinggi);
+                    form.find(`input[name="bb"]`).val(response.berat);
+                    form.find(`input[name="td"]`).val(response.tensi);
+                    form.find(`input[name="nadi"]`).val(response.nadi);
+                    form.find(`input[name="rr"]`).val(response.respirasi);
+                    form.find(`input[name="suhu"]`).val(response.suhu_tubuh);
+                    form.find(`input[name="spo"]`).val(response.spo2);
+                    form.find(`textarea[name="rps"]`).val(response.keluhan);
+                    form.find(`textarea[name="ket_fisik"]`).val(response.pemeriksaan);
+                    form.find(`textarea[name="diagnosis"]`).val(response.penilaian);
+                    form.find(`textarea[name="konsul"]`).val(response.instruksi);
+                    form.find(`textarea[name="tata"]`).val(response.rtl);
 
                 }
             })
@@ -1579,7 +1579,8 @@
                         }
                     })
                 } else {
-                    setSoapToAsmed(no_rawat, '#formAsmedRajalKandungan');
+                    const form = $('#formAsmedRajalKandungan')
+                    setSoapToAsmed(no_rawat, form);
                 }
             })
         }
@@ -1656,7 +1657,8 @@
                         }
                     })
                 } else {
-                    setSoapToAsmed(no_rawat, '#formAsmedRanapAnak');
+                    const form = $('#formAsmedRanapAnak')
+                    setSoapToAsmed(no_rawat, form);
                 }
             })
         }
@@ -1678,7 +1680,8 @@
                         }
                     })
                 } else {
-                    setSoapToAsmed(no_rawat, '#formAsmedRanapKandungan');
+                    const form = $('#formAsmedRanapKandungan');
+                    setSoapToAsmed(no_rawat, form);
                 }
             })
         }

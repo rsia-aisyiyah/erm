@@ -6,6 +6,8 @@ use App\Models\Upload;
 use App\Models\BridgingSep;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Pasien extends Model
 {
@@ -58,5 +60,26 @@ class Pasien extends Model
     function ketPasien()
     {
         return $this->hasOne(RsiaKetPasien::class, 'no_rkm_medis', 'no_rkm_medis');
+    }
+    function askepRalanAnak(): HasManyThrough{
+        return $this->hasManyThrough(
+            AskepRalanAnak::class,
+            RegPeriksa::class,
+            'no_rkm_medis',
+            'no_rawat',
+            'no_rkm_medis',
+            'no_rawat'
+        );
+    }
+
+    function askepRalanKebidanan(): HasManyThrough{
+        return $this->hasManyThrough(
+            AskepRalanKebidanan::class,
+            RegPeriksa::class,
+            'no_rkm_medis',
+            'no_rawat',
+            'no_rkm_medis',
+            'no_rawat'
+        );
     }
 }
