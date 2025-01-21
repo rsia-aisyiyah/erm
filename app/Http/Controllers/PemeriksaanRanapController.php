@@ -40,7 +40,7 @@ class PemeriksaanRanapController extends Controller
                    'tgl_registrasi', 'jam_reg', 'status_bayar', 'status_poli', 'stts_daftar', 'no_rawat'
                 )->with(['dokter', 'pasien']);
             }, 'petugas' => function($query){
-                return $query->with('petugas');
+                // return $query->with('petugas');
             }, 'grafikHarian']);
 
         if ($request->tgl_perawatan) {
