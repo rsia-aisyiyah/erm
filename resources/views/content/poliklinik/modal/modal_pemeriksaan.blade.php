@@ -1872,6 +1872,8 @@
         }
 
         $('#modalSoap').on('hidden.bs.modal', function() {
+            const nm_pasien = $('#pasien-cari').val();
+            tb_pasien(tgl_registrasi, nm_pasien);
             $('#tb-resep tbody').empty();
             $('#tb-resep-racikan tbody').empty();
             isModalShow = false;
