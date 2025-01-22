@@ -113,7 +113,7 @@
                 lab.forEach((item, index) => {
 
                     if (item.detail.length) {
-                        hasilLab += `<tr class="borderless" style="background-color:#eee;padding:2px">
+                        hasilLab += `<tr class="borderless row-secondary">
                             <td colspan="3">
                                 <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
                                 ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
@@ -121,7 +121,7 @@
                             <td>${item.petugas.nama}</td></tr>`;
                         item.detail.sort((a, b) => a.template.urut - b.template.urut);
                         item.detail.forEach((detail, index) => {
-                            hasilLab += `<tr ${setWarnaPemeriksaan(detail.keterangan)}>
+                            hasilLab += `<tr class="${setWarnaPemeriksaan(detail.keterangan)}">
                                 <td>${detail.template.Pemeriksaan}</td>
                                 <td>${detail.nilai} ${detail.template.satuan}</td>
                                 <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>

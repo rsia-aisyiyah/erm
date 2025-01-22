@@ -402,7 +402,7 @@
                             }
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
-                            button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px" id="dropdownAksi${meta.row}" onclick="toggleDropdownAksi(this)" data-id="${row.no_rawat}">Aksi</button><ul class="dropdown-menu" style="font-size:12px">${list}</ul></div>`
+                            button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px" id="dropdownAksi${meta.row}" data-id="${row.no_rawat}">Aksi</button><ul class="dropdown-menu" style="font-size:12px">${list}</ul></div>`
                             return button;
                         }
                     },
@@ -1282,15 +1282,15 @@
             $('#formSaveGrafikHarian input[name="gcs"]').val('-');
         }
 
-        function toggleDropdownAksi(e) {
-            const isShow = $(e).hasClass('show');
-            const no_rawat = $(e).data('id');
-            const id = $(e).attr('id');
-            if (isShow) {
-                $(`#${id}`).removeClass('show');
-            } else {
-                $(`#${id}`).addClass('show');
-            }
-        }
+        // function toggleDropdownAksi(e) {
+        //     const isShow = $(e).hasClass('show');
+        //     const no_rawat = $(e).data('id');
+        //     const id = $(e).attr('id');
+        //     if (isShow) {
+        //         $(`#${id}`).removeClass('show');
+        //     } else {
+        //         $(`#${id}`).addClass('show');
+        //     }
+        // }
     </script>
 @endpush

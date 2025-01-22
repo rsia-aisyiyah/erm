@@ -231,6 +231,59 @@
             font-size: 12px;
         }
 
+        .row-danger {
+            color: white;
+            background-color: #dc3545;
+            border-color: #a91827;
+            padding: 3px;
+        }
+
+        .row-primary {
+            color: white;
+            background-color: #0d6efd;
+            border-color: #074bb0;
+            padding: 3px;
+        }
+
+        .row-warning {
+            background-color: #ffe600;
+            border-color: #dbb106;
+            padding: 3px;
+        }
+
+        .row-indigo {
+            color: white;
+            background-color: #cb00cb;
+            border-color: #9c038c;
+            padding: 3px;
+        }
+
+        .row-secondary {
+            background-color: #e3e3e3;
+            border-color: #ababab;
+            padding: 3px;
+        }
+
+        .row-danger td,
+        .row-primary td,
+        .row-warning td,
+        .row-success td,
+        .row-secondary td,
+        .row-indigo td {
+            background-color: inherit;
+            color: inherit;
+            vertical-align: middle;
+        }
+
+        #table-ews tr td,
+        #table-ews tr th,
+        #table-ews tbody,
+        #table-ews thead {
+            border: 1px solid #000;
+            background-color: inherit;
+            vertical-align: middle
+        }
+
         table td {
             vertical-align: middle;
         }

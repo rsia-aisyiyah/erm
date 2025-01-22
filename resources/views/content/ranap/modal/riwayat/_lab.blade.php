@@ -20,7 +20,7 @@
                     lab.forEach((item, index) => {
                         if (item.detail.length) {
                             const detailLab = item.detail.map((detail, index) => {
-                                return `<tr ${setWarnaPemeriksaan(detail.keterangan)}>
+                                return `<tr class="${setWarnaPemeriksaan(detail.keterangan)}">
                                 <td>${detail.template.Pemeriksaan}</td>
                                 <td>${detail.nilai} ${detail.template.satuan}</td>
                                 <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>

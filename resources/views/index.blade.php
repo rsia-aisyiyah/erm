@@ -321,11 +321,11 @@
         function setWarnaPemeriksaan(keterangan) {
             let warna = '';
             if (keterangan == 'L') {
-                warna = 'style="color:#fff;background-color:#0d6efd;font-weight:bold"';
+                warna = 'row-primary';
             } else if (keterangan == 'H' || keterangan == '*' || keterangan == '**') {
-                warna = 'style="color:#fff;background-color:#dc3545;font-weight:bold"';
+                warna = 'row-danger';
             } else if (keterangan == 'K' || keterangan == 'k') {
-                warna = 'style="color:#fff;background-color:#dc3;font-weight:bold"';
+                warna = 'row-indigo';
             }
             return warna;
         }
