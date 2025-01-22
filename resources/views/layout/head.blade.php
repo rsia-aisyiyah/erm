@@ -37,7 +37,7 @@
     <style>
         * {
             font-family: "Poppins", serif;
-            font-weight: 400;
+            /* font-weight: 400; */
             font-style: normal;
         }
 
