@@ -943,7 +943,7 @@
                             // }
 
                             html =
-                                '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1" style = "width:80px;font-size:12px;text-align:left" onclick = "detailPeriksa(\'' +
+                                '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1" style="width:100px;font-size:11px;text-align:left" onclick = "detailPeriksa(\'' +
                                 row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' +
                                 textRawat(row.no_rawat) +
                                 '"><i id="upload-' +
@@ -951,19 +951,19 @@
                                 '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
                             html +=
                                 '<button id="btn-periksa-' + textRawat(row.no_rawat) +
-                                '" style="width:80px;font-size:12px;text-align:left" onclick="ambilNoRawat(\'' +
+                                '" style="width:100px;font-size:11px;text-align:left" onclick="ambilNoRawat(\'' +
                                 row.no_rawat +
                                 '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' +
                                 row.no_rawat + '"><i class="bi bi-pencil-square" id="icon-periksa-' +
                                 textRawat(row.no_rawat) + '"></i> SOAP</button><br/>';
-                            html += '<button id="btn-askep-' + textRawat(row.no_rawat) + '"style="width:80px;font-size:12px;text-align:left" onclick="' + ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
+                            html += '<button id="btn-askep-' + textRawat(row.no_rawat) + '" style="width:100px;font-size:11px;text-align:left" onclick="' + ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
                                 row.no_rkm_medis +
                                 '"><i id="icon-askep-' +
                                 textRawat(row.no_rawat) +
                                 '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
                             html +=
                                 '<button class="btn btn-primary btn-sm mb-2 mr-1" onclick="confirmUpdateRiwayat(\'' + row.no_rkm_medis + '\')" data-id="' +
-                                row.no_rkm_medis + '"  style="width:80px;font-size:12px;text-align:left"><i class="bi bi-search"></i>RIWAYAT</button>';
+                                row.no_rkm_medis + '"  style="width:100px;font-size:11px;text-align:left"><i class="bi bi-search"></i>RIWAYAT</button>';
 
                             if (row.upload.length > 0) {
                                 $('#upload-' + textRawat(row.no_rawat)).removeClass(
