@@ -31,7 +31,7 @@ class RanapController extends Controller
                 DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
                 DB::raw('TRIM(kd_poli) as kd_poli'),
                 DB::raw('TRIM(kd_pj) as kd_pj'),
-                'no_rawat', 'umurdaftar', 'sttsumur', 'no_reg'
+                'no_rawat', 'umurdaftar', 'sttsumur', 'no_reg', 'tgl_registrasi'
             )->with(['pasien', 'dokter' => function ($q) {
                 $q->with(['spesialis']);
             }, 'penjab', 'kamarInap']);

@@ -20,6 +20,7 @@ class PemeriksaanRanapController extends Controller
     private $track;
     private $log;
 
+
     public function __construct()
     {
         $this->tanggal = new Carbon();
