@@ -63,14 +63,15 @@ class PermintaanRadiologiController extends Controller
                         'kd_poli',
                         'kd_dokter',
                         'kd_pj',
+                        'umurdaftar',
+                        'sttsumur',
                         DB::raw('TRIM(no_rkm_medis) as no_rkm_medis')
                     ])->with([
                                 'pasien' => function ($q) {
                                     return $q->select([
                                         DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
                                         'nm_pasien',
-                                        'umurdaftar',
-                                        'sttsumur'
+                                        'tgl_lahir',
                                     ]);
             }]);
         }, 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'gambarRadiologi', 'permintaanPemeriksaan.jnsPemeriksaan']);
