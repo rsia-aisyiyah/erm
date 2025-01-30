@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AsesmenMedisAnak;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -59,5 +60,22 @@ class AsesmenMedisAnakController extends Controller
             $query->where('no_rkm_medis', $no_rkm_medis);
         })->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'dokter')->get();
         return response()->json($asmed);
+    }
+    
+    function print(Request $request){
+        $asmed = $this->asmed->where('no_rawat', $request->no_rawat)->with('regPeriksa.pasien', 'regPeriksa.dokter', 'dokter.pegawai')->first();
+        $asmed['sidik'] = $this->setFingerOutput($asmed->dokter->nm_dokter, bcrypt($asmed->dokter->kd_dokter), $asmed->tanggal);
+
+        $pdf = Pdf::loadView('content.print.asmed_ranap_anak', compact('asmed'))
+        ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
+            ->setPaper(array(0, 0, 595, 935));
+        return $pdf->stream($asmed->regPeriksa->pasien->no_rkm_medis . date('YmdHis') . '.pdf');
+        // return response()->json($asmed);
+    }
+
+     function setFingerOutput($dokter, $id, $tanggal)
+    {
+        $strId = sha1($id);
+        return $str = "Ditandatangani di RSIA Aisiyiyah Pekajangan Kab. Pekalongan, Ditandatangani Elektronik Oleh $dokter, ID $strId, $tanggal";
     }
 }

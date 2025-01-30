@@ -45,4 +45,7 @@ class Operasi extends Model
     {
         return $this->belongsTo(Petugas::class, 'omloop', 'nip');
     }
+    function laporan(){
+        return $this->hasOne(LaporanOperasi::class, 'no_rawat', 'no_rawat');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AsesmenMedisRanapKandungan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class AsesmenMedisRanapKandunganController extends Controller

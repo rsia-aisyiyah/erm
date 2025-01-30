@@ -6,8 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body modal-riwayat">
-                <table id="tb_riwayat" class="table table-bordered table-responsive" cellpadding="5" cellspacing="0"
-                    style="padding-left:50px;"></table>
+                <div id="contentRiwayat"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-bs-dismiss="modal"><i
@@ -31,6 +30,7 @@
 @push('script')
     <script>
         var no_rm = '';
+        const contentRiwayat = $('#contentRiwayat');
         $('#modalRiwayat').on('hidden.bs.modal', function() {
             $('#tb_riwayat').empty();
             detail = '';
@@ -62,26 +62,32 @@
         var diagnosa = '';
 
         function fotoPemeriksaan(foto) {
-            var hasilFoto = '<table>';
+
             if (Object.keys(foto).length > 0) {
-                foto.forEach(function(f) {
+                const listFoto = foto.map(function(f) {
                     let arrFoto = f?.file.split(',')
                     let kategori = f?.kategori;
-                    hasilFoto += '<tr>'
-                    arrFoto.forEach(function(fx) {
-                        hasilFoto += `<td>
-                            <div class="image-set m-t-20">
-                                <a data-magnify="gallery" data-src="" data-caption="${kategori?.toUpperCase()} ${formatTanggal(f.tgl_masuk)}" data-group="a" href="${getBaseUrl(`/erm/public/erm/${fx}`)}">
-                                    <img src="${getBaseUrl(`/erm/public/erm/${fx}`)}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
-                                </a>
-                                <figcaption>${kategori?.toUpperCase()}</figcaption>
-                            </div>
-                        </td>`
-                    })
-                    hasilFoto += '</tr>'
-                })
-                hasilFoto += '</table>';
-                return '<tr><th>Berkas Penunjang : </th><td>' + hasilFoto + '</td></tr>';
+                    const hasil = arrFoto.map((fx) => {
+                        return `<div class="col-md-2 col-sm-12">
+                                    <div class="image-set m-t-20">
+                                        <a data-magnify="gallery" data-src="" data-caption="${kategori?.toUpperCase()} ${formatTanggal(f.tgl_masuk)}" data-group="a" href="${getBaseUrl(`/erm/public/erm/${fx}`)}">
+                                            <img src="${getBaseUrl(`/erm/public/erm/${fx}`)}" class="img-thumbnail position-relative" width="300px"><figcaption align="center">
+                                        </a>
+                                        <figcaption>${kategori?.toUpperCase()}</figcaption>
+                                    </div>
+                            </div>`
+                    }).join("")
+
+                    return `${hasil}`
+
+
+                }).join('')
+                return `<div class="card my-2">
+                    <div class="card-header">Berkas Penunjang</div>
+                    <div class="card-body row">
+                        ${listFoto}
+                    </div>
+                    </div>`;
             }
             return '';
         }
@@ -94,13 +100,17 @@
 
 
         function riwayatPasien(d) {
+
+            let detail = '';
+            let stts_rawat = ''
             d.reg_periksa.forEach(function(i) {
+
                 if (i.status_lanjut == 'Ranap') {
-                    status_lanjut = 'RAWAT INAP';
+                    stts_rawat = 'RAWAT INAP';
                     ralan = 'UGD';
                     class_status = 'background:rgb(152, 0, 175);color:white';
                 } else {
-                    status_lanjut = 'RAWAT JALAN';
+                    stts_rawat = 'RAWAT JALAN';
                     ralan = 'Poliklinik';
                     class_status = 'background:rgb(255 193 7);color:black';
                 }
@@ -110,73 +120,249 @@
                 } else {
                     catatan = i.catatan_perawatan.catatan.replace(/\n/g, '<br/>');
                 }
-                hasilOperasi(i.operasi, i.no_rawat)
-                detail +=
-                    '<tr>' +
-                    '<th colspan="2" style="' + class_status + '"><h6 align="center">' + status_lanjut +
-                    '</h6></th>' +
-                    '</tr>' +
-                    '<tr><th style="width:15%">Tanggal Daftar</th><td>: ' + formatTanggal(i.tgl_registrasi) + ' ' + i.jam_reg +
-                    '<tr><th>Nama (Nomor RM)</th><td>: ' + d.nm_pasien + ' (' + i.no_rkm_medis + ')</td></tr>' +
-                    '<tr><th>Nomor Rawat</th><td>: ' + i.no_rawat + '</td></tr>' +
-                    '</td></tr>' +
-                    '<tr><th>Unit/Poliklinik</th><td>: ' + i.poliklinik.nm_poli + '</td></tr>' +
-                    '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
-                    '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
-                    diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) +
-                    renderResumeMedis(i.resume_medis) +
-                    renderPemeriksaan(ralan, i.pemeriksaan_ralan) + renderPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
-                    renderRiwayatAsmedAnak(i.asmed_ranap_anak) + renderRiwayatAsmedKandungan(i.asmed_ranap_kandungan) +
-                    '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
-                    pemberianObat(i.detail_pemberian_obat) +
-                    pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
-                    pemeriksaanRadiologi(i.periksa_radiologi) +
-                    fotoPemeriksaan(i.upload) +
-                    '</tr>';
 
-                pemeriksaan = '';
+
+
+                const header = `<h6 class="m-0">${stts_rawat}</h6>`;
+                const identitas = `<div class="card-body">
+                        <table class="table table-sm table-borderless text-sm m-0">
+                            <tr>
+                                <th>No. Rawat</th>
+                                <th>:</th>
+                                <td>${i.no_rawat}</td>
+                            </tr>    
+                            <tr>
+                                <th width="20%">Tanggal Daftar</th>
+                                <th width="1%">:</th>
+                                <td> ${formatTanggal(i.tgl_registrasi)} ${i.jam_reg}</td>
+                            </tr>    
+                            <tr>
+                                <th>Nama Pasien (No. RM)</th>
+                                <th>:</th>
+                                <td>${d.nm_pasien} (${d.no_rkm_medis})</td>
+                            </tr>    
+                            <tr>
+                                <th>Poliklinik</th>
+                                <th>:</th>
+                                <td>${i.poliklinik.nm_poli}</td>
+                            </tr>    
+                            <tr>
+                                <th>Dokter DPJP</th>
+                                <th>:</th>
+                                <td>${i.dokter.nm_dokter}</td>
+                            </tr>    
+                            <tr>
+                                <th>Pembiayaan</th>
+                                <th>:</th>
+                                <td>${d.kd_pj !== 'A03' ?  `<strong class="text-success">${i.penjab.png_jawab}</strong>`:`<strong class="text-danger">${i.penjab.png_jawab}</strong>` }</td>
+                            </tr>    
+                            <tr>
+                                <th>Diagnosa Akhir</th>
+                                <th>:</th>
+                                <td>${i.diagnosa_pasien.map((d) => {
+                                    if(d.prioritas == 1){
+                                        return `<strong class="text-danger">${d.kd_penyakit} - ${d.penyakit.nm_penyakit} *</strong>`;
+                                    }else{
+                                        return d.kd_penyakit + ' - ' + d.penyakit.nm_penyakit;
+                                    }
+                                }).join('<br/>')}</td>
+                            </tr>    
+                            <tr>
+                                <th>Prosedur/Tindakan</th>
+                                <th>:</th>
+                                <td>${i.prosedur_pasien.map((d) => {
+                                    if(d.prioritas == 1){
+                                        return `<strong class="text-danger">${d.kode} - ${d.icd9.deskripsi_panjang} *</strong>`;
+                                    }else{
+                                        return d.kode + ' - ' + d.icd9.deskripsi_panjang;
+                                    }
+                                }).join('<br/>')}</td>
+                            </tr>    
+                        </table>
+                    </div>`;
+                const pemeriksaanRajal = renderPemeriksaan(ralan, i.pemeriksaan_ralan);
+                const pemeriksaanRanap = renderPemeriksaan('Rawat Inap', i.pemeriksaan_ranap);
+                detail += `<div class="card card-header ${stts_rawat==='RAWAT INAP' ? 'text-bg-indigo' : 'text-bg-warning'} my-2 text-center">${header}</div>
+                <div class="card">${identitas}</div>
+                <div>${pemeriksaanRajal}</div>
+                <div class="card my-2">
+                    <div class="card-header">Catatan</div>
+                    <div class="card-body">${catatan}</div>
+                </div>
+                <div>${pemeriksaanRanap}</div>
+                <div>${renderHasilOperasi(i.operasi)}</div>
+                <div>${renderResumeMedis(i.resume_medis)}</div>
+                <div>${pemberianObat(i.detail_pemberian_obat)}</div>
+                <div>${pemeriksaanLab(i.periksa_lab)}</div>
+                <div> ${pemeriksaanRadiologi(i.periksa_radiologi)}</div>
+                <div> ${fotoPemeriksaan(i.upload)}</div>
+                <div> ${renderRiwayatAsmedAnak(i.asmed_ranap_anak)}</div>
+                <div> ${renderRiwayatAsmedKandungan(i.asmed_ranap_kandungan)}</div>
+                `
+                // detail +=
+                //     '<tr>' +
+                //     '<th colspan="2" style="' + class_status + '"><h6 align="center">' + status_lanjut +
+                //     '</h6></th>' +
+                //     '</tr>' +
+                //     '<tr><th style="width:15%">Tanggal Daftar</th><td>: ' + formatTanggal(i.tgl_registrasi) + ' ' + i.jam_reg +
+                //     '<tr><th>Nama (Nomor RM)</th><td>: ' + d.nm_pasien + ' (' + i.no_rkm_medis + ')</td></tr>' +
+                //     '<tr><th>Nomor Rawat</th><td>: ' + i.no_rawat + '</td></tr>' +
+                //     '</td></tr>' +
+                //     '<tr><th>Unit/Poliklinik</th><td>: ' + i.poliklinik.nm_poli + '</td></tr>' +
+                //     '<tr><th>Dokter</th><td>: ' + i.dokter.nm_dokter + '</td></tr>' +
+                //     '<tr><th>Cara Bayar</th><td>: ' + i.penjab.png_jawab + '</td></tr>' +
+                //     diagnosaPasien(i.diagnosa_pasien) + prosedurPasien(i.prosedur_pasien) +
+                //     renderResumeMedis(i.resume_medis) +
+                //     renderPemeriksaan(ralan, i.pemeriksaan_ralan) + renderPemeriksaan('Rawat Inap', i.pemeriksaan_ranap) +
+                //     renderRiwayatAsmedAnak(i.asmed_ranap_anak) + renderRiwayatAsmedKandungan(i.asmed_ranap_kandungan) +
+                //     '<tr class="operasi-' + textRawat(i.no_rawat) + '" style="display:none"><th>Laporan Operasi</th><td class="laporan-op-' + textRawat(i.no_rawat) + '"></td>' +
+                //     pemberianObat(i.detail_pemberian_obat) +
+                //     pemeriksaanLab(i.detail_pemeriksaan_lab, i.umurdaftar, d.jk) +
+                //     pemeriksaanRadiologi(i.periksa_radiologi) +
+                //     fotoPemeriksaan(i.upload) +
+                //     '</tr>';
+
+                // pemeriksaan = '';
 
             });
-            $('#tb_riwayat').append(detail);
+            // $('#tb_riwayat').append(detail);
+            contentRiwayat.html(detail);
+        }
+
+        function getLamaWaktu(start, end) {
+            start = start.split(":");
+            end = end.split(":");
+
+            var startDate = new Date(0, 0, 0, start[0], start[1], start[2] || 0);
+            var endDate = new Date(0, 0, 0, end[0], end[1], end[2] || 0);
+
+            var diff = endDate.getTime() - startDate.getTime();
+
+            var hours = Math.floor(diff / 1000 / 60 / 60);
+            diff -= hours * 1000 * 60 * 60;
+
+            var minutes = Math.floor(diff / 1000 / 60);
+            diff -= minutes * 1000 * 60;
+
+            var seconds = Math.floor(diff / 1000);
+
+            if (hours < 0) hours += 24;
+
+            return (
+                (hours <= 9 ? "0" : "") + hours + " Jam " +
+                (minutes <= 9 ? "0" : "") + minutes + " Menit " +
+                (seconds <= 9 ? "0" : "") + seconds + " Detik"
+            );
+        }
+
+        function renderHasilOperasi(operasi) {
+            if (operasi === null) {
+                return '';
+            }
+            const start = operasi.laporan.tanggal.split(' ')[1];
+            const end = operasi.laporan.selesaioperasi.split(' ')[1];
+            const hasil = operasi.laporan.laporan_operasi.replace(/\n/g, '<br>')
+
+            const content = `<div class="card my-2">
+                <div class="card-header">Laporan Operasi</div>
+                    <div class="card-body">
+                        <table class="table table-sm text-sm">
+                            <tr>
+                                <th width="15%">Tgl & Jam Mulai</th>
+                                <td>: ${formatTanggal(operasi.laporan.tanggal)}</td>
+                            </tr>
+                            <tr>
+                                <th>Tgl & Jam Selesai</th>
+                                <td>: ${formatTanggal(operasi.laporan.selesaioperasi)}</td>
+                            </tr>
+                            <tr>
+                                <th>Lama Operasi</th>
+                                <td>: ${getLamaWaktu(start, end)}</td>
+                            </tr>
+                            <tr>
+                                <th>Jenis Operasi</th>
+                                <td>: ${operasi.paket_operasi.nm_perawatan}</td>
+                            </tr>
+                            <tr>
+                                <th>Kategori</th>
+                                <td>: ${operasi.kategori}</td>
+                            </tr>
+                            <tr>
+                                <th>Operator</th>
+                                <td>: ${operasi.op1.nm_dokter}</td>
+                            </tr>
+                            <tr>
+                                <th>Asisten 1</th>
+                                <td>: ${operasi.asisten_op1.nama}</td>
+                            </tr>
+                            <tr>
+                                <th>Asisten 2</th>
+                                <td>: ${operasi.asisten_op2.nama}</td>
+                            </tr>
+                            <tr>
+                                <th>Diagnosa Pre-Operasi</th>
+                                <td>: ${operasi.laporan.diagnosa_preop}</td>
+                            </tr>
+                            <tr>
+                                <th>Diagnosa Post-Operasi</th>
+                                <td>: ${operasi.laporan.diagnosa_postop}</td>
+                            </tr>
+                            <tr>
+                                <th>Jaringan Dieksekusi</th>
+                                <td>: ${operasi.laporan.jaringan_dieksekusi}</td>
+                            </tr>
+                            <tr>
+                                <th>Permintaan PA</th>
+                                <td>: ${operasi.laporan.permintaan_pa}</td>
+                            </tr>
+                            <tr>
+                                <th>Hasil Laporan</th>    
+                                <td>: ${hasil}</td>    
+                            </tr>
+                        </table>
+                    </div>
+                
+                </div>`;
+
+            return content
         }
 
         function pemeriksaanRadiologi(radiologi) {
-            if (Object.keys(radiologi).length) {
-                html = `<tr class=""><th style="vertical-align: top;">Radiologi</th><td>`;
-                radiologi.map((rad) => {
-                    let hasiRadiologi = '';
-                    rad.hasil_radiologi.map((hasil) => {
-                        if (hasil.tgl_periksa == rad.tgl_periksa && hasil.jam == rad.jam) {
-                            hasiRadiologi = hasil.hasil
-                        }
-                    })
 
-                    let gambar = '';
-                    if (Object.keys(rad.gambar_radiologi).length) {
-                        rad.gambar_radiologi.map((img) => {
-                            if (img.tgl_periksa == rad.tgl_periksa && img.jam == rad.jam) {
-                                gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="${getBaseUrl(`/webapps/radiologi/${img.lokasi_gambar}`)}">
+            if (radiologi.length == 0) {
+                return '';
+            }
+            const content = radiologi.map((rad) => {
+                let hasiRadiologi = '';
+                rad.hasil_radiologi.map((hasil) => {
+                    if (hasil.tgl_periksa == rad.tgl_periksa && hasil.jam == rad.jam) {
+                        hasiRadiologi = hasil.hasil
+                    }
+                })
+
+                let gambar = '';
+                if (Object.keys(rad.gambar_radiologi).length) {
+                    rad.gambar_radiologi.map((img) => {
+                        if (img.tgl_periksa == rad.tgl_periksa && img.jam == rad.jam) {
+                            gambar += `<a data-magnify="gallery" data-src=""  data-group="a" href="${getBaseUrl(`/webapps/radiologi/${img.lokasi_gambar}`)}">
                                                 <img src="${getBaseUrl(`/webapps/radiologi/${img.lokasi_gambar}`)}" class="img-thumbnail position-relative" width="300px">
                                             </a>`
-                            } else {
-                                gambar = `<a data-magnify="gallery" data-src=""  data-group="a" href="{{ asset('/img/default.png') }}">
+                        } else {
+                            gambar = `<a data-magnify="gallery" data-src=""  data-group="a" href="{{ asset('/img/default.png') }}">
                                                 <img src="{{ asset('/img/default.png') }}" class="img-thumbnail position-relative" width="300px">
                                             </a>`
-                            }
-                        })
-                    } else {
-                        gambar = `<a data-magnify="gallery" data-src=""  data-group="a" href="{{ asset('/img/default.png') }}">
+                        }
+                    })
+                } else {
+                    gambar = `<a data-magnify="gallery" data-src=""  data-group="a" href="{{ asset('/img/default.png') }}">
                                                 <img src="{{ asset('/img/default.png') }}" class="img-thumbnail position-relative" width="300px">
                                             </a>`
-                    }
-
-                    // const gambar = rad.gambar_radiologi ? `https://sim.rsiaaisyiyah.com/webapps/radiologi/${rad.gambar_radiologi.lokasi_gambar}` : "{{ asset('/img/default.png') }}"
-                    html += `
-                            <div class="row">
-                                <div class="col-lg-4 col-sm-12 col-md-12">
+                }
+                return `<div class="row">
+                                <div class="col-lg-2 col-sm-12 col-md-12">
                                         ${gambar}
                                 </div>
-                                <div class="col-lg-8 col-sm-12 col-md-12" style="background-color:#e1ffe3">
+                                <div class="col-lg-8 col-sm-12 col-md-12">
                                     <table class="table table-sm table-borderless" width="100%">
                                         <tr>
                                             <td width="20%">
@@ -238,117 +424,133 @@
                                 </div>    
                                  
                             </div>`;
-                })
-                html += `</td></tr>`;
-                return html
-            }
+            }).join('')
+
+            return `<div class="card mt-2">
+                        <div class="card-header">Pemeriksaan Radiologi</div>
+                        <div class="card-body">${content}</div>
+                    </div>`
         }
 
         function renderPemeriksaan(jns, data) {
             let html = '';
             if (data.length) {
-                html = `<tr><th style="vertical-align: top;">Pemeriksaan ${jns}</th><td>`;
-                $.map(data, (pemRanap) => {
-                    html += `
-                            <div class="row">
+                if (jns === 'Rawat Inap') {
+                    data = data.filter((item) => item.pegawai.bidang === 'Dokter Umum' || item.pegawai.departemen === 'SPS');
+                }
+
+                const content = data.map((pemRanap) => {
+                    return `<div class="row gy-2 mb-2">
                                 <div class="col-sm-12 col-lg-4">
-                                    <table class="table table-sm borderless bm-2" style="background-color:#e1ffe3">
-                                        <tr>
-                                            <th width="10%">Petugas</th>
-                                            <th>:</th>
-                                            <th>${pemRanap.pegawai?.nama}</th>
-                                        </tr>  
-                                        <tr>
-                                            <td>Tanggal </td>
-                                            <td>:</td>
-                                            <td>${formatTanggal(pemRanap.tgl_perawatan)} ${pemRanap.jam_rawat}</td>
-                                        </tr>    
-                                        <tr>
-                                            <td>Tinggi </td>
-                                            <td>:</td>
-                                            <td>${pemRanap.tinggi} cm</td>    
-                                        </tr>
-                                        <tr>
-                                            <td>Berat Badan </td>
-                                            <td>:</td>
-                                            <td>${pemRanap.berat} Kg</td>    
-                                        </tr>
-                                        <tr>
-                                            <td>Suhu </td>
-                                            <td>:</td>
-                                            <td>${pemRanap.suhu_tubuh} <sup>0</sup>C</td>    
-                                        </tr>
-                                        <tr>
-                                            <td>Tensi</td>
-                                            <td>:</td>
-                                            <td>${pemRanap.tensi} mmHG</td>    
-                                        </tr>
-                                        <tr>
-                                            <td>Kesadaran</td>
-                                            <td>:</td>
-                                            <td>${pemRanap.kesadaran}</td>    
-                                        </tr>
-                                        <tr>
-                                            <td>GCS</td>
-                                            <td>:</td>
-                                            <td>${pemRanap.gcs} E,V,M</td>    
-                                            </tr>
-                                        <tr>
-                                            <td>Respirasi</td>
-                                            <td>:</td>
-                                            <td>${pemRanap.respirasi} X/menit</td>    
-                                        </tr>
-                                        <tr>
-                                            <td>Nadi</td>
-                                            <td>:</td>
-                                            <td>${pemRanap.nadi} X/menit</td>    
-                                        </tr>
-                                        <tr>
-                                            <td>SpO2</td>
-                                            <td>:</td>
-                                            <td>${pemRanap.spo2} %</td>    
-                                        </tr>
-                                        <tr>
-                                            <td>Alergi</td>
-                                            <td>:</td>
-                                            <td>${pemRanap.alergi}</td>    
-                                        </tr>
-                                    </table>
+                                    <div class="card">
+                                        <div class="card-header  ${jns === 'Rawat Inap' ? 'text-bg-primary' : 'text-bg-warning'}">
+                                            <span class="card-title">${pemRanap.pegawai?.nama}</span>    
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-sm borderless bm-2 text-sm p-4">
+                                                <tr>
+                                                    <td width="20%">Tanggal </td>
+                                                    <td>:</td>
+                                                    <td>${formatTanggal(pemRanap.tgl_perawatan)} ${pemRanap.jam_rawat}</td>
+                                                </tr>    
+                                                <tr>
+                                                    <td>Tinggi </td>
+                                                    <td>:</td>
+                                                    <td>${pemRanap.tinggi} cm</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Berat Badan </td>
+                                                    <td>:</td>
+                                                    <td>${pemRanap.berat} Kg</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Suhu </td>
+                                                    <td>:</td>
+                                                    <td>${pemRanap.suhu_tubuh} <sup>0</sup>C</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Tensi</td>
+                                                    <td>:</td>
+                                                    <td>${pemRanap.tensi} mmHG</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Kesadaran</td>
+                                                    <td>:</td>
+                                                    <td>${pemRanap.kesadaran}</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>GCS</td>
+                                                    <td>:</td>
+                                                    <td>${pemRanap.gcs} E,V,M</td>    
+                                                    </tr>
+                                                <tr>
+                                                    <td>Respirasi</td>
+                                                    <td>:</td>
+                                                    <td>${pemRanap.respirasi} X/menit</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Nadi</td>
+                                                    <td>:</td>
+                                                    <td>${pemRanap.nadi} X/menit</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>SpO2</td>
+                                                    <td>:</td>
+                                                    <td>${pemRanap.spo2} %</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td>Alergi</td>
+                                                    <td>:</td>
+                                                    <td>${pemRanap.alergi}</td>    
+                                                </tr>
+                                            </table>    
+                                        </div>
+
+                                    </div>
                                 </div>
                                 <div class="col-sm-12 col-lg-8">
-                                    <table class="table table-sm borderless bm-2" style="background-color:#e1ffe3">  
-                                        <tr>
-                                            <td width="10%">Subjek</td>
-                                            <td>:</td>
-                                            <td>${stringPemeriksaan(pemRanap.keluhan)}</td>
-                                        </tr>    
-                                        <tr>
-                                            <td width="10%">Objek</td>
-                                            <td>:</td>
-                                            <td>${stringPemeriksaan(pemRanap.pemeriksaan)}</td>
-                                        </tr>    
-                                        <tr>
-                                            <td width="10%">Asesmen</td>
-                                            <td>:</td>
-                                            <td>${stringPemeriksaan(pemRanap.penilaian)}</td>
-                                        </tr>    
-                                        <tr>
-                                            <td width="10%">Plan</td>
-                                            <td>:</td>
-                                            <td>${stringPemeriksaan(pemRanap.rtl)}</td>
-                                        </tr>    
-                                        <tr>
-                                            <td width="10%">Instruksi</td>
-                                            <td>:</td>
-                                            <td>${stringPemeriksaan(pemRanap.instruksi)}</td>
-                                        </tr>    
-                                    </table>
+                                    <div class="card">
+                                        <div class="card-header ${jns === 'Rawat Inap' ? 'text-bg-primary' : 'text-bg-warning'}">Hasil Pemeriksaan</div>
+                                        <div class="card-body">
+                                            <table class="table table-sm borderless bm-2">  
+                                                <tr>
+                                                    <td width="10%">Subjek</td>
+                                                    <td>:</td>
+                                                    <td>${stringPemeriksaan(pemRanap.keluhan)}</td>
+                                                </tr>    
+                                                <tr>
+                                                    <td width="10%">Objek</td>
+                                                    <td>:</td>
+                                                    <td>${stringPemeriksaan(pemRanap.pemeriksaan)}</td>
+                                                </tr>    
+                                                <tr>
+                                                    <td width="10%">Asesmen</td>
+                                                    <td>:</td>
+                                                    <td>${stringPemeriksaan(pemRanap.penilaian)}</td>
+                                                </tr>    
+                                                <tr>
+                                                    <td width="10%">Plan</td>
+                                                    <td>:</td>
+                                                    <td>${stringPemeriksaan(pemRanap.rtl)}</td>
+                                                </tr>    
+                                                <tr>
+                                                    <td width="10%">Instruksi</td>
+                                                    <td>:</td>
+                                                    <td>${stringPemeriksaan(pemRanap.instruksi)}</td>
+                                                </tr>    
+                                            </table>    
+                                        </div>    
+                                    </div>
                                 </div>
                                 
                                 
                             </div>`
-                })
-                html += `</td></tr>`
+                }).join('')
+
+                html = `<div class="card mt-2">
+                    <div class="card-header">Pemeriksaan ${jns}</div>
+                    <div class="card-body">${content}</div>
+                </div>`
             }
             return html;
         }
@@ -374,10 +576,9 @@
                         }
                     })
                 }
-                html = `<tr><th style="vertical-align: top;">Resume Medis</th><td>`;
-                html += `<div class="row">
+                html = `<div class="row">
                     <div class="col-lg-5">
-                        <table class="table table-sm table-borderless" width="100%" style="background-color:#e1ffe3">
+                        <table class="table table-sm table-borderless" width="100%">
                             <tr>
                                 <td>Tanggal Masuk</td>
                                 <td>: ${tgl_masuk} Jam : ${jam_masuk}</td>
@@ -416,8 +617,8 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="col-lg-12" style="background-color:#e1ffe3;padding:5px">
-                        <table class="table table-sm" width="100%">
+                    <div class="col-lg-12">
+                        <table class="table table-sm text-sm" width="100%">
                             <tr>
                                 <td><strong>ANAMNESIS</strong> <br/>
                                     ${stringPemeriksaan(resumeMedis.keluhan_utama)}
@@ -442,7 +643,7 @@
                                 <td><strong>DIAGNOSA AKHIR</strong> <br/>
                                     <table width="100%" style="margin-left:20px">
                                         <tr>
-                                            <th>
+                                            <th width="20%">
                                                 DIAGNOSA UTAMA
                                             </th>
                                             <td>
@@ -526,7 +727,7 @@
                                 <td><strong>TINDAKAN / OPERASI </strong> <br/>
                                     <table width="100%" style="margin-left:20px">
                                         <tr>
-                                            <th>
+                                            <th width="20%">
                                                 
                                             </th>
                                             <td>
@@ -612,16 +813,19 @@
                         </table>
                     </div>
                 </div>`
-                html += `</td></tr>`;
-                return html;
+
+                return `<div class="card my-2">
+                    <div class="card-header text-bg-success">Resume Medis</div>
+                    <div class="card-body">${html}</div>
+                    </div>`;
             }
+            return ''
 
         }
 
         function renderRiwayatAsmedAnak(asmed) {
             if (asmed) {
-                html = '<tr><th style="vertical-align: top;">Asesmen Medis</th><td>'
-                html += `
+                html = `
                 <table class="table-print" width="100%" style="background-color:#fff">
                     <thead>
                         <tr>
@@ -816,15 +1020,19 @@
                 </table>
                 `;
                 html += '</td></tr>'
-                return html;
+                return `<div class="card my-2">
+                    <div class="card-header">Asesmen Medis Rawat Inap Anak</div>
+                    <div class="card-body">${html}</div>
+                    </div>`;
             }
+
+            return '';
 
         }
 
         function renderRiwayatAsmedKandungan(asmed) {
             if (asmed) {
-                html = '<tr><th style="vertical-align: top;">Asesmen Medis</th><td>'
-                html += `
+                html = `
                 <table class="table-print" width="100%" style="background-color:#fff">
                     <thead>
                         <tr>
@@ -1032,9 +1240,13 @@
                     </tbody>
                 </table>
                 `;
-                html += '</td></tr>'
-                return html;
+                return `<div class="card my-2">
+                    <div class="card-header">Asesmen Medis Rawat Inap Kandungan</div>
+                    <div class="card-body">${html}</div>
+                    </div>`;
             }
+
+            return '';
         }
 
         function getAturanPakai(no_rawat, obat) {
@@ -1056,26 +1268,71 @@
 
         function pemberianObat(obat) {
             if (Object.keys(obat).length > 0) {
-                var pemberian = '<table class="table borderless mb-0" style="background-color:#e1ffe3">';
                 let tgl_sekarang = ''
-                obat.forEach(function(o) {
-                    console.log(o);
-                    if (o.data_barang.kdjns != 'J024') {
-                        pemberian += '<tr><td width="20%">' + (tgl_sekarang != o.tgl_perawatan ? formatTanggal(o.tgl_perawatan) + ', Jam ' + o.jam : '') +
-                            '</td><td>: <strong>' + o.data_barang.nama_brng + '</strong></td><td> ' + o.jml + ' ' + o.data_barang.kode_satuan?.satuan + '</td><td class="aturan-' + textRawat(o.no_rawat) +
-                            '-' + o.kode_brng + '"></td><tr>';
-                        tgl_sekarang = o.tgl_perawatan;
-                        getAturanPakai(o.no_rawat, o.kode_brng)
+                const groupedData = obat.reduce((acc, item) => {
+                    // Kelompok berdasarkan tgl_perawatan
+                    if (!acc[item.tgl_perawatan]) {
+                        acc[item.tgl_perawatan] = {};
                     }
-                })
-                pemberian += '</table>'
-                return '<tr><th>Pemberian Obat</th><td>' + pemberian + '</td></tr>';
+
+                    // Kelompok berdasarkan jam di dalam tgl_perawatan
+                    if (!acc[item.tgl_perawatan][item.jam]) {
+                        acc[item.tgl_perawatan][item.jam] = [];
+                    }
+
+                    acc[item.tgl_perawatan][item.jam].push(item);
+                    return acc;
+                }, {});
+
+                // Mengonversi ke array jika diperlukan
+                const arrayObat = Object.entries(groupedData).map(([date, times]) => ({
+                    tgl_perawatan: date,
+                    jam: Object.entries(times).map(([time, items]) => ({
+                        jam: time,
+                        items
+                    }))
+                }));
+
+                const pemberian = arrayObat.map((item) => {
+                    const jam = item.jam.map((item) => {
+                        const obat = item.items.filter(item => item.data_barang.kdjns !== 'J024' && item.data_barang.kdjns !== 'J033').map((item) => {
+                            return `<tr>
+                                        <td>${item.data_barang.nama_brng}</td>
+                                        <td>${item.jml} ${item.data_barang.kode_satuan.satuan}</td>
+                                        <td>${item.aturan_pakai ? item.aturan_pakai.aturan : ''}</td>
+                                </tr>`
+                        }).join('');
+
+                        return `<tr class="table-secondary" colspan="3"><td colspan="3">${item.jam}</td>
+                                ${obat}
+                            </tr>`
+                    }).join('')
+
+                    return `<table class="table table-sm text-sm">
+                        <tr>
+                            <th colspan="3">${(tgl_sekarang !== item.tgl_perawatan ? formatTanggal(item.tgl_perawatan) : '')}</th>
+                        </tr>
+                        <tr>
+                            <th width="30%">Nama Obat</th>
+                            <th width="10%">Jumlah</th>
+                            <th>Aturan Pakai</th>
+                        </tr>
+                        ${jam}
+                        </table>`
+
+                }).join('')
+                return `<div class="card my-2">
+                        <div class="card-header">
+                            Pemberian Obat    
+                        </div>
+                        <div class="card-body"> ${pemberian}</div>
+                    </div>`
             }
             return '';
         }
 
         function hasilOperasi(operasi, no_rawat) {
-            if (operasi) {
+            if (operasi.length > 0) {
                 $.ajax({
                     url: '/erm/operasi/laporan/' + textRawat(no_rawat, '-'),
                     dataType: 'JSON',
@@ -1177,77 +1434,47 @@
 
         }
 
-        function pemeriksaanLab(lab, umur, jk) {
-            if (Object.keys(lab).length > 0) {
-                var hasilLab = '<table class="table mb-0" style="background-color:#e1ffe3">';
-                let tgl_sekarang = '';
-                let jnsPeriksa = '';
-                let nmPerawatan = '';
-                let no = 1;
-                let rujukan = '';
-                let classDokter = '';
-                let classDokterSekarang = '';
-                let classPetugas = '';
-                let classPetugasSekarang = '';
-                let barisTanggal = '';
+        function pemeriksaanLab(lab) {
 
-                lab.forEach(function(l) {
-                    classDokterSekarang = classDokter;
-                    classPetugasSekarang = classPetugas;
-
-                    classDokter = 'dr-' + textRawat(l.no_rawat) + '-' + l.kd_jenis_prw;
-                    classPetugas = 'petugas-' + textRawat(l.no_rawat) + '-' + l.kd_jenis_prw;
-
-                    tgl_sekarang != l.tgl_periksa || nmPerawatan != l.jns_perawatan_lab.nm_perawatan ? no = 1 : '';
-
-                    hasilLab += (tgl_sekarang != l.tgl_periksa ?
-                            '<tr class="table-warning" border=1><td style="width:9%">' +
-                            formatTanggal(l.tgl_periksa) + ', Jam ' + l.jam + '</td>' +
-                            '</td><td class="dr-' + textRawat(l.no_rawat) + '-' + l.kd_jenis_prw + '"></td>' +
-                            '<td class="petugas-' + textRawat(l.no_rawat) + '-' + l.kd_jenis_prw +
-                            '"></td>' +
-                            '</tr>' : nmPerawatan != l.jns_perawatan_lab.nm_perawatan ?
-                            '<tr class="">' : '') +
-                        (jnsPeriksa == l.kd_jenis_prw ? (tgl_sekarang != l.tgl_periksa ?
-                                '<td style="width:30%" colspan="3"><strong>' + l
-                                .jns_perawatan_lab
-                                .nm_perawatan +
-                                '</tr>' +
-                                '</tr>' +
-                                '<tr><th>Pemeriksaan</th><th>Hasil</th><th>Rujukan</th></tr>' : '') :
-                            '<td style="width:30%" colspan="3"><p style="padding:0;margin:0"><strong>' +
-                            l
-                            .jns_perawatan_lab.nm_perawatan +
-                            '</strong></p></td>' +
-                            '</tr>' +
-                            '<tr><th>Pemeriksaan</th><th>Hasil</th><th>Rujukan</th></tr>') +
-                        '<tr><td>' + no + '. ' + l.template.Pemeriksaan + '</td><td>' + l.nilai +
-                        ' ' + l.template.satuan + (l.keterangan != '' ? ' (' + l.keterangan + ')' : '') +
-                        '</td><td>' + l.nilai_rujukan + ' ' + l.template.satuan + '</td></tr>';
-                    barisTanggal = tgl_sekarang != l.tgl_periksa ? '<td>' + formatTanggal(l.tgl_periksa) + ' ' +
-                        l
-                        .jam + '</td>' : '';
-                    barisPerawatan = nmPerawatan != l.jns_perawatan_lab.nm_perawatan ?
-                        '<td></td><td colspan="3""><strong>' +
-                        l
-                        .jns_perawatan_lab
-                        .nm_perawatan + '</strong></td>' : '';
-                    barisDokter = tgl_sekarang != l.tgl_periksa && classDokterSekarang != classDokter ?
-                        '<td class="' + classDokter + '">' + '</td>' : '';
-                    barisPetugas = tgl_sekarang != l.tgl_periksa && classPetugasSekarang != classPetugas ?
-                        '<td class="' + classPetugas + '" colspan="2">' + '</td>' +
-                        '<tr><td></td><th>Pemeriksaan</th><th>Hasil</th><th>Rujukan</th></tr>' : '';
-                    tgl_sekarang = l.tgl_periksa;
-                    jnsPeriksa = l.kd_jenis_prw;
-                    nmPerawatan = l.jns_perawatan_lab.nm_perawatan;
-                    petugasLab(l.no_rawat, l.kd_jenis_prw);
-                    no++;
-
-                })
-                hasilLab += '</table>'
-                return '<tr><th>Laboratorium </th><td>' + hasilLab + '</td></tr>';
+            if (lab.length == 0) {
+                return '';
             }
-            return '';
+
+            const content = lab.filter(item => item.kd_jenis_prw !== 'J000019').map((item, index) => {
+                const detail = item.detail.map((detail, index) => {
+                    return `<tr class="${setWarnaPemeriksaan(detail.keterangan)}">
+                            <td>${detail.template.Pemeriksaan}</td>
+                            <td>${detail.nilai} ${detail.template.satuan}</td>
+                            <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
+                            <td>${detail.keterangan}</td></tr>`
+                })
+                return `<div class="card my-2">
+                            <div class="card-header text-sm text-bold">${formatTanggal(item.tgl_periksa)} ${item.jam}</div>
+                            <div class="card-body">
+                                <table class="table table-sm text-sm table-hover">
+                                    <tr class="row-secondary">
+                                        <th colspan="3">${item.jns_perawatan_lab.nm_perawatan}</th>
+                                        <th>${item.petugas.nama}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Item Pemeriksaan</th>    
+                                        <th>Nilai Hasil</th>    
+                                        <th>Nilai Rujukan</th>    
+                                        <th>Keterangan</th>    
+                                    </tr>
+                                ${detail.join('')}
+                                </table>    
+                            </div>
+                        </div>`;
+            }).join('');
+
+            return `<div class="card">
+                        <div class="card-header">Pemeriksaan Laboratorium</div>
+                        <div class="card-body">
+                            ${content}
+                        </div>
+                    </div>`
+
         }
 
         function diagnosaPasien(diagnosa) {

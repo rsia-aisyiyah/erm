@@ -104,7 +104,7 @@ class RegPeriksaController extends Controller
             DB::raw('TRIM(kd_poli) as kd_poli'),
             DB::raw('TRIM(kd_dokter) as kd_dokter'),
             DB::raw('TRIM(kd_pj) as kd_pj'),
-            'tgl_registrasi', 'jam_reg', 'status_bayar', 'status_poli', 'stts_daftar', 'no_rawat','umurdaftar', 'sttsumur', 'status_lanjut'
+            'tgl_registrasi', 'jam_reg', 'status_bayar', 'p_jawab', 'status_poli', 'stts_daftar', 'no_rawat','umurdaftar', 'sttsumur', 'status_lanjut'
         )->where('no_rawat', $request->no_rawat)
             ->with(['pasien.bahasa', 'kamarInap' => function($query){
                   return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
@@ -136,9 +136,9 @@ DB::raw('TRIM(kd_pj) as kd_pj'),
                         return $q->with(['aturanPakai', 'dataBarang' => function ($q) {
                             $q->with('kodeSatuan');
                         }]);
-                    }, 'detailPemeriksaanLab' => function ($q) {
-                        $q->with(['jnsPerawatanLab', 'template'])->orderBy('tgl_periksa', 'ASC');
-                    }, 'kamarInap', 'operasi.paketOperasi', 'operasi.op1', 'operasi.asistenOp1', 'operasi.asistenOp2',
+                    }, 'periksaLab' => function ($q) {
+                        $q->with(['jnsPerawatanLab','detail.template', 'petugas'])->orderBy('tgl_periksa', 'ASC');
+                    }, 'kamarInap', 'operasi' , 'operasi.laporan', 'operasi.paketOperasi', 'operasi.op1', 'operasi.asistenOp1', 'operasi.asistenOp2',
                     'operasi.omloop', 'resumeMedis.regPeriksa.penjab', 'resumeMedis.dokter', 'resumeMedis.kamarInap' => function ($query) {
                         return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
                     },

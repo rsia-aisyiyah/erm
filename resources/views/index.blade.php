@@ -406,6 +406,11 @@
                 default:
                     break;
             }
+
+            if (oldTgl.split(' ').length > 1) {
+
+                return t.getDate() + ' ' + bulan + ' ' + t.getFullYear() + ' ' + oldTgl.split(' ')[1];
+            }
             return tanggal = t.getDate() + ' ' + bulan + ' ' + t.getFullYear();
         }
 

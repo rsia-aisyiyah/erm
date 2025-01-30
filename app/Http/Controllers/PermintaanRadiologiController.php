@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PermintaanRadiologi;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class PermintaanRadiologiController extends Controller
@@ -27,14 +28,52 @@ class PermintaanRadiologiController extends Controller
         $radiologi = $this->radiologi->where([
             'tgl_permintaan' => date('Y-m-d'),
             'tgl_hasil' => date('Y-m-d')
-        ])->with(['regPeriksa.pasien', 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'regPeriksa.pasien'])->get();
+        ])->with(['regPeriksa' => function ($q) {
+                    return $q->select([
+                        'no_rawat',
+                        'tgl_registrasi',
+                        'stts',
+                        'kd_poli',
+                        'kd_dokter',
+                        'kd_pj',
+                        DB::raw('TRIM(no_rkm_medis) as no_rkm_medis')
+                    ])->with([
+                                'pasien' => function ($q) {
+                                    return $q->select([
+                                        DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+                                        'nm_pasien',
+                                        'umurdaftar',
+                                        'sttsumur'
+                                    ]);
+            }]);
+        }, 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'regPeriksa.pasien'])->get();
 
         return $radiologi;
     }
     public function getByNoRawat(Request $request)
     {
 
-        $radiologi = $this->radiologi->with(['regPeriksa.pasien', 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'gambarRadiologi', 'permintaanPemeriksaan.jnsPemeriksaan']);
+        $radiologi = $this->radiologi
+            ->with([
+                'regPeriksa' => function ($q) {
+                    return $q->select([
+                        'no_rawat',
+                        'tgl_registrasi',
+                        'stts',
+                        'kd_poli',
+                        'kd_dokter',
+                        'kd_pj',
+                        DB::raw('TRIM(no_rkm_medis) as no_rkm_medis')
+                    ])->with([
+                                'pasien' => function ($q) {
+                                    return $q->select([
+                                        DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+                                        'nm_pasien',
+                                        'umurdaftar',
+                                        'sttsumur'
+                                    ]);
+            }]);
+        }, 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'gambarRadiologi', 'permintaanPemeriksaan.jnsPemeriksaan']);
 
         if ($request->tgl_permintaan && $request->jam_permintaan) {
             $radiologi = $radiologi->where([
