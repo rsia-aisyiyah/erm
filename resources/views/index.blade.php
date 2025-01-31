@@ -139,8 +139,6 @@
             const date2 = d2 ? new Date(d2) : new Date();
             const date1 = new Date(d1);
 
-            console.log(date1, date2);
-
             const timeDiff = Math.abs(date1.getTime() - date2.getTime());
             const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 

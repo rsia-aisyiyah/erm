@@ -94,6 +94,109 @@
             })
         }
 
+        function tbSoapRanap(no_rawat = '', tgl_pertama = '', tgl_kedua = '', petugas = '') {
+            no_rawat_soap = no_rawat;
+            var tbSoapRanap = $('#tbSoap').dataTable({
+                processing: true,
+                paging: false,
+                info: false,
+                ajax: {
+                    url: "soap",
+                    data: {
+                        'no_rawat': no_rawat,
+                        'tgl_pertama': tgl_pertama,
+                        'tgl_kedua': tgl_kedua,
+                        'petugas': petugas,
+                    },
+                    error: (request) => {
+                        if (request.status === 401) {
+                            Swal.fire({
+                                title: 'Sesi login berakhir !',
+                                icon: 'info',
+                                text: 'Silahkan login kembali ',
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/erm';
+                                }
+                            })
+                        }
+                    },
+                },
+                scrollCollapse: true,
+                columns: [{
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
+                            if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
+                                button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
+                            }
+                            return button;
+                        },
+                        name: 'tgl_perawatan',
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row, meta) {
+
+                            if (row.sbar) {
+                                return renderVerifikasiSbar(row.sbar)
+                            }
+
+
+                            list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
+                                '</strong></li>';
+                            list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
+                            $.map(row.grafik_harian, function(grafik) {
+                                if (row.tgl_perawatan === grafik.tgl_perawatan && row.jam_rawat === grafik.jam_rawat) {
+                                    list += '<li> O2 : ' + grafik.o2 + '</li>';
+                                }
+                            })
+                            list += '<li> GCS : ' + row.gcs + '</li>';
+                            list += '<li> Tensi : ' + row.tensi + ' mmHg</li>';
+                            list += '<li> Nadi : ' + row.nadi + ' /mnt</li>';
+                            list += '<li> SpO2 : ' + row.spo2 + ' %</li>';
+                            list += '<li> Respirasi : ' + row.respirasi + ' /mnt</li>';
+                            list += '<li> Suhu Tubuh : ' + row.suhu_tubuh + '  (<sup>o</sup>C)</li>';
+                            list += '<li> Tinggi : ' + row.tinggi + ' Cm</li>';
+                            list += '<li> Berat : ' + row.berat + ' Kg</li>';
+                            list += '<li> alergi : ' + row.alergi + '</li>';
+                            html = '<ul>' + list + '</ul>';
+
+                            return html;
+                        },
+                        name: 'ttv',
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row, meta) {
+
+                            if (row.sbar) {
+                                return renderSbar(row)
+                            }
+
+                            baris = '<tr><th width="5%">Petugas </th><td width="5%">:</td><td>' + row
+                                .petugas.nama + '</td></tr>'
+                            baris += '<tr><th>Subjek </th><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
+                            baris += '<tr><th>Objek </th><td>:</td><td>' + stringPemeriksaan(row.pemeriksaan) + '</td></tr>'
+                            baris += '<tr><th>Assesment</th><td>:</td><td>' + stringPemeriksaan(row.penilaian) + '</td></tr>'
+                            baris += '<tr><th>Plan</th><td>:</td><td>' + stringPemeriksaan(row.rtl) + '</td></tr>'
+                            html = '<table class="table table-striped">' + baris + '</table>'
+                            return html;
+                        },
+                        name: 'soap',
+                    },
+                ],
+                "language": {
+                    "zeroRecords": "Tidak ada data  data pemeriksaan",
+                    "infoEmpty": "Tidak ada data data pemeriksaan",
+                    "search": "Pencarian",
+                },
+            });
+        }
+
+
 
 
         function hapusSoap(no, tgl, jam) {
@@ -183,6 +286,62 @@
                     })
                 }
             });
+        }
+
+        function renderVerifikasiSbar(data) {
+            isDokter = "{{ session()->get('pegawai')->departemen }}";
+            let btn = '';
+            let isVerified = ''
+
+
+
+            if (data.verifikasi) {
+                isVerified = `<div class="alert alert-success p-2 mt-2" role="alert">
+                                <strong><i class="bi bi-circle-check"></i></strong>Telah diverifikasi pada <strong>${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}</strong> </div>`;
+            } else {
+                if (isDokter === 'SPS') {
+                    btn = `<button class="btn btn-sm btn-warning w-100" onclick="verifikasiSoap('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil"></i> Verifikasi SBAR</button>`;
+                }
+                isVerified = `<div class="alert alert-warning p-2 mt-2" role="alert">
+                                <strong><i class="bi bi-exclamation-triangle"></i></strong> Belum diverifikasi oleh DPJP
+                            </div>`;
+            }
+            return `<ul>
+                    <li>Tgl & Waktu : <strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong></li>
+                </ul> ${btn}
+            ${isVerified}
+                `
+
+        }
+
+        function renderSbar(data) {
+            return `<table class="table table-striped">
+                    <tr>
+                        <th width="5%">Petugas</th>    
+                        <th width="5%">:</th>    
+                        <td>${data.sbar.pegawai.nama}</td>    
+                    </tr>
+                    <tr>
+                        <th width="5%">Subject</th>    
+                        <th width="5%">:</th>    
+                        <td>${data.keluhan}</td>    
+                    </tr>
+                    <tr>
+                        <th width="5%">Background</th>    
+                        <th width="5%">:</th>    
+                        <td>${data.pemeriksaan}</td>    
+                    </tr>
+                    <tr>
+                        <th width="5%">Assesment</th>    
+                        <th width="5%">:</th>    
+                        <td>${data.penilaian}</td>    
+                    </tr>
+                    <tr>
+                        <th width="5%">Recomendation</th>    
+                        <th width="5%">:</th>    
+                        <td>${data.rtl}</td>    
+                    </tr>
+                </table>`
         }
     </script>
 @endpush
