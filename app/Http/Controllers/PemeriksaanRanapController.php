@@ -239,9 +239,7 @@ class PemeriksaanRanapController extends Controller
     public function ambil(Request $request)
     {
 
-        $pemeriksaan = $this->pemeriksaan->whereHas('grafikHarian', function ($q) {
-            $q->where('sumber', 'SBAR');
-        })->where('no_rawat', $request->no_rawat)->with([
+        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $request->no_rawat)->with([
                     'regPeriksa',
                     'regPeriksa.pasien',
                     'log.pegawai',
