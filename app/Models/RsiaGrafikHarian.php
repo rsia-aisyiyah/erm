@@ -22,7 +22,7 @@ class RsiaGrafikHarian extends Model
     //     'respirasi', 'spo2', 'o2', 'gcs', 'kesadaran', 'sumber', 'nip',
     // ];
     public function verifikasi(){
-        return $this->hasOne(RsiaVerifPemeriksaanRanap::class, 'no_rawat', 'no_rawat');
+        return $this->hasOne(RsiaVerifPemeriksaanRanap::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat']);
     }
 
     public function dokter(){
