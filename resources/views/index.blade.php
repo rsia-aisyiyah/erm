@@ -50,6 +50,7 @@
         const role = '{{ session()->get('role') }}'
         const APIURL = 'http://sim.rsiaaisyiyah.com/rsiap-api/api';
 
+
         window.onerror = function(msg, url, linenumber) {
             const messageError = 'Error message : ' + msg + '<br/>Muat ulang halaman ?';
             Swal.fire({
@@ -74,6 +75,7 @@
                 format: 'd-m-Y H:i:s',
             })
         })
+
 
 
         function getBaseUrl(urlSegments = '') {
@@ -130,6 +132,22 @@
             let arrTgl = tanggal.split('-');
             let txtTanggal = arrTgl[2] + '-' + arrTgl[1] + '-' + arrTgl[0];
             return txtTanggal;
+        }
+
+        function hitungLamaHari(d1, d2) {
+
+            const date2 = d2 ? new Date(d2) : new Date();
+            const date1 = new Date(d1);
+
+            console.log(date1, date2);
+
+            const timeDiff = Math.abs(date1.getTime() - date2.getTime());
+            const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+            const hari = ('0' + (diffDays)).slice(-2);
+
+            return diffDays;
+
         }
 
         // function getDataForm(form, element, except = []) {

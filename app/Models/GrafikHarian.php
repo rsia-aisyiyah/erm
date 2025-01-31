@@ -28,4 +28,7 @@ class GrafikHarian extends Model
         // pegawai nik
         return $this->belongsTo(Pegawai::class, 'nip', 'nik');
     }
+    public function verifikasi(){
+        return $this->hasOne(RsiaVerifPemeriksaanRanap::class, 'no_rawat', 'no_rawat');
+    }
 }

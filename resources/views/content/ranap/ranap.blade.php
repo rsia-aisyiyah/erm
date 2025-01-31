@@ -778,79 +778,6 @@
             tableGrafikHarian = null;
         });
 
-
-        function showModalSoapRanap(no_rawat) {
-            var formInfoPasien = $('#formInfoPasien')
-            getRegPeriksa(no_rawat).done((response) => {
-
-                formInfoPasien.find('input[name="no_rawat"]').val(no_rawat);
-                formInfoPasien.find('input[name="no_rkm_medis"]').val(response.no_rkm_medis);
-                formInfoPasien.find('input[name="pasien"]').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`);
-                formInfoPasien.find('input[name="umur"]').val(`${response.umurdaftar} ${response.sttsumur}`);
-                formInfoPasien.find('input[name="dokter_dpjp"]').val(`${response.dokter.nm_dokter}`);
-
-                const kamar = response.kamar_inap.map((item, index) => {
-                    formInfoPasien.find('input[name="kamar"]').val(item.kamar.bangsal.nm_bangsal);
-                    formInfoPasien.find('input[name="diagnosa_awal"]').val(item.diagnosa_awal);
-                })
-
-                $('#nomor_rawat').val(response.no_rawat);
-                $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-                $('#nik').val("{{ session()->get('pegawai')->nik }}");
-                $('#nama').val("{{ session()->get('pegawai')->nama }}");
-                $('#formSoapRanap input[name=spesialis]').val(response.dokter.kd_sps);
-
-                const tabAsuhanGiziAnakParent = $('#tabAsuhanGiziAnak').parent()
-                const tabAsuhanGiziDewasaParent = $('#tabAsuhanGiziDewasa').parent()
-                if (response.dokter.kd_sps === 'S0001') {
-
-                    tabAsuhanGiziAnakParent.addClass('d-none')
-                    tabAsuhanGiziDewasaParent.removeClass('d-none')
-                    $('.formEws').removeAttr('style');
-                    $('.formEws select[name=keluaran_urin]').val('-').change()
-                    $('.formEws select[name=proteinuria]').val('-').change()
-                    $('.formEws select[name=air_ketuban]').val('-').change()
-                    $('.formEws select[name=skala_nyeri]').val('-').change()
-                    $('.formEws select[name=lochia]').val('-').change()
-                    $('.formEws select[name=terlihat_tidak_sehat]').val('-').change()
-                } else {
-                    tabAsuhanGiziDewasaParent.addClass('d-none')
-                    tabAsuhanGiziAnakParent.removeClass('d-none')
-                    $('.formEws').css('display', 'none');
-                    $('.formEws select[name=keluaran_urin]').val('').change()
-                    $('.formEws select[name=proteinuria]').val('').change()
-                    $('.formEws select[name=air_ketuban]').val('')
-                    $('.formEws select[name=skala_nyeri]').val('')
-                    $('.formEws select[name=lochia]').val('').change()
-                    $('.formEws select[name=terlihat_tidak_sehat]').val('').change()
-                }
-
-                getDokter("{{ session()->get('pegawai')->nama }}").done((response) => {
-                    if (response.length) {
-                        $('.btn-tambah-grafik-harin').css('display', 'none')
-                    } else {
-                        $('.btn-tambah-grafik-harin').css('display', 'inline')
-                    }
-                })
-                $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
-                setEws(no_rawat, 'ranap', response.dokter.kd_sps)
-
-                $('#formSoapRanap .btn-simpan').attr('data-kd-dokter', response.dokter.kd_dokter);
-                $('#formSoapRanap .btn-simpan').attr('data-spesialis', response.dokter.spesialis.nm_sps);
-                $('#formSoapRanap .btn-simpan').attr('data-nm-pasien', response.pasien.nm_pasien);
-
-                $('#formSaveGrafikHarian #kdDokter').attr('data-kd-dokter', response.dokter.kd_dokter);
-                $('#formSaveGrafikHarian #spesialisDokter').attr('data-spesialis', response.dokter.spesialis.nm_sps);
-                $('#formSaveGrafikHarian #nmPasien').attr('data-nm-pasien', response.pasien.nm_pasien);
-            })
-
-            $('#modalSoapRanap').modal('toggle')
-
-            tbSoapRanap(no_rawat);
-            buildGrafik(no_rawat);
-            appendDataGrafikHarian(no_rawat);
-        }
-
         function tbSoapRanap(no_rawat = '', tgl_pertama = '', tgl_kedua = '', petugas = '') {
             no_rawat_soap = no_rawat;
             var tbSoapRanap = $('#tbSoap').dataTable({
@@ -896,6 +823,12 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
+
+                            if (row.sbar) {
+                                return renderVerifikasiSbar(row.sbar)
+                            }
+
+
                             list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
                                 '</strong></li>';
                             list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
@@ -918,25 +851,25 @@
 
                             var btnVerif = '';
 
-                            isDokter = "{{ session()->get('pegawai')->departemen }}";
-                            isDirektur = "{{ session()->get('pegawai')->jbtn }}";
-                            if (isDokter === 'Direksi' || isDokter === 'SPS' || isDirektur === 'Direktur') {
-                                btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-warning btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square" style="margin-right:5px;"></i> Verifikasi </button>';
-                                $.map(row.verifikasi, function(verifikasi) {
-                                    if (row.tgl_perawatan === verifikasi.tgl_perawatan && row.jam_rawat === verifikasi.jam_rawat) {
-                                        btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-success btn-sm mb-2">Telah Diverifikasi<br/>Oleh : <b>' + verifikasi.petugas.nama + '</b></button>';
-                                    }
-                                })
-                            } else {
-                                $.map(row.log, function(log) {
-                                    if (row.tgl_perawatan === log.tgl_perawatan && row.jam_rawat === log.jam_rawat) {
-                                        btnVerif = `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai.nama} 
-                                            , ${formatTanggal(log.waktu)} ${log.waktu.split(' ')[1]}
-                                                </i></div>`
-                                    }
-                                })
+                            // isDokter = "{{ session()->get('pegawai')->departemen }}";
+                            // isDirektur = "{{ session()->get('pegawai')->jbtn }}";
+                            // if (isDokter === 'Direksi' || isDokter === 'SPS' || isDirektur === 'Direktur') {
+                            //     btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-warning btn-sm mb-2" onclick="verifikasiSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square" style="margin-right:5px;"></i> Verifikasi </button>';
+                            //     $.map(row.verifikasi, function(verifikasi) {
+                            //         if (row.tgl_perawatan === verifikasi.tgl_perawatan && row.jam_rawat === verifikasi.jam_rawat) {
+                            //             btnVerif = '<button type="button" style="font-size:12px; width:100%;" class="mx-auto btn btn-success btn-sm mb-2">Telah Diverifikasi<br/>Oleh : <b>' + verifikasi.petugas.nama + '</b></button>';
+                            //         }
+                            //     })
+                            // } else {
 
-                            }
+                            // }
+                            // $.map(row.log, function(log) {
+                            //     if (row.tgl_perawatan === log.tgl_perawatan && row.jam_rawat === log.jam_rawat) {
+                            //         btnVerif = `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai.nama} 
+                        //         , ${formatTanggal(log.waktu)} ${log.waktu.split(' ')[1]}
+                        //             </i></div>`
+                            //     }
+                            // })
 
                             html += btnVerif;
                             return html;
@@ -946,6 +879,11 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
+
+                            if (row.sbar) {
+                                return renderSbar(row)
+                            }
+
                             baris = '<tr><td width="5%">Petugas </td><td width="5%">:</td><td>' + row
                                 .petugas.nama + '</td></tr>'
                             baris += '<tr><td>Subjek </td><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
@@ -1292,5 +1230,61 @@
         //         $(`#${id}`).addClass('show');
         //     }
         // }
+
+        function renderVerifikasiSbar(data) {
+            isDokter = "{{ session()->get('pegawai')->departemen }}";
+            let btn = '';
+            let isVerified = ''
+
+
+
+            if (data.verifikasi) {
+                isVerified = `<div class="alert alert-success p-2 mt-2" role="alert">
+                                <strong><i class="bi bi-circle-check"></i></strong>Telah diverifikasi pada <strong>${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}</strong> </div>`;
+            } else {
+                if (isDokter === 'SPS') {
+                    btn = `<button class="btn btn-sm btn-warning w-100" onclick="verifikasiSoap('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil"></i> Verifikasi SBAR</button>`;
+                }
+                isVerified = `<div class="alert alert-warning p-2 mt-2" role="alert">
+                                <strong><i class="bi bi-exclamation-triangle"></i></strong> Belum diverifikasi oleh DPJP
+                            </div>`;
+            }
+            return `<ul>
+                    <li>Tgl & Waktu : <strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong></li>
+                </ul> ${btn}
+            ${isVerified}
+                `
+
+        }
+
+        function renderSbar(data) {
+            return `<table class="table table-striped">
+                    <tr>
+                        <th width="5%">Petugas</th>    
+                        <th width="5%">:</th>    
+                        <td>${data.sbar.pegawai.nama}</td>    
+                    </tr>
+                    <tr>
+                        <th width="5%">Subject</th>    
+                        <th width="5%">:</th>    
+                        <td>${data.keluhan}</td>    
+                    </tr>
+                    <tr>
+                        <th width="5%">Background</th>    
+                        <th width="5%">:</th>    
+                        <td>${data.pemeriksaan}</td>    
+                    </tr>
+                    <tr>
+                        <th width="5%">Assesment</th>    
+                        <th width="5%">:</th>    
+                        <td>${data.penilaian}</td>    
+                    </tr>
+                    <tr>
+                        <th width="5%">Recomendation</th>    
+                        <th width="5%">:</th>    
+                        <td>${data.rtl}</td>    
+                    </tr>
+                </table>`
+        }
     </script>
 @endpush

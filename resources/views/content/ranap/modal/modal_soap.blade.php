@@ -7,97 +7,92 @@
             </div>
             <div class="modal-body">
                 <div class="row gy-2 mb-2" id="formInfoPasien">
-                    <div class="col-lg-2 col-md-6 col-sm-12">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text">
-                                <label for="">No Rawat</label>
-                            </span>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px"
-                                   id="no_rawat" name="no_rawat" placeholder="" readonly>
-                        </div>
+                    <div class="col-lg-1     col-md-6 col-sm-12">
+                        <label for="no_rawat">No. Rawat</label>
+                        <input type="text" class="form-control form-control-sm" style="font-size: 11px"
+                            id="no_rawat" name="no_rawat" placeholder="" readonly>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
+                        <label for="">Pasien</label>
                         <div class="input-group input-group-sm">
-                            <span class="input-group-text">
-                                <label for="">Pasien</label>
-                            </span>
                             <input type="text" class="form-control form-control-sm" style="font-size: 11px"
-                                   id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
+                                id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
                             <input type="text" class="form-control form-control-sm w-50" style="font-size: 11px"
-                                   id="pasien" name="pasien" placeholder="" readonly>
+                                id="pasien" name="pasien" placeholder="" readonly>
                             <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="umur"
-                                   name="umur" placeholder="" readonly>
+                                name="umur" placeholder="" readonly>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text">
-                                <label for="">Kamar</label>
-                            </span>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="kamar"
-                                   name="kamar" placeholder="" readonly>
-                        </div>
+                        <label for="">Keluarga</label>
+                        <x-input id="p_jawab" name="p_jawab" />
+
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text">
-                                <label for="">Dx Awal</label>
-                            </span>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px"
-                                   id="diagnosa_awal" name="diagnosa_awal" placeholder="" readonly>
-                        </div>
+                        <label for="">Kamar</label>
+                        <x-input-group class="input-group-sm">
+                            <x-input id="kamar" name="kamar" readonly class="w-50"></x-input>
+                            <x-input id="lama" name="lama" readonly />
+                        </x-input-group>
+                    </div>
+                    <div class="col-lg-1 col-md-6 col-sm-12">
+                        <label for="diagnosa_awal">Diagnosa Awal</label>
+                        <x-input id="diagnosa_awal" name="diagnosa_awal" readonly />
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text">
-                                <label for="">DPJP</label>
-                            </span>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px"
-                                   id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
-                        </div>
+                        <label for="dokter_dpjp">Dokter DPJP</label>
+                        <input type="text" class="form-control form-control-sm" style="font-size: 11px"
+                            id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
+                        <input type="hidden" id="kd_dokter_dpjp" name="kd_dokter_dpjp">
                     </div>
                 </div>
 
-                <ul class="nav nav-tabs" id="tab-soap-ranap" role="tablist">
+                <ul class="nav nav-tabs mt-3" id="tab-soap-ranap" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
-                                data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
-                                aria-selected="true">SOAP
+                            data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
+                            aria-selected="true">SOAP
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tabSbar" data-bs-toggle="tab"
+                            data-bs-target="#tabSbar-pane" type="button" role="tab" aria-controls="tabSbar-pane"
+                            aria-selected="true">SBAR
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-pane"
-                                type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Riwayat
+                            type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Riwayat
                             S.O.A.P
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-grafik" data-bs-toggle="tab" data-bs-target="#tab-grafik-pane"
-                                type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik
+                            type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik
                             Pasien
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
-                                type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
+                            type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
-                                type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
+                            type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
                         </button>
                     </li>
                     <li class="nav-item d-none" role="presentation">
                         <button class="nav-link" id="tabAsuhanGiziDewasa" data-bs-toggle="tab"
-                                data-bs-target="#tabAsuhanGiziDewasa-pane"
-                                type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">
+                            data-bs-target="#tabAsuhanGiziDewasa-pane"
+                            type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">
                             Asuhan Gizi Dewasa
                         </button>
                     </li>
                     <li class="nav-item d-none" role="presentation">
                         <button class="nav-link" id="tabAsuhanGiziAnak" data-bs-toggle="tab"
-                                data-bs-target="#tabAsuhanGiziAnak-pane"
-                                type="button" role="tab" aria-controls="tabAsuhanGiziAnak-pane" aria-selected="false">
+                            data-bs-target="#tabAsuhanGiziAnak-pane"
+                            type="button" role="tab" aria-controls="tabAsuhanGiziAnak-pane" aria-selected="false">
                             Asuhan Gizi Anak
                         </button>
                     </li>
@@ -105,40 +100,44 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
-                         aria-labelledby="home-tab" tabindex="0">
+                        aria-labelledby="home-tab" tabindex="0">
                         @include('content.ranap.modal.cppt._form_soap')
                     </div>
+                    <div class="tab-pane fade p-3" id="tabSbar-pane" role="tabpanel"
+                        aria-labelledby="sbar-tab" tabindex="0">
+                        @include('content.ranap.modal.cppt._form_sbar')
+                    </div>
                     <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
-                         tabindex="0">
+                        tabindex="0">
                         @include('content.ranap.modal.cppt._table_soap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
-                         tabindex="0">
+                        tabindex="0">
                         @include('content.ranap.modal.cppt._ewsRanap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
-                         tabindex="0">
+                        tabindex="0">
                         @include('content.ranap.modal.cppt._resep')
                     </div>
                     <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
-                         tabindex="0">
+                        tabindex="0">
                         @include('content.ranap.modal.cppt._grafikPemeriksaan')
                     </div>
                     <div class="tab-pane fade" id="tabAsuhanGiziDewasa-pane" role="tabpanel"
-                         aria-labelledby="tabAsuhanGiziDewasa"
-                         tabindex="0">
+                        aria-labelledby="tabAsuhanGiziDewasa"
+                        tabindex="0">
                         @include('content.ranap.modal.cppt._formAsuhanGiziDewasa')
                     </div>
                     <div class="tab-pane fade" id="tabAsuhanGiziAnak-pane" role="tabpanel"
-                         aria-labelledby="tabAsuhanGiziAnak"
-                         tabindex="0">
+                        aria-labelledby="tabAsuhanGiziAnak"
+                        tabindex="0">
                         @include('content.ranap.modal.cppt._formAsuhanGiziAnak')
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
-                            class="bi bi-x-circle"></i> Keluar
+                        class="bi bi-x-circle"></i> Keluar
                 </button>
 
             </div>
@@ -203,6 +202,80 @@
             $('#tgl_perawatan_ubah').datepicker('setDate', dateStart)
         })
 
+        function showModalSoapRanap(no_rawat) {
+            var formInfoPasien = $('#formInfoPasien')
+            getRegPeriksa(no_rawat).done((response) => {
+                formInfoPasien.find('input[name="no_rawat"]').val(no_rawat);
+                formInfoPasien.find('input[name="no_rkm_medis"]').val(response.no_rkm_medis);
+                formInfoPasien.find('input[name="p_jawab"]').val(response.p_jawab);
+                formInfoPasien.find('input[name="pasien"]').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`);
+                formInfoPasien.find('input[name="umur"]').val(`${response.umurdaftar} ${response.sttsumur}`);
+                formInfoPasien.find('input[name="dokter_dpjp"]').val(`${response.dokter.nm_dokter}`);
+                formInfoPasien.find('input[name="kd_dokter_dpjp"]').val(`${response.kd_dokter}`);
+
+                const kamar = response.kamar_inap.map((item, index) => {
+                    formInfoPasien.find('input[name="kamar"]').val(`${item.kamar.bangsal.nm_bangsal}`);
+                    formInfoPasien.find('input[name="lama"]').val(`${hitungLamaHari(item.tgl_masuk)} Hari`)
+                    formInfoPasien.find('input[name="diagnosa_awal"]').val(item.diagnosa_awal);
+                })
+
+                $('#nomor_rawat').val(response.no_rawat);
+                $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
+                $('#nik').val("{{ session()->get('pegawai')->nik }}");
+                $('#nama').val("{{ session()->get('pegawai')->nama }}");
+                $('#formSoapRanap input[name=spesialis]').val(response.dokter.kd_sps);
+
+                const tabAsuhanGiziAnakParent = $('#tabAsuhanGiziAnak').parent()
+                const tabAsuhanGiziDewasaParent = $('#tabAsuhanGiziDewasa').parent()
+
+                if (response.dokter.kd_sps === 'S0001') {
+                    tabAsuhanGiziAnakParent.addClass('d-none')
+                    tabAsuhanGiziDewasaParent.removeClass('d-none')
+                    $('.formEws').removeAttr('style');
+                    $('.formEws select[name=keluaran_urin]').val('-').change()
+                    $('.formEws select[name=proteinuria]').val('-').change()
+                    $('.formEws select[name=air_ketuban]').val('-').change()
+                    $('.formEws select[name=skala_nyeri]').val('-').change()
+                    $('.formEws select[name=lochia]').val('-').change()
+                    $('.formEws select[name=terlihat_tidak_sehat]').val('-').change()
+                } else {
+                    tabAsuhanGiziDewasaParent.addClass('d-none')
+                    tabAsuhanGiziAnakParent.removeClass('d-none')
+                    $('.formEws').css('display', 'none');
+                    $('.formEws select[name=keluaran_urin]').val('').change()
+                    $('.formEws select[name=proteinuria]').val('').change()
+                    $('.formEws select[name=air_ketuban]').val('')
+                    $('.formEws select[name=skala_nyeri]').val('')
+                    $('.formEws select[name=lochia]').val('').change()
+                    $('.formEws select[name=terlihat_tidak_sehat]').val('').change()
+                }
+
+                getDokter("{{ session()->get('pegawai')->nama }}").done((response) => {
+                    if (response.length) {
+                        $('.btn-tambah-grafik-harin').css('display', 'none')
+                    } else {
+                        $('.btn-tambah-grafik-harin').css('display', 'inline')
+                    }
+                })
+                $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
+                setEws(no_rawat, 'ranap', response.dokter.kd_sps)
+
+                $('#formSoapRanap .btn-simpan').attr('data-kd-dokter', response.dokter.kd_dokter);
+                $('#formSoapRanap .btn-simpan').attr('data-spesialis', response.dokter.spesialis.nm_sps);
+                $('#formSoapRanap .btn-simpan').attr('data-nm-pasien', response.pasien.nm_pasien);
+
+                $('#formSaveGrafikHarian #kdDokter').attr('data-kd-dokter', response.dokter.kd_dokter);
+                $('#formSaveGrafikHarian #spesialisDokter').attr('data-spesialis', response.dokter.spesialis.nm_sps);
+                $('#formSaveGrafikHarian #nmPasien').attr('data-nm-pasien', response.pasien.nm_pasien);
+            })
+
+            $('#modalSoapRanap').modal('toggle')
+
+            tbSoapRanap(no_rawat);
+            buildGrafik(no_rawat);
+            appendDataGrafikHarian(no_rawat);
+        }
+
         function getDetailPemeriksaanRanap(no_rawat, tgl, jam) {
             const pemeriksaan = $.ajax({
                 url: '/erm/soap/ambil',
@@ -216,392 +289,6 @@
                 },
             })
             return pemeriksaan;
-        }
-
-
-        function ambilSoap(no_rawat, tgl, jam) {
-            getDetailPemeriksaanRanap(no_rawat, tgl, jam).done((response) => {
-               formSoapRanap.find('#cekJam').prop('checked', true)
-                checkJam()
-               formSoapRanap.find('input[name=tgl_perawatan_ubah]').val(splitTanggal(response.tgl_perawatan));
-               formSoapRanap.find('input[name=jam_rawat_ubah]').val(response.jam_rawat);
-               formSoapRanap.find('input[name=tgl_perawatan]').val(response.tgl_perawatan);
-               formSoapRanap.find('input[name=jam_rawat]').val(response.jam_rawat);
-                $('#suhu').val(response.suhu_tubuh);
-                $('#tinggi').val(response.tinggi);
-                $('#berat').val(response.berat);
-                $('#tensi').val(response.tensi);
-                $('#respirasi').val(response.respirasi);
-                $('#nadi').val(response.nadi);
-                $('#spo2').val(response.spo2);
-                $('#gcs').val(response.gcs);
-
-                $.map(response.grafik_harian, function (grafik) {
-                    if (response.tgl_perawatan == grafik.tgl_perawatan && response.jam_rawat == grafik.jam_rawat) {
-                        $('#o2').val(grafik.o2);
-                    }
-                })
-
-                $('#kesadaran select').val(response.kesadaran);
-                $('#alergi').val(response.alergi);
-                $('#asesmen').val(response.penilaian);
-                $('#plan').val(response.rtl);
-                $('#instruksi').val(response.instruksi);
-                $('#evaluasi').val(response.evaluasi);
-                $('#subjek').val(response.keluhan);
-                $('#objek').val(response.pemeriksaan);
-                $('#reset_soap').append('')
-
-                $('#btn-reset').css('display', 'inline');
-                if (response.petugas.nip == "{{ session()->get('pegawai')->nik }}" || response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->departemen }}" == "CSM" || "{{ session()->get('pegawai')->nik }}" == "direksi") {
-                    $('#btn-ubah').css('display', 'inline');
-                } else {
-                    $('#btn-ubah').css('display', 'none');
-                    $('.btn-simpan').css('display', 'inline');
-                }
-                if (response.petugas.dokter) {
-                    if (response.petugas.dokter.kd_sps == 'S0007') {
-                        $('#btn-ubah').css('display', 'inline');
-                    }
-                }
-                bootstrap.Tab.getInstance(tabSoapRanap).show()
-            })
-        }
-
-        $('#btn-reset').on('click', function (event) {
-            no_rawat =formSoapRanap.find('input[name="nomor_rawat"]').val();
-           formSoapRanap.find('input').each((index, element) => {
-                $(element).val('-');
-                $(element).removeAttr('readonly');
-                $('#jam_rawat').val('');
-                $('#tgl_perawatan').val('');
-            })
-           formSoapRanap.find('textarea').each((index, element) => {
-                $(element).val('-')
-            });
-
-           formSoapRanap.find('textarea').removeAttr('readonly')
-           formSoapRanap.find('select').removeAttr('disabled', false)
-
-            getRegPeriksa(no_rawat).done((response) => {
-
-               formSoapRanap.find('input[name="nomor_rawat"]').val(response.no_rawat)
-               formSoapRanap.find('input[name="nm_pasien"]').val(`${response.pasien.nm_pasien} (${hitungUmur(response.pasien.tgl_lahir)})`)
-               formSoapRanap.find('input[name="nama"]').val("{{ session()->get('pegawai')->nama }}")
-               formSoapRanap.find('input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
-
-               formSoapRanap.find('input[name="nomor_rawat"]').attr('readonly', true)
-               formSoapRanap.find('input[name="nm_pasien"]').attr('readonly', true)
-               formSoapRanap.find('input[name="nama"]').attr('readonly', true)
-               formSoapRanap.find('input[name="nik"]').attr('readonly', true)
-            })
-
-
-            $('#btn-reset').css('display', 'none')
-            $('#btn-ubah').css('display', 'none')
-
-        });
-
-        function hapusSoap(no, tgl, jam) {
-            Swal.fire({
-                title: 'Yakin ?',
-                text: "Data yang dihapus tidak dapat dikembalikan",
-                icon: 'warning',
-                showCancelButton: true,
-                showConfirmButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus saja!',
-
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: 'soap/hapus',
-                        data: {
-                            '_token': '{{ csrf_token() }}',
-                            'no_rawat': no,
-                            'tgl_perawatan': tgl,
-                            'jam_rawat': jam,
-                        },
-                        method: 'DELETE',
-                        success: function (response) {
-                            if (response) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'BERHASIL !',
-                                    text: 'Data Berhasil dihapus',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                                $('#tbSoap').DataTable().destroy();
-                                tbSoapRanap(no, tgl_pertama, tgl_kedua);
-                                grafikPemeriksaan.destroy();
-                                buildGrafik(no)
-                                setEws(no, 'ranap',formSoapRanap.find('input[name=spesialis]').val())
-                            }
-                        }
-                    })
-
-                }
-            })
-
-        }
-
-        function editSoap() {
-            const no_rawat = modalSoapRanap.find('input[name=no_rawat]').val();
-            $.ajax({
-                url: 'soap/ubah',
-                data: {
-                    '_token': '{{ csrf_token() }}',
-                    'suhu_tubuh': $('#suhu').val(),
-                    'nip': $('#nik').val(),
-                    'no_rawat':no_rawat,
-                    'jam_rawat': $('#jam_rawat').val(),
-                    'tgl_perawatan': $('#tgl_perawatan').val(),
-                    'tinggi': $('#tinggi').val(),
-                    'berat': $('#berat').val(),
-                    'respirasi': $('#respirasi').val(),
-                    'tensi': $('#tensi').val(),
-                    'nadi': $('#nadi').val(),
-                    'kesadaran': $('#kesadaran option:selected').val(),
-                    'spo2': $('#spo2').val(),
-                    'o2': $('#o2').val(),
-                    'gcs': $('#gcs').val(),
-                    'alergi': $('#alergi').val(),
-                    'keluhan': $('#subjek').val(),
-                    'pemeriksaan': $('#objek').val(),
-                    'penilaian': $('#asesmen').val(),
-                    'rtl': $('#plan').val(),
-                    'evaluasi': $('#plan').val(),
-                    'instruksi': $('#instruksi').val(),
-                    'tgl_perawatan_ubah': splitTanggal($('#tgl_perawatan_ubah').val()),
-                    'jam_rawat_ubah': $('#jam_rawat_ubah').val(),
-                },
-                method: 'POST',
-                beforeSend: function () {
-                    swal.fire({
-                        title: 'Sedang mengirim data',
-                        text: 'Mohon Tunggu',
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            swal.showLoading();
-                        }
-                    })
-                },
-                error: (request, status, error) => {
-                    Swal.fire(
-                        'Gagal !',
-                        `Tidak bisa mengubah pemeriksaan<br/> Kode ${request.status} : ${request.statusText} `,
-                        'error',
-                    )
-                },
-                success: function (response) {
-                    if (response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'SUKSES !',
-                            text: 'Data Berhasil Diubah',
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(()=>{
-                            $('#tbSoap').DataTable().destroy();
-                            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
-                            grafikPemeriksaan.destroy();
-                            buildGrafik(no_rawat_soap)
-                            setEws(no_rawat_soap, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
-                            getInstance.show();
-                            const isTriggering = formSoapRanap.reset('triger');
-                            $('#btn-ubah').css('display', 'none')
-                            $('#btn-reset').css('display', 'none')
-                        })
-                    } else {
-                        Swal.fire({
-                            icon: 'danger',
-                            title: 'GAGAL !',
-                            text: 'Data Gagal Diubah',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }
-
-
-                }
-            })
-        }
-
-        function cariSoap() {
-            const tgl_pertama = splitTanggal($('.tgl_pertama_soap').val());
-            const tgl_kedua = splitTanggal($('.tgl_kedua_soap').val());
-            petugas = $('#petugas option:selected').val();
-            $('#tbSoap').DataTable().destroy();
-            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua, petugas);
-        }
-
-        function verifikasiSoap(no_rawat, tgl, jam) {
-            swal.fire({
-                title: 'Konfirmasi',
-                text: "Hasil pemeriksaan akan diverifikasi ?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#0d6efd',
-                cancelButtonColor: '#dc3545',
-                confirmButtonText: 'Ya, Verifikasi',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '/erm/soap/verifikasi',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            no_rawat: no_rawat,
-                            tgl_perawatan: tgl,
-                            jam_rawat: jam,
-                        },
-                        method: 'POST',
-                        dataType: 'JSON',
-                    }).done(() => {
-                        swal.fire({
-                            title: 'Berhasil',
-                            text: 'Hasil pemeriksaan telah diverivikasi',
-                            icon: 'success',
-                            timer: 1500,
-                        });
-                        $('#tbSoap').DataTable().destroy();
-                        tbSoapRanap(no_rawat);
-                    })
-                }
-            });
-        }
-
-        function simpanSoapRanap() {
-
-            const no_rawat = modalSoapRanap.find('input[name=no_rawat]').val();
-            let kd_dokter =formSoapRanap.find('.btn-simpan').attr('data-kd-dokter');
-            let spesialis =formSoapRanap.find('.btn-simpan').attr('data-spesialis');
-            let nm_pasien =formSoapRanap.find('.btn-simpan').attr('data-nm-pasien');
-            $.ajax({
-                url: '/erm/soap/simpan',
-                data: {
-                    '_token': '{{ csrf_token() }}',
-                    'suhu_tubuh': $('#suhu').val(),
-                    'nip': $('#nik').val(),
-                    'no_rawat': no_rawat,
-                    'tinggi': $('#tinggi').val(),
-                    'berat': $('#berat').val(),
-                    'respirasi': $('#respirasi').val(),
-                    'nadi': $('#nadi').val(),
-                    'tensi': $('#tensi').val(),
-                    'spo2': $('#spo2').val(),
-                    'gcs': $('#gcs').val(),
-                    'o2': $('#o2').val(),
-                    'kesadaran': $('#kesadaran option:selected').val(),
-                    'alergi': $('#alergi').val(),
-                    'keluhan': $('#subjek').val(),
-                    'pemeriksaan': $('#objek').val(),
-                    'penilaian': $('#asesmen').val(),
-                    'rtl': $('#plan').val(),
-                    'instruksi': $('#instruksi').val(),
-                    'keluaran_urin': $('.formEws select[name=keluaran_urin]').val(),
-                    'proteinuria': $('.formEws select[name=proteinuria]').val(),
-                    'air_ketuban': $('.formEws select[name=air_ketuban]').val(),
-                    'skala_nyeri': $('.formEws select[name=skala_nyeri]').val(),
-                    'lochia': $('.formEws select[name=lochia]').val(),
-                    'terlihat_tidak_sehat': $('.formEws select[name=terlihat_tidak_sehat]').val(),
-                },
-                method: 'POST',
-                beforeSend: function () {
-                    swal.fire({
-                        title: 'Sedang mengirim data',
-                        text: 'Mohon Tunggu',
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            swal.showLoading();
-                        }
-                    })
-                },
-                success: function (response) {
-                    if (response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'SUKSES !',
-                            text: 'Data Berhasil Ditambah',
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            $('#tbSoap').DataTable().destroy();
-                            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
-                            grafikPemeriksaan.destroy();
-                            buildGrafik(no_rawat_soap)
-                            setEws(no_rawat_soap, 'ranap',formSoapRanap.find('input[name=spesialis]').val())
-                           formSoapRanap.find('textarea[name=subjek]').val('-');
-                           formSoapRanap.find('textarea[name=objek]').val('-');
-                           formSoapRanap.find('textarea[name=asesmen]').val('-');
-                           formSoapRanap.find('textarea[name=plan]').val('-');
-                           formSoapRanap.find('textarea[name=instruksi]').val('-');
-                           formSoapRanap.find('input[name=suhu]').val('-');
-                           formSoapRanap.find('input[name=tinggi]').val('-');
-                           formSoapRanap.find('input[name=berat]').val('-');
-                           formSoapRanap.find('input[name=tensi]').val('-');
-                           formSoapRanap.find('input[name=respirasi]').val('-');
-                           formSoapRanap.find('input[name=nadi]').val('-');
-                           formSoapRanap.find('input[name=spo2]').val('-');
-                           formSoapRanap.find('input[name=gcs]').val('-');
-                           formSoapRanap.find('input[name=o2]').val('-');
-                           formSoapRanap.find('input[name=alergi]').val('-');
-                           formSoapRanap.find('select[name=kesadaran]').val('Compos Mentis').change();
-                            getInstance.show()
-                        });
-
-                        var suhu_tubuh = $('#suhu').val();
-                        if (suhu_tubuh.includes(',')) {
-                            suhu_tubuh = suhu_tubuh.replace(',', '.');
-                        }
-
-                        if (spesialis.toLowerCase().includes('anak')) {
-                            console.log('anak');
-                            if (suhu_tubuh < 35.5 || suhu_tubuh > 39.5) {
-                                console.log('kirim notif');
-                                notifSend(
-                                    // FIXME : kd_dokter masih belum benar
-                                    kd_dokter,
-                                    'Notifikasi Kondisi Pasien',
-                                    'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
-                                    $('#nomor_rawat').val(),
-                                    'Ranap',
-                                    'detail'
-                                );
-                            }
-                        } else {
-                            console.log('bukan anak');
-                            if (suhu_tubuh < 36 || suhu_tubuh > 38) {
-                                console.log('kirim notif');
-                                notifSend(
-                                    // FIXME : kd_dokter masih belum benar
-                                    kd_dokter,
-                                    'Notifikasi Kondisi Pasien',
-                                    'Suhu tubuh ' + suhu_tubuh + '°, pasien atas nama : ' + nm_pasien,
-                                    $('#nomor_rawat').val(),
-                                    'Ranap',
-                                    'detail'
-                                );
-                            }
-                        }
-
-
-                    } else {
-                        Swal.fire({
-                            icon: 'danger',
-                            title: 'GAGAL !',
-                            text: 'Data Gagal Ditambah',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }
-                },
-                error: (request) => {
-                    alertErrorAjax(request);
-                }
-            })
         }
 
         function setFormData(data) {

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RsiaVerifPemeriksaanRanap extends Model
 {
-    use HasFactory;
+    use HasFactory, Compoships;
     protected $table = 'rsia_verif_pemeriksaan_ranap';
     protected $fillable = ['no_rawat', 'tgl_perawatan', 'jam_rawat', 'tgl_verif', 'jam_verif', 'verifikator'];
     public $timestamps = false;

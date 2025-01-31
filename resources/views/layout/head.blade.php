@@ -34,6 +34,10 @@
     {{-- <script src="https://unpkg.com/sweetalert2@11"></script> --}}
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
 
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" />
+
+
+
     <style>
         * {
             font-family: "Noto Sans", serif;

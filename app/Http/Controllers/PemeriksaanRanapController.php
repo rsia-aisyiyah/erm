@@ -135,22 +135,22 @@ class PemeriksaanRanapController extends Controller
             'no_rawat' => $request->no_rawat,
             'tgl_perawatan' => $this->tanggal->now()->toDateString(),
             'jam_rawat' => date('H:i:s'),
-            'suhu_tubuh' => $request->suhu_tubuh,
-            'tinggi' => $request->tinggi,
-            'berat' => $request->berat,
-            'tensi' => $request->tensi,
-            'respirasi' => $request->respirasi,
-            'nadi' => $request->nadi,
-            'spo2' => $request->spo2,
-            'gcs' => $request->gcs,
-            'alergi' => $request->alergi,
-            'keluhan' => $request->keluhan,
-            'pemeriksaan' => $request->pemeriksaan,
-            'penilaian' => $request->penilaian,
-            'rtl' => $request->rtl,
+            'suhu_tubuh' => $request->suhu_tubuh ? $request->suhu_tubuh : '-',
+            'tinggi' => $request->tinggi ? $request->tinggi : '-',
+            'berat' => $request->berat ? $request->berat : '-',
+            'tensi' => $request->tensi ? $request->tensi : '-',
+            'respirasi' => $request->respirasi ? $request->respirasi : '-',
+            'nadi' => $request->nadi ? $request->nadi : '-',
+            'spo2' => $request->spo2 ? $request->spo2 : '-',
+            'gcs' => $request->gcs ? $request->gcs : '-',
+            'alergi' => $request->alergi ? $request->alergi : '-',
+            'keluhan' => $request->keluhan ? $request->keluhan : '-',
+            'pemeriksaan' => $request->pemeriksaan ? $request->pemeriksaan : '-',
+            'penilaian' => $request->penilaian ? $request->penilaian : '-',
+            'rtl' => $request->rtl ? $request->rtl : '-',
             'evaluasi' => '-',
-            'instruksi' => $request->instruksi ? $request->instruksi : '',
-            'kesadaran' => $request->kesadaran,
+            'instruksi' => $request->instruksi ? $request->instruksi : '-',
+            'kesadaran' => $request->kesadaran ? $request->kesadaran : '-',
         ];
 
         $data1 = [
@@ -158,13 +158,13 @@ class PemeriksaanRanapController extends Controller
             'no_rawat' => $request->no_rawat,
             'tgl_perawatan' => $this->tanggal->now()->toDateString(),
             'jam_rawat' => date('H:i:s'),
-            'suhu_tubuh' => $request->suhu_tubuh,
-            'tensi' => $request->tensi,
-            'respirasi' => $request->respirasi,
-            'nadi' => $request->nadi,
-            'spo2' => $request->spo2,
-            'gcs' => $request->gcs,
-            'kesadaran' => $request->kesadaran,
+            'suhu_tubuh' => $request->suhu_tubuh ? $request->suhu_tubuh : '-',
+            'tensi' => $request->tensi ? $request->tensi : '-',
+            'respirasi' => $request->respirasi ? $request->respirasi : '-',
+            'nadi' => $request->nadi ? $request->nadi : '-',
+            'spo2' => $request->spo2 ? $request->spo2 : '-',
+            'gcs' => $request->gcs ? $request->gcs : '-',
+            'kesadaran' => $request->kesadaran ? $request->kesadaran : '-',
             'keluaran_urin' => $request->keluaran_urin,
             'proteinuria' => $request->proteinuria,
             'air_ketuban' => $request->air_ketuban,
@@ -172,7 +172,7 @@ class PemeriksaanRanapController extends Controller
             'lochia' => $request->lochia,
             'terlihat_tidak_sehat' => $request->terlihat_tidak_sehat,
             'o2' => $request->o2,
-            'sumber' => 'SOAP',
+            'sumber' => $request->sumber,
         ];
 
 
@@ -239,8 +239,22 @@ class PemeriksaanRanapController extends Controller
     public function ambil(Request $request)
     {
 
-        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $request->no_rawat)->with(['regPeriksa', 'regPeriksa.pasien', 'log.pegawai', 'petugas', 'grafikHarian', 'verifikasi.petugas' => function ($q) {
-            return $q->select('nip', 'nama');
+        $pemeriksaan = $this->pemeriksaan->whereHas('grafikHarian', function ($q) {
+            $q->where('sumber', 'SBAR');
+        })->where('no_rawat', $request->no_rawat)->with([
+                    'regPeriksa',
+                    'regPeriksa.pasien',
+                    'log.pegawai',
+                    'petugas',
+                    'grafikHarian',
+                    'verifikasi.petugas' => function ($q) {
+                        return $q->select('nip', 'nama');
+                    },
+                    'sbar' => function ($q) {
+                        return $q->with([
+                            'pegawai' => function ($q) {
+                                return $q->select(['id', 'nik', 'nama']);
+            }, 'verifikasi.dokter']);
         }])->orderBy('tgl_perawatan', 'DESC')
             ->orderBy('jam_rawat', 'DESC');
 
