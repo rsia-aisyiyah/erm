@@ -32,4 +32,8 @@ class RsiaGrafikHarian extends Model
     public function pegawai(){
         return $this->belongsTo(Pegawai::class, 'nip', 'nik');
     }
+
+    public function dokterKonsul(){
+        return $this->hasOne(RsiaKonsulSbar::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat']);
+    }
 }

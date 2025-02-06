@@ -30,7 +30,7 @@
         </div>
     </div>
 </div>
-<table class="table table-bordered table-striped" id="tbSoap" style="font-size: 12px" width="100%">
+<table class="table table-bordered table-striped table-sm" id="tbSoap" width="100%">
     <thead>
         <tr>
             <td width="5%">Aksi</td>
@@ -100,6 +100,7 @@
                 processing: true,
                 paging: false,
                 info: false,
+                destroy: true,
                 ajax: {
                     url: "soap",
                     data: {
@@ -128,6 +129,9 @@
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
+                            if (row.sbar) {
+                                return renderBtnActionSbar(row.sbar)
+                            }
                             button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
                             if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
                                 button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
@@ -164,7 +168,15 @@
                             list += '<li> alergi : ' + row.alergi + '</li>';
                             html = '<ul>' + list + '</ul>';
 
+                            row.log.filter((item) => item.tgl_perawatan === row.tgl_perawatan && item.jam_rawat === row.jam_rawat).map((item) => {
+                                html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${item.aksi.toLowerCase()} oleh : <b>${item.pegawai.nama} 
+                                            , ${formatTanggal(item.waktu)}
+                                                </i></div>`
+                            })
+
                             return html;
+
+
                         },
                         name: 'ttv',
                     },
@@ -176,8 +188,11 @@
                                 return renderSbar(row)
                             }
 
-                            baris = '<tr><th width="5%">Petugas </th><td width="5%">:</td><td>' + row
-                                .petugas.nama + '</td></tr>'
+                            baris = `<tr>
+                                <th width="5%">Petugas</th>
+                                <td width="5%">:</td>
+                                <td>${row.petugas.nama} </td>
+                                </tr>`
                             baris += '<tr><th>Subjek </th><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
                             baris += '<tr><th>Objek </th><td>:</td><td>' + stringPemeriksaan(row.pemeriksaan) + '</td></tr>'
                             baris += '<tr><th>Assesment</th><td>:</td><td>' + stringPemeriksaan(row.penilaian) + '</td></tr>'
@@ -289,24 +304,23 @@
         }
 
         function renderVerifikasiSbar(data) {
-            isDokter = "{{ session()->get('pegawai')->departemen }}";
+            const kdDokter = "{{ session()->get('pegawai')->nik }}";
             let btn = '';
             let isVerified = ''
-
-
 
             if (data.verifikasi) {
                 isVerified = `<div class="alert alert-success p-2 mt-2" role="alert">
                                 <strong><i class="bi bi-circle-check"></i></strong>Telah diverifikasi pada <strong>${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}</strong> </div>`;
             } else {
-                if (isDokter === 'SPS') {
+                if (kdDokter === data.dokter_konsul.dokter) {
                     btn = `<button class="btn btn-sm btn-warning w-100" onclick="verifikasiSoap('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil"></i> Verifikasi SBAR</button>`;
                 }
                 isVerified = `<div class="alert alert-warning p-2 mt-2" role="alert">
-                                <strong><i class="bi bi-exclamation-triangle"></i></strong> Belum diverifikasi oleh DPJP
+                                <strong><i class="bi bi-exclamation-triangle"></i></strong> Belum diverifikasi oleh Dokter
                             </div>`;
             }
             return `<ul>
+                    <li>Konsul Ke : <strong>${data.dokter_konsul.dokter_sbar.nm_dokter}</strong></li>
                     <li>Tgl & Waktu : <strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong></li>
                 </ul> ${btn}
             ${isVerified}
@@ -342,6 +356,49 @@
                         <td>${data.rtl}</td>    
                     </tr>
                 </table>`
+        }
+
+        function renderBtnActionSbar(data) {
+            const kdPetugas = "{{ session()->get('pegawai')->nik }}";
+            const dokter = data.dokter_konsul.dokter;
+            const petugas = data.nip;
+
+            if (kdPetugas === petugas) {
+                return `<button class="btn btn-sm btn-primary" onclick="getSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>`
+            }
+
+            return '';
+
+        }
+
+        function getSbar(no_rawat, tgl_perawatan, jam) {
+            btnTabSbar.trigger('click');
+            getDetailPemeriksaanRanap(no_rawat, tgl_perawatan, jam).done((response) => {
+
+
+
+                btnSimpanSbar.addClass('d-none');
+                btnUbahSbar.removeClass('d-none');
+                btnBatalSbar.removeClass('d-none');
+
+                formSbarRanap.find('input[name=no_rawat]').val(response.no_rawat);
+                formSbarRanap.find('input[name=tgl_perawatan]').val(`${splitTanggal(response.tgl_perawatan)} ${response.jam_rawat}`);
+
+                formSbarRanap.find('input[name=jam_rawat_awal]').val(response.jam_rawat);
+                formSbarRanap.find('input[name=tgl_perawatan_awal]').val(response.tgl_perawatan);
+
+                formSbarRanap.find('input[name=jam_rawat]').val(response.jam_rawat);
+                formSbarRanap.find('input[name=petugas]').val(response.petugas.nip);
+                formSbarRanap.find('input[name=nm_petugas]').attr(response.petugas.nama);
+                formSbarRanap.find('textarea[name=keluhan]').val(response.keluhan);
+                formSbarRanap.find('textarea[name=pemeriksaan]').val(response.pemeriksaan);
+                formSbarRanap.find('textarea[name=penilaian]').val(response.penilaian);
+                formSbarRanap.find('textarea[name=rtl]').val(response.rtl);
+
+                const dokter = new Option(response.sbar.dokter_konsul.dokter_sbar.nm_dokter, response.sbar.dokter_konsul.dokter_sbar.kd_dokter, true, true);
+                dokterSbar.append(dokter).trigger('change');
+
+            });
         }
     </script>
 @endpush

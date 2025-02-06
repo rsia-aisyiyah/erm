@@ -27,4 +27,9 @@ class Pegawai extends Model
     {
         return $this->hasOne(SidikJari::class, 'id', 'id');
     }
+
+    function departemen()
+    {
+        return $this->hasOne(Departemen::class, 'dep_id', 'departemen');
+    }
 }

@@ -87,6 +87,7 @@ use App\Http\Controllers\RsiaMappingRacikanController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
+use App\Http\Controllers\SbarController;
 use App\Http\Controllers\SelesaiPoliController;
 use App\Http\Controllers\SkoringTbController;
 use App\Http\Controllers\SkriningTbController;
@@ -212,6 +213,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/soap/simpan', [PemeriksaanRanapController::class, 'simpan']);
     Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
     Route::post('/soap/verifikasi', [RsiaVerifPemeriksaanRanapController::class, 'create']);
+
+    Route::post('/ranap/sbar', [SbarController::class, 'update']);
 
     Route::get('/soap/chart', [PemeriksaanRanapController::class, 'getTTV']);
     Route::get('/soap/grafik/data', [PemeriksaanRanapController::class, 'getTTVData']);

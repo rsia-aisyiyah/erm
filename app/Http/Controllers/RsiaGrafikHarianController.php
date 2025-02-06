@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RsiaGrafikHarianController extends Controller
 {
@@ -104,5 +106,32 @@ class RsiaGrafikHarianController extends Controller
                 'message' => 'Gagal menghapus data grafik harian',
             ], 400);
         }
+    }
+
+    function updateSbar(Request $request){
+        $clause = [
+            'no_rawat' => $request->no_rawat,
+            'tgl_perawatan' => $request->tgl_perawatan_awal,
+            'jam_rawat' => $request->jam_rawat_awal,
+        ];
+
+        $data = [
+            'tgl_perawatan' => $request->tgl_perawatan,
+            'jam_rawat' => $request->jam_rawat,
+            'sumber' => $request->sumber,
+        ];
+
+        try{
+            DB::transaction(function () use ($data, $clause, $request)  {
+                    $grafikHarian = $this->model->where($clause)->update($data);
+                    $this->track->updateSql($this->model, $clause, $data);
+            });
+           
+        }catch(QueryException $e){
+            return response()->json($e->errorInfo, 500);
+        }
+
+        return response()->json('Berhasil Update', 200);
+        
     }
 }

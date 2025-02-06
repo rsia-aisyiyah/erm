@@ -33,16 +33,27 @@ class PemeriksaanRanapController extends Controller
     public function ambilSatu(Request $request)
     {
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa' => function($query){
-                return $query->select(
-                    DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
-                    DB::raw('TRIM(kd_poli) as kd_poli'),
-                    DB::raw('TRIM(kd_dokter) as kd_dokter'),
-                   'tgl_registrasi', 'jam_reg', 'status_bayar', 'status_poli', 'stts_daftar', 'no_rawat'
-                )->with(['dokter', 'pasien']);
-            }, 'petugas' => function($query){
-                // return $query->with('petugas');
-            }, 'grafikHarian']);
+            ->with([
+                'regPeriksa' => function ($query) {
+                    return $query->select(
+                        DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+                        DB::raw('TRIM(kd_poli) as kd_poli'),
+                        DB::raw('TRIM(kd_dokter) as kd_dokter'),
+                        'tgl_registrasi',
+                        'jam_reg',
+                        'status_bayar',
+                        'status_poli',
+                        'stts_daftar',
+                        'no_rawat'
+                    )->with(['dokter', 'pasien']);
+                },
+                'petugas' => function ($query) {
+                      // return $query->with('petugas');
+                },
+                'grafikHarian',
+                'sbar' => function ($query) {
+                    return $query->with(['dokterKonsul.dokterSbar']);
+            }]);
 
         if ($request->tgl_perawatan) {
             $pemeriksaan->where('tgl_perawatan', $request->tgl_perawatan);
@@ -112,9 +123,6 @@ class PemeriksaanRanapController extends Controller
             'sumber' => 'SOAP',
         ];
 
-
-
-
         $log = $this->log->insert([
             'no_rawat' => $clause['no_rawat'],
             'tgl_perawatan' => $data['tgl_perawatan'],
@@ -133,8 +141,8 @@ class PemeriksaanRanapController extends Controller
         $data = [
             'nip' => $request->nip,
             'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => $this->tanggal->now()->toDateString(),
-            'jam_rawat' => date('H:i:s'),
+            'tgl_perawatan' => $request->tgl_perawatan ? $request->tgl_perawatan : $this->tanggal->now()->toDateString(),
+            'jam_rawat' => $request->jam_rawat ? $request->jam_rawat : $this->tanggal->now()->toTimeString(),
             'suhu_tubuh' => $request->suhu_tubuh ? $request->suhu_tubuh : '-',
             'tinggi' => $request->tinggi ? $request->tinggi : '-',
             'berat' => $request->berat ? $request->berat : '-',
@@ -174,13 +182,25 @@ class PemeriksaanRanapController extends Controller
             'o2' => $request->o2,
             'sumber' => $request->sumber,
         ];
-
-
-
+ 
+        if($request->sumber === 'SBAR'){
+            $sbar = new RsiaKonsulSbarController();
+            $dataKonsul = [
+                'no_rawat' => $request->no_rawat,
+                'tgl_perawatan' => $data['tgl_perawatan'],
+                'jam_rawat' => $data['jam_rawat'],
+                'kd_dokter' => $request->kd_dokter
+            ];
+            $sbar->create( new Request($dataKonsul));
+        }   
+        
+        
         $pemeriksaan = PemeriksaanRanap::create($data);
         $grafikharian = GrafikHarian::create($data1);
         $this->track->insertSql($this->pemeriksaan, $data);
         $this->track->insertSql($this->grafikharian, $data);
+       
+      
         return response()->json(['Berhasil', $pemeriksaan, $grafikharian], 200);
     }
     public function hapus(Request $request)
@@ -240,16 +260,19 @@ class PemeriksaanRanapController extends Controller
     {
 
         $pemeriksaan = $this->pemeriksaan->where('no_rawat', $request->no_rawat)->with([
-                    'regPeriksa',
-                    'regPeriksa.pasien',
-                    'log.pegawai',
-                    'petugas',
-                    'grafikHarian',
-                    'verifikasi.petugas' => function ($q) {
-                        return $q->select('nip', 'nama');
-                    },
-                    'sbar' => function ($q) {
-                        return $q->with([
+            'regPeriksa',
+            'regPeriksa.pasien',
+            'log.pegawai',
+            'petugas.pegawai.departemen',
+            'grafikHarian',
+            'verifikasi.petugas' => function ($q) {
+                return $q->select('nip', 'nama');
+            },
+            'sbar' => function ($q) {
+                return $q->with([
+                    'dokterKonsul' => function ($q) {
+                        return $q->with('dokterSbar');
+                        },
                             'pegawai' => function ($q) {
                                 return $q->select(['id', 'nik', 'nama']);
             }, 'verifikasi.dokter']);
@@ -279,7 +302,8 @@ class PemeriksaanRanapController extends Controller
     function getTTV(Request $request)
     {
         $id = str_replace('-', '/', $request->no_rawat);
-        $data = $this->grafikharian->where(['no_rawat' => $id])
+        $data = $this->grafikharian->where(['no_rawat' => $id,])
+        ->where('sumber', '!=', 'SBAR')
             ->whereHas('pegawai', function ($q) {
                 return $q->where('jbtn', 'not like', '%direktur%')
                     ->where('jbtn', 'not like', '%spesialis%');

@@ -18,4 +18,8 @@ class Petugas extends Model
     {
         return $this->belongsTo(Dokter::class, 'nip', 'kd_dokter');
     }
+    public function pegawai(){
+        return $this->belongsTo(Pegawai::class, 'nip', 'nik')
+        ->select('nik', 'nama', 'departemen');
+    }
 }

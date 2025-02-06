@@ -44,4 +44,6 @@ class PemeriksaanRanap extends Model
         return $this->hasOne(RsiaGrafikHarian::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat'])
         ->where('sumber', 'SBAR');
     }
+    
+    
 }
