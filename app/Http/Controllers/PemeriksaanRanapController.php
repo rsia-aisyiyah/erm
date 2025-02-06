@@ -164,8 +164,8 @@ class PemeriksaanRanapController extends Controller
         $data1 = [
             'nip' => $request->nip,
             'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => $this->tanggal->now()->toDateString(),
-            'jam_rawat' => date('H:i:s'),
+             'tgl_perawatan' => $request->tgl_perawatan ? $request->tgl_perawatan : $this->tanggal->now()->toDateString(),
+            'jam_rawat' => $request->jam_rawat ? $request->jam_rawat : $this->tanggal->now()->toTimeString(),
             'suhu_tubuh' => $request->suhu_tubuh ? $request->suhu_tubuh : '-',
             'tensi' => $request->tensi ? $request->tensi : '-',
             'respirasi' => $request->respirasi ? $request->respirasi : '-',

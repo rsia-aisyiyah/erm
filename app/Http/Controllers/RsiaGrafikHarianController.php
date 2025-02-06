@@ -32,8 +32,8 @@ class RsiaGrafikHarianController extends Controller
         // return $request->all();
         $data = [
             'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => $dateNow,
-            'jam_rawat' => $timeNow,
+            'tgl_perawatan' => $request->tgl_perawatan ? $request->tgl_perawatan : $dateNow,
+            'jam_rawat' => $request->jam_rawat ? $request->jam_rawat : $timeNow,
 
             'suhu_tubuh' => $request->suhu_tubuh,
             'tensi' => $request->tensi,

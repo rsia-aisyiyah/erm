@@ -99,6 +99,8 @@
             data['nip'] = data['petugas'];
             data['no_rawat'] = formInfoPasien.find('input[name=no_rawat]').val();
             data['sumber'] = 'SBAR';
+            data['jam_rawat'] = data['tgl_perawatan'].split(' ')[1];
+            data['tgl_perawatan'] = splitTanggal(data['tgl_perawatan'].split(' ')[0]);
             $.post(`${url}/soap/simpan`, data).done((response) => {
                 alertSuccessAjax('Data SBAR berhasil disimpan')
                 formSbarRanap.trigger('reset')
