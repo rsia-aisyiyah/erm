@@ -321,7 +321,7 @@
                             </div>`;
             }
             return `<ul>
-                    <li>Konsul Ke : <strong>${data.dokter_konsul ? data.dokter_konsil.dokter_sbar.nm_dokter : formInfoPasien.find('input[name=dokter_dpjp]').val() }</strong></li>
+                    <li>Konsul Ke : <strong>${data.dokter_konsul ? data.dokter_konsul.dokter_sbar.nm_dokter : formInfoPasien.find('input[name=dokter_dpjp]').val() }</strong></li>
                     <li>Tgl & Waktu : <strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong></li>
                 </ul> ${btn}
             ${isVerified}
