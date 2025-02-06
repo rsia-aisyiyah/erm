@@ -359,9 +359,10 @@
         }
 
         function renderBtnActionSbar(data) {
+
             const kdPetugas = "{{ session()->get('pegawai')->nik }}";
-            const dokter = data.dokter_konsul.dokter;
-            const petugas = data.nip;
+            const dokter = data?.dokter_konsul ? data.dokter_konsul?.dokter : formInfoPasien.find('input[name=dokter_dpjp]').val();
+            const petugas = data?.nip;
 
             if (kdPetugas === petugas) {
                 return `<button class="btn btn-sm btn-primary" onclick="getSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>`
