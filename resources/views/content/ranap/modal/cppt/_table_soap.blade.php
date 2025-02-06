@@ -305,6 +305,7 @@
 
         function renderVerifikasiSbar(data) {
             const kdDokter = "{{ session()->get('pegawai')->nik }}";
+            const isDokterKonsul = data.dokter_konsul ? data.dokter_konsul.dokter : formInfoPasien.find('input[name=kd_dokter_dpjp]').val();
             let btn = '';
             let isVerified = ''
 
@@ -312,7 +313,7 @@
                 isVerified = `<div class="alert alert-success p-2 mt-2" role="alert">
                                 <strong><i class="bi bi-circle-check"></i></strong>Telah diverifikasi pada <strong>${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}</strong> </div>`;
             } else {
-                if (kdDokter === data.dokter_konsul.dokter) {
+                if (kdDokter === isDokterKonsul) {
                     btn = `<button class="btn btn-sm btn-warning w-100" onclick="verifikasiSoap('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil"></i> Verifikasi SBAR</button>`;
                 }
                 isVerified = `<div class="alert alert-warning p-2 mt-2" role="alert">
@@ -320,7 +321,7 @@
                             </div>`;
             }
             return `<ul>
-                    <li>Konsul Ke : <strong>${data.dokter_konsul.dokter_sbar.nm_dokter}</strong></li>
+                    <li>Konsul Ke : <strong>${data.dokter_konsul ? data.dokter_konsil.dokter_sbar.nm_dokter : formInfoPasien.find('input[name=dokter_dpjp]').val() }</strong></li>
                     <li>Tgl & Waktu : <strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong></li>
                 </ul> ${btn}
             ${isVerified}
