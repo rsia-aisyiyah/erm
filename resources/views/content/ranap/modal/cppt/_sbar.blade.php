@@ -42,8 +42,13 @@
             // data['jam_rawat'] = .val();
             $.post(`${url}/ranap/sbar/update`, data).done((response) => {
                 alertSuccessAjax('Data SBAR berhasil diubah')
+                alertSuccessAjax('Data SBAR berhasil disimpan')
+                formSbarRanap.trigger('reset')
                 tbSoapRanap(data['no_rawat']);
                 getInstance.show()
+                btnSimpanSbar.removeClass('d-none');
+                btnUbahSbar.addClass('d-none');
+                btnBatalSbar.addClass('d-none');
             })
         })
 
