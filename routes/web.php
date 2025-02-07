@@ -214,7 +214,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
     Route::post('/soap/verifikasi', [RsiaVerifPemeriksaanRanapController::class, 'create']);
 
-    Route::post('/ranap/sbar', [SbarController::class, 'update']);
+    Route::post('/ranap/sbar/update', [SbarController::class, 'update']);
+    Route::post('/ranap/sbar/delete', [SbarController::class, 'delete']);
 
     Route::get('/soap/chart', [PemeriksaanRanapController::class, 'getTTV']);
     Route::get('/soap/grafik/data', [PemeriksaanRanapController::class, 'getTTVData']);
@@ -479,6 +480,7 @@ Route::get('/test/view', function () {
     return view('test');
 });
 Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}',[PoliklinikController::class, 'poliPasien']);
+Route::get('/sbar', [SbarController::class, 'dataTable']);
 
 // Route::get('/file', function () {
 // $file = Storage::disk('custom')->url('LOGO RSIA (2).png');

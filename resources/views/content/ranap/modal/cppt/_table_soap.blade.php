@@ -132,9 +132,9 @@
                             if (row.sbar) {
                                 return renderBtnActionSbar(row.sbar)
                             }
-                            button = '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
+                            button = '<button type="button" class="btn btn-primary btn-sm me-1" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
                             if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
-                                button += '<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
+                                button += '<button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
                             }
                             return button;
                         },
@@ -321,8 +321,8 @@
                             </div>`;
             }
             return `<ul>
+                <li><strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong></li>
                     <li>Konsul Ke : <strong>${data.dokter_konsul ? data.dokter_konsul.dokter_sbar.nm_dokter : formInfoPasien.find('input[name=dokter_dpjp]').val() }</strong></li>
-                    <li>Tgl & Waktu : <strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong></li>
                 </ul> ${btn}
             ${isVerified}
                 `
@@ -366,10 +366,40 @@
             const petugas = data?.nip;
 
             if (kdPetugas === petugas) {
-                return `<button class="btn btn-sm btn-primary" onclick="getSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>`
+                return `<button class="btn btn-sm btn-primary" onclick="getSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`
             }
 
             return '';
+
+        }
+
+        function deleteSbar(no_rawat, tgl_perawatan, jam_rawat) {
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: "Data SBAR akan dihapus ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#0d6efd',
+                cancelButtonColor: '#dc3545',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post(`${url}/ranap/sbar/delete`, {
+                        no_rawat: no_rawat,
+                        tgl_perawatan: tgl_perawatan,
+                        jam_rawat: jam_rawat,
+                        _token: '{{ csrf_token() }}',
+                    }).done((response) => {
+                        alertSuccessAjax('Data SBAR berhasil dihapus')
+                        tbSoapRanap(no_rawat);
+                    }).fail((error) => {
+                        alertErrorAjax(error)
+                    })
+                }
+            })
+
 
         }
 

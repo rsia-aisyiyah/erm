@@ -778,7 +778,7 @@
             tableGrafikHarian = null;
         });
 
-       
+
         function appendDataGrafikHarian(no_rawat) {
 
             tableGrafikHarian = $("#tableGrafikHarian").dataTable({

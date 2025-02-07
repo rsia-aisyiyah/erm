@@ -105,7 +105,7 @@
                     </div>
                     <div class="tab-pane fade p-3" id="tabSbar-pane" role="tabpanel"
                         aria-labelledby="sbar-tab" tabindex="0">
-                        @include('content.ranap.modal.cppt._form_sbar')
+                        @include('content.ranap.modal.cppt._sbar')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
                         tabindex="0">

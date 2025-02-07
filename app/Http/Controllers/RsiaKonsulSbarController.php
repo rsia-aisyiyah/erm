@@ -54,4 +54,19 @@ class RsiaKonsulSbarController extends Controller
         $this->track->updateSql(new RsiaKonsulSbar(),$data, $key);
         return response()->json('Berhasil Update SBAR', 200);
     }
+
+    public function delete(Request $request){
+        $key = [
+            'no_rawat' => $request->no_rawat,
+            'tgl_perawatan' => $request->tgl_perawatan,
+            'jam_rawat' => $request->jam_rawat,
+        ];
+        try {
+            $result = RsiaKonsulSbar::where($key)->delete();
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
+        $this->track->deleteSql(new RsiaKonsulSbar(), $key);
+        return response()->json('Berhasil Hapus SBAR', 200);
+    }
 }
