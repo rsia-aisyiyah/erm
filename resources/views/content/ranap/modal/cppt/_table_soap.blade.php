@@ -33,8 +33,8 @@
 <table class="table table-bordered table-striped table-sm" id="tbSoap" width="100%">
     <thead>
         <tr>
-            <td width="5%">Aksi</td>
-            <td width="20%">TTV & Fisik</td>
+            <td>Aksi</td>
+            <td>TTV & Fisik</td>
             <td>CPPT</td>
         </tr>
     </thead>
@@ -101,6 +101,7 @@
                 paging: false,
                 info: false,
                 destroy: true,
+                autoWidth: false,
                 ajax: {
                     url: "soap",
                     data: {
@@ -125,7 +126,6 @@
                         }
                     },
                 },
-                scrollCollapse: true,
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
@@ -139,6 +139,7 @@
                             return button;
                         },
                         name: 'tgl_perawatan',
+                        width: '5%'
                     },
                     {
                         data: null,
@@ -179,6 +180,7 @@
 
                         },
                         name: 'ttv',
+                        width: '20%'
                     },
                     {
                         data: null,
@@ -307,56 +309,96 @@
             const kdDokter = "{{ session()->get('pegawai')->nik }}";
             const isDokterKonsul = data.dokter_konsul ? data.dokter_konsul.dokter : formInfoPasien.find('input[name=kd_dokter_dpjp]').val();
             let btn = '';
-            let isVerified = ''
+            let isVerified = '';
+            let qrDiv = '';
+
+            console.log(data.verifikasi);
 
             if (data.verifikasi) {
-                isVerified = `<div class="alert alert-success p-2 mt-2" role="alert">
-                                <strong><i class="bi bi-circle-check"></i></strong>Telah diverifikasi pada <strong>${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}</strong> </div>`;
+                const qrData = `Telah diverifikasi oleh ${data.verifikasi.dokter.nm_dokter} pada ${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}`;
+                const qrId = `qr-${data.no_rawat}-${data.tgl_perawatan}-${data.jam_rawat}`;
+
+                isVerified = `<div class="alert alert-success p-2 mt-2" role="alert" style="font-size:10px">
+                        <strong><i class="bi bi-circle-check"></i></strong>
+                        Telah diverifikasi oleh <br/> <strong>${data.verifikasi.dokter.nm_dokter}</strong> pada <strong>${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}</strong>
+                    </div>`;
+
+                qrDiv = `<div id="${qrId}" class="mt-2"></div>`;
+
+                setTimeout(() => {
+                    const qrElement = document.getElementById(qrId);
+                    if (qrElement) {
+                        qrElement.innerHTML = '';
+                        new QRCode(qrElement, {
+                            text: qrData,
+                            width: 100,
+                            height: 100
+                        });
+                    }
+                }, 500);
+
+
             } else {
                 if (kdDokter === isDokterKonsul) {
-                    btn = `<button class="btn btn-sm btn-warning w-100" onclick="verifikasiSoap('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil"></i> Verifikasi SBAR</button>`;
+                    btn = `<button class="btn btn-sm btn-warning w-100" onclick="verifikasiSoap('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')">
+                    <i class="bi bi-pencil"></i> Verifikasi SBAR
+                </button>`;
                 }
                 isVerified = `<div class="alert alert-warning p-2 mt-2" role="alert">
-                                <strong><i class="bi bi-exclamation-triangle"></i></strong> Belum diverifikasi oleh Dokter
-                            </div>`;
+                        <strong><i class="bi bi-exclamation-triangle"></i></strong> Belum diverifikasi oleh Dokter
+                    </div>`;
             }
+
+
             return `<ul>
                 <li><strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong></li>
-                    <li>Konsul Ke : <strong>${data.dokter_konsul ? data.dokter_konsul.dokter_sbar.nm_dokter : formInfoPasien.find('input[name=dokter_dpjp]').val() }</strong></li>
-                </ul> ${btn}
+                <li>Konsul Ke : <strong>${data.dokter_konsul ? data.dokter_konsul.dokter_sbar.nm_dokter : formInfoPasien.find('input[name=dokter_dpjp]').val()}</strong></li>
+            </ul> 
+            ${btn}
             ${isVerified}
-                `
+            ${qrDiv}`;
+        }
 
+
+
+
+        function renderBarcodeSbar(data) {
+            setTimeout(() => {
+                JsBarcode(`.barcode[data-id="${data.no_rawat}"][data-tgl="${data.tgl_perawatan}"][data-jam="${data.jam_rawat}"]`, 'wkwkwkw', {
+                    displayValue: false
+                });
+            }, 1000)
+            return '';
         }
 
         function renderSbar(data) {
             return `<table class="table table-striped">
-                    <tr>
-                        <th width="5%">Petugas</th>    
-                        <th width="5%">:</th>    
-                        <td>${data.sbar.pegawai.nama}</td>    
-                    </tr>
-                    <tr>
-                        <th width="5%">Subject</th>    
-                        <th width="5%">:</th>    
-                        <td>${data.keluhan}</td>    
-                    </tr>
-                    <tr>
-                        <th width="5%">Background</th>    
-                        <th width="5%">:</th>    
-                        <td>${data.pemeriksaan}</td>    
-                    </tr>
-                    <tr>
-                        <th width="5%">Assesment</th>    
-                        <th width="5%">:</th>    
-                        <td>${data.penilaian}</td>    
-                    </tr>
-                    <tr>
-                        <th width="5%">Recomendation</th>    
-                        <th width="5%">:</th>    
-                        <td>${data.rtl}</td>    
-                    </tr>
-                </table>`
+        <tr>
+            <th width="5%">Petugas</th>
+            <th width="5%">:</th>
+            <td>${data.sbar.pegawai.nama}</td>
+        </tr>
+        <tr>
+            <th width="5%">Subject</th>
+            <th width="5%">:</th>
+            <td>${data.keluhan}</td>
+        </tr>
+        <tr>
+            <th width="5%">Background</th>
+            <th width="5%">:</th>
+            <td>${data.pemeriksaan}</td>
+        </tr>
+        <tr>
+            <th width="5%">Assesment</th>
+            <th width="5%">:</th>
+            <td>${data.penilaian}</td>
+        </tr>
+        <tr>
+            <th width="5%">Recomendation</th>
+            <th width="5%">:</th>
+            <td>${data.rtl}</td>
+        </tr>
+    </table>`
         }
 
         function renderBtnActionSbar(data) {
@@ -366,8 +408,8 @@
             const petugas = data?.nip;
 
             if (kdPetugas === petugas) {
-                return `<span class="d-none">${data.tgl_rawat} ${data.jam_rawat}</span><button class="btn btn-sm btn-primary" onclick="getSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`
+                return `<span class="d-none">${data.tgl_perawatan} ${data.jam_rawat}</span><button class="btn btn-sm btn-primary" onclick="getSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>
+    <button class="btn btn-sm btn-danger" onclick="deleteSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`
             }
 
             return '';

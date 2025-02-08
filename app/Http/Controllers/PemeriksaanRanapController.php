@@ -269,13 +269,13 @@ class PemeriksaanRanapController extends Controller
                 return $q->select('nip', 'nama');
             },
             'sbar' => function ($q) {
-                return $q->with([
+                return $q->with(['verifikasi.dokter',
                     'dokterKonsul' => function ($q) {
                         return $q->with('dokterSbar');
                         },
                             'pegawai' => function ($q) {
                                 return $q->select(['id', 'nik', 'nama']);
-            }, 'verifikasi.dokter']);
+            }]);
         }])->orderBy('tgl_perawatan', 'DESC')
             ->orderBy('jam_rawat', 'DESC');
 

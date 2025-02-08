@@ -37,6 +37,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.0/chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('js/qrcode.min.js') }}"></script>
+
     <!-- Magnify Image Viewer JS -->
     <script src="{{ asset('js/magnifier/jquery.magnify.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
@@ -49,7 +51,7 @@
         const role = '{{ session()->get('role') }}'
         const APIURL = 'http://sim.rsiaaisyiyah.com/rsiap-api/api';
 
-
+        // var qrcode = new QRCode("qrcode");
         window.onerror = function(msg, url, linenumber) {
             const messageError = 'Error message : ' + msg + '<br/>Muat ulang halaman ?';
             Swal.fire({

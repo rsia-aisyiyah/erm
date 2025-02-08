@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalSoapRanap" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalSoapRanap" tabindex="-1" aria-labelledby="modalSoapRanap" aria-hidden="false">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
