@@ -863,7 +863,6 @@
         }
 
         $('#modalSoapRanap').on('hidden.bs.modal', function() {
-            $('#tbSoap').DataTable().destroy();
             $('#ubah_soap').empty();
             $('#suhu').val("-");
             $('#tinggi').val("-");

@@ -62,7 +62,6 @@
             $.post(`${url}/soap/simpan`, data).done((response) => {
                 alertSuccessAjax('Data SBAR berhasil disimpan')
                 formSbarRanap.trigger('reset')
-                $('#tbSoap').DataTable().destroy();
                 tbSoapRanap(data['no_rawat']);
                 getInstance.show()
                 btnSimpanSbar.removeClass('d-none');

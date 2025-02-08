@@ -328,7 +328,6 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            $('#tbSoap').DataTable().destroy();
                             tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
                             grafikPemeriksaan.destroy();
                             buildGrafik(no_rawat_soap)
@@ -460,7 +459,6 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            $('#tbSoap').DataTable().destroy();
                             tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
                             grafikPemeriksaan.destroy();
                             buildGrafik(no_rawat_soap)

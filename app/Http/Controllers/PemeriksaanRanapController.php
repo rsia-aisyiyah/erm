@@ -308,8 +308,6 @@ class PemeriksaanRanapController extends Controller
                 return $q->where('jbtn', 'not like', '%direktur%')
                     ->where('jbtn', 'not like', '%spesialis%');
             })->get();
-
-        // return json
         return $data;
     }
 

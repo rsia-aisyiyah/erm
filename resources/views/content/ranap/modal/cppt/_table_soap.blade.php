@@ -1,16 +1,9 @@
 <div class="row">
     <div class="col-md-12 col-lg-3 col-sm-12">
         <div class="input-group input-group-sm mb-3">
-            <input type="text" class="form-control form-control-sm tanggal tgl_pertama_soap"
-                style="font-size:12px;min-height:12px;border-radius:0;">
+            <input type="text" class="form-control form-control-sm tanggal tgl_pertama_soap">
             <span class="input-group-text" style="font-size:12px"><i class="bi bi-calendar3"></i></span>
-        </div>
-    </div>
-    <div class="col-md-12 col-lg-3 col-sm-12">
-        <div class="input-group input-group-sm mb-3">
-            <input type="text" class="form-control form-control-sm tanggal tgl_kedua_soap"
-                style="font-size:12px;min-height:12px;border-radius:0;">
-            <span class="input-group-text" style="font-size:12px"><i class="bi bi-calendar3"></i></span>
+            <input type="text" class="form-control form-control-sm tanggal tgl_kedua_soap">
         </div>
     </div>
     <div class="col-md-12 col-lg-3 col-sm-12">
@@ -22,12 +15,10 @@
         </select>
     </div>
     <div class="col-md-12 col-lg-3 col-sm-12">
-        <div class="d-grid gap-2">
-            <button type="button" class="btn btn-success btn-sm mb-3" style="border-radius:0px;font-size:12px" id="cari"
-                onclick="cariSoap()">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
+        <button type="button" class="btn btn-success btn-sm mb-3" id="cari"
+            onclick="cariSoap()">
+            <i class="bi bi-search"> Cari Soap</i>
+        </button>
     </div>
 </div>
 <table class="table table-bordered table-striped table-sm" id="tbSoap" width="100%">
@@ -102,6 +93,7 @@
                 info: false,
                 destroy: true,
                 autoWidth: false,
+                saveState: true,
                 ajax: {
                     url: "soap",
                     data: {
@@ -247,7 +239,6 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 });
-                                $('#tbSoap').DataTable().destroy();
                                 tbSoapRanap(no, tgl_pertama, tgl_kedua);
                                 grafikPemeriksaan.destroy();
                                 buildGrafik(no)
@@ -265,7 +256,6 @@
             const tgl_pertama = splitTanggal($('.tgl_pertama_soap').val());
             const tgl_kedua = splitTanggal($('.tgl_kedua_soap').val());
             petugas = $('#petugas option:selected').val();
-            $('#tbSoap').DataTable().destroy();
             tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua, petugas);
         }
 
@@ -298,7 +288,6 @@
                             icon: 'success',
                             timer: 1500,
                         });
-                        $('#tbSoap').DataTable().destroy();
                         tbSoapRanap(no_rawat);
                     })
                 }
@@ -379,7 +368,7 @@
             <td>${data.sbar.pegawai.nama}</td>
         </tr>
         <tr>
-            <th width="5%">Subject</th>
+            <th width="5%">Situation</th>
             <th width="5%">:</th>
             <td>${data.keluhan}</td>
         </tr>
