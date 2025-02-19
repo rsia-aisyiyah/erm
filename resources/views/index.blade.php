@@ -475,22 +475,6 @@
             return perawatan;
         }
 
-        function getPemeriksaanRanap(no_rawat, parameter = '', pemeriksaan = '') {
-            let perawatan = $.ajax({
-                url: '/erm/soap/get',
-                data: {
-                    'no_rawat': no_rawat,
-                    'parameter': parameter,
-                    'pemeriksaan': pemeriksaan,
-                },
-                error: (request) => {
-                    alertSessionExpired(request.status)
-                },
-            })
-
-            return perawatan;
-        }
-
         $("[data-magnify=gallery]").magnify({
             initMaximized: true,
             multiInstances: false,

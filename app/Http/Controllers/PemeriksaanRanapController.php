@@ -222,7 +222,9 @@ class PemeriksaanRanapController extends Controller
     function ambilPemeriksaan(Request $request)
     {
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa', 'log', 'regPeriksa.pasien', 'petugas', 'pegawai' => function ($query) {
+            ->with(['regPeriksa', 'sbar' => function($q){
+                return $q->select('no_rawat', 'jam_rawat', 'tgl_perawatan', 'sumber');
+            }, 'log', 'regPeriksa.pasien', 'petugas', 'pegawai' => function ($query) {
                 return $query->with('dokter');
             }, 'grafikHarian', 'verifikasi.petugas' => function ($q) {
                 return $q->select('nip', 'nama');

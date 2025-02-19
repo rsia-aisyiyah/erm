@@ -590,6 +590,8 @@
                         let headColor = '';
                         if (pemeriksaan.pegawai.dokter) {
                             headColor = 'bg-primary text-white'
+                        } else if (pemeriksaan.sbar) {
+                            headColor = 'bg-success text-white'
                         } else {
                             headColor = 'bg-warning'
                         }
@@ -653,12 +655,12 @@
                                             <div class="card-body">
                                                 <table class="table table-sm table-responsive borderless" cellpadding="5" cellspacing="0">
                                                     <tr>
-                                                        <th width="20%">Subyek</th>
+                                                        <th width="20%">${pemeriksaan.sbar ? 'Situation' : 'Subjek'}</th>
                                                         <td>:</td>
                                                         <td>${stringPemeriksaan(pemeriksaan.keluhan)}</td>
                                                     </tr>     
                                                     <tr>
-                                                        <th width="20%">Obyek</th>
+                                                        <th width="20%">${pemeriksaan.sbar ? 'Background' : 'Objek'}</th>
                                                         <td>:</td>
                                                         <td>${stringPemeriksaan(pemeriksaan.pemeriksaan)}</td>
                                                     </tr>     
@@ -668,15 +670,22 @@
                                                         <td>${stringPemeriksaan(pemeriksaan.penilaian)}</td>
                                                     </tr>     
                                                     <tr>
-                                                        <th width="20%">Plan</th>
+                                                        <th width="20%">${pemeriksaan.sbar ? 'Recomendation' : 'Plan'}</th>
                                                         <td>:</td>
                                                         <td>${stringPemeriksaan(pemeriksaan.rtl)}</td>
-                                                    </tr>     
-                                                    <tr>
-                                                        <th width="20%">Instruksi</th>
-                                                        <td>:</td>
-                                                        <td>${stringPemeriksaan(pemeriksaan.instruksi)}</td>
-                                                    </tr>     
+                                                    </tr> 
+                                                    ${pemeriksaan.sbar ? '':` <tr>
+                                                                                    <th width="20%">Instruksi</th>
+                                                                                    <td>:</td>
+                                                                                    <td>${stringPemeriksaan(pemeriksaan.instruksi)}</td>
+                                                                                </tr>`}  
+                                                        
+                                                    ${pemeriksaan.sbar ? `<tr>
+                                                                                        <th width="20%">Diverivikasi Oleh : </th>
+                                                                                        <td>:</td>
+                                                                                        <td> <strong>${pemeriksaan.verifikasi.petugas.nama}</strong> <br/> ${formatTanggal(pemeriksaan.verifikasi.tgl_verif)} ${pemeriksaan.verifikasi.jam_verif}</td>
+                                                                                    </tr>` : ''}
+                                                        
                                                 </table>
                                             </div>
                                         </div>

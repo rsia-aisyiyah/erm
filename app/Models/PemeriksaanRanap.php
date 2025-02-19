@@ -38,7 +38,7 @@ class PemeriksaanRanap extends Model
     }
     function log()
     {
-        return $this->hasMany(RsiaLogSoap::class, 'no_rawat', 'no_rawat');
+        return $this->hasMany(RsiaLogSoap::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat']);
     }
     function sbar(){
         return $this->hasOne(RsiaGrafikHarian::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat'])
