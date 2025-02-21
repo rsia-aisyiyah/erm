@@ -301,8 +301,6 @@
             let isVerified = '';
             let qrDiv = '';
 
-            console.log(data.verifikasi);
-
             if (data.verifikasi) {
                 const qrData = `Telah diverifikasi oleh ${data.verifikasi.dokter.nm_dokter} pada ${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}`;
                 const qrId = `qr-${data.no_rawat}-${data.tgl_perawatan}-${data.jam_rawat}`;

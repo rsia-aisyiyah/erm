@@ -1314,10 +1314,25 @@
             let index = 1;
             for (index; index < no; index++) {
                 let total = 0;
+                let classNilai = '';
                 $('.baris-' + index).each(function(index, element) {
                     total = total + parseFloat($(element).val());
                 });
-                html += '<td onclick="tindakanEws(' + total + ', ' + index + ')" class="nilai-' + index + '" style="cursor:pointer" id="total-ews">'
+
+                if (total >= 7) {
+                    classNilai = `bg-danger`;
+                } else if (total >= 5 && total <= 6) {
+                    classNilai = `bg-warning`;
+                } else if (total >= 1 && total <= 4) {
+                    classNilai = `bg-warning`;
+                    // cekArray = arrNilai.find((o) => {
+                    //     if (o == 3) {
+                    //         ews = `<div class="alert alert-warning" role="alert" style="padding:12px">Monitoring ulang minimal tiap 3-4 jam, <strong>Panggil dokter jaga</strong> <br/> Monitoring ulang minimal tiap 6-8 jam</div>`;
+                    //     }
+                    // });
+                }
+
+                html += '<td onclick="tindakanEws(' + total + ', ' + index + ')" class="nilai-' + index + ' ' + classNilai + '" style="cursor:pointer" id="total-ews">'
                 html += total
                 html += '</td>'
                 tindakanEws(total, index)
@@ -1335,8 +1350,6 @@
                 a = $(element).val();
                 arrNilai[index] = a;
             });
-
-
             if (nilai >= 7) {
                 ews = `<div class="alert alert-danger" role="alert" style="padding:12px"> Monitoring ulang tiap jam, <span class="text-danger"><i>call code blue</i></span>, Pindahkan perawatan ke level 2/3 (HCU)</div>`;
             } else if (nilai >= 5 && nilai <= 6) {
@@ -1423,13 +1436,15 @@
 
                         })
                         tanggal = '';
-                        $.map(data.tanggal, (tgl) => {
-                            tanggal += '<td width="5%" class="td-tanggal">' + splitTanggal(tgl) + '</td>';
+                        $.map(data.tanggal, (tgl, index) => {
+                            const id = index + 1;
+                            tanggal += '<td width="5%" class="td-tanggal" id="tanggal' + id + '">' + splitTanggal(tgl) + '</td>';
                         })
 
                         j = '';
-                        $.map(data.jam, (jam) => {
-                            j += '<td width="5%" class="td-jam">' + jam + '</td>';
+                        $.map(data.jam, (jam, index) => {
+                            const id = index + 1;
+                            j += '<td width="5%" class="td-jam jam' + id + '">' + jam + '</td>';
                         })
 
                         html += '<td style="padding:5px" class="hasil">' + data.hasil + '</td>'
@@ -1448,7 +1463,8 @@
         }
 
         function hitungNilaiEwsMaternal(no) {
-            // console.log('wlwlwlwlw');
+            let merah = '';
+            let kuning = '';
             $('.hasil-ews').empty();
             let kolom = 0;
             html = '<tr style="background:yellow;" id="rowKuning">'
@@ -1500,13 +1516,16 @@
         }
 
         function tindakanEwsMaternal(index) {
-            merah = $('.merah-' + index).text();
-            kuning = $('.kuning-' + index).text();
 
+
+            const merah = $('.merah-' + index).text();
+            const kuning = $('.kuning-' + index).text();
+            const tanggal = $(`#tanggal${index}`).text();
+            const jam = $(`.jam${index}`).text();
             if (merah >= 1 || kuning >= 2) {
-                tindakan = `<span><strong>LAPOR DPJP : Terdapat nilai <span class="text-danger">merah ${merah}</span> dan <span class="text-warning">kuning ${kuning}</span></strong></span>`
+                tindakan = `<span>Hasil pada ${tanggal} ${jam} : <strong>SEGERA LAPOR DPJP : Terdapat nilai <span class="badge bg-danger text-white" style="font-size:12px">Merah ${merah}</span> dan <span class="badge bg-warning text-dark" style="font-size:12px">Kuning ${kuning}</span></strong></span>`
             } else {
-                tindakan = `-`
+                tindakan = `<span>Hasil pada ${tanggal} ${jam} : - </span>`
             }
 
             $('.tindakan').html(tindakan)

@@ -50,12 +50,12 @@ class EwsController extends Controller
     {
         $value = [];
         $kategoriUmur = [];
-        $pemeriksaan = $sttsRawat == 'ranap' ? $this->pemRanap->where('no_rawat', $noRawat) : $this->pemRalan->where('no_rawat', $noRawat);
-        $periksa = $parameter != 'oksigen' ? $pemeriksaan->select($parameter, 'tgl_perawatan', 'jam_rawat')->get() :
-            $this->grafikHarian->where(['no_rawat' => $noRawat, 'sumber' => 'SOAP'])->select('o2', 'tgl_perawatan', 'jam_rawat')->get();
+        
+        $regPeriksa = $this->regPeriksa->get($noRawat);
+        $periksa = $this->grafikHarian
+        ->whereHas('pemeriksaanRanap')
+        ->where(['no_rawat' => $noRawat, 'sumber' => 'SOAP'])->get();
 
-        $id = str_replace('-', '/', $noRawat);
-        $regPeriksa = $this->regPeriksa->get($id);
         foreach ($table as $s) {
             $nilai_1 = $s->nilai_1 ? $s->nilai_1 : '';
             $nilai_2 = $s->nilai_2 ? $s->nilai_2 : '';

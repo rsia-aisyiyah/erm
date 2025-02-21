@@ -17,3 +17,17 @@
 <div class="hasil-ews">
 
 </div>
+
+@push('script')
+    <script>
+        const tabEws = $('#tab-ews');
+
+        tabEws.on('click', () => {
+            const no_rawat = formInfoPasien.find('input[name="no_rawat"]').val();
+            const spesialis = formInfoPasien.find('input[name="kd_sps_dokter"]').val();
+            const stts = 'ranap';
+            setEws(no_rawat, stts, spesialis)
+
+        })
+    </script>
+@endpush

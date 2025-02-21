@@ -160,7 +160,6 @@
                     jam_rawat: jam_rawat,
                 },
             }).done((response) => {
-                console.log(response);
                 if (response.pegawai.nik == "{{ session()->get('pegawai')->nik }}" || response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}") {
                     $('#btn-ubah').css('display', 'inline');
                     $('#btn-reset').css('display', 'inline');

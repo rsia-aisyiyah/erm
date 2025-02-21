@@ -23,6 +23,7 @@ class EwsMaternalController extends Controller
 {
     //
     protected $oksigen;
+    protected $tanggal;
     protected $respirasi;
     protected $saturasi;
     protected $sistolik;
@@ -193,13 +194,13 @@ class EwsMaternalController extends Controller
                         }
                     }
                 } else if ($parameter == 'lochia') {
-                    if ($kode_nilai == 'No') {
+                    if ($kode_nilai == 'Normal') {
                         if ($pem[$parameter] == 'Normal') {
                             $hp[] = "Normal";
                         } else {
                             $hp[] = "";
                         }
-                    } else if ($kode_nilai == 'Ba') {
+                    } else if ($kode_nilai == 'Banyak') {
                         if ($pem[$parameter] == 'Banyak') {
                             $hp[] = "Banyak";
                         } else {
@@ -244,7 +245,12 @@ class EwsMaternalController extends Controller
     function getParam($table, $noRawat, $parameter = '', $sttsRawat)
     {
         $value = [];
-        $periksa = $this->grafikHarian->where(['no_rawat' => $noRawat, 'sumber' => 'SOAP'])->get();
+        $tanggal = [];
+        $jam = [];
+        $periksa = $this->grafikHarian
+        ->whereHas('pemeriksaanRanap')
+        ->where(['no_rawat' => $noRawat, 'sumber' => 'SOAP'])->get();
+
         if (count($table) == 0) {
             if ($parameter == 'oksigen') {
                 $labelParam = 'L/menit';
@@ -263,7 +269,7 @@ class EwsMaternalController extends Controller
                 'kategori' => 'Maternal',
             ];
             foreach ($periksa as $p) {
-                $hp[] = $p[$indexPeriksa];
+                $hp[] = $p[$indexPeriksa] ? $p[$indexPeriksa] : '';
                 $tanggal[] = $p['tgl_perawatan'];
                 $jam[] = $p['jam_rawat'];
             }

@@ -44,6 +44,7 @@
                         <input type="text" class="form-control form-control-sm" style="font-size: 11px"
                             id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
                         <input type="hidden" id="kd_dokter_dpjp" name="kd_dokter_dpjp">
+                        <input type="hidden" id="kd_sps_dokter" name="kd_sps_dokter">
                     </div>
                 </div>
 
@@ -212,6 +213,7 @@
                 formInfoPasien.find('input[name="umur"]').val(`${response.umurdaftar} ${response.sttsumur}`);
                 formInfoPasien.find('input[name="dokter_dpjp"]').val(`${response.dokter.nm_dokter}`);
                 formInfoPasien.find('input[name="kd_dokter_dpjp"]').val(`${response.kd_dokter}`);
+                formInfoPasien.find('input[name="kd_sps_dokter"]').val(`${response.dokter.kd_sps}`);
 
                 const kamar = response.kamar_inap.map((item, index) => {
                     formInfoPasien.find('input[name="kamar"]').val(`${item.kamar.bangsal.nm_bangsal}`);
@@ -258,7 +260,7 @@
                     }
                 })
                 $('.btn-tambah-grafik-harin').attr('onclick', 'modalGrafikHarian("' + response.no_rawat + '","' + response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')")');
-                setEws(no_rawat, 'ranap', response.dokter.kd_sps)
+
 
                 $('#formSoapRanap .btn-simpan').attr('data-kd-dokter', response.dokter.kd_dokter);
                 $('#formSoapRanap .btn-simpan').attr('data-spesialis', response.dokter.spesialis.nm_sps);
