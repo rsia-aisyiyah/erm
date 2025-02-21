@@ -1501,11 +1501,13 @@
             }
 
 
-            if (merah >= 1 || kuning >= 2) {
-                tindakan = `<span><strong>LAPOR DPJP : Terdapat nilai <span class="text-danger">merah ${merah}</span> dan <span class="text-warning">kuning ${kuning}</span></strong></span>`
-            } else {
-                tindakan = `-`
-            }
+            // if (merah >= 1 || kuning >= 2) {
+            //     tindakan = `<span><strong>LAPOR DPJP : Terdapat nilai <span class="text-danger">merah ${merah}</span> dan <span class="text-warning">kuning ${kuning}</span></strong></span>`
+            // } else {
+            //     tindakan = `-`
+            // }
+
+            tindakan = `<span><strong>Keterangan : Lapor DPJP Bila Terdapat <span class="badge bg-danger text-white" style="font-size:12px">1 Skor Merah</span> dan <span class="badge bg-warning text-dark" style="font-size:12px">2 Skor Kuning</span></strong></span>`
             html += '</tr>'
             html += '<tr>'
             html += `<th colspan=2>TINDAKAN</th>`
@@ -1522,12 +1524,12 @@
             const kuning = $('.kuning-' + index).text();
             const tanggal = $(`#tanggal${index}`).text();
             const jam = $(`.jam${index}`).text();
-            if (merah >= 1 || kuning >= 2) {
-                tindakan = `<span>Hasil pada ${tanggal} ${jam} : <strong>SEGERA LAPOR DPJP : Terdapat nilai <span class="badge bg-danger text-white" style="font-size:12px">Merah ${merah}</span> dan <span class="badge bg-warning text-dark" style="font-size:12px">Kuning ${kuning}</span></strong></span>`
-            } else {
-                tindakan = `<span>Hasil pada ${tanggal} ${jam} : - </span>`
-            }
-
+            // if (merah >= 1 || kuning >= 2) {
+            //     tindakan = `<span><strong>Keterangan : Lapor DPJP Bila Terdapat <span class="badge bg-danger text-white" style="font-size:12px">1 Skor Merah</span> dan <span class="badge bg-warning text-dark" style="font-size:12px">2 Skor Kuning</span></strong></span>`
+            // } else {
+            //     tindakan = `<span><strong>Keterangan : Lapor DPJP Bila Terdapat <span class="badge bg-danger text-white" style="font-size:12px">1 Skor Merah</span> dan <span class="badge bg-warning text-dark" style="font-size:12px">2 Skor Kuning</span></strong></span>`
+            // }
+            tindakan = `<span><strong>Keterangan : Lapor DPJP Bila Terdapat <span class="badge bg-danger text-white" style="font-size:12px">1 Skor Merah</span> dan <span class="badge bg-warning text-dark" style="font-size:12px">2 Skor Kuning</span></strong></span>`
             $('.tindakan').html(tindakan)
 
         }
