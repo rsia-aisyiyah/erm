@@ -55,4 +55,8 @@ class KamarInap extends Model
     {
         return $this->belongsTo(KomunikasiEdukasiObatPulang::class, 'no_rawat', 'no_rawat');
     }
+
+    function dischargePlanning(){
+        return $this->hasOne(DischargePlanning::class, 'no_rawat', 'no_rawat');
+    }
 }

@@ -35,7 +35,7 @@ class RanapController extends Controller
             )->with(['pasien', 'dokter' => function ($q) {
                 $q->with(['spesialis']);
             }, 'penjab', 'kamarInap']);
-        }, 'kamar', 'ranapGabung.regPeriksa.dokter', 'ranapGabung.regPeriksa.pasien', 'ranapGabung.regPeriksa.askepRanapNeonatus', 'ranapGabung.regPeriksa.asmedRanapAnak', 'kamar.bangsal', 'regPeriksa.asmedRanapKandungan', 'regPeriksa.asmedRanapAnak', 'regPeriksa.askepRanapNeonatus', 'regPeriksa.askepRanapAnak', 'regPeriksa.askepRanapKandungan', 'resume', 'skoringTb', 'skriningTb'])->orderBy('no_rawat', 'DESC');
+        }, 'kamar', 'dischargePlanning', 'ranapGabung.regPeriksa.dokter', 'ranapGabung.regPeriksa.pasien', 'ranapGabung.regPeriksa.askepRanapNeonatus', 'ranapGabung.regPeriksa.asmedRanapAnak', 'kamar.bangsal', 'regPeriksa.asmedRanapKandungan', 'regPeriksa.asmedRanapAnak', 'regPeriksa.askepRanapNeonatus', 'regPeriksa.askepRanapAnak', 'regPeriksa.askepRanapKandungan', 'resume', 'skoringTb', 'skriningTb'])->orderBy('no_rawat', 'DESC');
 
         if ($request->stts_pulang == '-') {
             $ranap->where('stts_pulang', $request->stts_pulang);

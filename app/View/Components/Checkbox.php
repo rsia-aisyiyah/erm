@@ -16,13 +16,15 @@ class Checkbox extends Component
     public $value;
     public $label;
     public $checked;
-    public function __construct($id, $name, $value, $label, $checked = false)
+    public $onchange;
+    public function __construct($id, $name, $value, $label, $checked = false, $onchange ='')
     {
         $this->id = $id;
         $this->name = $name;
         $this->value = $value;
         $this->label = $label;
         $this->checked = $checked;
+        $this->onchange = $onchange;
     }
 
     /**

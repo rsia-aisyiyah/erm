@@ -29,6 +29,7 @@ use App\Http\Controllers\DetailPemberianObatController;
 use App\Http\Controllers\DetailPemeriksaanLabController;
 use App\Http\Controllers\DetailPermintaanLabController;
 use App\Http\Controllers\DiagnosaPasienController;
+use App\Http\Controllers\DischargePlanningController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\EstimasiPoliController;
 use App\Http\Controllers\EwsController;
@@ -467,7 +468,9 @@ Route::middleware('auth')->group(function () {
     Route::post('edukasi-obat-pulang', [KomunikasiEdukasiObatPulangController::class, 'create']);
     Route::post('edukasi-obat-pulang/delete', [KomunikasiEdukasiObatPulangController::class, 'delete']);
     Route::get('resep-pulang', [ResepPulangController::class, 'get']);
-
+    
+    Route::post('discharge-planning', [DischargePlanningController::class, 'create']);
+    Route::get('discharge-planning', [DischargePlanningController::class, 'get']);
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 
