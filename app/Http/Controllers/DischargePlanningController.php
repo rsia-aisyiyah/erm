@@ -34,6 +34,12 @@ class DischargePlanningController extends Controller
             'instruksi' => $request->instruksi,
             'nip' => session()->get('pegawai')->nik
         ];
+
+        $validate = $request->validate([
+            'rencana_rawat' => ['required', 'integer', 'min:0', 'gt:0'],
+            'tgl_rencana_pulang' => 'required',
+            'diagnosa_keluar' => 'required',
+        ]);
     
         $get = $this->modal->where('no_rawat', $request->no_rawat)
             ->with(['petugas'])

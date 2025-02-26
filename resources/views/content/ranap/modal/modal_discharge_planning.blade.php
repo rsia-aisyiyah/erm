@@ -237,7 +237,7 @@
     </div>
 </div>
 <div class="modal fade" id="modalObatDischargePlanning" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title fs-5" id="exampleModalLabel"><i>PEMBERIAN OBAT PULANG</i></h5>
@@ -245,34 +245,51 @@
             </div>
             <div class="modal-body">
                 <form id="formObatDischargePlanning" class="mb-3">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <label for="obat" class="form-label">Obat</label>
-                            <select class="form-select" name="obat" id="obat" data-dropdown-parent="#modalObatDischargePlanning" style="width:100%" id="selectObatDischargePlanning"></select>
+                    <fieldset class="border p-3">
+                        <legend class="fs-6 w-auto float-none">Obat yang Diberikan Saat Pulang</legend>
+                        <div class="alert alert-warning p-2 mb-1">
+                            <small>Jika belum ada resep pulang, maka isi melalui form ini</small>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <label for="jumlah" class="form-label">Jumlah</label>
-                            <x-input id="jumlah" name="jumlah" />
+
+
+                        <div class="row gy-2">
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <label for="obat" class="form-label">Obat</label>
+                                <select class="form-select" name="obat" id="obat" data-dropdown-parent="#modalObatDischargePlanning" style="width:100%" id="selectObatDischargePlanning"></select>
+                            </div>
+                            <div class="col-lg-2 col-md-6 col-sm-12">
+                                <label for="jumlah" class="form-label">Jumlah</label>
+                                <x-input id="jumlah" name="jumlah" type="number" value="0" />
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="dosis" class="form-label">Dosis</label>
+                                <x-input id="dosis" name="dosis" />
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="keterangan" class="form-label">Keterangan</label>
+                                <x-input id="keterangan" name="keterangan" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 d-flex flex-row-reverse">
+                                <button type="button" class="btn btn-primary btn-sm" style="font-size: 12px" id="btnCreateObatDischargePlanning">
+                                    <i class="bi bi-save me-1">
+                                    </i> Simpan
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <label for="dosis" class="form-label">Dosis</label>
-                            <x-input id="dosis" name="dosis" />
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <label for="keterangan" class="form-label">Keterangan</label>
-                            <x-input id="keterangan" name="keterangan" />
-                        </div>
-                    </div>
+                    </fieldset>
+
                 </form>
+
+                <h5>Resep Obat Pulang</h5>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped mt-3" id="tbResepObatPulang" width="100%">
+                    <table class="table table-bordered table-striped mt-3 table-sm" id="tbResepObatPulangDischarge" width="100%">
                         <thead>
                             <tr>
-                                <th>Tanggal</th>
-                                <th>Jam</th>
+                                <th>Tgl & Jam</th>
                                 <th>Obat</th>
                                 <th>Jumlah</th>
-                                <th>Aturan Pakai</th>
+                                <th>Dosis</th>
+                                <th>Keterangan</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -281,11 +298,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" style="font-size: 12px" id="btnCreateObatDischargePlanning">
-                    <i class="bi bi-save me-1">
-                    </i> Simpan
-
-                </button>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px">
                     <i class="bi bi-x-circle me-1">Keluar
                     </i>
@@ -306,12 +318,12 @@
         const selectObatDischargePlanning = formObatDischargePlanning.find('select[name=obat]');
         const btnCreateObatDischargePlanning = $('#btnCreateObatDischargePlanning');
         const tableObatDischargePlanning = $('#tableObatDischargePlanning');
-        const tableResepObatPulang = $('#tbResepObatPulang');
+        const tbResepObatPulangDischarge = $('#tbResepObatPulangDischarge');
 
         modalDischargePlanning.on('hidden.bs.modal', () => {
             $('#alertDischargePlanning').addClass('d-none');
             tableObatDischargePlanning.find('tbody').empty();
-            tableResepObatPulang.find('tbody').empty();
+            tbResepObatPulangDischarge.find('tbody').empty();
             formDischargePlanning.trigger('reset');
             formDischargePlanning.find('input[name=penyuluhan_lain]').prop('disabled', true);
             formDischargePlanning.find('input[name=penyuluhan_lain]').prop('disabled', true);
@@ -378,7 +390,25 @@
 
 
         function showModalObatDischargePlanning() {
-            const no_rawat = formObatDischargePlanning.find('input[name=no_rawat]').val();
+            const no_rawat = formDischargePlanning.find('input[name=no_rawat]').val();
+
+            $.get(`${url}/resep-pulang`, {
+                no_rawat: no_rawat
+            }).done((response) => {
+                const obat = response.map((item, index) => {
+                    return `<tr data-id="${index}">
+                    <td>${formatTanggal(item.tanggal)} ${item.jam}</td>
+                    <td>${item.obat.nama_brng}</td>
+                    <td>${item.jml_barang}</td>
+                    <td>${item.dosis}</td>
+                    <td>-</td>
+                    <td><button type="button" class="btn btn-primary btn-sm" onclick="setObatToFormDishcargePlanning('${item.obat.nama_brng}', '${item.jml_barang}', '${item.dosis}', '-')"><i class="bi bi-check"></i></button></td>
+                    </tr>`
+                })
+
+                tbResepObatPulangDischarge.find('tbody').empty().html(obat)
+
+            })
             modalObatDischargePlanning.modal('show');
 
         }
@@ -390,9 +420,19 @@
                 <td>${data.jumlah}</td>
                 <td>${data.dosis}</td>
                 <td>${data.keterangan}</td>
-                <td><a href="javascript:void(0)" onclick="hapusObatDischargePlanning('${data.id};${data.obat};${data.jumlah};${data.dosis};${data.keterangan}')"><i class="bi bi-trash-fill text-danger"></i></a></td>
+                <td><a href="javascript:void(0)" onclick="hapusObatDischargePlanning('${data.obat};${data.jumlah};${data.dosis};${data.keterangan}')"><i class="bi bi-trash-fill text-danger"></i></a></td>
                 </tr>`)
         })
+
+        function setObatToFormDishcargePlanning(...content) {
+            tableObatDischargePlanning.find('tbody').append(`<tr id='${content[0]};${content[1]};${content[2]};${content[3]}'>
+                <td>${content[0]}</td>
+                <td>${content[1]}</td>
+                <td>${content[2]}</td>
+                <td>${content[3]}</td>
+                <td><a href="javascript:void(0)" onclick="hapusObatDischargePlanning('${content[0]};${content[1]};${content[2]};${content[3]}')"><i class="bi bi-trash-fill text-danger"></i></a></td>
+                </tr>`)
+        }
 
         btnCreateDischargePlanning.on('click', (e) => {
             e.preventDefault();

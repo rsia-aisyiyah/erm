@@ -67,6 +67,7 @@
 
 
         input[type=text],
+        input[type=number],
         input[type=search],
         .form-select-sm {
             border-radius: 6px;
