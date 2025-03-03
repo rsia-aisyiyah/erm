@@ -8,37 +8,40 @@
             <div class="modal-body">
                 <form action="" id="formAsesmenNyeriDewasa">
                     <div class="row gy-2">
-                        <div class="col-lg-2">
+                        <div class="col-lg-2 col-md-6 col-sm-12">
                             <label for="no_rawat" class="form-label">No. Rawat</label>
-                            <input type="text" class="form-control" id="no_rawat" name="no_rawat" readonly>
+                            <input type="text" class="form-control form-control-sm" id="no_rawat" name="no_rawat" readonly>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-5 col-md-6 col-sm-12">
                             <label for="nm_pasien" class="form-label">Pasien</label>
-                            <input type="text" class="form-control" id="nm_pasien" name="nm_pasien" readonly>
+                            <x-input-group>
+                                <x-input id="no_rkm_medis" name="no_rkm_medis" readonly />
+                                <input type="text" class="form-control form-control-sm w-50" id="nm_pasien" name="nm_pasien" readonly>
+                            </x-input-group>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2 col-md-6 col-sm-12">
                             <label for="keluarga" class="form-label">Keluarga</label>
-                            <input type="text" class="form-control" id="keluarga" name="keluarga" readonly>
+                            <input type="text" class="form-control form-control-sm" id="keluarga" name="keluarga" readonly>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
                             <label for="alamat" class="form-label">Alamat</label>
-                            <input type="text" class="form-control" id="alamat" name="alamat" readonly>
+                            <input type="text" class="form-control form-control-sm" id="alamat" name="alamat" readonly>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
                             <label for="kamar" class="form-label">Kamar</label>
-                            <input type="text" class="form-control" id="kamar" name="kamar" readonly>
+                            <input type="text" class="form-control form-control-sm" id="kamar" name="kamar" readonly>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-2 col-md-6 col-sm-12">
                             <label for="tgl_registrasi" class="form-label">Tgl. Masuk</label>
-                            <input type="text" class="form-control" id="tgl_registrasi" name="tgl_registrasi" readonly>
+                            <input type="text" class="form-control form-control-sm" id="tgl_registrasi" name="tgl_registrasi" readonly>
                         </div>
                         <div class="col-lg-2">
                             <label for="diagnosa" class="form-label">Diag. Awal</label>
-                            <input type="text" class="form-control" id="diagnosa" name="diagnosa" readonly>
+                            <input type="text" class="form-control form-control-sm" id="diagnosa" name="diagnosa" readonly>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
                             <label for="dokter" class="form-label">DPJP</label>
-                            <input type="text" class="form-control" id="dokter" name="dokter" readonly>
+                            <input type="text" class="form-control form-control-sm" id="dokter" name="dokter" readonly>
                             <input type="hidden" id="kd_dokter" name="kd_dokter" readonly>
                         </div>
 
@@ -243,6 +246,7 @@
                 tanggal.val(dateNow);
 
                 formAsesmenNyeriDewasa.find('input[name=no_rawat]').val(no_rawat);
+                formAsesmenNyeriDewasa.find('input[name=no_rkm_medis]').val(pasien.no_rkm_medis);
                 formAsesmenNyeriDewasa.find('input[name=nm_pasien]').val(`${pasien.nm_pasien} (${response.umurdaftar} ${response.sttsumur})`);
                 formAsesmenNyeriDewasa.find('input[name=keluarga]').val(response.p_jawab)
                 formAsesmenNyeriDewasa.find('input[name=alamat]').val(`${pasien.alamat}, ${pasien.kecamatanpj}`)
@@ -303,6 +307,9 @@
                     {
                         label: "Petugas",
                         key: "petugas"
+                    }, {
+                        label: "Aksi",
+                        key: "action"
                     }
                 ];
 
@@ -331,13 +338,8 @@
                             values.push(value.nama);
                         } else if (item.key === 'tanggal') {
                             const value = objek[item.key];
-                            const user = "{{ session()->get('pegawai')->nik }}";
-                            const content = `
-                                <a href="javascript:void(0)" class="text-danger" onclick="deleteAsesmenNyeriDewasa('${objek.no_rawat}', '${objek.tanggal}')"><i class="bi bi-trash"></i></a>
-                                <a href="javascript:void(0)" class="text-primary" onclick="editAsesmenNyeriDewasa('${objek.no_rawat}', '${objek.tanggal}')"><i class="bi bi-pencil"></i></a>`
-                            const action = user === objek['petugas']['nama'] ? content : '';
 
-                            values.push(`${formatTanggal(value)} ${action}`);
+                            values.push(`${formatTanggal(value)}`);
                         } else if (item.key === 'skala') {
                             const value = objek[item.key];
                             let resource = "";
@@ -369,6 +371,13 @@
                                 values.push(`<strong>Non Farmakologi : </strong>`);
                                 values.push(`<ul class="ms-0">${nonFarmakologi.join('')}</ul>`);
                             }
+                        } else if (item.key === 'action') {
+                            const user = "{{ session()->get('pegawai')->nik }}";
+                            const content = `
+                                <button type="button" class="btn btn-sm btn-danger" onclick="deleteAsesmenNyeriDewasa('${objek.no_rawat}', '${objek.tanggal}')"><i class="bi bi-trash me-1"></i> Hapus</button>
+                                <button type="button" class="btn btn-sm btn-primary" onclick="editAsesmenNyeriDewasa('${objek.no_rawat}', '${objek.tanggal}')"><i class="bi bi-pencil me-1"></i> Edit</button>`
+                            const action = user === objek['petugas']['nama'] ? content : '';
+                            values.push(action);
                         } else {
                             if (objek[item.key]) values.push(...objek[item.key].split(';').map(v => v.trim()));
                             if (objek[item.key_lain]) values.push(...objek[item.key_lain].split(';').map(v => v.trim()));

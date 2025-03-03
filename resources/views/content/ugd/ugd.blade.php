@@ -57,6 +57,7 @@
     @include('content.ranap.modal.modal_lab')
     @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_skrining_tb')
+    @include('content.ranap.modal.modal_asesmen_nyeri_dewasa')
 @endsection
 
 
@@ -190,6 +191,7 @@
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">CPPT</a></li>';
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')">Pemeriksaan Penunjang</a></li>`
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${row.no_rawat}')">Asesmen Medis UGD ${cekList(row.asmed_igd)} </a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriDewasa('${row.no_rawat}')">Asesmen Nyeri Dewasa</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${row.no_rawat}')" data-id="${row.no_rawat}">Hasil Kritis</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
