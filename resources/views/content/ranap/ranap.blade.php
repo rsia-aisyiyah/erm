@@ -165,6 +165,7 @@
     @include('content.ranap.modal.modal_edukasi_obat_pulang')
     @include('content.ranap.modal.modal_discharge_planning')
     @include('content.ranap.modal.modal_resep_pulang')
+    @include('content.ranap.modal.modal_asesmen_nyeri_dewasa')
 @endsection
 
 @push('script')
@@ -375,6 +376,7 @@
                             list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="showModalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Upload Berkas Penunjang</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="catatanEdukasiPasien('${data.no_rawat}')">Catatan Edukasi Pasien</a></li>`;
+
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')">Monitoring Cairan Pasien</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')">Edukasi Obat Pulang  ${cekList(row.edukasi_obat_pulang)}</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalDischargePlanning('${data.no_rawat}')">Discharge Planning  ${cekList(row.discharge_planning)}</a></li>`;
@@ -390,7 +392,7 @@
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
                             }
-                            // resume medis aktif
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriDewasa('${data.no_rawat}')">Asesmen Nyeri Dewasa</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${data.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
                             isDokter = "{{ session()->get('pegawai')->departemen }}";
                             if (isDokter === 'DM7' || isDokter === 'Direksi' || isDokter === 'SPS' || isDokter === '-' || isDokter === 'CSM') {

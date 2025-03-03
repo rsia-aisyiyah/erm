@@ -6,6 +6,7 @@ use App\Http\Controllers\AsesmenMedisAnakController;
 use App\Http\Controllers\AsesmenMedisRajalAnakController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\AsesmenNyeriDewasaController;
 use App\Http\Controllers\AskepRalanAnakController;
 use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\AskepRanapAnakController;
@@ -471,6 +472,11 @@ Route::middleware('auth')->group(function () {
     
     Route::post('discharge-planning', [DischargePlanningController::class, 'create']);
     Route::get('discharge-planning', [DischargePlanningController::class, 'get']);
+
+    Route::post('asesmen-nyeri-dewasa', [AsesmenNyeriDewasaController::class, 'create']);
+    Route::get('asesmen-nyeri-dewasa', [AsesmenNyeriDewasaController::class, 'get']);
+    Route::get('asesmen-nyeri-dewasa/first', [AsesmenNyeriDewasaController::class, 'first']);
+    Route::post('asesmen-nyeri-dewasa/delete', [AsesmenNyeriDewasaController::class, 'delete']);
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 

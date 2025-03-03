@@ -1,5 +1,7 @@
 <!doctype html>
 <html lang="en">
+<meta charset="utf-8">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @include('layout.head')
 
 <body>
@@ -52,6 +54,13 @@
         const APIURL = 'http://sim.rsiaaisyiyah.com/rsiap-api/api';
 
         // var qrcode = new QRCode("qrcode");
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        
         window.onerror = function(msg, url, linenumber) {
             const messageError = 'Error message : ' + msg + '<br/>Muat ulang halaman ?';
             Swal.fire({
