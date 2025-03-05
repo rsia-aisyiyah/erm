@@ -381,14 +381,13 @@
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')">Monitoring Cairan Pasien</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')">Edukasi Obat Pulang  ${cekList(row.edukasi_obat_pulang)}</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalDischargePlanning('${data.no_rawat}')">Discharge Planning  ${cekList(row.discharge_planning)}</a></li>`;
-                            console.log(data);
 
                             if (row.reg_periksa.dokter.kd_sps === 'S0003') {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
                                 if (data.sttsumur === 'Hr') {
                                     list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
                                 } else if (data.sttsumur === 'Bl' || (data.umurdaftar <= 3 && data.sttsumur === 'Th')) {
-                                    // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriBatita('${data.no_rawat}')">Asesmen Nyeri Anak</a></li>`;
+                                    list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriBatita('${data.no_rawat}')">Asesmen Nyeri Anak</a></li>`;
                                 } else {
                                     list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
                                 }

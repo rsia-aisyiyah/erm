@@ -119,7 +119,6 @@ class AsesmenNyeriDewasaController extends Controller
             'waktu' => ['required', 'min:5'],
         ]);
         $data = [
-            'tanggal' => date('Y-m-d H:i:s', strtotime($request->tanggal)),
             'pemicu' => $request->pemicu,
             'pemicu_lain' => $request->pemicu_lain,
             'kualitas' => $request->kualitas,
