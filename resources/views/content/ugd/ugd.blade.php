@@ -58,6 +58,7 @@
     @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_skrining_tb')
     @include('content.ranap.modal.modal_asesmen_nyeri_dewasa')
+    @include('content.ranap.modal.modal_asesmen_nyeri_batita_flacc')
 @endsection
 
 
@@ -192,10 +193,14 @@
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')">Pemeriksaan Penunjang</a></li>`
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${row.no_rawat}')">Asesmen Medis UGD ${cekList(row.asmed_igd)} </a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriDewasa('${row.no_rawat}')">Asesmen Nyeri Dewasa</a></li>`;
+                            if (row.sttsumur === 'Bl' || (row.umurdaftar <= 3 && row.sttsumur === 'Th')) {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriBatita('${row.no_rawat}')">Asesmen Nyeri Anak</a></li>`;
+                            }
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${row.no_rawat}')" data-id="${row.no_rawat}">Hasil Kritis</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px;margin-left:15px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
