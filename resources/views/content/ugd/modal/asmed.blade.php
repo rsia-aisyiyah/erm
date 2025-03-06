@@ -324,8 +324,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm btn-asmed-ugd" onclick="" style="display: inline"><i class="bi bi-save"></i> Simpan</button>
-                <button type="button" class="btn btn-warning btn-sm btn-asmed-ugd-ubah" onclick="" style="display: inline"><i class="bi bi-pencil"></i> Ubah</button>
+                <button type="button" class="btn btn-primary btn-sm btn-asmed-ugd"><i class="bi bi-save"></i> Simpan</button>
+                {{-- <button type="button" class="btn btn-warning btn-sm btn-asmed-ugd-ubah" onclick="" style="display: inline"><i class="bi bi-pencil"></i> Ubah</button> --}}
             </div>
         </div>
     </div>
@@ -472,84 +472,84 @@
             });
         });
 
-        $('.btn-asmed-ugd-ubah').on('click', () => {
-            var data = {};
-            var dataTriase = {};
+        // $('.btn-asmed-ugd-ubah').on('click', () => {
+        //     var data = {};
+        //     var dataTriase = {};
 
-            var no_rawat = '';
+        //     var no_rawat = '';
 
-            $('#formAsmedUgd input').each((index, element) => {
-                keys = $(element).prop('name');
+        //     $('#formAsmedUgd input').each((index, element) => {
+        //         keys = $(element).prop('name');
 
-                if ($(element).attr('type') == 'checkbox') {
-                    return true;
-                }
+        //         if ($(element).attr('type') == 'checkbox') {
+        //             return true;
+        //         }
 
-                if (keys == 'no_rawat') {
-                    no_rawat = $(element).val();
-                }
+        //         if (keys == 'no_rawat') {
+        //             no_rawat = $(element).val();
+        //         }
 
-                data[keys] = $(element).val();
-                data[keys] = $(element).val();
+        //         data[keys] = $(element).val();
+        //         data[keys] = $(element).val();
 
-            })
+        //     })
 
-            $('#formAsmedUgd select').each((index, element) => {
-                keys = $(element).prop('name');
-                data[keys] = $(element).val();
-            })
+        //     $('#formAsmedUgd select').each((index, element) => {
+        //         keys = $(element).prop('name');
+        //         data[keys] = $(element).val();
+        //     })
 
-            $('#formAsmedUgd textarea').each((index, element) => {
-                keys = $(element).prop('name');
-                data[keys] = $(element).val();
-            })
+        //     $('#formAsmedUgd textarea').each((index, element) => {
+        //         keys = $(element).prop('name');
+        //         data[keys] = $(element).val();
+        //     })
 
-            // checkbox
-            $('#formAsmedUgd input[type=checkbox]').each((index, element) => {
-                keys = $(element).prop('name').replaceAll('[', '_').replaceAll(']', '');
-                var isChecked = $(element).is(":checked");
+        //     // checkbox
+        //     $('#formAsmedUgd input[type=checkbox]').each((index, element) => {
+        //         keys = $(element).prop('name').replaceAll('[', '_').replaceAll(']', '');
+        //         var isChecked = $(element).is(":checked");
 
-                var expKeys = keys.split('_');
+        //         var expKeys = keys.split('_');
 
-                if (dataTriase[expKeys[0]] == undefined) {
-                    dataTriase[expKeys[0]] = [];
-                }
+        //         if (dataTriase[expKeys[0]] == undefined) {
+        //             dataTriase[expKeys[0]] = [];
+        //         }
 
-                var kode_skala_keys = 'kode_' + expKeys[0];
+        //         var kode_skala_keys = 'kode_' + expKeys[0];
 
-                // only push if checked
-                if (isChecked) {
-                    dataTriase[expKeys[0]].push({
-                        'no_rawat': no_rawat,
-                        [kode_skala_keys]: $(element).val()
-                    });
-                } else {
-                    dataTriase[expKeys[0]].push({
-                        'no_rawat': no_rawat,
-                        [kode_skala_keys]: null
-                    });
-                }
-            })
+        //         // only push if checked
+        //         if (isChecked) {
+        //             dataTriase[expKeys[0]].push({
+        //                 'no_rawat': no_rawat,
+        //                 [kode_skala_keys]: $(element).val()
+        //             });
+        //         } else {
+        //             dataTriase[expKeys[0]].push({
+        //                 'no_rawat': no_rawat,
+        //                 [kode_skala_keys]: null
+        //             });
+        //         }
+        //     })
 
-            data._token = "{{ csrf_token() }}"
+        //     data._token = "{{ csrf_token() }}"
 
-            $.ajax({
-                url: '/erm/ugd/asesmen/medis/ubah',
-                data: data,
-                method: 'POST',
-                dataType: 'JSON',
-            }).done((response) => {
-                simpanTriase(dataTriase);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sukses !',
-                    text: 'Data berhasil diubah',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                $('#modalAsmedUgd').modal('hide')
-            });
-        });
+        //     $.ajax({
+        //         url: '/erm/ugd/asesmen/medis/ubah',
+        //         data: data,
+        //         method: 'POST',
+        //         dataType: 'JSON',
+        //     }).done((response) => {
+        //         simpanTriase(dataTriase);
+        //         Swal.fire({
+        //             icon: 'success',
+        //             title: 'Sukses !',
+        //             text: 'Data berhasil diubah',
+        //             showConfirmButton: false,
+        //             timer: 1500
+        //         })
+        //         $('#modalAsmedUgd').modal('hide')
+        //     });
+        // });
 
         $('#modalAsmedUgd').on('hidden.bs.modal', () => {
             $('#formAsmedUgd input').each((index, element) => {

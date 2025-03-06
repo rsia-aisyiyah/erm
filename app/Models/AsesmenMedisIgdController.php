@@ -53,7 +53,6 @@ class AsesmenMedisIgdController extends Model
     public function edit(Request $request)
     {
         $data = $request->except(['_token', 'pasien', 'tgl_lahir', 'dokter']);
-        $data['tanggal'] = date('Y-m-d H:i:s');
 
         try {
             $clause = ['no_rawat' => $data['no_rawat']];

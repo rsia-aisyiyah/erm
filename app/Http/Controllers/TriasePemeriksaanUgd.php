@@ -55,11 +55,14 @@ class TriasePemeriksaanUgd extends Controller
                             ->where($skala, $valueTriase[$skala])
                             ->first();
 
+
                         if ($check) {
                             // update data
+                            $valueTriase['tgl_kunjungan'] = date('Y-m-d H:i:s');    
                             $check->update($valueTriase);
                         } else {
                             // create data
+                            $valueTriase['tgl_kunjungan'] = date('Y-m-d H:i:s');    
                             $value::create($valueTriase);
                         }
 
