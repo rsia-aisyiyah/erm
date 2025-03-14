@@ -1120,29 +1120,6 @@
         //     }
         // }
 
-        function renderListsAsesmenNyeri(tgl_lahir, tgl_daftar, no_rawat) {
-
-            const umur = hitungUmurDaftar(tgl_lahir, tgl_daftar)
-
-            const totalHari = Number((umur.tahun * 365)) + Number((umur.bulan * 28)) + Number(umur.hari)
-            let list = '';
-            if (totalHari <= 28) {
-                list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriNeonatus('${no_rawat}')">Asesmen Nyeri Neonatus</a></li>`;
-            } else if (totalHari <= 3 * 365) {
-                // Batita
-                list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriBatita('${no_rawat}')">Asesmen Nyeri Anak</a></li>`;
-            } else if (totalHari <= 7 * 365) {
-                // Balita
-                list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriBalita('${no_rawat}')">Asesmen Nyeri Anak</a></li>`
-            } else if (totalHari <= 13 * 365) {
-                // Anak
-                list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriAnak('${no_rawat}')">Asesmen Nyeri Anak</a></li>`
-            } else {
-                // Dewasa
-                list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriDewasa('${no_rawat}')">Asesmen Nyeri Dewasa</a></li>`
-            }
-
-            return list;
-        }
+        
     </script>
 @endpush

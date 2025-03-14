@@ -59,6 +59,8 @@
     @include('content.ranap.modal.modal_skrining_tb')
     @include('content.ranap.modal.modal_asesmen_nyeri_dewasa')
     @include('content.ranap.modal.modal_asesmen_nyeri_batita_flacc')
+    @include('content.ranap.modal.modal_asesmen_nyeri_anak')
+    @include('content.ranap.modal.modal_asesmen_nyeri_neonatus')
 @endsection
 
 
@@ -189,13 +191,11 @@
                 columns: [{
                         data: '',
                         render: function(data, type, row, meta) {
+
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">CPPT</a></li>';
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')">Pemeriksaan Penunjang</a></li>`
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${row.no_rawat}')">Asesmen Medis UGD ${cekList(row.asmed_igd)} </a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriDewasa('${row.no_rawat}')">Asesmen Nyeri Dewasa</a></li>`;
-                            if (row.sttsumur === 'Bl' || (row.umurdaftar <= 3 && row.sttsumur === 'Th')) {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriBatita('${row.no_rawat}')">Asesmen Nyeri Anak</a></li>`;
-                            }
+                            list += renderListsAsesmenNyeri(row.pasien.tgl_lahir, row.tgl_registrasi, row.no_rawat)
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${row.no_rawat}')" data-id="${row.no_rawat}">Hasil Kritis</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
