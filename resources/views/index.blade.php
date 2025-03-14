@@ -60,7 +60,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        
+
         window.onerror = function(msg, url, linenumber) {
             const messageError = 'Error message : ' + msg + '<br/>Muat ulang halaman ?';
             Swal.fire({
@@ -274,50 +274,84 @@
         }
 
         function hitungUmur(tgl_lahir) {
-            sekarang = new Date();
-            hari = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate());
+            let sekarang = new Date();
+            let hari = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate());
 
-            var tahunSekarang = sekarang.getFullYear();
-            var bulanSekarang = sekarang.getMonth();
-            var tanggalSekarang = sekarang.getDate();
+            let tahunSekarang = sekarang.getFullYear();
+            let bulanSekarang = sekarang.getMonth();
+            let tanggalSekarang = sekarang.getDate();
 
-            splitTgl = tgl_lahir.split('-');
-            lahir = new Date(splitTgl[0], splitTgl[1] - 1, splitTgl[2]);
+            let splitTgl = tgl_lahir.split('-');
+            let lahir = new Date(splitTgl[0], splitTgl[1] - 1, splitTgl[2]);
 
+            let tahunLahir = lahir.getFullYear();
+            let bulanLahir = lahir.getMonth();
+            let tanggalLahir = lahir.getDate();
 
-            tahunLahir = lahir.getFullYear();
-            bulanLahir = lahir.getMonth();
-            tanggalLahir = lahir.getDate();
+            let umurTahun = tahunSekarang - tahunLahir;
+            let umurBulan = bulanSekarang - bulanLahir;
+            let umurTanggal = tanggalSekarang - tanggalLahir;
 
-            umurTahun = tahunSekarang - tahunLahir;
-            if (bulanSekarang >= bulanLahir) {
-                umurBulan = bulanSekarang - bulanLahir;
-            } else {
-                umurTahun--;
-                umurBulan = 12 + bulanSekarang - bulanLahir;
-            }
-
-            if (tanggalSekarang >= tanggalLahir) {
-                umurTanggal = tanggalSekarang - tanggalLahir;
-            } else {
+            if (umurTanggal < 0) {
+                let bulanSebelumnya = new Date(tahunSekarang, bulanSekarang, 0);
+                let jmlHariBulanSebelumnya = bulanSebelumnya.getDate();
+                umurTanggal += jmlHariBulanSebelumnya;
                 umurBulan--;
-                if (bulanSekarang == '1') {
-                    if (bulanSekarang % 4 == 0) {
-                        jmlHari = 29;
-                    } else {
-                        jmlHari = 28;
-                    }
-                } else if (bulanSekarang == '0' && bulanSekarang == '2' && bulanSekarang == '4' && bulanSekarang == '6' &&
-                    bulanSekarang == '8' && bulanSekarang == '9') {
-                    jmlHari = 31;
-                } else {
-                    jmlHari = 30;
-                }
-                umurTanggal = jmlHari + tanggalSekarang - tanggalLahir;
             }
 
-            return umurTahun + ' Th ' + umurBulan + ' Bln ' + umurTanggal + ' Hari';
+            if (umurBulan < 0) {
+                umurBulan += 12;
+                umurTahun--;
+            }
+
+            // Pastikan tidak ada nilai negatif
+            umurTahun = Math.max(umurTahun, 0);
+            umurBulan = Math.max(umurBulan, 0);
+            umurTanggal = Math.max(umurTanggal, 0);
+
+            return `${umurTahun} Th ${umurBulan} Bln ${umurTanggal} Hari`;
         }
+
+        function hitungUmurDaftar(tanggalLahir, tanggalUmur) {
+            const lahir = new Date(tanggalLahir);
+            const umur = new Date(tanggalUmur);
+
+            if (umur < lahir) {
+                return {
+                    tahun: 0,
+                    bulan: 0,
+                    hari: 0,
+                };
+            }
+
+            let tahun = umur.getFullYear() - lahir.getFullYear();
+            let bulan = umur.getMonth() - lahir.getMonth();
+            let hari = umur.getDate() - lahir.getDate();
+
+            if (bulan < 0 || (bulan === 0 && hari < 0)) {
+                tahun--;
+                bulan += 12;
+                if (hari < 0) {
+                    const hariTerakhirBulanLahir = new Date(
+                        umur.getFullYear(),
+                        umur.getMonth(),
+                        0
+                    ).getDate();
+                    hari += hariTerakhirBulanLahir;
+                    bulan--;
+                    if (bulan < 0) {
+                        bulan += 12;
+                    }
+                }
+            }
+
+            return {
+                tahun: Math.max(tahun, 0),
+                bulan: Math.max(bulan, 0),
+                hari: Math.max(hari, 0),
+            };
+        }
+
 
         // merapikan enter teks soap
         function stringPemeriksaan(value) {

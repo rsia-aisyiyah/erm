@@ -6,8 +6,11 @@ use App\Http\Controllers\AsesmenMedisAnakController;
 use App\Http\Controllers\AsesmenMedisRajalAnakController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\AsesmenNyeriAnakController;
+use App\Http\Controllers\AsesmenNyeriBalitaController;
 use App\Http\Controllers\AsesmenNyeriBatitaController;
 use App\Http\Controllers\AsesmenNyeriDewasaController;
+use App\Http\Controllers\AsesmenNyeriNeonatusController;
 use App\Http\Controllers\AskepRalanAnakController;
 use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\AskepRanapAnakController;
@@ -483,6 +486,22 @@ Route::middleware('auth')->group(function () {
     Route::get('asesmen-nyeri-batita', [AsesmenNyeriBatitaController::class, 'get']);
     Route::post('asesmen-nyeri-batita/delete', [AsesmenNyeriBatitaController::class, 'delete']);
     Route::get('asesmen-nyeri-batita/first', [AsesmenNyeriBatitaController::class, 'first']);
+    
+    Route::post('asesmen-nyeri-balita', [AsesmenNyeriBalitaController::class, 'create']);
+    Route::get('asesmen-nyeri-balita', [AsesmenNyeriBalitaController::class, 'get']);
+    Route::post('asesmen-nyeri-balita/delete', [AsesmenNyeriBalitaController::class, 'delete']);
+    Route::get('asesmen-nyeri-balita/first', [AsesmenNyeriBalitaController::class, 'first']);
+   
+    Route::post('asesmen-nyeri-anak', [AsesmenNyeriAnakController::class, 'create']);
+    Route::get('asesmen-nyeri-anak', [AsesmenNyeriAnakController::class, 'get']);
+    Route::post('asesmen-nyeri-anak/delete', [AsesmenNyeriAnakController::class, 'delete']);
+    Route::get('asesmen-nyeri-anak/first', [AsesmenNyeriAnakController::class, 'first']);
+ 
+    Route::post('asesmen-nyeri-neonatus', [AsesmenNyeriNeonatusController::class, 'create']);
+    Route::get('asesmen-nyeri-neonatus', [AsesmenNyeriNeonatusController::class, 'get']);
+    Route::post('asesmen-nyeri-neonatus/delete', [AsesmenNyeriNeonatusController::class, 'delete']);
+    Route::get('asesmen-nyeri-neonatus/first', [AsesmenNyeriNeonatusController::class, 'first']);
+
 
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);

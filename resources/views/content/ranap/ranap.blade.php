@@ -167,6 +167,9 @@
     @include('content.ranap.modal.modal_resep_pulang')
     @include('content.ranap.modal.modal_asesmen_nyeri_dewasa')
     @include('content.ranap.modal.modal_asesmen_nyeri_batita_flacc')
+    @include('content.ranap.modal.modal_asesmen_nyeri_balita')
+    @include('content.ranap.modal.modal_asesmen_nyeri_anak')
+    @include('content.ranap.modal.modal_asesmen_nyeri_neonatus')
 @endsection
 
 @push('script')
@@ -382,12 +385,13 @@
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')">Edukasi Obat Pulang  ${cekList(row.edukasi_obat_pulang)}</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalDischargePlanning('${data.no_rawat}')">Discharge Planning  ${cekList(row.discharge_planning)}</a></li>`;
 
+                            list += renderListsAsesmenNyeri(data.pasien.tgl_lahir, data.tgl_registrasi, data.no_rawat);
                             if (row.reg_periksa.dokter.kd_sps === 'S0003') {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
                                 if (data.sttsumur === 'Hr') {
                                     list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
                                 } else if (data.sttsumur === 'Bl' || (data.umurdaftar <= 3 && data.sttsumur === 'Th')) {
-                                    list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriBatita('${data.no_rawat}')">Asesmen Nyeri Anak</a></li>`;
+
                                     list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
                                 } else {
                                     list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
@@ -395,7 +399,7 @@
                             } else if (row.reg_periksa.dokter.kd_sps === 'S0001') {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriDewasa('${data.no_rawat}')">Asesmen Nyeri Dewasa</a></li>`;
+
                             }
 
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${data.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
@@ -1115,5 +1119,30 @@
         //         $(`#${id}`).addClass('show');
         //     }
         // }
+
+        function renderListsAsesmenNyeri(tgl_lahir, tgl_daftar, no_rawat) {
+
+            const umur = hitungUmurDaftar(tgl_lahir, tgl_daftar)
+
+            const totalHari = Number((umur.tahun * 365)) + Number((umur.bulan * 28)) + Number(umur.hari)
+            let list = '';
+            if (totalHari <= 28) {
+                list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriNeonatus('${no_rawat}')">Asesmen Nyeri Neonatus</a></li>`;
+            } else if (totalHari <= 3 * 365) {
+                // Batita
+                list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriBatita('${no_rawat}')">Asesmen Nyeri Anak</a></li>`;
+            } else if (totalHari <= 7 * 365) {
+                // Balita
+                list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriBalita('${no_rawat}')">Asesmen Nyeri Anak</a></li>`
+            } else if (totalHari <= 13 * 365) {
+                // Anak
+                list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriAnak('${no_rawat}')">Asesmen Nyeri Anak</a></li>`
+            } else {
+                // Dewasa
+                list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenNyeriDewasa('${no_rawat}')">Asesmen Nyeri Dewasa</a></li>`
+            }
+
+            return list;
+        }
     </script>
 @endpush

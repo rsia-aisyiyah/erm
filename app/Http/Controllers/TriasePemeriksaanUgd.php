@@ -18,8 +18,8 @@ class TriasePemeriksaanUgd extends Controller
 
     public function __construct()
     {
-        $this->track = new \App\Http\Controllers\TrackerSqlController;
-        $this->triase = new \App\Models\RsiaTriaseUgd;
+        $this->track = new TrackerSqlController();
+        $this->triase = new RsiaTriaseUgd();
     }
 
     function simpan(Request $request)

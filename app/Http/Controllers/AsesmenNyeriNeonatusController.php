@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AsesmenNyeriBatita;
+use App\Models\AsesmenNyeriNeonatus;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class AsesmenNyeriBatitaController extends Controller
+class AsesmenNyeriNeonatusController extends Controller
 {
     protected $model;
     protected $track;
     function __construct()
     {
-        $this->model = new AsesmenNyeriBatita();
+        $this->model = new AsesmenNyeriNeonatus();
         $this->track = new TrackerSqlController();
     }
     function create(Request $request)
@@ -20,32 +20,32 @@ class AsesmenNyeriBatitaController extends Controller
         $validate = $request->validate([
             'tanggal' => 'required',
             'no_rawat' => 'required',
-            'wajah' => 'required',
-            'kaki' => 'required',
-            'aktivitas' => 'required',
-            'menangis' => 'required',
-            'bersuara' => 'required',
-            'interpretasi' => 'required',
-            'farmakologi' => 'required',
-            'non_farmakologi' => 'required',
-            'total_skor' => 'required',
+            'ekspresi_wajah_nilai' => 'required',
+            'kaki_nilai' => 'required',
+            'tangisan_nilai' => 'required',
+            'tangan_nilai' => 'required',
+            'kesadaran_nilai' => 'required',
+            'pola_nafas_nilai' => 'required',
+
         ]);
 
-        $data = [
+       $data = [
             'no_rawat' => $request->no_rawat,
             'tanggal' => date('Y-m-d H:i:s', strtotime($request->tanggal)),
-            'wajah' => $request->wajah,
-            'kaki' => $request->kaki,
-            'aktivitas' => $request->aktivitas,
-            'menangis' => $request->menangis,
-            'bersuara' => $request->bersuara,
-            'wajah_ket' => $request->wajah_ket,
+            'ekspresi_wajah_nilai' => $request->ekspresi_wajah_nilai,
+            'ekspresi_wajah_ket' => $request->ekspresi_wajah_ket,
+            'kaki_nilai' => $request->kaki_nilai,
+            'tangan_nilai' => $request->tangan_nilai,
+            'tangan_ket' => $request->tangan_ket,
+            'tangisan_nilai' => $request->tangisan_nilai,
+            'kesadaran_nilai' => $request->kesadaran_nilai,
+            'pola_nafas_nilai' => $request->pola_nafas_nilai,
             'kaki_ket' => $request->kaki_ket,
-            'aktivitas_ket' => $request->aktivitas_ket,
-            'menangis_ket' => $request->menangis_ket,
-            'bersuara_ket' => $request->bersuara_ket,
-            'total_skor' => $request->total_skor,
-            'interpretasi' => $request->interpretasi,
+            'tangisan_ket' => $request->tangisan_ket,
+            'kesadaran_ket' => $request->kesadaran_ket,
+            'pola_nafas_ket' => $request->pola_nafas_ket,
+            'total_nilai' => $request->total_nilai,
+            'keterangan_nilai' => $request->keterangan,
             'farmakologi' => $request->farmakologi,
             'non_farmakologi' => $request->non_farmakologi,
             'non_farmakologi_lain' => $request->non_farmakologi_lain,
@@ -114,34 +114,33 @@ class AsesmenNyeriBatitaController extends Controller
         $validate = $request->validate([
             'tanggal' => 'required',
             'no_rawat' => 'required',
-            'wajah' => 'required',
-            'kaki' => 'required',
-            'aktivitas' => 'required',
-            'menangis' => 'required',
-            'bersuara' => 'required',
-            'interpretasi' => 'required',
-            'farmakologi' => 'required',
-            'non_farmakologi' => 'required',
-            'total_skor' => 'required',
+            'ekspresi_wajah_nilai' => 'required',
+            'kaki_nilai' => 'required',
+            'tangisan_nilai' => 'required',
+            'tangan_nilai' => 'required',
+            'kesadaran_nilai' => 'required',
+            'pola_nafas_nilai' => 'required',
+
         ]);
 
-        $data = [
-            'wajah' => $request->wajah,
-            'kaki' => $request->kaki,
-            'aktivitas' => $request->aktivitas,
-            'menangis' => $request->menangis,
-            'bersuara' => $request->bersuara,
-            'wajah_ket' => $request->wajah_ket,
+       $data = [
+            'ekspresi_wajah_nilai' => $request->ekspresi_wajah_nilai,
+            'ekspresi_wajah_ket' => $request->ekspresi_wajah_ket,
+            'kaki_nilai' => $request->kaki_nilai,
+            'tangisan_nilai' => $request->tangisan_nilai,
+            'tangan_nilai' => $request->tangan_nilai,
+            'tangan_ket' => $request->tangan_ket,
+            'kesadaran_nilai' => $request->kesadaran_nilai,
+            'pola_nafas_nilai' => $request->pola_nafas_nilai,
             'kaki_ket' => $request->kaki_ket,
-            'aktivitas_ket' => $request->aktivitas_ket,
-            'menangis_ket' => $request->menangis_ket,
-            'bersuara_ket' => $request->bersuara_ket,
-            'total_skor' => $request->total_skor,
-            'interpretasi' => $request->interpretasi,
+            'tangisan_ket' => $request->tangisan_ket,
+            'kesadaran_ket' => $request->kesadaran_ket,
+            'pola_nafas_ket' => $request->pola_nafas_ket,
+            'total_nilai' => $request->total_nilai,
+            'keterangan_nilai' => $request->keterangan,
             'farmakologi' => $request->farmakologi,
             'non_farmakologi' => $request->non_farmakologi,
             'non_farmakologi_lain' => $request->non_farmakologi_lain,
-            'nip' => session()->get('pegawai')->nik
         ];
 
         $key = [
