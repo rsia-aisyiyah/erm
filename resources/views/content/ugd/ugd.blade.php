@@ -61,6 +61,7 @@
     @include('content.ranap.modal.modal_asesmen_nyeri_batita_flacc')
     @include('content.ranap.modal.modal_asesmen_nyeri_anak')
     @include('content.ranap.modal.modal_asesmen_nyeri_neonatus')
+    @include('content.ranap.modal.modal_asesmen_nyeri_balita')
 @endsection
 
 
