@@ -25,7 +25,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.toast.min.css') }}">
-    <link rel="icon" href="{{ asset('img/rsiap.ico') }}">
+    <link rel="icon" href="{{ asset('img/LOGO RSIA .png') }}">
     <!-- Magnify Image Viewer CSS -->
     <link href="{{ asset('css/magnifier/jquery.magnify.css') }}" rel="stylesheet">
     {{-- sweetalert --}}

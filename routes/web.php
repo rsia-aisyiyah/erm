@@ -273,9 +273,11 @@ Route::middleware('auth')->group(function () {
         $route->prefix('gizi')->group(function ($route) {
             $route->get('asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'get']);
             $route->post('asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'create']);
+            $route->get('asuhan/dewasa/print', [RsiaAsuhanGiziDewasaController::class, 'print']);
 
             $route->get('asuhan/anak', [RsiaAsuhanGiziAnakController::class, 'get']);
             $route->post('asuhan/anak', [RsiaAsuhanGiziAnakController::class, 'create']);
+            $route->get('asuhan/anak/print', [RsiaAsuhanGiziAnakController::class, 'print']);
         });
     });
 

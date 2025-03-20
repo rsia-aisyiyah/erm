@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RsiaAsuhanGiziDewasa;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
@@ -70,5 +71,31 @@ class RsiaAsuhanGiziDewasaController extends Controller
         }
 
         return response()->json(null, 200);
+    }
+
+    function print(Request $request){
+        $asuhanGizi = $this->rsiaAsuhanGiziDewasa
+            ->where('no_rawat', $request->no_rawat)
+            ->with('regPeriksa', 'pasien', 'pegawai', 'kamarInap')
+            ->first();
+
+        $pasien = [
+            'nm_pasien' => $asuhanGizi->pasien->nm_pasien,
+            'umur' => $asuhanGizi->regPeriksa->umurdaftar . ' ' . $asuhanGizi->regPeriksa->sttsumur,
+            'no_rkm_medis' => $asuhanGizi->pasien->no_rkm_medis, 
+            'diagnosa_awal' => $asuhanGizi->kamarInap->diagnosa_awal, 
+            'jk' => $asuhanGizi->pasien->jk === 'L' ? 'Laki-laki' : 'Perempuan', 
+            'tgl_lahir' => Carbon::parse($asuhanGizi->pasien->tgl_lahir)->format('d F Y'), 
+        ];
+        $asuhanGizi['tanggal'] = Carbon::parse($asuhanGizi->tanggal)->format('d F Y H:i:s');
+        $pdf = Pdf::loadView('content.print.asuhan_gizi_dewasa',
+            [
+                'asuhanGizi' => $asuhanGizi,
+                'pasien' => $pasien,
+            ]
+        )
+        ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
+            ->setPaper(array(0, 0, 595, 935));
+        return $pdf->stream(date('YmdHis') . '.pdf');
     }
 }

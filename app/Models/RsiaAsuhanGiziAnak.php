@@ -14,6 +14,18 @@ class RsiaAsuhanGiziAnak extends Model
 	public $timestamps = false;
 
 	public function pasien(): HasManyThrough{
-		return $this->hasManyThrough(Pasien::class, RegPeriksa::class, 'no_rawat', 'no_rkm_medis', 'no_rawat', 'no_rkm_medis');
+		return $this->hasOneThrough(Pasien::class, RegPeriksa::class, 'no_rawat', 'no_rkm_medis', 'no_rawat', 'no_rkm_medis');
 	}
+	 function regPeriksa(){
+        return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
+    }
+
+    function pegawai(){
+        return $this->belongsTo(Pegawai::class, 'nip', 'nik');
+    }
+
+    function kamarInap(){
+        return $this->belongsTo(KamarInap::class, 'no_rawat', 'no_rawat');
+    }
+
 }
