@@ -1,109 +1,115 @@
 <?php
 
+use App\Models\Pasien;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EwsController;
+use App\Http\Controllers\LabController;
+use App\Http\Controllers\UgdController;
+use App\Http\Controllers\Icd9Controller;
+use App\Http\Controllers\SbarController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RanapController;
+use App\Models\AsesmenMedisIgdController;
+use App\Http\Controllers\DokterController;
+use App\Http\Controllers\PasienController;
+use App\Http\Controllers\PenjabController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\AntreanController;
-use App\Http\Controllers\Apotek\ApotekReferensiController;
+use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\PetugasController;
+use App\Http\Controllers\AskepUgdController;
+use App\Http\Controllers\PenyakitController;
+use App\Http\Controllers\KamarInapController;
+use App\Http\Controllers\ResepObatController;
+use App\Http\Controllers\SkoringTbController;
+use App\Http\Controllers\CacatFisikController;
+use App\Http\Controllers\DataBarangController;
+use App\Http\Controllers\PlanOfCareController;
+use App\Http\Controllers\PoliklinikController;
+use App\Http\Controllers\RegPeriksaController;
+use App\Http\Controllers\SkriningTbController;
+use App\Http\Controllers\SukuBangsaController;
+use App\Http\Controllers\TriasePemeriksaanUgd;
+use App\Http\Controllers\BridgingSepController;
+use App\Http\Controllers\EwsMaternalController;
+use App\Http\Controllers\RanapGabungController;
+use App\Http\Controllers\ResepDokterController;
+use App\Http\Controllers\ResepPulangController;
+use App\Http\Controllers\SelesaiPoliController;
+use App\Http\Controllers\BahasaPasienController;
+use App\Http\Controllers\Bridging\SepController;
+use App\Http\Controllers\BridgingSPRIController;
+use App\Http\Controllers\EstimasiPoliController;
+use App\Http\Controllers\PermintaanLabController;
+use App\Http\Controllers\PlanOfCareTimController;
+use App\Http\Controllers\RsiaKetPasienController;
+use App\Http\Controllers\AskepRalanAnakController;
+use App\Http\Controllers\AskepRanapAnakController;
+use App\Http\Controllers\Bridging\IcareController;
+use App\Http\Controllers\DiagnosaPasienController;
+use App\Http\Controllers\HasilRadiologiController;
+use App\Http\Controllers\LaporanOperasiController;
+use App\Http\Controllers\ProsedurPasienController;
+use App\Http\Controllers\JnsPerawatabLabController;
+use App\Http\Controllers\MappingPoliBpjsController;
+use App\Http\Controllers\MasterImunisasiController;
+use App\Http\Controllers\RsiaHasilKritisController;
 use App\Http\Controllers\AsesmenMedisAnakController;
-use App\Http\Controllers\AsesmenMedisRajalAnakController;
-use App\Http\Controllers\AsesmenMedisRajalKandunganController;
-use App\Http\Controllers\AsesmenMedisRanapKandunganController;
 use App\Http\Controllers\AsesmenNyeriAnakController;
+use App\Http\Controllers\Bridging\PesertaController;
+use App\Http\Controllers\Bridging\RujukanController;
+use App\Http\Controllers\CatatanPerawatanController;
+use App\Http\Controllers\PemeriksaanRalanController;
+use App\Http\Controllers\PemeriksaanRanapController;
+use App\Http\Controllers\PeriksaRadiologiController;
+use App\Http\Controllers\RiwayatImunisasiController;
+use App\Http\Controllers\RsiaGrafikHarianController;
+use App\Http\Controllers\BookingRegistrasiController;
+use App\Http\Controllers\DischargePlanningController;
+use App\Http\Controllers\MasalahAskepRanapController;
+use App\Http\Controllers\RencanaAskepRanapController;
+use App\Http\Controllers\ResumePasienRanapController;
+use App\Http\Controllers\RiwayatPersalinanController;
+use App\Http\Controllers\SuratKontrolUlangController;
 use App\Http\Controllers\AsesmenNyeriBalitaController;
 use App\Http\Controllers\AsesmenNyeriBatitaController;
 use App\Http\Controllers\AsesmenNyeriDewasaController;
-use App\Http\Controllers\AsesmenNyeriNeonatusController;
-use App\Http\Controllers\AskepRalanAnakController;
-use App\Http\Controllers\AskepRalanKebidananController;
-use App\Http\Controllers\AskepRanapAnakController;
-use App\Http\Controllers\AskepRanapKandunganController;
 use App\Http\Controllers\AskepRanapNeonatusController;
-use App\Http\Controllers\AskepUgdController;
-use App\Http\Controllers\BookingRegistrasiController;
-use App\Http\Controllers\BridgingRujukanBpjsController;
-use App\Http\Controllers\BridgingSepController;
-use App\Http\Controllers\BridgingSPRIController;
-use App\Http\Controllers\Bridging\IcareController;
-use App\Http\Controllers\Bridging\PesertaController;
 use App\Http\Controllers\Bridging\ReferensiController;
-use App\Http\Controllers\Bridging\RencanaKontrolController;
-use App\Http\Controllers\Bridging\RujukanController;
-use App\Http\Controllers\Bridging\SepController;
-use App\Http\Controllers\BrigdgingRencanaKontrolController;
-use App\Http\Controllers\CatatanPerawatanController;
-use App\Http\Controllers\DataBarangController;
+use App\Http\Controllers\ResepDokterRacikanController;
+use App\Http\Controllers\RsiaAsuhanGiziAnakController;
+use App\Http\Controllers\RsiaGeneralConsentController;
+use App\Http\Controllers\RsiaMappingRacikanController;
+use App\Http\Controllers\AskepRalanKebidananController;
+use App\Http\Controllers\AskepRanapKandunganController;
+use App\Http\Controllers\BridgingRujukanBpjsController;
 use App\Http\Controllers\DetailPemberianObatController;
-use App\Http\Controllers\DetailPemeriksaanLabController;
 use App\Http\Controllers\DetailPermintaanLabController;
-use App\Http\Controllers\DiagnosaPasienController;
-use App\Http\Controllers\DischargePlanningController;
-use App\Http\Controllers\DokterController;
-use App\Http\Controllers\EstimasiPoliController;
-use App\Http\Controllers\EwsController;
-use App\Http\Controllers\EwsMaternalController;
-use App\Http\Controllers\HasilRadiologiController;
-use App\Http\Controllers\Icd9Controller;
+use App\Http\Controllers\PenilaianMedisRanapController;
+use App\Http\Controllers\PermintaanRadiologiController;
+use App\Http\Controllers\AsesmenNyeriNeonatusController;
+use App\Http\Controllers\DetailPemeriksaanLabController;
+use App\Http\Controllers\RsiaAsuhanGiziDewasaController;
+use App\Http\Controllers\TemplateLaboratoriumController;
+use App\Http\Controllers\AsesmenMedisRajalAnakController;
+use App\Http\Controllers\Apotek\ApotekReferensiController;
+use App\Http\Controllers\MonitoringCairanPasienController;
+use App\Http\Controllers\Bridging\RencanaKontrolController;
+use App\Http\Controllers\BrigdgingRencanaKontrolController;
 use App\Http\Controllers\JenisPerawatanRadiologiController;
-use App\Http\Controllers\JnsPerawatabLabController;
-use App\Http\Controllers\KamarInapController;
-use App\Http\Controllers\KomunikasiEdukasiObatPulangController;
-use App\Http\Controllers\LabController;
-use App\Http\Controllers\LaporanOperasiController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\MappingPoliBpjsController;
-use App\Http\Controllers\MasalahAskepRanapController;
-use App\Http\Controllers\MasterImunisasiController;
+use App\Http\Controllers\PenilaianMedisKebidananController;
 use App\Http\Controllers\MasterMasalahKeperawatanController;
 use App\Http\Controllers\MasterRencanaKeperawatanController;
-use App\Http\Controllers\MonitoringCairanPasienController;
-use App\Http\Controllers\PasienController;
-use App\Http\Controllers\PegawaiController;
-use App\Http\Controllers\PemeriksaanRalanController;
-use App\Http\Controllers\PemeriksaanRanapController;
-use App\Http\Controllers\PenilaianMedisKebidananController;
-use App\Http\Controllers\PenilaianMedisRanapController;
-use App\Http\Controllers\PenyakitController;
-use App\Http\Controllers\PeriksaRadiologiController;
-use App\Http\Controllers\PermintaanLabController;
 use App\Http\Controllers\PermintaanPemeriksaanLabController;
-use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
-use App\Http\Controllers\PermintaanRadiologiController;
-use App\Http\Controllers\PetugasController;
-use App\Http\Controllers\PlanOfCareController;
-use App\Http\Controllers\PlanOfCareTimController;
-use App\Http\Controllers\PoliklinikController;
-use App\Http\Controllers\ProsedurPasienController;
-use App\Http\Controllers\RanapController;
-use App\Http\Controllers\RanapGabungController;
-use App\Http\Controllers\RegPeriksaController;
-use App\Http\Controllers\RencanaAskepRanapController;
-use App\Http\Controllers\ResepDokterController;
-use App\Http\Controllers\ResepDokterRacikanController;
 use App\Http\Controllers\ResepDokterRacikanDetailController;
-use App\Http\Controllers\ResepObatController;
-use App\Http\Controllers\ResepPulangController;
-use App\Http\Controllers\ResumePasienRanapController;
-use App\Http\Controllers\RiwayatImunisasiController;
-use App\Http\Controllers\RiwayatPersalinanController;
-use App\Http\Controllers\RsiaAsuhanGiziAnakController;
-use App\Http\Controllers\RsiaAsuhanGiziDewasaController;
-use App\Http\Controllers\RsiaGeneralConsentController;
-use App\Http\Controllers\RsiaGrafikHarianController;
-use App\Http\Controllers\RsiaHasilKritisController;
-use App\Http\Controllers\RsiaKetPasienController;
-use App\Http\Controllers\RsiaMappingRacikanController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
 use App\Http\Controllers\RsiaVerifPemeriksaanRanapController;
-use App\Http\Controllers\SbarController;
-use App\Http\Controllers\SelesaiPoliController;
-use App\Http\Controllers\SkoringTbController;
-use App\Http\Controllers\SkriningTbController;
-use App\Http\Controllers\SuratKontrolUlangController;
-use App\Http\Controllers\TemplateLaboratoriumController;
-use App\Http\Controllers\TriasePemeriksaanUgd;
-use App\Http\Controllers\UgdController;
-use App\Http\Controllers\UploadController;
-use App\Models\AsesmenMedisIgdController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AsesmenMedisRajalKandunganController;
+use App\Http\Controllers\AsesmenMedisRanapKandunganController;
+use App\Http\Controllers\KomunikasiEdukasiObatPulangController;
+use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -121,14 +127,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return redirect('/poliklinik');
     });
-
-    Route::get('/pasien', [PasienController::class, 'index']);
-    Route::get('/pasien/cari', [PasienController::class, 'search']);
-    Route::get('/pasien/ambil/{no_rkm_medis}', [PasienController::class, 'ambil']);
-
-    Route::get('/pasien/keterangan', [RsiaKetPasienController::class, 'get']);
-    Route::post('/pasien/keterangan', [RsiaKetPasienController::class, 'create']);
-
     Route::get('/periksa/show/{no_rkm_medis}/{tanggal?}', [
         RegPeriksaController::class,
         'show',
@@ -142,47 +140,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/petugas/cari', [PetugasController::class, 'cari']);
 
-    Route::get('/poliklinik', [PoliklinikController::class, 'index'])->name('poliklinik');
-    Route::get('/poliklinik/dokter', [PoliklinikController::class, 'poliDokter']);
-    Route::get('/poliklinik/table', [PoliklinikController::class, 'tbPoliPasien']);
-    Route::get('/poliklinik/{kd_poli}', [PoliklinikController::class, 'viewPoliPasien']);
-    Route::get('/poliklinik/count/{kd_poli}', [PoliklinikController::class, 'countUpload']);
-    Route::get('/pemeriksaan/jumlah', [PoliklinikController::class, 'jumlahPasienPoli']);
-    Route::get('/poli/panggil', [EstimasiPoliController::class, 'get']);
-    Route::post('/poliklinik/panggil', [EstimasiPoliController::class, 'kirim']);
-    Route::delete('/poliklinik/batal', [EstimasiPoliController::class, 'hapus']);
-    Route::post('/poliklinik/selesai', [SelesaiPoliController::class, 'kirim']);
-    Route::get('poliklinik/status/periksa', [PoliklinikController::class, 'statusSoap']);
-    Route::get('poliklinik/status/upload', [PoliklinikController::class, 'statusUpload']);
-    Route::get('poliklinik/askep/kebidanan', [AskepRalanKebidananController::class, 'ambil']);
-    Route::get('poliklinik/askep/kebidanan/{noRawat}', [AskepRalanKebidananController::class, 'get']);
-    Route::get('poliklinik/askep/anak', [AskepRalanAnakController::class, 'ambil']);
-    Route::get('poliklinik/askep/anak/detail', [AskepRalanAnakController::class, 'ambilDetail']);
 
-    Route::get('poliklinik/asmed/kandungan/get/{noRawat}', [AsesmenMedisRajalKandunganController::class, 'get']);
-    Route::post('poliklinik/asmed/kandungan/simpan', [AsesmenMedisRajalKandunganController::class, 'insert']);
-    Route::post('poliklinik/asmed/kandungan/edit', [AsesmenMedisRajalKandunganController::class, 'edit']);
-    Route::get('poliklinik/asmed/kandungan/riwayat/{no_rkm_medis}', [AsesmenMedisRajalKandunganController::class, 'getByNoRm']);
-    Route::get('poliklinik/asmed/kandungan/print/{no_rawat}', [AsesmenMedisRajalKandunganController::class, 'print']);
 
-    Route::post('poliklinik/asmed/anak/simpan', [AsesmenMedisRajalAnakController::class, 'insert']);
-    Route::post('poliklinik/asmed/anak/edit', [AsesmenMedisRajalAnakController::class, 'edit']);
-    Route::get('poliklinik/asmed/anak/get/{noRawat}', [AsesmenMedisRajalAnakController::class, 'get']);
-    Route::get('poliklinik/asmed/anak/riwayat/{no_rkm_medis}', [AsesmenMedisRajalAnakController::class, 'getByNoRm']);
-    Route::get('poliklinik/asmed/anak/print/{noRawat}', [AsesmenMedisRajalAnakController::class, 'print']);
 
-    Route::get('registrasi', [RegPeriksaController::class, 'index']);
-    Route::get('registrasi/ambil', [RegPeriksaController::class, 'ambil']);
-    Route::get('registrasi/ambil/table', [RegPeriksaController::class, 'ambilTable']);
-    Route::get('/registrasi/status', [RegPeriksaController::class, 'status']);
-    Route::get('/registrasi/selesai', [RegPeriksaController::class, 'hitungSelesai']);
-    Route::get('/registrasi/batal', [RegPeriksaController::class, 'hitungBatal']);
-    Route::get('/registrasi/tunggu', [RegPeriksaController::class, 'hitungTunggu']);
-    Route::get('/registrasi/riwayat', [RegPeriksaController::class, 'riwayat']);
-    Route::get('/registrasi/ubah/dokter', [RegPeriksaController::class, 'ubahDpjp']);
-    Route::get('/registrasi/foto', [UploadController::class, 'ambilPeriksa']);
-
-    Route::post('/registrasi/buat', [RegPeriksaController::class, 'create']);
 
     Route::post('/booking/buat', [BookingRegistrasiController::class, 'create']);
 
@@ -231,22 +191,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/aturan', [DetailPemberianObatController::class, 'aturanPakai']);
     Route::get('/obat/pemberian', [DetailPemberianObatController::class, 'get']);
     Route::get('/obat/pemberian/table', [DetailPemberianObatController::class, 'getDataTable']);
-    Route::get('lab/petugas', [LabController::class, 'petugas']);
-    Route::get('lab/ambil', [LabController::class, 'ambil']);
-    Route::get('lab/ambil/table', [LabController::class, 'getDataTable']);
 
-    Route::get('lab/jenis/get', [JnsPerawatabLabController::class, 'get']);
-    Route::get('lab/jenis/template/get', [JnsPerawatabLabController::class, 'getTemplate']);
-
-    Route::get('lab/permintaan/nomor', [PermintaanLabController::class, 'getNomor']);
-
-    Route::get('lab/permintaan', [PermintaanLabController::class, 'get']);
-    Route::post('lab/permintaan', [PermintaanLabController::class, 'create']);
-    Route::post('lab/permintaan/detail', [DetailPermintaanLabController::class, 'create']);
-    Route::post('lab/permintaan/pemeriksaan', [PermintaanPemeriksaanLabController::class, 'create']);
-
-    Route::get('lab/template/get', [TemplateLaboratoriumController::class, 'get']);
-    Route::get('lab/hasil', [DetailPemeriksaanLabController::class, 'get']);
 
     Route::get('ranap', [RanapController::class, 'index']);
     Route::get('ranap/pasien', [RanapController::class, 'ranap']);
@@ -266,7 +211,7 @@ Route::middleware('auth')->group(function () {
     Route::get('ranap/askep/neonatus', [AskepRanapNeonatusController::class, 'get']);
     Route::post('ranap/askep/neonatus/create', [AskepRanapNeonatusController::class, 'createOrUpdate']);
 
-//    Route::post('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'create']);
+    //    Route::post('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'create']);
 //    Route::get('ranap/gizi/asuhan/dewasa', [RsiaAsuhanGiziDewasaController::class, 'get']);
 
     Route::prefix('ranap')->group(function ($route) {
@@ -409,40 +354,7 @@ Route::middleware('auth')->group(function () {
     Route::post('skrining/tb/delete', [SkriningTbController::class, 'delete']);
     Route::get('skrining/tb/print/{id}', [SkriningTbController::class, 'print']);
 
-    Route::prefix('bridging')->group(function () {
-        Route::prefix('referensi')->group(function () {
-            Route::get('/propinsi', [ReferensiController::class, 'getPropinsi']);
-            Route::get('/diagnosa/{diagnosa}', [ReferensiController::class, 'getDiagnosa']);
-            Route::get('/poli/{poli}', [ReferensiController::class, 'getPoli']);
-            Route::get('/dokter/pelayanan/{jenis}/{tgl}/{kd_sps}', [ReferensiController::class, 'getDokterDpjp']);
-            Route::get('/faskes/{faskes}/{jnsFaskes?}', [ReferensiController::class, 'getFaskes']);
-        });
-        Route::prefix('rujukan')->group(function () {
-            Route::post('insert', [RujukanController::class, 'insertRujukanKeluar']);
-            Route::get('keluar/list/{tglPertama}/{tglKedua}', [RujukanController::class, 'getListRujukanKeluarRs']);
-            Route::get('keluar/{noRujukan}', [RujukanController::class, 'getRujukanKeluar']);
-            Route::get('pcare/peserta/{noka}', [RujukanController::class, 'geRujukanPcarePeserta']);
-            Route::get('peserta/{noka}', [RujukanController::class, 'getRujukanPeserta']);
-            Route::get('list/peserta/{noka}', [RujukanController::class, 'getListRujukanPeserta']);
-        });
-        Route::prefix('rencanaKontrol')->group(function () {
-            Route::get('{jnsKontrol}/{nomor}/{tanggal}', [RencanaKontrolController::class, 'getSpesialis']);
-            Route::get('jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);
-            Route::get('list/{bulan}/{tahun}/{noka}/{filter}', [RencanaKontrolController::class, 'getListRencana']);
-            Route::post('insert', [RencanaKontrolController::class, 'insertRencanaKontrol']);
-        });
 
-        Route::prefix('spri')->group(function () {
-            Route::post('insert', [RencanaKontrolController::class, 'insertPerintahInap']);
-        });
-        Route::get('peserta/nik/{nik}/{tanggal}', [PesertaController::class, 'getPesertaNik']);
-        Route::get('peserta/noka/{noka}/{tanggal}', [PesertaController::class, 'getPesertaNoka']);
-        Route::get('SEP/{sep}', [SepController::class, 'getSep']);
-        Route::get('peserta/nokartu/{nokartu}/tglsep/{tglsep}', [ReferensiController::class, 'getPasien']);
-        Route::post('/riwayat/icare', [IcareController::class, 'rsValidate']);
-
-        Route::get('apotek/referensi/dhpo', [ApotekReferensiController::class, 'getDpho']);
-    });
 
     Route::get('spri/get/{nokartu}/{tanggal}', [BridgingSPRIController::class, 'get']);
     Route::post('spri/insert', [BridgingSPRIController::class, 'create']);
@@ -475,36 +387,9 @@ Route::middleware('auth')->group(function () {
     Route::post('edukasi-obat-pulang', [KomunikasiEdukasiObatPulangController::class, 'create']);
     Route::post('edukasi-obat-pulang/delete', [KomunikasiEdukasiObatPulangController::class, 'delete']);
     Route::get('resep-pulang', [ResepPulangController::class, 'get']);
-    
+
     Route::post('discharge-planning', [DischargePlanningController::class, 'create']);
     Route::get('discharge-planning', [DischargePlanningController::class, 'get']);
-
-    Route::post('asesmen-nyeri-dewasa', [AsesmenNyeriDewasaController::class, 'create']);
-    Route::get('asesmen-nyeri-dewasa', [AsesmenNyeriDewasaController::class, 'get']);
-    Route::get('asesmen-nyeri-dewasa/first', [AsesmenNyeriDewasaController::class, 'first']);
-    Route::post('asesmen-nyeri-dewasa/delete', [AsesmenNyeriDewasaController::class, 'delete']);
-    
-    Route::post('asesmen-nyeri-batita', [AsesmenNyeriBatitaController::class, 'create']);
-    Route::get('asesmen-nyeri-batita', [AsesmenNyeriBatitaController::class, 'get']);
-    Route::post('asesmen-nyeri-batita/delete', [AsesmenNyeriBatitaController::class, 'delete']);
-    Route::get('asesmen-nyeri-batita/first', [AsesmenNyeriBatitaController::class, 'first']);
-    
-    Route::post('asesmen-nyeri-balita', [AsesmenNyeriBalitaController::class, 'create']);
-    Route::get('asesmen-nyeri-balita', [AsesmenNyeriBalitaController::class, 'get']);
-    Route::post('asesmen-nyeri-balita/delete', [AsesmenNyeriBalitaController::class, 'delete']);
-    Route::get('asesmen-nyeri-balita/first', [AsesmenNyeriBalitaController::class, 'first']);
-   
-    Route::post('asesmen-nyeri-anak', [AsesmenNyeriAnakController::class, 'create']);
-    Route::get('asesmen-nyeri-anak', [AsesmenNyeriAnakController::class, 'get']);
-    Route::post('asesmen-nyeri-anak/delete', [AsesmenNyeriAnakController::class, 'delete']);
-    Route::get('asesmen-nyeri-anak/first', [AsesmenNyeriAnakController::class, 'first']);
- 
-    Route::post('asesmen-nyeri-neonatus', [AsesmenNyeriNeonatusController::class, 'create']);
-    Route::get('asesmen-nyeri-neonatus', [AsesmenNyeriNeonatusController::class, 'get']);
-    Route::post('asesmen-nyeri-neonatus/delete', [AsesmenNyeriNeonatusController::class, 'delete']);
-    Route::get('asesmen-nyeri-neonatus/first', [AsesmenNyeriNeonatusController::class, 'first']);
-
-
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 
@@ -516,9 +401,16 @@ Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 Route::get('/test/view', function () {
     return view('test');
 });
-Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}',[PoliklinikController::class, 'poliPasien']);
+Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}', [PoliklinikController::class, 'poliPasien']);
 Route::get('/sbar', [SbarController::class, 'dataTable']);
 
+
+require __DIR__ . '/partials/asesmen_nyeri.php';
+require __DIR__ . '/partials/pasien.php';
+require __DIR__ . '/partials/bridging_bpjs.php';
+require __DIR__ . '/partials/registrasi.php';
+require __DIR__ . '/partials/poliklinik.php';
+require __DIR__ . '/partials/lab.php';
 // Route::get('/file', function () {
 // $file = Storage::disk('custom')->url('LOGO RSIA (2).png');
 // dd($file);

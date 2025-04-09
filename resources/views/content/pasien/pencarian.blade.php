@@ -1,12 +1,15 @@
 @extends('index')
 
 @section('contents')
-    <div class="input-group mb-3">
+    <div class="input-group mb-3 d-none">
         <select class="search form-control" name="keyword"></select>
     </div>
-
-
     <div class="row gy-2">
+        <div class="col-12">
+            <table class="table table-striped table-sm table-responsive nowrap" id="tablePasien" width="100%" style="font-size: 11px">
+
+            </table>
+        </div>
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-header text-bg-warning">
@@ -63,6 +66,10 @@
 @push('script')
     <script>
         var btnName;
+        const tablePasien = $('#tablePasien');
+        $(document).ready(function() {
+            loadTablePasien();
+        })
         $('.search').select2({
             placeholder: 'Cari pasien',
             allowClear: true,
@@ -94,6 +101,7 @@
         });
 
 
+
         $(document).ready(function() {
             if ($('.pip').length == 0) {
                 $('#submit').hide()
@@ -116,6 +124,140 @@
                 } else {
                     modalRiwayat(no_rkm_medis);
                 }
+            })
+        }
+
+        function loadTablePasien() {
+            tablePasien.DataTable({
+                processing: true,
+                serverSide: true,
+                scrollX: true,
+                ajax: {
+                    url: `${url}/pasien/table`,
+                    data: function(d) {
+                        d.no_rkm_medis = d.search.value;
+                        d.nm_pasien = d.search.value;
+                    }
+                },
+                columns: [{
+                        data: 'no_rkm_medis',
+                        name: 'no_rkm_medis',
+                        title: '',
+                        render: (data, type, row, meta) => {
+                            const encRm = row.id;
+                            return `<button class="btn btn-primary btn-sm" style="border-radius:20px" onclick="showHistory('${data}')"><i class="bi bi-eye"></i></button>
+                            <button class="btn btn-info btn-sm" style="border-radius:20px" onclick="confirmRiwayat('${data}')"><i class="bi bi-info-circle"></i></button>
+                            <a href="${url}/pasien/edit/${encRm}" class="btn btn-warning btn-sm" style="border-radius:20px"><i class="bi bi-pencil"></i></a>`
+                        }
+                    },
+                    {
+                        data: 'no_rkm_medis',
+                        name: 'no_rkm_medis',
+                        title: 'No. RM'
+                    },
+                    {
+                        data: 'no_ktp',
+                        name: 'no_ktp',
+                        title: 'No. KTP/SIM'
+                    },
+
+                    {
+                        data: 'no_peserta',
+                        name: 'no_peserta',
+                        title: 'No. Peserta'
+                    },
+                    {
+                        data: 'nm_pasien',
+                        name: 'nm_pasien',
+                        title: 'Nama'
+                    },
+                    {
+                        data: 'jk',
+                        name: 'jk',
+                        title: 'JK'
+                    },
+                    {
+                        data: 'tmp_lahir',
+                        name: 'tmp_lahir',
+                        title: 'Temp. Lahir'
+                    },
+                    {
+                        data: 'tgl_lahir',
+                        name: 'tgl_lahir',
+                        title: 'Tgl. Lahir',
+                        render: (data, type, row, meta) => {
+                            return moment(data).format('DD-MM-YYYY')
+                        }
+                    },
+                    {
+                        data: 'tgl_lahir',
+                        name: 'tgl_lahir',
+                        title: 'Umur',
+                        render: (data, type, row, meta) => {
+                            return hitungUmur(data)
+                        }
+
+                    },
+                    {
+                        data: 'nm_ibu',
+                        name: 'nm_ibu',
+                        title: 'Nm. Ibu'
+                    },
+                    {
+                        data: 'alamat',
+                        name: 'alamat',
+                        title: 'Alamat'
+                    },
+                    {
+                        data: 'kel.nm_kel',
+                        name: 'kel.nm_kel',
+                        title: 'Kelurahan'
+                    },
+                    {
+                        data: 'kec.nm_kec',
+                        name: 'kec.nm_kec',
+                        title: 'Kecamatan'
+                    },
+                    {
+                        data: 'kab.nm_kab',
+                        name: 'kab.nm_kab',
+                        title: 'Kab/Kota'
+                    },
+                    {
+                        data: 'no_tlp',
+                        name: 'no_tlp',
+                        title: 'Telp.'
+                    },
+                    {
+                        data: 'gol_darah',
+                        name: 'gol_darah',
+                        title: 'G.D.'
+                    },
+                    {
+                        data: 'pekerjaan',
+                        name: 'pekerjaan',
+                        title: 'Pekerjaan'
+                    },
+                    {
+                        data: 'instansi.nama_perusahaan',
+                        name: 'instansi.nama_perusahaan',
+                        title: 'Instansi'
+                    },
+                    {
+                        data: 'penjab.png_jawab',
+                        name: 'penjab.png_jawab',
+                        title: 'Asuransi'
+                    },
+                    {
+                        data: 'tgl_daftar',
+                        name: 'tgl_daftar',
+                        title: 'Tgl. Daftar',
+                        render: (data, type, row, meta) => {
+                            return moment(data).format('DD-MM-YYYY')
+                        }
+                    }
+
+                ]
             })
         }
     </script>

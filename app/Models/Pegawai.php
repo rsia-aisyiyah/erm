@@ -32,4 +32,8 @@ class Pegawai extends Model
     {
         return $this->hasOne(Departemen::class, 'dep_id', 'departemen');
     }
+    function dep()
+    {
+        return $this->hasOne(Departemen::class, 'dep_id', 'departemen');
+    }
 }

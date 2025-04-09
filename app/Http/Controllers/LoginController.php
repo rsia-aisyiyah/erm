@@ -57,11 +57,12 @@ class LoginController extends Controller
                 }
 
                 Auth::login($user);
-                $pegawai = Pegawai::where('nik', $request->get('username'))->with(['petugas', 'dokter.jadwal'])->first();
+                $pegawai = Pegawai::where('nik', $request->get('username'))
+                    ->with(['petugas', 'dokter.jadwal', 'dep'])->first();
                 $request->session()->regenerate();
                 Session::put('pegawai', $pegawai);
                 Session::put('status', 'ok');
-                $role = $pegawai->dokter ? 'dokter' : '';
+                $role = $pegawai->dokter ? 'dokter' : $pegawai->dep->nama;
                 Session::put('role', $role);
 
                 return $this->redirectBasedOnRole($pegawai, $request);

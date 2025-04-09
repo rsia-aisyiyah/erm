@@ -558,9 +558,9 @@
 
         function showRiwayatAsmedKandungan(rawat, no_rkm_medis) {
             $('#tbRiwayatAsmed tbody').empty()
-            const url = rawat === 'ranap' ? `asmed/ranap/kandungan/rm/${no_rkm_medis}` : '';
+            const urlAsmed = rawat === 'ranap' ? `asmed/ranap/kandungan/rm/${no_rkm_medis}` : '';
             $.ajax({
-                url: url,
+                url: urlAsmed,
                 method: 'get',
                 dataType: 'JSON',
             }).done((response) => {
@@ -602,9 +602,9 @@
 
         function showRiwayatAsmedAnak(rawat, no_rkm_medis) {
             $('#tbRiwayatAsmed tbody').empty()
-            const url = rawat === 'ranap' ? `asmed/ranap/anak/rm/${no_rkm_medis}` : '';
+            const urlAsmed = rawat === 'ranap' ? `asmed/ranap/anak/rm/${no_rkm_medis}` : '';
             $.ajax({
-                url: url,
+                url: urlAsmed,
                 method: 'get',
                 dataType: 'JSON',
             }).done((response) => {
@@ -1119,7 +1119,5 @@
         //         $(`#${id}`).addClass('show');
         //     }
         // }
-
-        
     </script>
 @endpush

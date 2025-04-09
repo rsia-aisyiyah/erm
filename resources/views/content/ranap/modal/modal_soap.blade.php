@@ -292,23 +292,5 @@
             })
             return pemeriksaan;
         }
-
-        function setFormData(data) {
-            for (let key in data) {
-                if (data.hasOwnProperty(key)) {
-                    let fields = document.querySelectorAll(`[name="${key}"]`);
-
-                    if (fields.length > 0) {
-                        fields.forEach(field => {
-                            if (field.type === 'checkbox' || field.type === 'radio') {
-                                field.checked = data[key] == field.value;
-                            } else {
-                                field.value = data[key];
-                            }
-                        });
-                    }
-                }
-            }
-        }
     </script>
 @endpush

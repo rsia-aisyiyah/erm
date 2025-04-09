@@ -123,7 +123,6 @@
         var petugas = $('#selectPetugas')
         var selectDokter = $('#selectDokterKritis')
         var selectPetugasRuang = $('#selectPetugasRuang')
-        var url = "{{ url('') }}"
 
         function selectPetugasKritis(params) {
             const select = params.select2({

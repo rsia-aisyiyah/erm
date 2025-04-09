@@ -3,6 +3,7 @@
 <meta charset="utf-8">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @include('layout.head')
+@stack('style')
 
 <body>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" style="border-radius:0px">
@@ -18,7 +19,7 @@
     <div class="container-fluid">
         <div class="row">
             @include('layout.sidebar')
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">
                         {{ (Request::segment(1) == null ? 'DASHBOARD' : Request::segment(1) == 'ranap') ? 'Rawat Inap' : strtoupper(Request::segment(1)) }}
@@ -53,7 +54,7 @@
     <script type="text/javascript">
         const role = '{{ session()->get('role') }}'
         const APIURL = 'http://sim.rsiaaisyiyah.com/rsiap-api/api';
-
+        let url = '{{ url('/') }}';
         // var qrcode = new QRCode("qrcode");
 
         $.ajaxSetup({
@@ -93,12 +94,30 @@
             const getUrl = "{{ url('') }}"
             const arrDomain = getUrl.split('/');
             const segment = urlSegments ? `/${urlSegments}` : ''
+
             if (arrDomain[2] == 'sim.rsiaaisyiyah.com') {
-                url = 'https://sim.rsiaaisyiyah.com' + segment;
+                return 'https://sim.rsiaaisyiyah.com' + segment;
             } else {
-                url = `${arrDomain[0]}//192.168.100.33${segment}`
+                return `${arrDomain[0]}//192.168.100.33${segment}`
             }
-            return url;
+        }
+
+        function setFormData(data) {
+            for (let key in data) {
+                if (data.hasOwnProperty(key)) {
+                    let fields = document.querySelectorAll(`[name="${key}"]`);
+
+                    if (fields.length > 0) {
+                        fields.forEach(field => {
+                            if (field.type === 'checkbox' || field.type === 'radio') {
+                                field.checked = data[key] == field.value;
+                            } else {
+                                field.value = data[key];
+                            }
+                        });
+                    }
+                }
+            }
         }
 
         function ambilNoRawat(no_rawat) {
@@ -928,8 +947,9 @@
             })
         }
 
-        function showHistory() {
-            var no_rkm_medis = $('.search option:selected').val();
+        function showHistory(no_rm = '') {
+            var selected = $('.search option:selected').val();
+            const no_rkm_medis = no_rm ? no_rm : selected;
             $('#upload-image').css('visibility', 'hidden');
             getPasienPeriksa(no_rkm_medis).done(function(data) {
                 $('#ralan tbody').empty();
@@ -1234,9 +1254,9 @@
         });
 
         function getEws(params, stts) {
-            const url = stts == 'ranap' ? '/erm/ews/ranap/' + textRawat(params, '-') : '/erm/ews/ralan/' + textRawat(params, '-');
+            const urlEws = stts == 'ranap' ? '/erm/ews/ranap/' + textRawat(params, '-') : '/erm/ews/ralan/' + textRawat(params, '-');
             const ews = $.ajax({
-                url: url,
+                url: urlEws,
                 dataType: 'JSON',
                 method: 'GET',
                 error: (request) => {
@@ -1415,9 +1435,9 @@
         }
 
         function getEwsMaternal(params, stts) {
-            const url = stts == 'ranap' ? '/erm/ews/maternal/ranap/' + textRawat(params, '-') : '/erm/ews/maternal/ralan/' + textRawat(params, '-');
+            const urlEws = stts == 'ranap' ? '/erm/ews/maternal/ranap/' + textRawat(params, '-') : '/erm/ews/maternal/ralan/' + textRawat(params, '-');
             const ews = $.ajax({
-                url: url,
+                url: urlEws,
                 dataType: 'JSON',
                 method: 'GET',
                 error: (request) => {
