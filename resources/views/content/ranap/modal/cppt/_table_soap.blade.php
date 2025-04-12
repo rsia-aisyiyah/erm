@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="col-md-12 col-lg-3 col-sm-12">
-        <select name="petugas" id="petugas" class="form-select form-select-sm mb-3" style="font-size: 12px">
+        <select name="petugasCppt" id="petugasCppt" class="form-select form-select-sm mb-3" style="font-size: 12px">
             <option value="" disabled selected>Pilih Petugas Medis</option>
             <option value="">Semua</option>
             <option value="1">Dokter</option>
@@ -15,7 +15,7 @@
         </select>
     </div>
     <div class="col-md-12 col-lg-3 col-sm-12">
-        <button type="button" class="btn btn-success btn-sm mb-3" id="cari"
+        <button type="button" class="btn btn-success btn-sm mb-3" id="cariCppt"
             onclick="cariSoap()">
             <i class="bi bi-search"> Cari Soap</i>
         </button>
@@ -256,7 +256,7 @@
         function cariSoap() {
             const tgl_pertama = splitTanggal($('.tgl_pertama_soap').val());
             const tgl_kedua = splitTanggal($('.tgl_kedua_soap').val());
-            petugas = $('#petugas option:selected').val();
+            const petugas = $('#petugasCppt').val();
             tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua, petugas);
         }
 
