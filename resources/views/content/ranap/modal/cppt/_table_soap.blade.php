@@ -94,6 +94,7 @@
                 destroy: true,
                 autoWidth: false,
                 saveState: true,
+                ordering: false,
                 ajax: {
                     url: "soap",
                     data: {
