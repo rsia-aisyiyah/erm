@@ -30,6 +30,8 @@ class Pasien extends Model
 {
     use HasFactory;
     protected $table = 'pasien';
+    public $timestamps = false;
+    protected $guarded = [];
     public function regPeriksa()
     {
         return $this->hasMany(
@@ -118,6 +120,10 @@ class Pasien extends Model
         );
     }
     function sukuBangsa(): BelongsTo
+    {
+        return $this->belongsTo(SukuBangsa::class, 'suku_bangsa', 'id');
+    }
+    function suku(): BelongsTo
     {
         return $this->belongsTo(SukuBangsa::class, 'suku_bangsa', 'id');
     }

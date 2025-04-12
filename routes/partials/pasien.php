@@ -8,6 +8,7 @@ use App\Http\Controllers\CacatFisikController;
 use App\Http\Controllers\SukuBangsaController;
 use App\Http\Controllers\BahasaPasienController;
 use App\Http\Controllers\RsiaKetPasienController;
+use App\Models\Instansi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -18,9 +19,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::prefix('pasien')->group(function () {
         Route::get('/', [PasienController::class, 'index']);
+        Route::post('/', [PasienController::class, 'create']);
         Route::get('/edit/{no_rkm_medis}', function ($no_rkm_medis) {
             $id = Crypt::decrypt($no_rkm_medis);
-            $pasien = Pasien::where('no_rkm_medis', $id)->first();
+            $pasien = Pasien::where('no_rkm_medis', $id)
+                ->with('sukuBangsa', 'bahasa', 'cacat', 'penjab', 'kel', 'kec', 'kab', 'prop', 'instansi')
+                ->first();
             return view('content.pasien.edit', [
                 'pasien' => $pasien,
             ]);
@@ -50,6 +54,9 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('/propinsi', function (Propinsi $propinsi, Request $request) {
             return $propinsi->where('nm_prop', 'like', '%' . $request->nama . '%')->get();
+        });
+        Route::get('/instansi', function (Instansi $model, Request $request) {
+            return $model->where('nama_perusahaan', 'like', '%' . $request->nama . '%')->get();
         });
     });
 });
