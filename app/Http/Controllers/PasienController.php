@@ -59,7 +59,8 @@ class PasienController extends Controller
         $pasien = $this->pasien;
         if ($key) {
             $pasien = $pasien
-                ->where('nm_pasien', 'like', '%' . $key . '%');
+                ->where('nm_pasien', 'like', '%' . $key . '%')
+                ->orWhere('no_rkm_medis', 'like', $key . '%');
         } else {
             $pasien = $pasien
                 ->where('nm_pasien', '!=', '-')
