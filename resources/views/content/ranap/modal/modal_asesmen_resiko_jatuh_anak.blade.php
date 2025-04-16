@@ -1,12 +1,12 @@
-<div class="modal fade" id="modalAsesmenResikoJatuhDewasa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalAsesmenResikoJatuhAnak" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fs-5" id="#"><i>ASESMEN RESIKO JATUH DEWASA / MORSE</i></h5>
+                <h5 class="modal-title fs-5" id="#"><i>ASESMEN RESIKO JATUH ANAK / HUMPY-DUMPTY</i></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" id="formAsesmenResikoJatuhDewasa">
+                <form action="" id="formAsesmenResikoJatuhAnak">
                     <div class="row gy-2">
                         <div class="col-lg-2 col-md-6 col-sm-12">
                             <label for="no_rawat" class="form-label">No. Rawat</label>
@@ -47,7 +47,7 @@
 
                     </div>
                     <hr>
-                    <div class="row gy-2 sectionFormResikoJatuhDewasa">
+                    <div class="row gy-2 sectionFormResikoJatuhAnak">
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label for="petugas" class="form-label">Petugas</label>
                             <x-input-group class="input-group-sm">
@@ -246,7 +246,7 @@
                             <x-input type="hidden" name="update" id="update" value=0 />
                         </div>
                         <div class="table-responsive table-responsive-md overflow-x-auto">
-                            <table class="table table-striped table-bordered" id="tbAsesmenResikoJatuhDewasa">
+                            <table class="table table-striped table-bordered" id="tbAsesmenResikoJatuhAnak">
                                 <tbody>
 
                                 </tbody>
@@ -254,7 +254,7 @@
                         </div>
                     </div>
                     <div class="table-responsive" style="overflow-x: auto;">
-                        <table class="table table-striped table-bordered" id="tableResikoJatuhDewasa" style="min-width: 1200px;">
+                        <table class="table table-striped table-bordered" id="tableResikoJatuhAnak" style="min-width: 1200px;">
                             <tbody>
                                 <!-- your existing table rows -->
                             </tbody>
@@ -264,7 +264,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" style="font-size: 13px" id="btnCreateAsesmenResikoJatuhDewasa">
+                <button type="button" class="btn btn-primary btn-sm" style="font-size: 13px" id="btnCreateAsesmenResikoJatuhAnak">
                     <i class="bi bi-save me-1">
                     </i> Simpan
                 </button>
@@ -279,23 +279,23 @@
 
 @push('script')
     <script>
-        const modalAsesmenResikoJatuhDewasa = $('#modalAsesmenResikoJatuhDewasa');
-        const formAsesmenResikoJatuhDewasa = $('#formAsesmenResikoJatuhDewasa');
-        const btnCreateAsesmenResikoJatuhDewasa = $('#btnCreateAsesmenResikoJatuhDewasa');
-        const radioAsesmenResikoJatuhDewasa = formAsesmenResikoJatuhDewasa.find('input[type=radio]');
-        const tableResikoJatuhDewasa = $('#tableResikoJatuhDewasa');
+        const modalAsesmenResikoJatuhAnak = $('#modalAsesmenResikoJatuhAnak');
+        const formAsesmenResikoJatuhAnak = $('#formAsesmenResikoJatuhAnak');
+        const btnCreateAsesmenResikoJatuhAnak = $('#btnCreateAsesmenResikoJatuhAnak');
+        const radioAsesmenResikoJatuhAnak = formAsesmenResikoJatuhAnak.find('input[type=radio]');
+        const tableResikoJatuhAnak = $('#tableResikoJatuhAnak');
 
 
-        const selects = formAsesmenResikoJatuhDewasa.find('select[name^=penilaian_jatuhmorse_skala]');
-        selects.change((e) => {
+        const selectsAsesmenResikoJatuhAnak = formAsesmenResikoJatuhAnak.find('select[name^=penilaian_jatuhmorse_skala]');
+        selectsAsesmenResikoJatuhAnak.change((e) => {
             const nilai = $(e.target).find(':selected').data('nilai');
             const inputName = $(e.target).attr('name').replace('skala', 'nilai');
-            formAsesmenResikoJatuhDewasa.find(`input[name=${inputName}]`).val(nilai);
-            countTingkatResikoJatuhDewasa();
+            formAsesmenResikoJatuhAnak.find(`input[name=${inputName}]`).val(nilai);
+            countTingkatResikoJatuhAnak();
         });
 
-        function countTingkatResikoJatuhDewasa() {
-            const skalaValues = [1, 2, 3, 4, 5, 6].map(i => parseInt(formAsesmenResikoJatuhDewasa.find(`input[name=penilaian_jatuhmorse_nilai${i}]`).val()) || 0);
+        function countTingkatResikoJatuhAnak() {
+            const skalaValues = [1, 2, 3, 4, 5, 6].map(i => parseInt(formAsesmenResikoJatuhAnak.find(`input[name=penilaian_jatuhmorse_nilai${i}]`).val()) || 0);
             const skalaNyeri = skalaValues.reduce((sum, val) => sum + val, 0);
 
             let hasilResiko, tindakanResiko, textColor;
@@ -318,36 +318,41 @@
             }
             $('.intervensiResikoDewasa').html(`${hasilResiko} <br/> ${tindakanResiko}`);
             $('.intervensiResikoDewasa').css('color', textColor);
-            formAsesmenResikoJatuhDewasa.find('input[name=penilaian_jatuhmorse_totalnilai]').val(skalaNyeri);
-            formAsesmenResikoJatuhDewasa.find('textarea[name=hasil_skrining]').val(`${hasilResiko} : ${tindakanResiko}`);
+            formAsesmenResikoJatuhAnak.find('input[name=penilaian_jatuhmorse_totalnilai]').val(skalaNyeri);
+            formAsesmenResikoJatuhAnak.find('textarea[name=hasil_skrining]').val(`${hasilResiko} : ${tindakanResiko}`);
         }
 
-        function showModalAsesmenResikoJatuhDewasa(no_rawat) {
-            modalAsesmenResikoJatuhDewasa.modal('show');
-            renderResikojatuhDewasa(no_rawat)
-            resetFormAsesmenResikoJatuhDewasa(no_rawat);
-            countTingkatResikoJatuhDewasa();
+        function showModalAsesmenResikoJatuhAnak(no_rawat) {
+            Swal.fire({
+                title: '<i>Belum tersedia</i>',
+                icon: 'info',
+                html: `Masih dalam proses pengembangan, terimakasih`
+            })
+            // modalAsesmenResikoJatuhAnak.modal('show');
+            // renderResikojatuhDewasa(no_rawat)
+            // resetFormAsesmenResikoJatuhAnak(no_rawat);
+            // countTingkatResikoJatuhAnak();
         }
 
-        const chekIntervensiDewasa = formAsesmenResikoJatuhDewasa.find('.check_intervensi_pencegahan');
+        const chekIntervensiAnak = formAsesmenResikoJatuhAnak.find('.check_intervensi_pencegahan');
 
-        chekIntervensiDewasa.change((e) => {
-            const check = formAsesmenResikoJatuhDewasa.find('input[name=intervensi_pencegahan]:checked');
+        chekIntervensiAnak.change((e) => {
+            const check = formAsesmenResikoJatuhAnak.find('input[name=intervensi_pencegahan]:checked');
             const arrayChecked = check.serializeArray();
             const value = arrayChecked.map((item) => item.value).join(';\n');
-            const textareaSaran = formAsesmenResikoJatuhDewasa.find('textarea[name=saran]')
+            const textareaSaran = formAsesmenResikoJatuhAnak.find('textarea[name=saran]')
 
 
             textareaSaran.text(value)
 
         });
 
-        function resetFormAsesmenResikoJatuhDewasa(no_rawat) {
-            formAsesmenResikoJatuhDewasa.trigger('reset');
-            formAsesmenResikoJatuhDewasa.find('input[name=skala]').val(0).trigger('change');
-            formAsesmenResikoJatuhDewasa.find('input[name=lokasi]').prop('checked', false).trigger('change');
-            formAsesmenResikoJatuhDewasa.find('input[name=penyuluhan]').prop('checked', false).trigger('change');
-            formAsesmenResikoJatuhDewasa.find('input[name=non_farmakologi]').prop('checked', false).trigger('change');
+        function resetFormAsesmenResikoJatuhAnak(no_rawat) {
+            formAsesmenResikoJatuhAnak.trigger('reset');
+            formAsesmenResikoJatuhAnak.find('input[name=skala]').val(0).trigger('change');
+            formAsesmenResikoJatuhAnak.find('input[name=lokasi]').prop('checked', false).trigger('change');
+            formAsesmenResikoJatuhAnak.find('input[name=penyuluhan]').prop('checked', false).trigger('change');
+            formAsesmenResikoJatuhAnak.find('input[name=non_farmakologi]').prop('checked', false).trigger('change');
 
             getRegPeriksa(no_rawat).done((response) => {
                 rangeSkalaInterpretasiNeonatus.val(0).trigger('change');
@@ -370,44 +375,47 @@
                 }
 
 
-                const tanggal = formAsesmenResikoJatuhDewasa.find('input[name=tanggal]');
+                const tanggal = formAsesmenResikoJatuhAnak.find('input[name=tanggal]');
                 const dateNow = moment().format('DD-MM-YYYY HH:mm:ss');
                 tanggal.val(dateNow);
 
-                formAsesmenResikoJatuhDewasa.find('input[name=no_rawat]').val(no_rawat);
-                formAsesmenResikoJatuhDewasa.find('input[name=no_rkm_medis]').val(pasien.no_rkm_medis);
-                formAsesmenResikoJatuhDewasa.find('input[name=nm_pasien]').val(`${pasien.nm_pasien} (${response.umurdaftar} ${response.sttsumur})`);
-                formAsesmenResikoJatuhDewasa.find('input[name=keluarga]').val(response.p_jawab)
-                formAsesmenResikoJatuhDewasa.find('input[name=alamat]').val(`${pasien.alamat}, ${pasien.kecamatanpj}`)
-                formAsesmenResikoJatuhDewasa.find('input[name=kamar]').val(kamar.split(',').length >= 1 ? kamar.split(',')[0] : kamar);
-                formAsesmenResikoJatuhDewasa.find('input[name=tgl_registrasi]').val(`${formatTanggal(response.tgl_registrasi)} ${response.jam_reg}`);
-                formAsesmenResikoJatuhDewasa.find('input[name=diagnosa]').val(kamar.split(',').length >= 1 ? kamar.split(',')[1] : '-');
-                formAsesmenResikoJatuhDewasa.find('input[name=dokter]').val(dokter.nm_dokter);
-                formAsesmenResikoJatuhDewasa.find('input[name=update]').val(0);
-                formAsesmenResikoJatuhDewasa.find('textarea[name=saran]').text('');
-                formAsesmenResikoJatuhDewasa.find('textarea[name=hasil_skrining]').text('');
+                formAsesmenResikoJatuhAnak.find('input[name=no_rawat]').val(no_rawat);
+                formAsesmenResikoJatuhAnak.find('input[name=no_rkm_medis]').val(pasien.no_rkm_medis);
+                formAsesmenResikoJatuhAnak.find('input[name=nm_pasien]').val(`${pasien.nm_pasien} (${response.umurdaftar} ${response.sttsumur})`);
+                formAsesmenResikoJatuhAnak.find('input[name=keluarga]').val(response.p_jawab)
+                formAsesmenResikoJatuhAnak.find('input[name=alamat]').val(`${pasien.alamat}, ${pasien.kecamatanpj}`)
+                formAsesmenResikoJatuhAnak.find('input[name=kamar]').val(kamar.split(',').length >= 1 ? kamar.split(',')[0] : kamar);
+                formAsesmenResikoJatuhAnak.find('input[name=tgl_registrasi]').val(`${formatTanggal(response.tgl_registrasi)} ${response.jam_reg}`);
+                formAsesmenResikoJatuhAnak.find('input[name=diagnosa]').val(kamar.split(',').length >= 1 ? kamar.split(',')[1] : '-');
+                formAsesmenResikoJatuhAnak.find('input[name=dokter]').val(dokter.nm_dokter);
+                formAsesmenResikoJatuhAnak.find('input[name=update]').val(0);
+                formAsesmenResikoJatuhAnak.find('textarea[name=saran]').text('');
+                formAsesmenResikoJatuhAnak.find('textarea[name=hasil_skrining]').text('');
 
             })
         }
 
-        btnCreateAsesmenResikoJatuhDewasa.on('click', () => {
-            const data = getDataForm('#formAsesmenResikoJatuhDewasa', ['input', 'select', 'textarea']);
-            const isUpdate = formAsesmenResikoJatuhDewasa.find('input[name=update]').val()
+        btnCreateAsesmenResikoJatuhAnak.on('click', () => {
+            const data = getDataForm('#formAsesmenResikoJatuhAnak', ['input', 'select', 'textarea']);
+            const isUpdate = formAsesmenResikoJatuhAnak.find('input[name=update]').val()
+
 
             if (isUpdate != 0) {
-                updateResikoJatuhDewasa(data);
+                console.log(isUpdate);
+                updateResikoJatuhAnak(data);
                 return false;
             }
+            console.log('CREATED');
             $.post(`${url}/asesmen/resiko-jatuh-dewasa`, data).done((response) => {
                 alertSuccessAjax('Berhasil membuat resiko jatuh dewasa')
                 renderResikojatuhDewasa(data['no_rawat']);
-                resetFormAsesmenResikoJatuhDewasa(data['no_rawat']);
-                countTingkatResikoJatuhDewasa(data['no_rawat']);
+                resetFormAsesmenResikoJatuhAnak(data['no_rawat']);
+                countTingkatResikoJatuhAnak(data['no_rawat']);
             })
         })
 
 
-        function updateResikoJatuhDewasa(data) {
+        function updateResikoJatuhAnak(data) {
             $.ajax({
                 url: `${url}/asesmen/resiko-jatuh-dewasa`,
                 type: 'PUT',
@@ -415,7 +423,7 @@
             }).done((response) => {
                 alertSuccessAjax('Berhasil mengubah resiko jatuh dewasa')
                 renderResikojatuhDewasa(data['no_rawat']);
-                resetFormAsesmenResikoJatuhDewasa(data['no_rawat'])
+                resetFormAsesmenResikoJatuhAnak(data['no_rawat'])
             })
         }
 
@@ -424,7 +432,7 @@
             $.get(`${url}/asesmen/resiko-jatuh-dewasa/get`, {
                 no_rawat: no_rawat
             }).done((response) => {
-                tableResikoJatuhDewasa.find('tbody').empty();
+                tableResikoJatuhAnak.find('tbody').empty();
                 if (Object.keys(response).length === 0) {
                     return false;
                 }
@@ -489,12 +497,12 @@
                     }
                 })
 
-                tableResikoJatuhDewasa.find('tbody').append(headerRow);
+                tableResikoJatuhAnak.find('tbody').append(headerRow);
 
                 barisData.forEach(item => {
                     const baris = $("<tr></tr>");
                     baris.append($(`<th width="15%"></th>`).text(item.label));
-                    tableResikoJatuhDewasa.find('tbody').append(baris);
+                    tableResikoJatuhAnak.find('tbody').append(baris);
                     response.forEach((data, index) => {
                         const selData = $(`<td></td>`);
                         let values = [];
@@ -514,8 +522,8 @@
                                 const userSession = "{{ session()->get('pegawai')->nik }}";
                                 let button = '';
                                 if (userSession == data['petugas']['nip']) {
-                                    button = ` <span class="badge bg-primary p-1 ms-2" style="cursor: pointer" onclick="getResikoJatuhDewasa('${data.no_rawat}', '${data.tanggal}')"><i class="bi bi-pencil-square"></i></span>
-                                    <span class="badge bg-danger p-1" style="cursor: pointer" onclick="deleteResikoJatuhDewasa('${data.no_rawat}', '${data.tanggal}')"><i class="bi bi-trash"></i></span>`;
+                                    button = ` <span class="badge bg-primary p-1 ms-2" style="cursor: pointer" onclick="getResikoJatuhAnak('${data.no_rawat}', '${data.tanggal}')"><i class="bi bi-pencil-square"></i></span>
+                                    <span class="badge bg-danger p-1" style="cursor: pointer" onclick="deleteResikoJatuhAnak('${data.no_rawat}', '${data.tanggal}')"><i class="bi bi-trash"></i></span>`;
                                 }
 
 
@@ -556,27 +564,27 @@
 
         }
 
-        function getResikoJatuhDewasa(no_rawat, tanggal) {
+        function getResikoJatuhAnak(no_rawat, tanggal) {
             $.get(`${url}/asesmen/resiko-jatuh-dewasa/get`, {
                 no_rawat: no_rawat,
                 tanggal: tanggal
             }).done((response) => {
                 for (let i = 1; i <= 6; i++) {
-                    formAsesmenResikoJatuhDewasa.find(`select[name=penilaian_jatuhmorse_skala${i}]`)
+                    formAsesmenResikoJatuhAnak.find(`select[name=penilaian_jatuhmorse_skala${i}]`)
                         .val(response[`penilaian_jatuhmorse_skala${i}`]).trigger('change');
                 }
-                formAsesmenResikoJatuhDewasa.find('textarea[name=hasil_skrining]').val(response.hasil_skrining);
-                formAsesmenResikoJatuhDewasa.find('textarea[name=saran]').val(response.saran);
+                formAsesmenResikoJatuhAnak.find('textarea[name=hasil_skrining]').val(response.hasil_skrining);
+                formAsesmenResikoJatuhAnak.find('textarea[name=saran]').val(response.saran);
                 const dateTimeSplit = response.tanggal.split(' ');
                 const date = splitTanggal(dateTimeSplit[0]);
                 const time = dateTimeSplit[1];
-                formAsesmenResikoJatuhDewasa.find('input[name=tanggal]').val(`${date} ${time}`);
-                formAsesmenResikoJatuhDewasa.find('input[name=update]').val(1);
+                formAsesmenResikoJatuhAnak.find('input[name=tanggal]').val(`${date} ${time}`);
+                formAsesmenResikoJatuhAnak.find('input[name=update]').val(1);
 
             });
         }
 
-        function deleteResikoJatuhDewasa(no_rawat, tanggal) {
+        function deleteResikoJatuhAnak(no_rawat, tanggal) {
             Swal.fire({
                 icon: 'question',
                 title: 'Hapus Data',
@@ -597,7 +605,7 @@
                     }).done((response) => {
                         alertSuccessAjax('Berhasil menghapus resiko jatuh dewasa')
                         renderResikojatuhDewasa(no_rawat)
-                        resetFormAsesmenResikoJatuhDewasa(no_rawat)
+                        resetFormAsesmenResikoJatuhAnak(no_rawat)
                     })
                 }
             })

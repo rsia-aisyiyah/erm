@@ -411,6 +411,7 @@ require __DIR__ . '/partials/bridging_bpjs.php';
 require __DIR__ . '/partials/registrasi.php';
 require __DIR__ . '/partials/poliklinik.php';
 require __DIR__ . '/partials/lab.php';
+require __DIR__ . '/partials/resiko_jatuh.php';
 // Route::get('/file', function () {
 // $file = Storage::disk('custom')->url('LOGO RSIA (2).png');
 // dd($file);
