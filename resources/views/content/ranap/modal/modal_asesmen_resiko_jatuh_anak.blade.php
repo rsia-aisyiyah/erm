@@ -278,7 +278,7 @@
 </div>
 
 @push('script')
-    <script>
+    {{-- <script>
         const modalAsesmenResikoJatuhAnak = $('#modalAsesmenResikoJatuhAnak');
         const formAsesmenResikoJatuhAnak = $('#formAsesmenResikoJatuhAnak');
         const btnCreateAsesmenResikoJatuhAnak = $('#btnCreateAsesmenResikoJatuhAnak');
@@ -322,17 +322,7 @@
             formAsesmenResikoJatuhAnak.find('textarea[name=hasil_skrining]').val(`${hasilResiko} : ${tindakanResiko}`);
         }
 
-        function showModalAsesmenResikoJatuhAnak(no_rawat) {
-            Swal.fire({
-                title: '<i>Belum tersedia</i>',
-                icon: 'info',
-                html: `Masih dalam proses pengembangan, terimakasih`
-            })
-            // modalAsesmenResikoJatuhAnak.modal('show');
-            // renderResikojatuhDewasa(no_rawat)
-            // resetFormAsesmenResikoJatuhAnak(no_rawat);
-            // countTingkatResikoJatuhAnak();
-        }
+        
 
         const chekIntervensiAnak = formAsesmenResikoJatuhAnak.find('.check_intervensi_pencegahan');
 
@@ -609,6 +599,20 @@
                     })
                 }
             })
+        }
+    </script> --}}
+
+    <script>
+        function showModalAsesmenResikoJatuhAnak(no_rawat) {
+            Swal.fire({
+                title: '<i>Belum tersedia</i>',
+                icon: 'info',
+                html: `Masih dalam proses pengembangan, terimakasih`
+            })
+            // modalAsesmenResikoJatuhAnak.modal('show');
+            // renderResikojatuhDewasa(no_rawat)
+            // resetFormAsesmenResikoJatuhAnak(no_rawat);
+            // countTingkatResikoJatuhAnak();
         }
     </script>
 @endpush
