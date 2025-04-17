@@ -171,6 +171,7 @@
     @include('content.ranap.modal.modal_asesmen_nyeri_anak')
     @include('content.ranap.modal.modal_asesmen_nyeri_neonatus')
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_dewasa')
+    @include('content.ranap.modal.modal_asesmen_resiko_jatuh_anak')
 @endsection
 
 @push('script')
@@ -389,7 +390,7 @@
                             list += renderListsAsesmenNyeri(data.pasien.tgl_lahir, data.tgl_registrasi, data.no_rawat);
                             if (row.reg_periksa.dokter.kd_sps === 'S0003') {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
-                                // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${data.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${data.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
                                 if (data.sttsumur === 'Hr') {
                                     list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
                                 } else if (data.sttsumur === 'Bl' || (data.umurdaftar <= 3 && data.sttsumur === 'Th')) {
@@ -401,7 +402,7 @@
                             } else if (row.reg_periksa.dokter.kd_sps === 'S0001') {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
-                                // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${data.no_rawat}')">Asesmen Resiko Jatuh Dewasa</a></li>`;
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${data.no_rawat}')">Asesmen Resiko Jatuh Dewasa</a></li>`;
 
                             }
 

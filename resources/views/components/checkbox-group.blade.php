@@ -1,5 +1,5 @@
 @foreach ($checkboxes as $id => $check)
-    <div class="form-check me-3">
+    <div {{ $attributes->merge(['class' => 'form-check me-3']) }}>
         <x-checkbox
             :id="$id"
             :name="$name"
