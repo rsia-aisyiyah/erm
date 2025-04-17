@@ -319,7 +319,7 @@
             $('.intervensiResikoDewasa').html(`${hasilResiko} <br/> ${tindakanResiko}`);
             $('.intervensiResikoDewasa').css('color', textColor);
             formAsesmenResikoJatuhDewasa.find('input[name=penilaian_jatuhmorse_totalnilai]').val(skalaNyeri);
-            formAsesmenResikoJatuhDewasa.find('textarea[name=hasil_skrining]').val(`${hasilResiko} : ${tindakanResiko}`);
+            formAsesmenResikoJatuhDewasa.find('textarea[name=hasil_skrining]').text(`${hasilResiko} : ${tindakanResiko}`);
         }
 
         function showModalAsesmenResikoJatuhDewasa(no_rawat) {
@@ -332,11 +332,12 @@
         const chekIntervensiDewasa = formAsesmenResikoJatuhDewasa.find('.check_intervensi_pencegahan');
 
         chekIntervensiDewasa.change((e) => {
+
             const check = formAsesmenResikoJatuhDewasa.find('input[name=intervensi_pencegahan]:checked');
             const arrayChecked = check.serializeArray();
+
             const value = arrayChecked.map((item) => item.value).join(';\n');
             const textareaSaran = formAsesmenResikoJatuhDewasa.find('textarea[name=saran]')
-
 
             textareaSaran.text(value)
 
@@ -565,15 +566,22 @@
                     formAsesmenResikoJatuhDewasa.find(`select[name=penilaian_jatuhmorse_skala${i}]`)
                         .val(response[`penilaian_jatuhmorse_skala${i}`]).trigger('change');
                 }
-                formAsesmenResikoJatuhDewasa.find('textarea[name=hasil_skrining]').val(response.hasil_skrining);
-                formAsesmenResikoJatuhDewasa.find('textarea[name=saran]').val(response.saran);
+                formAsesmenResikoJatuhDewasa.find('textarea[name=hasil_skrining]').text(response.hasil_skrining);
+                formAsesmenResikoJatuhDewasa.find('textarea[name=saran]').text(response.saran);
                 const dateTimeSplit = response.tanggal.split(' ');
                 const date = splitTanggal(dateTimeSplit[0]);
                 const time = dateTimeSplit[1];
                 formAsesmenResikoJatuhDewasa.find('input[name=tanggal]').val(`${date} ${time}`);
                 formAsesmenResikoJatuhDewasa.find('input[name=update]').val(1);
-
-            });
+                response.saran.split(';\n').forEach((item) => {
+                    formAsesmenResikoJatuhDewasa.find(`input[type=checkbox][value="${item}"]`).each(function() {
+                        const checkbox = $(this);
+                        if (!checkbox.closest('.d-none').length) {
+                            checkbox.prop('checked', true);
+                        }
+                    });
+                });
+            })
         }
 
         function deleteResikoJatuhDewasa(no_rawat, tanggal) {

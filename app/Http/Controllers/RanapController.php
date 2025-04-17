@@ -25,17 +25,45 @@ class RanapController extends Controller
     public function ranap(Request $request)
     {
 
-        $ranap = KamarInap::with(['regPeriksa.poc', 'edukasiObatPulang', 'regPeriksa' => function($q){
-            $q->select(
-                DB::raw('TRIM(kd_dokter) as kd_dokter'),
-                DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
-                DB::raw('TRIM(kd_poli) as kd_poli'),
-                DB::raw('TRIM(kd_pj) as kd_pj'),
-                'no_rawat', 'umurdaftar', 'sttsumur', 'no_reg', 'tgl_registrasi'
-            )->with(['pasien', 'dokter' => function ($q) {
-                $q->with(['spesialis']);
-            }, 'penjab', 'kamarInap']);
-        }, 'kamar', 'dischargePlanning', 'ranapGabung.regPeriksa.dokter', 'ranapGabung.regPeriksa.pasien', 'ranapGabung.regPeriksa.askepRanapNeonatus', 'ranapGabung.regPeriksa.asmedRanapAnak', 'kamar.bangsal', 'regPeriksa.asmedRanapKandungan', 'regPeriksa.asmedRanapAnak', 'regPeriksa.askepRanapNeonatus', 'regPeriksa.askepRanapAnak', 'regPeriksa.askepRanapKandungan', 'resume', 'skoringTb', 'skriningTb'])->orderBy('no_rawat', 'DESC');
+        $ranap = KamarInap::with([
+            'regPeriksa.poc',
+            'edukasiObatPulang',
+            'regPeriksa' => function ($q) {
+                $q->select(
+                    DB::raw('TRIM(kd_dokter) as kd_dokter'),
+                    DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+                    DB::raw('TRIM(kd_poli) as kd_poli'),
+                    DB::raw('TRIM(kd_pj) as kd_pj'),
+                    'no_rawat',
+                    'umurdaftar',
+                    'sttsumur',
+                    'no_reg',
+                    'tgl_registrasi'
+                )->with([
+                            'pasien',
+                            'dokter' => function ($q) {
+                                $q->with(['spesialis']);
+                            },
+                            'penjab',
+                            'kamarInap'
+                        ]);
+            },
+            'kamar',
+            'dischargePlanning',
+            'ranapGabung.regPeriksa.dokter',
+            'ranapGabung.regPeriksa.pasien',
+            'ranapGabung.regPeriksa.askepRanapNeonatus',
+            'ranapGabung.regPeriksa.asmedRanapAnak',
+            'kamar.bangsal',
+            'regPeriksa.asmedRanapKandungan',
+            'regPeriksa.asmedRanapAnak',
+            'regPeriksa.askepRanapNeonatus',
+            'regPeriksa.askepRanapAnak',
+            'regPeriksa.askepRanapKandungan',
+            'resume',
+            'skoringTb',
+            'skriningTb'
+        ])->orderBy('no_rawat', 'DESC');
 
         if ($request->stts_pulang == '-') {
             $ranap->where('stts_pulang', $request->stts_pulang);
