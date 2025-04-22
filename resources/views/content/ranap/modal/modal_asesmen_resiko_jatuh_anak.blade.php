@@ -222,7 +222,7 @@
                                             </div>
                                             <div class="col-lg-6 col-md-12 col-sm-12">
                                                 <label for="saran" class="form-label">Saran : </label>
-                                                <x-textarea cols="30" rows="5" name="saran" id="saran"></x-textarea>
+                                                <x-textarea cols="30" rows="5" name="saran" id="saran" readonly></x-textarea>
 
                                             </div>
 
@@ -886,7 +886,7 @@
             const arrayChecked = check.serializeArray();
             const value = arrayChecked.map((item) => item.value).join(';\n');
             const textareaSaran = formAsesmenResikoJatuhAnak.find('textarea[name=saran]')
-            textareaSaran.text(value)
+            textareaSaran.empty().text(value)
 
         });
 
