@@ -886,7 +886,7 @@
             const arrayChecked = check.serializeArray();
             const value = arrayChecked.map((item) => item.value).join(';\n');
             const textareaSaran = formAsesmenResikoJatuhAnak.find('textarea[name=saran]')
-            textareaSaran.text(value)
+            textareaSaran.empty().text(value)
 
         });
 
