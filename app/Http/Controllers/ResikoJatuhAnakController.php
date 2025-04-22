@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\ResikoJatuhDewasaDataTable;
-use App\Http\Requests\ResikoJatuhDewasa as RequestsResikoJatuhDewasa;
-use App\Models\ResikoJatuhDewasa;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use App\Models\ResikoJatuhAnak;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ResikoJatuhAnak as RequestsResikoJatuhAnak;
 
-class ResikoJatuhDewasaController extends Controller
+class ResikoJatuhAnakController extends Controller
 {
     protected $model;
     protected $track;
-
-    function __construct(ResikoJatuhDewasa $model)
+    function __construct(ResikoJatuhAnak $model)
     {
         $this->track = new TrackerSqlController();
         $this->model = $model;
@@ -45,7 +44,7 @@ class ResikoJatuhDewasaController extends Controller
         return response()->json($data, 200);
     }
 
-    public function create(RequestsResikoJatuhDewasa $req)
+    public function create(RequestsResikoJatuhAnak $req)
     {
         $data = $req->validated();
         $data['tanggal'] = date('Y-m-d H:i:s', strtotime($data['tanggal']));
@@ -59,7 +58,7 @@ class ResikoJatuhDewasaController extends Controller
             return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
         }
     }
-    function update(RequestsResikoJatuhDewasa $req)
+    function update(RequestsResikoJatuhAnak $req)
     {
         $data = $req->validated();
         $data['tanggal'] = date('Y-m-d H:i:s', strtotime($data['tanggal']));
