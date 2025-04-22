@@ -192,7 +192,7 @@
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-12">
                                         <label for="saran" class="form-label">Saran : </label>
-                                        <x-textarea cols="30" rows="4" name="saran" id="saran"></x-textarea>
+                                        <x-textarea cols="30" rows="4" name="saran" id="saran" readonly></x-textarea>
                                     </div>
 
 
