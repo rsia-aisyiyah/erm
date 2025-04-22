@@ -537,7 +537,9 @@
                                 baris.append(selData);
                                 break;
                             case 'petugas':
-                                values.push(data[item.key]['nama']);
+                                const nama = data[item.key]['nama'];
+                                const departemen = data[item.key]['pegawai']['departemen']['nama'];
+                                values.push(`<strong>${nama}</strong> (${departemen})`);
                                 selData.append(values);
                                 baris.append(selData);
                                 break;
