@@ -826,7 +826,6 @@
             const isUpdate = formAsesmenResikoJatuhAnak.find('input[name=update]').val()
 
             if (isUpdate != 0) {
-                console.log(isUpdate);
                 updateResikoJatuhAnak(data);
                 return false;
             }
@@ -849,7 +848,6 @@
 
         const selectsAsesmenResikoJatuhAnak = formAsesmenResikoJatuhAnak.find('select[name^=penilaian_humptydumpty_skala]');
         selectsAsesmenResikoJatuhAnak.change((e) => {
-            console.log(e);
             const nilai = $(e.target).find(':selected').data('nilai');
             const inputName = $(e.target).attr('name').replace('skala', 'nilai');
             formAsesmenResikoJatuhAnak.find(`input[name=${inputName}]`).val(nilai);
@@ -859,10 +857,6 @@
         function countTingkatResikoJatuhAnak() {
             const skalaValues = [1, 2, 3, 4, 5, 6, 7].map(i => parseInt(formAsesmenResikoJatuhAnak.find(`input[name=penilaian_humptydumpty_nilai${i}]`).val()) || 0);
             const skalaNyeri = skalaValues.reduce((sum, val) => sum + val, 0);
-
-            console.log(skalaValues, skalaNyeri);
-
-
             let hasilResiko, tindakanResiko, textColor;
             $('.intervensiResikoAnak1, .intervensiResiko2').addClass('d-none');
             if (parseInt(skalaNyeri) <= 11) {
@@ -890,11 +884,8 @@
 
             const check = formAsesmenResikoJatuhAnak.find('input[name=intervensi_pencegahan_anak]:checked');
             const arrayChecked = check.serializeArray();
-            console.log('CHECK ===', arrayChecked);
             const value = arrayChecked.map((item) => item.value).join(';\n');
             const textareaSaran = formAsesmenResikoJatuhAnak.find('textarea[name=saran]')
-
-
             textareaSaran.text(value)
 
         });
