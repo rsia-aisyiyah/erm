@@ -62,6 +62,8 @@
     @include('content.ranap.modal.modal_asesmen_nyeri_anak')
     @include('content.ranap.modal.modal_asesmen_nyeri_neonatus')
     @include('content.ranap.modal.modal_asesmen_nyeri_balita')
+    @include('content.ranap.modal.modal_asesmen_resiko_jatuh_dewasa')
+    @include('content.ranap.modal.modal_asesmen_resiko_jatuh_anak')
 @endsection
 
 
@@ -201,7 +203,11 @@
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
-
+                            if (row.umurdaftar > 13 && row.sttsumur === 'Th') {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${row.no_rawat}')">Asesmen Resiko Jatuh Dewasa</a></li>`;
+                            } else {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
+                            }
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px;margin-left:15px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
