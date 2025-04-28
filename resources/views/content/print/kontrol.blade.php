@@ -1,7 +1,6 @@
 @extends('content.print.main')
 
 @section('content')
-    {{-- @dd($kontrol) --}}
     <table>
         <tr>
             <td width="180px" style="padding-right: 10px">
@@ -20,46 +19,55 @@
     </table>
     <img style="position: absolute;top:80px;right:30px" src="data:image/png;base64,{{ DNS1D::getBarcodePNG($kontrol['no_surat'], 'C39E') }}" height="30" width="180" /><br />
 
-    <table style="">
+    <table style="font-size:12px">
         <tr>
             <td>
                 Kepada Yth
             </td>
             <td>:</td>
-            <td width="450px">
+            <td colspan="4">
                 <strong>{{ $kontrol['nmDokter'] }}</strong>
             </td>
         </tr>
         <tr>
-            <td colspan="3" style="padding-bottom: 10px;padding-top: 10px;">Mohon pemeriksaan dan penanganan lebih lanjut : </td>
+            <td colspan="6" style="padding-bottom: 10px;padding-top: 10px;">Mohon pemeriksaan dan penanganan lebih lanjut : </td>
         </tr>
         <tr>
-            <td>No. Kartu</td>
-            <td>:</td>
-            <td>{{ $kontrol['noKartu'] }}</td>
+            <td width="90px">No. Kartu</td>
+            <td width="2px">:</td>
+            <td width="300px">{{ $kontrol['noKartu'] }}</td>
+            <td width="90px">No. Rujukan</td>
+            <td width="2px">:</td>
+            <td width="300px">{{ $kontrol['no_sep'] }}</td>
         </tr>
         <tr>
-            <td>Nama Pasien</td>
+            <td>Nama</td>
             <td>:</td>
             <td>{{ $kontrol['namaPasien'] }} ({{ $kontrol['jkel'] }})</td>
+            <td>Tgl. Rujukan</td>
+            <td>:</td>
+            <td>{{ $kontrol['tglKontrolSep'] }} s.d {{ $kontrol['tglRujukanExpired'] }}</td>
         </tr>
         <tr>
-            <td>Tanggal Lahir</td>
+            <td>Tgl. Lahir</td>
             <td>:</td>
             <td>{{ $kontrol['tglLahir'] }}</td>
-        </tr>
-        <tr>
-            <td>Diagnosa Awal</td>
+            <td>Faskes</td>
             <td>:</td>
-            <td>{{ $kontrol['diagnosa'] }}</td>
+            <td>{{ $kontrol['nmppkrujukan'] }}</td>
         </tr>
         <tr>
-            <td>Tanggal Entri</td>
+            <td>Diagnosis Awal</td>
             <td>:</td>
-            <td>{{ $kontrol['tglSurat'] }}</td>
+            <td colspan="4">{{ $kontrol['diagnosa'] }}</td>
         </tr>
         <tr>
-            <td colspan="3" style="padding-top:10px;padding-bottom:10px">
+            <td>Tgl. Entri</td>
+            <td>:</td>
+            <td colspan="4">{{ $kontrol['tglSurat'] }}</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="padding-top:10px;padding-bottom:10px">
                 Demikian atas bantuannya, diucapkan banyak terimakasih.
             </td>
         </tr>
@@ -72,17 +80,18 @@
                 <p>
                     <i>Tgl. Cetak {{ $kontrol['tglCetak'] }}</i>
                 </p>
+                <p>
+                    <i id="rujukan-expired"></i>
+                </p>
             </td>
             <td width="300px">
                 <div>
-                    <p style="text-align: center;margin-bottom:80px;font-size:16px">MENGETAHUI</p>
+                    <p style="text-align: center;margin-bottom:80px;font-size:12px">MENGETAHUI</p>
                     <hr />
                 </div>
             </td>
         </tr>
     </table>
-
-    {{-- {{ print_r($kontrol) }} --}}
 @endsection
 
 @push('script')
