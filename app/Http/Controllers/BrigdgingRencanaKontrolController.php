@@ -48,15 +48,21 @@ class BrigdgingRencanaKontrolController extends Controller
 
     function print($noSurat)
     {
-        $kontrol = $this->rencanaKontrol->where('no_surat', $noSurat)->with(['sep', 'mappingDokter.dokter'])->first();
+        $kontrol = $this->rencanaKontrol->where('no_surat', $noSurat)
+            ->with(['sep', 'mappingDokter.dokter'])->first();
         $dataKontrol = [
+            // 'sep' => $kontrol->sep->toArray(),
+            'no_sep' => $kontrol->sep->no_sep,
+            'tglRujukanExpired' => $this->carbon->parse($kontrol->sep->tgl_kontrol)->addDays(90)->translatedFormat('d F Y'),
+            'nmppkrujukan' => $kontrol->sep->nmppkrujukan,
+            'tglKontrolSep' => $this->carbon->parse($kontrol->sep->tgl_kontrol)->translatedFormat('d F Y'),
             'no_surat' => $kontrol->no_surat,
             'tglSurat' => $this->carbon->parse($kontrol->tgl_surat)->translatedFormat('d F Y'),
             'tglKontrol' => $this->carbon->parse($kontrol->tgl_rencana)->translatedFormat('d F Y'),
             'nmDokter' => $kontrol->mappingDokter->dokter->nm_dokter,
             'noKartu' => $kontrol->sep->no_kartu,
             'namaPasien' => $kontrol->sep->nama_pasien,
-            'jkel' => $kontrol->sep->jkel == 'L' ? 'LAKI-LAKI' : 'PEREMPUAN',
+            'jkel' => $kontrol->sep->jkel,
             'tglLahir' => $this->carbon->parse($kontrol->sep->tanggal_lahir)->translatedFormat('d F Y'),
             'diagnosa' => $kontrol->sep->diagawal . ' - ' . $kontrol->sep->nmdiagnosaawal,
             'tglCetak' => date('d/m/Y H:i:s'),
