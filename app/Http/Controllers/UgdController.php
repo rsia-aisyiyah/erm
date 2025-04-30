@@ -38,9 +38,10 @@ class UgdController extends Controller
                 'no_rawat',
                 'umurdaftar',
                 'sttsumur',
-                'status_lanjut'
+                'status_lanjut',
+                'stts'
             )
-            ->with(['pasien', 'dokter', 'kamarInap', 'penjab', 'asmedRanapAnak', 'asmedRanapKandungan', 'asmedIgd', 'skriningTb'])->where('kd_poli', 'IGDK');
+            ->with(['pasien', 'sep', 'dokter.mappingDokter', 'kamarInap', 'penjab', 'asmedRanapAnak', 'asmedRanapKandungan', 'asmedIgd', 'skriningTb'])->where('kd_poli', 'IGDK');
 
         if ($request->tgl_awal || $request->tgl_akhir) {
             $regPeriksa->whereBetween('tgl_registrasi', [$request->tgl_awal, $request->tgl_akhir])->get();

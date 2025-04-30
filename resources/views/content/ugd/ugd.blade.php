@@ -38,8 +38,10 @@
                         <thead>
                             <tr role="row">
                                 <th width="100px" style="text-align: center"></th>
+                                <th>No. Rawat</th>
                                 <th>Pasien</th>
                                 <th>Dokter DPJP</th>
+                                <th>Pembiayaan</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -64,6 +66,7 @@
     @include('content.ranap.modal.modal_asesmen_nyeri_balita')
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_dewasa')
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_anak')
+    @include('content.poliklinik.modal.modal_icare')
 @endsection
 
 
@@ -203,6 +206,11 @@
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+
+                            if (row.kd_pj == 'A01' || row.kd_pj == 'A05') {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${row.pasien.no_peserta}', '${row.dokter.mapping_dokter?.kd_dokter_bpjs}')">Riwayat Perawatan ICare</a></li>`
+                            }
+
                             if (row.umurdaftar > 13 && row.sttsumur === 'Th') {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${row.no_rawat}')">Asesmen Resiko Jatuh Dewasa</a></li>`;
                             } else {
@@ -210,6 +218,12 @@
                             }
                             button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px;margin-left:15px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
+                        }
+                    },
+                    {
+                        data: 'no_rawat',
+                        render: (data, type, row, meta) => {
+                            return data;
                         }
                     },
                     {
@@ -228,20 +242,14 @@
                                 })
                                 return '';
                             }
-                            let penjab = '';
-                            if (row.penjab.kd_pj == 'A03') {
-                                penjab = `<span class="text-danger"><b>${row.penjab.png_jawab}</b></span>`
-                            } else if (row.penjab.kd_pj == 'A01' || row.penjab.kd_pj == 'A05') {
-                                penjab = `<span class="text-success"><b>${row.penjab.png_jawab}</b></span>`
-                            }
 
                             if (row.asmed_igd == null) {
                                 asmed = ' <button class="ml-1 px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button><br/>'
                             }
 
                             kamarInap = Object.keys(row.kamar_inap).length ? `<span class="badge text-bg-success">Pindah Kamar</span>` : '';
-                            return `${asmed} ${row.no_rawat} <br/> <strong>${row.no_rkm_medis} <br/> ${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong> 
-                            <br/> ${penjab} <br/> ${kamarInap}`
+                            return `${asmed}<strong>${row.no_rkm_medis} - ${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong> 
+                          <br/> ${kamarInap}`
                         }
                     },
                     {
@@ -260,6 +268,21 @@
                             return row.dokter.nm_dokter;
                         }
                     },
+                    {
+                        data: 'penjab',
+                        render: (data, type, row, meta) => {
+                            let penjab = '';
+                            if (data.kd_pj == 'A03') {
+                                penjab = `<span class="text-danger"><b>${row.penjab.png_jawab}</b></span>`
+                            } else if (data.kd_pj == 'A01' || row.penjab.kd_pj == 'A05') {
+                                penjab = `<span class="text-success"><b>${row.penjab.png_jawab} ${row.sep?.no_sep ? '<i class="fa fa-check text-success"></i>' : ''}</b></span>`
+                            }
+
+                            return penjab;
+
+                        }
+                    },
+
                     {
                         data: 'kamar',
                         render: (data, type, row, meta) => {
