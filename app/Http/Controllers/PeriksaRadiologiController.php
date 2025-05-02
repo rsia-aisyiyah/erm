@@ -28,10 +28,19 @@ class PeriksaRadiologiController extends Controller
     public function getByNoRawat(Request $request)
     {
         $periksa = $this->pemeriksaan->with([
-            'gambarRadiologi', 'petugas', 'dokter', 'dokterRujuk', 'hasilRadiologi', 'jnsPerawatan', 'regPeriksa.pasien', 'regPeriksa.penjab',
+            'gambarRadiologi',
+            'petugas',
+            'dokter',
+            'dokterRujuk',
+            'hasilRadiologi',
+            'jnsPerawatan',
+            'regPeriksa.pasien',
+            'regPeriksa.penjab',
             'regPeriksa.kamarInap' => function ($query) {
                 return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with(['kamar.bangsal']);
-            }, 'regPeriksa.poliklinik', 'permintaan.permintaanPemeriksaan',
+            },
+            'regPeriksa.poliklinik',
+            'permintaan.permintaanPemeriksaan',
         ]);
         if ($request->tgl_periksa) {
             $jam = explode(':', $request->jam); //split jam,
@@ -132,7 +141,7 @@ class PeriksaRadiologiController extends Controller
 
         $domain = $request->getHost();
         if ($domain !== 'sim.rsiaaisyiyah.com') {
-            $domain = "http://{$domain}";
+            $domain = "http://192.168.100.33";
         } else {
             $domain = "https://{$domain}";
         }
