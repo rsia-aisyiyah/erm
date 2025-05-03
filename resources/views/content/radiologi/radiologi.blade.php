@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </form>
-                    <table class="table table-striped table-responsive text-sm" id="tbRadiologi" width="100%">
+                    <table class="table table-striped table-responsive text-sm" id="tbRadiologi" width="100%" style="font-size:11px">
                         <thead>
                             <tr role="row">
                                 <th></th>
@@ -61,6 +61,25 @@
     </div>
     @include('content.radiologi.modal.modal_hasil_radiologi')
     @include('content.poliklinik.modal.modal_riwayat')
+
+
+    <div class="modal fade" id="modalCetakHasilRadiologi" tabindex="-1" aria-labelledby="modalCetakHasilRadiologi" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">RIWAYAT PASIEN</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="viewHasil"src="" width="100%" height="600px"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-bs-dismiss="modal"><i
+                            class="bi bi-x-circle"></i> Keluar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')
@@ -70,6 +89,8 @@
         var spesialis = '';
         var dateStart = '';
         var status = '';
+
+        const modalCetakHasilRadiologi = $('#modalCetakHasilRadiologi')
 
         const tbRadiologi = $('#tbRadiologi')
 
@@ -132,10 +153,6 @@
             $('.tgl_akhir').datepicker('setDate', splitTanggal(tgl_akhir))
 
             drawTbRadiologi()
-            setInterval(() => {
-                drawTbRadiologi()
-                toastReload('Memperbaharui data radiologi', 2000)
-            }, 50000);
         })
 
 
@@ -178,10 +195,9 @@
                         data: 'reg_periksa',
                         render: (data, type, row, meta) => {
                             let no_rkm_medis = data.no_rkm_medis
+                            let listPrint = '';
                             if (row.hasil_radiologi.length) {
-                                listPrint = `<li><a class="dropdown-item" href="${getBaseUrl(`erm/radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}`)}" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>`;
-                            } else {
-                                listPrint = ``
+                                listPrint = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>`;
                             }
                             return `
                                 <div class="btn-group">
@@ -189,12 +205,11 @@
                                         <i class="bi bi-list-ul"></i>
                                     </button>
                                     <ul class="dropdown-menu" style="font-size:11px">
-                                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${no_rkm_medis}')">Riwayat Pemeriksaan</a></li>
+                                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalHasilRadiologi('${no_rkm_medis}')">Riwayat Pemeriksaan</a></li>
                                         ${listPrint}
                                     </ul>
                                 </div>
                                 `;
-                            // <li><a class="dropdown-item" href="{{ url('radiologi/periksa/print?no_rawat=${data.no_rawat}&tgl_periksa=${row.tgl_hasil}&jam=${row.jam_hasil}') }}">Cetak Hasil</a></li>
                         },
                         name: 'action'
                     },
@@ -284,113 +299,42 @@
                 icon: 'info',
                 html: 'Sedang mengunduh berkas hasil radiologi',
                 timerProgressBar: true,
+                allowOutsideClick: false,
                 didOpen: () => {
-                    Swal.showLoading()
-                    $.get('/erm/radiologi/periksa/print', {
+                    Swal.showLoading();
+
+                    modalCetakHasilRadiologi.modal('show');
+                    modalCetakHasilRadiologi.find('#viewHasil').removeAttr('src').attr('src', `${url}/radiologi/periksa/print?no_rawat=${no_rawat}&tgl_periksa=${tgl_periksa}&jam=${jam}&openWith=stream`);
+
+                    // Aktifkan kembali penanganan error AJAX
+                    $.get(`${url}/radiologi/periksa/print`, {
                         'no_rawat': no_rawat,
                         'tgl_periksa': tgl_periksa,
                         'jam': jam,
-                        'openWith': 'download',
+                        'openWith': 'stream' // Pastikan ini sesuai dengan yang diubah di atas
                     }).fail((request) => {
-                        alertErrorAjax(request)
-                    }).done((response, x, y, ) => {
                         Swal.fire({
-                            title: 'Berhasil',
-                            icon: 'success',
-                            html: 'Berkas telah diunduh',
-                        })
-                    })
+                            title: 'Gagal',
+                            icon: 'error',
+                            html: 'Gagal memuat berkas hasil radiologi.',
+                        });
+                        console.error("Error loading PDF:", request); // Tambahkan logging untuk debugging
+                        modalCetakHasilRadiologi.modal('hide'); // Sembunyikan modal jika gagal
+                    }).done((response, textStatus, jqXHR) => {
+                        Swal.close(); // Tutup loading SweetAlert setelah berhasil (iframe akan menampilkan PDF)
+                        // Anda bisa menambahkan notifikasi sukses jika diperlukan
+                        // Swal.fire({
+                        //     title: 'Berhasil',
+                        //     icon: 'success',
+                        //     html: 'Berkas hasil radiologi berhasil ditampilkan.',
+                        // });
+                    });
                 },
-            })
+                willClose: () => {
+                    // Optional: Lakukan sesuatu ketika SweetAlert ditutup
+                }
+            });
         }
-
-
-        function modalHasilRadiologi(no_rawat, tgl_periksa, jam, idOrder) {
-            const departemen = "{{ session()->get('pegawai')->departemen }}"
-            getPeriksaRadiologi(no_rawat, tgl_periksa, jam).done((response) => {
-                let gambar = ''
-                const tglPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.tgl_sampel : response.tgl_periksa
-                const jamPeriksa = response.permintaan_radiologi ? response.permintaan_radiologi.jam_sampel : response.jam
-                $('#formHasilRadiologi input[name=no_rawat]').val(response.no_rawat);
-                $('#formHasilRadiologi input[name=petugas]').val(response.petugas.nama);
-                $('#formHasilRadiologi input[name=jam]').val(response.jam);
-                $('#formHasilRadiologi input[name=tgl_periksa]').val(response.tgl_periksa);
-                $('#formHasilRadiologi input[name=nm_pasien]').val(`${response.reg_periksa.pasien.nm_pasien} (${response.reg_periksa.no_rkm_medis})`);
-                $('#formHasilRadiologi input[name=tgl_lahir]').val(`${formatTanggal(response.reg_periksa.pasien.tgl_lahir)} (${response.reg_periksa.umurdaftar} ${response.reg_periksa.sttsumur})`);
-                $('#formHasilRadiologi input[name=poliklinik]').val(`${response.reg_periksa.poliklinik.nm_poli}`);
-                $('#formHasilRadiologi input[name=penjab]').val(`${response.reg_periksa.penjab.png_jawab}`);
-                $('#formHasilRadiologi input[name=tgl_pemeriksaan]').val(`${splitTanggal(tglPeriksa)} ${jamPeriksa}`);
-                $('#formHasilRadiologi input[name=proyeksi]').val(`${response.proyeksi}`);
-                $('#formHasilRadiologi input[name=kv]').val(`${response.kV}`);
-                $('#formHasilRadiologi input[name=inak]').val(`${response.inak}`);
-                $('#formHasilRadiologi input[name=jml_penyinaran]').val(`${response.jml_penyinaran}`);
-                $('#formHasilRadiologi input[name=dosis]').val(`${response.dosis}`);
-                $('#formHasilRadiologi input[name=noorder]').val(`${idOrder}`);
-
-                if (departemen == 'RAD') {
-                    $('#formHasilRadiologi textarea[name=hasil]').attr('readonly', 'readonly');
-                    $('#formHasilRadiologi input[name=inak]').attr('readonly', false);
-                    $('#formHasilRadiologi input[name=proyeksi]').attr('readonly', false);
-                    $('#formHasilRadiologi input[name=dosis]').attr('readonly', false);
-                    $('#formHasilRadiologi input[name=jml_penyinaran]').attr('readonly', false);
-                    $('#formHasilRadiologi input[name=kv]').attr('readonly', false);
-                }
-
-                if (response.permintaan.length) {
-                    response.permintaan.map((permintaan, index) => {
-                        if (tgl_periksa == permintaan.tgl_hasil && jam == permintaan.jam_hasil) {
-                            $('#formHasilRadiologi input[name=tgl_sampel]').val(`${splitTanggal(permintaan.tgl_sampel)} ${permintaan.jam_sampel}`)
-                        }
-                    })
-                }
-                if (Object.keys(response.reg_periksa.kamar_inap).length) {
-                    response.reg_periksa.kamar_inap.map((kamarInap) => {
-                        $('#formHasilRadiologi input[name=kamarInap]').val(`${kamarInap.kamar.bangsal.nm_bangsal}`)
-                    })
-                } else {
-                    $('#formHasilRadiologi input[name=kamarInap]').val(`-`)
-                }
-                response.hasil_radiologi.map((hsx) => {
-                    if (tgl_periksa == hsx.tgl_periksa && jam == hsx.jam) {
-                        $('#formHasilRadiologi textarea[name=hasil]').val(`${hsx ? hsx.hasil : ''}`);
-                    }
-                })
-                let htmlImage = ''
-                if (Object.keys(response.gambar_radiologi).length) {
-                    response.gambar_radiologi.map((imgx, index) => {
-                        if (tgl_periksa == imgx.tgl_periksa) {
-                            gambar = `${getBaseUrl()}/webapps/radiologi/${imgx.lokasi_gambar}`
-                            htmlImage += `
-                                 <a class="btn btn-success btn-sm m-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gambar}">
-                                    <i class="bi bi-eye"></i> LAYAR PENUH
-                                </a>
-                                <a class="btn btn-primary btn-sm m-2" id="btnDownloadImage" class="downloadImg${index}" download="${textRawat(no_rawat)}" href="${gambar}" target="_blank">
-                                    <i class="bi bi-download"></i> UNDUH GAMBAR
-                                </a>
-                                <img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative thumbnailImg${index}" src="${gambar}" style="padding: 10px" width="100%">
-                            `;
-                        } else {
-                            gambar = "{{ asset('/img/default.png') }}";
-                            htmlImage += `<img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative " src="${gambar}" style="padding: 10px" width="100%">`
-                        }
-                    })
-                    $('#gambarRadiologi').attr('src', `${gambar}`);
-                    $('#btnMagnifyImage').attr('href', `${gambar}`);
-                    $('.image-set').append(htmlImage);
-
-                } else {
-                    gambar = "{{ asset('/img/default.png') }}";
-                    htmlImage += `<img id="gambarRadiologi" loading="lazy" class="img-thumbnail position-relative src="${gambar}" style="padding: 10px" width="100%">`
-                    $('#gambarRadiologi').attr('src', `${gambar}`);
-                    $('#btnMagnifyImage').attr('href', `${gambar}`);
-                    $('.image-set').append(htmlImage);
-
-                }
-            })
-            $('#btnSimpanHasil').attr('onclick', `simpanHasilRadiologi('${no_rawat}')`);
-            $('#modalHasilRadiologi').modal('show')
-        }
-
 
         function updateHasilRadiologi(data) {
             const hasil = $.post('/erm/radiologi/hasil/update', data).fail((request) => {

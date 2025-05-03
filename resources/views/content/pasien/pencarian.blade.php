@@ -133,7 +133,7 @@
                 serverSide: true,
                 scrollX: true,
                 ajax: {
-                    url: `${url}/pasien/table`,
+                    url: `pasien/table`,
                     data: function(d) {
                         d.no_rkm_medis = d.search.value;
                         d.nm_pasien = d.search.value;

@@ -350,7 +350,7 @@
                 info: false,
                 destroy: true,
                 ajax: {
-                    url: `${url}/ranap/pasien`,
+                    url: `ranap/pasien`,
                     data: {
                         'stts_pulang': stts_pulang,
                         'tgl_pertama': tgl_awal,
