@@ -49,7 +49,7 @@ class BrigdgingRencanaKontrolController extends Controller
     function print($noSurat)
     {
         $kontrol = $this->rencanaKontrol->where('no_surat', $noSurat)
-            ->with(['sep', 'mappingDokter.dokter'])->first();
+            ->with(['sep.regPeriksa', 'mappingDokter.dokter'])->first();
         $dataKontrol = [
             // 'sep' => $kontrol->sep->toArray(),
             'no_sep' => $kontrol->sep->no_sep,
@@ -63,12 +63,15 @@ class BrigdgingRencanaKontrolController extends Controller
             'noKartu' => $kontrol->sep->no_kartu,
             'namaPasien' => $kontrol->sep->nama_pasien,
             'jkel' => $kontrol->sep->jkel,
+            'umur' => $kontrol->sep->regPeriksa->umurdaftar . ' ' . $kontrol->sep->regPeriksa->sttsumur,
             'tglLahir' => $this->carbon->parse($kontrol->sep->tanggal_lahir)->translatedFormat('d F Y'),
             'diagnosa' => $kontrol->sep->diagawal . ' - ' . $kontrol->sep->nmdiagnosaawal,
             'tglCetak' => date('d/m/Y H:i:s'),
             // 'qrCode' => DNS1D::getBarcodeHtml('TEST', 'PHARMA2T'),
         ];
-        $file = PDF::loadView('content.print.kontrol', ['kontrol' => $dataKontrol])->setOptions(['defaultFont' => 'serif', 'isRemoteEnabled' => true]);
+        $file = PDF::loadView('content.print.kontrol', ['kontrol' => $dataKontrol])
+            ->setOptions(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
+            ->setPaper(array(0, 0, 595, 350));
 
         return $file->stream($kontrol->no_surat . '.pdf');
     }
