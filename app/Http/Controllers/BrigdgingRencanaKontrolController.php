@@ -70,8 +70,7 @@ class BrigdgingRencanaKontrolController extends Controller
             // 'qrCode' => DNS1D::getBarcodeHtml('TEST', 'PHARMA2T'),
         ];
         $file = PDF::loadView('content.print.kontrol', ['kontrol' => $dataKontrol])
-            ->setOptions(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
-            ->setPaper(array(0, 0, 595, 350));
+            ->setOptions(['defaultFont' => 'serif', 'isRemoteEnabled' => true]);
 
         return $file->stream($kontrol->no_surat . '.pdf');
     }
