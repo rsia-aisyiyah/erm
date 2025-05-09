@@ -58,6 +58,12 @@
                 </li>
             @endif
 
+            {{-- <li class="nav-item">
+                <a class="nav-link {{ Request::is('lab') ? 'active' : '' }}" href="{{url('/lab')}}">
+                    <i class="bi bi-prescription2"></i>
+                    Laborat
+                </a>
+            </li> --}}
             @if (session()->get('pegawai')->nik == 'direksi' ||
                     session()->get('pegawai')->departemen == 'DM3' ||
                     session()->get('pegawai')->departemen == 'DM7' ||

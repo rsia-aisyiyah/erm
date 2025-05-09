@@ -10,6 +10,11 @@ use App\Models\DetailPemeriksaanLab;
 
 class LabController extends Controller
 {
+
+    function index()
+    {
+        return view('content.lab.permintaan');
+    }
     public function petugas(Request $request)
     {
         $lab = PeriksaLab::where('no_rawat', $request->no_rawat)

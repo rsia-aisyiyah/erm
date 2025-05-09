@@ -6,6 +6,7 @@ use App\Models\PermintaanLab;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class PermintaanLabController extends Controller
 {
@@ -26,7 +27,7 @@ class PermintaanLabController extends Controller
             $nomor = "PK{$now}0001";
         } else {
             $arrString = explode('PK', $permintaan->noorder);
-            $nomor =  (int)$arrString[1] + 1;
+            $nomor = (int) $arrString[1] + 1;
             $nomor = "PK{$nomor}";
         }
         return $nomor;
@@ -61,10 +62,20 @@ class PermintaanLabController extends Controller
     function get(Request $request): JsonResponse
     {
         $permintaan = $this->permintaan->where('no_rawat', $request->no_rawat)
-            ->with(['pemeriksaan' => function ($q) {
-                return $q->with(['jenis', 'detail.item']);
-            }])
+            ->with([
+                'pemeriksaan' => function ($q) {
+                    return $q->with(['jenis', 'detail.item']);
+                }
+            ])
             ->get();
         return response()->json($permintaan);
     }
+
+    function getDataTable()
+    {
+        $permintaan = $this->permintaan->get();
+        return DataTables::of($permintaan)->make(true);
+    }
+
+
 }
