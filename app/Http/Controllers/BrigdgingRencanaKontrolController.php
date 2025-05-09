@@ -49,13 +49,14 @@ class BrigdgingRencanaKontrolController extends Controller
     function print($noSurat)
     {
         $kontrol = $this->rencanaKontrol->where('no_surat', $noSurat)
-            ->with(['sep.regPeriksa', 'mappingDokter.dokter'])->first();
+            ->with(['sep.regPeriksa', 'mappingDokter.dokter'])
+            ->first();
         $dataKontrol = [
             // 'sep' => $kontrol->sep->toArray(),
-            'no_sep' => $kontrol->sep->no_sep,
-            'tglRujukanExpired' => $this->carbon->parse($kontrol->sep->tgl_kontrol)->addDays(90)->translatedFormat('d F Y'),
+            'no_sep' => $kontrol->sep->no_rujukan,
+            'tglRujukanExpired' => $this->carbon->parse($kontrol->sep->tglrujukan)->addDays(90)->translatedFormat('d F Y'),
             'nmppkrujukan' => $kontrol->sep->nmppkrujukan,
-            'tglKontrolSep' => $this->carbon->parse($kontrol->sep->tgl_kontrol)->translatedFormat('d F Y'),
+            'tglKontrolSep' => $this->carbon->parse($kontrol->sep->tglrujukan)->translatedFormat('d F Y'),
             'no_surat' => $kontrol->no_surat,
             'tglSurat' => $this->carbon->parse($kontrol->tgl_surat)->translatedFormat('d F Y'),
             'tglKontrol' => $this->carbon->parse($kontrol->tgl_rencana)->translatedFormat('d F Y'),
