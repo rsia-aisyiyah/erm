@@ -43,6 +43,10 @@
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script src="{{ asset('js/qrcode.min.js') }}"></script>
 
+    {{-- Context Menu    --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+
     <!-- Magnify Image Viewer JS -->
     <script src="{{ asset('js/magnifier/jquery.magnify.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
@@ -401,11 +405,11 @@
         function setWarnaPemeriksaan(keterangan) {
             let warna = '';
             if (keterangan == 'L') {
-                warna = 'row-primary';
+                warna = 'row-success';
             } else if (keterangan == 'H' || keterangan == '*' || keterangan == '**') {
-                warna = 'row-danger';
+                warna = 'row-primary';
             } else if (keterangan == 'K' || keterangan == 'k') {
-                warna = 'row-indigo';
+                warna = 'row-warning';
             }
             return warna;
         }

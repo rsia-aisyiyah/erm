@@ -16,6 +16,7 @@ class PermintaanPemeriksaanLab extends Model
     protected $guarded = [];
     public $timestamps = false;
 
+
     function detail(): HasMany
     {
         return $this->hasMany(DetailPermintaanLab::class, ['noorder', 'kd_jenis_prw'], ['noorder', 'kd_jenis_prw']);

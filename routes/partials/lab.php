@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
         $route->get('/jenis/template/get', [JnsPerawatabLabController::class, 'getTemplate']);
         $route->prefix('permintaan')->group(function ($route) {
             $route->get('/', [PermintaanLabController::class, 'get']);
+            $route->get('/table', [PermintaanLabController::class, 'getDataTable']);
             $route->post('/', [PermintaanLabController::class, 'create']);
             $route->get('/nomor', [PermintaanLabController::class, 'getNomor']);
             $route->post('/detail', [DetailPermintaanLabController::class, 'create']);

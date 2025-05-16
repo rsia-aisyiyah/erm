@@ -12,7 +12,7 @@
             </td>
             <td>
                 <p style="font-size:14px;margin-top:15px">No. {{ $kontrol['no_surat'] }} <br>
-                    Tgl. {{ $kontrol['tglKontrol'] }}
+                    Tgl. <strong>{{ $kontrol['tglKontrol'] }}</strong>
                 </p>
             </td>
         </tr>

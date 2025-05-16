@@ -23,21 +23,16 @@ class LabController extends Controller
     }
     public function ambil(Request $request)
     {
-        // $lab = DetailPemeriksaanLab::where('no_rawat', $request->no_rawat)
-        //     ->with('jnsPerawatanLab', 'regPeriksa.pasien', 'template', 'periksaLab.dokter', 'periksaLab.perujuk', 'periksaLab.petugas')
-        //     ->orderBy('id_template', 'ASC')
-        //     ->orderBy('tgl_periksa', 'DESC')
-        //     ->orderBy('jam', 'DESC');
-
-        // if ($request->pemeriksaan) {
-        //     $lab->whereHas('template', function ($query) use ($request) {
-        //         return $query->where('Pemeriksaan', 'like', '%' . $request->pemeriksaan . '%');
-        //     });
-        // }
-        // return $lab->get();
-        $lab = PeriksaLab::where('no_rawat', $request->no_rawat)->with(['petugas', 'dokter', 'jnsPerawatanLab', 'detail.template'])
+        $lab = PeriksaLab::where('no_rawat', $request->no_rawat)
+            ->with(['permintaan', 'petugas', 'dokter', 'perujuk', 'jnsPerawatanLab', 'detail.template'])
+            ->where('kd_jenis_prw', '!=', "J000019")
             ->orderBy('tgl_periksa', 'DESC')
-            ->get();
+            ->orderBy('jam', 'ASC');
+        if ($request->tgl_periksa && $request->jam) {
+            $lab = $lab->where('tgl_periksa', $request->tgl_periksa)
+                ->where('jam', $request->jam);
+        }
+        $lab = $lab->get();
         return response()->json($lab);
     }
 

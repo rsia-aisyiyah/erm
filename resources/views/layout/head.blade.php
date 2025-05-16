@@ -32,7 +32,7 @@
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
 
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
 
 
     <style>
@@ -275,6 +275,13 @@
         .row-secondary {
             background-color: #e3e3e3;
             border-color: #ababab;
+            padding: 3px;
+        }
+
+        .row-success {
+            color: white;
+            background-color: #198754;
+            border-color: #146c43;
             padding: 3px;
         }
 
