@@ -10,6 +10,7 @@ $.contextMenu({
         const no_rkm_medis = element.data('no_rkm_medis');
         const tgl_hasil = element.data('tgl');
         const jam_hasil = element.data('jam');
+        const noorder = element.data('noorder');
         element.addClass('table-secondary')
         return {
             items: {
@@ -17,7 +18,7 @@ $.contextMenu({
                     name: "Pemeriksaan Lab",
                     icon: 'fa-regular fa-stethoscope',
                     callback: function (item, option, e, x, y) {
-                        showHasilPemeriksaanLab(no_rawat, tgl_hasil, jam_hasil);
+                        showHasilPemeriksaanLab(no_rawat, noorder);
                     }
 
                 },

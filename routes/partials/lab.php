@@ -8,6 +8,7 @@ use App\Http\Controllers\DetailPermintaanLabController;
 use App\Http\Controllers\DetailPemeriksaanLabController;
 use App\Http\Controllers\TemplateLaboratoriumController;
 use App\Http\Controllers\PermintaanPemeriksaanLabController;
+use App\Http\Controllers\SaranKesanLabController;
 
 Route::middleware('auth')->group(function () {
     Route::prefix('lab')->group(function ($route) {
@@ -29,6 +30,7 @@ Route::middleware('auth')->group(function () {
 
         $route->get('/template/get', [TemplateLaboratoriumController::class, 'get']);
         $route->get('/hasil', [DetailPemeriksaanLabController::class, 'get']);
+        $route->get('/saran', [SaranKesanLabController::class, 'getByNoRawat']);
 
     });
 });

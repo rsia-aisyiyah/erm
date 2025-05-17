@@ -565,5 +565,17 @@
             color: #155724;
             /* Dark green text */
         }
+
+        @media (min-width: 367px) {
+            /* .batasan-lebar { */
+            /* width: 497px;
+                margin-left: auto;
+                margin-right: auto;
+            } */
+
+            .order-sm-2 {
+                order: 2 !important;
+            }
+        }
     </style>
 </head>

@@ -70,9 +70,13 @@ class PermintaanLabController extends Controller
             }
         ]);
 
-
         if ($request->noorder) {
             $permintaan = $permintaan->where('noorder', $request->noorder)
+                ->first();
+        } else if ($request->tgl_hasil && $request->jam_hasil) {
+            $permintaan = $permintaan->where('no_rawat', $request->no_rawat)
+                ->where('tgl_permintaan', $request->tgl_hasil)
+                ->where('jam_permintaan', $request->jam_hasil)
                 ->first();
         } else {
             $permintaan = $permintaan->where('no_rawat', $request->no_rawat)

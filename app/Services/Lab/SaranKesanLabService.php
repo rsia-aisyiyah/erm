@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Services\Lab;
+
+use App\Models\SaranKesanLab;
+use Illuminate\Http\Request;
+
+class SaranKesanLabService
+{
+
+    protected $model;
+    public function __construct(SaranKesanLab $model)
+    {
+        $this->model = $model;
+    }
+
+    public function create($data)
+    {
+        try {
+            $result = $this->model->create($data);
+            return $result;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function get(Request $request)
+    {
+        $query = $this->model->where('no_rawat', $request->no_rawat);
+
+        if ($request->tgl_periksa && $request->jam) {
+            $record = $query->where('tgl_periksa', $request->tgl_periksa)
+                ->where('jam', $request->jam)
+                ->first();
+        } else {
+            $record = $query->get();
+        }
+
+        return $record;
+    }
+    public function show(Request $request)
+    {
+        $record = $this->model->where('no_rawat', $request->no_rawat)
+            ->where('tgl_periksa', $request->tgl_periksa)
+            ->where('jam', $request->jam)
+            ->first();
+        return $record;
+    }
+
+}

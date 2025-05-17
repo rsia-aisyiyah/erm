@@ -36,18 +36,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="row gy-2 mb-3">
-                        <div class="col-lg-6 col-sm-12 col-md-12">
+                        <div class="col-lg-7 col-sm-12 col-md-12">
                             <form id="formHasilPermintaanLab">
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="no_rawat">No. Rawat</label>
                                         <x-input id="no_rawat" name="no_rawat" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-4">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
                                         <label for="nm_pasien">Pasien</label>
                                         <x-input id="nm_pasien" name="nm_pasien" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                    <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="tgl_lahir">Tgl. Lahir/Umur</label>
                                         <x-input id="tgl_lahir" name="tgl_lahir" readonly />
                                     </div>
@@ -55,29 +55,25 @@
                                         <label for="dokter">Dokter DPJP</label>
                                         <x-input id="dokter" name="dokter" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-4">
+                                    <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="kamarInap">Kamar Inap</label>
                                         <x-input id="kamarInap" name="kamarInap" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-4">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
                                         <label for="diagnosis_awal">Dx. Awal</label>
                                         <x-input id="diagnosis_awal" name="diagnosis_awal" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-4">
-                                        <label for="perujuk">Dokter Rujuk</label>
-                                        <x-input id="perujuk" name="perujuk" readonly />
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                        <label for="informasi">Informasi Lain</label>
+                                        <x-input id="informasi" name="informasi" readonly />
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-3">
-                                        <label for="petugas">Petugas</label>
-                                        <x-input id="petugas" name="petugas" readonly />
+                                        <label for="tgl_sampel">Tgl. Sampling/Periksa</label>
+                                        <x-input id="tgl_sampel" name="tgl_sampel" readonly />
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-3">
-                                        <label for="petugas">Tgl. Periksa</label>
-                                        <x-input id="petugas" name="petugas" readonly />
-                                    </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-6">
-                                        <label for="petugas">No. Permintaan</label>
-                                        <select class="form-select" id="noorder" name="noorder" data-dropdown-parent="#formHasilPermintaanLab" style="width:100%;font-size:10px"></select>
+                                        <label for="petugas">Tgl. Hasil</label>
+                                        <x-input id="tgl_hasil" name="tgl_hasil" readonly />
                                     </div>
                                 </div>
                                 <hr />
@@ -109,47 +105,25 @@
 
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="accordion" id="accordionPermintaanLab">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Accordion Item #1
-                                        </button>
-                                    </h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <strong>This is the first item’s accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the
-                                            transition does limit overflow.
-                                        </div>
-                                    </div>
+                        <div class="col-lg-5 col-sm-12 col-md-12">
+                            <div class="row gy-3">
+                                <div class="col-lg-12 order-lg-1 order-sm-2 order-md-2">
+                                    <p class="h5">Riwayat Permintaan </p>
+                                    <ol class="list-group list-group-numbered overflow-auto" id="listRiwayatPermintaanLab" style="max-height: 300px">
+
+                                    </ol>
                                 </div>
-                                {{-- <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            Accordion Item #2
-                                        </button>
-                                    </h2>
-                                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <strong>This is the second item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though
-                                            the transition does limit overflow.
-                                        </div>
-                                    </div>
+                                <div class="col-lg-12 order-lg-2 order-sm-1 order-md-1">
+                                    <fieldset class="border p-3">
+                                        <legend class="w-auto float-none" style="font-size : 14px">Saran & Kesan Hasil</legend>
+                                        <form action="" id="saranKesanLab">
+                                            <label for="saran">Saran</label>
+                                            <x-textarea id="saran" name="saran"></x-textarea>
+                                            <label for="kesan">Kesan</label>
+                                            <x-textarea id="kesan" name="kesan"></x-textarea>
+                                        </form>
+                                    </fieldset>
                                 </div>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                            Accordion Item #3
-                                        </button>
-                                    </h2>
-                                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <strong>This is the third item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the
-                                            transition does limit overflow.
-                                        </div>
-                                    </div>
-                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -170,11 +144,11 @@
         const tablePermintaanLab = $('#tablePermintaanLab')
         const btnFilterTglLab = $('#btnFilterTglLab')
         const modalHasilPermintaanLab = $('#modalHasilPermintaanLab')
-        const contentHasilPermintaanLab = modalHasilPermintaanLab.find('#contentHasil')
+        const contewntHasilPermintaanLab = modalHasilPermintaanLab.find('#contentHasil')
         const tableHasilPermintaanLab = modalHasilPermintaanLab.find('#tbHasilPermintaanLab tbody')
         const formHasilPermintaanLab = modalHasilPermintaanLab.find('#formHasilPermintaanLab')
         const selectNoOrder = formHasilPermintaanLab.find('#noorder')
-        const accordionPermintaanLab = $('#accordionPermintaanLab')
+        const listRiwayatPermintaanLab = $('#listRiwayatPermintaanLab')
         $(document).ready(() => {
             renderTablePermintaanLab();
         })
@@ -214,6 +188,7 @@
                         .attr('data-id', data.no_rawat)
                         .attr('data-tgl', data.tgl_hasil)
                         .attr('data-jam', data.jam_hasil)
+                        .attr('data-noorder', data.noorder)
                         .attr('data-no_rkm_medis', data.reg_periksa.no_rkm_medis);
                 },
                 columnDefs: [{
@@ -331,58 +306,61 @@
         })
 
 
-        function showHasilPemeriksaanLab(no_rawat, tgl_periksa, jam) {
-            $.get(`/erm/lab/ambil`, {
-                no_rawat: no_rawat,
-                tgl_periksa: tgl_periksa,
-                jam: jam
+        function showHasilPemeriksaanLab(no_rawat, noorder) {
+            riwayatPemeriksaanLab(no_rawat).done((response) => {
+                getPermintaanLab(noorder).done((data) => {
+                    $(`#item${noorder}`).addClass('active');
+                    $(`#item${noorder}`).siblings().removeClass('active');
+                })
 
+            })
+            modalHasilPermintaanLab.modal('show');
+        }
+
+        function getPermintaanLab(noorder) {
+            return $.get(`/erm/lab/permintaan`, {
+                noorder: noorder
             }).done((response) => {
-
-                console.log('SHOW RESPONSE ===', response);
-
-                getRegPeriksa(no_rawat).done((rawat) => {
+                console.log('RESPONSE ===', response);
+                getRegPeriksa(response.no_rawat).done((rawat) => {
                     formHasilPermintaanLab.find('#no_rawat').val(rawat.no_rawat);
+                    formHasilPermintaanLab.find('#nm_pasien').val(`${rawat.no_rkm_medis} - ${rawat.pasien.nm_pasien} (${rawat.pasien.jk})`);
+                    formHasilPermintaanLab.find('#tgl_lahir').val(`${formatTanggal(rawat.pasien.tgl_lahir)} / ${rawat.umurdaftar} ${rawat.sttsumur}`);
+                    formHasilPermintaanLab.find('#dokter').val(rawat.dokter.nm_dokter);
+                    formHasilPermintaanLab.find('#penjab').val(rawat.penjab.png_jawab);
+                    const kamar = rawat.kamar_inap.filter((item) => {
+                            return item.stts_pulang !== 'Pindah Kamar'
+                        })
+                        .map((item) => {
+                            console.log(item);
+                            return item.kamar.bangsal.nm_bangsal
+                        })
+                    formHasilPermintaanLab.find('#kamarInap').val(kamar);
                 });
-                modalHasilPermintaanLab.modal('show');
-                tableHasilPermintaanLab.html(renderHasilPemeriksaanLab(response));
-                riwayatPemeriksaanLab(no_rawat)
+                formHasilPermintaanLab.find('#diagnosis_awal').val(response.diagnosa_klinis);
+                formHasilPermintaanLab.find('#informasi').val(response.informasi_tambahan);
+                formHasilPermintaanLab.find('#tgl_sampel').val(`${formatTanggal(response.tgl_sampel)} ${response.jam_sampel}`);
+                formHasilPermintaanLab.find('#tgl_hasil').val(`${formatTanggal(response.tgl_hasil)} ${response.jam_hasil}`);
+                tableHasilPermintaanLab.html(renderHasilPemeriksaanLab(response.hasil));
             })
         }
 
         function riwayatPemeriksaanLab(no_rawat) {
-            $.get(`/erm/lab/permintaan`, {
+            return $.get(`/erm/lab/permintaan`, {
                 no_rawat: no_rawat
             }).done((response) => {
                 const content = response.map((data, index) => {
-                    return ` <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="true" aria-controls="collapse${index}">
-                                        ${data.noorder}
-                                        </button>
-                                    </h2>
-                                    <div id="collapse${index}" class="accordion-collapse collapse">
-                                        <div class="accordion-body" id="content${index}">
-                                            <table class="table table-bordered">
-                                                 <thead>
-                                            <tr>
-                                                <th>Pemeriksaan</th>
-                                                <th>Hasil</th>
-                                                <th>Nilai Rujukan</th>
-                                                <th>Keterangan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                ${renderItemRiwayatPemeriksaanLab(data.hasil, index)}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                    return `<li class="list-group-item d-flex justify-content-between align-items-start" onclick="getRiwayatPemeriksaanLab('${data.noorder}', this)" id="item${data.noorder}">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">${data.noorder}</div>
+                                        Tgl. Permintaan ${formatTanggal(data.tgl_permintaan)} ${data.jam_permintaan}
                                     </div>
-                                </div>`
+                                    ${ data.tgl_hasil === '0000-00-00' ? '<span class="badge bg-danger rounded-pill my-auto">Tidak Ada Pemeriksaan</span>' : `<span class="badge bg-success rounded-pill my-auto">Tgl. Hasil ${formatTanggal(data.tgl_hasil)} ${data.jam_hasil}</span>`}
+                                </li> `
                 })
 
 
-                accordionPermintaanLab.html(content);
+                listRiwayatPermintaanLab.html(content);
 
             })
         }
@@ -400,10 +378,6 @@
                     <td colspan=4><strong>${element.jns_perawatan_lab.nm_perawatan}</strong></td>
                 </tr>
                     ${renderSubHasilPemeriksaanLab(element.detail)}`
-
-                // const opPermintaan = new Option(`${element.permintaan.noorder} - ${splitTanggal(element.permintaan.tgl_permintaan)} ${element.permintaan.jam_permintaan}`, element.permintaan.noorder, true, true);
-                // selectNoOrder.append(opPermintaan).trigger('change.select2');
-
             });
             return content;
         }
@@ -449,19 +423,11 @@
             },
         })
 
-        selectNoOrder.on('select2:select', (e) => {
-            const noorder = e.params.data.id;
-            $.get(`/erm/lab/permintaan`, {
-                noorder: noorder
-            }).done((response) => {
-                $.get(`/erm/lab/ambil`, {
-                    no_rawat: response.no_rawat,
-                    tgl_periksa: response.tgl_hasil,
-                    jam: response.jam_hasil
-                }).done((response) => {
-                    renderHasilPemeriksaanLab(response);
-                })
-            })
-        })
+        function getRiwayatPemeriksaanLab(noorder, e) {
+            getPermintaanLab(noorder);
+            $(e).addClass('active');
+            $(e).siblings().removeClass('active');
+
+        }
     </script>
 @endpush
