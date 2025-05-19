@@ -130,8 +130,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnSimpanHasilSaranLab"><i class="bi bi-save"></i> Simpan</button>
                 </div>
             </div>
         </div>
@@ -149,6 +148,8 @@
         const formHasilPermintaanLab = modalHasilPermintaanLab.find('#formHasilPermintaanLab')
         const selectNoOrder = formHasilPermintaanLab.find('#noorder')
         const listRiwayatPermintaanLab = $('#listRiwayatPermintaanLab')
+        const btnSimpanHasilSaranLab = $('#btnSimpanHasilSaranLab');
+
         $(document).ready(() => {
             renderTablePermintaanLab();
         })
@@ -325,7 +326,7 @@
                 getRegPeriksa(response.no_rawat).done((rawat) => {
                     formHasilPermintaanLab.find('#no_rawat').val(rawat.no_rawat);
                     formHasilPermintaanLab.find('#nm_pasien').val(`${rawat.no_rkm_medis} - ${rawat.pasien.nm_pasien} (${rawat.pasien.jk})`);
-                    formHasilPermintaanLab.find('#tgl_lahir').val(`${formatTanggal(rawat.pasien.tgl_lahir)} / ${rawat.umurdaftar} ${rawat.sttsumur}`);
+                    formHasilPermintaanLab.find('#tgl_lahir').val(`${splitTanggal(rawat.pasien.tgl_lahir)} / ${rawat.umurdaftar} ${rawat.sttsumur}`);
                     formHasilPermintaanLab.find('#dokter').val(rawat.dokter.nm_dokter);
                     formHasilPermintaanLab.find('#penjab').val(rawat.penjab.png_jawab);
                     const kamar = rawat.kamar_inap.filter((item) => {
@@ -339,8 +340,8 @@
                 });
                 formHasilPermintaanLab.find('#diagnosis_awal').val(response.diagnosa_klinis);
                 formHasilPermintaanLab.find('#informasi').val(response.informasi_tambahan);
-                formHasilPermintaanLab.find('#tgl_sampel').val(`${formatTanggal(response.tgl_sampel)} ${response.jam_sampel}`);
-                formHasilPermintaanLab.find('#tgl_hasil').val(`${formatTanggal(response.tgl_hasil)} ${response.jam_hasil}`);
+                formHasilPermintaanLab.find('#tgl_sampel').val(`${splitTanggal(response.tgl_sampel)} ${response.jam_sampel}`);
+                formHasilPermintaanLab.find('#tgl_hasil').val(`${splitTanggal(response.tgl_hasil)} ${response.jam_hasil}`);
                 tableHasilPermintaanLab.html(renderHasilPemeriksaanLab(response.hasil));
             })
         }
@@ -353,9 +354,9 @@
                     return `<li class="list-group-item d-flex justify-content-between align-items-start" onclick="getRiwayatPemeriksaanLab('${data.noorder}', this)" id="item${data.noorder}">
                                     <div class="ms-2 me-auto">
                                         <div class="fw-bold">${data.noorder}</div>
-                                        Tgl. Permintaan ${formatTanggal(data.tgl_permintaan)} ${data.jam_permintaan}
+                                        Tgl. Permintaan ${splitTanggal(data.tgl_permintaan)} ${data.jam_permintaan}
                                     </div>
-                                    ${ data.tgl_hasil === '0000-00-00' ? '<span class="badge bg-danger rounded-pill my-auto">Tidak Ada Pemeriksaan</span>' : `<span class="badge bg-success rounded-pill my-auto">Tgl. Hasil ${formatTanggal(data.tgl_hasil)} ${data.jam_hasil}</span>`}
+                                    ${ data.tgl_hasil === '0000-00-00' ? '<span class="badge bg-danger rounded-pill my-auto">Tidak Ada Pemeriksaan</span>' : `<span class="badge bg-success rounded-pill my-auto">Tgl. Hasil ${splitTanggal(data.tgl_hasil)} ${data.jam_hasil}</span>`}
                                 </li> `
                 })
 
@@ -371,6 +372,7 @@
         }
 
         function renderHasilPemeriksaanLab(data) {
+
             let content = '';
             data.forEach(element => {
                 content += `
@@ -427,7 +429,27 @@
             getPermintaanLab(noorder);
             $(e).addClass('active');
             $(e).siblings().removeClass('active');
-
         }
+
+        btnSimpanHasilSaranLab.on('click', () => {
+            const no_rawat = formHasilPermintaanLab.find('#no_rawat').val();
+            const tglPeriksa = formHasilPermintaanLab.find('#tgl_hasil').val();
+            const tanggal = tglPeriksa.split(' ')[0];
+            const jam = tglPeriksa.split(' ')[1];
+            const saran = $('#saranKesanLab').find('#saran').val();
+            const kesan = $('#saranKesanLab').find('#kesan').val();
+
+
+            $.post(`/erm/lab/saran-kesan`, {
+                no_rawat: no_rawat,
+                tgl_periksa: splitTanggal(tanggal),
+                jam: jam,
+                saran: saran,
+                kesan: kesan
+            }).done((response) => {
+                alertSuccessAjax('Berhasil menyimpan saran dan kesan')
+            })
+
+        })
     </script>
 @endpush

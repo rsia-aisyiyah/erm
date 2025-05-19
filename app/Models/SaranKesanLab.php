@@ -12,6 +12,9 @@ class SaranKesanLab extends Model
 
     protected $table = 'saran_kesan_lab';
     protected $guarded = [];
+    // protected $primaryKey = ['no_rawat', 'tgl_periksa', 'jam'];
+
+    public $timestamps = false;
 
     public function periksaLab()
     {

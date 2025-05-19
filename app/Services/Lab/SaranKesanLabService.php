@@ -3,6 +3,7 @@
 namespace App\Services\Lab;
 
 use App\Models\SaranKesanLab;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class SaranKesanLabService
@@ -13,17 +14,6 @@ class SaranKesanLabService
     {
         $this->model = $model;
     }
-
-    public function create($data)
-    {
-        try {
-            $result = $this->model->create($data);
-            return $result;
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
     public function get(Request $request)
     {
         $query = $this->model->where('no_rawat', $request->no_rawat);
@@ -45,6 +35,24 @@ class SaranKesanLabService
             ->where('jam', $request->jam)
             ->first();
         return $record;
+    }
+
+    public function create(Request $request)
+    {
+        $validated = $request->validate([
+            'no_rawat' => 'required',
+            'tgl_periksa' => 'required',
+            'jam' => 'required',
+            'saran' => 'required',
+            'kesan' => 'required',
+        ]);
+
+        try {
+            $result = $this->model->create($validated);
+            return $result;
+        } catch (QueryException $e) {
+            return $e->errorInfo;
+        }
     }
 
 }

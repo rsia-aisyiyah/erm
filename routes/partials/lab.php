@@ -30,7 +30,8 @@ Route::middleware('auth')->group(function () {
 
         $route->get('/template/get', [TemplateLaboratoriumController::class, 'get']);
         $route->get('/hasil', [DetailPemeriksaanLabController::class, 'get']);
-        $route->get('/saran', [SaranKesanLabController::class, 'getByNoRawat']);
+        $route->get('/saran-kesan', [SaranKesanLabController::class, 'show']);
+        $route->post('/saran-kesan', [SaranKesanLabController::class, 'create']);
 
     });
 });

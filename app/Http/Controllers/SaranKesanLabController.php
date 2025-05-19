@@ -23,5 +23,10 @@ class SaranKesanLabController extends Controller
         $data = $this->saranService->show($request);
         return response()->json($data);
     }
+    public function create(Request $request)
+    {
+        $data = $this->saranService->create($request);
+        return response()->json('success', 202);
+    }
 
 }
