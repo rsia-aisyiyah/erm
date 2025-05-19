@@ -137,6 +137,8 @@
             </div>
         </div>
     </div>
+
+    @include('content.ranap.modal.modal_soap')
 @endsection
 
 @push('script')

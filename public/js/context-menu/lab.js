@@ -28,6 +28,13 @@ $.contextMenu({
                     callback: function (item, option, e, x, y) {
                         listRiwayatPasien(`${no_rkm_medis}`);
                     }
+                },
+                "soapRanap": {
+                    name: "CPPT / SOAP",
+                    icon: 'fa-regular fa-stethoscope',
+                    callback: function (item, option, e, x, y) {
+                        showModalSoapRanap(no_rawat);
+                    }
                 }
             }
         }

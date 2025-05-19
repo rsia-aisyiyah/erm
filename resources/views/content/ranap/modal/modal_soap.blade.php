@@ -148,8 +148,8 @@
 @push('script')
     <script>
         let no_rawat_soap = '';
-        const tgl_pertama = '';
-        const tgl_kedua = '';
+        const tglSoap1 = '';
+        const tglSoap2 = '';
         let getInstance = '';
         let sel = '';
 

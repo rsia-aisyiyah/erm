@@ -348,7 +348,10 @@
                             formSoapRanap.find('input[name=o2]').val('-');
                             formSoapRanap.find('input[name=alergi]').val('-');
                             formSoapRanap.find('select[name=kesadaran]').val('Compos Mentis').change();
-                            getInstance.show()
+                            // getInstance.show()
+
+                            sel = document.querySelector('#tab-tabel')
+                            getInstance = bootstrap.Tab.getInstance(sel);
                         });
 
                         var suhu_tubuh = $('#suhu').val();

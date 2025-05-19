@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-md-12 col-lg-3 col-sm-12">
         <div class="input-group input-group-sm mb-3">
-            <input type="text" class="form-control form-control-sm tanggal tgl_pertama_soap">
+            <input type="text" class="form-control form-control-sm tanggal tglSoap1_soap" value="{{ date('d-m-Y') }}">
             <span class="input-group-text" style="font-size:12px"><i class="bi bi-calendar3"></i></span>
-            <input type="text" class="form-control form-control-sm tanggal tgl_kedua_soap">
+            <input type="text" class="form-control form-control-sm tanggal tglSoap2_soap" value="{{ date('d-m-Y') }}">
         </div>
     </div>
     <div class="col-md-12 col-lg-3 col-sm-12">
@@ -36,6 +36,20 @@
 
 @push('script')
     <script>
+        $('.tglSoap1_soap').datepicker({
+            format: 'dd-mm-yyyy',
+            orientation: 'bottom',
+            autoclose: true,
+        })
+
+        $('.tglSoap2_soap').datepicker({
+            format: 'dd-mm-yyyy',
+            orientation: 'bottom',
+            autoclose: true,
+        })
+
+
+
         function ambilSoap(no_rawat, tgl, jam) {
             getDetailPemeriksaanRanap(no_rawat, tgl, jam).done((response) => {
                 formSoapRanap.find('#cekJam').prop('checked', true)
@@ -85,7 +99,7 @@
             })
         }
 
-        function tbSoapRanap(no_rawat = '', tgl_pertama = '', tgl_kedua = '', petugas = '') {
+        function tbSoapRanap(no_rawat = '', tglSoap1 = '', tglSoap2 = '', petugas = '') {
             no_rawat_soap = no_rawat;
             var tbSoapRanap = $('#tbSoap').dataTable({
                 processing: true,
@@ -99,8 +113,8 @@
                     url: "soap",
                     data: {
                         'no_rawat': no_rawat,
-                        'tgl_pertama': tgl_pertama,
-                        'tgl_kedua': tgl_kedua,
+                        'tgl_pertama': tglSoap1,
+                        'tgl_kedua': tglSoap2,
                         'petugas': petugas,
                     },
                     error: (request) => {
@@ -240,7 +254,7 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 });
-                                tbSoapRanap(no, tgl_pertama, tgl_kedua);
+                                tbSoapRanap(no, tglSoap1, tglSoap2);
                                 grafikPemeriksaan.destroy();
                                 buildGrafik(no)
                                 setEws(no, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
@@ -254,10 +268,10 @@
         }
 
         function cariSoap() {
-            const tgl_pertama = splitTanggal($('.tgl_pertama_soap').val());
-            const tgl_kedua = splitTanggal($('.tgl_kedua_soap').val());
+            const tglSoap1 = splitTanggal($('.tglSoap1_soap').val());
+            const tglSoap2 = splitTanggal($('.tglSoap2_soap').val());
             const petugas = $('#petugasCppt').val();
-            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua, petugas);
+            tbSoapRanap(no_rawat_soap, tglSoap1, tglSoap2, petugas);
         }
 
         function verifikasiSoap(no_rawat, tgl, jam) {
