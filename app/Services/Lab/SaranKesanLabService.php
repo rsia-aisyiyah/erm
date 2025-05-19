@@ -54,5 +54,39 @@ class SaranKesanLabService
             return $e->errorInfo;
         }
     }
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'no_rawat' => 'required',
+            'tgl_periksa' => 'required',
+            'jam' => 'required',
+            'saran' => 'required',
+            'kesan' => 'required',
+        ]);
+        try {
+            $result = $this->model->where('no_rawat', $request->no_rawat)
+                ->where('tgl_periksa', $request->tgl_periksa)
+                ->where('jam', $request->jam)
+                ->update($validated);
+            return $result;
+        } catch (QueryException $e) {
+            return $e->errorInfo;
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        $key = [
+            'no_rawat' => $request->no_rawat,
+            'tgl_periksa' => $request->tgl_periksa,
+            'jam' => $request->jam,
+        ];
+        try {
+            $result = $this->model->where($key)->delete();
+        } catch (QueryException $e) {
+            return $e->errorInfo;
+        }
+        return $result;
+    }
 
 }

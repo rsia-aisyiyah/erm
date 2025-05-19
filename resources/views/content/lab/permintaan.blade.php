@@ -121,6 +121,8 @@
                                             <x-textarea id="saran" name="saran"></x-textarea>
                                             <label for="kesan">Kesan</label>
                                             <x-textarea id="kesan" name="kesan"></x-textarea>
+                                            <button type="button" class="mt-2 btn btn-primary btn-sm" id="btnSimpanHasilSaranLab"><i class="bi bi-save"></i> Simpan</button>
+                                            <button type="button" class="mt-2 btn btn-danger btn-sm" id="btnHapusHasilSaranLab"><i class="bi bi-trash"></i> Hapus</button>
                                         </form>
                                     </fieldset>
                                 </div>
@@ -130,7 +132,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-sm" id="btnSimpanHasilSaranLab"><i class="bi bi-save"></i> Simpan</button>
+
                 </div>
             </div>
         </div>
@@ -152,6 +154,7 @@
         const saranKesanLab = $('#saranKesanLab');
         const saranLab = saranKesanLab.find('#saran');
         const kesanLab = saranKesanLab.find('#kesan');
+        const btnHapusHasilSaranLab = $('#btnHapusHasilSaranLab');
 
         $(document).ready(() => {
             renderTablePermintaanLab();
@@ -338,7 +341,8 @@
                 formHasilPermintaanLab.find('#informasi').val(response.informasi_tambahan);
                 formHasilPermintaanLab.find('#tgl_sampel').val(`${splitTanggal(response.tgl_sampel)} ${response.jam_sampel}`);
                 formHasilPermintaanLab.find('#tgl_hasil').val(`${splitTanggal(response.tgl_hasil)} ${response.jam_hasil}`);
-                tableHasilPermintaanLab.html(renderHasilPemeriksaanLab(response.hasil));
+                tableHasilPermintaanLab.html(renderHasilPemeriksaanLab(response.hasil, response.saran_kesan));
+
                 saranLab.val(response.saran_kesan?.saran);
                 kesanLab.val(response.saran_kesan?.kesan);
 
@@ -370,7 +374,24 @@
             // $(`#content${index}`).html(content);
         }
 
-        function renderHasilPemeriksaanLab(data) {
+        function renderHasilPemeriksaanLab(data, saran = null) {
+            if (saran) {
+                btnSimpanHasilSaranLab.removeClass('btn-primary')
+                    .addClass('btn-warning')
+                    .attr('onclick', `ubahHasilSaranLab()`)
+                    .html('<i class="bi bi-pencil"></i> Ubah');
+
+                btnHapusHasilSaranLab.removeClass('d-none')
+            } else {
+                btnSimpanHasilSaranLab
+                    .removeClass('btn-warning')
+                    .addClass('btn-primary')
+                    .attr('onclick', `simpanHasilSaranLab()`)
+                    .html('<i class="bi bi-save"></i> Simpan');
+                btnHapusHasilSaranLab.addClass('d-none')
+                    .removeAttr('onclick');
+            }
+
 
             let content = '';
             data.forEach(element => {
@@ -384,7 +405,7 @@
             return content;
         }
 
-    function renderSubHasilPemeriksaanLab(data) {
+        function renderSubHasilPemeriksaanLab(data) {
             let content = '';
             data.sort((a, b) => a.template.urut - b.template.urut);
 
@@ -431,14 +452,13 @@
             $(e).siblings().removeClass('active');
         }
 
-        btnSimpanHasilSaranLab.on('click', () => {
+        function simpanHasilSaranLab() {
             const no_rawat = formHasilPermintaanLab.find('#no_rawat').val();
             const tglPeriksa = formHasilPermintaanLab.find('#tgl_hasil').val();
             const tanggal = tglPeriksa.split(' ')[0];
             const jam = tglPeriksa.split(' ')[1];
             const saran = $('#saranKesanLab').find('#saran').val();
             const kesan = $('#saranKesanLab').find('#kesan').val();
-
 
             $.post(`/erm/lab/saran-kesan`, {
                 no_rawat: no_rawat,
@@ -447,9 +467,110 @@
                 saran: saran,
                 kesan: kesan
             }).done((response) => {
-                alertSuccessAjax('Berhasil menyimpan saran dan kesan')
+                alertSuccessAjax('Berhasil menyimpan saran dan kesan').then(() => {
+                    btnSimpanHasilSaranLab.removeClass('btn-primary')
+                        .addClass('btn-warning')
+                        .attr('onclick', `ubahHasilSaranLab()`)
+                        .html('<i class="bi bi-pencil"></i> Ubah');
+
+                    btnHapusHasilSaranLab.removeClass('d-none')
+                })
+
+            }).fail((error) => {
+                const errors = error.responseJSON.errors;
+                const errorStringOneLine = Object.entries(errors)
+                    .map(([field, messages]) => `${messages.join(', ')}`)
+                    .join('; ');
+
+                const errorString = `${error.responseJSON.message} <br/> ${errorStringOneLine}`;
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: `${errorString}`
+                })
+            })
+        }
+
+        function ubahHasilSaranLab() {
+            const no_rawat = formHasilPermintaanLab.find('#no_rawat').val();
+            const tglPeriksa = formHasilPermintaanLab.find('#tgl_hasil').val();
+            const tanggal = tglPeriksa.split(' ')[0];
+            const jam = tglPeriksa.split(' ')[1];
+            const saran = $('#saranKesanLab').find('#saran').val();
+            const kesan = $('#saranKesanLab').find('#kesan').val();
+
+
+            $.ajax({
+                url: `/erm/lab/saran-kesan`,
+                method: 'PUT',
+                data: {
+                    no_rawat: no_rawat,
+                    tgl_periksa: splitTanggal(tanggal),
+                    jam: jam,
+                    saran: saran,
+                    kesan: kesan
+                },
+            }).done((response) => {
+                alertSuccessAjax('Berhasil menyimpan perubahan saran dan kesan')
+            }).fail((error) => {
+                const errors = error.responseJSON.errors;
+                const errorStringOneLine = Object.entries(errors)
+                    .map(([field, messages]) => `${messages.join(', ')}`)
+                    .join('; ');
             })
 
+        }
+
+        btnHapusHasilSaranLab.on('click', () => {
+            Swal.fire({
+                title: 'Yakin ingin menghapus saran dan kesan?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteHasilSaranLab();
+                }
+            })
+
+
         })
+
+        function deleteHasilSaranLab() {
+            const no_rawat = formHasilPermintaanLab.find('#no_rawat').val();
+            const tglPeriksa = formHasilPermintaanLab.find('#tgl_hasil').val();
+            const tanggal = tglPeriksa.split(' ')[0];
+            const jam = tglPeriksa.split(' ')[1];
+            $.ajax({
+                url: `/erm/lab/saran-kesan`,
+                method: 'DELETE',
+                data: {
+                    no_rawat: no_rawat,
+                    tgl_periksa: splitTanggal(tanggal),
+                    jam: jam
+                },
+            }).done((response) => {
+                alertSuccessAjax('Berhasil menghapus saran dan kesan').then(() => {
+                    btnSimpanHasilSaranLab
+                        .removeClass('btn-warning')
+                        .addClass('btn-primary')
+                        .attr('onclick', `simpanHasilSaranLab()`)
+                        .html('<i class="bi bi-save"></i> Simpan');
+                    btnHapusHasilSaranLab.addClass('d-none')
+                        .removeAttr('onclick');
+                })
+                saranLab.val('');
+                kesanLab.val('');
+            }).fail((error) => {
+                const errors = error.responseJSON.errors;
+                const errorStringOneLine = Object.entries(errors)
+                    .map(([field, messages]) => `${messages.join(', ')}`)
+                    .join('; ');
+            })
+        }
     </script>
 @endpush
