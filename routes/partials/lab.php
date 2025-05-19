@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
         $route->get('/hasil', [DetailPemeriksaanLabController::class, 'get']);
         $route->get('/saran-kesan', [SaranKesanLabController::class, 'show']);
         $route->post('/saran-kesan', [SaranKesanLabController::class, 'create']);
+        $route->put('/saran-kesan', [SaranKesanLabController::class, 'update']);
+        $route->delete('/saran-kesan', [SaranKesanLabController::class, 'destroy']);
 
     });
 });
