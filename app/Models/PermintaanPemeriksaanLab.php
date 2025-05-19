@@ -25,4 +25,8 @@ class PermintaanPemeriksaanLab extends Model
     {
         return $this->belongsTo(JnsPerawatanLab::class, 'kd_jenis_prw', 'kd_jenis_prw');
     }
+    function saranKesan()
+    {
+        return $this->hasOne(SaranKesanLab::class, ['no_rawat', 'tgl_periksa', 'jam'], ['no_rawat', 'tgl_hasil', 'jam_hasils']);
+    }
 }

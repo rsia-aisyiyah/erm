@@ -43,7 +43,7 @@
                                         <label for="no_rawat">No. Rawat</label>
                                         <x-input id="no_rawat" name="no_rawat" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                    <div class="col-sm-12 col-md-12 col-lg-4">
                                         <label for="nm_pasien">Pasien</label>
                                         <x-input id="nm_pasien" name="nm_pasien" readonly />
                                     </div>
@@ -51,11 +51,11 @@
                                         <label for="tgl_lahir">Tgl. Lahir/Umur</label>
                                         <x-input id="tgl_lahir" name="tgl_lahir" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                    <div class="col-sm-12 col-md-12 col-lg-4">
                                         <label for="dokter">Dokter DPJP</label>
                                         <x-input id="dokter" name="dokter" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-2">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
                                         <label for="kamarInap">Kamar Inap</label>
                                         <x-input id="kamarInap" name="kamarInap" readonly />
                                     </div>
@@ -63,15 +63,15 @@
                                         <label for="diagnosis_awal">Dx. Awal</label>
                                         <x-input id="diagnosis_awal" name="diagnosis_awal" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                    <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="informasi">Informasi Lain</label>
                                         <x-input id="informasi" name="informasi" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                    <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="tgl_sampel">Tgl. Sampling/Periksa</label>
                                         <x-input id="tgl_sampel" name="tgl_sampel" readonly />
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                    <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="petugas">Tgl. Hasil</label>
                                         <x-input id="tgl_hasil" name="tgl_hasil" readonly />
                                     </div>
@@ -149,6 +149,9 @@
         const selectNoOrder = formHasilPermintaanLab.find('#noorder')
         const listRiwayatPermintaanLab = $('#listRiwayatPermintaanLab')
         const btnSimpanHasilSaranLab = $('#btnSimpanHasilSaranLab');
+        const saranKesanLab = $('#saranKesanLab');
+        const saranLab = saranKesanLab.find('#saran');
+        const kesanLab = saranKesanLab.find('#kesan');
 
         $(document).ready(() => {
             renderTablePermintaanLab();
@@ -163,13 +166,8 @@
         const tgl_pertama = localStorage.getItem('tgl_pertama') ? localStorage.getItem('tgl_pertama') : `{{ date('d-m-Y') }}`;
         const tgl_kedua = localStorage.getItem('tgl_kedua') ? localStorage.getItem('tgl_kedua') : `{{ date('d-m-Y') }}`;
 
-        console.log(tgl_pertama, tgl_kedua);
-
-
         $('#tgl_pertama').datepicker('setDate', tgl_pertama);
         $('#tgl_kedua').datepicker('setDate', tgl_kedua);
-
-        // $('.filterTanggal').datepicker('setDate', `{{ date('d-m-Y') }}`);
 
         function renderTablePermintaanLab() {
             tablePermintaanLab.dataTable({
@@ -322,7 +320,6 @@
             return $.get(`/erm/lab/permintaan`, {
                 noorder: noorder
             }).done((response) => {
-                console.log('RESPONSE ===', response);
                 getRegPeriksa(response.no_rawat).done((rawat) => {
                     formHasilPermintaanLab.find('#no_rawat').val(rawat.no_rawat);
                     formHasilPermintaanLab.find('#nm_pasien').val(`${rawat.no_rkm_medis} - ${rawat.pasien.nm_pasien} (${rawat.pasien.jk})`);
@@ -333,7 +330,6 @@
                             return item.stts_pulang !== 'Pindah Kamar'
                         })
                         .map((item) => {
-                            console.log(item);
                             return item.kamar.bangsal.nm_bangsal
                         })
                     formHasilPermintaanLab.find('#kamarInap').val(kamar);
@@ -343,6 +339,9 @@
                 formHasilPermintaanLab.find('#tgl_sampel').val(`${splitTanggal(response.tgl_sampel)} ${response.jam_sampel}`);
                 formHasilPermintaanLab.find('#tgl_hasil').val(`${splitTanggal(response.tgl_hasil)} ${response.jam_hasil}`);
                 tableHasilPermintaanLab.html(renderHasilPemeriksaanLab(response.hasil));
+                saranLab.val(response.saran_kesan?.saran);
+                kesanLab.val(response.saran_kesan?.kesan);
+
             })
         }
 
@@ -377,14 +376,15 @@
             data.forEach(element => {
                 content += `
                 <tr class="borderless row-secondary">
-                    <td colspan=4><strong>${element.jns_perawatan_lab.nm_perawatan}</strong></td>
+                    <td colspan=3><strong>${element.jns_perawatan_lab.nm_perawatan}</strong></td>
+                    <td>${element.petugas.nama}</td>
                 </tr>
                     ${renderSubHasilPemeriksaanLab(element.detail)}`
             });
             return content;
         }
 
-        function renderSubHasilPemeriksaanLab(data) {
+    function renderSubHasilPemeriksaanLab(data) {
             let content = '';
             data.sort((a, b) => a.template.urut - b.template.urut);
 

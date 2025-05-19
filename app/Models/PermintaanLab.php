@@ -39,5 +39,8 @@ class PermintaanLab extends Model
         return $this->hasMany(PeriksaLab::class, ['no_rawat', 'tgl_periksa', 'jam'], ['no_rawat', 'tgl_hasil', 'jam_hasil'])
             ->where('kd_jenis_prw', '!=', 'J000019');
     }
-
+    function saranKesan()
+    {
+        return $this->hasOne(SaranKesanLab::class, ['no_rawat', 'tgl_periksa', 'jam'], ['no_rawat', 'tgl_hasil', 'jam_hasil']);
+    }
 }

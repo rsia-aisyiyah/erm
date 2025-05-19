@@ -66,8 +66,9 @@ class PermintaanLabController extends Controller
                 return $q->with(['jenis', 'detail.item']);
             },
             'hasil' => function ($q) {
-                return $q->with(['jnsPerawatanLab', 'detail.template', 'saranKesan']);
-            }
+                return $q->with(['jnsPerawatanLab', 'detail.template', 'saranKesan', 'petugas']);
+            },
+            'saranKesan'
         ]);
 
         if ($request->noorder) {
