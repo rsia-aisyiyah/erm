@@ -22,11 +22,25 @@ $.contextMenu({
                     }
 
                 },
+                "hasilKritis": {
+                    name: "Hasil Kritis",
+                    icon: 'fa-regular fa-flask',
+                    callback: function (item, option, e, x, y) {
+                        hasilKritis(`${no_rawat}`)
+                    }
+                },
                 "riwayatPasien": {
                     name: "Riwayat Pasien",
                     icon: 'fa-regular fa-search',
                     callback: function (item, option, e, x, y) {
                         listRiwayatPasien(`${no_rkm_medis}`);
+                    }
+                },
+                "soapRanap": {
+                    name: "CPPT / SOAP",
+                    icon: 'fa-regular fa-pencil',
+                    callback: function (item, option, e, x, y) {
+                        showModalSoapRanap(no_rawat);
                     }
                 }
             }

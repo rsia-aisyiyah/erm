@@ -45,7 +45,7 @@
                 alertSuccessAjax('Data SBAR berhasil disimpan')
                 formSbarRanap.trigger('reset')
                 tbSoapRanap(data['no_rawat']);
-                getInstance.show()
+                $('#tab-tabel-pane').click();
                 btnSimpanSbar.removeClass('d-none');
                 btnUbahSbar.addClass('d-none');
                 btnBatalSbar.addClass('d-none');
@@ -63,7 +63,7 @@
                 alertSuccessAjax('Data SBAR berhasil disimpan')
                 formSbarRanap.trigger('reset')
                 tbSoapRanap(data['no_rawat']);
-                getInstance.show()
+                $('#tab-tabel-pane').click();
                 btnSimpanSbar.removeClass('d-none');
                 btnUbahSbar.addClass('d-none');
                 btnBatalSbar.addClass('d-none');

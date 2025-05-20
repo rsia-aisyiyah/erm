@@ -116,10 +116,10 @@
                         tabindex="0">
                         @include('content.ranap.modal.cppt._ewsRanap')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
+                    {{-- <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
                         tabindex="0">
                         @include('content.ranap.modal.cppt._resep')
-                    </div>
+                    </div> --}}
                     <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
                         tabindex="0">
                         @include('content.ranap.modal.cppt._grafikPemeriksaan')
@@ -148,8 +148,8 @@
 @push('script')
     <script>
         let no_rawat_soap = '';
-        const tgl_pertama = '';
-        const tgl_kedua = '';
+        const tglSoap1 = '';
+        const tglSoap2 = '';
         let getInstance = '';
         let sel = '';
 
@@ -292,5 +292,21 @@
             })
             return pemeriksaan;
         }
+
+
+        function checkJam() {
+            cek = $('#cekJam').is(':checked')
+            if (cek) {
+                clearInterval(jamSekarang)
+            } else {
+                jamSekarang = setInterval(() => {
+                    $('#jam_rawat_ubah').val(getJam())
+                }, 1000);
+            }
+        }
+
+        $('#cekJam').on('change', function() {
+            checkJam();
+        })
     </script>
 @endpush

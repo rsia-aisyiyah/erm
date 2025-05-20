@@ -63,13 +63,21 @@ class PermintaanLabController extends Controller
     {
         $permintaan = $this->permintaan->with([
             'pemeriksaan' => function ($q) {
-                return $q->with(['jenis', 'detail.item']);
+                return $q->with(['jenis', 'detail.item', 'detail.dokter']);
             },
             'hasil' => function ($q) {
-                return $q->with(['jnsPerawatanLab', 'detail.template', 'saranKesan', 'petugas']);
+                return $q->with([
+                    'jnsPerawatanLab',
+                    'detail.template' => function ($q) {
+                        return $q->orderBy('urut');
+                    },
+                    'saranKesan',
+                    'petugas',
+                    'dokter'
+                ]);
             },
             'saranKesan'
-        ]);
+        ])->orderBy('noorder', 'desc');
 
         if ($request->noorder) {
             $permintaan = $permintaan->where('noorder', $request->noorder)

@@ -8,36 +8,12 @@
             <div class="modal-body" style="height: 100vh">
                 <div class="card mb-2 p-0">
                     <div class="card-body">
-                        <table class="borderless">
-                            <tr>
-                                <td>Nomor Rawat</td>
-                                <td>:</td>
-                                <td id="no_rawat">
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Nama / JK</td>
-                                <td>:</td>
-                                <td id="nama_pasien">
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal Lahir / Umur</td>
-                                <td>:</td>
-                                <td id="umur">
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Dokter DPJP</td>
-                                <td>:</td>
-                                <td id="dokter">
-
-                                </td>
-                            </tr>
-                        </table>
+                        <div class="d-flex align-items-center justify-content-between" style="font-size: 12px" id="detailPasien">
+                            <p class="m-0">No. Rawat : <span id="no_rawat"></span></p>
+                            <p class="m-0">Nama / JK : <span id="nama_pasien"></span></p>
+                            <p class="m-0">Tgl. Lahir / Umur : <span id="umur"></span></p>
+                            <p class="m-0">DPJP : <span id="dokter"></span></p>
+                        </div>
                     </div>
                 </div>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -57,7 +33,7 @@
                 <div class="tab-content p-2" id="myTabContent">
                     <div class="tab-pane fade show active" id="laborat-tab-pane" role="tabpanel" aria-labelledby="laborat-tab" tabindex="0">
                         <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
-                        <table class="table table-bordered" width="100%">
+                        {{-- <table class="table table-bordered" width="100%">
                             <thead>
                                 <tr>
                                     <th>Pemeriksaan</th>
@@ -68,7 +44,11 @@
                             </thead>
                             <tbody id="tabel-lab">
                             </tbody>
-                        </table>
+                        </table> --}}
+
+                        <div id="hasilPermintaanLab">
+
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
                         @include('content.ranap.modal.penunjang.permintaan_lab')
@@ -107,35 +87,15 @@
 </div>
 @push('script')
     <script>
+        const hasilPermintaanLab = $('#hasilPermintaanLab')
+        const detailPasien = $('#detailPasien')
+
         function modalPemeriksaanPenunjang(no_rawat) {
-            getHasilLab(no_rawat).done((lab) => {
-                let hasilLab = '';
-                lab.forEach((item, index) => {
-
-                    if (item.detail.length) {
-                        hasilLab += `<tr class="borderless row-secondary">
-                            <td colspan="3">
-                                <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
-                                ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
-                            </td>
-                            <td>${item.petugas.nama}</td></tr>`;
-                        item.detail.sort((a, b) => a.template.urut - b.template.urut);
-                        item.detail.forEach((detail, index) => {
-                            hasilLab += `<tr class="${setWarnaPemeriksaan(detail.keterangan)}">
-                                <td>${detail.template.Pemeriksaan}</td>
-                                <td>${detail.nilai} ${detail.template.satuan}</td>
-                                <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
-                                <td>${detail.keterangan}</td></tr>`
-                        })
-                    }
-                })
-                $('#tabel-lab').append(hasilLab)
-
-            })
+            getHasilPermintaanLab(no_rawat)
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 $('#modalLabRanap').modal('show')
-                $('td#no_rawat').html(no_rawat)
-                $('td#dokter').html(regPeriksa.dokter.nm_dokter)
+                detailPasien.find('#no_rawat').html(no_rawat)
+                detailPasien.find('#dokter').html(regPeriksa.dokter.nm_dokter)
                 formPermintaanLab.find('#no_rawat').val(no_rawat)
                 formPermintaanLab.find('#dokter').val(regPeriksa.dokter.nm_dokter)
                 formPermintaanLab.find('#kd_dokter').val(regPeriksa.kd_dokter)
@@ -146,8 +106,8 @@
                 formPermintaanRadiologi.find('#dokter').val(regPeriksa.dokter.nm_dokter)
                 formPermintaanRadiologi.find('#status').val(regPeriksa.status_lanjut.toLowerCase())
 
-                $('td#nama_pasien').html(`${regPeriksa.no_rkm_medis} ${regPeriksa.pasien.nm_pasien} / ${regPeriksa.pasien.jk}`)
-                $('td#umur').html(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
+                detailPasien.find('#nama_pasien').html(`${regPeriksa.no_rkm_medis} ${regPeriksa.pasien.nm_pasien} / ${regPeriksa.pasien.jk}`)
+                detailPasien.find('#umur').html(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
             })
 
             getPermintaanRadiologi(no_rawat).done((permintaan) => {
@@ -204,6 +164,73 @@
 
         }
 
+        function getHasilPermintaanLab(no_rawat) {
+            $.get(`/erm/lab/permintaan`, {
+                no_rawat: no_rawat
+            }).done((response) => {
+                let table = '';
+
+                response.forEach((item) => {
+                    table += `
+                    <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
+                        <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
+                        <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
+                        <div class="p-2 bd-highlight fw-bold">Informasi : ${item.informasi_tambahan}</div>
+                        <div class="p-2 bd-highlight fw-bold">Tgl. Permintaan : ${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</div>    
+                    </div>
+                    <table class='table table-bordered table-hover'>
+                        <thead>
+                            <tr>
+                                <td width="">Pemeriksaan</td>    
+                                <td width="20%">Hasil</td>    
+                                <td width="30%">Nilai Rujukan</td>    
+                                <td width="20%">Keterangan</td>    
+                            </tr>
+                        </thead>
+                        <tbody>
+                                ${renderHasilPermintaanLab(item.hasil)}
+                                <tr>
+                                    <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil[0].dokter.nm_dokter}</strong></td>    
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="">Saran : <strong>${item.saran_kesan? item.saran_kesan.saran : '-'}</strong></td>    
+                                    <td colspan="2" class="">Kesan : <strong>${item.saran_kesan? item.saran_kesan.kesan : '-'}</strong></td>    
+                                </tr>
+                        </tbody>
+                    </table>`
+
+                })
+
+                hasilPermintaanLab.html(table);
+
+            })
+        }
+
+
+        function renderHasilPermintaanLab(data) {
+            let html = '';
+            data.forEach((item) => {
+                const detail = item.detail.map((detail, index) => {
+                    return `<tr class="${setWarnaPemeriksaan(detail.keterangan)}" onclick="setTextHasil(this)">
+                            <td>${detail.template.Pemeriksaan}</td>
+                            <td>${detail.nilai} ${detail.template.satuan}</td>
+                            <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
+                            <td>${detail.keterangan}</td>
+                        </tr>`
+
+                }).join('');
+                html += `
+                    <tr>
+                        <th colspan="2">${item.jns_perawatan_lab.nm_perawatan}</th>
+                        <th>${splitTanggal(item.tgl_periksa)} ${item.jam}</th>
+                        <th>${item.petugas.nama}</th>
+                    </tr>
+                    ${detail}
+                `
+            })
+            return html
+
+        }
 
 
         $('#modalLabRanap').on('hidden.bs.modal', function() {
@@ -213,5 +240,27 @@
             tableHasilPermintaan.addClass('d-none');
 
         })
+
+        function setTextHasil(element) {
+
+            const textHasil = $('#formHasilKritis').find('textarea[name="hasil"]');
+
+            if (!textHasil) {
+                return false;
+            }
+
+            const pemeriksaan = $(element).find('td:nth-child(1)').text()
+            const hasil = $(element).find('td:nth-child(2)').text()
+            const keterangan = $(element).find('td:nth-child(4)').text()
+
+            let stringHasil = $('#formHasilKritis').find('textarea[name="hasil"]').val();
+
+            stringHasil += `${pemeriksaan} : ${hasil}; \n`
+
+            $('#formHasilKritis').find('textarea[name="hasil"]').val(stringHasil)
+
+
+
+        }
     </script>
 @endpush
