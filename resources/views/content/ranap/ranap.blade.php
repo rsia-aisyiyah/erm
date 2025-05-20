@@ -138,6 +138,7 @@
         </div>
     </div>
     @include('content.poliklinik.modal.modal_riwayat')
+    @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_lab')
     @include('content.ranap.modal.modal_soap')
     @include('content.ranap.modal.modal_penunjang')
@@ -156,7 +157,6 @@
     @include('content.ranap.modal.modal_riwayat_persalinan')
     @include('content.ranap.modal.modal_poc')
     @include('content.ranap.modal.modal_skrining_tb')
-    @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_riwayat')
     @include('content.ranap.modal.modal_catatan_edukasi_pasien')
     @include('content.ranap.modal.cppt.gizi._modalListAntropometri')
@@ -211,22 +211,6 @@
             $('.tanggal').datepicker('setDate', dateStart)
             tb_ranap();
         });
-
-
-        function checkJam() {
-            cek = $('#cekJam').is(':checked')
-            if (cek) {
-                clearInterval(jamSekarang)
-            } else {
-                jamSekarang = setInterval(() => {
-                    $('#jam_rawat_ubah').val(getJam())
-                }, 1000);
-            }
-        }
-
-        $('#cekJam').on('change', function() {
-            checkJam();
-        })
 
         $('#cari-kamar').on('search', function() {
             if ($(this).val() === '') {
@@ -798,7 +782,7 @@
         });
 
 
-        
+
 
         // function toggleDropdownAksi(e) {
         //     const isShow = $(e).hasClass('show');

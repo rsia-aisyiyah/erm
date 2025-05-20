@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-sm table-hover align-middle" id="tablePermintaanLab" style="font-size: 11px">
+                <table class="table table-sm table-hover align-middle" id="tableDataPermintaanLab" style="font-size: 11px">
 
                 </table>
 
@@ -139,12 +139,14 @@
     </div>
 
     @include('content.ranap.modal.modal_soap')
+    @include('content.ranap.modal.modal_hasil_kritis')
+    @include('content.ranap.modal.modal_lab')
 @endsection
 
 @push('script')
     <script src={{ asset('js/context-menu/lab.js') }}></script>
     <script>
-        const tablePermintaanLab = $('#tablePermintaanLab')
+        const tableDataPermintaanLab = $('#tableDataPermintaanLab')
         const btnFilterTglLab = $('#btnFilterTglLab')
         const modalHasilPermintaanLab = $('#modalHasilPermintaanLab')
         const contewntHasilPermintaanLab = modalHasilPermintaanLab.find('#contentHasil')
@@ -159,7 +161,7 @@
         const btnHapusHasilSaranLab = $('#btnHapusHasilSaranLab');
 
         $(document).ready(() => {
-            renderTablePermintaanLab();
+            rendertableDataPermintaanLab();
         })
 
         $('.filterTanggal').datepicker({
@@ -174,8 +176,8 @@
         $('#tgl_pertama').datepicker('setDate', tgl_pertama);
         $('#tgl_kedua').datepicker('setDate', tgl_kedua);
 
-        function renderTablePermintaanLab() {
-            tablePermintaanLab.dataTable({
+        function rendertableDataPermintaanLab() {
+            tableDataPermintaanLab.dataTable({
                 processing: true,
                 destroy: true,
                 serverSide: true,
@@ -302,7 +304,7 @@
         }
 
         btnFilterTglLab.on('click', () => {
-            renderTablePermintaanLab();
+            rendertableDataPermintaanLab();
             const tgl_pertama = $('#tgl_pertama').val();
             const tgl_kedua = $('#tgl_kedua').val();
             localStorage.setItem('tgl_pertama', $('#tgl_pertama').val());

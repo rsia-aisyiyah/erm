@@ -112,6 +112,10 @@ class LoginController extends Controller
             return redirect('/radiologi');
         }
 
+        if ($pegawai->jbtn == 'Dokter Spesialis Patologi Klinik') {
+            return redirect('/lab');
+        }
+
         return redirect('/');
     }
 }

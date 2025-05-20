@@ -328,30 +328,16 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+                            tbSoapRanap(no_rawat);
                             grafikPemeriksaan.destroy();
-                            buildGrafik(no_rawat_soap)
-                            setEws(no_rawat_soap, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
-                            formSoapRanap.find('textarea[name=subjek]').val('-');
-                            formSoapRanap.find('textarea[name=objek]').val('-');
-                            formSoapRanap.find('textarea[name=asesmen]').val('-');
-                            formSoapRanap.find('textarea[name=plan]').val('-');
-                            formSoapRanap.find('textarea[name=instruksi]').val('-');
-                            formSoapRanap.find('input[name=suhu]').val('-');
-                            formSoapRanap.find('input[name=tinggi]').val('-');
-                            formSoapRanap.find('input[name=berat]').val('-');
-                            formSoapRanap.find('input[name=tensi]').val('-');
-                            formSoapRanap.find('input[name=respirasi]').val('-');
-                            formSoapRanap.find('input[name=nadi]').val('-');
-                            formSoapRanap.find('input[name=spo2]').val('-');
-                            formSoapRanap.find('input[name=gcs]').val('-');
-                            formSoapRanap.find('input[name=o2]').val('-');
-                            formSoapRanap.find('input[name=alergi]').val('-');
+                            buildGrafik(no_rawat)
+                            setEws(no_rawat, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
+                            formSoapRanap.trigger('reset');
                             formSoapRanap.find('select[name=kesadaran]').val('Compos Mentis').change();
-                            // getInstance.show()
-
-                            sel = document.querySelector('#tab-tabel')
-                            getInstance = bootstrap.Tab.getInstance(sel);
+                            formSoapRanap.find('input[name=tgl_perawatan_ubah]').val('{{ date('d-m-Y') }}');
+                            formSoapRanap.find('input[name=nik]').val('{{ session()->get('pegawai')->nik }}');
+                            formSoapRanap.find('input[name=nama]').val('{{ session()->get('pegawai')->nama }}');
+                            $('#tab-tabel').click();
                         });
 
                         var suhu_tubuh = $('#suhu').val();
