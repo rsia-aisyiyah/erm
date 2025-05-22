@@ -118,8 +118,8 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body table-responsive">
-                    <table class="table table-striped table-hover text-sm table-sm" id="tb_ranap" width="100%">
-                        <thead>
+                    <table class="table table-striped table-hover text-sm table-sm" id="tb_ranap" width="100%" style="font-size: 11px">
+                        {{-- <thead>
                             <tr role="row">
                                 <th></th>
                                 <th>No. Rawat</th>
@@ -130,8 +130,7 @@
                                 <th>Dokter</th>
                                 <th>Diag. Awal</th>
                             </tr>
-                        </thead>
-                        <tbody></tbody>
+                        </thead> --}}
                     </table>
                 </div>
             </div>
@@ -190,7 +189,7 @@
 
 
         $(document).ready(function() {
-            new bootstrap.Tab('#tab-resep')
+            // new bootstrap.Tab('#tab-resep')
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-grafik')
             new bootstrap.Tab('#tab-tabel')
@@ -345,6 +344,25 @@
 
                     },
                 },
+                columnDefs: [{
+                        target: 0,
+                        width: 70,
+                    },
+                    {
+                        target: 1,
+                        width: 100,
+                    },
+                    {
+                        target: 3,
+                        width: 150,
+                    }, {
+                        target: 4,
+                        width: 150,
+                    }, {
+                        target: 5,
+                        width: 150,
+                    }
+                ],
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
@@ -410,9 +428,11 @@
                         }
                     },
                     {
+                        title: 'No. Rawat',
                         data: 'no_rawat',
                     },
                     {
+                        title: 'Pasien',
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
                             pasien = `${data.no_rkm_medis} <br/> ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})`;
@@ -455,6 +475,7 @@
                         name: 'reg_periksa',
                     },
                     {
+                        title: 'Pembiayaan',
                         data: 'reg_periksa.penjab',
                         render: function(data) {
                             penjab = `<span class="${data.kd_pj === 'A03' ? 'text-danger' : 'text-success'}"><b>${data.png_jawab}</b></span>`
@@ -463,6 +484,7 @@
                         name: 'penjab',
                     },
                     {
+                        title: 'Kamar',
                         data: 'kamar',
                         render: function(data) {
                             return data.bangsal.nm_bangsal;
@@ -470,6 +492,15 @@
                         name: 'kamar',
                     },
                     {
+                        title: 'Tgl. Masuk',
+                        data: 'tgl_masuk',
+                        render: function(data, type, row, meta) {
+                            return `${splitTanggal(data)} ${row.jam_masuk}`;
+                        },
+                        name: 'tgl_masuk',
+                    },
+                    {
+                        title: 'Lama',
                         data: 'lama',
                         render: function(data, type, row) {
                             return `${data} Hari`;
@@ -477,6 +508,7 @@
                         name: 'lama',
                     },
                     {
+                        title: 'Dokter DPJP',
                         data: 'reg_periksa',
                         render: function(data, type, row) {
                             let dokter = '';
@@ -518,6 +550,7 @@
                         name: 'dokter'
                     },
                     {
+                        title: 'Diag. Awal',
                         data: 'diagnosa_awal',
                         name: 'diagnosa'
                     },

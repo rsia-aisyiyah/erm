@@ -1,7 +1,7 @@
 {{-- @dd(auth()->user()->nama) --}}
-<nav id="sidebarMenu" class="col-md-2 col-lg-2 d-md-block bg-light sidebar collapse">
+<nav id="sidebarMenu" class="col-md-2 col-lg-1 d-md-block bg-light sidebar collapse">
     <div class="">
-        <ul class="nav flex-column">
+        <ul class="nav flex-column" style="font-size:12px">
             <h6
                 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
                 <span>MENU</span>

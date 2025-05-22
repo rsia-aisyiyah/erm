@@ -32,28 +32,38 @@
                 </div>
             </div>
         </div>
-        <div class="row gy-2">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row gy-2">
 
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <label for="subjek">Situation</label>
-                <x-textarea cols="30" rows="8" name="keluhan" id="keluhan">-</x-textarea>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label for="subjek">Situation</label>
+                        <x-textarea cols="10" rows="8" name="keluhan" id="keluhan">-</x-textarea>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label for="background">Background</label>
+                        <x-textarea cols="10" rows="8" name="pemeriksaan" id="pemeriksaan">-</x-textarea>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <label for="penilaian">Assesment</label>
-                <x-textarea cols="30" rows="8" name="penilaian" id="penilaian">-</x-textarea>
-            </div>
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <label for="background">Background</label>
-                <x-textarea cols="30" rows="8" name="pemeriksaan" id="pemeriksaan">-</x-textarea>
-            </div>
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <label for="rtl">Recomendation</label>
-                <x-textarea cols="30" rows="8" name="rtl" id="rtl">-</x-textarea>
+            <div class="col-lg-6">
+                <div class="row gy-2">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label for="penilaian">Assesment</label>
+                        <x-textarea cols="10" rows="8" name="penilaian" id="penilaian">-</x-textarea>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label for="rtl">Recomendation</label>
+                        <x-textarea cols="10" rows="8" name="rtl" id="rtl">-</x-textarea>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row justify-content-end my-2">
-            <div class="col-6">
+        <div class="row justify-content-end my-2 w-m-100">
+            <div class="col-6 order-lg-1 order-md-2 order-sm-2">
+            </div>
+            <div class="col-6 order-lg-2 order-md-1 order-sm-1">
                 <button type="button" class="btn btn-sm btn-primary" id="btnSimpanSbar"><i class="bi bi-save me-1"></i> Simpan</button>
                 <button type="button" class="btn btn-sm btn-warning d-none" id="btnUbahSbar"><i class="bi bi-pencil me-1"></i> Ubah</button>
                 <button type="button" class="btn btn-sm btn-danger d-none" id="btnBatalSbar"><i class="bi bi-x me-1"></i> Batal</button>

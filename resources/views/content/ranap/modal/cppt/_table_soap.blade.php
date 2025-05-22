@@ -378,27 +378,27 @@
         <tr>
             <th width="5%">Petugas</th>
             <th width="5%">:</th>
-            <td>${data.sbar.pegawai.nama}</td>
+            <td>${stringPemeriksaan(data.sbar.pegawai.nama)}</td>
         </tr>
         <tr>
             <th width="5%">Situation</th>
             <th width="5%">:</th>
-            <td>${data.keluhan}</td>
+            <td>${stringPemeriksaan(data.keluhan)}</td>
         </tr>
         <tr>
             <th width="5%">Background</th>
             <th width="5%">:</th>
-            <td>${data.pemeriksaan}</td>
+            <td>${stringPemeriksaan(data.pemeriksaan)}</td>
         </tr>
         <tr>
             <th width="5%">Assesment</th>
             <th width="5%">:</th>
-            <td>${data.penilaian}</td>
+            <td>${stringPemeriksaan(data.penilaian)}</td>
         </tr>
         <tr>
             <th width="5%">Recomendation</th>
             <th width="5%">:</th>
-            <td>${data.rtl}</td>
+            <td>${stringPemeriksaan(data.rtl)}</td>
         </tr>
     </table>`
         }
