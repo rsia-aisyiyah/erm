@@ -110,7 +110,17 @@ class PermintaanLabController extends Controller
         } else {
             $permintaan->where('tgl_permintaan', date('Y-m-d'));
         }
-        return DataTables::of($permintaan)->make(true);
+        return DataTables::of($permintaan)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('search') && $request->get('search')['value']) {
+                    return $query->whereHas('regPeriksa.pasien', function ($query) use ($request) {
+                        $query->where('nm_pasien', 'like', '%' . $request->get('search')['value'] . '%')
+                            ->orWhere('no_rkm_medis', 'like', '%' . $request->get('search')['value'] . '%');
+                    })->orWhere('noorder', 'like', '%' . $request->get('search')['value'] . '%')
+                        ->orWhere('no_rawat', 'like', '%' . $request->get('search')['value'] . '%');
+                }
+            })
+            ->make(true);
     }
 
 

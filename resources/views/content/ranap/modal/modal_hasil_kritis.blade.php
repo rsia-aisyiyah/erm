@@ -199,6 +199,9 @@
 
             formTabKritis = document.getElementById('formPasienKritis-tab')
             hasilTabKritis = document.getElementById('hasilKritis-tab')
+            formPasienKritis.find('#hasil').val('')
+
+
 
             instanceFormTabKritis = bootstrap.Tab.getInstance(formTabKritis);
             instansceHasilTabKritis = new bootstrap.Tab(hasilTabKritis);
