@@ -78,9 +78,14 @@
                             type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    {{-- <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
                             type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
+                        </button>
+                    </li> --}}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-laboratorium" data-bs-toggle="tab" data-bs-target="#tab-laboratorium-pane"
+                            type="button" role="tab" aria-controls="tab-laboratorium-pane" aria-selected="false">Laboratorium
                         </button>
                     </li>
                     <li class="nav-item d-none" role="presentation">
@@ -116,9 +121,13 @@
                         tabindex="0">
                         @include('content.ranap.modal.cppt._ewsRanap')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
+                    {{-- <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
                         tabindex="0">
                         @include('content.ranap.modal.cppt._resep')
+                    </div> --}}
+                    <div class="tab-pane fade p-3" id="tab-laboratorium-pane" role="tabpanel" aria-labelledby="tab-laboratorium"
+                        tabindex="0">
+                        <div id="hasilPermintaanLabSoap"></div>
                     </div>
                     <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
                         tabindex="0">
@@ -148,8 +157,8 @@
 @push('script')
     <script>
         let no_rawat_soap = '';
-        const tgl_pertama = '';
-        const tgl_kedua = '';
+        const tglSoap1 = '';
+        const tglSoap2 = '';
         let getInstance = '';
         let sel = '';
 
@@ -160,6 +169,7 @@
 
         const departemen = "{{ session()->get('pegawai')->departemen }}";
         const formInfoPasien = $('#formInfoPasien')
+        const tabLaboratorium = $('#tab-laboratorium')
 
         modalSoapRanap.on('hidden.bs.modal', () => {
             const elementInput = $('input');
@@ -167,6 +177,53 @@
             elementInput.hasClass('is-valid') && elementInput.removeClass('is-valid');
             formAsuhanGiziDewasa.trigger('reset')
             formAsuhanGiziAnak.trigger('reset')
+            grafikPemeriksaan.destroy();
+
+        })
+
+        tabLaboratorium.on('click', () => {
+            const no_rawat = formInfoPasien.find('input[name="no_rawat"]').val();
+            const hasilLab = $('#hasilPermintaanLabSoap');
+            $.get(`/erm/lab/permintaan`, {
+                no_rawat: no_rawat
+            }).done((response) => {
+                let table = '';
+
+                response.forEach((item) => {
+                    table += `
+                    <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
+                        <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
+                        <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
+                        <div class="p-2 bd-highlight fw-bold">Informasi : ${item.informasi_tambahan}</div>
+                        <div class="p-2 bd-highlight fw-bold">Tgl. Permintaan : ${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</div>    
+                    </div>
+                    <table class='table table-bordered table-hover'>
+                        <thead>
+                            <tr>
+                                <td width="">Pemeriksaan</td>    
+                                <td width="20%">Hasil</td>    
+                                <td width="30%">Nilai Rujukan</td>    
+                                <td width="20%">Keterangan</td>    
+                            </tr>
+                        </thead>
+                        <tbody>
+                                ${renderHasilPermintaanLab(item.hasil)}
+                                
+                                <tr>
+                                    <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil.length ? item.hasil[0].dokter.nm_dokter : ''}</strong></td>    
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="">Saran : <strong>${item.saran_kesan? item.saran_kesan.saran : '-'}</strong></td>    
+                                    <td colspan="2" class="">Kesan : <strong>${item.saran_kesan? item.saran_kesan.kesan : '-'}</strong></td>    
+                                </tr>
+                        </tbody>
+                    </table>`
+
+                })
+
+                hasilLab.html(table);
+
+            })
         })
 
         modalSoapRanap.on('shown.bs.modal', () => {
@@ -292,5 +349,21 @@
             })
             return pemeriksaan;
         }
+
+
+        function checkJam() {
+            cek = $('#cekJam').is(':checked')
+            if (cek) {
+                clearInterval(jamSekarang)
+            } else {
+                jamSekarang = setInterval(() => {
+                    $('#jam_rawat_ubah').val(getJam())
+                }, 1000);
+            }
+        }
+
+        $('#cekJam').on('change', function() {
+            checkJam();
+        })
     </script>
 @endpush

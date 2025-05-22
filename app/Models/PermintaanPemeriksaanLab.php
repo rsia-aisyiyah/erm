@@ -16,6 +16,7 @@ class PermintaanPemeriksaanLab extends Model
     protected $guarded = [];
     public $timestamps = false;
 
+
     function detail(): HasMany
     {
         return $this->hasMany(DetailPermintaanLab::class, ['noorder', 'kd_jenis_prw'], ['noorder', 'kd_jenis_prw']);
@@ -23,5 +24,9 @@ class PermintaanPemeriksaanLab extends Model
     function jenis(): BelongsTo
     {
         return $this->belongsTo(JnsPerawatanLab::class, 'kd_jenis_prw', 'kd_jenis_prw');
+    }
+    function saranKesan()
+    {
+        return $this->hasOne(SaranKesanLab::class, ['no_rawat', 'tgl_periksa', 'jam'], ['no_rawat', 'tgl_hasil', 'jam_hasils']);
     }
 }

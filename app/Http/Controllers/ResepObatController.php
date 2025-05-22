@@ -64,6 +64,14 @@ class ResepObatController extends Controller
             'jam_penyerahan' => $jam,
         ]);
 
+        $this->track->updateSql($resepObat, [
+            'tgl_penyerahan' => $request->tanggal,
+            'jam_penyerahan' => $jam,
+        ], [
+            'no_resep' =>
+                $request->no_resep
+        ]);
+
         return response()->json('Berhasil dipanggil');
     }
     public function ambilSekarang()
@@ -110,12 +118,12 @@ class ResepObatController extends Controller
             'no_resep' => $request->no_resep,
             'kd_dokter' => $request->kd_dokter,
             'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' =>  '0000-00-00',
+            'tgl_perawatan' => '0000-00-00',
             'jam' => date('H:i:s', strtotime("00:00:00")),
             'tgl_peresepan' => date('Y-m-d'),
             'jam_peresepan' => date('H:i:s'),
             'status' => 'ralan',
-            'tgl_penyerahan' =>  '0000-00-00',
+            'tgl_penyerahan' => '0000-00-00',
             'jam_penyerahan' => date('H:i:s', strtotime("00:00:00")),
         ];
         $resepObat = $this->resepObat->create($data);

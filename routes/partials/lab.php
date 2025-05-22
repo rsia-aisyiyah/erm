@@ -8,6 +8,7 @@ use App\Http\Controllers\DetailPermintaanLabController;
 use App\Http\Controllers\DetailPemeriksaanLabController;
 use App\Http\Controllers\TemplateLaboratoriumController;
 use App\Http\Controllers\PermintaanPemeriksaanLabController;
+use App\Http\Controllers\SaranKesanLabController;
 
 Route::middleware('auth')->group(function () {
     Route::prefix('lab')->group(function ($route) {
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
         $route->get('/jenis/template/get', [JnsPerawatabLabController::class, 'getTemplate']);
         $route->prefix('permintaan')->group(function ($route) {
             $route->get('/', [PermintaanLabController::class, 'get']);
+            $route->get('/table', [PermintaanLabController::class, 'getDataTable']);
             $route->post('/', [PermintaanLabController::class, 'create']);
             $route->get('/nomor', [PermintaanLabController::class, 'getNomor']);
             $route->post('/detail', [DetailPermintaanLabController::class, 'create']);
@@ -28,6 +30,10 @@ Route::middleware('auth')->group(function () {
 
         $route->get('/template/get', [TemplateLaboratoriumController::class, 'get']);
         $route->get('/hasil', [DetailPemeriksaanLabController::class, 'get']);
+        $route->get('/saran-kesan', [SaranKesanLabController::class, 'show']);
+        $route->post('/saran-kesan', [SaranKesanLabController::class, 'create']);
+        $route->put('/saran-kesan', [SaranKesanLabController::class, 'update']);
+        $route->delete('/saran-kesan', [SaranKesanLabController::class, 'destroy']);
 
     });
 });

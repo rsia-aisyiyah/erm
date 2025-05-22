@@ -10,6 +10,17 @@ class Petugas extends Model
     use HasFactory;
     protected $table = 'petugas';
 
+    protected $hidden = [
+        'agama',
+        'alamat',
+        'jk',
+        'gol_darah',
+        'tmp_lahir',
+        'tgl_lahir',
+        'stts_nikah',
+        'no_telp',
+    ];
+
     public function periksaLab()
     {
         return $this->hasMany(PeriksaLab::class, 'nip', 'nip');

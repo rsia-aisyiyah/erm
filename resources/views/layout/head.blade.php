@@ -9,11 +9,11 @@
     <title>{{ config('app.name') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href='/erm/public/css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css'>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
     </style>
-    <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet" />
+    <link href="/erm/public/css/select2/select2.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
         rel="stylesheet" />
     {{-- Datatable --}}
@@ -32,7 +32,7 @@
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
 
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
 
 
     <style>
@@ -275,6 +275,13 @@
         .row-secondary {
             background-color: #e3e3e3;
             border-color: #ababab;
+            padding: 3px;
+        }
+
+        .row-success {
+            color: white;
+            background-color: #198754;
+            border-color: #146c43;
             padding: 3px;
         }
 
@@ -557,6 +564,18 @@
             /* Green border color for valid state */
             color: #155724;
             /* Dark green text */
+        }
+
+        @media (min-width: 367px) {
+            /* .batasan-lebar { */
+            /* width: 497px;
+                margin-left: auto;
+                margin-right: auto;
+            } */
+
+            .order-sm-2 {
+                order: 2 !important;
+            }
         }
     </style>
 </head>

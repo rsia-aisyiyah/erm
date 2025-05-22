@@ -1,7 +1,7 @@
 {{-- @dd(auth()->user()->nama) --}}
-<nav id="sidebarMenu" class="col-md-2 col-lg-2 d-md-block bg-light sidebar collapse">
+<nav id="sidebarMenu" class="col-md-2 col-lg-1 d-md-block bg-light sidebar collapse">
     <div class="">
-        <ul class="nav flex-column">
+        <ul class="nav flex-column" style="font-size:12px">
             <h6
                 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
                 <span>MENU</span>
@@ -58,12 +58,12 @@
                 </li>
             @endif
 
-            {{-- <li class="nav-item">
-                <a class="nav-link {{ Request::is('lab') ? 'active' : '' }}" href="{{url('/lab')}}">
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('lab') ? 'active' : '' }}" href="{{ url('/lab') }}">
                     <i class="bi bi-prescription2"></i>
                     Laborat
                 </a>
-            </li> --}}
+            </li>
             @if (session()->get('pegawai')->nik == 'direksi' ||
                     session()->get('pegawai')->departemen == 'DM3' ||
                     session()->get('pegawai')->departemen == 'DM7' ||

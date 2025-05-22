@@ -61,7 +61,7 @@
                         <form action="" id="formHasilKritis">
                             <div class="row gy-2">
                                 <div class="col-lg-6">
-                                    <label for="" class="form-label">Hasil Kritis</label>
+                                    <label for="" class="form-label">Hasil Kritis <a href="javascript:void(0)" class="text-primary" id="showHasilPenunjang" title="Hasil Penunjang Lab & Radiologi"><i class="fa fa-search"></i></a></label>
                                     <textarea class="form-control" id="hasil" cols="30" rows="10" name="hasil"></textarea>
                                 </div>
                                 <div class="col-lg-6">
@@ -114,7 +114,6 @@
         </div>
     </div>
 </div>
-</div>
 @push('script')
     <script>
         var modalHasilKritis = $('#modalHasilKritis')
@@ -123,6 +122,7 @@
         var petugas = $('#selectPetugas')
         var selectDokter = $('#selectDokterKritis')
         var selectPetugasRuang = $('#selectPetugasRuang')
+        const showHasilPenunjang = $('#showHasilPenunjang')
 
         function selectPetugasKritis(params) {
             const select = params.select2({
@@ -192,6 +192,7 @@
 
 
         modalHasilKritis.on('show.bs.modal', () => {
+
             selectPetugasKritis(petugas)
             selectPetugasKritis(selectPetugasRuang)
             selectDokterKritis(selectDokter)
@@ -220,6 +221,7 @@
                 formPasienKritis.find('#kamar').val(kamarInap.split(',')[0]);
                 formPasienKritis.find('#diagnosa').val(kamarInap.split(',')[1]);
                 formPasienKritis.find('#dokter').val(response.dokter.nm_dokter);
+                showHasilPenunjang.attr('onclick', `modalPemeriksaanPenunjang('${no_rawat}')`)
             })
             drawHasilKritis(no_rawat)
             modalHasilKritis.modal('show')

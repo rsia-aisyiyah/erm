@@ -16,6 +16,17 @@ class Dokter extends Model
 {
     use HasFactory, Compoships;
     protected $table = 'dokter';
+    protected $hidden = [
+        'agama',
+        'alamat',
+        'gol_drh',
+        'jk',
+        'no_ijin_praktek',
+        'stts_nikah',
+        'tmp_lahir',
+        'no_ijn_praktek',
+        'tgl_lahir'
+    ];
 
     public function mappingPoli()
     {

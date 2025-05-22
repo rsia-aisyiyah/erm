@@ -61,19 +61,55 @@ class PermintaanLabController extends Controller
 
     function get(Request $request): JsonResponse
     {
-        $permintaan = $this->permintaan->where('no_rawat', $request->no_rawat)
-            ->with([
-                'pemeriksaan' => function ($q) {
-                    return $q->with(['jenis', 'detail.item']);
-                }
-            ])
-            ->get();
+        $permintaan = $this->permintaan->with([
+            'pemeriksaan' => function ($q) {
+                return $q->with(['jenis', 'detail.item', 'detail.dokter']);
+            },
+            'hasil' => function ($q) {
+                return $q->with([
+                    'jnsPerawatanLab',
+                    'detail.template' => function ($q) {
+                        return $q->orderBy('urut');
+                    },
+                    'saranKesan',
+                    'petugas',
+                    'dokter'
+                ]);
+            },
+            'saranKesan'
+        ])->orderBy('noorder', 'desc');
+
+        if ($request->noorder) {
+            $permintaan = $permintaan->where('noorder', $request->noorder)
+                ->first();
+        } else if ($request->tgl_hasil && $request->jam_hasil) {
+            $permintaan = $permintaan->where('no_rawat', $request->no_rawat)
+                ->where('tgl_permintaan', $request->tgl_hasil)
+                ->where('jam_permintaan', $request->jam_hasil)
+                ->first();
+        } else {
+            $permintaan = $permintaan->where('no_rawat', $request->no_rawat)
+                ->get();
+        }
         return response()->json($permintaan);
     }
 
-    function getDataTable()
+    function getDataTable(Request $request)
     {
-        $permintaan = $this->permintaan->get();
+        $permintaan = $this->permintaan->with([
+            'pemeriksaan.jenis',
+            'regPeriksa' => function ($q) {
+                return $q->with(['pasien', 'penjab']);
+            },
+            'dokter'
+        ]);
+
+
+        if ($request) {
+            $permintaan->whereBetween('tgl_permintaan', [date('Y-m-d', strtotime($request->tgl_pertama)), date('Y-m-d', strtotime($request->tgl_kedua))]);
+        } else {
+            $permintaan->where('tgl_permintaan', date('Y-m-d'));
+        }
         return DataTables::of($permintaan)->make(true);
     }
 

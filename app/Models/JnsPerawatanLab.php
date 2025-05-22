@@ -10,6 +10,18 @@ class JnsPerawatanLab extends Model
 {
     use HasFactory;
     protected $table = 'jns_perawatan_lab';
+    protected $hidden = [
+        'bagian_rs',
+        'bhp',
+        'biaya',
+        'kso',
+        'menejemen',
+        'tarif_perujuk',
+        'tarif_tindakan_dokter',
+        'tarif_tindakan_petugas',
+        'total_byr',
+    ];
+
     public function detailPemeriksaanLab(): HasMany
     {
         return $this->hasMany(DetailPemeriksaanLab::class, 'kd_jenis_prw', 'kd_jenis_prw');

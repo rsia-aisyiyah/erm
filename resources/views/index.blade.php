@@ -6,8 +6,10 @@
 @stack('style')
 
 <body>
-    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" style="border-radius:0px">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">{{ config('app.name') }}
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" style="border-radius:0px;">
+        <a class="navbar-brand col-md-3 col-lg-1 me-0 px-3 fs-5" href="#" style="background-color: rgba(0,0,0,0); box-shadow: 0 0 0 transparent;">
+            <img src="/erm/public/img/logo.png" alt="Logo" style="max-width: 30px" />
+            {{ config('app.name') }}
         </a>
         <button style="border-radius:0px" class="navbar-toggler position-absolute d-md-none collapsed" type="button"
             data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
@@ -19,7 +21,7 @@
     <div class="container-fluid">
         <div class="row">
             @include('layout.sidebar')
-            <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
+            <main class="col-md-10 ms-sm-auto col-lg-11 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">
                         {{ (Request::segment(1) == null ? 'DASHBOARD' : Request::segment(1) == 'ranap') ? 'Rawat Inap' : strtoupper(Request::segment(1)) }}
@@ -42,6 +44,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script src="{{ asset('js/qrcode.min.js') }}"></script>
+
+    {{-- Context Menu    --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
 
     <!-- Magnify Image Viewer JS -->
     <script src="{{ asset('js/magnifier/jquery.magnify.min.js') }}"></script>
@@ -405,10 +411,21 @@
             } else if (keterangan == 'H' || keterangan == '*' || keterangan == '**') {
                 warna = 'row-danger';
             } else if (keterangan == 'K' || keterangan == 'k') {
-                warna = 'row-indigo';
+                warna = 'row-warning';
             }
             return warna;
         }
+        // function setWarnaPemeriksaan(keterangan) {
+        //     let warna = '';
+        //     if (keterangan == 'L') {
+        //         warna = 'row-success';
+        //     } else if (keterangan == 'H' || keterangan == '*' || keterangan == '**') {
+        //         warna = 'row-primary';
+        //     } else if (keterangan == 'K' || keterangan == 'k') {
+        //         warna = 'row-warning';
+        //     }
+        //     return warna;
+        // }
 
         function cariPetugas(nama) {
             $.ajax({
