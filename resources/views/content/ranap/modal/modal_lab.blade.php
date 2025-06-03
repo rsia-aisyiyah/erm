@@ -190,7 +190,7 @@
                         <tbody>
                                 ${renderHasilPermintaanLab(item.hasil)}
                                 <tr>
-                                    <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil[0].dokter.nm_dokter}</strong></td>    
+                                    <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil[0]?.dokter.nm_dokter}</strong></td>    
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="">Saran : <strong>${item.saran_kesan? item.saran_kesan.saran : '-'}</strong></td>    

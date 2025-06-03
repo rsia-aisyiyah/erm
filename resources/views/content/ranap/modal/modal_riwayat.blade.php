@@ -431,6 +431,11 @@
                                                         <td>:</td>
                                                         <td>${regPeriksa.pasien.nm_pasien} (${regPeriksa.no_rkm_medis})</td>
                                                     </tr>    
+                                                    <tr>
+                                                        <th>Tgl. Lahir / Umur</th>
+                                                        <td>:</td>
+                                                        <td>${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}</td>
+                                                    </tr>    
                                                 </table>    
                                             </div>
                                             <div class="col-md-6 col-lg-6 col-sm-12">
@@ -675,17 +680,17 @@
                                                         <td>${stringPemeriksaan(pemeriksaan.rtl)}</td>
                                                     </tr> 
                                                     ${pemeriksaan.sbar ? '':` <tr>
-                                                                                <th width="20%">Instruksi</th>
-                                                                                <td>:</td>
-                                                                                <td>${stringPemeriksaan(pemeriksaan.instruksi)}</td>
-                                                                            </tr>`}  
+                                                                                                    <th width="20%">Instruksi</th>
+                                                                                                    <td>:</td>
+                                                                                                    <td>${stringPemeriksaan(pemeriksaan.instruksi)}</td>
+                                                                                                </tr>`}  
                                                         
                                                     ${pemeriksaan.sbar ? `<tr>
-                                                                                    <th width="20%">Diverivikasi Oleh : </th>
-                                                                                    <td>:</td>
-                                                                                    <td> <strong>${pemeriksaan.verifikasi ? pemeriksaan.verifikasi.petugas.nama : '<span class="text-danger">Belum diverifikasi</span>'}</strong>
-                                                                                        <br/> ${pemeriksaan.verifikasi ? `${formatTanggal(pemeriksaan.verifikasi?.tgl_verif)} ${pemeriksaan.verifikasi.jam_verif}` : ''}</td>
-                                                                                </tr>` : ''}
+                                                                                                        <th width="20%">Diverivikasi Oleh : </th>
+                                                                                                        <td>:</td>
+                                                                                                        <td> <strong>${pemeriksaan.verifikasi ? pemeriksaan.verifikasi.petugas.nama : '<span class="text-danger">Belum diverifikasi</span>'}</strong>
+                                                                                                            <br/> ${pemeriksaan.verifikasi ? `${formatTanggal(pemeriksaan.verifikasi?.tgl_verif)} ${pemeriksaan.verifikasi.jam_verif}` : ''}</td>
+                                                                                                    </tr>` : ''}
                                                         
                                                 </table>
                                             </div>

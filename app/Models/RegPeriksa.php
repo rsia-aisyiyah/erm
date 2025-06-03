@@ -9,17 +9,26 @@ use App\Models\Upload;
 use App\Models\Operasi;
 use App\Models\KamarInap;
 use App\Models\ResepObat;
+use App\Models\PeriksaLab;
 use App\Models\PlanOfCare;
 use App\Models\Poliklinik;
+use App\Models\SkriningTb;
 use App\Models\BridgingSep;
 use App\Models\RanapGabung;
 use App\Models\BridgingSPRI;
 use App\Models\AskepRalanAnak;
+use App\Models\AskepRanapAnak;
 use App\Models\DiagnosaPasien;
+use App\Models\HasilRadiologi;
 use App\Models\LaporanOperasi;
 use App\Models\ProsedurPasien;
+use App\Models\AsesmenMedisIgd;
+use App\Models\GambarRadiologi;
+use App\Models\AsesmenMedisAnak;
 use App\Models\CatatanPerawatan;
 use App\Models\PemeriksaanRalan;
+use App\Models\PemeriksaanRanap;
+use App\Models\PeriksaRadiologi;
 use App\Models\ResumePasienRanap;
 use App\Models\SuratKontrolUlang;
 use App\Models\AskepRanapNeonatus;
@@ -27,12 +36,20 @@ use App\Models\RsiaGeneralConsent;
 use App\Models\AskepRalanKebidanan;
 use App\Models\AskepRanapKandungan;
 use App\Models\DetailPemberianObat;
+use App\Models\PermintaanRadiologi;
 use App\Models\DetailPemeriksaanLab;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\AsesmenMedisRajalKandungan;
+use App\Models\AsesmenMedisRanapKandungan;
 use App\Models\PenilaianMedisRalanKandungan;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\RsiaDataTriaseUgdDetailSkala1;
+use App\Models\RsiaDataTriaseUgdDetailSkala2;
+use App\Models\RsiaDataTriaseUgdDetailSkala3;
+use App\Models\RsiaDataTriaseUgdDetailSkala4;
+use App\Models\RsiaDataTriaseUgdDetailSkala5;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RegPeriksa extends Model
 {
@@ -107,7 +124,8 @@ class RegPeriksa extends Model
         return $this->hasMany(DetailPemberianObat::class, 'no_rawat', 'no_rawat');
     }
 
-    public function periksaLab(){
+    public function periksaLab()
+    {
         return $this->hasMany(PeriksaLab::class, 'no_rawat', 'no_rawat');
     }
     public function detailPemeriksaanLab()
@@ -202,8 +220,29 @@ class RegPeriksa extends Model
     {
         return $this->hasOne(AsesmenMedisIgd::class, 'no_rawat', 'no_rawat');
     }
-	function skriningTb() : BelongsTo
-	{
-		return $this->belongsTo(SkriningTb::class, 'no_rawat', 'no_rawat');
-	}
+    function skriningTb(): BelongsTo
+    {
+        return $this->belongsTo(SkriningTb::class, 'no_rawat', 'no_rawat');
+    }
+    function triaseSkala1()
+    {
+        return $this->hasMany(RsiaDataTriaseUgdDetailSkala1::class, 'no_rawat', 'no_rawat');
+    }
+    function triaseSkala2()
+    {
+        return $this->hasMany(RsiaDataTriaseUgdDetailSkala2::class, 'no_rawat', 'no_rawat');
+    }
+    function triaseSkala3()
+    {
+        return $this->hasMany(RsiaDataTriaseUgdDetailSkala3::class, 'no_rawat', 'no_rawat');
+    }
+    function triaseSkala4()
+    {
+        return $this->hasMany(RsiaDataTriaseUgdDetailSkala4::class, 'no_rawat', 'no_rawat');
+    }
+    function triaseSkala5()
+    {
+        return $this->hasMany(RsiaDataTriaseUgdDetailSkala5::class, 'no_rawat', 'no_rawat');
+    }
+
 }
