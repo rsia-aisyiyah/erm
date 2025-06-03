@@ -23,7 +23,7 @@
                                     <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
                                     <select name="spesialis" id="spesialis" class="form-select form-select-sm">
                                         <option value="">Semua</option>
-                                        <option value="S0007">Spesialis Umum</option>
+                                        <option value="S0007">Umum</option>
                                         <option value="S0003">Spesialis Anak</option>
                                         <option value="S0001">Spesialis Kandungan & Kebidanan</option>
                                     </select>
@@ -34,15 +34,10 @@
                             @endif
                         </div>
                     </form>
-                    <table class="table table-striped table-responsive text-sm table-sm" id="tb_ugd" width="100%">
+                    <table class="table table-striped table-responsive text-sm table-sm" id="tb_ugd" width="100%" style="font-size: 11px">
                         <thead>
                             <tr role="row">
-                                <th width="100px" style="text-align: center"></th>
-                                <th>No. Rawat</th>
-                                <th>Pasien</th>
-                                <th>Dokter DPJP</th>
-                                <th>Pembiayaan</th>
-                                <th>Status</th>
+
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -77,7 +72,7 @@
         var nm_pasien = '';
         var dokter = '';
         var spesialis = '';
-        var tableUdg = '';
+        // var tableUdg = '';
         var dateStart = '';
         var sel = '';
         var getInstance = '';
@@ -124,10 +119,10 @@
             })
 
             tbUgd()
-            setInterval(() => {
-                tbUgd()
-                toastReload('Memperbaharui data pasien UGD', 2000)
-            }, 50000);
+            // setInterval(() => {
+            //     tbUgd()
+            //     toastReload('Memperbaharui data pasien UGD', 2000)
+            // }, 50000);
 
             $('.tgl_awal').datepicker('setDate', splitTanggal(tgl_awal))
             $('.tgl_akhir').datepicker('setDate', splitTanggal(tgl_akhir))
@@ -154,16 +149,16 @@
         })
 
         function tbUgd() {
-            tableUdg = $('#tb_ugd').DataTable({
+            $('#tb_ugd').DataTable({
                 destroy: true,
                 processing: true,
                 scrollX: true,
                 scrollY: '60vh',
                 stateSave: true,
-                ordering: true,
+                // ordering: true,
                 paging: false,
                 info: false,
-                searching: true,
+                // searching: true,
                 ajax: {
                     url: "/erm/ugd/get/table",
                     data: {
@@ -194,8 +189,31 @@
                 initComplete: function() {
                     // toastReload('Menampilkan data pasien UGD', 2000)
                 },
+                columnDefs: [{
+                    target: 0,
+                    width: 10,
+                }, {
+                    target: 1,
+                    width: 100,
+                }, {
+                    target: 2,
+                    width: 300,
+                }, {
+                    target: 5,
+                    width: 100,
+                }, {
+                    target: 6,
+                    width: 100,
+
+                }],
+                createdRow: function(row, data, dataIndex) {
+                    if (data.asmed_igd == null) {
+                        $(row).addClass('table-danger').prop('title', 'Belum Ada Asesmen Medis')
+                    }
+                },
                 columns: [{
                         data: '',
+                        title: 'Aksi',
                         render: function(data, type, row, meta) {
 
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">CPPT</a></li>';
@@ -221,12 +239,14 @@
                         }
                     },
                     {
+                        title: 'No. Rawat',
                         data: 'no_rawat',
                         render: (data, type, row, meta) => {
                             return data;
                         }
                     },
                     {
+                        title: 'Pasien',
                         data: 'pasien',
                         render: (data, type, row, meta) => {
 
@@ -243,16 +263,12 @@
                                 return '';
                             }
 
-                            if (row.asmed_igd == null) {
-                                asmed = ' <button class="ml-1 px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button><br/>'
-                            }
-
-                            kamarInap = Object.keys(row.kamar_inap).length ? `<span class="badge text-bg-success">Pindah Kamar</span>` : '';
-                            return `${asmed}<strong>${row.no_rkm_medis} - ${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong> 
-                          <br/> ${kamarInap}`
+                            kamarInap = Object.keys(row.kamar_inap).length ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
+                            return `<strong>${row.no_rkm_medis} - ${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
                         }
                     },
                     {
+                        title: 'Dokter',
                         data: 'dokter',
                         render: (data, type, row, meta) => {
                             if (!data) {
@@ -269,6 +285,36 @@
                         }
                     },
                     {
+                        title: 'Tgl. Masuk',
+                        data: 'tgl_registrasi',
+                        render: (data, type, row, meta) => {
+                            return `${moment(data).format('DD-MM-YYYY')} ${row.jam_reg}`;
+                        }
+                    },
+
+                    {
+                        title: 'Dx. Awal',
+                        data: 'asmed_igd',
+                        render: (data, type, row, meta) => {
+                            if (data == null) {
+                                return '-'
+                            }
+                            return data?.diagnosis;
+
+                        }
+                    },
+                    {
+                        title: 'Asesmen Medis',
+                        data: 'asmed_igd',
+                        render: (data, type, row, meta) => {
+                            if (data == null) {
+                                return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
+                            }
+                            return moment(data.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                        }
+                    },
+                    {
+                        title: 'Pembiayaan',
                         data: 'penjab',
                         render: (data, type, row, meta) => {
                             let penjab = '';
@@ -283,7 +329,9 @@
                         }
                     },
 
+
                     {
+                        title: 'Kamar',
                         data: 'kamar',
                         render: (data, type, row, meta) => {
                             if (Object.keys(row.kamar_inap).length > 0) {

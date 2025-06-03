@@ -137,9 +137,14 @@
                                 <td> ${formatTanggal(i.tgl_registrasi)} ${i.jam_reg}</td>
                             </tr>    
                             <tr>
-                                <th>Nama Pasien (No. RM)</th>
+                                <th>Pasien (No. RM)</th>
                                 <th>:</th>
                                 <td>${d.nm_pasien} (${d.no_rkm_medis})</td>
+                            </tr>    
+                            <tr>
+                                <th>Tgl. Lahir / Umur</th>
+                                <th>:</th>
+                                <td>${formatTanggal(d.tgl_lahir)} / ${i.umurdaftar} ${i.sttsumur}</td>
                             </tr>    
                             <tr>
                                 <th>Poliklinik</th>
