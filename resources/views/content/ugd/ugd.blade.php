@@ -34,7 +34,7 @@
                             @endif
                         </div>
                     </form>
-                    <table class="table table-striped table-responsive text-sm table-sm" id="tb_ugd" width="100%" style="font-size: 11px">
+                    <table class="table table-responsive text-sm table-sm" id="tb_ugd" width="100%" style="font-size: 11px">
                         <thead>
                             <tr role="row">
 
@@ -66,6 +66,7 @@
 
 
 @push('script')
+    <script type="text/javascript" src="{{ asset('js/context-menu/ugd.js') }}"></script>
     <script type="text/javascript">
         var tgl_awal = '';
         var tgl_akhir = '';
@@ -207,6 +208,15 @@
 
                 }],
                 createdRow: function(row, data, dataIndex) {
+                    $(row).addClass('row-ugd')
+                        .attr('data-id', data.no_rawat)
+                        .attr('data-no_rkm_medis', data.no_rkm_medis)
+                        .attr('data-no_peserta', data.pasien.no_peserta)
+                        .attr('data-penjab', data.kd_pj)
+                        .attr('data-dokter_bpjs', data.dokter.mapping_dokter?.kd_dokter_bpjs)
+                        .attr('data-pasien', JSON.stringify(data.pasien))
+                        .attr('data-umur', data.umurdaftar)
+                        .attr('data-sttsumur', data.sttsumur)
                     if (data.asmed_igd == null) {
                         $(row).addClass('table-danger').prop('title', 'Belum Ada Asesmen Medis')
                     }
@@ -264,7 +274,7 @@
                             }
 
                             kamarInap = Object.keys(row.kamar_inap).length ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
-                            return `<strong>${row.no_rkm_medis} - ${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
+                            return `<strong>${row.no_rkm_medis}<br/>${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
                         }
                     },
                     {
