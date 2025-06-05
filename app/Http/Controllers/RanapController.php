@@ -38,11 +38,12 @@ class RanapController extends Controller
                     'umurdaftar',
                     'sttsumur',
                     'no_reg',
-                    'tgl_registrasi'
+                    'tgl_registrasi',
+                    'jam_reg'
                 )->with([
                             'pasien',
                             'dokter' => function ($q) {
-                                $q->with(['spesialis']);
+                                $q->with(['spesialis', 'mappingDokter']);
                             },
                             'penjab',
                             'kamarInap'

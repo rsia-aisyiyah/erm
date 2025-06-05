@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Action\TrackerLogin;
 use App\Models\User;
 use App\Models\Pegawai;
 use Illuminate\Database\QueryException;
@@ -14,8 +15,10 @@ use Illuminate\Validation\ValidationException;
 class LoginController extends Controller
 {
     public $userPublic = ['direksi', 'verifikator', '1.112.0823', '1.218.0921', '2.311.0314', '1.101.1112', '1.114.0525'];
+    public $trackLogin;
     public function __construct()
     {
+        $this->trackLogin = new TrackerLogin();
     }
 
     public function index()
@@ -58,15 +61,9 @@ class LoginController extends Controller
                 }
 
                 Auth::login($user);
-                $pegawai = Pegawai::where('nik', $request->get('username'))
-                    ->with(['petugas', 'dokter.jadwal', 'dep'])->first();
-                $request->session()->regenerate();
-                Session::put('pegawai', $pegawai);
-                Session::put('status', 'ok');
-                $role = $pegawai->dokter ? 'dokter' : $pegawai->dep->nama;
-                Session::put('role', $role);
 
-                return $this->redirectBasedOnRole($pegawai, $request);
+                $this->trackLogin->handle($request->get('username'));
+                return $this->setSession($request);
 
             } else {
                 return back()->with('error', 'Login Gagal, Periksa Kembali NIK dan Password')
@@ -117,5 +114,17 @@ class LoginController extends Controller
         }
 
         return redirect('/');
+    }
+
+    private function setSession(Request $request)
+    {
+        $pegawai = Pegawai::where('nik', $request->get('username'))
+            ->with(['petugas', 'dokter.jadwal', 'dep'])->first();
+        $request->session()->regenerate();
+        Session::put('pegawai', $pegawai);
+        Session::put('status', 'ok');
+        $role = $pegawai->dokter ? 'dokter' : $pegawai->dep->nama;
+        Session::put('role', $role);
+        return $this->redirectBasedOnRole($pegawai, $request);
     }
 }

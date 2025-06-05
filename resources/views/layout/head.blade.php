@@ -566,7 +566,28 @@
             /* Dark green text */
         }
 
-        @media (min-width: 367px) {
+        .context-menu-list,
+        .context-menu-item {
+            font-size: 11px !important;
+        }
+
+        .context-menu-item.context-menu-hover {
+            background-color: #0d6efd !important;
+            color: #fff;
+        }
+
+        .context-menu-icon.context-menu-icon--fa::before {
+
+            color: #0d6efd;
+        }
+
+        tbody {
+            border-color: #ccc;
+            border-style: solid;
+            border-width: 0;
+        }
+
+        tr @media (min-width: 367px) {
             /* .batasan-lebar { */
             /* width: 497px;
                 margin-left: auto;

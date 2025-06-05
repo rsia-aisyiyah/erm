@@ -144,6 +144,8 @@
         localStorage.removeItem('spesialis')
         localStorage.removeItem('dokter')
         localStorage.removeItem('riwayat')
+        localStorage.removeItem('tgl_pertama');
+        localStorage.removeItem('tgl_kedua');
     });
 
     document.getElementById('togglePassword').addEventListener('click', function() {

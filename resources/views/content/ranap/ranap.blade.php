@@ -171,6 +171,7 @@
     @include('content.ranap.modal.modal_asesmen_nyeri_neonatus')
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_dewasa')
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_anak')
+    @include('content.poliklinik.modal.modal_icare')
 @endsection
 
 @push('script')
@@ -423,7 +424,9 @@
                             }
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+                            // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${data.pasien.no_peserta}', '${data.dokter.mapping_dokter.kd_dokter_bpjs}')">Riwayat Pemeriksaan I-Care</a></li>`;
                             button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px" id="dropdownAksi${meta.row}" data-id="${row.no_rawat}">Aksi</button><ul class="dropdown-menu" style="font-size:12px">${list}</ul></div>`
+
                             return button;
                         }
                     },
@@ -493,9 +496,9 @@
                     },
                     {
                         title: 'Tgl. Masuk',
-                        data: 'tgl_masuk',
+                        data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-                            return `${splitTanggal(data)} ${row.jam_masuk}`;
+                            return `${splitTanggal(data.tgl_registrasi)} ${data.jam_reg}`;
                         },
                         name: 'tgl_masuk',
                     },
