@@ -190,19 +190,26 @@
                     }, {
                         target: 2,
                         width: 300,
-                    }, {
+                    },
+                    {
+                        target: 3,
+                        width: 200,
+                    },
+                    {
                         target: 5,
                         width: 100,
-                    }, {
-                        target: 6,
-                        width: 80,
                     },
                     {
                         target: 4,
                         width: 80,
                     }, {
                         target: 6,
-                        width: 100,
+                        width: 80,
+
+                    },
+                    {
+                        target: 7,
+                        width: 180,
 
                     }
                 ],
@@ -339,18 +346,48 @@
 
                         }
                     },
-
-
                     {
-                        title: 'Kamar',
-                        data: 'kamar',
+                        title: 'Status',
+                        data: 'status_lanjut',
                         render: (data, type, row, meta) => {
-                            if (Object.keys(row.kamar_inap).length > 0) {
-                                return '<button type="button" class="btn btn-danger btn-sm">Rawat Inap</button>';
+                            if (data === 'Ralan') {
+                                return `<span class="text-primary"><b>Rawat Jalan</b></span>`
                             } else {
-                                return '<button type="button" class="btn btn-warning btn-sm">Rawat Jalan</button>';
-
+                                return `<span class="text-danger"><b>Rawat Inap</b></span>`
                             }
+
+
+                        }
+                    },
+                    {
+                        title: 'Pindah Kamar',
+                        data: '',
+                        render: (data, type, row, meta) => {
+                            return row.kamar_pulang ? row.kamar_pulang.kamar.bangsal.nm_bangsal : '';
+                        }
+                    }, {
+                        title: 'Triase',
+                        data: '',
+                        render: (data, type, row, meta) => {
+                            let ats = '';
+                            let atsClass = '';
+                            if (row.triase_skala1.length > 0) {
+                                ats = `ATS I`
+                                atsClass = 'bg-danger text-white';
+                            } else if (row.triase_skala2.length > 0) {
+                                ats = `ATS II`
+                                atsClass = 'bg-warning text-dark';
+                            } else if (row.triase_skala3.length > 0) {
+                                ats = `ATS III`
+                                atsClass = 'bg-success text-white';
+                            } else if (row.triase_skala4.length > 0) {
+                                ats = `ATS IV`
+                                atsClass = 'bg-primary text-white';
+                            } else if (row.triase_skala5.length > 0) {
+                                ats = `ATS V`
+                                atsClass = 'bg-secondary text-white';
+                            }
+                            return `<div class="${atsClass} p-2 text-center" style="font-family:monospace">${ats}</div>`
                         }
                     }
 

@@ -41,7 +41,25 @@ class UgdController extends Controller
                 'status_lanjut',
                 'stts'
             )
-            ->with(['pasien', 'sep', 'dokter.mappingDokter', 'kamarInap', 'penjab', 'asmedRanapAnak', 'asmedRanapKandungan', 'asmedIgd', 'skriningTb', 'triaseSkala1', 'triaseSkala2', 'triaseSkala3', 'triaseSkala4', 'triaseSkala5'])->where('kd_poli', 'IGDK');
+            ->with([
+                'pasien',
+                'sep',
+                'dokter.mappingDokter',
+                'kamarInap',
+                'penjab',
+                'asmedRanapAnak',
+                'asmedRanapKandungan',
+                'asmedIgd',
+                'skriningTb',
+                'triaseSkala1',
+                'triaseSkala2',
+                'triaseSkala3',
+                'triaseSkala4',
+                'triaseSkala5',
+                'kamarPulang' => function ($q) {
+                    return $q->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
+                }
+            ])->where('kd_poli', 'IGDK');
 
         if ($request->tgl_awal || $request->tgl_akhir) {
             $regPeriksa->whereBetween('tgl_registrasi', [$request->tgl_awal, $request->tgl_akhir])->get();
