@@ -43,6 +43,15 @@ class KamarInap extends Model
     {
         return $this->hasOne(AskepRanapNeonatus::class, 'no_rawat', 'no_rawat');
     }
+    function askepKandungan()
+    {
+        return $this->hasOne(AskepRanapKandungan::class, 'no_rawat', 'no_rawat');
+    }
+
+    function asmedUmum()
+    {
+        return $this->hasOne(AsesmenMedisIgd::class, 'no_rawat', 'no_rawat');
+    }
     public function skoringTb(): BelongsTo
     {
         return $this->belongsTo(SkoringTb::class, 'no_rawat', 'no_rawat');
@@ -56,7 +65,8 @@ class KamarInap extends Model
         return $this->belongsTo(KomunikasiEdukasiObatPulang::class, 'no_rawat', 'no_rawat');
     }
 
-    function dischargePlanning(){
+    function dischargePlanning()
+    {
         return $this->hasOne(DischargePlanning::class, 'no_rawat', 'no_rawat');
     }
 }

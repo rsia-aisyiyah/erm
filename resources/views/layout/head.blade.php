@@ -598,5 +598,68 @@
                 order: 2 !important;
             }
         }
+
+        @media (max-width: 367px) {
+
+            table {
+                font-size: 10px !important;
+            }
+
+            table tbody th,
+            table tbody td {
+                padding: 6px 8px;
+            }
+
+            label,
+            input,
+            select,
+            button,
+            a {
+                font-size: 10px !important;
+            }
+
+            .form-check-label {
+                font-size: 10px !important;
+            }
+
+            .sidebar .nav-link {
+                font-weight: 500;
+                color: #333;
+                font-size: 10px !important;
+                padding: 8px 12px;
+            }
+
+            h1,
+            .h1 {
+                font-size: 1.75rem !important;
+            }
+
+            h2,
+            .h2 {
+                font-size: 1.5rem !important;
+            }
+
+            h3,
+            .h3 {
+                font-size: 1.25rem !important;
+            }
+
+            h4,
+            .h4 {
+                font-size: 1rem !important;
+            }
+
+            h5,
+            .h5 {
+                font-size: 0.875rem !important;
+            }
+
+            h6,
+            .h6 {
+                font-size: 0.75rem !important;
+            }
+
+
+        }
     </style>
 </head>

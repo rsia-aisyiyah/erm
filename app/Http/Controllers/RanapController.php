@@ -46,9 +46,15 @@ class RanapController extends Controller
                                 $q->with(['spesialis', 'mappingDokter']);
                             },
                             'penjab',
-                            'kamarInap'
+                            'kamarInap',
                         ]);
             },
+            'asmedKandungan',
+            'asmedAnak',
+            'askepNeonatus',
+            'askepAnak',
+            'askepKandungan',
+            'asmedUmum',
             'kamar',
             'dischargePlanning',
             'ranapGabung.regPeriksa.dokter',
@@ -56,11 +62,6 @@ class RanapController extends Controller
             'ranapGabung.regPeriksa.askepRanapNeonatus',
             'ranapGabung.regPeriksa.asmedRanapAnak',
             'kamar.bangsal',
-            'regPeriksa.asmedRanapKandungan',
-            'regPeriksa.asmedRanapAnak',
-            'regPeriksa.askepRanapNeonatus',
-            'regPeriksa.askepRanapAnak',
-            'regPeriksa.askepRanapKandungan',
             'resume',
             'skoringTb',
             'skriningTb'
@@ -69,9 +70,13 @@ class RanapController extends Controller
         if ($request->stts_pulang == '-') {
             $ranap->where('stts_pulang', $request->stts_pulang);
         } else if ($request->stts_pulang == 'Masuk') {
-            $ranap->whereBetween('tgl_masuk', [$request->tgl_pertama, $request->tgl_kedua]);
+            $ranap->whereBetween('tgl_masuk', [$request->tgl_pertama, $request->tgl_kedua])
+                ->where('stts_pulang', '!=', 'Pindah Kamar');
         } else if ($request->stts_pulang == 'Pulang') {
-            $ranap->whereBetween('tgl_keluar', [$request->tgl_pertama, $request->tgl_kedua]);
+            $ranap->whereBetween('tgl_keluar', [$request->tgl_pertama, $request->tgl_kedua])
+                ->where('stts_pulang', '!=', 'Pindah Kamar');
+        } else {
+            $ranap->where('stts_pulang', '!=', 'Pindah Kamar');
         }
 
         if ($request->kd_dokter) {

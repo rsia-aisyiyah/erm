@@ -28,7 +28,7 @@
                 @endif
             </div>
         </form>
-        <table class="table table-responsive text-sm table-sm" id="tb_ugd" width="100%" style="font-size: 11px">
+        <table class="table table-responsive text-sm table-sm" id="tb_ugd" width="100%">
             <thead>
                 <tr role="row">
 
@@ -209,8 +209,7 @@
                     },
                     {
                         target: 7,
-                        width: 180,
-
+                        width: 100,
                     }
                 ],
                 createdRow: function(row, data, dataIndex) {
@@ -355,8 +354,6 @@
                             } else {
                                 return `<span class="text-danger"><b>Rawat Inap</b></span>`
                             }
-
-
                         }
                     },
                     {
