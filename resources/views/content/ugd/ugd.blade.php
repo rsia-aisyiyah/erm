@@ -1,50 +1,41 @@
 @extends('index')
 @section('contents')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    Pasien UGD
+    <div class="table-responsive">
+        <form action="" id="formFilterUgd">
+            <div class="row">
+                <div class="col-md-6 col-lg-3 col-sm-12">
+                    <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Periode</label>
+                    <div class="input-group input-group-sm input-daterange">
+                        <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
+                        <div class="input-group-text">ke</div>
+                        <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
+                        <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form action="" id="formFilterUgd">
-                        <div class="row">
-                            <div class="col-md-6 col-lg-3 col-sm-12">
-                                <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Periode</label>
-                                <div class="input-group input-group-sm input-daterange">
-                                    <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
-                                    <div class="input-group-text">ke</div>
-                                    <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
-                                    <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
-                                </div>
-                            </div>
-                            @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
-                                <div class="col-md-6 col-lg-3 col-sm-12">
-                                    <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
-                                    <select name="spesialis" id="spesialis" class="form-select form-select-sm">
-                                        <option value="">Semua</option>
-                                        <option value="S0007">Umum</option>
-                                        <option value="S0003">Spesialis Anak</option>
-                                        <option value="S0001">Spesialis Kandungan & Kebidanan</option>
-                                    </select>
-                                </div>
-                                <input type="hidden" value="" name="kd_dokter">
-                            @else
-                                <input type="hidden" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
-                            @endif
-                        </div>
-                    </form>
-                    <table class="table table-responsive text-sm table-sm" id="tb_ugd" width="100%" style="font-size: 11px">
-                        <thead>
-                            <tr role="row">
-
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+                @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
+                    <div class="col-md-6 col-lg-3 col-sm-12">
+                        <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
+                        <select name="spesialis" id="spesialis" class="form-select form-select-sm">
+                            <option value="">Semua</option>
+                            <option value="S0007">Umum</option>
+                            <option value="S0003">Spesialis Anak</option>
+                            <option value="S0001">Spesialis Kandungan & Kebidanan</option>
+                        </select>
+                    </div>
+                    <input type="hidden" value="" name="kd_dokter">
+                @else
+                    <input type="hidden" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
+                @endif
             </div>
-        </div>
+        </form>
+        <table class="table table-responsive text-sm table-sm" id="tb_ugd" width="100%" style="font-size: 11px">
+            <thead>
+                <tr role="row">
+
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
     @include('content.ugd.modal.pemeriksaan')
     @include('content.ugd.modal.asmed')
@@ -191,22 +182,30 @@
                     // toastReload('Menampilkan data pasien UGD', 2000)
                 },
                 columnDefs: [{
-                    target: 0,
-                    width: 10,
-                }, {
-                    target: 1,
-                    width: 100,
-                }, {
-                    target: 2,
-                    width: 300,
-                }, {
-                    target: 5,
-                    width: 100,
-                }, {
-                    target: 6,
-                    width: 100,
+                        target: 0,
+                        width: 10,
+                    }, {
+                        target: 1,
+                        width: 100,
+                    }, {
+                        target: 2,
+                        width: 300,
+                    }, {
+                        target: 5,
+                        width: 100,
+                    }, {
+                        target: 6,
+                        width: 80,
+                    },
+                    {
+                        target: 4,
+                        width: 80,
+                    }, {
+                        target: 6,
+                        width: 100,
 
-                }],
+                    }
+                ],
                 createdRow: function(row, data, dataIndex) {
                     $(row).addClass('row-ugd')
                         .attr('data-id', data.no_rawat)
@@ -217,13 +216,15 @@
                         .attr('data-pasien', JSON.stringify(data.pasien))
                         .attr('data-umur', data.umurdaftar)
                         .attr('data-sttsumur', data.sttsumur)
+                        .attr('data-tgl_registrasi', data.tgl_registrasi)
+                        .attr('data-tgl_lahir', data.pasien.tgl_lahir)
                     if (data.asmed_igd == null) {
                         $(row).addClass('table-danger').prop('title', 'Belum Ada Asesmen Medis')
                     }
                 },
                 columns: [{
                         data: '',
-                        title: 'Aksi',
+                        title: '',
                         render: function(data, type, row, meta) {
 
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">CPPT</a></li>';
@@ -244,7 +245,7 @@
                             } else {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
                             }
-                            button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px;margin-left:15px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
+                            button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:11px"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
                     },

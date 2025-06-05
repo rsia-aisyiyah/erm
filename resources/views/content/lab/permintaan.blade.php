@@ -31,7 +31,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalHasilPermintaanLabLabel">Modal Title</h5>
+                    <h5 class="modal-title" id="modalHasilPermintaanLabLabel">Pemeriksaan Lab</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -227,7 +227,7 @@
                         data: 'reg_periksa',
                         name: 'no_rawat',
                         render: (data, type, row, meta) => {
-                            return `${data.no_rawat} <br/> ${data.no_rkm_medis} - ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})`
+                            return `${data.no_rawat} <br/><strong>${data.no_rkm_medis} - ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})</strong>`
                         }
                     },
                     {

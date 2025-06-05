@@ -1,7 +1,3 @@
-function isAsesmenNyeriActive(umur, sttsumur) {
-
-}
-
 $.contextMenu({
     selector: '.row-ugd',
     events: {
@@ -17,10 +13,10 @@ $.contextMenu({
         const penjab = element.data('penjab');
         const umur = element.data('umur');
         const sttsumur = element.data('sttsumur');
-        // const pasien = JSON.parse(element.data('pasien'));
-        console.log(element[0].dataset);
-
-
+        const pasien = element.data('pasien');
+        const tgl_daftar = element.data('tgl_registrasi')
+        const umurHari = hitungUmurDaftar(pasien.tgl_lahir, tgl_daftar)
+        const totalHari = Number((umurHari.tahun * 365)) + Number((umurHari.bulan * 28)) + Number(umurHari.hari)
         element.addClass('table-secondary')
         return {
             items: {
@@ -66,30 +62,61 @@ $.contextMenu({
                             items: {
                                 "asesmenNyeriNeonatus": {
                                     name: "Asesmen Nyeri Neonatus/Bayi",
+                                    disabled: () => {
+                                        if (totalHari <= 28 && totalHari <= 3 * 365) {
+                                            return false;
+                                        }
+                                        return true;
+
+                                    },
                                     callback: function (item, option, e, x, y) {
                                         showModalAsesmenNyeriNeonatus(`${no_rawat}`)
                                     }
                                 },
                                 "asesmenNyeriBatita": {
                                     name: "Asesmen Nyeri Batita",
+                                    disabled: () => {
+                                        if (totalHari <= 3 * 365 && totalHari >= 28) {
+                                            return false;
+                                        }
+                                        return true;
+                                    },
                                     callback: function (item, option, e, x, y) {
                                         showModalAsesmenNyeriBatita(`${no_rawat}`)
                                     }
                                 },
                                 "asesmenNyeriBalita": {
                                     name: "Asesmen Nyeri Balita",
+                                    disabled: () => {
+                                        if (totalHari <= 7 * 365 && totalHari >= 3 * 365) {
+                                            return false;
+                                        }
+                                        return true;
+                                    },
                                     callback: function (item, option, e, x, y) {
                                         showModalAsesmenNyeriBalita(`${no_rawat}`)
                                     }
                                 },
                                 "asesmenNyeriAnak": {
                                     name: "Asesmen Nyeri Anak",
+                                    disabled: () => {
+                                        if (totalHari >= 7 * 365 && totalHari <= 13 * 365) {
+                                            return false;
+                                        }
+                                        return true;
+                                    },
                                     callback: function (item, option, e, x, y) {
                                         showModalAsesmenNyeriAnak(`${no_rawat}`)
                                     }
                                 },
                                 "asesmenNyeriDewasa": {
                                     name: "Asesmen Nyeri Dewasa",
+                                    disabled: () => {
+                                        if (totalHari >= 13 * 365) {
+                                            return false;
+                                        }
+                                        return true;
+                                    },
                                     callback: function (item, option, e, x, y) {
                                         showModalAsesmenNyeriDewasa(`${no_rawat}`)
                                     }
