@@ -28,8 +28,8 @@ class IcareController extends Controller
     public function rsValidate(Request $request)
     {
         $data = [
-            'param' => (string)$request->param,
-            'kodedokter' => (int)$request->kodedokter
+            'param' => (string) $request->param,
+            'kodedokter' => (int) $request->kodedokter
         ];
         $response = Http::withHeaders($this->config->setHeaderIcare())->post($this->config->setUrlIcare(), $data);
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));

@@ -60,7 +60,7 @@
         </div>
     </div>
     @include('content.radiologi.modal.modal_hasil_radiologi')
-    @include('content.poliklinik.modal.modal_riwayat')
+    @include('content.ranap.modal.modal_riwayat')
 
 
     <div class="modal fade" id="modalCetakHasilRadiologi" tabindex="-1" aria-labelledby="modalCetakHasilRadiologi" aria-hidden="true">
@@ -205,7 +205,7 @@
                                         <i class="bi bi-list-ul"></i>
                                     </button>
                                     <ul class="dropdown-menu" style="font-size:11px">
-                                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="modalHasilRadiologi('${no_rkm_medis}')">Riwayat Pemeriksaan</a></li>
+                                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${no_rkm_medis}')">Riwayat Pemeriksaan</a></li>
                                         ${listPrint}
                                     </ul>
                                 </div>

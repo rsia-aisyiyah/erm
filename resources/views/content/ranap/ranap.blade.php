@@ -361,6 +361,10 @@
                     const asmedKandungan = data.asmed_kandungan;
                     const asmedUmumBBL = data.asmed_umum;
 
+
+                    console.log(data.asmed_kandungan, data.asmed_umum);
+
+
                     if (asmedAnak === null && asmedKandungan === null) {
                         row.addClass('table-danger')
                     }
@@ -435,7 +439,7 @@
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${data.pasien.no_peserta}', '${data.dokter.mapping_dokter.kd_dokter_bpjs}')">Riwayat Pemeriksaan I-Care</a></li>`;
-                            button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownAksi${meta.row}" data-id="${row.no_rawat}"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu">${list}</ul></div>`
+                            button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownAksi${meta.row}" data-id="${row.no_rawat}"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:11px">${list}</ul></div>`
 
                             return button;
                         }
@@ -519,8 +523,6 @@
                             if (asmedAnak) {
                                 return asmedAnak.diagnosis;
                             } else if (asmedKandungan) {
-                                console.log('AsMED KANDUNGAN', asmedKandungan);
-
                                 return asmedKandungan.diagnosis;
                                 // return moment(asmedKandungan.tanggal).format('DD-MM-YYYY HH:mm:ss');
                             } else if (asmedUmumBBL) {
@@ -542,11 +544,17 @@
                                 return moment(asmedAnak.tanggal).format('DD-MM-YYYY HH:mm:ss');
                             } else if (asmedKandungan) {
                                 return moment(asmedKandungan.tanggal).format('DD-MM-YYYY HH:mm:ss');
-                            } else if (asmedUmumBBL) {
-                                return moment(asmedUmumBBL.tanggal).format('DD-MM-YYYY HH:mm:ss');
-                            } else {
-                                return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
                             }
+
+                            if (row.reg_periksa.umurdaftar === '0' && row.reg_periksa.sttsumur === 'Hr') {
+                                if (asmedUmumBBL === null) {
+                                    // row.addClass('table-danger')
+                                    return moment(asmedUmumBBL.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                                }
+                            }
+                            // else if (asmedUmumBBL) {} else {
+                            // }
+                            return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
 
                             // if (data.reg_periksa.umurdaftar === '0' && data.reg_periksa.sttsumur === 'Hr') {
                             //     if (asmedUmumBBL === null) {
