@@ -1,33 +1,33 @@
 @extends('index')
 @section('contents')
-    <div class="table-responsive">
-        <form action="" id="formFilterUgd">
-            <div class="row">
-                <div class="col-md-6 col-lg-3 col-sm-12">
-                    <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Periode</label>
-                    <div class="input-group input-group-sm input-daterange">
-                        <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
-                        <div class="input-group-text">ke</div>
-                        <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
-                        <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
-                    </div>
+    <form action="" id="formFilterUgd">
+        <div class="row">
+            <div class="col-md-6 col-lg-3 col-sm-12">
+                <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Periode</label>
+                <div class="input-group input-group-sm input-daterange">
+                    <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
+                    <div class="input-group-text">ke</div>
+                    <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
+                    <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
                 </div>
-                @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
-                    <div class="col-md-6 col-lg-3 col-sm-12">
-                        <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
-                        <select name="spesialis" id="spesialis" class="form-select form-select-sm">
-                            <option value="">Semua</option>
-                            <option value="S0007">Umum</option>
-                            <option value="S0003">Spesialis Anak</option>
-                            <option value="S0001">Spesialis Kandungan & Kebidanan</option>
-                        </select>
-                    </div>
-                    <input type="hidden" value="" name="kd_dokter">
-                @else
-                    <input type="hidden" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
-                @endif
             </div>
-        </form>
+            @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
+                <div class="col-md-6 col-lg-3 col-sm-12">
+                    <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
+                    <select name="spesialis" id="spesialis" class="form-select form-select-sm">
+                        <option value="">Semua</option>
+                        <option value="S0007">Umum</option>
+                        <option value="S0003">Spesialis Anak</option>
+                        <option value="S0001">Spesialis Kandungan & Kebidanan</option>
+                    </select>
+                </div>
+                <input type="hidden" value="" name="kd_dokter">
+            @else
+                <input type="hidden" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
+            @endif
+        </div>
+    </form>
+    <div class="table-responsive">
         <table class="table table-responsive text-sm table-sm" id="tb_ugd" width="100%">
             <thead>
                 <tr role="row">
@@ -350,9 +350,9 @@
                         data: 'status_lanjut',
                         render: (data, type, row, meta) => {
                             if (data === 'Ralan') {
-                                return `<span class="text-primary"><b>Rawat Jalan</b></span>`
+                                return `<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Rawat Jalan"><i class="bi bi-person-wheelchair"></i></button>`
                             } else {
-                                return `<span class="text-danger"><b>Rawat Inap</b></span>`
+                                return `<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Default tooltip"><i class="bi bi-house-add"></i></button>`
                             }
                         }
                     },

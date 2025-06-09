@@ -599,7 +599,7 @@
             }
         }
 
-        @media (max-width: 367px) {
+        @media (max-width: 1700px) {
 
             table {
                 font-size: 10px !important;
