@@ -11,33 +11,64 @@ const asesmenMenuItems = (noRawat, umur, sttsumur, totalHari) => ({
             disabled: () => true,
             callback: () => false
         },
+        asesmenRanap: {
+            name: "Asesmen Ranap",
+            disabled: () => false,
+            icon: 'fa-regular fa-paperclip',
+            items: {
+                asesmenMedisKandungan: {
+                    name: "Asesmen Medis Kandungan",
+                    callback: () => modalAsmedKandungan(noRawat)
+                },
+                asesmenMedisAnak: {
+                    name: "Asesmen Medis Anak",
+                    callback: () => modalAsmedAnak(noRawat)
+                },
+                asesmenKeperawatanAnak: {
+                    name: "Asesmen Keperawatan Anak",
+                    callback: () => modalAskepAnak(noRawat)
+                },
+                asesmenKeperawatanKandungan: {
+                    name: "Asesmen Keperawatan Kandungan",
+                    callback: () => modalAskepAnak(noRawat)
+                }
+            }
+        },
         asesmenNyeri: {
             name: "Asesmen Nyeri",
             icon: 'fa-regular fa-paperclip',
             items: {
                 asesmenNyeriNeonatus: {
                     name: "Asesmen Nyeri Neonatus/Bayi",
-                    disabled: () => totalHari > 28 || totalHari > 3 * 365,
+                    // Dinonaktifkan jika usia pasien LEBIH DARI 28 hari
+                    disabled: () => totalHari > 28,
                     callback: () => showModalAsesmenNyeriNeonatus(noRawat)
                 },
                 asesmenNyeriBatita: {
                     name: "Asesmen Nyeri Batita",
-                    disabled: () => totalHari <= 28 || totalHari < 3 * 365,
+                    // Dinonaktifkan jika usia pasien KURANG DARI atau SAMA DENGAN 28 hari,
+                    // ATAU jika usia pasien LEBIH DARI atau SAMA DENGAN 3 tahun (365 * 3 hari)
+                    disabled: () => totalHari <= 28 || totalHari >= (3 * 365),
                     callback: () => showModalAsesmenNyeriBatita(noRawat)
                 },
                 asesmenNyeriBalita: {
                     name: "Asesmen Nyeri Balita",
-                    disabled: () => totalHari <= 3 * 365 || totalHari < 7 * 365,
+                    // Dinonaktifkan jika usia pasien KURANG DARI 3 tahun (365 * 3 hari),
+                    // ATAU jika usia pasien LEBIH DARI atau SAMA DENGAN 7 tahun (365 * 7 hari)
+                    disabled: () => totalHari < (3 * 365) || totalHari >= (7 * 365),
                     callback: () => showModalAsesmenNyeriBalita(noRawat)
                 },
                 asesmenNyeriAnak: {
                     name: "Asesmen Nyeri Anak",
-                    disabled: () => totalHari <= 7 * 365 || totalHari < 13 * 365,
+                    // Dinonaktifkan jika usia pasien KURANG DARI 7 tahun (365 * 7 hari),
+                    // ATAU jika usia pasien LEBIH DARI atau SAMA DENGAN 13 tahun (365 * 13 hari)
+                    disabled: () => totalHari < (7 * 365) || totalHari >= (13 * 365),
                     callback: () => showModalAsesmenNyeriAnak(noRawat)
                 },
                 asesmenNyeriDewasa: {
                     name: "Asesmen Nyeri Dewasa",
-                    disabled: () => totalHari <= 13 * 365,
+                    // Dinonaktifkan jika usia pasien KURANG DARI 13 tahun (365 * 13 hari)
+                    disabled: () => totalHari < (13 * 365),
                     callback: () => showModalAsesmenNyeriDewasa(noRawat)
                 }
             }
@@ -123,3 +154,10 @@ const pemeriksaanPenunjangMenuItems = (no_rawat) => (
         }
     }
 )
+
+const totalUmurHari = (tgl_lahir, tgl_daftar) => {
+    const umurHari = hitungUmurDaftar(tgl_lahir, tgl_daftar);
+    const total = Number((umurHari.tahun * 365)) + Number((umurHari.bulan * 28)) + Number(umurHari.hari)
+
+    return total
+}

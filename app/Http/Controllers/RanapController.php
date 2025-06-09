@@ -28,6 +28,7 @@ class RanapController extends Controller
         $ranap = KamarInap::with([
             'regPeriksa.poc',
             'edukasiObatPulang',
+            'pasien',
             'regPeriksa' => function ($q) {
                 $q->select(
                     DB::raw('TRIM(kd_dokter) as kd_dokter'),
@@ -70,13 +71,9 @@ class RanapController extends Controller
         if ($request->stts_pulang == '-') {
             $ranap->where('stts_pulang', $request->stts_pulang);
         } else if ($request->stts_pulang == 'Masuk') {
-            $ranap->whereBetween('tgl_masuk', [$request->tgl_pertama, $request->tgl_kedua])
-                ->where('stts_pulang', '!=', 'Pindah Kamar');
+            $ranap->whereBetween('tgl_masuk', [$request->tgl_pertama, $request->tgl_kedua]);
         } else if ($request->stts_pulang == 'Pulang') {
-            $ranap->whereBetween('tgl_keluar', [$request->tgl_pertama, $request->tgl_kedua])
-                ->where('stts_pulang', '!=', 'Pindah Kamar');
-        } else {
-            $ranap->where('stts_pulang', '!=', 'Pindah Kamar');
+            $ranap->whereBetween('tgl_keluar', [$request->tgl_pertama, $request->tgl_kedua]);
         }
 
         if ($request->kd_dokter) {

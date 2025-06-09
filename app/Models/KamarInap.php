@@ -69,4 +69,9 @@ class KamarInap extends Model
     {
         return $this->hasOne(DischargePlanning::class, 'no_rawat', 'no_rawat');
     }
+
+    function pasien()
+    {
+        return $this->hasOneThrough(Pasien::class, RegPeriksa::class, 'no_rawat', 'no_rkm_medis', 'no_rawat', 'no_rkm_medis');
+    }
 }

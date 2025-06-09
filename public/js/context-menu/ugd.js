@@ -1,6 +1,11 @@
 $.contextMenu({
     selector: '.row-ugd',
     events: {
+        // show: (element, event) => {
+        //     $(element.selector).addClass('table-secondary')
+        //     console.log("SELECTOR", element.selector);
+
+        // },
         hide: (element, event) => {
             $(element.selector).removeClass('table-secondary')
         }

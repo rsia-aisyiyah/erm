@@ -108,7 +108,7 @@
             </div>
         </div>
     </form>
-    <table class="table table-hover text-sm table-sm" id="tb_ranap" width="100%" style="font-size: 11px">
+    <table class="table table-hover text-sm table-sm" id="tb_ranap" width="100%">
         {{-- <thead>
                 <tr role="row">
                     <th></th>
@@ -162,6 +162,7 @@
 @endsection
 
 @push('script')
+    <script type="text/javascript" src="{{ asset('js/context-menu/ranap.js') }}"></script>
     <script>
         var stts_pulang = '-';
         var tgl_awal = '';
@@ -333,6 +334,9 @@
                     },
                 },
                 columnDefs: [{
+                        target: 0,
+                        width: 10,
+                    }, {
                         target: 1,
                         width: 80,
                     },
@@ -351,19 +355,35 @@
                     }, {
                         target: 7,
                         width: 50,
+                    }, {
+                        target: 8,
+                        width: 150,
+                    }, {
+                        target: 9,
+                        width: 150,
                     }
                 ],
                 createdRow: (element, data, index, meta) => {
                     const row = $(element);
-                    row.attr('data-pasien', JSON.stringify(data));
+                    const dataAttr = {
+                        'no_rawat': data.no_rawat,
+                        'no_rkm_medis': data.reg_periksa.no_rkm_medis,
+                        'kd_dokter': data.reg_periksa.kd_dokter,
+                        'tgl_lahir': data.pasien.tgl_lahir,
+                        'umurdaftar': data.reg_periksa.umurdaftar,
+                        'tgl_reg': data.reg_periksa.tgl_registrasi,
+                        'sttsumur': data.reg_periksa.sttsumur,
+                        'no_peserta': data.pasien.no_peserta,
+                        'kd_dokter_bpjs': data.reg_periksa.dokter.mapping_dokter.kd_dokter_bpjs,
+                        'kd_pj': data.reg_periksa.kd_pj,
+                    }
+
+                    row.attr('data-pasien', JSON.stringify(dataAttr))
+                        .addClass('row-ranap');
 
                     const asmedAnak = data.asmed_anak;
                     const asmedKandungan = data.asmed_kandungan;
                     const asmedUmumBBL = data.asmed_umum;
-
-
-                    console.log(data.asmed_kandungan, data.asmed_umum);
-
 
                     if (asmedAnak === null && asmedKandungan === null) {
                         row.addClass('table-danger')
