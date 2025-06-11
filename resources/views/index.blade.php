@@ -1777,8 +1777,8 @@
             return list;
         }
     </script>
-    <script type="text/javascript" src="{{ asset('js/context-menu/items.js') }}"></script>
     @stack('script')
+    <script type="text/javascript" src="{{ asset('js/context-menu/items.js') }}"></script>
 </body>
 
 </html>

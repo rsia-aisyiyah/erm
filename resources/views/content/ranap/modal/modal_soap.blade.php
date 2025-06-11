@@ -9,17 +9,17 @@
                 <div class="row gy-2 mb-2" id="formInfoPasien">
                     <div class="col-lg-1     col-md-6 col-sm-12">
                         <label for="no_rawat">No. Rawat</label>
-                        <input type="text" class="form-control form-control-sm" style="font-size: 11px"
+                        <input type="text" class="form-control form-control-sm"
                             id="no_rawat" name="no_rawat" placeholder="" readonly>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <label for="">Pasien</label>
                         <div class="input-group input-group-sm">
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px"
+                            <input type="text" class="form-control form-control-sm"
                                 id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
-                            <input type="text" class="form-control form-control-sm w-50" style="font-size: 11px"
+                            <input type="text" class="form-control form-control-sm w-50"
                                 id="pasien" name="pasien" placeholder="" readonly>
-                            <input type="text" class="form-control form-control-sm" style="font-size: 11px" id="umur"
+                            <input type="text" class="form-control form-control-sm" id="umur"
                                 name="umur" placeholder="" readonly>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="dokter_dpjp">Dokter DPJP</label>
-                        <input type="text" class="form-control form-control-sm" style="font-size: 11px"
+                        <input type="text" class="form-control form-control-sm"
                             id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
                         <input type="hidden" id="kd_dokter_dpjp" name="kd_dokter_dpjp">
                         <input type="hidden" id="kd_sps_dokter" name="kd_sps_dokter">

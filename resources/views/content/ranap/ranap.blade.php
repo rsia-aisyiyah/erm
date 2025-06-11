@@ -132,7 +132,7 @@
     @include('content.ranap.modal.modal_asmed_kandungan')
     @include('content.ranap.modal.modal_askep_anak')
     @include('content.ranap.modal.modal_askep_neonatus')
-    @include('content.ranap.modal.modal_asmed_kandungan')
+    @include('content.ranap.modal.modal_askep_kandungan')
     @include('content.ranap.modal.modal_grafik_harian')
     @include('content.ranap.modal.modal_resume_ranap')
     @include('content.ranap.modal.modal_list_pemeriksaan')
@@ -192,7 +192,9 @@
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
                 autoclose: true,
-                defaultDate: null
+                defaultDate: null,
+                todayHighlight: true,
+                todayBtn: true
             });
 
             $('#cari-kamar').val(kamar)
@@ -376,6 +378,7 @@
                         'no_peserta': data.pasien.no_peserta,
                         'kd_dokter_bpjs': data.reg_periksa.dokter.mapping_dokter.kd_dokter_bpjs,
                         'kd_pj': data.reg_periksa.kd_pj,
+                        'kd_sps': data.reg_periksa.dokter.kd_sps
                     }
 
                     row.attr('data-pasien', JSON.stringify(dataAttr))

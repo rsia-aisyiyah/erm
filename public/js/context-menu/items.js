@@ -1,4 +1,4 @@
-const asesmenMenuItems = (noRawat, umur, sttsumur, totalHari) => ({
+const asesmenMenuItems = (noRawat, umur, sttsumur, totalHari, kd_sps) => ({
     name: "Asesmen",
     icon: 'fa-regular fa-book',
     items: {
@@ -13,26 +13,27 @@ const asesmenMenuItems = (noRawat, umur, sttsumur, totalHari) => ({
         },
         asesmenRanap: {
             name: "Asesmen Ranap",
-            disabled: () => false,
+            // disabled: () => false,
             icon: 'fa-regular fa-paperclip',
-            items: {
-                asesmenMedisKandungan: {
-                    name: "Asesmen Medis Kandungan",
-                    callback: () => modalAsmedKandungan(noRawat)
-                },
-                asesmenMedisAnak: {
-                    name: "Asesmen Medis Anak",
-                    callback: () => modalAsmedAnak(noRawat)
-                },
-                asesmenKeperawatanAnak: {
-                    name: "Asesmen Keperawatan Anak",
-                    callback: () => modalAskepAnak(noRawat)
-                },
-                asesmenKeperawatanKandungan: {
-                    name: "Asesmen Keperawatan Kandungan",
-                    callback: () => modalAskepAnak(noRawat)
-                }
-            }
+            // items: {
+            //     asesmenMedisKandungan: {
+            //         name: "Asesmen Medis Kandungan",
+            //         callback: () => modalAsmedKandungan(noRawat)
+            //     },
+            //     asesmenMedisAnak: {
+            //         name: "Asesmen Medis Anak",
+            //         callback: () => modalAsmedAnak(noRawat)
+            //     },
+            //     asesmenKeperawatanAnak: {
+            //         name: "Asesmen Keperawatan Anak",
+            //         callback: () => modalAskepAnak(noRawat)
+            //     },
+            //     asesmenKeperawatanKandungan: {
+            //         name: "Asesmen Keperawatan Kandungan",
+            //         callback: () => modalAskepAnak(noRawat)
+            //     }
+            // }
+            items: asesmenRanapMenuItems(noRawat, kd_sps),
         },
         asesmenNyeri: {
             name: "Asesmen Nyeri",
@@ -161,3 +162,28 @@ const totalUmurHari = (tgl_lahir, tgl_daftar) => {
 
     return total
 }
+
+const asesmenRanapMenuItems = (no_rawat, kd_sps) => ({
+    "asmedRanapKandungan": {
+        name: "Asesmen Medis Kandungan",
+        disabled: () => kd_sps !== 'S0001',
+        callback: () => asmedRanapKandungan(no_rawat)
+    },
+    "asmedRanapAnak": {
+        name: "Asesmen Medis Anak",
+        disabled: () => kd_sps !== 'S0003',
+        callback: () => asmedRanapAnak(no_rawat)
+    },
+    "askepRanapKandungan": {
+        name: "Asesmen Keperawatan Kandungan",
+        disabled: () => kd_sps !== 'S0001',
+        callback: () => {
+            return askepRanapKandungan(no_rawat)
+        }
+    },
+    "askepRanapAnak": {
+        name: "Asesmen Keperawatan Anak",
+        disabled: () => kd_sps !== 'S0003',
+        callback: () => askepRanapAnak(no_rawat)
+    }
+})

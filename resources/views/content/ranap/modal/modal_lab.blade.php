@@ -1,19 +1,50 @@
 <div class="modal fade" id="modalLabRanap" tabindex="-1" aria-labelledby="#modalLabRanapLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title fs-5" id="modalLabRanapLabel">PEMERIKSAAN PENUNJANG</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="height: 100vh">
-                <div class="card mb-2 p-0">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between" style="font-size: 12px" id="detailPasien">
-                            <p class="m-0">No. Rawat : <span id="no_rawat"></span></p>
-                            <p class="m-0">Nama / JK : <span id="nama_pasien"></span></p>
-                            <p class="m-0">Tgl. Lahir / Umur : <span id="umur"></span></p>
-                            <p class="m-0">DPJP : <span id="dokter"></span></p>
-                        </div>
+            <div class="modal-body">
+                <div class="row mb-2 gy-2" id="formInfoPasienPenunjang">
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <label for="no_rawat">No. Rawat</label>
+                        <input type="text" class="form-control form-control-sm"
+                            id="no_rawat" name="no_rawat" placeholder="" readonly>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="">Pasien</label>
+                        <input type="text" class="form-control form-control-sm"
+                            id="pasien" name="pasien" placeholder="" readonly>
+
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <label for="">Tgl. Lahir/Umur</label>
+                        <input type="text" class="form-control form-control-sm"
+                            id="tgl_lahir" name="tgl_lahir" placeholder="" readonly>
+
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <label for="">Keluarga</label>
+                        <x-input id="p_jawab" name="p_jawab" />
+
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="">Kamar</label>
+                        <x-input id="kamar" name="kamar" readonly></x-input>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="diagnosa_awal">Diagnosa Awal</label>
+                        <x-input id="diagnosa_awal" name="diagnosa_awal" readonly />
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="penjab">Pembiayaan</label>
+                        <x-input id="penjab" name="penjab" readonly />
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="dokter_dpjp">Dokter DPJP</label>
+                        <input type="text" class="form-control form-control-sm"
+                            id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
                     </div>
                 </div>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -89,11 +120,30 @@
     <script>
         const hasilPermintaanLab = $('#hasilPermintaanLab')
         const detailPasien = $('#detailPasien')
+        const formInfoPasienPenunjang = $('#formInfoPasienPenunjang')
 
         function modalPemeriksaanPenunjang(no_rawat) {
             getHasilPermintaanLab(no_rawat)
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 $('#modalLabRanap').modal('show')
+                const kamar = regPeriksa.kamar_inap.filter((item) => {
+                    return item.stts_pulang != 'Pindah Kamar'
+                }).map((item) => {
+                    return {
+                        'bangsal': item.kamar.bangsal.nm_bangsal,
+                        'diagnosa_awal': item.diagnosa_awal
+                    }
+                })[0]
+
+                formInfoPasienPenunjang.find('#no_rawat').val(no_rawat)
+                formInfoPasienPenunjang.find('#pasien').val(`${regPeriksa.no_rkm_medis} - ${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
+                formInfoPasienPenunjang.find('#tgl_lahir').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
+                formInfoPasienPenunjang.find('#p_jawab').val(regPeriksa.p_jawab)
+                formInfoPasienPenunjang.find('#kamar').val(`${kamar.bangsal} / ${hitungLamaHari(regPeriksa.tgl_registrasi)} Hari`)
+                formInfoPasienPenunjang.find('#kd_dokter').val(regPeriksa.kd_dokter)
+                formInfoPasienPenunjang.find('#dokter_dpjp').val(regPeriksa.dokter.nm_dokter)
+                formInfoPasienPenunjang.find('#penjab').val(regPeriksa.penjab.png_jawab)
+
                 detailPasien.find('#no_rawat').html(no_rawat)
                 detailPasien.find('#dokter').html(regPeriksa.dokter.nm_dokter)
                 formPermintaanLab.find('#no_rawat').val(no_rawat)
@@ -258,9 +308,6 @@
             stringHasil += `${pemeriksaan} : ${hasil}; \n`
 
             $('#formHasilKritis').find('textarea[name="hasil"]').val(stringHasil)
-
-
-
         }
     </script>
 @endpush
