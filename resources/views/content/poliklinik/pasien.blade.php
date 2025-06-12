@@ -15,30 +15,30 @@
                             <td>:</td>
                             <td width="100px">
                                 <button class="btn btn-sm" id="count-pasien"
-                                    style=" display: block; width:auto; border-radius: 50%; background-color: #0067dd; color:white; font-weight:bold; font-size:9pt">
+                                    style=" display: block; width:auto; border-radius: 50%; background-color: #0067dd; color:white; font-weight:bold">
                                 </button>
                             </td>
                             <td>Selesai</td>
                             <td>:</td>
                             <td>
                                 <button id="count-selesai" class="btn btn-sm btn-success"
-                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
+                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold">
                                 </button>
                             </td>
                         </tr>
-                        <tr style="height: 40   px">
+                        <tr style="height: 40px">
                             <td>Menunggu</td>
                             <td>:</td>
                             <td>
                                 <button id="count-tunggu" class="btn btn-sm btn-warning"
-                                    style=" display: block; width:auto; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold; font-size:9pt">
+                                    style=" display: block; width:auto; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold">
                                 </button>
                             </td>
                             <td>Batal</td>
                             <td>:</td>
                             <td>
                                 <button id="count-batal" class="btn btn-sm btn-danger"
-                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold; font-size:9pt">
+                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold">
                                 </button>
                             </td>
                         </tr>
@@ -49,20 +49,20 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-3 col-sm-12">
                             <div class="mb-3">
-                                <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Tgl. Registrasi</label>
+                                <label for="tgl_registrasi" class="form-label" style="margin-bottom:0px">Tgl. Registrasi</label>
                                 <input type="text" class="form-control form-control-sm" id="tgl_registrasi" placeholder="" autocomplete="off">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-3 col-sm-12">
                             <div class="mb-3">
-                                <label for="pasien" class="form-label" style="font-size: 12px;margin-bottom:0px">Nama Pasien</label>
+                                <label for="pasien" class="form-label" style="margin-bottom:0px">Nama Pasien</label>
                                 <input type="search" class="form-control form-control-sm" id="pasien-cari" placeholder="Cari nama pasien... " autocomplete="off">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-3 col-sm-12">
                             <div class="mb-3">
-                                <label for="pembiayaan" class="form-label" style="font-size: 12px;margin-bottom:0px">Pembiayaan</label>
-                                <select name="pembiayaan" id="pembiayaan" class="form-select form-select-sm" style="font-size: 12px;">
+                                <label for="pembiayaan" class="form-label" style="margin-bottom:0px">Pembiayaan</label>
+                                <select name="pembiayaan" id="pembiayaan" class="form-select form-select-sm" style="">
                                     <option value="" disabled selected>Pilih Pembiayaan</option>
                                     <option value="">Umum & BPJS </option>
                                     <option value="BPJS">BPJS</option>
@@ -72,8 +72,8 @@
                         </div>
                         <div class="col-md-6 col-lg-3 col-sm-12">
                             <div class="mb-3">
-                                <label for="status_periksa" class="form-label" style="font-size: 12px;margin-bottom:0px">Status Periksa</label>
-                                <select name="status_periksa" id="status_periksa" class="form-select form-select-sm" style="font-size: 12px;">
+                                <label for="status_periksa" class="form-label" style="margin-bottom:0px">Status Periksa</label>
+                                <select name="status_periksa" id="status_periksa" class="form-select form-select-sm" style="">
                                     <option value="" disabled selected>Pilih Status Periksa</option>
                                     <option value="">Semua</option>
                                     <option value="Sudah">Sudah</option>
@@ -84,7 +84,7 @@
                         </div>
                     </div>
 
-                    <table class="table table-striped text-sm table-sm" id="tb_pasien" width="100%">
+                    <table class="table table-striped text-sm table-sm" id="tb_pasien" width="100%" style="font-size: 12px !important">
                         <thead>
                             <tr role="row">
                                 <th style="width: 20px">Aksi</th>
@@ -896,7 +896,7 @@
                                 textPenjab = '<a href="javascript:void(0)" onclick="" style="text-decoration:none;color:green">' + row.penjab.png_jawab + '</a>'
                             }
 
-                            html = '<h5 class="mb-1">' + row.no_reg + '</h5>';
+                            html = '<h5 class="mb-1 h3">' + row.no_reg + '</h5>';
                             html += '<p style="margin:0px"><span class="pasien-' + row.no_reg + '">' + pasien + cekList(row.skrining_tb) +
                                 '</span></br>' +
                                 row.no_rawat +
