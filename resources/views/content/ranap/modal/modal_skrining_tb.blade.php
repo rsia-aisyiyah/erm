@@ -5,7 +5,7 @@
                 <h5 class="modal-title fs-5" id="exampleModalLabel">Skoring & Skrining TB</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="min-height: 550px">
+            <div class="modal-body">
                 <form action="" id="formPasienSkoringTb">
                     <div class="row gy-2">
                         <div class="col-lg-2 col-md-6 col-sm-12">
