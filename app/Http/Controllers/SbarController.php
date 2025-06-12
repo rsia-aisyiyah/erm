@@ -13,10 +13,12 @@ use Illuminate\Support\Facades\DB;
 class SbarController extends Controller
 {
     protected $track;
-    function __construct(){
-        $this->track  = new TrackerSqlController();
+    function __construct()
+    {
+        $this->track = new TrackerSqlController();
     }
-   public function update(Request $request){
+    public function update(Request $request)
+    {
         $clause = [
             'no_rawat' => $request->no_rawat,
             'tgl_perawatan' => $request->tgl_perawatan_awal,
@@ -33,8 +35,8 @@ class SbarController extends Controller
         ];
 
 
-        try{
-            DB::transaction(function () use ($data, $clause, $request)  {
+        try {
+            DB::transaction(function () use ($data, $clause, $request) {
                 PemeriksaanRanap::where($clause)->update($data);
                 $konsul = new RsiaKonsulSbarController();
                 $grafik = new RsiaGrafikHarianController();
@@ -43,35 +45,37 @@ class SbarController extends Controller
                 $grafik->updateSbar($request);
                 $konsul->update($request);
             });
-        }catch(QueryException $e){
+        } catch (QueryException $e) {
             return response()->json($e->errorInfo, 500);
         }
 
         return response()->json('SUKSES');
-   }
+    }
 
-   function delete(Request $request){
+    function delete(Request $request)
+    {
         $clause = [
             'no_rawat' => $request->no_rawat,
             'tgl_perawatan' => $request->tgl_perawatan,
             'jam_rawat' => $request->jam_rawat,
         ];
-        try{
+        try {
             DB::transaction(function () use ($clause) {
                 $pemeriksaan = PemeriksaanRanap::where($clause)->delete();
                 $grafik = new RsiaGrafikHarianController();
                 $konsul = new RsiaKonsulSbarController();
                 $grafik->delete(new Request($clause), 'SBAR');
-                $konsul->delete(new Request($clause)); 
+                $konsul->delete(new Request($clause));
             });
-        }catch(QueryException $e){
+        } catch (QueryException $e) {
             return response()->json($e->errorInfo, 500);
         }
         $this->track->deleteSql(new PemeriksaanRanap(), $clause);
         return response()->json('SUKSES');
-   }
+    }
 
-   function dataTable(SbarDataTable $dataTable){
+    function dataTable(SbarDataTable $dataTable)
+    {
         return $dataTable->ajax();
-   }
+    }
 }

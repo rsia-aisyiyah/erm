@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalPlanOfCare" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title fs-5" id="exampleModalLabel"><i>PLAN OF CARE</i></h5>
@@ -7,13 +7,29 @@
             </div>
             <div class="modal-body">
                 <form action="" id="formPlanOfCare">
-                    <div class="row gy-2">
-                        <div class="col-sm-12 col-md-12 col-lg-3">
+                    <div class="row gy-2 mb-2">
+                        <div class="col-sm-12 col-md-12 col-lg-2">
                             <label for="">No Rawat</label>
                             <input type="hidden" value="{{ csrf_token() }}" name="_token">
                             <input type="text" class="form-control form-control-sm" id="no_rawat" name="no_rawat" placeholder="" readonly="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                         </div>
-                        <div class="col-sm-12 col-md-12 col-lg-6">
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <label for="pasien">Pasien</label>
+                            <input type="text" class="form-control form-control-sm" id="pasien" name="pasien" placeholder="" readonly="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
+                        </div>
+                        <div class="col-lg-2 col-md-12 col-sm-12">
+                            <label for="tgl_lahir">Tgl. Lahir</label>
+                            <x-input name="tgl_lahir" id="tgl_lahir" />
+                        </div>
+                        <div class="col-lg-2 col-md-12 col-sm-12">
+                            <label for="keluarga">Keluarga</label>
+                            <x-input name="keluarga" id="keluarga" />
+                        </div>
+                        <div class="col-lg-2 col-md-12 col-sm-12">
+                            <label for="png_jawab">Pembiayaan</label>
+                            <x-input name="png_jawab" id="png_jawab" />
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-3">
                             <label for="">Anamnesa</label>
                             <div class="input-group">
                                 <select class="form-select form-select-sm" id="anamnesa" style="font-size: 12px" name="anamnesa">
@@ -23,11 +39,21 @@
                                 <input type="search" class="form-control form-control-sm" placeholder="" aria-label="" id="hubungan" name="hubungan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-12 col-lg-3">
-                            <label for="">Cara Masuk</label>
-                            <input type="search" class="form-control form-control-sm" placeholder="" aria-label="" id="poli" name="poli" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" readonly>
+                        <div class="col-sm-12 col-md-12 col-lg-2">
+                            <label for="poli">Cara Masuk</label>
+                            <x-input name="poli" id="poli" />
                         </div>
-
+                        <div class="col-sm-12 col-md-12 col-lg-2">
+                            <label for="tanggal">Tgl. Entry</label>
+                            <x-input name="tanggal" id="tanggal" class="datetimepicker" />
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-3">
+                            <label for="nm_petugas">Petugas</label>
+                            <x-input name="nm_petugas" id="nm_petugas" />
+                            <x-input type="hidden" name="petugas" id="petugas" />
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-6">
                             <label for="keluhan">Diagnosa Kerja</label>
                             <textarea class="form-control" name="diagnosa_kerja" id="diagnosa_kerja" cols="30" rows="3" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
@@ -255,12 +281,27 @@
 </div>
 @push('script')
     <script>
-        var formPlanOfCare = $('#formPlanOfCare')
+        const formPlanOfCare = $('#formPlanOfCare')
         $('#modalPlanOfCare').on('hidden.bs.modal', () => {
             document.getElementById("formPlanOfCare").reset();
+            $('#ket_laboratorium').attr('disabled', true)
+            $('#ket_ecg').attr('disabled', true);
+            $('#ket_radiologi').attr('disabled', true)
+            $('#ket_diet').attr('disabled', true)
+            $('#ket_pengobatan1').attr('disabled', true)
+            $('#ket_pengobatan2').attr('disabled', true)
             $('#formPlanOfCare').find('.personil').remove();
             $('.search').val('').trigger('change');
-        })
+        });
+
+
+
+        const radioPengobatan = $(`#formPlanOfCare input[name=pengobatan]`);
+        const checkKewaspadaan = $(`#formPlanOfCare input[name=kewaspadaan]`);
+        const checkPemeriksaan = $(`#formPlanOfCare input[name=pemeriksaan_penunjang]`);
+        const checkNutrisi = $(`#formPlanOfCare input[name=diet]`);
+        const checkAktivitas = $(`#formPlanOfCare input[name=aktivitas]`);
+        const checkKeperawatan = $(`#formPlanOfCare input[name=keperawatan]`);
 
         function simpanPoc() {
             const queryString = formPlanOfCare.serializeArray()
@@ -387,6 +428,7 @@
                     })
                 }
                 alertSuccessAjax().then(() => {
+                    formPlanOfCare.find('input[name=tanggal]').val('{{ date('d-m-Y H:i:s') }}')
                     $('#modalPlanOfCare').modal('hide')
                     $('#tb_ranap').DataTable().destroy();
                     tb_ranap();
@@ -474,6 +516,9 @@
                 formPlanOfCare.find('input[name=poli]').val(response.poliklinik.nm_poli)
                 formPlanOfCare.find('input[name=dokter]').val(response.dokter.nm_dokter)
                 formPlanOfCare.find('input[name=kd_dokter]').val(response.dokter.kd_dokter)
+                formPlanOfCare.find('input[name=pasien]').val(`${response.no_rkm_medis} - ${response.pasien.nm_pasien} (${response.pasien.jk})`)
+                formPlanOfCare.find('input[name=keluarga]').val(response.p_jawab)
+                formPlanOfCare.find('input[name=tgl_lahir]').val(`${formatTanggal(response.pasien.tgl_lahir)} / ${response.umurdaftar} ${response.sttsumur}`)
             });
             $.get('poc', {
                 no_rawat: no_rawat,
@@ -497,81 +542,24 @@
 
                     })
 
-                    const arrKewaspadaan = response.kewaspadaan ? response.kewaspadaan.split('; ') : [''];
-                    const arrPemeriksaan = response.pemeriksaan_penunjang ? response.pemeriksaan_penunjang.split(', ') : [''];
-                    const arrNutrisi = response.nutrisi ? response.nutrisi.split('; ') : [''];
-                    const arrAktivitas = response.aktivitas ? response.aktivitas.split('; ') : [''];
-                    const arrKeperawatan = response.keperawatan ? response.keperawatan.split('; ') : [''];
-
-                    const radioPengobatan = $(`#formPlanOfCare input[name=pengobatan]`);
-                    const checkKewaspadaan = $(`#formPlanOfCare input[name=kewaspadaan]`);
-                    const checkPemeriksaan = $(`#formPlanOfCare input[name=pemeriksaan_penunjang]`);
-                    const checkNutrisi = $(`#formPlanOfCare input[name=diet]`);
-                    const checkAktivitas = $(`#formPlanOfCare input[name=aktivitas]`);
-                    const checkKeperawatan = $(`#formPlanOfCare input[name=keperawatan]`);
+                    $(`#formPlanOfCare input[name=petugas]`).val(`${response.petugas.nip}`)
+                    $(`#formPlanOfCare input[name=nm_petugas]`).val(`${response.petugas.nama}`)
                     $(`#formPlanOfCare input[name=poli]`).val(`${response.reg_periksa.poliklinik.nm_poli}`)
                     $(`#formPlanOfCare input[name=dokter]`).val(`${response.reg_periksa.dokter.nm_dokter}`)
                     $(`#formPlanOfCare input[name=kd_dokter]`).val(`${response.reg_periksa.kd_dokter}`)
 
+                    setValueAktivitas(response)
+                    setValueKeperawatan(response)
+                    setValuePengobatan(response)
+                    setValueKewaspadaan(response)
+                    setValuePemeriksaan(response)
+                    setValueNutrisi(response)
+                    setValueTim(response.tim)
 
-                    radioPengobatan.each((index, element) => {
-                        const pengobatan = response.pengobatan ? response.pengobatan.split(' : ') : [''];
-                        if (element.value == pengobatan[0]) {
-                            $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
-                            $(`#formPlanOfCare input[id=ket_${element.id}]`).prop('disabled', false)
-                            $(`#formPlanOfCare input[id=ket_${element.id}]`).val(pengobatan[1])
-                        }
-
-                    })
-                    checkKewaspadaan.each((index, element) => {
-                        const find = arrKewaspadaan.find((el) => el == element.id)
-                        $(`#formPlanOfCare input[id=${find}]`).prop('checked', true)
-
-                    })
-
-                    checkPemeriksaan.each((index, element) => {
-                        const pemeriksaan = arrPemeriksaan.find((el) => el.split(' : ')[0].toLowerCase() == element.id)
-                        if (pemeriksaan) {
-                            $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
-                            $(`#formPlanOfCare input[id=ket_${element.id}]`).prop('disabled', false)
-                            $(`#formPlanOfCare input[id=ket_${element.id}]`).val(pemeriksaan.split(' : ')[1])
-                        }
-                    })
-                    checkNutrisi.each((index, element) => {
-                        const nutrisi = arrNutrisi.find((el) => el.split(' : ')[0].toLowerCase() === element.id)
-                        const batasan = arrNutrisi.find((nut) => nut.split(' : ')[0].split(' ')[1]?.toLowerCase(), ' ===', 'cairan')
-                        if (nutrisi) {
-                            $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
-                            $(`#formPlanOfCare input[id=ket_${element.id}]`).val(nutrisi.split(' : ')[1])
-                            $(`#formPlanOfCare input[id=ket_${element.id}]`).prop('disabled', false)
-                            if (batasan) {
-                                $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
-                                $(`#formPlanOfCare input[id=keterangan_batasan]`).val(batasan.split(' : ')[2])
-                                $(`#formPlanOfCare input[id=keterangan_batasan]`).prop('disabled', false)
-                                $(`#formPlanOfCare input[id=${batasan.split(':')[1]}]`).prop('checked', true)
-
-                            }
-                        }
-                    });
-                    checkAktivitas.each((index, elemet) => {
-                        const aktivitas = arrAktivitas.find((el) => el == elemet.value)
-                        $(`#formPlanOfCare input[value='${aktivitas}']`).prop('checked', true)
-                    })
-                    checkKeperawatan.each((index, element) => {
-                        const keperawatan = arrKeperawatan.find((el) => el == element.value)
-                        $(`#formPlanOfCare input[value='${keperawatan}']`).prop('checked', true)
-                    })
-
-                    const tim = response.tim.map((personil, index) => {
-                        return `<div class="col-lg-12 personil" id="personil${personil.id}">
-                                <div class="input-group mb-1">
-                                    <input class="form-control form-control-sm" name="personil" readonly value="${personil.petugas.nama}">
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="deletePersonilPoc('${personil.id}')"><i class="bi bi-trash"></i></button>
-                                </div>
-                            </div>`
-                    })
-                    $('#formPlanOfCare').find('#perawat').prepend(tim)
-
+                } else {
+                    formPlanOfCare.find('input[name=tanggal]').val('{{ date('d-m-Y H:i:s') }}')
+                    $(`#formPlanOfCare input[name=petugas]`).val("{{ session()->get('pegawai')->nip }}")
+                    $(`#formPlanOfCare input[name=nm_petugas]`).val(`{{ session()->get('pegawai')->nama }}`)
 
                 }
 
@@ -579,6 +567,87 @@
             const petugas = $('#petugas1')
             selectPetugas(petugas)
             $('#modalPlanOfCare').modal('show');
+        }
+
+        function setValuePengobatan(data) {
+            radioPengobatan.each((index, element) => {
+                const pengobatan = data.pengobatan ? data.pengobatan.split(' : ') : [''];
+                if (element.value == pengobatan[0]) {
+                    $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
+                    $(`#formPlanOfCare input[id=ket_${element.id}]`).prop('disabled', false)
+                    $(`#formPlanOfCare input[id=ket_${element.id}]`).val(pengobatan[1])
+                }
+
+            })
+        }
+
+        function setValueKewaspadaan(data) {
+            const arrKewaspadaan = data.kewaspadaan ? data.kewaspadaan.split('; ') : [''];
+            checkKewaspadaan.each((index, element) => {
+                const find = arrKewaspadaan.find((el) => el == element.id)
+                $(`#formPlanOfCare input[id=${find}]`).prop('checked', true)
+
+            })
+        }
+
+        function setValuePemeriksaan(data) {
+            const arrPemeriksaan = data.pemeriksaan_penunjang ? data.pemeriksaan_penunjang.split('; ') : [''];
+            checkPemeriksaan.each((index, element) => {
+                const pemeriksaan = arrPemeriksaan.find((el) => el.split(' : ')[0].toLowerCase() == element.id)
+                if (pemeriksaan) {
+                    $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
+                    $(`#formPlanOfCare input[id=ket_${element.id}]`).prop('disabled', false)
+                    $(`#formPlanOfCare input[id=ket_${element.id}]`).val(pemeriksaan.split(' : ')[1])
+                }
+            })
+        }
+
+        function setValueNutrisi(data) {
+            const arrNutrisi = data.nutrisi ? data.nutrisi.split('; ') : [''];
+            checkNutrisi.each((index, element) => {
+                const nutrisi = arrNutrisi.find((el) => el.split(' : ')[0].toLowerCase() === element.id)
+                const batasan = arrNutrisi.find((nut) => nut.split(' : ')[0].split(' ')[1]?.toLowerCase(), ' ===', 'cairan')
+                if (nutrisi) {
+                    $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
+                    $(`#formPlanOfCare input[id=ket_${element.id}]`).val(nutrisi.split(' : ')[1])
+                    $(`#formPlanOfCare input[id=ket_${element.id}]`).prop('disabled', false)
+                    if (batasan) {
+                        $(`#formPlanOfCare input[id=${element.id}]`).prop('checked', true)
+                        $(`#formPlanOfCare input[id=keterangan_batasan]`).val(batasan.split(' : ')[2])
+                        $(`#formPlanOfCare input[id=keterangan_batasan]`).prop('disabled', false)
+                        $(`#formPlanOfCare input[id=${batasan.split(':')[1]}]`).prop('checked', true)
+
+                    }
+                }
+            });
+        }
+
+        function setValueAktivitas(data) {
+            const arrAktivitas = data.aktivitas ? data.aktivitas.split('; ') : [''];
+            checkAktivitas.each((index, elemet) => {
+                const aktivitas = arrAktivitas.find((el) => el == elemet.value)
+                $(`#formPlanOfCare input[value='${aktivitas}']`).prop('checked', true)
+            })
+        }
+
+        function setValueKeperawatan(data) {
+            const arrKeperawatan = data.keperawatan ? data.keperawatan.split('; ') : [''];
+            checkKeperawatan.each((index, element) => {
+                const keperawatan = arrKeperawatan.find((el) => el == element.value)
+                $(`#formPlanOfCare input[value='${keperawatan}']`).prop('checked', true)
+            })
+        }
+
+        function setValueTim(data) {
+            const tim = data.map((personil, index) => {
+                return `<div class="col-lg-12 personil" id="personil${personil.id}">
+                                <div class="input-group mb-1">
+                                    <input class="form-control form-control-sm" name="personil" readonly value="${personil.petugas.nama}">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="deletePersonilPoc('${personil.id}')"><i class="bi bi-trash"></i></button>
+                                </div>
+                            </div>`
+            })
+            $('#formPlanOfCare').find('#perawat').prepend(tim)
         }
 
         function deletePersonilPoc(id) {

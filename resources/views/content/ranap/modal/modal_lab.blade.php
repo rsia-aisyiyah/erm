@@ -61,7 +61,7 @@
                         <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab" data-bs-target="#permintaan-radiologi-tab-pane" type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi</button>
                     </li>
                 </ul>
-                <div class="tab-content p-2" id="myTabContent">
+                <div class="tab-content p-2" id="myTabContent" style="min-height: 350px">
                     <div class="tab-pane fade show active" id="laborat-tab-pane" role="tabpanel" aria-labelledby="laborat-tab" tabindex="0">
                         <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
                         {{-- <table class="table table-bordered" width="100%">
@@ -215,46 +215,88 @@
         }
 
         function getHasilPermintaanLab(no_rawat) {
-            $.get(`/erm/lab/permintaan`, {
+            $.get(`/erm/lab/ambil`, {
                 no_rawat: no_rawat
             }).done((response) => {
+                // const data = groupByKdJenisPrw(response)
                 let table = '';
-
                 response.forEach((item) => {
                     table += `
-                    <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
-                        <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
-                        <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
-                        <div class="p-2 bd-highlight fw-bold">Informasi : ${item.informasi_tambahan}</div>
-                        <div class="p-2 bd-highlight fw-bold">Tgl. Permintaan : ${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</div>    
-                    </div>
-                    <table class='table table-bordered table-hover'>
-                        <thead>
-                            <tr>
-                                <td width="">Pemeriksaan</td>    
-                                <td width="20%">Hasil</td>    
-                                <td width="30%">Nilai Rujukan</td>    
-                                <td width="20%">Keterangan</td>    
-                            </tr>
-                        </thead>
-                        <tbody>
-                                ${renderHasilPermintaanLab(item.hasil)}
-                                <tr>
-                                    <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil[0]?.dokter.nm_dokter}</strong></td>    
-                                </tr>
-                                <tr>
-                                    <td colspan="2" class="">Saran : <strong>${item.saran_kesan? item.saran_kesan.saran : '-'}</strong></td>    
-                                    <td colspan="2" class="">Kesan : <strong>${item.saran_kesan? item.saran_kesan.kesan : '-'}</strong></td>    
-                                </tr>
-                        </tbody>
-                    </table>`
-
+                                <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
+                                    <div class="p-2 bd-highlight fw-bold">Tgl. Periksa : ${formatTanggal(item.tgl_periksa)} ${item.jam}</div>
+                                    <div class="p-2 bd-highlight fw-bold">Petugas : ${item.petugas.nama}</div>
+                                    <div class="p-2 bd-highlight fw-bold">Pemeriksaan : ${item.jns_perawatan_lab.nm_perawatan}</div>
+                                    <div class="p-2 bd-highlight fw-bold">Dokter Perujuk : ${item.perujuk.nm_dokter}</div>    
+                             </div>
+                            <table class='table table-bordered table-hover'>
+                                <thead>
+                                    <tr>
+                                        <td width="">Pemeriksaan</td>    
+                                        <td width="20%">Hasil</td>    
+                                        <td width="30%">Nilai Rujukan</td>    
+                                        <td width="20%">Keterangan</td>    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${renderDetailHasilPemeriksaanLab(item.detail)}    
+                                </tbody>
+                            </table>`
                 })
-
                 hasilPermintaanLab.html(table);
-
             })
+            // $.get(`/erm/lab/permintaan`, {
+            //     no_rawat: no_rawat
+            // }).done((response) => {
+            //     let table = '';
+
+            //     response.forEach((item) => {
+            //         table += `
+        //         <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
+        //             <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
+        //             <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
+        //             <div class="p-2 bd-highlight fw-bold">Informasi : ${item.informasi_tambahan}</div>
+        //             <div class="p-2 bd-highlight fw-bold">Tgl. Permintaan : ${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</div>    
+        //         </div>
+        //         <table class='table table-bordered table-hover'>
+        //             <thead>
+        //                 <tr>
+        //                     <td width="">Pemeriksaan</td>    
+        //                     <td width="20%">Hasil</td>    
+        //                     <td width="30%">Nilai Rujukan</td>    
+        //                     <td width="20%">Keterangan</td>    
+        //                 </tr>
+        //             </thead>
+        //             <tbody>
+        //                     ${renderHasilPermintaanLab(item.hasil)}
+        //                     <tr>
+        //                         <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil[0]?.dokter.nm_dokter}</strong></td>    
+        //                     </tr>
+        //                     <tr>
+        //                         <td colspan="2" class="">Saran : <strong>${item.saran_kesan? item.saran_kesan.saran : '-'}</strong></td>    
+        //                         <td colspan="2" class="">Kesan : <strong>${item.saran_kesan? item.saran_kesan.kesan : '-'}</strong></td>    
+        //                     </tr>
+        //             </tbody>
+        //         </table>`
+
+            //     })
+
+            //     hasilPermintaanLab.html(table);
+
+            // })
         }
+
+        // function groupByKdJenisPrw(data) {
+        //     const groupedData = {};
+        //     for (const item of data) {
+        //         const key = item.kd_jenis_prw;
+        //         if (!groupedData[key]) {
+        //             groupedData[key] = [];
+        //         }
+        //         groupedData[key].push(item);
+        //     }
+        //     return groupedData;
+        // }
+
 
 
         function renderHasilPermintaanLab(data) {
@@ -280,6 +322,17 @@
             })
             return html
 
+        }
+
+        function renderDetailHasilPemeriksaanLab(data) {
+            return data.map((item) => {
+                return `<tr class="${setWarnaPemeriksaan(item.keterangan)}" onclick="setTextHasil(this)">
+                            <td>${item.template.Pemeriksaan}</td>
+                            <td>${item.nilai} ${item.template.satuan}</td>
+                            <td>${item.nilai_rujukan} ${item.template.satuan}</td>
+                            <td>${item.keterangan}</td>
+                        </tr>`
+            }).join('');
         }
 
 

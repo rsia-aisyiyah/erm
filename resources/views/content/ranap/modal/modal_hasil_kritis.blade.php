@@ -5,34 +5,34 @@
                 <h5 class="modal-title fs-5" id="exampleModalLabel">Hasil Kritis</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="min-height: 550px">
                 <form action="" id="formPasienKritis">
                     <div class="row gy-2">
                         <div class="col-lg-2">
                             <label for="no_rawat">No. Rawat</label>
                             <input type="text" class="form-control" id="no_rawat" name="no_rawat" readonly>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <label for="nm_pasien">Pasien</label>
                             <input type="text" class="form-control" id="nm_pasien" name="nm_pasien" readonly>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <label for="tgl_lahir">Tgl. Lahir/Umur</label>
                             <input type="text" class="form-control" id="tgl_lahir" name="tgl_lahir" readonly>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <label for="keluarga">Keluarga</label>
                             <input type="text" class="form-control" id="keluarga" name="keluarga" readonly>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <label for="kamar">Kamar</label>
                             <input type="text" class="form-control" id="kamar" name="kamar" readonly>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-2">
                             <label for="diagnosa">Diagnosa Awal</label>
                             <input type="text" class="form-control" id="diagnosa" name="diagnosa" readonly>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <label for="dokter">DPJP</label>
                             <input type="text" class="form-control" id="dokter" name="dokter" readonly>
                             <input type="hidden" id="kd_dokter" name="kd_dokter" readonly>
@@ -40,15 +40,56 @@
 
                     </div>
                 </form>
-                <ul class="nav nav-tabs mt-3" id="tabsHasilKritis" role="tablist">
+                <hr />
+                <h1 class="h4 text-center">FORM HASIL KRITIS</h1>
+                <form action="" id="formHasilKritis" class="mb-3">
+                    <div class="row gy-2">
+                        <div class="col-lg-6">
+                            <label for="" class="form-label">Hasil Kritis <a href="javascript:void(0)" class="text-primary" id="showHasilPenunjang" title="Hasil Penunjang Lab & Radiologi"><i class="fa fa-search"></i></a></label>
+                            <textarea class="form-control" id="hasil" cols="30" rows="10" name="hasil"></textarea>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <label for="" class="form-label">Petugas Lab/Radiologi</label>
+                                    <select class="form-select" id="selectPetugas" style="width: 100%" name="petugas"></select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="" class="form-label">Tanggal & Jam</label>
+                                    <input type='text' id='tgl' class="form-control form-control-sm datetimepicker" name="tgl" />
+                                </div>
+                                <div class="col-lg-8">
+                                    <label for="" class="form-label">Petugas Ruangan</label>
+                                    <select class="form-select" id="selectPetugasRuang" style="width: 100%" name="petugas_ruang"></select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="" class="form-label">Tanggal & Jam</label>
+                                    <input type='text' id='tgl_ruang' class="form-control form-control-sm datetimepicker" name="tgl_ruang" />
+                                </div>
+                                <div class="col-lg-8">
+                                    <label for="" class="form-label">Dokter</label>
+                                    <select class="form-select" id="selectDokterKritis" style="width: 100%" name="dokter"></select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="" class="form-label">Tanggal & Jam</label>
+                                    <input type='text' id='tgl_dokter' class="form-control form-control-sm datetimepicker" name="tgl_dokter" />
+                                    <input type='hidden' id='_token' name="_token" value="{{ csrf_token() }}" />
+                                    <input type='hidden' id='id' name="id" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <table class="table nowrap" id="tbHasilKritis" width="100%"></table>
+                {{-- <ul class="nav nav-tabs mt-3" id="tabsHasilKritis" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="formPasienKritis-tab" data-bs-toggle="tab" data-bs-target="#tabHasilKritis" type="button" role="tab" aria-controls="tabHasilKritis" aria-selected="true">Form Hasil Kritis</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="hasilKritis-tab" data-bs-toggle="tab" data-bs-target="#hasilKritis" type="button" role="tab" aria-controls="hasilKritis" aria-selected="true">Daftar Hasil</button>
                     </li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
+                </ul> --}}
+                {{-- <div class="tab-content" id="myTabContent" style="min-height: 350px">
                     <div class="tab-pane fade show active p-3" id="tabHasilKritis" role="tabpanel" aria-labelledby="formPasienKritis-tab">
                         <form action="" id="formHasilKritis">
                             <div class="row gy-2">
@@ -90,9 +131,9 @@
                         </form>
                     </div>
                     <div class="tab-pane fade p-3" id="hasilKritis" role="tabpanel" aria-labelledby="hasilKritis-tab">
-                        <table class="table nowrap" id="tbHasilKritis" width="100%"></table>
+
                     </div>
-                </div>
+                </div> --}}
 
             </div>
             <div class="modal-footer">
@@ -149,6 +190,10 @@
 
         }
 
+        function resetFormHasilKritis() {
+            formPasienKritis.trigger('reset')
+        }
+
         function selectDokterKritis(params) {
             const select = params.select2({
                 dropdownParent: modalHasilKritis,
@@ -184,36 +229,29 @@
 
 
         modalHasilKritis.on('show.bs.modal', () => {
-
-            selectPetugasKritis(petugas)
-            selectPetugasKritis(selectPetugasRuang)
-            selectDokterKritis(selectDokter)
-
-            formTabKritis = document.getElementById('formPasienKritis-tab')
-            hasilTabKritis = document.getElementById('hasilKritis-tab')
+            selectPetugasKritis(petugas);
+            selectPetugasKritis(selectPetugasRuang);
+            selectDokterKritis(selectDokter);
             formPasienKritis.find('#hasil').val('')
-
-
-
-            instanceFormTabKritis = bootstrap.Tab.getInstance(formTabKritis);
-            instansceHasilTabKritis = new bootstrap.Tab(hasilTabKritis);
         })
 
         function hasilKritis(no_rawat) {
             getRegPeriksa(no_rawat).done((response) => {
                 const pasien = response.pasien
                 formPasienKritis.find('#no_rawat').val(no_rawat)
-                formPasienKritis.find('#nm_pasien').val(`${pasien.nm_pasien} (${response.umurdaftar} ${response.sttsumur}) / ${splitTanggal(pasien.tgl_lahir)}`)
+                formPasienKritis.find('#nm_pasien').val(`${response.no_rkm_medis} - ${pasien.nm_pasien}`)
                 formPasienKritis.find('#keluarga').val(response.p_jawab)
+                formPasienKritis.find('#tgl_lahir').val(`${formatTanggal(response.pasien.tgl_lahir)} / ${response.umurdaftar} ${response.sttsumur}`)
                 const kamarInap = response.kamar_inap.map((item) => {
                     const valKamar = item.stts_pulang != 'Pindah Kamar' ? item.kamar.bangsal.nm_bangsal : '-';
                     return [
                         valKamar,
-                        item.diagnosa_awal
+                        item.diagnosa_awal,
+                        item.tgl_masuk,
                     ];
                 }).join(',')
 
-                formPasienKritis.find('#kamar').val(kamarInap.split(',')[0]);
+                formPasienKritis.find('#kamar').val(`${kamarInap.split(',')[0]} / ${hitungLamaHari(kamarInap.split(',')[2])} Hari`);
                 formPasienKritis.find('#diagnosa').val(kamarInap.split(',')[1]);
                 formPasienKritis.find('#dokter').val(response.dokter.nm_dokter);
                 showHasilPenunjang.attr('onclick', `modalPemeriksaanPenunjang('${no_rawat}')`)
@@ -228,8 +266,10 @@
             $.post(`${url}/hasil/kritis`, data).done((response) => {
                 alertSuccessAjax()
                 drawHasilKritis(data['no_rawat']);
-                $('#formHasilKritis').trigger('reset')
-                instansceHasilTabKritis.show()
+                $('#formHasilKritis').trigger('reset');
+
+
+
             }).fail((error) => {
                 alertErrorAjax(error)
             })
@@ -260,7 +300,7 @@
                         data: 'hasil',
                         title: 'Hasil',
                         render: (data, type, row, meta) => {
-                            return `${data}`;
+                            return `${stringPemeriksaan(data)}`;
                         }
                     },
                     {
@@ -295,7 +335,6 @@
                     },
 
 
-
                 ],
             });
         }
@@ -308,6 +347,7 @@
             }).done((response) => {
                 alertSuccessAjax().then(() => {
                     drawHasilKritis(no_rawat);
+                    resetFormHasilKritis()
                 })
             }).fail((error) => {
                 alertErrorAjax(error)
@@ -329,10 +369,6 @@
                 selectDokter.append(dokter).trigger('change')
                 selectPetugasRuang.append(ruang).trigger('change')
                 petugas.append(tugas).trigger('change')
-
-
-
-                instanceFormTabKritis.show()
             }).fail((error) => {
                 alertErrorAjax(error)
             })

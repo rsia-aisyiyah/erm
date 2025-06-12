@@ -105,13 +105,14 @@
             font-size: 12px;
         }
 
+
         .table-wrapper-scroll-y {
             display: block;
         }
 
         .table tr td,
         .table tr th {
-            vertical-align: top;
+            vertical-align: middle !important;
         }
 
         .table-print th,
@@ -614,6 +615,7 @@
             input,
             select,
             button,
+            textarea,
             a {
                 font-size: 10px !important;
             }
