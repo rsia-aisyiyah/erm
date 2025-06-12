@@ -1,141 +1,128 @@
 @extends('index')
 @section('contents')
-    <div class="row gy-2">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <form action="" id="formFilterRanap">
-                        <div class="form-group mb-2">
-                            <div class="row gy-2">
-                                <div class="col-lg-2 col-md-12 col-sm-12">
-                                    <div class="input-group">
-                                        <div class="row gy-2">
-                                            <div class="col col-sm-12">
-                                                <div class="form-radio form-radio-inline">
-                                                    <input class="form-radio-input" type="radio" id="belum"
-                                                        name="stts_pulang"
-                                                        value="Belum Pulang">
-                                                    <label class="form-radio-label" for="belum">Belum
-                                                        Pulang</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-12 col-sm-12">
-                                    <div class="row gy-2">
-                                        <div class="col-lg-4 col-md-4 col-sm-12">
-                                            <div class="form-radio form-radio-inline">
-                                                <input class="form-radio-input" type="radio" id="pulang"
-                                                    name="stts_pulang"
-                                                    value="pulang">
-                                                <label class="form-radio-label" for="pulang">Pulang</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-8 col-md-8 col-sm-12">
-                                            <div class="input-group input-group-sm">
-                                                <input type="text"
-                                                    class="form-control form-control-sm tanggal tgl_pulang"
-                                                    id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off"
-                                                    disabled>
-                                                <span class="input-group-text"><label for="">s/d</label></span>
-                                                <input type="text"
-                                                    class="form-control form-control-sm tanggal tgl_pulang"
-                                                    id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off"
-                                                    disabled>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-12 col-sm-12">
-                                    <div class="row gy-2">
-                                        <div class="col-lg-4 col-md-4 col-sm-12">
-                                            <div class="form-radio form-radio-inline">
-                                                <input class="form-radio-input" type="radio" id="masuk"
-                                                    name="stts_pulang"
-                                                    value="masuk">
-                                                <label class="form-radio-label" for="masuk">Masuk</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-8 col-md-4 col-sm-12">
-                                            <div class="input-group input-group-sm">
-                                                <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
-                                                    id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off"
-                                                    disabled>
-
-                                                <span class="input-group-text"><label for="">s/d</label></span>
-                                                <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
-                                                    id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off" disabled>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-12 col-sm-12">
-                                    <div class="d-grid gap-2">
-                                        <button type="button" class="btn btn-success btn-sm"
-                                            id="cari">
-                                            <i class="bi bi-search"></i>
-                                        </button>
-                                    </div>
+    <form action="" id="formFilterRanap" class="mb-3">
+        <div class="form-group mb-2">
+            <div class="row gy-2">
+                <div class="col-lg-2 col-md-12 col-sm-12">
+                    <div class="input-group">
+                        <div class="row gy-2">
+                            <div class="col col-sm-12">
+                                <div class="form-radio form-radio-inline">
+                                    <input class="form-radio-input" type="radio" id="belum"
+                                        name="stts_pulang"
+                                        value="Belum Pulang">
+                                    <label class="form-radio-label" for="belum">Belum
+                                        Pulang</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="row gy-2">
-                                <div class="col-lg-3 col-md-12 col-sm-12">
-                                    <select name="spesialis" id="spesialis" class="form-select form-select-sm"
-                                        style="width:100%">
-                                        <option value="">Semua Spesialis</option>
-                                        <option value="S0001">Spesialis Kebidanan & Kandungan</option>
-                                        <option value="S0003">Spesialis Anak</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-4 col-md-12 col-sm-12">
-                                    <select style="font-size:12px" name="dokter" id="dokter" class="form-select form-select-sm" style="width:100%"
-                                        disabled>
-                                        <option value="">Semua Dokter</option>
-                                        <option value="1.101.1112" class="S0003">dr. Himawan Budityastomo, Sp.OG</option>
-                                        <option value="1.109.1119" class="S0003">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
-                                        <option value="1.107.0317" class="S0001">dr. Dwi Riyanto, Sp.A</option>
-                                        <option value="1.111.1221" class="S0001">dr. Rendy Yoga Ardian, Sp.A</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-5 col-md-12 col-sm-12">
-                                    <div class="row">
-                                        <label for="cari-kamar" class="col-sm-3 col-form-label" style="font-size:12px">Cari Kamar : </label>
-                                        <div class="col-sm-9">
-                                            <input type="search" id="cari-kamar" name="cari-kamar" class="form-control form-control-sm" width="100%" autocomplete="off">
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="row gy-2">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <div class="form-radio form-radio-inline">
+                                <input class="form-radio-input" type="radio" id="pulang"
+                                    name="stts_pulang"
+                                    value="pulang">
+                                <label class="form-radio-label" for="pulang">Pulang</label>
                             </div>
                         </div>
-                    </form>
+                        <div class="col-lg-8 col-md-8 col-sm-12">
+                            <div class="input-group input-group-sm">
+                                <input type="text"
+                                    class="form-control form-control-sm tanggal tgl_pulang"
+                                    id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off"
+                                    disabled>
+                                <span class="input-group-text"><label for="">s/d</label></span>
+                                <input type="text"
+                                    class="form-control form-control-sm tanggal tgl_pulang"
+                                    id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off"
+                                    disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="row gy-2">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <div class="form-radio form-radio-inline">
+                                <input class="form-radio-input" type="radio" id="masuk"
+                                    name="stts_pulang"
+                                    value="masuk">
+                                <label class="form-radio-label" for="masuk">Masuk</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-4 col-sm-12">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
+                                    id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off"
+                                    disabled>
+
+                                <span class="input-group-text"><label for="">s/d</label></span>
+                                <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
+                                    id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off" disabled>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12">
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-success btn-sm"
+                            id="cari">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body table-responsive">
-                    <table class="table table-striped table-hover text-sm table-sm" id="tb_ranap" width="100%" style="font-size: 11px">
-                        {{-- <thead>
-                            <tr role="row">
-                                <th></th>
-                                <th>No. Rawat</th>
-                                <th>Pasien</th>
-                                <th>Pembiayaan</th>
-                                <th>Kamar</th>
-                                <th>Lama</th>
-                                <th>Dokter</th>
-                                <th>Diag. Awal</th>
-                            </tr>
-                        </thead> --}}
-                    </table>
+        <div class="form-group">
+            <div class="row gy-2">
+                <div class="col-lg-3 col-md-12 col-sm-12">
+                    <select name="spesialis" id="spesialis" class="form-select form-select-sm"
+                        style="width:100%">
+                        <option value="">Semua Spesialis</option>
+                        <option value="S0001">Spesialis Kebidanan & Kandungan</option>
+                        <option value="S0003">Spesialis Anak</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <select style="font-size:12px" name="dokter" id="dokter" class="form-select form-select-sm" style="width:100%"
+                        disabled>
+                        <option value="">Semua Dokter</option>
+                        <option value="1.101.1112" class="S0003">dr. Himawan Budityastomo, Sp.OG</option>
+                        <option value="1.109.1119" class="S0003">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
+                        <option value="1.107.0317" class="S0001">dr. Dwi Riyanto, Sp.A</option>
+                        <option value="1.111.1221" class="S0001">dr. Rendy Yoga Ardian, Sp.A</option>
+                    </select>
+                </div>
+                <div class="col-lg-5 col-md-12 col-sm-12">
+                    <div class="row">
+                        <label for="cari-kamar" class="col-sm-3 col-form-label" style="font-size:12px">Cari Kamar : </label>
+                        <div class="col-sm-9">
+                            <input type="search" id="cari-kamar" name="cari-kamar" class="form-control form-control-sm" width="100%" autocomplete="off">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
+    <table class="table table-hover text-sm table-sm" id="tb_ranap" width="100%">
+        {{-- <thead>
+                <tr role="row">
+                    <th></th>
+                    <th>No. Rawat</th>
+                    <th>Pasien</th>
+                    <th>Pembiayaan</th>
+                    <th>Kamar</th>
+                    <th>Lama</th>
+                    <th>Dokter</th>
+                    <th>Diag. Awal</th>
+                </tr>
+            </thead> --}}
+    </table>
+
     @include('content.poliklinik.modal.modal_riwayat')
     @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_lab')
@@ -171,9 +158,11 @@
     @include('content.ranap.modal.modal_asesmen_nyeri_neonatus')
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_dewasa')
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_anak')
+    @include('content.poliklinik.modal.modal_icare')
 @endsection
 
 @push('script')
+    <script type="text/javascript" src="{{ asset('js/context-menu/ranap.js') }}"></script>
     <script>
         var stts_pulang = '-';
         var tgl_awal = '';
@@ -203,7 +192,9 @@
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
                 autoclose: true,
-                defaultDate: null
+                defaultDate: null,
+                todayHighlight: true,
+                todayBtn: true
             });
 
             $('#cari-kamar').val(kamar)
@@ -326,7 +317,7 @@
             $('#tb_ranap').DataTable({
                 processing: true,
                 scrollX: true,
-                scrollY: "50vh",
+                scrollY: "60vh",
                 stateSave: true,
                 ordering: true,
                 paging: false,
@@ -346,23 +337,70 @@
                 },
                 columnDefs: [{
                         target: 0,
-                        width: 70,
-                    },
-                    {
+                        width: 10,
+                    }, {
                         target: 1,
-                        width: 100,
+                        width: 80,
                     },
                     {
                         target: 3,
                         width: 150,
                     }, {
                         target: 4,
-                        width: 150,
+                        width: 50,
                     }, {
                         target: 5,
+                        width: 20,
+                    }, {
+                        target: 6,
+                        width: 100,
+                    }, {
+                        target: 7,
+                        width: 50,
+                    }, {
+                        target: 8,
+                        width: 150,
+                    }, {
+                        target: 9,
                         width: 150,
                     }
                 ],
+                createdRow: (element, data, index, meta) => {
+                    const row = $(element);
+                    const dataAttr = {
+                        'no_rawat': data.no_rawat,
+                        'no_rkm_medis': data.reg_periksa.no_rkm_medis,
+                        'kd_dokter': data.reg_periksa.kd_dokter,
+                        'tgl_lahir': data.pasien.tgl_lahir,
+                        'umurdaftar': data.reg_periksa.umurdaftar,
+                        'tgl_reg': data.reg_periksa.tgl_registrasi,
+                        'sttsumur': data.reg_periksa.sttsumur,
+                        'no_peserta': data.pasien.no_peserta,
+                        'kd_dokter_bpjs': data.reg_periksa.dokter.mapping_dokter.kd_dokter_bpjs,
+                        'kd_pj': data.reg_periksa.kd_pj,
+                        'kd_sps': data.reg_periksa.dokter.kd_sps
+                    }
+
+                    row.attr('data-pasien', JSON.stringify(dataAttr))
+                        .addClass('row-ranap');
+
+                    const asmedAnak = data.asmed_anak;
+                    const asmedKandungan = data.asmed_kandungan;
+                    const asmedUmumBBL = data.asmed_umum;
+
+                    if (asmedAnak === null && asmedKandungan === null) {
+                        row.addClass('table-danger')
+                    }
+
+                    if (data.reg_periksa.umurdaftar === '0' && data.reg_periksa.sttsumur === 'Hr') {
+                        if (asmedUmumBBL === null) {
+                            row.addClass('table-danger')
+                        }
+                    }
+
+
+
+                },
                 columns: [{
                         data: 'reg_periksa',
                         render: function(data, type, row, meta) {
@@ -423,7 +461,9 @@
                             }
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
-                            button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px" id="dropdownAksi${meta.row}" data-id="${row.no_rawat}">Aksi</button><ul class="dropdown-menu" style="font-size:12px">${list}</ul></div>`
+                            // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${data.pasien.no_peserta}', '${data.dokter.mapping_dokter.kd_dokter_bpjs}')">Riwayat Pemeriksaan I-Care</a></li>`;
+                            button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownAksi${meta.row}" data-id="${row.no_rawat}"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:11px">${list}</ul></div>`
+
                             return button;
                         }
                     },
@@ -463,26 +503,13 @@
 
                             }
 
-                            asmed = '';
-                            if (data.asmed_ranap_anak == null && data.asmed_ranap_kandungan == null) {
-                                asmed = ' <button class="ml-1 px-1 py-0 btn btn-sm btn-danger" ><b>Belum ada Asmed</b></button><br/>'
-                            }
 
-
-                            return asmed + '<strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + bayiGabung;
+                            return '<strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + bayiGabung;
 
                         },
                         name: 'reg_periksa',
                     },
-                    {
-                        title: 'Pembiayaan',
-                        data: 'reg_periksa.penjab',
-                        render: function(data) {
-                            penjab = `<span class="${data.kd_pj === 'A03' ? 'text-danger' : 'text-success'}"><b>${data.png_jawab}</b></span>`
-                            return penjab;
-                        },
-                        name: 'penjab',
-                    },
+
                     {
                         title: 'Kamar',
                         data: 'kamar',
@@ -493,9 +520,9 @@
                     },
                     {
                         title: 'Tgl. Masuk',
-                        data: 'tgl_masuk',
+                        data: 'reg_periksa',
                         render: function(data, type, row, meta) {
-                            return `${splitTanggal(data)} ${row.jam_masuk}`;
+                            return `${splitTanggal(data.tgl_registrasi)} ${data.jam_reg}`;
                         },
                         name: 'tgl_masuk',
                     },
@@ -506,6 +533,59 @@
                             return `${data} Hari`;
                         },
                         name: 'lama',
+                    },
+                    {
+                        title: 'Diag. Awal',
+                        data: '',
+                        name: 'diagnosa',
+                        render: function(data, type, row) {
+                            const asmedAnak = row.asmed_anak;
+                            const asmedKandungan = row.asmed_kandungan;
+                            const asmedUmumBBL = row.asmed_umum;
+
+                            if (asmedAnak) {
+                                return asmedAnak.diagnosis;
+                            } else if (asmedKandungan) {
+                                return asmedKandungan.diagnosis;
+                                // return moment(asmedKandungan.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                            } else if (asmedUmumBBL) {
+                                return asmedUmumBBL.diagnosis;
+                                // return moment(asmedUmumBBL.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                            } else {
+                                return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
+                            }
+                        }
+                    },
+                    {
+                        title: 'Asesmen Medis',
+                        render: (data, type, row) => {
+                            const asmedAnak = row.asmed_anak;
+                            const asmedKandungan = row.asmed_kandungan;
+                            const asmedUmumBBL = row.asmed_umum;
+
+                            if (asmedAnak) {
+                                return moment(asmedAnak.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                            } else if (asmedKandungan) {
+                                return moment(asmedKandungan.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                            }
+
+                            if (row.reg_periksa.umurdaftar === '0' && row.reg_periksa.sttsumur === 'Hr') {
+                                if (asmedUmumBBL === null) {
+                                    // row.addClass('table-danger')
+                                    return moment(asmedUmumBBL.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                                }
+                            }
+                            // else if (asmedUmumBBL) {} else {
+                            // }
+                            return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
+
+                            // if (data.reg_periksa.umurdaftar === '0' && data.reg_periksa.sttsumur === 'Hr') {
+                            //     if (asmedUmumBBL === null) {
+                            //         // row.addClass('table-danger')
+                            //     }
+                            // }
+                            // return false;
+                        }
                     },
                     {
                         title: 'Dokter DPJP',
@@ -549,11 +629,30 @@
                         },
                         name: 'dokter'
                     },
+
                     {
-                        title: 'Diag. Awal',
-                        data: 'diagnosa_awal',
-                        name: 'diagnosa'
+                        title: 'Pembiayaan',
+                        data: 'reg_periksa.penjab',
+                        render: function(data) {
+                            penjab = `<span class="${data.kd_pj === 'A03' ? 'text-danger' : 'text-success'}"><b>${data.png_jawab}</b></span>`
+                            return penjab;
+                        },
+                        name: 'penjab',
                     },
+                    {
+                        title: 'Status',
+                        data: 'stts_pulang',
+                        render: function(data, type, row, meta) {
+                            let tanggal = '';
+                            if (data === '-') {
+                                tanggal = ``;
+                            } else {
+                                tanggal = `${moment(row.tgl_keluar).format('DD-MM-YYYY')} ${row.jam_keluar}`;
+
+                            }
+                            return `${tanggal}<br>${data}`;
+                        }
+                    }
                 ],
                 "language": {
                     "zeroRecords": "Tidak ada data pasien terdaftar",

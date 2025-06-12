@@ -1,50 +1,41 @@
 @extends('index')
 @section('contents')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    Pasien UGD
-                </div>
-                <div class="card-body">
-                    <form action="" id="formFilterUgd">
-                        <div class="row">
-                            <div class="col-md-6 col-lg-3 col-sm-12">
-                                <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Periode</label>
-                                <div class="input-group input-group-sm input-daterange">
-                                    <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
-                                    <div class="input-group-text">ke</div>
-                                    <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
-                                    <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
-                                </div>
-                            </div>
-                            @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
-                                <div class="col-md-6 col-lg-3 col-sm-12">
-                                    <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
-                                    <select name="spesialis" id="spesialis" class="form-select form-select-sm">
-                                        <option value="">Semua</option>
-                                        <option value="S0007">Umum</option>
-                                        <option value="S0003">Spesialis Anak</option>
-                                        <option value="S0001">Spesialis Kandungan & Kebidanan</option>
-                                    </select>
-                                </div>
-                                <input type="hidden" value="" name="kd_dokter">
-                            @else
-                                <input type="hidden" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
-                            @endif
-                        </div>
-                    </form>
-                    <table class="table table-striped table-responsive text-sm table-sm" id="tb_ugd" width="100%" style="font-size: 11px">
-                        <thead>
-                            <tr role="row">
-
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+    <form action="" id="formFilterUgd">
+        <div class="row">
+            <div class="col-md-6 col-lg-3 col-sm-12">
+                <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Periode</label>
+                <div class="input-group input-group-sm input-daterange">
+                    <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
+                    <div class="input-group-text">ke</div>
+                    <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
+                    <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
                 </div>
             </div>
+            @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
+                <div class="col-md-6 col-lg-3 col-sm-12">
+                    <label for="" style="font-size: 12px;margin-bottom:0px">Spesialis</label>
+                    <select name="spesialis" id="spesialis" class="form-select form-select-sm">
+                        <option value="">Semua</option>
+                        <option value="S0007">Umum</option>
+                        <option value="S0003">Spesialis Anak</option>
+                        <option value="S0001">Spesialis Kandungan & Kebidanan</option>
+                    </select>
+                </div>
+                <input type="hidden" value="" name="kd_dokter">
+            @else
+                <input type="hidden" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
+            @endif
         </div>
+    </form>
+    <div class="table-responsive">
+        <table class="table table-responsive text-sm table-sm" id="tb_ugd" width="100%">
+            <thead>
+                <tr role="row">
+
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
     @include('content.ugd.modal.pemeriksaan')
     @include('content.ugd.modal.asmed')
@@ -66,6 +57,7 @@
 
 
 @push('script')
+    <script type="text/javascript" src="{{ asset('js/context-menu/ugd.js') }}"></script>
     <script type="text/javascript">
         var tgl_awal = '';
         var tgl_akhir = '';
@@ -190,30 +182,55 @@
                     // toastReload('Menampilkan data pasien UGD', 2000)
                 },
                 columnDefs: [{
-                    target: 0,
-                    width: 10,
-                }, {
-                    target: 1,
-                    width: 100,
-                }, {
-                    target: 2,
-                    width: 300,
-                }, {
-                    target: 5,
-                    width: 100,
-                }, {
-                    target: 6,
-                    width: 100,
+                        target: 0,
+                        width: 10,
+                    }, {
+                        target: 1,
+                        width: 100,
+                    }, {
+                        target: 2,
+                        width: 300,
+                    },
+                    {
+                        target: 3,
+                        width: 200,
+                    },
+                    {
+                        target: 5,
+                        width: 100,
+                    },
+                    {
+                        target: 4,
+                        width: 80,
+                    }, {
+                        target: 6,
+                        width: 80,
 
-                }],
+                    },
+                    {
+                        target: 7,
+                        width: 100,
+                    }
+                ],
                 createdRow: function(row, data, dataIndex) {
+                    $(row).addClass('row-ugd')
+                        .attr('data-id', data.no_rawat)
+                        .attr('data-no_rkm_medis', data.no_rkm_medis)
+                        .attr('data-no_peserta', data.pasien.no_peserta)
+                        .attr('data-penjab', data.kd_pj)
+                        .attr('data-dokter_bpjs', data.dokter.mapping_dokter?.kd_dokter_bpjs)
+                        .attr('data-pasien', JSON.stringify(data.pasien))
+                        .attr('data-umur', data.umurdaftar)
+                        .attr('data-sttsumur', data.sttsumur)
+                        .attr('data-tgl_registrasi', data.tgl_registrasi)
+                        .attr('data-tgl_lahir', data.pasien.tgl_lahir)
                     if (data.asmed_igd == null) {
                         $(row).addClass('table-danger').prop('title', 'Belum Ada Asesmen Medis')
                     }
                 },
                 columns: [{
                         data: '',
-                        title: 'Aksi',
+                        title: '',
                         render: function(data, type, row, meta) {
 
                             list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">CPPT</a></li>';
@@ -234,7 +251,7 @@
                             } else {
                                 list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
                             }
-                            button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:12px;width:80px;margin-left:15px">Aksi</button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
+                            button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:11px"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                             return button;
                         }
                     },
@@ -264,7 +281,7 @@
                             }
 
                             kamarInap = Object.keys(row.kamar_inap).length ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
-                            return `<strong>${row.no_rkm_medis} - ${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
+                            return `<strong>${row.no_rkm_medis}<br/>${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
                         }
                     },
                     {
@@ -328,18 +345,46 @@
 
                         }
                     },
-
-
                     {
-                        title: 'Kamar',
-                        data: 'kamar',
+                        title: 'Status',
+                        data: 'status_lanjut',
                         render: (data, type, row, meta) => {
-                            if (Object.keys(row.kamar_inap).length > 0) {
-                                return '<button type="button" class="btn btn-danger btn-sm">Rawat Inap</button>';
+                            if (data === 'Ralan') {
+                                return `<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Rawat Jalan"><i class="bi bi-person-wheelchair"></i></button>`
                             } else {
-                                return '<button type="button" class="btn btn-warning btn-sm">Rawat Jalan</button>';
-
+                                return `<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Default tooltip"><i class="bi bi-house-add"></i></button>`
                             }
+                        }
+                    },
+                    {
+                        title: 'Pindah Kamar',
+                        data: '',
+                        render: (data, type, row, meta) => {
+                            return row.kamar_pulang ? row.kamar_pulang.kamar.bangsal.nm_bangsal : '';
+                        }
+                    }, {
+                        title: 'Triase',
+                        data: '',
+                        render: (data, type, row, meta) => {
+                            let ats = '';
+                            let atsClass = '';
+                            if (row.triase_skala1.length > 0) {
+                                ats = `ATS I`
+                                atsClass = 'bg-danger text-white';
+                            } else if (row.triase_skala2.length > 0) {
+                                ats = `ATS II`
+                                atsClass = 'bg-warning text-dark';
+                            } else if (row.triase_skala3.length > 0) {
+                                ats = `ATS III`
+                                atsClass = 'bg-success text-white';
+                            } else if (row.triase_skala4.length > 0) {
+                                ats = `ATS IV`
+                                atsClass = 'bg-primary text-white';
+                            } else if (row.triase_skala5.length > 0) {
+                                ats = `ATS V`
+                                atsClass = 'bg-secondary text-white';
+                            }
+                            return `<div class="${atsClass} p-2 text-center" style="font-family:monospace">${ats}</div>`
                         }
                     }
 

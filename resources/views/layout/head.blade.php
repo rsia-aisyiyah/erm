@@ -21,8 +21,9 @@
     <link href="https://cdn.datatables.net/fixedcolumns/4.2.1/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
     @stack('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
+    {{-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> --}}
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.toast.min.css') }}">
     <link rel="icon" href="{{ asset('img/LOGO RSIA .png') }}">
@@ -104,13 +105,14 @@
             font-size: 12px;
         }
 
+
         .table-wrapper-scroll-y {
             display: block;
         }
 
         .table tr td,
         .table tr th {
-            vertical-align: top;
+            vertical-align: middle !important;
         }
 
         .table-print th,
@@ -566,7 +568,28 @@
             /* Dark green text */
         }
 
-        @media (min-width: 367px) {
+        .context-menu-list,
+        .context-menu-item {
+            font-size: 11px !important;
+        }
+
+        .context-menu-item.context-menu-hover {
+            background-color: #0d6efd !important;
+            color: #fff;
+        }
+
+        .context-menu-icon.context-menu-icon--fa::before {
+
+            color: #0d6efd;
+        }
+
+        tbody {
+            border-color: #ccc;
+            border-style: solid;
+            border-width: 0;
+        }
+
+        tr @media (min-width: 367px) {
             /* .batasan-lebar { */
             /* width: 497px;
                 margin-left: auto;
@@ -576,6 +599,69 @@
             .order-sm-2 {
                 order: 2 !important;
             }
+        }
+
+        @media (max-width: 1700px) {
+            table {
+                font-size: 10px !important;
+            }
+
+            table tbody th,
+            table tbody td {
+                padding: 6px 8px;
+            }
+
+            label,
+            input,
+            select,
+            button,
+            textarea,
+            a {
+                font-size: 10px !important;
+            }
+
+            .form-check-label {
+                font-size: 10px !important;
+            }
+
+            .sidebar .nav-link {
+                font-weight: 500;
+                color: #333;
+                font-size: 10px !important;
+                padding: 8px 12px;
+            }
+
+            h1,
+            .h1 {
+                font-size: 1.75rem !important;
+            }
+
+            h2,
+            .h2 {
+                font-size: 1.5rem !important;
+            }
+
+            h3,
+            .h3 {
+                font-size: 1.25rem !important;
+            }
+
+            h4,
+            .h4 {
+                font-size: 1rem !important;
+            }
+
+            h5,
+            .h5 {
+                font-size: 0.875rem !important;
+            }
+
+            h6,
+            .h6 {
+                font-size: 0.75rem !important;
+            }
+
+
         }
     </style>
 </head>
