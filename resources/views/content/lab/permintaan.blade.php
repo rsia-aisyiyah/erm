@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-sm table-hover align-middle" id="tableDataPermintaanLab" style="font-size: 11px">
+                <table class="table table-sm table-hover align-middle" id="tableDataPermintaanLab">
 
                 </table>
 

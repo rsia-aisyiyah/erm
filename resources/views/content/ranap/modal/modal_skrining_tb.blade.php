@@ -5,45 +5,38 @@
                 <h5 class="modal-title fs-5" id="exampleModalLabel">Skoring & Skrining TB</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="min-height: 550px">
                 <form action="" id="formPasienSkoringTb">
                     <div class="row gy-2">
-                        <div class="col-lg-4">
-                            <div class="input-group">
-                                <label for="no_rawat" class="form-label">No. Rawat</label>
-                                <input type="text" class="form-control br-full" id="no_rawat" name="no_rawat" readonly>
-                            </div>
+                        <div class="col-lg-2 col-md-6 col-sm-12">
+                            <label for="no_rawat">No. Rawat</label>
+                            <input type="text" class="form-control" id="no_rawat" name="no_rawat" readonly>
                         </div>
-                        <div class="col-lg-5">
-                            <div class="input-group">
-                                <label for="nm_pasien">Pasien</label>
-                                <input type="text" class="form-control br-full" id="nm_pasien" name="nm_pasien" readonly>
-                            </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label for="nm_pasien">Pasien</label>
+                            <input type="text" class="form-control" id="nm_pasien" name="nm_pasien" readonly>
+
                         </div>
-                        <div class="col-lg-3">
-                            <div class="input-group">
-                                <label for="keluarga">Keluarga</label>
-                                <input type="text" class="form-control br-full" id="keluarga" name="keluarga" readonly>
-                            </div>
+                        <div class="col-lg-2 col-md-6 col-sm-12">
+                            <label for="tgl_lahir">Tgl. Lahir/Umur</label>
+                            <input type="text" class="form-control" id="tgl_lahir" name="tgl_lahir" readonly>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="input-group">
-                                <label for="kamar">Kamar</label>
-                                <input type="text" class="form-control br-full" id="kamar" name="kamar" readonly>
-                            </div>
+                        <div class="col-lg-2 col-md-6 col-sm-12">
+                            <label for="keluarga">Keluarga</label>
+                            <input type="text" class="form-control" id="keluarga" name="keluarga" readonly>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="input-group">
-                                <label for="diagnosa">Diagnosa Awal</label>
-                                <input type="text" class="form-control br-full" id="diagnosa" name="diagnosa" readonly>
-                            </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label for="kamar">Kamar</label>
+                            <input type="text" class="form-control" id="kamar" name="kamar" readonly>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="input-group">
-                                <label for="dokter">DPJP</label>
-                                <input type="text" class="form-control br-full" id="dokter" name="dokter" readonly>
-                                <input type="hidden" id="kd_dokter" name="kd_dokter" readonly>
-                            </div>
+                        <div class="col-lg-2 col-md-6 col-sm-12">
+                            <label for="diagnosa">Diagnosa Awal</label>
+                            <input type="text" class="form-control" id="diagnosa" name="diagnosa" readonly>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label for="dokter">DPJP</label>
+                            <input type="text" class="form-control" id="dokter" name="dokter" readonly>
+                            <input type="hidden" id="kd_dokter" name="kd_dokter" readonly>
                         </div>
 
                     </div>
@@ -97,5 +90,25 @@
             formSkoringTb.trigger('reset')
             formSkriningTb.trigger('reset')
         })
+
+        function skoringTb(no_rawat) {
+            modalSkoringTb.modal('show')
+            getRegPeriksa(no_rawat).done((response) => {
+                const kamar = response.kamar_inap.map((item) => {
+                    const valKamar = item.stts_pulang != 'Pindah Kamar' ? item.kamar.bangsal.nm_bangsal : '-';
+                    return [valKamar, item.diagnosa_awal];
+                }).join(',');
+                formPasienSkoringTb.find('#no_rawat').val(no_rawat);
+                formPasienSkoringTb.find('#nm_pasien').val(`${response.no_rkm_medis} - ${response.pasien.nm_pasien} (${response.pasien.jk})`);
+                formPasienSkoringTb.find('#dokter').val(response.dokter.nm_dokter);
+                formPasienSkoringTb.find('#kd_dokter').val(response.kd_dokter);
+                formPasienSkoringTb.find('#tgl_lahir').val(`${formatTanggal(response.pasien.tgl_lahir)} / ${response.umurdaftar} ${response.sttsumur}`);
+                formPasienSkoringTb.find('#keluarga').val(`${response.p_jawab}`);
+                formPasienSkoringTb.find('#kamar').val(kamar.split(',')[0]);
+                formPasienSkoringTb.find('#diagnosa').val(kamar.split(',')[1]);
+            })
+            drawTbSkriningTb(no_rawat)
+            drawTbSkoringTb(no_rawat)
+        }
     </script>
 @endpush

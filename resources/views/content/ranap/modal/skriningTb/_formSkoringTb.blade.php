@@ -221,24 +221,6 @@
             });
         }
 
-        function skoringTb(no_rawat) {
-            modalSkoringTb.modal('show')
-            getRegPeriksa(no_rawat).done((response) => {
-                const kamar = response.kamar_inap.map((item) => {
-                    const valKamar = item.stts_pulang != 'Pindah Kamar' ? item.kamar.bangsal.nm_bangsal : '-';
-                    return [valKamar, item.diagnosa_awal];
-                }).join(',');
-                formPasienSkoringTb.find('#no_rawat').val(no_rawat);
-                formPasienSkoringTb.find('#nm_pasien').val(`${response.no_rkm_medis} - ${response.pasien.nm_pasien} / ${response.umurdaftar} ${response.sttsumur}`);
-                formPasienSkoringTb.find('#dokter').val(response.dokter.nm_dokter);
-                formPasienSkoringTb.find('#kd_dokter').val(response.kd_dokter);
-                formPasienSkoringTb.find('#keluarga').val(`${response.p_jawab} (${response.hubunganpj})`);
-                formPasienSkoringTb.find('#kamar').val(kamar.split(',')[0]);
-                formPasienSkoringTb.find('#diagnosa').val(kamar.split(',')[1]);
-            })
-                drawTbSkriningTb(no_rawat)
-                drawTbSkoringTb(no_rawat)
-        }
 
         function simpanSkoringTb() {
             const data = getDataForm('#formSkoringTb', ['input', 'select']);

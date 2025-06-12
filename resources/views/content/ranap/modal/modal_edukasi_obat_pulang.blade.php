@@ -8,42 +8,35 @@
             <div class="modal-body">
                 <form action="" id="formEdukasiObatPulang">
                     <div class="row gy-2">
-                        <div class="col-lg-4">
-                            <div class="input-group">
-                                <label for="no_rawat" class="form-label">No. Rawat</label>
-                                <input type="text" class="form-control br-full" id="no_rawat" name="no_rawat" readonly>
-                            </div>
+                        <div class="col-lg-2">
+                            <label for="no_rawat">No. Rawat</label>
+                            <input type="text" class="form-control" id="no_rawat" name="no_rawat" readonly>
+
                         </div>
-                        <div class="col-lg-5">
-                            <div class="input-group">
-                                <label for="nm_pasien">Pasien</label>
-                                <input type="text" class="form-control br-full" id="nm_pasien" name="nm_pasien" readonly>
-                            </div>
+                        <div class="col-lg-4">
+                            <label for="nm_pasien">Pasien</label>
+                            <input type="text" class="form-control" id="nm_pasien" name="nm_pasien" readonly>
                         </div>
                         <div class="col-lg-3">
-                            <div class="input-group">
-                                <label for="keluarga">Keluarga</label>
-                                <input type="text" class="form-control br-full" id="keluarga" name="keluarga" readonly>
-                            </div>
+                            <label for="tgl_lahir">Tgl. Lahir/Umur</label>
+                            <input type="text" class="form-control" id="tgl_lahir" name="tgl_lahir" readonly>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="keluarga">Keluarga</label>
+                            <input type="text" class="form-control" id="keluarga" name="keluarga" readonly>
                         </div>
                         <div class="col-lg-4">
-                            <div class="input-group">
-                                <label for="kamar">Kamar</label>
-                                <input type="text" class="form-control br-full" id="kamar" name="kamar" readonly>
-                            </div>
+                            <label for="kamar">Kamar</label>
+                            <input type="text" class="form-control" id="kamar" name="kamar" readonly>
                         </div>
                         <div class="col-lg-4">
-                            <div class="input-group">
-                                <label for="diagnosa">Diagnosa Awal</label>
-                                <input type="text" class="form-control br-full" id="diagnosa" name="diagnosa" readonly>
-                            </div>
+                            <label for="diagnosa">Diagnosa Awal</label>
+                            <input type="text" class="form-control" id="diagnosa" name="diagnosa" readonly>
                         </div>
                         <div class="col-lg-4">
-                            <div class="input-group">
-                                <label for="dokter">DPJP</label>
-                                <input type="text" class="form-control br-full" id="dokter" name="dokter" readonly>
-                                <input type="hidden" id="kd_dokter" name="kd_dokter" readonly>
-                            </div>
+                            <label for="dokter">DPJP</label>
+                            <input type="text" class="form-control" id="dokter" name="dokter" readonly>
+                            <input type="hidden" id="kd_dokter" name="kd_dokter" readonly>
                         </div>
 
                     </div>
@@ -124,7 +117,7 @@
     <script>
         const modalEdukasiObatPulang = $('#modalEdukasiObatPulang');
         const formEdukasiObatPulang = $('#formEdukasiObatPulang');
-      
+
         const tbResepObatPulang = $('#tbResepObatPulang');
 
         const tableEdukasiObatPulang = $('#tableEdukasiObatPulang');
@@ -195,7 +188,8 @@
                 }).join(',');
 
                 formEdukasiObatPulang.find('input[name=no_rawat]').val(no_rawat);
-                formEdukasiObatPulang.find('input[name=nm_pasien]').val(`${pasien.nm_pasien} (${response.umurdaftar} ${response.sttsumur})`);
+                formEdukasiObatPulang.find('input[name=nm_pasien]').val(`${response.no_rkm_medis} - ${pasien.nm_pasien} (${pasien.jk})`);
+                formEdukasiObatPulang.find('input[name=tgl_lahir]').val(`${formatTanggal(pasien.tgl_lahir)} / ${response.umurdaftar} ${response.sttsumur}`);
                 formEdukasiObatPulang.find('input[name=keluarga]').val(response.p_jawab)
                 formEdukasiObatPulang.find('input[name=kamar]').val(kamar.split(',')[0]);
                 formEdukasiObatPulang.find('input[name=diagnosa]').val(kamar.split(',')[1]);

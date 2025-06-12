@@ -48,12 +48,13 @@ class PemeriksaanRanapController extends Controller
                     )->with(['dokter', 'pasien']);
                 },
                 'petugas' => function ($query) {
-                      // return $query->with('petugas');
+                    // return $query->with('petugas');
                 },
                 'grafikHarian',
                 'sbar' => function ($query) {
                     return $query->with(['dokterKonsul.dokterSbar']);
-            }]);
+                }
+            ]);
 
         if ($request->tgl_perawatan) {
             $pemeriksaan->where('tgl_perawatan', $request->tgl_perawatan);
@@ -69,7 +70,7 @@ class PemeriksaanRanapController extends Controller
     {
         $clause = [
             'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => $request->tgl_perawatan,
+            'tgl_perawatan' => date('Y-m-d', strtotime($request->tgl_perawatan)),
             'jam_rawat' => $request->jam_rawat,
         ];
 
@@ -141,7 +142,7 @@ class PemeriksaanRanapController extends Controller
         $data = [
             'nip' => $request->nip,
             'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => $request->tgl_perawatan ? $request->tgl_perawatan : $this->tanggal->now()->toDateString(),
+            'tgl_perawatan' => $request->tgl_perawatan ? date('Y-m-d', strtotime($request->tgl_perawatan)) : $this->tanggal->now()->toDateString(),
             'jam_rawat' => $request->jam_rawat ? $request->jam_rawat : $this->tanggal->now()->toTimeString(),
             'suhu_tubuh' => $request->suhu_tubuh ? $request->suhu_tubuh : '-',
             'tinggi' => $request->tinggi ? $request->tinggi : '-',
@@ -164,7 +165,7 @@ class PemeriksaanRanapController extends Controller
         $data1 = [
             'nip' => $request->nip,
             'no_rawat' => $request->no_rawat,
-             'tgl_perawatan' => $request->tgl_perawatan ? $request->tgl_perawatan : $this->tanggal->now()->toDateString(),
+            'tgl_perawatan' => $request->tgl_perawatan ? date('Y-m-d', strtotime($request->tgl_perawatan)) : $this->tanggal->now()->toDateString(),
             'jam_rawat' => $request->jam_rawat ? $request->jam_rawat : $this->tanggal->now()->toTimeString(),
             'suhu_tubuh' => $request->suhu_tubuh ? $request->suhu_tubuh : '-',
             'tensi' => $request->tensi ? $request->tensi : '-',
@@ -182,8 +183,8 @@ class PemeriksaanRanapController extends Controller
             'o2' => $request->o2,
             'sumber' => $request->sumber,
         ];
- 
-        if($request->sumber === 'SBAR'){
+
+        if ($request->sumber === 'SBAR') {
             $sbar = new RsiaKonsulSbarController();
             $dataKonsul = [
                 'no_rawat' => $request->no_rawat,
@@ -191,16 +192,16 @@ class PemeriksaanRanapController extends Controller
                 'jam_rawat' => $data['jam_rawat'],
                 'kd_dokter' => $request->kd_dokter
             ];
-            $sbar->create( new Request($dataKonsul));
-        }   
-        
-        
+            $sbar->create(new Request($dataKonsul));
+        }
+
+
         $pemeriksaan = PemeriksaanRanap::create($data);
         $grafikharian = GrafikHarian::create($data1);
         $this->track->insertSql($this->pemeriksaan, $data);
         $this->track->insertSql($this->grafikharian, $data);
-       
-      
+
+
         return response()->json(['Berhasil', $pemeriksaan, $grafikharian], 200);
     }
     public function hapus(Request $request)
@@ -222,13 +223,22 @@ class PemeriksaanRanapController extends Controller
     function ambilPemeriksaan(Request $request)
     {
         $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa', 'sbar' => function($q){
-                return $q->select('no_rawat', 'jam_rawat', 'tgl_perawatan', 'sumber');
-            }, 'log', 'regPeriksa.pasien', 'petugas', 'pegawai' => function ($query) {
-                return $query->with('dokter');
-            }, 'grafikHarian', 'verifikasi.petugas' => function ($q) {
-                return $q->select('nip', 'nama');
-            }])
+            ->with([
+                'regPeriksa',
+                'sbar' => function ($q) {
+                    return $q->select('no_rawat', 'jam_rawat', 'tgl_perawatan', 'sumber');
+                },
+                'log',
+                'regPeriksa.pasien',
+                'petugas',
+                'pegawai' => function ($query) {
+                    return $query->with('dokter');
+                },
+                'grafikHarian',
+                'verifikasi.petugas' => function ($q) {
+                    return $q->select('nip', 'nama');
+                }
+            ])
             ->orderBy('tgl_perawatan', 'DESC')
             ->orderBy('jam_rawat', 'DESC');
         if ($request->parameter) {
@@ -271,14 +281,17 @@ class PemeriksaanRanapController extends Controller
                 return $q->select('nip', 'nama');
             },
             'sbar' => function ($q) {
-                return $q->with(['verifikasi.dokter',
+                return $q->with([
+                    'verifikasi.dokter',
                     'dokterKonsul' => function ($q) {
                         return $q->with('dokterSbar');
-                        },
-                            'pegawai' => function ($q) {
-                                return $q->select(['id', 'nik', 'nama']);
-            }]);
-        }])->orderBy('tgl_perawatan', 'DESC')
+                    },
+                    'pegawai' => function ($q) {
+                        return $q->select(['id', 'nik', 'nama']);
+                    }
+                ]);
+            }
+        ])->orderBy('tgl_perawatan', 'DESC')
             ->orderBy('jam_rawat', 'DESC');
 
         // if tanggal pertama and tanggal kedua is not empty string
@@ -305,7 +318,7 @@ class PemeriksaanRanapController extends Controller
     {
         $id = str_replace('-', '/', $request->no_rawat);
         $data = $this->grafikharian->where(['no_rawat' => $id,])
-        ->where('sumber', '!=', 'SBAR')
+            ->where('sumber', '!=', 'SBAR')
             ->whereHas('pegawai', function ($q) {
                 return $q->where('jbtn', 'not like', '%direktur%')
                     ->where('jbtn', 'not like', '%spesialis%');

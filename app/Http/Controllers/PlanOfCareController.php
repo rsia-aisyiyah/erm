@@ -43,7 +43,7 @@ class PlanOfCareController extends Controller
             'tindakan_rehab_medik' => $request->tindakan_rehab_medik,
             'konsultasi' => $request->konsultasi,
             'sasaran' => $request->sasaran,
-            'tanggal' => date('Y-m-d H:i:s'),
+            'tanggal' => date('Y-m-d H:i:s', strtotime($request->tanggal))
         ];
 
 

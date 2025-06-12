@@ -64,6 +64,9 @@
         let url = '{{ url('/') }}';
         // var qrcode = new QRCode("qrcode");
 
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1775,6 +1778,7 @@
         }
     </script>
     @stack('script')
+    <script type="text/javascript" src="{{ asset('js/context-menu/items.js') }}"></script>
 </body>
 
 </html>
