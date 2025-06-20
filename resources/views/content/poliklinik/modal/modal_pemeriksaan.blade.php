@@ -1905,6 +1905,8 @@
             $('#body_riwayat').empty();
             $('#ket_pasien').val('');
             $('button[data-bs-target="#tab-soap-pane"]').tab('show')
+            tb_pasien()
+
 
         });
 
