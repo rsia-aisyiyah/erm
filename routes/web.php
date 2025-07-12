@@ -364,7 +364,7 @@ Route::middleware('auth')->group(function () {
     Route::post('rujukan/insert', [BridgingRujukanBpjsController::class, 'create']);
     Route::get('rujukan/print/{noRujukan}', [BridgingRujukanBpjsController::class, 'print']);
     Route::post('kontrol/umum/baru', [SuratKontrolUlangController::class, 'create']);
-    Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
+
     Route::get('poliklinik/bpjs/{kdPoli}', [MappingPoliBpjsController::class, 'ambil']);
     Route::get('catatan/perawatan', [CatatanPerawatanController::class, 'getCatatan']);
     Route::get('catatan/perawatan/{noRawat}', [CatatanPerawatanController::class, 'get']);
@@ -390,6 +390,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('discharge-planning', [DischargePlanningController::class, 'create']);
     Route::get('discharge-planning', [DischargePlanningController::class, 'get']);
+
+    Route::get('sep', [BridgingSepController::class, 'index'])->name('sep.index');
+    Route::get('sep/datatable', [BridgingSepController::class, 'dataTable'])->name('sep.datatable');
+    Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 
