@@ -14,6 +14,15 @@
                     </a>
                 </li>
             @endif
+            </h6>
+            @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DNM6' || session()->get('pegawai')->departemen == 'DM6')
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('sep') ? 'active' : '' }}" href="/erm/sep">
+                        <i class="bi bi-link align-text-bottom"></i>
+                        SEP Terbit
+                    </a>
+                </li>
+            @endif
             @if (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'DNM2')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
