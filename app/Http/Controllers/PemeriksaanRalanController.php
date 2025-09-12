@@ -7,6 +7,7 @@ use App\Http\Action\UpdateJamResepObat;
 use App\Http\Action\WaktuAmbilBerkas;
 use App\Http\Controllers\ResepObatController;
 use App\Http\Controllers\TrackerSqlController;
+use App\Http\Requests\PemeriksaanRalanRequest;
 use App\Models\GrafikHarian;
 use App\Models\PemeriksaanRalan;
 use App\Models\RegPeriksa;
@@ -45,9 +46,12 @@ class PemeriksaanRalanController extends Controller
     {
 
         $pemeriksaan = PemeriksaanRalan::where('no_rawat', $request->no_rawat)
-            ->with(['regPeriksa.pasien', 'pegawai' => function ($query) {
-                $query->with('dokter');
-            }]);
+            ->with([
+                'regPeriksa.pasien',
+                'pegawai' => function ($query) {
+                    $query->with('dokter');
+                }
+            ]);
 
         if ($request->kd_poli) {
             $response = response()->json($pemeriksaan->get(), 200);
@@ -94,79 +98,62 @@ class PemeriksaanRalanController extends Controller
         return $pemeriksaan;
     }
 
-    public function simpan(Request $request)
+    public function simpan(PemeriksaanRalanRequest $request, UpdateJamResepObat $updateJamResepObat)
     {
         $clause = [
             'no_rawat' => $request->no_rawat,
             'jam_rawat' => $request->jam_rawat,
             'tgl_perawatan' => $request->tgl_perawatan,
-        ];
-        $data = [
-            'suhu_tubuh' => $request->suhu_tubuh,
-            'tensi' => $request->tensi,
-            'nadi' => $request->nadi,
-            'respirasi' => $request->respirasi,
-            'tinggi' => $request->tinggi,
-            'berat' => $request->berat,
-            'spo2' => $request->spo2,
-            'gcs' => $request->gcs,
-            'kesadaran' => $request->kesadaran,
-            'keluhan' => $request->keluhan,
-            'pemeriksaan' => $request->pemeriksaan,
-            'alergi' => $request->alergi ? $request->alergi : '-',
-            'rtl' => $request->rtl ? $request->rtl : '-',
-            'penilaian' => $request->penilaian,
-            'instruksi' => $request->instruksi,
-            'evaluasi' => $request->evaluasi,
-            'lingkar_perut' => '-',
+            'nip' => $request->role === 'dokter' ? $request->kd_dokter : $request->nip
         ];
 
-        $pemeriksaan = PemeriksaanRalan::where($clause);
 
-        if ($pemeriksaan->first()) {
-            $actionUpdateResep = new UpdateJamResepObat();
-            $actionUpdateResep->handle(new ResepObat(), $request);
-            try {
-                $update = $pemeriksaan->update($data);
-                if ($update) {
-                    $this->track->updateSql($this->pemeriksaan, $data, $clause);
-                    if ($request->o2) {
-                        $this->grafikHarian->update($request);
-                    }
-                }
-            } catch (QueryException $e) {
-                return response()->json($e->errorInfo, 500);
-            }
-
+        $pemeriksaan = PemeriksaanRalan::where($clause)->first();
+        if ($pemeriksaan) {
+            return $this->updatePemeriksaanRalan($request, $clause, $updateJamResepObat);
         } else {
-            $dataTambah = [
-                'nip' => $request->kd_dokter ? $request->kd_dokter : $request->nip,
-                'no_rawat' => $request->no_rawat,
-                'jam_rawat' => date('H:i:s'),
-                'tgl_perawatan' => $this->tanggal->now()->toDateString(),
-            ];
-
-            $dataMerge = array_merge($data, $dataTambah);
-
-            try {
-                $create = $this->pemeriksaan->create($dataMerge);
-                if ($create) {
-                    $this->track->insertSql($this->pemeriksaan, $dataMerge);
-                    if ($request->kd_poli != 'IGDK') {
-                        $this->berkas->handle($request);
-                    } else {
-                        $this->setStatus->handle($request, 'Sudah');
-                    }
-                    if ($request->o2) {
-                        $this->grafikHarian->create($request);
-                    }
-                }
-            } catch (QueryException $e) {
-                return response()->json($e->errorInfo, 500);
-            }
-
+            return $this->createPemeriksaanRalan($request, $clause);
         }
-        return response()->json('Berhasil', 200);
+    }
+
+
+    function updatePemeriksaanRalan(PemeriksaanRalanRequest $request, array $clause, UpdateJamResepObat $updateJamResepObat)
+    {
+        $data = array_merge($request->pemeriksaanData(), $clause);
+        $updateJamResepObat->handle($request);
+        try {
+            $update = PemeriksaanRalan::where($clause)->update($request->pemeriksaanData());
+            if ($update) {
+                $this->track->updateSql($this->pemeriksaan, $data, $clause);
+                if ($request->o2) {
+                    $this->grafikHarian->update($request);
+                }
+            }
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
+
+    }
+    function createPemeriksaanRalan(PemeriksaanRalanRequest $request, array $clause)
+    {
+        $clause['jam_rawat'] = date('H:i:s');
+        $dataMerge = array_merge($request->pemeriksaanData(), $clause);
+        try {
+            $create = $this->pemeriksaan->create($dataMerge);
+            if ($create) {
+                $this->track->insertSql($this->pemeriksaan, $dataMerge);
+                if ($request->kd_poli != 'IGDK') {
+                    $this->berkas->handle($request);
+                } else {
+                    $this->setStatus->handle($request, 'Sudah');
+                }
+                if ($request->o2) {
+                    $this->grafikHarian->create($request);
+                }
+            }
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
     }
 
     public function edit(Request $request)

@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ResepDokter;
+use App\Models\ResepDokterRacikan;
+use App\Models\ResepDokterRacikanDetail;
 use App\Models\ResepObat;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class ResepObatController extends Controller
@@ -19,12 +24,19 @@ class ResepObatController extends Controller
     {
         return view('content.farmasi.ralan.resep');
     }
-    public function hapus($noResep)
+    public function delete($noResep)
     {
         $resepObat = $this->resepObat;
         $data = ['no_resep' => $noResep];
-        $result = $resepObat->where($data)->delete();
-        $this->track->deleteSql($resepObat, $data);
+
+        try {
+            $result = $resepObat->where($data)->delete();
+            if ($result) {
+                $this->track->deleteSql($resepObat, $data);
+            }
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
         return response()->json($result);
     }
 
@@ -112,10 +124,10 @@ class ResepObatController extends Controller
 
         return response()->json($result);
     }
-    public function simpan(Request $request)
+    public function create(Request $request)
     {
         $data = [
-            'no_resep' => $request->no_resep,
+            'no_resep' => $request->no_resep ? $request->no_resep : $this->createNoResep(),
             'kd_dokter' => $request->kd_dokter,
             'no_rawat' => $request->no_rawat,
             'tgl_perawatan' => '0000-00-00',
@@ -126,9 +138,23 @@ class ResepObatController extends Controller
             'tgl_penyerahan' => '0000-00-00',
             'jam_penyerahan' => date('H:i:s', strtotime("00:00:00")),
         ];
-        $resepObat = $this->resepObat->create($data);
-        $this->track->insertSql($this->resepObat, $data);
-        return $resepObat;
+        try {
+            $create = $this->resepObat->create($data);
+            if ($create) {
+                $this->track->insertSql($this->resepObat, $data);
+
+            }
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil disimpan',
+                'no_resep' => $create->no_resep,
+                'jam_peresepan' => $create->jam_peresepan,
+                'tgl_peresepan' => $create->tgl_peresepan
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json(['status' => false, 'message' => $e->errorInfo]);
+        }
     }
 
     function updateTime($no_resep)
@@ -150,5 +176,101 @@ class ResepObatController extends Controller
         })->with(['resepRacikan.detailRacikan.databarang.kodeSatuan', 'resepRacikan.metode', 'resepDokter.dataBarang.kodeSatuan'])->get();
 
         return response()->json($resep);
+    }
+
+    function createNoResep()
+    {
+        $resep = ResepObat::select('no_resep')
+            ->where('tgl_peresepan', date('Y-m-d'))
+            ->orWhere('tgl_perawatan', date('Y-m-d'))
+            ->orderBy('no_resep', 'DESC')->first();
+        if ($resep) {
+            return (int) $resep->no_resep + 1;
+
+        }
+        return (int) date('Ymd') . '0001';
+    }
+
+    function copyResep($no_resep, Request $request)
+    {
+
+
+        $noResepExist = $this->isAvailable($request->no_rawat)?->no_resep;
+        $get = $this->get($no_resep);
+        $no = $noResepExist ? $noResepExist : $this->createNoResep();
+        $data = json_decode($get->content());
+
+        $requestCreeateResep = new Request([
+            'no_resep' => $no,
+            'kd_dokter' => $request->kd_dokter,
+            'no_rawat' => $request->no_rawat,
+        ]);
+
+        $resepDokter = collect($data->resep_dokter)->map((function ($item) use ($no) {
+            return [
+                'kode_brng' => $item->kode_brng,
+                'jml' => $item->jml,
+                'aturan_pakai' => $item->aturan_pakai,
+                'no_resep' => $no,
+            ];
+        }));
+
+        $resepRacikan = collect($data->resep_racikan)->map((function ($item, $key) use ($no) {
+            return [
+                'kd_racik' => $item->kd_racik,
+                'nama_racik' => $item->nama_racik,
+                'jml_dr' => $item->jml_dr,
+                'aturan_pakai' => $item->aturan_pakai,
+                'no_racik' => $key + 1,
+                'keterangan' => $item->keterangan,
+                'no_resep' => $no,
+                'detail' => collect($item->detail_racikan)->map((function ($detail) use ($no) {
+                    return [
+                        'no_resep' => $no,
+                        'no_racik' => $detail->no_racik,
+                        'kode_brng' => $detail->kode_brng,
+                        'jml' => $detail->jml,
+                        'p1' => $detail->p1,
+                        'p2' => $detail->p2,
+                        'kandungan' => $detail->kandungan,
+                        'jml' => $detail->jml
+
+                    ];
+                }))
+            ];
+        }));
+
+
+        try {
+            DB::transaction(function () use ($resepDokter, $resepRacikan, $requestCreeateResep) {
+                $this->create($requestCreeateResep);
+
+                if ($resepDokter->isEmpty()) {
+                    throw new \Exception("Resep dokter tidak boleh kosong!");
+                }
+
+                ResepDokter::insert($resepDokter->toArray());
+
+                $racikan = $resepRacikan
+                    ->map(fn($item) => collect($item)->except('detail'))
+                    ->toArray();
+                ResepDokterRacikan::insert($racikan);
+
+                $detailRacikan = $resepRacikan->pluck('detail')->collapse();
+                ResepDokterRacikanDetail::insert($detailRacikan->toArray());
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Resep berhasil disimpan'
+            ], 200);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan resep',
+                'error' => $e->getMessage(), // bisa disembunyikan di production
+            ], 500);
+        }
     }
 }

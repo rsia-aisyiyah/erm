@@ -59,7 +59,6 @@
 @push('script')
     <script>
         const formPermintaanLab = $('#formPermintaanLab')
-        const formSoapPoli = $('#formSoapPoli')
         const selectJenisPeriksaLab = formPermintaanLab.find('#pemeriksaan')
         const tablePermintaanLab = $('#tablePermintaanLab');
         const tableHasilPermintaan = $('#tableHasilPermintaan');

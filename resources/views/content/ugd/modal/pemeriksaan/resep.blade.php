@@ -390,14 +390,14 @@
                                         '" data-stok="' + item.stok +
                                         '" data-kapasitas="' + data.kapasitas +
                                         '" data-nama="' + data.nama_brng + '" onclick="ambilObat(this)"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                        data.nama_brng + ' <span class="text-primary">- Rp. '+toRupiah(data.ralan)+' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
+                                        data.nama_brng + ' <span class="text-primary">- Rp. ' + toRupiah(data.ralan) + ' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
                                 } else {
                                     html +=
                                         '<li class="disable" data-id="' + data
-                                            .kode_brng +
+                                        .kode_brng +
                                         '" data-stok="' + item.stok +
                                         '"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
-                                        data.nama_brng + ' - Rp. '+toRupiah(data.ralan)+' - <b>Stok Kosong' +
+                                        data.nama_brng + ' - Rp. ' + toRupiah(data.ralan) + ' - <b>Stok Kosong' +
                                         '</b></a></i></li>'
                                 }
                             }
@@ -437,7 +437,7 @@
                         simpanObatRacikanTemplate(dr.kode_brng, data.no_racik, data.no_resep)
                     })
                 })
-                setListResep(no_rawat);
+                getResepObat(no_rawat)
                 tulisPlan(no_rawat);
             }).fail((request, status, error) => {
                 Swal.fire(
@@ -478,7 +478,7 @@
                     data: data,
                     success: function(response) {
                         $('.btn-umum').css('display', 'inline')
-                        setListResep(no_rawat);
+                        getResepObat(no_rawat)
                         tulisPlan(no_rawat);
                     },
                     error: function(request, status, error) {
@@ -553,7 +553,6 @@
 
             const no_rawat = $('#formResepUgd input[name=no_rawat]').val()
 
-            console.log(no);
             Swal.fire({
                 title: 'Yakin ?',
                 text: "Anda tidak bisa mengembalikan lagi",
@@ -586,8 +585,9 @@
                     }).done(function() {
                         $('.obat-' + kode_brng).remove();
                         hitungBarisObat($('.table-racikan-detail'))
-                        setListResep(no_rawat);
+                        getResepObat(no_rawat)
                         tulisPlan(no_rawat);
+                        totalResepRacikan();
                     })
                 }
             })
@@ -616,8 +616,6 @@
             const no_resep = $('#formDetailResep input[name=no_resep]').val()
             const no_rawat = $('#formResepUgd input[name=no_rawat]').val()
             let banyakBaris = $('.nomor').val()
-
-            console.log(banyakBaris);
             for (let no = 1; no < banyakBaris; no++) {
                 $.ajax({
                     url: '/erm/resep/racik/detail/ubah',
@@ -636,7 +634,7 @@
                         Swal.fire('Gagal !', response.responseJSON.message, 'error');
                     }
                 }).done((response) => {
-                    setListResep(no_rawat);
+                    getResepObat(no_rawat)
                     $('#modalObatRacik').modal('hide')
                 })
                 tulisPlan(no_rawat);
@@ -647,18 +645,23 @@
             e.preventDefault();
             row = $(this).parents('td').parents('tr').remove();
             $('.btn-umum').fadeIn()
+            $('.tambah_racik').removeClass('d-none')
             return false;
         })
         $('#tb-resep-racikan tbody').on('click', '.hapus-baris', function(e) {
             e.preventDefault();
             row = $(this).parents('td').parents('tr').remove();
             $('.btn-racikan').fadeIn()
+            $('.tambah_racik').removeClass('d-none')
+            console.log($('.tambah_racik'));
+
             return false;
         })
 
         $('.table-racikan-detail tbody').on('click', '.x', function(e) {
             e.preventDefault();
             row = $(this).parents('td').parents('tr').remove();
+            totalResepRacikan();
             return false;
         })
 
@@ -736,35 +739,11 @@
 
                         }
                     }).done(function() {
-                        setListResep(no_rawat)
+                        getResepObat(no_rawat)
                         tulisPlan(no_rawat)
                     })
                 }
             })
-        }
-
-        function hapusRacikan(no_resep, no_racik) {
-            const no_rawat = $('#formResepUgd input[name=no_rawat]').val()
-            Swal.fire({
-                title: 'Yakin ?',
-                text: "Anda tidak bisa mengembalikan lagi",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus saja!',
-                cancelButtonText: 'Jangan',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    hapusResepRacikan(no_resep, no_racik).done((response) => {
-                        setListResep(no_rawat)
-                        tulisPlan(no_rawat)
-                    }).fail((request, status, error) => {
-                        Swal.fire('Gagal !', 'Tidak menghapus obat<br/>' + request.responseJSON.message, 'error', )
-                    })
-                }
-            })
-
         }
     </script>
 @endpush

@@ -11,9 +11,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
     <link rel="stylesheet" href='/erm/public/css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css'>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap');
     </style>
-    <link href="/erm/public/css/select2/select2.min.css" rel="stylesheet" />
+    {{-- <link href="/erm/public/css/select2/select2.min.css" rel="stylesheet" /> --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
         rel="stylesheet" />
     {{-- Datatable --}}
@@ -119,7 +120,22 @@
 
         .table-print th,
         .table-print td {
-            padding: 10px;
+            padding: 11px;
+        }
+
+        .list_obat ul li.active>a {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .list_aturan ul li.active>a {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .list_racik ul li.active>a {
+            background-color: #0d6efd;
+            color: #fff;
         }
 
         .table-print .td-border {
@@ -177,7 +193,7 @@
             position: absolute;
             width: 97%;
             z-index: 5;
-            height: 10px;
+            height: 11px;
             margin-left: 18px;
             margin-bottom: 18px;
         }
@@ -351,7 +367,7 @@
             border-bottom-right-radius: 0px !important;
             border-bottom-left-radius: 0px !important; */
             font-size: 12px;
-            padding: 10px;
+            padding: 11px;
         }
 
         .nav-tabs .nav-link.active {
@@ -368,6 +384,13 @@
             background-color: none;
         }
 
+
+        .btn-width-poliklinik {
+            width: 100px !important;
+            font-size: 11px;
+            text-align: left
+        }
+
         @media (max-width: 368px) {
             .tb-askep {
                 font-size: 9px !important;
@@ -382,11 +405,12 @@
                 font-size: 9px !important;
             }
 
+
             #modalSoap table,
             #modalSoap form input,
             #modalSoap form select,
             #modalSoap form textarea {
-                font-size: 10px !important;
+                font-size: 11px !important;
             }
 
             .content-scrolled {
@@ -426,7 +450,7 @@
         }
 
         .input-group-sm .btn {
-            font-size: 10px;
+            font-size: 11px;
             height: 28px;
         }
 
@@ -605,7 +629,7 @@
 
         @media (max-width: 1700px) {
             table {
-                font-size: 10px !important;
+                font-size: 11px !important;
             }
 
             table tbody th,
@@ -619,17 +643,18 @@
             button,
             textarea,
             a {
-                font-size: 10px !important;
+                font-size: 11px !important;
+                font-style: normal;
             }
 
             .form-check-label {
-                font-size: 10px !important;
+                font-size: 11px !important;
             }
 
             .sidebar .nav-link {
                 font-weight: 500;
                 color: #333;
-                font-size: 10px !important;
+                font-size: 11px !important;
                 padding: 8px 12px;
             }
 

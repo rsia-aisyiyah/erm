@@ -469,7 +469,7 @@
                 $('#formSoapUgd input[name="spesialis"]').val(response.dokter.kd_sps)
                 $('#formResepUgd input[name="no_rawat"]').val(response.no_rawat)
                 $('#formResepUgd input[name="kd_dokter"]').val(response.kd_dokter)
-                setListResep(noRawat);
+                getResepObat(no_rawat)
                 setEws(noRawat, 'ralan', response.dokter.kd_sps)
                 if (response.dokter.kd_sps == 'S0001') {
                     $('.formEws').removeAttr('style');

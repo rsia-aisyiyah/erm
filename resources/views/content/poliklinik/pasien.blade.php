@@ -199,85 +199,42 @@
             })
         }
 
-        function simpanSoap() {
-            const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
-            $.post('/erm/pemeriksaan/simpan', data).done((response) => {
-                if (data.ket_pasien) {
-                    $.post('/erm/pasien/keterangan', {
-                        no_rkm_medis: data.no_rkm_medis,
-                        ket_pasien: data.ket_pasien,
-                        _token: "{{ csrf_token() }}"
-                    })
-                }
-                alertSuccessAjax('Data SOAP berhasil disimpan').then(() => {
-                    hitungPanggilan();
-                    reloadTabelPoli();
-                    $('#modalSoap').modal('hide');
 
-                })
-            }).fail((request) => {
-                alertErrorAjax(request)
-            })
-        }
 
-        function modalsoap(no_rawat) {
-            jbtn = "{{ session()->get('pegawai')->jbtn }}";
-            nik = "{{ session()->get('pegawai')->nik }}";
-            nama = "{{ session()->get('pegawai')->nama }}";
-            $('#nama_user').val(nama);
-            $('#user').val(nik);
-            let kd_dokter = "{{ Request::get('dokter') }}"
-            let textObject = `Janin : \nPres : \nDJJ : \nTBJ : \nJK : \nPlacenta : \nAk : \n`
+        // function modalsoap(no_rawat) {
+        //     jbtn = "{{ session()->get('pegawai')->jbtn }}";
+        //     nik = "{{ session()->get('pegawai')->nik }}";
+        //     nama = "{{ session()->get('pegawai')->nama }}";
+        //     $('#nama_user').val(nama);
+        //     $('#user').val(nik);
+        //     let kd_dokter = "{{ Request::get('dokter') }}"
+        //     let textObject = `Janin : \nPres : \nDJJ : \nTBJ : \nJK : \nPlacenta : \nAk : \n`
 
-            getRegPeriksa(no_rawat).done((regPeriksa) => {
-                if (regPeriksa.pasien.ket_pasien) {
-                    $('#formSoapPoli input[name=ket_pasien]').val(regPeriksa.pasien.ket_pasien.keterangan)
-                }
-                $('#formSoapPoli input[name=no_rawat]').val(no_rawat)
-                $('#formSoapPoli input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
-                $('#formSoapPoli input[name=nm_pasien]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk}) / ${hitungUmur(regPeriksa.pasien.tgl_lahir)}`)
-                $('#formSoapPoli input[name=p_jawab]').val(regPeriksa.p_jawab)
-                $('#formSoapPoli input[name=png_jawab]').val(`${regPeriksa.penjab.png_jawab}`)
+        //     getRegPeriksa(no_rawat).done((regPeriksa) => {
+        //         if (regPeriksa.pasien.ket_pasien) {
+        //             $('#formSoapPoli input[name=ket_pasien]').val(regPeriksa.pasien.ket_pasien.keterangan)
+        //         }
+        //         $('#formSoapPoli input[name=no_rawat]').val(no_rawat)
+        //         $('#formSoapPoli input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
+        //         $('#formSoapPoli input[name=nm_pasien]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk}) / ${hitungUmur(regPeriksa.pasien.tgl_lahir)}`)
+        //         $('#formSoapPoli input[name=p_jawab]').val(regPeriksa.p_jawab)
+        //         $('#formSoapPoli input[name=png_jawab]').val(`${regPeriksa.penjab.png_jawab}`)
 
-                if (role === 'dokter') {
-                    cekPanggilanPoli(no_rawat).done((response) => {
-                        if (!response.length) {
-                            panggil(textRawat(regPeriksa.no_rawat))
-                        }
-                    });
-                }
+        //         if (role === 'dokter') {
+        //             cekPanggilanPoli(no_rawat).done((response) => {
+        //                 if (!response.length) {
+        //                     panggil(textRawat(regPeriksa.no_rawat))
+        //                 }
+        //             });
+        //         }
 
-                riwayatResep(regPeriksa.no_rkm_medis)
-                cekAlergi(regPeriksa.no_rkm_medis)
-            }).fail((request) => {
-                alertErrorAjax(request);
-            })
+        //         riwayatResep(regPeriksa.no_rkm_medis)
+        //         cekAlergi(regPeriksa.no_rkm_medis)
+        //     }).fail((request) => {
+        //         alertErrorAjax(request);
+        //     })
 
-            getPemeriksaanPoli(no_rawat).done((pemeriksaan) => {
-                if (Object.keys(pemeriksaan).length) {
-                    Object.keys(pemeriksaan).map((key, index) => {
-                        select = $(`#formSoapPoli select[name=${key}]`);
-                        input = $(`#formSoapPoli input[name=${key}]`);
-                        textarea = $(`#formSoapPoli textarea[name=${key}]`);
-
-                        if (textarea.length) {
-                            textarea.val(pemeriksaan[key])
-                        }
-                        if (input.length) {
-                            input.val(pemeriksaan[key])
-                        }
-                        if (input.length) {
-                            select.val(pemeriksaan[key])
-                        }
-                    })
-                    $('#formSoapPoli input[name=tgl_perawatan]').val(pemeriksaan.tgl_perawatan)
-                    $('#formSoapPoli input[name=jam_rawat]').val(pemeriksaan.jam_rawat)
-                    $('#formSoapPoli input[name=jam_rawat]').val(pemeriksaan.jam_rawat)
-                }
-            }).fail((request) => {
-                alertErrorAjax(request)
-            })
-        }
+        // }
 
         function cekPanggilanPoli(no_rawat) {
             return $.ajax({
@@ -477,19 +434,6 @@
         }
 
         function batal(urut) {
-            $('.panggil-' + urut).prop('class', 'btn btn-success btn-sm mb-2 panggil-' + urut + '');
-            $('.panggil-' + urut).removeAttr('style');
-            $('.panggil-' + urut).css({
-                'width': '80px'
-            });
-
-            $('.batal-' + urut).prop('disabled', true);
-            $('.batal-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 batal-' + urut + '');
-
-            $('.selesai-' + urut).prop('disabled', true);
-            $('.selesai-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 selesai-' + urut + '');
-
-            $('.panggil-' + urut).text('PANGGIL');
 
             id = $('.batal-' + urut).data('id');
 
@@ -500,16 +444,37 @@
                     'no_rawat': id,
                 },
                 method: "DELETE",
-                success: function(response) {
-                    $.toast({
-                        text: response.pesan + ' : ' + response.no_rawat,
-                        position: 'bottom-center',
-                        bgColor: '#dc3545',
-                        loader: false,
-                        stack: false,
-                    });
-                    hitungPanggilan();
-                }
+            }).done((response) => {
+                $.toast({
+                    text: response.pesan + ' : ' + response.no_rawat,
+                    position: 'bottom-center',
+                    bgColor: '#dc3545',
+                    loader: false,
+                    stack: false,
+                });
+
+                $('.panggil-' + urut).prop('class', 'btn btn-success btn-sm mb-2 panggil-' + urut + '');
+                $('.panggil-' + urut).removeAttr('style');
+                $('.panggil-' + urut).css({
+                    'width': '80px'
+                });
+
+                $('.batal-' + urut).prop('disabled', true);
+                $('.batal-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 batal-' + urut + '');
+
+                $('.selesai-' + urut).prop('disabled', true);
+                $('.selesai-' + urut).prop('class', 'btn btn-secondary btn-sm mb-2 selesai-' + urut + '');
+
+                $('.panggil-' + urut).text('PANGGIL');
+
+                hitungPanggilan();
+            }).fail((request, error) => {
+                // console.log(, error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: request.responseJSON,
+                })
             });
 
 
@@ -942,27 +907,36 @@
                             //     });
                             // }
 
-                            html =
-                                '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1" style="width:100px;font-size:11px;text-align:left" onclick = "detailPeriksa(\'' +
-                                row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' +
-                                textRawat(row.no_rawat) +
-                                '"><i id="upload-' +
-                                textRawat(row.no_rawat) +
-                                '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
-                            html +=
-                                '<button id="btn-periksa-' + textRawat(row.no_rawat) +
-                                '" style="width:100px;font-size:11px;text-align:left" onclick="ambilNoRawat(\'' +
-                                row.no_rawat +
-                                '\')" class="btn btn-primary btn-sm mb-2 mr-1" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' +
-                                row.no_rawat + '"><i class="bi bi-pencil-square" id="icon-periksa-' +
-                                textRawat(row.no_rawat) + '"></i> SOAP</button><br/>';
-                            html += '<button id="btn-askep-' + textRawat(row.no_rawat) + '" style="width:100px;font-size:11px;text-align:left" onclick="' + ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1" data-id="' +
+                            // html =
+                            //     '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" style="" onclick = "detailPeriksa(\'' +
+                            //     row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' +
+                            //     textRawat(row.no_rawat) +
+                            //     '"><i id="upload-' +
+                            //     textRawat(row.no_rawat) +
+                            //     '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
+                            html = `<button
+                                class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik"
+                                onclick="detailPeriksa('${row.no_rawat}', '${row.status_lanjut}')"
+                                id="btn-upload-${textRawat(row.no_rawat)}">
+                                <i class="bi bi-cloud-upload-fill" id="upload-${textRawat(row.no_rawat)}"></i>
+                                UPLOAD
+                            </button>`
+                            html += `<button id="btn-periksa-${textRawat(row.no_rawat)}" style="" onclick="showSoapRalan('${row.no_rawat}')" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik">
+                                    <i class="bi bi-pencil-square" id="icon-periksa-${textRawat(row.no_rawat)}"></i>
+                                    SOAP
+                                </button>`
+                            // html +=
+                            //     '<button id="btn-periksa-' + textRawat(row.no_rawat) +
+                            //     '" style="" onclick="" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' +
+                            //     row.no_rawat + '"><i class="bi bi-pencil-square" id="icon-periksa-' +
+                            //     textRawat(row.no_rawat) + '"></i> SOAP</button>';
+                            html += '<button id="btn-askep-' + textRawat(row.no_rawat) + '" onclick="' + ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" data-id="' +
                                 row.no_rkm_medis +
                                 '"><i id="icon-askep-' +
                                 textRawat(row.no_rawat) +
-                                '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button></br>';
+                                '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button>';
                             html +=
-                                '<button class="btn btn-primary btn-sm mb-2 mr-1" onclick="confirmUpdateRiwayat(\'' + row.no_rkm_medis + '\')" data-id="' +
+                                '<button class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" onclick="confirmUpdateRiwayat(\'' + row.no_rkm_medis + '\')" data-id="' +
                                 row.no_rkm_medis + '"  style="width:100px;font-size:11px;text-align:left"><i class="bi bi-search"></i>RIWAYAT</button>';
 
                             if (row.upload.length > 0) {
@@ -995,16 +969,16 @@
                             $.map(row.pasien.reg_periksa, function(data) {
                                 if (data.kd_poli == 'P001' || data.kd_poli == 'P007' || data.kd_poli == 'P009') {
                                     if (Object.keys(data.askep_ralan_kebidanan).length > 0) {
-                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mb-2 mr-1')
+                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1')
                                     }
                                 } else if (data.kd_poli == 'P008' || data.kd_poli == 'P003') {
                                     if (Object.keys(data.askep_ralan_anak).length > 0) {
-                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mb-2 mr-1')
+                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1')
                                     }
                                 }
                             })
 
-                            return html;
+                            return `<div class="d-flex flex-column">${html}</div>`;
                         },
                         name: 'upload',
                     }

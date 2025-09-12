@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EstimasiPoli;
+use App\Models\ResepObat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -23,15 +24,11 @@ class EstimasiPoliController extends Controller
         return $estimasi;
     }
 
-    public function get(Request $request): bool
+    public function get(Request $request)
     {
         $no_rawat = $request->no_rawat;
         $estimasi = EstimasiPoli::where('no_rawat', $no_rawat)->first();
-
-        if ($estimasi) {
-            return true;
-        }
-        return false;
+        return $estimasi;
     }
     public function kirim(Request $request)
     {
@@ -53,14 +50,31 @@ class EstimasiPoliController extends Controller
             if ($estimasi) {
                 $this->tracker->insertSql(new EstimasiPoli(), $data);
             }
+            app('App\Http\Controllers\RegPeriksaController')->statusDaftar($no_rawat, 'Berkas Diterima');
+            return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $jam_periksa], 200);
         }
-        app('App\Http\Controllers\RegPeriksaController')->statusDaftar($no_rawat, 'Berkas Diterima');
-        return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $jam_periksa], 200);
+        return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $getEstimasi->jam_periksa], 200);
+
     }
     public function hapus(Request $request)
     {
         $no_rawat = $request->no_rawat;
         $estimasi = EstimasiPoli::where('no_rawat', $no_rawat);
+
+
+        $resep = new ResepObat();
+
+        // TODO: check apakah kosong
+        $isResepExist = $resep->where('no_rawat', $no_rawat)->first();
+
+        if ($isResepExist) {
+            return response()->json('Resep Obat Masih Ada', 400);
+        }
+
+
+        if ($isResepExist) {
+            return response()->json('Resep Obat Masih Ada', 400);
+        }
 
         if ($estimasi) {
             $isDelete = $estimasi->delete();
