@@ -266,43 +266,33 @@
         }
 
         .row-danger {
-            color: white;
-            background-color: #dc3545;
-            border-color: #a91827;
-            padding: 3px;
+            color: #dc3545;
+            font-weight: bold;
         }
 
         .row-primary {
-            color: white;
-            background-color: #0d6efd;
-            border-color: #074bb0;
-            padding: 3px;
+            color: #0d6efd;
+            font-weight: bold;
         }
 
         .row-warning {
-            background-color: #ffe600;
-            border-color: #dbb106;
-            padding: 3px;
+            color: #ffe600;
+            font-weight: bold;
         }
 
         .row-indigo {
-            color: white;
-            background-color: #cb00cb;
-            border-color: #9c038c;
-            padding: 3px;
+            color: #cb00cb;
+            font-weight: bold;
         }
 
         .row-secondary {
-            background-color: #e3e3e3;
-            border-color: #ababab;
-            padding: 3px;
+            color: #e3e3e3;
+            font-weight: bold;
         }
 
         .row-success {
-            color: white;
-            background-color: #198754;
-            border-color: #146c43;
-            padding: 3px;
+            color: #198754;
+            font-weight: bold;
         }
 
         .row-danger td,

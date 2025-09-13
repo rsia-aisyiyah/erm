@@ -49,7 +49,7 @@
                     {
                         data: 'ralan',
                         name: 'ralan',
-                        title: 'Harga Ralan',
+                        title: 'Harga Rajal',
                         render: $.fn.dataTable.render.number('.', ',', 0, 'Rp. ')
                     },
                     {

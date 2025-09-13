@@ -57,6 +57,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 
     @stack('js')
 
@@ -456,12 +458,10 @@
 
         function setWarnaPemeriksaan(keterangan) {
             let warna = '';
-            if (keterangan == 'L') {
+            if (keterangan.includes('L') || keterangan == 'L') {
                 warna = 'row-primary';
-            } else if (keterangan == 'H' || keterangan == '*' || keterangan == '**') {
+            } else if (keterangan.includes('H') || keterangan == '*' || keterangan == '**') {
                 warna = 'row-danger';
-            } else if (keterangan == 'K' || keterangan == 'k') {
-                warna = 'row-warning';
             }
             return warna;
         }

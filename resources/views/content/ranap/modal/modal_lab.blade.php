@@ -123,12 +123,7 @@
         const formInfoPasienPenunjang = $('#formInfoPasienPenunjang')
 
         function modalPemeriksaanPenunjang(no_rawat) {
-            // $.get(`/erm/lab/permintaan`, {
-            //     no_rawat: no_rawat
-            // }).done((response) => {
-            //     console.log('RESPONSE ===', response);
 
-            // })
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 $('#modalLabRanap').modal('show')
                 const kamar = regPeriksa.kamar_inap.filter((item) => {
@@ -164,6 +159,8 @@
                 detailPasien.find('#nama_pasien').html(`${regPeriksa.no_rkm_medis} ${regPeriksa.pasien.nm_pasien} / ${regPeriksa.pasien.jk}`)
                 detailPasien.find('#umur').html(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
             })
+
+            getHasilPermintaanLab(no_rawat)
 
             getPermintaanRadiologi(no_rawat).done((permintaan) => {
                 if (Object.keys(permintaan).length) {
@@ -220,93 +217,48 @@
         }
 
         function getHasilPermintaanLab(no_rawat) {
-
-
-            $.get(`/erm/lab/ambil`, {
+            $.get(`/erm/lab/permintaan`, {
                 no_rawat: no_rawat
             }).done((response) => {
-                console.log('RESPONSE ===', response);
-
-                // const data = groupByKdJenisPrw(response)
                 let table = '';
-                response.forEach((item) => {
-                    table += `
-                                <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
-                                    <div class="p-2 bd-highlight fw-bold">Tgl. Periksa : ${formatTanggal(item.tgl_periksa)} ${item.jam}</div>
-                                    <div class="p-2 bd-highlight fw-bold">Petugas : ${item.petugas.nama}</div>
-                                    <div class="p-2 bd-highlight fw-bold">Pemeriksaan : ${item.jns_perawatan_lab.nm_perawatan}</div>
-                                    <div class="p-2 bd-highlight fw-bold">Dokter Perujuk : ${item.perujuk.nm_dokter}</div>    
-                             </div>
-                            <table class='table table-bordered table-hover'>
-                                <thead>
-                                    <tr>
-                                        <td width="">Pemeriksaan</td>    
-                                        <td width="20%">Hasil</td>    
-                                        <td width="30%">Nilai Rujukan</td>    
-                                        <td width="20%">Keterangan</td>    
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${renderDetailHasilPemeriksaanLab(item.detail)}    
-                                </tbody>
-                            </table>`
+
+                response.forEach((item, index) => {
+                    table += `<div id="tablePenunjangLab${item.noorder}">
+                        
+                <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px" onclick="renderToImagePenunjangLab('${item.noorder}')">
+                    <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
+                    <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
+                    <div class="p-2 bd-highlight fw-bold">Informasi : ${item.informasi_tambahan}</div>
+                    <div class="p-2 bd-highlight fw-bold">Tgl. Permintaan : ${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</div>    
+                </div>
+                <table class='table table-bordered table-hover'>
+                    <thead>
+                        <tr>
+                            <td width="">Pemeriksaan</td>    
+                            <td width="20%">Hasil</td>    
+                            <td width="30%">Nilai Rujukan</td>    
+                            <td width="20%">Keterangan</td>    
+                        </tr>
+                    </thead>
+                    <tbody>
+                            ${renderHasilPermintaanLab(item.hasil)}
+                            <tr>
+                                <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil[0]?.dokter.nm_dokter}</strong></td>    
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="">Saran : <strong>${item.saran_kesan? item.saran_kesan.saran : '-'}</strong></td>    
+                                <td colspan="2" class="">Kesan : <strong>${item.saran_kesan? item.saran_kesan.kesan : '-'}</strong></td>    
+                            </tr>
+                    </tbody>
+                </table>
+                </div>`
+
                 })
+
                 hasilPermintaanLab.html(table);
+
             })
-            // $.get(`/erm/lab/permintaan`, {
-            //     no_rawat: no_rawat
-            // }).done((response) => {
-            //     let table = '';
-
-            //     response.forEach((item) => {
-            //         table += `
-        //         <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
-        //             <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
-        //             <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
-        //             <div class="p-2 bd-highlight fw-bold">Informasi : ${item.informasi_tambahan}</div>
-        //             <div class="p-2 bd-highlight fw-bold">Tgl. Permintaan : ${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</div>    
-        //         </div>
-        //         <table class='table table-bordered table-hover'>
-        //             <thead>
-        //                 <tr>
-        //                     <td width="">Pemeriksaan</td>    
-        //                     <td width="20%">Hasil</td>    
-        //                     <td width="30%">Nilai Rujukan</td>    
-        //                     <td width="20%">Keterangan</td>    
-        //                 </tr>
-        //             </thead>
-        //             <tbody>
-        //                     ${renderHasilPermintaanLab(item.hasil)}
-        //                     <tr>
-        //                         <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil[0]?.dokter.nm_dokter}</strong></td>    
-        //                     </tr>
-        //                     <tr>
-        //                         <td colspan="2" class="">Saran : <strong>${item.saran_kesan? item.saran_kesan.saran : '-'}</strong></td>    
-        //                         <td colspan="2" class="">Kesan : <strong>${item.saran_kesan? item.saran_kesan.kesan : '-'}</strong></td>    
-        //                     </tr>
-        //             </tbody>
-        //         </table>`
-
-            //     })
-
-            //     hasilPermintaanLab.html(table);
-
-            // })
         }
-
-        // function groupByKdJenisPrw(data) {
-        //     const groupedData = {};
-        //     for (const item of data) {
-        //         const key = item.kd_jenis_prw;
-        //         if (!groupedData[key]) {
-        //             groupedData[key] = [];
-        //         }
-        //         groupedData[key].push(item);
-        //     }
-        //     return groupedData;
-        // }
-
-
 
         function renderHasilPermintaanLab(data) {
             let html = '';
@@ -321,10 +273,9 @@
 
                 }).join('');
                 html += `
-                    <tr>
-                        <th colspan="2">${item.jns_perawatan_lab.nm_perawatan}</th>
-                        <th>${splitTanggal(item.tgl_periksa)} ${item.jam}</th>
-                        <th>${item.petugas.nama}</th>
+                    <tr class="table-secondary">
+                        <th colspan="4">${item.jns_perawatan_lab.nm_perawatan}</th>
+                       
                     </tr>
                     ${detail}
                 `
@@ -370,6 +321,40 @@
             stringHasil += `${pemeriksaan} : ${hasil}; \n`
 
             $('#formHasilKritis').find('textarea[name="hasil"]').val(stringHasil)
+        }
+
+        function renderToImagePenunjangLab(index) {
+            const content = document.getElementById(`tablePenunjangLab${index}`);
+
+            // Proses html2canvas
+            html2canvas(content).then(function(canvas) {
+                const imageDataURL = canvas.toDataURL('image/png');
+
+                const link = document.createElement('a');
+                link.href = imageDataURL;
+                link.download = `${index}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+
+                // Bisa kasih notifikasi sukses
+                Swal.fire({
+                    icon: 'success',
+                    text: 'Gambar berhasil diunduh',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }).catch(function(error) {
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi Kesalahan!',
+                    text: error.message
+                });
+            });
         }
     </script>
 @endpush
