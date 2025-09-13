@@ -374,6 +374,10 @@
                 swalToast('Data SOAP berhasil disimpan', 'success')
                 hitungPanggilan();
                 reloadTabelPoli();
+
+                formSoapPoli.find('input').val('-')
+                formSoapPoli.find('textarea').val('-')
+
                 $('#modalSoapRalan').modal('hide');
             }).fail((request) => {
                 Swal.fire({
