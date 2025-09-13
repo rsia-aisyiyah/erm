@@ -55,7 +55,17 @@
                     {
                         data: 'letak_barang',
                         name: 'letak_barang',
-                        title: 'Kandungan'
+                        title: 'Kandungan',
+
+                    },
+                    {
+                        data: 'gudang_barang',
+                        name: 'gudang_barang',
+                        title: 'Stok Rajal',
+                        render: (data, type, row, meta) => {
+                            const stokRalan = data.reduce((acc, item) => item.kd_bangsal === 'RM7' ? acc + item.stok : acc, '');
+                            return stokRalan > 0 ? stokRalan : `<span class="text-danger">Kosong</span>`
+                        }
                     },
                     {
                         data: 'kode_satuan.satuan',

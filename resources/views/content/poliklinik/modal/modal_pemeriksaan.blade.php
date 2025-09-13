@@ -1559,8 +1559,7 @@
             // $('.labelTglResep').text(``);
             modalsoap(id);
             // cekResep(id);
-            ambilDiagnosaPasien(id);
-            ambilProsedurPasien(id);
+
             getRegPeriksa(id).done((regPeriksa) => {
                 // riwayatIcare(regPeriksa.pasien.no_kartu, 284199)
                 var form = '';
@@ -1979,6 +1978,9 @@
         });
 
         function catatanPasien() {
+            const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
+            ambilDiagnosaPasien(no_rawat);
+            ambilProsedurPasien(no_rawat);
             $('#modalCatatan').modal('show')
         }
 

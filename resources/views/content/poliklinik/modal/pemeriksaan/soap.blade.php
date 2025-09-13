@@ -35,6 +35,8 @@
             <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">
             <input type="hidden" id="lingkar_perut" name="lingkar_perut" value="-">
             <input type="hidden" id="evaluasi" name="evaluasi" value="-">
+            <input type="hidden" name="no_diagnosa" class="no_diagnosa" value="1">
+
             <label for="nip" class="form-label"> Dokter:</label>
             <div class="d-flex gap-2">
                 <x-input type="hidden" id="role" name="role" value="{{ session()->get('role') }}" />
@@ -287,14 +289,11 @@
                 pemeriksaanByDokter = Object.assign({}, ...filterByDokter)
                 pemeriksaanByPerawat = Object.assign({}, ...filterByPerawat)
 
-                const perawat = new Option(pemeriksaanByPerawat.pegawai.nama, pemeriksaanByDokter.nip ? pemeriksaanByDokter.nip : pemeriksaanByPerawat.nip, true, true)
+                const perawat = new Option(pemeriksaanByPerawat.pegawai?.nama, pemeriksaanByDokter.nip ? pemeriksaanByDokter.nip : pemeriksaanByPerawat?.nip, true, true)
                 formSoapPoli.find('select[name=nip]').append(perawat).trigger('change').prop('disabled', true)
 
                 const keluhan = pemeriksaanByDokter.keluhan ? pemeriksaanByDokter.keluhan : pemeriksaanByPerawat.keluhan
                 formSoapPoli.find('textarea[name=keluhan]').val(keluhan.length ? keluhan : '-')
-
-                console.log(keluhan, pemeriksaanByPerawat);
-
 
                 const pemeriksaan = pemeriksaanByDokter.pemeriksaan ? pemeriksaanByDokter.pemeriksaan : pemeriksaanByPerawat.pemeriksaan
                 formSoapPoli.find('textarea[name=pemeriksaan]').val(pemeriksaan.length ? pemeriksaan : '-')
@@ -356,8 +355,6 @@
                 processResults: (data) => {
                     return {
                         results: data.map((dokter) => {
-                            console.log('DATA _DOKTER,', dokter);
-
                             return {
                                 id: dokter.kd_dokter,
                                 text: dokter.nm_dokter
@@ -384,10 +381,6 @@
                 swalToast('Data SOAP berhasil disimpan', 'success')
                 hitungPanggilan();
                 reloadTabelPoli();
-
-
-                console.log(formSoapPoli.find('textarea'));
-
 
                 formSoapPoli.find('input').val('-')
                 formSoapPoli.find('textarea').val('-').trigger('change');

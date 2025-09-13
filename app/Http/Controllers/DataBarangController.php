@@ -25,7 +25,7 @@ class DataBarangController extends Controller
     {
         $query = $this->barang;
         if ($request->nama) {
-            $query = $query->where('nama_brng', 'like', '%' . $request->nama . '%');
+            $query = $query->where('nama_brng', 'like', '%'.$request->nama.'%');
         }
 
         $hasil = $query->get();
@@ -34,7 +34,7 @@ class DataBarangController extends Controller
     }
     public function cari(Request $request)
     {
-        $hasil = $this->barang->where('nama_brng', 'like', $request->nama . '%')->limit(10)->with([
+        $hasil = $this->barang->where('nama_brng', 'like', $request->nama.'%')->limit(10)->with([
             'gudangBarang' => function ($q) {
                 return $q
                     ->where('kd_bangsal', 'RM7')
@@ -49,7 +49,7 @@ class DataBarangController extends Controller
             $response =
                 response()->json([
                     'success' => true,
-                    'message' => 'Data obat dan alkes berdasarkan pencarian = ' . $request->nama,
+                    'message' => 'Data obat dan alkes berdasarkan pencarian = '.$request->nama,
                     'data' => $hasil,
                 ], 200);
         } else {
@@ -73,12 +73,12 @@ class DataBarangController extends Controller
     function table(Request $request)
     {
         $databarang = DataBarang::where('status', '1')
-            ->with(['kodeSatuan', 'golongan', 'kategori', 'jenis', 'industriFarmasi']);
+            ->with(['kodeSatuan', 'golongan', 'kategori', 'jenis', 'industriFarmasi', 'gudangBarang.bangsal']);
         // render to datatable
         return DataTables()->of($databarang)
             ->filter(function ($query) use ($request) {
                 if ($request->has('search') && $request->get('search')['value']) {
-                    return $query->where('nama_brng', 'like', '%' . $request->get('search')['value'] . '%');
+                    return $query->where('nama_brng', 'like', '%'.$request->get('search')['value'].'%');
                 }
             })
             ->make(true);
