@@ -1319,6 +1319,9 @@
                                                     <span class="text-primary">
                                                         - Rp. ${toRupiah(data.ralan)} - 
                                                         <i><b>Stok (${item.stok})</b></i>
+                                                    </span><br/>
+                                                    <span class="text-disable" style="font-size:9px;color:#8b8b8b">
+                                                        Kandungan : ${data.letak_barang}
                                                     </span>
                                                 </a>
                                             </li>`;
@@ -1329,7 +1332,11 @@
                                             data-stok="${item.stok}">
                                             <a class="dropdown-item text-danger" href="#">
                                                 ${data.nama_brng} - Rp. ${toRupiah(data.ralan)} - <b>Stok Kosong</b>
+                                                <br/><span class="text-disable" style="font-size:9px;color:#8b8b8b">
+                                                        Kandungan : ${data.letak_barang}
+                                                </span>
                                             </a>
+                                             
                                         </li>
                                     `;
                                 }

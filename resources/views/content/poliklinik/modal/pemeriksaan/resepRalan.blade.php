@@ -109,7 +109,7 @@
                 }
                 const content = response.map((val, index) => {
                     const total = val.data_barang.ralan * val.jml;
-                    return `<tr class="obatUmum-${val.kode_brng}">
+                    return `<tr class="obatUmum-${val.kode_brng}" title="${val.data_barang.letak_barang}">
                     <td>${val.data_barang.nama_brng}</td>
                     <td>${val.jml}</td>
                     <td>${val.aturan_pakai}</td>
@@ -184,8 +184,6 @@
             bodyResepObatUmum.find('.totalObatUmum').remove();
             $('.labelTotalObatUmum').each((index, el) => {
                 const total = $(el).data('number');
-                console.log('TOTAL ===', total);
-
                 labelTotalObatUmum += parseInt(total);
 
             })
@@ -344,6 +342,7 @@
                 getResepObat(no_rawat)
                 btnTambahObatUmum.removeClass('d-none')
                 swalToast('Berhasil Mengubah Obat')
+                tulisPlan()
             }).fail((error) => {
                 Swal.fire({
                     icon: 'error',
@@ -383,6 +382,7 @@
                             timer: 1500
                         })
                         getResepObat(no_rawat)
+                        tulisPlan()
 
                         $('.no_resep').val('')
                         $('.noResepText').text('')
@@ -400,6 +400,7 @@
                 kd_dokter: kd_dokter,
                 no_rawat: no_rawat,
             }).done((response) => {
+                tulisPlan()
                 $('.no_resep').val(response.no_resep)
                 $('.noResepText').text(response.no_resep)
                 $('.labelTglResep').text(`${formatTanggal(response.tgl_peresepan)} ${response.jam_peresepan}`);
@@ -589,6 +590,7 @@
                     //     hapusResep($('.no_resep').val())
                     // }
                 }).done(function(response) {
+                    tulisPlan()
                     getResepRacikan(no_resep)
                     editRacikan(no_resep, response.data.no_racik)
 
@@ -685,8 +687,6 @@
                 formTabelRacikan.find(`[name=aturan_pakai]`).val(response.aturan_pakai);
                 formTabelRacikan.find(`[name=metode]`).val(response.kd_racik).change();
                 formTabelRacikan.find(`[name=nomorObat]`).val(response.detail.length);
-
-
 
                 const contentObat = response.detail.map((val, index) => {
                     const subtotal = (parseInt(val.databarang.ralan) * parseInt(val.jml));
