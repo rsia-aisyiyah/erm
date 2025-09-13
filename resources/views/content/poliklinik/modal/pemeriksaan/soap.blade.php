@@ -149,6 +149,21 @@
             }
 
             getRegPeriksa(no_rawat).done((response) => {
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Lihat Icare ?',
+                    text: 'Tampilkan riwayat perawatan dengan ICARE',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        riwayatIcare(response.pasien.no_peserta, response.dokter.mapping_dokter.kd_dokter_bpjs)
+                    }
+                })
+                // riwayatIcare(response.pasien.no_peserta, response.dokter.mapping_dokter.kd_dokter_bpjs)
                 if (response.pasien.ket_pasien) {
                     formSoapPoli.find('input[name=ket_pasien]').val(response.pasien.ket_pasien.keterangan)
                 }

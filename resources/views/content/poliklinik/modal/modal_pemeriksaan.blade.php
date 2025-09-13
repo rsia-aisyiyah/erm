@@ -1542,6 +1542,9 @@
         }
 
         $('#modalSoap').on('shown.bs.modal', function() {
+
+
+
             $('.tambah_umum').css('visibility', 'visible')
             let kd_dokter = "{{ Request::get('dokter') }}"
             // $('.no_resep').val('')
@@ -1552,6 +1555,7 @@
             ambilDiagnosaPasien(id);
             ambilProsedurPasien(id);
             getRegPeriksa(id).done((regPeriksa) => {
+                // riwayatIcare(regPeriksa.pasien.no_kartu, 284199)
                 var form = '';
                 if (regPeriksa.dokter.kd_sps == 'S0003') {
                     $('#li-asmed-ana').css('display', 'inline');

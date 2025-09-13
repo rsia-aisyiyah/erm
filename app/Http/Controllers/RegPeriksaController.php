@@ -104,11 +104,30 @@ class RegPeriksaController extends Controller
             DB::raw('TRIM(kd_poli) as kd_poli'),
             DB::raw('TRIM(kd_dokter) as kd_dokter'),
             DB::raw('TRIM(kd_pj) as kd_pj'),
-            'tgl_registrasi', 'jam_reg', 'status_bayar', 'p_jawab', 'status_poli', 'stts_daftar', 'no_rawat','umurdaftar', 'sttsumur', 'status_lanjut'
+            'tgl_registrasi',
+            'jam_reg',
+            'status_bayar',
+            'p_jawab',
+            'status_poli',
+            'stts_daftar',
+            'no_rawat',
+            'umurdaftar',
+            'sttsumur',
+            'status_lanjut'
         )->where('no_rawat', $request->no_rawat)
-            ->with(['pasien.bahasa', 'kamarInap' => function($query){
-                  return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
-            }, 'dokter', 'dokter.spesialis', 'penjab', 'diagnosaPasien.penyakit', 'bayiGabung.kamarInap.kamar.bangsal', 'poliklinik', 'pasien.ketPasien'])
+            ->with([
+                'pasien.bahasa',
+                'kamarInap' => function ($query) {
+                    return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
+                },
+                'dokter.mappingDokter',
+                'dokter.spesialis',
+                'penjab',
+                'diagnosaPasien.penyakit',
+                'bayiGabung.kamarInap.kamar.bangsal',
+                'poliklinik',
+                'pasien.ketPasien'
+            ])
             ->first();
         return response()->json($regPeriksa);
     }
@@ -120,31 +139,73 @@ class RegPeriksaController extends Controller
                     DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
                     DB::raw('TRIM(kd_poli) as kd_poli'),
                     DB::raw('TRIM(kd_dokter) as kd_dokter'),
-DB::raw('TRIM(kd_pj) as kd_pj'),
-                   'tgl_registrasi', 'jam_reg', 'status_bayar', 'status_poli', 'stts_daftar', 'no_rawat','umurdaftar', 'sttsumur', 'status_lanjut'
+                    DB::raw('TRIM(kd_pj) as kd_pj'),
+                    'tgl_registrasi',
+                    'jam_reg',
+                    'status_bayar',
+                    'status_poli',
+                    'stts_daftar',
+                    'no_rawat',
+                    'umurdaftar',
+                    'sttsumur',
+                    'status_lanjut'
                 )->where(function ($q) {
                     $q->where('stts', 'Sudah')->orWhere('status_lanjut', '=', 'Ranap')->orWhere('kd_poli', 'IGDK');
                 })->with([
-                    'upload', 'resepObat' => function ($q) {
-                        return $q->with('resepDokter', 'resepRacikan');
-                    }, 'poliklinik', 'dokter', 'penjab', 'pemeriksaanRalan.pegawai', 'pemeriksaanRanap.pegawai',
-                    'catatanPerawatan', 'diagnosaPasien' => function ($q) {
-                        return $q->with('penyakit')->orderBy('prioritas', 'ASC');
-                    }, 'prosedurPasien' => function ($q) {
-                        return $q->with('icd9');
-                    }, 'detailPemberianObat' => function ($q) {
-                        return $q->with(['aturanPakai', 'dataBarang' => function ($q) {
-                            $q->with('kodeSatuan');
-                        }]);
-                    }, 'periksaLab' => function ($q) {
-                        $q->with(['jnsPerawatanLab','detail.template', 'petugas'])->orderBy('tgl_periksa', 'ASC');
-                    }, 'kamarInap', 'operasi' , 'operasi.laporan', 'operasi.paketOperasi', 'operasi.op1', 'operasi.asistenOp1', 'operasi.asistenOp2',
-                    'operasi.omloop', 'resumeMedis.regPeriksa.penjab', 'resumeMedis.dokter', 'resumeMedis.kamarInap' => function ($query) {
-                        return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
-                    },
-                    'resumeMedis.bayiGabung.kamarInap.kamar.bangsal', 'asmedRanapAnak.regPeriksa.pasien', 'asmedRanapAnak.dokter', 'asmedRanapKandungan.regPeriksa.pasien',
-                    'asmedRanapKandungan.dokter', 'periksaRadiologi.hasilRadiologi', 'periksaRadiologi.gambarRadiologi', 'periksaRadiologi.dokterRujuk', 'periksaRadiologi.petugas', 'periksaRadiologi.permintaanRadiologi', 'periksaRadiologi.dokter', 'periksaRadiologi.jnsPerawatan', 'periksaRadiologi.hasilRadiologi'
-                ])->orderBy('no_rawat', $request->sortir);
+                            'upload',
+                            'resepObat' => function ($q) {
+                                return $q->with('resepDokter', 'resepRacikan');
+                            },
+                            'poliklinik',
+                            'dokter',
+                            'penjab',
+                            'pemeriksaanRalan.pegawai',
+                            'pemeriksaanRanap.pegawai',
+                            'catatanPerawatan',
+                            'diagnosaPasien' => function ($q) {
+                                return $q->with('penyakit')->orderBy('prioritas', 'ASC');
+                            },
+                            'prosedurPasien' => function ($q) {
+                                return $q->with('icd9');
+                            },
+                            'detailPemberianObat' => function ($q) {
+                                return $q->with([
+                                    'aturanPakai',
+                                    'dataBarang' => function ($q) {
+                                        $q->with('kodeSatuan');
+                                    }
+                                ]);
+                            },
+                            'periksaLab' => function ($q) {
+                                $q->with(['jnsPerawatanLab', 'detail.template', 'petugas'])->orderBy('tgl_periksa', 'ASC');
+                            },
+                            'kamarInap',
+                            'operasi',
+                            'operasi.laporan',
+                            'operasi.paketOperasi',
+                            'operasi.op1',
+                            'operasi.asistenOp1',
+                            'operasi.asistenOp2',
+                            'operasi.omloop',
+                            'resumeMedis.regPeriksa.penjab',
+                            'resumeMedis.dokter',
+                            'resumeMedis.kamarInap' => function ($query) {
+                                return $query->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
+                            },
+                            'resumeMedis.bayiGabung.kamarInap.kamar.bangsal',
+                            'asmedRanapAnak.regPeriksa.pasien',
+                            'asmedRanapAnak.dokter',
+                            'asmedRanapKandungan.regPeriksa.pasien',
+                            'asmedRanapKandungan.dokter',
+                            'periksaRadiologi.hasilRadiologi',
+                            'periksaRadiologi.gambarRadiologi',
+                            'periksaRadiologi.dokterRujuk',
+                            'periksaRadiologi.petugas',
+                            'periksaRadiologi.permintaanRadiologi',
+                            'periksaRadiologi.dokter',
+                            'periksaRadiologi.jnsPerawatan',
+                            'periksaRadiologi.hasilRadiologi'
+                        ])->orderBy('no_rawat', $request->sortir);
             })
             ->first();
 
@@ -163,19 +224,35 @@ DB::raw('TRIM(kd_pj) as kd_pj'),
     {
         if ($request->no_rawat) {
             $regPeriksa = RegPeriksa::select(
-                      DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
-                    DB::raw('TRIM(kd_poli) as kd_poli'),
-                    DB::raw('TRIM(kd_dokter) as kd_dokter'),
-DB::raw('TRIM(kd_pj) as kd_pj'),
-                   'tgl_registrasi', 'jam_reg', 'status_bayar', 'status_poli', 'stts_daftar', 'no_rawat','umurdaftar', 'sttsumur', 'status_lanjut'
+                DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+                DB::raw('TRIM(kd_poli) as kd_poli'),
+                DB::raw('TRIM(kd_dokter) as kd_dokter'),
+                DB::raw('TRIM(kd_pj) as kd_pj'),
+                'tgl_registrasi',
+                'jam_reg',
+                'status_bayar',
+                'status_poli',
+                'stts_daftar',
+                'no_rawat',
+                'umurdaftar',
+                'sttsumur',
+                'status_lanjut'
             )->where('no_rawat', $request->no_rawat)->with('pasien.ketPasien', 'dokter.spesialis', 'kamarInap.kamar.bangsal', 'suratKontrol', 'poliklinik', 'suratKontrol')->first();
         } else {
             $regPeriksa = RegPeriksa::select(
-                      DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
-                    DB::raw('TRIM(kd_poli) as kd_poli'),
-                    DB::raw('TRIM(kd_dokter) as kd_dokter'),
-DB::raw('TRIM(kd_pj) as kd_pj'),
-                   'tgl_registrasi', 'jam_reg', 'status_bayar', 'status_poli', 'stts_daftar', 'no_rawat','umurdaftar', 'sttsumur', 'status_lanjut'
+                DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+                DB::raw('TRIM(kd_poli) as kd_poli'),
+                DB::raw('TRIM(kd_dokter) as kd_dokter'),
+                DB::raw('TRIM(kd_pj) as kd_pj'),
+                'tgl_registrasi',
+                'jam_reg',
+                'status_bayar',
+                'status_poli',
+                'stts_daftar',
+                'no_rawat',
+                'umurdaftar',
+                'sttsumur',
+                'status_lanjut'
             )->where('tgl_registrasi', $request->tgl_registrasi)->where('status_lanjut', 'Ralan')->with('pasien.ketPasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'suratKontrol')->get();
         }
         return response()->json($regPeriksa);
@@ -184,11 +261,19 @@ DB::raw('TRIM(kd_pj) as kd_pj'),
     public function statusDiterima(Request $request)
     {
         $regPeriksa = RegPeriksa::select(
-                  DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
-                    DB::raw('TRIM(kd_poli) as kd_poli'),
-                    DB::raw('TRIM(kd_dokter) as kd_dokter'),
-DB::raw('TRIM(kd_pj) as kd_pj'),
-                   'tgl_registrasi', 'jam_reg', 'status_bayar', 'status_poli', 'stts_daftar', 'no_rawat','umurdaftar', 'sttsumur', 'status_lanjut'
+            DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+            DB::raw('TRIM(kd_poli) as kd_poli'),
+            DB::raw('TRIM(kd_dokter) as kd_dokter'),
+            DB::raw('TRIM(kd_pj) as kd_pj'),
+            'tgl_registrasi',
+            'jam_reg',
+            'status_bayar',
+            'status_poli',
+            'stts_daftar',
+            'no_rawat',
+            'umurdaftar',
+            'sttsumur',
+            'status_lanjut'
         )->where('tgl_registrasi', $this->tanggal->now()->toDateString())
             ->where('kd_poli', $request->kd_poli)
             ->where('kd_dokter', $request->kd_dokter)
@@ -201,11 +286,19 @@ DB::raw('TRIM(kd_pj) as kd_pj'),
     public function hitungSelesai(Request $request)
     {
         $regPeriksa = RegPeriksa::select(
-                  DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
-                    DB::raw('TRIM(kd_poli) as kd_poli'),
-                    DB::raw('TRIM(kd_dokter) as kd_dokter'),
-DB::raw('TRIM(kd_pj) as kd_pj'),
-                   'tgl_registrasi', 'jam_reg', 'status_bayar', 'status_poli', 'stts_daftar', 'no_rawat','umurdaftar', 'sttsumur', 'status_lanjut'
+            DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+            DB::raw('TRIM(kd_poli) as kd_poli'),
+            DB::raw('TRIM(kd_dokter) as kd_dokter'),
+            DB::raw('TRIM(kd_pj) as kd_pj'),
+            'tgl_registrasi',
+            'jam_reg',
+            'status_bayar',
+            'status_poli',
+            'stts_daftar',
+            'no_rawat',
+            'umurdaftar',
+            'sttsumur',
+            'status_lanjut'
         )->where('tgl_registrasi', $this->tanggal->now()->toDateString())
             ->where('kd_poli', $request->kd_poli)
             ->where('kd_dokter', $request->kd_dokter)
@@ -246,11 +339,19 @@ DB::raw('TRIM(kd_pj) as kd_pj'),
     public function ambilTable(Request $request)
     {
         $regPeriksa = RegPeriksa::select(
-                  DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
-                    DB::raw('TRIM(kd_poli) as kd_poli'),
-                    DB::raw('TRIM(kd_dokter) as kd_dokter'),
-DB::raw('TRIM(kd_pj) as kd_pj'),
-                   'tgl_registrasi', 'jam_reg', 'status_bayar', 'status_poli', 'stts_daftar', 'no_rawat','umurdaftar', 'sttsumur', 'status_lanjut'
+            DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+            DB::raw('TRIM(kd_poli) as kd_poli'),
+            DB::raw('TRIM(kd_dokter) as kd_dokter'),
+            DB::raw('TRIM(kd_pj) as kd_pj'),
+            'tgl_registrasi',
+            'jam_reg',
+            'status_bayar',
+            'status_poli',
+            'stts_daftar',
+            'no_rawat',
+            'umurdaftar',
+            'sttsumur',
+            'status_lanjut'
         )->where('tgl_registrasi', date('Y-m-d'))
             ->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai', 'sep', 'suratKontrol')->orderBy('no_rawat', 'DESC')->get();
         return DataTables::of($regPeriksa)->make(true);

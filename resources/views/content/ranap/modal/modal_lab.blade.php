@@ -123,7 +123,12 @@
         const formInfoPasienPenunjang = $('#formInfoPasienPenunjang')
 
         function modalPemeriksaanPenunjang(no_rawat) {
-            getHasilPermintaanLab(no_rawat)
+            // $.get(`/erm/lab/permintaan`, {
+            //     no_rawat: no_rawat
+            // }).done((response) => {
+            //     console.log('RESPONSE ===', response);
+
+            // })
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 $('#modalLabRanap').modal('show')
                 const kamar = regPeriksa.kamar_inap.filter((item) => {
@@ -215,9 +220,13 @@
         }
 
         function getHasilPermintaanLab(no_rawat) {
+
+
             $.get(`/erm/lab/ambil`, {
                 no_rawat: no_rawat
             }).done((response) => {
+                console.log('RESPONSE ===', response);
+
                 // const data = groupByKdJenisPrw(response)
                 let table = '';
                 response.forEach((item) => {
