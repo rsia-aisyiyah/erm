@@ -252,6 +252,9 @@
             $('.no_resep').val('')
             $('.noResepText').text('')
             $('.labelTglResep').text(``);
+            formSoapPoli.find('input').val('-');
+            formSoapPoli.find('textarea').text('-');
+
             bodyResepObatUmum.empty();
             bodyResepRacikan.empty();
 
