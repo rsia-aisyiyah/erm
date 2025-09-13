@@ -200,6 +200,8 @@
                 })
             }
             $('#kandungan' + no).val(kandungan.toFixed(2));
+            $('#p1' + no).val('1');
+            $('#p2' + no).val('1');
             subtotalRacikan(no)
         }
 
