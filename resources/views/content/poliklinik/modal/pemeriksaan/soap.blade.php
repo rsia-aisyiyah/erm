@@ -361,6 +361,7 @@
 
         function simpanSoapRalan() {
             const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
+            data['_token'] = "{{ csrf_token() }}";
             $.post('/erm/pemeriksaan/simpan', data).done((response) => {
                 if (data.ket_pasien) {
                     $.post('/erm/pasien/keterangan', {
