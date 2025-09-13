@@ -252,6 +252,7 @@
             $('.no_resep').val('')
             $('.noResepText').text('')
             $('.labelTglResep').text(``);
+
             formSoapPoli.find('input').val('-');
             formSoapPoli.find('textarea').text('-');
 
@@ -286,6 +287,10 @@
 
                 const keluhan = pemeriksaanByDokter.keluhan ? pemeriksaanByDokter.keluhan : pemeriksaanByPerawat.keluhan
                 formSoapPoli.find('textarea[name=keluhan]').text(keluhan.length ? keluhan : '-')
+
+                console.log(keluhan, pemeriksaanByPerawat);
+
+
                 const pemeriksaan = pemeriksaanByDokter.pemeriksaan ? pemeriksaanByDokter.pemeriksaan : pemeriksaanByPerawat.pemeriksaan
                 formSoapPoli.find('textarea[name=pemeriksaan]').text(pemeriksaan.length ? pemeriksaan : '-')
                 const penilaian = pemeriksaanByDokter.penilaian ? pemeriksaanByDokter.penilaian : pemeriksaanByPerawat.penilaian
@@ -376,7 +381,7 @@
                 reloadTabelPoli();
 
                 formSoapPoli.find('input').val('-')
-                formSoapPoli.find('textarea').val('-')
+                formSoapPoli.find('textarea').text('-')
 
                 $('#modalSoapRalan').modal('hide');
             }).fail((request) => {
