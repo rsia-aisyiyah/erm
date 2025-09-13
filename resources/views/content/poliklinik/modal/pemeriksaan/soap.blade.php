@@ -257,7 +257,7 @@
             $('.labelTglResep').text(``);
 
             formSoapPoli.find('input').val('-');
-            formSoapPoli.find('textarea').text('-');
+            formSoapPoli.find('textarea').val('-');
 
             bodyResepObatUmum.empty();
             bodyResepRacikan.empty();
@@ -291,19 +291,19 @@
                 formSoapPoli.find('select[name=nip]').append(perawat).trigger('change').prop('disabled', true)
 
                 const keluhan = pemeriksaanByDokter.keluhan ? pemeriksaanByDokter.keluhan : pemeriksaanByPerawat.keluhan
-                formSoapPoli.find('textarea[name=keluhan]').text(keluhan.length ? keluhan : '-')
+                formSoapPoli.find('textarea[name=keluhan]').val(keluhan.length ? keluhan : '-')
 
                 console.log(keluhan, pemeriksaanByPerawat);
 
 
                 const pemeriksaan = pemeriksaanByDokter.pemeriksaan ? pemeriksaanByDokter.pemeriksaan : pemeriksaanByPerawat.pemeriksaan
-                formSoapPoli.find('textarea[name=pemeriksaan]').text(pemeriksaan.length ? pemeriksaan : '-')
+                formSoapPoli.find('textarea[name=pemeriksaan]').val(pemeriksaan.length ? pemeriksaan : '-')
                 const penilaian = pemeriksaanByDokter.penilaian ? pemeriksaanByDokter.penilaian : pemeriksaanByPerawat.penilaian
-                formSoapPoli.find('textarea[name=penilaian]').text(penilaian.length ? penilaian : '-')
+                formSoapPoli.find('textarea[name=penilaian]').val(penilaian.length ? penilaian : '-')
                 const rtl = pemeriksaanByDokter.rtl ? pemeriksaanByDokter.rtl : pemeriksaanByPerawat.rtl
-                formSoapPoli.find('textarea[name=rtl]').text(rtl.length ? rtl : '-')
+                formSoapPoli.find('textarea[name=rtl]').val(rtl.length ? rtl : '-')
                 const instruksi = pemeriksaanByDokter.instruksi ? pemeriksaanByDokter.instruksi : pemeriksaanByPerawat.instruksi
-                formSoapPoli.find('textarea[name=instruksi]').text(instruksi.length ? instruksi : '-')
+                formSoapPoli.find('textarea[name=instruksi]').val(instruksi.length ? instruksi : '-')
                 const suhu_tubuh = pemeriksaanByPerawat.suhu_tubuh
                 formSoapPoli.find('input[name=suhu_tubuh]').val(suhu_tubuh)
                 const nadi = pemeriksaanByPerawat.nadi
@@ -385,8 +385,12 @@
                 hitungPanggilan();
                 reloadTabelPoli();
 
+
+                console.log(formSoapPoli.find('textarea'));
+
+
                 formSoapPoli.find('input').val('-')
-                formSoapPoli.find('textarea').text('-')
+                formSoapPoli.find('textarea').val('-').trigger('change');
 
                 $('#modalSoapRalan').modal('hide');
             }).fail((request) => {

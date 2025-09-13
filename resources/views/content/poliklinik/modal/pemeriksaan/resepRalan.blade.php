@@ -88,7 +88,7 @@
                 if (!response.length) {
                     bodyResepObatUmum.empty();
                     bodyResepRacikan.empty();
-                    formSoapPoli.find('textarea[name="rtl"]').text("-")
+                    formSoapPoli.find('textarea[name="rtl"]').val("-")
                     return;
                 }
                 response.map((val) => {

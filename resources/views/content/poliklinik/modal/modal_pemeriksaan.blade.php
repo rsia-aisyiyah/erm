@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalSoapRalan" tabindex="-1" aria-labelledby="modalSoapRalan">
+<div class="modal fade" id="modalSoapRalan" tabindex="-1" aria-labelledby="modalSoapRalan" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
@@ -1966,7 +1966,7 @@
             // $('#nadi').val('-');
             // $('#spo2').val('-');
             formSoapPoli.find('input').val('-');
-            formSoapPoli.find('textarea').text('-');
+            formSoapPoli.find('textarea').val('-');
 
             $('#body_umum').empty();
             $('#body_racikan').empty();
