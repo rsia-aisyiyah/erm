@@ -43,6 +43,13 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link {{ Request::is('obat') ? 'active' : '' }}" href="/erm/obat">
+                        <i class="bi bi-capsule-pill align-text-bottom"></i>
+                        Obat & BHP
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link {{ Request::is('racikan') ? 'active' : '' }}" href="/erm/resep/racik">
                         <i class="bi bi-pen  align-text-bottom"></i>
                         Template Racikan

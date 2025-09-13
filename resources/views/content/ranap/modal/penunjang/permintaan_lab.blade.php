@@ -62,6 +62,7 @@
         const selectJenisPeriksaLab = formPermintaanLab.find('#pemeriksaan')
         const tablePermintaanLab = $('#tablePermintaanLab');
         const tableHasilPermintaan = $('#tableHasilPermintaan');
+        const formSoapPoli = $('#formSoapPoli');
 
         $('button[id="permintaan-laborat-tab"]').on('shown.bs.tab', (e) => {
             tablePermintaanLab.find('tbody').empty();

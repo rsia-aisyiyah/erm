@@ -381,6 +381,7 @@
                             showConfirmButton: false,
                             timer: 1500
                         })
+                        formSoapPoli.find('[name=rtl]').val('-');
                         getResepObat(no_rawat)
                         tulisPlan()
 

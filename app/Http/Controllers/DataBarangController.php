@@ -14,7 +14,14 @@ class DataBarangController extends Controller
         $this->dataBarang = $dataBarang;
         $this->barang = $this->dataBarang->semua();
     }
-    public function index(Request $request)
+
+    public function index()
+    {
+
+        return view('content.databarang.table_databarang');
+
+    }
+    public function all(Request $request)
     {
         $query = $this->barang;
         if ($request->nama) {
@@ -61,5 +68,20 @@ class DataBarangController extends Controller
             ->where('kode_brng', $kode_brng)->first();
 
         return response()->json($data);
+    }
+
+    function table(Request $request)
+    {
+        $databarang = DataBarang::where('status', '1')
+            ->with(['kodeSatuan', 'golongan', 'kategori', 'jenis', 'industriFarmasi']);
+        // render to datatable
+        return DataTables()->of($databarang)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('search') && $request->get('search')['value']) {
+                    return $query->where('nama_brng', 'like', '%' . $request->get('search')['value'] . '%');
+                }
+            })
+            ->make(true);
+
     }
 }
