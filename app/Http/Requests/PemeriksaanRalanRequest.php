@@ -36,13 +36,6 @@ class PemeriksaanRalanRequest extends FormRequest
             'spo2' => 'required',
             'gcs' => 'required',
             'kesadaran' => 'required',
-            'keluhan' => 'required',
-            'pemeriksaan' => 'required',
-            'alergi' => 'required',
-            'rtl' => 'required',
-            'penilaian' => 'required',
-            'instruksi' => 'required',
-            'evaluasi' => 'required',
             'lingkar_perut' => 'required',
         ];
     }
