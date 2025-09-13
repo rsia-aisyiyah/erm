@@ -32,11 +32,12 @@
         </div>
     </div>
 
-   
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/select2/select2.full.min.js') }}"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/4.2.1/js/dataTables.fixedColumns.min.js"></script>
@@ -264,7 +265,7 @@
         function alertErrorAjax(request) {
             Swal.fire(
                 'Gagal',
-                'Terjadi kesalahan <br/> Error Code : ' + request.status + ', ' + request.statusText + '<br/> <p style="padding:0 15px 0 15px;font-size:13px;color:red">' + request.responseJSON.message.split('(SQL')[0] + '</p>',
+                'Terjadi kesalahan <br/> Error Code : ' + request?.status + ', ' + request?.statusText + '<br/> <p style="padding:0 15px 0 15px;font-size:13px;color:red">' + request?.responseJSON?.message.split('(SQL')[0] + '</p>',
                 'error'
             );
         }
@@ -302,6 +303,50 @@
                     }
                 })
             }
+        }
+
+
+        function swalToast(message, status = 'success') {
+            let toastColor = '';
+            let toastIcon = '';
+            switch (status) {
+                case 'success':
+                    toastColor = 'bg-success';
+                    toastIcon = 'success';
+                    break;
+                case 'error':
+                    toastColor = 'bg-danger';
+                    toastIcon = 'error';
+                    break;
+                case 'info':
+                    toastColor = 'bg-info';
+                    toastIcon = 'info';
+                    break;
+                case 'warning':
+                    toastColor = 'bg-warning';
+                    toastIcon = 'warning';
+                    break;
+                default:
+                    toastColor = 'bg-success';
+                    toastIcon = 'success';
+            }
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: toastIcon,
+                title: message,
+            });
+
         }
 
         function hitungUmur(tgl_lahir) {
@@ -1060,44 +1105,142 @@
             $('#upload-image').css('visibility', 'hidden')
         }
 
-        function cariObatRacikan(obat, no) {
+        // function cariObatRacikan(obat, no) {
+        //     $.ajax({
+        //         url: '/erm/obat/cari',
+        //         data: {
+        //             'nama': obat.value,
+        //         },
+        //         success: function(response) {
+        //             html =
+        //                 '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
+        //             $.map(response.data, function(data) {
+        //                 $.map(data.gudang_barang, function(item) {
+        //                     if (data) {
+        //                         if (data.status != "0") {
+        //                             if (item.stok != "0") {
+        //                                 html +=
+        //                                     '<li data-id="' +
+        //                                     data.kode_brng +
+        //                                     '" data-stok="' + item.stok +
+        //                                     '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok ="' + item.stok + '" onclick="setObat(this, ' + no + ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
+        //                                     data.nama_brng + ' - <span class="text-primary">- Rp. ' + toRupiah(data.ralan) + ' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
+        //                             } else {
+        //                                 html +=
+        //                                     '<li class="disable" data-id="' + data
+        //                                     .kode_brng +
+        //                                     '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok="' + item.stok + '" onclick="setObat(this, ' + no + ')"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
+        //                                     data.nama_brng + ' - Rp. ' + toRupiah(data.ralan) + ' - <b>Stok Kosong' +
+        //                                     '</a></i></li>'
+        //                             }
+        //                         }
+        //                     }
+        //                 })
+        //             })
+        //             html += '</ul>';
+        //             $('.list_obat_' + no).fadeIn();
+        //             $('.list_obat_' + no).html(html);
+        //         }
+        //     })
+        // }
+
+        function cariObatRacikan(obat, no, event) {
+            let $list = $('.list_obat_' + no);
+
+            // Handle navigasi panah & enter
+            if (event) {
+                let $items = $list.find('.dropdown-item');
+                let $active = $list.find('.dropdown-item.active');
+                let index = $items.index($active);
+
+                if (event.key === "ArrowDown") {
+                    event.preventDefault();
+                    if (index < $items.length - 1) {
+                        $items.removeClass('active');
+                        $items.eq(index + 1).addClass('active');
+                    } else {
+                        $items.removeClass('active');
+                        $items.eq(0).addClass('active');
+                    }
+                    return;
+                } else if (event.key === "ArrowUp") {
+                    event.preventDefault();
+                    if (index > 0) {
+                        $items.removeClass('active');
+                        $items.eq(index - 1).addClass('active');
+                    } else {
+                        $items.removeClass('active');
+                        $items.eq($items.length - 1).addClass('active');
+                    }
+                    return;
+                } else if (event.key === "Enter") {
+                    event.preventDefault();
+                    if ($active.length) {
+                        $active.parent().trigger('click');
+                    }
+                    return;
+                }
+            }
+
+            // Ajax pencarian obat
             $.ajax({
                 url: '/erm/obat/cari',
                 data: {
                     'nama': obat.value,
                 },
                 success: function(response) {
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
-                    $.map(response.data, function(data) {
-                        $.map(data.gudang_barang, function(item) {
-                            if (data) {
-                                if (data.status != "0") {
-                                    if (item.stok != "0") {
-                                        html +=
-                                            '<li data-id="' +
-                                            data.kode_brng +
-                                            '" data-stok="' + item.stok +
-                                            '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok ="' + item.stok + '" onclick="setObat(this, ' + no + ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                            data.nama_brng + ' - <span class="text-primary">- Rp. ' + toRupiah(data.ralan) + ' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
-                                    } else {
-                                        html +=
-                                            '<li class="disable" data-id="' + data
-                                            .kode_brng +
-                                            '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok="' + item.stok + '" onclick="setObat(this, ' + no + ')"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
-                                            data.nama_brng + ' - Rp. ' + toRupiah(data.ralan) + ' - <b>Stok Kosong' +
-                                            '</a></i></li>'
-                                    }
+                    let html = `
+                            <ul class="dropdown-menu show" style="width:auto;position:absolute;font-size:12px">
+                            `;
+
+                    response.data.forEach(data => {
+                        if (data && data.status != "0") {
+                            data.gudang_barang.forEach(item => {
+                                const stok = parseInt(item.stok);
+                                if (stok > 0) {
+                                    html += `
+                    <li data-id="${data.kode_brng}"
+                        data-stok="${stok}"
+                        data-kapasitas="${data.kapasitas}"
+                        data-nama="${data.nama_brng}"
+                        data-harga="${data.ralan}"
+                        onclick="setObat(this, ${no})">
+                        <a class="dropdown-item" href="#" style="overflow:hidden">
+                            ${data.nama_brng} - 
+                            <span class="text-primary">
+                                Rp. ${toRupiah(data.ralan)} 
+                                <i><b>Stok (${stok})</b></i>
+                            </span>
+                        </a>
+                    </li>
+                `;
+                                } else {
+                                    html += `
+                    <li class="disable"
+                        data-id="${data.kode_brng}"
+                        data-kapasitas="${data.kapasitas}"
+                        data-nama="${data.nama_brng}"
+                        data-harga="${data.ralan}"
+                        onclick="setObat(this, ${no})">
+                        <a class="dropdown-item" href="#" style="overflow:hidden;color:red">
+                            ${data.nama_brng} - Rp. ${toRupiah(data.ralan)} - 
+                            <b>Stok Kosong</b>
+                        </a>
+                    </li>
+                `;
                                 }
-                            }
-                        })
-                    })
-                    html += '</ul>';
-                    $('.list_obat_' + no).fadeIn();
-                    $('.list_obat_' + no).html(html);
+                            });
+                        }
+                    });
+
+                    html += `</ul>`;
+                    $list.fadeIn().html(html);
+
                 }
-            })
+            });
         }
+
+
 
         function hitungJumlahObat(kps, p1, p2, jumlah) {
             // jumlah = $('.jml_dr').val();
@@ -1123,6 +1266,8 @@
         }
 
         function setNilaiPembagi(e) {
+            console.log('pembagi ===', e);
+
             pembagi = $(e).val();
             if (pembagi == '' || pembagi == 0) {
                 $(e).val(1);
@@ -1131,15 +1276,25 @@
         }
 
         function setObat(param, no) {
-            $('.nama_obat_' + no).val($(param).data('nama'));
-            $('#kode_brng' + no).val($(param).data('id'))
-            $('#kps' + no).val($(param).data('kapasitas'))
+            const nama = $(param).data('nama');
+            const kode_brng = $(param).data('id');
+            const kps = $(param).data('kapasitas');
+            const jumlahRacikan = $('input[name="jml_dr"]').val();
+            const harga = $(param).data('harga');
+            const subTotal = (harga * jumlahRacikan);
+            $('.nama_obat_' + no).val(nama);
+            $('#kode_brng' + no).val(kode_brng)
+            $('#labelHargaBarang' + no).text(formatCurrency(harga)).data('number', harga)
+            $('#labelSubTotalBarang' + no).text(formatCurrency(subTotal)).data('number', subTotal)
+            $('#kps' + no).val(kps)
             $('#p1' + no).val(1)
             $('#p2' + no).val(1)
-            $('#jml_obat' + no).val(0)
-            $('#kandungan' + no).val(0)
+            $('#jml_obat' + no).val(jumlahRacikan)
+            $('#kandungan' + no).val(kps)
             $('#stok' + no).val($(param).data('stok'))
             $('.list_obat_' + no).fadeOut()
+
+            subtotalRacikan(no)
         }
 
         function ambilTemplateRacikan(kd_dokter = '', nm_racik = '', id = '') {
@@ -1776,6 +1931,30 @@
             }
 
             return list;
+        }
+
+        function formatCurrency(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0,
+            }).format(number);
+        }
+
+        function formatFloat(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(number);
+        }
+
+        function floatWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function floatWithDot(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
     </script>
     @stack('script')

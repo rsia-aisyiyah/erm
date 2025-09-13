@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ResepDokterRacikan extends Model
 {
-    use HasFactory;
+    use HasFactory, Compoships;
     protected $table = 'resep_dokter_racikan';
     protected $fillable = ['no_resep', 'no_racik', 'nama_racik', 'kd_racik', 'jml_dr', 'aturan_pakai', 'keterangan'];
     public $timestamps = false;
@@ -27,6 +28,10 @@ class ResepDokterRacikan extends Model
     public function detailRacikNo()
     {
         return $this->hasMany(ResepDokterRacikanDetail::class, 'no_racik', 'no_racik');
+    }
+    public function detail()
+    {
+        return $this->hasMany(ResepDokterRacikanDetail::class, ['no_resep', 'no_racik'], ['no_resep', 'no_racik']);
     }
     // public function dataBarang()
     // {

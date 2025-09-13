@@ -110,6 +110,7 @@ use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 use App\Http\Controllers\AsesmenMedisRanapKandunganController;
 use App\Http\Controllers\KomunikasiEdukasiObatPulangController;
 use App\Http\Controllers\PermintaanPemeriksaanRadiologiController;
+use App\Models\ResepObat;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
@@ -251,14 +252,18 @@ Route::middleware('auth')->group(function () {
     Route::post('asmed/ranap/kandungan/ubah', [AsesmenMedisRanapKandunganController::class, 'update']);
 
     Route::get('obat/', [DataBarangController::class, 'index']);
+    Route::get('obat/get/{kode_brng}', [DataBarangController::class, 'get']);
     Route::get('obat/cari', [DataBarangController::class, 'cari']);
 
     Route::get('/resep', [ResepObatController::class, 'index']);
+    Route::post('/resep/create', [ResepObatController::class, 'create']);
+    Route::delete('/resep/delete/{noResep}', [ResepObatController::class, 'delete']);
     Route::get('/resep/ambil/tabel', [ResepObatController::class, 'ambilTable']);
     Route::get('/resep/get/rawat/{no_rawat}', [ResepObatController::class, 'getByNoRawat']);
     Route::get('/resep/ambil/sekarang', [ResepObatController::class, 'ambilSekarang']);
     Route::get('/resep/riwayat/{no_rkm_medis}', [ResepObatController::class, 'getByNoRm']);
     Route::get('/resep/get/nomor/akhir', [ResepObatController::class, 'getLast']);
+    Route::post('/resep/copy/{noResep}', [ResepObatController::class, 'copyResep']);
 
     Route::get('/resep/obat/akhir', [ResepObatController::class, 'akhir']);
     Route::get('/resep/obat/ambil', [ResepObatController::class, 'ambil']);
@@ -268,6 +273,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/resep/obat/hapus/{noResep}', [ResepObatController::class, 'hapus']);
 
     Route::post('/resep/umum/simpan', [ResepDokterController::class, 'simpan']);
+    Route::get('/resep/umum/get/{no_resep?}', [ResepDokterController::class, 'get']);
     Route::post('/resep/umum/ubah', [ResepDokterController::class, 'ubah']);
     Route::delete('/resep/umum/hapus', [ResepDokterController::class, 'hapus']);
     Route::get('/aturan/cari', [ResepDokterController::class, 'cari']);
@@ -429,3 +435,4 @@ require __DIR__ . '/partials/resiko_jatuh.php';
 // });
 
 // Route::get('/print', [PeriksaRadiologiController::class, 'print']);
+Route::get('/test-resep/{no_resep}', [ResepObatController::class, 'copyResep']);
