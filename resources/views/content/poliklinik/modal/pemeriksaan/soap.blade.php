@@ -114,7 +114,7 @@
                 </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <label for="penilaian" class="form-label">Penilaian :</label>
+                <label for="penilaian" class="form-label">Asesmen :</label>
                 <x-textarea name="penilaian" id="asesmen" rows="4" onfocus="removeZero(this)" onblur="cekKosong(this)" />
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -141,12 +141,14 @@
 
         function showSoapRalan(no_rawat) {
             formSoapPoli.find('input[name="no_rawat"]').val(no_rawat);
-            formSoapPoli.find('textarea').text('-');
+
             btnTambahObatUmum.removeClass('d-none');
 
             if (role == 'dokter') {
                 panggil(textRawat(no_rawat));
             }
+
+            modalSoapRalan.modal('show');
 
             getRegPeriksa(no_rawat).done((response) => {
                 // Swal.fire({
@@ -215,7 +217,8 @@
                 setTabMenuAsesmen(no_rawat, response.dokter.kd_sps);
 
             })
-            modalSoapRalan.modal('show');
+
+
         }
 
         function setTabMenuAsesmen(no_rawat, kd_sps) {
@@ -260,6 +263,8 @@
             bodyResepRacikan.empty();
 
         })
+
+
 
         function setPemeriksaanPoli(no_rawat, kd_poli) {
             $.get(`/erm/pemeriksaan`, {
