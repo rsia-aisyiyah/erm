@@ -58,9 +58,12 @@
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen></iframe> --}}
-                    <video autoplay="" muted="" class="rounded-xl" loop>
-                        <source src="http://192.168.100.31/antrian/image/dinamic/1910070001.mp4" type="video/mp4">
-                    </video>
+                    {{-- <video autoplay="" muted="" class="rounded-xl" loop>
+                        <source src="https://www.youtube.com/watch?v=b1LeOAgtan0" type="video/mp4">
+                    </video> --}}
+
+                    <iframe src="https://www.youtube-nocookie.com/embed/b1LeOAgtan0?si=TjwMPD6JYDpDQ4GQ&controls=0&autoplay=1&mute=1"  class="rounded-xl w-full aspect-video" title="Daftar Periksa Hanya dengan E-KTP/NIK" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
                     <div class="w-full mt-1.5">
                         <div class="flex justify-center rounded-xl border-2 bg-emerald-100 border-emerald-500 mb-2 items-center p-2 h-[161px] max-h-[161px] overflow-y-scroll no-scrollbar"
                             id="name_active_position">
@@ -127,18 +130,12 @@
                         <table class="table-auto w-full">
                             <thead class="sticky top-0 bg-blue-100">
                                 <tr>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">No
-                                        Resep</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">
-                                        Nama</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Jam
-                                        Resep</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">
-                                        Kategori</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">
-                                        Status</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Jam
-                                        Selesai</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">No Resep</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600"> Nama</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Jam Resep</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600"> Kategori</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600"> Status</th>
+                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Jam Selesai</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -148,15 +145,14 @@
             </div>
             <div class="w-full h-[50px] bg-green-100 border-2 border-green-500 rounded-xl flex items-center justify-center">
                 <marquee behavior="" direction="" class="font-bold text-2xl">
-                    WAKTU TUNGGU KATEGORI RESEP <span class="text-rose-500">RACIKAN</span> MAKSIMAL <span
-                        class="text-rose-500">1 JAM</span>, UNTUK RESEP <span class="text-blue-500">NON RACIKAN</span> MAKSIMAL <span class="text-blue-500">30 MENIT</span>
+                    WAKTU TUNGGU KATEGORI RESEP <span class="text-rose-500">RACIKAN</span> MAKSIMAL <span class="text-rose-500">1 JAM</span>, UNTUK RESEP <span class="text-blue-500">NON RACIKAN</span> MAKSIMAL <span class="text-blue-500">30 MENIT</span>
                 </marquee>
             </div>
         </div>
     </div>
 
 
-    <script src="https://code.responsivevoice.org/responsivevoice.js?key=bJDDvdyZ"></script>
+    {{-- <script src="https://code.responsivevoice.org/responsivevoice.js?key=bJDDvdyZ"></script> --}}
     <script>
         function ngomong(text) {
             if (text.trim() === "") {
@@ -164,15 +160,30 @@
                 return;
             }
 
-            // Speak the text
-            responsiveVoice.speak(text, "Indonesian Male", {
-                pitch: 1,
-                rate: .85,
-                volume: 1
-            });
+            const utterance = new SpeechSynthesisUtterance(text);
+
+            // Tunggu sampai voices tersedia
+            const setVoiceAndSpeak = () => {
+                const voices = window.speechSynthesis.getVoices();
+                console.log("Jumlah suara tersedia:", voices.length);
+
+                // Pilih suara Indonesia jika ada
+                const indoVoice = voices.find(voice => voice.lang.includes("id"));
+                if (indoVoice) {
+                    utterance.voice = indoVoice;
+                }
+
+                window.speechSynthesis.speak(utterance);
+                // Hindari dipanggil ulang
+                window.speechSynthesis.onvoiceschanged = null;
+            };
+
+            if (window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
+            } else {
+                setVoiceAndSpeak();
+            }
         }
-
-
 
         $(document).ready(function() {
             // Check if "start" has been clicked before
@@ -252,7 +263,8 @@
 
         function getData() {
             $.ajax({
-                url: "<?= url('/get/antrian') ?>",
+                // url: "<?= url('/get/antrian') ?>",
+                url: "/erm/get/antrian",
                 type: "GET",
                 success: function(data) {
                     var html = "";
