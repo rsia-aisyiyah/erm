@@ -316,8 +316,7 @@
                         <input type="text" 
                             class="form-control form-control-sm form-underline" 
                             id="jml_obat${no}" 
-                            name="jml[]" 
-                            readonly/>
+                            name="jml[]" autocomplete="off"/>
                     </td>
                     <td class="labelSubTotalBarang" id="labelSubTotalBarang${no}"> 
                         

@@ -720,7 +720,7 @@
                             ${formatCurrency(val.databarang.ralan)}
                         </td>
                         <td>
-                            <x-input id="jml_obat${index}" class="jml_obat${index} form-underline" name="jml[]" value="${val.jml}" type="search" onchange="hitungByJumlah(${index})" autocomplete="off" onkeypress="return hanyaAngka(event)" />
+                            <x-input id="jml_obat${index}" class="jml_obat${index} form-underline" name="jml[]" value="${val.jml}" type="search" oninput="hitungByJumlah(${index})" autocomplete="off" onkeypress="return hanyaAngka(event)" />
                         </td>
                         <td class="labelSubTotalBarang text-end" id="labelSubTotalBarang${index}">
                             ${formatCurrency(subtotal)}
