@@ -259,6 +259,8 @@
             $('.labelTglResep').text(``);
 
             $('.tambah_racik').removeClass('d-none')
+            $('.tambah_umum').removeClass('d-none')
+
 
             formSoapPoli.find('input').val('-');
             formSoapPoli.find('textarea').val('-');
