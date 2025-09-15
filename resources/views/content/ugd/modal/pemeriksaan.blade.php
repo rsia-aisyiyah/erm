@@ -37,7 +37,8 @@
                         @include('content.ugd.modal.pemeriksaan.ews')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep" tabindex="0">
-                        @include('content.ugd.modal.pemeriksaan.resep')
+                        {{-- @include('content.ugd.modal.pemeriksaan.resep') --}}
+                        @include('content.poliklinik.modal.pemeriksaan.resepRalan')
                     </div>
                 </div>
             </div>
@@ -51,6 +52,8 @@
 </div>
 @push('script')
     <script type="text/javascript">
+        const formSoapPoli = $('#formSoapPoli');
+
         function tbSoapUgd(noRawat) {
             $('#tbSoapUgd').DataTable({
                 processing: true,

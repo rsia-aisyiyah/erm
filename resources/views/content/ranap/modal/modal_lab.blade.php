@@ -129,17 +129,20 @@
                 const kamar = regPeriksa.kamar_inap.filter((item) => {
                     return item.stts_pulang != 'Pindah Kamar'
                 }).map((item) => {
+                    console.log('ITEM ', item.kamar);
+
                     return {
-                        'bangsal': item.kamar.bangsal.nm_bangsal,
-                        'diagnosa_awal': item.diagnosa_awal
+                        'bangsal': item.kamar ? item.kamar.bangsal.nm_bangsal : '-',
+                        'diagnosa_awal': item?.diagnosa_awal
                     }
                 })[0]
+
 
                 formInfoPasienPenunjang.find('#no_rawat').val(no_rawat)
                 formInfoPasienPenunjang.find('#pasien').val(`${regPeriksa.no_rkm_medis} - ${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
                 formInfoPasienPenunjang.find('#tgl_lahir').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
                 formInfoPasienPenunjang.find('#p_jawab').val(regPeriksa.p_jawab)
-                formInfoPasienPenunjang.find('#kamar').val(`${kamar.bangsal} / ${hitungLamaHari(regPeriksa.tgl_registrasi)} Hari`)
+                formInfoPasienPenunjang.find('#kamar').val(`${kamar ? `${kamar.bangsal} / ${hitungLamaHari(regPeriksa.tgl_registrasi)} Hari` :'-'}`)
                 formInfoPasienPenunjang.find('#kd_dokter').val(regPeriksa.kd_dokter)
                 formInfoPasienPenunjang.find('#dokter_dpjp').val(regPeriksa.dokter.nm_dokter)
                 formInfoPasienPenunjang.find('#penjab').val(regPeriksa.penjab.png_jawab)

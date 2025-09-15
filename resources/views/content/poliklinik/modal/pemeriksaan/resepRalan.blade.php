@@ -79,12 +79,14 @@
     <script>
         const btnTambahObatUmum = $('.tambah_umum')
         const bodyResepRacikan = $('#body_racikan')
+        const bodyResepObatUmum = $('#tb-resep').find('tbody')
 
         function getResepObat(no_rawat) {
-
             $.get(`/erm/resep/obat/ambil`, {
                 no_rawat: no_rawat
             }).done((response) => {
+                console.log('RESPONSE', response);
+
                 if (!response.length) {
                     bodyResepObatUmum.empty();
                     bodyResepRacikan.empty();
@@ -173,8 +175,6 @@
 
                 bodyResepRacikan.html(content)
                 totalResepRacikan()
-
-
             })
         }
 

@@ -139,7 +139,7 @@
     <script>
         const modalSoapRalan = $('#modalSoapRalan');
         const formSoapPoli = $('#formSoapPoli');
-        const bodyResepObatUmum = $('#tb-resep').find('tbody')
+       
 
         function showSoapRalan(no_rawat) {
             formSoapPoli.find('input[name="no_rawat"]').val(no_rawat);
