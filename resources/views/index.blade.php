@@ -702,7 +702,7 @@
                             splitNamaFile = file.split('.');
                             // console.log(splitNamaFile[1])
                             if (splitNamaFile[1] != 'pdf') {
-                                fileName = '{{ asset('erm') }}' + file;
+                                fileName = '{{ asset('erm') }}/' + file;
                             } else {
                                 fileName = "{{ asset('img/pdf-icon.png') }}";
                             }
