@@ -129,8 +129,6 @@
                 const kamar = regPeriksa.kamar_inap.filter((item) => {
                     return item.stts_pulang != 'Pindah Kamar'
                 }).map((item) => {
-                    console.log('ITEM ', item.kamar);
-
                     return {
                         'bangsal': item.kamar ? item.kamar.bangsal.nm_bangsal : '-',
                         'diagnosa_awal': item?.diagnosa_awal
@@ -224,10 +222,15 @@
                 no_rawat: no_rawat
             }).done((response) => {
                 let table = '';
-
                 response.forEach((item, index) => {
                     table += `<div id="tablePenunjangLab${item.noorder}">
                         
+                <div class="d-none d-flex align-items-center justify-content-between p-1 border infoPasien" style="font-size:11px">
+                    <div class="p-2 bd-highlight fw-bold">No. Rawat : ${item.no_rawat} </div>
+                    <div class="p-2 bd-highlight fw-bold">Nama : ${item.pasien.no_rkm_medis} -  ${item.pasien.nm_pasien}</div>
+                    <div class="p-2 bd-highlight fw-bold">JK. : ${item.pasien.jk === 'L' ? 'Laki-laki' : 'Perempuan'}</div>
+                    <div class="p-2 bd-highlight fw-bold">Tgl. Lahir : ${formatTanggal(item.pasien.tgl_lahir)}</div>
+                </div>
                 <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px" onclick="renderToImagePenunjangLab('${item.noorder}')">
                     <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
                     <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
@@ -328,11 +331,11 @@
 
         function renderToImagePenunjangLab(index) {
             const content = document.getElementById(`tablePenunjangLab${index}`);
+            document.querySelector('.infoPasien').classList.remove('d-none');
 
             // Proses html2canvas
             html2canvas(content).then(function(canvas) {
                 const imageDataURL = canvas.toDataURL('image/png');
-
                 const link = document.createElement('a');
                 link.href = imageDataURL;
                 link.download = `${index}.png`;
@@ -349,7 +352,10 @@
                     position: 'top-end',
                     showConfirmButton: false,
                     timer: 2000
+                }).then(() => {
+                    document.querySelector('.infoPasien').classList.add('d-none');
                 });
+
             }).catch(function(error) {
                 Swal.close();
                 Swal.fire({
