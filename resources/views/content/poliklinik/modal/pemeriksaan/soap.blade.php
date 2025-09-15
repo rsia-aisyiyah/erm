@@ -25,7 +25,7 @@
         </div>
         <div class="col-lg-2 col-sm-12 mb-2">
             <label for="ket_pasien">Keterangan</label>
-            <x-input id="ket_pasien" name="ket_pasien" readonly />
+            <x-input id="ket_pasien" name="ket_pasien" />
         </div>
     </div>
     <div class="row">
