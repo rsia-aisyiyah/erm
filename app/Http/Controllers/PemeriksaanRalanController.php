@@ -137,6 +137,7 @@ class PemeriksaanRalanController extends Controller
     function createPemeriksaanRalan(PemeriksaanRalanRequest $request, array $clause)
     {
         $clause['jam_rawat'] = date('H:i:s');
+        $clause['tgl_perawatan'] = date('Y-m-d');
         $dataMerge = array_merge($request->pemeriksaanData(), $clause);
         try {
             $create = $this->pemeriksaan->create($dataMerge);

@@ -82,7 +82,7 @@
                             <x-input id="tensi" name="tensi" />
                         </div>
                         <div class="col-lg-2 col-sm-12">
-                            <label for="respirasi" class="form-label">Respirasi (/mnt) :</label>
+                            <label for="respirasi" class="form-label">Resp. (/mnt) :</label>
                             <x-input id="respirasi" name="respirasi" />
                         </div>
                         <div class="col-lg-2 col-sm-12">
@@ -139,7 +139,7 @@
     <script>
         const modalSoapRalan = $('#modalSoapRalan');
         const formSoapPoli = $('#formSoapPoli');
-       
+
 
         function showSoapRalan(no_rawat) {
             formSoapPoli.find('input[name="no_rawat"]').val(no_rawat);

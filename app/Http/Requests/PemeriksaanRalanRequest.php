@@ -24,9 +24,7 @@ class PemeriksaanRalanRequest extends FormRequest
     public function rules()
     {
         return [
-            'nip' => 'required',
             'no_rawat' => 'required',
-            'jam_rawat' => 'required',
             'suhu_tubuh' => 'required',
             'tensi' => 'required',
             'nadi' => 'required',
@@ -36,7 +34,6 @@ class PemeriksaanRalanRequest extends FormRequest
             'spo2' => 'required',
             'gcs' => 'required',
             'kesadaran' => 'required',
-            'lingkar_perut' => 'required',
         ];
     }
 
@@ -45,6 +42,7 @@ class PemeriksaanRalanRequest extends FormRequest
         return [
             'suhu_tubuh' => $this->suhu_tubuh,
             'tensi' => $this->tensi,
+            'tgl_perawatan' => $this->tgl_perawatan ?? date('Y-m-d'),
             'jam_rawat' => $this->jam_rawat ?? date('H:i:s'),
             'nadi' => $this->nadi,
             'respirasi' => $this->respirasi,
