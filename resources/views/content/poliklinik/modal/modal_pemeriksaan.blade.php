@@ -636,7 +636,11 @@
         }
 
         function tulisPlan() {
-            no_rawat = $('#nomor_rawat').val();
+
+            console.log('PLANNNN');
+
+            const no_rawat = formSoapPoli.find('#nomor_rawat').val();
+            console.log();
 
             $.ajax({
                 url: '/erm/resep/obat/ambil',
@@ -666,7 +670,7 @@
                         })
 
                     })
-                    formSoapPoli.find('#rtl').text(teksRd + '\n' + teksRr);
+                    formSoapPoli.find('#rtl').val(teksRd + '\n' + teksRr);
                 },
                 error: function(request, status, error) {
                     Swal.fire(
