@@ -343,7 +343,7 @@
         function panggil(urut) {
 
             id = $('.panggil-' + urut).data('id');
-            if ($('.panggil-' + urut)) {
+            if (!$('.panggil-' + urut)) {
                 return false
             }
             hitung_panggilan = $('#hitung-panggil').val();
