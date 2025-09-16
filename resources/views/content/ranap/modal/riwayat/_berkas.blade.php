@@ -25,11 +25,11 @@
                     const berkas = response.map((item, index) => {
                         return `<div class="col-md-2 col-sm-12">
                                     <div class="card">
-                                        <a data-magnify="gallery" data-src="" data-caption="${item.kategori.toUpperCase()} ${splitTanggal(item.tgl_masuk)}" data-group="a" href="https://sim.rsiaaisyiyah.com/erm/public/erm/${item.file}">
+                                        <a data-magnify="gallery" data-src="" data-caption="${item?.kategori?.toUpperCase()} ${splitTanggal(item?.tgl_masuk)}" data-group="a" href="https://sim.rsiaaisyiyah.com/erm/public/erm/${item.file}">
                                             <img src="https://sim.rsiaaisyiyah.com/erm/public/erm/${item.file}" class="card-img-top" alt="..." />
                                         </a>
                                         <div class="card-body">
-                                            <p class="card-text">${item.kategori.toUpperCase()} ${splitTanggal(item.tgl_masuk)}</p>
+                                            <p class="card-text">${item?.kategori?.toUpperCase()} ${splitTanggal(item?.tgl_masuk)}</p>
                                         </div>
                                     </div>
                                 </div>`;
