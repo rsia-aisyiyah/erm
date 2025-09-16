@@ -180,6 +180,7 @@
                 formSoapPoli.find('input[name=nm_pasien]').val(`${response.pasien.nm_pasien} (${response.pasien.jk}) / ${hitungUmur(response.pasien.tgl_lahir)}`)
                 formSoapPoli.find('input[name=p_jawab]').val(response.p_jawab)
                 formSoapPoli.find('input[name=png_jawab]').val(`${response.penjab.png_jawab}`)
+                formSoapPoli.find('input[name=role]').val("{{ session()->get('role') }}")
                 formSoapPoli.find('[name=nip]').attr('disabled', false)
 
                 // set identitas asmed rajal anak
@@ -388,7 +389,7 @@
 
                 formSoapPoli.find('input').val('-')
                 formSoapPoli.find('textarea').val('-').trigger('change');
-
+                formSoapPoli.find('input[name=role]').val("{{ session()->get('role') }}")
                 $('#modalSoapRalan').modal('hide');
             }).fail((request) => {
                 Swal.fire({

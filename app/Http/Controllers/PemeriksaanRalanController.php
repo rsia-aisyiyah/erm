@@ -132,6 +132,7 @@ class PemeriksaanRalanController extends Controller
         } catch (QueryException $e) {
             return response()->json($e->errorInfo, 500);
         }
+        return response()->json('SUKSES UPDATE');
 
     }
     function createPemeriksaanRalan(PemeriksaanRalanRequest $request, array $clause)
@@ -155,6 +156,8 @@ class PemeriksaanRalanController extends Controller
         } catch (QueryException $e) {
             return response()->json($e->errorInfo, 500);
         }
+
+        return response()->json('SUKSES CREATE');
     }
 
     public function edit(Request $request)
