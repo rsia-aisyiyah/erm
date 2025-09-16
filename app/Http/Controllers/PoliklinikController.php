@@ -43,7 +43,14 @@ class PoliklinikController extends Controller
         $tanggal = new Carbon();
 
         $sekarang = $tanggal->now()->toDateString();
-        $pasienPoli = RegPeriksa::select(['no_rawat', 'stts', 'kd_pj', 'tgl_registrasi', 'jam_reg', 'no_reg',
+        $pasienPoli = RegPeriksa::select([
+            'no_rawat',
+            'stts',
+            'kd_pj',
+            'tgl_registrasi',
+            'jam_reg',
+            'no_reg',
+            'status_lanjut',
             DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
             DB::raw('TRIM(kd_dokter) as kd_dokter'),
             DB::raw('TRIM(kd_poli) as kd_poli'),
@@ -51,9 +58,21 @@ class PoliklinikController extends Controller
             ->with([
                 'pasien' => function ($query) {
                     $query->with(['askepRalanAnak', 'askepRalanKebidanan']);
-        },'pasien.regPeriksa.askepRalanAnak', 'pasien.regPeriksa.askepRalanKebidanan', 'dokter.mappingDokter', 'penjab','skriningTb' , 'upload', 'pemeriksaanRalan', 'sep.suratKontrol', 'suratKontrol', 'sep.rujukanKeluar', 'pasien.spri' => function ($q) use ($tgl_registrasi) {
-            return $q->where('tgl_surat', $tgl_registrasi);
-        }])
+                },
+                'pasien.regPeriksa.askepRalanAnak',
+                'pasien.regPeriksa.askepRalanKebidanan',
+                'dokter.mappingDokter',
+                'penjab',
+                'skriningTb',
+                'upload',
+                'pemeriksaanRalan',
+                'sep.suratKontrol',
+                'suratKontrol',
+                'sep.rujukanKeluar',
+                'pasien.spri' => function ($q) use ($tgl_registrasi) {
+                    return $q->where('tgl_surat', $tgl_registrasi);
+                }
+            ])
             ->whereNotIn('kd_poli', ['OPE', 'IGDK', '-', 'U0016', 'LAB'])
             ->where('kd_poli', $kd_poli)
             ->orderBy('no_reg', 'ASC');

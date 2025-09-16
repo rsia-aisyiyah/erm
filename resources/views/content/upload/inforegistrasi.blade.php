@@ -1,4 +1,4 @@
-<div class="col-sm-12" id="infoReg" style="visibility: hidden">
+<div class="col-sm-12" id="infoReg">
     <div class="card mb-3">
         <div class="card-header text-bg-primary">
             Data Perawatan

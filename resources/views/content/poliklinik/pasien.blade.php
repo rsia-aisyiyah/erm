@@ -100,8 +100,8 @@
             </div>
 
         </div>
-        @include('content.upload.inforegistrasi')
-        @include('content.upload.resume')
+        {{-- @include('content.upload.inforegistrasi')
+        @include('content.upload.resume') --}}
     </div>
     @include('content.poliklinik.modal.modal_pemeriksaan')
     @include('content.poliklinik.modal.modal_riwayat')
@@ -117,6 +117,7 @@
     @include('content.poliklinik.modal.modal_peserta')
     @include('content.poliklinik.modal.modal_catatan')
     @include('content.ranap.modal.modal_hasil_kritis')
+    @include('content.ranap.modal.modal_penunjang')
 @endsection
 
 @push('script')
@@ -875,7 +876,6 @@
                     {
                         data: '',
                         render: function(data, type, row, meta) {
-
                             let ambilAskep = '';
                             let no_rkm_medis = row.no_rkm_medis.replace(/\s/g, '');
                             if (row.dokter) {
@@ -886,50 +886,18 @@
                                     ambilAskep = 'ambilAskepAnak(\'' + no_rkm_medis + '\')';
                                 }
                             }
-                            // else {
-                            //     kd_dokter = row.kd_dokter.replace(/\s/g, '');
-                            //     $.ajax({
-                            //         url: '/erm/dokter/ambil',
-                            //         dataType: 'JSON',
-                            //         data: {
-                            //             'nik': kd_dokter,
-                            //         },
-                            //         success: function(response) {
-                            //             $.map(response.data, function(res) {
-                            //                 if (res.kd_dokter == 'S0001') {
-                            //                     $('#btn-askep-' + row.no_reg).attr('onclick', 'ambilAskepAnak(\'' + no_rkm_medis + '\')');
-
-                            //                 } else {
-                            //                     $('#btn-askep-' + row.no_reg).attr('onclick', 'ambilAskepKebidanan(\'' + no_rkm_medis + '\')');
-                            //                 }
-                            //             })
-                            //         }
-                            //     });
-                            // }
-
-                            // html =
-                            //     '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" style="" onclick = "detailPeriksa(\'' +
-                            //     row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' +
-                            //     textRawat(row.no_rawat) +
-                            //     '"><i id="upload-' +
-                            //     textRawat(row.no_rawat) +
-                            //     '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a></br>';
-                            html = `<button
-                                class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik"
-                                onclick="detailPeriksa('${row.no_rawat}', '${row.status_lanjut}')"
-                                id="btn-upload-${textRawat(row.no_rawat)}">
-                                <i class="bi bi-cloud-upload-fill" id="upload-${textRawat(row.no_rawat)}"></i>
-                                UPLOAD
-                            </button>`
+                            html =
+                                '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" style="" onclick = "detailPeriksa(\'' +
+                                row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' +
+                                textRawat(row.no_rawat) +
+                                '"><i id="upload-' +
+                                textRawat(row.no_rawat) +
+                                '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a>';
                             html += `<button id="btn-periksa-${textRawat(row.no_rawat)}" style="" onclick="showSoapRalan('${row.no_rawat}')" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik">
                                     <i class="bi bi-pencil-square" id="icon-periksa-${textRawat(row.no_rawat)}"></i>
                                     SOAP
                                 </button>`
-                            // html +=
-                            //     '<button id="btn-periksa-' + textRawat(row.no_rawat) +
-                            //     '" style="" onclick="" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" data-bs-toggle="modal" data-bs-target="#modalSoap" data-id="' +
-                            //     row.no_rawat + '"><i class="bi bi-pencil-square" id="icon-periksa-' +
-                            //     textRawat(row.no_rawat) + '"></i> SOAP</button>';
+
                             html += '<button id="btn-askep-' + textRawat(row.no_rawat) + '" onclick="' + ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" data-id="' +
                                 row.no_rkm_medis +
                                 '"><i id="icon-askep-' +
