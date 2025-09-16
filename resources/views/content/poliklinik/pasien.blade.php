@@ -343,6 +343,9 @@
         function panggil(urut) {
 
             id = $('.panggil-' + urut).data('id');
+            if ($('.panggil-' + urut)) {
+                return false
+            }
             hitung_panggilan = $('#hitung-panggil').val();
             text_recall = $('.panggil-' + urut).text()
             if (hitung_panggilan < 2 || text_recall == 'CALL') {

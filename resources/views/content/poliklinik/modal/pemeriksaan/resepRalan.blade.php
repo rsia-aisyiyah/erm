@@ -85,8 +85,6 @@
             $.get(`/erm/resep/obat/ambil`, {
                 no_rawat: no_rawat
             }).done((response) => {
-                console.log('RESPONSE', response);
-
                 if (!response.length) {
                     bodyResepObatUmum.empty();
                     bodyResepRacikan.empty();
@@ -574,22 +572,7 @@
 
                     },
                     method: 'POST',
-                    // success: function(response) {
-                    //     $.map(template.detail_racik, function(temp) {
-                    //         if (Object.keys(temp).length > 0) {
-                    //             simpanObatRacikanTemplate(temp.kode_brng)
-                    //         }
-                    //     })
-                    //     cekResep($('#nomor_rawat').val())
-                    // },
-                    // error: function(response, message, detail) {
-                    //     Swal.fire(
-                    //         'Gagal !',
-                    //         response.responseJSON.message,
-                    //         'error'
-                    //     );
-                    //     hapusResep($('.no_resep').val())
-                    // }
+
                 }).done(function(response) {
                     tulisPlan()
                     getResepRacikan(no_resep)
@@ -648,8 +631,6 @@
                         tulisPlan()
                     },
                     error: function(request, status, error) {
-                        console.log(request);
-
                         Swal.fire(
                             'Gagal !',
                             'Obat tidak tersimpan<br/>' + request.responseJSON.message,
