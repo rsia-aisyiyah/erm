@@ -173,7 +173,15 @@
         }
 
         function splitTanggal(tanggal) {
+            if (tanggal === null || tanggal === undefined) {
+                return null
+            }
+
             let arrTgl = tanggal.split('-');
+            if (arrTgl.length !== 3) {
+                return null
+            }
+
             let txtTanggal = arrTgl[2] + '-' + arrTgl[1] + '-' + arrTgl[0];
             return txtTanggal;
         }
@@ -611,7 +619,7 @@
         });
 
 
-        
+
 
         function showForm(no_rawat = '', kategori = '') {
             $('#submit').hide()
@@ -723,7 +731,7 @@
             tb_pasien(tanggal);
         }
 
-        
+
         $('#submit').click(function() {})
 
         function hiddenForm() {

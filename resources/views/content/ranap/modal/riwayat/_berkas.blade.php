@@ -29,7 +29,7 @@
                                             <img src="https://sim.rsiaaisyiyah.com/erm/public/erm/${item.file}" class="card-img-top" alt="..." />
                                         </a>
                                         <div class="card-body">
-                                            <p class="card-text">${item?.kategori?.toUpperCase()} ${splitTanggal(item?.tgl_masuk)}</p>
+                                            <p class="card-text">${item?.kategori?.toUpperCase()} ${splitTanggal(item ?.tgl_masuk)}</p>
                                         </div>
                                     </div>
                                 </div>`;
