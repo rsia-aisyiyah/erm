@@ -132,7 +132,7 @@
             placeholder: 'Pilih Obat',
             allowClear: true,
             ajax: {
-                url: `${url}/obat`,
+                url: `${url}/obat/cari`,
                 type: 'get',
                 data: function(params) {
                     return {
@@ -140,10 +140,9 @@
                     }
                 },
                 dataType: 'json',
-                delay: 250,
                 processResults: function(data) {
                     return {
-                        results: $.map(data, function(item) {
+                        results: $.map(data.data, function(item) {
                             return {
                                 text: item.nama_brng,
                                 id: item.kode_brng
