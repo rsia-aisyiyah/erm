@@ -121,7 +121,7 @@
                 tbResep();
                 hitungResep();
                 Swal.fire({
-                    title: 'Memuat ulang data resep!',
+                    text: 'Memuat ulang data resep!',
                     position: 'top-end',
                     toast: true,
                     icon: 'success',

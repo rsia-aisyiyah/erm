@@ -262,7 +262,7 @@
 
         function toastReload(message, timer) {
             Swal.fire({
-                title: message,
+                text: message,
                 position: 'top-end',
                 toast: true,
                 icon: 'success',
