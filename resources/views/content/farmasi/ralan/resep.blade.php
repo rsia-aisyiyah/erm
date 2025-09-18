@@ -44,21 +44,38 @@
 
                     <input type="hidden" id="hitung-panggil" value="">
 
-                    <table class="table table-striped table-responsive text-sm table-sm" id="tb_resep" width="100%">
-                        <thead>
-                            <tr role="row">
-                                <th>No. Resep</th>
-                                <th>Waktu</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+
 
                 </div>
             </div>
 
+        </div>
+        <div class="col-lg-2 col-md-12 col-sm-12">
+            <label for="tgl_peresepan" class="form-label">Tgl. Resep</label>
+            <input type="text" class="form-control form-control-sm" id="tgl_peresepan" placeholder="" autocomplete="off" value="{{ date('d-m-Y') }}">
+        </div>
+        <div class="col-lg-2 col-md-12 col-sm-12">
+            <label for="tgl_pemerimaan" class="form-label">Tgl. Penyerahan</label>
+            <input type="text" class="form-control form-control-sm" id="tgl_penyerahan" placeholder="" autocomplete="off" value="{{ date('d-m-Y') }}">
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <button class="btn btn-success mt-4 w-25" id="btnFilterResep" onclick="filterResep()">
+                <i class="bi bi-search"></i>
+                Cari
+            </button>
+        </div>
+        <div class="col-12">
+            <table class="table table-striped table-responsive text-sm table-sm" id="tb_resep" width="100%">
+                <thead>
+                    <tr role="row">
+                        <th>No. Resep</th>
+                        <th>Waktu</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 @endsection
@@ -67,12 +84,35 @@
 
 @push('script')
     <script>
+        const tglPeresepan = $('#tgl_peresepan')
+        const tglPenyerahan = $('#tgl_penyerahan')
+
         $(document).ready(function() {
             tbResep();
             hitungResep();
             reloadTabelResep();
         })
 
+        $('#tgl_peresepan').datepicker({
+            format: 'dd-mm-yyyy',
+            orientation: 'bottom',
+            autoclose: true,
+            todayHighlight: true,
+            todayBtn: true,
+        })
+        $('#tgl_penyerahan').datepicker({
+            format: 'dd-mm-yyyy',
+            orientation: 'bottom',
+            autoclose: true,
+            todayHighlight: true,
+            todayBtn: true,
+        })
+
+        function filterResep() {
+            const tgl_peresepan = tglPeresepan.val();
+            const tgl_penyerahan = tglPenyerahan.val();
+            tbResep();
+        }
 
         function reloadTabelResep() {
             setInterval(function() {
@@ -90,7 +130,7 @@
                     timer: 1500
                 })
                 // }
-            }, 30000);
+            }, 40000);
         }
 
         function hitungResep() {
@@ -129,8 +169,11 @@
         }
 
         function tbResep() {
+            const tgl_peresepan = tglPeresepan.val();
+            const tgl_penyerahan = tglPenyerahan.val();
             var table = $('#tb_resep').DataTable({
                 processing: false,
+                destroy: true,
                 scrollX: true,
                 serverSide: true,
                 stateSave: true,
@@ -141,9 +184,10 @@
                 info: false,
                 deferRender: true,
                 ajax: {
-                    url: "resep/ambil/tabel",
+                    url: "/erm/resep/ambil/tabel",
                     data: {
-                        tgl_peresepan: "{{ date('Y-m-d') }}",
+                        tgl_peresepan: tgl_peresepan,
+                        tgl_penyerahan: tgl_penyerahan
                     }
                 },
                 columns: [{
@@ -178,7 +222,9 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            html = '<button onclick="tampilResep(\'' + row.no_resep + '\')" class="btn btn-sm mb-2 status-' + row.no_resep + '" type="button" style="width:110px;display:inline" data-id="' + row.no_rawat + '"></button><br/>';
+                            console.log('DATA ===', row);
+
+                            html = `<button onclick="tampilResep('${row.no_resep}', '${row.reg_periksa.kd_poli}')" class="btn btn-sm mb-2 status-${row.no_resep}" type="button" style="width:110px;display:inline" data-id="${row.no_rawat}"></button><br/>`;
                             html += '<button onclick="panggilResep(\'' + row.no_resep + '\',' + false + ', \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-warning mb-2 panggil-' + row.no_resep + '" style="width:110px;display:none" type="button" style="width:110px;" data-id="' + row.no_rawat + '">PANGGIL</button><br/>';
                             html += '<button onclick="panggilResep(\'' + row.no_resep + '\',' + true + ', \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-success mb-2 selesai-' + row.no_resep + '" style="width:110px;display:none" type="button" style="width:110px;" data-id="' + row.no_rawat + '">SELESAI</button>';
 
@@ -279,23 +325,26 @@
             })
         }
 
-        function tampilResep(no_resep) {
+        function tampilResep(no_resep, kd_poli = '') {
             // reloadTabelResep();
-            $('#modalResepObat').modal('show');
-            $('.notif').empty()
+
             $.ajax({
                 url: 'resep/obat/ambil',
                 data: {
                     no_resep: no_resep,
                 },
                 success: function(response) {
+                    getPemeriksaanPoli(response.no_rawat, kd_poli).done((res) => {
+                        console.log('RES PEMERIKSAAN ===', res);
+                        const resFilter = res.filter((item) => item.rtl !== '-' && item.nip.includes('1.'))
+                            .map((item) => item.rtl).join('')
+                        $('.notif').val(resFilter)
 
-                    getPemeriksaanPoli(response.no_rawat).done((res) => {
-                        plan = res.rtl.split('\n')
-                        for (let index = 0; index < plan.length; index++) {
-                            $('.notif').append(`${plan[index]} <br/>`)
-                        }
                     })
+                    $('#infoNoResep').html(no_resep)
+                    $('#infoTglResep').html(`${response.tgl_peresepan} ${response.jam_peresepan}`)
+                    $('#modalResepObat').modal('show');
+                    $('.notif').empty()
                 }
             })
         }

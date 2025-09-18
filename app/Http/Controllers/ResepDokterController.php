@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ResepDokter;
 use App\Models\ResepObat;
+use Exception;
 use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class ResepDokterController extends Controller
         $resepDokter = $this->resepDokter;
         $hasil = '';
         if ($request->aturan_pakai) {
-            $hasil = $resepDokter->where('aturan_pakai', 'like', '%' . $request->aturan_pakai . "%")->limit(10)->groupBy('aturan_pakai')->get();
+            $hasil = $resepDokter->where('aturan_pakai', 'like', '%'.$request->aturan_pakai."%")->limit(10)->groupBy('aturan_pakai')->get();
         } else {
             $resepDokter->limit(10)->get();
         }
@@ -48,8 +49,13 @@ class ResepDokterController extends Controller
         if ($this->isExist($request)) {
             return response()->json(['message' => 'Obat sudah ada'], 500);
         }
-        $resepDokter = $this->resepDokter->create($data);
-        $this->track->insertSql($this->resepDokter, $data);
+        try {
+            $resepDokter = $this->resepDokter->create($data);
+            $this->track->insertSql($this->resepDokter, $data);
+        } catch (Exception $e) {
+            throw new Exception("Error Processing Request $e->getMessage", 1);
+
+        }
         return response()->json($resepDokter);
     }
     public function hapus(Request $request)
@@ -103,7 +109,7 @@ class ResepDokterController extends Controller
 
     protected function isResepAvalilable($no_resep)
     {
-        if (!$no_resep) {
+        if (! $no_resep) {
 
         }
     }
