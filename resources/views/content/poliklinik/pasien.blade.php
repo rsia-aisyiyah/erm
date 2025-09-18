@@ -940,11 +940,11 @@
                             $.map(row.pasien.reg_periksa, function(data) {
                                 if (data.kd_poli == 'P001' || data.kd_poli == 'P007' || data.kd_poli == 'P009') {
                                     if (Object.keys(data.askep_ralan_kebidanan).length > 0) {
-                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1')
+                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1 btn-width-poliklinik')
                                     }
                                 } else if (data.kd_poli == 'P008' || data.kd_poli == 'P003') {
                                     if (Object.keys(data.askep_ralan_anak).length > 0) {
-                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1')
+                                        $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1 btn-width-poliklinik')
                                     }
                                 }
                             })
