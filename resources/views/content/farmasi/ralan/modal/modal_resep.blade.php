@@ -6,14 +6,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="hidden" class="no_rawat" />
-                <input type="hidden" class="no_resep" />
-                <div class="notif" style="font-size: 12px">
-
+                <div class="d-flex gap-2 text-success" style="font-size:12px">
+                    <div>No. Resep : <span id="infoNoResep" style="font-weight: bold"></span></div>
+                    <div>Tgl. Resep : <span id="infoTglResep" style="font-weight: bold; "></span></div>
                 </div>
-            </div>
-            <div class="modal-footer">
-
+                <label for="">Resep By Plan :</label>
+                <x-textarea class="notif" id="notifResep" name="notifResep" rows="15" readonly />
             </div>
         </div>
     </div>

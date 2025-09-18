@@ -94,7 +94,8 @@ class ResepObatController extends Controller
     public function ambilTable(Request $request)
     {
         $resepObat = $this->resepObat
-            ->where('tgl_peresepan', $request->tgl_peresepan)
+            ->where('tgl_peresepan', date('Y-m-d', strtotime($request->tgl_peresepan)))
+            ->orWhere('tgl_penyerahan', date('Y-m-d', strtotime($request->tgl_penyerahan)))
             ->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis')->where('status', 'ralan')
             ->orderBy('jam_peresepan', 'DESC');
 
@@ -102,7 +103,7 @@ class ResepObatController extends Controller
             ->filter(function ($query) use ($request) {
                 if ($request->has('search') && $request->get('search')['value']) {
                     return $query->whereHas('regPeriksa.pasien', function ($query) use ($request) {
-                        $query->where('nm_pasien', 'like', '%' . $request->get('search')['value'] . '%');
+                        $query->where('nm_pasien', 'like', '%'.$request->get('search')['value'].'%');
                     });
                 }
             })
@@ -188,7 +189,7 @@ class ResepObatController extends Controller
             return (int) $resep->no_resep + 1;
 
         }
-        return (int) date('Ymd') . '0001';
+        return (int) date('Ymd').'0001';
     }
 
     function copyResep($no_resep, Request $request)
@@ -252,7 +253,7 @@ class ResepObatController extends Controller
                 ResepDokter::insert($resepDokter->toArray());
 
                 $racikan = $resepRacikan
-                    ->map(fn($item) => collect($item)->except('detail'))
+                    ->map(fn ($item) => collect($item)->except('detail'))
                     ->toArray();
                 ResepDokterRacikan::insert($racikan);
 

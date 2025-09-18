@@ -375,6 +375,8 @@
             const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
             data['_token'] = "{{ csrf_token() }}";
             $.post('/erm/pemeriksaan/simpan', data).done((response) => {
+                console.log('DATA ===', data);
+
                 if (data.ket_pasien) {
                     $.post('/erm/pasien/keterangan', {
                         no_rkm_medis: data.no_rkm_medis,
