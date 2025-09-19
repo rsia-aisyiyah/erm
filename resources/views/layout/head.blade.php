@@ -381,6 +381,14 @@
             text-align: left
         }
 
+        @media(max-width:1200px) {
+
+            table tr td,
+            th {
+                font-size: 10px !important
+            }
+        }
+
         @media (max-width: 368px) {
             .tb-askep {
                 font-size: 9px !important;
@@ -617,7 +625,7 @@
             }
         }
 
-        @media (max-width: 1700px) {
+        @media (max-width: 1500px) {
             table {
                 font-size: 11px !important;
             }
