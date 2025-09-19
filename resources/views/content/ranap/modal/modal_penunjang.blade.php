@@ -54,7 +54,6 @@
                 },
                 dataType: 'JSON',
                 success: function(data) {
-
                     formUploadPenunjang.find('#no_rawat').val(data.no_rawat)
                     formUploadPenunjang.find('#no_rkm_medis').val(data.no_rkm_medis)
                     formUploadPenunjang.find('#tgl_masuk').val(data.tgl_registrasi)
@@ -65,7 +64,6 @@
 
                     $('#button-form label').detach()
                     $('#button-form input').detach()
-
 
                     if (status == "Ralan") {
                         html =
@@ -141,19 +139,9 @@
                         title: 'Memproses Data',
                         text: 'Mohon Tunggu',
                         showConfirmButton: false,
-                        footer: '<img width="25" src="http://192.168.100.33/simrsiav2/assets/gambar/rsiap.ico"><b>&nbsp;RSIA AISYIYAH PEKAJANGAN</b>',
                         didOpen: () => {
                             swal.showLoading();
                         }
-                    })
-                },
-                complete: function() {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Sukses !',
-                        text: 'Data Berhasil Diproses',
-                        showConfirmButton: false,
-                        timer: 1500
                     })
                 },
                 success: function(msg) {
@@ -173,13 +161,7 @@
                         reloadTabelPoli();
                     }
                     showForm(data.no_rawat, data.kategori);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Sukses !',
-                        text: 'Data Berhasil Diproses',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                    swalToast('Data Berhasil dikirim', 'success')
                     // reloadTabelPoli();
 
                 },
@@ -188,6 +170,52 @@
                 }
             })
 
+        }
+
+        function deleteImage(id, img) {
+            const kategori = $('#button-form').find('input[type="radio"]:checked').val();
+            const no_rawat = $('#infoReg').find('#td_no_rawat').text();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            Swal.fire({
+                title: 'Yakin hapus file ini ?',
+                text: "anda tidak bisa mengembalikan file yang dihapus",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: '/erm/upload/delete/' + id,
+                        dataType: 'JSON',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            image: img
+                        },
+                        success: function(data) {
+                            swalToast('Data Berhasil Dihapus', 'success');
+                            showForm(no_rawat, kategori);
+                            if ($('#tb_pasien').length > 0) {
+                                $('#tb_pasien').DataTable().destroy();
+                                if (localStorage.getItem('tanggal')) {
+                                    tb_pasien(`${localStorage.getItem('tanggal')}`);
+                                } else {
+                                    tb_pasien(`{{ date('Y-m-d') }}`);
+                                }
+                            }
+
+                        },
+
+                    })
+                }
+            })
         }
     </script>
 @endpush

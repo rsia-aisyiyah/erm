@@ -583,7 +583,7 @@
                             let no = 1
                             $.map(rr.detail_racikan, function(dr) {
                                 if (rr.no_racik == dr.no_racik) {
-                                    teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, \n`
+                                    teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, jml : ${dr.jml}\n`
                                     no++;
                                 }
                             })

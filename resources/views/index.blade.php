@@ -354,7 +354,7 @@
             });
             Toast.fire({
                 icon: toastIcon,
-                title: message,
+                text: message,
             });
 
         }
@@ -624,7 +624,7 @@
         function showForm(no_rawat = '', kategori = '') {
             $('#submit').hide()
             if (!no_rawat && !kategori) {
-                no_rawat = $('#no_rawat').val();
+                no_rawat = $('#td_no_rawat').text();
                 kategori = event.target.value;
             }
 
@@ -665,8 +665,6 @@
         }
 
         function previewImage(input) {
-
-
             if (input.files && input.files[0]) {
 
                 $('input[name="kategori"]').each(function(index) {
@@ -920,52 +918,7 @@
 
         }
 
-        function deleteImage(id, img) {
-            kategori = $('input[type="radio"]:checked').val();
-            no_rawat = $('#no_rawat').val();
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            Swal.fire({
-                title: 'Yakin hapus file ini ?',
-                text: "anda tidak bisa mengembalikan file yang dihapus",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: 'DELETE',
-                        url: '/erm/upload/delete/' + id,
-                        dataType: 'JSON',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            image: img
-                        },
-                        success: function(data) {
-                            showForm(no_rawat, kategori);
-                            if ($('#tb_pasien').length > 0) {
-                                $('#tb_pasien').DataTable().destroy();
-                                if (localStorage.getItem('tanggal')) {
-                                    tb_pasien(`${localStorage.getItem('tanggal')}`);
-                                } else {
-                                    tb_pasien(`{{ date('Y-m-d') }}`);
-                                }
-                            }
-                            Swal.fire(
-                                'Berhasil!', 'Berkas telah dihapus', 'success'
-                            )
-                        },
-
-                    })
-                }
-            })
-        }
 
 
 

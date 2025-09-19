@@ -636,12 +636,7 @@
         }
 
         function tulisPlan() {
-
-            console.log('PLANNNN');
-
             const no_rawat = formSoapPoli.find('#nomor_rawat').val();
-            console.log();
-
             $.ajax({
                 url: '/erm/resep/obat/ambil',
                 method: 'GET',
@@ -662,7 +657,7 @@
                             let no = 1
                             $.map(rr.detail_racikan, function(dr) {
                                 if (rr.no_racik == dr.no_racik) {
-                                    teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, \n`
+                                    teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, jml : ${dr.jml} \n`
                                     no++;
                                 }
                             })
