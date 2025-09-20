@@ -24,16 +24,7 @@ class PemeriksaanRalanRequest extends FormRequest
     public function rules()
     {
         return [
-            'no_rawat' => 'required',
-            'suhu_tubuh' => 'required',
-            'tensi' => 'required',
-            'nadi' => 'required',
-            'respirasi' => 'required',
-            'tinggi' => 'required',
-            'berat' => 'required',
-            'spo2' => 'required',
-            'gcs' => 'required',
-            'kesadaran' => 'required',
+
         ];
     }
 
