@@ -24,22 +24,14 @@ class PemeriksaanRalanRequest extends FormRequest
     public function rules()
     {
         return [
-            'no_rawat' => 'required',
-            'suhu_tubuh' => 'required',
-            'tensi' => 'required',
-            'nadi' => 'required',
-            'respirasi' => 'required',
-            'tinggi' => 'required',
-            'berat' => 'required',
-            'spo2' => 'required',
-            'gcs' => 'required',
-            'kesadaran' => 'required',
+
         ];
     }
 
     public function pemeriksaanData()
     {
         return [
+            'nip' => $this->nip ? $this->nip : auth()->user()->nip,
             'suhu_tubuh' => $this->suhu_tubuh,
             'tensi' => $this->tensi,
             'tgl_perawatan' => $this->tgl_perawatan ?? date('Y-m-d'),

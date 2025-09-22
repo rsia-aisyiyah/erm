@@ -168,6 +168,7 @@
                 //     }
                 // })
                 // riwayatIcare(response.pasien.no_peserta, response.dokter.mapping_dokter.kd_dokter_bpjs)
+                setRiwayatPemeriksaan(response.no_rkm_medis)
                 if (response.pasien.ket_pasien) {
                     formSoapPoli.find('input[name=ket_pasien]').val(response.pasien.ket_pasien.keterangan)
                 }
@@ -219,6 +220,8 @@
                 getResepObat(no_rawat)
                 setTabMenuAsesmen(no_rawat, response.dokter.kd_sps);
 
+                $('button[data-bs-target="#tab-soap-pane"]').tab('show')
+
             })
 
 
@@ -251,6 +254,13 @@
 
                 setAsmedRajalKandungan(no_rawat);
                 setAsmedRanapKandungan(no_rawat)
+            } else {
+                $('#li-asmed-ana').css('display', 'none');
+                $('#li-asmed-ranap-ana').css('display', 'none');
+                $('#li-data-anak').css('display', 'none');
+                $('#li-asmed-obg').css('display', 'none');
+                $('#li-asmed-ranap-obg').css('display', 'none');
+                $('#li-data-obg').css('display', 'none');
             }
         }
 
@@ -269,6 +279,8 @@
             bodyResepObatUmum.empty();
             bodyResepRacikan.empty();
 
+            navTabRiwayatPemeriksaan.empty();
+
         })
 
 
@@ -282,6 +294,7 @@
                 if (response.length == 0) {
                     formSoapPoli.find('input[name=jam_rawat]').val("{{ date('H:i:s') }}");
                     formSoapPoli.find('input[name=tgl_perawatan]').val("{{ date('Y-m-d') }}");
+                    formSoapPoli.find('textarea').val("-");
                     return false;
                 }
 

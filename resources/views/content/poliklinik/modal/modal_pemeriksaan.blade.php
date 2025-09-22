@@ -12,6 +12,10 @@
                             data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
                             aria-selected="true">SOAP</button>
                     </li>
+                    <li class="nav-item" role="presentation" id="li-riwayat-pemeriksaan">
+                        <button class="nav-link" id="tab-riwayat-pemeriksaan" data-bs-toggle="tab" data-bs-target="#tab-riwayat-pane"
+                            type="button" role="tab" aria-controls="tab-riwayat-pemeriksaan" aria-selected="false">Riwayat Pemeriksaan</button>
+                    </li>
                     <li class="nav-item" role="presentation" id="li-asmed-obg">
                         <button class="nav-link" id="tab-asesmen-obg" data-bs-toggle="tab" data-bs-target="#tab-asmed-obg"
                             type="button" role="tab" aria-controls="tab-asmed-obg" aria-selected="false">Asesmen Medis Rajal Obgyn</button>
@@ -36,22 +40,26 @@
                         <button class="nav-link" id="tab-lab" data-bs-toggle="tab" data-bs-target="#lab-ana"
                             type="button" role="tab" aria-controls="lab-ana" aria-selected="false">Hasil Laboratorium</button>
                     </li>
-                    <li class="nav-item" role="presentation" id="li-rad-ana">
-                        <button class="nav-link" id="tab-rad" data-bs-toggle="tab" data-bs-target="#rad-ana"
-                            type="button" role="tab" aria-controls="rad-ana" aria-selected="false">Hasil Radiologi</button>
-                    </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab" data-bs-target="#permintaan-radiologi-tab-pane"
                             type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi</button>
+                    </li>
+                    <li class="nav-item" role="presentation" id="li-rad-ana">
+                        <button class="nav-link" id="tab-rad" data-bs-toggle="tab" data-bs-target="#rad-ana"
+                            type="button" role="tab" aria-controls="rad-ana" aria-selected="false">Hasil Radiologi</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="skriningTB" data-bs-toggle="tab" data-bs-target="#skriningTB-pane"
                             type="button" role="tab" aria-controls="skriningTB-pane" aria-selected="true">Skrining/Skoring TB</button>
                     </li>
                 </ul>
-                <div class="tab-content" id="myTabContent">
+                <div class="tab-content" id="tabContentPemeriksaan">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.soap')
+                    </div>
+                    <div class="tab-pane fade p-3" id="tab-riwayat-pane" role="tabpanel" aria-labelledby="tab-riwayat-pemeriksaan"
+                        tabindex="0">
+                        @include('content.poliklinik.modal.pemeriksaan.riwayat_pemeriksaan')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-asmed-obg" role="tabpanel" aria-labelledby="tab-asmed"
                         tabindex="0">
@@ -169,7 +177,7 @@
                                 <button class="nav-link" id="skriningTb-tab" data-bs-toggle="tab" data-bs-target="#skriningTb" type="button" role="tab" aria-controls="skriningTb" aria-selected="true">Hasil Skrining</button>
                             </li>
                         </ul>
-                        <div class="tab-content" id="myTabContent">
+                        <div class="tab-content" id="tabPenilaianTB">
                             <div class="tab-pane fade show active p-3" id="tabSkoringTb" role="tabpanel" aria-labelledby="formSkoringTb-tab">
                                 <div style="background-color:whitesmoke;border-radius:10px;padding:10px">
                                     @include('content.ranap.modal.skriningTb._formSkoringTb')
