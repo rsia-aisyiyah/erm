@@ -7,11 +7,12 @@ use App\Models\DataBarang;
 use App\Models\ResepDokterRacikan;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\DataBarangController;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ResepDokterRacikanDetail extends Model
 {
-    use HasFactory;
+    use HasFactory, Compoships;
     protected $table = 'resep_dokter_racikan_detail';
     protected $fillable = ['no_resep', 'no_racik', 'kode_brng', 'p1', 'p2', 'kandungan', 'jml'];
     public $timestamps = false;

@@ -10,17 +10,22 @@ use Illuminate\Http\Request;
 
 class UpdateJamResepObat
 {
-	public function handle(ResepObat $resepObat, Request $request): JsonResponse
+	protected ResepObat $resepObat;
+	function __construct(ResepObat $resepObat)
 	{
-		$resep = $resepObat->where('no_rawat', $request->no_rawat)
+		$this->resepObat = $resepObat;
+	}
+	public function handle(Request $request): JsonResponse
+	{
+		$resep = $this->resepObat->where('no_rawat', $request->no_rawat)
 			->where('tgl_perawatan', '0000-00-00')
 			->where('jam', '00:00:00')->first();
 		try {
 			if ($resep) {
 				$jamUpdate = ['jam_peresepan' => date('H:i:s')];
-				$update = $resepObat->where('no_rawat', $request->no_rawat)->update($jamUpdate);
-				if($update){
-					$track =  new TrackerSqlController();
+				$update = $this->resepObat->where('no_rawat', $request->no_rawat)->update($jamUpdate);
+				if ($update) {
+					$track = new TrackerSqlController();
 					$track->updateSql($resep, $jamUpdate, ['no_rawat' => $request->no_rawat]);
 				}
 			}

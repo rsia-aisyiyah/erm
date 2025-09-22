@@ -59,10 +59,10 @@
 @push('script')
     <script>
         const formPermintaanLab = $('#formPermintaanLab')
-        const formSoapPoli = $('#formSoapPoli')
         const selectJenisPeriksaLab = formPermintaanLab.find('#pemeriksaan')
         const tablePermintaanLab = $('#tablePermintaanLab');
         const tableHasilPermintaan = $('#tableHasilPermintaan');
+
 
         $('button[id="permintaan-laborat-tab"]').on('shown.bs.tab', (e) => {
             tablePermintaanLab.find('tbody').empty();

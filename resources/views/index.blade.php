@@ -32,11 +32,12 @@
         </div>
     </div>
 
-   
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/select2/select2.full.min.js') }}"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/4.2.1/js/dataTables.fixedColumns.min.js"></script>
@@ -55,6 +56,8 @@
     <script src="{{ asset('js/magnifier/jquery.magnify.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 
     @stack('js')
@@ -170,7 +173,15 @@
         }
 
         function splitTanggal(tanggal) {
+            if (tanggal === null || tanggal === undefined) {
+                return null
+            }
+
             let arrTgl = tanggal.split('-');
+            if (arrTgl.length !== 3) {
+                return null
+            }
+
             let txtTanggal = arrTgl[2] + '-' + arrTgl[1] + '-' + arrTgl[0];
             return txtTanggal;
         }
@@ -251,7 +262,7 @@
 
         function toastReload(message, timer) {
             Swal.fire({
-                title: message,
+                text: message,
                 position: 'top-end',
                 toast: true,
                 icon: 'success',
@@ -264,7 +275,7 @@
         function alertErrorAjax(request) {
             Swal.fire(
                 'Gagal',
-                'Terjadi kesalahan <br/> Error Code : ' + request.status + ', ' + request.statusText + '<br/> <p style="padding:0 15px 0 15px;font-size:13px;color:red">' + request.responseJSON.message.split('(SQL')[0] + '</p>',
+                'Terjadi kesalahan <br/> Error Code : ' + request?.status + ', ' + request?.statusText + '<br/> <p style="padding:0 15px 0 15px;font-size:13px;color:red">' + request?.responseJSON?.message.split('(SQL')[0] + '</p>',
                 'error'
             );
         }
@@ -302,6 +313,50 @@
                     }
                 })
             }
+        }
+
+
+        function swalToast(message, status = 'success') {
+            let toastColor = '';
+            let toastIcon = '';
+            switch (status) {
+                case 'success':
+                    toastColor = 'bg-success';
+                    toastIcon = 'success';
+                    break;
+                case 'error':
+                    toastColor = 'bg-danger';
+                    toastIcon = 'error';
+                    break;
+                case 'info':
+                    toastColor = 'bg-info';
+                    toastIcon = 'info';
+                    break;
+                case 'warning':
+                    toastColor = 'bg-warning';
+                    toastIcon = 'warning';
+                    break;
+                default:
+                    toastColor = 'bg-success';
+                    toastIcon = 'success';
+            }
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: toastIcon,
+                text: message,
+            });
+
         }
 
         function hitungUmur(tgl_lahir) {
@@ -411,12 +466,10 @@
 
         function setWarnaPemeriksaan(keterangan) {
             let warna = '';
-            if (keterangan == 'L') {
+            if (keterangan.includes('L') || keterangan == 'L') {
                 warna = 'row-primary';
-            } else if (keterangan == 'H' || keterangan == '*' || keterangan == '**') {
+            } else if (keterangan.includes('H') || keterangan == '*' || keterangan == '**') {
                 warna = 'row-danger';
-            } else if (keterangan == 'K' || keterangan == 'k') {
-                warna = 'row-warning';
             }
             return warna;
         }
@@ -566,75 +619,12 @@
         });
 
 
-        function detailPeriksa(no_rawat, status) {
 
-            $('#upload-image').css('visibility', 'hidden')
-            $('#form-upload').css('visibility', 'visible')
-            $('#image .tmb').detach()
-            $.ajax({
-                url: '/erm/periksa/detail',
-                method: "GET",
-                data: {
-                    'no_rawat': no_rawat,
-                },
-                dataType: 'JSON',
-                success: function(data) {
-                    $('#no_rawat').val(data.no_rawat)
-                    $('#no_rkm_medis').val(data.no_rkm_medis)
-                    $('#tgl_masuk').val(data.tgl_registrasi)
-                    $('#td_no_rawat').text(data.no_rawat)
-                    $('#td_nm_pasien').text(data.pasien.nm_pasien)
-                    $('#td_tgl_reg').text(formatTanggal(data.tgl_registrasi))
-                    $('#infoReg').css('visibility', 'visible')
-
-                    $('#button-form label').detach()
-                    $('#button-form input').detach()
-
-
-                    if (status == "Ralan") {
-                        html =
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-klaim" autocomplete="off" onclick="showForm()" value="klaim"><label class="btn btn-outline-primary btn-sm" for="opt-klaim">Berkas Klaim</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-rujukan" autocomplete="off" onclick="showForm()" value="surat rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-rujukan">Surat Rujukan</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-usg" autocomplete="off" onclick="showForm()" value="usg"><label class="btn btn-outline-primary btn-sm" for="opt-usg">USG</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-cppt" autocomplete="off" onclick="showForm()" value="cppt"><label class="btn btn-outline-primary btn-sm" for="opt-cppt">CPPT</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-laborat" autocomplete="off" onclick="showForm()" value="laborat"><label class="btn btn-outline-primary btn-sm" for="opt-laborat">Laboratorium</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-radiologi" autocomplete="off" onclick="showForm()" value="radiologi"><label class="btn btn-outline-primary btn-sm" for="opt-radiologi">Radiologi</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-legalisasi" autocomplete="off" onclick="showForm()" value="legalisasi"><label class="btn btn-outline-primary btn-sm" for="opt-legalisasi">Surat Legalisasi</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-km" autocomplete="off" onclick="showForm()" value="km"><label class="btn btn-outline-primary btn-sm" for="opt-km">Foto KM</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-ekg" autocomplete="off" onclick="showForm()" value="ekg"><label class="btn btn-outline-primary btn-sm" for="opt-ekg">Berkas EKG</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-form-rujukan" autocomplete="off" onclick="showForm()" value="form-rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-form-rujukan">Form Rujukan</label>'
-
-                        $('#button-form').append(html)
-                    } else {
-                        html =
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-klaim" autocomplete="off" onclick="showForm()" value="klaim"><label class="btn btn-outline-primary btn-sm" for="opt-klaim">Berkas Klaim</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-rujukan" autocomplete="off" onclick="showForm()" value="surat rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-rujukan">Surat Rujukan</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-usg" autocomplete="off" onclick="showForm()" value="usg"><label class="btn btn-outline-primary btn-sm" for="opt-usg">USG</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-resume" autocomplete="off" onclick="showForm()" value="resume"><label class="btn btn-outline-primary btn-sm" for="opt-resume">Resume Medis</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-laborat" autocomplete="off" onclick="showForm()" value="laborat"><label class="btn btn-outline-primary btn-sm" for="opt-laborat">Laboratorium</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-skl" autocomplete="off" onclick="showForm()" value="skl"><label class="btn btn-outline-primary btn-sm" for="opt-skl">SKL</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-radiologi" autocomplete="off" onclick="showForm()" value="radiologi"><label class="btn btn-outline-primary btn-sm" for="opt-radiologi">Radiologi</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-operasi" autocomplete="off" onclick="showForm()" value="operasi"><label class="btn btn-outline-primary btn-sm" for="opt-operasi">Operasi</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-icu" autocomplete="off" onclick="showForm()" value="icu"><label class="btn btn-outline-primary btn-sm" for="opt-icu">ICU</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-lain" autocomplete="off" onclick="showForm()" value="lainnya"><label class="btn btn-outline-primary btn-sm" for="opt-lain">Lainnya</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-legalisasi" autocomplete="off" onclick="showForm()" value="legalisasi"><label class="btn btn-outline-primary btn-sm" for="opt-legalisasi">Surat Legalisasi</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-km" autocomplete="off" onclick="showForm()" value="km"><label class="btn btn-outline-primary btn-sm" for="opt-km">Foto KM</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-ekg" autocomplete="off" onclick="showForm()" value="ekg"><label class="btn btn-outline-primary btn-sm" for="opt-ekg">Berkas EKG</label>' +
-                            '<input type="radio" class="btn-check" name="kategori" id="opt-form-rujukan" autocomplete="off" onclick="showForm()" value="form-rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-form-rujukan">Form Rujukan</label>'
-
-                        $('#button-form').append(html)
-
-                    }
-
-                    $('#modalPenunjangRanap').modal('show')
-                }
-            })
-        }
 
         function showForm(no_rawat = '', kategori = '') {
             $('#submit').hide()
             if (!no_rawat && !kategori) {
-                no_rawat = $('#no_rawat').val();
+                no_rawat = $('#td_no_rawat').text();
                 kategori = event.target.value;
             }
 
@@ -675,8 +665,6 @@
         }
 
         function previewImage(input) {
-
-
             if (input.files && input.files[0]) {
 
                 $('input[name="kategori"]').each(function(index) {
@@ -741,84 +729,7 @@
             tb_pasien(tanggal);
         }
 
-        function simpan() {
-            var images = []
 
-            $('input:hidden[name="images"]').each(function() {
-                images.push($(this).val());
-            })
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            data = {
-                no_rawat: $('#no_rawat').val(),
-                no_rkm_medis: $('#no_rkm_medis').val(),
-                images: images,
-                tgl_masuk: $('#tgl_masuk').val(),
-                kategori: $('#button-form').find('input[type="radio"]:checked').val(),
-                username: "{{ session()->get('pegawai')->nik }}",
-                _token: "{{ csrf_token() }}"
-            }
-
-            $.ajax({
-                url: '/erm/upload',
-                method: 'POST',
-                data: data,
-                dataType: 'JSON',
-                beforeSend: function() {
-                    $('#submit').prop('disabled', true);
-                    swal.fire({
-                        title: 'Memproses Data',
-                        text: 'Mohon Tunggu',
-                        showConfirmButton: false,
-                        footer: '<img width="25" src="http://192.168.100.33/simrsiav2/assets/gambar/rsiap.ico"><b>&nbsp;RSIA AISYIYAH PEKAJANGAN</b>',
-                        didOpen: () => {
-                            swal.showLoading();
-                        }
-                    })
-                },
-                complete: function() {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Sukses !',
-                        text: 'Data Berhasil Diproses',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                },
-                success: function(msg) {
-                    $('#submit').prop('disabled', false);
-                    hiddenForm();
-                    showHistory();
-                    $(".pip").remove();
-                    if ($('.pip').length == 0) {
-                        $('#images').val("");
-                        $('#submit').hide()
-                        $('input[name="kategori"]').each(function(index) {
-                            $(this).prop('disabled', false);
-                        })
-
-                    }
-                    if ($('#tb_pasien').length > 0) {
-                        reloadTabelPoli();
-                    }
-                    showForm(data.no_rawat, data.kategori);
-                    Swal.fire(
-                        'Berhasil!', 'Berkas sudah terupload di server', 'success'
-                    )
-                    // reloadTabelPoli();
-
-                },
-                fail: function(jqXHR, status) {
-                    // console.log(status)
-                }
-            })
-
-        }
         $('#submit').click(function() {})
 
         function hiddenForm() {
@@ -1007,52 +918,7 @@
 
         }
 
-        function deleteImage(id, img) {
-            kategori = $('input[type="radio"]:checked').val();
-            no_rawat = $('#no_rawat').val();
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            Swal.fire({
-                title: 'Yakin hapus file ini ?',
-                text: "anda tidak bisa mengembalikan file yang dihapus",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: 'DELETE',
-                        url: '/erm/upload/delete/' + id,
-                        dataType: 'JSON',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            image: img
-                        },
-                        success: function(data) {
-                            showForm(no_rawat, kategori);
-                            if ($('#tb_pasien').length > 0) {
-                                $('#tb_pasien').DataTable().destroy();
-                                if (localStorage.getItem('tanggal')) {
-                                    tb_pasien(`${localStorage.getItem('tanggal')}`);
-                                } else {
-                                    tb_pasien(`{{ date('Y-m-d') }}`);
-                                }
-                            }
-                            Swal.fire(
-                                'Berhasil!', 'Berkas telah dihapus', 'success'
-                            )
-                        },
-
-                    })
-                }
-            })
-        }
 
 
 
@@ -1060,44 +926,149 @@
             $('#upload-image').css('visibility', 'hidden')
         }
 
-        function cariObatRacikan(obat, no) {
+        // function cariObatRacikan(obat, no) {
+        //     $.ajax({
+        //         url: '/erm/obat/cari',
+        //         data: {
+        //             'nama': obat.value,
+        //         },
+        //         success: function(response) {
+        //             html =
+        //                 '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
+        //             $.map(response.data, function(data) {
+        //                 $.map(data.gudang_barang, function(item) {
+        //                     if (data) {
+        //                         if (data.status != "0") {
+        //                             if (item.stok != "0") {
+        //                                 html +=
+        //                                     '<li data-id="' +
+        //                                     data.kode_brng +
+        //                                     '" data-stok="' + item.stok +
+        //                                     '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok ="' + item.stok + '" onclick="setObat(this, ' + no + ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
+        //                                     data.nama_brng + ' - <span class="text-primary">- Rp. ' + toRupiah(data.ralan) + ' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
+        //                             } else {
+        //                                 html +=
+        //                                     '<li class="disable" data-id="' + data
+        //                                     .kode_brng +
+        //                                     '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok="' + item.stok + '" onclick="setObat(this, ' + no + ')"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
+        //                                     data.nama_brng + ' - Rp. ' + toRupiah(data.ralan) + ' - <b>Stok Kosong' +
+        //                                     '</a></i></li>'
+        //                             }
+        //                         }
+        //                     }
+        //                 })
+        //             })
+        //             html += '</ul>';
+        //             $('.list_obat_' + no).fadeIn();
+        //             $('.list_obat_' + no).html(html);
+        //         }
+        //     })
+        // }
+
+        function cariObatRacikan(obat, no, event) {
+            let $list = $('.list_obat_' + no);
+
+            // Handle navigasi panah & enter
+            if (event) {
+                let $items = $list.find('.dropdown-item');
+                let $active = $list.find('.dropdown-item.active');
+                let index = $items.index($active);
+
+                if (event.key === "ArrowDown") {
+                    event.preventDefault();
+                    if (index < $items.length - 1) {
+                        $items.removeClass('active');
+                        $items.eq(index + 1).addClass('active');
+                    } else {
+                        $items.removeClass('active');
+                        $items.eq(0).addClass('active');
+                    }
+                    return;
+                } else if (event.key === "ArrowUp") {
+                    event.preventDefault();
+                    if (index > 0) {
+                        $items.removeClass('active');
+                        $items.eq(index - 1).addClass('active');
+                    } else {
+                        $items.removeClass('active');
+                        $items.eq($items.length - 1).addClass('active');
+                    }
+                    return;
+                } else if (event.key === "Enter") {
+                    event.preventDefault();
+                    if ($active.length) {
+                        $active.parent().trigger('click');
+                    }
+                    return;
+                }
+            }
+
+            // Ajax pencarian obat
             $.ajax({
                 url: '/erm/obat/cari',
                 data: {
                     'nama': obat.value,
                 },
                 success: function(response) {
-                    html =
-                        '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
-                    $.map(response.data, function(data) {
-                        $.map(data.gudang_barang, function(item) {
-                            if (data) {
-                                if (data.status != "0") {
-                                    if (item.stok != "0") {
-                                        html +=
-                                            '<li data-id="' +
-                                            data.kode_brng +
-                                            '" data-stok="' + item.stok +
-                                            '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok ="' + item.stok + '" onclick="setObat(this, ' + no + ')"><a class="dropdown-item" href="#" style="overflow:hidden">' +
-                                            data.nama_brng + ' - <span class="text-primary">- Rp. ' + toRupiah(data.ralan) + ' - <i><b>Stok (' + item.stok + ')</b></i></span></a></li>'
-                                    } else {
-                                        html +=
-                                            '<li class="disable" data-id="' + data
-                                            .kode_brng +
-                                            '" data-kapasitas="' + data.kapasitas + '" data-nama ="' + data.nama_brng + '" data-stok="' + item.stok + '" onclick="setObat(this, ' + no + ')"><i><a class="dropdown-item" href="#" style="overflow:hidden;color:red">' +
-                                            data.nama_brng + ' - Rp. ' + toRupiah(data.ralan) + ' - <b>Stok Kosong' +
-                                            '</a></i></li>'
-                                    }
+                    let html = `
+                            <ul class="dropdown-menu show" style="width:auto;position:absolute;font-size:12px">
+                            `;
+
+                    response.data.forEach(data => {
+                        if (data && data.status != "0") {
+                            data.gudang_barang.forEach(item => {
+                                const stok = parseInt(item.stok);
+                                if (stok > 0) {
+                                    html += `
+                    <li data-id="${data.kode_brng}"
+                        data-stok="${stok}"
+                        data-kapasitas="${data.kapasitas}"
+                        data-nama="${data.nama_brng}"
+                        data-harga="${data.ralan}"
+                        onclick="setObat(this, ${no})">
+                        <a class="dropdown-item" href="#" style="overflow:hidden">
+                            ${data.nama_brng} - 
+                            <span class="text-primary">
+                                Rp. ${toRupiah(data.ralan)} 
+                                <i><b>Stok (${stok})</b></i>
+                            </span><br/>
+                            <span class="text-disable" style="font-size:9px;color:#8b8b8b">
+                                Kandungan : ${data.letak_barang}
+                            </span>
+                        </a>
+                    </li>
+                `;
+                                } else {
+                                    html += `
+                    <li class="disable"
+                        data-id="${data.kode_brng}"
+                        data-kapasitas="${data.kapasitas}"
+                        data-nama="${data.nama_brng}"
+                        data-harga="${data.ralan}"
+                        onclick="setObat(this, ${no})">
+                        <a class="dropdown-item" href="#" style="overflow:hidden;color:red">
+                            ${data.nama_brng} - Rp. ${toRupiah(data.ralan)} - 
+                            <b>Stok Kosong</b>
+                            <br/>
+                            <span class="text-disable" style="font-size:9px;color:#8b8b8b">
+                                Kandungan : ${data.letak_barang}
+                            </span>
+                        </a>
+                    </li>
+                `;
                                 }
-                            }
-                        })
-                    })
-                    html += '</ul>';
-                    $('.list_obat_' + no).fadeIn();
-                    $('.list_obat_' + no).html(html);
+                            });
+                        }
+                    });
+
+                    html += `</ul>`;
+                    $list.fadeIn().html(html);
+
                 }
-            })
+            });
         }
+
+
 
         function hitungJumlahObat(kps, p1, p2, jumlah) {
             // jumlah = $('.jml_dr').val();
@@ -1123,6 +1094,8 @@
         }
 
         function setNilaiPembagi(e) {
+            console.log('pembagi ===', e);
+
             pembagi = $(e).val();
             if (pembagi == '' || pembagi == 0) {
                 $(e).val(1);
@@ -1131,15 +1104,25 @@
         }
 
         function setObat(param, no) {
-            $('.nama_obat_' + no).val($(param).data('nama'));
-            $('#kode_brng' + no).val($(param).data('id'))
-            $('#kps' + no).val($(param).data('kapasitas'))
+            const nama = $(param).data('nama');
+            const kode_brng = $(param).data('id');
+            const kps = $(param).data('kapasitas');
+            const jumlahRacikan = $('input[name="jml_dr"]').val();
+            const harga = $(param).data('harga');
+            const subTotal = (harga * jumlahRacikan);
+            $('.nama_obat_' + no).val(nama);
+            $('#kode_brng' + no).val(kode_brng)
+            $('#labelHargaBarang' + no).text(formatCurrency(harga)).data('number', harga)
+            $('#labelSubTotalBarang' + no).text(formatCurrency(subTotal)).data('number', subTotal)
+            $('#kps' + no).val(kps)
             $('#p1' + no).val(1)
             $('#p2' + no).val(1)
-            $('#jml_obat' + no).val(0)
-            $('#kandungan' + no).val(0)
+            $('#jml_obat' + no).val(jumlahRacikan)
+            $('#kandungan' + no).val(kps)
             $('#stok' + no).val($(param).data('stok'))
             $('.list_obat_' + no).fadeOut()
+
+            subtotalRacikan(no)
         }
 
         function ambilTemplateRacikan(kd_dokter = '', nm_racik = '', id = '') {
@@ -1776,6 +1759,30 @@
             }
 
             return list;
+        }
+
+        function formatCurrency(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0,
+            }).format(number);
+        }
+
+        function formatFloat(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(number);
+        }
+
+        function floatWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function floatWithDot(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
     </script>
     @stack('script')

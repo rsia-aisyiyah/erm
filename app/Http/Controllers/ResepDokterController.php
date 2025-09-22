@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\ResepDokter;
+use App\Models\ResepObat;
+use Exception;
+use Facade\Ignition\QueryRecorder\Query;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class ResepDokterController extends Controller
@@ -20,12 +24,18 @@ class ResepDokterController extends Controller
         $resepDokter = $this->resepDokter;
         $hasil = '';
         if ($request->aturan_pakai) {
-            $hasil = $resepDokter->where('aturan_pakai', 'like', '%' . $request->aturan_pakai . "%")->limit(10)->groupBy('aturan_pakai')->get();
+            $hasil = $resepDokter->where('aturan_pakai', 'like', '%'.$request->aturan_pakai."%")->limit(10)->groupBy('aturan_pakai')->get();
         } else {
             $resepDokter->limit(10)->get();
         }
 
         return response()->json($hasil, 200);
+    }
+    public function get(int|string $no_resep)
+    {
+        $resepDokter = $this->resepDokter->where('no_resep', $no_resep)
+            ->with('dataBarang.kodeSatuan')->get();
+        return response()->json($resepDokter);
     }
     public function simpan(Request $request)
     {
@@ -35,18 +45,34 @@ class ResepDokterController extends Controller
             'jml' => $request->jml,
             'aturan_pakai' => $request->aturan_pakai,
         ];
-        $resepDokter = $this->resepDokter->create($data);
-        $this->track->insertSql($this->resepDokter, $data);
+
+        if ($this->isExist($request)) {
+            return response()->json(['message' => 'Obat sudah ada'], 500);
+        }
+        try {
+            $resepDokter = $this->resepDokter->create($data);
+            $this->track->insertSql($this->resepDokter, $data);
+        } catch (Exception $e) {
+            throw new Exception("Error Processing Request $e->getMessage", 1);
+
+        }
         return response()->json($resepDokter);
     }
     public function hapus(Request $request)
     {
-        $data =  [
+        $data = [
             'no_resep' => $request->no_resep,
             'kode_brng' => $request->kode_brng,
         ];
-        $resepDokter = $this->resepDokter->where($data)->delete();
-        $this->track->deleteSql($this->resepDokter, $data);
+        try {
+
+            $resepDokter = $this->resepDokter->where($data)->delete();
+            if ($resepDokter) {
+                $this->track->deleteSql($this->resepDokter, $data);
+            }
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
         return response()->json($resepDokter, 200);
     }
 
@@ -60,9 +86,31 @@ class ResepDokterController extends Controller
             'no_resep' => $request->no_resep,
             'kode_brng' => $request->kode_brng
         ];
+        try {
+            $resepDokter = $this->resepDokter->where($clause)->update($data);
+            if ($resepDokter) {
+                $this->track->updateSql($this->resepDokter, $data, $clause);
+            }
 
-        $resepDokter = $this->resepDokter->where($clause)->update($data);
-        $this->track->updateSql($this->resepDokter, $data, $clause);
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
         return response()->json('Data berhasil diubah');
+    }
+
+    protected function isExist(Request $request): bool
+    {
+        $resepDokter = $this->resepDokter
+            ->where('no_resep', $request->no_resep)
+            ->where('kode_brng', $request->kode_brng)->first();
+
+        return $resepDokter ? true : false;
+    }
+
+    protected function isResepAvalilable($no_resep)
+    {
+        if (! $no_resep) {
+
+        }
     }
 }

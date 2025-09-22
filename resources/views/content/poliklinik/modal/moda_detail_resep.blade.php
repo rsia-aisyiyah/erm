@@ -50,7 +50,6 @@
                     })
                     $('#modalDetailResep').modal('show')
                 }
-                console.log('RESEP RACIKAN ===', response);
             })
         }
     </script>

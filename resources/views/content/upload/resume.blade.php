@@ -1,4 +1,4 @@
-<div class="col-sm-12" id="form-upload" style="visibility: hidden">
+<div class="col-sm-12" id="form-upload">
     <div>
         <div class="d-flex align-items-start">
             <div class="btn-group-vertical" id="button-form">
@@ -11,7 +11,7 @@
                         <div class="row" id="preview">
                         </div>
                     </div>
-                    <form action="upload" method="post" enctype="multipart/form-data">
+                    <form action="upload" method="post" enctype="multipart/form-data" id="formUploadPenunjang">
                         @csrf
                         <div class="d-grid gap-2">
                             <label for="no_rkm_medis"></label>
@@ -28,7 +28,7 @@
                         <div class="d-grid gap-2">
                             <label type="button" class="btn btn-success" width="100%" for="file" style="font-size:12px">Tambah</label>
                             <button type="button" class="btn btn-primary btn-sm" id="submit"
-                                onclick="simpan()">Simpan</button>
+                                onclick="uploadBerkas()">Simpan</button>
                         </div>
                     </form>
                 </div>

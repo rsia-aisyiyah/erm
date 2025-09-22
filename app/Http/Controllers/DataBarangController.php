@@ -7,17 +7,25 @@ use Illuminate\Http\Request;
 
 class DataBarangController extends Controller
 {
-    private $dataBarang, $data;
-    public function __construct()
+    protected $dataBarang;
+    protected $barang;
+    public function __construct(DataBarang $dataBarang)
     {
-        $this->dataBarang = new DataBarang();
-        $this->data = $this->dataBarang->semua();
+        $this->dataBarang = $dataBarang;
+        $this->barang = $this->dataBarang->semua();
     }
-    public function index(Request $request)
+
+    public function index()
     {
-        $query = $this->data;
+
+        return view('content.databarang.table_databarang');
+
+    }
+    public function all(Request $request)
+    {
+        $query = $this->barang;
         if ($request->nama) {
-            $query = $query->where('nama_brng', 'like', '%' . $request->nama . '%');
+            $query = $query->where('nama_brng', 'like', '%'.$request->nama.'%');
         }
 
         $hasil = $query->get();
@@ -26,26 +34,54 @@ class DataBarangController extends Controller
     }
     public function cari(Request $request)
     {
-        $hasil = $this->data->where('nama_brng', 'like', $request->nama . '%')->limit(10)->with(['gudangBarang' => function ($q) {
-            return $q
-                ->where('kd_bangsal', 'RM7')
-                ->sum('stok');
-        }])->get();
+        $hasil = $this->barang->where('nama_brng', 'like', $request->nama.'%')->limit(10)->with([
+            'gudangBarang' => function ($q) {
+                return $q
+                    ->where('kd_bangsal', 'RM7')
+                    ->sum('stok');
+            }
+        ])
+            ->whereHas('gudangBarang', function ($q) {
+                return $q->where('kd_bangsal', 'RM7');
+            })->get();
 
         if ($hasil) {
             $response =
-            response()->json([
-                'success' => true,
-                'message' => 'Data obat dan alkes berdasarkan pencarian = ' . $request->nama,
-                'data' => $hasil,
-            ], 200);
+                response()->json([
+                    'success' => true,
+                    'message' => 'Data obat dan alkes berdasarkan pencarian = '.$request->nama,
+                    'data' => $hasil,
+                ], 200);
         } else {
             $response =
-            response()->json([
-                'success' => false,
-                'message' => 'Tidak menemukan obat/alkes',
-            ], 404);
+                response()->json([
+                    'success' => false,
+                    'message' => 'Tidak menemukan obat/alkes',
+                ], 404);
         }
         return $response;
+    }
+
+    function get(string $kode_brng)
+    {
+        $data = $this->barang
+            ->where('kode_brng', $kode_brng)->first();
+
+        return response()->json($data);
+    }
+
+    function table(Request $request)
+    {
+        $databarang = DataBarang::where('status', '1')
+            ->with(['kodeSatuan', 'golongan', 'kategori', 'jenis', 'industriFarmasi', 'gudangBarang.bangsal']);
+        // render to datatable
+        return DataTables()->of($databarang)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('search') && $request->get('search')['value']) {
+                    return $query->where('nama_brng', 'like', '%'.$request->get('search')['value'].'%');
+                }
+            })
+            ->make(true);
+
     }
 }

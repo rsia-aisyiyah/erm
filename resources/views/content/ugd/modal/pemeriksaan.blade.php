@@ -37,7 +37,8 @@
                         @include('content.ugd.modal.pemeriksaan.ews')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep" tabindex="0">
-                        @include('content.ugd.modal.pemeriksaan.resep')
+                        {{-- @include('content.ugd.modal.pemeriksaan.resep') --}}
+                        @include('content.poliklinik.modal.pemeriksaan.resepRalan')
                     </div>
                 </div>
             </div>
@@ -51,6 +52,8 @@
 </div>
 @push('script')
     <script type="text/javascript">
+        const formSoapPoli = $('#formSoapPoli');
+
         function tbSoapUgd(noRawat) {
             $('#tbSoapUgd').DataTable({
                 processing: true,
@@ -160,13 +163,12 @@
                     jam_rawat: jam_rawat,
                 },
             }).done((response) => {
-                if (response.pegawai.nik == "{{ session()->get('pegawai')->nik }}" || response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}") {
+                if (response.pegawai.nik == "{{ session()->get('pegawai')->nik }}" && response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}") {
                     $('#btn-ubah').css('display', 'inline');
                     $('#btn-reset').css('display', 'inline');
                     $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
                     $('#formSoapUgd input[name="nik"]').val(response.pegawai.nik)
                     $('#formSoapUgd input[name="nama"]').val(response.pegawai.nama)
-
                 } else {
                     $('#btn-ubah').css('display', 'none');
                     $('#btn-reset').css('display', 'inline');
@@ -269,6 +271,7 @@
                     tgl_perawatan: $('#formSoapUgd input[name="tgl_perawatan"]').val(),
                     jam_rawat: $('#formSoapUgd input[name="jam_rawat"]').val(),
                     evaluasi: '-',
+                    lingkar_perut: '-',
                     keluaran_urin: $('#formSoapUgd select[name="keluaran_urin"] option:selected').val(),
                     proteinuria: $('#formSoapUgd select[name="proteinuria"] option:selected').val(),
                     air_ketuban: $('#formSoapUgd select[name="air_ketuban"] option:selected').val(),
@@ -303,13 +306,7 @@
                 setEws(no_rawat, 'ralan', spesialis)
                 tbSoapUgd(no_rawat);
                 getInstance.show()
-                swal.fire({
-                    title: 'Berhasil',
-                    text: 'Data berhasil dikirim',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    timer: 1500,
-                })
+                swalToast('Berhasil', 'Data berhasil dikirim', 'success')
                 resetSoap(no_rawat);
 
             })
@@ -339,6 +336,9 @@
                     penilaian: $('#formSoapUgd textarea[name="asesmen"]').val(),
                     rtl: $('#formSoapUgd textarea[name="plan"]').val(),
                     instruksi: $('#formSoapUgd textarea[name="instruksi"]').val(),
+                    jam_rawat: $('#formSoapUgd input[name="jam_rawat"]').val(),
+                    tgl_perawatan: $('#formSoapUgd input[name="tgl_perawatan"]').val(),
+                    lingkar_perut: '-',
                     evaluasi: '-',
                     keluaran_urin: $('#formSoapUgd select[name="keluaran_urin"] option:selected').val(),
                     proteinuria: $('#formSoapUgd select[name="proteinuria"] option:selected').val(),
@@ -373,13 +373,7 @@
                 spesialis = $('#formSoapUgd input[name="no_rawat"]').val();
                 setEws(no_rawat, 'ralan', spesialis)
                 tbSoapUgd(no_rawat);
-                swal.fire({
-                    title: 'Berhasil',
-                    text: 'Data berhasil dikirim',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    timer: 1500,
-                })
+                swalToast('Berhasil', 'Data berhasil dikirim', 'success')
                 getInstance.show();
                 resetSoap(no_rawat);
             })
@@ -420,12 +414,7 @@
                         setEws(no_rawat, 'ralan', spesialis)
                         $('#tbSoapUgd').DataTable().destroy();
                         tbSoapUgd(no_rawat);
-                        swal.fire({
-                            title: 'Berhasil',
-                            text: 'Data berhasil dihapus',
-                            icon: 'success',
-                            timer: 1500,
-                        })
+                        swalToast('Berhasil', 'Data berhasil dihapus', 'success')
                     })
                 }
             })

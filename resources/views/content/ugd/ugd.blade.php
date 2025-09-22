@@ -469,7 +469,7 @@
                 $('#formSoapUgd input[name="spesialis"]').val(response.dokter.kd_sps)
                 $('#formResepUgd input[name="no_rawat"]').val(response.no_rawat)
                 $('#formResepUgd input[name="kd_dokter"]').val(response.kd_dokter)
-                setListResep(noRawat);
+                getResepObat(noRawat)
                 setEws(noRawat, 'ralan', response.dokter.kd_sps)
                 if (response.dokter.kd_sps == 'S0001') {
                     $('.formEws').removeAttr('style');
@@ -583,7 +583,7 @@
                             let no = 1
                             $.map(rr.detail_racikan, function(dr) {
                                 if (rr.no_racik == dr.no_racik) {
-                                    teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, \n`
+                                    teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, jml : ${dr.jml}\n`
                                     no++;
                                 }
                             })

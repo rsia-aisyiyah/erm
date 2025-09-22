@@ -76,7 +76,8 @@ class PermintaanLabController extends Controller
                     'dokter'
                 ]);
             },
-            'saranKesan'
+            'saranKesan',
+            'pasien'
         ])->orderBy('noorder', 'desc');
 
         if ($request->noorder) {

@@ -216,8 +216,9 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input type="hidden" name="jam_rawat" id="jam_rawat">
-                        <input type="hidden" name="tgl_perawatan" id="tgl_perawatan">
+                        {{-- <input type="hidden" name="jam_rawat" id="jam_rawat" value="{{ date('H:i:s') }}"> --}}
+                        <input type="hidden" name="lingkar_perut" id="lingkar_perut" value="">
+                        {{-- <input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="{{ date('Y-m-d') }}"> --}}
                         <input type="hidden" name="spesialis" id="spesialis">
                         <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRalan()"><i class="bi bi-save"></i> Simpan</button>
                         <button type="button" class="btn btn-warning btn-sm" id="btn-reset" style="font-size:12px;display: none"><i class="bi bi-arrow-clockwise"></i> Baru</button>

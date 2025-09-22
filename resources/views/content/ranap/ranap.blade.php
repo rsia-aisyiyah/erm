@@ -164,6 +164,7 @@
 @push('script')
     <script type="text/javascript" src="{{ asset('js/context-menu/ranap.js') }}"></script>
     <script>
+        const formSoapPoli = $('#formSoapPoli');
         var stts_pulang = '-';
         var tgl_awal = '';
         var tgl_akhir = '';

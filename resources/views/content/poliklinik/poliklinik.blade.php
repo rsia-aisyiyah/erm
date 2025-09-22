@@ -94,7 +94,7 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Poliklinik : {{ session()->get('pegawai')->nama }}</h5>
                         <div class="d-grid gap-2">
-                            @if (session()->get('pegawai')->bidang == 'Dokter Umum')
+                            @if (session()->get('pegawai')->bidang == 'Dokter Umum' || session()->get('pegawai')->jbtn == 'Dokter Umum')
                                 <a href="poliklinik/P006?dokter={{ session()->get('pegawai')->nik }}"
                                     class="btn btn-primary">
                                     POLIKLINIK UMUM
