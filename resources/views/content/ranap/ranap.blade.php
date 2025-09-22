@@ -460,8 +460,8 @@
                                 }
                                 list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
                             }
-                            // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+                            // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
                             // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${data.pasien.no_peserta}', '${data.dokter.mapping_dokter.kd_dokter_bpjs}')">Riwayat Pemeriksaan I-Care</a></li>`;
                             button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownAksi${meta.row}" data-id="${row.no_rawat}"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:11px">${list}</ul></div>`
 
