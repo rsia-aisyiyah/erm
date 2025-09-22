@@ -123,7 +123,8 @@ const riwayatPasienMenuItems = (no_rkm_medis) => (
         name: "Riwayat Pasien",
         icon: 'fa-regular fa-search',
         callback: function (item, option, e, x, y) {
-            listRiwayatPasien(`${no_rkm_medis}`);
+            // listRiwayatPasien(`${no_rkm_medis}`);
+            modalRiwayat(`${no_rkm_medis}`);
         }
     }
 )
