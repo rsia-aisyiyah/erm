@@ -31,6 +31,7 @@ class PemeriksaanRalanRequest extends FormRequest
     public function pemeriksaanData()
     {
         return [
+            'nip' => $this->nip ? $this->nip : auth()->user()->nip,
             'suhu_tubuh' => $this->suhu_tubuh,
             'tensi' => $this->tensi,
             'tgl_perawatan' => $this->tgl_perawatan ?? date('Y-m-d'),

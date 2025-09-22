@@ -462,7 +462,7 @@
                                 </div>`;
 
 
-                $('#info').append(infoPasien).hide().fadeIn()
+                $('#info').html(infoPasien)
                 setDiagnosaPasien(no_rawat);
                 setLaporanOperasi(no_rawat)
                 setRiwayatPemeriksaanRalan(no_rawat, regPeriksa.kd_poli);
@@ -680,17 +680,17 @@
                                                         <td>${stringPemeriksaan(pemeriksaan.rtl)}</td>
                                                     </tr> 
                                                     ${pemeriksaan.sbar ? '':` <tr>
-                                                                                                    <th width="20%">Instruksi</th>
-                                                                                                    <td>:</td>
-                                                                                                    <td>${stringPemeriksaan(pemeriksaan.instruksi)}</td>
-                                                                                                </tr>`}  
+                                                                                                                <th width="20%">Instruksi</th>
+                                                                                                                <td>:</td>
+                                                                                                                <td>${stringPemeriksaan(pemeriksaan.instruksi)}</td>
+                                                                                                            </tr>`}  
                                                         
                                                     ${pemeriksaan.sbar ? `<tr>
-                                                                                                        <th width="20%">Diverivikasi Oleh : </th>
-                                                                                                        <td>:</td>
-                                                                                                        <td> <strong>${pemeriksaan.verifikasi ? pemeriksaan.verifikasi.petugas.nama : '<span class="text-danger">Belum diverifikasi</span>'}</strong>
-                                                                                                            <br/> ${pemeriksaan.verifikasi ? `${formatTanggal(pemeriksaan.verifikasi?.tgl_verif)} ${pemeriksaan.verifikasi.jam_verif}` : ''}</td>
-                                                                                                    </tr>` : ''}
+                                                                                                                    <th width="20%">Diverivikasi Oleh : </th>
+                                                                                                                    <td>:</td>
+                                                                                                                    <td> <strong>${pemeriksaan.verifikasi ? pemeriksaan.verifikasi.petugas.nama : '<span class="text-danger">Belum diverifikasi</span>'}</strong>
+                                                                                                                        <br/> ${pemeriksaan.verifikasi ? `${formatTanggal(pemeriksaan.verifikasi?.tgl_verif)} ${pemeriksaan.verifikasi.jam_verif}` : ''}</td>
+                                                                                                                </tr>` : ''}
                                                         
                                                 </table>
                                             </div>
