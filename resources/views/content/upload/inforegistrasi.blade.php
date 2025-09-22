@@ -8,17 +8,17 @@
                 <tr>
                     <td>Nama</td>
                     <td>:</td>
-                    <td id="td_nm_pasien"></td>
+                    <td class="td_nm_pasien"></td>
                 </tr>
                 <tr>
                     <td>No Rawat</td>
                     <td>:</td>
-                    <td id="td_no_rawat"></td>
+                    <td class="td_no_rawat"></td>
                 </tr>
                 <tr>
                     <td>Tanggal Masuk</td>
                     <td>:</td>
-                    <td id="td_tgl_reg"></td>
+                    <td class="td_tgl_reg"></td>
                 </tr>
             </table>
         </div>

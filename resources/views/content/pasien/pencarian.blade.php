@@ -52,14 +52,15 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">
+        {{-- <div class="col-sm-12">
             @include('content.upload.inforegistrasi')
-        </div>
-        <div class="col-sm-12">
-            @include('content.upload.resume')
-            @include('content.poliklinik.modal.modal_riwayat')
-            @include('content.ranap.modal.modal_riwayat')
-        </div>
+        </div> --}}
+        {{-- <div class="col-sm-12"> --}}
+        {{-- @include('content.upload.resume') --}}
+        {{-- </div> --}}
+        @include('content.ranap.modal.modal_penunjang')
+        @include('content.poliklinik.modal.modal_riwayat')
+        @include('content.ranap.modal.modal_riwayat')
     </div>
 @endsection
 

@@ -57,10 +57,12 @@
                     formUploadPenunjang.find('#no_rawat').val(data.no_rawat)
                     formUploadPenunjang.find('#no_rkm_medis').val(data.no_rkm_medis)
                     formUploadPenunjang.find('#tgl_masuk').val(data.tgl_registrasi)
-                    $('#td_no_rawat').text(data.no_rawat)
-                    $('#td_nm_pasien').text(data.pasien.nm_pasien)
-                    $('#td_tgl_reg').text(formatTanggal(data.tgl_registrasi))
-                    $('#infoReg').css('visibility', 'visible')
+                    console.log(data.no_rawat);
+
+                    $('.td_no_rawat').text(data.no_rawat)
+                    $('.td_nm_pasien').text(data.pasien.nm_pasien)
+                    $('.td_tgl_reg').text(formatTanggal(data.tgl_registrasi))
+                    $('.infoReg').css('visibility', 'visible')
 
                     $('#button-form label').detach()
                     $('#button-form input').detach()
