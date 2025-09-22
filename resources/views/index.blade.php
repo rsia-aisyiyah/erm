@@ -624,7 +624,7 @@
         function showForm(no_rawat = '', kategori = '') {
             $('#submit').hide()
             if (!no_rawat && !kategori) {
-                no_rawat = $('#td_no_rawat').text();
+                no_rawat = $('.td_no_rawat').text();
                 kategori = event.target.value;
             }
 
