@@ -386,6 +386,12 @@
                         $('.no_resep').val('')
                         $('.noResepText').text('')
                         $('.labelTglResep').text(``);
+                    }).fail((error) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: `Terjadi Kesalahan!`,
+                            html: `<h4 class="text-danger">${error.responseJSON?.message}</h4> ${error.status} : ${error.statusText}`,
+                        })
                     })
                 }
             })
