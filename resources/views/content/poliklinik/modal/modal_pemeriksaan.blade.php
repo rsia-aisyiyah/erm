@@ -231,42 +231,42 @@
 
 
         $('button[data-bs-target="#tab-soap-pane"]').on('shown.bs.tab', function(e, x, y) {
-            $('.btn-asmed-ranap').css('display', 'none')
-            $('.btn-asmed').css('display', 'none')
-            $('.btn-soap').css('display', 'inline')
+            $('.btn-asmed-ranap').addClass('d-none')
+            $('.btn-asmed').addClass('d-none')
+            $('.btn-soap').removeClass('d-none')
 
         })
 
         btnTabAsmedAnak.on('shown.bs.tab', function(e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedAnak)
-            $('.btn-asmed-ranap').css('display', 'none')
-            $('.btn-asmed').css('display', 'inline')
-            $('.btn-soap').css('display', 'none')
+            $('.btn-asmed-ranap').addClass('d-none')
+            $('.btn-asmed').removeClass('d-none')
+            $('.btn-soap').addClass('d-none')
 
         })
         btnTabAsmedObgyn.on('shown.bs.tab', function(e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRajalKandungan)
-            $('.btn-asmed-ranap').css('display', 'none')
-            $('.btn-asmed').css('display', 'inline')
-            $('.btn-soap').css('display', 'none')
+            $('.btn-asmed-ranap').addClass('d-none')
+            $('.btn-asmed').removeClass('d-none')
+            $('.btn-soap').addClass('d-none')
 
         })
         btnTabAsmedRanapAnak.on('shown.bs.tab', function(e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRanapAnak)
-            $('.btn-asmed-ranap').css('display', 'inline')
-            $('.btn-asmed').css('display', 'none')
-            $('.btn-soap').css('display', 'none')
+            $('.btn-asmed-ranap').removeClass('d-none')
+            $('.btn-asmed').addClass('d-none')
+            $('.btn-soap').addClass('d-none')
         })
 
         btnTabAsmedRanapObgyn.on('shown.bs.tab', function(e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRanapKandungan)
-            $('.btn-asmed-ranap').css('display', 'inline')
-            $('.btn-asmed').css('display', 'none')
-            $('.btn-soap').css('display', 'none')
+            $('.btn-asmed-ranap').removeClass('d-none')
+            $('.btn-asmed').addClass('d-none')
+            $('.btn-soap').addClass('d-none')
         });
 
         btnsSkriningTB.on('shown.bs.tab', function(e, x, y) {
@@ -289,15 +289,15 @@
                 formPasienSkoringTb.find('input[name=kd_dokter]').val(response.kd_dokter)
             })
 
-            $('.btn-asmed-ranap').css('display', 'none')
-            $('.btn-asmed').css('display', 'none')
-            $('.btn-soap').css('display', 'none')
+            $('.btn-asmed-ranap').addClass('d-none')
+            $('.btn-asmed').addClass('d-none')
+            $('.btn-soap').addClass('d-none')
         })
 
         $('button[data-bs-target="#lab-ana"]').on('shown.bs.tab', function(e, x, y) {
-            $('.btn-asmed-ranap').css('display', 'none')
-            $('.btn-asmed').css('display', 'none')
-            $('.btn-soap').css('display', 'none')
+            $('.btn-asmed-ranap').addClass('d-none')
+            $('.btn-asmed').addClass('d-none')
+            $('.btn-soap').addClass('d-none')
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             $('#tabel-lab').empty()
             getHasilLab(no_rawat).done((lab) => {
@@ -331,19 +331,26 @@
 
                     })
                     // $('#tabel-lab').append(hasil)
-                    $('#viewHasilLaborat').css('display', 'inline')
-                    $('#alertHasilLab').css('display', 'none')
+                    $('#viewHasilLaborat').removeClass('d-none')
+                    $('#alertHasilLab').addClass('d-none')
                 } else {
-                    $('#viewHasilLaborat').css('display', 'none')
-                    $('#alertHasilLab').css('display', 'inline')
+                    $('#viewHasilLaborat').addClass('d-none')
+                    $('#alertHasilLab').removeClass('d-none')
 
                 }
             })
         })
+
+        btnTabPermintaanLab.on('shown.bs.tab', function(e, x, y) {
+            $('.btn-asmed-ranap').addClass('d-none')
+            $('.btn-asmed').addClass('d-none')
+            $('.btn-soap').addClass('d-none')
+        })
+
         $('button[data-bs-target="#rad-ana"]').on('shown.bs.tab', function(e, x, y) {
-            $('.btn-asmed-ranap').css('display', 'none')
-            $('.btn-asmed').css('display', 'none')
-            $('.btn-soap').css('display', 'none')
+            $('.btn-asmed-ranap').addClass('d-none')
+            $('.btn-asmed').addClass('d-none')
+            $('.btn-soap').addClass('d-none')
             const no_rawat = $('#nomor_rawat').val();
             $('#tbHasilRadiologi tbody').empty()
             getPermintaanRadiologi(no_rawat).done((permintaan) => {
@@ -391,11 +398,11 @@
                     })
 
                     $('#viewHasilRadiologi').css('display', 'flex')
-                    $('#alertHasilRadiologi').css('display', 'none')
+                    $('#alertHasilRadiologi').addClass('d-none')
 
                 } else {
-                    $('#viewHasilRadiologi').css('display', 'none')
-                    $('#alertHasilRadiologi').css('display', 'inline')
+                    $('#viewHasilRadiologi').addClass('d-none')
+                    $('#alertHasilRadiologi').removeClass('d-none')
                 }
             })
         })
@@ -736,7 +743,7 @@
             kps = $(param).data('kps');
             obat = $(param).data('obat');
 
-            $('.simpan-obat').css('display', 'none');
+            $('.simpan-obat').addClass('d-none');
             $('.ubah-obat').css('display', '');
             $('.obat-baru').css('display', '');
 
@@ -791,8 +798,8 @@
 
         $('.obat-baru').on('click', function() {
             $('.simpan-obat').css('display', '');
-            $('.ubah-obat').css('display', 'none');
-            $('.obat-baru').css('display', 'none');
+            $('.ubah-obat').addClass('d-none');
+            $('.obat-baru').addClass('d-none');
 
             $('.kandungan').val('');
             $('.jml_obat').val('');
@@ -1571,12 +1578,12 @@
                 // riwayatIcare(regPeriksa.pasien.no_kartu, 284199)
                 var form = '';
                 if (regPeriksa.dokter.kd_sps == 'S0003') {
-                    $('#li-asmed-ana').css('display', 'inline');
-                    $('#li-asmed-ranap-ana').css('display', 'inline');
-                    $('#li-data-anak').css('display', 'inline');
-                    $('#li-asmed-obg').css('display', 'none');
-                    $('#li-asmed-ranap-obg').css('display', 'none');
-                    $('#li-data-obg').css('display', 'none');
+                    $('#li-asmed-ana').removeClass('d-none');
+                    $('#li-asmed-ranap-ana').removeClass('d-none');
+                    $('#li-data-anak').removeClass('d-none');
+                    $('#li-asmed-obg').addClass('d-none');
+                    $('#li-asmed-ranap-obg').addClass('d-none');
+                    $('#li-data-obg').addClass('d-none');
                     $('.btn-asmed-ranap').attr('onclick', 'simpanAsmedRanapAnak()')
                     $('.btn-asmed').attr('onclick', 'simpanAsmedRajalAnak()')
                     form = '.form-asmed-anak';
@@ -1584,12 +1591,12 @@
                     setAsmedRanapAnak(id)
 
                 } else if (regPeriksa.dokter.kd_sps == 'S0001') {
-                    $('#li-asmed-ana').css('display', 'none');
-                    $('#li-asmed-ranap-ana').css('display', 'none');
-                    $('#li-data-anak').css('display', 'none');
-                    $('#li-asmed-obg').css('display', 'inline');
-                    $('#li-asmed-ranap-obg').css('display', 'inline');
-                    $('#li-data-obg').css('display', 'inline');
+                    $('#li-asmed-ana').addClass('d-none');
+                    $('#li-asmed-ranap-ana').addClass('d-none');
+                    $('#li-data-anak').addClass('d-none');
+                    $('#li-asmed-obg').removeClass('d-none');
+                    $('#li-asmed-ranap-obg').removeClass('d-none');
+                    $('#li-data-obg').removeClass('d-none');
                     $('.btn-asmed-ranap').attr('onclick', 'simpanAsmedRanapKandungan()')
                     $('.btn-asmed').attr('onclick', 'simpanAsmedRajalKandungan()')
                     form = '.form-asmed-kandungan';
@@ -1658,11 +1665,11 @@
 
         function setAsmedAnak(no_rawat) {
             getAsmedAnak(no_rawat).done((response) => {
-                $('.form-asmed-anak button[name="simpan"]').css('display', 'inline')
-                $('.form-asmed-anak button[name="edit"]').css('display', 'none')
+                $('.form-asmed-anak button[name="simpan"]').removeClass('d-none')
+                $('.form-asmed-anak button[name="edit"]').addClass('d-none')
                 if (Object.keys(response).length != 0) {
-                    $('.form-asmed-anak button[name="simpan"]').css('display', 'none')
-                    $('.form-asmed-anak button[name="edit"]').css('display', 'inline')
+                    $('.form-asmed-anak button[name="simpan"]').addClass('d-none')
+                    $('.form-asmed-anak button[name="edit"]').removeClass('d-none')
                     $('.form-asmed-anak select[name="anamnesis"]').val(response.anamnesis).change()
                     $('.form-asmed-anak input[name="hubungan"]').val(response.hubungan)
                     $('.form-asmed-anak textarea[name="keluhan_utama"]').val(response.keluhan_utama)
@@ -1795,7 +1802,7 @@
             aturan_pakai = $('.aturan_pakai_' + no).text();
             $('.simpan-obat-' + no).css('visibility', 'visible');
             $('.simpan-obat-' + no).css('font-size', '12px');
-            $('.ubah-obat').css('display', 'none');
+            $('.ubah-obat').addClass('d-none');
             $('.jml_' + no).empty()
             $('.aturan_pakai_' + no).empty()
             $('.jml_' + no).append('<input type="text" class="form-control form-control-sm form-underline u_jml_' + no + '" value="' + jml + '" />')

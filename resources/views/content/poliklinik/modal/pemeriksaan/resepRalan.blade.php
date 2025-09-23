@@ -593,7 +593,7 @@
 
                 Swal.fire(
                     'Gagal !',
-                    'Kolom ' + textObat + textJml + textAturan + ' tidak boleh kosong',
+                    'Kolom ' + textObat + textJml + textAturan + 'obat racikan tidak boleh kosong',
                     'error'
                 )
             }
@@ -648,7 +648,7 @@
                 textAturan = aturan_pakai ? '' : '<b class="text-danger"> Aturan Pakai</b>';
                 Swal.fire(
                     'Gagal !',
-                    'Kolom ' + textObat + textJml + textAturan + ' tidak boleh kosong',
+                    'Kolom ' + textObat + textJml + textAturan + 'obat tidak boleh kosong',
                     'error'
                 )
             }
