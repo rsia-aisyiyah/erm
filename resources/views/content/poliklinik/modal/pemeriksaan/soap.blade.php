@@ -151,6 +151,7 @@
             }
 
             modalSoapRalan.modal('show');
+            btnTabRiwayatPemeriksaan.trigger('click')
 
             getRegPeriksa(no_rawat).done((response) => {
                 // Swal.fire({

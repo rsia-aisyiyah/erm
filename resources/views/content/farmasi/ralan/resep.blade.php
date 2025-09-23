@@ -310,6 +310,8 @@
                     jam: jam_panggil,
                 },
                 success: function(response) {
+                    console.log('RESPONSE ===', response);
+
                     $('.status-' + no_resep).prop('onclick', '');
                     $('.status-' + no_resep).css('height', '50px');
                     $('.status-' + no_resep).removeClass('btn-primary');

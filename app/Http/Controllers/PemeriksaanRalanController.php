@@ -100,11 +100,12 @@ class PemeriksaanRalanController extends Controller
 
     public function simpan(PemeriksaanRalanRequest $request, UpdateJamResepObat $updateJamResepObat)
     {
+        $nip = $request->nip && $request->nip !== '-' ? $request->nip : session()->get('pegawai')->nik;
         $clause = [
             'no_rawat' => $request->no_rawat,
             'jam_rawat' => $request->jam_rawat,
             'tgl_perawatan' => $request->tgl_perawatan,
-            'nip' => $request->role === 'dokter' ? $request->kd_dokter : $request->nip
+            'nip' => $request->role === 'dokter' ? $request->kd_dokter : $nip
         ];
 
 
