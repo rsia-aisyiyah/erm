@@ -31,12 +31,19 @@ class ResepObatController extends Controller
         $data = ['no_resep' => $noResep];
 
         try {
-            $result = $resepObat->where($data)->delete();
+            $result = $resepObat->where($data);
+            $isValidated = $result->first()->tgl_perawatan !== '0000-00-00' ? true : false;
+            $isSubmitted = $result->first()->tgl_penyerahan !== '0000-00-00' ? true : false;
+            if ($isValidated || $isSubmitted) {
+                return response()->json(['message' => 'Obat sudah divalidasi / diserahkan'], 500);
+            }
+
+            $result->delete();
             if ($result) {
                 $this->track->deleteSql($resepObat, $data);
             }
         } catch (QueryException $e) {
-            return response()->json($e->errorInfo, 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
         return response()->json($result);
     }
@@ -104,7 +111,7 @@ class ResepObatController extends Controller
             ->filter(function ($query) use ($request) {
                 if ($request->has('search') && $request->get('search')['value']) {
                     return $query->whereHas('regPeriksa.pasien', function ($query) use ($request) {
-                        $query->where('nm_pasien', 'like', '%'.$request->get('search')['value'].'%');
+                        $query->where('nm_pasien', 'like', '%' . $request->get('search')['value'] . '%');
                     });
                 }
             })
@@ -190,7 +197,7 @@ class ResepObatController extends Controller
             return (int) $resep->no_resep + 1;
 
         }
-        return (int) date('Ymd').'0001';
+        return (int) date('Ymd') . '0001';
     }
 
     function copyResep($no_resep, Request $request)
@@ -263,7 +270,7 @@ class ResepObatController extends Controller
                 ResepDokter::insert($resepDokter->toArray());
 
                 $racikan = $resepRacikan
-                    ->map(fn ($item) => collect($item)->except('detail'))
+                    ->map(fn($item) => collect($item)->except('detail'))
                     ->toArray();
                 ResepDokterRacikan::insert($racikan);
 
