@@ -6,6 +6,7 @@ use App\Models\ResepDokter;
 use App\Models\ResepDokterRacikan;
 use App\Models\ResepDokterRacikanDetail;
 use App\Models\ResepObat;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -196,7 +197,16 @@ class ResepObatController extends Controller
     {
 
 
-        $noResepExist = $this->isAvailable($request->no_rawat)?->no_resep;
+        $noResepExist = null;
+        try {
+            $resep = $this->isAvailable($request->no_rawat);
+            if ($resep) {
+                $noResepExist = $resep->no_resep;
+            }
+        } catch (Exception $e) {
+            // Log::error($e);
+            throw new Exception("Error Processing Request", 1);
+        }
         $get = $this->get($no_resep);
         $no = $noResepExist ? $noResepExist : $this->createNoResep();
         $data = json_decode($get->content());
