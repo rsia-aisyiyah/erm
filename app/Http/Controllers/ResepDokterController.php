@@ -42,8 +42,8 @@ class ResepDokterController extends Controller
     public function simpan(Request $request)
     {
         $data = [
-            // 'no_resep' => $request->no_resep,
-            // 'kode_brng' => $request->kode_brng,
+            'no_resep' => $request->no_resep,
+            'kode_brng' => $request->kode_brng,
             'jml' => $request->jml,
             'aturan_pakai' => $request->aturan_pakai,
         ];
