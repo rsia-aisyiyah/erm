@@ -11,6 +11,7 @@
         "php": "^7.3|^8.0",
         "awobaz/compoships": "^2.3",
         "barryvdh/laravel-dompdf": "^2.0",
+        "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "itsgoingd/clockwork": "^5.1",
         "laravel/framework": "^8.75",
@@ -18,6 +19,7 @@
         "laravel/tinker": "^2.5",
         "milon/barcode": "^10.0",
         "nullpunkt/lz-string-php": "^1.3",
+        "opcodesio/log-viewer": "^3.19",
         "virusphp/bridging-bpjs": "^2.1",
         "yajra/laravel-datatables": "^1.5"
     },

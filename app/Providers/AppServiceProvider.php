@@ -5,6 +5,7 @@ namespace App\Providers;
 use URL;
 use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
+use Opcodes\LogViewer\Facades\LogViewer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
         if (request()->isSecure()) {
             URL::forceScheme('https');
         }
+
+        LogViewer::auth(function ($request) {
+            return session()->has('pegawai') && session()->get('pegawai')->nik = 'direksi';
+        });
 
     }
 }
