@@ -6,6 +6,7 @@
 /public/vendor
 /storage/*.key
 /vendor
+composer.lock
 .env
 .env.backup
 .phpunit.result.cache
@@ -21,3 +22,6 @@ yarn-error.log
 /public/erm/*.jpeg
 /public/erm/*.jpg
 /public/erm/*.png
+
+/storage/app/public/
+/storage/logs/
