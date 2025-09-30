@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ResepDokter;
 use App\Models\ResepObat;
+use App\Traits\ResponseTrait;
 use Exception;
 use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Database\QueryException;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 
 class ResepDokterController extends Controller
 {
+    use ResponseTrait;
     private $resepDokter;
     private $track;
     public function __construct()
@@ -24,7 +26,7 @@ class ResepDokterController extends Controller
         $resepDokter = $this->resepDokter;
         $hasil = '';
         if ($request->aturan_pakai) {
-            $hasil = $resepDokter->where('aturan_pakai', 'like', '%'.$request->aturan_pakai."%")->limit(10)->groupBy('aturan_pakai')->get();
+            $hasil = $resepDokter->where('aturan_pakai', 'like', '%' . $request->aturan_pakai . "%")->limit(10)->groupBy('aturan_pakai')->get();
         } else {
             $resepDokter->limit(10)->get();
         }
@@ -40,11 +42,13 @@ class ResepDokterController extends Controller
     public function simpan(Request $request)
     {
         $data = [
-            'no_resep' => $request->no_resep,
-            'kode_brng' => $request->kode_brng,
+            // 'no_resep' => $request->no_resep,
+            // 'kode_brng' => $request->kode_brng,
             'jml' => $request->jml,
             'aturan_pakai' => $request->aturan_pakai,
         ];
+
+
 
         if ($this->isExist($request)) {
             return response()->json(['message' => 'Obat sudah ada'], 500);
@@ -53,8 +57,8 @@ class ResepDokterController extends Controller
             $resepDokter = $this->resepDokter->create($data);
             $this->track->insertSql($this->resepDokter, $data);
         } catch (Exception $e) {
-            throw new Exception("Error Processing Request $e->getMessage", 1);
 
+            return $this->errorResponse($e, $e->getMessage(), 500);
         }
         return response()->json($resepDokter);
     }
@@ -109,7 +113,7 @@ class ResepDokterController extends Controller
 
     protected function isResepAvalilable($no_resep)
     {
-        if (! $no_resep) {
+        if (!$no_resep) {
 
         }
     }
