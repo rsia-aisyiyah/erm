@@ -120,6 +120,15 @@
                     KYC
                 </a>
             </li>
+
+            @if(session()->get('pegawai')->nik === 'direksi')
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="/erm/logs">
+                        <i class="bi bi-journal"></i>
+                        Log
+                    </a>
+                </li>
+            @endif
             <hr />
 
             <h6

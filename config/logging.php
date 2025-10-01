@@ -55,6 +55,13 @@ return [
             'days' => 30,
         ],
 
+        'authLog' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/auth.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+            'days' => 30,
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],
