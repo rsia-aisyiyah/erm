@@ -6,6 +6,7 @@ use App\Models\ResepDokter;
 use App\Models\ResepDokterRacikan;
 use App\Models\ResepDokterRacikanDetail;
 use App\Models\ResepObat;
+use App\Traits\ResponseTrait;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -16,6 +17,8 @@ class ResepObatController extends Controller
 {
     private $resepObat;
     private $track;
+
+    use ResponseTrait;
     public function __construct()
     {
         $this->resepObat = new ResepObat();
@@ -43,7 +46,7 @@ class ResepObatController extends Controller
                 $this->track->deleteSql($resepObat, $data);
             }
         } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return $this->errorResponse($e, $e->getMessage(), 500);
         }
         return response()->json($result);
     }
@@ -84,7 +87,7 @@ class ResepObatController extends Controller
             'jam_penyerahan' => $jam,
         ]);
 
-        $this->track->updateSql($resepObat, [
+        $this->track->updateSql($this->resepObat, [
             'tgl_penyerahan' => $request->tanggal,
             'jam_penyerahan' => $jam,
         ], [
@@ -162,7 +165,7 @@ class ResepObatController extends Controller
             ]);
 
         } catch (QueryException $e) {
-            return response()->json(['status' => false, 'message' => $e->errorInfo]);
+            return $this->errorResponse($e, $e->getMessage(), 500);
         }
     }
 
@@ -211,8 +214,8 @@ class ResepObatController extends Controller
                 $noResepExist = $resep->no_resep;
             }
         } catch (Exception $e) {
-            // Log::error($e);
-            throw new Exception("Error Processing Request", 1);
+
+            return $this->errorResponse($e, $e->getMessage(), 500);
         }
         $get = $this->get($no_resep);
         $no = $noResepExist ? $noResepExist : $this->createNoResep();
@@ -251,7 +254,6 @@ class ResepObatController extends Controller
                         'p1' => $detail->p1,
                         'p2' => $detail->p2,
                         'kandungan' => $detail->kandungan,
-                        'jml' => $detail->jml
 
                     ];
                 }))
@@ -284,11 +286,8 @@ class ResepObatController extends Controller
             ], 200);
 
         } catch (\Throwable $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Gagal menyimpan resep',
-                'error' => $e->getMessage(), // bisa disembunyikan di production
-            ], 500);
+
+            return $this->errorResponse($e, $e->getMessage(), 500);
         }
     }
 }

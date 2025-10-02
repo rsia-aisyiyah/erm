@@ -48,11 +48,18 @@ return [
     */
 
     'channels' => [
-        'custom' => [
+        'responseLogs' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/custom.log'),
+            'path' => storage_path('logs/responses.log'),
             'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 14,
+            'days' => 30,
+        ],
+
+        'authLog' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/auth.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+            'days' => 30,
         ],
 
         'stack' => [
