@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\EstimasiPoli;
 use App\Models\ResepObat;
+use App\Traits\ResponseTrait;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class EstimasiPoliController extends Controller
 {
     // public $regPeriksa = app('App\Http\Controllers\RegPeriksaController')->status();
     private $tanggal;
     private $tracker;
+    use ResponseTrait;
     public function __construct()
     {
         $this->tanggal = new Carbon();
@@ -34,26 +38,32 @@ class EstimasiPoliController extends Controller
     {
         $no_rawat = $request->no_rawat;
         $jam_periksa = $this->tanggal->now()->toDateTimeString();
-
         $getEstimasi = $this->get($request);
 
-        if (!$getEstimasi) {
-            $data = [
-                'no_rawat' => $no_rawat,
-                'jam_periksa' => $jam_periksa,
-            ];
+        $data = [
+            'no_rawat' => $no_rawat,
+            'jam_periksa' => $jam_periksa,
+        ];
 
-            $estimasi = EstimasiPoli::create(
-                $data
-            );
-
-            if ($estimasi) {
-                $this->tracker->insertSql(new EstimasiPoli(), $data);
-            }
-            app('App\Http\Controllers\RegPeriksaController')->statusDaftar($no_rawat, 'Berkas Diterima');
-            return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $jam_periksa], 200);
+        if ($getEstimasi) {
+            return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $getEstimasi->jam_periksa], 200);
         }
-        return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $getEstimasi->jam_periksa], 200);
+
+        try {
+            DB::transaction(function () use ($data, $no_rawat) {
+                $estimasi = EstimasiPoli::create($data);
+                if ($estimasi) {
+                    $this->tracker->insertSql(new EstimasiPoli(), $data);
+                }
+                $regPeriksa = new RegPeriksaController();
+                $regPeriksa->statusDaftar($no_rawat, 'Berkas Diterima');
+
+            });
+
+        } catch (QueryException $th) {
+            return $this->errorResponse($th, $th->getMessage(), 500);
+        }
+        return response()->json(['no_rawat' => $no_rawat, 'jam_periksa' => $jam_periksa], 200);
 
     }
     public function hapus(Request $request)

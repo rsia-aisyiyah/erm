@@ -7,7 +7,7 @@ use Throwable;
 
 trait ResponseTrait
 {
-    protected string $logChannel = 'custom';
+    protected string $logChannel = 'responseLogs';
 
     /**
      * Kirim response sukses (opsional).
@@ -34,7 +34,7 @@ trait ResponseTrait
         if ($withLog) {
             if ($error instanceof Throwable) {
                 Log::channel($this->logChannel)->error(
-                    $error->getMessage() . ' in ' . $error->getFile() . ':' . $error->getLine()
+                    $error->getMessage().' in '.$error->getFile().':'.$error->getLine()
                 );
             } else {
                 Log::channel($this->logChannel)->error($error);

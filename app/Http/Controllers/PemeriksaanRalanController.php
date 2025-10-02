@@ -12,9 +12,11 @@ use App\Models\GrafikHarian;
 use App\Models\PemeriksaanRalan;
 use App\Models\RegPeriksa;
 use App\Models\ResepObat;
+use App\Traits\ResponseTrait;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class PemeriksaanRalanController extends Controller
@@ -28,6 +30,8 @@ class PemeriksaanRalanController extends Controller
     private $track;
     private $pemeriksaan;
     private $setStatus;
+
+    use ResponseTrait;
 
     public function __construct()
     {
@@ -89,13 +93,22 @@ class PemeriksaanRalanController extends Controller
             'tgl_perawatan' => $request->tgl_perawatan,
         ];
 
-        $pemeriksaan = $this->pemeriksaan->where($clause)->delete();
-        $grafik = $this->grafik->where($clause)->delete();
+        try {
+            DB::transaction(function () use ($clause) {
+                $pemeriksaan = $this->pemeriksaan->where($clause)->delete();
+                $grafik = $this->grafik->where($clause)->delete();
+                if ($pemeriksaan && $grafik) {
+                    $this->track->deleteSql($this->pemeriksaan, $clause);
+                    $this->track->deleteSql($this->grafik, $clause);
 
-        $this->track->deleteSql($this->pemeriksaan, $clause);
-        $this->track->deleteSql($this->grafik, $clause);
+                }
 
-        return $pemeriksaan;
+            });
+        } catch (QueryException $e) {
+            return $this->errorResponse($e, $e->getMessage(), 500);
+        }
+        return $this->successResponse('Berhasil');
+
     }
 
     public function simpan(PemeriksaanRalanRequest $request, UpdateJamResepObat $updateJamResepObat)
@@ -131,7 +144,7 @@ class PemeriksaanRalanController extends Controller
                 }
             }
         } catch (QueryException $e) {
-            return response()->json($e->errorInfo, 500);
+            return $this->errorResponse($e, $e->getMessage(), 500);
         }
         return response()->json('SUKSES UPDATE');
 
@@ -155,10 +168,10 @@ class PemeriksaanRalanController extends Controller
                 }
             }
         } catch (QueryException $e) {
-            return response()->json($e->errorInfo, 500);
+            return $this->errorResponse($e, $e->getMessage(), 500);
         }
 
-        return response()->json('SUKSES CREATE');
+        return $this->successResponse('SUKSES CREATE');
     }
 
     public function edit(Request $request)
