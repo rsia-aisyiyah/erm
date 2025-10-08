@@ -59,12 +59,13 @@
             </table>
             <button class="btn btn-primary btn-sm tambah_racik" type="button" onclick="tambahRacikan()">Tambah Racikan</button>
         </div>
-        <div class="tab-pane fade" id="riwayat">
-            <table class="table table-responsive" id="tb-resep-riwayat" width="100%">
+        <div class="tab-pane fade" id="riwayat" style="max-height: 50vh;overflow: auto">
+            <table class="table table-responsive table-bordered" id="tb-resep-riwayat" width="100%" >
                 <thead>
                     <tr>
                         <th>Tanggal</th>
-                        <th width="65%">Obat/Racikan</th>
+                        <th width="40%">Non-Racikan</th>
+                        <th width="40%">Racikan</th>
                         <th></th>
                     </tr>
                 </thead>

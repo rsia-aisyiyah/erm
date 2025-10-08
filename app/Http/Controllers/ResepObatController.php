@@ -63,7 +63,7 @@ class ResepObatController extends Controller
     function get($no_resep)
     {
         $resepObat = $this->resepObat->where('no_resep', $no_resep)->where('status', 'ralan')
-            ->with('resepDokter.dataBarang.kodeSatuan', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang.kodeSatuan')
+            ->with('resepDokter.dataBarang.kodeSatuan', 'resepRacikan.metode', 'resepRacikan.detail.databarang.kodeSatuan')
             ->first();
         return response()->json($resepObat);
     }
@@ -185,7 +185,9 @@ class ResepObatController extends Controller
     {
         $resep = $this->resepObat->whereHas('regPeriksa.pasien', function ($query) use ($no_rkm_medis) {
             return $query->where('no_rkm_medis', $no_rkm_medis);
-        })->with(['resepRacikan.detailRacikan.databarang.kodeSatuan', 'resepRacikan.metode', 'resepDokter.dataBarang.kodeSatuan'])->get();
+        })->with(['resepRacikan.detail.databarang.kodeSatuan', 'resepRacikan.metode', 'resepDokter.dataBarang.kodeSatuan'])
+	        ->orderBy('tgl_peresepan', 'DESC')
+	        ->get();
 
         return response()->json($resep);
     }
@@ -205,79 +207,92 @@ class ResepObatController extends Controller
 
     function copyResep($no_resep, Request $request)
     {
+	    $noResepExist = null;
+	    try {
+		    // Cek apakah nomor rawat sudah punya resep
+		    $resep = ResepObat::where('no_rawat', $request->no_rawat)
+			    ->where('status', 'ralan')
+			    ->with('resepDokter.dataBarang.kodeSatuan', 'resepRacikan.metode', 'resepRacikan.detailRacikan.databarang.kodeSatuan')
+			    ->first();
+
+		    if ($resep) {
+			    $noResepExist = $resep->no_resep;
+		    }
+	    } catch (Exception $e) {
+		    return $this->errorResponse($e, $e->getMessage(), 500);
+	    }
+
+// Ambil data template resep dari sumber lain (service `get`)
+	    $get = $this->get($no_resep);
+	    $data = json_decode($get->content());
+
+// Nomor resep — gunakan yang lama kalau ada
+	    $no = $noResepExist ?: $this->createNoResep();
+
+// Hitung nomor racik terakhir kalau resep sebelumnya ada
+	    $lastNoRacik = 0;
+	    if ($noResepExist && $resep?->resepRacikan?->isNotEmpty()) {
+		    $lastNoRacik = $resep->resepRacikan->max('no_racik');
+	    }
+
+// Siapkan objek request untuk create resep baru (kalau belum ada)
+	    $requestCreeateResep = new Request([
+		    'no_resep' => $no,
+		    'kd_dokter' => $request->kd_dokter,
+		    'no_rawat' => $request->no_rawat,
+	    ]);
+
+// Map resep dokter
+	    $resepDokter = collect($data->resep_dokter)->map(function ($item) use ($no) {
+		    return [
+			    'kode_brng' => $item->kode_brng,
+			    'jml' => $item->jml,
+			    'aturan_pakai' => $item->aturan_pakai,
+			    'no_resep' => $no,
+		    ];
+	    });
+
+// Map racikan detail, dengan penambahan nomor racik terakhir
+	    $detailRacikan = collect($data->resep_racikan)->flatMap(function ($item, $key) use ($no, $lastNoRacik) {
+		    $no_racik = $lastNoRacik + $key + 1; // lanjut dari racik terakhir
+		    return collect($item->detail)->map(function ($detail) use ($no, $no_racik) {
+			    return [
+				    'no_resep'  => $no,
+				    'no_racik'  => $no_racik,
+				    'kode_brng' => $detail->kode_brng,
+				    'jml'       => $detail->jml,
+				    'p1'        => $detail->p1,
+				    'p2'        => $detail->p2,
+				    'kandungan' => $detail->kandungan,
+			    ];
+		    });
+	    })->toArray();
+
+// Map racikan utama, juga tambahkan offset dari nomor terakhir
+	    $resepRacikan = collect($data->resep_racikan)->map(function ($item, $key) use ($no, $lastNoRacik) {
+		    return [
+			    'kd_racik'      => $item->kd_racik,
+			    'nama_racik'    => $item->nama_racik,
+			    'jml_dr'        => $item->jml_dr,
+			    'aturan_pakai'  => $item->aturan_pakai,
+			    'no_racik'      => $lastNoRacik + $key + 1,
+			    'keterangan'    => $item->keterangan,
+			    'no_resep'      => $no,
+		    ];
+	    });
 
 
-        $noResepExist = null;
-        try {
-            $resep = $this->isAvailable($request->no_rawat);
-            if ($resep) {
-                $noResepExist = $resep->no_resep;
-            }
-        } catch (Exception $e) {
 
-            return $this->errorResponse($e, $e->getMessage(), 500);
-        }
-        $get = $this->get($no_resep);
-        $no = $noResepExist ? $noResepExist : $this->createNoResep();
-        $data = json_decode($get->content());
-
-        $requestCreeateResep = new Request([
-            'no_resep' => $no,
-            'kd_dokter' => $request->kd_dokter,
-            'no_rawat' => $request->no_rawat,
-        ]);
-
-        $resepDokter = collect($data->resep_dokter)->map((function ($item) use ($no) {
-            return [
-                'kode_brng' => $item->kode_brng,
-                'jml' => $item->jml,
-                'aturan_pakai' => $item->aturan_pakai,
-                'no_resep' => $no,
-            ];
-        }));
-
-        $resepRacikan = collect($data->resep_racikan)->map((function ($item, $key) use ($no) {
-            return [
-                'kd_racik' => $item->kd_racik,
-                'nama_racik' => $item->nama_racik,
-                'jml_dr' => $item->jml_dr,
-                'aturan_pakai' => $item->aturan_pakai,
-                'no_racik' => $key + 1,
-                'keterangan' => $item->keterangan,
-                'no_resep' => $no,
-                'detail' => collect($item->detail_racikan)->map((function ($detail) use ($no) {
-                    return [
-                        'no_resep' => $no,
-                        'no_racik' => $detail->no_racik,
-                        'kode_brng' => $detail->kode_brng,
-                        'jml' => $detail->jml,
-                        'p1' => $detail->p1,
-                        'p2' => $detail->p2,
-                        'kandungan' => $detail->kandungan,
-
-                    ];
-                }))
-            ];
-        }));
-
-
-        try {
-            DB::transaction(function () use ($resepDokter, $resepRacikan, $requestCreeateResep) {
+	    try {
+            DB::transaction(function () use ($resepDokter, $resepRacikan, $detailRacikan, $requestCreeateResep) {
                 $this->create($requestCreeateResep);
 
-                if ($resepDokter->isEmpty()) {
-                    throw new \Exception("Resep dokter tidak boleh kosong!");
+                if ($resepDokter->isEmpty() && $resepRacikan->isEmpty()) {
+                    throw new \Exception("Nomor resep tidak ada data obat & racikan");
                 }
-
                 ResepDokter::insert($resepDokter->toArray());
-
-                $racikan = $resepRacikan
-                    ->map(fn($item) => collect($item)->except('detail'))
-                    ->toArray();
-                ResepDokterRacikan::insert($racikan);
-
-                $detailRacikan = $resepRacikan->pluck('detail')->collapse();
-                ResepDokterRacikanDetail::insert($detailRacikan->toArray());
+                ResepDokterRacikan::insert($resepRacikan->toArray());
+                ResepDokterRacikanDetail::insert($detailRacikan);
             });
 
             return response()->json([
