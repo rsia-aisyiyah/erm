@@ -253,8 +253,6 @@
                 url: `/erm/resep/riwayat/${no_rm}`,
                 method: 'GET',
             }).done((response) => {
-                console.log('RESPONSE ===', response)
-
                 const resep = response.map((item)=>{
                     let resepDokter ='';
                     let resepRacikan ='';
@@ -277,6 +275,9 @@
                         }).join('')
                     }
 
+                    if(item.tgl_penyerahan === '0000-00-00'){
+                        return '';
+                    }
                     return `<tr>
                                 <td width="15%">${formatTanggal(item.tgl_peresepan)}</td>
                                 <td><ul>${resepDokter}</ul></td>
