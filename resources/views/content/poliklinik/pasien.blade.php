@@ -275,7 +275,7 @@
                         }).join('')
                     }
 
-                    if(item.tgl_penyerahan === '0000-00-00'){
+                    if(item.tgl_penyerahan === '0000-00-00' && item.tgl_perawatan){
                         return '';
                     }
                     return `<tr>
