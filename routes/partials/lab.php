@@ -13,6 +13,7 @@ use App\Http\Controllers\SaranKesanLabController;
 Route::middleware('auth')->group(function () {
     Route::prefix('lab')->group(function ($route) {
         $route->get('/', [LabController::class, 'index']);
+        $route->get('/riwayat/{no_rkm_medis}', [LabController::class, 'getRiwayatLaboratorium']);
         $route->get('/petugas', [LabController::class, 'petugas']);
         $route->get('/ambil', [LabController::class, 'ambil']);
         $route->get('/ambil/table', [LabController::class, 'getDataTable']);

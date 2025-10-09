@@ -325,6 +325,7 @@ Route::middleware('auth')->group(function () {
     Route::post('riwayat/persalinan/insert', [RiwayatPersalinanController::class, 'insert']);
 
     Route::get('radiologi', [PeriksaRadiologiController::class, 'view']);
+    Route::get('radiologi/riwayat/{no_rkm_medis}', [PeriksaRadiologiController::class, 'riwayat']);
     Route::get('radiologi/table', [PermintaanRadiologiController::class, 'getTableIndex']);
     Route::get('radiologi/permintaan', [PermintaanRadiologiController::class, 'getByNoRawat']);
     Route::post('radiologi/permintaan', [PermintaanRadiologiController::class, 'create']);

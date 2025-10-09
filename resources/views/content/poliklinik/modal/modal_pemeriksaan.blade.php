@@ -83,23 +83,39 @@
                     </div>
                     <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab"
                         tabindex="0">
-                        <small class="mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilLab" style="display: none">Belum / Tidak dilakukan pemeriksaan laboratorium</small>
-                        <div class="container" id="viewHasilLaborat" style="display: none">
-                            <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
-                            <table class="table table-bordered" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th>Pemeriksaan</th>
-                                        <th>Hasil</th>
-                                        <th>Nilai Rujukan</th>
-                                        <th>Keterangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabel-lab">
-                                </tbody>
-                            </table>
+{{--                        <small class="d-none mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilLab">Belum / Tidak dilakukan pemeriksaan laboratorium</small>--}}
+                        <div class="row gy-2">
+                            <div class="col-lg-8 col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">
+                                            Hasil Pemeriksaan Laboratorium
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                            <table class="table table-bordered" width="100%" id="tbHasilLabRalan">
+                                                <thead>
+                                                <tr>
+                                                    <th>Pemeriksaan</th>
+                                                    <th>Hasil</th>
+                                                    <th>Nilai Rujukan</th>
+                                                    <th>Keterangan</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tabel-lab">
+                                                </tbody>
+                                            </table>
+                                            <button type="button" class="mt-1 btn btn-warning btn-sm" id="btnHasilKritis"><i class="bi bi-pencil me-2"></i> Hasil Kritis</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12 col-sm-12">
+                                <ul class="list-group" id='listRiwayatLaboratorium'>
+
+                                </ul>
+                            </div>
                         </div>
-                        <br><button type="button" class="mt-3 btn btn-warning btn-sm" id="btnHasilKritis"><i class="bi bi-pencil me-2"></i> Hasil Kritis</button>
+
                     </div>
                     <div class="tab-pane fade" id="permintaan-radiologi-tab-pane" role="tabpanel" aria-labelledby="permintaan-radiologi-tab" tabindex="0">
                         @include('content.ranap.modal.penunjang.permintaan_radiologi')
@@ -294,52 +310,87 @@
             $('.btn-soap').addClass('d-none')
         })
 
+
+        function setRiwayatLaboratorium(no_rkm_medis){
+            const listRiwayatLaboratorium = $('#listRiwayatLaboratorium')
+            //     <li class="list-group-item">First item</li>
+            // <li class="list-group-item">Second item</li>
+            // <li class="list-group-item">Third item</li>
+            $.get(`/erm/lab/riwayat/${no_rkm_medis}`).done((response)=>{
+                const {data} = response;
+                listRiwayatLaboratorium.empty()
+                if(data.length === 0){
+                    return false;
+                }
+
+                const list = data.map((item, index)=>{
+                    return `<li class="list-group-item"  data-no-rawat="${item.no_rawat}" onclick="hasilLabRalan('${item.no_rawat}')">
+                                <div class="d-flex justify-content-between">
+
+                                <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
+                                <span>
+                                       ${item.diagnosa_klinis} ${item.informasi_tambahan}
+                                </span>
+                                </div>
+                            </li>`
+                }).join('')
+
+                listRiwayatLaboratorium.on('click', 'li', function () {
+                    listRiwayatLaboratorium.find('li').removeClass('active');
+                    $(this).addClass('active');
+                });
+
+                listRiwayatLaboratorium.html(list)
+            })
+
+        }
+
         $('button[data-bs-target="#lab-ana"]').on('shown.bs.tab', function(e, x, y) {
             $('.btn-asmed-ranap').addClass('d-none')
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').addClass('d-none')
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
-            $('#tabel-lab').empty()
+            const no_rkm_medis = formSoapPoli.find('input[name="no_rkm_medis"]').val();
+
+            setRiwayatLaboratorium(no_rkm_medis)
+            $('#tbHasilLabRalan').find('tbody').empty()
+            hasilLabRalan(no_rawat)
+
+        })
+
+        function hasilLabRalan(no_rawat){
             getHasilLab(no_rawat).done((lab) => {
-                // console.log(lab.length);
                 let jenisPerawatan = '';
                 let tglPeriksa = '';
                 let hasil = '';
+                $('#tbHasilLabRalan').find('tbody').empty()
                 if (lab.length) {
-                    getHasilLab(no_rawat).done((lab) => {
-                        let hasilLab = '';
-                        lab.forEach((item, index) => {
+                    let hasilLab = '';
 
-                            if (item.detail.length) {
-                                hasilLab += `<tr class="borderless" style="background-color:#eee;padding:2px">
-                            <td colspan="3">
+                    lab.forEach((item, index) => {
+
+                        if (item.detail.length) {
+                            hasilLab += `<tr class="" >
+                            <td colspan="3" style="background-color:#ffc800;padding:2px">
                                 <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
                                 ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
                             </td>
-                            <td>${item.petugas.nama}</td></tr>`;
-                                item.detail.sort((a, b) => a.template.urut - b.template.urut);
-                                item.detail.forEach((detail, index) => {
-                                    hasilLab += `<tr class="${setWarnaPemeriksaan(detail.keterangan)}">
+                            <td  style="background-color:#ffc800;padding:2px">${item.petugas.nama}</td></tr>`;
+                            item.detail.sort((a, b) => a.template.urut - b.template.urut);
+                            item.detail.forEach((detail, index) => {
+                                hasilLab += `<tr class="${setWarnaPemeriksaan(detail.keterangan)}">
                                 <td>${detail.template.Pemeriksaan}</td>
                                 <td>${detail.nilai} ${detail.template.satuan}</td>
                                 <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
                                 <td>${detail.keterangan}</td></tr>`
-                                })
-                            }
-                        })
-                        $('#tabel-lab').append(hasilLab)
-
+                            })
+                        }
                     })
-                    // $('#tabel-lab').append(hasil)
-                    $('#viewHasilLaborat').removeClass('d-none')
-                    $('#alertHasilLab').addClass('d-none')
-                } else {
-                    $('#viewHasilLaborat').addClass('d-none')
-                    $('#alertHasilLab').removeClass('d-none')
 
+                    $('#tbHasilLabRalan').find('tbody').html(hasilLab)
                 }
             })
-        })
+        }
 
         btnTabPermintaanLab.on('shown.bs.tab', function(e, x, y) {
             $('.btn-asmed-ranap').addClass('d-none')
