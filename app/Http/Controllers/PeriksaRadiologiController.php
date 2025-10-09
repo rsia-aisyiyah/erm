@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\PeriksaRadiologi;
+use App\Models\PermintaanRadiologi;
+use App\Traits\ResponseTrait;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -10,6 +12,7 @@ use Yajra\DataTables\DataTables;
 
 class PeriksaRadiologiController extends Controller
 {
+	use ResponseTrait;
     protected $track;
     protected $pemeriksaan;
     protected $carbon;
@@ -83,6 +86,16 @@ class PeriksaRadiologiController extends Controller
         }
         return $pemeriksaan->with(['regPeriksa.pasien', 'dokterRujuk', 'jnsPerawatan', 'hasilRadiologi', 'permintaan.permintaanPemeriksaan'])->get();
     }
+
+	public function riwayat($no_rkm_medis){
+		$riwayat = PermintaanRadiologi::whereHas('regPeriksa', function ($q) use($no_rkm_medis){
+			$q->where('no_rkm_medis', $no_rkm_medis);
+		})->orderBy('no_rawat', 'DESC')
+		->groupBy('no_rawat')
+		->get();
+
+		return $this->successResponse($riwayat);
+	}
     public function getTableIndex(Request $request)
     {
         if ($request->tgl_awal || $request->spesialis || $request->status) {

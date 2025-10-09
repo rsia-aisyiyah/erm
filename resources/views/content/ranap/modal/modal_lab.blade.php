@@ -52,7 +52,7 @@
                             id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
                     </div>
                 </div>
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <ul class="nav nav-tabs" id="tabPenunjangRanap" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="laborat-tab" data-bs-toggle="tab" data-bs-target="#laborat-tab-pane" type="button" role="tab" aria-controls="laborat-tab-pane" aria-selected="true">Laboratorium</button>
                     </li>
@@ -100,24 +100,17 @@
                         @include('content.ranap.modal.penunjang.permintaan_lab')
                     </div>
                     <div class="tab-pane fade" id="radiologi-tab-pane" role="tabpanel" aria-labelledby="radiologi-tab" tabindex="0">
-                        <small class="mb-3 px-2 py-1  fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilRadiologi" style="display: none">Belum / Tidak dilakukan pemeriksaan radiologi</small>
-                        <div class="row" id="viewHasilRadiologi" style="display: none">
-                            <table class="table text-sm table-bordered" id="tbHasilRadiologi">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal Sampel</th>
-                                        <th>Diagnosa Klinis</th>
-                                        <th>Informasi Medis</th>
-                                        <th>Jenis Pemeriksaan</th>
-                                        <th>Hasil</th>
-                                        <th>Gambar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <div class="row gy-2">
+                                <div class="col-lg-8 col-md-12 col-sm-12">
+                                    <div class="row" id="viewHasilRadiologi" style="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-12 col-sm-12">
+                                    <ul class="list-group text-sm" id='listRiwayatRadiologiPasien'>
 
-                                </tbody>
-                            </table>
-                        </div>
+                                    </ul>
+                                </div>
+                            </div>
                     </div>
                     <div class="tab-pane fade" id="permintaan-radiologi-tab-pane" role="tabpanel" aria-labelledby="permintaan-radiologi-tab" tabindex="0">
                         @include('content.ranap.modal.penunjang.permintaan_radiologi')
@@ -138,7 +131,13 @@
         const formInfoPasienPenunjang = $('#formInfoPasienPenunjang')
 
         function modalPemeriksaanPenunjang(no_rawat) {
+            const tabPenunjang = $('#tabPenunjangRanap')
+            tabPenunjang.find('.nav-link').removeClass('active')
+            tabPenunjang.find('[data-bs-target="#laborat-tab-pane"]').addClass('active')
 
+            const tabContent = $('.tab-content')
+            tabContent.find('.tab-pane').removeClass('show active')
+            tabContent.find('#laborat-tab-pane').addClass('show active')
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 $('#modalLabRanap').modal('show')
                 const kamar = regPeriksa.kamar_inap.filter((item) => {
@@ -180,65 +179,58 @@
 
             getHasilPermintaanLab(no_rawat)
 
-            getPermintaanRadiologi(no_rawat).done((permintaan) => {
-                if (Object.keys(permintaan).length) {
-                    permintaan.map((prm, index) => {
-                        html = `<tr><td>${splitTanggal(prm.tgl_hasil)} ${prm.jam_hasil}</td>
-                            <td>${prm.diagnosa_klinis}</td>
-                            <td>${prm.informasi_tambahan}</td>
-                            <td>`
-                        prm.periksa_radiologi.map((periksa) => {
-                            if (periksa.tgl_periksa == prm.tgl_hasil && periksa.jam == prm.jam_hasil) {
-                                html += `${periksa.jns_perawatan.nm_perawatan}, <br/>`
-                            }
-                        })
+        }
 
-                        html += `</td>`
-                        html += `<td>`
-                        prm.hasil_radiologi.map((hasil) => {
-                            if (hasil.tgl_periksa == prm.tgl_hasil && hasil.jam == prm.jam_hasil) {
-                                html += `${stringPemeriksaan(hasil.hasil)}`
-                            }
-                        })
-                        html += `</td>`
-                        html += `<td>`
-                        if (prm.gambar_radiologi.length) {
-                            prm.gambar_radiologi.map((gambar) => {
-                                if (gambar.tgl_periksa == prm.tgl_hasil && gambar.jam == prm.jam_hasil) {
-                                    gbr = `${getBaseUrl(`/webapps/radiologi/${gambar.lokasi_gambar}`)}`
-                                    html += `<a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gbr}">
-                                            <i class="bi bi-eye"></i> BUKA GAMBAR
-                                        </a><br/>`
-                                } else {
-                                    html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
 
-                                }
-                            })
-                        } else {
-                            html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
-                        }
-                        html += `</td>`
-                        html += `<tr>`
 
-                        $('#tbHasilRadiologi tbody').append(html)
-                    })
 
-                    $('#viewHasilRadiologi').css('display', 'flex')
-                    $('#alertHasilRadiologi').css('display', 'none')
+        $('#tabPenunjangRanap')
+            .find('[data-bs-target="#radiologi-tab-pane"]')
+            .on('shown.bs.tab', () => {
+                const no_rawat = formInfoPasienPenunjang.find('#no_rawat').val();
+                const no_rkm_medis = formInfoPasienPenunjang.find('#no_rkm_medis').val();
+                setHasilRadiologiRanap(no_rawat);
+                setRiwayatRadiologiPasien(no_rkm_medis)
+            });
 
-                } else {
-                    $('#viewHasilRadiologi').css('display', 'none')
-                    $('#alertHasilRadiologi').css('display', 'inline')
+
+        function setRiwayatRadiologiPasien(no_rkm_medis){
+            const listRiwayatRadiologiPasien = $('#listRiwayatRadiologiPasien')
+            $.get(`/erm/radiologi/riwayat/${no_rkm_medis}`).done((response)=>{
+                const {data} = response;
+                listRiwayatRadiologiPasien.empty()
+                if(data.length === 0){
+                    return false;
                 }
+
+                const list = data.map((item, index)=>{
+                    return `<li class="list-group-item"  data-no-rawat="${item.no_rawat}" onclick="setHasilRadiologiRanap('${item.no_rawat}')">
+
+                                <div class="d-flex justify-content-between">
+
+                                <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
+                                <span>
+                                       ${item.diagnosa_klinis} ${item.informasi_tambahan}
+                                </span>
+                                </div>
+
+                    </li>`
+                }).join('')
+
+                listRiwayatRadiologiPasien.on('click', 'li', function () {
+                    listRiwayatRadiologiPasien.find('li').removeClass('active');
+                    $(this).addClass('active');
+                });
+
+
+                listRiwayatRadiologiPasien.html(list)
+
+
             })
 
         }
-
         function setRiwayatLabPasien(no_rkm_medis){
             const listRiwayatLabPasien = $('#listRiwayatLabPasien')
-            //     <li class="list-group-item">First item</li>
-            // <li class="list-group-item">Second item</li>
-            // <li class="list-group-item">Third item</li>
             $.get(`/erm/lab/riwayat/${no_rkm_medis}`).done((response)=>{
                 const {data} = response;
                 listRiwayatLabPasien.empty()
@@ -416,5 +408,105 @@
                 });
             });
         }
+
+        function setHasilRadiologiRanap(no_rawat) {
+            const container = $('#viewHasilRadiologi');
+            container.empty();
+
+            getPermintaanRadiologi(no_rawat).done((permintaan) => {
+                // if (!Array.isArray(permintaan) || permintaan.length === 0) {
+                //     $('#viewHasilRadiologi').hide();
+                //     $('#alertHasilRadiologi').show();
+                //     return;
+                // }
+                //
+                // $('#viewHasilRadiologi').show();
+                // $('#alertHasilRadiologi').hide();
+
+                permintaan.forEach((prm) => {
+                    let jenisPemeriksaan = '';
+                    let hasilPemeriksaan = '';
+                    let tombolGambar = '';
+
+                    // --- Jenis Pemeriksaan ---
+                    prm.periksa_radiologi.forEach((periksa) => {
+                        if (periksa.tgl_periksa === prm.tgl_hasil && periksa.jam === prm.jam_hasil) {
+                            jenisPemeriksaan += `${periksa.jns_perawatan.nm_perawatan}<br>`;
+                        }
+                    });
+
+                    // --- Hasil Pemeriksaan ---
+                    prm.hasil_radiologi.forEach((hasil) => {
+                        if (hasil.tgl_periksa === prm.tgl_hasil && hasil.jam === prm.jam_hasil) {
+                            hasilPemeriksaan += `${stringPemeriksaan(hasil.hasil)}`;
+                        }
+                    });
+
+                    // --- Gambar Radiologi ---
+                    if (prm.gambar_radiologi.length) {
+                        prm.gambar_radiologi.forEach((gambar) => {
+                            if (gambar.tgl_periksa === prm.tgl_hasil && gambar.jam === prm.jam_hasil) {
+                                const gbr = getBaseUrl(`/webapps/radiologi/${gambar.lokasi_gambar}`);
+                                tombolGambar += `
+                            <a class="btn btn-success btn-sm mb-2"
+                               data-magnify="gallery"
+                               data-src="${gbr}">
+                               <i class="bi bi-eye me-1"></i> BUKA GAMBAR
+                            </a><br>`;
+                            }
+                        });
+                    } else {
+                        tombolGambar = `
+                    <button class="btn btn-danger btn-sm ms-auto" disabled>
+                        <i class="bi bi-eye-slash me-1"></i> GAMBAR KOSONG
+                    </button>`;
+                    }
+
+                    // --- Card Template ---
+                    const card = `
+                <div class="col">
+                    <div class="card text-sm">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="card-title m-0">
+        <strong><i class="bi bi-calendar-event me-1"></i> ${splitTanggal(prm.tgl_hasil)} ${prm.jam_hasil}</strong>
+    </h5>
+    <div class="ms-auto">
+        ${tombolGambar}
+    </div>
+</div>
+                        <div class="card-body" style="font-size: 0.7rem">
+                           <div class="d-flex gap-2 justify-content-between">
+                                <div class="mb-2">
+                                    <span class="fw-semibold text-secondary">Diagnosa Klinis:</span>
+                                    <span>${prm.diagnosa_klinis || '-'}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="fw-semibold text-secondary">Informasi Medis:</span>
+                                    <span>${prm.informasi_tambahan || '-'}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="fw-semibold text-secondary">Jenis Pemeriksaan:</span>
+                                    <span>${jenisPemeriksaan || '-'}</span>
+                                </div>
+                                <div class="mb-2">
+
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="hasil-pemeriksaan"  >
+                                <p class="fw-semibold mb-1">Hasil Pemeriksaan:</p>
+                                <p class="mb-0">${hasilPemeriksaan || '-'}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                    container.append(card);
+                });
+            });
+        }
+
     </script>
 @endpush
