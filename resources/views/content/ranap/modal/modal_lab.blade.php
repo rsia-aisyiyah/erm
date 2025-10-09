@@ -178,7 +178,6 @@
             })
 
             getHasilPermintaanLab(no_rawat)
-
         }
 
 
@@ -206,12 +205,19 @@
                 const list = data.map((item, index)=>{
                     return `<li class="list-group-item"  data-no-rawat="${item.no_rawat}" onclick="setHasilRadiologiRanap('${item.no_rawat}')">
 
-                                <div class="d-flex justify-content-between">
-
-                                <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
-                                <span>
-                                       ${item.diagnosa_klinis} ${item.informasi_tambahan}
-                                </span>
+                                <div class="d-flex w-100">
+                                    <i class="me-2 bi bi-circle-fill f-5 ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i>
+                                    <div class="w-100">
+                                        <p class="mb-0">${formatTanggal(item.tgl_permintaan)}</p>
+                                        <div class="d-flex w-100 justify-content-between gap-2">
+                                        <p class="mb-0" style="font-size: 0.7rem">
+                                               Dx. Klinis : ${item.diagnosa_klinis}
+                                        </p>
+                                        <p class="mb-0" style="font-size: 0.7rem">
+                                              ${item.informasi_tambahan !== '-' ? `<i class="bi bi-info-circle-fill text-primary"></i> ${item.informasi_tambahan}` : ''}
+                                        </p>
+                                        </div>
+                                    </div>
                                 </div>
 
                     </li>`
@@ -240,13 +246,21 @@
 
                 const list = data.map((item, index)=>{
                     return `<li class="list-group-item"  data-no-rawat="${item.no_rawat}" onclick="getHasilPermintaanLab('${item.no_rawat}')">
-                                <div class="d-flex justify-content-between">
-
-                                <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
-                                <span>
-                                       ${item.diagnosa_klinis} ${item.informasi_tambahan}
-                                </span>
+                                <div class="d-flex w-100">
+                                    <i class="me-2 bi bi-circle-fill f-5 ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i>
+                                    <div class="w-100">
+                                        <p class="mb-0">${formatTanggal(item.tgl_permintaan)}</p>
+                                        <div class="d-flex w-100 justify-content-between gap-2">
+                                        <p class="mb-0" style="font-size: 0.7rem">
+                                               Dx. Klinis : ${item.diagnosa_klinis}
+                                        </p>
+                                        <p class="mb-0" style="font-size: 0.7rem">
+                                               ${item.informasi_tambahan !== '-' ? `<i class="bi bi-info-circle-fill text-bg-primary"></i> ${item.informasi_tambahan}` : ''}
+                                        </p>
+                                        </div>
+                                    </div>
                                 </div>
+
                             </li>`
                 }).join('')
 
