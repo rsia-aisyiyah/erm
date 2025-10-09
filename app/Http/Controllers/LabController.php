@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\PeriksaLab;
+use App\Models\PermintaanLab;
 use App\Models\RegPeriksa;
+use App\Traits\ResponseTrait;
+use App\Traits\TrackSQL;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\DetailPemeriksaanLab;
 
 class LabController extends Controller
 {
-
+	Use ResponseTrait;
     function index()
     {
         return view('content.lab.permintaan');
@@ -36,6 +39,16 @@ class LabController extends Controller
         return response()->json($lab);
     }
 
+	function getRiwayatLaboratorium($no_rkm_medis){
+		$lab = PermintaanLab::whereHas('regPeriksa', function($q) use($no_rkm_medis){
+			$q->where('no_rkm_medis', $no_rkm_medis);
+		})
+			->groupBy('no_rawat')
+			->orderBy('no_rawat', 'DESC')
+		->get();
+
+		return $this->successResponse($lab);
+	}
     function getDataTable(Request $request)
     {
         $lab = DetailPemeriksaanLab::where('no_rawat', $request->no_rawat)

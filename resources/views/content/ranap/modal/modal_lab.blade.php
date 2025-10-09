@@ -14,8 +14,13 @@
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <label for="">Pasien</label>
-                        <input type="text" class="form-control form-control-sm"
-                            id="pasien" name="pasien" placeholder="" readonly>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control form-control-sm"
+                                id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
+                                <input type="text" class="form-control form-control-sm w-50"
+                                id="pasien" name="pasien" placeholder="" readonly>
+
+                        </div>
 
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
@@ -63,7 +68,19 @@
                 </ul>
                 <div class="tab-content p-2" id="myTabContent" style="min-height: 350px">
                     <div class="tab-pane fade show active" id="laborat-tab-pane" role="tabpanel" aria-labelledby="laborat-tab" tabindex="0">
-                        <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
+                        <div class="row gy-2">
+                            <div class="col-lg-8 col-sm-12">
+                                <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
+                                <div id="hasilPermintaanLab">
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-12 mt-3">
+                                <ul class="list-group text-sm" id='listRiwayatLabPasien'>
+
+                                </ul>
+                            </div>
+                        </div>
                         {{-- <table class="table table-bordered" width="100%">
                             <thead>
                                 <tr>
@@ -77,9 +94,7 @@
                             </tbody>
                         </table> --}}
 
-                        <div id="hasilPermintaanLab">
 
-                        </div>
                     </div>
                     <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
                         @include('content.ranap.modal.penunjang.permintaan_lab')
@@ -135,9 +150,11 @@
                     }
                 })[0]
 
+                setRiwayatLabPasien(regPeriksa.no_rkm_medis)
 
                 formInfoPasienPenunjang.find('#no_rawat').val(no_rawat)
-                formInfoPasienPenunjang.find('#pasien').val(`${regPeriksa.no_rkm_medis} - ${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
+                formInfoPasienPenunjang.find('#pasien').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`)
+                formInfoPasienPenunjang.find('#no_rkm_medis').val(regPeriksa.no_rkm_medis)
                 formInfoPasienPenunjang.find('#tgl_lahir').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
                 formInfoPasienPenunjang.find('#p_jawab').val(regPeriksa.p_jawab)
                 formInfoPasienPenunjang.find('#kamar').val(`${kamar ? `${kamar.bangsal} / ${hitungLamaHari(regPeriksa.tgl_registrasi)} Hari` :'-'}`)
@@ -213,6 +230,40 @@
                     $('#viewHasilRadiologi').css('display', 'none')
                     $('#alertHasilRadiologi').css('display', 'inline')
                 }
+            })
+
+        }
+
+        function setRiwayatLabPasien(no_rkm_medis){
+            const listRiwayatLabPasien = $('#listRiwayatLabPasien')
+            //     <li class="list-group-item">First item</li>
+            // <li class="list-group-item">Second item</li>
+            // <li class="list-group-item">Third item</li>
+            $.get(`/erm/lab/riwayat/${no_rkm_medis}`).done((response)=>{
+                const {data} = response;
+                listRiwayatLabPasien.empty()
+                if(data.length === 0){
+                    return false;
+                }
+
+                const list = data.map((item, index)=>{
+                    return `<li class="list-group-item"  data-no-rawat="${item.no_rawat}" onclick="getHasilPermintaanLab('${item.no_rawat}')">
+                                <div class="d-flex justify-content-between">
+
+                                <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
+                                <span>
+                                       ${item.diagnosa_klinis} ${item.informasi_tambahan}
+                                </span>
+                                </div>
+                            </li>`
+                }).join('')
+
+                listRiwayatLabPasien.on('click', 'li', function () {
+                    listRiwayatLabPasien.find('li').removeClass('active');
+                    $(this).addClass('active');
+                });
+
+                listRiwayatLabPasien.html(list)
             })
 
         }
