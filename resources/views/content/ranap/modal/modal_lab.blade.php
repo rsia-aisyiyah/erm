@@ -66,8 +66,8 @@
                         <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab" data-bs-target="#permintaan-radiologi-tab-pane" type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi</button>
                     </li>
                 </ul>
-                <div class="tab-content p-2" id="myTabContent" style="min-height: 350px">
-                    <div class="tab-pane fade show active" id="laborat-tab-pane" role="tabpanel" aria-labelledby="laborat-tab" tabindex="0">
+                <div class="tab-content p-2" id="myTabContent" style="height: 50vh">
+                    <div class="tab-pane fade h-full show active" id="laborat-tab-pane" role="tabpanel" aria-labelledby="laborat-tab" tabindex="0">
                         <div class="row gy-2">
                             <div class="col-lg-8 col-sm-12">
                                 <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
@@ -96,10 +96,10 @@
 
 
                     </div>
-                    <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
+                    <div class="tab-pane fade h-100" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
                         @include('content.ranap.modal.penunjang.permintaan_lab')
                     </div>
-                    <div class="tab-pane fade" id="radiologi-tab-pane" role="tabpanel" aria-labelledby="radiologi-tab" tabindex="0">
+                    <div class="tab-pane fade h-100" id="radiologi-tab-pane" role="tabpanel" aria-labelledby="radiologi-tab" tabindex="0">
                             <div class="row gy-2">
                                 <div class="col-lg-8 col-md-12 col-sm-12">
                                     <div class="row" id="viewHasilRadiologi" style="">
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                     </div>
-                    <div class="tab-pane fade" id="permintaan-radiologi-tab-pane" role="tabpanel" aria-labelledby="permintaan-radiologi-tab" tabindex="0">
+                    <div class="tab-pane fade h-100" id="permintaan-radiologi-tab-pane" role="tabpanel" aria-labelledby="permintaan-radiologi-tab" tabindex="0">
                         @include('content.ranap.modal.penunjang.permintaan_radiologi')
                     </div>
                 </div>
