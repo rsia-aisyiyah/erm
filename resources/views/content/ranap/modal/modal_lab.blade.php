@@ -66,7 +66,7 @@
                         <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab" data-bs-target="#permintaan-radiologi-tab-pane" type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi</button>
                     </li>
                 </ul>
-                <div class="tab-content p-2" id="myTabContent" style="height: 50vh">
+                <div class="tab-content p-2" id="myTabContent" style="height: 70vh">
                     <div class="tab-pane fade h-full show active" id="laborat-tab-pane" role="tabpanel" aria-labelledby="laborat-tab" tabindex="0">
                         <div class="row gy-2">
                             <div class="col-lg-8 col-sm-12">
