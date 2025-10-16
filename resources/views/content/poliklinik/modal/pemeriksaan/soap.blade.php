@@ -18,7 +18,7 @@
             <label for="png_jawab">Pembiayaan</label>
             <x-input-group class="input-group-sm">
                 <x-input id="png_jawab" name="png_jawab" readonly />
-                <x-input id="no_kartu" name="no_kartu" readonly />
+                <x-input id="no_peserta" name="no_peserta" readonly />
                 <button type="button" class="btn btn-primary" id="btnInfoPeserta">
                     <i class="bi bi-eye"></i>
                 </button>
@@ -187,6 +187,7 @@
                 formSoapPoli.find('select[name=nip]').append(pegawai).trigger('change').trigger('change')
 
                 formSoapPoli.find('input[name=no_rkm_medis]').val(response.no_rkm_medis)
+                formSoapPoli.find('input[name=no_peserta]').val(response.pasien.no_peserta)
                 formSoapPoli.find('input[name=nm_pasien]').val(`${response.pasien.nm_pasien} (${response.pasien.jk}) / ${hitungUmur(response.pasien.tgl_lahir)}`)
                 formSoapPoli.find('input[name=p_jawab]').val(response.p_jawab)
                 formSoapPoli.find('input[name=png_jawab]').val(`${response.penjab.png_jawab}`)
