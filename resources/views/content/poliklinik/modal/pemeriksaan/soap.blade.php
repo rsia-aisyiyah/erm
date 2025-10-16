@@ -14,9 +14,15 @@
             </x-input-group>
         </div>
 
-        <div class="col-lg-2 col-sm-12 mb-2">
+        <div class="col-lg-3 col-sm-12 mb-2">
             <label for="png_jawab">Pembiayaan</label>
-            <x-input id="png_jawab" name="png_jawab" readonly />
+            <x-input-group class="input-group-sm">
+                <x-input id="png_jawab" name="png_jawab" readonly />
+                <x-input id="no_peserta" name="no_peserta" readonly />
+                <button type="button" class="btn btn-primary" id="btnInfoPeserta">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </x-input-group>
 
         </div>
         <div class="col-lg-2 col-sm-12 mb-2">
@@ -170,6 +176,8 @@
                 // })
                 // riwayatIcare(response.pasien.no_peserta, response.dokter.mapping_dokter.kd_dokter_bpjs)
                 setRiwayatPemeriksaan(response.no_rkm_medis)
+                $('#btnInfoPeserta').attr('onclick', `getPesertaDetail('${response.pasien.no_peserta}')` )
+
                 if (response.pasien.ket_pasien) {
                     formSoapPoli.find('input[name=ket_pasien]').val(response.pasien.ket_pasien.keterangan)
                 }
@@ -179,6 +187,7 @@
                 formSoapPoli.find('select[name=nip]').append(pegawai).trigger('change').trigger('change')
 
                 formSoapPoli.find('input[name=no_rkm_medis]').val(response.no_rkm_medis)
+                formSoapPoli.find('input[name=no_peserta]').val(response.pasien.no_peserta)
                 formSoapPoli.find('input[name=nm_pasien]').val(`${response.pasien.nm_pasien} (${response.pasien.jk}) / ${hitungUmur(response.pasien.tgl_lahir)}`)
                 formSoapPoli.find('input[name=p_jawab]').val(response.p_jawab)
                 formSoapPoli.find('input[name=png_jawab]').val(`${response.penjab.png_jawab}`)
@@ -322,28 +331,45 @@
                 formSoapPoli.find('textarea[name=rtl]').val(rtl.length ? rtl : '-')
                 const instruksi = pemeriksaanByDokter.instruksi ? pemeriksaanByDokter.instruksi : pemeriksaanByPerawat.instruksi
                 formSoapPoli.find('textarea[name=instruksi]').val(instruksi.length ? instruksi : '-')
-                const suhu_tubuh = pemeriksaanByPerawat.suhu_tubuh
-                formSoapPoli.find('input[name=suhu_tubuh]').val(suhu_tubuh)
-                const nadi = pemeriksaanByPerawat.nadi
-                formSoapPoli.find('input[name=nadi]').val(nadi)
-                const tinggi = pemeriksaanByPerawat.tinggi
-                formSoapPoli.find('input[name=tinggi]').val(tinggi)
-                const berat = pemeriksaanByPerawat.berat
-                formSoapPoli.find('input[name=berat]').val(berat)
-                const respirasi = pemeriksaanByPerawat.respirasi
-                formSoapPoli.find('input[name=respirasi]').val(respirasi)
-                const tensi = pemeriksaanByPerawat.tensi
-                formSoapPoli.find('input[name=tensi]').val(tensi)
-                const spo2 = pemeriksaanByPerawat.spo2
-                formSoapPoli.find('input[name=spo2]').val(spo2)
-                const o2 = pemeriksaanByPerawat.o2
-                formSoapPoli.find('input[name=o2]').val(o2)
-                const gcs = pemeriksaanByPerawat.gcs
-                formSoapPoli.find('input[name=gcs]').val(gcs)
-                const kesadaran = pemeriksaanByPerawat.kesadaran
-                formSoapPoli.find('select[name=kesadaran]').val(kesadaran)
-                const alergi = pemeriksaanByPerawat.alergi
-                formSoapPoli.find('input[name=alergi]').val(alergi)
+
+                const suhu_tubuh = pemeriksaanByDokter.suhu_tubuh ? pemeriksaanByDokter.suhu_tubuh:  pemeriksaanByPerawat.suhu_tubuh
+                formSoapPoli.find('input[name=suhu_tubuh]').val(suhu_tubuh.length ? suhu_tubuh: '-')
+
+                const nadi = pemeriksaanByDokter.nadi ? pemeriksaanByDokter.nadi:  pemeriksaanByPerawat.nadi
+                formSoapPoli.find('input[name=nadi]').val(nadi.length ? nadi: '-')
+
+                const tinggi = pemeriksaanByDokter.tinggi ? pemeriksaanByDokter.tinggi:  pemeriksaanByPerawat.tinggi
+                formSoapPoli.find('input[name=tinggi]').val(tinggi.length ? tinggi: '-')
+
+                const berat = pemeriksaanByDokter.berat ? pemeriksaanByDokter.berat:  pemeriksaanByPerawat.berat
+                formSoapPoli.find('input[name=berat]').val(berat.length ? berat: '-')
+
+                const respirasi = pemeriksaanByDokter.respirasi ? pemeriksaanByDokter.respirasi:  pemeriksaanByPerawat.respirasi
+                formSoapPoli.find('input[name=respirasi]').val(respirasi.length ? respirasi: '-')
+
+                const tensi = pemeriksaanByDokter.tensi ? pemeriksaanByDokter.tensi:  pemeriksaanByPerawat.tensi
+                formSoapPoli.find('input[name=tensi]').val(tensi.length ? tensi: '-')
+
+                const spo2 = pemeriksaanByDokter.spo2 ? pemeriksaanByDokter.spo2:  pemeriksaanByPerawat.spo2
+                formSoapPoli.find('input[name=spo2]').val(spo2.length ? spo2: '-')
+
+                // const o2 = pemeriksaanByDokter.o2 ? pemeriksaanByDokter.o2:  pemeriksaanByPerawat.o2
+                //
+                // console.log(o2)
+                // formSoapPoli.find('input[name=o2]').val(o2.length ? o2: '-')
+
+
+
+                const gcs = pemeriksaanByDokter.gcs ? pemeriksaanByDokter.gcs:  pemeriksaanByPerawat.gcs
+                formSoapPoli.find('input[name=gcs]').val(gcs.length ? gcs: '-')
+
+                const kesadaran = pemeriksaanByDokter.kesadaran ? pemeriksaanByDokter.kesadaran:  pemeriksaanByPerawat.kesadaran
+                formSoapPoli.find('select[name=kesadaran]').val(kesadaran.length ? kesadaran: '-')
+
+                const alergi = pemeriksaanByDokter.alergi ? pemeriksaanByDokter.alergi:  pemeriksaanByPerawat.alergi
+                formSoapPoli.find('input[name=alergi]').val(alergi.length ? alergi: '-')
+
+
                 const tgl_perawatan = pemeriksaanByDokter.tgl_perawatan ? pemeriksaanByDokter.tgl_perawatan : pemeriksaanByPerawat.tgl_perawatan
                 formSoapPoli.find('input[name=tgl_perawatan]').val(tgl_perawatan).trigger('change')
                 const jam_rawat = pemeriksaanByDokter.jam_rawat ? pemeriksaanByDokter.jam_rawat : pemeriksaanByPerawat.jam_rawat
