@@ -14,9 +14,15 @@
             </x-input-group>
         </div>
 
-        <div class="col-lg-2 col-sm-12 mb-2">
+        <div class="col-lg-3 col-sm-12 mb-2">
             <label for="png_jawab">Pembiayaan</label>
-            <x-input id="png_jawab" name="png_jawab" readonly />
+            <x-input-group class="input-group-sm">
+                <x-input id="png_jawab" name="png_jawab" readonly />
+                <x-input id="no_kartu" name="no_kartu" readonly />
+                <button type="button" class="btn btn-primary" id="btnInfoPeserta">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </x-input-group>
 
         </div>
         <div class="col-lg-2 col-sm-12 mb-2">
@@ -170,6 +176,8 @@
                 // })
                 // riwayatIcare(response.pasien.no_peserta, response.dokter.mapping_dokter.kd_dokter_bpjs)
                 setRiwayatPemeriksaan(response.no_rkm_medis)
+                $('#btnInfoPeserta').attr('onclick', `getPesertaDetail('${response.pasien.no_peserta}')` )
+
                 if (response.pasien.ket_pasien) {
                     formSoapPoli.find('input[name=ket_pasien]').val(response.pasien.ket_pasien.keterangan)
                 }
