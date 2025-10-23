@@ -299,13 +299,6 @@
                                             <i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
-                                <div class="col-12 mb-3">
-                                    <button type="button" id="btn-tambah-diagnosa"
-                                            class="btn btn-outline-success btn-sm">
-                                        + Tambah Diagnosa Sekunder
-                                    </button>
-                                </div>
-
                             </div>
                             <div class="separator m-2">3. Prosedur</div>
                             <div class="row">
@@ -564,9 +557,6 @@
 
 
                 getResumeMedis(noRawat).done((resume) => {
-
-
-                    // 🔹 Isi otomatis dari hasil getResumeMedis
                     if (Object.keys(resume).length) {
                         $.each(resume, (index, value) => {
                             const select = $(`#formResumeRanap select[name=${index}]`);
@@ -579,33 +569,17 @@
                         });
                     }
 
-                    // 🔹 Tombol tambah diagnosa
-                    $('#btn-tambah-diagnosa').on('click', function () {
-                        for (let i = 3; i <= 7; i++) {
-                            const hidden = $(`#diagnosa_sekunder${i}`).closest('.col-sm-12').hasClass('d-none');
-                            if (hidden) {
-                                toggleDiagnosa(i, true);
-                                return;
-                            }
-                        }
-                        toggleButtonVisibility();
-                    });
-
-                    // 🔹 Cek kondisi awal tombol
-                    toggleButtonVisibility();
+                    // set action pencarian
+                    $('#formResumeRanap #srcKeluhan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'keluhan')`);
+                    $('#formResumeRanap #srcPemeriksaan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'pemeriksaan')`);
+                    $('#formResumeRanap #srcObat').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'obat')`);
+                    $('#formResumeRanap #srcObatPulang').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'obatpulang')`);
+                    $('#formResumeRanap #srcLab').attr('onclick', `listHasilLab('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
+                    $('#formResumeRanap #srcRadiologi').attr('onclick', `listHasilRadiologi('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
+                    // $('#formResumeRanap #srcObat').attr('onclick', `listPemberianObat('${response.no_rawat}')`);
                 });
-
-
-                // set action pencarian
-                $('#formResumeRanap #srcKeluhan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'keluhan')`);
-                $('#formResumeRanap #srcPemeriksaan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'pemeriksaan')`);
-                $('#formResumeRanap #srcObat').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'obat')`);
-                $('#formResumeRanap #srcObatPulang').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'obatpulang')`);
-                $('#formResumeRanap #srcLab').attr('onclick', `listHasilLab('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
-                $('#formResumeRanap #srcRadiologi').attr('onclick', `listHasilRadiologi('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
-                // $('#formResumeRanap #srcObat').attr('onclick', `listPemberianObat('${response.no_rawat}')`);
-            });
-            $('#modalResumeRanap').modal('show')
+                $('#modalResumeRanap').modal('show')
+            })
         }
 
         function listRiwayatPemeriksaan(noRawat, parameter) {

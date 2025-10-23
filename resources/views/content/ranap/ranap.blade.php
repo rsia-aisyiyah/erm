@@ -9,8 +9,8 @@
                             <div class="col col-sm-12">
                                 <div class="form-radio form-radio-inline">
                                     <input class="form-radio-input" type="radio" id="belum"
-                                        name="stts_pulang"
-                                        value="Belum Pulang">
+                                           name="stts_pulang"
+                                           value="Belum Pulang">
                                     <label class="form-radio-label" for="belum">Belum
                                         Pulang</label>
                                 </div>
@@ -23,22 +23,22 @@
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="form-radio form-radio-inline">
                                 <input class="form-radio-input" type="radio" id="pulang"
-                                    name="stts_pulang"
-                                    value="pulang">
+                                       name="stts_pulang"
+                                       value="pulang">
                                 <label class="form-radio-label" for="pulang">Pulang</label>
                             </div>
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-12">
                             <div class="input-group input-group-sm">
                                 <input type="text"
-                                    class="form-control form-control-sm tanggal tgl_pulang"
-                                    id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off"
-                                    disabled>
+                                       class="form-control form-control-sm tanggal tgl_pulang"
+                                       id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off"
+                                       disabled>
                                 <span class="input-group-text"><label for="">s/d</label></span>
                                 <input type="text"
-                                    class="form-control form-control-sm tanggal tgl_pulang"
-                                    id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off"
-                                    disabled>
+                                       class="form-control form-control-sm tanggal tgl_pulang"
+                                       id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off"
+                                       disabled>
                             </div>
                         </div>
                     </div>
@@ -48,20 +48,20 @@
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="form-radio form-radio-inline">
                                 <input class="form-radio-input" type="radio" id="masuk"
-                                    name="stts_pulang"
-                                    value="masuk">
+                                       name="stts_pulang"
+                                       value="masuk">
                                 <label class="form-radio-label" for="masuk">Masuk</label>
                             </div>
                         </div>
                         <div class="col-lg-8 col-md-4 col-sm-12">
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
-                                    id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off"
-                                    disabled>
+                                       id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off"
+                                       disabled>
 
                                 <span class="input-group-text"><label for="">s/d</label></span>
                                 <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
-                                    id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off" disabled>
+                                       id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off" disabled>
 
                             </div>
                         </div>
@@ -70,7 +70,7 @@
                 <div class="col-lg-2 col-md-12 col-sm-12">
                     <div class="d-grid gap-2">
                         <button type="button" class="btn btn-success btn-sm"
-                            id="cari">
+                                id="cari">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
@@ -81,15 +81,16 @@
             <div class="row gy-2">
                 <div class="col-lg-3 col-md-12 col-sm-12">
                     <select name="spesialis" id="spesialis" class="form-select form-select-sm"
-                        style="width:100%">
+                            style="width:100%">
                         <option value="">Semua Spesialis</option>
                         <option value="S0001">Spesialis Kebidanan & Kandungan</option>
                         <option value="S0003">Spesialis Anak</option>
                     </select>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <select style="font-size:12px" name="dokter" id="dokter" class="form-select form-select-sm" style="width:100%"
-                        disabled>
+                    <select style="font-size:12px" name="dokter" id="dokter" class="form-select form-select-sm"
+                            style="width:100%"
+                            disabled>
                         <option value="">Semua Dokter</option>
                         <option value="1.101.1112" class="S0003">dr. Himawan Budityastomo, Sp.OG</option>
                         <option value="1.109.1119" class="S0003">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
@@ -99,9 +100,11 @@
                 </div>
                 <div class="col-lg-5 col-md-12 col-sm-12">
                     <div class="row">
-                        <label for="cari-kamar" class="col-sm-3 col-form-label" style="font-size:12px">Cari Kamar : </label>
+                        <label for="cari-kamar" class="col-sm-3 col-form-label" style="font-size:12px">Cari Kamar
+                            : </label>
                         <div class="col-sm-9">
-                            <input type="search" id="cari-kamar" name="cari-kamar" class="form-control form-control-sm" width="100%" autocomplete="off">
+                            <input type="search" id="cari-kamar" name="cari-kamar" class="form-control form-control-sm"
+                                   width="100%" autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -178,7 +181,7 @@
         var getSpsId = $('#kd_sps').val();
 
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             // new bootstrap.Tab('#tab-resep')
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-grafik')
@@ -203,7 +206,7 @@
             tb_ranap();
         });
 
-        $('#cari-kamar').on('search', function() {
+        $('#cari-kamar').on('search', function () {
             if ($(this).val() === '') {
                 kamar = '';
                 $('#tb_ranap').DataTable().destroy();
@@ -212,7 +215,7 @@
             }
         })
 
-        $('#spesialis').on('change', function() {
+        $('#spesialis').on('change', function () {
             sps = $('#spesialis option:selected').val();
             localStorage.setItem('spesialis', sps);
             if (sps) {
@@ -221,9 +224,9 @@
                     data: {
                         'sps': sps,
                     },
-                    success: function(response) {
+                    success: function (response) {
                         let option = `<option value="" disabled selected>Pilih Dokter Spesialis</option>`;
-                        response.data.forEach(function(res) {
+                        response.data.forEach(function (res) {
                             $('#dokter').prop('disabled', false)
                             $('#dokter').empty();
                             option += `<option value="${res.kd_dokter}">${res.nm_dokter}</option>`;
@@ -244,11 +247,11 @@
             tb_ranap();
         })
 
-        $("#cari-kamar").bind('keypress', function(e) {
+        $("#cari-kamar").bind('keypress', function (e) {
             // console.log($(this).val())
         })
 
-        $('#cari-kamar').on('keyup', function() {
+        $('#cari-kamar').on('keyup', function () {
             kamar = $(this).val();
             if (kamar.length >= 5) {
                 localStorage.setItem('kamar', kamar);
@@ -261,14 +264,14 @@
             }
         })
 
-        $('#dokter').on('change', function() {
+        $('#dokter').on('change', function () {
             kd_dokter = $(this).val();
             localStorage.setItem('dokter', kd_dokter)
             $('#tb_ranap').DataTable().destroy();
             tb_ranap();
         })
 
-        $('#pulang').on('click', function() {
+        $('#pulang').on('click', function () {
             stts_pulang = 'Pulang';
             if ($('#pulang').is(':checked')) {
                 $('.tgl_pulang').prop('disabled', false)
@@ -278,7 +281,7 @@
                 $('.tgl_masuk').prop('disabled', false)
             }
         })
-        $('#masuk').on('click', function() {
+        $('#masuk').on('click', function () {
             stts_pulang = 'Masuk';
             if ($('#masuk').is(':checked')) {
                 $('.tgl_pulang').prop('disabled', true)
@@ -290,13 +293,13 @@
         })
 
 
-        $('#belum').on('click', function() {
+        $('#belum').on('click', function () {
             stts_pulang = '-';
             $('.tgl_pulang').prop('disabled', true)
             $('.tgl_masuk').prop('disabled', true)
         });
 
-        $('#cari').on('click', function() {
+        $('#cari').on('click', function () {
             let a = '';
             let b = '';
             if (stts_pulang === 'Pulang') {
@@ -337,12 +340,12 @@
                     },
                 },
                 columnDefs: [{
-                        target: 0,
-                        width: 10,
-                    }, {
-                        target: 1,
-                        width: 80,
-                    },
+                    target: 0,
+                    width: 10,
+                }, {
+                    target: 1,
+                    width: 80,
+                },
                     {
                         target: 3,
                         width: 150,
@@ -400,82 +403,84 @@
                     }
 
 
-
                 },
                 columns: [{
-                        data: 'reg_periksa',
-                        render: function(data, type, row, meta) {
-                            if (!data.dokter) {
-                                swal.fire({
-                                    icon: 'error',
-                                    html: `Gagal memuat pasien ${row.no_rawat} dengan ID Dokter ${row}, periksa kembali data registrasi`,
-                                    title: 'Terjadi Kesalahan',
-                                    showConfirmButton: true,
-                                    confirmButtonColor: '#3085d6',
-                                })
-                                return false;
-                            }
-
-                            const textNoRawat = textRawat(row.no_rawat);
-
-                            list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
-                            list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="showModalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Upload Berkas Penunjang</a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="catatanEdukasiPasien('${data.no_rawat}')">Catatan Edukasi Pasien</a></li>`;
-
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')">Monitoring Cairan Pasien</a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')">Edukasi Obat Pulang  ${cekList(row.edukasi_obat_pulang)}</a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalDischargePlanning('${data.no_rawat}')">Discharge Planning  ${cekList(row.discharge_planning)}</a></li>`;
-
-                            list += renderListsAsesmenNyeri(data.pasien.tgl_lahir, data.tgl_registrasi, data.no_rawat);
-                            if (row.reg_periksa.dokter.kd_sps === 'S0003') {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${data.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
-                                if (data.sttsumur === 'Hr') {
-                                    list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
-                                } else if (data.sttsumur === 'Bl' || (data.umurdaftar <= 3 && data.sttsumur === 'Th')) {
-
-                                    list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
-                                } else {
-                                    list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
-                                }
-                            } else if (row.reg_periksa.dokter.kd_sps === 'S0001') {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${data.no_rawat}')">Asesmen Resiko Jatuh Dewasa</a></li>`;
-
-                            }
-
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${data.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
-                            isDokter = "{{ session()->get('pegawai')->departemen }}";
-                            if (isDokter === 'DM7' || isDokter === 'Direksi' || isDokter === 'SPS' || isDokter === '-' || isDokter === 'CSM') {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPlanOfCare('${data.no_rawat}')"><i>Plan of Care</i> ${cekList(row.reg_periksa.poc)}</a></li>`;
-                            }
-                            if (isDokter === 'Direksi' || isDokter === 'SPS' || isDokter === '-' || isDokter === 'CSM') {
-                                if (row.resume) {
-                                    iconCheck = '<i class="bi bi-check-circle text-success"></i>';
-                                } else {
-                                    iconCheck = '';
-                                }
-                                list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
-                            }
-                            // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
-                            // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${data.pasien.no_peserta}', '${data.dokter.mapping_dokter.kd_dokter_bpjs}')">Riwayat Pemeriksaan I-Care</a></li>`;
-                            button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownAksi${meta.row}" data-id="${row.no_rawat}"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:11px">${list}</ul></div>`
-
-                            return button;
+                    data: 'reg_periksa',
+                    render: function (data, type, row, meta) {
+                        if (!data.dokter) {
+                            swal.fire({
+                                icon: 'error',
+                                html: `Gagal memuat pasien ${row.no_rawat} dengan ID Dokter ${row}, periksa kembali data registrasi`,
+                                title: 'Terjadi Kesalahan',
+                                showConfirmButton: true,
+                                confirmButtonColor: '#3085d6',
+                            })
+                            return false;
                         }
-                    },
+
+                        const textNoRawat = textRawat(row.no_rawat);
+
+                        list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang(\'' + data.no_rawat + '\')">Pemeriksaan Penunjang</a></li>';
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
+                        list += '<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="' + row.reg_periksa.kd_dokter + '" onclick="showModalSoapRanap(\'' + data.no_rawat + '\')">CPPT</a></li>';
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Upload Berkas Penunjang</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="catatanEdukasiPasien('${data.no_rawat}')">Catatan Edukasi Pasien</a></li>`;
+
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')">Monitoring Cairan Pasien</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')">Edukasi Obat Pulang  ${cekList(row.edukasi_obat_pulang)}</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalDischargePlanning('${data.no_rawat}')">Discharge Planning  ${cekList(row.discharge_planning)}</a></li>`;
+
+                        list += renderListsAsesmenNyeri(data.pasien.tgl_lahir, data.tgl_registrasi, data.no_rawat);
+                        if (row.reg_periksa.dokter.kd_sps === 'S0003') {
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${data.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
+                            if (data.sttsumur === 'Hr') {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
+                            } else if (data.sttsumur === 'Bl' || (data.umurdaftar <= 3 && data.sttsumur === 'Th')) {
+
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
+                            } else {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
+                            }
+                        } else if (row.reg_periksa.dokter.kd_sps === 'S0001') {
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${data.no_rawat}')">Asesmen Resiko Jatuh Dewasa</a></li>`;
+
+                        }
+
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${data.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
+                        isDokter = "{{ session()->get('pegawai')->departemen }}";
+                        if (isDokter === 'DM7' || isDokter === 'Direksi' || isDokter === 'SPS' || isDokter === '-' || isDokter === 'CSM') {
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPlanOfCare('${data.no_rawat}')"><i>Plan of Care</i> ${cekList(row.reg_periksa.poc)}</a></li>`;
+                        }
+                        if (isDokter === 'Direksi' || isDokter === 'SPS' || isDokter === '-' || isDokter === 'CSM') {
+                            if (row.resume) {
+                                iconCheck = '<i class="bi bi-check-circle text-success"></i>';
+                            } else {
+                                iconCheck = '';
+                            }
+                            list += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
+                        }
+                        // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${data.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+                        // list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${data.pasien.no_peserta}', '${data.dokter.mapping_dokter.kd_dokter_bpjs}')">Riwayat Pemeriksaan I-Care</a></li>`;
+                        button = `<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownAksi${meta.row}" data-id="${row.no_rawat}"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:11px">${list}</ul></div>`
+
+                        return button;
+                    }
+                },
                     {
                         title: 'No. Rawat',
                         data: 'no_rawat',
+                        render: function (data) {
+                            return `<a href="javascript:void(0)" class="text-dark" style="text-decoration: none " onclick="showModalSoapRanap('${data}')">${data}</a>`
+                        }
                     },
                     {
                         title: 'Pasien',
                         data: 'reg_periksa',
-                        render: function(data, type, row, meta) {
+                        render: function (data, type, row, meta) {
                             pasien = `${data.no_rkm_medis} <br/> ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})`;
 
                             bayiGabung = '';
@@ -514,7 +519,7 @@
                     {
                         title: 'Kamar',
                         data: 'kamar',
-                        render: function(data) {
+                        render: function (data) {
                             return data.bangsal.nm_bangsal;
                         },
                         name: 'kamar',
@@ -522,7 +527,7 @@
                     {
                         title: 'Tgl. Masuk',
                         data: 'reg_periksa',
-                        render: function(data, type, row, meta) {
+                        render: function (data, type, row, meta) {
                             return `${splitTanggal(data.tgl_registrasi)} ${data.jam_reg}`;
                         },
                         name: 'tgl_masuk',
@@ -530,7 +535,7 @@
                     {
                         title: 'Lama',
                         data: 'lama',
-                        render: function(data, type, row) {
+                        render: function (data, type, row) {
                             return `${data} Hari`;
                         },
                         name: 'lama',
@@ -539,7 +544,7 @@
                         title: 'Diag. Awal',
                         data: '',
                         name: 'diagnosa',
-                        render: function(data, type, row) {
+                        render: function (data, type, row) {
                             const asmedAnak = row.asmed_anak;
                             const asmedKandungan = row.asmed_kandungan;
                             const asmedUmumBBL = row.asmed_umum;
@@ -591,7 +596,7 @@
                     {
                         title: 'Dokter DPJP',
                         data: 'reg_periksa',
-                        render: function(data, type, row) {
+                        render: function (data, type, row) {
                             let dokter = '';
                             if (!data.dokter) {
                                 swal.fire({
@@ -613,8 +618,8 @@
                                     data: {
                                         'nik': kd_dokter,
                                     },
-                                    success: function(response) {
-                                        $.map(response.data, function(res) {
+                                    success: function (response) {
+                                        $.map(response.data, function (res) {
                                             $('.nm_dokter').text(res.nm_dokter);
                                         })
                                     }
@@ -634,7 +639,7 @@
                     {
                         title: 'Pembiayaan',
                         data: 'reg_periksa.penjab',
-                        render: function(data) {
+                        render: function (data) {
                             penjab = `<span class="${data.kd_pj === 'A03' ? 'text-danger' : 'text-success'}"><b>${data.png_jawab}</b></span>`
                             return penjab;
                         },
@@ -643,7 +648,7 @@
                     {
                         title: 'Status',
                         data: 'stts_pulang',
-                        render: function(data, type, row, meta) {
+                        render: function (data, type, row, meta) {
                             let tanggal = '';
                             if (data === '-') {
                                 tanggal = ``;
@@ -906,15 +911,13 @@
             $('#modalAsmedRanapAnak').modal('show')
         }
 
-        $("#modalSoapRanap").on('hidden.bs.modal', function() {
+        $("#modalSoapRanap").on('hidden.bs.modal', function () {
             grafikPemeriksaan.destroy();
             grafikPemeriksaan = null;
 
             tableGrafikHarian.fnDestroy();
             tableGrafikHarian = null;
         });
-
-
 
 
         // function toggleDropdownAksi(e) {

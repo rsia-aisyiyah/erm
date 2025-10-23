@@ -14,17 +14,20 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap');
     </style>
     {{-- <link href="/erm/public/css/select2/select2.min.css" rel="stylesheet" /> --}}
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
-        rel="stylesheet" />
+          rel="stylesheet"/>
     {{-- Datatable --}}
-    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/fixedcolumns/4.2.1/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet"/>
+    <link href="https://cdn.datatables.net/fixedcolumns/4.2.1/css/fixedColumns.dataTables.min.css" rel="stylesheet"/>
     @stack('css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
     {{-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> --}}
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.toast.min.css') }}">
     <link rel="icon" href="{{ asset('img/LOGO RSIA .png') }}">
@@ -33,8 +36,9 @@
     {{-- sweetalert --}}
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
 
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
@@ -43,10 +47,9 @@
         * {
             font-family: "Noto Sans", serif;
             font-optical-sizing: auto;
-            font-weight: <weight>;
+            font-weight: < weight >;
             font-style: normal;
-            font-variation-settings:
-                "wdth" 100;
+            font-variation-settings: "wdth" 100;
         }
 
         .card {
@@ -67,7 +70,6 @@
         .dropdown-menu {
             border-radius: 6px;
         }
-
 
 
         input[type=text],
@@ -123,17 +125,17 @@
             padding: 11px;
         }
 
-        .list_obat ul li.active>a {
+        .list_obat ul li.active > a {
             background-color: #0d6efd;
             color: #fff;
         }
 
-        .list_aturan ul li.active>a {
+        .list_aturan ul li.active > a {
             background-color: #0d6efd;
             color: #fff;
         }
 
-        .list_racik ul li.active>a {
+        .list_racik ul li.active > a {
             background-color: #0d6efd;
             color: #fff;
         }
@@ -262,7 +264,7 @@
         }
 
         tr th {
-            background-color: :inherit;
+            background-color:: inherit;
         }
 
         .row-danger {
@@ -381,7 +383,7 @@
             text-align: left
         }
 
-        @media(max-width:1200px) {
+        @media (max-width: 1200px) {
 
             table tr td,
             th {
@@ -470,8 +472,7 @@
         .form-underline:focus {
             border-bottom: 1px dashed #ececec;
             box-shadow: none;
-            transition: background-size .3s ease;
-            ;
+            transition: background-size .3s ease;;
         }
 
         form label {
@@ -546,7 +547,7 @@
             border-radius: 6px;
         }
 
-        @media (max-width:820px) {
+        @media (max-width: 820px) {
             .tab-responsive {
                 display: none;
             }
@@ -554,7 +555,6 @@
             .nav-brand {
                 display: inherit !important;
             }
-
 
 
         }
@@ -585,7 +585,7 @@
             font-size: 11px;
         }
 
-        .is-valid+.select2-container .select2-selection {
+        .is-valid + .select2-container .select2-selection {
             border-color: #28a745;
             /* Green border color for valid state */
             color: #155724;
@@ -613,13 +613,14 @@
             border-width: 0;
         }
 
-        tr @media (min-width: 367px) {
+        tr
+
+        @media (min-width: 367px) {
             /* .batasan-lebar { */
             /* width: 497px;
                 margin-left: auto;
                 margin-right: auto;
             } */
-
             .order-sm-2 {
                 order: 2 !important;
             }
@@ -687,6 +688,33 @@
             }
 
 
+        }
+
+        /*    select2*/
+
+        /* Ukuran teks di dalam pilihan multiple (tag) */
+
+        .select2-selection--multiple .select2-selection__choice__display {
+            font-size: 12px !important; /* ubah ukuran sesuai selera, misal 12–13px */
+            padding: 2px 6px; /* atur padding biar proporsional */
+            margin-top: 3px;
+        }
+
+        /* Ukuran teks di input search-nya */
+        .select2-selection--multiple .select2-search__field {
+            font-size: 12px !important;
+        }
+
+        /* Border dan tinggi area utama */
+        .select2-selection--multiple {
+            min-height: 34px; /* pastikan tidak terlalu tinggi */
+            padding: 2px;
+            font-size: 12px !important;
+        }
+
+        /* Placeholder dan hasil dropdown */
+        .select2-results__option {
+            font-size: 12px;
         }
     </style>
 </head>

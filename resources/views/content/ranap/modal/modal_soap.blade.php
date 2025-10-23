@@ -7,42 +7,52 @@
             </div>
             <div class="modal-body">
                 <div class="row gy-2 mb-2" id="formInfoPasien">
-                    <div class="col-lg-1     col-md-6 col-sm-12">
+                    <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="no_rawat">No. Rawat</label>
                         <input type="text" class="form-control form-control-sm"
-                            id="no_rawat" name="no_rawat" placeholder="" readonly>
+                               id="no_rawat" name="no_rawat" placeholder="" readonly>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <label for="">Pasien</label>
                         <div class="input-group input-group-sm">
                             <input type="text" class="form-control form-control-sm"
-                                id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
+                                   id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
                             <input type="text" class="form-control form-control-sm w-50"
-                                id="pasien" name="pasien" placeholder="" readonly>
-                            <input type="text" class="form-control form-control-sm" id="umur"
-                                name="umur" placeholder="" readonly>
+                                   id="pasien" name="pasien" placeholder="" readonly>
                         </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="tgl_lahir">Tgl. Lahir</label>
+                        <input type="text" class="form-control form-control-sm" id="tgl_lahir"
+                               name="tgl_lahir" placeholder="" readonly>
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="">Keluarga</label>
-                        <x-input id="p_jawab" name="p_jawab" />
+                        <x-input id="p_jawab" name="p_jawab"/>
 
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="">Kamar</label>
                         <x-input-group class="input-group-sm">
-                            <x-input id="kamar" name="kamar" readonly class="w-50"></x-input>
-                            <x-input id="lama" name="lama" readonly />
+                            <x-input id="kamar" name="kamar" readonly class="w-50"/>
+                            <x-input id="lama" name="lama" readonly/>
                         </x-input-group>
                     </div>
-                    <div class="col-lg-1 col-md-6 col-sm-12">
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="">Pebiayaan</label>
+                        <x-input-group class="input-group-sm">
+                            <x-input id="penjab" name="penjab" readonly class="w-50"/>
+                            <x-input id="no_kartu" name="no_kartu" readonly/>
+                        </x-input-group>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="diagnosa_awal">Diagnosa Awal</label>
-                        <x-input id="diagnosa_awal" name="diagnosa_awal" readonly />
+                        <x-input id="diagnosa_awal" name="diagnosa_awal" readonly/>
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="dokter_dpjp">Dokter DPJP</label>
                         <input type="text" class="form-control form-control-sm"
-                            id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
+                               id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
                         <input type="hidden" id="kd_dokter_dpjp" name="kd_dokter_dpjp">
                         <input type="hidden" id="kd_sps_dokter" name="kd_sps_dokter">
                     </div>
@@ -51,31 +61,38 @@
                 <ul class="nav nav-tabs mt-3" id="tab-soap-ranap" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
-                            data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
-                            aria-selected="true">SOAP
+                                data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
+                                aria-selected="true">SOAP
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tabSbar" data-bs-toggle="tab"
-                            data-bs-target="#tabSbar-pane" type="button" role="tab" aria-controls="tabSbar-pane"
-                            aria-selected="true">SBAR
+                                data-bs-target="#tabSbar-pane" type="button" role="tab" aria-controls="tabSbar-pane"
+                                aria-selected="true">SBAR
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-pane"
-                            type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Riwayat
+                                type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Riwayat
                             S.O.A.P
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-diagnosa" data-bs-toggle="tab"
+                                data-bs-target="#tab-diagnosa-pane"
+                                type="button" role="tab" aria-controls="tab-diagnosa-pane" aria-selected="false">
+                            Diagnosa
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-grafik" data-bs-toggle="tab" data-bs-target="#tab-grafik-pane"
-                            type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik
+                                type="button" role="tab" aria-controls="tab-grafik-pane" aria-selected="false">Grafik
                             Pasien
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
-                            type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
+                                type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
                         </button>
                     </li>
                     {{-- <li class="nav-item" role="presentation">
@@ -84,21 +101,23 @@
                         </button>
                     </li> --}}
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab-laboratorium" data-bs-toggle="tab" data-bs-target="#tab-laboratorium-pane"
-                            type="button" role="tab" aria-controls="tab-laboratorium-pane" aria-selected="false">Laboratorium
+                        <button class="nav-link" id="tab-laboratorium" data-bs-toggle="tab"
+                                data-bs-target="#tab-laboratorium-pane"
+                                type="button" role="tab" aria-controls="tab-laboratorium-pane" aria-selected="false">
+                            Laboratorium
                         </button>
                     </li>
                     <li class="nav-item d-none" role="presentation">
                         <button class="nav-link" id="tabAsuhanGiziDewasa" data-bs-toggle="tab"
-                            data-bs-target="#tabAsuhanGiziDewasa-pane"
-                            type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">
+                                data-bs-target="#tabAsuhanGiziDewasa-pane"
+                                type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">
                             Asuhan Gizi Dewasa
                         </button>
                     </li>
                     <li class="nav-item d-none" role="presentation">
                         <button class="nav-link" id="tabAsuhanGiziAnak" data-bs-toggle="tab"
-                            data-bs-target="#tabAsuhanGiziAnak-pane"
-                            type="button" role="tab" aria-controls="tabAsuhanGiziAnak-pane" aria-selected="false">
+                                data-bs-target="#tabAsuhanGiziAnak-pane"
+                                type="button" role="tab" aria-controls="tabAsuhanGiziAnak-pane" aria-selected="false">
                             Asuhan Gizi Anak
                         </button>
                     </li>
@@ -106,48 +125,53 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
-                        aria-labelledby="home-tab" tabindex="0">
+                         aria-labelledby="home-tab" tabindex="0">
                         @include('content.ranap.modal.cppt._form_soap')
                     </div>
                     <div class="tab-pane fade p-3" id="tabSbar-pane" role="tabpanel"
-                        aria-labelledby="sbar-tab" tabindex="0">
+                         aria-labelledby="sbar-tab" tabindex="0">
                         @include('content.ranap.modal.cppt._sbar')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
-                        tabindex="0">
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._table_soap')
                     </div>
+                    <div class="tab-pane fade p-3" id="tab-diagnosa-pane" role="tabpanel" aria-labelledby="tab-diagnosa"
+                         tabindex="0">
+                        @include('content.ranap.modal.cppt._form_diagnosa')
+                    </div>
                     <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
-                        tabindex="0">
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._ewsRanap')
                     </div>
                     {{-- <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
                         tabindex="0">
                         @include('content.ranap.modal.cppt._resep')
                     </div> --}}
-                    <div class="tab-pane fade p-3" id="tab-laboratorium-pane" role="tabpanel" aria-labelledby="tab-laboratorium"
-                        tabindex="0">
+                    <div class="tab-pane fade p-3" id="tab-laboratorium-pane" role="tabpanel"
+                         aria-labelledby="tab-laboratorium"
+                         tabindex="0">
                         <div id="hasilPermintaanLabSoap"></div>
                     </div>
                     <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
-                        tabindex="0">
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._grafikPemeriksaan')
                     </div>
                     <div class="tab-pane fade" id="tabAsuhanGiziDewasa-pane" role="tabpanel"
-                        aria-labelledby="tabAsuhanGiziDewasa"
-                        tabindex="0">
+                         aria-labelledby="tabAsuhanGiziDewasa"
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._formAsuhanGiziDewasa')
                     </div>
                     <div class="tab-pane fade" id="tabAsuhanGiziAnak-pane" role="tabpanel"
-                        aria-labelledby="tabAsuhanGiziAnak"
-                        tabindex="0">
+                         aria-labelledby="tabAsuhanGiziAnak"
+                         tabindex="0">
                         @include('content.ranap.modal.cppt._formAsuhanGiziAnak')
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
-                        class="bi bi-x-circle"></i> Keluar
+                            class="bi bi-x-circle"></i> Keluar
                 </button>
 
             </div>
@@ -213,8 +237,8 @@
                                     <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil.length ? item.hasil[0].dokter.nm_dokter : ''}</strong></td>    
                                 </tr>
                                 <tr>
-                                    <td colspan="2" class="">Saran : <strong>${item.saran_kesan? item.saran_kesan.saran : '-'}</strong></td>    
-                                    <td colspan="2" class="">Kesan : <strong>${item.saran_kesan? item.saran_kesan.kesan : '-'}</strong></td>    
+                                    <td colspan="2" class="">Saran : <strong>${item.saran_kesan ? item.saran_kesan.saran : '-'}</strong></td>
+                                    <td colspan="2" class="">Kesan : <strong>${item.saran_kesan ? item.saran_kesan.kesan : '-'}</strong></td>
                                 </tr>
                         </tbody>
                     </table>`
@@ -264,9 +288,12 @@
             var formInfoPasien = $('#formInfoPasien')
             getRegPeriksa(no_rawat).done((response) => {
                 formInfoPasien.find('input[name="no_rawat"]').val(no_rawat);
+                formInfoPasien.find('input[name="tgl_lahir"]').val(`${formatTanggal(response.pasien.tgl_lahir)} / ${hitungUmur(response.pasien.tgl_lahir)}`);
                 formInfoPasien.find('input[name="no_rkm_medis"]').val(response.no_rkm_medis);
                 formInfoPasien.find('input[name="p_jawab"]').val(response.p_jawab);
                 formInfoPasien.find('input[name="pasien"]').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`);
+                formInfoPasien.find('input[name="penjab"]').val(`${response.penjab.png_jawab}`);
+                formInfoPasien.find('input[name="no_kartu"]').val(`${response.pasien.no_peserta}`);
                 formInfoPasien.find('input[name="umur"]').val(`${response.umurdaftar} ${response.sttsumur}`);
                 formInfoPasien.find('input[name="dokter_dpjp"]').val(`${response.dokter.nm_dokter}`);
                 formInfoPasien.find('input[name="kd_dokter_dpjp"]').val(`${response.kd_dokter}`);
@@ -362,7 +389,7 @@
             }
         }
 
-        $('#cekJam').on('change', function() {
+        $('#cekJam').on('change', function () {
             checkJam();
         })
     </script>
