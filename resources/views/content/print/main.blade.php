@@ -67,8 +67,8 @@
             display: table;
         }
 
-        .d-table>div,
-        .d-table>span {
+        .d-table > div,
+        .d-table > span {
             display: table-cell;
             vertical-align: top;
             padding: 5px;
@@ -594,25 +594,26 @@
             line-height: 1 !important;
         }
     </style>
-
 </head>
 
 <body>
-    @yield('content')
-    @stack('script')
-    <script>
-        function getBaseUrl(urlSegments = '') {
-            const getUrl = "{{ url('') }}"
-            const arrDomain = getUrl.split('/');
-            const segment = urlSegments ? `/${urlSegments}` : ''
-            if (arrDomain[2] == 'sim.rsiaaisyiyah.com') {
-                url = 'https://sim.rsiaaisyiyah.com' + segment;
-            } else {
-                url = `${arrDomain[0]}//192.168.100.33${segment}`
-            }
-            return url;
+@yield('content')
+@stack('script')
+<script>
+    function getBaseUrl(urlSegments = '') {
+        const getUrl = "{{ url('') }}"
+        const arrDomain = getUrl.split('/');
+        const segment = urlSegments ? `/${urlSegments}` : ''
+        if (arrDomain[2] == 'sim.rsiaaisyiyah.com') {
+            url = 'https://sim.rsiaaisyiyah.com' + segment;
+        } else {
+            url = `${arrDomain[0]}//192.168.100.33${segment}`
         }
-    </script>
+        return url;
+    }
+
+
+</script>
 </body>
 
 </html>
