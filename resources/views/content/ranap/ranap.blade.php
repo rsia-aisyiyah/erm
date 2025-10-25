@@ -162,6 +162,7 @@
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_dewasa')
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_anak')
     @include('content.poliklinik.modal.modal_icare')
+    @include('content.ugd.modal.asmed')
 @endsection
 
 @push('script')
