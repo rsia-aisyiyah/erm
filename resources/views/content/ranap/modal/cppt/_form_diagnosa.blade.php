@@ -136,6 +136,7 @@
 
             }).done((response) => {
                 tbDiagnosisAkhirRanap.empty()
+                selected.empty()
                 if (response.length === 0) {
                     return false;
                 }
@@ -175,6 +176,7 @@
                 'no_rawat': no_rawat
 
             }).done((response) => {
+                selected.empty()
                 tbProsedurPasienRanap.empty()
                 if (response.length === 0) {
                     return false;
