@@ -481,7 +481,10 @@
                                 </div>
                             </div>
                         </div>
-
+                        <input type="hidden" value="-" name="alergi" id="alergi"/>
+                        <input type="hidden" value="-" name="diet" id="diet"/>
+                        <input type="hidden" value="-" name="jalannya_penyakit" id="jalannya_penyakit"/>
+                        <input type="hidden" value="-" name="lab_belum" id="lab_belum"/>
 
                     </div>
                 </form>
@@ -1012,8 +1015,19 @@
                         }
                     })
                 },
+                success: () => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses !',
+                        text: 'Data Berhasil Diproses',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                },
                 error: (request) => {
                     alertSessionExpired(request.status)
+                    alertErrorAjax(request)
                 }
             })
 

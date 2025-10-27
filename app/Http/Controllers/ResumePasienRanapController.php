@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ResumePasienRanapRequest;
 use App\Models\ResumePasienRanap;
 use Illuminate\Http\Request;
 
@@ -30,31 +31,31 @@ class ResumePasienRanapController extends Controller
         return response()->json($resume);
     }
 
-    function insert(Request $request)
+    function insert(ResumePasienRanapRequest $request)
     {
         try {
-            $data = $request->except(['tgl_kontrol', 'jam_kontrol', '_token', 'no_rkm_medis']);
+            $data = $request->validated();
             $resume = $this->resume->create($data);
             if ($resume) {
                 $this->track->insertSql($this->resume, $data);
 
             }
-        } catch (QueryException $e) {
-            return response()->json($e->errorInfo, 500);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
         }
         return response()->json('Sukses');
     }
 
-    function edit(Request $request)
+    function edit(ResumePasienRanapRequest $request)
     {
-        $data = $request->except(['tgl_kontrol', 'jam_kontrol', '_token']);
         try {
+	    $data = $request->validated();
             $update = $this->resume->where('no_rawat', $data['no_rawat'])->update($data);
             if ($update) {
                 $this->track->updateSql($this->resume, $data, ['no_rawat', $data['no_rawat']]);
             }
-        } catch (QueryException $e) {
-            return response()->json($e->errorInfo, 500);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
         }
 
         return response()->json('Sukses');
