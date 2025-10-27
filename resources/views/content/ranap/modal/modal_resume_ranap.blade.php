@@ -407,45 +407,50 @@
                                             <option value="BUBIA">BUBIA</option>
                                         </select>
                                     </div>
-                                    <div class="mb-2 col-sm-12 col-md-6 col-lg-4">
+                                    <div class="mb-2 col-sm-12 col-md-6 col-lg-6">
                                         <label for="cara_keluar">Cara Keluar</label>
-                                        <select class="form-select" name="cara_keluar" id="cara_keluar">
-                                            <option value="Atas Izin Dokter">Atas Izin Dokter</option>
-                                            <option value="Pindah RS">Pindah RS</option>
-                                            <option value="Pulang Atas Permintaan Sendiri">Pulang Atas Permintaan
-                                                Sendiri
-                                            </option>
-                                            <option value="Lainnya">Lainnya</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-2 col-sm-12 col-md-6 col-lg-2">
                                         <label for="ket_keluar"></label>
-                                        <input class="form-control form-control-sm" name="ket_keluar" id="ket_keluar"
+                                        <x-input-group>
+                                            <select class="form-select" name="cara_keluar" id="cara_keluar">
+                                                <option value="Atas Izin Dokter">Atas Izin Dokter</option>
+                                                <option value="Pindah RS">Pindah RS</option>
+                                                <option value="Pulang Atas Permintaan Sendiri">Pulang Atas Permintaan
+                                                    Sendiri
+                                                </option>
+                                                <option value="Lainnya">Lainnya</option>
+                                            </select>
+                                            <input class="form-control form-control-sm" name="ket_keluar" id="ket_keluar"
                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value='-'/>
+                                        </x-input-group>
+
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="mb-2 col-sm-12 col-md-2 col-lg-3">
+                                <div class="mb-2 col-sm-12 col-md-2 col-lg-6">
                                     <label for="dilanjutkan">Dilanjutkan</label>
-                                    <select class="form-select" name="dilanjutkan" id="dilanjutkan">
-                                        <option value="Kembali Ke RS">Kembali Ke RS</option>
-                                        <option value="RS Lain">RS Lain</option>
-                                        <option value="Dokter Luar">Dokter Luar</option>
-                                        <option value="Puskesmes">Puskesmas</option>
-                                        <option value="Lainnya">Lainnya</option>
-                                    </select>
-                                </div>
-                                <div class="mb-2 col-sm-12 col-md-4 col-lg-4">
                                     <label for="ket_dilanjutkan"></label>
-                                    <input class="form-control form-control-sm" name="ket_dilanjutkan"
-                                           id="ket_dilanjutkan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                           value='-'/>
+                                    <x-input-group>
+                                        <select class="form-select" name="dilanjutkan" id="dilanjutkan">
+                                            <option value="Kembali Ke RS">Kembali Ke RS</option>
+                                            <option value="RS Lain">RS Lain</option>
+                                            <option value="Dokter Luar">Dokter Luar</option>
+                                            <option value="Puskesmes">Puskesmas</option>
+                                            <option value="Lainnya">Lainnya</option>
+                                        </select>
+                                        <input class="form-control form-control-sm" name="ket_dilanjutkan"
+                                               id="ket_dilanjutkan" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                               value='-'/>
+                                    </x-input-group>
                                 </div>
                                 <div class="mb-2 col-sm-12 col-md-4 col-lg-5">
                                     <label for="tgl_kontrol">Tanggal Kontrol</label>
-                                    <input class="form-control form-control-sm" name="tgl_kontrol" id="tgl_kontrol"
+                                    <x-input-group class="input-group-sm">
+                                        <span class="input-group-text"><i class="bi bi-calendar"></i> </span>
+                                        <input class="form-control form-control-sm" name="tgl_kontrol" id="tgl_kontrol"
                                            onfocus="removeZero(this)" onblur="cekKosong(this)"/>
+
+                                    </x-input-group>
                                     <input name="jam_kontrol" id="jam_kontrol" type="hidden"/>
                                 </div>
                                 {{-- <div class="mb-2 col-sm-12 col-md-3 col-lg-2">
@@ -505,8 +510,7 @@
     <script>
         $(document).ready(() => {
             $('#formResumeRanap textarea[name=jalannya_penyakit]').css("display", "none");
-            $('#tgl_kontrol').val("{{ date('d-m-Y') }}");
-            $('#jam_kontrol').val("{{ date('H:i:s') }}");
+
             $('#tgl_kontrol').datepicker({
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
@@ -517,6 +521,7 @@
 
         function resumeMedis(noRawat) {
             $('#formResumeRanap').trigger('reset')
+            $('#modalResumeRanap').modal('show')
             getRegPeriksa(noRawat).done((response) => {
                 $('#formResumeRanap input[name=no_rawat]').val(response.no_rawat);
                 $('#formResumeRanap input[name=no_rkm_medis]').val(response.no_rkm_medis);
@@ -560,6 +565,8 @@
 
 
                 getResumeMedis(noRawat).done((resume) => {
+                    $('#tgl_kontrol').val("{{ date('d-m-Y') }}");
+                    $('#jam_kontrol').val("{{ date('H:i:s') }}");
                     if (Object.keys(resume).length) {
                         $.each(resume, (index, value) => {
                             const select = $(`#formResumeRanap select[name=${index}]`);
@@ -567,8 +574,13 @@
                             const textarea = $(`#formResumeRanap textarea[name=${index}]`);
 
                             if (select.length) select.val(value);
-                            else if (input.length) input.val(value);
-                            else if (textarea.length) textarea.val(value);
+                            else if (input.length) input.val(value ? value : '-');
+                            else if (textarea.length) textarea.val(value ? value : '-');
+
+                            const tgl_kontrol = resume.kontrol.split(' ')[0];
+                            const jam_kontrol = resume.kontrol.split(' ')[1];
+                            $('#formResumeRanap').find('input[name=tgl_kontrol]').val(splitTanggal(tgl_kontrol))
+                            $('#formResumeRanap').find('input[name=jam_kontrol]').val(jam_kontrol)
                         });
                     }
 
@@ -581,7 +593,7 @@
                     $('#formResumeRanap #srcRadiologi').attr('onclick', `listHasilRadiologi('${response.no_rawat}', '${response.no_rkm_medis}', '${response.kd_poli}')`);
                     // $('#formResumeRanap #srcObat').attr('onclick', `listPemberianObat('${response.no_rawat}')`);
                 });
-                $('#modalResumeRanap').modal('show')
+
             })
         }
 
@@ -807,7 +819,8 @@
                     {
                         data: '',
                         render: function (data, type, row, meta) {
-                            return `${row.template.Pemeriksaan} : ${row.nilai} ${row.template.satuan}`
+
+                            return `${row.template?.Pemeriksaan} : ${row.nilai} ${row.template?.satuan}`
                         }
                     },
                     {
@@ -1022,12 +1035,16 @@
                         text: 'Data Berhasil Diproses',
                         showConfirmButton: false,
                         timer: 1500
+                    }).then(()=>{
+                        $('#modalResumeRanap').modal('hide');
                     })
 
                 },
                 error: (request) => {
-                    alertSessionExpired(request.status)
+                    if (request.status === 401)
+                        alertSessionExpired(request.status)
                     alertErrorAjax(request)
+
                 }
             })
 
@@ -1078,33 +1095,34 @@
             data = getDataForm('#formResumeRanap', ['input', 'textarea', 'select'], except)
             data.kontrol = `${splitTanggal(data.tgl_kontrol)} ${data.jam_kontrol}`
 
-            getResumeMedis(data.no_rawat).done((response) => {
+            // getResumeMedis(data.no_rawat).done((response) => {
+            //
+            //     if (Object.keys(response).length == 0) {
+            //
+            //     } else {
+            //         editResumeMedis(data).done(() => {
+            //             alertSuccessAjax('Berhasil mengubah resume medis').then(() => {
+            //                 $('#tb_ranap').DataTable().destroy();
+            //                 tb_ranap();
+            //                 $('#modalResumeRanap').modal('hide');
+            //             })
+            //         })
+            //     }
+            // })
 
-                if (Object.keys(response).length == 0) {
-                    insertResumeMedis(data).done(() => {
-                        notifSend(
-                            $('#formResumeRanap input[name=kd_dokter]').val(),
-                            "Notifikasi Resume Pasien",
-                            `Resume pasien atas nama ${$('#formResumeRanap input[name=pasien]').val()}. Mohon segera cek dan verifikasi pengisian.`,
-                            $('#formResumeRanap input[name=no_rawat]').val(),
-                            "Ranap",
-                            "resume"
-                        );
-                        alertSuccessAjax('Berhasil menambahkan resume medis').then(() => {
-                            $('#tb_ranap').DataTable().destroy();
-                            tb_ranap();
-                            $('#modalResumeRanap').modal('hide');
-                        })
-                    })
-                } else {
-                    editResumeMedis(data).done(() => {
-                        alertSuccessAjax('Berhasil mengubah resume medis').then(() => {
-                            $('#tb_ranap').DataTable().destroy();
-                            tb_ranap();
-                            $('#modalResumeRanap').modal('hide');
-                        })
-                    })
-                }
+            insertResumeMedis(data).done(() => {
+                // notifSend(
+                //     $('#formResumeRanap input[name=kd_dokter]').val(),
+                //     "Notifikasi Resume Pasien",
+                //     `Resume pasien atas nama ${$('#formResumeRanap input[name=pasien]').val()}. Mohon segera cek dan verifikasi pengisian.`,
+                //     $('#formResumeRanap input[name=no_rawat]').val(),
+                //     "Ranap",
+                //     "resume"
+                // );
+                // alertSuccessAjax('Berhasil menambahkan resume medis').then(() => {
+                //     tb_ranap();
+                //     $('#modalResumeRanap').modal('hide');
+                // })
             })
 
         }

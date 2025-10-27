@@ -35,6 +35,10 @@ class ResumePasienRanapController extends Controller
     {
         try {
             $data = $request->validated();
+			$isAvailResume = $this->resume->where('no_rawat', $data['no_rawat'])->first();
+			if($isAvailResume){
+				return $this->edit($request);
+			}
             $resume = $this->resume->create($data);
             if ($resume) {
                 $this->track->insertSql($this->resume, $data);

@@ -10,6 +10,8 @@ class ResumePasienRanap extends Model
     use HasFactory;
     protected $table = 'resume_pasien_ranap';
     protected $guarded = [];
+	protected $primaryKey = 'no_rawat';
+	protected $keyType = 'string';
     public $timestamps = false;
 
     function dokter()
