@@ -12,6 +12,7 @@ use App\Models\GrafikHarian;
 use App\Models\PemeriksaanRalan;
 use App\Models\RegPeriksa;
 use App\Models\ResepObat;
+use App\Models\RsiaLogSoap;
 use App\Traits\ResponseTrait;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
@@ -67,7 +68,7 @@ class PemeriksaanRalanController extends Controller
 
     public function getTable(Request $request)
     {
-        $pemeriksaan = $this->pemeriksaan->where(['no_rawat' => $request->no_rawat])->with(['regPeriksa.penjab', 'regPeriksa.dokter', 'pegawai', 'log', 'grafik'])
+        $pemeriksaan = $this->pemeriksaan->where(['no_rawat' => $request->no_rawat])->with(['regPeriksa.penjab', 'regPeriksa.dokter', 'pegawai', 'log.pegawai', 'grafik'])
             ->orderBy('tgl_perawatan', 'DESC')
             ->orderBy('jam_rawat', 'DESC')->get();
         return DataTables::of($pemeriksaan)->make(true);
@@ -222,18 +223,42 @@ class PemeriksaanRalanController extends Controller
             'sumber' => 'SOAP',
         ];
 
-        $pemeriksaan = PemeriksaanRalan::where($clause)->update($data);
-        $grafik = GrafikHarian::where($clause)->update($dataGrafik);
 
-        $this->track->updateSql($this->pemeriksaan, $data, $clause);
-        $this->track->updateSql($this->grafik, $dataGrafik, $clause);
+	    try {
 
-        if ($request->kd_poli == 'IGDK') {
-            $sttsPeriksa = ['stts' => 'Sudah'];
-            RegPeriksa::where('no_rawat', $request->no_rawat)->update($sttsPeriksa);
-            $this->track->insertSql($this->regPeriksa, $sttsPeriksa);
-        }
+			DB::transaction(function() use ($request, $clause, $data, $dataGrafik){
+			    $pemeriksaan = PemeriksaanRalan::where($clause)->update($data);
+			    $grafik = GrafikHarian::where($clause)->update($dataGrafik);
+				RsiaLogSoap::create([
+					'no_rawat' => $request->no_rawat,
+					'jam_rawat' => $request->jam_rawat,
+					'tgl_perawatan' => $request->tgl_perawatan,
+					'waktu' => date('Y-m-d H:i:s'),
+					'aksi' => 'Ubah',
+					'nip' => session()->get('pegawai')->nik
+				]);
 
-        return response()->json($pemeriksaan);
+				if($pemeriksaan){
+			         $this->track->updateSql($this->pemeriksaan, $data, $clause);
+
+				}
+
+				if($grafik){
+			        $this->track->updateSql($this->grafik, $dataGrafik, $clause);
+				}
+
+			    if ($request->kd_poli == 'IGDK') {
+			        $sttsPeriksa = ['stts' => 'Sudah'];
+			        RegPeriksa::where('no_rawat', $request->no_rawat)->update($sttsPeriksa);
+			        $this->track->insertSql($this->regPeriksa, $sttsPeriksa);
+			    }
+
+			});
+
+	    }catch (\Exception $e){
+			return response()->json($e->getMessage(), 500);
+	    }
+
+        return response()->json('Sukses');
     }
 }

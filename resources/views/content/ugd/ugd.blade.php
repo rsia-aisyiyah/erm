@@ -259,7 +259,9 @@
                         title: 'No. Rawat',
                         data: 'no_rawat',
                         render: (data, type, row, meta) => {
-                            return data;
+
+
+                            return `<a href="javascript:void(0)" onclick="modalSoapUgd('${row.no_rawat}')" style="text-decoration: none; color: #000">${data}</a>`;
                         }
                     },
                     {
