@@ -32,7 +32,7 @@ class PeriksaRadiologi extends Model
     }
     function gambarRadiologi()
     {
-        return $this->hasMany(GambarRadiologi::class, ['no_rawat', 'tgl_periksa'], ['no_rawat', 'tgl_periksa']);
+        return $this->hasMany(GambarRadiologi::class, ['no_rawat', 'tgl_periksa', 'jam'], ['no_rawat', 'tgl_periksa', 'jam']);
     }
     function hasilRadiologi()
     {

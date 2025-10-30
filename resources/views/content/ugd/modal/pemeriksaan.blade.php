@@ -92,6 +92,8 @@
                             if (row.nip == "{{ session()->get('pegawai')->nik }}") {
                                 button += `<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`;
                             }
+
+
                             return button;
                         },
                     },
@@ -124,9 +126,9 @@
                             html = '<ul>' + list + '</ul>';
 
                             $.map(row.log, function(log) {
-                                if (row.tgl_perawatan == log.tgl_perawatan && row.jam_rawat == log.jam_rawat) {
-                                    html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai.nama} 
-                                            , ${formatTanggal(log.waktu)} ${log.waktu.split(' ')[1]}
+                                if (row.tgl_perawatan === log.tgl_perawatan && row.jam_rawat === log.jam_rawat) {
+                                    html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai?.nama}</b>
+                                            , ${formatTanggal(log.waktu)}
                                                 </i></div>`
                                 }
                             })
@@ -163,7 +165,7 @@
                     jam_rawat: jam_rawat,
                 },
             }).done((response) => {
-                if (response.pegawai.nik == "{{ session()->get('pegawai')->nik }}" && response.reg_periksa.kd_dokter == "{{ session()->get('pegawai')->nik }}") {
+                if (response.pegawai.nik === "{{ session()->get('pegawai')->nik }}" || response.reg_periksa.kd_dokter === "{{ session()->get('pegawai')->nik }}") {
                     $('#btn-ubah').css('display', 'inline');
                     $('#btn-reset').css('display', 'inline');
                     $('#btn-reset').attr('onclick', `resetSoap('${response.no_rawat}')`);
@@ -208,8 +210,8 @@
             $('#formSoapUgd input').each((index, element) => {
                 $(element).val('-');
                 $(element).removeAttr('readonly');
-                $('#jam_rawat').val('');
-                $('#tgl_perawatan').val('');
+                $('#jam_rawat').val("{{date('Y-m-d')}}");
+                $('#tgl_perawatan').val("{{date('H:i:s')}}");
             })
             $('#formSoapUgd textarea').each((index, element) => {
                 $(element).val('-')
