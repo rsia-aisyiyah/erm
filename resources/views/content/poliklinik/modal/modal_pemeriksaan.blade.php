@@ -9,81 +9,123 @@
                 <ul class="nav nav-tabs nav-tabs-expand" id="tab-soap-rajal" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
-                            data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
-                            aria-selected="true">SOAP</button>
+                                data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
+                                aria-selected="true">SOAP
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-riwayat-pemeriksaan">
-                        <button class="nav-link" id="tab-riwayat-pemeriksaan" data-bs-toggle="tab" data-bs-target="#tab-riwayat-pane"
-                            type="button" role="tab" aria-controls="tab-riwayat-pemeriksaan" aria-selected="false">Riwayat Pemeriksaan</button>
+                        <button class="nav-link" id="tab-riwayat-pemeriksaan" data-bs-toggle="tab"
+                                data-bs-target="#tab-riwayat-pane"
+                                type="button" role="tab" aria-controls="tab-riwayat-pemeriksaan" aria-selected="false">
+                            Riwayat Pemeriksaan
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-asmed-obg">
-                        <button class="nav-link" id="tab-asesmen-obg" data-bs-toggle="tab" data-bs-target="#tab-asmed-obg"
-                            type="button" role="tab" aria-controls="tab-asmed-obg" aria-selected="false">Asesmen Medis Rajal Obgyn</button>
+                        <button class="nav-link" id="tab-asesmen-obg" data-bs-toggle="tab"
+                                data-bs-target="#tab-asmed-obg"
+                                type="button" role="tab" aria-controls="tab-asmed-obg" aria-selected="false">Asesmen
+                            Medis Rajal Obgyn
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-asmed-ana">
-                        <button class="nav-link" id="tab-asesmen-anak" data-bs-toggle="tab" data-bs-target="#tab-asmed-ana"
-                            type="button" role="tab" aria-controls="tab-asmed-ana" aria-selected="false">Asesmen Medis Rajal Anak</button>
+                        <button class="nav-link" id="tab-asesmen-anak" data-bs-toggle="tab"
+                                data-bs-target="#tab-asmed-ana"
+                                type="button" role="tab" aria-controls="tab-asmed-ana" aria-selected="false">Asesmen
+                            Medis Rajal Anak
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-asmed-ranap-obg">
-                        <button class="nav-link" id="tab-asesmen-ranap-obg" data-bs-toggle="tab" data-bs-target="#tab-asmed-ranap-obg"
-                            type="button" role="tab" aria-controls="tab-asmed-ranap-obg" aria-selected="false">Asesmen Medis Ranap Obgyn</button>
+                        <button class="nav-link" id="tab-asesmen-ranap-obg" data-bs-toggle="tab"
+                                data-bs-target="#tab-asmed-ranap-obg"
+                                type="button" role="tab" aria-controls="tab-asmed-ranap-obg" aria-selected="false">
+                            Asesmen Medis Ranap Obgyn
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-asmed-ranap-ana">
-                        <button class="nav-link" id="tab-asesmen-ranap-anak" data-bs-toggle="tab" data-bs-target="#tab-asmed-ranap-ana"
-                            type="button" role="tab" aria-controls="tab-asmed-ranap-ana" aria-selected="false">Asesmen Medis Ranap Anak</button>
+                        <button class="nav-link" id="tab-asesmen-ranap-anak" data-bs-toggle="tab"
+                                data-bs-target="#tab-asmed-ranap-ana"
+                                type="button" role="tab" aria-controls="tab-asmed-ranap-ana" aria-selected="false">
+                            Asesmen Medis Ranap Anak
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="permintaan-laborat-tab" data-bs-toggle="tab" data-bs-target="#permintaan-laborat-tab-pane"
-                            type="button" role="tab" aria-controls="permintaan-laborat-tab-pane" aria-selected="true">Permintaan Lab</button>
+                        <button class="nav-link" id="permintaan-laborat-tab" data-bs-toggle="tab"
+                                data-bs-target="#permintaan-laborat-tab-pane"
+                                type="button" role="tab" aria-controls="permintaan-laborat-tab-pane"
+                                aria-selected="true">Permintaan Lab
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-lab-ana">
                         <button class="nav-link" id="tab-lab" data-bs-toggle="tab" data-bs-target="#lab-ana"
-                            type="button" role="tab" aria-controls="lab-ana" aria-selected="false">Hasil Laboratorium</button>
+                                type="button" role="tab" aria-controls="lab-ana" aria-selected="false">Hasil
+                            Laboratorium
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab" data-bs-target="#permintaan-radiologi-tab-pane"
-                            type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi</button>
+                        <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab"
+                                data-bs-target="#permintaan-radiologi-tab-pane"
+                                type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane"
+                                aria-selected="true">Permintaan Radiologi
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-rad-ana">
                         <button class="nav-link" id="tab-rad" data-bs-toggle="tab" data-bs-target="#rad-ana"
-                            type="button" role="tab" aria-controls="rad-ana" aria-selected="false">Hasil Radiologi</button>
+                                type="button" role="tab" aria-controls="rad-ana" aria-selected="false">Hasil Radiologi
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="skriningTB" data-bs-toggle="tab" data-bs-target="#skriningTB-pane"
-                            type="button" role="tab" aria-controls="skriningTB-pane" aria-selected="true">Skrining/Skoring TB</button>
+                                type="button" role="tab" aria-controls="skriningTB-pane" aria-selected="true">
+                            Skrining/Skoring TB
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
+                                data-bs-target="#tabTindakan-pane"
+                                type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan
+                        </button>
                     </li>
                 </ul>
                 <div class="tab-content" id="tabContentPemeriksaan">
-                    <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                    <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
+                         aria-labelledby="home-tab" tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.soap')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-riwayat-pane" role="tabpanel" aria-labelledby="tab-riwayat-pemeriksaan"
-                        tabindex="0">
+                    <div class="tab-pane fade p-3" id="tab-riwayat-pane" role="tabpanel"
+                         aria-labelledby="tab-riwayat-pemeriksaan"
+                         tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.riwayat_pemeriksaan')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-asmed-obg" role="tabpanel" aria-labelledby="tab-asmed"
-                        tabindex="0">
+                         tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.asmed_kandungan')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-asmed-ana" role="tabpanel" aria-labelledby="tab-asmed"
-                        tabindex="0">
+                         tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.asmed_anak')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-asmed-ranap-obg" role="tabpanel" aria-labelledby="tab-asmed-ranap"
-                        tabindex="0">
+                    <div class="tab-pane fade p-3" id="tab-asmed-ranap-obg" role="tabpanel"
+                         aria-labelledby="tab-asmed-ranap"
+                         tabindex="0">
                         @include('content.ranap.form.form_asmed_kandungan')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-asmed-ranap-ana" role="tabpanel" aria-labelledby="tab-asmed-ranap"
-                        tabindex="0">
+                    <div class="tab-pane fade p-3" id="tab-asmed-ranap-ana" role="tabpanel"
+                         aria-labelledby="tab-asmed-ranap"
+                         tabindex="0">
                         @include('content.ranap.form.form_asemd_anak')
                     </div>
-                    <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
+                    <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel"
+                         aria-labelledby="permintaan-laborat-tab" tabindex="0">
                         @include('content.ranap.modal.penunjang.permintaan_lab')
 
                     </div>
+                    <div class="tab-pane fade  p-2 m-2" id="tabTindakan-pane" role="tabpanel"
+                         aria-labelledby="tabTindakan" tabindex="0">
+                        @include('content.poliklinik.modal.tab-tindakan')
+                    </div>
                     <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab"
-                        tabindex="0">
-{{--                        <small class="d-none mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilLab">Belum / Tidak dilakukan pemeriksaan laboratorium</small>--}}
+                         tabindex="0">
+                        {{--                        <small class="d-none mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilLab">Belum / Tidak dilakukan pemeriksaan laboratorium</small>--}}
                         <div class="row gy-2">
                             <div class="col-lg-8 col-md-12 col-sm-12">
                                 <div class="card">
@@ -93,19 +135,21 @@
                                         </h5>
                                     </div>
                                     <div class="card-body">
-                                            <table class="table table-bordered" width="100%" id="tbHasilLabRalan">
-                                                <thead>
-                                                <tr>
-                                                    <th>Pemeriksaan</th>
-                                                    <th>Hasil</th>
-                                                    <th>Nilai Rujukan</th>
-                                                    <th>Keterangan</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="tabel-lab">
-                                                </tbody>
-                                            </table>
-                                            <button type="button" class="mt-1 btn btn-warning btn-sm" id="btnHasilKritis"><i class="bi bi-pencil me-2"></i> Hasil Kritis</button>
+                                        <table class="table table-bordered" width="100%" id="tbHasilLabRalan">
+                                            <thead>
+                                            <tr>
+                                                <th>Pemeriksaan</th>
+                                                <th>Hasil</th>
+                                                <th>Nilai Rujukan</th>
+                                                <th>Keterangan</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="tabel-lab">
+                                            </tbody>
+                                        </table>
+                                        <button type="button" class="mt-1 btn btn-warning btn-sm" id="btnHasilKritis"><i
+                                                    class="bi bi-pencil me-2"></i> Hasil Kritis
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -117,23 +161,26 @@
                         </div>
 
                     </div>
-                    <div class="tab-pane fade" id="permintaan-radiologi-tab-pane" role="tabpanel" aria-labelledby="permintaan-radiologi-tab" tabindex="0">
+                    <div class="tab-pane fade" id="permintaan-radiologi-tab-pane" role="tabpanel"
+                         aria-labelledby="permintaan-radiologi-tab" tabindex="0">
                         @include('content.ranap.modal.penunjang.permintaan_radiologi')
                     </div>
                     <div class="tab-pane fade p-3" id="rad-ana" role="tabpanel" aria-labelledby="tab-radiologi"
-                        tabindex="0">
-                        <small class="mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilRadiologi" style="display: none">Belum / Tidak dilakukan pemeriksaan radiologi</small>
+                         tabindex="0">
+                        <small class="mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3"
+                               id="alertHasilRadiologi" style="display: none">Belum / Tidak dilakukan pemeriksaan
+                            radiologi</small>
                         <div class="row" id="viewHasilRadiologi" style="display: none">
                             <table class="table text-sm table-bordered" id="tbHasilRadiologi">
                                 <thead>
-                                    <tr>
-                                        <th>Tanggal Sampel</th>
-                                        <th>Diagnosa Klinis</th>
-                                        <th>Informasi Medis</th>
-                                        <th>Jenis Pemeriksaan</th>
-                                        <th>Hasil</th>
-                                        <th>Gambar</th>
-                                    </tr>
+                                <tr>
+                                    <th>Tanggal Sampel</th>
+                                    <th>Diagnosa Klinis</th>
+                                    <th>Informasi Medis</th>
+                                    <th>Jenis Pemeriksaan</th>
+                                    <th>Hasil</th>
+                                    <th>Gambar</th>
+                                </tr>
                                 </thead>
                                 <tbody>
 
@@ -142,18 +189,21 @@
                         </div>
                     </div>
                     <div class="tab-pane fade p-3" id="skriningTB-pane" role="tabpanel" aria-labelledby="tab-tb"
-                        tabindex="0">
+                         tabindex="0">
                         <form action="" id="formPasienSkoringTb">
                             <div class="row gy-1">
                                 <div class="col-lg-2 col-md-4 col-sm-12">
                                     <label for="no_rawat">No. Rawat</label>
-                                    <input type="text" class="form-control br-full" id="no_rawat" name="no_rawat" readonly>
+                                    <input type="text" class="form-control br-full" id="no_rawat" name="no_rawat"
+                                           readonly>
                                 </div>
                                 <div class="col-lg-3 col-md-4 col-sm-12">
                                     <label for="nm_pasien">Pasien</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="no_rkm_medis" name="no_rkm_medis" readonly>
-                                        <input type="text" class="form-control w-50" id="nm_pasien" name="nm_pasien" readonly>
+                                        <input type="text" class="form-control" id="no_rkm_medis" name="no_rkm_medis"
+                                               readonly>
+                                        <input type="text" class="form-control w-50" id="nm_pasien" name="nm_pasien"
+                                               readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-4 col-sm-12">
@@ -164,50 +214,70 @@
                             <div class="row gy-1">
                                 <div class="col-lg-2 col-md-4 col-sm-12">
                                     <label for="keluarga">Keluarga</label>
-                                    <input type="text" class="form-control br-full" id="p_jawab" name="p_jawab" readonly>
+                                    <input type="text" class="form-control br-full" id="p_jawab" name="p_jawab"
+                                           readonly>
                                 </div>
                                 <div class="col-lg-2 col-md-4 col-sm-12">
                                     <label for="nm_poli">Poliklinik</label>
-                                    <input type="text" class="form-control br-full" id="nm_poli" name="nm_poli" readonly>
+                                    <input type="text" class="form-control br-full" id="nm_poli" name="nm_poli"
+                                           readonly>
                                 </div>
                                 <div class="col-lg-3 col-md-4 col-sm-12">
                                     <label for="dokter">DPJP</label>
                                     <div class="input-group">
-                                        <input type="text" id="kd_dokter" name="kd_dokter" class="form-control" readonly>
-                                        <input type="text" class="form-control w-50" id="nm_dokter" name="nm_dokter" readonly>
+                                        <input type="text" id="kd_dokter" name="kd_dokter" class="form-control"
+                                               readonly>
+                                        <input type="text" class="form-control w-50" id="nm_dokter" name="nm_dokter"
+                                               readonly>
                                     </div>
                                 </div>
                             </div>
                         </form>
                         <ul class="nav nav-tabs mt-3" id="tabsSkoringTb" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="formSkoringTb-tab" data-bs-toggle="tab" data-bs-target="#tabSkoringTb" type="button" role="tab" aria-controls="tabSkoringTb" aria-selected="true">Form Skoring</button>
+                                <button class="nav-link active" id="formSkoringTb-tab" data-bs-toggle="tab"
+                                        data-bs-target="#tabSkoringTb" type="button" role="tab"
+                                        aria-controls="tabSkoringTb" aria-selected="true">Form Skoring
+                                </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="SkoringTb-tab" data-bs-toggle="tab" data-bs-target="#SkoringTb" type="button" role="tab" aria-controls="SkoringTb" aria-selected="true">Hasil Skoring</button>
+                                <button class="nav-link" id="SkoringTb-tab" data-bs-toggle="tab"
+                                        data-bs-target="#SkoringTb" type="button" role="tab" aria-controls="SkoringTb"
+                                        aria-selected="true">Hasil Skoring
+                                </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="formSkriningTb-tab" data-bs-toggle="tab" data-bs-target="#tabSkriningTb" type="button" role="tab" aria-controls="tabSkiringTb" aria-selected="true">Form Skrining</button>
+                                <button class="nav-link" id="formSkriningTb-tab" data-bs-toggle="tab"
+                                        data-bs-target="#tabSkriningTb" type="button" role="tab"
+                                        aria-controls="tabSkiringTb" aria-selected="true">Form Skrining
+                                </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="skriningTb-tab" data-bs-toggle="tab" data-bs-target="#skriningTb" type="button" role="tab" aria-controls="skriningTb" aria-selected="true">Hasil Skrining</button>
+                                <button class="nav-link" id="skriningTb-tab" data-bs-toggle="tab"
+                                        data-bs-target="#skriningTb" type="button" role="tab" aria-controls="skriningTb"
+                                        aria-selected="true">Hasil Skrining
+                                </button>
                             </li>
                         </ul>
                         <div class="tab-content" id="tabPenilaianTB">
-                            <div class="tab-pane fade show active p-3" id="tabSkoringTb" role="tabpanel" aria-labelledby="formSkoringTb-tab">
+                            <div class="tab-pane fade show active p-3" id="tabSkoringTb" role="tabpanel"
+                                 aria-labelledby="formSkoringTb-tab">
                                 <div style="background-color:whitesmoke;border-radius:10px;padding:10px">
                                     @include('content.ranap.modal.skriningTb._formSkoringTb')
                                 </div>
                             </div>
-                            <div class="tab-pane fade p-3" id="SkoringTb" role="tabpanel" aria-labelledby="SkoringTb-tab">
+                            <div class="tab-pane fade p-3" id="SkoringTb" role="tabpanel"
+                                 aria-labelledby="SkoringTb-tab">
                                 <table class="table nowrap" id="tbSkoringTb" width="100%"></table>
                             </div>
-                            <div class="tab-pane fade p-3" id="tabSkriningTb" role="tabpanel" aria-labelledby="formSkriningTb-tab">
+                            <div class="tab-pane fade p-3" id="tabSkriningTb" role="tabpanel"
+                                 aria-labelledby="formSkriningTb-tab">
                                 <div style="background-color:whitesmoke;border-radius:10px;padding:10px">
                                     @include('content.ranap.modal.skriningTb._formSkriningTb')
                                 </div>
                             </div>
-                            <div class="tab-pane fade p-3" id="skriningTb" role="tabpanel" aria-labelledby="skriningTb-tab">
+                            <div class="tab-pane fade p-3" id="skriningTb" role="tabpanel"
+                                 aria-labelledby="skriningTb-tab">
                                 <table class="table nowrap" id="tbSkriningTb" width="100%"></table>
                             </div>
                         </div>
@@ -217,10 +287,19 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-success btn-sm btn-soap" onclick="simpanSoapRalan()"><i class="bi bi-save"></i> Simpan SOAP</button>
-                <button type="button" class="btn btn-success btn-sm btn-asmed" name="simpan" style="display: none"><i class="bi bi-save"></i> Simpan Asmed Rajal</button>
-                <button type="button" class="btn btn-success btn-sm btn-asmed-ranap" name="simpan" style="display: none"><i class="bi bi-save"></i> Simpan Asmed Ranap</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                            class="bi bi-x-circle"></i> Keluar
+                </button>
+                <button type="button" class="btn btn-success btn-sm btn-soap" onclick="simpanSoapRalan()"><i
+                            class="bi bi-save"></i> Simpan SOAP
+                </button>
+                <button type="button" class="btn btn-success btn-sm btn-asmed" name="simpan" style="display: none"><i
+                            class="bi bi-save"></i> Simpan Asmed Rajal
+                </button>
+                <button type="button" class="btn btn-success btn-sm btn-asmed-ranap" name="simpan"
+                        style="display: none"><i class="bi bi-save"></i> Simpan Asmed Ranap
+                </button>
+
             </div>
         </div>
     </div>
@@ -246,14 +325,14 @@
         const btnsSkriningTB = $('button[data-bs-target="#skriningTB-pane"]');
 
 
-        $('button[data-bs-target="#tab-soap-pane"]').on('shown.bs.tab', function(e, x, y) {
+        $('button[data-bs-target="#tab-soap-pane"]').on('shown.bs.tab', function (e, x, y) {
             $('.btn-asmed-ranap').addClass('d-none')
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').removeClass('d-none')
 
         })
 
-        btnTabAsmedAnak.on('shown.bs.tab', function(e, x, y) {
+        btnTabAsmedAnak.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedAnak)
             $('.btn-asmed-ranap').addClass('d-none')
@@ -261,7 +340,7 @@
             $('.btn-soap').addClass('d-none')
 
         })
-        btnTabAsmedObgyn.on('shown.bs.tab', function(e, x, y) {
+        btnTabAsmedObgyn.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRajalKandungan)
             $('.btn-asmed-ranap').addClass('d-none')
@@ -269,7 +348,7 @@
             $('.btn-soap').addClass('d-none')
 
         })
-        btnTabAsmedRanapAnak.on('shown.bs.tab', function(e, x, y) {
+        btnTabAsmedRanapAnak.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRanapAnak)
             $('.btn-asmed-ranap').removeClass('d-none')
@@ -277,7 +356,7 @@
             $('.btn-soap').addClass('d-none')
         })
 
-        btnTabAsmedRanapObgyn.on('shown.bs.tab', function(e, x, y) {
+        btnTabAsmedRanapObgyn.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRanapKandungan)
             $('.btn-asmed-ranap').removeClass('d-none')
@@ -285,7 +364,7 @@
             $('.btn-soap').addClass('d-none')
         });
 
-        btnsSkriningTB.on('shown.bs.tab', function(e, x, y) {
+        btnsSkriningTB.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             drawTbSkriningTb(no_rawat)
             drawTbSkoringTb(no_rawat)
@@ -311,19 +390,19 @@
         })
 
 
-        function setRiwayatLaboratorium(no_rkm_medis){
+        function setRiwayatLaboratorium(no_rkm_medis) {
             const listRiwayatLaboratorium = $('#listRiwayatLaboratorium')
             //     <li class="list-group-item">First item</li>
             // <li class="list-group-item">Second item</li>
             // <li class="list-group-item">Third item</li>
-            $.get(`/erm/lab/riwayat/${no_rkm_medis}`).done((response)=>{
+            $.get(`/erm/lab/riwayat/${no_rkm_medis}`).done((response) => {
                 const {data} = response;
                 listRiwayatLaboratorium.empty()
-                if(data.length === 0){
+                if (data.length === 0) {
                     return false;
                 }
 
-                const list = data.map((item, index)=>{
+                const list = data.map((item, index) => {
                     return `<li class="list-group-item"  data-no-rawat="${item.no_rawat}" onclick="hasilLabRalan('${item.no_rawat}')">
                                 <div class="d-flex justify-content-between">
 
@@ -345,7 +424,7 @@
 
         }
 
-        $('button[data-bs-target="#lab-ana"]').on('shown.bs.tab', function(e, x, y) {
+        $('button[data-bs-target="#lab-ana"]').on('shown.bs.tab', function (e, x, y) {
             $('.btn-asmed-ranap').addClass('d-none')
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').addClass('d-none')
@@ -358,7 +437,7 @@
 
         })
 
-        function hasilLabRalan(no_rawat){
+        function hasilLabRalan(no_rawat) {
             getHasilLab(no_rawat).done((lab) => {
                 let jenisPerawatan = '';
                 let tglPeriksa = '';
@@ -392,13 +471,13 @@
             })
         }
 
-        btnTabPermintaanLab.on('shown.bs.tab', function(e, x, y) {
+        btnTabPermintaanLab.on('shown.bs.tab', function (e, x, y) {
             $('.btn-asmed-ranap').addClass('d-none')
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').addClass('d-none')
         })
 
-        $('button[data-bs-target="#rad-ana"]').on('shown.bs.tab', function(e, x, y) {
+        $('button[data-bs-target="#rad-ana"]').on('shown.bs.tab', function (e, x, y) {
             $('.btn-asmed-ranap').addClass('d-none')
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').addClass('d-none')
@@ -468,9 +547,9 @@
                 data: {
                     no_resep: no_resep,
                 },
-                success: function(response) {
+                success: function (response) {
                     if (Object.keys(response).length >= 1) {
-                        $.map(response, function(data) {
+                        $.map(response, function (data) {
                             no = data.no_racik
                         })
                         no_racik = parseInt(no) + 1;
@@ -613,15 +692,13 @@
         }
 
 
-
-
-        $('#simpanObat').on('click', function() {
+        $('#simpanObat').on('click', function () {
             $.ajax({
                 url: '/erm/resep/obat/ambil',
                 data: {
                     'no_resep': $('.no_resep').val(),
                 },
-                success: function(response) {
+                success: function (response) {
                     if (Object.keys(response).length == 0) {
                         simpanResepObat()
                     }
@@ -634,13 +711,13 @@
                             'kode_brng': $('.kode_obat').val(),
                             'jml': $('.jml').val(),
                             'aturan_pakai': $('.aturan_pakai').val() + ' ' + $(
-                                    '.keterangan')
+                                '.keterangan')
                                 .val(),
                         },
-                        success: function(response) {
+                        success: function (response) {
                             cekResep(id)
                         },
-                        error: function() {
+                        error: function () {
                             Swal.fire('Gagal !', 'Obat tidak tersimpan', 'error')
                         }
                     })
@@ -663,7 +740,7 @@
                     no_resep: $('.no_resep').val(),
                 },
                 method: 'POST',
-                error: function(request, status, error) {
+                error: function (request, status, error) {
                     Swal.fire(
                         'Gagal !',
                         'Tidak bisa menambah resep<br/>' + request.responseJSON.message,
@@ -694,7 +771,7 @@
                 data: {
                     no_resep: no_resep,
                 },
-                success: function(response) {
+                success: function (response) {
                     hasil = response;
                 },
             })
@@ -709,19 +786,19 @@
                 data: {
                     no_rawat: no_rawat,
                 },
-                success: function(response) {
+                success: function (response) {
 
                     teksRd = '';
                     teksRr = '';
-                    $.map(response, function(res) {
-                        $.map(res.resep_dokter, function(rd) {
+                    $.map(response, function (res) {
+                        $.map(res.resep_dokter, function (rd) {
                             teksRd += `${rd.data_barang.nama_brng}, jml : ${rd.jml} ${rd.data_barang.kode_satuan.satuan} aturan pakai ${rd.aturan_pakai} \n`;
                         })
 
-                        $.map(res.resep_racikan, function(rr) {
+                        $.map(res.resep_racikan, function (rr) {
                             teksRr += `${rr.metode.nm_racik} ${rr.nama_racik}, jml : ${rr.jml_dr} aturan pakai ${rr.aturan_pakai}, isian :  \n`
                             let no = 1
-                            $.map(rr.detail_racikan, function(dr) {
+                            $.map(rr.detail_racikan, function (dr) {
                                 if (rr.no_racik == dr.no_racik) {
                                     teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, jml : ${dr.jml} \n`
                                     no++;
@@ -733,7 +810,7 @@
                     })
                     formSoapPoli.find('#rtl').val(teksRd + '\n' + teksRr);
                 },
-                error: function(request, status, error) {
+                error: function (request, status, error) {
                     Swal.fire(
                         'Gagal !',
                         'Tidak tertulis di PLAN<br/>' + request.responseJSON.message,
@@ -763,10 +840,10 @@
                     no_resep: no_resep,
                     no_racik: no_racik,
                 },
-                success: function(response, status, detail) {
+                success: function (response, status, detail) {
                     html = '';
                     no = 1;
-                    $.map(response, function(res) {
+                    $.map(response, function (res) {
 
                         kandungan = res.kandungan != 0 ? res.kandungan : res.data_barang.kapasitas;
 
@@ -807,7 +884,7 @@
             $('.p2').val(1);
         }
 
-        $('.ubah-obat').on('click', function() {
+        $('.ubah-obat').on('click', function () {
             no_racik = $('.no_racik').val();
             no_resep = $('.no_resep').val();
             kode_brng = $('.kode_obat').val();
@@ -829,25 +906,23 @@
                     jml: jml,
                 },
                 method: 'POST',
-                success: function(response) {
+                success: function (response) {
                     ambilObatRacikan();
                 },
-                error: function(request, status, error) {
+                error: function (request, status, error) {
                     Swal.fire(
                         'Gagal !',
                         'Tidak bisa mengubah obat<br/>' + request.responseJSON.message,
                         'error',
                     )
                 }
-            }).done(function() {
+            }).done(function () {
                 tulisPlan();
             })
         })
 
 
-
-
-        $('.obat-baru').on('click', function() {
+        $('.obat-baru').on('click', function () {
             $('.simpan-obat').css('display', '');
             $('.ubah-obat').addClass('d-none');
             $('.obat-baru').addClass('d-none');
@@ -892,22 +967,22 @@
                             no_racik: no_racik,
                             kode_brng: kode_brng,
                         },
-                        success: function() {
+                        success: function () {
                             $('.obat-' + no).remove();
                             hitungBarisObat($('.table-racikan'))
                             cekResep(id);
                             riwayatResep($('#no_rm').val())
                         },
-                        error: function(request, status, error) {
+                        error: function (request, status, error) {
                             Swal.fire(
                                 'Gagal !',
                                 'Tidak menghapus obat<br/>' + request.responseJSON
-                                .message,
+                                    .message,
                                 'error',
                             )
 
                         }
-                    }).done(function() {
+                    }).done(function () {
                         tulisPlan();
                     })
                 }
@@ -915,7 +990,7 @@
         }
 
         function hitungBarisObat($table) {
-            $table.find('tr').each(function(index, element) {
+            $table.find('tr').each(function (index, element) {
                 $(element).attr('class', 'obat-' + index)
                 $(element).find('td:eq(0) input').attr('id', 'kode_brng' + index)
                 $(element).find('td:eq(1) input').attr('id', 'kps' + index)
@@ -930,7 +1005,7 @@
             $('.nomor').val($table.find('tr').length);
         }
 
-        $('tbody').on('click', '.edit', function() {
+        $('tbody').on('click', '.edit', function () {
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
             let no_racik = $(this).data('racik');
@@ -947,7 +1022,7 @@
             })
         })
 
-        $('#modalObatRacik').on('shown.bs.modal', function() {
+        $('#modalObatRacik').on('shown.bs.modal', function () {
             $('.kps').val('');
             $('.p1').val('');
             $('.p2').val('');
@@ -955,7 +1030,7 @@
             $('.kandungan').val('');
             $('.kandungan').val('');
         });
-        $('#modalObatRacik').on('hidden.bs.modal', function() {
+        $('#modalObatRacik').on('hidden.bs.modal', function () {
             $('.no_racik').val('');
             $('.kps').val('');
             $('.p1').val('');
@@ -964,7 +1039,6 @@
             $('.nama_obat').val('');
             $('.kandungan').val('');
         });
-
 
 
         function hapusResepUmum(no_resep, kode_brng) {
@@ -982,11 +1056,11 @@
         }
 
         function hapusNomorResep(no_resep) {
-            ambilResep(no_resep).done(function(res) {
+            ambilResep(no_resep).done(function (res) {
                 resepDokter = Object.keys(res.resep_dokter).length
                 resepRacik = Object.keys(res.resep_racikan).length
                 if (resepDokter == 0 && resepRacik == 0) {
-                    hapusResep(no_resep).done(function() {
+                    hapusResep(no_resep).done(function () {
                         Swal.fire({
                             title: 'Berhasil',
                             text: "Resep telah dihapus",
@@ -1018,13 +1092,14 @@
                         tulisPlan(no_rawat)
                         swalToast('Berhasil Hapus Racikan')
                     }).fail((request, status, error) => {
-                        Swal.fire('Gagal !', 'Tidak menghapus obat<br/>' + request.responseJSON.message, 'error', )
+                        Swal.fire('Gagal !', 'Tidak menghapus obat<br/>' + request.responseJSON.message, 'error',)
                     })
                 }
             })
 
         }
-        $('tbody').on('click', '.remove', function() {
+
+        $('tbody').on('click', '.remove', function () {
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
             let no_racik = $(this).attr('data-racik');
@@ -1040,7 +1115,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (no_racik) {
-                        hapusResepRacikan(no_resep, no_racik).done(function(response) {
+                        hapusResepRacikan(no_resep, no_racik).done(function (response) {
                             hapusNomorResep(no_resep)
                             tulisPlan();
                             $('#body_racik').empty();
@@ -1048,7 +1123,7 @@
                             cekResep($('#nomor_rawat').val());
                         })
                     } else {
-                        hapusResepUmum(no_resep, kode_brng).done(function(response) {
+                        hapusResepUmum(no_resep, kode_brng).done(function (response) {
                             hapusNomorResep(no_resep)
                             $('#body_umum').empty();
                             cekResep($('#nomor_rawat').val())
@@ -1062,14 +1137,13 @@
         })
 
 
-
         function cariDiagnosaSoap(diagnosa) {
-            getDiagnosa(diagnosa.value).done(function(response) {
+            getDiagnosa(diagnosa.value).done(function (response) {
                 if (response) {
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                     no = 1;
-                    $.map(response, function(data) {
+                    $.map(response, function (data) {
                         html +=
                             '<li data-nama="' + data.nm_penyakit + '" data-id="' + data.kd_penyakit + '" onclick="tambahDiagnosa(this)"><a class="dropdown-item" href="#" style="overflow:hidden"> ' + data.kd_penyakit + ' - ' + data.nm_penyakit + '</a></li>'
                         no++;
@@ -1089,12 +1163,12 @@
                         'kode': kode.value,
                     },
                     dataType: 'JSON',
-                    success: function(response) {
+                    success: function (response) {
                         if (response) {
                             html =
                                 '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                             no = 1;
-                            $.map(response, function(data) {
+                            $.map(response, function (data) {
                                 html +=
                                     '<li data-nama="' + data.deskripsi_pendek + '" data-id="' + data.kode + '" onclick="tambahProsedur(this)"><a class="dropdown-item" href="#" style="overflow:hidden"> ' + data.kode + ' - ' + data.deskripsi_pendek + '</a></li>'
                                 no++;
@@ -1123,7 +1197,7 @@
                     prioritas: prioritas,
                 },
                 method: 'POST',
-                success: function(response) {
+                success: function (response) {
                     ambilDiagnosaPasien(no_rawat)
                     $('#diagnosa').val('').focus();
                 }
@@ -1146,7 +1220,7 @@
                     prioritas: prioritas,
                 },
                 method: 'POST',
-                success: function(response) {
+                success: function (response) {
                     ambilProsedurPasien(no_rawat)
                     $('#prosedur').val('').focus();
                 }
@@ -1160,11 +1234,11 @@
                 data: {
                     no_rawat: no_rawat,
                 },
-                success: function(response) {
+                success: function (response) {
                     nomor = 1;
                     $('.table-diagnosa tbody').empty();
                     if (Object.keys(response).length > 0) {
-                        $.map(response, function(res) {
+                        $.map(response, function (res) {
                             html = '<tr class="diagnosa_' + res.kd_penyakit + '">'
                             html += '<td>'
                             html += res.prioritas
@@ -1200,11 +1274,11 @@
                 data: {
                     no_rawat: no_rawat,
                 },
-                success: function(response) {
+                success: function (response) {
                     nomor = 1;
                     $('.table-prosedur tbody').empty();
                     if (Object.keys(response).length > 0) {
-                        $.map(response, function(res) {
+                        $.map(response, function (res) {
                             html = '<tr class="prosedur_' + res.kode + '">'
                             html += '<td>'
                             html += res.prioritas
@@ -1244,7 +1318,7 @@
                     kode: kode,
                 },
                 method: 'DELETE',
-                success: function(response) {
+                success: function (response) {
 
                     $('.no_prosedur').val(parseInt(no) - 1)
                     ambilProsedurPasien(no_rawat)
@@ -1263,7 +1337,7 @@
                     kd_penyakit: kd_penyakit,
                 },
                 method: 'DELETE',
-                success: function(response) {
+                success: function (response) {
 
                     $('.no_diagnosa').val(parseInt(no) - 1)
                     ambilDiagnosaPasien(no_rawat)
@@ -1307,11 +1381,11 @@
                     'kd_dokter': "{{ Request::get('dokter') }}",
                 },
                 dataType: 'JSON',
-                success: function(response) {
+                success: function (response) {
                     if (Object.keys(response).length > 0) {
                         html =
                             '<ul class="dropdown-menu show" style="width:auto;display:block;position:absolute;font-size:12px;max-height:200px;overflow-y:auto">';
-                        $.map(response, function(data) {
+                        $.map(response, function (data) {
                             html +=
                                 '<li onclick="setNamaRacik(this)" data-nama="' + data.nm_racik + '" data-id="' + data.id + '"><a class="dropdown-item" href="#" style="overflow:hidden">' + data.nm_racik + '</a></li>'
                         })
@@ -1323,7 +1397,7 @@
             })
         }
 
-        $('.list_racik').on('click', 'li', function() {
+        $('.list_racik').on('click', 'li', function () {
             $('.list_racik').fadeOut();
         })
 
@@ -1366,11 +1440,11 @@
                 data: {
                     'nama': obat.value
                 },
-                success: function(response) {
+                success: function (response) {
                     let html =
                         '<ul class="dropdown-menu show" style="width:auto;display:block;position:absolute;font-size:12px;max-height:200px;overflow-y:auto">';
-                    $.map(response.data, function(data) {
-                        $.map(data.gudang_barang, function(item) {
+                    $.map(response.data, function (data) {
+                        $.map(data.gudang_barang, function (item) {
                             if (data && data.status != "0") {
                                 if (item.stok) {
                                     html += `<li data-id="${data.kode_brng}" 
@@ -1452,7 +1526,6 @@
         }
 
 
-
         // function cariAturan(aturan) {
         //     $.ajax({
         //         url: '/erm/resep/cari',
@@ -1509,14 +1582,14 @@
                 data: {
                     'aturan_pakai': aturan.value
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response) {
                         let html = `
                     <ul class="dropdown-menu show" 
                         style="width:auto;display:block;position:absolute;font-size:12px;max-height:200px;overflow-y:auto">
                 `;
 
-                        $.map(response, function(data) {
+                        $.map(response, function (data) {
                             html += `
                         <li onclick="ambilAturan(this)" class="dropdown-item">${data.aturan_pakai}</li>`;
                         });
@@ -1547,9 +1620,7 @@
         }
 
 
-
-
-        $('.list_obat').on('click', 'li', function() {
+        $('.list_obat').on('click', 'li', function () {
             if ($(this).data('stok') > 0) {
                 $('.kode_obat').val($(this).data('id'));
                 $('.nama_obat').val($(this).text());
@@ -1567,12 +1638,13 @@
             // console.log('PARAM ===', $(param), 'VALUE PARAM', param);
             $('.aturan_pakai').val($(param).text());
         }
-        $('.list_aturan').on('click', 'li', function() {
+
+        $('.list_aturan').on('click', 'li', function () {
             // console.log($(this).text())
             $('.list_aturan').fadeOut();
         });
 
-        $(document).click(function() {
+        $(document).click(function () {
             $('.list_obat').fadeOut();
             $('.list_aturan').fadeOut();
             $('.list_racik').fadeOut();
@@ -1583,8 +1655,7 @@
         });
 
 
-
-        $('#modalResepRacikan').on('hidden.bs.modal', function() {
+        $('#modalResepRacikan').on('hidden.bs.modal', function () {
             $('.nm_racik').val('');
             $('.jml').val('');
             $('.aturan_pakai').val('');
@@ -1592,7 +1663,7 @@
             $('.no_racik').val('');
         })
 
-        $('#modalResepRacikan').on('shown.bs.modal', function() {
+        $('#modalResepRacikan').on('shown.bs.modal', function () {
             cekResep(id);
             $('.no_resep').val(setNoResep())
         })
@@ -1613,8 +1684,7 @@
 
         }
 
-        $('#modalSoap').on('shown.bs.modal', function() {
-
+        $('#modalSoap').on('shown.bs.modal', function () {
 
 
             $('.tambah_umum').css('visibility', 'visible')
@@ -1839,7 +1909,7 @@
                     jml: $('.u_jml_' + no).val(),
                     aturan_pakai: $('.u_aturan_' + no).val(),
                 },
-                success: function(response) {
+                success: function (response) {
                     // alert(response);
                     cekResep(id)
                     tulisPlan()
@@ -1847,7 +1917,7 @@
             })
         }
 
-        $('tbody').on('click', '.ubah-obat', function() {
+        $('tbody').on('click', '.ubah-obat', function () {
             no = $(this).data('id')
             jml = $('.jml_' + no).text();
             aturan_pakai = $('.aturan_pakai_' + no).text();
@@ -1872,13 +1942,13 @@
                 data: {
                     no_rawat: no_rawat,
                 },
-                success: function(response) {
+                success: function (response) {
 
                     if (Object.keys(response).length > 0) {
-                        $.map(response, function(res) {
+                        $.map(response, function (res) {
                             if (Object.keys(res.resep_dokter).length > 0) {
                                 no = 1;
-                                $.map(res.resep_dokter, function(resep) {
+                                $.map(res.resep_dokter, function (resep) {
                                     html = '<tr class="obat_' + no + '">';
                                     html += '<td>' + resep.no_resep + '</td>'
                                     html += '<td>' + resep.data_barang.nama_brng +
@@ -1905,7 +1975,7 @@
 
                             if (Object.keys(res.resep_racikan).length > 0) {
 
-                                $.map(res.resep_racikan, function(resep) {
+                                $.map(res.resep_racikan, function (resep) {
 
                                     html = '<tr class="racikan_' + resep.no_racik + '">';
                                     html += '<td>' + resep.no_racik + '</td>'
@@ -1916,21 +1986,21 @@
                                     html += '<td class="aturan_pakai_dr_' + no + '">' + resep.aturan_pakai + '</td>'
                                     html +=
                                         '<td class="' + resep.no_resep + resep
-                                        .no_racik +
+                                            .no_racik +
                                         '"></td>';
                                     html += '</tr>';
                                     $('#body_racikan').append(html);
                                     if (Object.keys(resep.detail_racikan).length >
                                         0) {
                                         d = '<tr><td></td><td colspan="6">'
-                                        $.map(resep.detail_racikan, function(
+                                        $.map(resep.detail_racikan, function (
                                             detail) {
                                             if (resep.no_racik == detail
                                                 .no_racik) {
 
                                                 d += '<span class="badge rounded-pill text-bg-success"><i>' +
                                                     detail.databarang
-                                                    .nama_brng + ' (' +
+                                                        .nama_brng + ' (' +
                                                     detail.kandungan +
                                                     ' mg)' +
                                                     '<i></span>';
@@ -1988,7 +2058,7 @@
                     }
 
                 },
-                error: function(request, status, error) {
+                error: function (request, status, error) {
                     Swal.fire(
                         'Gagal !',
                         'Ada kesalahan pemuatan obat',
@@ -2000,7 +2070,7 @@
             return resep;
         }
 
-        $('#modalSoap').on('hidden.bs.modal', function() {
+        $('#modalSoap').on('hidden.bs.modal', function () {
             const nm_pasien = $('#pasien-cari').val();
             tb_pasien(tgl_registrasi, nm_pasien);
             $('#tb-resep tbody').empty();

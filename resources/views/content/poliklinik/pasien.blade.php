@@ -263,7 +263,6 @@
                     }
                     if(item.resep_racikan){
                         resepRacikan = item.resep_racikan.map((items)=>{
-                            console.log('ITEMS RAVIKAN ===', items)
                             const obat = items.detail.map((itemsObat)=>{
                                 return `<span class="badge text-bg-success">${itemsObat.databarang.nama_brng}</span>`
                             }).join(', ')
@@ -781,17 +780,18 @@
                 processing: false,
                 scrollX: true,
                 serverSide: true,
-                stateSave: true,
+                // stateSave: true,
                 searching: false,
                 ordering: false,
                 paging: false,
                 lenghtChange: false,
                 info: false,
-                deferRender: true,
+                // deferRender: true,
                 destroy: true,
                 columnDefs: [{
                     width: 50,
                     targets: 0,
+                    orderable:false,
                 }],
                 ajax: {
                     url: "table",

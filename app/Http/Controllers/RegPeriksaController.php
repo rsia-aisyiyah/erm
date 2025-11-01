@@ -108,6 +108,7 @@ class RegPeriksaController extends Controller
             'jam_reg',
             'status_bayar',
             'p_jawab',
+            'hubunganpj',
             'status_poli',
             'stts_daftar',
             'no_rawat',
