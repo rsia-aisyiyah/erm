@@ -1784,6 +1784,7 @@
         function floatWithDot(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
+        $('.select2').select2({})
     </script>
     @stack('script')
     <script type="text/javascript" src="{{ asset('js/context-menu/items.js') }}"></script>
