@@ -50,29 +50,115 @@
         </button>
     </li>
 </ul>
-<div class="tab-content" id="contentTabTindakan">
-    <div class="tab-pane fade p-2" id="targetTindakanDokter" role="tabpanel"
-         aria-labelledby="tabTindakanDokter" tabindex="0">
-       @include('content.poliklinik.modal.tindakan.tindakan_ralan_dr')
+<div class="row">
+    <div class="col-lg-5 col-xl-6 col-md-12 col-sm-12">
+        <div class="tab-content" id="contentTabTindakan">
+            <div class="tab-pane fade p-2" id="targetTindakanDokter" role="tabpanel"
+                 aria-labelledby="tabTindakanDokter" tabindex="0">
+                @include('content.poliklinik.modal.tindakan.tindakan_ralan_dr')
+            </div>
+            <div class="tab-pane fade p-2" id="targetTindakanPerawat" role="tabpanel"
+                 aria-labelledby="tabTindakanDokter" tabindex="0">
+                @include('content.poliklinik.modal.tindakan.tindakan_ralan_pr')
+            </div>
+            <div class="tab-pane fade p-2" id="targetTindakanDokterPerawat" role="tabpanel"
+                 aria-labelledby="tabTindakanDokter" tabindex="0">
+                @include('content.poliklinik.modal.tindakan.tindakan_ralan_drpr')
+            </div>
+        </div>
     </div>
-    <div class="tab-pane fade p-2" id="targetTindakanPerawat" role="tabpanel"
-         aria-labelledby="tabTindakanDokter" tabindex="0">
-       @include('content.poliklinik.modal.tindakan.tindakan_ralan_pr')
-    </div>
-    <div class="tab-pane fade p-2" id="targetTindakanDokterPerawat" role="tabpanel"
-         aria-labelledby="tabTindakanDokter" tabindex="0">
-       @include('content.poliklinik.modal.tindakan.tindakan_ralan_drpr')
+    <div class="col-xl-6 col-lg-7 col-md-12 col-sm-12 p-2">
+
+        <div class="d-flex flex-column gap-2">
+            <div class="card">
+                <div class="card-header text-white bg-primary ">
+                    Tindakan Dokter
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered" id="tabelTindakanDilakukan">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tgl.</th>
+                            <th>Jam</th>
+                            <th>Perawatan</th>
+                            <th>Dokter</th>
+                            <th>Biaya</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteTindakanDokter()">
+                        <i class="ti ti-trash"></i>Hapus
+                    </button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header text-white bg-primary ">
+                    Tindakan Perawat
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered" id="tabelTindakanDilakukanPr">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tgl.</th>
+                            <th>Jam</th>
+                            <th>Tindakan</th>
+                            <th>Petugas</th>
+                            <th>Biaya</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteTindakanPerawat()">
+                        <i class="ti ti-trash"></i>Hapus
+                    </button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header text-white bg-primary ">
+                    Tindakan Dokter & Perawat
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered" id="tabelTindakanDilakukanDrPr">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tgl.</th>
+                            <th>Jam</th>
+                            <th>Tindakan</th>
+                            <th>Dokter & Perawat</th>
+                            <th>Biaya</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteTindakanDokterPerawat()">
+                        <i class="ti ti-trash"></i>Hapus
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
+
 @push('script')
     <script>
-        $('#tabTindakan').on('shown.bs.tab', function (){
+        $('#tabTindakan').on('shown.bs.tab', function () {
             const no_rawat = $('#no_rawat').val();
             const formInfoTindakan = $('.formInfoTindakan')
             $.get(`/erm/periksa/detail`, {
                 no_rawat: no_rawat
-            }).done((response)=>{
+            }).done((response) => {
                 const {pasien, penjab, dokter} = response
 
                 formInfoTindakan.find('#no_rawat').val(no_rawat)
@@ -90,7 +176,9 @@
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').addClass('d-none')
 
-
+            getTindakanDilakukanDr(no_rawat)
+            getTindakanDilakukanPr(no_rawat)
+            getTindakanDilakukanDrPr(no_rawat)
 
         })
 

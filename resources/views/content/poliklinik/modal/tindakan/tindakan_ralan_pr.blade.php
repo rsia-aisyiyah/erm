@@ -1,49 +1,21 @@
 <div id="tindakanPerawatRajal">
 	<form action="" id="formTindakanPerawat">
 		<div class="row">
-			<div class="col-md-6">
-				<div class="row">
-					<div class="col-lg-6 col-md-12 col-lg-12">
-						<label for="nip">Petugas</label>
-						<select name="nip" id="nip" class="select2 w-100" data-dropdown-parent="#formTindakanPerawat"></select>
-					</div>
-					<div class="col-md-12 mt-2">
-						<div class="table-responsive">
-							<table class="table table-sm table-bordered table-striped" id="tabelJenisTindakanPerawat">
-
-							</table>
-						</div>
-
-						<button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanPerawat" onclick="createTindakanPerawat()"><i class="bi bi-floppy"></i> Buat</button>
-					</div>
-				</div>
+			<div class="col-lg-6 col-md-12 col-lg-12">
+				<label for="nip">Petugas</label>
+				<select name="nip" id="nip" class="select2 w-100" data-dropdown-parent="#formTindakanPerawat"></select>
 			</div>
-			<div class="col-md-6">
-				<div class="card">
-					<div class="card-body">
-						<h4 class="card-title h5">Tindakan Dilakukan</h4>
-						<table class="table table-bordered" id="tabelTindakanDilakukanPr">
-							<thead>
-							<tr>
-								<th>#</th>
-								<th>Tgl.</th>
-								<th>Jam</th>
-								<th>Tindakan</th>
-								<th>Petugas</th>
-								<th>Biaya</th>
-							</tr>
-							</thead>
-							<tbody>
+			<div class="col-md-12 mt-2">
+				<div class="table-responsive">
+					<table class="table table-sm table-bordered table-striped" id="tabelJenisTindakanPerawat">
 
-							</tbody>
-						</table>
-						<button type="button" class="btn btn-sm btn-danger" onclick="deleteTindakanPerawat()">
-							<i class="ti ti-trash"></i>Hapus
-						</button>
-					</div>
+					</table>
 				</div>
-			</div>
 
+				<button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanPerawat"
+						onclick="createTindakanPerawat()"><i class="bi bi-floppy"></i> Buat
+				</button>
+			</div>
 		</div>
 	</form>
 </div>
@@ -93,13 +65,22 @@
 
 
 			tableJenisTindakanPerawat()
-			getTindakanDilakukanPr(no_rawat)
+
 		})
 
 		// global
 		let selectedRowsPr = [];
 		let selectedDataCachePr = {};
 		let lastRequestStartPr = 0;
+
+		$('#tabelJenisTindakanDokterPerawat').off('click', 'tbody tr').on('click', 'tbody tr', function (e) {
+			if ($(e.target).is('input[type="checkbox"]') || $(this).hasClass('child')) return;
+
+			const $checkbox = $(this).find('.tindakan-check');
+			if ($checkbox.length) {
+				$checkbox.prop('checked', !$checkbox.prop('checked')).trigger('change');
+			}
+		});
 		function tableJenisTindakanPerawat() {
 			// simpan referensi table ke variable supaya bisa dipakai di event handler
 			const table = new DataTable('#tabelJenisTindakanPerawat', {
@@ -313,7 +294,7 @@
 
 			}).then((result) => {
 				if (result.isConfirmed) {
-					const checkedTindakan = $('.tindakan-hasil:checked').map(function() {
+					const checkedTindakan = $('#tabelTindakanDilakukanPr tbody').find('.tindakan-hasil:checked').map(function() {
 						const $this = $(this);
 						return {
 							kd_jenis_prw: $this.val(),
