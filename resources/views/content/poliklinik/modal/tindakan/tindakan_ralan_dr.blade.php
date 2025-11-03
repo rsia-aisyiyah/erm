@@ -15,7 +15,7 @@
 							</table>
 						</div>
 
-						<button type="button" class="btn btn-primary" id="btnCreateTindakanDokter" onclick="createTindakanDokter()"><i class="bi bi-floppy"></i> Buat</button>
+						<button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanDokter" onclick="createTindakanDokter()"><i class="bi bi-floppy"></i> Buat</button>
 					</div>
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 
 							</tbody>
 						</table>
-						<button type="button" class="btn btn-danger" onclick="deleteTindakanDokter()">
+						<button type="button" class="btn btn-sm btn-danger" onclick="deleteTindakanDokter()">
 							<i class="ti ti-trash"></i>Hapus
 						</button>
 					</div>
@@ -53,13 +53,15 @@
 
 	<script>
 		$('#btnTabTindakanDokter').on('shown.tab.bs', ()=>{
+
+
 			const formTindakanDokter =$('#formTindakanDokter')
 			const formInfoTindakan = $('.formInfoTindakan');
 
 			const dokter = formInfoTindakan.find('#dokter').val()
 			const nm_dokter= formInfoTindakan.find('#nm_dokter').val()
+			const no_rawat= formInfoTindakan.find('#no_rawat').val()
 
-			console.log(dokter, nm_dokter, formTindakanDokter.find('select[name=kd_dokter]') )
 
 			const optDokter = new Option(nm_dokter, dokter, true, true)
 			formTindakanDokter.find('select[name=kd_dokter]').append(optDokter).trigger('change');
@@ -98,15 +100,11 @@
 
 
 
-		// global
-		let selectedRows = [];
-		let selectedDataCache = {};
-		let lastRequestStart = 0;
-		let diskonValues = {
-			persen: {},
-			rupiah: {}
-		};
 
+		// global
+		let selectedRowsDr = [];
+		let selectedDataCacheDr = {};
+		let lastRequestStartDr = 0;
 
 
 		function tableJenisTindakanDokter() {
@@ -125,22 +123,22 @@
 					type: 'GET',
 					// tangkap request params sebelum dikirim
 					data: function (d) {
-						lastRequestStart = d.start || 0;
+						lastRequestStartDr = d.start || 0;
 						return d;
 					},
 					// intercept response dari server
 					dataSrc: function (json) {
 						// update cache untuk selected ids yang mungkin ada di response ini
 						json.data.forEach(d => {
-							if (selectedRows.includes(d.kd_jenis_prw)) {
-								selectedDataCache[d.kd_jenis_prw] = d;
+							if (selectedRowsDr.includes(d.kd_jenis_prw)) {
+								selectedDataCacheDr[d.kd_jenis_prw] = d;
 							}
 						});
 
 						// jika request halaman pertama (start === 0) => gabungkan selected rows di depan
-						if (lastRequestStart === 0) {
-							// buat array checkedData berdasarkan urutan selectedRows
-							const checkedData = selectedRows.map(id => selectedDataCache[id]).filter(Boolean);
+						if (lastRequestStartDr === 0) {
+							// buat array checkedData berdasarkan urutan selectedRowsDr
+							const checkedData = selectedRowsDr.map(id => selectedDataCacheDr[id]).filter(Boolean);
 
 							// hindari duplikat: kumpulkan id yang sudah ada di checkedData
 							const checkedIds = new Set(checkedData.map(d => d.kd_jenis_prw));
@@ -152,7 +150,7 @@
 							return [...checkedData, ...otherData];
 						} else {
 							// bukan halaman pertama => jangan tampilkan item yg sudah dipindah ke halaman 1
-							return json.data.filter(d => !selectedRows.includes(d.kd_jenis_prw));
+							return json.data.filter(d => !selectedRowsDr.includes(d.kd_jenis_prw));
 						}
 					},
 					complete: function () {
@@ -177,7 +175,7 @@
 					title: '',
 					render: function (data, type, row, meta) {
 						// jangan gunakan onchange inline (kita pakai delegated handler)
-						const checked = selectedRows.includes(data) ? 'checked' : '';
+						const checked = selectedRowsDr.includes(data) ? 'checked' : '';
 						return `<input type="checkbox" class="form-check-input tindakan-check" data-id="${data}" ${checked}>`;
 					}
 				},
@@ -215,15 +213,15 @@
 				const rowData = rowApi.data(); // ambil data baris sekarang (penting untuk cache)
 
 				if (this.checked) {
-					if (!selectedRows.includes(id)) {
-						selectedRows.push(id);
+					if (!selectedRowsDr.includes(id)) {
+						selectedRowsDr.push(id);
 					}
 					// simpan ke cache segera supaya saat kita draw halaman 1, data tersedia
-					if (rowData) selectedDataCache[id] = rowData;
+					if (rowData) selectedDataCacheDr[id] = rowData;
 				} else {
 					// uncheck -> hapus dari selected + cache
-					selectedRows = selectedRows.filter(x => x !== id);
-					delete selectedDataCache[id];
+					selectedRowsDr = selectedRowsDr.filter(x => x !== id);
+					delete selectedDataCacheDr[id];
 				}
 
 				// pindah ke halaman pertama, lalu redraw (false supaya tidak kehilangan state paging)
@@ -245,9 +243,9 @@
 
 
 
-			let selectedData = selectedRows
+			let selectedData = selectedRowsDr
 					.map(id => {
-						const data = selectedDataCache[id];
+						const data = selectedDataCacheDr[id];
 						if (!data) return null;
 
 						return data;
@@ -263,8 +261,8 @@
 			}).done((response) => {
 				$('.tindakan-check').prop('checked', false);
 				selectedData = []
-				selectedRows = []
-				selectedDataCache = {}
+				selectedRowsDr = []
+				selectedDataCacheDr = {}
 				getTindakanDilakukanDr(no_rawat)
 				swalToast('Berhasil Menambah Tindakan')
 			}).fail((result)=>{

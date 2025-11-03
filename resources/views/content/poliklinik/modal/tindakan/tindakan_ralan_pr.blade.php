@@ -14,7 +14,7 @@
 							</table>
 						</div>
 
-						<button type="button" class="btn btn-primary" id="btnCreateTindakanPerawat" onclick="createTindakanPerawat()"><i class="bi bi-floppy"></i> Buat</button>
+						<button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanPerawat" onclick="createTindakanPerawat()"><i class="bi bi-floppy"></i> Buat</button>
 					</div>
 				</div>
 			</div>
@@ -37,7 +37,7 @@
 
 							</tbody>
 						</table>
-						<button type="button" class="btn btn-danger" onclick="deleteTindakanPerawat()">
+						<button type="button" class="btn btn-sm btn-danger" onclick="deleteTindakanPerawat()">
 							<i class="ti ti-trash"></i>Hapus
 						</button>
 					</div>
@@ -95,6 +95,11 @@
 			tableJenisTindakanPerawat()
 			getTindakanDilakukanPr(no_rawat)
 		})
+
+		// global
+		let selectedRowsPr = [];
+		let selectedDataCachePr = {};
+		let lastRequestStartPr = 0;
 		function tableJenisTindakanPerawat() {
 			// simpan referensi table ke variable supaya bisa dipakai di event handler
 			const table = new DataTable('#tabelJenisTindakanPerawat', {
@@ -111,22 +116,22 @@
 					type: 'GET',
 					// tangkap request params sebelum dikirim
 					data: function (d) {
-						lastRequestStart = d.start || 0;
+						lastRequestStartPr = d.start || 0;
 						return d;
 					},
 					// intercept response dari server
 					dataSrc: function (json) {
 						// update cache untuk selected ids yang mungkin ada di response ini
 						json.data.forEach(d => {
-							if (selectedRows.includes(d.kd_jenis_prw)) {
-								selectedDataCache[d.kd_jenis_prw] = d;
+							if (selectedRowsPr.includes(d.kd_jenis_prw)) {
+								selectedDataCachePr[d.kd_jenis_prw] = d;
 							}
 						});
 
 						// jika request halaman pertama (start === 0) => gabungkan selected rows di depan
-						if (lastRequestStart === 0) {
-							// buat array checkedData berdasarkan urutan selectedRows
-							const checkedData = selectedRows.map(id => selectedDataCache[id]).filter(Boolean);
+						if (lastRequestStartPr === 0) {
+							// buat array checkedData berdasarkan urutan selectedRowsPr
+							const checkedData = selectedRowsPr.map(id => selectedDataCachePr[id]).filter(Boolean);
 
 							// hindari duplikat: kumpulkan id yang sudah ada di checkedData
 							const checkedIds = new Set(checkedData.map(d => d.kd_jenis_prw));
@@ -138,7 +143,7 @@
 							return [...checkedData, ...otherData];
 						} else {
 							// bukan halaman pertama => jangan tampilkan item yg sudah dipindah ke halaman 1
-							return json.data.filter(d => !selectedRows.includes(d.kd_jenis_prw));
+							return json.data.filter(d => !selectedRowsPr.includes(d.kd_jenis_prw));
 						}
 					},
 					complete: function () {
@@ -163,7 +168,7 @@
 					title: '',
 					render: function (data, type, row, meta) {
 						// jangan gunakan onchange inline (kita pakai delegated handler)
-						const checked = selectedRows.includes(data) ? 'checked' : '';
+						const checked = selectedRowsPr.includes(data) ? 'checked' : '';
 						return `<input type="checkbox" class="form-check-input tindakan-check" data-id="${data}" ${checked}>`;
 					}
 				},
@@ -201,15 +206,15 @@
 				const rowData = rowApi.data(); // ambil data baris sekarang (penting untuk cache)
 
 				if (this.checked) {
-					if (!selectedRows.includes(id)) {
-						selectedRows.push(id);
+					if (!selectedRowsPr.includes(id)) {
+						selectedRowsPr.push(id);
 					}
 					// simpan ke cache segera supaya saat kita draw halaman 1, data tersedia
-					if (rowData) selectedDataCache[id] = rowData;
+					if (rowData) selectedDataCachePr[id] = rowData;
 				} else {
 					// uncheck -> hapus dari selected + cache
-					selectedRows = selectedRows.filter(x => x !== id);
-					delete selectedDataCache[id];
+					selectedRowsPr = selectedRowsPr.filter(x => x !== id);
+					delete selectedDataCachePr[id];
 				}
 
 				// pindah ke halaman pertama, lalu redraw (false supaya tidak kehilangan state paging)
@@ -229,9 +234,9 @@
 			const nm_pasien = formInfoTindakan.find('#nm_pasien').val();
 			const no_rkm_medis = formInfoTindakan.find('#no_rkm_medis').val();
 
-			let selectedData = selectedRows
+			let selectedData = selectedRowsPr
 					.map(id => {
-						const data = selectedDataCache[id];
+						const data = selectedDataCachePr[id];
 						if (!data) return null;
 
 						return data;
@@ -247,8 +252,8 @@
 			}).done((response) => {
 				$('.tindakan-check').prop('checked', false);
 				selectedData = []
-				selectedRows = []
-				selectedDataCache = {}
+				selectedRowsPr = []
+				selectedDataCachePr = {}
 				getTindakanDilakukanPr(no_rawat)
 				swalToast('Berhasil Menambah Tindakan')
 			}).fail((result)=>{

@@ -180,7 +180,7 @@ class TindakanDokterAction
 
 	/**
 	 * Write on journal table
-	 *
+	 *P
 	 * This function will write the data given on journal table.
 	 * The data will contain the no bukti, no rkm medis, nama pasien, and the amount of the action.
 	 *

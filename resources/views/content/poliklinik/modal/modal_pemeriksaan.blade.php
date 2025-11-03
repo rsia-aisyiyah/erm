@@ -293,11 +293,11 @@
                 <button type="button" class="btn btn-success btn-sm btn-soap" onclick="simpanSoapRalan()"><i
                             class="bi bi-save"></i> Simpan SOAP
                 </button>
-                <button type="button" class="btn btn-success btn-sm btn-asmed" name="simpan" style="display: none"><i
+                <button type="button" class="btn btn-success btn-sm btn-asmed" name="simpan"><i
                             class="bi bi-save"></i> Simpan Asmed Rajal
                 </button>
-                <button type="button" class="btn btn-success btn-sm btn-asmed-ranap" name="simpan"
-                        style="display: none"><i class="bi bi-save"></i> Simpan Asmed Ranap
+                <button type="button" class="btn btn-success btn-sm btn-asmed-ranap d-none" name="simpan"
+                       ><i class="bi bi-save"></i> Simpan Asmed Ranap
                 </button>
 
             </div>

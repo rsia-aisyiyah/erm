@@ -21,7 +21,7 @@
                             </table>
                         </div>
 
-                        <button type="button" class="btn btn-primary" id="btnCreateTindakanDokterPerawat"
+                        <button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanDokterPerawat"
                                 onclick="createTindakanDokterPerawat()"><i class="bi bi-floppy"></i> Buat
                         </button>
                     </div>
@@ -46,7 +46,7 @@
 
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-danger" onclick="deleteTindakanDokterPerawat()">
+                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteTindakanDokterPerawat()">
                             <i class="ti ti-trash"></i>Hapus
                         </button>
                     </div>
@@ -135,6 +135,11 @@
             getTindakanDilakukanDrPr(no_rawat)
         })
 
+        // global
+        let selectedRowsDrPr = [];
+        let selectedDataCacheDrPr = {};
+        let lastRequestStartDrPr = 0;
+
         function tableJenisTindakanDokterPerawat() {
             // simpan referensi table ke variable supaya bisa dipakai di event handler
             const table = new DataTable('#tabelJenisTindakanDokterPerawat', {
@@ -151,22 +156,22 @@
                     type: 'GET',
                     // tangkap request params sebelum dikirim
                     data: function (d) {
-                        lastRequestStart = d.start || 0;
+                        lastRequestStartDrPr = d.start || 0;
                         return d;
                     },
                     // intercept response dari server
                     dataSrc: function (json) {
                         // update cache untuk selected ids yang mungkin ada di response ini
                         json.data.forEach(d => {
-                            if (selectedRows.includes(d.kd_jenis_prw)) {
-                                selectedDataCache[d.kd_jenis_prw] = d;
+                            if (selectedRowsDrPr.includes(d.kd_jenis_prw)) {
+                                selectedDataCacheDrPr[d.kd_jenis_prw] = d;
                             }
                         });
 
                         // jika request halaman pertama (start === 0) => gabungkan selected rows di depan
-                        if (lastRequestStart === 0) {
-                            // buat array checkedData berdasarkan urutan selectedRows
-                            const checkedData = selectedRows.map(id => selectedDataCache[id]).filter(Boolean);
+                        if (lastRequestStartDrPr === 0) {
+                            // buat array checkedData berdasarkan urutan selectedRowsDrPr
+                            const checkedData = selectedRowsDrPr.map(id => selectedDataCacheDrPr[id]).filter(Boolean);
 
                             // hindari duplikat: kumpulkan id yang sudah ada di checkedData
                             const checkedIds = new Set(checkedData.map(d => d.kd_jenis_prw));
@@ -178,7 +183,7 @@
                             return [...checkedData, ...otherData];
                         } else {
                             // bukan halaman pertama => jangan tampilkan item yg sudah dipindah ke halaman 1
-                            return json.data.filter(d => !selectedRows.includes(d.kd_jenis_prw));
+                            return json.data.filter(d => !selectedRowsDrPr.includes(d.kd_jenis_prw));
                         }
                     },
                     complete: function () {
@@ -203,7 +208,7 @@
                     title: '',
                     render: function (data, type, row, meta) {
                         // jangan gunakan onchange inline (kita pakai delegated handler)
-                        const checked = selectedRows.includes(data) ? 'checked' : '';
+                        const checked = selectedRowsDrPr.includes(data) ? 'checked' : '';
                         return `<input type="checkbox" class="form-check-input tindakan-check" data-id="${data}" ${checked}>`;
                     }
                 },
@@ -241,15 +246,15 @@
                 const rowData = rowApi.data(); // ambil data baris sekarang (penting untuk cache)
 
                 if (this.checked) {
-                    if (!selectedRows.includes(id)) {
-                        selectedRows.push(id);
+                    if (!selectedRowsDrPr.includes(id)) {
+                        selectedRowsDrPr.push(id);
                     }
                     // simpan ke cache segera supaya saat kita draw halaman 1, data tersedia
-                    if (rowData) selectedDataCache[id] = rowData;
+                    if (rowData) selectedDataCacheDrPr[id] = rowData;
                 } else {
                     // uncheck -> hapus dari selected + cache
-                    selectedRows = selectedRows.filter(x => x !== id);
-                    delete selectedDataCache[id];
+                    selectedRowsDrPr = selectedRowsDrPr.filter(x => x !== id);
+                    delete selectedDataCacheDrPr[id];
                 }
 
                 // pindah ke halaman pertama, lalu redraw (false supaya tidak kehilangan state paging)
@@ -270,9 +275,9 @@
             const nm_pasien = formInfoTindakan.find('#nm_pasien').val();
             const no_rkm_medis = formInfoTindakan.find('#no_rkm_medis').val();
 
-            let selectedData = selectedRows
+            let selectedData = selectedRowsDrPr
                 .map(id => {
-                    const data = selectedDataCache[id];
+                    const data = selectedDataCacheDrPr[id];
                     if (!data) return null;
 
                     return data;
@@ -289,8 +294,8 @@
             }).done((response) => {
                 $('.tindakan-check').prop('checked', false);
                 selectedData = []
-                selectedRows = []
-                selectedDataCache = {}
+                selectedRowsDrPr = []
+                selectedDataCacheDrPr = {}
                 getTindakanDilakukanDrPr(no_rawat)
                 swalToast('Berhasil Menambah Tindakan')
             }).fail((result) => {
@@ -320,7 +325,12 @@
                         <td>${splitTanggal(item.tgl_perawatan)}</td>
                         <td>${item.jam_rawat}</td>
                         <td>${item.tindakan.nm_perawatan}</td>
-                        <td>${item.petugas.nama}</td>
+                        <td>
+                            <ul>
+                                <li>${item.dokter.nm_dokter}</li>
+                                <li>${item.petugas.nama} </li>
+                            </ul>
+                        </td>
                         <td class="text-end">${formatCurrency(item.biaya_rawat)}</td>
                     </tr>`;
                     tbody.append(row);
