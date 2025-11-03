@@ -225,9 +225,10 @@
                         title: 'Kategori'
                     },
                     {
-                        data: 'total_byrpr',
+                        data: 'total_byrdrpr',
                         title: 'Biaya',
                         render: function (data, type, row, meta) {
+                            console.log('DATA ===', data)
                             return formatCurrency(data);
                         }
                     },
