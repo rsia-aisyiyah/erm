@@ -73,7 +73,7 @@
 		let selectedDataCachePr = {};
 		let lastRequestStartPr = 0;
 
-		$('#tabelJenisTindakanDokterPerawat').off('click', 'tbody tr').on('click', 'tbody tr', function (e) {
+		$('#tabelJenisTindakanPerawat').off('click', 'tbody tr').on('click', 'tbody tr', function (e) {
 			if ($(e.target).is('input[type="checkbox"]') || $(this).hasClass('child')) return;
 
 			const $checkbox = $(this).find('.tindakan-check');
