@@ -36,8 +36,6 @@ class JenisPerawatanController extends Controller
 				->where('total_byrdrpr', '==', 0);
 		}else if($params=='drpr'){
 			$data = $data
-				->where('total_byrdr', '!=', 0)
-				->where('total_byrpr', '!=', 0)
 				->where('total_byrdrpr', '!=', 0);
 		}
 
