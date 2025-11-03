@@ -1,58 +1,28 @@
 <div id="tindakanDokterPerawatRajal">
     <form action="" id="formTindakanDokterPerawat">
         <div class="row">
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-lg-6 col-md-12 col-sm-12">
-                        <label for="kd_dokter">Dokter</label>
-                        <select name="kd_dokter" id="kd_dokter" class="select2 w-100"
-                                data-dropdown-parent="#formTindakanDokterPerawat"></select>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12">
-                        <label for="nip">Petugas</label>
-                        <select name="nip" id="nip" class="select2 w-100"
-                                data-dropdown-parent="#formTindakanDokterPerawat"></select>
-                    </div>
-                    <div class="col-lg-12 col-md-12 mt-2">
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered table-striped"
-                                   id="tabelJenisTindakanDokterPerawat">
-
-                            </table>
-                        </div>
-
-                        <button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanDokterPerawat"
-                                onclick="createTindakanDokterPerawat()"><i class="bi bi-floppy"></i> Buat
-                        </button>
-                    </div>
-                </div>
+            <div class="col-lg-5 col-md-12 col-sm-12">
+                <label for="kd_dokter">Dokter</label>
+                <select name="kd_dokter" id="kd_dokter" class="select2 w-100"
+                        data-dropdown-parent="#formTindakanDokterPerawat"></select>
             </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title h5">Tindakan Dilakukan</h4>
-                        <table class="table table-bordered" id="tabelTindakanDilakukanDrPr">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tgl.</th>
-                                <th>Jam</th>
-                                <th>Perawatan</th>
-                                <th>Dokter & Perawat</th>
-                                <th>Biaya</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteTindakanDokterPerawat()">
-                            <i class="ti ti-trash"></i>Hapus
-                        </button>
-                    </div>
-                </div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <label for="nip">Petugas</label>
+                <select name="nip" id="nip" class="select2 w-100"
+                        data-dropdown-parent="#formTindakanDokterPerawat"></select>
             </div>
+            <div class="col-lg-12 col-md-12 mt-2">
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered table-striped"
+                           id="tabelJenisTindakanDokterPerawat">
 
+                    </table>
+                </div>
+
+                <button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanDokterPerawat"
+                        onclick="createTindakanDokterPerawat()"><i class="bi bi-floppy"></i> Buat
+                </button>
+            </div>
         </div>
     </form>
 </div>
@@ -132,13 +102,22 @@
 
 
             tableJenisTindakanDokterPerawat()
-            getTindakanDilakukanDrPr(no_rawat)
+
         })
 
         // global
         let selectedRowsDrPr = [];
         let selectedDataCacheDrPr = {};
         let lastRequestStartDrPr = 0;
+
+        $('#tabelJenisTindakanDokterPerawat').off('click', 'tbody tr').on('click', 'tbody tr', function (e) {
+            if ($(e.target).is('input[type="checkbox"]') || $(this).hasClass('child')) return;
+
+            const $checkbox = $(this).find('.tindakan-check');
+            if ($checkbox.length) {
+                $checkbox.prop('checked', !$checkbox.prop('checked')).trigger('change');
+            }
+        });
 
         function tableJenisTindakanDokterPerawat() {
             // simpan referensi table ke variable supaya bisa dipakai di event handler
@@ -318,8 +297,6 @@
             }).done((response) => {
                 const tbody = $('#tabelTindakanDilakukanDrPr tbody');
                 tbody.empty();
-
-                console.log('RESPONSE TINDAKAN DR PR ===', response)
                 response.forEach((item, index) => {
                     const row = `<tr>
                         <td><input type="checkbox" class="form-check-input tindakan-hasil" name="kode_tindakan[]" id="tindakan${index}" value="${item.kd_jenis_prw}" data-tgl="${item.tgl_perawatan}" data-jam="${item.jam_rawat}" data-rawat="${item.no_rawat}"  data-nip="${item.nip}" data-dokter="${item.kd_dokter}"/></td>
@@ -361,7 +338,7 @@
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const checkedTindakan = $('.tindakan-hasil:checked').map(function () {
+                    const checkedTindakan = $('#tabelTindakanDilakukanDrPr tbody').find('.tindakan-hasil:checked').map(function () {
                         const $this = $(this);
                         return {
                             kd_jenis_prw: $this.val(),
