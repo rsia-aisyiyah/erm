@@ -18,6 +18,12 @@
                             Pemeriksaan</button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
+                                data-bs-target="#tabTindakan-pane"
+                                type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
                             type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS</button>
                     </li>
@@ -25,6 +31,7 @@
                         <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
                             type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep</button>
                     </li>
+
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
@@ -39,6 +46,10 @@
                     <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep" tabindex="0">
                         {{-- @include('content.ugd.modal.pemeriksaan.resep') --}}
                         @include('content.poliklinik.modal.pemeriksaan.resepRalan')
+                    </div>
+                    <div class="tab-pane fade  p-2 m-2" id="tabTindakan-pane" role="tabpanel"
+                         aria-labelledby="tabTindakan" tabindex="0">
+                        @include('content.poliklinik.modal.tab-tindakan')
                     </div>
                 </div>
             </div>

@@ -321,7 +321,7 @@
                 console.log('RESPONSE TINDAKAN DR PR ===', response)
                 response.forEach((item, index) => {
                     const row = `<tr>
-                        <td><input type="checkbox" class="form-check-input tindakan-hasil" name="kode_tindakan[]" id="tindakan${index}" value="${item.kd_jenis_prw}" data-tgl="${item.tgl_perawatan}" data-jam="${item.jam_rawat}" data-rawat="${item.no_rawat}"  data-nip="${item.nip}"/></td>
+                        <td><input type="checkbox" class="form-check-input tindakan-hasil" name="kode_tindakan[]" id="tindakan${index}" value="${item.kd_jenis_prw}" data-tgl="${item.tgl_perawatan}" data-jam="${item.jam_rawat}" data-rawat="${item.no_rawat}"  data-nip="${item.nip}" data-dokter="${item.kd_dokter}"/></td>
                         <td>${splitTanggal(item.tgl_perawatan)}</td>
                         <td>${item.jam_rawat}</td>
                         <td>${item.tindakan.nm_perawatan}</td>
@@ -344,8 +344,6 @@
             const formTindakanDokterPerawat = $('#formTindakanDokterPerawat')
 
             const no_rawat = formInfoTindakan.find('#no_rawat').val();
-            const nip = formTindakanDokterPerawat.find('#nip').val();
-            const kd_dokter = formTindakanDokterPerawat.find('#kd_dokter').val();
             const nm_pasien = formInfoTindakan.find('#nm_pasien').val();
             const no_rkm_medis = formInfoTindakan.find('#no_rkm_medis').val();
 
@@ -369,6 +367,8 @@
                             no_rawat: $this.data('rawat'),
                             jam_rawat: $this.data('jam'),
                             tgl_perawatan: $this.data('tgl'),
+                            nip : $this.data('nip'),
+                            kd_dokter : $this.data('dokter')
                         };
                     }).get();
 
@@ -377,9 +377,7 @@
                         method: 'DELETE',
                         data: {
                             no_rawat: no_rawat,
-                            nip: nip,
                             nm_pasien: nm_pasien,
-                            kd_dokter : kd_dokter,
                             no_rkm_medis: no_rkm_medis,
                             tindakan: checkedTindakan
 

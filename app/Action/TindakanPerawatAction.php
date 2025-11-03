@@ -112,7 +112,7 @@ class TindakanPerawatAction
 			foreach ($data['tindakan'] as $item) {
 				$tindakan = TindakanPerawat::where([
 					'no_rawat' => $data['no_rawat'],
-					'nip' => $data['nip'],
+					'nip' => $item['nip'],
 					'kd_jenis_prw' => $item['kd_jenis_prw'],
 				]);
 

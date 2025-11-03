@@ -288,7 +288,7 @@
 				console.log('RESPONSE TINDAKAN DOKTER ===', response)
 				response.forEach((item, index) => {
 					const row = `<tr>
-                        <td><input type="checkbox" class="form-check-input tindakan-hasil" name="kode_tindakan[]" id="tindakan${index}" value="${item.kd_jenis_prw}" data-tgl="${item.tgl_perawatan}" data-jam="${item.jam_rawat}" data-rawat="${item.no_rawat}" data-nip="${item.nip}"/></td>
+                        <td><input type="checkbox" class="form-check-input tindakan-hasil" name="kode_tindakan[]" id="tindakan${index}" value="${item.kd_jenis_prw}" data-tgl="${item.tgl_perawatan}" data-jam="${item.jam_rawat}" data-rawat="${item.no_rawat}" data-dokter="${item.kd_dokter}"/></td>
                         <td>${splitTanggal(item.tgl_perawatan)}</td>
                         <td>${item.jam_rawat}</td>
                         <td>${item.tindakan.nm_perawatan}</td>
@@ -303,10 +303,7 @@
 
 		function deleteTindakanDokter() {
 			const formInfoTindakan = $('.formInfoTindakan')
-			const formTindakanDokter=  $('#formTindakanDokter')
-
 			const no_rawat = formInfoTindakan.find('#no_rawat').val();
-			const kd_dokter = formTindakanDokter.find('#kd_dokter').val();
 			const nm_pasien = formInfoTindakan.find('#nm_pasien').val();
 			const no_rkm_medis = formInfoTindakan.find('#no_rkm_medis').val();
 
@@ -329,8 +326,8 @@
 							kd_jenis_prw: $this.val(),
 							no_rawat: $this.data('rawat'),
 							jam_rawat: $this.data('jam'),
+							kd_dokter: $this.data('dokter'),
 							tgl_perawatan: $this.data('tgl'),
-							nip : $this.data('nip')
 						};
 					}).get();
 
@@ -339,7 +336,6 @@
 						method: 'DELETE',
 						data: {
 							no_rawat: no_rawat,
-							kd_dokter: kd_dokter,
 							nm_pasien: nm_pasien,
 							no_rkm_medis: no_rkm_medis,
 							tindakan: checkedTindakan

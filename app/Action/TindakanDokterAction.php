@@ -6,6 +6,7 @@ use App\Models\JenisPerawatan;
 use App\Models\Jurnal;
 use App\Models\JurnalDetail;
 use App\Models\TindakanDokter;
+
 //use App\Traits\Track;
 use App\Services\JurnalService;
 use Illuminate\Support\Facades\DB;
@@ -16,10 +17,12 @@ class TindakanDokterAction
 
 	protected JurnalService $jurnalService;
 
-	public function __construct(JurnalService $jurnalService){
+	public function __construct(JurnalService $jurnalService)
+	{
 		$this->jurnalService = $jurnalService;
 	}
-	public function handleCreate(array $data) :array
+
+	public function handleCreate(array $data): array
 	{
 		$tindakan = [];
 		try {
@@ -34,7 +37,7 @@ class TindakanDokterAction
 		return $tindakan;
 	}
 
-	public function handleDelete(array $data) : array
+	public function handleDelete(array $data): array
 	{
 		$tindakan = [];
 
@@ -230,7 +233,7 @@ class TindakanDokterAction
 //		}
 //	}
 
-	protected function deleteTindakanDokter(array $data) : array
+	protected function deleteTindakanDokter(array $data): array
 	{
 		try {
 
@@ -244,13 +247,15 @@ class TindakanDokterAction
 			];
 
 			foreach ($data['tindakan'] as $item) {
+				DB::enableQueryLog();
 				$tindakan = TindakanDokter::where([
 					'no_rawat' => $data['no_rawat'],
-					'kd_dokter' => $data['kd_dokter'],
+					'kd_dokter' => $item['kd_dokter'],
 					'kd_jenis_prw' => $item['kd_jenis_prw'],
 				]);
 
 				$row = $tindakan->first();
+
 				$totals['ttldokter'] += floatval($row->tarif_tindakandr);
 				$totals['ttlkso'] += floatval($row->kso);
 				$totals['ttlpendapatan'] += floatval($row->biaya_rawat);
@@ -271,11 +276,9 @@ class TindakanDokterAction
 			return $totals;
 
 		} catch (Exception $e) {
-			throw new Exception("Error Processing Request ".$e->getMessage(), 1);
+			throw new Exception("Error Processing Request " . $e->getMessage(), 1);
 		}
 	}
-
-
 
 
 }

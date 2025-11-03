@@ -329,7 +329,6 @@
 						method: 'DELETE',
 						data: {
 							no_rawat: no_rawat,
-							nip: nip,
 							nm_pasien: nm_pasien,
 							no_rkm_medis: no_rkm_medis,
 							tindakan: checkedTindakan
