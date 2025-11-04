@@ -41,7 +41,7 @@
                         <thead>
                             <tr role="row">
                                 <th></th>
-                                <th></th>
+                                <th>No. Permintaan</th>
                                 <th>No Rawat</th>
                                 <th>Nama / No. RM</th>
                                 <th>Tgl Permintaan</th>
@@ -226,10 +226,10 @@
                             } else {
                                 cek = '';
                             }
-                            return `${cek}`;
+                            return `${cek} ${row.noorder}`
                         }
                     },
-                    {
+                   {
                         data: 'no_rawat',
                         render: (data, type, row, meta) => {
                             return `${data}`;
