@@ -344,7 +344,6 @@
                 data: {
                     _token: "{{ csrf_token() }}",
                     no_rawat: $('#formSoapUgd input[name="no_rawat"]').val(),
-                    nip: $('#formSoapUgd input[name="nik"]').val(),
                     keluhan: $('#formSoapUgd textarea[name="subjek"]').val(),
                     pemeriksaan: $('#formSoapUgd textarea[name="objek"]').val(),
                     suhu_tubuh: $('#formSoapUgd input[name="suhu"]').val(),
