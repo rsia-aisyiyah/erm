@@ -9,12 +9,16 @@
                     <form id="formFilterRadiologi">
                         <div class="row">
                             <div class="col-md-6 col-lg-3 col-sm-12">
-                                <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Periode</label>
+                                <label for="tgl_registrasi" class="form-label"
+                                       style="font-size: 12px;margin-bottom:0px">Periode</label>
                                 <div class="input-group input-group-sm input-daterange">
-                                    <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
+                                    <input type="text" class="form-control form-control-sm tgl_awal"
+                                           style="font-size:12px">
                                     <div class="input-group-text">ke</div>
-                                    <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
-                                    <button class="btn btn-success btn-sm" type="button" id="btnFilterPeriode"><i class="bi bi-search"></i></button>
+                                    <input type="text" class="form-control form-control-sm tgl_akhir"
+                                           style="font-size:12px">
+                                    <button class="btn btn-success btn-sm" type="button" id="btnFilterPeriode"><i
+                                                class="bi bi-search"></i></button>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3 col-sm-12">
@@ -38,22 +42,7 @@
                         </div>
                     </form>
                     <table class="table table-striped table-responsive text-sm" id="tbRadiologi" width="100%">
-                        <thead>
-                            <tr role="row">
-                                <th></th>
-                                <th>No. Permintaan</th>
-                                <th>No Rawat</th>
-                                <th>Nama / No. RM</th>
-                                <th>Tgl Permintaan</th>
-                                <th>Dokter Perujuk</th>
-                                <th>Diagnosa Klinis</th>
-                                <th>Informasi Klinis</th>
-                                <th>Jenis Perawatan</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
+
                     </table>
                 </div>
             </div>
@@ -63,7 +52,8 @@
     @include('content.ranap.modal.modal_riwayat')
 
 
-    <div class="modal fade" id="modalCetakHasilRadiologi" tabindex="-1" aria-labelledby="modalCetakHasilRadiologi" aria-hidden="true">
+    <div class="modal fade" id="modalCetakHasilRadiologi" tabindex="-1" aria-labelledby="modalCetakHasilRadiologi"
+         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -71,11 +61,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <iframe id="viewHasil"src="" width="100%" height="600px"></iframe>
+                    <iframe id="viewHasil" src="" width="100%" height="600px"></iframe>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-bs-dismiss="modal"><i
-                            class="bi bi-x-circle"></i> Keluar</button>
+                    <button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-bs-dismiss="modal">
+                        <i
+                                class="bi bi-x-circle"></i> Keluar
+                    </button>
                 </div>
             </div>
         </div>
@@ -156,17 +148,16 @@
         })
 
 
-
         function drawTbRadiologi() {
             tbRadiologi.dataTable({
                 destroy: true,
-                processing: true,
-                paging: false,
+                paging: true,
                 info: true,
                 responsive: true,
                 scrollX: true,
-                scrollY: 340,
+                scrollY: "60vh",
                 stateSave: true,
+                serverSide: true,
                 ajax: {
                     url: '/erm/radiologi/table',
                     data: {
@@ -186,20 +177,25 @@
                     $(row).css('cursor', 'pointer');
                 },
                 columnDefs: [{
-                    'targets': [1, 2, 3, 4, 5, 6, 7],
+                    'targets': [0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                     'createdCell': (td, cellData, rowData, row, col) => {
-                        $(td).attr('onclick', `modalHasilRadiologi('${rowData.no_rawat}', '${rowData.tgl_hasil}', '${rowData.jam_hasil}', '${rowData.noorder}')`);
+                        if (rowData.tgl_sampel != '0000-00-00' && rowData.jam_sampel) {
+                            $(td).attr('onclick', `modalHasilRadiologi('${rowData.no_rawat}', '${rowData.tgl_hasil}', '${rowData.jam_hasil}', '${rowData.noorder}')`);
+                        } else {
+                            $(td).addClass('table-danger');
+
+                        }
                     }
                 }],
                 columns: [{
-                        data: 'reg_periksa',
-                        render: (data, type, row, meta) => {
-                            let no_rkm_medis = data.no_rkm_medis
-                            let listPrint = '';
-                            if (row.hasil_radiologi.length) {
-                                listPrint = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>`;
-                            }
-                            return `
+                    data: 'reg_periksa',
+                    render: (data, type, row, meta) => {
+                        let no_rkm_medis = data.no_rkm_medis
+                        let listPrint = '';
+                        if (row.hasil_radiologi.length) {
+                            listPrint = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>`;
+                        }
+                        return `
                                 <div class="btn-group">
                                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bi bi-list-ul"></i>
@@ -210,11 +206,12 @@
                                     </ul>
                                 </div>
                                 `;
-                        },
-                        name: 'action'
                     },
+                    name: 'action'
+                },
                     {
                         data: 'hasil_radiologi',
+                        title: 'No. Permintaan',
                         render: (data, type, row, meta) => {
                             let cek = ''
                             if (data.length) {
@@ -229,44 +226,61 @@
                             return `${cek} ${row.noorder}`
                         }
                     },
-                   {
+                    {
+                        title: 'No. Rawat',
                         data: 'no_rawat',
                         render: (data, type, row, meta) => {
                             return `${data}`;
                         }
                     },
                     {
-                        data: 'noorder',
+                        data: 'reg_periksa',
+                        title: 'No. Permintaan',
                         render: (data, type, row, meta) => {
 
-                            return `${row.reg_periksa.pasien.nm_pasien} (${row.reg_periksa.no_rkm_medis})`
+                            return `${data.pasien.nm_pasien} (${data.no_rkm_medis})`
                         }
                     },
                     {
+                        title: 'Tgl. Permintaan',
                         data: 'tgl_permintaan',
                         render: (data, type, row, meta) => {
                             return `${splitTanggal(data)} ${row.jam_permintaan}`
                         }
                     },
                     {
+                        title: 'Tgl. Sampel',
+                        data: 'tgl_sampel',
+                        render: (data, type, row, meta) => {
+                            if (data != '0000-00-00' && row.jam_permintaan) {
+                                return `${splitTanggal(data)} ${row.jam_permintaan}`
+                            }
+                            return '-'
+                        }
+                    },
+                    {
+                        title: 'Dr. Perujuk',
                         data: 'dokter_rujuk',
                         render: (data, type, row, meta) => {
                             return row.dokter_rujuk.nm_dokter
                         }
                     },
                     {
+                        title: 'Dx. Klinis',
                         data: 'diagnosa_klinis',
                         render: (data, type, row, meta) => {
                             return data;
                         }
                     },
                     {
+                        title: 'Informasi',
                         data: 'informasi_tambahan',
                         render: (data, type, row, meta) => {
                             return data
                         }
                     },
                     {
+                        title: 'Jenis',
                         data: 'permintaan_pemeriksaan',
                         render: (data, type, row, meta) => {
                             let jenisPeriksa = ''
@@ -278,6 +292,7 @@
                         }
                     },
                     {
+                        title: 'Lanjut',
                         data: 'reg_periksa.status_lanjut',
                         render: (data, type, row, meta) => {
                             if (data.toUpperCase() == 'RANAP') {
