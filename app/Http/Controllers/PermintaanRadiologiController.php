@@ -27,7 +27,7 @@ class PermintaanRadiologiController extends Controller
     {
         $radiologi = $this->radiologi->where([
             'tgl_permintaan' => date('Y-m-d'),
-            'tgl_hasil' => date('Y-m-d')
+//            'tgl_hasil' => date('Y-m-d')
         ])->with(['regPeriksa' => function ($q) {
                     return $q->select([
                         'no_rawat',

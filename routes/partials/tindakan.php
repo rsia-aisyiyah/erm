@@ -13,6 +13,7 @@ use App\Http\Controllers\SaranKesanLabController;
 Route::middleware('auth')->group(function () {
 	Route::prefix('jenis-tindakan')->group(function ($route) {
 		$route->get('/datatable/{param}', [\App\Http\Controllers\JenisPerawatanController::class, 'dataTable']);
+		$route->get('ranap/datatable/{param}', [\App\Http\Controllers\JenisPerawatanInapController::class, 'dataTable']);
 	});
 	Route::prefix('tindakan')->group(function ($route) {
 		$route->prefix('dokter')->group(function($route){
@@ -31,5 +32,10 @@ Route::middleware('auth')->group(function () {
 			$route->delete('/delete', [\App\Http\Controllers\TindakanDokterPerawatController::class, 'delete']);
 		});
 
+	});
+	Route::prefix('tindakan-ranap')->group(function ($route){
+		$route->prefix('dokter')->group(function($route){
+			$route->get('/get', [\App\Http\Controllers\TindakanDokterRanapController::class, 'get']);
+		});
 	});
 });
