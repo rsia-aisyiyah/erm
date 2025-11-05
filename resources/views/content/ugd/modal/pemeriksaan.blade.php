@@ -9,13 +9,15 @@
                 <ul class="nav nav-tabs" id="tab-soap-ugd" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
-                            data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
-                            aria-selected="true">SOAP</button>
+                                data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
+                                aria-selected="true">SOAP
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-pane"
-                            type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Data
-                            Pemeriksaan</button>
+                                type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Data
+                            Pemeriksaan
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
@@ -25,25 +27,31 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
-                            type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS</button>
+                                type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
-                            type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep</button>
+                                type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
+                        </button>
                     </li>
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                    <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
+                         aria-labelledby="home-tab" tabindex="0">
                         @include('content.ugd.modal.pemeriksaan.soap')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel" tabindex="0">
+                    <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
+                         tabindex="0">
                         @include('content.ugd.modal.pemeriksaan.data')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews" tabindex="0">
+                    <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
+                         tabindex="0">
                         @include('content.ugd.modal.pemeriksaan.ews')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep" tabindex="0">
+                    <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
+                         tabindex="0">
                         {{-- @include('content.ugd.modal.pemeriksaan.resep') --}}
                         @include('content.poliklinik.modal.pemeriksaan.resepRalan')
                     </div>
@@ -55,7 +63,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
-                        class="bi bi-x-circle"></i> Keluar</button>
+                            class="bi bi-x-circle"></i> Keluar
+                </button>
 
             </div>
         </div>
@@ -97,24 +106,24 @@
                     },
                 },
                 columns: [{
-                        data: null,
-                        render: (data, type, row, meta) => {
-                            button = `<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>`;
-                            if (row.nip == "{{ session()->get('pegawai')->nik }}") {
-                                button += `<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`;
-                            }
+                    data: null,
+                    render: (data, type, row, meta) => {
+                        button = `<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>`;
+                        if (row.nip == "{{ session()->get('pegawai')->nik }}") {
+                            button += `<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`;
+                        }
 
 
-                            return button;
-                        },
+                        return button;
                     },
+                },
                     {
                         data: null,
                         render: (data, type, row, meta) => {
                             list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
                                 '</strong></li>';
                             list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
-                            $.map(row.grafik_harian, function(grafik) {
+                            $.map(row.grafik_harian, function (grafik) {
                                 if (row.tgl_perawatan == grafik.tgl_perawatan && row.jam_rawat == grafik.jam_rawat) {
                                     list += '<li> O2 : ' + grafik.o2 + '</li>';
                                 }
@@ -136,7 +145,7 @@
                             list += '<li> Alergi : ' + row.alergi + '</li>';
                             html = '<ul>' + list + '</ul>';
 
-                            $.map(row.log, function(log) {
+                            $.map(row.log, function (log) {
                                 if (row.tgl_perawatan === log.tgl_perawatan && row.jam_rawat === log.jam_rawat) {
                                     html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai?.nama}</b>
                                             , ${formatTanggal(log.waktu)}
@@ -149,7 +158,7 @@
                     },
                     {
                         data: null,
-                        render: function(data, type, row, meta) {
+                        render: function (data, type, row, meta) {
                             baris = '<tr><td width="5%">Petugas </td><td width="5%">:</td><td>' + row
                                 .pegawai.nama + '</td></tr>'
                             baris += '<tr><td>Subjek </td><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
@@ -326,6 +335,9 @@
         }
 
         function simpanSoapRalan() {
+
+            $('#formSoapUgd input[name="jam_rawat"]').val("{{date('H:i:s')}}");
+            $('#formSoapUgd input[name="tgl_perawatan"]').val("{{date('Y-m-d')}}");
             $.ajax({
                 url: '/erm/pemeriksaan/simpan',
                 method: 'POST',
