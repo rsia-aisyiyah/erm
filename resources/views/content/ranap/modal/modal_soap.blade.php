@@ -90,12 +90,12 @@
                             Pasien
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
-                                data-bs-target="#tabTindakan-pane"
-                                type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan
-                        </button>
-                    </li>
+{{--                    <li class="nav-item" role="presentation">--}}
+{{--                        <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"--}}
+{{--                                data-bs-target="#tabTindakan-pane"--}}
+{{--                                type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan--}}
+{{--                        </button>--}}
+{{--                    </li>--}}
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
                                 type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
