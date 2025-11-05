@@ -49,6 +49,12 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
+                                data-bs-target="#tabTindakan-pane"
+                                type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link" id="permintaan-laborat-tab" data-bs-toggle="tab"
                                 data-bs-target="#permintaan-laborat-tab-pane"
                                 type="button" role="tab" aria-controls="permintaan-laborat-tab-pane"
@@ -79,12 +85,7 @@
                             Skrining/Skoring TB
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
-                                data-bs-target="#tabTindakan-pane"
-                                type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan
-                        </button>
-                    </li>
+
                 </ul>
                 <div class="tab-content" id="tabContentPemeriksaan">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
