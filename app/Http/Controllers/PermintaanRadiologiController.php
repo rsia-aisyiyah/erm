@@ -91,7 +91,7 @@ class PermintaanRadiologiController extends Controller
     {
         $radiologi = $this->radiologi;
         if ($request->tgl_awal) {
-            $radiologi = $radiologi->whereBetween('tgl_hasil', [$request->tgl_awal, $request->tgl_akhir]);
+            $radiologi = $radiologi->whereBetween('tgl_permintaan', [$request->tgl_awal, $request->tgl_akhir]);
         }
         if ($request->spesialis) {
             $radiologi = $radiologi->whereHas('dokterRujuk.spesialis', function ($query) use ($request) {
