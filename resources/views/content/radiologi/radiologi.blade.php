@@ -252,8 +252,8 @@
                         title: 'Tgl. Sampel',
                         data: 'tgl_sampel',
                         render: (data, type, row, meta) => {
-                            if (data != '0000-00-00' && row.jam_permintaan) {
-                                return `${splitTanggal(data)} ${row.jam_permintaan}`
+                            if (data != '0000-00-00' && row.jam_sampel) {
+                                return `${splitTanggal(data)} ${row.jam_sampel}`
                             }
                             return '-'
                         }
