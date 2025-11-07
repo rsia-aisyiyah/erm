@@ -177,7 +177,7 @@
                     $(row).css('cursor', 'pointer');
                 },
                 columnDefs: [{
-                    'targets': [0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    'targets': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                     'createdCell': (td, cellData, rowData, row, col) => {
                         if (rowData.tgl_sampel != '0000-00-00' && rowData.jam_sampel) {
                             $(td).attr('onclick', `modalHasilRadiologi('${rowData.no_rawat}', '${rowData.tgl_hasil}', '${rowData.jam_hasil}', '${rowData.noorder}')`);
@@ -252,8 +252,8 @@
                         title: 'Tgl. Sampel',
                         data: 'tgl_sampel',
                         render: (data, type, row, meta) => {
-                            if (data != '0000-00-00' && row.jam_permintaan) {
-                                return `${splitTanggal(data)} ${row.jam_permintaan}`
+                            if (data != '0000-00-00' && row.jam_sampel) {
+                                return `${splitTanggal(data)} ${row.jam_sampel}`
                             }
                             return '-'
                         }
