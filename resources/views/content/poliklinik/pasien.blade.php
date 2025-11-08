@@ -15,14 +15,14 @@
                             <td>:</td>
                             <td width="100px">
                                 <button class="btn btn-sm" id="count-pasien"
-                                    style=" display: block; width:auto; border-radius: 50%; background-color: #0067dd; color:white; font-weight:bold">
+                                        style=" display: block; width:auto; border-radius: 50%; background-color: #0067dd; color:white; font-weight:bold">
                                 </button>
                             </td>
                             <td>Selesai</td>
                             <td>:</td>
                             <td>
                                 <button id="count-selesai" class="btn btn-sm btn-success"
-                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold">
+                                        style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold">
                                 </button>
                             </td>
                         </tr>
@@ -31,14 +31,14 @@
                             <td>:</td>
                             <td>
                                 <button id="count-tunggu" class="btn btn-sm btn-warning"
-                                    style=" display: block; width:auto; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold">
+                                        style=" display: block; width:auto; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold">
                                 </button>
                             </td>
                             <td>Batal</td>
                             <td>:</td>
                             <td>
                                 <button id="count-batal" class="btn btn-sm btn-danger"
-                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold">
+                                        style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold">
                                 </button>
                             </td>
                         </tr>
@@ -49,14 +49,17 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-3 col-sm-12">
                             <div class="mb-3">
-                                <label for="tgl_registrasi" class="form-label" style="margin-bottom:0px">Tgl. Registrasi</label>
-                                <input type="text" class="form-control form-control-sm" id="tgl_registrasi" placeholder="" autocomplete="off">
+                                <label for="tgl_registrasi" class="form-label" style="margin-bottom:0px">Tgl.
+                                    Registrasi</label>
+                                <input type="text" class="form-control form-control-sm" id="tgl_registrasi"
+                                       placeholder="" autocomplete="off">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-3 col-sm-12">
                             <div class="mb-3">
                                 <label for="pasien" class="form-label" style="margin-bottom:0px">Nama Pasien</label>
-                                <input type="search" class="form-control form-control-sm" id="pasien-cari" placeholder="Cari nama pasien... " autocomplete="off">
+                                <input type="search" class="form-control form-control-sm" id="pasien-cari"
+                                       placeholder="Cari nama pasien... " autocomplete="off">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-3 col-sm-12">
@@ -64,7 +67,7 @@
                                 <label for="pembiayaan" class="form-label" style="margin-bottom:0px">Pembiayaan</label>
                                 <select name="pembiayaan" id="pembiayaan" class="form-select form-select-sm" style="">
                                     <option value="" disabled selected>Pilih Pembiayaan</option>
-                                    <option value="">Umum & BPJS </option>
+                                    <option value="">Umum & BPJS</option>
                                     <option value="BPJS">BPJS</option>
                                     <option value="Umum">Umum</option>
                                 </select>
@@ -72,8 +75,10 @@
                         </div>
                         <div class="col-md-6 col-lg-3 col-sm-12">
                             <div class="mb-3">
-                                <label for="status_periksa" class="form-label" style="margin-bottom:0px">Status Periksa</label>
-                                <select name="status_periksa" id="status_periksa" class="form-select form-select-sm" style="">
+                                <label for="status_periksa" class="form-label" style="margin-bottom:0px">Status
+                                    Periksa</label>
+                                <select name="status_periksa" id="status_periksa" class="form-select form-select-sm"
+                                        style="">
                                     <option value="" disabled selected>Pilih Status Periksa</option>
                                     <option value="">Semua</option>
                                     <option value="Sudah">Sudah</option>
@@ -84,13 +89,14 @@
                         </div>
                     </div>
 
-                    <table class="table table-striped text-sm table-sm" id="tb_pasien" width="100%" style="font-size: 12px !important">
+                    <table class="table table-striped text-sm table-sm" id="tb_pasien" width="100%"
+                           style="font-size: 12px !important">
                         <thead>
-                            <tr role="row">
-                                <th style="width: 20px">Aksi</th>
-                                <th>Nama</th>
-                                <th>Tools</th>
-                            </tr>
+                        <tr role="row">
+                            <th style="width: 20px">Aksi</th>
+                            <th>Nama</th>
+                            <th>Tools</th>
+                        </tr>
                         </thead>
                         <tbody>
                         </tbody>
@@ -131,7 +137,7 @@
         var pembiayaan = "";
         var status_periksa = "";
 
-        $('#pasien-cari').on('keyup', function() {
+        $('#pasien-cari').on('keyup', function () {
             localStorage.setItem('pasien', $('#pasien-cari').val());
             nmpasien = localStorage.getItem('pasien');
             if (nmpasien.length >= 3 || nmpasien.length == 0) {
@@ -140,25 +146,25 @@
             }
         })
 
-        $('#pasien-cari').on('search', function() {
+        $('#pasien-cari').on('search', function () {
             nmpasien = '';
             localStorage.setItem('pasien', '');
             $('#tb_pasien').DataTable().destroy();
             tb_pasien(tgl_registrasi);
         })
 
-        $('#pembiayaan').on('change', function() {
+        $('#pembiayaan').on('change', function () {
             pembiayaan = $(this).val();
             $('#tb_pasien').DataTable().destroy();
             tb_pasien(tgl_registrasi, nmpasien, pembiayaan, status_periksa);
         })
-        $('#status_periksa').on('change', function() {
+        $('#status_periksa').on('change', function () {
             status_periksa = $(this).val();
             $('#tb_pasien').DataTable().destroy();
             tb_pasien(tgl_registrasi, nmpasien, pembiayaan, status_periksa);
         })
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             date = new Date()
             hari = ('0' + (date.getDate())).slice(-2);
             bulan = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -194,12 +200,11 @@
                     'kd_dokter': kd_dokter
                 },
                 method: 'GET',
-                success: function(response) {
+                success: function (response) {
                     $('#count-pasien').text(response);
                 }
             })
         }
-
 
 
         // function modalsoap(no_rawat) {
@@ -253,17 +258,17 @@
                 url: `/erm/resep/riwayat/${no_rm}`,
                 method: 'GET',
             }).done((response) => {
-                const resep = response.map((item)=>{
-                    let resepDokter ='';
-                    let resepRacikan ='';
-                    if(item.resep_dokter){
-                        resepDokter = item.resep_dokter.map((items)=>{
+                const resep = response.map((item) => {
+                    let resepDokter = '';
+                    let resepRacikan = '';
+                    if (item.resep_dokter) {
+                        resepDokter = item.resep_dokter.map((items) => {
                             return `<li>${items.data_barang.nama_brng} @${items.jml} ${items.data_barang?.kode_satuan?.satuan} ${items.aturan_pakai}</li>`
                         }).join('')
                     }
-                    if(item.resep_racikan){
-                        resepRacikan = item.resep_racikan.map((items)=>{
-                            const obat = items.detail.map((itemsObat)=>{
+                    if (item.resep_racikan) {
+                        resepRacikan = item.resep_racikan.map((items) => {
+                            const obat = items.detail.map((itemsObat) => {
                                 return `<span class="badge text-bg-success">${itemsObat.databarang.nama_brng}</span>`
                             }).join(', ')
 
@@ -274,7 +279,7 @@
                         }).join('')
                     }
 
-                    if(item.tgl_penyerahan === '0000-00-00' && item.tgl_perawatan){
+                    if (item.tgl_penyerahan === '0000-00-00' && item.tgl_perawatan) {
                         return '';
                     }
                     return `<tr>
@@ -319,9 +324,9 @@
                     no_rkm_medis: no_rm,
                     sortir: 'ASC',
                 },
-                success: function(response) {
+                success: function (response) {
                     alergi = '-'
-                    $.map(response.reg_periksa, function(val) {
+                    $.map(response.reg_periksa, function (val) {
                         if (val.pemeriksaan_ralan.length) {
                             $.map(val.pemeriksaan_ralan, (pem) => {
                                 if (pem.alergi != '-' || pem.alergi != '' || pem.alergi) {
@@ -347,13 +352,13 @@
                     'kd_dokter': kd_dokter,
                 },
                 method: 'GET',
-                success: function(response) {
+                success: function (response) {
                     let jumlah = 0;
                     let batal = 0;
                     let tunggu = 0;
                     let sudah = 0;
                     let periksa = 0;
-                    $.map(response, function(val, index) {
+                    $.map(response, function (val, index) {
                         if (val.stts == 'Belum') {
                             tunggu = val.jumlah;
                         } else if (val.stts == 'Sudah') {
@@ -403,7 +408,7 @@
                         'no_rawat': id,
                     },
                     method: "POST",
-                    success: function(data) {
+                    success: function (data) {
                         $.toast({
                             text: 'Memangil : ' + data.no_rawat + '<br/> Jam Periksa : ' + data
                                 .jam_periksa,
@@ -450,7 +455,7 @@
                             'no_rawat': id,
                         },
                         method: 'POST',
-                        success: function(response) {
+                        success: function (response) {
                             $.toast({
                                 text: 'Periksa : ' + response.no_rawat +
                                     ' Selesai <br/> Jam Periksa : ' +
@@ -543,7 +548,7 @@
 
         function rujukanKeluar(noSep) {
             $('#modalRujukanKeluar').modal('show')
-            cekSep(noSep).done(function(response) {
+            cekSep(noSep).done(function (response) {
                 $('#no_kartu').val(response.no_kartu)
                 $('#no_sep_rujuk').val(response.no_sep)
                 $('#no_rawat_rujuk').val(response.no_rawat)
@@ -570,7 +575,6 @@
         }
 
 
-
         function geRujukanPcarePeserta(noka) {
             let rujukan = $.ajax({
                 url: '/erm/bridging/rujukan/pcare/peserta/' + noka,
@@ -593,8 +597,8 @@
         function kontrolUlang(noSep) {
             reloadTabelPoli();
 
-            cekSep(noSep).done(function(response) {
-                geRujukanPcarePeserta(response.no_kartu).done(function(rujukan) {
+            cekSep(noSep).done(function (response) {
+                geRujukanPcarePeserta(response.no_kartu).done(function (rujukan) {
                     if (rujukan.metaData.code == 200 && rujukan.response) {
                         rujukanExpired(rujukan.response.rujukan.tglKunjungan)
                     } else {
@@ -691,15 +695,15 @@
             $('#modalSpri').modal('show');
         }
 
-        $('.diagnosa_inap').on('keyup', function() {
+        $('.diagnosa_inap').on('keyup', function () {
             let dx = $(this).val();
             if (dx.length >= 3) {
-                getDiagnosa(dx).done(function(response) {
+                getDiagnosa(dx).done(function (response) {
                     if (response) {
                         html =
                             '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                         no = 1;
-                        $.map(response, function(data) {
+                        $.map(response, function (data) {
                             html +=
                                 '<li data-nama="' + data.nm_penyakit + '" data-id="' + data.kd_penyakit + '" onclick="setDiagnosaInap(this)"><a class="dropdown-item" href="javascript:void(0)" style="overflow:hidden"> ' + data.kd_penyakit + ' - ' + data.nm_penyakit + '</a></li>'
                             no++;
@@ -740,12 +744,12 @@
 
         function cariDokterPoli(kdPoli) {
 
-            getPoliBpjs(kdPoli).done(function(response) {
+            getPoliBpjs(kdPoli).done(function (response) {
                 no = 1;
                 html = '';
                 kd_dokter = '';
-                $.map(response, function(res) {
-                    $.map(res.poliklinik.mapping_poli, function(data) {
+                $.map(response, function (res) {
+                    $.map(res.poliklinik.mapping_poli, function (data) {
                         if (kd_dokter != data.dokter.kd_dokter) {
                             html += '<tr>'
                             html += '<td>' + no + '</td>'
@@ -791,7 +795,7 @@
                 columnDefs: [{
                     width: 50,
                     targets: 0,
-                    orderable:false,
+                    orderable: false,
                 }],
                 ajax: {
                     url: "table",
@@ -805,46 +809,46 @@
                     },
                 },
                 columns: [{
-                        data: null,
-                        render: function(data, type, row, meta) {
-                            let html = '';
-                            norawat = textRawat(row.no_rawat)
-                            if (row.stts == 'Batal') {
-                                html =
-                                    '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
-                            } else if (row.stts == 'Sudah') {
-                                html =
-                                    '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
-                            } else {
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        let html = '';
+                        norawat = textRawat(row.no_rawat)
+                        if (row.stts == 'Batal') {
+                            html =
+                                '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
+                        } else if (row.stts == 'Sudah') {
+                            html =
+                                '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
+                        } else {
 
-                                if (row.stts == 'Berkas Diterima' || row.stts == 'Periksa') {
-                                    $('.panggil-' + norawat).text('RE-CALL');
-                                    $('.selesai-' + norawat).addClass('btn-warning');
-                                    $('.panggil-' + norawat).prop('style',
-                                        'width:80px;background-color:#9800af;border-color:#8e06a3;color:white'
-                                    );
-                                    $('.batal-' + norawat).addClass('btn-danger');
-                                } else {
-                                    $('.panggil-' + norawat).addClass('btn-success');
-                                    $('.batal-' + norawat).addClass('btn-secondary');
-                                    $('.selesai-' + norawat).addClass('btn-secondary');
-                                    $('.panggil-' + norawat).text('PANGGIL')
-                                    $('.batal-' + norawat).prop('disabled', true);
-                                    $('.selesai-' + norawat).prop('disabled', true);
-                                }
-                                html = '<div id="aksi-' + norawat + '">';
-                                html += ' <button onclick="panggil(\'' + norawat + '\')" class="btn btn-sm mb-2 panggil-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '"></button><br/>';
-                                html += ' <button onclick="selesai(\'' + norawat + '\')" class="btn btn-sm mb-2 selesai-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">SELESAI</button><br/>';
-                                html += ' <button onclick="batal(\'' + norawat + '\')" class="btn btn-sm mb-2 batal-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">BATAL</button><br/>';
-                                html += '</div>';
+                            if (row.stts == 'Berkas Diterima' || row.stts == 'Periksa') {
+                                $('.panggil-' + norawat).text('RE-CALL');
+                                $('.selesai-' + norawat).addClass('btn-warning');
+                                $('.panggil-' + norawat).prop('style',
+                                    'width:80px;background-color:#9800af;border-color:#8e06a3;color:white'
+                                );
+                                $('.batal-' + norawat).addClass('btn-danger');
+                            } else {
+                                $('.panggil-' + norawat).addClass('btn-success');
+                                $('.batal-' + norawat).addClass('btn-secondary');
+                                $('.selesai-' + norawat).addClass('btn-secondary');
+                                $('.panggil-' + norawat).text('PANGGIL')
+                                $('.batal-' + norawat).prop('disabled', true);
+                                $('.selesai-' + norawat).prop('disabled', true);
                             }
-                            return html
-                        },
-                        name: 'aksi'
+                            html = '<div id="aksi-' + norawat + '">';
+                            html += ' <button onclick="panggil(\'' + norawat + '\')" class="btn btn-sm mb-2 panggil-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '"></button><br/>';
+                            html += ' <button onclick="selesai(\'' + norawat + '\')" class="btn btn-sm mb-2 selesai-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">SELESAI</button><br/>';
+                            html += ' <button onclick="batal(\'' + norawat + '\')" class="btn btn-sm mb-2 batal-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">BATAL</button><br/>';
+                            html += '</div>';
+                        }
+                        return html
                     },
+                    name: 'aksi'
+                },
                     {
                         data: null,
-                        render: function(data, type, row, meta) {
+                        render: function (data, type, row, meta) {
                             if (row.kd_pj == 'A01' || row.kd_pj == 'A05') {
                                 classTeksPenjab = 'text-success';
                             } else {
@@ -865,16 +869,16 @@
                                 html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
                                 html += '</ul>'
                                 $('#dropdown-sep-' + no_rawat).append(html)
-                                if (row.sep.surat_kontrol) {
-                                    badgeKontrol = '<a target="_blank" href="/erm/rencanaKontrol/print/' + row.sep.surat_kontrol.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
-                                } else if (row.sep.rujukan_keluar) {
+                                if (row.sep?.surat_kontrol) {
+                                    badgeKontrol = '<a target="_blank" href="/erm/rencanaKontrol/print/' + row.sep?.surat_kontrol?.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
+                                } else if (row.sep?.rujukan_keluar) {
                                     textRujukan = row.sep.rujukan_keluar.nm_ppkDirujuk.split(' - ')[0];
                                     rujukan = textRujukan.length > 10 ? textRujukan.substring(0, 10) + '...' : textRujukan
-                                    badgeKontrol = '<a target="_blank" href="/erm/rujukan/print/' + row.sep.rujukan_keluar.no_rujukan + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Rujuk : ' + rujukan + '</span></a>';
+                                    badgeKontrol = '<a target="_blank" href="/erm/rujukan/print/' + row.sep?.rujukan_keluar?.no_rujukan + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Rujuk : ' + rujukan + '</span></a>';
                                 }
 
                                 if (row.pasien.spri?.tgl_surat == row.tgl_registrasi) {
-                                    badgeKontrol = '<a target="_blank" href="/erm/spri/print/' + row.pasien.spri.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >SPRI : ' + splitTanggal(row.pasien.spri.tgl_rencana) + '</span></a>';
+                                    badgeKontrol = '<a target="_blank" href="/erm/spri/print/' + row.pasien?.spri?.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >SPRI : ' + splitTanggal(row.pasien.spri.tgl_rencana) + '</span></a>';
                                 }
                             } else if (!row.sep && row.kd_pj != "A03") {
                                 $('#btn-rujuk-' + no_rawat).addClass('btn btn-danger dropdown-toggle');
@@ -895,7 +899,7 @@
                             }
 
 
-                            if (row.penjab.png_jawab == 'UMUM') {
+                            if (row.penjab?.png_jawab == 'UMUM') {
                                 textPenjab = '<a href="javascript:void(0)" onclick="kontrolUmum(\'' + row.no_rawat + '\')" style="text-decoration:none;color:red">' + row.penjab.png_jawab + '</a>'
                             } else {
                                 textPenjab = '<a href="javascript:void(0)" onclick="" style="text-decoration:none;color:green">' + row.penjab.png_jawab + '</a>'
@@ -914,7 +918,7 @@
                     },
                     {
                         data: '',
-                        render: function(data, type, row, meta) {
+                        render: function (data, type, row, meta) {
                             let ambilAskep = '';
                             let no_rkm_medis = row.no_rkm_medis.replace(/\s/g, '');
                             if (row.dokter) {
@@ -956,7 +960,6 @@
                             }
 
 
-
                             if (row.pemeriksaan_ralan.length) {
                                 $('#icon-periksa-' + textRawat(row.no_rawat)).removeClass(
                                     'bi bi-pencil-square')
@@ -973,7 +976,7 @@
                                 $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', true);
                             }
 
-                            $.map(row.pasien.reg_periksa, function(data) {
+                            $.map(row.pasien?.reg_periksa, function (data) {
                                 if (data.kd_poli == 'P001' || data.kd_poli == 'P007' || data.kd_poli == 'P009') {
                                     if (Object.keys(data.askep_ralan_kebidanan).length > 0) {
                                         $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1 btn-width-poliklinik')
@@ -1031,7 +1034,7 @@
                 data: {
                     no_rawat: no_rawat
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.surat_kontrol) {
                         tanggalKontrol = splitTanggal(response.surat_kontrol.tanggal);
                         $('.no_surat').val(response.surat_kontrol.no_surat)
@@ -1082,7 +1085,7 @@
                     tanggal: splitTanggal(tanggal),
                     dokter: dokter,
                 },
-                success: function(response) {
+                success: function (response) {
                     Swal.fire(
                         'Berhasil',
                         'Surat kontrol sudah dibuat',
@@ -1095,7 +1098,7 @@
                         'tanggal': splitTanggal(tanggal),
                     }
 
-                    buatBooking(dataBooking).done(function(val) {
+                    buatBooking(dataBooking).done(function (val) {
                         data = {
                             'no_reg': val.response.no_reg,
                             'tgl_registrasi': val.response.tanggal_periksa,
@@ -1127,7 +1130,7 @@
                 url: '/erm/booking/buat',
                 data: data,
                 method: 'POST',
-                success: function(response) {
+                success: function (response) {
                     $('.booking').val('true');
                     Swal.fire(
                         'Berhasil',
@@ -1135,7 +1138,7 @@
                         'success'
                     );
                 },
-                error: function(a, b, c) {
+                error: function (a, b, c) {
                     Swal.fire(
                         'Gagal',
                         'Terjadi kesalahan pembuatan booking',
@@ -1153,7 +1156,7 @@
                 url: '/erm/registrasi/buat',
                 method: 'POST',
                 data: data,
-                success: function(response) {
+                success: function (response) {
                     $('.registrasi').val('true');
                     Swal.fire(
                         'Berhasil',
@@ -1162,7 +1165,7 @@
                     );
                     reloadTabelPoli();
                 },
-                error: function(a, b, c) {
+                error: function (a, b, c) {
                     Swal.fire(
                         'Gagal',
                         'Terjadi kesalahan pembuatan registrasi pasien',
@@ -1181,11 +1184,11 @@
                     no_rkm_medis: no_rkm_medis,
                 },
                 dataType: 'JSON',
-                success: function(response) {
+                success: function (response) {
                     if (Object.keys(response).length > 0) {
                         $('#opt-rawat').append(
                             '<option value="" disabled selected>PILIH TANGGAL ASESMEN</option>')
-                        $.map(response, function(data) {
+                        $.map(response, function (data) {
                             $('#opt-rawat').append('<option class="opt-asesmen-anak" value=' + data.no_rawat + '>' + formatTanggal(data.tanggal) + ' - ' + data.no_rawat + '</option>')
                             $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
                             $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' :
@@ -1196,7 +1199,7 @@
                             $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien
                                     .tgl_lahir) +
                                 ' / ' + data.reg_periksa.umurdaftar + ' ' + data.reg_periksa
-                                .sttsumur);
+                                    .sttsumur);
                             $('.anamnesis').html(': ' + data.informasi);
                             $('.tensi').html(': ' + data.td + ' mmHG');
                             $('.nadi').html(': ' + data.nadi + ' x/menit');
@@ -1216,7 +1219,7 @@
                             $('.anakke').html(': ' + data.anakke + ', dari ' + data.darisaudara +
                                 ' bersaudara');
                             $('.caralahir').html(': ' + data.caralahir + ' ( ' + data
-                                .ket_caralahir +
+                                    .ket_caralahir +
                                 ' )');
                             $('.umurkelahiran').html(': ' + data.umurkelahiran);
                             $('.kelainanbawaan').html(': ' + data.kelainanbawaan + ' (' + data
@@ -1225,13 +1228,13 @@
                             namaImunisasi = '';
                             $('.tb-askep-imunisasi tbody').empty()
                             $('.imunisasi').remove()
-                            $.map(data.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
+                            $.map(data.reg_periksa.pasien.riwayat_imunisasi, function (imunisasi) {
                                 if (namaImunisasi != imunisasi.master_imunisasi
                                     .nama_imunisasi) {
                                     namaImunisasi = imunisasi.master_imunisasi
                                         .nama_imunisasi
                                     html = '<tr class="imunisasi ' + imunisasi
-                                        .kode_imunisasi +
+                                            .kode_imunisasi +
                                         '">'
                                     html += '<td>' + namaImunisasi + '</td>';
 
@@ -1256,7 +1259,7 @@
                             $('.prothesa').html(': ' + data.prothesa);
                             $('.aktifitas').html(': ' + data.aktifitas);
                             $('.status_psiko').html(': ' + data.status_psiko + ' (' + data
-                                .ket_psiko +
+                                    .ket_psiko +
                                 ' )');
                             $('.edukasi').html(': ' + data.edukasi + ' (' + data.ket_edukasi +
                                 ' )');
@@ -1279,7 +1282,7 @@
             });
         }
 
-        $('#opt-rawat').on('change', function() {
+        $('#opt-rawat').on('change', function () {
             no_rawat = $(this).val();
             $.ajax({
                 url: 'askep/anak/detail',
@@ -1287,7 +1290,7 @@
                     no_rawat: no_rawat,
                 },
                 dataType: 'JSON',
-                success: function(response) {
+                success: function (response) {
                     $('.tgl_registrasi').html(': ' + formatTanggal(response.reg_periksa
                         .tgl_registrasi));
                     $('.tensi').html(': ' + response.td + ' mmHG');
@@ -1308,7 +1311,7 @@
                     $('.anakke').html(': ' + response.anakke + ', dari ' + response.darisaudara +
                         ' bersaudara');
                     $('.caralahir').html(': ' + response.caralahir + ' ( ' + response
-                        .ket_caralahir +
+                            .ket_caralahir +
                         ' )');
                     $('.umurkelahiran').html(': ' + response.umurkelahiran);
                     $('.kelainanbawaan').html(': ' + response.kelainanbawaan + ' (' + response
@@ -1316,7 +1319,7 @@
                     namaImunisasi = '';
                     $('.tb-askep-imunisasi tbody').empty()
                     $('.imunisasi').remove()
-                    $.map(response.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
+                    $.map(response.reg_periksa.pasien.riwayat_imunisasi, function (imunisasi) {
                         if (namaImunisasi != imunisasi.master_imunisasi.nama_imunisasi) {
                             namaImunisasi = imunisasi.master_imunisasi.nama_imunisasi
                             html = '<tr class="imunisasi ' + imunisasi.kode_imunisasi + '">'
@@ -1340,7 +1343,7 @@
                     $('.prothesa').html(': ' + response.prothesa);
                     $('.aktifitas').html(': ' + response.aktifitas);
                     $('.status_psiko').html(': ' + response.status_psiko + ' (' + response
-                        .ket_psiko +
+                            .ket_psiko +
                         ' )');
                     $('.edukasi').html(': ' + response.edukasi + ' (' + response.ket_edukasi +
                         ' )');
@@ -1361,7 +1364,7 @@
                     no_rkm_medis: no_rkm_medis,
                 },
                 dataType: 'JSON',
-                success: function(response) {
+                success: function (response) {
                     let option = '';
                     response?.data?.map((data) => {
                         $('#select-askep-bidan').append('<option class="opt-askep-bidan" value=' + textRawat(data.no_rawat, '-') + '>' + formatTanggal(data.tanggal) + ' - ' + data.no_rawat + '</option>')
@@ -1372,7 +1375,7 @@
                         $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) +
                             ' / ' +
                             data
-                            .reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
+                                .reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
                         $('.anamnesis').html(': ' + data.informasi);
                         $('.tensi').html(': ' + data.td + ' mmHG');
                         $('.nadi').html(': ' + data.nadi + ' x/menit');
@@ -1440,18 +1443,18 @@
                         $('.berhenti').text(data.berhenti);
                         $('.alasan').text(data.alasan);
                         no = 1;
-                        data.reg_periksa.pasien.riwayat_persalinan.forEach(function(riwayat) {
+                        data.reg_periksa.pasien.riwayat_persalinan.forEach(function (riwayat) {
                             html = '<tr>';
                             html += '<td>' + no + '</td>'
                             html += '<td>' + formatTanggal(riwayat.tgl_thn) + '</td>'
                             html += '<td>' + riwayat.tempat_persalinan + '</br>' + riwayat
-                                .penolong +
+                                    .penolong +
                                 '</td>'
                             html += '<td>' + riwayat.usia_hamil + '</td>'
                             html += '<td> Persalinan : ' + riwayat.jenis_persalinan +
                                 '<br/> Penyulit : ' +
                                 riwayat
-                                .penyulit +
+                                    .penyulit +
                                 '</td>'
                             html += '<td> JK : ' + riwayat.jk + '<br/> BB/PB : ' + riwayat.bbpb +
                                 '<br/> Keadaaan : ' + riwayat.keadaan + '</td>'
@@ -1473,7 +1476,7 @@
                 },
                 method: 'GET',
                 dataType: 'JSON',
-                success: function(response) {
+                success: function (response) {
                     $('.no_rawat').val(response.no_rawat);
                     $('.nm_pasien').val(response.no_rkm_medis + ' / ' + response.pasien.nm_pasien + ' / ' +
                         response.umurdaftar + ' ' + response.sttsumur)

@@ -37,6 +37,9 @@ class PermintaanRadiologi extends Model
     {
         return $this->hasMany(PermintaanPemeriksaanRadiologi::class, 'noorder', 'noorder');
     }
+	function pasien(){
+		return $this->hasOneThrough(Pasien::class, RegPeriksa::class, 'no_rawat', 'no_rkm_medis', 'no_rawat', 'no_rkm_medis');
+	}
     function scoopeRadiologiLengkap($query)
     {
         return $radiologi = DB::table('permintaan_radiologi')
