@@ -186,6 +186,9 @@
 
                         }
                     }
+                },{
+                    'targets' : [0, 6, 7,8 ,9],
+                    'orderable' : false
                 }],
                 columns: [{
                     data: 'reg_periksa',
@@ -207,7 +210,6 @@
                                 </div>
                                 `;
                     },
-                    name: 'action'
                 },
                     {
                         data: 'hasil_radiologi',
@@ -224,29 +226,30 @@
                                 cek = '';
                             }
                             return `${cek} ${row.noorder}`
-                        }
+                        }, name:'noorder'
                     },
                     {
                         title: 'No. Rawat',
                         data: 'no_rawat',
                         render: (data, type, row, meta) => {
                             return `${data}`;
-                        }
+                        },
+                        name:'no_rawat'
                     },
                     {
                         data: 'reg_periksa',
-                        title: 'No. Permintaan',
+                        title: 'Pasien',
                         render: (data, type, row, meta) => {
 
                             return `${data.pasien.nm_pasien} (${data.no_rkm_medis})`
-                        }
+                        }, name:''
                     },
                     {
                         title: 'Tgl. Permintaan',
                         data: 'tgl_permintaan',
                         render: (data, type, row, meta) => {
                             return `${splitTanggal(data)} ${row.jam_permintaan}`
-                        }
+                        }, name:'tgl_permintaan'
                     },
                     {
                         title: 'Tgl. Sampel',
@@ -256,7 +259,7 @@
                                 return `${splitTanggal(data)} ${row.jam_sampel}`
                             }
                             return '-'
-                        }
+                        }, name:'tgl_sampel'
                     },
                     {
                         title: 'Dr. Perujuk',
