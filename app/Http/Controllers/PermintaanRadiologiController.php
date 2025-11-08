@@ -46,7 +46,7 @@ class PermintaanRadiologiController extends Controller
                                         'sttsumur'
                                     ]);
             }]);
-        }, 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'regPeriksa.pasien'])->get();
+        }, 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'regPeriksa.pasien', 'pasien']);
 
         return $radiologi;
     }
@@ -74,7 +74,7 @@ class PermintaanRadiologiController extends Controller
                                         'tgl_lahir',
                                     ]);
             }]);
-        }, 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'gambarRadiologi', 'permintaanPemeriksaan.jnsPemeriksaan']);
+        }, 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'gambarRadiologi', 'permintaanPemeriksaan.jnsPemeriksaan', 'pasien']);
 
         if ($request->tgl_permintaan && $request->jam_permintaan) {
             $radiologi = $radiologi->where([
@@ -101,7 +101,7 @@ class PermintaanRadiologiController extends Controller
         if ($request->status) {
             $radiologi = $radiologi->where('status', $request->status);
         }
-        return $radiologi->with(['regPeriksa.pasien', 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'permintaanPemeriksaan.jnsPemeriksaan'])->get();
+        return $radiologi->with(['regPeriksa.pasien', 'dokterRujuk', 'periksaRadiologi.jnsPerawatan', 'hasilRadiologi', 'permintaanPemeriksaan.jnsPemeriksaan']);
     }
     function getTableIndex(Request $request)
     {
@@ -111,7 +111,27 @@ class PermintaanRadiologiController extends Controller
         } else {
             $permintaanRadiologi = $this->index();
         }
-        return DataTables::of($permintaanRadiologi)->make(true);
+        return DataTables::of($permintaanRadiologi)
+	        ->filter(function ($query) use ($request) {
+            $search = $request->get('search')['value'] ?? null;
+
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('no_rawat', 'like', "%{$search}%")
+                      ->orWhereHas('regPeriksa.pasien', function ($q) use ($search) {
+                          $q->where('nm_pasien', 'like', "%{$search}%");
+                      })
+                      ->orWhereHas('dokterRujuk', function ($q) use ($search) {
+                          $q->where('nm_dokter', 'like', "%{$search}%");
+                      })
+                      ->orWhereHas('permintaanPemeriksaan.jnsPemeriksaan', function ($q) use ($search) {
+                          $q->where('nm_perawatan', 'like', "%{$search}%");
+                      })
+                      ->orWhere('diagnosa_klinis', 'like', "%{$search}%");
+                });
+            }
+        })
+	        ->make(true);
     }
     public function updateDateTime($clause = [], $data = [])
     {
