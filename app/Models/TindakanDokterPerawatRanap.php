@@ -6,11 +6,11 @@ use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TindakanDokterPerawat extends Model
+class TindakanDokterPerawatRanap extends Model
 {
 	use HasFactory, Compoships;
 
-	protected $table = 'rawat_jl_drpr';
+	protected $table = 'rawat_inap_drpr';
 	protected $guarded = [];
 	public $timestamps = false;
 

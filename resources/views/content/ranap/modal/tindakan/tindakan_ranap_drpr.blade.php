@@ -1,26 +1,26 @@
-<div id="tindakanDokterPerawatRajal">
-    <form action="" id="formTindakanDokterPerawat">
+<div id="tindakanDokterPerawatRanap">
+    <form action="" id="formTindakanDokterPerawatRanap">
         <div class="row">
             <div class="col-lg-5 col-md-12 col-sm-12">
                 <label for="kd_dokter">Dokter</label>
                 <select name="kd_dokter" id="kd_dokter" class="select2 w-100"
-                        data-dropdown-parent="#formTindakanDokterPerawat"></select>
+                        data-dropdown-parent="#tindakanDokterPerawatRanap"></select>
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <label for="nip">Petugas</label>
                 <select name="nip" id="nip" class="select2 w-100"
-                        data-dropdown-parent="#formTindakanDokterPerawat"></select>
+                        data-dropdown-parent="#tindakanDokterPerawatRanap"></select>
             </div>
             <div class="col-lg-12 col-md-12 mt-2">
                 <div class="table-responsive">
                     <table class="table table-sm table-bordered table-striped"
-                           id="tabelJenisTindakanDokterPerawat">
+                           id="btnCreateTindakanDokterPerawatRanap">
 
                     </table>
                 </div>
 
-                <button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanDokterPerawat"
-                        onclick="createTindakanDokterPerawat()"><i class="bi bi-floppy"></i> Buat
+                <button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanDokterPerawatRanap"
+                        onclick="createTindakanDokterPerawatRanap()"><i class="bi bi-floppy"></i> Buat
                 </button>
             </div>
         </div>
@@ -30,19 +30,19 @@
 @push('script')
 
     <script>
-        $('#btnTabTindakanDokterPerawat').on('shown.tab.bs', () => {
+        $('#btnTabTindakanDokterPerawatRanap').on('shown.tab.bs', () => {
 
-            const formTindakanDokterPerawat = $('#formTindakanDokterPerawat')
-            const formInfoTindakan = $('.formInfoTindakan')
+            const formTindakanDokterPerawatRanap = $('#formTindakanDokterPerawatRanap')
+            const formInfoPasien = $('#formInfoPasien')
 
-            const no_rawat = formInfoTindakan.find('#no_rawat').val();
+            const no_rawat = formInfoPasien.find('#no_rawat').val();
             const user = new Option("{{session()->get('pegawai')->nama}}", "{{session()->get('pegawai')->nik}}", true, true)
-            formTindakanDokterPerawat.find('#nip').append(user).trigger('change')
+            formTindakanDokterPerawatRanap.find('#nip').append(user).trigger('change')
 
-            const dokter = new Option(formInfoTindakan.find('#nm_dokter').val(), formInfoTindakan.find('#dokter').val(), true, true)
-            formTindakanDokterPerawat.find('select[name=kd_dokter]').append(dokter).trigger('change')
+            const dokter = new Option(formInfoPasien.find('#dokter_dpjp').val(), formInfoPasien.find('#kd_dokter_dpjp').val(), true, true)
+            formTindakanDokterPerawatRanap.find('select[name=kd_dokter]').append(dokter).trigger('change')
 
-            formTindakanDokterPerawat.find('select[name=kd_dokter]').select2({
+            formTindakanDokterPerawatRanap.find('select[name=kd_dokter]').select2({
                 delay: 0,
                 scrollAfterSelect: false,
                 allowClear: true,
@@ -72,7 +72,7 @@
             });
 
 
-            formTindakanDokterPerawat.find('#nip').select2({
+            formTindakanDokterPerawatRanap.find('#nip').select2({
                 delay: 0,
                 scrollAfterSelect: false,
                 initSelection: function (element, callback) {
@@ -101,7 +101,7 @@
             });
 
 
-            tableJenisTindakanDokterPerawat()
+            tableJenisTindakanDokterPerawatRanap()
 
         })
 
@@ -110,7 +110,7 @@
         let selectedDataCacheDrPr = {};
         let lastRequestStartDrPr = 0;
 
-        $('#tabelJenisTindakanDokterPerawat').off('click', 'tbody tr').on('click', 'tbody tr', function (e) {
+        $('#btnCreateTindakanDokterPerawatRanap').off('click', 'tbody tr').on('click', 'tbody tr', function (e) {
             if ($(e.target).is('input[type="checkbox"]') || $(this).hasClass('child')) return;
 
             const $checkbox = $(this).find('.tindakan-check');
@@ -119,9 +119,9 @@
             }
         });
 
-        function tableJenisTindakanDokterPerawat() {
+        function tableJenisTindakanDokterPerawatRanap() {
             // simpan referensi table ke variable supaya bisa dipakai di event handler
-            const table = new DataTable('#tabelJenisTindakanDokterPerawat', {
+            const table = new DataTable('#btnCreateTindakanDokterPerawatRanap', {
                 responsive: true,
                 serverSide: true,
                 processing: true,
@@ -131,7 +131,7 @@
                 info: false,
 
                 ajax: {
-                    url: '/erm/jenis-tindakan/datatable/drpr',
+                    url: '/erm/jenis-tindakan/ranap/datatable/drpr',
                     type: 'GET',
                     // tangkap request params sebelum dikirim
                     data: function (d) {
@@ -166,8 +166,8 @@
                         }
                     },
                     complete: function () {
-                        // $('#tabelJenisTindakanDokterPerawat tbody').width(w - 5); // -- - THIS IS THE FIX
-                        // $('#tabelJenisTindakanDokterPerawat').width(w + 5);
+                        // $('#btnCreateTindakanDokterPerawatRanap tbody').width(w - 5); // -- - THIS IS THE FIX
+                        // $('#btnCreateTindakanDokterPerawatRanap').width(w + 5);
                     }
                 },
 
@@ -219,7 +219,7 @@
             });
 
             // delegated handler untuk checkbox (satu handler untuk seluruh table)
-            $('#tabelJenisTindakanDokterPerawat').off('change', '.tindakan-check').on('change', '.tindakan-check', function () {
+            $('#btnCreateTindakanDokterPerawatRanap').off('change', '.tindakan-check').on('change', '.tindakan-check', function () {
                 const id = $(this).data('id');
                 const $tr = $(this).closest('tr');
                 const rowApi = table.row($tr);
@@ -245,15 +245,15 @@
             return table;
         }
 
-        function createTindakanDokterPerawat() {
-            const formInfoTindakan = $('.formInfoTindakan')
-            const formTindakanDokterPerawat = $('#formTindakanDokterPerawat')
+        function createTindakanDokterPerawatRanap() {
+            const formInfoPasien = $('#formInfoPasien')
+            const formTindakanDokterPerawatRanap = $('#formTindakanDokterPerawatRanap')
 
-            const no_rawat = formInfoTindakan.find('#no_rawat').val();
-            const nip = formTindakanDokterPerawat.find('#nip').val();
-            const kd_dokter = formTindakanDokterPerawat.find('#kd_dokter').val();
-            const nm_pasien = formInfoTindakan.find('#nm_pasien').val();
-            const no_rkm_medis = formInfoTindakan.find('#no_rkm_medis').val();
+            const no_rawat = formInfoPasien.find('input[name=no_rawat]').val();
+            const nip = formTindakanDokterPerawatRanap.find('select[name=nip]').val();
+            const kd_dokter = formTindakanDokterPerawatRanap.find('select[name=kd_dokter').val()
+            const nm_pasien = formInfoPasien.find('input[name=pasien]').val();
+            const no_rkm_medis = formInfoPasien.find('input[name=no_rkm_medis]').val();
 
             let selectedData = selectedRowsDrPr
                 .map(id => {
@@ -264,7 +264,7 @@
                 })
                 .filter(Boolean);
 
-            $.post('/erm/tindakan/dokter-perawat', {
+            $.post('/erm/tindakan-ranap/dokter-perawat', {
                 no_rawat,
                 nip,
                 kd_dokter,
@@ -276,7 +276,7 @@
                 selectedData = []
                 selectedRowsDrPr = []
                 selectedDataCacheDrPr = {}
-                getTindakanDilakukanDrPr(no_rawat)
+                getTindakanDokterPerawatRanap()
                 swalToast('Berhasil Menambah Tindakan')
             }).fail((result) => {
                 Swal.fire({
@@ -291,40 +291,41 @@
         }
 
 
-        function getTindakanDilakukanDrPr(no_rawat) {
-            $.get(`/erm/tindakan/dokter-perawat/get`, {
-                no_rawat: no_rawat
-            }).done((response) => {
-                const tbody = $('#tabelTindakanDilakukanDrPr tbody');
-                tbody.empty();
-                response.forEach((item, index) => {
-                    const row = `<tr>
-                        <td><input type="checkbox" class="form-check-input tindakan-hasil" name="kode_tindakan[]" id="tindakan${index}" value="${item.kd_jenis_prw}" data-tgl="${item.tgl_perawatan}" data-jam="${item.jam_rawat}" data-rawat="${item.no_rawat}"  data-nip="${item.nip}" data-dokter="${item.kd_dokter}"/></td>
-                        <td>${splitTanggal(item.tgl_perawatan)}</td>
-                        <td>${item.jam_rawat}</td>
-                        <td>${item.tindakan.nm_perawatan}</td>
-                        <td>
-                            <ul>
-                                <li>${item.dokter.nm_dokter}</li>
-                                <li>${item.petugas.nama} </li>
-                            </ul>
-                        </td>
-                        <td class="text-end">${formatCurrency(item.biaya_rawat)}</td>
-                    </tr>`;
-                    tbody.append(row);
-                });
-            })
-        }
+        // function getTindakanDilakukanDrPrRanap(no_rawat) {
+        //     $.get(`/erm/tindakan-ranap/dokter-perawat/get`, {
+        //         no_rawat: no_rawat
+        //     }).done((response) => {
+        //         const tbody = $('#tbTindakanDokterPerawatRanap tbody');
+        //         tbody.empty();
+        //         // response.forEach((item, index) => {
+        //         //     const row = `<tr>
+        //         //         <td><input type="checkbox" class="form-check-input tindakan-hasil-drpr-ranap" name="kode_tindakan[]" id="tindakan${index}" value="${item.kd_jenis_prw}"
+        //         //             data-tgl="${item.tgl_perawatan}" data-jam="${item.jam_rawat}"
+        //         //             data-rawat="${item.no_rawat}"  data-nip="${item.nip}"
+        //         //             data-dokter="${item.kd_dokter}"/></td>
+        //         //         <td>${splitTanggal(item.tgl_perawatan)}</td>
+        //         //         <td>${item.jam_rawat}</td>
+        //         //         <td>${item.tindakan.nm_perawatan}</td>
+        //         //         <td>
+        //         //             <ul>
+        //         //                 <li>${item.dokter.nm_dokter}</li>
+        //         //                 <li>${item.petugas.nama} </li>
+        //         //             </ul>
+        //         //         </td>
+        //         //         <td class="text-end">${formatCurrency(item.biaya_rawat)}</td>
+        //         //     </tr>`;
+        //         //     tbody.append(row);
+        //         // });
+        //     })
+        // }
 
 
-        function deleteTindakanDokterPerawat() {
-            const formInfoTindakan = $('.formInfoTindakan')
-            const formTindakanDokterPerawat = $('#formTindakanDokterPerawat')
+        function deleteTindakanDokterPerawatRanap() {
+            const formInfoPasien = $('#formInfoPasien')
 
-            const no_rawat = formInfoTindakan.find('#no_rawat').val();
-            const nm_pasien = formInfoTindakan.find('#nm_pasien').val();
-            const no_rkm_medis = formInfoTindakan.find('#no_rkm_medis').val();
-
+            const no_rawat = formInfoPasien.find('input[name=no_rawat]').val();
+            const nm_pasien = formInfoPasien.find('input[name=pasien]').val();
+            const no_rkm_medis = formInfoPasien.find('input[name=no_rkm_medis]').val();
 
             Swal.fire({
                 title: 'Yakin ?',
@@ -338,7 +339,7 @@
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const checkedTindakan = $('#tabelTindakanDilakukanDrPr tbody').find('.tindakan-hasil:checked').map(function () {
+                    const checkedTindakan = $('#tbTindakanDokterPerawatRanap tbody').find('.check-tindakan-drpr:checked').map(function () {
                         const $this = $(this);
                         return {
                             kd_jenis_prw: $this.val(),
@@ -351,7 +352,7 @@
                     }).get();
 
                     $.ajax({
-                        url: `/erm/tindakan/dokter-perawat/delete`,
+                        url: `/erm/tindakan-ranap/dokter-perawat/delete`,
                         method: 'DELETE',
                         data: {
                             no_rawat: no_rawat,
@@ -361,8 +362,8 @@
 
                         }
                     }).done((response) => {
-                        getTindakanDilakukanDrPr(no_rawat)
                         swalToast('Berhasil Menghapus Tindakan')
+                        getTindakanDokterPerawatRanap()
                     }).fail((result) => {
                         Swal.fire({
                             title: 'Gagal',

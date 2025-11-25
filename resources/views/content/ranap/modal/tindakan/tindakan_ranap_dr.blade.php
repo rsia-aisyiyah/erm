@@ -23,18 +23,12 @@
 
 	<script>
 		$('#btnTabTindakanDokterRanap').on('shown.tab.bs', ()=>{
-
+			const formInfoPasien = $('#formInfoPasien')
 			const formTindakanDokterRanap =$('#formTindakanDokterRanap')
-			const formInfoTindakan = $('.formInfoTindakan');
 
-			const dokter = formInfoTindakan.find('#dokter').val()
-			const nm_dokter= formInfoTindakan.find('#nm_dokter').val()
-			const no_rawat= formInfoTindakan.find('#no_rawat').val()
-
-
-			const optDokter = new Option(nm_dokter, dokter, true, true)
-			formTindakanDokterRanap.find('select[name=kd_dokter]').append(optDokter).trigger('change');
-
+			const nm_dokter = formInfoPasien.find('input[name="dokter_dpjp"]').val()
+			const kd_dokter = formInfoPasien.find('input[name=kd_dokter_dpjp').val()
+			const no_rawat= formInfoPasien.find('#no_rawat').val()
 
 			formTindakanDokterRanap.find('select[name=kd_dokter]').select2({
 				delay: 0,
@@ -62,6 +56,8 @@
 				}
 			});
 
+			const optDokter = new Option(nm_dokter, kd_dokter, true, true)
+			formTindakanDokterRanap.find('select[name=kd_dokter]').append(optDokter).trigger('change');
 
 			tableJenisTindakanDokterRanap()
 
@@ -71,9 +67,9 @@
 
 
 		// global
-		let selectedRowsDr = [];
-		let selectedDataCacheDr = {};
-		let lastRequestStartDr = 0;
+		let selectedRowsRanapDr = [];
+		let selectedDataCacheRanapDr = {};
+		let lastRequestStartRanapDr = 0;
 
 
 		$('#tabelJenisTindakanDokterRanap').off('click', 'tbody tr').on('click', 'tbody tr', function (e) {
@@ -102,22 +98,22 @@
 					type: 'GET',
 					// tangkap request params sebelum dikirim
 					data: function (d) {
-						lastRequestStartDr = d.start || 0;
+						lastRequestStartRanapDr = d.start || 0;
 						return d;
 					},
 					// intercept response dari server
 					dataSrc: function (json) {
 						// update cache untuk selected ids yang mungkin ada di response ini
 						json.data.forEach(d => {
-							if (selectedRowsDr.includes(d.kd_jenis_prw)) {
-								selectedDataCacheDr[d.kd_jenis_prw] = d;
+							if (selectedRowsRanapDr.includes(d.kd_jenis_prw)) {
+								selectedDataCacheRanapDr[d.kd_jenis_prw] = d;
 							}
 						});
 
 						// jika request halaman pertama (start === 0) => gabungkan selected rows di depan
-						if (lastRequestStartDr === 0) {
-							// buat array checkedData berdasarkan urutan selectedRowsDr
-							const checkedData = selectedRowsDr.map(id => selectedDataCacheDr[id]).filter(Boolean);
+						if (lastRequestStartRanapDr === 0) {
+							// buat array checkedData berdasarkan urutan selectedRowsRanapDr
+							const checkedData = selectedRowsRanapDr.map(id => selectedDataCacheRanapDr[id]).filter(Boolean);
 
 							// hindari duplikat: kumpulkan id yang sudah ada di checkedData
 							const checkedIds = new Set(checkedData.map(d => d.kd_jenis_prw));
@@ -129,7 +125,7 @@
 							return [...checkedData, ...otherData];
 						} else {
 							// bukan halaman pertama => jangan tampilkan item yg sudah dipindah ke halaman 1
-							return json.data.filter(d => !selectedRowsDr.includes(d.kd_jenis_prw));
+							return json.data.filter(d => !selectedRowsRanapDr.includes(d.kd_jenis_prw));
 						}
 					},
 					complete: function () {
@@ -154,7 +150,7 @@
 					title: '',
 					render: function (data, type, row, meta) {
 						// jangan gunakan onchange inline (kita pakai delegated handler)
-						const checked = selectedRowsDr.includes(data) ? 'checked' : '';
+						const checked = selectedRowsRanapDr.includes(data) ? 'checked' : '';
 						return `<input type="checkbox" class="form-check-input tindakan-check" data-id="${data}" ${checked}>`;
 					}
 				},
@@ -192,15 +188,15 @@
 				const rowData = rowApi.data(); // ambil data baris sekarang (penting untuk cache)
 
 				if (this.checked) {
-					if (!selectedRowsDr.includes(id)) {
-						selectedRowsDr.push(id);
+					if (!selectedRowsRanapDr.includes(id)) {
+						selectedRowsRanapDr.push(id);
 					}
 					// simpan ke cache segera supaya saat kita draw halaman 1, data tersedia
-					if (rowData) selectedDataCacheDr[id] = rowData;
+					if (rowData) selectedDataCacheRanapDr[id] = rowData;
 				} else {
 					// uncheck -> hapus dari selected + cache
-					selectedRowsDr = selectedRowsDr.filter(x => x !== id);
-					delete selectedDataCacheDr[id];
+					selectedRowsRanapDr = selectedRowsRanapDr.filter(x => x !== id);
+					delete selectedDataCacheRanapDr[id];
 				}
 
 				// pindah ke halaman pertama, lalu redraw (false supaya tidak kehilangan state paging)
@@ -212,24 +208,23 @@
 		}
 
 		function createTindakanDokterRanap() {
-			const formInfoTindakan = $('.formInfoTindakan')
+			const formInfoPasien = $('#formInfoPasien')
 			const formTindakanDokterRanap=  $('#formTindakanDokterRanap')
 
-			const no_rawat = formInfoTindakan.find('#no_rawat').val();
-			const kd_dokter = formTindakanDokterRanap.find('#kd_dokter').val();
-			const nm_pasien = formInfoTindakan.find('#nm_pasien').val();
-			const no_rkm_medis = formInfoTindakan.find('#no_rkm_medis').val();
+			const no_rawat = formInfoPasien.find('input[name=no_rawat]').val();
+			const kd_dokter = formTindakanDokterRanap.find('select[name=kd_dokter]').val();
+			const nm_pasien = formInfoPasien.find('input[name=pasien]').val();
+			const no_rkm_medis = formInfoPasien.find('input[name=no_rkm_medis]').val();
 
-
-
-			let selectedData = selectedRowsDr
+			let selectedData = selectedRowsRanapDr
 					.map(id => {
-						const data = selectedDataCacheDr[id];
+						const data = selectedDataCacheRanapDr[id];
 						if (!data) return null;
 
 						return data;
 					})
 					.filter(Boolean);
+
 
 			$.post('/erm/tindakan-ranap/dokter', {
 				no_rawat,
@@ -240,9 +235,9 @@
 			}).done((response) => {
 				$('.tindakan-check').prop('checked', false);
 				selectedData = []
-				selectedRowsDr = []
-				selectedDataCacheDr = {}
-				getTindakanDilakukanDr(no_rawat)
+				selectedRowsRanapDr = []
+				selectedDataCacheRanapDr = {}
+				getTindakanDokterRanap()
 				swalToast('Berhasil Menambah Tindakan')
 			}).fail((result)=>{
 				Swal.fire({
@@ -257,33 +252,14 @@
 		}
 
 
-		function getTindakanDilakukanDr(no_rawat) {
-			$.get(`/erm/tindakan-ranap/dokter/get`, {
-				no_rawat: no_rawat
-			}).done((response) => {
-				const tbody = $('#tabelTindakanDilakukan tbody');
-				tbody.empty();
-				response.forEach((item, index) => {
-					const row = `<tr>
-                        <td><input type="checkbox" class="form-check-input tindakan-hasil" name="kode_tindakan[]" id="tindakan${index}" value="${item.kd_jenis_prw}" data-tgl="${item.tgl_perawatan}" data-jam="${item.jam_rawat}" data-rawat="${item.no_rawat}" data-dokter="${item.kd_dokter}"/></td>
-                        <td>${splitTanggal(item.tgl_perawatan)}</td>
-                        <td>${item.jam_rawat}</td>
-                        <td>${item.tindakan.nm_perawatan}</td>
-                        <td>${item.dokter.nm_dokter}</td>
-                        <td class="text-end">${formatCurrency(item.biaya_rawat)}</td>
-                    </tr>`;
-					tbody.append(row);
-				});
-			})
-		}
 
 
-		function deleteTindakanDokter() {
-			const formInfoTindakan = $('.formInfoTindakan')
-			const no_rawat = formInfoTindakan.find('#no_rawat').val();
-			const nm_pasien = formInfoTindakan.find('#nm_pasien').val();
-			const no_rkm_medis = formInfoTindakan.find('#no_rkm_medis').val();
 
+		function deleteTindakanDokterRanap() {
+			const formInfoPasien = $('#formInfoPasien')
+			const no_rawat = formInfoPasien.find('input[name=no_rawat]').val();
+			const nm_pasien = formInfoPasien.find('input[name=pasien]').val();
+			const no_rkm_medis = formInfoPasien.find('input[name=no_rkm_medis]').val();
 
 			Swal.fire({
 				title: 'Yakin ?',
@@ -297,7 +273,7 @@
 
 			}).then((result) => {
 				if (result.isConfirmed) {
-					const checkedTindakan = $('#tabelTindakanDilakukan tbody').find('.tindakan-hasil:checked').map(function() {
+					const checkedTindakan = $('#tbTindakanDilakukanDokterRanap tbody').find('.check-tindakan-dokter:checked').map(function() {
 						const $this = $(this);
 						return {
 							kd_jenis_prw: $this.val(),
@@ -319,7 +295,7 @@
 
 						}
 					}).done((response) => {
-						getTindakanDilakukanDr(no_rawat)
+						getTindakanDokterRanap()
 						swalToast('Berhasil Menghapus Tindakan')
 					}).fail((result)=>{
 						Swal.fire({

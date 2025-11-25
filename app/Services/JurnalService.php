@@ -6,24 +6,24 @@ use Illuminate\Support\Facades\DB;
 
 class JurnalService
 {
-
-	public function createJurnalTindakanRalan(array $data, array $totals): void
+	public function createJurnalTindakan(array $data, array $totals, string $jenis = 'ralan'): void
 	{
-		$rekening = $this->getRekeningMapping();
-		$this->createTampJurnal($rekening, $totals);
-		$this->writeOnJurnal($data);
+		$rekening = $this->getRekeningMapping($jenis);
+		$this->createTampJurnal($rekening, $totals, false, $jenis);
+		$this->writeOnJurnal($data, false, $jenis);
 	}
 
-	public function revertJurnalTindakanRalan(array $data, array $totals): void
+	public function revertJurnalTindakan(array $data, array $totals, string $jenis = 'ralan'): void
 	{
-		$rekening = $this->getRekeningMapping();
-		$this->createTampJurnal($rekening, $totals, true);
-		$this->writeOnJurnal($data, true);
+		$rekening = $this->getRekeningMapping($jenis);
+		$this->createTampJurnal($rekening, $totals, true, $jenis);
+		$this->writeOnJurnal($data, true, $jenis);
 	}
-	public function writeOnJurnal(array $data, bool $isRevert = false)
-	{
 
-		$keterangan = $isRevert ? 'PEMBATALAN TINDAKAN RAWAT JALAN ' : 'TINDAKAN RAWAT JALAN ';
+	public function writeOnJurnal(array $data, bool $isRevert = false, string $jenis = 'ralan')
+	{
+		$namaJenis = strtoupper($jenis === 'ralan' ? 'RAWAT JALAN' : 'RAWAT INAP');
+		$keterangan = $isRevert ? "PEMBATALAN TINDAKAN $namaJenis " : "TINDAKAN $namaJenis ";
 
 		$dataJurnal = [
 			'no_jurnal' => $this->generateNoJurnal(),
@@ -31,8 +31,9 @@ class JurnalService
 			'jam_jurnal' => date('H:i:s'),
 			'no_bukti' => $data['no_rawat'],
 			'jenis' => 'U',
-			'keterangan' => $keterangan.$data['no_rkm_medis'].' '.$data['nm_pasien'].' DI POST OLEH  '.session()->get('pegawai')->nama,
+			'keterangan' => $keterangan . $data['no_rkm_medis'] . ' ' . $data['nm_pasien'] . ' DI POST OLEH ' . session()->get('pegawai')->nama,
 		];
+
 		DB::table('jurnal')->insert($dataJurnal);
 		$this->createDetailJurnal($dataJurnal['no_jurnal']);
 	}
@@ -41,42 +42,40 @@ class JurnalService
 	{
 		try {
 			$data = DB::table('tampjurnal')->get();
-			if ($data === null) {
+			if ($data->isEmpty()) {
 				throw new \Exception('Tampjurnal table is empty');
 			}
-			$data = $data->map(function ($item) use ($no_jurnal) {
-				return (array) [
+
+			$records = $data->map(function ($item) use ($no_jurnal) {
+				return [
 					'no_jurnal' => $no_jurnal,
 					'kd_rek' => $item->kd_rek,
 					'debet' => $item->debet,
 					'kredit' => $item->kredit,
 				];
 			})->toArray();
-			if (empty($data)) {
-				throw new \Exception('Tampjurnal table is empty');
-			}
-			DB::table('detailjurnal')->insert($data);
+
+			DB::table('detailjurnal')->insert($records);
 		} catch (\Exception $e) {
 			throw new \Exception($e->getMessage());
 		}
 	}
 
-	public function generateNoJurnal() : string
+	public function generateNoJurnal(): string
 	{
 		$date = date('Y-m-d');
 		$count = DB::table('jurnal')->whereDate('tgl_jurnal', $date)->count();
-		$count += 1;
-		return 'JR'.date('Ymd').str_pad($count, 6, '0', STR_PAD_LEFT);
-
+		$count++;
+		return 'JR' . date('Ymd') . str_pad($count, 6, '0', STR_PAD_LEFT);
 	}
 
-	private function createTampJurnal($rekening, $totals, $reverse = false)
+	private function createTampJurnal($rekening, $totals, $reverse = false, string $jenis = 'ralan')
 	{
 		DB::table('tampjurnal')->delete();
 
 		$insertJurnal = function ($kd, $nm, $debet, $kredit) use ($reverse) {
 			if ($reverse) {
-				[$debet, $kredit] = [$kredit, $debet]; // tukar posisi
+				[$debet, $kredit] = [$kredit, $debet];
 			}
 
 			DB::table('tampjurnal')->insert([
@@ -87,61 +86,72 @@ class JurnalService
 			]);
 		};
 
-		if ($totals['ttlpendapatan'] > 0) {
-			$insertJurnal($rekening->Suspen_Piutang_Tindakan_Ralan, 'Suspen Piutang Tindakan Ralan', $totals['ttlpendapatan'], 0);
-			$insertJurnal($rekening->Tindakan_Ralan, 'Pendapatan Tindakan Rawat Jalan', 0, $totals['ttlpendapatan']);
-		}
+		$label = ucfirst($jenis === 'ralan' ? 'Rawat Jalan' : 'Rawat Inap');
+		$prefix = ucfirst($jenis); // Ralan / Ranap
 
-		if (isset($totals['ttldokter']) && $totals['ttldokter'] > 0) {
-			$insertJurnal($rekening->Beban_Jasa_Medik_Dokter_Tindakan_Ralan, 'Beban Jasa Medik Dokter Tindakan Ralan', $totals['ttldokter'], 0);
-			$insertJurnal($rekening->Utang_Jasa_Medik_Dokter_Tindakan_Ralan, 'Utang Jasa Medik Dokter Tindakan Ralan', 0, $totals['ttldokter']);
-		}
-		if (isset($totals['ttlperawat']) && $totals['ttlperawat'] > 0) {
-			$insertJurnal($rekening->Beban_Jasa_Medik_Paramedis_Tindakan_Ralan, 'Beban Jasa Medik Paramedis Tindakan Ralan', $totals['ttlperawat'], 0);
-			$insertJurnal($rekening->Utang_Jasa_Medik_Paramedis_Tindakan_Ralan, 'Utang Jasa Medik Paramedis Tindakan Ralan', 0, $totals['ttlperawat']);
-		}
+		$akunMap = [
+			'ttlpendapatan' => [
+				["Suspen_Piutang_Tindakan_{$prefix}", "Suspen Piutang Tindakan {$label}"],
+				["Tindakan_{$prefix}", "Pendapatan Tindakan {$label}"],
+			],
+			'ttldokter' => [
+				["Beban_Jasa_Medik_Dokter_Tindakan_{$prefix}", "Beban Jasa Medik Dokter Tindakan {$label}"],
+				["Utang_Jasa_Medik_Dokter_Tindakan_{$prefix}", "Utang Jasa Medik Dokter Tindakan {$label}"],
+			],
+			'ttlperawat' => [
+				["Beban_Jasa_Medik_Paramedis_Tindakan_{$prefix}", "Beban Jasa Medik Paramedis Tindakan {$label}"],
+				["Utang_Jasa_Medik_Paramedis_Tindakan_{$prefix}", "Utang Jasa Medik Paramedis Tindakan {$label}"],
+			],
+			'ttlkso' => [
+				["Beban_KSO_Tindakan_{$prefix}", "Beban KSO Tindakan {$label}"],
+				["Utang_KSO_Tindakan_{$prefix}", "Utang KSO Tindakan {$label}"],
+			],
+			'ttlmaterial' => [
+				["Beban_Jasa_Sarana_Tindakan_{$prefix}", "Beban Jasa Sarana Tindakan {$label}"],
+				["Utang_Jasa_Sarana_Tindakan_{$prefix}", "Utang Jasa Sarana Tindakan {$label}"],
+			],
+			'ttlbhp' => [
+				["HPP_BHP_Tindakan_{$prefix}", "HPP BHP Tindakan {$label}"],
+				["Persediaan_BHP_Tindakan_{$prefix}", "Persediaan BHP Tindakan {$label}"],
+			],
+			'ttlmenejemen' => [
+				["Beban_Jasa_Menejemen_Tindakan_{$prefix}", "Beban Jasa Menejemen Tindakan {$label}"],
+				["Utang_Jasa_Menejemen_Tindakan_{$prefix}", "Utang Jasa Menejemen Tindakan {$label}"],
+			],
+		];
 
-		if ($totals['ttlkso'] > 0) {
-			$insertJurnal($rekening->Beban_KSO_Tindakan_Ralan, 'Beban KSO Tindakan Ralan', $totals['ttlkso'], 0);
-			$insertJurnal($rekening->Utang_KSO_Tindakan_Ralan, 'Utang KSO Tindakan Ralan', 0, $totals['ttlkso']);
-		}
-
-		if ($totals['ttlmaterial'] > 0) {
-			$insertJurnal($rekening->Beban_Jasa_Sarana_Tindakan_Ralan, 'Beban Jasa Sarana Tindakan Ralan', $totals['ttlmaterial'], 0);
-			$insertJurnal($rekening->Utang_Jasa_Sarana_Tindakan_Ralan, 'Utang Jasa Sarana Tindakan Ralan', 0, $totals['ttlmaterial']);
-		}
-
-		if ($totals['ttlbhp'] > 0) {
-			$insertJurnal($rekening->HPP_BHP_Tindakan_Ralan, 'HPP BHP Tindakan Ralan', $totals['ttlbhp'], 0);
-			$insertJurnal($rekening->Persediaan_BHP_Tindakan_Ralan, 'Persediaan BHP Tindakan Ralan', 0, $totals['ttlbhp']);
-		}
-
-		if ($totals['ttlmenejemen'] > 0) {
-			$insertJurnal($rekening->Beban_Jasa_Menejemen_Tindakan_Ralan, 'Beban Jasa Menejemen Tindakan Ralan', $totals['ttlmenejemen'], 0);
-			$insertJurnal($rekening->Utang_Jasa_Menejemen_Tindakan_Ralan, 'Utang Jasa Menejemen Tindakan Ralan', 0, $totals['ttlmenejemen']);
+		foreach ($akunMap as $key => $pairs) {
+			if (!empty($totals[$key]) && $totals[$key] > 0) {
+				[$kd1, $nm1] = $pairs[0];
+				[$kd2, $nm2] = $pairs[1];
+				$insertJurnal($rekening->$kd1, $nm1, $totals[$key], 0);
+				$insertJurnal($rekening->$kd2, $nm2, 0, $totals[$key]);
+			}
 		}
 	}
 
-	private function getRekeningMapping()
+	private function getRekeningMapping(string $jenis = 'ralan')
 	{
-		$rekening = DB::table('set_akun_ralan')
-			->first();
-		return (object) [
-			'Suspen_Piutang_Tindakan_Ralan' => $rekening->Suspen_Piutang_Tindakan_Ralan,
-			'Tindakan_Ralan' => $rekening->Tindakan_Ralan,
-			'Beban_Jasa_Medik_Dokter_Tindakan_Ralan' => $rekening->Beban_Jasa_Medik_Dokter_Tindakan_Ralan,
-			'Utang_Jasa_Medik_Dokter_Tindakan_Ralan' => $rekening->Utang_Jasa_Medik_Dokter_Tindakan_Ralan,
-			'Beban_Jasa_Medik_Paramedis_Tindakan_Ralan' => $rekening->Beban_Jasa_Medik_Paramedis_Tindakan_Ralan,
-			'Utang_Jasa_Medik_Paramedis_Tindakan_Ralan' => $rekening->Utang_Jasa_Medik_Paramedis_Tindakan_Ralan,
-			'Beban_KSO_Tindakan_Ralan' => $rekening->Beban_KSO_Tindakan_Ralan,
-			'Utang_KSO_Tindakan_Ralan' => $rekening->Utang_KSO_Tindakan_Ralan,
-			'Beban_Jasa_Sarana_Tindakan_Ralan' => $rekening->Beban_Jasa_Sarana_Tindakan_Ralan,
-			'Utang_Jasa_Sarana_Tindakan_Ralan' => $rekening->Utang_Jasa_Sarana_Tindakan_Ralan,
-			'Beban_Jasa_Menejemen_Tindakan_Ralan' => $rekening->Beban_Jasa_Menejemen_Tindakan_Ralan,
-			'Utang_Jasa_Menejemen_Tindakan_Ralan' => $rekening->Utang_Jasa_Menejemen_Tindakan_Ralan,
-			'HPP_BHP_Tindakan_Ralan' => $rekening->HPP_BHP_Tindakan_Ralan,
-			'Persediaan_BHP_Tindakan_Ralan' => $rekening->Persediaan_BHP_Tindakan_Ralan,
-		];
+		$tabel = $jenis === 'ranap' ? 'set_akun_ranap' : 'set_akun_ralan';
+		$prefix = ucfirst($jenis);
 
+		$rekening = DB::table($tabel)->first();
+
+		return (object) [
+			"Suspen_Piutang_Tindakan_{$prefix}" => $rekening->{"Suspen_Piutang_Tindakan_{$prefix}"},
+			"Tindakan_{$prefix}" => $rekening->{"Tindakan_{$prefix}"},
+			"Beban_Jasa_Medik_Dokter_Tindakan_{$prefix}" => $rekening->{"Beban_Jasa_Medik_Dokter_Tindakan_{$prefix}"},
+			"Utang_Jasa_Medik_Dokter_Tindakan_{$prefix}" => $rekening->{"Utang_Jasa_Medik_Dokter_Tindakan_{$prefix}"},
+			"Beban_Jasa_Medik_Paramedis_Tindakan_{$prefix}" => $rekening->{"Beban_Jasa_Medik_Paramedis_Tindakan_{$prefix}"},
+			"Utang_Jasa_Medik_Paramedis_Tindakan_{$prefix}" => $rekening->{"Utang_Jasa_Medik_Paramedis_Tindakan_{$prefix}"},
+			"Beban_KSO_Tindakan_{$prefix}" => $rekening->{"Beban_KSO_Tindakan_{$prefix}"},
+			"Utang_KSO_Tindakan_{$prefix}" => $rekening->{"Utang_KSO_Tindakan_{$prefix}"},
+			"Beban_Jasa_Sarana_Tindakan_{$prefix}" => $rekening->{"Beban_Jasa_Sarana_Tindakan_{$prefix}"},
+			"Utang_Jasa_Sarana_Tindakan_{$prefix}" => $rekening->{"Utang_Jasa_Sarana_Tindakan_{$prefix}"},
+			"Beban_Jasa_Menejemen_Tindakan_{$prefix}" => $rekening->{"Beban_Jasa_Menejemen_Tindakan_{$prefix}"},
+			"Utang_Jasa_Menejemen_Tindakan_{$prefix}" => $rekening->{"Utang_Jasa_Menejemen_Tindakan_{$prefix}"},
+			"HPP_BHP_Tindakan_{$prefix}" => $rekening->{"HPP_BHP_Tindakan_{$prefix}"},
+			"Persediaan_BHP_Tindakan_{$prefix}" => $rekening->{"Persediaan_BHP_Tindakan_{$prefix}"},
+		];
 	}
 }

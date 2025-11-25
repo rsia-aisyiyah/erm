@@ -872,7 +872,7 @@
                                 if (row.sep?.surat_kontrol) {
                                     badgeKontrol = '<a target="_blank" href="/erm/rencanaKontrol/print/' + row.sep?.surat_kontrol?.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
                                 } else if (row.sep?.rujukan_keluar) {
-                                    textRujukan = row.sep.rujukan_keluar.nm_ppkDirujuk.split(' - ')[0];
+                                    textRujukan = row.sep.rujukan_keluar?.nm_ppkDirujuk?.split(' - ')[0];
                                     rujukan = textRujukan.length > 10 ? textRujukan.substring(0, 10) + '...' : textRujukan
                                     badgeKontrol = '<a target="_blank" href="/erm/rujukan/print/' + row.sep?.rujukan_keluar?.no_rujukan + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Rujuk : ' + rujukan + '</span></a>';
                                 }

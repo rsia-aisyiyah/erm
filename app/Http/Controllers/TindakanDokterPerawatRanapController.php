@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Action\TindakanDokterPerawatAction;
+use App\Action\TindakanDokterPerawatRanapAction;
 use App\Models\TindakanDokterPerawat;
+use App\Models\TindakanDokterPerawatRanap;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class TindakanDokterPerawatController extends Controller
+class TindakanDokterPerawatRanapController extends Controller
 {
-    public TindakanDokterPerawat $model;
-	public TindakanDokterPerawatAction $action;
+	public TindakanDokterPerawatRanap $model;
+	public TindakanDokterPerawatRanapAction $action;
 
-	public function __construct(TindakanDokterPerawat $mode, TindakanDokterPerawatAction $action){
-		$this->model = $mode;
+	public function __construct(TindakanDokterPerawatRanap $model, TindakanDokterPerawatRanapAction $action){
+		$this->model = $model;
 		$this->action = $action;
 	}
 
