@@ -8,13 +8,15 @@ use App\Models\JurnalDetail;
 use App\Models\TindakanDokter;
 
 //use App\Traits\Track;
+use App\Models\TindakanDokterPerawat;
+use App\Models\TindakanDokterRanap;
 use App\Models\TindakanPerawat;
+use App\Models\TindakanPerawatRanap;
 use App\Services\JurnalService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
-class TindakanPerawatAction
+class TindakanPerawatRanapAction
 {
 
 	protected JurnalService $jurnalService;
@@ -31,7 +33,7 @@ class TindakanPerawatAction
 			DB::transaction(function () use ($data, &$tindakan) {
 
 				$tindakan = $this->createTindakanPerawat($data['no_rawat'], $data['nip'], $data['tindakan']);
-				$this->jurnalService->createJurnalTindakan($data, $tindakan['totals']);
+				$this->jurnalService->createJurnalTindakan($data, $tindakan['totals'], 'ranap');
 			});
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
@@ -46,15 +48,15 @@ class TindakanPerawatAction
 		DB::transaction(function () use ($data, &$tindakan) {
 			try {
 				$tindakan = $this->deleteTindakanPerawat($data);
-				$this->jurnalService->revertJurnalTindakanRalan($data, $tindakan);
+				$this->jurnalService->revertJurnalTindakan($data, $tindakan, 'ranap' );
 
 			} catch (Exception $e) {
-				DB::rollBack();
 				throw new Exception($e->getMessage());
 			}
 		});
 		return $tindakan;
 	}
+
 
 	function createTindakanPerawat(string $no_rawat, string $nip, array $data)
 	{
@@ -88,18 +90,18 @@ class TindakanPerawatAction
 				'tarif_tindakanpr' => $item['tarif_tindakanpr'],
 				'kso' => $item['kso'],
 				'menejemen' => $item['menejemen'],
-				'stts_bayar' => 'Belum',
 				'biaya_rawat' => $pendapatan,
 			];
 		})->toArray();
 
-		$create = DB::table('rawat_jl_pr')->insert($data);
+		$create = DB::table('rawat_inap_pr')->insert($data);
 		return ['data' => $data, 'totals' => $totals];
 	}
 
 
 	protected function deleteTindakanPerawat(array $data): array
 	{
+
 		try {
 			$totals = [
 				'ttlperawat' => 0,
@@ -110,7 +112,7 @@ class TindakanPerawatAction
 				'ttlmenejemen' => 0,
 			];
 			foreach ($data['tindakan'] as $item) {
-				$tindakan = TindakanPerawat::where([
+				$tindakan = TindakanPerawatRanap::where([
 					'no_rawat' => $data['no_rawat'],
 					'nip' => $item['nip'],
 					'kd_jenis_prw' => $item['kd_jenis_prw'],
@@ -133,6 +135,5 @@ class TindakanPerawatAction
 			throw new Exception("Error Processing Request " . $e->getMessage());
 		}
 	}
-
 
 }

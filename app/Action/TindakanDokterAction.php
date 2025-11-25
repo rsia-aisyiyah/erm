@@ -29,7 +29,7 @@ class TindakanDokterAction
 			DB::transaction(function () use ($data, &$tindakan) {
 
 				$tindakan = $this->createTindakanDokter($data['no_rawat'], $data['kd_dokter'], $data['tindakan']);
-				$this->jurnalService->createJurnalTindakanRalan($data, $tindakan['totals']);
+				$this->jurnalService->createJurnalTindakan($data, $tindakan['totals']);
 			});
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
@@ -44,7 +44,7 @@ class TindakanDokterAction
 		DB::transaction(function () use ($data, &$tindakan) {
 			try {
 				$tindakan = $this->deleteTindakanDokter($data);
-				$this->jurnalService->revertJurnalTindakanRalan($data, $tindakan);
+				$this->jurnalService->revertJurnalTindakan($data, $tindakan);
 
 			} catch (Exception $e) {
 				throw new Exception($e->getMessage());

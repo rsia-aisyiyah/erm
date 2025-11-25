@@ -16,26 +16,38 @@ Route::middleware('auth')->group(function () {
 		$route->get('ranap/datatable/{param}', [\App\Http\Controllers\JenisPerawatanInapController::class, 'dataTable']);
 	});
 	Route::prefix('tindakan')->group(function ($route) {
-		$route->prefix('dokter')->group(function($route){
+		$route->prefix('dokter')->group(function ($route) {
 			$route->post('/', [\App\Http\Controllers\TindakanDokterController::class, 'create']);
 			$route->get('/get', [\App\Http\Controllers\TindakanDokterController::class, 'get']);
 			$route->delete('/delete', [\App\Http\Controllers\TindakanDokterController::class, 'delete']);
 		});
-		$route->prefix('perawat')->group(function($route){
+		$route->prefix('perawat')->group(function ($route) {
 			$route->post('/', [\App\Http\Controllers\TindakanPerawatController::class, 'create']);
 			$route->get('/get', [\App\Http\Controllers\TindakanPerawatController::class, 'get']);
 			$route->delete('/delete', [\App\Http\Controllers\TindakanPerawatController::class, 'delete']);
 		});
-		$route->prefix('dokter-perawat')->group(function($route){
+		$route->prefix('dokter-perawat')->group(function ($route) {
 			$route->post('/', [\App\Http\Controllers\TindakanDokterPerawatController::class, 'create']);
 			$route->get('/get', [\App\Http\Controllers\TindakanDokterPerawatController::class, 'get']);
 			$route->delete('/delete', [\App\Http\Controllers\TindakanDokterPerawatController::class, 'delete']);
 		});
 
 	});
-	Route::prefix('tindakan-ranap')->group(function ($route){
-		$route->prefix('dokter')->group(function($route){
+	Route::prefix('tindakan-ranap')->group(function ($route) {
+		$route->prefix('dokter')->group(function ($route) {
+			$route->post('/', [\App\Http\Controllers\TindakanDokterRanapController::class, 'create']);
+			$route->delete('/delete', [\App\Http\Controllers\TindakanDokterRanapController::class, 'delete']);
 			$route->get('/get', [\App\Http\Controllers\TindakanDokterRanapController::class, 'get']);
+		});
+		$route->prefix('perawat')->group(function ($route) {
+			$route->post('/', [\App\Http\Controllers\TindakanPerawatRanapController::class, 'create']);
+			$route->delete('/delete', [\App\Http\Controllers\TindakanPerawatRanapController::class, 'delete']);
+			$route->get('/get', [\App\Http\Controllers\TindakanPerawatRanapController::class, 'get']);
+		});
+		$route->prefix('dokter-perawat')->group(function ($route) {
+			$route->post('/', [\App\Http\Controllers\TindakanDokterPerawatRanapController::class, 'create']);
+			$route->delete('/delete', [\App\Http\Controllers\TindakanDokterPerawatRanapController::class, 'delete']);
+			$route->get('/get', [\App\Http\Controllers\TindakanDokterPerawatRanapController::class, 'get']);
 		});
 	});
 });

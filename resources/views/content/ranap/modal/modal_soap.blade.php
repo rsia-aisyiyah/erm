@@ -90,12 +90,13 @@
                             Pasien
                         </button>
                     </li>
-{{--                    <li class="nav-item" role="presentation">--}}
-{{--                        <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"--}}
-{{--                                data-bs-target="#tabTindakan-pane"--}}
-{{--                                type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan--}}
-{{--                        </button>--}}
-{{--                    </li>--}}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
+                                data-bs-target="#tabTindakan-pane"
+                                type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan
+                            Ranap
+                        </button>
+                    </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
                                 type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
@@ -148,55 +149,58 @@
                     </div>
                     <div class="tab-pane fade  p-2 m-2" id="tabTindakan-pane" role="tabpanel"
                          aria-labelledby="tabTindakan" tabindex="0">
-                        {{--                        @include('content.poliklinik.modal.tab-tindakan')--}}
-                        <ul class="nav nav-tabs nav-tabs-expand" id="groupTindakan" role="tablist">
-                            <li class="nav-item" role="presentation" id="tabTindakanDokter">
-                                <button class="nav-link" id="btnTabTindakanDokterRanap" data-bs-toggle="tab"
-                                        data-bs-target="#targetTindakanDokterRanap"
-                                        type="button" role="tab" aria-controls="targetTindakanDokter"
-                                        aria-selected="false">Tindakan
-                                    Dokter
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation" id="tabTindakanPerawat">
-                                <button class="nav-link" id="btnTabTindakanPerawatRanap" data-bs-toggle="tab"
-                                        data-bs-target="#targetTindakanPerawatRanap"
-                                        type="button" role="tab" aria-controls="targetTindakanPerawat"
-                                        aria-selected="false">Tindakan
-                                    Perawat
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation" id="tabTindakanDokterPerawat">
-                                <button class="nav-link" id="btnTabTindakanDokterPerawatRanap" data-bs-toggle="tab"
-                                        data-bs-target="#targetTindakanDokterPerawatRanap"
-                                        type="button" role="tab" aria-controls="targetTindakanDokterPerawat"
-                                        aria-selected="false">Tindakan
-                                    Dokter & Perawat
-                                </button>
-                            </li>
-                        </ul>
-                        <div class="row">
+
+                        <div class="row gy-2">
                             <div class="col-lg-7 col-xl-6 col-md-12 col-sm-12">
+                                <ul class="nav nav-tabs nav-tabs-expand" id="groupTindakan" role="tablist">
+                                    <li class="nav-item" role="presentation" id="tabTindakanDokter">
+                                        <button class="nav-link" id="btnTabTindakanDokterRanap" data-bs-toggle="tab"
+                                                data-bs-target="#targetTindakanDokterRanap"
+                                                type="button" role="tab" aria-controls="targetTindakanDokter"
+                                                aria-selected="false">Tindakan
+                                            Dokter
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation" id="tabTindakanPerawatRanap">
+                                        <button class="nav-link" id="btnTabTindakanPerawatRanap" data-bs-toggle="tab"
+                                                data-bs-target="#targetTindakanPerawatRanap"
+                                                type="button" role="tab" aria-controls="targetTindakanPerawat"
+                                                aria-selected="false">Tindakan
+                                            Perawat
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation" id="tabTindakanDokterPerawat">
+                                        <button class="nav-link" id="btnTabTindakanDokterPerawatRanap"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#targetTindakanDokterPerawatRanap"
+                                                type="button" role="tab" aria-controls="targetTindakanDokterPerawat"
+                                                aria-selected="false">Tindakan
+                                            Dokter & Perawat
+                                        </button>
+                                    </li>
+                                </ul>
                                 <div class="tab-content" id="contentTabTindakan">
                                     <div class="tab-pane fade p-2" id="targetTindakanDokterRanap" role="tabpanel"
                                          aria-labelledby="tabTindakanDokterRanap" tabindex="0">
                                         @include('content.ranap.modal.tindakan.tindakan_ranap_dr')
                                     </div>
                                     <div class="tab-pane fade p-2" id="targetTindakanPerawatRanap" role="tabpanel"
-                                         aria-labelledby="tabTindakanPerawatRanap" tabindex="0">
-                                        @include('content.poliklinik.modal.tindakan.tindakan_ralan_pr')
+                                         aria-labelledby="tabTindakanPerawatRanapRanap" tabindex="0">
+                                        @include('content.ranap.modal.tindakan.tindakan_ranap_pr')
                                     </div>
                                     <div class="tab-pane fade p-2" id="targetTindakanDokterPerawatRanap" role="tabpanel"
                                          aria-labelledby="tabTindakanDokterPerawatRanap" tabindex="0">
-                                        @include('content.poliklinik.modal.tindakan.tindakan_ralan_drpr')
+                                        @include('content.ranap.modal.tindakan.tindakan_ranap_drpr')
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-xl-6 col-md-12 col-sm-12">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut dolorem doloribus exercitationem fugit voluptas! A assumenda autem consequatur eaque et id incidunt iure neque, provident quaerat sit vel. Perspiciatis, quas.
+                            <div class="col-lg-5 col-xl-6 col-md-12 col-sm-12 p-2">
+                                @include('content.ranap.modal.tindakan.tabel_tindakan')
+
                             </div>
                         </div>
                     </div>
+
                     <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
                          tabindex="0">
                         @include('content.ranap.modal.cppt._ewsRanap')
@@ -306,6 +310,15 @@
 
             })
         })
+
+        $('#tabTindakan').on('shown.bs.tab', function () {
+            $('#btnTabTindakanDokterRanap').click()
+            getTindakanDokterRanap()
+            getTindakanPerawatRanap()
+            getTindakanDokterPerawatRanap()
+        })
+
+
 
         modalSoapRanap.on('shown.bs.modal', () => {
 

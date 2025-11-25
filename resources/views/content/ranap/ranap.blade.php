@@ -80,7 +80,7 @@
         <div class="form-group">
             <div class="row gy-2">
                 <div class="col-lg-3 col-md-12 col-sm-12">
-                    <select name="spesialis" id="spesialis" class="form-select form-select-sm"
+                    <select name="spesialis" id="spesialis" class="form-select form-select-sm select2"
                             style="width:100%">
                         <option value="">Semua Spesialis</option>
                         <option value="S0001">Spesialis Kebidanan & Kandungan</option>
@@ -88,14 +88,16 @@
                     </select>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
-                    <select style="font-size:12px" name="dokter" id="dokter" class="form-select form-select-sm"
-                            style="width:100%"
-                            disabled>
+                    <select style="font-size:12px" name="dokter" id="dokter" class="form-select form-select-sm select2"
+                            style="width:100%">
                         <option value="">Semua Dokter</option>
+                        <option value="1.113.1023" class="S0001">dr. Achmad Dahlan Kadir, Sp.OG</option>
                         <option value="1.101.1112" class="S0003">dr. Himawan Budityastomo, Sp.OG</option>
                         <option value="1.109.1119" class="S0003">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
-                        <option value="1.107.0317" class="S0001">dr. Dwi Riyanto, Sp.A</option>
                         <option value="1.111.1221" class="S0001">dr. Rendy Yoga Ardian, Sp.A</option>
+                        <option value="1.227.0824" class="S0001">dr. Alifa Nofia Febriani, Sp.A</option>
+                        <option value="1.210.0825" class="S0001">dr. Hanif Hary Setyawan, Sp.A</option>
+                        <option value="1.107.0317" class="S0001">dr. Dwi Riyanto, Sp.A</option>
                     </select>
                 </div>
                 <div class="col-lg-5 col-md-12 col-sm-12">
@@ -204,6 +206,9 @@
 
             $('#cari-kamar').val(kamar)
             $('.tanggal').datepicker('setDate', dateStart)
+
+            let isDokter = "{{session()->get('pegawai')->dokter}}"
+            kd_dokter = isDokter ?  "{{session()->get('pegawai')->nik}}" : '';
             tb_ranap();
         });
 
@@ -226,7 +231,7 @@
                         'sps': sps,
                     },
                     success: function (response) {
-                        let option = `<option value="" disabled selected>Pilih Dokter Spesialis</option>`;
+                        let option = `<option value="" selected>Pilih Dokter</option>`;
                         response.data.forEach(function (res) {
                             $('#dokter').prop('disabled', false)
                             $('#dokter').empty();
@@ -236,10 +241,10 @@
                     }
                 })
             } else {
-                $('#dokter').prop('disabled', true)
-                $('#dokter').empty();
-                option = '<option value="">Semua Dokter</option>'
-                $('#dokter').append(option);
+                // $('#dokter').prop('disabled', true)
+                // $('#dokter').empty();
+                // option = '<option value="">Semua Dokter</option>'
+                // $('#dokter').append(option);
                 localStorage.removeItem('dokter')
                 kd_dokter = '';
 
