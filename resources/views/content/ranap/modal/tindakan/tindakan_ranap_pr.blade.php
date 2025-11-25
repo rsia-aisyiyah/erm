@@ -69,6 +69,15 @@
 
         })
 
+        modalSoapRanap.on('shown.bs.modal', function () {
+            $('.tindakan-check').each(function () {
+                $(this).prop('checked', false);
+            });
+
+            selectedRowsPrRanap = [];
+            selectedDataCachePrRanap = {};
+            lastRequestStartPr = 0;
+        })
         // global
         let selectedRowsPrRanap = [];
         let selectedDataCachePrRanap = {};

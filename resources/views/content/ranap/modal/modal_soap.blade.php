@@ -263,7 +263,6 @@
             formAsuhanGiziDewasa.trigger('reset')
             formAsuhanGiziAnak.trigger('reset')
             grafikPemeriksaan.destroy();
-
         })
 
         tabLaboratorium.on('click', () => {
