@@ -105,6 +105,16 @@
 
         })
 
+        modalSoapRanap.on('shown.bs.modal', function () {
+            $('.tindakan-check').each(function () {
+                $(this).prop('checked', false);
+            });
+
+            selectedRowsDrPr = [];
+            selectedDataCacheDrPr = {};
+            lastRequestStartDrPr = 0;
+        })
+
         // global
         let selectedRowsDrPr = [];
         let selectedDataCacheDrPr = {};
@@ -207,7 +217,6 @@
                         data: 'total_byrdrpr',
                         title: 'Biaya',
                         render: function (data, type, row, meta) {
-                            console.log('DATA ===', data)
                             return formatCurrency(data);
                         }
                     },
