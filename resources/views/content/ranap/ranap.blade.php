@@ -209,7 +209,7 @@
 
             let isDokter = "{{session()->get('pegawai')->dokter}}"
 
-            let isSpesialis = "{{session()->get('pegawai')->dokter->kd_sps}}"
+            let isSpesialis = "{{session()->get('pegawai')->dokter?->kd_sps}}"
 
             kd_dokter = isDokter && isSpesialis != 'S0007' ?  "{{session()->get('pegawai')->nik}}" : '';
             tb_ranap();
