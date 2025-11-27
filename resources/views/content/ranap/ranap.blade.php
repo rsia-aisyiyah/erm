@@ -208,7 +208,10 @@
             $('.tanggal').datepicker('setDate', dateStart)
 
             let isDokter = "{{session()->get('pegawai')->dokter}}"
-            kd_dokter = isDokter ?  "{{session()->get('pegawai')->nik}}" : '';
+
+            let isSpesialis = "{{session()->get('pegawai')->dokter->kd_sps}}"
+
+            kd_dokter = isDokter && isSpesialis != 'S0007' ?  "{{session()->get('pegawai')->nik}}" : '';
             tb_ranap();
         });
 
