@@ -220,8 +220,6 @@
 			const nm_pasien = formInfoTindakan.find('#nm_pasien').val();
 			const no_rkm_medis = formInfoTindakan.find('#no_rkm_medis').val();
 
-
-
 			let selectedData = selectedRowsDr
 					.map(id => {
 						const data = selectedDataCacheDr[id];

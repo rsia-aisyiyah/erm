@@ -8,13 +8,12 @@ use App\Models\JurnalDetail;
 use App\Models\TindakanDokter;
 
 //use App\Traits\Track;
-use App\Models\TindakanPerawat;
+use App\Models\TindakanDokterRanap;
 use App\Services\JurnalService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
-class TindakanPerawatAction
+class TindakanDokterRanapAction
 {
 
 	protected JurnalService $jurnalService;
@@ -30,8 +29,8 @@ class TindakanPerawatAction
 		try {
 			DB::transaction(function () use ($data, &$tindakan) {
 
-				$tindakan = $this->createTindakanPerawat($data['no_rawat'], $data['nip'], $data['tindakan']);
-				$this->jurnalService->createJurnalTindakan($data, $tindakan['totals']);
+				$tindakan = $this->createTindakanDokter($data['no_rawat'], $data['kd_dokter'], $data['tindakan']);
+				$this->jurnalService->createJurnalTindakan($data, $tindakan['totals'], 'ranap');
 			});
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
@@ -45,21 +44,20 @@ class TindakanPerawatAction
 
 		DB::transaction(function () use ($data, &$tindakan) {
 			try {
-				$tindakan = $this->deleteTindakanPerawat($data);
-				$this->jurnalService->revertJurnalTindakanRalan($data, $tindakan);
+				$tindakan = $this->deleteTindakanDokter($data);
+				$this->jurnalService->revertJurnalTindakan($data, $tindakan, 'ranap' );
 
 			} catch (Exception $e) {
-				DB::rollBack();
 				throw new Exception($e->getMessage());
 			}
 		});
 		return $tindakan;
 	}
 
-	function createTindakanPerawat(string $no_rawat, string $nip, array $data)
+	function createTindakanDokter(string $no_rawat, string $kd_dokter, array $data)
 	{
 		$totals = [
-			'ttlperawat' => 0,
+			'ttldokter' => 0,
 			'ttlkso' => 0,
 			'ttlpendapatan' => 0,
 			'ttlmaterial' => 0,
@@ -67,58 +65,56 @@ class TindakanPerawatAction
 			'ttlmenejemen' => 0,
 		];
 
-		$data = collect($data)->map(function ($item) use ($no_rawat, $nip, &$totals) {
-			$pendapatan = floatval($item['total_byrpr']);
-			$totals['ttlperawat'] += floatval($item['tarif_tindakanpr']);
+		$data = collect($data)->map(function ($item) use ($no_rawat, $kd_dokter, &$totals) {
+			$pendapatan = floatval($item['total_byrdr']);
+			$totals['ttldokter'] += floatval($item['tarif_tindakandr']);
 			$totals['ttlkso'] += floatval($item['kso']);
 			$totals['ttlpendapatan'] += floatval($pendapatan);
 			$totals['ttlmaterial'] += floatval($item['material']);
 			$totals['ttlbhp'] += floatval($item['bhp']);
 			$totals['ttlmenejemen'] += floatval($item['menejemen']);
 
-
 			return [
 				'no_rawat' => $no_rawat,
-				'nip' => $nip,
+				'kd_dokter' => $kd_dokter,
 				'kd_jenis_prw' => $item['kd_jenis_prw'],
 				'tgl_perawatan' => date('Y-m-d'),
 				'jam_rawat' => date('H:i:s'),
 				'material' => $item['material'],
 				'bhp' => $item['bhp'],
-				'tarif_tindakanpr' => $item['tarif_tindakanpr'],
+				'tarif_tindakandr' => $item['tarif_tindakandr'],
 				'kso' => $item['kso'],
 				'menejemen' => $item['menejemen'],
-				'stts_bayar' => 'Belum',
 				'biaya_rawat' => $pendapatan,
 			];
 		})->toArray();
 
-		$create = DB::table('rawat_jl_pr')->insert($data);
+		$create = DB::table('rawat_inap_dr')->insert($data);
 		return ['data' => $data, 'totals' => $totals];
 	}
-
-
-	protected function deleteTindakanPerawat(array $data): array
+	protected function deleteTindakanDokter(array $data): array
 	{
 		try {
+
 			$totals = [
-				'ttlperawat' => 0,
+				'ttldokter' => 0,
 				'ttlkso' => 0,
 				'ttlpendapatan' => 0,
 				'ttlmaterial' => 0,
 				'ttlbhp' => 0,
 				'ttlmenejemen' => 0,
 			];
+
 			foreach ($data['tindakan'] as $item) {
-				$tindakan = TindakanPerawat::where([
+				$tindakan = TindakanDokterRanap::where([
 					'no_rawat' => $data['no_rawat'],
-					'nip' => $item['nip'],
+					'kd_dokter' => $item['kd_dokter'],
 					'kd_jenis_prw' => $item['kd_jenis_prw'],
 				]);
 
 				$row = $tindakan->first();
 
-				$totals['ttlperawat'] += floatval($row->tarif_tindakanpr);
+				$totals['ttldokter'] += floatval($row->tarif_tindakandr);
 				$totals['ttlkso'] += floatval($row->kso);
 				$totals['ttlpendapatan'] += floatval($row->biaya_rawat);
 				$totals['ttlmaterial'] += floatval($row->material);
@@ -130,7 +126,7 @@ class TindakanPerawatAction
 			return $totals;
 
 		} catch (Exception $e) {
-			throw new Exception("Error Processing Request " . $e->getMessage());
+			throw new Exception("Error Processing Request " . $e->getMessage(), 1);
 		}
 	}
 
