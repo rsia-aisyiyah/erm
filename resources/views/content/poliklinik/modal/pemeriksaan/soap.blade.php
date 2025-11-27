@@ -195,11 +195,11 @@
                 if(response.penjab?.png_jawab?.includes('BPJS')){
                     formSoapPoli.find('input[name=no_peserta]').removeClass('text-bg-danger').addClass('text-bg-success')
                     formSoapPoli.find('input[name=png_jawab]').removeClass('text-bg-danger').addClass('text-bg-success')
-                    $('#btnInfoPeserta').removeClass('btn-danger').addClass('btn-success').prop('disabled', false)
+                    $('#btnInfoPeserta').removeClass('btn-danger').addClass('btn-success')
                 }else{
                     formSoapPoli.find('input[name=no_peserta]').addClass('text-bg-danger').removeClass('text-bg-success')
                     formSoapPoli.find('input[name=png_jawab]').addClass('text-bg-danger').removeClass('text-bg-success')
-                    $('#btnInfoPeserta').addClass('btn-danger').removeClass('btn-success').prop('disabled', true)
+                    $('#btnInfoPeserta').addClass('btn-danger').removeClass('btn-success')
                 }
 
                 formSoapPoli.find('input[name=role]').val("{{ session()->get('role') }}")
