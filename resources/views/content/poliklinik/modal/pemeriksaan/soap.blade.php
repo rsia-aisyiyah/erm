@@ -193,12 +193,12 @@
                 formSoapPoli.find('input[name=png_jawab]').val(`${response.penjab.png_jawab}`)
 
                 if(response.penjab?.png_jawab?.includes('BPJS')){
-                    formSoapPoli.find('input[name=no_peserta]').removeClass('text-bg-danger')
-                    formSoapPoli.find('input[name=png_jawab]').removeClass('text-bg-danger')
+                    formSoapPoli.find('input[name=no_peserta]').removeClass('text-bg-danger').addClass('text-bg-success')
+                    formSoapPoli.find('input[name=png_jawab]').removeClass('text-bg-danger').addClass('text-bg-success')
                     $('#btnInfoPeserta').removeClass('btn-danger').addClass('btn-primary').prop('disabled', false)
                 }else{
-                    formSoapPoli.find('input[name=no_peserta]').addClass('text-bg-danger')
-                    formSoapPoli.find('input[name=png_jawab]').addClass('text-bg-danger')
+                    formSoapPoli.find('input[name=no_peserta]').addClass('text-bg-danger').removeClass('text-bg-danger')
+                    formSoapPoli.find('input[name=png_jawab]').addClass('text-bg-danger').removeClass('text-bg-danger')
                     $('#btnInfoPeserta').addClass('btn-danger').removeClass('btn-primary').prop('disabled', true)
                 }
 
