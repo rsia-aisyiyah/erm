@@ -33,7 +33,7 @@ class TindakanDokterPerawatRanapAction
 			DB::transaction(function () use ($data, &$tindakan) {
 
 				$tindakan = $this->createTindakanPerawat($data['no_rawat'], $data['nip'], $data['kd_dokter'], $data['tindakan']);
-				$this->jurnalService->createJurnalTindakan($data, $tindakan['totals']);
+				$this->jurnalService->createJurnalTindakan($data, $tindakan['totals'], 'ranap');
 			});
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
