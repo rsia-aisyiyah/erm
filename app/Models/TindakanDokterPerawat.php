@@ -17,7 +17,7 @@ class TindakanDokterPerawat extends Model
 
 	function tindakan()
 	{
-		return $this->belongsTo(JenisPerawatanInap::class, 'kd_jenis_prw', 'kd_jenis_prw');
+		return $this->belongsTo(JenisPerawatan::class, 'kd_jenis_prw', 'kd_jenis_prw');
 	}
 	function pasien()
 	{
