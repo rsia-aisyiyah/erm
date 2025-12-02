@@ -82,6 +82,7 @@
                 <div class="col-lg-3 col-md-12 col-sm-12">
                     <select name="spesialis" id="spesialis" class="form-select form-select-sm select2"
                             style="width:100%">
+                        <option value="" disabled selected>Pilih  Spesialis</option>
                         <option value="">Semua Spesialis</option>
                         <option value="S0001">Spesialis Kebidanan & Kandungan</option>
                         <option value="S0003">Spesialis Anak</option>
@@ -90,6 +91,7 @@
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <select style="font-size:12px" name="dokter" id="dokter" class="form-select form-select-sm select2"
                             style="width:100%">
+                        <option value="" disabled selected>Pilih Dokter</option>
                         <option value="">Semua Dokter</option>
                         <option value="1.113.1023" class="S0001">dr. Achmad Dahlan Kadir, Sp.OG</option>
                         <option value="1.101.1112" class="S0003">dr. Himawan Budityastomo, Sp.OG</option>
