@@ -236,7 +236,10 @@ class PemeriksaanRanapController extends Controller
 		$grafik = array_merge($clause, ['sumber' => 'SOAP']);
 		$log = $this->log->insert($clause, 'Hapus');
 		$grafikHarian = $this->grafikharian->where($grafik)->delete();
+
+		$this->logger->handle($request, 'DELETE');
 		return response()->json(['Berhasil', $pemeriksaan], 200);
+
 	}
 
 	function ambilPemeriksaan(Request $request)

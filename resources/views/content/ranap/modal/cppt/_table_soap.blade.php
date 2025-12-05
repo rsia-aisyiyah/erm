@@ -262,7 +262,6 @@
                     $.ajax({
                         url: 'soap/hapus',
                         data: {
-                            '_token': '{{ csrf_token() }}',
                             'no_rawat': no,
                             'tgl_perawatan': tgl,
                             'jam_rawat': jam,
