@@ -374,11 +374,12 @@ Route::get('/nosurat/{poli}', [SuratKontrolUlangController::class, 'setNoSurat']
 Route::get('/noreg/{tanggal}/{poli}/{dokter}', [BookingRegistrasiController::class, 'setNoReg']);
 Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 
+Route::get('/log/track', [\App\Http\Controllers\TrackerSqlController::class, 'get']);
+
 Route::get('/test/view', function () {
 	return view('test');
 });
-Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}', [PoliklinikController::class, 'poliPasien']);
-Route::get('/sbar', [SbarController::class, 'dataTable']);
+//Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}', [PoliklinikController::class, 'poliPasien']);
 
 
 require __DIR__ . '/partials/asesmen_nyeri.php';

@@ -16,26 +16,31 @@
     </div>
     <div class="col-md-12 col-lg-3 col-sm-12">
         <button type="button" class="btn btn-success btn-sm mb-3" id="cariCppt"
-            onclick="cariSoap()">
+                onclick="cariSoap()">
             <i class="bi bi-search"> Cari Soap</i>
         </button>
     </div>
+
+
 </div>
 <table class="table table-bordered table-striped table-sm" id="tbSoap" width="100%">
     <thead>
-        <tr>
-            <td>Aksi</td>
-            <td>TTV & Fisik</td>
-            <td>CPPT</td>
-        </tr>
+    <tr>
+        <td>Aksi</td>
+        <td>TTV & Fisik</td>
+        <td>CPPT</td>
+    </tr>
     </thead>
     <tbody>
 
     </tbody>
 </table>
 
+
+
 @push('script')
     <script>
+        const modalLogTracker = $('#modalLogTracker')
         $('.tglSoap1_soap').datepicker({
             format: 'dd-mm-yyyy',
             orientation: 'bottom',
@@ -47,7 +52,6 @@
             orientation: 'bottom',
             autoclose: true,
         })
-
 
 
         function ambilSoap(no_rawat, tgl, jam) {
@@ -67,7 +71,7 @@
                 $('#spo2').val(response.spo2);
                 $('#gcs').val(response.gcs);
 
-                $.map(response.grafik_harian, function(grafik) {
+                $.map(response.grafik_harian, function (grafik) {
                     if (response.tgl_perawatan == grafik.tgl_perawatan && response.jam_rawat == grafik.jam_rawat) {
                         $('#o2').val(grafik.o2);
                     }
@@ -134,23 +138,23 @@
                     },
                 },
                 columns: [{
-                        data: null,
-                        render: function(data, type, row, meta) {
-                            if (row.sbar) {
-                                return renderBtnActionSbar(row.sbar)
-                            }
-                            button = '<span class="d-none">' + row.tgl_perawatan + ' ' + row.jam_rawat + '</span><button type="button" class="btn btn-primary btn-sm me-1" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
-                            if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
-                                button += '<button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
-                            }
-                            return button;
-                        },
-                        name: 'tgl_perawatan',
-                        width: '5%'
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        if (row.sbar) {
+                            return renderBtnActionSbar(row.sbar)
+                        }
+                        button = '<span class="d-none">' + row.tgl_perawatan + ' ' + row.jam_rawat + '</span><button type="button" class="btn btn-primary btn-sm me-1" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
+                        if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
+                            button += '<button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
+                        }
+                        return button;
                     },
+                    name: 'tgl_perawatan',
+                    width: '5%'
+                },
                     {
                         data: null,
-                        render: function(data, type, row, meta) {
+                        render: function (data, type, row, meta) {
 
                             if (row.sbar) {
                                 return renderVerifikasiSbar(row.sbar)
@@ -160,7 +164,7 @@
                             list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
                                 '</strong></li>';
                             list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
-                            $.map(row.grafik_harian, function(grafik) {
+                            $.map(row.grafik_harian, function (grafik) {
                                 if (row.tgl_perawatan === grafik.tgl_perawatan && row.jam_rawat === grafik.jam_rawat) {
                                     list += '<li> O2 : ' + grafik.o2 + '</li>';
                                 }
@@ -177,10 +181,12 @@
                             html = '<ul>' + list + '</ul>';
 
                             row.log.filter((item) => item.tgl_perawatan === row.tgl_perawatan && item.jam_rawat === row.jam_rawat).map((item) => {
-                                html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${item.aksi.toLowerCase()} oleh : <b>${item.pegawai.nama} 
+                                html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${item.aksi.toLowerCase()} oleh : <b>${item.pegawai.nama}
                                             , ${formatTanggal(item.waktu)}
                                                 </i></div>`
                             })
+
+                            // html+=`<a href="javascript:void(0)" onclick="getTrackerLog('pemeriksaan_ranap','${row.no_rawat}')">Lihat log</a>`
 
                             return html;
 
@@ -191,7 +197,7 @@
                     },
                     {
                         data: null,
-                        render: function(data, type, row, meta) {
+                        render: function (data, type, row, meta) {
 
                             if (row.sbar) {
                                 return renderSbar(row)
@@ -221,7 +227,24 @@
         }
 
 
+        function getTrackerLog(...args) {
+            console.log(args)
 
+            $.ajax({
+                url: '/erm/log/track',        // ganti dengan route kamu
+                method: 'GET',
+                data: {
+                    keywords: args  // otomatis jadi keywords[]=...
+                },
+                success: function(res) {
+                    console.log("RESULT:", res);
+                    modalLogTracker.modal('show')
+                },
+                error: function(err) {
+                    console.error("ERROR:", err);
+                }
+            });
+        }
 
         function hapusSoap(no, tgl, jam) {
             Swal.fire({
@@ -245,7 +268,7 @@
                             'jam_rawat': jam,
                         },
                         method: 'DELETE',
-                        success: function(response) {
+                        success: function (response) {
                             if (response) {
                                 Swal.fire({
                                     icon: 'success',
@@ -362,8 +385,6 @@
         }
 
 
-
-
         function renderBarcodeSbar(data) {
             setTimeout(() => {
                 JsBarcode(`.barcode[data-id="${data.no_rawat}"][data-tgl="${data.tgl_perawatan}"][data-jam="${data.jam_rawat}"]`, 'wkwkwkw', {
@@ -450,7 +471,6 @@
         function getSbar(no_rawat, tgl_perawatan, jam) {
             btnTabSbar.trigger('click');
             getDetailPemeriksaanRanap(no_rawat, tgl_perawatan, jam).done((response) => {
-
 
 
                 btnSimpanSbar.addClass('d-none');

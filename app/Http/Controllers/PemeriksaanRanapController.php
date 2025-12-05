@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Action\LogSoapRanapAction;
 use Carbon\Carbon;
 use App\Models\RsiaLogSoap;
 use App\Models\GrafikHarian;
@@ -14,334 +15,353 @@ use Illuminate\Support\Facades\DB;
 
 class PemeriksaanRanapController extends Controller
 {
-    private $tanggal;
-    private $pemeriksaan;
-    private $grafikharian;
-    private $track;
-    private $log;
+	private $tanggal;
+	private $pemeriksaan;
+	private $grafikharian;
+	private $track;
+	private $log;
+	public $logger;
+
+	public function __construct(LogSoapRanapAction $logger)
+	{
+		$this->tanggal = new Carbon();
+		$this->pemeriksaan = new PemeriksaanRanap();
+		$this->grafikharian = new GrafikHarian();
+		$this->track = new TrackerSqlController();
+		$this->log = new RsiaLogSoapController();
+
+		$this->logger = $logger;
+	}
+
+	public function ambilSatu(Request $request)
+	{
+		$pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
+			->with([
+				'regPeriksa' => function ($query) {
+					return $query->select(
+						DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+						DB::raw('TRIM(kd_poli) as kd_poli'),
+						DB::raw('TRIM(kd_dokter) as kd_dokter'),
+						'tgl_registrasi',
+						'jam_reg',
+						'status_bayar',
+						'status_poli',
+						'stts_daftar',
+						'no_rawat'
+					)->with(['dokter', 'pasien']);
+				},
+				'petugas' => function ($query) {
+					// return $query->with('petugas');
+				},
+				'grafikHarian',
+				'sbar' => function ($query) {
+					return $query->with(['dokterKonsul.dokterSbar']);
+				}
+			]);
+
+		if ($request->tgl_perawatan) {
+			$pemeriksaan->where('tgl_perawatan', $request->tgl_perawatan);
+		}
+		if ($request->jam_rawat) {
+			$pemeriksaan->where('jam_rawat', $request->jam_rawat);
+		}
+
+		return response()->json($pemeriksaan->first(), 200);
+	}
+
+	public function ubah(Request $request)
+	{
 
 
-    public function __construct()
-    {
-        $this->tanggal = new Carbon();
-        $this->pemeriksaan = new PemeriksaanRanap();
-        $this->grafikharian = new GrafikHarian();
-        $this->track = new TrackerSqlController();
-        $this->log = new RsiaLogSoapController();
-    }
+		$clause = [
+			'no_rawat' => $request->no_rawat,
+			'tgl_perawatan' => date('Y-m-d', strtotime($request->tgl_perawatan)),
+			'jam_rawat' => $request->jam_rawat,
+		];
 
-    public function ambilSatu(Request $request)
-    {
-        $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with([
-                'regPeriksa' => function ($query) {
-                    return $query->select(
-                        DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
-                        DB::raw('TRIM(kd_poli) as kd_poli'),
-                        DB::raw('TRIM(kd_dokter) as kd_dokter'),
-                        'tgl_registrasi',
-                        'jam_reg',
-                        'status_bayar',
-                        'status_poli',
-                        'stts_daftar',
-                        'no_rawat'
-                    )->with(['dokter', 'pasien']);
-                },
-                'petugas' => function ($query) {
-                    // return $query->with('petugas');
-                },
-                'grafikHarian',
-                'sbar' => function ($query) {
-                    return $query->with(['dokterKonsul.dokterSbar']);
-                }
-            ]);
+		$data = [
+			'suhu_tubuh' => $request->suhu_tubuh,
+			'tinggi' => $request->tinggi,
+			'berat' => $request->berat,
+			'respirasi' => $request->respirasi,
+			'nadi' => $request->nadi,
+			'tensi' => $request->tensi,
+			'spo2' => $request->spo2,
+			'gcs' => $request->gcs,
+			'alergi' => $request->alergi,
+			'keluhan' => $request->keluhan,
+			'pemeriksaan' => $request->pemeriksaan,
+			'penilaian' => $request->penilaian,
+			'rtl' => $request->rtl,
+			'evaluasi' => '-',
+			'instruksi' => $request->instruksi,
+			'kesadaran' => $request->kesadaran,
+		];
 
-        if ($request->tgl_perawatan) {
-            $pemeriksaan->where('tgl_perawatan', $request->tgl_perawatan);
-        }
-        if ($request->jam_rawat) {
-            $pemeriksaan->where('jam_rawat', $request->jam_rawat);
-        }
+		if ($request->tgl_perawatan_ubah == '' && $clause['tgl_perawatan'] == $request->tgl_perawatan_ubah) {
+			$data['tgl_perawatan'] = $clause['tgl_perawatan'];
+		} else {
+			$data['tgl_perawatan'] = $request->tgl_perawatan_ubah;
+		}
 
-        return response()->json($pemeriksaan->first(), 200);
-    }
+		if ($request->jam_rawat_ubah == '' && $clause['jam_rawat'] == $request->jam_rawat_ubah) {
+			$data['jam_rawat'] = $clause['jam_rawat'];
+		} else {
+			$data['jam_rawat'] = $request->jam_rawat_ubah;
+		}
 
-    public function ubah(Request $request)
-    {
-        $clause = [
-            'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => date('Y-m-d', strtotime($request->tgl_perawatan)),
-            'jam_rawat' => $request->jam_rawat,
-        ];
+		$data1 = [
+			'no_rawat' => $request->no_rawat,
+			'suhu_tubuh' => $request->suhu_tubuh,
+			'tensi' => $request->tensi,
+			'respirasi' => $request->respirasi,
+			'nadi' => $request->nadi,
+			'spo2' => $request->spo2,
+			'gcs' => $request->gcs,
+			'kesadaran' => $request->kesadaran,
+			'keluaran_urin' => $request->keluaran_urin,
+			'proteinuria' => $request->proteinuria,
+			'air_ketuban' => $request->air_ketuban,
+			'skala_nyeri' => $request->skala_nyeri,
+			'lochia' => $request->lochia,
+			'terlihat_tidak_sehat' => $request->terlihat_tidak_sehat,
+			'o2' => $request->o2,
+			'sumber' => 'SOAP',
+		];
+		try {
+			DB::transaction(function () use ($clause, $data, $data1, $request) {
+				$pemeriksaan = PemeriksaanRanap::where($clause)->update($data);
+				$grafikharian = GrafikHarian::where($clause)->update($data1);
+				$this->track->updateSql($this->pemeriksaan, $data, $clause);
+				$this->track->updateSql($this->grafikharian, $data1, $clause);
+				$log = $this->log->insert([
+					'no_rawat' => $clause['no_rawat'],
+					'tgl_perawatan' => $data['tgl_perawatan'],
+					'jam_rawat' => $data['jam_rawat'],
+				], 'Ubah');
+				$this->logger->handle($request, 'UPDATE');
+			});
 
-        $data = [
-            'suhu_tubuh' => $request->suhu_tubuh,
-            'tinggi' => $request->tinggi,
-            'berat' => $request->berat,
-            'respirasi' => $request->respirasi,
-            'nadi' => $request->nadi,
-            'tensi' => $request->tensi,
-            'spo2' => $request->spo2,
-            'gcs' => $request->gcs,
-            'alergi' => $request->alergi,
-            'keluhan' => $request->keluhan,
-            'pemeriksaan' => $request->pemeriksaan,
-            'penilaian' => $request->penilaian,
-            'rtl' => $request->rtl,
-            'evaluasi' => '-',
-            'instruksi' => $request->instruksi,
-            'kesadaran' => $request->kesadaran,
-        ];
+		} catch (\Exception $e) {
+			return response()->json($e->getMessage(), 500);
+		}
 
-        if ($request->tgl_perawatan_ubah == '' && $clause['tgl_perawatan'] == $request->tgl_perawatan_ubah) {
-            $data['tgl_perawatan'] = $clause['tgl_perawatan'];
-        } else {
-            $data['tgl_perawatan'] = $request->tgl_perawatan_ubah;
-        }
+		return response()->json('Sukses');
+	}
 
-        if ($request->jam_rawat_ubah == '' && $clause['jam_rawat'] == $request->jam_rawat_ubah) {
-            $data['jam_rawat'] = $clause['jam_rawat'];
-        } else {
-            $data['jam_rawat'] = $request->jam_rawat_ubah;
-        }
+	public function simpan(Request $request)
+	{
+		$data = [
+			'nip' => $request->nip,
+			'no_rawat' => $request->no_rawat,
+			'tgl_perawatan' => $request->tgl_perawatan ? date('Y-m-d', strtotime($request->tgl_perawatan)) : $this->tanggal->now()->toDateString(),
+			'jam_rawat' => $request->jam_rawat ? $request->jam_rawat : $this->tanggal->now()->toTimeString(),
+			'suhu_tubuh' => $request->suhu_tubuh ? $request->suhu_tubuh : '-',
+			'tinggi' => $request->tinggi ? $request->tinggi : '-',
+			'berat' => $request->berat ? $request->berat : '-',
+			'tensi' => $request->tensi ? $request->tensi : '-',
+			'respirasi' => $request->respirasi ? $request->respirasi : '-',
+			'nadi' => $request->nadi ? $request->nadi : '-',
+			'spo2' => $request->spo2 ? $request->spo2 : '-',
+			'gcs' => $request->gcs ? $request->gcs : '-',
+			'alergi' => $request->alergi ? $request->alergi : '-',
+			'keluhan' => $request->keluhan ? $request->keluhan : '-',
+			'pemeriksaan' => $request->pemeriksaan ? $request->pemeriksaan : '-',
+			'penilaian' => $request->penilaian ? $request->penilaian : '-',
+			'rtl' => $request->rtl ? $request->rtl : '-',
+			'evaluasi' => '-',
+			'instruksi' => $request->instruksi ? $request->instruksi : '-',
+			'kesadaran' => $request->kesadaran ? $request->kesadaran : '-',
+		];
 
-        $data1 = [
-            'no_rawat' => $request->no_rawat,
-            'suhu_tubuh' => $request->suhu_tubuh,
-            'tensi' => $request->tensi,
-            'respirasi' => $request->respirasi,
-            'nadi' => $request->nadi,
-            'spo2' => $request->spo2,
-            'gcs' => $request->gcs,
-            'kesadaran' => $request->kesadaran,
-            'keluaran_urin' => $request->keluaran_urin,
-            'proteinuria' => $request->proteinuria,
-            'air_ketuban' => $request->air_ketuban,
-            'skala_nyeri' => $request->skala_nyeri,
-            'lochia' => $request->lochia,
-            'terlihat_tidak_sehat' => $request->terlihat_tidak_sehat,
-            'o2' => $request->o2,
-            'sumber' => 'SOAP',
-        ];
-
-        $log = $this->log->insert([
-            'no_rawat' => $clause['no_rawat'],
-            'tgl_perawatan' => $data['tgl_perawatan'],
-            'jam_rawat' => $data['jam_rawat'],
-        ], 'Ubah');
-
-        $pemeriksaan = PemeriksaanRanap::where($clause)->update($data);
-        $grafikharian = GrafikHarian::where($clause)->update($data1);
-        $this->track->updateSql($this->pemeriksaan, $data, $clause);
-        $this->track->updateSql($this->grafikharian, $data1, $clause);
-        return response()->json([$pemeriksaan, $grafikharian]);
-    }
-
-    public function simpan(Request $request)
-    {
-        $data = [
-            'nip' => $request->nip,
-            'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => $request->tgl_perawatan ? date('Y-m-d', strtotime($request->tgl_perawatan)) : $this->tanggal->now()->toDateString(),
-            'jam_rawat' => $request->jam_rawat ? $request->jam_rawat : $this->tanggal->now()->toTimeString(),
-            'suhu_tubuh' => $request->suhu_tubuh ? $request->suhu_tubuh : '-',
-            'tinggi' => $request->tinggi ? $request->tinggi : '-',
-            'berat' => $request->berat ? $request->berat : '-',
-            'tensi' => $request->tensi ? $request->tensi : '-',
-            'respirasi' => $request->respirasi ? $request->respirasi : '-',
-            'nadi' => $request->nadi ? $request->nadi : '-',
-            'spo2' => $request->spo2 ? $request->spo2 : '-',
-            'gcs' => $request->gcs ? $request->gcs : '-',
-            'alergi' => $request->alergi ? $request->alergi : '-',
-            'keluhan' => $request->keluhan ? $request->keluhan : '-',
-            'pemeriksaan' => $request->pemeriksaan ? $request->pemeriksaan : '-',
-            'penilaian' => $request->penilaian ? $request->penilaian : '-',
-            'rtl' => $request->rtl ? $request->rtl : '-',
-            'evaluasi' => '-',
-            'instruksi' => $request->instruksi ? $request->instruksi : '-',
-            'kesadaran' => $request->kesadaran ? $request->kesadaran : '-',
-        ];
-
-        $data1 = [
-            'nip' => $request->nip,
-            'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => $request->tgl_perawatan ? date('Y-m-d', strtotime($request->tgl_perawatan)) : $this->tanggal->now()->toDateString(),
-            'jam_rawat' => $request->jam_rawat ? $request->jam_rawat : $this->tanggal->now()->toTimeString(),
-            'suhu_tubuh' => $request->suhu_tubuh ? $request->suhu_tubuh : '-',
-            'tensi' => $request->tensi ? $request->tensi : '-',
-            'respirasi' => $request->respirasi ? $request->respirasi : '-',
-            'nadi' => $request->nadi ? $request->nadi : '-',
-            'spo2' => $request->spo2 ? $request->spo2 : '-',
-            'gcs' => $request->gcs ? $request->gcs : '-',
-            'kesadaran' => $request->kesadaran ? $request->kesadaran : '-',
-            'keluaran_urin' => $request->keluaran_urin,
-            'proteinuria' => $request->proteinuria,
-            'air_ketuban' => $request->air_ketuban,
-            'skala_nyeri' => $request->skala_nyeri,
-            'lochia' => $request->lochia,
-            'terlihat_tidak_sehat' => $request->terlihat_tidak_sehat,
-            'o2' => $request->o2,
-            'sumber' => $request->sumber,
-        ];
-
-        if ($request->sumber === 'SBAR') {
-            $sbar = new RsiaKonsulSbarController();
-            $dataKonsul = [
-                'no_rawat' => $request->no_rawat,
-                'tgl_perawatan' => $data['tgl_perawatan'],
-                'jam_rawat' => $data['jam_rawat'],
-                'kd_dokter' => $request->kd_dokter
-            ];
-            $sbar->create(new Request($dataKonsul));
-        }
+		$data1 = [
+			'nip' => $request->nip,
+			'no_rawat' => $request->no_rawat,
+			'tgl_perawatan' => $request->tgl_perawatan ? date('Y-m-d', strtotime($request->tgl_perawatan)) : $this->tanggal->now()->toDateString(),
+			'jam_rawat' => $request->jam_rawat ? $request->jam_rawat : $this->tanggal->now()->toTimeString(),
+			'suhu_tubuh' => $request->suhu_tubuh ? $request->suhu_tubuh : '-',
+			'tensi' => $request->tensi ? $request->tensi : '-',
+			'respirasi' => $request->respirasi ? $request->respirasi : '-',
+			'nadi' => $request->nadi ? $request->nadi : '-',
+			'spo2' => $request->spo2 ? $request->spo2 : '-',
+			'gcs' => $request->gcs ? $request->gcs : '-',
+			'kesadaran' => $request->kesadaran ? $request->kesadaran : '-',
+			'keluaran_urin' => $request->keluaran_urin,
+			'proteinuria' => $request->proteinuria,
+			'air_ketuban' => $request->air_ketuban,
+			'skala_nyeri' => $request->skala_nyeri,
+			'lochia' => $request->lochia,
+			'terlihat_tidak_sehat' => $request->terlihat_tidak_sehat,
+			'o2' => $request->o2,
+			'sumber' => $request->sumber,
+		];
 
 
-        $pemeriksaan = PemeriksaanRanap::create($data);
-        $grafikharian = GrafikHarian::create($data1);
-        $this->track->insertSql($this->pemeriksaan, $data);
-        $this->track->insertSql($this->grafikharian, $data);
+		try {
+			DB::transaction(function () use ($request, $data, $data1){
+				if ($request->sumber === 'SBAR') {
+					$sbar = new RsiaKonsulSbarController();
+					$dataKonsul = [
+						'no_rawat' => $request->no_rawat,
+						'tgl_perawatan' => $data['tgl_perawatan'],
+						'jam_rawat' => $data['jam_rawat'],
+						'kd_dokter' => $request->kd_dokter
+					];
+					$sbar->create(new Request($dataKonsul));
+				}
+				$pemeriksaan = PemeriksaanRanap::create($data);
+				$grafikharian = GrafikHarian::create($data1);
+				$this->track->insertSql($this->pemeriksaan, $data);
+				$this->track->insertSql($this->grafikharian, $data);
+
+				$this->logger->handle($request, 'CREATE');
+
+			});
+		}catch (\Exception $e){
+			return response()->json($e->getMessage(), 500);
+		}
+		return response()->json('Berhasil', 200);
+	}
+
+	public function hapus(Request $request)
+	{
+		$clause = [
+			'no_rawat' => $request->no_rawat,
+			'tgl_perawatan' => $request->tgl_perawatan,
+			'jam_rawat' => $request->jam_rawat,
+		];
+		$pemeriksaan = PemeriksaanRanap::where($clause)->delete();
+		$this->track->deleteSql($this->pemeriksaan, $clause);
+
+		$grafik = array_merge($clause, ['sumber' => 'SOAP']);
+		$log = $this->log->insert($clause, 'Hapus');
+		$grafikHarian = $this->grafikharian->where($grafik)->delete();
+		return response()->json(['Berhasil', $pemeriksaan], 200);
+	}
+
+	function ambilPemeriksaan(Request $request)
+	{
+		$pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
+			->with([
+				'regPeriksa',
+				'sbar' => function ($q) {
+					return $q->select('no_rawat', 'jam_rawat', 'tgl_perawatan', 'sumber');
+				},
+				'log',
+				'regPeriksa.pasien',
+				'petugas',
+				'pegawai' => function ($query) {
+					return $query->with('dokter');
+				},
+				'grafikHarian',
+				'verifikasi.petugas' => function ($q) {
+					return $q->select('nip', 'nama');
+				}
+			])
+			->orderBy('tgl_perawatan', 'DESC')
+			->orderBy('jam_rawat', 'DESC');
+		if ($request->parameter) {
+			if ($request->parameter == 'pemeriksaan') {
+				$pemeriksaan->select([$request->parameter, 'gcs', 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'kesadaran', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
+			} else if ($request->parameter == 'obat' || $request->parameter == 'obatpulang') {
+				$pemeriksaan->select(['rtl', 'pemeriksaan', 'jam_rawat', 'tgl_perawatan', 'nip'])->whereHas('pegawai', function ($query) {
+					$query->whereIn('departemen', ['DM7', 'SPS', '-', 'DM2', 'DM3', 'DM4', 'DM5', 'DM8', 'CSM']);
+				})->orderBy('tgl_perawatan', 'ASC');
+			} else if ($request->parameter == 'ttv') {
+				$pemeriksaan->select(['suhu_tubuh', 'tensi', 'berat', 'tinggi', 'spo2', 'nadi', 'respirasi', 'kesadaran', 'gcs', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
+			} else {
+				$pemeriksaan->select([$request->parameter, 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
+			}
+			if ($request->pemeriksaan) {
+				$pemeriksaan->where($request->parameter, 'like', '%' . $request->pemeriksaan . '%');
+			}
+		}
+
+		return $pemeriksaan->get();
+	}
+
+	function getDataTable(Request $request)
+	{
+		$data = $this->ambilPemeriksaan($request);
+
+		return DataTables::of($data)->make(true);
+	}
+
+	public function ambil(Request $request)
+	{
+
+		$pemeriksaan = $this->pemeriksaan->where('no_rawat', $request->no_rawat)->with([
+			'regPeriksa',
+			'regPeriksa.pasien',
+			'log.pegawai',
+			'petugas.pegawai.departemen',
+			'grafikHarian',
+			'verifikasi.petugas' => function ($q) {
+				return $q->select('nip', 'nama');
+			},
+			'sbar' => function ($q) {
+				return $q->with([
+					'verifikasi.dokter',
+					'dokterKonsul' => function ($q) {
+						return $q->with('dokterSbar');
+					},
+					'pegawai' => function ($q) {
+						return $q->select(['id', 'nik', 'nama']);
+					}
+				]);
+			}
+		])->orderBy('tgl_perawatan', 'DESC')
+			->orderBy('jam_rawat', 'DESC');
+
+		// if tanggal pertama and tanggal kedua is not empty string
+		if ($request->tgl_pertama != '' && $request->tgl_kedua != '') {
+			$pemeriksaan->whereBetween('tgl_perawatan', [$request->tgl_pertama, $request->tgl_kedua]);
+		}
+
+		if ($request->petugas == 1) {
+			$pemeriksaan->whereHas('petugas', function ($q) use ($request) {
+				return $q->whereIn('kd_jbtn', ['J01', 'J024', 'J025', 'J002']);
+			});
+		} else if ($request->petugas == 2) {
+			$pemeriksaan->whereHas('petugas', function ($q) use ($request) {
+				return $q->whereNotIn('kd_jbtn', ['J01', 'J024', 'J025', 'J002']);
+			});
+		}
+
+		return DataTables::of($pemeriksaan->get())->make(true);
+	}
 
 
-        return response()->json(['Berhasil', $pemeriksaan, $grafikharian], 200);
-    }
-    public function hapus(Request $request)
-    {
-        $clause = [
-            'no_rawat' => $request->no_rawat,
-            'tgl_perawatan' => $request->tgl_perawatan,
-            'jam_rawat' => $request->jam_rawat,
-        ];
-        $pemeriksaan = PemeriksaanRanap::where($clause)->delete();
-        $this->track->deleteSql($this->pemeriksaan, $clause);
+	function getTTV(Request $request)
+	{
+		$id = str_replace('-', '/', $request->no_rawat);
+		$data = $this->grafikharian->where(['no_rawat' => $id,])
+			->where('sumber', '!=', 'SBAR')
+			->whereHas('pegawai', function ($q) {
+				return $q->where('jbtn', 'not like', '%direktur%')
+					->where('jbtn', 'not like', '%spesialis%');
+			})->get();
+		return $data;
+	}
 
-        $grafik = array_merge($clause, ['sumber' => 'SOAP']);
-        $log = $this->log->insert($clause, 'Hapus');
-        $grafikHarian = $this->grafikharian->where($grafik)->delete();
-        return response()->json(['Berhasil', $pemeriksaan], 200);
-    }
+	function getTTVData(Request $request)
+	{
+		$id = str_replace('-', '/', $request->no_rawat);
+		$data = $this->grafikharian->where(['no_rawat' => $id, 'sumber' => '-'])->get();
+		return DataTables::of($data)->make(true);
+	}
 
-    function ambilPemeriksaan(Request $request)
-    {
-        $pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
-            ->with([
-                'regPeriksa',
-                'sbar' => function ($q) {
-                    return $q->select('no_rawat', 'jam_rawat', 'tgl_perawatan', 'sumber');
-                },
-                'log',
-                'regPeriksa.pasien',
-                'petugas',
-                'pegawai' => function ($query) {
-                    return $query->with('dokter');
-                },
-                'grafikHarian',
-                'verifikasi.petugas' => function ($q) {
-                    return $q->select('nip', 'nama');
-                }
-            ])
-            ->orderBy('tgl_perawatan', 'DESC')
-            ->orderBy('jam_rawat', 'DESC');
-        if ($request->parameter) {
-            if ($request->parameter == 'pemeriksaan') {
-                $pemeriksaan->select([$request->parameter, 'gcs', 'suhu_tubuh', 'tensi', 'nadi', 'respirasi', 'kesadaran', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
-            } else if ($request->parameter == 'obat' || $request->parameter == 'obatpulang') {
-                $pemeriksaan->select(['rtl', 'pemeriksaan', 'jam_rawat', 'tgl_perawatan', 'nip'])->whereHas('pegawai', function ($query) {
-                    $query->whereIn('departemen', ['DM7', 'SPS', '-', 'DM2', 'DM3', 'DM4', 'DM5', 'DM8', 'CSM']);
-                })->orderBy('tgl_perawatan', 'ASC');
-            } else if ($request->parameter == 'ttv') {
-                $pemeriksaan->select(['suhu_tubuh', 'tensi', 'berat', 'tinggi', 'spo2', 'nadi', 'respirasi', 'kesadaran', 'gcs', 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
-            } else {
-                $pemeriksaan->select([$request->parameter, 'jam_rawat', 'tgl_perawatan', 'nip'])->orderBy('tgl_perawatan', 'ASC');
-            }
-            if ($request->pemeriksaan) {
-                $pemeriksaan->where($request->parameter, 'like', '%' . $request->pemeriksaan . '%');
-            }
-        }
+	function get($noRawat)
+	{
+		$pemeriksaan = $this->pemeriksaan->where('no_rawat', $noRawat)->get();
 
-        return $pemeriksaan->get();
-    }
+		return $pemeriksaan;
+	}
 
-    function getDataTable(Request $request)
-    {
-        $data = $this->ambilPemeriksaan($request);
+	function getParamTTV($noRawat, $param)
+	{
+		$pemeriksaan = $this->pemeriksaan->where('no_rawat', $noRawat)->select($param)->get();
 
-        return DataTables::of($data)->make(true);
-    }
-
-    public function ambil(Request $request)
-    {
-
-        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $request->no_rawat)->with([
-            'regPeriksa',
-            'regPeriksa.pasien',
-            'log.pegawai',
-            'petugas.pegawai.departemen',
-            'grafikHarian',
-            'verifikasi.petugas' => function ($q) {
-                return $q->select('nip', 'nama');
-            },
-            'sbar' => function ($q) {
-                return $q->with([
-                    'verifikasi.dokter',
-                    'dokterKonsul' => function ($q) {
-                        return $q->with('dokterSbar');
-                    },
-                    'pegawai' => function ($q) {
-                        return $q->select(['id', 'nik', 'nama']);
-                    }
-                ]);
-            }
-        ])->orderBy('tgl_perawatan', 'DESC')
-            ->orderBy('jam_rawat', 'DESC');
-
-        // if tanggal pertama and tanggal kedua is not empty string
-        if ($request->tgl_pertama != '' && $request->tgl_kedua != '') {
-            $pemeriksaan->whereBetween('tgl_perawatan', [$request->tgl_pertama, $request->tgl_kedua]);
-        }
-
-        if ($request->petugas == 1) {
-            $pemeriksaan->whereHas('petugas', function ($q) use ($request) {
-                return $q->whereIn('kd_jbtn', ['J01', 'J024', 'J025', 'J002']);
-            });
-        } else if ($request->petugas == 2) {
-            $pemeriksaan->whereHas('petugas', function ($q) use ($request) {
-                return $q->whereNotIn('kd_jbtn', ['J01', 'J024', 'J025', 'J002']);
-            });
-        }
-
-        return DataTables::of($pemeriksaan->get())->make(true);
-    }
-
-
-
-    function getTTV(Request $request)
-    {
-        $id = str_replace('-', '/', $request->no_rawat);
-        $data = $this->grafikharian->where(['no_rawat' => $id,])
-            ->where('sumber', '!=', 'SBAR')
-            ->whereHas('pegawai', function ($q) {
-                return $q->where('jbtn', 'not like', '%direktur%')
-                    ->where('jbtn', 'not like', '%spesialis%');
-            })->get();
-        return $data;
-    }
-
-    function getTTVData(Request $request)
-    {
-        $id = str_replace('-', '/', $request->no_rawat);
-        $data = $this->grafikharian->where(['no_rawat' => $id, 'sumber' => '-'])->get();
-        return DataTables::of($data)->make(true);
-    }
-    function get($noRawat)
-    {
-        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $noRawat)->get();
-
-        return $pemeriksaan;
-    }
-    function getParamTTV($noRawat, $param)
-    {
-        $pemeriksaan = $this->pemeriksaan->where('no_rawat', $noRawat)->select($param)->get();
-
-        return $pemeriksaan;
-    }
+		return $pemeriksaan;
+	}
 }

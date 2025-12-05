@@ -281,7 +281,6 @@
             $.ajax({
                 url: '/erm/soap/simpan',
                 data: {
-                    '_token': '{{ csrf_token() }}',
                     'sumber': 'SOAP',
                     'suhu_tubuh': $('#suhu').val(),
                     'nip': $('#nik').val(),
@@ -396,7 +395,6 @@
             $.ajax({
                 url: 'soap/ubah',
                 data: {
-                    '_token': '{{ csrf_token() }}',
                     'suhu_tubuh': $('#suhu').val(),
                     'nip': $('#nik').val(),
                     'no_rawat': no_rawat,

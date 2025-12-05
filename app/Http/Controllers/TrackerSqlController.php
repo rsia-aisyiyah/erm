@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TrackerSql;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TrackerSqlController extends Controller
 {
@@ -73,4 +74,26 @@ class TrackerSqlController extends Controller
 
         return $result;
     }
+
+//	public function get(Request $request)
+//	{
+//		$string = $request->input('keywords', []);
+//
+//		if (!is_array($string)) {
+//			$string = [$string];
+//		}
+//
+//		$query = DB::table('trackersql')
+//			->join('pegawai', 'pegawai.nik', '=', 'trackersql.usere')
+//			->select(['pegawai.nik', 'pegawai.nama', 'trackersql.sqle','tanggal']);
+//
+//		foreach ($string as $keyword) {
+//			$query->whereRaw("trackersql.sqle REGEXP ?", [$keyword]);
+//		}
+//
+//		$results = $query->orderBy('tanggal', 'DESC')->get();
+//
+//		return response()->json($results);
+//	}
+
 }
