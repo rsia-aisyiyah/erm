@@ -376,9 +376,7 @@ Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 
 Route::get('/log/track', [\App\Http\Controllers\TrackerSqlController::class, 'get']);
 
-Route::get('/test/view', function () {
-	return view('test');
-});
+Route::get('/test',[ \App\Http\Controllers\PermintaanLabPAController::class, 'get']);
 //Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}', [PoliklinikController::class, 'poliPasien']);
 
 

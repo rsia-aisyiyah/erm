@@ -52,10 +52,16 @@ class EwsController extends Controller
         $kategoriUmur = [];
         
         $regPeriksa = $this->regPeriksa->get($noRawat);
-        $periksa = $this->grafikHarian
-        ->whereHas('pemeriksaanRanap')
-        ->where(['no_rawat' => $noRawat, 'sumber' => 'SOAP'])->get();
-
+	    $periksa = $this->grafikHarian
+		    ->where('no_rawat', $noRawat)
+		    ->where(function ($q) {
+			    $q->where('sumber', 'EWS')
+			    ->orWhere(function ($q2) {
+				    $q2->where('sumber', 'SOAP')
+					    ->whereHas('pemeriksaanRanap');
+			    });
+		    })
+		    ->get();
         foreach ($table as $s) {
             $nilai_1 = $s->nilai_1 ? $s->nilai_1 : '';
             $nilai_2 = $s->nilai_2 ? $s->nilai_2 : '';

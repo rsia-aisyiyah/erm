@@ -68,32 +68,35 @@
                 </ul>
                 <div class="tab-content p-2" id="myTabContent" style="height: 70vh">
                     <div class="tab-pane fade h-full show active" id="laborat-tab-pane" role="tabpanel" aria-labelledby="laborat-tab" tabindex="0">
-                        <div class="row gy-2">
-                            <div class="col-lg-8 col-sm-12">
-                                <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
-                                <div id="hasilPermintaanLab">
 
+                        <ul class="nav nav-tabs" id="navPeriksaLaborat" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="tabLabPK" data-bs-toggle="tab" data-bs-target="#paneLabPK" type="button" role="tab" aria-controls="paneLabPK" aria-selected="true">Patologi Klinik</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tabLabPA" data-bs-toggle="tab" data-bs-target="#paneLabPA" type="button" role="tab" aria-controls="paneLabPA" aria-selected="true">Patologi Anatomi</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content p-2" id="tabPeriksaLaborat">
+                            <div class="tab-pane fade h-full show active" id="paneLabPK" role="tabpanel" aria-labelledby="tabLabPK" tabindex="0">
+                                <div class="row gy-2">
+                                    <div class="col-lg-8 col-sm-12">
+                                        <h5 class="text-center">HASIL PEMERIKSAAN LAB</h5>
+                                        <div id="hasilPermintaanLab">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12 mt-3">
+                                        <ul class="list-group text-sm" id='listRiwayatLabPasien'>
+
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-sm-12 mt-3">
-                                <ul class="list-group text-sm" id='listRiwayatLabPasien'>
-
-                                </ul>
+                            <div class="tab-pane fade h-full" id="paneLabPA" role="tabpanel" aria-labelledby="tabLabPA" tabindex="0">
+                                Patologi anatomi
                             </div>
                         </div>
-                        {{-- <table class="table table-bordered" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Pemeriksaan</th>
-                                    <th>Hasil</th>
-                                    <th>Nilai Rujukan</th>
-                                    <th>Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabel-lab">
-                            </tbody>
-                        </table> --}}
-
 
                     </div>
                     <div class="tab-pane fade h-100" id="permintaan-laborat-tab-pane" role="tabpanel" aria-labelledby="permintaan-laborat-tab" tabindex="0">
@@ -138,6 +141,7 @@
             const tabContent = $('.tab-content')
             tabContent.find('.tab-pane').removeClass('show active')
             tabContent.find('#laborat-tab-pane').addClass('show active')
+            $('#tabPeriksaLaborat').find('#paneLabPK').addClass('show active')
             getRegPeriksa(no_rawat).done((regPeriksa) => {
                 $('#modalLabRanap').modal('show')
                 const kamar = regPeriksa.kamar_inap.filter((item) => {

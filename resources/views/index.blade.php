@@ -1283,7 +1283,7 @@
 
         function setEwsAnak(params, stts) {
             getRegPeriksa(params).done((rawat) => {
-                jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
+                let jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
                 $('#no_rawat_ews').html(rawat.no_rawat);
                 $('#nama_pasien_ews').html(rawat.pasien.nm_pasien);
                 $('#umur_ews').html(rawat.umurdaftar + ' ' + rawat.sttsumur + ' / ' + jk);
@@ -1293,7 +1293,7 @@
                 $('.td-jam').remove()
                 $('.td-tanggal').remove()
                 let no = '';
-                j = '';
+                let j = '';
                 tanggal = '';
                 html = '';
                 style = '';
@@ -1456,7 +1456,7 @@
 
         function setEwsMaternal(params, stts) {
             getRegPeriksa(params).done((rawat) => {
-                jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
+                let jk = rawat.pasien.jk == 'L' ? 'Laki-laki' : 'Perempuan';
                 $('#no_rawat_ews').html(rawat.no_rawat);
                 $('#nama_pasien_ews').html(rawat.pasien.nm_pasien);
                 $('#umur_ews').html(rawat.umurdaftar + ' ' + rawat.sttsumur + ' / ' + jk);
@@ -1466,7 +1466,7 @@
                 $('.td-jam').remove()
                 $('.td-tanggal').remove()
                 let no = '';
-                j = '';
+                let j = '';
                 tanggal = '';
                 html = '';
                 style = '';

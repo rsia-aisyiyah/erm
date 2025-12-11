@@ -47,7 +47,18 @@ class RsiaGrafikHarianController extends Controller
         ];
 
         if (!isset($request->action)) {
-            $data['sumber'] = "-";
+
+	        $data['sumber'] = $request->sumber ? $request->sumber : '-';
+
+			if($data['sumber'] === 'EWS'){
+				$data['keluaran_urin'] = $request->keluaran_urin;
+				$data['proteinuria'] = $request->proteinuria;
+				$data['air_ketuban'] = $request->air_ketuban;
+				$data['skala_nyeri'] = $request->skala_nyeri;
+				$data['lochia'] = $request->lochia;
+				$data['kesadaran_maternal'] = $request->kesadaran_maternal;
+				$data['terlihat_tidak_sehat'] = $request->terlihat_tidak_sehat;
+			}
 
             // get session
             $session = session()->get('pegawai');

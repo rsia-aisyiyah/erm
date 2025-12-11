@@ -239,6 +239,7 @@
         </div>
     </div>
 </div>
+
 {{--<div class="modal fade" id="modalLogTracker" tabindex="-1" aria-labelledby="modalLogTrackerLabel"--}}
 {{--     aria-hidden="true">--}}
 {{--    <div class="modal-dialog modal-xg modal-dialog-centered modal-dialog-scrollable">--}}
