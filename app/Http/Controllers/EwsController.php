@@ -49,153 +49,145 @@ class EwsController extends Controller
     function getParam($table, $noRawat, $parameter = '', $sttsRawat)
     {
         $value = [];
-        $kategoriUmur = [];
-        
+        $val   = [];
+
         $regPeriksa = $this->regPeriksa->get($noRawat);
-	    $periksa = $this->grafikHarian
-		    ->where('no_rawat', $noRawat)
-		    ->where(function ($q) {
-			    $q->where('sumber', 'EWS')
-			    ->orWhere(function ($q2) {
-				    $q2->where('sumber', 'SOAP')
-					    ->whereHas('pemeriksaanRanap');
-			    });
-		    })
-		    ->get();
+
+        $periksa = $this->grafikHarian
+            ->where('no_rawat', $noRawat)
+            ->where(function ($q) {
+                $q->where('sumber', 'EWS')
+                    ->orWhere(function ($q2) {
+                        $q2->where('sumber', 'SOAP')
+                            ->whereHas('pemeriksaanRanap');
+                    });
+            })
+            ->get();
+
+        $sumber = $periksa->pluck('sumber')->toArray();
+        $nip    = $periksa->pluck('nip')->toArray();
+
         foreach ($table as $s) {
-            $nilai_1 = $s->nilai_1 ? $s->nilai_1 : '';
-            $nilai_2 = $s->nilai_2 ? $s->nilai_2 : '';
+
+            $nilai_1 = $s->nilai_1 ?: '';
+            $nilai_2 = $s->nilai_2 ?: '';
+
+            // -------------------------------
+            //   KATEGORI BAYI / BULAN
+            // -------------------------------
             if ($regPeriksa->sttsumur == 'Bl') {
+
                 if ($s->kode_usia == '<') {
-                    if ($s->kode_nilai == '>') {
-                        $arrVal = [
-                            'id' => $s->kode,
-                            'parameter' => $s->kode_nilai . ' ' . $nilai_1,
-                            'hasil' => $s->hasil,
-                            'nilai1' => $nilai_1,
-                            'nilai2' => $nilai_2,
-                            'kategori' => "1 - 11 Bulan"
-                        ];
-                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
-                    } else if ($s->kode_nilai == '<') {
-                        $arrVal = [
-                            'id' => $s->kode,
-                            'parameter' => $s->kode_nilai . ' ' . $nilai_1,
-                            'hasil' => $s->hasil,
-                            'nilai1' => $nilai_1,
-                            'nilai2' => $nilai_2,
-                            'kategori' => "1 - 11 Bulan"
-                        ];
-                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+
+                    // Bentuk label parameter
+                    if ($s->kode_nilai == '>' || $s->kode_nilai == '<') {
+                        $label = $s->kode_nilai . ' ' . $nilai_1;
                     } else if ($s->kode_nilai == '<=' || $s->kode_nilai == '>=') {
-                        $arrVal = [
-                            'id' => $s->kode,
-                            'parameter' => $s->kode_nilai . ' ' . $nilai_2,
-                            'hasil' => $s->hasil,
-                            'nilai1' => $nilai_1,
-                            'nilai2' => $nilai_2,
-                            'kategori' => "1 - 11 Bulan"
-                        ];
-                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                        $label = $s->kode_nilai . ' ' . $nilai_2;
                     } else {
-                        $arrVal = [
-                            'id' => $s->kode,
-                            'parameter' => $nilai_1 . $s->kode_nilai . $nilai_2,
-                            'hasil' => $s->hasil,
-                            'nilai1' => $nilai_1,
-                            'nilai2' => $nilai_2,
-                            'kategori' => "1 - 11 Bulan"
-                        ];
-                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                        $label = $nilai_1 . $s->kode_nilai . $nilai_2;
                     }
+
+                    $arrVal = [
+                        'id'        => $s->kode,
+                        'parameter' => $label,
+                        'hasil'     => $s->hasil,
+                        'nilai1'    => $nilai_1,
+                        'nilai2'    => $nilai_2,
+                        'kategori'  => "1 - 11 Bulan",
+                    ];
+
+                    $nilai = $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai);
+
+                    // Tambahkan sumber & nip
+                    $nilai['sumber'] = $sumber;
+                    $nilai['nip']    = $nip;
+
+                    $val[] = array_merge($arrVal, $nilai);
                 }
+
                 $value = $val;
-            } else if ($regPeriksa->sttsumur == 'Hr') {
+            }
+
+            // -------------------------------
+            //   KATEGORI NEONATAL
+            // -------------------------------
+            else if ($regPeriksa->sttsumur == 'Hr') {
+
                 if ($s->kode_usia == '<') {
-                    if ($s->kode_nilai == '>') {
-                        $arrVal = [
-                            'id' => $s->kode,
-                            'parameter' => $s->kode_nilai . ' ' . $nilai_1,
-                            'hasil' => $s->hasil,
-                            'nilai1' => $nilai_1,
-                            'nilai2' => $nilai_2,
-                            'kategori' => "Bayi/Neonatal"
-                        ];
-                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
-                    } else if ($s->kode_nilai == '<') {
-                        $arrVal = [
-                            'id' => $s->kode,
-                            'parameter' => $s->kode_nilai . ' ' . $nilai_1,
-                            'hasil' => $s->hasil,
-                            'nilai1' => $nilai_1,
-                            'nilai2' => $nilai_2,
-                            'kategori' => "Bayi/Neonatal"
-                        ];
-                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+
+                    if ($s->kode_nilai == '>' || $s->kode_nilai == '<') {
+                        $label = $s->kode_nilai . ' ' . $nilai_1;
                     } else if ($s->kode_nilai == '<=' || $s->kode_nilai == '>=') {
-                        $arrVal = [
-                            'id' => $s->kode,
-                            'parameter' => $s->kode_nilai . ' ' . $nilai_2,
-                            'hasil' => $s->hasil,
-                            'nilai1' => $nilai_1,
-                            'nilai2' => $nilai_2,
-                            'kategori' => "Bayi/Neonatal"
-                        ];
-                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                        $label = $s->kode_nilai . ' ' . $nilai_2;
                     } else {
-                        $arrVal = [
-                            'id' => $s->kode,
-                            'parameter' => $nilai_1 . $s->kode_nilai . $nilai_2,
-                            'hasil' => $s->hasil,
-                            'nilai1' => $nilai_1,
-                            'nilai2' => $nilai_2,
-                            'kategori' => "Bayi/Neonatal"
-                        ];
-                        $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                        $label = $nilai_1 . $s->kode_nilai . $nilai_2;
                     }
+
+                    $arrVal = [
+                        'id'        => $s->kode,
+                        'parameter' => $label,
+                        'hasil'     => $s->hasil,
+                        'nilai1'    => $nilai_1,
+                        'nilai2'    => $nilai_2,
+                        'kategori'  => "Bayi/Neonatal",
+                    ];
+
+                    $nilai = $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai);
+
+                    // Tambah sumber & nip
+                    $nilai['sumber'] = $sumber;
+                    $nilai['nip']    = $nip;
+
+                    $val[] = array_merge($arrVal, $nilai);
                 }
+
                 $value = $val;
-            } else if ($regPeriksa->sttsumur == 'Th') {
+            }
+
+            // -------------------------------
+            //   KATEGORI ANAK (TH)
+            // -------------------------------
+            else if ($regPeriksa->sttsumur == 'Th') {
+
                 if ($s->kode_usia == '-') {
+
                     if ($regPeriksa->umurdaftar >= $s->usia_1 && $regPeriksa->umurdaftar <= $s->usia_2) {
+
                         if ($s->kode_nilai == '>' || $s->kode_nilai == '<') {
-                            $arrVal = [
-                                'id' => $s->kode,
-                                'parameter' => $s->kode_nilai . ' ' . $nilai_1,
-                                'hasil' => $s->hasil,
-                                'nilai1' => $nilai_1,
-                                'nilai2' => $nilai_2,
-                                'kategori' => $s->usia_1 . ' - ' . $s->usia_2 . ' Tahun'
-                            ];
-                            $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
-                        } else if ($s->kode_nilai == '>=' || $s->kode_nilai == '<=') {
-                            $arrVal = [
-                                'id' => $s->kode,
-                                'parameter' => $s->kode_nilai . ' ' . $nilai_1,
-                                'hasil' => $s->hasil,
-                                'nilai1' => $nilai_1,
-                                'nilai2' => $nilai_2,
-                                'kategori' => $s->usia_1 . ' - ' . $s->usia_2 . ' Tahun'
-                            ];
-                            $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                            $label = $s->kode_nilai . ' ' . $nilai_1;
+                        } else if ($s->kode_nilai == '<=' || $s->kode_nilai == '>=') {
+                            $label = $s->kode_nilai . ' ' . $nilai_1;
                         } else {
-                            $arrVal = [
-                                'id' => $s->kode,
-                                'parameter' => $nilai_1 . $s->kode_nilai . $nilai_2,
-                                'nilai1' => $nilai_1,
-                                'nilai2' => $nilai_2,
-                                'hasil' => $s->hasil,
-                                'kategori' => $s->usia_1 . ' - ' . $s->usia_2 . ' Tahun'
-                            ];
-                            $val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+                            $label = $nilai_1 . $s->kode_nilai . $nilai_2;
                         }
-                        $value = $val;
+
+                        $arrVal = [
+                            'id'        => $s->kode,
+                            'parameter' => $label,
+                            'hasil'     => $s->hasil,
+                            'nilai1'    => $nilai_1,
+                            'nilai2'    => $nilai_2,
+                            'kategori'  => $s->usia_1 . ' - ' . $s->usia_2 . ' Tahun',
+                        ];
+
+                        $nilai = $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai);
+
+                        // Tambah sumber & nip
+                        $nilai['sumber'] = $sumber;
+                        $nilai['nip']    = $nip;
+
+                        $val[] = array_merge($arrVal, $nilai);
                     }
+
+                    $value = $val;
                 }
             }
         }
+
         return $value;
     }
+
     function getNilai($parameter, $periksa, $nilai1, $nilai2 = '', $kode_nilai = '')
     {
         $hp = [];
@@ -260,7 +252,7 @@ class EwsController extends Controller
                             } else {
                                 $hp[] = '';
                             }
-                        } 
+                        }
                     } else {
                         if ($kode_nilai == '<') {
                             if ($pem[$parameter] < $nilai1) {

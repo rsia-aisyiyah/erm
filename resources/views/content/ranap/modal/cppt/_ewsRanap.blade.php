@@ -65,8 +65,8 @@
                 formEwsRanap.find('select[name=air_ketuban]').val('').change()
                 formEwsRanap.find('select[name=skala_nyeri]').val('').change()
                 formEwsRanap.find('select[name=lochia]').val('').change()
-                formEwsRanap.find('select[name=terlihat_tidak_sehat]').val('-').change()
-                formEwsRanap.find('select[name=kesadaran_maternal]').val('-').change()
+                formEwsRanap.find('select[name=terlihat_tidak_sehat]').val('').change()
+                formEwsRanap.find('select[name=kesadaran_maternal]').val('').change()
             }
             $('#modalEwsRanap').modal('show')
 
@@ -79,28 +79,32 @@
             delete data['nm_pegawai'];
 
             $.post('/erm/soap/grafik/store', data).done((response)=>{
-                console.log('RESPONSE ===', response)
-
                 const no_rawat = formInfoPasien.find('input[name="no_rawat"]').val();
                 const spesialis = formInfoPasien.find('input[name="kd_sps_dokter"]').val();
                 const stts = 'ranap';
                 setEws(no_rawat, stts, spesialis)
                 $('#modalEwsRanap').modal('hide')
-            }).fail((error)=>{
+                swalToast('Berhasil Menambah Data EWS')
+                formEwsRanap.find('select').val('').change();
+                formEwsRanap.find('input').val('').change();
+            }).fail(function(xhr, status, error) {
+                swalToast('Terjadi Kesalahan', error)
+                console.error("Error:", status, error); // Tampilkan detail error
+                console.log("XHR Response:", xhr.responseText); // Tampilkan respons server
             })
         }
 
-        function deleteEwsRanap(no_rawat, tgl, jam){
+        function deleteEwsRanap(no_rawat, tgl_perawatan, jam_rawat){
            $.ajax({
                url: '/erm/soap/grafik/delete',
                data: {
                    no_rawat,
-                   tgl,
-                   jam,
+                   tgl_perawatan,
+                   jam_rawat,
                },
                method: 'DELETE',
                success: (response) => {
-                   console.log('RESPONSE ===', response)
+                   swalToast('Berhasil Hapus EWS')
                    const no_rawat = formInfoPasien.find('input[name="no_rawat"]').val();
                    const spesialis = formInfoPasien.find('input[name="kd_sps_dokter"]').val();
                    const stts = 'ranap';
@@ -152,6 +156,8 @@
                 html = '';
                 style = '';
                 let rowspan = '';
+
+
                 $.map(response, (res) => {
                     $('#kategori-' + res.kategori).empty()
 
@@ -188,15 +194,43 @@
                             no++;
 
                         })
-                        tanggal = '';
-                        $.map(data.tanggal, (tgl) => {
-                            tanggal += '<td width="5%" class="td-tanggal">' + splitTanggal(tgl) + '</td>';
-                        })
+                        tanggal = data.tanggal
+                            .map((tgl, index) => {
+                                const id = index + 1;
+                                const jamVal = data.jam[index] ?? '';
+                                const sumber = data.sumber[index] ?? '';
+                                let btnDelete = '';
 
-                        j = '';
-                        $.map(data.jam, (jam) => {
-                            j += '<td width="5%" class="td-jam">' + jam + '</td>';
-                        })
+                                console.log(sumber)
+                                if(sumber === 'EWS'){
+                                    btnDelete = ` <a
+                                                    href="javascript:void(0)"
+                                                    onclick="deleteEwsRanap('${params}', '${tgl}', '${jamVal}')">
+                                                    <i class="bi bi-x text-danger"></i>
+                                                </a>`
+                                }
+
+                                return `
+                                        <td width="6%" class="td-tanggal" id="tanggal${id}">
+                                                <span>${splitTanggal(tgl)}</span>
+                                                ${btnDelete}
+
+                                        </td>
+                                 `;
+                            })
+                            .join('');
+
+                        j = data.jam
+                            .map((jam, index) => {
+                                const id = index + 1;
+                                return `
+            <td width="5%" class="td-jam jam${id}">
+                ${jam}
+            </td>
+        `;
+                            })
+                            .join('');
+
 
                         html += '<td style="padding:5px" class="hasil">' + data.hasil + '</td>'
                         html += '</tr>'
@@ -326,7 +360,7 @@
                         }
 
                         html += '<tr class="ews-' + data.id + '" ' + style + ' id="kategori-' + res.kategori + '">'
-                        html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '" width="5%">' + data.parameter + '</td>'
+                        html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '" width="10%">' + data.parameter + '</td>'
 
                         let inputHasil = '';
                         no = 1;
@@ -350,13 +384,13 @@
                                 if(sumber === 'EWS'){
                                     btnDelete = ` <a
                                                     href="javascript:void(0)"
-                                                    onclick="deleteEwsRanap('${data.no_rawat}', '${tgl}', '${jamVal}')">
+                                                    onclick="deleteEwsRanap('${params}', '${tgl}', '${jamVal}')">
                                                     <i class="bi bi-x text-danger"></i>
                                                 </a>`
                                 }
 
                                 return `
-                                        <td width="5%" class="td-tanggal" id="tanggal${id}">
+                                        <td width="6%" class="td-tanggal" id="tanggal${id}">
                                                 <span>${splitTanggal(tgl)}</span>
                                                 ${btnDelete}
 

@@ -159,7 +159,6 @@ class EwsMaternalController extends Controller
 					}
 				} else if ($parameter == 'nadi') {
 					$value = floatval($pem[$parameter]);
-
 					if ($kode_nilai == '>=') {
 						$hp[] = ($value >= $nilai1) ? $value : '';
 					}
