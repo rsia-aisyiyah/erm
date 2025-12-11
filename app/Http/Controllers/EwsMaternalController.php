@@ -250,106 +250,106 @@ class EwsMaternalController extends Controller
 	function getParam($table, $noRawat, $parameter = '', $sttsRawat)
 	{
 		$value = [];
+		$val   = [];
 		$tanggal = [];
 		$jam = [];
+		$sumber = [];
+		$nip = [];
+
 		$periksa = $this->grafikHarian
 			->where('no_rawat', $noRawat)
 			->where(function ($q) {
 				$q->where('sumber', 'EWS')
-				->orWhere(function ($q2) {
-					$q2->where('sumber', 'SOAP')
-						->whereHas('pemeriksaanRanap');
-				});
+					->orWhere(function ($q2) {
+						$q2->where('sumber', 'SOAP')
+							->whereHas('pemeriksaanRanap');
+					});
 			})
 			->get();
+
+		// ===================================
+		// PARAMETER YANG TIDAK PUNYA TABEL EWS
+		// ===================================
 		if (count($table) == 0) {
+
 			if ($parameter == 'oksigen') {
-				$labelParam = 'L/menit';
+				$labelParam  = 'L/menit';
 				$indexPeriksa = 'o2';
 			} else if ($parameter == 'urin') {
-				$labelParam = 'Y/T';
+				$labelParam  = 'Y/T';
 				$indexPeriksa = 'keluaran_urin';
 			}
+
 			$hp = [];
+
 			$arrVal = [
-				'id' => 1,
+				'id'        => 1,
 				'parameter' => "$labelParam",
-				'hasil' => '',
-				'nilai1' => '',
-				'nilai2' => '',
-				'kategori' => 'Maternal',
+				'hasil'     => '',
+				'nilai1'    => '',
+				'nilai2'    => '',
+				'kategori'  => 'Maternal',
 			];
+
 			foreach ($periksa as $p) {
-				$hp[] = $p[$indexPeriksa] ? $p[$indexPeriksa] : '';
+
+				$hp[]      = $p[$indexPeriksa] ?? '';
 				$tanggal[] = $p['tgl_perawatan'];
-				$jam[] = $p['jam_rawat'];
+				$jam[]     = $p['jam_rawat'];
+				$sumber[]  = $p['sumber'];      // ADD
+				$nip[]     = $p['nip'];         // ADD
 			}
+
 			$val[] = array_merge($arrVal, [
-				'hp' => $hp,
+				'hp'      => $hp,
 				'tanggal' => $tanggal,
-				'jam' => $jam,
+				'jam'     => $jam,
+				'sumber'  => $sumber,   // ADD RETURN
+				'nip'     => $nip,      // ADD RETURN
 			]);
-		} else {
+
+		}
+		// ===================================
+		// PARAMETER YANG PUNYA TABEL EWS
+		// ===================================
+		else {
+
 			foreach ($table as $s) {
-				$nilai_1 = $s->nilai_1 ? $s->nilai_1 : 0;
-				$nilai_2 = $s->nilai_2 ? $s->nilai_2 : 0;
-				if ($s->kode_nilai == '>') {
-					$arrVal = [
-						'id' => $s->kode,
-						'parameter' => $s->kode_nilai . ' ' . $nilai_1,
-						'hasil' => $s->hasil,
-						'nilai1' => $nilai_1,
-						'nilai2' => $nilai_2,
-						'kategori' => "Maternal"
-					];
-					$val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
-				} else if ($s->kode_nilai == '<') {
-					$arrVal = [
-						'id' => $s->kode,
-						'parameter' => $s->kode_nilai . ' ' . $nilai_1,
-						'hasil' => $s->hasil,
-						'nilai1' => $nilai_1,
-						'nilai2' => $nilai_2,
-						'kategori' => "Maternal"
-					];
-					$val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+
+				$nilai_1 = $s->nilai_1 ?: 0;
+				$nilai_2 = $s->nilai_2 ?: 0;
+
+				// label parameter
+				if ($s->kode_nilai == '-' ) {
+					$label = $nilai_1 . ' - ' . $nilai_2;
 				} else if ($s->kode_nilai == '<=' || $s->kode_nilai == '>=') {
-					$arrVal = [
-						'id' => $s->kode,
-						'parameter' => $s->kode_nilai . ' ' . $nilai_2,
-						'hasil' => $s->hasil,
-						'nilai1' => $nilai_1,
-						'nilai2' => $nilai_2,
-						'kategori' => "Maternal"
-					];
-					$val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
-				} else if ($s->kode_nilai == '-') {
-					$arrVal = [
-						'id' => $s->kode,
-						'parameter' => $nilai_1 . ' - ' . $nilai_2,
-						'hasil' => $s->hasil,
-						'nilai1' => $nilai_1,
-						'nilai2' => $nilai_2,
-						'kategori' => "Maternal"
-					];
-					$val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+					$label = $s->kode_nilai . ' ' . $nilai_2;
 				} else {
-					$arrVal = [
-						'id' => $s->kode,
-						'parameter' => $nilai_1,
-						'hasil' => $s->hasil,
-						'nilai1' => $nilai_1,
-						'nilai2' => $nilai_2,
-						'kategori' => "Maternal"
-					];
-					$val[] = array_merge($arrVal, $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai));
+					$label = $s->kode_nilai . ' ' . $nilai_1;
 				}
+
+				$arrVal = [
+					'id'        => $s->kode,
+					'parameter' => $label,
+					'hasil'     => $s->hasil,
+					'nilai1'    => $nilai_1,
+					'nilai2'    => $nilai_2,
+					'kategori'  => 'Maternal',
+				];
+
+				$nilai = $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai);
+
+				// Tambah sumber & nip
+				$nilai['sumber'] = $periksa->pluck('sumber')->toArray();
+				$nilai['nip']    = $periksa->pluck('nip')->toArray();
+
+				$val[] = array_merge($arrVal, $nilai);
 			}
 		}
-		$value = $val;
 
-		return $value;
+		return $val;
 	}
+
 
 	function getParamSaturasi($noRawat, $sttsRawat)
 	{
