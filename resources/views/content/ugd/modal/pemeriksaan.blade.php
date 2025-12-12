@@ -6,6 +6,57 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="row gy-2 mb-2" id="formInfoPasien">
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <label for="no_rawat">No. Rawat</label>
+                        <input type="text" class="form-control form-control-sm"
+                               id="no_rawat" name="no_rawat" placeholder="" readonly>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <label for="">Pasien</label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control form-control-sm"
+                                   id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm w-50"
+                                   id="pasien" name="pasien" placeholder="" readonly>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="tgl_lahir">Tgl. Lahir</label>
+                        <input type="text" class="form-control form-control-sm" id="tgl_lahir"
+                               name="tgl_lahir" placeholder="" readonly>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <label for="">Keluarga</label>
+                        <x-input id="p_jawab" name="p_jawab"/>
+
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <label for="">Kamar</label>
+                        <x-input-group class="input-group-sm">
+                            <x-input id="kamar" name="kamar" readonly class="w-50"/>
+                            <x-input id="lama" name="lama" readonly/>
+                        </x-input-group>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="">Pebiayaan</label>
+                        <x-input-group class="input-group-sm">
+                            <x-input id="penjab" name="penjab" readonly class="w-50"/>
+                            <x-input id="no_kartu" name="no_kartu" readonly/>
+                        </x-input-group>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <label for="diagnosa_awal">Diagnosa Awal</label>
+                        <x-input id="diagnosa_awal" name="diagnosa_awal" readonly/>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12">
+                        <label for="dokter_dpjp">Dokter DPJP</label>
+                        <input type="text" class="form-control form-control-sm"
+                               id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
+                        <input type="hidden" id="kd_dokter_dpjp" name="kd_dokter_dpjp">
+                        <input type="hidden" id="kd_sps_dokter" name="kd_sps_dokter">
+                    </div>
+                </div>
                 <ul class="nav nav-tabs" id="tab-soap-ugd" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
@@ -48,7 +99,8 @@
                     </div>
                     <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
                          tabindex="0">
-                        @include('content.ugd.modal.pemeriksaan.ews')
+{{--                        @include('content.ugd.modal.pemeriksaan.ews')--}}
+                        @include('content.ranap.modal.cppt._ewsRanap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
                          tabindex="0">
