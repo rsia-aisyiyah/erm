@@ -333,7 +333,8 @@
                                                 onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder9', 'diagnosa_sekunder9')">
                                             <i class="bi bi-search"></i></button>
                                     </div>
-                                </div> </div><div class="col-sm-12 col-md-3 col-lg-3">
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
                                     <label for="diagnosa_sekunder10" class="mt-2">Diagnosa sekunder 10</label>
                                 </div>
                                 <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
