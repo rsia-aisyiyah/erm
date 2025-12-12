@@ -73,6 +73,7 @@
         const tabEws = $('#tab-ews');
 
         tabEws.on('click', () => {
+            const formInfoPasien = $('#formInfoPasien');
             const no_rawat = formInfoPasien.find('input[name="no_rawat"]').val();
             const spesialis = formInfoPasien.find('input[name="kd_sps_dokter"]').val();
             const pasien = formInfoPasien.find('input[name="pasien"]').val();
