@@ -55,6 +55,12 @@ return [
             'days' => 30,
         ],
 
+	    'pemeriksaanRanapLogs' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/pemeriksaan_ranap_'.date('Y_m').'.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+        ],
+
         'authLog' => [
             'driver' => 'daily',
             'path' => storage_path('logs/auth.log'),

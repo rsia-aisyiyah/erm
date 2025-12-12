@@ -7,9 +7,9 @@
                 <div class="col-lg-3 col-md-12 col-md-12">
                     <label class="form-label">Tgl. Pemeriksaan</label>
                     <x-input-group class="input-group-sm">
-                        <x-input id="tgl_pertama" name="tgl_pertama" class="filterTanggal" />
+                        <x-input id="tgl_pertama" name="tgl_pertama" class="filterTanggal"/>
                         <x-input-group-text>s.d.</x-input-group-text>
-                        <x-input id="tgl_kedua" name="tgl_kedua" class="filterTanggal" />
+                        <x-input id="tgl_kedua" name="tgl_kedua" class="filterTanggal"/>
                         <button class="btn btn-primary" id="btnFilterTglLab">
                             <i class="bi bi-search"></i>
                         </button>
@@ -26,8 +26,10 @@
         </div>
     </div>
 
-    @include('content.ranap.modal.modal_riwayat')
-    <div class="modal fade" id="modalHasilPermintaanLab" tabindex="-1" aria-labelledby="modalExampleLabel" aria-hidden="true">
+
+
+    <div class="modal fade" id="modalHasilPermintaanLab" tabindex="-1" aria-labelledby="modalExampleLabel"
+         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
@@ -41,53 +43,53 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="no_rawat">No. Rawat</label>
-                                        <x-input id="no_rawat" name="no_rawat" readonly />
+                                        <x-input id="no_rawat" name="no_rawat" readonly/>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-4">
                                         <label for="nm_pasien">Pasien</label>
-                                        <x-input id="nm_pasien" name="nm_pasien" readonly />
+                                        <x-input id="nm_pasien" name="nm_pasien" readonly/>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="tgl_lahir">Tgl. Lahir/Umur</label>
-                                        <x-input id="tgl_lahir" name="tgl_lahir" readonly />
+                                        <x-input id="tgl_lahir" name="tgl_lahir" readonly/>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-4">
                                         <label for="dokter">Dokter DPJP</label>
-                                        <x-input id="dokter" name="dokter" readonly />
+                                        <x-input id="dokter" name="dokter" readonly/>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-3">
                                         <label for="kamarInap">Kamar Inap</label>
-                                        <x-input id="kamarInap" name="kamarInap" readonly />
+                                        <x-input id="kamarInap" name="kamarInap" readonly/>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-3">
                                         <label for="diagnosis_awal">Dx. Awal</label>
-                                        <x-input id="diagnosis_awal" name="diagnosis_awal" readonly />
+                                        <x-input id="diagnosis_awal" name="diagnosis_awal" readonly/>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="informasi">Informasi Lain</label>
-                                        <x-input id="informasi" name="informasi" readonly />
+                                        <x-input id="informasi" name="informasi" readonly/>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="tgl_sampel">Tgl. Sampling/Periksa</label>
-                                        <x-input id="tgl_sampel" name="tgl_sampel" readonly />
+                                        <x-input id="tgl_sampel" name="tgl_sampel" readonly/>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="petugas">Tgl. Hasil</label>
-                                        <x-input id="tgl_hasil" name="tgl_hasil" readonly />
+                                        <x-input id="tgl_hasil" name="tgl_hasil" readonly/>
                                     </div>
                                 </div>
-                                <hr />
+                                <hr/>
                             </form>
                             <div class="row gy-2">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <table class="table table-bordered" id="tbHasilPermintaanLab">
                                         <thead>
-                                            <tr>
-                                                <th>Pemeriksaan</th>
-                                                <th>Hasil</th>
-                                                <th>Nilai Rujukan</th>
-                                                <th>Keterangan</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Pemeriksaan</th>
+                                            <th>Hasil</th>
+                                            <th>Nilai Rujukan</th>
+                                            <th>Keterangan</th>
+                                        </tr>
                                         </thead>
 
                                         <tbody></tbody>
@@ -109,20 +111,26 @@
                             <div class="row gy-3">
                                 <div class="col-lg-12 order-lg-1 order-sm-2 order-md-2">
                                     <p class="h5">Riwayat Permintaan </p>
-                                    <ol class="list-group list-group-numbered overflow-auto" id="listRiwayatPermintaanLab" style="max-height: 300px">
+                                    <ol class="list-group list-group-numbered overflow-auto"
+                                        id="listRiwayatPermintaanLab" style="max-height: 300px">
 
                                     </ol>
                                 </div>
                                 <div class="col-lg-12 order-lg-2 order-sm-1 order-md-1">
                                     <fieldset class="border p-3">
-                                        <legend class="w-auto float-none" style="font-size : 14px">Saran & Kesan Hasil</legend>
+                                        <legend class="w-auto float-none" style="font-size : 14px">Saran & Kesan Hasil
+                                        </legend>
                                         <form action="" id="saranKesanLab">
                                             <label for="saran">Saran</label>
                                             <x-textarea id="saran" name="saran"></x-textarea>
                                             <label for="kesan">Kesan</label>
                                             <x-textarea id="kesan" name="kesan"></x-textarea>
-                                            <button type="button" class="mt-2 btn btn-primary btn-sm" id="btnSimpanHasilSaranLab"><i class="bi bi-save"></i> Simpan</button>
-                                            <button type="button" class="mt-2 btn btn-danger btn-sm" id="btnHapusHasilSaranLab"><i class="bi bi-trash"></i> Hapus</button>
+                                            <button type="button" class="mt-2 btn btn-primary btn-sm"
+                                                    id="btnSimpanHasilSaranLab"><i class="bi bi-save"></i> Simpan
+                                            </button>
+                                            <button type="button" class="mt-2 btn btn-danger btn-sm"
+                                                    id="btnHapusHasilSaranLab"><i class="bi bi-trash"></i> Hapus
+                                            </button>
                                         </form>
                                     </fieldset>
                                 </div>
@@ -138,9 +146,10 @@
         </div>
     </div>
 
-    @include('content.ranap.modal.modal_soap')
     @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_lab')
+    @include('content.ranap.modal.modal_riwayat')
+    @include('content.ranap.modal.modal_soap')
 @endsection
 
 @push('script')
@@ -184,7 +193,7 @@
                 nowrap: true,
                 ajax: {
                     url: '/erm/lab/permintaan/table',
-                    data: function(d) {
+                    data: function (d) {
                         d.tgl_pertama = $('#tgl_pertama').val();
                         d.tgl_kedua = $('#tgl_kedua').val();
                     }
@@ -218,10 +227,13 @@
                     width: 90,
                 }],
                 columns: [{
-                        title: 'No. Order',
-                        data: 'noorder',
-                        name: 'noorder',
-                    },
+                    title: 'No. Order',
+                    data: 'noorder',
+                    name: 'noorder',
+                    render: (data, type, row, meta)=> {
+                        return `<a href="javascript:void(0)" style="text-decoration: none;color:#000000" onclick="showHasilPemeriksaanLab('${row.no_rawat}','${data}')">${data}</a>`
+                    }
+                },
                     {
                         title: 'Nama',
                         data: 'reg_periksa',
@@ -334,8 +346,8 @@
                     formHasilPermintaanLab.find('#dokter').val(rawat.dokter.nm_dokter);
                     formHasilPermintaanLab.find('#penjab').val(rawat.penjab.png_jawab);
                     const kamar = rawat.kamar_inap.filter((item) => {
-                            return item.stts_pulang !== 'Pindah Kamar'
-                        })
+                        return item.stts_pulang !== 'Pindah Kamar'
+                    })
                         .map((item) => {
                             return item.kamar.bangsal.nm_bangsal
                         })
@@ -363,7 +375,7 @@
                                         <div class="fw-bold">${data.noorder}</div>
                                         Tgl. Permintaan ${splitTanggal(data.tgl_permintaan)} ${data.jam_permintaan}
                                     </div>
-                                    ${ data.tgl_hasil === '0000-00-00' ? '<span class="badge bg-danger rounded-pill my-auto">Tidak Ada Pemeriksaan</span>' : `<span class="badge bg-success rounded-pill my-auto">Tgl. Hasil ${splitTanggal(data.tgl_hasil)} ${data.jam_hasil}</span>`}
+                                    ${data.tgl_hasil === '0000-00-00' ? '<span class="badge bg-danger rounded-pill my-auto">Tidak Ada Pemeriksaan</span>' : `<span class="badge bg-success rounded-pill my-auto">Tgl. Hasil ${splitTanggal(data.tgl_hasil)} ${data.jam_hasil}</span>`}
                                 </li> `
                 })
 
@@ -400,7 +412,7 @@
             let content = '';
             data.forEach(element => {
                 content += `
-                <tr class="borderless row-secondary">
+                <tr>
                     <td colspan=3><strong>${element.jns_perawatan_lab.nm_perawatan}</strong></td>
                     <td>${element.petugas.nama}</td>
                 </tr>
@@ -436,7 +448,7 @@
                     }
                 },
                 dataType: 'json',
-                processResults: function(data) {
+                processResults: function (data) {
                     return {
                         results: data.map((item) => {
                             return {

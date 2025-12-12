@@ -37,4 +37,10 @@ Route::middleware('auth')->group(function () {
         $route->delete('/saran-kesan', [SaranKesanLabController::class, 'destroy']);
 
     });
+
+	Route::prefix('lab-pa')->group(function($route){
+		$route->get('/permintaan', function(){
+			\App\Models\PermintaanLabPA::first();
+		});
+	});
 });

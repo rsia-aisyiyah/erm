@@ -82,7 +82,7 @@
                 <div class="col-lg-3 col-md-12 col-sm-12">
                     <select name="spesialis" id="spesialis" class="form-select form-select-sm select2"
                             style="width:100%">
-                        <option value="" disabled selected>Pilih  Spesialis</option>
+                        <option value="" disabled selected>Pilih Spesialis</option>
                         <option value="">Semua Spesialis</option>
                         <option value="S0001">Spesialis Kebidanan & Kandungan</option>
                         <option value="S0003">Spesialis Anak</option>
@@ -167,6 +167,152 @@
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_anak')
     @include('content.poliklinik.modal.modal_icare')
     @include('content.ugd.modal.asmed')
+
+    <div class="modal fade" id="modalEwsRanap" tabindex="-1" aria-labelledby="modalEwsRanapLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalEwsRanapLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="formEwsRanap">
+                        <div class="row gy-2">
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <label for="nip">Petugas</label>
+                                <x-input type="hidden" value="{{session()->get('pegawai')->nik}}" name="nik"
+                                         id="nik"></x-input>
+                                <x-input value="{{session()->get('pegawai')->nama}}" name="nm_pegawai" id="nm_pegawai"
+                                         readonly=""></x-input>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <label for="tgl_perawatan">Tanggal</label>
+                                <x-input type="date" value="" name="tgl_perawatan"
+                                         id="tgl_perawatan"></x-input>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <label for="jam_rawat">Tanggal</label>
+                                <x-input type="time" value="" name="jam_rawat"
+                                         id="jam_rawat" step="1"></x-input>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="suhu_tubuh">Suhu (<sup>0</sup>C)</label>
+                                <x-input id="suhu_tubuh" name="suhu_tubuh"></x-input>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="tensi">Tensi (mmHG)</label>
+                                <x-input id="tensi" name="tensi"></x-input>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="respirasi">Respirasi (x/mnt)</label>
+                                <x-input id="respirasi" name="respirasi"></x-input>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="nadi">Nadi (x/mnt)</label>
+                                <x-input id="nadi" name="nadi"></x-input>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="spo2">SpO2 (%)</label>
+                                <x-input id="spo2" name="spo2"></x-input>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="gcs">GCS (EVM)</label>
+                                <x-input id="gcs" name="gcs"></x-input>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="o2">Oksigen (%)</label>
+                                <x-input id="o2" name="o2"></x-input>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="kesadaran">Kesadaran</label>
+                                <select name="kesadaran" id="kesadaran" class="form-select">
+                                    <option value="Compos Mentis" selected>Compos Mentis</option>
+                                    <option value="Confusion">Confusion</option>
+                                    <option value="Pain">Pain</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" id="maternal">
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="keluaran_urin">Keluaran Urin :</label>
+                                <select class="form-select" name="keluaran_urin" id="keluaran_urin">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-" selected>-</option>
+                                    <option value="Y">Y</option>
+                                    <option value="T">T</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="proteinuria">Proteinuria :</label>
+                                <select class="form-select" name="proteinuria" id="proteinuria">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-" selected>-</option>
+                                    <option value="++">++</option>
+                                    <option value="+++">+++</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="air_ketuban">Air Ketuban :</label>
+                                <select class="form-select" name="air_ketuban" id="air_ketuban">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-" selected>-</option>
+                                    <option value="Jernih">Jernih/Pink</option>
+                                    <option value="Hijau">Hijau</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="skala_nyeri">Skala Nyeri</label>
+                                <select class="form-select" name="skala_nyeri" id="skala_nyeri">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-" selected>-</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="lochia">Lochia : </label>
+                                <select class="form-select" name="lochia" id="lochia">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-" selected>-</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="Banyak">Banyak</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="lochia">Respon Neurologis : </label>
+                                <select class="form-select" name="kesadaran_maternal" id="kesadaran_maternal">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-" selected>-</option>
+                                    <option value="Sadar">Sadar</option>
+                                    <option value="Verbal">Verbal</option>
+                                    <option value="Nyeri">Nyeri</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <label for="terlihat_tidak_sehat">Terlihat Tidak Sehat </label>
+                                <select class="form-select" name="terlihat_tidak_sehat" id="terlihat_tidak_sehat">
+                                    <option value="" style="display:none"></option>
+                                    <option value="-" selected>-</option>
+                                    <option value="Tidak" selected>Tidak</option>
+                                    <option value="Ya">Ya</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x me-1"></i> Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="createEwsRanap()"><i class="bi bi-save me-1"></i> Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')
@@ -213,7 +359,7 @@
 
             let isSpesialis = "{{session()->get('pegawai')->dokter?->kd_sps}}"
 
-            kd_dokter = isDokter && isSpesialis != 'S0007' ?  "{{session()->get('pegawai')->nik}}" : '';
+            kd_dokter = isDokter && isSpesialis != 'S0007' ? "{{session()->get('pegawai')->nik}}" : '';
             tb_ranap();
         });
 
