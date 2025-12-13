@@ -99,7 +99,6 @@
                     </div>
                     <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
                          tabindex="0">
-{{--                        @include('content.ugd.modal.pemeriksaan.ews')--}}
                         @include('content.ranap.modal.cppt._ewsRanap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"

@@ -38,6 +38,7 @@ use App\Models\AskepRanapKandungan;
 use App\Models\DetailPemberianObat;
 use App\Models\PermintaanRadiologi;
 use App\Models\DetailPemeriksaanLab;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\AsesmenMedisRajalKandungan;
 use App\Models\AsesmenMedisRanapKandungan;
@@ -53,7 +54,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RegPeriksa extends Model
 {
-    use HasFactory;
+    use HasFactory, Compoships;
     protected $table = 'reg_periksa';
     public $timestamps = false;
 

@@ -74,13 +74,13 @@ class EwsMaternalController extends Controller
 						} else {
 							$hp[] = '';
 						}
-					} else if($kode_nilai =='Verbal'){
+					} else if ($kode_nilai == 'Verbal') {
 						if ($pem[$parameter] == 'Verbal') {
 							$hp[] = "$pem[$parameter]";
 						} else {
 							$hp[] = '';
 						}
-					} else if($kode_nilai =='Nyeri'){
+					} else if ($kode_nilai == 'Nyeri') {
 						if ($pem[$parameter] == 'Nyeri') {
 							$hp[] = "$pem[$parameter]";
 						} else {
@@ -161,11 +161,9 @@ class EwsMaternalController extends Controller
 					$value = floatval($pem[$parameter]);
 					if ($kode_nilai == '>=') {
 						$hp[] = ($value >= $nilai1) ? $value : '';
-					}
-					else if ($kode_nilai == '<=') {
+					} else if ($kode_nilai == '<=') {
 						$hp[] = ($value <= $nilai1) ? $value : '';
-					}
-					else if ($kode_nilai == '-') {
+					} else if ($kode_nilai == '-') {
 						$hp[] = ($value >= $nilai1 && $value <= $nilai2) ? $value : '';
 					}
 				} else if ($parameter == 'air_ketuban') {
@@ -249,7 +247,7 @@ class EwsMaternalController extends Controller
 	function getParam($table, $noRawat, $parameter = '', $sttsRawat)
 	{
 		$value = [];
-		$val   = [];
+		$val = [];
 		$tanggal = [];
 		$jam = [];
 		$sumber = [];
@@ -262,6 +260,9 @@ class EwsMaternalController extends Controller
 					->orWhere(function ($q2) {
 						$q2->where('sumber', 'SOAP')
 							->whereHas('pemeriksaanRanap');
+					})->orWhere(function ($q2) {
+						$q2->where('sumber', 'SOAP')
+							->whereHas('pemeriksaanRalan');
 					});
 			})
 			->get();
@@ -272,39 +273,39 @@ class EwsMaternalController extends Controller
 		if (count($table) == 0) {
 
 			if ($parameter == 'oksigen') {
-				$labelParam  = 'L/menit';
+				$labelParam = 'L/menit';
 				$indexPeriksa = 'o2';
 			} else if ($parameter == 'urin') {
-				$labelParam  = 'Y/T';
+				$labelParam = 'Y/T';
 				$indexPeriksa = 'keluaran_urin';
 			}
 
 			$hp = [];
 
 			$arrVal = [
-				'id'        => 1,
+				'id' => 1,
 				'parameter' => "$labelParam",
-				'hasil'     => '',
-				'nilai1'    => '',
-				'nilai2'    => '',
-				'kategori'  => 'Maternal',
+				'hasil' => '',
+				'nilai1' => '',
+				'nilai2' => '',
+				'kategori' => 'Maternal',
 			];
 
 			foreach ($periksa as $p) {
 
-				$hp[]      = $p[$indexPeriksa] ?? '';
+				$hp[] = $p[$indexPeriksa] ?? '';
 				$tanggal[] = $p['tgl_perawatan'];
-				$jam[]     = $p['jam_rawat'];
-				$sumber[]  = $p['sumber'];      // ADD
-				$nip[]     = $p['nip'];         // ADD
+				$jam[] = $p['jam_rawat'];
+				$sumber[] = $p['sumber'];      // ADD
+				$nip[] = $p['nip'];         // ADD
 			}
 
 			$val[] = array_merge($arrVal, [
-				'hp'      => $hp,
+				'hp' => $hp,
 				'tanggal' => $tanggal,
-				'jam'     => $jam,
-				'sumber'  => $sumber,   // ADD RETURN
-				'nip'     => $nip,      // ADD RETURN
+				'jam' => $jam,
+				'sumber' => $sumber,   // ADD RETURN
+				'nip' => $nip,      // ADD RETURN
 			]);
 
 		}
@@ -319,7 +320,7 @@ class EwsMaternalController extends Controller
 				$nilai_2 = $s->nilai_2 ?: 0;
 
 				// label parameter
-				if ($s->kode_nilai == '-' ) {
+				if ($s->kode_nilai == '-') {
 					$label = $nilai_1 . ' - ' . $nilai_2;
 				} else if ($s->kode_nilai == '<=' || $s->kode_nilai == '>=') {
 					$label = $s->kode_nilai . ' ' . $nilai_2;
@@ -328,19 +329,19 @@ class EwsMaternalController extends Controller
 				}
 
 				$arrVal = [
-					'id'        => $s->kode,
+					'id' => $s->kode,
 					'parameter' => $label,
-					'hasil'     => $s->hasil,
-					'nilai1'    => $nilai_1,
-					'nilai2'    => $nilai_2,
-					'kategori'  => 'Maternal',
+					'hasil' => $s->hasil,
+					'nilai1' => $nilai_1,
+					'nilai2' => $nilai_2,
+					'kategori' => 'Maternal',
 				];
 
 				$nilai = $this->getNilai($parameter, $periksa, $nilai_1, $nilai_2, $s->kode_nilai);
 
 				// Tambah sumber & nip
 				$nilai['sumber'] = $periksa->pluck('sumber')->toArray();
-				$nilai['nip']    = $periksa->pluck('nip')->toArray();
+				$nilai['nip'] = $periksa->pluck('nip')->toArray();
 
 				$val[] = array_merge($arrVal, $nilai);
 			}
