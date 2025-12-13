@@ -471,6 +471,33 @@
                 $('#formSoapUgd input[name="spesialis"]').val(response.dokter.kd_sps)
                 $('#formResepUgd input[name="no_rawat"]').val(response.no_rawat)
                 $('#formResepUgd input[name="kd_dokter"]').val(response.kd_dokter)
+
+
+                const formInfoPasien = $('#formInfoPasien');
+
+                formInfoPasien.find('input[name=no_rawat]').val(noRawat);
+                formInfoPasien.find('input[name=no_rkm_medis]').val(response.no_rkm_medis);
+                formInfoPasien.find('input[name=pasien]').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`);
+                formInfoPasien.find('input[name=tgl_lahir]').val(`${formatTanggal(response.pasien.tgl_lahir)} (${hitungUmur(response.pasien.tgl_lahir)})`);
+                formInfoPasien.find('input[name=p_jawab]').val(response.p_jawab);
+                formInfoPasien.find('input[name=penjab]').val(response.penjab.png_jawab);
+                formInfoPasien.find('input[name=no_kartu]').val(response.pasien.no_kartu);
+                formInfoPasien.find('input[name=dokter_dpjp]').val(response.dokter.nm_dokter);
+                // formInfoPasien.find('input[name=dokter_dpjp]').val(response.pasien.no_kartu);
+
+                const kamar = response.kamar_inap.filter((item) => {
+                    return item.stts_pulang != 'Pindah Kamar'
+                }).map((item) => {
+                    return {
+                        'bangsal': item.kamar ? item.kamar.bangsal.nm_bangsal : '-',
+                        'diagnosa_awal': item?.diagnosa_awal
+                    }
+                })[0]
+                formInfoPasien.find('input[name=kamar]').val(kamar ? kamar.bangsal : '-');
+                formInfoPasien.find('input[name=diagnosa_awal]').val(kamar ? kamar.diagnosa_awal : '-');
+
+
+
                 getResepObat(noRawat)
                 setEws(noRawat, 'ralan', response.dokter.kd_sps)
                 if (response.dokter.kd_sps == 'S0001') {

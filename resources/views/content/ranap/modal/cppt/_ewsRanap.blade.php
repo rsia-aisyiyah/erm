@@ -90,6 +90,8 @@
 
             setEws(no_rawat, stts, spesialis)
 
+
+
         })
         /**
          * Fungsi untuk merender elemen 'sectionEws' ke dokumen PDF
@@ -260,6 +262,8 @@
                 setEwsAnak(no_rawat, stts)
             } else if (spesialis == 'S0001') {
                 setEwsMaternal(no_rawat, stts)
+            }else{
+                setEwsAnak(no_rawat, 'ralan', '')
             }
         }
 

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PemeriksaanRalan extends Model
 {
-    use HasFactory;
+    use HasFactory, Compoships;
     protected $table = 'pemeriksaan_ralan';
     public $timestamps = false;
     public $guarded = [];
