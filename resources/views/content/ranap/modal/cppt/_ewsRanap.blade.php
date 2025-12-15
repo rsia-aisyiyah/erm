@@ -290,9 +290,7 @@
                     $('#kategori-' + res.kategori).empty()
 
                     rowspan = res.data.length + 1
-                    // html += '<tr style="text-align:center" class="judul-ews">'
-                    // html += '<td rowspan="" style="padding:10px">' + res.judul + '</td>'
-                    // html += '</tr>'
+
                     let rowCount = 0;
                     const totalRowsInGroup = res.data.length;
                     $.map(res.data, (data) => {
