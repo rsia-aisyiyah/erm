@@ -59,8 +59,8 @@ class ResumePasienRanapRequest extends FormRequest
 		    'kd_diagnosa_sekunder9' => 'nullable|string|max:10',
 		    'diagnosa_sekunder10'    => 'nullable|string|max:80',
 		    'kd_diagnosa_sekunder10' => 'nullable|string|max:10',
-//		    'diagnosa_sekunder11'    => 'nullable|string|max:80',
-//		    'kd_diagnosa_sekunder11' => 'nullable|string|max:10',
+		    'diagnosa_sekunder11'    => 'nullable|string|max:80',
+		    'kd_diagnosa_sekunder11' => 'nullable|string|max:10',
 
 		    'prosedur_utama'        => 'required|string|max:80',
 		    'kd_prosedur_utama'     => 'required|string|max:8',
