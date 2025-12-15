@@ -387,6 +387,7 @@
 
                 })
                 $('#table-ews tbody').append(html)
+                $('#table-ews tfoot').removeClass('d-none')
                 $('.tr-jam').append(j)
                 $('.tr-tanggal').append(tanggal)
                 hitungNilaiEws(no)
@@ -506,11 +507,13 @@
 
                     rowspan = res.data.length + 1
 
+                    let rowCount = 0;
+                    const totalRowsInGroup = res.data.length;
                     $.map(res.data, (data) => {
 
                         $('.kategori').text(data.kategori);
                         let hasilPemeriksaan = '';
-
+                        rowCount++;
                         if (data.hasil == 'Merah') {
                             style = "style='background-color:red;color:#fff'";
                         } else if (data.hasil == 'Kuning') {
@@ -519,8 +522,25 @@
                             style = "style='background-color:#fff;color:#000'";
                         }
 
-                        html += '<tr class="ews-' + data.id + '" ' + style + ' id="kategori-' + res.kategori + '">'
-                        html += '<td style="background-color: #fff !important;">' + res.judul + '</td>'
+
+                        // Menentukan class untuk estetika border pengelompokan
+                        let groupClass = '';
+                        if (rowCount === 1) {
+                            groupClass = 'ews-group-start'; // Baris pertama di grup
+                        } else if (rowCount === totalRowsInGroup) {
+                            groupClass = 'ews-group-end';   // Baris terakhir di grup
+                        } else {
+                            groupClass = 'ews-group-middle';// Baris tengah
+                        }
+
+                        html += '<tr class="ews-' + data.id + ' '+groupClass+'" ' + style + ' id="kategori-' + res.kategori + '">'
+
+                        if (rowCount === 1) {
+                            html += '<td style="padding:10px; text-align:center;background-color: #fff !important;" class="criteria-cell">' + res.judul + '</td>'
+                        } else {
+                            html += '<td style="padding:10px;background-color: #fff !important;" class="criteria-cell-hidden"></td>'
+                        }
+
                         html += '<td style="padding:5px" data-nilai1="' + data.nilai1 + '" data-nilai2="' + data.nilai2 + '" width="10%">' + data.parameter + '</td>'
 
                         let inputHasil = '';
@@ -580,9 +600,11 @@
 
                 })
                 $('#table-ews tbody').append(html)
+                $('#table-ews tfoot').addClass('d-none')
                 $('.tr-jam').append(j)
                 $('.tr-tanggal').append(tanggal)
                 hitungNilaiEwsMaternal(no)
+
             })
         }
 
