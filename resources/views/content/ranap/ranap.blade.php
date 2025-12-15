@@ -177,7 +177,7 @@
                 </div>
                 <div class="modal-body">
                     <form action="" id="formEwsRanap">
-                        <div class="row gy-2">
+                        <div class="row gy-2 infoEws">
                             <div class="col-lg-4 col-md-6 col-sm-12">
                                 <label for="nip">Petugas</label>
                                 <x-input type="hidden" value="{{session()->get('pegawai')->nik}}" name="nik"
@@ -198,7 +198,7 @@
                             </div>
                         </div>
                         <hr/>
-                        <div class="row">
+                        <div class="row parameterEws">
                             <div class="col-lg-3 col-md-6 col-sm-12">
                                 <label for="suhu_tubuh">Suhu (<sup>0</sup>C)</label>
                                 <x-input id="suhu_tubuh" name="suhu_tubuh"></x-input>
