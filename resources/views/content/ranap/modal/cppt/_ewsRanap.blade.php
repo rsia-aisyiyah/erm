@@ -197,8 +197,8 @@
                 const stts = 'ranap';
                 setEws(no_rawat, stts, spesialis)
                 swalToast('Berhasil Menambah Data EWS')
-                formEwsRanap.find('select').val('').change();
-                formEwsRanap.find('input').val('').change();
+                formEwsRanap.find('.parameterEws').find('select').val('').change();
+                formEwsRanap.find('.parameterEws').find('input').val('').change();
                 $('#modalEwsRanap').modal('hide')
             }).fail(function(xhr, status, error) {
                 swalToast('Terjadi Kesalahan', error)
