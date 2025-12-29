@@ -105,6 +105,66 @@
         })
 
 
+        function cekSep(sep) {
+            sep = $.ajax({
+                url: '/erm/sep/' + sep,
+                dataType: 'JSON',
+            });
+            return sep;
+        }
+
+
+        function getRujukanPcarePeserta(noka) {
+            let rujukan = $.ajax({
+                url: '/erm/bridging/rujukan/pcare/peserta/' + noka,
+                dataType: 'JSON',
+                method: 'GET',
+            });
+
+            return rujukan;
+        }
+
+
+        function getPoliBpjs(kdPoli) {
+            let poli = $.ajax({
+                url: '/erm/poliklinik/bpjs/' + kdPoli,
+                dataType: 'JSON',
+                error: (request) => {
+                    alertSessionExpired(request.status)
+                },
+            });
+
+            return poli;
+        }
+
+        function cariDokterPoli(kdPoli) {
+
+            getPoliBpjs(kdPoli).done(function (response) {
+                no = 1;
+                html = '';
+                kd_dokter = '';
+                $.map(response, function (res) {
+                    $.map(res.poliklinik.mapping_poli, function (data) {
+                        if (kd_dokter != data.dokter.kd_dokter) {
+                            html += '<tr>'
+                            html += '<td>' + no + '</td>'
+                            html += '<td><a href="javascript:void(0)" onclick="setDokterSpesialis(\'' + data.dokter.mapping_dokter.kd_dokter_bpjs + '\', \'' + data.dokter.mapping_dokter.nm_dokter_bpjs + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.dokter.mapping_dokter.kd_dokter_bpjs + '</span></a></td>'
+                            html += '<td>' + data.dokter.nm_dokter + '</td>'
+                            html += '</tr>'
+                            no++;
+                            kd_dokter = data.dokter.kd_dokter;
+                        }
+                    })
+                })
+                $('.table-dokter tbody').append(html)
+                $('#modalDokter').modal('show');
+                tanggalKontrol = $('#tgl_kontrol').val();
+                $('#modalSkrj').modal('hide');
+            })
+
+
+        }
+
 
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"
@@ -1465,8 +1525,8 @@
         }
         $('.select2').select2({})
     </script>
-    @stack('script')
     <script type="text/javascript" src="{{ asset('js/context-menu/items.js') }}"></script>
+    @stack('script')
 </body>
 
 </html>

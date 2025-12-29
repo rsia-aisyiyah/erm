@@ -25,13 +25,14 @@ class PesertaController extends Controller
     }
     function getPesertaNik($nik, $tanggal)
     {
-        $endpoint = "Peserta/nik/{$nik}/tglSep/{$tanggal}";
+
+        $endpoint = "Peserta/nik/{$nik}/tglSEP/{$tanggal}";
         $result = $this->bridge->getRequest($endpoint);
         return $result;
     }
     function getPesertaNoka($noka, $tanggal)
     {
-        $endpoint = "Peserta/nokartu/{$noka}/tglSep/{$tanggal}";
+		$endpoint = "Peserta/nokartu/{$noka}/tglSEP/{$tanggal}";
         $result = $this->bridge->getRequest($endpoint);
         return $result;
     }

@@ -40,7 +40,7 @@ class ReferensiController extends Controller
 
     public function getPropinsi()
     {
-        $endpoint = "Referensi/propinsi";
+        $endpoint = "referensi/propinsi";
         $result = $this->bridge->getRequest($endpoint);
         return $result;
     }

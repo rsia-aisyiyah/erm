@@ -34,6 +34,8 @@ class DokterController extends Controller
         $dokter = Dokter::where('status', '1')
             ->where('nm_dokter', 'like', '%' . $request->nm_dokter . '%')
             ->orWhere('kd_dokter', 'like', '%' . $request->nm_dokter . '%')
+	        ->limit(10)
+	        ->whereHas('mappingDokter')
             ->with('pegawai', 'spesialis', 'mappingDokter')->get();
 
         return response()->json($dokter);

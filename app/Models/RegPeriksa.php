@@ -245,5 +245,8 @@ class RegPeriksa extends Model
     {
         return $this->hasMany(RsiaDataTriaseUgdDetailSkala5::class, 'no_rawat', 'no_rawat');
     }
+	public function spri(){
+		return $this->hasOne(BridgingSPRI::class, 'no_rawat', 'no_rawat');
+	}
 
 }

@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class MappingDokterBpjs extends Model
 {
-    use HasFactory;
+	use HasFactory;
+
+	protected $table = 'maping_dokter_dpjpvclaim';
+
+	public function dokter()
+	{
+		return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter');
+	}
 }
