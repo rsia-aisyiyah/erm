@@ -573,6 +573,7 @@
                 info: false,
                 // deferRender: true,
                 destroy: true,
+
                 columnDefs: [{
                     width: 50,
                     targets: 0,

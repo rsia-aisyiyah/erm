@@ -307,8 +307,12 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x me-1"></i> Close</button>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="createEwsRanap()"><i class="bi bi-save me-1"></i> Simpan</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                                class="bi bi-x me-1"></i> Close
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="createEwsRanap()"><i
+                                class="bi bi-save me-1"></i> Simpan
+                    </button>
                 </div>
             </div>
         </div>
@@ -502,13 +506,16 @@
                 }, {
                     target: 1,
                     width: 80,
+                }, {
+                    target: 2,
+                    width: 150,
                 },
                     {
                         target: 3,
                         width: 150,
                     }, {
                         target: 4,
-                        width: 50,
+                        width: 80,
                     }, {
                         target: 5,
                         width: 20,
@@ -520,7 +527,7 @@
                         width: 50,
                     }, {
                         target: 8,
-                        width: 150,
+                        width: 180,
                     }, {
                         target: 9,
                         width: 150,
@@ -559,6 +566,25 @@
                         }
                     }
 
+                    const alertContainer = $('<div class="infection-alert mt-2"></div>');
+                    row.find('td:eq(10)').append(alertContainer);
+
+                    if (!window.labAlertCache) {
+                        window.labAlertCache = {};
+                    }
+
+                    const noRkmMedis = dataAttr.no_rkm_medis;
+
+                    if (window.labAlertCache[noRkmMedis]) {
+                        renderInfectionAlertRow(alertContainer, window.labAlertCache[noRkmMedis]);
+                        return;
+                    }
+
+                    $.get(`/erm/lab/riwayat-hasil/${noRkmMedis}`)
+                        .done(response => {
+                            window.labAlertCache[noRkmMedis] = response.infection_alert;
+                            renderInfectionAlertRow(alertContainer, response.infection_alert);
+                        });
 
                 },
                 columns: [{
@@ -801,6 +827,13 @@
                             return penjab;
                         },
                         name: 'penjab',
+                    }, {
+                        title: 'Catatan',
+                        data: 'reg_periksa.no_rkm_medis',
+                        render: function (data) {
+                            return `<span class="" id="riwayat_lab_${data}"></span>`
+                        },
+                        name: 'no_rkm_medis',
                     },
                     {
                         title: 'Status',
@@ -1087,5 +1120,36 @@
         //         $(`#${id}`).addClass('show');
         //     }
         // }
+
+        function renderInfectionAlertRow(container, alertData) {
+
+            if (!alertData || alertData.infection_alert !== true) {
+                return;
+            }
+
+            const badgeClass = alertData.highest_risk === 'MODERATE'
+                ? 'badge-warning'
+                : 'badge-danger';
+
+            const title = alertData.highest_risk === 'MODERATE'
+                ? '⚠️ Risiko Infeksi Sedang'
+                : '⚠️ Risiko Infeksi Tinggi';
+
+            let html = `
+        <div class="alert alert-danger p-2">
+            <strong>${title}</strong>
+            <ul class="mb-0 mt-1 ps-3">
+    `;
+
+            alertData.alerts.forEach(item => {
+                html += `
+
+        `;
+            });
+
+            html += `</ul></div>`;
+
+            container.html(html);
+        }
     </script>
 @endpush
