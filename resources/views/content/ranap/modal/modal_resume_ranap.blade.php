@@ -299,6 +299,96 @@
                                             <i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder8" class="mt-2">Diagnosa sekunder 8</label>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder8"
+                                           id="diagnosa_sekunder8" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                           value='-'/>
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control form-control-sm"
+                                               name="kd_diagnosa_sekunder8" id="kd_diagnosa_sekunder8"
+                                               onfocus="removeZero(this)" onblur="cekKosong(this)" value='-'/>
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id=""
+                                                onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder8', 'diagnosa_sekunder8')">
+                                            <i class="bi bi-search"></i></button>
+                                    </div>
+                                </div><div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder9" class="mt-2">Diagnosa sekunder 9</label>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder9"
+                                           id="diagnosa_sekunder9" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                           value='-'/>
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control form-control-sm"
+                                               name="kd_diagnosa_sekunder9" id="kd_diagnosa_sekunder9"
+                                               onfocus="removeZero(this)" onblur="cekKosong(this)" value='-'/>
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id=""
+                                                onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder9', 'diagnosa_sekunder9')">
+                                            <i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder10" class="mt-2">Diagnosa sekunder 10</label>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder10"
+                                           id="diagnosa_sekunder10" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                           value='-'/>
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control form-control-sm"
+                                               name="kd_diagnosa_sekunder10" id="kd_diagnosa_sekunder10"
+                                               onfocus="removeZero(this)" onblur="cekKosong(this)" value='-'/>
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id=""
+                                                onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder10', 'diagnosa_sekunder10')">
+                                            <i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3">
+                                    <label for="diagnosa_sekunder11" class="mt-2">Diagnosa sekunder 11</label>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">
+                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder11"
+                                           id="diagnosa_sekunder11" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                           value='-'/>
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control form-control-sm"
+                                               name="kd_diagnosa_sekunder11" id="kd_diagnosa_sekunder11"
+                                               onfocus="removeZero(this)" onblur="cekKosong(this)" value='-'/>
+                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id=""
+                                                onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder11', 'diagnosa_sekunder11')">
+                                            <i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
+
+{{--                                <div class="col-sm-12 col-md-3 col-lg-3">--}}
+{{--                                    <label for="diagnosa_sekunder12" class="mt-2">Diagnosa sekunder 12</label>--}}
+{{--                                </div>--}}
+{{--                                <div class="col-sm-12 col-md-7 col-lg-6 mb-2">--}}
+{{--                                    <input type="search" class="form-control form-control-sm" name="diagnosa_sekunder12"--}}
+{{--                                           id="diagnosa_sekunder12" onfocus="removeZero(this)" onblur="cekKosong(this)"--}}
+{{--                                           value='-'/>--}}
+{{--                                </div>--}}
+{{--                                <div class="col-sm-12 col-md-2 col-lg-3 mb-2">--}}
+{{--                                    <div class="input-group">--}}
+{{--                                        <input type="search" class="form-control form-control-sm"--}}
+{{--                                               name="kd_diagnosa_sekunder12" id="kd_diagnosa_sekunder12"--}}
+{{--                                               onfocus="removeZero(this)" onblur="cekKosong(this)" value='-'/>--}}
+{{--                                        <button class="btn btn-primary btn-sm btn-diagnosa" type="button" id=""--}}
+{{--                                                onclick="listDiagnosaRanap('diagnosa','kd_diagnosa_sekunder12', 'diagnosa_sekunder12')">--}}
+{{--                                            <i class="bi bi-search"></i></button>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                             </div>
                             <div class="separator m-2">3. Prosedur</div>
                             <div class="row">
@@ -419,8 +509,9 @@
                                                 </option>
                                                 <option value="Lainnya">Lainnya</option>
                                             </select>
-                                            <input class="form-control form-control-sm" name="ket_keluar" id="ket_keluar"
-                                               onfocus="removeZero(this)" onblur="cekKosong(this)" value='-'/>
+                                            <input class="form-control form-control-sm" name="ket_keluar"
+                                                   id="ket_keluar"
+                                                   onfocus="removeZero(this)" onblur="cekKosong(this)" value='-'/>
                                         </x-input-group>
 
                                     </div>
@@ -448,7 +539,7 @@
                                     <x-input-group class="input-group-sm">
                                         <span class="input-group-text"><i class="bi bi-calendar"></i> </span>
                                         <input class="form-control form-control-sm" name="tgl_kontrol" id="tgl_kontrol"
-                                           onfocus="removeZero(this)" onblur="cekKosong(this)"/>
+                                               onfocus="removeZero(this)" onblur="cekKosong(this)"/>
 
                                     </x-input-group>
                                     <input name="jam_kontrol" id="jam_kontrol" type="hidden"/>
@@ -1035,7 +1126,7 @@
                         text: 'Data Berhasil Diproses',
                         showConfirmButton: false,
                         timer: 1500
-                    }).then(()=>{
+                    }).then(() => {
                         $('#modalResumeRanap').modal('hide');
                     })
 

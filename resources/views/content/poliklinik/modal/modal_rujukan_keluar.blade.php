@@ -80,6 +80,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-sm btn-primary btn-buat-rujukan mr-auto" onclick="simpanRujukanKeluar()"><i class="bi bi-envelope-plus-fill"></i> Buat Rujukan Keluar</button>
+                <a href="" target="_blank" class="btn btn-sm btn-success btn-print-rujukan mr-auto" ><i class="bi bi-printer"></i> Cetak Rujukan Keluar</a>
             </div>
         </div>
     </div>
@@ -438,6 +439,37 @@
                     );
                     $('.btn-buat-rujukan').css('display', 'none')
                     reloadTabelPoli();
+                }
+            })
+        }
+        function rujukanKeluar(noSep) {
+            $('#modalRujukanKeluar').modal('show')
+            cekSep(noSep).done(function (response) {
+                $('#no_kartu').val(response.no_kartu)
+                $('#no_sep_rujuk').val(response.no_sep)
+                $('#no_rawat_rujuk').val(response.no_rawat)
+                $('#pasien_rujuk').val(response.reg_periksa.no_rkm_medis + ' - ' + response.nama_pasien)
+                $('#tgl_lahir_rujuk').val(splitTanggal(response.tanggal_lahir))
+                $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.no_kartu + '\', \'' + response.tglsep + '\')');
+                if (response.rujukan_keluar) {
+                    $('#ppk_rujuk').attr('disabled', '')
+                    $('#poli_rujuk').attr('disabled', '')
+                    $('#tipe_rujuk').attr('disabled', '')
+                    $('#tgl_kunjungan_rujuk').attr('disabled', '')
+                    $('#diagnosa_rujuk').attr('disabled', '')
+                    $('#catatan_rujuk').attr('disabled', '')
+                    $('.btn-cari').css('display', 'none')
+                    $('#ppk_rujuk').val(response.rujukan_keluar.nm_ppkDirujuk)
+                    tanggalKontrol = splitTanggal(response.rujukan_keluar.tglRencanaKunjungan);
+                    $('#diagnosa_rujuk').val(response.rujukan_keluar.nama_diagRujukan)
+                    $('#poli_rujuk').val(response.rujukan_keluar.poliRujukan)
+                    $('#catatan_rujuk').val(response.rujukan_keluar.catatan)
+                    $('#tipe_rujuk').append('<option selected disable value="x">' + response.rujukan_keluar.tipeRujukan + '</option>')
+                    $('.btn-print-rujukan').prop('href',`/erm/rujukan/print/${response.rujukan_keluar.no_rujukan}`).removeClass('d-none')
+                    $('.btn-buat-rujukan').addClass('d-none')
+                }else{
+                    $('.btn-buat-rujukan').removeClass('d-none')
+                    $('.btn-print-rujukan').prop('href',`javascript:void(0)`).addClass('d-none')
                 }
             })
         }

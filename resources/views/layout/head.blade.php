@@ -43,11 +43,70 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
+
+    <style>
+        /* Pastikan tabel menggunakan border collapse */
+        #table-ews {
+            border-collapse: collapse;
+        }
+
+
+        #table-ews tr td,
+        #table-ews tr th,
+        #table-ews tbody,
+        #table-ews thead {
+            border: 1px solid #000;
+            color : black;
+            background-color: inherit;
+            vertical-align: middle;
+            padding: 2px;
+        }
+
+        /* Kriteria Utama: Sel pertama di grup (menampung judul) */
+        #table-ews .criteria-cell {
+            /* Pastikan latar belakangnya solid (misal: putih) */
+            background-color: white !important;
+            /* Hapus border vertikal di antara baris dalam grup */
+            border-bottom: none !important;
+        }
+
+        /* Sel Kriteria Tersembunyi: Sel kriteria selain yang pertama di grup */
+        #table-ews .criteria-cell-hidden {
+            /* Latar belakang sama dengan yang di atas */
+            background-color: white !important;
+            /* Hapus semua border horizontal internal untuk menggabungkannya secara visual */
+            border-bottom: none !important;
+            border-top: none !important;
+        }
+
+        /* Seluruh Baris Awal Grup */
+        #table-ews .ews-group-start td {
+            border-top: 2px solid black !important; /* Border tebal di atas grup baru */
+        }
+
+        /* Seluruh Baris Akhir Grup */
+        #table-ews .ews-group-end td {
+            border-bottom: 2px solid black !important; /* Border tebal di bawah grup */
+        }
+
+        /* Seluruh Baris Tengah Grup */
+        #table-ews .ews-group-middle td {
+
+            border-bottom: none !important; /* Hapus border internal */
+        }
+
+        /* Perbaiki Border Seluruh Baris Hasil */
+        /* Seluruh baris di tbody harus menghilangkan border bawah, kecuali ews-group-end */
+        #table-ews tbody tr:not(.ews-group-end) td:not(.criteria-cell):not(.criteria-cell-hidden) {
+            border-bottom: 1px solid #ccc !important; /* Tentukan border tipis antar baris data (jika diinginkan) */
+        }
+    </style>
+
     <style>
         * {
             font-family: "Noto Sans", serif;
             font-optical-sizing: auto;
-            font-weight: < weight >;
+            /*font-weight: <weight>;*/
             font-style: normal;
             font-variation-settings: "wdth" 100;
         }
@@ -319,14 +378,6 @@
             vertical-align: middle;
         }
 
-        #table-ews tr td,
-        #table-ews tr th,
-        #table-ews tbody,
-        #table-ews thead {
-            border: 1px solid #000;
-            background-color: inherit;
-            vertical-align: middle
-        }
 
         table td {
             vertical-align: middle;

@@ -21,7 +21,7 @@ class BridgingSep extends Model
 
     public $timestamps = false;
 
-    protected $with = ['regPeriksa.poliklinik'];
+    protected $with = ['regPeriksa.poliklinik', 'pasien','suratKontrol'];
     public function scopeBetweenTanggal(Builder $query, $start, $end)
     {
         return $query->whereBetween('tglsep', [$start, $end]);
@@ -59,7 +59,7 @@ class BridgingSep extends Model
     public function pasien()
     {
         return $this->belongsTo(Pasien::class, 'no_kartu', 'no_peserta')
-            ->selec(['no_kartu', 'no_rkm_medis', 'nm_pasien']);
+            ->select(['no_peserta', 'no_rkm_medis', 'nm_pasien', 'tgl_lahir']);
     }
     public function spri()
     {

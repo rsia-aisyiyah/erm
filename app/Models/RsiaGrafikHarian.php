@@ -40,4 +40,7 @@ class RsiaGrafikHarian extends Model
     public function pemeriksaanRanap(){
         return $this->belongsTo(PemeriksaanRanap::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat']);
     }
+	public function pemeriksaanRalan(){
+        return $this->belongsTo(PemeriksaanRalan::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat']);
+    }
 }

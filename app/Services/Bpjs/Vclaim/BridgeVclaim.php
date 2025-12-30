@@ -23,6 +23,7 @@ class BridgeVclaim extends CurlFactory
     public function getRequest($endpoint)
     {
 
+//                return $result = $this->request($this->config->setUrl() . $endpoint, $this->header);
         $output = false;
         try {
             while ($output == false) {

@@ -7,64 +7,67 @@
             </div>
             <div class="modal-body">
                 <div class="rujukan-expired"></div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-12 gy-2">
+                <form action="" id="formModalSkrj">
+                <div class="row gy-2">
+                    <div class="col-md-6 col-sm-12">
                         <label for="no_rawat" class="form-label mb-0">No. Rawat</label>
                         <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
+                    <div class="col-md-6 col-sm-12">
                         <label for="pasien" class="form-label mb-0">Pasien</label>
                         <div class="input-group mb-3">
                             <input type="text" class="form-control form-control-sm pasien" id="pasien" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                             <button class="btn btn-secondary btn-sm btn-cari-peserta" type="button" style="font-size:12px"><i class="bi bi-eye"></i></button>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
+                    <div class="col-md-6 col-sm-12">
                         <label for="tgl_lahir" class="form-label mb-0">Tanggal Lahir</label>
                         <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
+                    <div class="col-md-6 col-sm-12">
                         <label for="no_sep" class="form-label mb-0">No. SEP</label>
                         <input type="text" class="form-control form-control-sm no_sep" id="no_sep" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
 
-                    <div class="col-md-6 col-sm-12 gy-2">
+                    <div class="col-md-6 col-sm-12">
                         <label for="no_surat" class="form-label mb-0">No. Surat</label>
                         <input type="text" class="form-control form-control-sm no_surat" id="no_surat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
+                    <div class="col-md-6 col-sm-12">
                         <label for="no_surat" class="form-label mb-0">Diagnosa</label>
                         <input type="text" class="form-control form-control-sm diagnosa" id="diagnosa" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
+                    <div class="col-md-6 col-sm-12">
                         <label for="tgl_surat" class="form-label mb-0">Tgl. Surat</label>
                         <input type="text" class="form-control form-control-sm tgl_surat" id="tgl_surat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
+                    <div class="col-md-6 col-sm-12">
                         <label for="tgl_kontrol" class="form-label mb-0">Tgl. Kontrol</label>
                         <input type="text" class="form-control form-control-sm tgl_kontrol tanggal" onchange="setTanggalKontrol(this)" id="tgl_kontrol" placeholder="">
                     </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
+                    <div class="col-md-6 col-sm-12">
                         <label for="dokter" class="form-label mb-0">Spesialis/Sub</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-sm kode_dokter" placeholder="" aria-label="" id="kode_dokter" aria-describedby="btn-spesialis" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                            <input type="text" style="margin-left: 10px;background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
+                            <input type="text" class=" form-control form-control-sm kode_dokter" placeholder="" aria-label="" id="kode_dokter" aria-describedby="btn-spesialis" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                            <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="w-50 form-control form-control-sm nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-12 gy-2">
+                    <div class="col-md-6 col-sm-12">
                         <label for="poli" class="form-label mb-0">Unit/Poli</label>
                         <div class="input-group mb-3">
                             <input type="text" class="form-control form-control-sm kode_poli" placeholder="" aria-label="" aria-describedby="kode_poli" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                            <input type="text" style="margin-left: 10px;background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
+                            <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="w-50 form-control form-control-sm nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
                         </div>
 
                     </div>
                     <input type="hidden" name="noka" class="noka">
                     <input type="hidden" name="nokontrol" class="nokontrol">
                 </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sm btn-primary btn-buat-skrj" onclick="simpanSkrj()">Buat SKRJ</button>
+                <button class="btn btn-sm btn-primary btn-buat-skrj" onclick="simpanSkrj()"><i class="bi bi-plus"></i> Buat SKRJ</button>
+                <a href="" target="_blank"  class="btn btn-sm btn-success btn-print-skrj d-none"><i class="bi bi-printer"></i> Cetak SKRJ</a>
             </div>
         </div>
     </div>
@@ -74,6 +77,10 @@
 @include('content.poliklinik.modal.modal_dokter')
 @push('script')
     <script>
+
+        var tanggalKontrol = '';
+
+
         $('#modalSkrj').on('shown.bs.modal', function() {
             // console.log(tanggalKontrol)
             isModalShow = true;
@@ -90,8 +97,14 @@
                 setDate: dateStart,
                 startDate: '+1',
             });
-            $('#tgl_surat').val(splitTanggal("{{ date('Y-m-d') }}"));
-            $('#tgl_kontrol').datepicker('setDate', tanggal)
+            $('.tanggal').datepicker({
+                format: 'dd-mm-yyyy',
+                orientation: 'bottom',
+                autoclose: true,
+                setDate: dateStart,
+                startDate: '+1',
+            });
+
         })
 
         $('#modalSkrj').on('hidden.bs.modal', function() {
@@ -111,7 +124,7 @@
                         'Berhasil membuat SKRJ',
                         'success'
                     );
-                    $('.btn-buat-skrj').css('display', 'none')
+                    $('.btn-buat-skrj').addClass('d-none')
                     reloadTabelPoli();
                     $('#modalSkrj').modal('hide');
                 },
@@ -203,5 +216,76 @@
             });
 
         }
+
+        function kontrolUlang(noSep) {
+            const formModalSkrj = $('#formModalSkrj');
+            cekSep(noSep).done(function (response) {
+                getRujukanPcarePeserta(response.no_kartu).done(function (rujukan) {
+                    if (rujukan.metaData.code == 200 && rujukan.response) {
+                        rujukanExpired(rujukan.response.rujukan.tglKunjungan)
+                    } else {
+                        $('.rujukan-expired').empty()
+                        $('.rujukan-expired').append('<div class="alert alert-danger" style="padding:8px;border-radius:0px;font-size:12px;margin:5px" role="alert"><i class="bi bi-info-circle-fill"></i> Tidak ada rujukan dari FKTP</div>');
+                    }
+                })
+
+                console.log('RESPONSE SEP ===', response)
+                $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.no_kartu + '\', \'' + response.tglsep + '\')');
+                formModalSkrj.find('.no_rawat').val(response.no_rawat)
+                formModalSkrj.find('.no_sep').val(response.no_sep)
+                formModalSkrj.find('.pasien').val(response.nomr + ' - ' + response.nama_pasien + ' (' + response.reg_periksa.umurdaftar + ')');
+                formModalSkrj.find('.tgl_lahir').val(splitTanggal(response.tanggal_lahir))
+                formModalSkrj.find('.kode_poli').val(response.kdpolitujuan)
+                formModalSkrj.find('.nama_poli').val(response.nmpolitujuan)
+                formModalSkrj.find('.diagnosa').val(response.nmdiagnosaawal)
+                formModalSkrj.find('.nama_dokter').val(response.reg_periksa.dokter.nm_dokter)
+                formModalSkrj.find('.kode_dokter').val(response.kddpjp)
+                formModalSkrj.find('.noka').val(response.no_kartu)
+
+                if (response.surat_kontrol != null) {
+                    tanggal = response.surat_kontrol.tgl_rencana.split('-');
+                    tanggalKontrol = tanggal[2] + '-' + tanggal[1] + '-' + tanggal[0];
+                    formModalSkrj.find('.no_surat').val(response.surat_kontrol.no_surat)
+                    formModalSkrj.find('.tgl_kontrol').val(tanggalKontrol)
+                    formModalSkrj.find('.tgl_surat').val(splitTanggal(response.surat_kontrol?.tgl_surat))
+                    formModalSkrj.find('.nama_dokter').val(response.surat_kontrol.nm_dokter_bpjs)
+                    formModalSkrj.find('.kode_dokter').val(response.surat_kontrol.kd_dokter_bpjs)
+                    formModalSkrj.find('.btn-buat-skrj').css('display', 'none');
+                    formModalSkrj.find('#btn-spesialis').removeAttr('onclick');
+
+                    $('.btn-print-skrj').prop('href', `/erm/rencanaKontrol/print/${response.surat_kontrol.no_surat}`);
+                    $('.btn-print-skrj').removeClass('d-none');
+                    $('.btn-buat-skrj').addClass('d-none');
+                } else {
+                    $('#btn-spesialis').removeAttr('onclick');
+                    $('.no_surat').val('')
+                    $('.btn-buat-skrj').removeClass('d-none');
+
+                    $('#tgl_surat').val(splitTanggal("{{ date('Y-m-d') }}"));
+                    $('#tgl_kontrol').datepicker('setDate', splitTanggal("{{ date('Y-m-d') }}"))
+                    $('.tangal').datepicker('setDate', splitTanggal("{{ date('Y-m-d') }}"))
+                    $('.btn-print-skrj').prop('href', `javascript:void(0)`);
+                    $('.btn-print-skrj').addClass('d-none');
+                }
+                $('#modalSkrj').modal('show')
+            })
+        }
+
+
+        function setTanggalKontrol(param) {
+
+            tanggalKontrol = $(param).val()
+        }
+
+        function rujukanExpired(tanggal) {
+            $('.rujukan-expired').empty()
+            let tglRujukan = new Date(tanggal)
+            tglRujukan.setDate(tglRujukan.getDate() + 90)
+            expiredRujukan = tglRujukan.toISOString().split('T')[0];
+            $('.rujukan-expired').append('<div class="alert alert-warning" style="padding:8px;border-radius:0px;font-size:12px;margin:5px" role="alert"><i class="bi bi-info-circle-fill"></i> Masa berlaku rujukan sampai : <strong>' + formatTanggal(expiredRujukan) + '</strong></div>');
+        }
+
+
+
     </script>
 @endpush

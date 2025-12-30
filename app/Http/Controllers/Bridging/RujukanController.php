@@ -58,7 +58,7 @@ class RujukanController extends Controller
         $response = $this->bridge->getRequest($endpoint);
         return $response;
     }
-    function geRujukanPcarePeserta($noka)
+    function getRujukanPcarePeserta($noka)
     {
         $endpoint = "Rujukan/Peserta/{$noka}";
         $response = $this->bridge->getRequest($endpoint);

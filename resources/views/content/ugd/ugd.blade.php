@@ -227,6 +227,30 @@
                     if (data.asmed_igd == null) {
                         $(row).addClass('table-danger').prop('title', 'Belum Ada Asesmen Medis')
                     }
+
+                    const alertContainer = $('<div class="infection-alert mt-2"></div>');
+                    $(row).find('td:eq(9)').append(alertContainer);
+
+                    if (!window.labAlertCache) {
+                        window.labAlertCache = {};
+                    }
+
+                    const noRkmMedis = data.no_rkm_medis;
+
+                    if (window.labAlertCache[noRkmMedis]) {
+                        renderInfectionAlertRow(alertContainer, window.labAlertCache[noRkmMedis], noRkmMedis);
+                        return;
+                    }
+
+                    $.get(`/erm/lab/riwayat-hasil/${noRkmMedis}`)
+                        .done(response => {
+                            window.labAlertCache[noRkmMedis] = response.infection_alert;
+                            renderInfectionAlertRow(alertContainer, response.infection_alert, noRkmMedis);
+                            if (response.infection_alert?.highest_risk === 'HIGH') {
+                                $(`#pasien[data-no-rkm-medis="${noRkmMedis}"]`)
+                                    .addClass('text-danger fw-bold').attr('onclick', `showLabInfectionAlert('${noRkmMedis}')`);
+                            }
+                        });
                 },
                 columns: [{
                         data: '',
@@ -283,7 +307,7 @@
                             }
 
                             kamarInap = Object.keys(row.kamar_inap).length ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
-                            return `<strong>${row.no_rkm_medis}<br/>${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
+                            return `<strong id="pasien" data-no-rkm-medis="${row.no_rkm_medis}">${row.no_rkm_medis}<br/>${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
                         }
                     },
                     {
@@ -357,6 +381,14 @@
                                 return `<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Default tooltip"><i class="bi bi-house-add"></i></button>`
                             }
                         }
+                    },
+                    {
+                        title: 'Catatan',
+                        data: 'reg_periksa.no_rkm_medis',
+                        render: function (data) {
+                            return `<span class="" id="riwayat_lab_${data}"></span>`
+                        },
+                        name: 'no_rkm_medis',
                     },
                     {
                         title: 'Pindah Kamar',
@@ -471,6 +503,33 @@
                 $('#formSoapUgd input[name="spesialis"]').val(response.dokter.kd_sps)
                 $('#formResepUgd input[name="no_rawat"]').val(response.no_rawat)
                 $('#formResepUgd input[name="kd_dokter"]').val(response.kd_dokter)
+
+
+                const formInfoPasien = $('#formInfoPasien');
+
+                formInfoPasien.find('input[name=no_rawat]').val(noRawat);
+                formInfoPasien.find('input[name=no_rkm_medis]').val(response.no_rkm_medis);
+                formInfoPasien.find('input[name=pasien]').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`);
+                formInfoPasien.find('input[name=tgl_lahir]').val(`${formatTanggal(response.pasien.tgl_lahir)} (${hitungUmur(response.pasien.tgl_lahir)})`);
+                formInfoPasien.find('input[name=p_jawab]').val(response.p_jawab);
+                formInfoPasien.find('input[name=penjab]').val(response.penjab.png_jawab);
+                formInfoPasien.find('input[name=no_kartu]').val(response.pasien.no_kartu);
+                formInfoPasien.find('input[name=dokter_dpjp]').val(response.dokter.nm_dokter);
+                // formInfoPasien.find('input[name=dokter_dpjp]').val(response.pasien.no_kartu);
+
+                const kamar = response.kamar_inap.filter((item) => {
+                    return item.stts_pulang != 'Pindah Kamar'
+                }).map((item) => {
+                    return {
+                        'bangsal': item.kamar ? item.kamar.bangsal.nm_bangsal : '-',
+                        'diagnosa_awal': item?.diagnosa_awal
+                    }
+                })[0]
+                formInfoPasien.find('input[name=kamar]').val(kamar ? kamar.bangsal : '-');
+                formInfoPasien.find('input[name=diagnosa_awal]').val(kamar ? kamar.diagnosa_awal : '-');
+
+
+
                 getResepObat(noRawat)
                 setEws(noRawat, 'ralan', response.dokter.kd_sps)
                 if (response.dokter.kd_sps == 'S0001') {
