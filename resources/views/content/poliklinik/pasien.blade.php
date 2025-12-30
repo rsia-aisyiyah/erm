@@ -537,20 +537,6 @@
             return rencana;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         function setDokterSpesialis(kode, nama) {
             $('#modalSkrj').modal('show')
             $('#modalDokter').modal('hide')
@@ -589,6 +575,33 @@
                         pembiayaan: pembiayaan,
                         status_periksa: status,
                     },
+                },
+                createdRow: function (row, data, dataIndex) {
+                    $(row).attr('data-no-rkm-medis', data.no_rkm_medis);
+                    //
+                    // const alertContainer = $('<div class="infection-alert mt-2"></div>');
+                    // $(row).find('td:eq(9)').append(alertContainer);
+                    //
+                    // if (!window.labAlertCache) {
+                    //     window.labAlertCache = {};
+                    // }
+                    //
+                    const noRkmMedis = data.no_rkm_medis;
+                    //
+                    // if (window.labAlertCache[noRkmMedis]) {
+                    //     renderInfectionAlertRow(alertContainer, window.labAlertCache[noRkmMedis], noRkmMedis);
+                    //     return;
+                    // }
+
+                    $.get(`/erm/lab/riwayat-hasil/${data.no_rkm_medis}`)
+                        .done(response => {
+                            // window.labAlertCache[data.no_rkm_medis] = response.infection_alert;
+                            // renderInfectionAlertRow(alertContainer, response.infection_alert, noRkmMedis);
+                            if (response.infection_alert?.highest_risk === 'HIGH') {
+                                $(`.pasien-${data.no_reg}`)
+                                    .addClass('text-danger fw-bold').attr('onclick', `showLabInfectionAlert('${noRkmMedis}')`);
+                            }
+                        });
                 },
                 columns: [{
                     data: null,

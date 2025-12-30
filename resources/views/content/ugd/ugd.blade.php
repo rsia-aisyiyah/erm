@@ -227,6 +227,30 @@
                     if (data.asmed_igd == null) {
                         $(row).addClass('table-danger').prop('title', 'Belum Ada Asesmen Medis')
                     }
+
+                    const alertContainer = $('<div class="infection-alert mt-2"></div>');
+                    $(row).find('td:eq(9)').append(alertContainer);
+
+                    if (!window.labAlertCache) {
+                        window.labAlertCache = {};
+                    }
+
+                    const noRkmMedis = data.no_rkm_medis;
+
+                    if (window.labAlertCache[noRkmMedis]) {
+                        renderInfectionAlertRow(alertContainer, window.labAlertCache[noRkmMedis], noRkmMedis);
+                        return;
+                    }
+
+                    $.get(`/erm/lab/riwayat-hasil/${noRkmMedis}`)
+                        .done(response => {
+                            window.labAlertCache[noRkmMedis] = response.infection_alert;
+                            renderInfectionAlertRow(alertContainer, response.infection_alert, noRkmMedis);
+                            if (response.infection_alert?.highest_risk === 'HIGH') {
+                                $(`#pasien[data-no-rkm-medis="${noRkmMedis}"]`)
+                                    .addClass('text-danger fw-bold').attr('onclick', `showLabInfectionAlert('${noRkmMedis}')`);
+                            }
+                        });
                 },
                 columns: [{
                         data: '',
@@ -283,7 +307,7 @@
                             }
 
                             kamarInap = Object.keys(row.kamar_inap).length ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
-                            return `<strong>${row.no_rkm_medis}<br/>${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
+                            return `<strong id="pasien" data-no-rkm-medis="${row.no_rkm_medis}">${row.no_rkm_medis}<br/>${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
                         }
                     },
                     {
@@ -357,6 +381,14 @@
                                 return `<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Default tooltip"><i class="bi bi-house-add"></i></button>`
                             }
                         }
+                    },
+                    {
+                        title: 'Catatan',
+                        data: 'reg_periksa.no_rkm_medis',
+                        render: function (data) {
+                            return `<span class="" id="riwayat_lab_${data}"></span>`
+                        },
+                        name: 'no_rkm_medis',
                     },
                     {
                         title: 'Pindah Kamar',

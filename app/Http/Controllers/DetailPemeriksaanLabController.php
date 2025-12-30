@@ -49,9 +49,16 @@ class DetailPemeriksaanLabController extends Controller
 				'regPeriksa:no_rawat,no_rkm_medis,tgl_registrasi,jam_reg,kd_poli',
 				'jnsPerawatanLab:kd_jenis_prw,nm_perawatan'
 			])
+
 			->orderByDesc('tgl_periksa')
 			->orderByDesc('jam')
-			->get();
+			->get()
+			->map(function ($row) use ($labService) {
+
+				$row->status = $labService->resolveResultStatus($row->nilai);
+
+				return $row;
+			});
 
 		$infectionAlert = $labService->evaluate($data);
 

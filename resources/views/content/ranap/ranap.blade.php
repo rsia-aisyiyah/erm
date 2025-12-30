@@ -576,15 +576,20 @@
                     const noRkmMedis = dataAttr.no_rkm_medis;
 
                     if (window.labAlertCache[noRkmMedis]) {
-                        renderInfectionAlertRow(alertContainer, window.labAlertCache[noRkmMedis]);
+                        renderInfectionAlertRow(alertContainer, window.labAlertCache[noRkmMedis], noRkmMedis);
                         return;
                     }
 
                     $.get(`/erm/lab/riwayat-hasil/${noRkmMedis}`)
                         .done(response => {
                             window.labAlertCache[noRkmMedis] = response.infection_alert;
-                            renderInfectionAlertRow(alertContainer, response.infection_alert);
-                        });
+                            renderInfectionAlertRow(alertContainer, response.infection_alert, noRkmMedis);
+
+                            if (response.infection_alert?.highest_risk === 'HIGH') {
+                                $(`#pasien[data-no-rkm-medis="${noRkmMedis}"]`)
+                                    .addClass('text-danger fw-bold').attr('onclick', `showLabInfectionAlert('${noRkmMedis}')`);
+                            }
+                    });
 
                 },
                 columns: [{
@@ -693,7 +698,7 @@
                             }
 
 
-                            return '<strong>' + '<span id="pasien">' + pasien + '</span></strong><br/>' + bayiGabung;
+                            return '<strong>' + `<span id="pasien" data-no-rkm-medis="${data.no_rkm_medis}">` + pasien + '</span></strong><br/>' + bayiGabung;
 
                         },
                         name: 'reg_periksa',
@@ -1110,46 +1115,7 @@
         });
 
 
-        // function toggleDropdownAksi(e) {
-        //     const isShow = $(e).hasClass('show');
-        //     const no_rawat = $(e).data('id');
-        //     const id = $(e).attr('id');
-        //     if (isShow) {
-        //         $(`#${id}`).removeClass('show');
-        //     } else {
-        //         $(`#${id}`).addClass('show');
-        //     }
-        // }
 
-        function renderInfectionAlertRow(container, alertData) {
 
-            if (!alertData || alertData.infection_alert !== true) {
-                return;
-            }
-
-            const badgeClass = alertData.highest_risk === 'MODERATE'
-                ? 'badge-warning'
-                : 'badge-danger';
-
-            const title = alertData.highest_risk === 'MODERATE'
-                ? '⚠️ Risiko Infeksi Sedang'
-                : '⚠️ Risiko Infeksi Tinggi';
-
-            let html = `
-        <div class="alert alert-danger p-2">
-            <strong>${title}</strong>
-            <ul class="mb-0 mt-1 ps-3">
-    `;
-
-            alertData.alerts.forEach(item => {
-                html += `
-
-        `;
-            });
-
-            html += `</ul></div>`;
-
-            container.html(html);
-        }
     </script>
 @endpush

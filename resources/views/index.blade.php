@@ -32,6 +32,8 @@
         </div>
     </div>
 
+    @include('content.ranap.modal.modal_riwayat_infeksi')
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> --}}
@@ -1524,6 +1526,28 @@
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
         $('.select2').select2({})
+
+        function renderInfectionAlertRow(container, alertData, no_rkm_medis = null) {
+
+            if (!alertData || alertData.infection_alert !== true) {
+                return;
+            }
+
+            const badgeClass = alertData.highest_risk === 'MODERATE'
+                ? 'badge-warning'
+                : 'badge-danger';
+
+            const title = alertData.highest_risk === 'MODERATE'
+                ? '⚠️ Risiko Infeksi Sedang'
+                : '⚠️Risiko Infeksi Tinggi';
+
+            let html = `
+        <div class="alert alert-danger p-2" style="cursor: pointer" onclick="showLabInfectionAlert('${no_rkm_medis}')">
+            <strong>${title}</strong>
+        </div>`;
+            container.html(html);
+        }
+
     </script>
     <script type="text/javascript" src="{{ asset('js/context-menu/items.js') }}"></script>
     @stack('script')

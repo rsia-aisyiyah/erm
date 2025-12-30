@@ -31,8 +31,8 @@ class LabResultService
 			'J000080', // Tes Mantoux
 
 			// Covid
-			'J000049', // Covid-19 Rapid Antigen
-			'J000037', // Rapid Test Serologi Covid-19
+			//'J000049', // Covid-19 Rapid Antigen
+			//'J000037', // Rapid Test Serologi Covid-19
 		],
 
 
@@ -200,5 +200,36 @@ class LabResultService
 //				$this->riskMapping['moderate']
 			)
 		));
+	}
+
+	public function resolveResultStatus(?string $nilai): string
+	{
+		if (!$nilai) {
+			return 'UNKNOWN';
+		}
+
+		$value = strtolower(trim($nilai));
+
+		// PRIORITAS NEGATIF
+		if (
+			str_contains($value, 'non reaktif') ||
+			str_contains($value, 'nonreaktif') ||
+			str_contains($value, 'negatif') ||
+			in_array($value, ['-', 'nr', 'nrr'])
+		) {
+			return 'NEGATIVE';
+		}
+
+		// POSITIF
+		if (
+			str_contains($value, 'reaktif') ||
+			str_contains($value, 'positif') ||
+			str_contains($value, '(+)') ||
+			in_array($value, ['+', 'r', 'r*'])
+		) {
+			return 'POSITIVE';
+		}
+
+		return 'UNKNOWN';
 	}
 }
