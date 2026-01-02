@@ -291,8 +291,6 @@
                 "user": "{{ session()->get('pegawai')->nik }}",
             };
 
-            // return false;
-
             $.ajax({
                 url: '/erm/bridging/spri/insert',
                 data: data,
