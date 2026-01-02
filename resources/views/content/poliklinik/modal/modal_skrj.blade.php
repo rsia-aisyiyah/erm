@@ -132,91 +132,158 @@
         }
 
 
-        function simpanSkrj() {
-            const formModalSkrj = $('#formModalSkrj')
-            const valTglRencana =formModalSkrj.find('input[name=tgl_kontrol]').val()
+        {{--function simpanSkrj() {--}}
+        {{--    const formModalSkrj = $('#formModalSkrj')--}}
+        {{--    const valTglRencana = formModalSkrj.find('input[name=tgl_kontrol]').val()--}}
 
-            data = {
-                "noSEP": formModalSkrj.find('input[name=no_sep]').val(),
-                "kodeDokter": formModalSkrj.find('input[name=kode_dokter').val(),
-                "poliKontrol": formModalSkrj.find('input[name=kode_poli]').val(),
-                "tglRencanaKontrol": valTglRencana.split('/').reverse().join('-'),
-                "user": "{{ session()->get('pegawai')->nik }}",
+        {{--    data = {--}}
+        {{--        "noSEP": formModalSkrj.find('input[name=no_sep]').val(),--}}
+        {{--        "kodeDokter": formModalSkrj.find('input[name=kode_dokter').val(),--}}
+        {{--        "poliKontrol": formModalSkrj.find('input[name=kode_poli]').val(),--}}
+        {{--        "tglRencanaKontrol": valTglRencana.split('/').reverse().join('-'),--}}
+        {{--        "user": "{{ session()->get('pegawai')->nik }}",--}}
+        {{--    };--}}
+
+        {{--    $.ajax({--}}
+        {{--        url: '/erm/bridging/rencanaKontrol/insert',--}}
+        {{--        data: data,--}}
+        {{--        beforeSend: function() {--}}
+        {{--            swal.fire({--}}
+        {{--                title: 'Sedang mengirim data',--}}
+        {{--                text: 'Mohon Tunggu',--}}
+        {{--                showConfirmButton: false,--}}
+        {{--                didOpen: () => {--}}
+        {{--                    swal.showLoading();--}}
+        {{--                }--}}
+        {{--            })--}}
+        {{--        },--}}
+        {{--        dataType: 'JSON',--}}
+        {{--        method: 'POST',--}}
+        {{--        success: function(val) {--}}
+        {{--            let noSEP = formModalSkrj.find('input[name=no_sep]').val();--}}
+        {{--            let kodeDokter = data.kodeDokter;--}}
+        {{--            let kdPoli = data.poliKontrol;--}}
+        {{--            let nmPoli = formModalSkrj.find('input[nama_poli]').val();--}}
+        {{--            let nmDokter = formModalSkrj.find('input[nama_dokter]').val();--}}
+        {{--            if (val.metaData.code == 200) {--}}
+        {{--                if (val.response != null) {--}}
+        {{--                    data = {--}}
+        {{--                        '_token': "{{ csrf_token() }}",--}}
+        {{--                        'no_sep': noSEP,--}}
+        {{--                        'tgl_surat': splitTanggal(val.response.tglRencanaKontrol),--}}
+        {{--                        'no_surat': val.response.noSuratKontrol,--}}
+        {{--                        'tgl_rencana': val.response.tglRencanaKontrol,--}}
+        {{--                        'kd_dokter_bpjs': kodeDokter,--}}
+        {{--                        'nm_dokter_bpjs': nmDokter,--}}
+        {{--                        'kd_poli_bpjs': kdPoli,--}}
+        {{--                        'nm_poli_bpjs': nmPoli,--}}
+        {{--                    }--}}
+        {{--                    tarikRencanaKontrol(data)--}}
+        {{--                    $('.nokontrol').val(val.response.noSuratKontrol)--}}
+        {{--                } else {--}}
+        {{--                    tanggalKontrol = splitTanggal($('#tgl_kontrol').val())--}}
+        {{--                    noka = $('.noka').val()--}}
+        {{--                    getListRencanaKontrol(bulan, tahun, noka, 1).done(function(response) {--}}
+        {{--                        $('.nokontrol').val(data.noSuratKontrol)--}}
+        {{--                        $.map(response.response.list, function(dataSkrj) {--}}
+        {{--                            if (noSEP == dataSkrj.noSepAsalKontrol) {--}}
+        {{--                                data = {--}}
+        {{--                                    '_token': "{{ csrf_token() }}",--}}
+        {{--                                    'no_sep': dataSkrj.noSepAsalKontrol,--}}
+        {{--                                    'tgl_surat': dataSkrj.tglTerbitKontrol,--}}
+        {{--                                    'no_surat': dataSkrj.noSuratKontrol,--}}
+        {{--                                    'tgl_rencana': dataSkrj.tglRencanaKontrol,--}}
+        {{--                                    'kd_dokter_bpjs': dataSkrj.kodeDokter,--}}
+        {{--                                    'nm_dokter_bpjs': nmDokter,--}}
+        {{--                                    'kd_poli_bpjs': dataSkrj.poliTujuan,--}}
+        {{--                                    'nm_poli_bpjs': nmPoli,--}}
+        {{--                                }--}}
+        {{--                                tarikRencanaKontrol(data)--}}
+        {{--                            }--}}
+        {{--                        })--}}
+
+        {{--                    })--}}
+
+        {{--                }--}}
+
+        {{--            } else {--}}
+        {{--                swal.fire(--}}
+        {{--                    'Peringatan',--}}
+        {{--                    val.metaData.message,--}}
+        {{--                    'warning'--}}
+        {{--                );--}}
+        {{--            }--}}
+        {{--        },--}}
+        {{--    });--}}
+
+        {{--}--}}
+
+
+        function simpanSkrj() {
+            const $form = $('#formModalSkrj');
+
+            const tglKontrol = $form.find('input[name=tgl_kontrol]').val();
+
+            const payloadBpjs = {
+                noSEP: $form.find('input[name=no_sep]').val(),
+                kodeDokter: $form.find('input[name=kode_dokter]').val(),
+                poliKontrol: $form.find('input[name=kode_poli]').val(),
+                tglRencanaKontrol: tglKontrol.split('-').reverse().join('-'),
+                user: "{{ session()->get('pegawai')->nik }}"
             };
 
             $.ajax({
                 url: '/erm/bridging/rencanaKontrol/insert',
-                data: data,
-                beforeSend: function() {
-                    swal.fire({
-                        title: 'Sedang mengirim data',
-                        text: 'Mohon Tunggu',
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            swal.showLoading();
-                        }
-                    })
-                },
-                dataType: 'JSON',
                 method: 'POST',
-                success: function(val) {
-                    let noSEP = $('#no_sep').val();
-                    let kodeDokter = data.kodeDokter;
-                    let kdPoli = data.poliKontrol;
-                    let nmPoli = formModalSkrj.find('input[nama_poli]').val();
-                    let nmDokter = formModalSkrj.find('input[nama_dokter]').val();
-                    if (val.metaData.code == 200) {
-                        if (val.response != null) {
-                            data = {
-                                '_token': "{{ csrf_token() }}",
-                                'no_sep': noSEP,
-                                'tgl_surat': splitTanggal(tglSurat),
-                                'no_surat': val.response.noSuratKontrol,
-                                'tgl_rencana': val.response.tglRencanaKontrol,
-                                'kd_dokter_bpjs': kodeDokter,
-                                'nm_dokter_bpjs': nmDokter,
-                                'kd_poli_bpjs': kdPoli,
-                                'nm_poli_bpjs': nmPoli,
-                            }
-                            tarikRencanaKontrol(data)
-                            $('.nokontrol').val(val.response.noSuratKontrol)
-                        } else {
-                            tanggalKontrol = splitTanggal($('#tgl_kontrol').val())
-                            noka = $('.noka').val()
-                            getListRencanaKontrol(bulan, tahun, noka, 1).done(function(response) {
-                                $('.nokontrol').val(data.noSuratKontrol)
-                                $.map(response.response.list, function(dataSkrj) {
-                                    if (noSEP == dataSkrj.noSepAsalKontrol) {
-                                        data = {
-                                            '_token': "{{ csrf_token() }}",
-                                            'no_sep': dataSkrj.noSepAsalKontrol,
-                                            'tgl_surat': dataSkrj.tglTerbitKontrol,
-                                            'no_surat': dataSkrj.noSuratKontrol,
-                                            'tgl_rencana': dataSkrj.tglRencanaKontrol,
-                                            'kd_dokter_bpjs': dataSkrj.kodeDokter,
-                                            'nm_dokter_bpjs': nmDokter,
-                                            'kd_poli_bpjs': dataSkrj.poliTujuan,
-                                            'nm_poli_bpjs': nmPoli,
-                                        }
-                                        tarikRencanaKontrol(data)
-                                    }
-                                })
-
-                            })
-
-                        }
-
-                    } else {
-                        swal.fire(
-                            'Peringatan',
-                            val.metaData.message,
-                            'warning'
-                        );
-                    }
+                dataType: 'JSON',
+                data: payloadBpjs,
+                beforeSend() {
+                    Swal.fire({
+                        title: 'Sedang mengirim data',
+                        text: 'Mohon tunggu',
+                        showConfirmButton: false,
+                        didOpen: () => Swal.showLoading()
+                    });
                 },
-            });
+                success(res) {
+                    if (res.metaData.code !== 200) {
+                        Swal.fire('Peringatan', res.metaData.message, 'warning');
+                        return;
+                    }
 
+                    handleSkrjResponse(res, payloadBpjs);
+                }
+            });
         }
+
+
+        function handleSkrjResponse(res, payloadBpjs) {
+            const $form = $('#formModalSkrj');
+
+            const noSep = payloadBpjs.noSEP;
+            const nmPoli = $form.find('input[name=nama_poli]').val();
+            const nmDokter = $form.find('input[name=nama_dokter]').val();
+
+            if (res.response) {
+                const r = res.response;
+
+                const dataInsert = {
+                    _token: "{{ csrf_token() }}",
+                    no_sep: noSep,
+                    no_surat: r.noSuratKontrol,
+                    tgl_surat: splitTanggal(r.tglRencanaKontrol),
+                    tgl_rencana: r.tglRencanaKontrol,
+                    kd_dokter_bpjs: payloadBpjs.kodeDokter,
+                    nm_dokter_bpjs: nmDokter,
+                    kd_poli_bpjs: payloadBpjs.poliKontrol,
+                    nm_poli_bpjs: nmPoli
+                };
+
+                $('.nokontrol').val(r.noSuratKontrol);
+                tarikRencanaKontrol(dataInsert);
+            }
+        }
+
 
         function kontrolUlang(noSep) {
             const formModalSkrj = $('#formModalSkrj');
