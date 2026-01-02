@@ -26,37 +26,37 @@
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <label for="no_sep" class="form-label mb-0">No. SEP</label>
-                        <input type="text" class="form-control form-control-sm no_sep" id="no_sep" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm no_sep" id="no_sep" name="no_sep" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
 
                     <div class="col-md-6 col-sm-12">
                         <label for="no_surat" class="form-label mb-0">No. Surat</label>
-                        <input type="text" class="form-control form-control-sm no_surat" id="no_surat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm no_surat" id="no_surat" name="no_surat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <label for="no_surat" class="form-label mb-0">Diagnosa</label>
-                        <input type="text" class="form-control form-control-sm diagnosa" id="diagnosa" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm diagnosa" id="diagnosa" name="diagnosa" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <label for="tgl_surat" class="form-label mb-0">Tgl. Surat</label>
-                        <input type="text" class="form-control form-control-sm tgl_surat" id="tgl_surat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                        <input type="text" class="form-control form-control-sm tgl_surat" id="tgl_surat" name="tgl_surat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <label for="tgl_kontrol" class="form-label mb-0">Tgl. Kontrol</label>
-                        <input type="text" class="form-control form-control-sm tgl_kontrol tanggal" onchange="setTanggalKontrol(this)" id="tgl_kontrol" placeholder="">
+                        <input type="text" class="form-control form-control-sm tgl_kontrol tanggal" name="tgl_kontrol" onchange="setTanggalKontrol(this)" id="tgl_kontrol" placeholder="">
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <label for="dokter" class="form-label mb-0">Spesialis/Sub</label>
                         <div class="input-group mb-3">
-                            <input type="text" class=" form-control form-control-sm kode_dokter" placeholder="" aria-label="" id="kode_dokter" aria-describedby="btn-spesialis" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                            <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="w-50 form-control form-control-sm nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
+                            <input type="text" class=" form-control form-control-sm kode_dokter" placeholder="" aria-label="" id="kode_dokter" name="kode_dokter" aria-describedby="btn-spesialis" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                            <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="w-50 form-control form-control-sm nama_dokter" name="nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <label for="poli" class="form-label mb-0">Unit/Poli</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-sm kode_poli" placeholder="" aria-label="" aria-describedby="kode_poli" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                            <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="w-50 form-control form-control-sm nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
+                            <input type="text" class="form-control form-control-sm kode_poli" placeholder="" aria-label="" name="kode_poli" aria-describedby="kode_poli" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                            <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="w-50 form-control form-control-sm nama_poli" name="nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
                         </div>
 
                     </div>
@@ -133,12 +133,14 @@
 
 
         function simpanSkrj() {
+            const formModalSkrj = $('#formModalSkrj')
+            const valTglRencana =formModalSkrj.find('input[name=tgl_kontrol]').val()
+
             data = {
-                "_token": "{{ csrf_token() }}",
-                "noSEP": $('#no_sep').val(),
-                "kodeDokter": $('#kode_dokter').val(),
-                "poliKontrol": $('.kode_poli').val(),
-                "tglRencanaKontrol": splitTanggal($('#tgl_kontrol').val()),
+                "noSEP": formModalSkrj.find('input[name=no_sep]').val(),
+                "kodeDokter": formModalSkrj.find('input[name=kode_dokter').val(),
+                "poliKontrol": formModalSkrj.find('input[name=kode_poli]').val(),
+                "tglRencanaKontrol": valTglRencana.split('/').reverse().join('-'),
                 "user": "{{ session()->get('pegawai')->nik }}",
             };
 
@@ -159,11 +161,10 @@
                 method: 'POST',
                 success: function(val) {
                     let noSEP = $('#no_sep').val();
-                    let kodeDokter = $('#kode_dokter').val();
-                    let tglSurat = $('#tgl_surat').val();
-                    let kdPoli = $('.kode_poli').val();
-                    let nmPoli = $('.nama_poli').val();
-                    let nmDokter = $('.nama_dokter').val();
+                    let kodeDokter = data.kodeDokter;
+                    let kdPoli = data.poliKontrol;
+                    let nmPoli = formModalSkrj.find('input[nama_poli]').val();
+                    let nmDokter = formModalSkrj.find('input[nama_dokter]').val();
                     if (val.metaData.code == 200) {
                         if (val.response != null) {
                             data = {
@@ -229,7 +230,6 @@
                     }
                 })
 
-                console.log('RESPONSE SEP ===', response)
                 $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.no_kartu + '\', \'' + response.tglsep + '\')');
                 formModalSkrj.find('.no_rawat').val(response.no_rawat)
                 formModalSkrj.find('.no_sep').val(response.no_sep)
