@@ -45,8 +45,8 @@ class BridgingRujukanBpjsController extends Controller
             'no_kartu' => $rujukan->sep->no_kartu,
             'jnsPelayanan' => $rujukan->jnsPelayanan == '1' ? '1. Rawat Inap' : '2. Rawat Jalan',
             'diagRujuk' => $rujukan->diagRujukan . ' - ' . $rujukan->nama_diagRujukan,
-            'tglRujukan' => $this->carbon->parse($rujukan->tglRujukan)->translatedFormat('d F Y'),
-            'masaBerlaku' => $this->carbon->parse($rujukan->tglRujukan)->addDay(90)->translatedFormat('d F Y'),
+            'tglRujukan' => $this->carbon->parse($rujukan->tglRujukan)->translatedFormat('d M Y'),
+            'masaBerlaku' => $this->carbon->parse($rujukan->tglRujukan)->addDay(90)->translatedFormat('d M Y'),
             'catatan' => $rujukan->catatan,
 
         ];
