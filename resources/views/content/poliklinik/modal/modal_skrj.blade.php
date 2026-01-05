@@ -8,66 +8,90 @@
             <div class="modal-body">
                 <div class="rujukan-expired"></div>
                 <form action="" id="formModalSkrj">
-                <div class="row gy-2">
-                    <div class="col-md-6 col-sm-12">
-                        <label for="no_rawat" class="form-label mb-0">No. Rawat</label>
-                        <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label for="pasien" class="form-label mb-0">Pasien</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-sm pasien" id="pasien" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                            <button class="btn btn-secondary btn-sm btn-cari-peserta" type="button" style="font-size:12px"><i class="bi bi-eye"></i></button>
+                    <div class="row gy-2">
+                        <div class="col-md-6 col-sm-12">
+                            <label for="no_rawat" class="form-label mb-0">No. Rawat</label>
+                            <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat"
+                                   placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                         </div>
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label for="tgl_lahir" class="form-label mb-0">Tanggal Lahir</label>
-                        <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label for="no_sep" class="form-label mb-0">No. SEP</label>
-                        <input type="text" class="form-control form-control-sm no_sep" id="no_sep" name="no_sep" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                    </div>
-
-                    <div class="col-md-6 col-sm-12">
-                        <label for="no_surat" class="form-label mb-0">No. Surat</label>
-                        <input type="text" class="form-control form-control-sm no_surat" id="no_surat" name="no_surat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label for="no_surat" class="form-label mb-0">Diagnosa</label>
-                        <input type="text" class="form-control form-control-sm diagnosa" id="diagnosa" name="diagnosa" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label for="tgl_surat" class="form-label mb-0">Tgl. Surat</label>
-                        <input type="text" class="form-control form-control-sm tgl_surat" id="tgl_surat" name="tgl_surat" placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label for="tgl_kontrol" class="form-label mb-0">Tgl. Kontrol</label>
-                        <input type="text" class="form-control form-control-sm tgl_kontrol tanggal" name="tgl_kontrol" onchange="setTanggalKontrol(this)" id="tgl_kontrol" placeholder="">
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label for="dokter" class="form-label mb-0">Spesialis/Sub</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class=" form-control form-control-sm kode_dokter" placeholder="" aria-label="" id="kode_dokter" name="kode_dokter" aria-describedby="btn-spesialis" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                            <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="w-50 form-control form-control-sm nama_dokter" name="nama_dokter" placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="pasien" class="form-label mb-0">Pasien</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-sm pasien" id="pasien"
+                                       placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                                <button class="btn btn-secondary btn-sm btn-cari-peserta" type="button"
+                                        style="font-size:12px"><i class="bi bi-eye"></i></button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label for="poli" class="form-label mb-0">Unit/Poli</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-sm kode_poli" placeholder="" aria-label="" name="kode_poli" aria-describedby="kode_poli" readonly style="background-color: #e9ecef;cursor:not-allowed">
-                            <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="w-50 form-control form-control-sm nama_poli" name="nama_poli" placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="tgl_lahir" class="form-label mb-0">Tanggal Lahir</label>
+                            <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir"
+                                   placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="no_sep" class="form-label mb-0">No. SEP</label>
+                            <input type="text" class="form-control form-control-sm no_sep" id="no_sep" name="no_sep"
+                                   placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                         </div>
 
+                        <div class="col-md-6 col-sm-12">
+                            <label for="no_surat" class="form-label mb-0">No. Surat</label>
+                            <input type="text" class="form-control form-control-sm no_surat" id="no_surat"
+                                   name="no_surat" placeholder="" readonly
+                                   style="background-color: #e9ecef;cursor:not-allowed">
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="no_surat" class="form-label mb-0">Diagnosa</label>
+                            <input type="text" class="form-control form-control-sm diagnosa" id="diagnosa"
+                                   name="diagnosa" placeholder="" readonly
+                                   style="background-color: #e9ecef;cursor:not-allowed">
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="tgl_surat" class="form-label mb-0">Tgl. Surat</label>
+                            <input type="date" class="form-control form-control-sm tgl_surat" id="tgl_surat"
+                                   name="tgl_surat" placeholder="" readonly
+                                   style="background-color: #e9ecef;cursor:not-allowed">
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="tgl_kontrol" class="form-label mb-0">Tgl. Kontrol</label>
+                            <input type="date" class="form-control form-control-sm tgl_kontrol" name="tgl_kontrol"
+                                   id="tgl_kontrol" placeholder="">
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="dokter" class="form-label mb-0">Spesialis/Sub</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class=" form-control form-control-sm kode_dokter" placeholder=""
+                                       aria-label="" id="kode_dokter" name="kode_dokter"
+                                       aria-describedby="btn-spesialis" readonly
+                                       style="background-color: #e9ecef;cursor:not-allowed">
+                                <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
+                                       class="w-50 form-control form-control-sm nama_dokter" name="nama_dokter"
+                                       placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="poli" class="form-label mb-0">Unit/Poli</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-sm kode_poli" placeholder=""
+                                       aria-label="" name="kode_poli" aria-describedby="kode_poli" readonly
+                                       style="background-color: #e9ecef;cursor:not-allowed">
+                                <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
+                                       class="w-50 form-control form-control-sm nama_poli" name="nama_poli"
+                                       placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
+                            </div>
+
+                        </div>
+                        <input type="hidden" name="noka" class="noka">
+                        <input type="hidden" name="nokontrol" class="nokontrol">
                     </div>
-                    <input type="hidden" name="noka" class="noka">
-                    <input type="hidden" name="nokontrol" class="nokontrol">
-                </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sm btn-primary btn-buat-skrj" onclick="simpanSkrj()"><i class="bi bi-plus"></i> Buat SKRJ</button>
-                <a href="" target="_blank"  class="btn btn-sm btn-success btn-print-skrj d-none"><i class="bi bi-printer"></i> Cetak SKRJ</a>
+                <button class="btn btn-sm btn-primary btn-buat-skrj" onclick="simpanSkrj()"><i class="bi bi-plus"></i>
+                    Buat SKRJ
+                </button>
+                <a href="" target="_blank" class="btn btn-sm btn-success btn-print-skrj d-none"><i
+                            class="bi bi-printer"></i> Cetak SKRJ</a>
             </div>
         </div>
     </div>
@@ -81,36 +105,34 @@
         var tanggalKontrol = '';
 
 
-        $('#modalSkrj').on('shown.bs.modal', function() {
+        $('#modalSkrj').on('shown.bs.modal', function () {
             // console.log(tanggalKontrol)
-            isModalShow = true;
-            date = new Date()
-            hari = ('0' + (date.getDate())).slice(-2);
-            bulan = ('0' + (date.getMonth() + 1)).slice(-2);
-            tahun = date.getFullYear();
-            dateStart = hari + '-' + bulan + '-' + tahun;
-            let tanggal = tanggalKontrol ? tanggalKontrol : dateStart;
-            $('#tgl_kontrol').datepicker({
-                format: 'dd-mm-yyyy',
-                orientation: 'bottom',
-                autoclose: true,
-                setDate: dateStart,
-                startDate: '+1',
-            });
-            $('.tanggal').datepicker({
-                format: 'dd-mm-yyyy',
-                orientation: 'bottom',
-                autoclose: true,
-                setDate: dateStart,
-                startDate: '+1',
-            });
+            // isModalShow = true;
+            // date = new Date()
+            // hari = ('0' + (date.getDate())).slice(-2);
+            // bulan = ('0' + (date.getMonth() + 1)).slice(-2);
+            // tahun = date.getFullYear();
+            // dateStart = hari + '-' + bulan + '-' + tahun;
+            // let tanggal = tanggalKontrol ? tanggalKontrol : dateStart;
+            // $('#tgl_kontrol').datepicker({
+            //     format: 'dd-mm-yyyy',
+            //     orientation: 'bottom',
+            //     autoclose: true,
+            //     setDate: dateStart,
+            //     startDate: '+1',
+            // });
+            // $('.tanggal').datepicker({
+            //     format: 'dd-mm-yyyy',
+            //     orientation: 'bottom',
+            //     autoclose: true,
+            //     setDate: dateStart,
+            //     startDate: '+1',
+            // });
 
         })
 
-        $('#modalSkrj').on('hidden.bs.modal', function() {
-            isModalShow = false;
+        $('#modalSkrj').on('hidden.bs.modal', function () {
             $('.opt-rawat').empty();
-            tanggalKontrol = splitTanggal("{{ date('Y-m-d') }}");
         });
 
         function tarikRencanaKontrol(data) {
@@ -118,7 +140,7 @@
                 url: '/erm/rencanaKontrol/insert',
                 method: 'POST',
                 data: data,
-                success: function(response) {
+                success: function (response) {
                     swal.fire(
                         'Berhasil',
                         'Berhasil membuat SKRJ',
@@ -228,9 +250,25 @@
                 noSEP: $form.find('input[name=no_sep]').val(),
                 kodeDokter: $form.find('input[name=kode_dokter]').val(),
                 poliKontrol: $form.find('input[name=kode_poli]').val(),
-                tglRencanaKontrol: tglKontrol.split('-').reverse().join('-'),
+                tglRencanaKontrol: tglKontrol,
                 user: "{{ session()->get('pegawai')->nik }}"
             };
+
+            const res =  {
+                "metaData": {
+                    "code": "200",
+                    "message": "Ok"
+                },
+                "response": {
+                    "noSuratKontrol": "0301R0110520K000013",
+                    "tglRencanaKontrol": "2020-05-15",
+                    "namaDokter": "Dr. John Wick",
+                    "noKartu": "0001328186441",
+                    "nama": "ARIS",
+                    "kelamin": "Laki-laki",
+                    "tglLahir": "1947-12-31"
+                }
+            }
 
             $.ajax({
                 url: '/erm/bridging/rencanaKontrol/insert',
@@ -268,10 +306,9 @@
                 const r = res.response;
 
                 const dataInsert = {
-                    _token: "{{ csrf_token() }}",
                     no_sep: noSep,
                     no_surat: r.noSuratKontrol,
-                    tgl_surat: splitTanggal(r.tglRencanaKontrol),
+                    tgl_surat: r.tglRencanaKontrol,
                     tgl_rencana: r.tglRencanaKontrol,
                     kd_dokter_bpjs: payloadBpjs.kodeDokter,
                     nm_dokter_bpjs: nmDokter,
@@ -280,7 +317,6 @@
                 };
 
                 $('.nokontrol').val(r.noSuratKontrol);
-                tarikRencanaKontrol(dataInsert);
             }
         }
 
@@ -310,11 +346,9 @@
                 formModalSkrj.find('.noka').val(response.no_kartu)
 
                 if (response.surat_kontrol != null) {
-                    tanggal = response.surat_kontrol.tgl_rencana.split('-');
-                    tanggalKontrol = tanggal[2] + '-' + tanggal[1] + '-' + tanggal[0];
-                    formModalSkrj.find('.no_surat').val(response.surat_kontrol.no_surat)
-                    formModalSkrj.find('.tgl_kontrol').val(tanggalKontrol)
-                    formModalSkrj.find('.tgl_surat').val(splitTanggal(response.surat_kontrol?.tgl_surat))
+                    formModalSkrj.find('input[name=no_surat]').val(response.surat_kontrol.no_surat).addClass('is-valid')
+                    formModalSkrj.find('input[name=tgl_kontrol]').val(response.surat_kontrol?.tgl_rencana).addClass('is-valid').prop('disabled', true)
+                    formModalSkrj.find('input[name=tgl_surat]').val(response.surat_kontrol?.tgl_surat).addClass('is-valid')
                     formModalSkrj.find('.nama_dokter').val(response.surat_kontrol.nm_dokter_bpjs)
                     formModalSkrj.find('.kode_dokter').val(response.surat_kontrol.kd_dokter_bpjs)
                     formModalSkrj.find('.btn-buat-skrj').css('display', 'none');
@@ -324,13 +358,14 @@
                     $('.btn-print-skrj').removeClass('d-none');
                     $('.btn-buat-skrj').addClass('d-none');
                 } else {
+
                     $('#btn-spesialis').removeAttr('onclick');
-                    $('.no_surat').val('')
+                    formModalSkrj.find('input[name=no_surat]').val('-').removeClass('is-valid')
+                    formModalSkrj.find('input[name=tgl_surat]').val('').removeClass('is-valid')
+                    formModalSkrj.find('input[name=tgl_kontrol]').val("{{date('Y-m-d')}}").removeClass('is-valid').prop('disabled', false)
+
                     $('.btn-buat-skrj').removeClass('d-none');
 
-                    $('#tgl_surat').val(splitTanggal("{{ date('Y-m-d') }}"));
-                    $('#tgl_kontrol').datepicker('setDate', splitTanggal("{{ date('Y-m-d') }}"))
-                    $('.tangal').datepicker('setDate', splitTanggal("{{ date('Y-m-d') }}"))
                     $('.btn-print-skrj').prop('href', `javascript:void(0)`);
                     $('.btn-print-skrj').addClass('d-none');
                 }
@@ -338,11 +373,11 @@
             })
         }
 
-
-        function setTanggalKontrol(param) {
-
-            tanggalKontrol = $(param).val()
-        }
+        //
+        // function setTanggalKontrol(param) {
+        //
+        //     tanggalKontrol = $(param).val()
+        // }
 
         function rujukanExpired(tanggal) {
             $('.rujukan-expired').empty()
@@ -351,7 +386,6 @@
             expiredRujukan = tglRujukan.toISOString().split('T')[0];
             $('.rujukan-expired').append('<div class="alert alert-warning" style="padding:8px;border-radius:0px;font-size:12px;margin:5px" role="alert"><i class="bi bi-info-circle-fill"></i> Masa berlaku rujukan sampai : <strong>' + formatTanggal(expiredRujukan) + '</strong></div>');
         }
-
 
 
     </script>

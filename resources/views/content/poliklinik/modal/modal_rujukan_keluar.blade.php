@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="tgl_kontrol" class="form-label mb-0" style="font-size:12px;">Tgl. R. Kunjungan</label>
-                        <input type="text" class="form-control form-control-sm tgl_kunjungan tanggal" name="tgl_kunjungan_rujuk" onchange="setTanggalKontrol(this)" id="tgl_kunjungan_rujuk" placeholder="">
+                        <input type="text" class="form-control form-control-sm tgl_kunjungan tanggal" name="tgl_kunjungan_rujuk" id="tgl_kunjungan_rujuk" placeholder="">
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 gy-3">
                         <label for="no_sep_rujuk" class="form-label mb-0" style="font-size:12px;">No. SEP</label>

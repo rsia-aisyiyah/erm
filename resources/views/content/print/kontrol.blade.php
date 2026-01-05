@@ -46,7 +46,7 @@
             <td colspan="3">{{ $kontrol['namaPasien'] }} ({{ $kontrol['jkel'] }})</td>
             <td>Tgl. Rujukan</td>
             <td>:</td>
-            <td>{{ $kontrol['tglKontrolSep'] }} s.d {{ $kontrol['tglRujukanExpired'] }}</td>
+            <td style="font-style: italic"><strong>{{ $kontrol['tglKontrolSep'] }} s.d {{ $kontrol['tglRujukanExpired'] }}</strong></td>
         </tr>
         <tr>
             <td>Tgl. Lahir / Umur</td>

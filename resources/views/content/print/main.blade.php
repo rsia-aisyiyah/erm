@@ -593,6 +593,10 @@
         .lh-1 {
             line-height: 1 !important;
         }
+
+        /*table {*/
+        /*    font-size: 12px !important;*/
+        /*}*/
     </style>
 </head>
 

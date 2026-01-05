@@ -57,12 +57,12 @@
                             <label for="tgl_surat" class="form-label mb-0">Tgl. Surat</label>
                             <input type="date" class="form-control form-control-sm tgl_surat" name="tgl_surat"
                                    id="tgl_surat"
-                                   placeholder="" readonly>
+                                   placeholder="" readonly disabled>
                         </div>
                         <div class="col-md-6 col-sm-12 ">
                             <label for="tgl_inap" class="form-label mb-0">Tgl. Rawat Inap</label>
                             <input type="date" class="form-control form-control-sm tgl_inap"
-                                   onchange="setTanggalKontrol(this)" id="tgl_inap" name="tgl_inap" placeholder="">
+                                   id="tgl_inap" name="tgl_inap" placeholder="">
                         </div>
                         <div class="col-md-6 col-sm-12 ">
                             <label for="diagnosa_inap" class="form-label mb-0">Diagnosa</label>
@@ -213,8 +213,6 @@
                 $formSpri.find('input[name=no_sep]').val(val.sep.no_sep)
                 $formSpri.find('input[name=nmppkrujukan]').val(val.sep.nmppkpelayanan)
                 $formSpri.find('input[name=tgl_surat]').val(val.tgl_registrasi).prop('readonly', false)
-
-                    console.log(val)
                 if (val.spri) {
 
                     $formSpri.find('input[name=no_surat]').val(val.spri.no_surat).addClass('is-valid').prop('readonly', true)
@@ -234,7 +232,7 @@
 
                 } else {
                     $formSpri.find('input[name=no_surat]').val("").removeClass('is-valid')
-                    $formSpri.find('input[name=tgl_inap]').val("").removeClass('is-valid').prop('readonly', false)
+                    $formSpri.find('input[name=tgl_inap]').val("{{date('Y-m-d')}}").removeClass('is-valid').prop('readonly', false)
 
                     $formSpri.find('select[name=kd_diagnosa_inap]').prop('disabled', false);
                     $formSpri.find('select[name=kd_dokter_bpjs]').prop('disabled', false);
@@ -257,10 +255,8 @@
         }
 
         $('#modalSpri').on('hidden.bs.modal', function () {
-            isModalShow = false;
             $formSpri.trigger('reset')
             $('.opt-rawat').empty();
-            tanggalKontrol = splitTanggal("{{ date('Y-m-d') }}");
         });
 
         function tarikSpri(data) {
@@ -275,8 +271,8 @@
                         'success'
                     );
                     $('.btn-buat-skrj').css('display', 'none')
-                    reloadTabelPoli();
                     $('#modalSpri').modal('hide');
+                    reloadTabelPoli();
                 },
             })
         }
@@ -290,6 +286,7 @@
                 "tglRencanaKontrol": $formSpri.find('input[name=tgl_inap]').val(),
                 "user": "{{ session()->get('pegawai')->nik }}",
             };
+
 
             $.ajax({
                 url: '/erm/bridging/spri/insert',
@@ -324,7 +321,6 @@
                         if (val.response != null) {
                             let dataSpri = Object.assign(dataTarik, {
                                 no_rujukan: val.response.noSPRI,
-                                _token: "{{ csrf_token() }}",
                             })
                             tarikSpri(dataSpri)
                             $('.nokontrol').val(val.response.noSuratKontrol)
@@ -335,7 +331,6 @@
                                     if (spri.namaJnsKontrol == 'SPRI') {
                                         let dataSpri = Object.assign(dataTarik, {
                                             no_rujukan: spri.noSuratKontrol,
-                                            _token: "{{ csrf_token() }}",
                                         })
                                         tarikSpri(dataSpri)
                                         $formSpri.find('input[name=no_surat]').val(val.response.noSuratKontrol)
@@ -374,6 +369,8 @@
 
 
         function rawatInap(noRm, tanggal) {
+
+            const formSpri = $('#formSpri')
             getPasienPeriksa(noRm, tanggal).done((response) => {
                 $.map(response, (periksa) => {
                     getPerintahInap(periksa.pasien.no_peserta, tanggal).done((val) => {
