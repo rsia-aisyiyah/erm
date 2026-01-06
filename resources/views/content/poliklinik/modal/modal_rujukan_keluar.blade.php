@@ -312,12 +312,6 @@
 
         function simpanRujukanKeluar() {
 
-            detailData = {
-                'nm_ppkDirujuk': $('#ppk_rujuk').val().length ? $('#ppk_rujuk').val() : '-',
-                'nama_diagRujukan': $('#diagnosa_rujuk').val(),
-                'nama_poliRujukan': $('#poli_rujuk').val(),
-            }
-
             let data = {
                 'noSep': $('#no_sep_rujuk').val(),
                 'tglRujukan': splitTanggal($('#tgl_surat_rujuk').val()),
@@ -354,11 +348,10 @@
                     delete data.noSep;
                     delete data.tipeRujukan;
                     detailData = {
-                        'nm_ppkDirujuk': $('#ppk_rujuk').val() ?? '-',
+                        'nm_ppkDirujuk': $('#ppk_rujuk').val().length ? $('#ppk_rujuk').val() : '-',
                         'nama_diagRujukan': $('#diagnosa_rujuk').val(),
                         'nama_poliRujukan': $('#poli_rujuk').val(),
                     }
-
 
                     if (response.metaData.code == 200) {
                         if (response.response != null) {
