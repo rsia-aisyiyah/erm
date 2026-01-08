@@ -260,7 +260,7 @@
                 url: '/erm/bridging/rencanaKontrol/insert',
                 method: 'POST',
                 dataType: 'JSON',
-                // data: payloadBpjs,
+                data: payloadBpjs,
                 beforeSend() {
                     Swal.fire({
                         title: 'Sedang mengirim data',
@@ -274,6 +274,8 @@
                         Swal.fire('Peringatan', res.metaData.message, 'warning');
                         return;
                     }
+
+                    handleSkrjResponse(res, payloadBpjs);
 
                 },
                 error(request, status, error) {
@@ -289,9 +291,6 @@
             const noSep = payloadBpjs.noSEP;
             const nmPoli = $form.find('input[name=nama_poli]').val();
             const nmDokter = $form.find('input[name=nama_dokter]').val();
-
-            console.log('RESPONSE handle', res.response);
-
 
             if (res.response) {
                 const r = res.response;
