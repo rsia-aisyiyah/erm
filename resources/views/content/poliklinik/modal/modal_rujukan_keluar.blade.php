@@ -438,7 +438,11 @@
                         'success'
                     );
                     $('.btn-buat-rujukan').css('display', 'none')
-                    reloadTabelPoli();
+                    if ($('#tb_pasien').length) {
+                        reloadTabelPoli();
+                    } else {
+                        $('#tableSep').DataTable().ajax.reload(null, true);
+                    }
                 }
             })
         }
