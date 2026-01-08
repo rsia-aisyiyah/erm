@@ -786,14 +786,6 @@
             return resDokter;
         }
 
-        function reloadTabelPoli() {
-            tanggal = localStorage.getItem('tanggal') ? localStorage.getItem('tanggal') : "{{ date('Y-m-d') }}"
-            hitungPanggilan();
-            $('#tb_pasien').DataTable().destroy();
-            tb_pasien(tanggal);
-        }
-
-
         $('#submit').click(function() {})
 
         function hiddenForm() {
