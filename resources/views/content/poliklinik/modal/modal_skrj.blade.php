@@ -146,12 +146,12 @@
                         'success'
                     );
                     $('.btn-buat-skrj').addClass('d-none')
+                    $('.btn-print-skrj ').removeClass('d-none').attr('href', `/erm/rencanaKontrol/print/${response.no_surat}`)
                     if ($('#tb_pasien').length) {
                         reloadTabelPoli();
                     } else {
                         $('#tableSep').DataTable().ajax.reload(null, true);
                     }
-                    $('#modalSkrj').modal('hide');
                 },
             })
         }
@@ -270,7 +270,7 @@
                     });
                 },
                 success(res) {
-                    if (res.metaData.code !== 200) {
+                    if (res.metaData.code !== "200") {
                         Swal.fire('Peringatan', res.metaData.message, 'warning');
                         return;
                     }
