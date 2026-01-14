@@ -323,7 +323,7 @@
                         sep: '-',
                     };
 
-                    if (val.metaData.code == 200) {
+                    if (val.metaData.code == "200") {
                         if (val.response != null) {
                             let dataSpri = Object.assign(dataTarik, {
                                 no_rujukan: val.response.noSPRI,
