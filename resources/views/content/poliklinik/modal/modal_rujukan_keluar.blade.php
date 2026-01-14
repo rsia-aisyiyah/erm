@@ -177,7 +177,7 @@
                         html += '<td></td>'
                         html += '<td colspan="2">FASKES TINGKAT ' + jenis + ' </td></tr>'
                         no--;
-                        if (response.metaData.code == 200 && response.response != null) {
+                        if (response.metaData.code == "200" && response.response != null) {
                             urut = 1;
                             $.map(response.response.faskes, function(val) {
                                 html += '<tr class="urut" >'
@@ -211,7 +211,7 @@
                 dataType: 'JSON',
             }).done(function(response) {
                 html = '';
-                if (response.metaData.code == 200 && response.response != null) {
+                if (response.metaData.code == "200" && response.response != null) {
                     urut = 1;
                     $.map(response.response.diagnosa, function(val) {
                         html += '<tr class="diagnosa' + val.kode + '" >'
@@ -240,7 +240,7 @@
                 dataType: 'JSON',
             }).done(function(response) {
                 html = '';
-                if (response.metaData.code == 200 && response.response != null) {
+                if (response.metaData.code == "200" && response.response != null) {
                     urut = 1;
                     $.map(response.response.poli, function(val) {
                         html += '<tr class="poli' + val.kode + '" >'
@@ -353,7 +353,7 @@
                         'nama_poliRujukan': $('#poli_rujuk').val(),
                     }
 
-                    if (response.metaData.code == 200) {
+                    if (response.metaData.code == "200") {
                         if (response.response != null) {
                             rujukan = {
                                 '_token': "{{ csrf_token() }}",
