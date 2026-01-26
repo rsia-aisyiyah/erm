@@ -8,10 +8,10 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="dxpx-tab" data-bs-toggle="tab" data-bs-target="#dxpx-tab-pane" type="button" role="tab" aria-controls="dxpx-tab-pane" aria-selected="true">Home</button>
+                        <button class="nav-link active" id="dxpx-tab" data-bs-toggle="tab" data-bs-target="#dxpx-tab-pane" type="button" role="tab" aria-controls="dxpx-tab-pane" aria-selected="true">Pilih Kode</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pemeriksaan-tab" data-bs-toggle="tab" data-bs-target="#pemeriksaan-tab-pane" type="button" role="tab" aria-controls="pemeriksaan-tab-pane" aria-selected="false">Profile</button>
+                        <button class="nav-link" id="pemeriksaan-tab" data-bs-toggle="tab" data-bs-target="#pemeriksaan-tab-pane" type="button" role="tab" aria-controls="pemeriksaan-tab-pane" aria-selected="false">Asesmen/Penilaian</button>
                     </li>
 
                 </ul>
@@ -116,7 +116,7 @@
             $('#modalListDiagnosa input[name=kode_diagnosa]').val('')
             $('#modalListDiagnosa input[name=nama_diagnosa]').val('')
             $('#modalListDiagnosa input[name=dxpx]').val('')
-            $('button[data-bs-target="#dxpx-tab-pane"]').trigger('click');  
+            $('button[data-bs-target="#dxpx-tab-pane"]').trigger('click');
         })
 
         $('button[data-bs-target="#pemeriksaan-tab-pane"]').on('shown.bs.tab', function(e, x, y) {
@@ -124,8 +124,9 @@
             $('#tbPemeriksaanSoap tbody').empty();
             getPemeriksaanRanap(no_rawat).done((response) => {
                 const pemeriksaan = response.filter(item => item.pegawai.dokter !== null).map((item, index) => {
+                    const text = item.penilaian.replace(/\n/g, ' ');
                     return `` +
-                        `<tr onclick="setDiagnosaResumeFromSoap('${item.penilaian}')">` +
+                        `<tr onclick="setDiagnosaResumeFromSoap('${text}')">` +
                         `<td>${item.tgl_perawatan}</td>` +
                         `<td>${item.penilaian}</td>` +
                         `<td>${item.pegawai.dokter.nm_dokter}</td>` +
@@ -145,7 +146,10 @@
             const namaDxTarget = $('#modalListDiagnosa input[name=nama_diagnosa]').val();
             const kdDxTarget = $('#modalListDiagnosa input[name=kode_diagnosa]').val();
 
-            $(`#modalResumeRanap input[name=${namaDxTarget}]`).val(penilaian);
+            // ubah enter menjadi space pada string namaDxTarget
+            const dxTarget = penilaian.replace(/\n/g, ' ');
+
+            $(`#modalResumeRanap input[name=${namaDxTarget}]`).val(dxTarget);
             $(`#modalResumeRanap input[name=${kdDxTarget}]`).val('-');
 
             $('#modalListDiagnosa').modal('hide');
