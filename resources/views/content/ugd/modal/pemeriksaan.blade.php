@@ -10,49 +10,49 @@
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="no_rawat">No. Rawat</label>
                         <input type="text" class="form-control form-control-sm"
-                               id="no_rawat" name="no_rawat" placeholder="" readonly>
+                            id="no_rawat" name="no_rawat" placeholder="" readonly>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <label for="">Pasien</label>
                         <div class="input-group input-group-sm">
                             <input type="text" class="form-control form-control-sm"
-                                   id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
+                                id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
                             <input type="text" class="form-control form-control-sm w-50"
-                                   id="pasien" name="pasien" placeholder="" readonly>
+                                id="pasien" name="pasien" placeholder="" readonly>
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <label for="tgl_lahir">Tgl. Lahir</label>
                         <input type="text" class="form-control form-control-sm" id="tgl_lahir"
-                               name="tgl_lahir" placeholder="" readonly>
+                            name="tgl_lahir" placeholder="" readonly>
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="">Keluarga</label>
-                        <x-input id="p_jawab" name="p_jawab"/>
+                        <x-input id="p_jawab" name="p_jawab" />
 
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="">Kamar</label>
                         <x-input-group class="input-group-sm">
-                            <x-input id="kamar" name="kamar" readonly class="w-50"/>
-                            <x-input id="lama" name="lama" readonly/>
+                            <x-input id="kamar" name="kamar" readonly class="w-50" />
+                            <x-input id="lama" name="lama" readonly />
                         </x-input-group>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <label for="">Pebiayaan</label>
                         <x-input-group class="input-group-sm">
-                            <x-input id="penjab" name="penjab" readonly class="w-50"/>
-                            <x-input id="no_kartu" name="no_kartu" readonly/>
+                            <x-input id="penjab" name="penjab" readonly class="w-50" />
+                            <x-input id="no_kartu" name="no_kartu" readonly />
                         </x-input-group>
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="diagnosa_awal">Diagnosa Awal</label>
-                        <x-input id="diagnosa_awal" name="diagnosa_awal" readonly/>
+                        <x-input id="diagnosa_awal" name="diagnosa_awal" readonly />
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="dokter_dpjp">Dokter DPJP</label>
                         <input type="text" class="form-control form-control-sm"
-                               id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
+                            id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
                         <input type="hidden" id="kd_dokter_dpjp" name="kd_dokter_dpjp">
                         <input type="hidden" id="kd_sps_dokter" name="kd_sps_dokter">
                     </div>
@@ -60,67 +60,76 @@
                 <ul class="nav nav-tabs" id="tab-soap-ugd" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
-                                data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
-                                aria-selected="true">SOAP
+                            data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
+                            aria-selected="true">SOAP
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
+                            type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-pane"
-                                type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Data
+                            type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">Data
                             Pemeriksaan
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
-                                data-bs-target="#tabTindakan-pane"
-                                type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan
+                            data-bs-target="#tabTindakan-pane"
+                            type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
-                                type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
+                            type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
-                                type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
-                        </button>
-                    </li>
+
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
-                         aria-labelledby="home-tab" tabindex="0">
+                        aria-labelledby="home-tab" tabindex="0">
                         @include('content.ugd.modal.pemeriksaan.soap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
-                         tabindex="0">
+                        tabindex="0">
                         @include('content.ugd.modal.pemeriksaan.data')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
-                         tabindex="0">
+                        tabindex="0">
                         @include('content.ranap.modal.cppt._ewsRanap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
-                         tabindex="0">
-                        {{-- @include('content.ugd.modal.pemeriksaan.resep') --}}
-                        @include('content.poliklinik.modal.pemeriksaan.resepRalan')
+                        tabindex="0">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                @include('content.poliklinik.modal.pemeriksaan.resepRalan')
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade  p-2 m-2" id="tabTindakan-pane" role="tabpanel"
-                         aria-labelledby="tabTindakan" tabindex="0">
+                        aria-labelledby="tabTindakan" tabindex="0">
                         @include('content.poliklinik.modal.tab-tindakan')
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
-                            class="bi bi-x-circle"></i> Keluar
+                        class="bi bi-x-circle"></i> Keluar
                 </button>
 
             </div>
         </div>
     </div>
 </div>
+{{-- @include('content.poliklinik.modal.moda_detail_resep') --}}
+@include('content.poliklinik.modal.modal_resep')
 @push('script')
     <script type="text/javascript">
         const formSoapPoli = $('#formSoapPoli');
@@ -157,24 +166,24 @@
                     },
                 },
                 columns: [{
-                    data: null,
-                    render: (data, type, row, meta) => {
-                        button = `<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>`;
-                        if (row.nip == "{{ session()->get('pegawai')->nik }}") {
-                            button += `<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`;
-                        }
+                        data: null,
+                        render: (data, type, row, meta) => {
+                            button = `<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>`;
+                            if (row.nip == "{{ session()->get('pegawai')->nik }}") {
+                                button += `<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`;
+                            }
 
 
-                        return button;
+                            return button;
+                        },
                     },
-                },
                     {
                         data: null,
                         render: (data, type, row, meta) => {
                             list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
                                 '</strong></li>';
                             list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
-                            $.map(row.grafik_harian, function (grafik) {
+                            $.map(row.grafik_harian, function(grafik) {
                                 if (row.tgl_perawatan == grafik.tgl_perawatan && row.jam_rawat == grafik.jam_rawat) {
                                     list += '<li> O2 : ' + grafik.o2 + '</li>';
                                 }
@@ -196,7 +205,7 @@
                             list += '<li> Alergi : ' + row.alergi + '</li>';
                             html = '<ul>' + list + '</ul>';
 
-                            $.map(row.log, function (log) {
+                            $.map(row.log, function(log) {
                                 if (row.tgl_perawatan === log.tgl_perawatan && row.jam_rawat === log.jam_rawat) {
                                     html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai?.nama}</b>
                                             , ${formatTanggal(log.waktu)}
@@ -209,7 +218,7 @@
                     },
                     {
                         data: null,
-                        render: function (data, type, row, meta) {
+                        render: function(data, type, row, meta) {
                             baris = '<tr><td width="5%">Petugas </td><td width="5%">:</td><td>' + row
                                 .pegawai.nama + '</td></tr>'
                             baris += '<tr><td>Subjek </td><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
@@ -281,8 +290,8 @@
             $('#formSoapUgd input').each((index, element) => {
                 $(element).val('-');
                 $(element).removeAttr('readonly');
-                $('#jam_rawat').val("{{date('Y-m-d')}}");
-                $('#tgl_perawatan').val("{{date('H:i:s')}}");
+                $('#jam_rawat').val("{{ date('Y-m-d') }}");
+                $('#tgl_perawatan').val("{{ date('H:i:s') }}");
             })
             $('#formSoapUgd textarea').each((index, element) => {
                 $(element).val('-')
@@ -299,6 +308,7 @@
                 $('#formSoapUgd input[name="spesialis"]').val(response.dokter.kd_sps)
                 $('#formSoapUgd input[name="nama"]').val("{{ session()->get('pegawai')->nama }}")
                 $('#formSoapUgd input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
+
 
                 $('#formSoapUgd input[name="no_rawat"]').attr('readonly', true)
                 $('#formSoapUgd input[name="nm_pasien"]').attr('readonly', true)
@@ -387,8 +397,8 @@
 
         function simpanSoapRalan() {
 
-            $('#formSoapUgd input[name="jam_rawat"]').val("{{date('H:i:s')}}");
-            $('#formSoapUgd input[name="tgl_perawatan"]').val("{{date('Y-m-d')}}");
+            $('#formSoapUgd input[name="jam_rawat"]').val("{{ date('H:i:s') }}");
+            $('#formSoapUgd input[name="tgl_perawatan"]').val("{{ date('Y-m-d') }}");
             $.ajax({
                 url: '/erm/pemeriksaan/simpan',
                 method: 'POST',

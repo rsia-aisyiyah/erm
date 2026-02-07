@@ -149,6 +149,7 @@
 
         function showSoapRalan(no_rawat) {
             formSoapPoli.find('input[name="no_rawat"]').val(no_rawat);
+            const formInfoPasienResep = $('#formInfoPasienResep')
 
             btnTambahObatUmum.removeClass('d-none');
 
@@ -176,7 +177,7 @@
                 // })
                 // riwayatIcare(response.pasien.no_peserta, response.dokter.mapping_dokter.kd_dokter_bpjs)
                 setRiwayatPemeriksaan(response.no_rkm_medis)
-                $('#btnInfoPeserta').attr('onclick', `getPesertaDetail('${response.pasien.no_peserta}')` )
+                $('#btnInfoPeserta').attr('onclick', `getPesertaDetail('${response.pasien.no_peserta}')`)
 
                 if (response.pasien.ket_pasien) {
                     formSoapPoli.find('input[name=ket_pasien]').val(response.pasien.ket_pasien.keterangan)
@@ -192,11 +193,19 @@
                 formSoapPoli.find('input[name=p_jawab]').val(response.p_jawab)
                 formSoapPoli.find('input[name=png_jawab]').val(`${response.penjab.png_jawab}`)
 
-                if(response.penjab?.png_jawab?.includes('BPJS')){
+                formInfoPasienResep.find('input[name=no_rawat]').val(no_rawat);
+                formInfoPasienResep.find('input[name=no_rkm_medis]').val(response.no_rkm_medis);
+                formInfoPasienResep.find('input[name=kd_dokter]').val(response.kd_dokter);
+                formInfoPasienResep.find('input[name=status_lanjut]').val(response.status_lanjut?.toLowerCase());
+                formInfoPasienResep.find('input[name=kelasHarga]').val('ralan');
+
+                riwayatResep(response.no_rkm_medis)
+
+                if (response.penjab?.png_jawab?.includes('BPJS')) {
                     formSoapPoli.find('input[name=no_peserta]').removeClass('text-bg-danger').addClass('text-bg-success')
                     formSoapPoli.find('input[name=png_jawab]').removeClass('text-bg-danger').addClass('text-bg-success')
                     $('#btnInfoPeserta').removeClass('btn-danger').addClass('btn-success')
-                }else{
+                } else {
                     formSoapPoli.find('input[name=no_peserta]').addClass('text-bg-danger').removeClass('text-bg-success')
                     formSoapPoli.find('input[name=png_jawab]').addClass('text-bg-danger').removeClass('text-bg-success')
                     $('#btnInfoPeserta').addClass('btn-danger').removeClass('btn-success')
@@ -236,7 +245,7 @@
                 formAsmedRanapKandungan.find('input[name=kd_dokter]').val(`${response.kd_dokter}`);
                 formAsmedRanapKandungan.find('input[name=nm_dokter]').val(`${response.dokter.nm_dokter}`);
 
-                riwayatResep(response.no_rkm_medis)
+
                 setPemeriksaanPoli(no_rawat, response.kd_poli)
                 getResepObat(no_rawat)
                 setTabMenuAsesmen(no_rawat, response.dokter.kd_sps);
@@ -343,26 +352,26 @@
                 const instruksi = pemeriksaanByDokter.instruksi ? pemeriksaanByDokter.instruksi : pemeriksaanByPerawat.instruksi
                 formSoapPoli.find('textarea[name=instruksi]').val(instruksi.length ? instruksi : '-')
 
-                const suhu_tubuh = pemeriksaanByDokter.suhu_tubuh ? pemeriksaanByDokter.suhu_tubuh:  pemeriksaanByPerawat.suhu_tubuh
-                formSoapPoli.find('input[name=suhu_tubuh]').val(suhu_tubuh.length ? suhu_tubuh: '-')
+                const suhu_tubuh = pemeriksaanByDokter.suhu_tubuh ? pemeriksaanByDokter.suhu_tubuh : pemeriksaanByPerawat.suhu_tubuh
+                formSoapPoli.find('input[name=suhu_tubuh]').val(suhu_tubuh.length ? suhu_tubuh : '-')
 
-                const nadi = pemeriksaanByDokter.nadi ? pemeriksaanByDokter.nadi:  pemeriksaanByPerawat.nadi
-                formSoapPoli.find('input[name=nadi]').val(nadi.length ? nadi: '-')
+                const nadi = pemeriksaanByDokter.nadi ? pemeriksaanByDokter.nadi : pemeriksaanByPerawat.nadi
+                formSoapPoli.find('input[name=nadi]').val(nadi.length ? nadi : '-')
 
-                const tinggi = pemeriksaanByDokter.tinggi ? pemeriksaanByDokter.tinggi:  pemeriksaanByPerawat.tinggi
-                formSoapPoli.find('input[name=tinggi]').val(tinggi.length ? tinggi: '-')
+                const tinggi = pemeriksaanByDokter.tinggi ? pemeriksaanByDokter.tinggi : pemeriksaanByPerawat.tinggi
+                formSoapPoli.find('input[name=tinggi]').val(tinggi.length ? tinggi : '-')
 
-                const berat = pemeriksaanByDokter.berat ? pemeriksaanByDokter.berat:  pemeriksaanByPerawat.berat
-                formSoapPoli.find('input[name=berat]').val(berat.length ? berat: '-')
+                const berat = pemeriksaanByDokter.berat ? pemeriksaanByDokter.berat : pemeriksaanByPerawat.berat
+                formSoapPoli.find('input[name=berat]').val(berat.length ? berat : '-')
 
-                const respirasi = pemeriksaanByDokter.respirasi ? pemeriksaanByDokter.respirasi:  pemeriksaanByPerawat.respirasi
-                formSoapPoli.find('input[name=respirasi]').val(respirasi.length ? respirasi: '-')
+                const respirasi = pemeriksaanByDokter.respirasi ? pemeriksaanByDokter.respirasi : pemeriksaanByPerawat.respirasi
+                formSoapPoli.find('input[name=respirasi]').val(respirasi.length ? respirasi : '-')
 
-                const tensi = pemeriksaanByDokter.tensi ? pemeriksaanByDokter.tensi:  pemeriksaanByPerawat.tensi
-                formSoapPoli.find('input[name=tensi]').val(tensi.length ? tensi: '-')
+                const tensi = pemeriksaanByDokter.tensi ? pemeriksaanByDokter.tensi : pemeriksaanByPerawat.tensi
+                formSoapPoli.find('input[name=tensi]').val(tensi.length ? tensi : '-')
 
-                const spo2 = pemeriksaanByDokter.spo2 ? pemeriksaanByDokter.spo2:  pemeriksaanByPerawat.spo2
-                formSoapPoli.find('input[name=spo2]').val(spo2.length ? spo2: '-')
+                const spo2 = pemeriksaanByDokter.spo2 ? pemeriksaanByDokter.spo2 : pemeriksaanByPerawat.spo2
+                formSoapPoli.find('input[name=spo2]').val(spo2.length ? spo2 : '-')
 
                 // const o2 = pemeriksaanByDokter.o2 ? pemeriksaanByDokter.o2:  pemeriksaanByPerawat.o2
                 //
@@ -371,14 +380,14 @@
 
 
 
-                const gcs = pemeriksaanByDokter.gcs ? pemeriksaanByDokter.gcs:  pemeriksaanByPerawat.gcs
-                formSoapPoli.find('input[name=gcs]').val(gcs.length ? gcs: '-')
+                const gcs = pemeriksaanByDokter.gcs ? pemeriksaanByDokter.gcs : pemeriksaanByPerawat.gcs
+                formSoapPoli.find('input[name=gcs]').val(gcs.length ? gcs : '-')
 
-                const kesadaran = pemeriksaanByDokter.kesadaran ? pemeriksaanByDokter.kesadaran:  pemeriksaanByPerawat.kesadaran
-                formSoapPoli.find('select[name=kesadaran]').val(kesadaran.length ? kesadaran: '-')
+                const kesadaran = pemeriksaanByDokter.kesadaran ? pemeriksaanByDokter.kesadaran : pemeriksaanByPerawat.kesadaran
+                formSoapPoli.find('select[name=kesadaran]').val(kesadaran.length ? kesadaran : '-')
 
-                const alergi = pemeriksaanByDokter.alergi ? pemeriksaanByDokter.alergi:  pemeriksaanByPerawat.alergi
-                formSoapPoli.find('input[name=alergi]').val(alergi.length ? alergi: '-')
+                const alergi = pemeriksaanByDokter.alergi ? pemeriksaanByDokter.alergi : pemeriksaanByPerawat.alergi
+                formSoapPoli.find('input[name=alergi]').val(alergi.length ? alergi : '-')
 
 
                 const tgl_perawatan = pemeriksaanByDokter.tgl_perawatan ? pemeriksaanByDokter.tgl_perawatan : pemeriksaanByPerawat.tgl_perawatan

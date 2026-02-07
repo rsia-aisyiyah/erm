@@ -58,7 +58,7 @@
         </div>
     </div>
     <div class="tab-pane fade" id="riwayat">
-        <table class="table table-responsive" id="tb-resep-riwayat" width="100%">
+        <table class="table table-responsive tb-resep-riwayat" id="" width="100%">
             <thead>
                 <tr>
                     <th>Tanggal</th>

@@ -252,70 +252,7 @@
             })
         }
 
-        function riwayatResep(no_rm) {
-            $('#tb-resep-riwayat tbody').empty()
-            $.ajax({
-                url: `/erm/resep/riwayat/${no_rm}`,
-                method: 'GET',
-            }).done((response) => {
-                const resep = response.map((item) => {
-                    let resepDokter = '';
-                    let resepRacikan = '';
-                    if (item.resep_dokter) {
-                        resepDokter = item.resep_dokter.map((items) => {
-                            return `<li>${items.data_barang.nama_brng} @${items.jml} ${items.data_barang?.kode_satuan?.satuan} ${items.aturan_pakai}</li>`
-                        }).join('')
-                    }
-                    if (item.resep_racikan) {
-                        resepRacikan = item.resep_racikan.map((items) => {
-                            const obat = items.detail.map((itemsObat) => {
-                                return `<span class="badge text-bg-success">${itemsObat.databarang.nama_brng}</span>`
-                            }).join(', ')
-
-                            return `<li>
-                                           ${items.nama_racik} @${items.jml_dr} ${items.metode.nm_racik} ${items.aturan_pakai}<br/>
-                                           ${obat}
-                                    </li>`
-                        }).join('')
-                    }
-
-                    if (item.tgl_penyerahan === '0000-00-00' && item.tgl_perawatan) {
-                        return '';
-                    }
-                    return `<tr>
-                                <td width="15%">${formatTanggal(item.tgl_peresepan)}</td>
-                                <td><ul>${resepDokter}</ul></td>
-                                <td><ul>${resepRacikan}</ul></td>
-                                <td><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(${item.no_resep})" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy Resep</button></td>
-
-                            </tr>`
-
-                })
-                $('#tb-resep-riwayat tbody').append(resep)
-
-                // $.map(response, (resep) => {
-                //     if (resep.resep_dokter.length > 0 || resep.resep_racikan.length > 0) {
-                //         html = `<tr>`
-                //         html += `<td width="15%">${formatTanggal(resep.tgl_peresepan)} <br>${resep.no_resep}</td>`
-                //         html += `<td><ul style="disc inside">`
-                //         $.map(resep.resep_dokter, (dokter) => {
-                //             html += `<li>${dokter.data_barang.nama_brng}, ${dokter.jml} ${dokter.data_barang.kode_satuan.satuan}, aturan pakai ${dokter.aturan_pakai}</li>`
-                //         })
-                //         $.map(resep.resep_racikan, (racikan) => {
-                //             html += `<li>${racikan.nama_racik}, jumlah ${racikan.jml_dr} ${racikan.metode.nm_racik}, aturan pakai ${racikan.aturan_pakai}</li>`
-                //             $.map(racikan.detail_racikan, (detail) => {
-                //                 html += `<span class="badge rounded-pill text-bg-success">${detail.databarang.nama_brng}</span>`
-                //             })
-                //         })
-                //
-                //         html += `</ul></td>`
-                //         html += `<td><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(${resep.no_resep})" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy Resep</button></td>`;
-                //         html += `<tr>`
-                //         $('#tb-resep-riwayat tbody').append(html)
-                //     }
-                // })
-            })
-        }
+        
 
         function cekAlergi(no_rm) {
             $.ajax({

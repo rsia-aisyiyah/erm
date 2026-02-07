@@ -385,7 +385,7 @@
                     {
                         title: 'Catatan',
                         data: 'reg_periksa.no_rkm_medis',
-                        render: function (data) {
+                        render: function(data) {
                             return `<span class="" id="riwayat_lab_${data}"></span>`
                         },
                         name: 'no_rkm_medis',
@@ -505,6 +505,13 @@
                 $('#formResepUgd input[name="kd_dokter"]').val(response.kd_dokter)
 
 
+                $('#formInfoPasienResep').find('input[name=no_rawat]').val(response.no_rawat);
+                $('#formInfoPasienResep').find('input[name=no_rkm_medis]').val(response.no_rkm_medis);
+                $('#formInfoPasienResep').find('input[name=kd_dokter]').val(response.kd_dokter);
+                $('#formInfoPasienResep').find('input[name=status_lanjut]').val(response.status_lanjut.toLowerCase());
+                $('#formInfoPasienResep').find('input[name=kelasHarga]').val('ralan');
+
+
                 const formInfoPasien = $('#formInfoPasien');
 
                 formInfoPasien.find('input[name=no_rawat]').val(noRawat);
@@ -559,50 +566,6 @@
             tbSoapUgd(noRawat);
 
 
-        }
-
-
-
-        function tulisPlan(no_rawat) {
-            $.ajax({
-                url: '/erm/resep/obat/ambil',
-                method: 'GET',
-                data: {
-                    no_rawat: no_rawat,
-                },
-                success: function(response) {
-                    teksRd = '';
-                    teksRr = '';
-                    $.map(response, function(res) {
-                        $.map(res.resep_dokter, function(rd) {
-                            teksRd += `${rd.data_barang.nama_brng}, jml : ${rd.jml} ${rd.data_barang.kode_satuan.satuan} aturan pakai ${rd.aturan_pakai} \n`;
-                        })
-
-                        $.map(res.resep_racikan, function(rr) {
-                            teksRr += `${rr.metode.nm_racik} ${rr.nama_racik}, jml : ${rr.jml_dr} aturan pakai ${rr.aturan_pakai}, isian :  \n`
-                            let no = 1
-                            $.map(rr.detail_racikan, function(dr) {
-                                if (rr.no_racik == dr.no_racik) {
-                                    teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, jml : ${dr.jml}\n`
-                                    no++;
-                                }
-                            })
-                            teksRr += '\n';
-                        })
-
-                    })
-                    $('#formSoapUgd textarea[name=plan]').val(`${teksRd} \n ${teksRr}`)
-
-                },
-                error: function(request, status, error) {
-                    Swal.fire(
-                        'Gagal !',
-                        'Tidak tertulis di PLAN<br/>' + request.responseJSON.message,
-                        'error',
-                    )
-
-                }
-            })
         }
     </script>
 @endpush

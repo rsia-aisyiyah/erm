@@ -32,10 +32,12 @@
 @push('script')
     <script>
         function showDetailRacikan(no_resep, no_racik) {
+            console.log('RESPONSE ===', response);
             $.get('/erm/resep/racik/detail/ambil', {
                 no_resep: no_resep,
                 no_racik: no_racik
             }).done((response) => {
+
                 $('#tabelDetailResep tbody').empty()
                 if (response.length) {
                     response.map((resep, index) => {
