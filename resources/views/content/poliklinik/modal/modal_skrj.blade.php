@@ -11,13 +11,13 @@
                     <div class="row gy-2">
                         <div class="col-md-6 col-sm-12">
                             <label for="no_rawat" class="form-label mb-0">No. Rawat</label>
-                            <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat"
+                            <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat" name="no_rawat"
                                 placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label for="pasien" class="form-label mb-0">Pasien</label>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control form-control-sm pasien" id="pasien"
+                                <input type="text" class="form-control form-control-sm pasien" id="pasien" name="pasien"
                                     placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                                 <button class="btn btn-secondary btn-sm btn-cari-peserta" type="button"
                                     style="font-size:12px"><i class="bi bi-eye"></i></button>
@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label for="tgl_lahir" class="form-label mb-0">Tanggal Lahir</label>
-                            <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir"
+                            <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" name="tgl_lahir"
                                 placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                         </div>
                         <div class="col-md-6 col-sm-12">
