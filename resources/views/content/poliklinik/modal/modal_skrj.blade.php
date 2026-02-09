@@ -132,6 +132,7 @@
 
         $('#modalSkrj').on('hidden.bs.modal', function() {
             $('.opt-rawat').empty();
+            $('#formModalSkrj').trigger('reset');
         });
 
         function tarikRencanaKontrol(data) {
@@ -186,9 +187,7 @@
                         Swal.fire('Peringatan', res.metaData.message, 'warning');
                         return;
                     }
-
                     handleSkrjResponse(res, payloadBpjs);
-
                 },
                 error(request, status, error) {
                     alertErrorAjax(request);
@@ -239,16 +238,16 @@
                 })
 
                 $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.no_kartu + '\', \'' + response.tglsep + '\')');
-                formModalSkrj.find('.no_rawat').val(response.no_rawat)
-                formModalSkrj.find('.no_sep').val(response.no_sep)
-                formModalSkrj.find('.pasien').val(response.nomr + ' - ' + response.nama_pasien + ' (' + response.reg_periksa.umurdaftar + ')');
-                formModalSkrj.find('.tgl_lahir').val(splitTanggal(response.tanggal_lahir))
-                formModalSkrj.find('.kode_poli').val(response.kdpolitujuan)
-                formModalSkrj.find('.nama_poli').val(response.nmpolitujuan)
-                formModalSkrj.find('.diagnosa').val(response.nmdiagnosaawal)
-                formModalSkrj.find('.nama_dokter').val(response.reg_periksa.dokter.nm_dokter)
-                formModalSkrj.find('.kode_dokter').val(response.kddpjp)
-                formModalSkrj.find('.noka').val(response.no_kartu)
+                formModalSkrj.find('input[name=no_rawat]').val(response.no_rawat)
+                formModalSkrj.find('input[name=no_sep]').val(response.no_sep)
+                formModalSkrj.find('input[name=pasien]').val(response.nomr + ' - ' + response.nama_pasien + ' (' + response.reg_periksa.umurdaftar + ')');
+                formModalSkrj.find('input[name=tgl_lahir]').val(splitTanggal(response.tanggal_lahir))
+                formModalSkrj.find('input[name=kode_poli]').val(response.kdpolitujuan)
+                formModalSkrj.find('input[name=nama_poli]').val(response.nmpolitujuan)
+                formModalSkrj.find('input[name=diagnosa]').val(response.nmdiagnosaawal)
+                formModalSkrj.find('input[name=nama_dokter]').val(response.reg_periksa.dokter.nm_dokter)
+                formModalSkrj.find('input[name=kode_dokter]').val(response.kddpjp)
+                formModalSkrj.find('input[name=noka]').val(response.no_kartu)
 
                 if (response.surat_kontrol != null) {
                     formModalSkrj.find('input[name=no_surat]').val(response.surat_kontrol.no_surat).addClass('is-valid')
@@ -278,11 +277,6 @@
             })
         }
 
-        //
-        // function setTanggalKontrol(param) {
-        //
-        //     tanggalKontrol = $(param).val()
-        // }
 
         function rujukanExpired(tanggal) {
             $('.rujukan-expired').empty()
