@@ -25,10 +25,18 @@
         </div>
     </div>
     @include('content.poliklinik.modal.modal_icare')
+    @include('content.poliklinik.modal.modal_rujukan_keluar')
+    @include('content.poliklinik.modal.modal_kontrol_umum')
+    @include('content.poliklinik.modal.modal_spri')
+    @include('content.poliklinik.modal.modal_skrj')
+    @include('content.poliklinik.modal.modal_peserta')
+
+
 @endsection
 
 
 @push('script')
+    <script type="text/javascript" src="{{ asset('js/context-menu/sep.js') }}"></script>
     <script>
         const start = $('#start_date');
         const end = $('#end_date');
@@ -51,6 +59,29 @@
                     d.start_date = start.val();
                     d.end_date = end.val();
                 }
+            },
+            createdRow: (element, data, index, meta) => {
+                const row = $(element);
+                console.log('DATA SEP === ', data)
+                const dataAttr = {
+                    'no_rawat': data.no_rawat,
+                    'no_rkm_medis': data.reg_periksa.no_rkm_medis,
+                    'kd_dokter': data.reg_periksa.kd_dokter,
+                    'tgl_lahir': data.pasien.tgl_lahir,
+                    'umurdaftar': data.reg_periksa.umurdaftar,
+                    'tgl_reg': data.reg_periksa.tgl_registrasi,
+                    'sttsumur': data.reg_periksa.sttsumur,
+                    'no_peserta': data.pasien.no_peserta,
+                    'sep': data.no_sep,
+                    'tglsep': data.tglsep,
+                    'jnspelayanan': data.jnspelayanan,
+                    // 'kd_dokter_bpjs': data.reg_periksa.dokter.mapping_dokter.kd_dokter_bpjs,
+                    // 'kd_pj': data.reg_periksa.kd_pj,
+                    // 'kd_sps': data.reg_periksa.dokter.kd_sps
+                }
+                //
+                row.attr('data-pasien', JSON.stringify(dataAttr))
+                    .addClass('row-sep');
             },
             columns: [{
                 data: 'kddpjp',
@@ -99,7 +130,9 @@
                 data: 'jnspelayanan',
                 name: 'jnspelayanan',
                 render: (data, type, row, meta) => {
-                    return `${row.jnspelayanan =='2' ? 'Rawat Jalan' : 'Rawat Inap'}`
+                    const jenis = `${row.jnspelayanan =='2' ? 'Rawat Jalan' : 'Rawat Inap'}`;
+                    const colorClass = `${row.jnspelayanan =='2' ? 'text-success' : 'text-danger'}`
+                    return `<strong class="${colorClass}">${jenis}</strong>`
                 },
                 title: 'Jenis Pelayanan'
             }]

@@ -32,6 +32,8 @@
         </div>
     </div>
 
+    @include('content.ranap.modal.modal_riwayat_infeksi')
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> --}}
@@ -104,6 +106,66 @@
             })
         })
 
+
+        function cekSep(sep) {
+            sep = $.ajax({
+                url: '/erm/sep/' + sep,
+                dataType: 'JSON',
+            });
+            return sep;
+        }
+
+
+        function getRujukanPcarePeserta(noka) {
+            let rujukan = $.ajax({
+                url: '/erm/bridging/rujukan/pcare/peserta/' + noka,
+                dataType: 'JSON',
+                method: 'GET',
+            });
+
+            return rujukan;
+        }
+
+
+        function getPoliBpjs(kdPoli) {
+            let poli = $.ajax({
+                url: '/erm/poliklinik/bpjs/' + kdPoli,
+                dataType: 'JSON',
+                error: (request) => {
+                    alertSessionExpired(request.status)
+                },
+            });
+
+            return poli;
+        }
+
+        function cariDokterPoli(kdPoli) {
+
+            getPoliBpjs(kdPoli).done(function (response) {
+                no = 1;
+                html = '';
+                kd_dokter = '';
+                $.map(response, function (res) {
+                    $.map(res.poliklinik.mapping_poli, function (data) {
+                        if (kd_dokter != data.dokter.kd_dokter) {
+                            html += '<tr>'
+                            html += '<td>' + no + '</td>'
+                            html += '<td><a href="javascript:void(0)" onclick="setDokterSpesialis(\'' + data.dokter.mapping_dokter.kd_dokter_bpjs + '\', \'' + data.dokter.mapping_dokter.nm_dokter_bpjs + '\')"><span style="font-size:12px" class="badge text-bg-primary">' + data.dokter.mapping_dokter.kd_dokter_bpjs + '</span></a></td>'
+                            html += '<td>' + data.dokter.nm_dokter + '</td>'
+                            html += '</tr>'
+                            no++;
+                            kd_dokter = data.dokter.kd_dokter;
+                        }
+                    })
+                })
+                $('.table-dokter tbody').append(html)
+                $('#modalDokter').modal('show');
+                tanggalKontrol = $('#tgl_kontrol').val();
+                $('#modalSkrj').modal('hide');
+            })
+
+
+        }
 
 
         function getBaseUrl(urlSegments = '') {
@@ -723,14 +785,6 @@
 
             return resDokter;
         }
-
-        function reloadTabelPoli() {
-            tanggal = localStorage.getItem('tanggal') ? localStorage.getItem('tanggal') : "{{ date('Y-m-d') }}"
-            hitungPanggilan();
-            $('#tb_pasien').DataTable().destroy();
-            tb_pasien(tanggal);
-        }
-
 
         $('#submit').click(function() {})
 
@@ -1464,9 +1518,31 @@
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
         $('.select2').select2({})
+
+        function renderInfectionAlertRow(container, alertData, no_rkm_medis = null) {
+
+            if (!alertData || alertData.infection_alert !== true) {
+                return;
+            }
+
+            const badgeClass = alertData.highest_risk === 'MODERATE'
+                ? 'badge-warning'
+                : 'badge-danger';
+
+            const title = alertData.highest_risk === 'MODERATE'
+                ? '⚠️ Risiko Infeksi Sedang'
+                : '⚠️Risiko Infeksi Tinggi';
+
+            let html = `
+        <div class="alert alert-danger p-2" style="cursor: pointer" onclick="showLabInfectionAlert('${no_rkm_medis}')">
+            <strong>${title}</strong>
+        </div>`;
+            container.html(html);
+        }
+
     </script>
-    @stack('script')
     <script type="text/javascript" src="{{ asset('js/context-menu/items.js') }}"></script>
+    @stack('script')
 </body>
 
 </html>

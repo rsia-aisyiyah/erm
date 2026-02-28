@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
         $route->put('/saran-kesan', [SaranKesanLabController::class, 'update']);
         $route->delete('/saran-kesan', [SaranKesanLabController::class, 'destroy']);
 
+	    $route->get('/riwayat-hasil/{no_rkm_medis}/{jns_perawatan?}', [DetailPemeriksaanLabController::class, 'history']);
+
     });
 
 	Route::prefix('lab-pa')->group(function($route){

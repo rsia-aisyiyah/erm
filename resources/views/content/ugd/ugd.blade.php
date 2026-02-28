@@ -227,6 +227,30 @@
                     if (data.asmed_igd == null) {
                         $(row).addClass('table-danger').prop('title', 'Belum Ada Asesmen Medis')
                     }
+
+                    const alertContainer = $('<div class="infection-alert mt-2"></div>');
+                    $(row).find('td:eq(9)').append(alertContainer);
+
+                    if (!window.labAlertCache) {
+                        window.labAlertCache = {};
+                    }
+
+                    const noRkmMedis = data.no_rkm_medis;
+
+                    if (window.labAlertCache[noRkmMedis]) {
+                        renderInfectionAlertRow(alertContainer, window.labAlertCache[noRkmMedis], noRkmMedis);
+                        return;
+                    }
+
+                    $.get(`/erm/lab/riwayat-hasil/${noRkmMedis}`)
+                        .done(response => {
+                            window.labAlertCache[noRkmMedis] = response.infection_alert;
+                            renderInfectionAlertRow(alertContainer, response.infection_alert, noRkmMedis);
+                            if (response.infection_alert?.highest_risk === 'HIGH') {
+                                $(`#pasien[data-no-rkm-medis="${noRkmMedis}"]`)
+                                    .addClass('text-danger fw-bold').attr('onclick', `showLabInfectionAlert('${noRkmMedis}')`);
+                            }
+                        });
                 },
                 columns: [{
                         data: '',
@@ -283,7 +307,7 @@
                             }
 
                             kamarInap = Object.keys(row.kamar_inap).length ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
-                            return `<strong>${row.no_rkm_medis}<br/>${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
+                            return `<strong id="pasien" data-no-rkm-medis="${row.no_rkm_medis}">${row.no_rkm_medis}<br/>${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
                         }
                     },
                     {
@@ -357,6 +381,14 @@
                                 return `<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Default tooltip"><i class="bi bi-house-add"></i></button>`
                             }
                         }
+                    },
+                    {
+                        title: 'Catatan',
+                        data: 'reg_periksa.no_rkm_medis',
+                        render: function(data) {
+                            return `<span class="" id="riwayat_lab_${data}"></span>`
+                        },
+                        name: 'no_rkm_medis',
                     },
                     {
                         title: 'Pindah Kamar',
@@ -473,6 +505,13 @@
                 $('#formResepUgd input[name="kd_dokter"]').val(response.kd_dokter)
 
 
+                $('#formInfoPasienResep').find('input[name=no_rawat]').val(response.no_rawat);
+                $('#formInfoPasienResep').find('input[name=no_rkm_medis]').val(response.no_rkm_medis);
+                $('#formInfoPasienResep').find('input[name=kd_dokter]').val(response.kd_dokter);
+                $('#formInfoPasienResep').find('input[name=status_lanjut]').val(response.status_lanjut.toLowerCase());
+                $('#formInfoPasienResep').find('input[name=kelasHarga]').val('ralan');
+
+
                 const formInfoPasien = $('#formInfoPasien');
 
                 formInfoPasien.find('input[name=no_rawat]').val(noRawat);
@@ -527,50 +566,6 @@
             tbSoapUgd(noRawat);
 
 
-        }
-
-
-
-        function tulisPlan(no_rawat) {
-            $.ajax({
-                url: '/erm/resep/obat/ambil',
-                method: 'GET',
-                data: {
-                    no_rawat: no_rawat,
-                },
-                success: function(response) {
-                    teksRd = '';
-                    teksRr = '';
-                    $.map(response, function(res) {
-                        $.map(res.resep_dokter, function(rd) {
-                            teksRd += `${rd.data_barang.nama_brng}, jml : ${rd.jml} ${rd.data_barang.kode_satuan.satuan} aturan pakai ${rd.aturan_pakai} \n`;
-                        })
-
-                        $.map(res.resep_racikan, function(rr) {
-                            teksRr += `${rr.metode.nm_racik} ${rr.nama_racik}, jml : ${rr.jml_dr} aturan pakai ${rr.aturan_pakai}, isian :  \n`
-                            let no = 1
-                            $.map(rr.detail_racikan, function(dr) {
-                                if (rr.no_racik == dr.no_racik) {
-                                    teksRr += `   - ${dr.databarang.nama_brng} dosis ${dr.kandungan} mg, jml : ${dr.jml}\n`
-                                    no++;
-                                }
-                            })
-                            teksRr += '\n';
-                        })
-
-                    })
-                    $('#formSoapUgd textarea[name=plan]').val(`${teksRd} \n ${teksRr}`)
-
-                },
-                error: function(request, status, error) {
-                    Swal.fire(
-                        'Gagal !',
-                        'Tidak tertulis di PLAN<br/>' + request.responseJSON.message,
-                        'error',
-                    )
-
-                }
-            })
         }
     </script>
 @endpush

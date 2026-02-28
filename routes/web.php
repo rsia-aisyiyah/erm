@@ -90,6 +90,11 @@ Route::post('/login', [LoginController::class, 'authenticate'])
 	->name('login')
 	->middleware('guest');
 
+//Route::get('/erm', function () {
+////		return redirect('/poliklinik');
+//	return 'wkwkwkwkw';
+//});
+
 Route::middleware('auth')->group(function () {
 	Route::get('/logout', [LoginController::class, 'logout']);
 	Route::get('/', function () {
@@ -328,7 +333,8 @@ Route::middleware('auth')->group(function () {
 	Route::get('skrining/tb/print/{id}', [SkriningTbController::class, 'print']);
 
 
-	Route::get('spri/get/{nokartu}/{tanggal}', [BridgingSPRIController::class, 'get']);
+//	Route::get('spri/get/{nokartu}/{tanggal}', [BridgingSPRIController::class, 'get']);
+	Route::get('spri/get/', [BridgingSPRIController::class, 'get']);
 	Route::post('spri/insert', [BridgingSPRIController::class, 'create']);
 	Route::get('spri/print/{noSurat}', [BridgingSPRIController::class, 'print']);
 	Route::post('rencanaKontrol/insert', [BrigdgingRencanaKontrolController::class, 'create']);
@@ -389,6 +395,7 @@ require __DIR__ . '/partials/lab.php';
 require __DIR__ . '/partials/resiko_jatuh.php';
 require __DIR__ . '/partials/databarang.php';
 require __DIR__ . '/partials/tindakan.php';
+require __DIR__ . '/partials/mapping.php';
 require __DIR__ . '/partials/logs.php';
 // Route::get('/file', function () {
 // $file = Storage::disk('custom')->url('LOGO RSIA (2).png');

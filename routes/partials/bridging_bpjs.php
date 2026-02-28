@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
             Route::post('insert', [RujukanController::class, 'insertRujukanKeluar']);
             Route::get('keluar/list/{tglPertama}/{tglKedua}', [RujukanController::class, 'getListRujukanKeluarRs']);
             Route::get('keluar/{noRujukan}', [RujukanController::class, 'getRujukanKeluar']);
-            Route::get('pcare/peserta/{noka}', [RujukanController::class, 'geRujukanPcarePeserta']);
+            Route::get('pcare/peserta/{noka}', [RujukanController::class, 'getRujukanPcarePeserta']);
             Route::get('peserta/{noka}', [RujukanController::class, 'getRujukanPeserta']);
             Route::get('list/peserta/{noka}', [RujukanController::class, 'getListRujukanPeserta']);
         });
@@ -45,3 +45,5 @@ Route::middleware('auth')->group(function () {
     });
 
 });
+
+Route::get('supertest', [ReferensiController::class, 'testConfig']);

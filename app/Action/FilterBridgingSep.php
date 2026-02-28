@@ -9,9 +9,7 @@ class FilterBridgingSep
 
     public function handle(BridgingSep $model, array $params)
     {
-        //handle null coalising
-
-        if (!empty($params['start_date']) && !empty($params['end_date'])) {
+         if (!empty($params['start_date']) && !empty($params['end_date'])) {
             $filtered = $this->filterBetween($model, $params);
         } else if (!empty($params['tahun']) && !empty($params['bulan'])) {
             $filtered = $this->filterBulan($model, $params);
