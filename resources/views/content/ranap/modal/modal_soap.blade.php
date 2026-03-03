@@ -335,7 +335,7 @@
                         </thead>
                         <tbody>
                                 ${renderHasilPermintaanLab(item.hasil)}
-                                
+
                                 <tr>
                                     <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil.length ? item.hasil[0].dokter.nm_dokter : ''}</strong></td>    
                                 </tr>
@@ -427,6 +427,10 @@
                     formInfoPasien.find('input[name="lama"]').val(`${hitungLamaHari(item.tgl_masuk)} Hari`)
                     formInfoPasien.find('input[name="diagnosa_awal"]').val(item.diagnosa_awal);
                     formInfoPasienResep.find('input[name=kelasHarga]').val(item.kamar?.kelas?.toLowerCase().replace(/\s/g, ''));
+                
+                    if(item.kamar.kelas === 'Kelas Utama') {
+                        formInfoPasien.find('input[name="kelasHarga"]').val('kelas3');
+                    }
                 })
 
                 $('#nomor_rawat').val(response.no_rawat);
