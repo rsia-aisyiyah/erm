@@ -25,6 +25,7 @@ use App\Http\Controllers\HasilRadiologiController;
 use App\Http\Controllers\Icd9Controller;
 use App\Http\Controllers\JenisPerawatanRadiologiController;
 use App\Http\Controllers\KamarInapController;
+use App\Http\Controllers\KlinisResepAntibiotikController;
 use App\Http\Controllers\KomunikasiEdukasiObatPulangController;
 use App\Http\Controllers\LaporanOperasiController;
 use App\Http\Controllers\LoginController;
@@ -265,6 +266,10 @@ Route::middleware('auth')->group(function () {
 	Route::post('/resep/racik/template/tambah', [RsiaMappingRacikanController::class, 'tambah']);
 	Route::post('/resep/racik/template/detail/tambah', [RsiaMappingRacikanDetailController::class, 'tambah']);
 	Route::delete('/resep/racik/template/detail/hapus', [RsiaMappingRacikanDetailController::class, 'hapus']);
+
+	Route::get('/resep/ppra', [KlinisResepAntibiotikController::class, 'get']);
+	Route::post('/resep/ppra', [KlinisResepAntibiotikController::class, 'create']);
+	Route::delete('/resep/ppra', [KlinisResepAntibiotikController::class, 'delete']);
 
 	Route::get('/pegawai/ambil', [PegawaiController::class, 'ambil']);
 

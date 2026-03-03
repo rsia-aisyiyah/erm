@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DataBarang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DataBarangController extends Controller
 {
@@ -25,7 +26,7 @@ class DataBarangController extends Controller
     {
         $query = $this->barang;
         if ($request->nama) {
-            $query = $query->where('nama_brng', 'like', '%'.$request->nama.'%');
+            $query = $query->where('nama_brng', 'like', '%' . $request->nama . '%');
         }
 
         $hasil = $query->get();
@@ -34,29 +35,31 @@ class DataBarangController extends Controller
     }
     public function cari(Request $request)
     {
-        $hasil = $this->barang->where('nama_brng', 'like', $request->nama.'%')->limit(10)->with([
-            'gudangBarang' => function ($q) {
-                return $q
-                    ->where('kd_bangsal', 'RM7')
-                    ->sum('stok');
-            }
-        ])
-            ->whereHas('gudangBarang', function ($q) {
-                return $q->where('kd_bangsal', 'RM7');
-            })->get();
+        DB::enableQueryLog();
+        $hasil = $this->barang
+            ->select(['databarang.*', 'rsia_ppra_mapping_obat.kode_brng as kode_mapping', 'rsia_ppra_mapping_obat.status_notif'])
+            ->leftJoin('rsia_ppra_mapping_obat', 'databarang.kode_brng', '=', 'rsia_ppra_mapping_obat.kode_brng')
+            ->where('nama_brng', 'like', $request->nama . '%')
+            ->limit(10)
+            ->with('gudangBarang', function ($q) use ($request) {
+                return $q->where('kd_bangsal', $request->gudang);
+            })
+            ->get();
 
         if ($hasil) {
             $response =
                 response()->json([
                     'success' => true,
-                    'message' => 'Data obat dan alkes berdasarkan pencarian = '.$request->nama,
+                    'message' => 'Data obat dan alkes berdasarkan pencarian = ' . $request->nama,
                     'data' => $hasil,
+                    'sql' => DB::getQueryLog()
                 ], 200);
         } else {
             $response =
                 response()->json([
                     'success' => false,
                     'message' => 'Tidak menemukan obat/alkes',
+                    'sql' => $hasil->toSql()
                 ], 404);
         }
         return $response;
@@ -65,7 +68,9 @@ class DataBarangController extends Controller
     function get(string $kode_brng)
     {
         $data = $this->barang
-            ->where('kode_brng', $kode_brng)->first();
+            ->select(['*', 'rsia_ppra_mapping_obat.kode_brng as kode_mapping', 'rsia_ppra_mapping_obat.status_notif'])
+            ->leftJoin('rsia_ppra_mapping_obat', 'databarang.kode_brng', '=', 'rsia_ppra_mapping_obat.kode_brng')
+            ->where('databarang.kode_brng', $kode_brng)->first();
 
         return response()->json($data);
     }
@@ -78,7 +83,7 @@ class DataBarangController extends Controller
         return DataTables()->of($databarang)
             ->filter(function ($query) use ($request) {
                 if ($request->has('search') && $request->get('search')['value']) {
-                    return $query->where('nama_brng', 'like', '%'.$request->get('search')['value'].'%');
+                    return $query->where('nama_brng', 'like', '%' . $request->get('search')['value'] . '%');
                 }
             })
             ->make(true);

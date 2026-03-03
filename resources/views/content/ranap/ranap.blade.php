@@ -167,6 +167,7 @@
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_anak')
     @include('content.poliklinik.modal.modal_icare')
     @include('content.ugd.modal.asmed')
+    @include('content.ranap.modal.modal_persetujuan_ppra')
 
     <div class="modal fade" id="modalEwsRanap" tabindex="-1" aria-labelledby="modalEwsRanapLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -317,6 +318,8 @@
             </div>
         </div>
     </div>
+    {{--modal ppra --}}
+    
 @endsection
 
 @push('script')
@@ -1113,5 +1116,6 @@
             tableGrafikHarian.fnDestroy();
             tableGrafikHarian = null;
         });
+
     </script>
 @endpush
