@@ -84,8 +84,11 @@
         </div>
     </div>
 </div>
+
+
 @push('script')
     <script>
+        const modalDetailPpra = $('#modalDetailPpra')
         const btnTambahObatUmum = $('.tambah_umum')
         const bodyResepRacikan = $('#body_racikan')
         const bodyResepObatUmum = $('#tb-resep').find('tbody')
@@ -217,7 +220,7 @@
                         return `<span class="badge bg-success">${item.databarang.nama_brng} (${item.kandungan} mg)</span>`
                     })
                     const rowObat = `<tr class="table-sm">
-                      
+
                             <td colspan="5">${obat.join('|')}</td>
                             <td></td>
                         </tr>`
@@ -357,6 +360,7 @@
                     <span>Rp.</span>
                     <span class="labelHarga">${harga}</span>
                     <input type="hidden" id="harga" name="harga" value="${response.ralan}" />
+                    <input type="hidden" id="status_notif_ppra" name="status_notif_ppra" value="${response.status_notif}" />
                 </div>
             </td>
             <td>
@@ -398,8 +402,8 @@
             const jumlah = $(`.obatUmum-${kode_brng}`).find('td:eq(1)').find('.jml_umum').val();
             const aturanPakai = $(`.obatUmum-${kode_brng}`).find('td:eq(2)').find('.aturan_pakai').val();
             const no_rawat = $('#formInfoPasienResep').find('[name=no_rawat]').val();
+            const status_lanjut = $('#formInfoPasienResep').find('[name=status_lanjut]').val();
             $.post(`/erm/resep/umum/ubah`, {
-                _token: "{{ csrf_token() }}",
                 no_resep: no_resep,
                 kode_brng: kode_brng,
                 jml: jumlah,
@@ -408,6 +412,33 @@
                 getResepObat(no_rawat)
                 btnTambahObatUmum.removeClass('d-none')
                 swalToast('Berhasil Mengubah Obat')
+
+                const status_notif_ppra = $('#status_notif_ppra').val();
+                if (status_lanjut === 'ranap' && status_notif_ppra === '1') {
+                    Swal.fire({
+                        title: 'Obat ini masuk dalam daftar PPRA',
+                        text: "Apakah anda ingin mengubah/menambah form persetujuan PPRA ?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, lihat sekarang!',
+                        cancelButtonText: 'Tidak, nanti saja!',
+
+                    }).then((response) => {
+                        if (response.isConfirmed) {
+                            modalDetailPpra.find('input[name="no_resep"]').val(no_resep);
+                            modalDetailPpra.find('input[name="no_rawat"]').val(no_rawat);
+                            modalDetailPpra.find('input[name="kode_brng"]').val(kode_brng);
+                            modalDetailPpra.find('input[name="jumlah"]').val(jumlah);
+                            modalDetailPpra.find('input[name="aturan_pakai"]').val(aturanPakai);
+                            modalDetailPpra.find('input[name="nama_obat"]').val($(`.obatUmum-${kode_brng}`).find('td:eq(0)').text());
+                            modalDetailPpra.find('#btnRiwayatLabPpra').attr('onclick', `hasilKritis('${no_rawat}')`)
+                            modalDetailPpra.modal('show')
+                        }   
+                    })
+                }
+
                 tulisPlan()
             }).fail((error) => {
                 Swal.fire({
@@ -502,7 +533,8 @@
                             </td>`;
             html += '<td>';
             html +=
-                '<input type="text" class="jml_umum form-control form-control-sm form-underline"/>';
+                `<input type="text" class="jml_umum form-control form-control-sm form-underline"/>
+                <input type="hidden" class="status_notif_ppra form-control form-control-sm form-underline"/>`;
             html += '</td>';
             html += '<td>';
             html +=
@@ -511,7 +543,6 @@
 
             html += `<td>
                             <x-input type="hidden" id="harga" name="harga" readonly/>
-                            
                             <span class="labelHarga"></span>
                             </td>`
 
@@ -566,9 +597,28 @@
 
         function ambilObat(param) {
 
-            $('.nama_obat_umum').val($(param).data('nama'));
-            $('.kode_obat_umum').val($(param).data('id'))
-            const harga = $(param).data('harga');
+            const status_lanjut = $('#formInfoPasienResep').find('[name=status_lanjut]').val();
+
+            const item = $(param);
+            const harga = item.data('harga');
+            // const notif = item.data('notif-ppra');
+
+            if(status_lanjut === 'ranap') {
+            //     const no_rawat = $('#formInfoPasienResep').find('[name=no_rawat]').val();
+            //     const no_resep = $('.noResepText').text();
+            //     if(item.data('notif-ppra')) {
+            //         modalDetailPpra.find('input[name="no_resep"]').val(no_resep);
+            //         modalDetailPpra.find('input[name="no_rawat"]').val(no_rawat);
+            //         modalDetailPpra.find('input[name="kode_brng"]').val(item.data('id'));
+            //         modalDetailPpra.find('input[name="nama_obat"]').val(item.data('nama'));
+            //         modalDetailPpra.find('#btnRiwayatLabPpra').attr('onclick', `hasilKritis('${no_rawat}')`)
+            //         modalDetailPpra.modal('show')
+            //     }
+                $('.status_notif_ppra').val(item.data('notif-ppra'));
+            }
+
+            $('.nama_obat_umum').val(item.data('nama'));
+            $('.kode_obat_umum').val(item.data('id'))
             $('#harga').val(harga);
             $('.labelHarga').text(toRupiah(harga));
             $('.jml_umum ').val(1).trigger('change');
@@ -686,8 +736,10 @@
             const kode_obat = $('.kode_obat_umum').val()
             const jml = $('.jml_umum').val()
             const aturan_pakai = $('.aturan_pakai').val()
+            const nm_obat = $('.nama_obat_umum').val()
             const no_rawat = formInfoPasienResep.find('#no_rawat').val()
             const kd_dokter = formInfoPasienResep.find('#kd_dokter').val()
+            const status_lanjut = formInfoPasienResep.find('#status_lanjut').val();
 
             if (kode_obat && jml && aturan_pakai) {
                 $.ajax({
@@ -716,6 +768,32 @@
 
                     }
                 }).done(function() {
+                    const status_notif_ppra = $('.status_notif_ppra').val();
+                        if(status_lanjut === 'ranap' && status_notif_ppra === '1') {
+                             Swal.fire({
+                                title: 'Obat ini masuk dalam daftar PPRA',
+                                text: "Apakah anda ingin mengubah/menambah form persetujuan PPRA ?",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ya, lihat sekarang!',
+                                cancelButtonText: 'Tidak, nanti saja!',
+
+                            }).then((response) => {
+                                if (response.isConfirmed) {
+                                        modalDetailPpra.find('input[name="no_resep"]').val(no_resep);
+                                        modalDetailPpra.find('input[name="no_rawat"]').val(no_rawat);
+                                        modalDetailPpra.find('input[name="kode_brng"]').val(kode_obat);
+                                        modalDetailPpra.find('input[name="nama_obat"]').val(nm_obat);
+                                        modalDetailPpra.find('input[name="jumlah"]').val(jml);
+                                        modalDetailPpra.find('input[name="aturan_pakai"]').val(aturan_pakai);
+                                        modalDetailPpra.find('#btnRiwayatLabPpra').attr('onclick', `hasilKritis('${no_rawat}')`)
+                                        modalDetailPpra.modal('show')
+                                }
+                            })
+                        }
+
                     tulisPlan()
                 })
             } else {
@@ -811,7 +889,7 @@
                             <span>Rp. </span>    
                             <span id="labelTotalBarangRacikan">${toRupiah(total)}</span>
                         </div>
-                        
+
                     </td>
                     <td></td>
                 </tr>
@@ -837,8 +915,6 @@
         let selectedRacikanIndex = -1;
 
         function cariRacikan(racik, e) {
-            // let $list = $(".list_racik ul li");
-
             let $list = $(racik).siblings(".list_racik").find("ul li");
 
             if (e.key === "ArrowDown") {
@@ -900,6 +976,8 @@
         let selectedIndex = -1; // posisi item aktif
         function cariObat(obat, e) {
             const kelas = $('#formInfoPasienResep').find('input[name="kelasHarga"]').val();
+            const status = $('#formInfoPasienResep').find('input[name="status_lanjut"]').val();
+            const gudang = status === 'ranap' ? 'RM' : 'RM7';
             // Navigasi keyboard
             let $list = $(".list_obat ul li");
             if (e.key === "ArrowDown") {
@@ -927,6 +1005,7 @@
             $.ajax({
                 url: '/erm/obat/cari',
                 data: {
+                    'gudang' : gudang,
                     'nama': obat.value
                 },
                 success: function(response) {
@@ -934,22 +1013,25 @@
                     let html =
                         '<ul class="dropdown-menu show" style="width:auto;display:block;position:absolute;font-size:12px;max-height:200px;overflow-y:auto">';
                     $.map(response.data, function(data) {
-                        console.log('kelas ===', kelas);
-                        console.log('DATA HAGRA ===', data[kelas]);
+                        console.log('DATA ==', data );
+                        console.log('kelas ==', kelas );
+
 
                         $.map(data.gudang_barang, function(item) {
+                            const hargaKelas = data[kelas] ? data[kelas] : data.ralan;
                             if (data && data.status != "0") {
                                 if (item.stok) {
                                     html += `<li data-id="${data.kode_brng}" 
                                                 data-stok="${item.stok}" 
                                                 data-kapasitas="${data.kapasitas}" 
                                                 data-nama="${data.nama_brng}" 
-                                                data-harga="${data[kelas]}"
+                                                data-harga="${hargaKelas}"
+                                                data-notif-ppra="${data.status_notif}"
                                                 onclick="ambilObat(this)">
                                                 <a class="dropdown-item" href="#">
                                                     ${data.nama_brng} 
                                                     <span class="text-primary">
-                                                        - Rp. ${toRupiah(data[kelas])} - 
+                                                        - Rp. ${toRupiah(hargaKelas)} - 
                                                         <i><b>Stok (${item.stok})</b></i>
                                                     </span><br/>
                                                     <span class="text-disable" style="font-size:9px;color:#8b8b8b">
@@ -963,12 +1045,12 @@
                                             data-id="${data.kode_brng}" 
                                             data-stok="${item.stok}">
                                             <a class="dropdown-item text-danger" href="#">
-                                                ${data.nama_brng} - Rp. ${toRupiah(data[kelas])} - <b>Stok Kosong</b>
+                                                ${data.nama_brng} - Rp. ${toRupiah(hargaKelas)} - <b>Stok Kosong</b>
                                                 <br/><span class="text-disable" style="font-size:9px;color:#8b8b8b">
                                                         Kandungan : ${data.letak_barang}
                                                 </span>
                                             </a>
-                                             
+
                                         </li>
                                     `;
                                 }
@@ -1431,7 +1513,7 @@
                             <td>${item.no_resep}</td>
                             <td>${item.resep_dokter.length ? `<ul>${resepDokter.join('')}</ul>` : ''}</td>
                             <td>${item.resep_racikan.length ? `<ul>${resepRacikan.join('')}</ul>` : ''}</td>
-                            
+
                         </tr>
                     `
                 })
