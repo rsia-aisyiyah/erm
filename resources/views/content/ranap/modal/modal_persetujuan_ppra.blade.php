@@ -38,7 +38,7 @@
         ['value' => 'Profilaksis Non Bedah', 'label' => 'Profilaksis Non Bedah'],
         ['value' => 'Terapi Empiris', 'label' => 'Terapi Empiris'],
         ['value' => 'Terapi Definitif', 'label' => 'Terapi Definitif'],
-        ['value' => 'Lain-lain', 'label' => 'Lain-lain'],
+        ['value' => 'Lainnya', 'label' => 'Lainnya'],
     ]">
                         </x-radio-group>
                     </x-input-group>
