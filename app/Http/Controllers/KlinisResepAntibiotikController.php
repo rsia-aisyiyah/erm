@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class KlinisResepAntibiotikController extends Controller
 {
-     use ResponseTrait;
+    use ResponseTrait;
     public function create(Request $request)
     {
         $data = request()->validate([
@@ -20,7 +20,7 @@ class KlinisResepAntibiotikController extends Controller
         ]);
         $data['tanggal_input'] = now();
 
-        try{
+        try {
             $klinisResepAntibiotik = KlinisResepAntibiotik::updateOrCreate(
                 [
                     'no_rawat' => $data['no_rawat'],
@@ -31,14 +31,14 @@ class KlinisResepAntibiotikController extends Controller
             );
             return $this->successResponse($klinisResepAntibiotik, 'Data klinis resep antibiotik berhasil disimpan');
         } catch (\Exception $e) {
-            return $e;
             return $this->errorResponse($e->getMessage(), 'Gagal menyimpan data klinis resep antibiotik');
         }
     }
 
-    public function get(Request $request){
-        
-        try{
+    public function get(Request $request)
+    {
+
+        try {
             $klinisResepAntibiotik = KlinisResepAntibiotik::where('no_rawat', $request->no_rawat)
                 ->where('kode_brng', $request->kode_brng)
                 ->where('no_resep', $request->no_resep)
@@ -56,7 +56,7 @@ class KlinisResepAntibiotikController extends Controller
             'no_resep' => 'required',
         ]);
 
-        try{
+        try {
             $klinisResepAntibiotik = KlinisResepAntibiotik::where('no_rawat', $data['no_rawat'])
                 ->where('kode_brng', $data['kode_brng'])
                 ->where('no_resep', $data['no_resep'])

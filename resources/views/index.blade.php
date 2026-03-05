@@ -1023,7 +1023,7 @@
 
         function cariObatRacikan(obat, no, event) {
             let $list = $('.list_obat_' + no);
-
+            const gudang = status === 'ranap' ? 'RM' : 'RM7';
             // Handle navigasi panah & enter
             if (event) {
                 let $items = $list.find('.dropdown-item');
@@ -1064,6 +1064,7 @@
                 url: '/erm/obat/cari',
                 data: {
                     'nama': obat.value,
+                    'gudang': gudang,
                 },
                 success: function(response) {
                     let html = `
