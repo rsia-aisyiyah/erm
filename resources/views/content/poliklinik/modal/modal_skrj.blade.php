@@ -154,7 +154,9 @@
                         $('#tableSep').DataTable().ajax.reload(null, true);
                     }
                 },
-            })
+            }).fail(function(request, status, error) {
+                alertErrorAjax(request);
+            });
         }
 
         function simpanSkrj() {
@@ -203,7 +205,7 @@
             const nmPoli = $form.find('input[name=nama_poli]').val();
             const nmDokter = $form.find('input[name=nama_dokter]').val();
 
-            if (res.response) {
+            // if (res.response) {
                 const r = res.response;
 
                 const dataInsert = {
@@ -221,7 +223,9 @@
                 $('.nokontrol').val(r.noSuratKontrol);
 
                 tarikRencanaKontrol(dataInsert);
-            }
+            // }
+
+            // return false;
         }
 
 
