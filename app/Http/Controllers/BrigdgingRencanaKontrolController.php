@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSkrjRequest;
 use PDF;
 use Carbon\Carbon;
 use Milon\Barcode\DNS1D;
@@ -25,7 +26,7 @@ class BrigdgingRencanaKontrolController extends Controller
         $this->carbon = new Carbon();
     }
 
-    public function create(StoreBangsalRequest $request)
+    public function create(StoreSkrjRequest $request)
     {
         $data = $request->validated();
 
@@ -35,8 +36,8 @@ class BrigdgingRencanaKontrolController extends Controller
             $rencanaKontrol = $this->rencanaKontrol->create($data);
             $track = $this->track->insertSql($this->rencanaKontrol, $data);
             return response()->json($rencanaKontrol);
-        } catch (QueryException $e) {
-            return response()->json(['metaData' => ['Status' => 'FAILED', 'Code' => 400], 'response' => $e->errorInfo]);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
         }
     }
 

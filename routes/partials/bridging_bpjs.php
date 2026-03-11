@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
             Route::get('jadwal/{jnsKontrol}/{kdPoli}/{tanggal}', [RencanaKontrolController::class, 'getDokterSpesialis']);
             Route::get('list/{bulan}/{tahun}/{noka}/{filter}', [RencanaKontrolController::class, 'getListRencana']);
             Route::post('insert', [RencanaKontrolController::class, 'insertRencanaKontrol']);
+            Route::get('noSuratKontrol/{noSuratKontrol}', [RencanaKontrolController::class, 'getRencanaKontrol']);
         });
 
         Route::prefix('spri')->group(function () {
