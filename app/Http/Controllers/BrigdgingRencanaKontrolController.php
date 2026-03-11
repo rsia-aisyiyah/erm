@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSkrjRequest;
 use PDF;
 use Carbon\Carbon;
 use Milon\Barcode\DNS1D;
@@ -25,7 +26,7 @@ class BrigdgingRencanaKontrolController extends Controller
         $this->carbon = new Carbon();
     }
 
-    public function create(StoreBangsalRequest $request)
+    public function create(StoreSkrjRequest $request)
     {
         $data = $request->validated();
 
