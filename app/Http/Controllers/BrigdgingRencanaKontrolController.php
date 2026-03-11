@@ -36,8 +36,8 @@ class BrigdgingRencanaKontrolController extends Controller
             $rencanaKontrol = $this->rencanaKontrol->create($data);
             $track = $this->track->insertSql($this->rencanaKontrol, $data);
             return response()->json($rencanaKontrol);
-        } catch (QueryException $e) {
-            return response()->json(['metaData' => ['Status' => 'FAILED', 'Code' => 400], 'response' => $e->errorInfo]);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
         }
     }
 

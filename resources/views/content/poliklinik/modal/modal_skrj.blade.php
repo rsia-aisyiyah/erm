@@ -9,14 +9,20 @@
                 <div class="rujukan-expired"></div>
                 <form action="" id="formModalSkrj">
                     <div class="row gy-2">
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-3 col-sm-12">
                             <label for="no_rawat" class="form-label mb-0">No. Rawat</label>
-                            <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat" name="no_rawat"
+                            <input type="text" class="form-control form-control-sm no_rawat" id="no_rawat"
+                                name="no_rawat" placeholder="" readonly
+                                style="background-color: #e9ecef;cursor:not-allowed">
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <label for="noka" class="form-label mb-0">No. Kartu</label>
+                            <input type="text" class="form-control form-control-sm noka" id="noka" name="noka"
                                 placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label for="pasien" class="form-label mb-0">Pasien</label>
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <input type="text" class="form-control form-control-sm pasien" id="pasien" name="pasien"
                                     placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                                 <button class="btn btn-secondary btn-sm btn-cari-peserta" type="button"
@@ -25,10 +31,16 @@
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label for="tgl_lahir" class="form-label mb-0">Tanggal Lahir</label>
-                            <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" name="tgl_lahir"
+                            <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir"
+                                name="tgl_lahir" placeholder="" readonly
+                                style="background-color: #e9ecef;cursor:not-allowed">
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <label for="tglSep" class="form-label mb-0">Tgl. SEP</label>
+                            <input type="date" class="form-control form-control-sm tglSep" id="tglSep" name="tglSep"
                                 placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
                         </div>
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-3 col-sm-12">
                             <label for="no_sep" class="form-label mb-0">No. SEP</label>
                             <input type="text" class="form-control form-control-sm no_sep" id="no_sep" name="no_sep"
                                 placeholder="" readonly style="background-color: #e9ecef;cursor:not-allowed">
@@ -61,9 +73,8 @@
                             <label for="dokter" class="form-label mb-0">Spesialis/Sub</label>
                             <div class="input-group mb-3">
                                 <input type="text" class=" form-control form-control-sm kode_dokter" placeholder=""
-                                    aria-label="" id="kode_dokter" name="kode_dokter"
-                                    aria-describedby="btn-spesialis" readonly
-                                    style="background-color: #e9ecef;cursor:not-allowed">
+                                    aria-label="" id="kode_dokter" name="kode_dokter" aria-describedby="btn-spesialis"
+                                    readonly style="background-color: #e9ecef;cursor:not-allowed">
                                 <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
                                     class="w-50 form-control form-control-sm nama_dokter" name="nama_dokter"
                                     placeholder="" aria-label="" aria-describedby="nama_dokter" readonly>
@@ -76,8 +87,8 @@
                                     aria-label="" name="kode_poli" aria-describedby="kode_poli" readonly
                                     style="background-color: #e9ecef;cursor:not-allowed">
                                 <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
-                                    class="w-50 form-control form-control-sm nama_poli" name="nama_poli"
-                                    placeholder="" aria-label="" aria-describedby="nama_poli" readonly>
+                                    class="w-50 form-control form-control-sm nama_poli" name="nama_poli" placeholder=""
+                                    aria-label="" aria-describedby="nama_poli" readonly>
                             </div>
 
                         </div>
@@ -90,6 +101,9 @@
                 <button class="btn btn-sm btn-primary btn-buat-skrj" onclick="simpanSkrj()"><i class="bi bi-plus"></i>
                     Buat SKRJ
                 </button>
+                <button class="btn btn-sm btn-warning btn-bridging-skrj" onclick="tarikSkrjBridging()"><i class="bi bi-file-earmark-arrow-down"></i>
+                    Tarik SKRJ Online
+                </button>
                 <a href="" target="_blank" class="btn btn-sm btn-success btn-print-skrj d-none"><i
                         class="bi bi-printer"></i> Cetak SKRJ</a>
             </div>
@@ -99,12 +113,13 @@
 @include('content.poliklinik.modal.modal_poli')
 @include('content.poliklinik.modal.modal_spesialis')
 @include('content.poliklinik.modal.modal_dokter')
+
 @push('script')
     <script>
         var tanggalKontrol = '';
 
 
-        $('#modalSkrj').on('shown.bs.modal', function() {
+        $('#modalSkrj').on('shown.bs.modal', function () {
             // console.log(tanggalKontrol)
             // isModalShow = true;
             // date = new Date()
@@ -130,133 +145,204 @@
 
         })
 
-        $('#modalSkrj').on('hidden.bs.modal', function() {
+        $('#modalSkrj').on('hidden.bs.modal', function () {
             $('.opt-rawat').empty();
             $('#formModalSkrj').trigger('reset');
         });
 
+        function tarikSkrjBridging() {
+            const form = $('#formModalSkrj');
+            const noKartu = form.find('input[name=noka]').val();
+            const tglSep = form.find('input[name=tglSep]').val();
+            const noSep = form.find('input[name=no_sep]').val();
+            const bulanSep = tglSep.split('-')[1];
+            const tahunSep = tglSep.split('-')[0];
+
+            $.get(`/erm/bridging/rencanaKontrol/list/${bulanSep}/${tahunSep}/${noKartu}/1`, function (res) {
+                console.log('CONSOLE KONTROL ===', res);
+
+                if (res.metaData.code == "200" && res.response.list.length > 0) {
+                    const rencanaKontrol = res.response.list;
+                    const result = rencanaKontrol.find(item => item.noSepAsalKontrol === noSep);
+
+                    console.log('RESULT ===', result);
+                    
+                    if(!result) {
+                        Swal.fire(
+                            'Informasi',
+                            'Tidak ada SKRJ yang dapat ditarik untuk SEP ini, pastikan SEP sudah pernah digunakan untuk kontrol sebelumnya',
+                            'info'
+                        );
+                        return;
+                    }
+
+                    const data = {
+                        no_sep: noSep,
+                        no_surat: result.noSuratKontrol,
+                        tgl_surat: result.tglTerbitKontrol ?? result.tglRencanaKontrol,
+                        tgl_rencana: result.tglRencanaKontrol,
+                        kd_dokter_bpjs: result.kodeDokter,
+                        nm_dokter_bpjs: result.namaDokter,
+                        kd_poli_bpjs: result.poliTujuan,
+                        nm_poli_bpjs: result.namaPoliTujuan
+                    }
+                    console.log('TARIK ===', data);
+
+                    tarikRencanaKontrol(data);
+                } else {
+                    Swal.fire(
+                        'Informasi',
+                        'Peserta belum memiliki SKRJ, silahkan buat SKRJ',
+                        'info'
+                    );
+
+                }
+
+            });
+
+        }
+
         function tarikRencanaKontrol(data) {
 
-                $.ajax({
-                    url: '/erm/rencanaKontrol/insert',
-                    method: 'POST',
-                    data: data,
-
-                    success: function (response) {
-                        Swal.fire(
-                            'Berhasil',
-                            'Berhasil membuat SKRJ',
-                            'success'
-                        );
-                        $('.btn-buat-skrj').addClass('d-none');
-                        $('.btn-print-skrj')
-                            .removeClass('d-none')
-                            .attr('href', `/erm/rencanaKontrol/print/${response.no_surat}`);
-                        if ($('#tb_pasien').length) {
-                            reloadTabelPoli();
-                        } else {
-                            $('#tableSep').DataTable().ajax.reload(null, true);
-                        }
-                    },
-                    error(request) {
-                        Swal.close();
-                        $('.btn-buat-skrj').prop('disabled', false);
-                        alertErrorAjax(request);
-                    }
+            $.ajax({
+                url: '/erm/rencanaKontrol/insert',
+                method: 'POST',
+                data: data,
+                beforeSend : function() {
+                    Swal.fire({
+                        title: 'Sedang memproses penarikan data ke server',
+                        text: 'Mohon tunggu',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        didOpen: () => Swal.showLoading()
+                    });
+                }
+            }).done((response) => {
+                 Swal.fire(
+                    'Berhasil',
+                    'Berhasil membuat SKRJ',
+                    'success'
+                );
+                $('.btn-buat-skrj').addClass('d-none');
+                $('.btn-print-skrj')
+                    .removeClass('d-none')
+                    .attr('href', `/erm/rencanaKontrol/print/${response.no_surat}`);
+                if ($('#tb_pasien').length) {
+                    reloadTabelPoli();
+                } else {
+                    $('#tableSep').DataTable().ajax.reload(null, true);
+                }
+            }).fail((request) => {
+                console.log('REQUEST ===', request);
+                
+                Swal.close();
+                $('.btn-buat-skrj').prop('disabled', false);
+                Swal.fire({
+                    title: request.statusText ?? 'Terjadi Kesalahan',
+                    text: request.responseText.slice(0,100) ?? 'Gagal membuat SKRJ',
+                    icon: 'error'
+                    
                 });
-            }
+            });
+        }
 
         function simpanSkrj() {
-                const form = $('#formModalSkrj');
-                const btn = $('.btn-buat-skrj');
-                btn.prop('disabled', true);
-                const tglKontrol = form.find('input[name=tgl_kontrol]').val();
-                const payloadBpjs = {
-                    noSEP: form.find('input[name=no_sep]').val(),
-                    kodeDokter: form.find('input[name=kode_dokter]').val(),
-                    poliKontrol: form.find('input[name=kode_poli]').val(),
-                    tglRencanaKontrol: tglKontrol,
-                    user: "{{ session()->get('pegawai')->nik }}"
-                };
-                $.ajax({
-                    url: '/erm/bridging/rencanaKontrol/insert',
-                    method: 'POST',
-                    dataType: 'JSON',
-                    data: payloadBpjs,
+            const form = $('#formModalSkrj');
+            const btn = $('.btn-buat-skrj');
+            btn.prop('disabled', true);
+            const tglKontrol = form.find('input[name=tgl_kontrol]').val();
+            const payloadBpjs = {
+                noSEP: form.find('input[name=no_sep]').val(),
+                kodeDokter: form.find('input[name=kode_dokter]').val(),
+                poliKontrol: form.find('input[name=kode_poli]').val(),
+                tglRencanaKontrol: tglKontrol,
+                user: "{{ session()->get('pegawai')->nik }}"
+            };
+            $.ajax({
+                url: '/erm/bridging/rencanaKontrol/insert',
+                method: 'POST',
+                dataType: 'JSON',
+                data: payloadBpjs,
 
-                    beforeSend() {
-                        Swal.fire({
-                            title: 'Sedang mengirim data',
-                            text: 'Mohon tunggu',
-                            showConfirmButton: false,
-                            allowOutsideClick: false,
-                            didOpen: () => Swal.showLoading()
-                        });
-                    },
+                beforeSend() {
+                    Swal.fire({
+                        title: 'Sedang mengirim data',
+                        text: 'Mohon tunggu',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        didOpen: () => Swal.showLoading()
+                    });
+                },
 
-                    success(res) {
+                success(res) {
+                    Swal.close();
 
-                        Swal.close();
-
-                        if (res.metaData.code !== "200") {
-
-                            btn.prop('disabled', false);
-
-                            Swal.fire(
-                                'Peringatan',
-                                res.metaData.message,
-                                'warning'
-                            );
-                            return;
-                        }
-
-                        handleSkrjResponse(res, payloadBpjs);
-                    },
-
-                    error(request) {
-
-                        Swal.close();
+                    if (res.metaData.code !== "200") {
 
                         btn.prop('disabled', false);
 
-                        alertErrorAjax(request);
+                        Swal.fire(
+                            'Peringatan',
+                            res.metaData.message,
+                            'warning'
+                        );
+                        return;
+                    } else if (res.metaData.code === "200" && res.response == null) {
+
+                        btn.prop('disabled', false);
+                        Swal.fire(
+                            'Informasi',
+                            'SKRJ dibuat tapi tidak mendapatkan response dari BPJS, silahkan cek di menu rencana kontrol',
+                            'info'
+                        );
+                        return;
+
                     }
-                });
-            }
+
+                    handleSkrjResponse(res, payloadBpjs);
+                },
+
+                error(request) {
+                    Swal.close();
+                    btn.prop('disabled', false);
+                    alertErrorAjax(request);
+                }
+            });
+        }
 
 
         function handleSkrjResponse(res, payloadBpjs) {
 
-                const form = $('#formModalSkrj');
+            const form = $('#formModalSkrj');
 
-                const noSep = payloadBpjs.noSEP;
+            const noSep = payloadBpjs.noSEP;
 
-                const nmPoli = form.find('input[name=nama_poli]').val();
-                const nmDokter = form.find('input[name=nama_dokter]').val();
+            const nmPoli = form.find('input[name=nama_poli]').val();
+            const nmDokter = form.find('input[name=nama_dokter]').val();
 
-                const r = res.response;
+            const r = res.response;
 
-                const dataInsert = {
-                    no_sep: noSep,
-                    no_surat: r.noSuratKontrol,
-                    tgl_surat: r.tglTerbitKontrol ?? r.tglRencanaKontrol,
-                    tgl_rencana: r.tglRencanaKontrol,
-                    kd_dokter_bpjs: payloadBpjs.kodeDokter,
-                    nm_dokter_bpjs: nmDokter,
-                    kd_poli_bpjs: payloadBpjs.poliKontrol,
-                    nm_poli_bpjs: nmPoli
-                };
+            const dataInsert = {
+                no_sep: noSep,
+                no_surat: r.noSuratKontrol,
+                tgl_surat: r.tglTerbitKontrol ?? r.tglRencanaKontrol,
+                tgl_rencana: r.tglRencanaKontrol,
+                kd_dokter_bpjs: payloadBpjs.kodeDokter,
+                nm_dokter_bpjs: nmDokter,
+                kd_poli_bpjs: payloadBpjs.poliKontrol,
+                nm_poli_bpjs: nmPoli
+            };
 
-                $('.nokontrol').val(r.noSuratKontrol);
+            $('.nokontrol').val(r.noSuratKontrol);
 
-                tarikRencanaKontrol(dataInsert);
-            }
+            tarikRencanaKontrol(dataInsert);
+        }
 
 
         function kontrolUlang(noSep) {
             const formModalSkrj = $('#formModalSkrj');
-            cekSep(noSep).done(function(response) {
-                getRujukanPcarePeserta(response.no_kartu).done(function(rujukan) {
+            cekSep(noSep).done(function (response) {
+                getRujukanPcarePeserta(response.no_kartu).done(function (rujukan) {
                     if (rujukan.metaData.code == 200 && rujukan.response) {
                         rujukanExpired(rujukan.response.rujukan.tglKunjungan)
                     } else {
@@ -268,6 +354,7 @@
                 $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.no_kartu + '\', \'' + response.tglsep + '\')');
                 formModalSkrj.find('input[name=no_rawat]').val(response.no_rawat)
                 formModalSkrj.find('input[name=no_sep]').val(response.no_sep)
+                formModalSkrj.find('input[name=tglSep]').val(response.tglsep)
                 formModalSkrj.find('input[name=pasien]').val(response.nomr + ' - ' + response.nama_pasien + ' (' + response.reg_periksa.umurdaftar + ')');
                 formModalSkrj.find('input[name=tgl_lahir]').val(splitTanggal(response.tanggal_lahir))
                 formModalSkrj.find('input[name=kode_poli]').val(response.kdpolitujuan)
