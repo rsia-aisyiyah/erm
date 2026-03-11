@@ -10,6 +10,7 @@ use App\Models\RencanaKontrol;
 use Illuminate\Routing\Controller;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\TrackerSqlController;
+use App\Http\Requests\StoreBangsalRequest;
 
 class BrigdgingRencanaKontrolController extends Controller
 {
@@ -24,7 +25,7 @@ class BrigdgingRencanaKontrolController extends Controller
         $this->carbon = new Carbon();
     }
 
-    public function create(Request $request)
+    public function create(StoreBangsalRequest $request)
     {
         $data = $request->validated();
 
