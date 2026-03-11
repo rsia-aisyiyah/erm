@@ -136,82 +136,110 @@
         });
 
         function tarikRencanaKontrol(data) {
-            $.ajax({
-                url: '/erm/rencanaKontrol/insert',
-                method: 'POST',
-                data: data,
-                success: function(response) {
-                    swal.fire(
-                        'Berhasil',
-                        'Berhasil membuat SKRJ',
-                        'success'
-                    );
-                    $('.btn-buat-skrj').addClass('d-none')
-                    $('.btn-print-skrj ').removeClass('d-none').attr('href', `/erm/rencanaKontrol/print/${response.no_surat}`)
-                    if ($('#tb_pasien').length) {
-                        reloadTabelPoli();
-                    } else {
-                        $('#tableSep').DataTable().ajax.reload(null, true);
+
+                $.ajax({
+                    url: '/erm/rencanaKontrol/insert',
+                    method: 'POST',
+                    data: data,
+
+                    success: function (response) {
+                        Swal.fire(
+                            'Berhasil',
+                            'Berhasil membuat SKRJ',
+                            'success'
+                        );
+                        $('.btn-buat-skrj').addClass('d-none');
+                        $('.btn-print-skrj')
+                            .removeClass('d-none')
+                            .attr('href', `/erm/rencanaKontrol/print/${response.no_surat}`);
+                        if ($('#tb_pasien').length) {
+                            reloadTabelPoli();
+                        } else {
+                            $('#tableSep').DataTable().ajax.reload(null, true);
+                        }
+                    },
+                    error(request) {
+                        Swal.close();
+                        $('.btn-buat-skrj').prop('disabled', false);
+                        alertErrorAjax(request);
                     }
-                },
-            }).fail(function(request, status, error) {
-                alertErrorAjax(request);
-            });
-        }
+                });
+            }
 
         function simpanSkrj() {
-            const $form = $('#formModalSkrj');
+                const form = $('#formModalSkrj');
+                const btn = $('.btn-buat-skrj');
+                btn.prop('disabled', true);
+                const tglKontrol = form.find('input[name=tgl_kontrol]').val();
+                const payloadBpjs = {
+                    noSEP: form.find('input[name=no_sep]').val(),
+                    kodeDokter: form.find('input[name=kode_dokter]').val(),
+                    poliKontrol: form.find('input[name=kode_poli]').val(),
+                    tglRencanaKontrol: tglKontrol,
+                    user: "{{ session()->get('pegawai')->nik }}"
+                };
+                $.ajax({
+                    url: '/erm/bridging/rencanaKontrol/insert',
+                    method: 'POST',
+                    dataType: 'JSON',
+                    data: payloadBpjs,
 
-            const tglKontrol = $form.find('input[name=tgl_kontrol]').val();
+                    beforeSend() {
+                        Swal.fire({
+                            title: 'Sedang mengirim data',
+                            text: 'Mohon tunggu',
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            didOpen: () => Swal.showLoading()
+                        });
+                    },
 
-            const payloadBpjs = {
-                noSEP: $form.find('input[name=no_sep]').val(),
-                kodeDokter: $form.find('input[name=kode_dokter]').val(),
-                poliKontrol: $form.find('input[name=kode_poli]').val(),
-                tglRencanaKontrol: tglKontrol,
-                user: "{{ session()->get('pegawai')->nik }}"
-            };
-            $.ajax({
-                url: '/erm/bridging/rencanaKontrol/insert',
-                method: 'POST',
-                dataType: 'JSON',
-                data: payloadBpjs,
-                beforeSend() {
-                    Swal.fire({
-                        title: 'Sedang mengirim data',
-                        text: 'Mohon tunggu',
-                        showConfirmButton: false,
-                        didOpen: () => Swal.showLoading()
-                    });
-                },
-                success(res) {
-                    if (res.metaData.code !== "200") {
-                        Swal.fire('Peringatan', res.metaData.message, 'warning');
-                        return;
+                    success(res) {
+
+                        Swal.close();
+
+                        if (res.metaData.code !== "200") {
+
+                            btn.prop('disabled', false);
+
+                            Swal.fire(
+                                'Peringatan',
+                                res.metaData.message,
+                                'warning'
+                            );
+                            return;
+                        }
+
+                        handleSkrjResponse(res, payloadBpjs);
+                    },
+
+                    error(request) {
+
+                        Swal.close();
+
+                        btn.prop('disabled', false);
+
+                        alertErrorAjax(request);
                     }
-                    handleSkrjResponse(res, payloadBpjs);
-                },
-                error(request, status, error) {
-                    alertErrorAjax(request);
-                }
-            });
-        }
+                });
+            }
 
 
         function handleSkrjResponse(res, payloadBpjs) {
-            const $form = $('#formModalSkrj');
 
-            const noSep = payloadBpjs.noSEP;
-            const nmPoli = $form.find('input[name=nama_poli]').val();
-            const nmDokter = $form.find('input[name=nama_dokter]').val();
+                const form = $('#formModalSkrj');
 
-            // if (res.response) {
+                const noSep = payloadBpjs.noSEP;
+
+                const nmPoli = form.find('input[name=nama_poli]').val();
+                const nmDokter = form.find('input[name=nama_dokter]').val();
+
                 const r = res.response;
 
                 const dataInsert = {
                     no_sep: noSep,
                     no_surat: r.noSuratKontrol,
-                    tgl_surat: r.tglRencanaKontrol,
+                    tgl_surat: r.tglTerbitKontrol ?? r.tglRencanaKontrol,
                     tgl_rencana: r.tglRencanaKontrol,
                     kd_dokter_bpjs: payloadBpjs.kodeDokter,
                     nm_dokter_bpjs: nmDokter,
@@ -219,14 +247,10 @@
                     nm_poli_bpjs: nmPoli
                 };
 
-
                 $('.nokontrol').val(r.noSuratKontrol);
 
                 tarikRencanaKontrol(dataInsert);
-            // }
-
-            // return false;
-        }
+            }
 
 
         function kontrolUlang(noSep) {

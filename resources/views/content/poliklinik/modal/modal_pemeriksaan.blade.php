@@ -568,9 +568,10 @@
         }
 
         function copyResep(kdResep) {
-            const no_rawat = formSoapPoli.find('[name=no_rawat]').val();
-            const kd_dokter = formSoapPoli.find('[name=kd_dokter]').val();
-
+            const formInfoPasienResep = $('#formInfoPasienResep')
+            const no_rawat = formInfoPasienResep.find('[name=no_rawat]').val();
+            const kd_dokter = formInfoPasienResep.find('[name=kd_dokter]').val();
+            const status = formInfoPasienResep.find('[name=status_lanjut]').val();
 
             Swal.fire({
                 title: 'Yakin ?',
@@ -586,6 +587,7 @@
                     $.post(`/erm/resep/copy/${kdResep}`, {
                         no_rawat: no_rawat,
                         kd_dokter: kd_dokter,
+                        status: status,
                     }).done((response) => {
                         if (response.status == 'success') {
                             swalToast('Berhasil Copy Resep')

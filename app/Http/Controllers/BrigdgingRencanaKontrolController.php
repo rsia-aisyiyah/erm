@@ -26,16 +26,9 @@ class BrigdgingRencanaKontrolController extends Controller
 
     public function create(Request $request)
     {
-        $data = [
-            'no_sep' => $request->no_sep,
-            'tgl_surat' => $request->tgl_surat,
-            'no_surat' => $request->no_surat,
-            'tgl_rencana' => $request->tgl_rencana,
-            'kd_dokter_bpjs' => $request->kd_dokter_bpjs,
-            'nm_dokter_bpjs' => $request->nm_dokter_bpjs,
-            'kd_poli_bpjs' => $request->kd_poli_bpjs,
-            'nm_poli_bpjs' => ucfirst(strtolower($request->nm_poli_bpjs)),
-        ];
+        $data = $request->validated();
+
+        $data['nm_poli_bpjs'] = ucfirst(strtolower($data['nm_poli_bpjs']));
 
         try {
             $rencanaKontrol = $this->rencanaKontrol->create($data);
