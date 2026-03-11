@@ -73,6 +73,12 @@ class RencanaKontrolController extends Controller
         $response = Http::withHeaders($this->config->setHeaderPost())->post($this->config->setUrl() . $endpoint, $data);
         return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
     }
+    public function getRencanaKontrol(string $noSuratKontrol)
+    {
+        $endpoint = "RencanaKontrol/noSuratKontrol/{$noSuratKontrol}";
+        $response = Http::withHeaders($this->config->setHeader())->get($this->config->setUrl() . $endpoint);
+        return $this->output->responseVclaim($response, $this->config->keyDecrypt($this->config->setTimestamp()));
+    }
 
     public function insertPerintahInap(Request $request)
     {

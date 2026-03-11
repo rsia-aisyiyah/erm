@@ -817,7 +817,6 @@
                 no_resep: no_resep,
                 no_racik: no_racik,
             }).done((response) => {
-                console.log('RESPONSE EDIT ===', response);
                 formTabelRacikan.find(`[name=no_resep]`).val(no_resep);
                 formTabelRacikan.find(`[name=no_racik]`).val(no_racik);
                 formTabelRacikan.find(`[name=nama_racik]`).val(response.nama_racik);
@@ -1013,10 +1012,6 @@
                     let html =
                         '<ul class="dropdown-menu show" style="width:auto;display:block;position:absolute;font-size:12px;max-height:200px;overflow-y:auto">';
                     $.map(response.data, function(data) {
-                        console.log('DATA ==', data );
-                        console.log('kelas ==', kelas );
-
-
                         $.map(data.gudang_barang, function(item) {
                             const hargaKelas = data[kelas] ? data[kelas] : data.ralan;
                             if (data && data.status != "0") {
@@ -1438,7 +1433,6 @@
 
                             </tr>`
 
-                    console.log('RESPO ===', item);
                 })
 
                 $('.tb-resep-riwayat tbody').html(resep)
