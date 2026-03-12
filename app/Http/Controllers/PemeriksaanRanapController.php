@@ -33,6 +33,71 @@ class PemeriksaanRanapController extends Controller
 		$this->logger = $logger;
 	}
 
+	public function index()
+	{
+		return view('content.ranap.pemeriksaan.index');
+	}
+	public function dataTable(Request $request)
+	{
+		// 1. Query Dasar (Gunakan scope query agar lebih bersih)
+		$pemeriksaan = PemeriksaanRanap::with([
+			'regPeriksa' => function ($q) {
+				$q->select('no_rawat', 'tgl_registrasi', 'jam_reg', 'kd_poli', 'kd_dokter', 'no_rkm_medis', 'kd_pj', 'umurdaftar', 'sttsumur')
+					->with([
+						'pasien:no_rkm_medis,nm_pasien,jk,tgl_lahir',
+						'dokter:kd_dokter,nm_dokter,kd_sps',
+						'dokter.spesialis',
+						'penjab'
+					]);
+			},
+			'petugas',
+			'kamarInap.kamar.bangsal',
+			'grafikHarian' => function ($q) {
+				$q->where('sumber', 'SBAR');
+			}
+		]);
+
+		// 2. Filter Tanggal (Wajib di luar grouping search)
+		if ($request->tgl_perawatan1 && $request->tgl_perawatan2) {
+			$pemeriksaan->whereBetween('tgl_perawatan', [$request->tgl_perawatan1, $request->tgl_perawatan2]);
+		} else {
+			$pemeriksaan->where('tgl_perawatan', date('Y-m-d'));
+		}
+
+		// 3. Filter Kamar Spesifik
+		if ($request->kamar) {
+			$pemeriksaan->whereHas('kamarInap.kamar.bangsal', function ($query) use ($request) {
+				$query->where('nm_bangsal', 'like', '%' . $request->kamar . '%');
+			});
+		}
+
+		// 4. Integrasi dengan DataTables Engine
+		return DataTables::of($pemeriksaan)
+			->filter(function ($query) use ($request) {
+				// Logika Search Global DataTables (Pojok Kanan Atas)
+				if ($request->has('search') && $request->search['value'] != null) {
+					$searchValue = $request->search['value'];
+					$query->where(function ($q) use ($searchValue) {
+						$q->where('no_rawat', 'like', "%$searchValue%")
+							->orWhereHas('regPeriksa.pasien', function ($query) use ($searchValue) {
+								$query->where('nm_pasien', 'like', "%$searchValue%");
+							})
+							->orWhereHas('regPeriksa.dokter', function ($query) use ($searchValue) {
+								$query->where('nm_dokter', 'like', "%$searchValue%");
+							})
+							->orWhereHas('kamarInap.kamar.bangsal', function ($query) use ($searchValue) {
+								$query->where('nm_bangsal', 'like', "%$searchValue%");
+							});
+					});
+				}
+			})
+			->orderColumn('no_rawat', function ($query, $order) {
+				$query->orderBy('no_rawat', $order);
+			})
+			// Tambahkan kolom index jika diperlukan
+			->addIndexColumn()
+			->make(true);
+	}
 	public function ambilSatu(Request $request)
 	{
 		$pemeriksaan = PemeriksaanRanap::where('no_rawat', $request->no_rawat)
@@ -198,7 +263,7 @@ class PemeriksaanRanapController extends Controller
 
 
 		try {
-			DB::transaction(function () use ($request, $data, $data1){
+			DB::transaction(function () use ($request, $data, $data1) {
 				if ($request->sumber === 'SBAR') {
 					$sbar = new RsiaKonsulSbarController();
 					$dataKonsul = [
@@ -217,7 +282,7 @@ class PemeriksaanRanapController extends Controller
 				$this->logger->handle($request, 'CREATE');
 
 			});
-		}catch (\Exception $e){
+		} catch (\Exception $e) {
 			return response()->json($e->getMessage(), 500);
 		}
 		return response()->json('Berhasil', 200);
