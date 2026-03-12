@@ -150,6 +150,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('/soap/simpan', [PemeriksaanRanapController::class, 'simpan']);
 	Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
 	Route::post('/soap/verifikasi', [RsiaVerifPemeriksaanRanapController::class, 'create']);
+	
 
 	Route::post('/ranap/sbar/update', [SbarController::class, 'update']);
 	Route::post('/ranap/sbar/delete', [SbarController::class, 'delete']);
@@ -402,6 +403,8 @@ require __DIR__ . '/partials/databarang.php';
 require __DIR__ . '/partials/tindakan.php';
 require __DIR__ . '/partials/mapping.php';
 require __DIR__ . '/partials/logs.php';
+require __DIR__ . '/partials/ranap.php';
+
 // Route::get('/file', function () {
 // $file = Storage::disk('custom')->url('LOGO RSIA (2).png');
 // dd($file);
