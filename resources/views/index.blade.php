@@ -7,7 +7,8 @@
 
 <body>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" style="border-radius:0px;">
-        <a class="navbar-brand col-md-3 col-lg-1 me-0 px-3 fs-5" href="#" style="background-color: rgba(0,0,0,0); box-shadow: 0 0 0 transparent;">
+        <a class="navbar-brand col-md-3 col-lg-1 me-0 px-3 fs-5" href="#"
+            style="background-color: rgba(0,0,0,0); box-shadow: 0 0 0 transparent;">
             <img src="/erm/public/img/logo.png" alt="Logo" style="max-width: 30px" />
             {{ config('app.name') }}
         </a>
@@ -22,7 +23,8 @@
         <div class="row">
             @include('layout.sidebar')
             <main class="col-md-10 ms-sm-auto col-lg-11 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">
                         {{ (Request::segment(1) == null ? 'DASHBOARD' : Request::segment(1) == 'ranap') ? 'Rawat Inap' : strtoupper(Request::segment(1)) }}
                     </h1>
@@ -36,32 +38,39 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> --}}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-    {{-- <script src="{{ asset('js/select2/select2.full.min.js') }}"></script> --}}
+    {{--
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+        crossorigin="anonymous"></script>
+    {{--
+    <script src="{{ asset('js/select2/select2.full.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/4.2.1/js/dataTables.fixedColumns.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.6.0/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-    
+
     <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.0/chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script src="{{ asset('js/qrcode.min.js') }}"></script>
 
-    {{-- Context Menu    --}}
+    {{-- Context Menu --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
 
     <!-- Magnify Image Viewer JS -->
     <script src="{{ asset('js/magnifier/jquery.magnify.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -85,7 +94,7 @@
             }
         });
 
-        window.onerror = function(msg, url, linenumber) {
+        window.onerror = function (msg, url, linenumber) {
             const messageError = 'Error message : ' + msg + '<br/>Muat ulang halaman ?';
             Swal.fire({
                 title: 'Terjadi Masalah!',
@@ -559,15 +568,15 @@
                 data: {
                     'q': nama.value
                 },
-                success: function(response) {
+                success: function (response) {
 
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
-                    $.map(response, function(data) {
+                    $.map(response, function (data) {
                         html += '<li>'
                         html += '<a data-id="' + data.nip +
                             '" class="dropdown-item" onclick="setPetugas(this)">' + data
-                            .nama +
+                                .nama +
                             '</a>'
                         html += '</li>'
                     })
@@ -707,11 +716,11 @@
 
                 method: 'GET',
                 dataType: 'JSON',
-                success: function(data) {
+                success: function (data) {
                     countData = Object.keys(data).length
                     if (countData > 0) {
                         img = data.file.split(',');
-                        $.map(img, function(file) {
+                        $.map(img, function (file) {
                             splitNamaFile = file.split('.');
                             // console.log(splitNamaFile[1])
                             if (splitNamaFile[1] != 'pdf') {
@@ -735,7 +744,7 @@
         function previewImage(input) {
             if (input.files && input.files[0]) {
 
-                $('input[name="kategori"]').each(function(index) {
+                $('input[name="kategori"]').each(function (index) {
                     if ($(this).prop('checked') != true) {
                         $(this).prop('disabled', true);
                     }
@@ -745,7 +754,7 @@
                 for (let index = 0; index < countImage; index++) {
                     var reader = new FileReader();
                     reader.readAsDataURL(input.files[index]);
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         var file = e.target;
                         var fileName = input.files[index].name;
                         var filePreview = '';
@@ -761,13 +770,13 @@
                             '" title="' +
                             fileName + '" alt="' + fileName +
                             '"/><br /><span class="remove badge text-bg-danger">Batal Upload</span></div>')
-                        $(".remove").click(function() {
+                        $(".remove").click(function () {
                             $('input[type="file"]').val('');
                             $(this).parent(".pip").remove();
                             if ($('.pip').length == 0) {
                                 $('#images').val("");
                                 $('#submit').hide()
-                                $('input[name="kategori"]').each(function(index) {
+                                $('input[name="kategori"]').each(function (index) {
                                     $(this).prop('disabled', false);
                                 })
                             }
@@ -790,7 +799,7 @@
             return resDokter;
         }
 
-        $('#submit').click(function() {})
+        $('#submit').click(function () { })
 
         function hiddenForm() {
             $('#upload-image').css('visibility', 'hidden')
@@ -944,10 +953,10 @@
             var selected = $('.search option:selected').val();
             const no_rkm_medis = no_rm ? no_rm : selected;
             $('#upload-image').css('visibility', 'hidden');
-            getPasienPeriksa(no_rkm_medis).done(function(data) {
+            getPasienPeriksa(no_rkm_medis).done(function (data) {
                 $('#ralan tbody').empty();
                 $('#ranap tbody').empty();
-                $.map(data, function(item) {
+                $.map(data, function (item) {
                     if (item.upload.length > 0) {
                         button = '<a href="#form-upload" onclick="detailPeriksa(\'' + item
                             .no_rawat
@@ -1070,7 +1079,7 @@
                     'nama': obat.value,
                     'gudang': gudang,
                 },
-                success: function(response) {
+                success: function (response) {
                     let html = `
                             <ul class="dropdown-menu show" style="width:auto;position:absolute;font-size:12px">
                             `;
@@ -1196,7 +1205,7 @@
                     kd_dokter: kd_dokter,
                     nm_racik: nm_racik,
                 },
-                success: function(response) {
+                success: function (response) {
                     res = response;
                 }
             })
@@ -1235,7 +1244,7 @@
         function getPeserta(noka, tglSep = '') {
             let tanggal = tglSep ? tglSep : "{{ date('Y-m-d') }}";
             let peserta = $.ajax({
-                beforeSend: function() {
+                beforeSend: function () {
                     swal.fire({
                         title: 'Sedang mengabil data peserta',
                         text: 'Mohon Tunggu',
@@ -1248,7 +1257,7 @@
                 url: '/erm/bridging/peserta/noka/' + noka + '/' + tanggal,
                 dataType: 'JSON',
                 method: 'GET',
-                success: function(response) {
+                success: function (response) {
                     if (response.metaData.code == 200 && response.metaData.message == 'OK') {
                         swal.fire({
                             title: 'Berhasil',
@@ -1276,9 +1285,9 @@
         }
 
         function getPesertaDetail(noka, tglSep) {
-            getPeserta(noka, tglSep).done(function(response) {
+            getPeserta(noka, tglSep).done(function (response) {
                 if (response.metaData.code == 200 && response.metaData.message == 'OK') {
-                    $.map(response.response, function(p) {
+                    $.map(response.response, function (p) {
                         jkel = p.sex == 'L' ? 'LAKI-LAKI' : 'PEREMPUAN';
                         p.statusPeserta.kode == 0 ? $('.statusPeserta').css('color', 'green') : $('.statusPeserta').css('color', 'red');
                         $('.namaPeserta').text(p.nama + ' ( ' + jkel + ' )');
@@ -1301,7 +1310,7 @@
                 }
             })
         }
-        $('#modalPesertaBpjs').on('bs.modal.hidden', function() {
+        $('#modalPesertaBpjs').on('bs.modal.hidden', function () {
             $('.namaPeserta').text('');
             $('.nikPeserta').text('');
             $('.tglLahirPeserta').text('');
@@ -1543,6 +1552,14 @@
             <strong>${title}</strong>
         </div>`;
             container.html(html);
+        }
+
+        function setIconGender(jk) {
+            if (jk === 'L') {
+                return `<span class="badge text-bg-primary"><i class="bi bi-gender-male "></i></span> `
+            }
+            return `<span class="badge text-bg-warning"><i class="bi bi-gender-female "></i></span> `
+
         }
 
     </script>
