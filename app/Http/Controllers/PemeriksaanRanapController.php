@@ -51,11 +51,13 @@ class PemeriksaanRanapController extends Controller
 					]);
 			},
 			'petugas',
+			'sbar',
 			'kamarInap.kamar.bangsal',
 			'grafikHarian' => function ($q) {
 				$q->where('sumber', 'SBAR');
 			}
-		]);
+		])->orderBy('tgl_perawatan', 'ASC')
+			->orderBy('jam_rawat', 'DESC');
 
 		// 2. Filter Tanggal (Wajib di luar grouping search)
 		if ($request->tgl_perawatan1 && $request->tgl_perawatan2) {
@@ -94,6 +96,14 @@ class PemeriksaanRanapController extends Controller
 			->orderColumn('no_rawat', function ($query, $order) {
 				$query->orderBy('no_rawat', $order);
 			})
+			->addColumn('flag', function ($row) {
+				// Cek apakah ada data di relasi grafikHarian yang sumbernya SBAR
+				if ($row->sbar !== null) {
+					return '<span class="badge bg-danger"><i class="fas fa-phone-alt me-1"></i> SBAR</span>';
+				}
+				return '<span class="badge bg-primary"><i class="fas fa-edit me-1"></i> CPPT</span>';
+			})
+			->rawColumns(['flag'])
 			// Tambahkan kolom index jika diperlukan
 			->addIndexColumn()
 			->make(true);
@@ -110,6 +120,8 @@ class PemeriksaanRanapController extends Controller
 						'tgl_registrasi',
 						'jam_reg',
 						'status_bayar',
+						'umurdaftar',
+						'sttsumur',
 						'status_poli',
 						'stts_daftar',
 						'no_rawat'
