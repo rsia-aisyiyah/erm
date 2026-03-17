@@ -46,138 +46,138 @@
     </div>
 
     <table class="table table-sm table-striped table-hover nowrap" id="tablePemeriksaanRanap"></table>
-    <div class="modal fade" id="modalDetailPemeriksaan" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">
-                        <i class="fas fa-file-medical-alt me-2"></i>Detail Pemeriksaan Pasien
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body bg-light">
-                    <div class="card mb-3 border-0 shadow-sm">
-                        <div class="card-body py-2 px-3">
-                            <div class="row align-items-center">
-                                <div class="col-md-4 border-end-md">
-                                    <small class="text-muted d-block">No. Rawat</small>
-                                    <span id="detailNoRawat" class="fw-bold text-primary">-</span>
-                                </div>
-                                <div class="col-md-4 border-end-md">
-                                    <small class="text-muted d-block">Nama Pasien</small>
-                                    <span id="detailNamaPasien" class="fw-bold text-primary">-</span>
-                                </div>
-                                <div class="col-md-4 border-end-md">
-                                    <small class="text-muted d-block">Tgl. Lahir/Umur</small>
-                                    <span id="detailTglLahir" class="fw-bold text-primary">-</span>
-                                </div>
-                                <div class="col-md-4 border-end-md">
-                                    <small class="text-muted d-block">Dokter DPJP</small>
-                                    <span id="detailDokterDpjp" class="fw-bold text-dark">-</span>
-                                </div>
-                                <div class="col-md-4 border-end-md">
-                                    <small class="text-muted d-block">Tanggal Pemeriksaan</small>
-                                    <span id="detailTgl" class="fw-bold text-dark">-</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <small class="text-muted d-block">Petugas Input</small>
-                                    <span id="detailPetugas" class="fw-bold text-dark">-</span>
-                                </div>
-                            </div>
-                        </div>
+        <div class="modal fade" id="modalDetailPemeriksaan" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-file-medical-alt me-2"></i>Detail Pemeriksaan Pasien
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
-                    <div id="sectionVerifikasi"></div>
-                    <div class="card mb-3 border-0 shadow-sm section-ttv">
-                        <div class="card-header bg-white fw-bold"><i class="fas fa-vitals me-2 text-danger"></i>Tanda-Tanda
-                            Vital</div>
-                        <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-6 col-md-3">
-                                    <div class="p-2 border rounded bg-white text-center h-100">
-                                        <small class="text-muted d-block">Suhu</small>
-                                        <h5 id="detailSuhu" class="mb-0 fw-bold text-danger">-</h5>
+                    <div class="modal-body bg-light">
+                        <div class="card mb-3 border-0 shadow-sm">
+                            <div class="card-body py-2 px-3">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 border-end-md">
+                                        <small class="text-muted d-block">No. Rawat</small>
+                                        <span id="detailNoRawat" class="fw-bold text-primary">-</span>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="p-2 border rounded bg-white text-center h-100">
-                                        <small class="text-muted d-block">Tensi</small>
-                                        <h5 id="detailTensi" class="mb-0 fw-bold">-</h5>
+                                    <div class="col-md-4 border-end-md">
+                                        <small class="text-muted d-block">Nama Pasien</small>
+                                        <span id="detailNamaPasien" class="fw-bold text-primary">-</span>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="p-2 border rounded bg-white text-center h-100">
-                                        <small class="text-muted d-block">Nadi</small>
-                                        <h5 id="detailNadi" class="mb-0 fw-bold">-</h5>
+                                    <div class="col-md-4 border-end-md">
+                                        <small class="text-muted d-block">Tgl. Lahir/Umur</small>
+                                        <span id="detailTglLahir" class="fw-bold text-primary">-</span>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="p-2 border rounded bg-white text-center h-100">
-                                        <small class="text-muted d-block">SPO2</small>
-                                        <h5 id="detailSpo2" class="mb-0 fw-bold text-success">-</h5>
+                                    <div class="col-md-4 border-end-md">
+                                        <small class="text-muted d-block">Dokter DPJP</small>
+                                        <span id="detailDokterDpjp" class="fw-bold text-dark">-</span>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="p-2 border rounded bg-white text-center h-100">
-                                        <small class="text-muted d-block">GCS (E,V,M)</small>
-                                        <h5 id="detailGcs" class="mb-0">-</h5>
+                                    <div class="col-md-4 border-end-md">
+                                        <small class="text-muted d-block">Tanggal Pemeriksaan</small>
+                                        <span id="detailTgl" class="fw-bold text-dark">-</span>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="p-2 border rounded bg-white text-center h-100">
-                                        <small class="text-muted d-block">Respirasi</small>
-                                        <h5 id="detailRespirasi" class="mb-0">-</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="p-2 border rounded bg-white text-center h-100">
-                                        <small class="text-muted d-block">Tinggi (cm)</small>
-                                        <h5 id="detailTinggi" class="mb-0">-</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="p-2 border rounded bg-white text-center h-100">
-                                        <small class="text-muted d-block">Berat (Kg)</small>
-                                        <h5 id="detailBerat" class="mb-0">-</h5>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Petugas Input</small>
+                                        <span id="detailPetugas" class="fw-bold text-dark">-</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div id="sectionVerifikasi"></div>
+                        <div class="card mb-3 border-0 shadow-sm section-ttv">
+                            <div class="card-header bg-white fw-bold"><i class="fas fa-vitals me-2 text-danger"></i>Tanda-Tanda
+                                Vital</div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-2 border rounded bg-white text-center h-100">
+                                            <small class="text-muted d-block">Suhu</small>
+                                            <h5 id="detailSuhu" class="mb-0 fw-bold text-danger">-</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-2 border rounded bg-white text-center h-100">
+                                            <small class="text-muted d-block">Tensi</small>
+                                            <h5 id="detailTensi" class="mb-0 fw-bold">-</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-2 border rounded bg-white text-center h-100">
+                                            <small class="text-muted d-block">Nadi</small>
+                                            <h5 id="detailNadi" class="mb-0 fw-bold">-</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-2 border rounded bg-white text-center h-100">
+                                            <small class="text-muted d-block">SPO2</small>
+                                            <h5 id="detailSpo2" class="mb-0 fw-bold text-success">-</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-2 border rounded bg-white text-center h-100">
+                                            <small class="text-muted d-block">GCS (E,V,M)</small>
+                                            <h5 id="detailGcs" class="mb-0">-</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-2 border rounded bg-white text-center h-100">
+                                            <small class="text-muted d-block">Respirasi</small>
+                                            <h5 id="detailRespirasi" class="mb-0">-</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-2 border rounded bg-white text-center h-100">
+                                            <small class="text-muted d-block">Tinggi (cm)</small>
+                                            <h5 id="detailTinggi" class="mb-0">-</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="p-2 border rounded bg-white text-center h-100">
+                                            <small class="text-muted d-block">Berat (Kg)</small>
+                                            <h5 id="detailBerat" class="mb-0">-</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-header bg-info text-white fw-bold">S (Subjek/Keluhan)</div>
+                                <div id="labelS" class="card-header bg-info text-white fw-bold">S (Subjek/Keluhan)</div>
                                 <div id="detailKeluhan" class="card-body soap-content">-</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-header bg-success text-white fw-bold">O (Objek/Pemeriksaan)</div>
+                                <div id="labelO" class="card-header bg-success text-white fw-bold">O (Objek/Pemeriksaan)</div>
                                 <div id="detailPemeriksaan" class="card-body soap-content">-</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-header bg-warning text-dark fw-bold">A (Asesmen/Penilaian)</div>
+                                <div id="labelA" class="card-header bg-warning text-dark fw-bold">A (Asesmen/Penilaian)</div>
                                 <div id="detailPenilaian" class="card-body soap-content">-</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-header bg-secondary text-white fw-bold">P (Plan/Rencana)</div>
+                                <div id="labelP" class="card-header bg-secondary text-white fw-bold">P (Plan/Rencana)</div>
                                 <div id="detailRtl" class="card-body soap-content">-</div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 @endsection
 @push('script')
@@ -317,30 +317,45 @@
                 $('#detailPetugas').text(data.petugas.nama);
 
                 if (data.sbar !== null) {
+                    // 1. Sembunyikan TTV & Set Badge
                     $('.section-ttv').hide();
                     $('#detailBadgeFlag').html('<span class="badge bg-danger ms-2">SBAR</span>');
 
-                    if (data.dokter_konsul !== null) {
+                    // 2. Ubah Label Menjadi SBAR
+                    $('#labelS').html('S (Situation)');
+                    $('#labelO').html('B (Background)');
+                    $('#labelA').html('A (Assessment)');
+                    $('#labelP').html('R (Recommendation)');
+
+                    // 3. Logika Verifikasi (Sesuai kode Anda sebelumnya)
+                    if (data.sbar.dokter_konsul !== null) {
                         $('#sectionVerifikasi').html(`
-                            <div class="alert alert-success d-flex align-items-center mb-3">
-                                <i class="fas fa-check-circle me-2"></i>
-                                <div>
-                                    <strong>Terverifikasi:</strong> Dikonfirmasi oleh <strong>${data.sbar.dokter_konsul.dokter_sbar.nm_dokter}</strong> pada ${formatTanggal(data.sbar.dokter_konsul.tgl_perawatan)} ${data.sbar.dokter_konsul.jam_rawat}
-                                </div>
-                            </div>
-                        `);
+            <div class="alert alert-success d-flex align-items-center mb-3">
+                <i class="fas fa-check-circle me-2"></i>
+                <div>
+                    <strong>Terverifikasi:</strong> Dikonfirmasi oleh <strong>${data.sbar.dokter_konsul.dokter_sbar.nm_dokter}</strong> pada ${formatTanggal(data.sbar.dokter_konsul.tgl_perawatan)} ${data.sbar.dokter_konsul.jam_rawat}
+                </div>
+            </div>
+        `);
                     } else {
                         $('#sectionVerifikasi').html(`
-                            <div class="alert alert-warning d-flex align-items-center mb-3">
-                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                <div><strong>Belum Verifikasi:</strong> Menunggu konfirmasi DPJP (TBAK).</div>
-                            </div>
-                        `);
+            <div class="alert alert-warning d-flex align-items-center mb-3">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <div><strong>Belum Verifikasi:</strong> Menunggu konfirmasi DPJP (TBAK).</div>
+            </div>
+        `);
                     }
                 } else {
+                    // 1. Tampilkan TTV & Set Badge
                     $('.section-ttv').show();
                     $('#detailBadgeFlag').html('<span class="badge bg-primary ms-2">CPPT</span>');
                     $('#sectionVerifikasi').empty();
+
+                    // 2. Kembalikan Label ke SOAP (Penting agar tidak tertukar saat buka detail lain)
+                    $('#labelS').html('S (Subjek/Keluhan)');
+                    $('#labelO').html('O (Objek/Pemeriksaan)');
+                    $('#labelA').html('A (Asesmen/Penilaian)');
+                    $('#labelP').html('P (Plan/Rencana)');
                 }
 
                 $('#detailSuhu').text(data.suhu_tubuh ? data.suhu_tubuh + " °C" : "-");
