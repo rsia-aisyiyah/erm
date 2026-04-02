@@ -63,6 +63,7 @@
                 <i class="bi bi-search"></i>
                 Cari
             </button>
+            <x-input type="hidden" name="status" id="status" value="ralan"></x-input>
         </div>
         <div class="col-12">
             <table class="table table-striped table-responsive text-sm table-sm" id="tb_resep" width="100%">
@@ -222,7 +223,6 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            console.log('DATA ===', row);
 
                             html = `<button onclick="tampilResep('${row.no_resep}', '${row.reg_periksa.kd_poli}')" class="btn btn-sm mb-2 status-${row.no_resep}" type="button" style="width:110px;display:inline" data-id="${row.no_rawat}"></button><br/>`;
                             html += '<button onclick="panggilResep(\'' + row.no_resep + '\',' + false + ', \'' + row.reg_periksa.pasien.nm_pasien + '\')" class="btn btn-sm btn-warning mb-2 panggil-' + row.no_resep + '" style="width:110px;display:none" type="button" style="width:110px;" data-id="' + row.no_rawat + '">PANGGIL</button><br/>';
@@ -328,20 +328,19 @@
         }
 
         function tampilResep(no_resep, kd_poli = '') {
-            // reloadTabelResep();
+            const status = $('#status').val();
 
             $.ajax({
                 url: 'resep/obat/ambil',
                 data: {
                     no_resep: no_resep,
+                    status : status,
                 },
                 success: function(response) {
                     getPemeriksaanPoli(response.no_rawat, kd_poli).done((res) => {
-                        console.log('RES PEMERIKSAAN ===', res);
                         const resFilter = res.filter((item) => item.rtl !== '-' && item.nip.includes('1.'))
                             .map((item) => item.rtl).join('')
                         $('.notif').val(resFilter)
-
                     })
                     $('#infoNoResep').html(no_resep)
                     $('#infoTglResep').html(`${response.tgl_peresepan} ${response.jam_peresepan}`)
