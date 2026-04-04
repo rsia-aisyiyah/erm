@@ -72,6 +72,10 @@ class ResumePasienRanapRequest extends FormRequest
 			'kd_prosedur_sekunder3' => 'nullable|string|max:8',
 			'prosedur_sekunder4' => 'nullable|string|max:80',
 			'kd_prosedur_sekunder4' => 'nullable|string|max:8',
+			'prosedur_sekunder5' => 'nullable|string|max:80',
+			'kd_prosedur_sekunder5' => 'nullable|string|max:8',
+			'prosedur_sekunder6' => 'nullable|string|max:80',
+			'kd_prosedur_sekunder6' => 'nullable|string|max:8',
 
 			'alergi' => 'nullable|string|max:100',
 			'diet' => 'nullable|string',
