@@ -19,7 +19,7 @@ class RsiaAsuhanGiziDewasaController extends Controller
         $this->rsiaAsuhanGiziDewasa = $rsiaAsuhanGiziDewasa;
     }
 
-    function create(Request $request): JsonResponse | array
+    function create(Request $request): JsonResponse|array
     {
         $data = $request->except('_token');
         $data['tanggal'] = Carbon::parse($data['tanggal'])->toDateTimeString();
@@ -42,7 +42,7 @@ class RsiaAsuhanGiziDewasaController extends Controller
         return response()->json('Berhasil', 200);
     }
 
-    function update(Request $request): JsonResponse | array
+    function update(Request $request): JsonResponse|array
     {
         $data = $request->except('_token');
         $data['tanggal'] = Carbon::parse($data['tanggal'])->toDateTimeString();
@@ -73,7 +73,8 @@ class RsiaAsuhanGiziDewasaController extends Controller
         return response()->json(null, 200);
     }
 
-    function print(Request $request){
+    function print(Request $request)
+    {
         $asuhanGizi = $this->rsiaAsuhanGiziDewasa
             ->where('no_rawat', $request->no_rawat)
             ->with('regPeriksa', 'pasien', 'pegawai', 'kamarInap')
@@ -82,20 +83,34 @@ class RsiaAsuhanGiziDewasaController extends Controller
         $pasien = [
             'nm_pasien' => $asuhanGizi->pasien->nm_pasien,
             'umur' => $asuhanGizi->regPeriksa->umurdaftar . ' ' . $asuhanGizi->regPeriksa->sttsumur,
-            'no_rkm_medis' => $asuhanGizi->pasien->no_rkm_medis, 
-            'diagnosa_awal' => $asuhanGizi->kamarInap->diagnosa_awal, 
-            'jk' => $asuhanGizi->pasien->jk === 'L' ? 'Laki-laki' : 'Perempuan', 
-            'tgl_lahir' => Carbon::parse($asuhanGizi->pasien->tgl_lahir)->format('d F Y'), 
+            'no_rkm_medis' => $asuhanGizi->pasien->no_rkm_medis,
+            'diagnosa_awal' => $asuhanGizi->kamarInap->diagnosa_awal,
+            'jk' => $asuhanGizi->pasien->jk === 'L' ? 'Laki-laki' : 'Perempuan',
+            'tgl_lahir' => Carbon::parse($asuhanGizi->pasien->tgl_lahir)->format('d F Y'),
+            
+
+        ];
+        $petugas = [
+            'nip' => $asuhanGizi->nip,
+            'nama' => $asuhanGizi->pegawai->nama,
+            'ttd' => $this->setFingerOutput($asuhanGizi->pegawai->nama, bcrypt($asuhanGizi->nip), date('Y-m-d H:i:s'))
         ];
         $asuhanGizi['tanggal'] = Carbon::parse($asuhanGizi->tanggal)->format('d F Y H:i:s');
-        $pdf = Pdf::loadView('content.print.asuhan_gizi_dewasa',
+        $pdf = Pdf::loadView(
+            'content.print.asuhan_gizi_dewasa',
             [
                 'asuhanGizi' => $asuhanGizi,
                 'pasien' => $pasien,
+                'petugas' => $petugas
             ]
         )
-        ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
+            ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
             ->setPaper(array(0, 0, 595, 935));
         return $pdf->stream(date('YmdHis') . '.pdf');
+    }
+    function setFingerOutput($dokter, $id, $tanggal)
+    {
+        $strId = sha1($id);
+        return "Ditandatangani di RSIA Aisiyiyah Pekajangan Kab. Pekalongan, Ditandatangani Elektronik Oleh $dokter, ID $strId, $tanggal";
     }
 }
