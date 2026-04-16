@@ -7,10 +7,12 @@ use App\Models\ResepDokterRacikan;
 use App\Models\ResepDokterRacikanDetail;
 use App\Models\ResepObat;
 use App\Traits\ResponseTrait;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast;
 use Yajra\DataTables\DataTables;
 
 class ResepObatController extends Controller
@@ -297,8 +299,8 @@ class ResepObatController extends Controller
                         'no_rawat' => $request->no_rawat,
                         'tgl_perawatan' => '0000-00-00',
                         'jam' => '00:00:00',
-                        'tgl_peresepan' => date('Y-m-d'),
-                        'jam_peresepan' => date('H:i:s'),
+                        'tgl_peresepan' => Carbon::now()->toDateString(),
+                        'jam_peresepan' => Carbon::now()->toTimeString(),
                         'status' => $request->status,
                         'tgl_penyerahan' => '0000-00-00',
                         'jam_penyerahan' => '00:00:00',
