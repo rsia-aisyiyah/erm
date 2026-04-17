@@ -79,6 +79,7 @@
                             '<input type="radio" class="btn-check" name="kategori" id="opt-km" autocomplete="off" onclick="showForm()" value="km"><label class="btn btn-outline-primary btn-sm" for="opt-km">Foto KM</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-ekg" autocomplete="off" onclick="showForm()" value="ekg"><label class="btn btn-outline-primary btn-sm" for="opt-ekg">Berkas EKG</label>' +
                             '<input type="radio" class="btn-check" name="kategori" id="opt-form-rujukan" autocomplete="off" onclick="showForm()" value="form-rujukan"><label class="btn btn-outline-primary btn-sm" for="opt-form-rujukan">Form Rujukan</label>'
+                             '<input type="radio" class="btn-check" name="kategori" id="opt-cardiotokografi" autocomplete="off" onclick="showForm()" value="cardiotokografi"><label class="btn btn-outline-primary btn-sm" for="opt-cardiotokografi">Cardiotokografi</label>'
 
                         $('#button-form').append(html)
                     } else {
