@@ -134,6 +134,7 @@ class RegPeriksaController extends Controller
     }
     public function riwayat(Request $request)
     {
+        ini_set('memory_limit', '512M');
         $pemeriksaan = Pasien::where('no_rkm_medis', $request->no_rkm_medis)
             ->with('regPeriksa', function ($q) use ($request) {
                 return $q->select(
