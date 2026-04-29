@@ -54,10 +54,15 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 30,
         ],
-
-	    'pemeriksaanRanapLogs' => [
+        'resep-log' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/resep_' . date('Y_m') . '.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
+        ],
+        'pemeriksaanRanapLogs' => [
             'driver' => 'single',
-            'path' => storage_path('logs/pemeriksaan_ranap_'.date('Y_m').'.log'),
+            'path' => storage_path('logs/pemeriksaan_ranap_' . date('Y_m') . '.log'),
             'level' => env('LOG_LEVEL', 'info'),
         ],
 

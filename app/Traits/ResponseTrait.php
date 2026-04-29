@@ -7,13 +7,36 @@ use Throwable;
 
 trait ResponseTrait
 {
-    protected string $logChannel = 'responseLogs';
+    /**
+     * Mendapatkan channel log secara dinamis.
+     * Jika di Controller didefinisikan protected string $logChannel, maka itu yang dipakai.
+     * Jika tidak, default ke 'responseLogs'.
+     */
+    protected function getLogChannel(): string
+    {
+        return $this->logChannel ?? 'responseLogs';
+    }
 
     /**
      * Kirim response sukses (opsional).
      */
     protected function successResponse($data, string $message = 'Success', int $code = 200)
     {
+        // Ambil data pegawai dari session
+        $pegawai = session()->get('pegawai');
+
+        // Catat log dengan konteks yang lebih detail
+        Log::channel($this->getLogChannel())->info($message, [
+            'user' => [
+                'nik' => $pegawai?->nik ?? 'System',
+                'nama' => $pegawai?->nama ?? 'System',
+            ],
+            'payload_response' => $data, // Data yang dikembalikan (seperti no_resep)
+            'url' => request()->fullUrl(),
+            'method' => request()->method(),
+            'ip' => request()->ip(),
+        ]);
+
         return response()->json([
             'success' => true,
             'message' => $message,
@@ -33,11 +56,11 @@ trait ResponseTrait
     {
         if ($withLog) {
             if ($error instanceof Throwable) {
-                Log::channel($this->logChannel)->error(
+                Log::channel($this->getLogChannel())->error(
                     $error->getMessage().' in '.$error->getFile().':'.$error->getLine()
                 );
             } else {
-                Log::channel($this->logChannel)->error($error);
+                Log::channel($this->getLogChannel())->error($error);
             }
         }
 

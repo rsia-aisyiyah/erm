@@ -589,7 +589,7 @@
                         kd_dokter: kd_dokter,
                         status: status,
                     }).done((response) => {
-                        if (response.status == 'success') {
+                        if (response.success) {
                             swalToast('Berhasil Copy Resep')
                             getResepObat(no_rawat)
                         }
@@ -1311,19 +1311,14 @@
 
 
 
-        $('#modalSoap').on('shown.bs.modal', function() {
+        $('#modal').on('shown.bs.modal', function() {
 
 
             $('.tambah_umum').css('visibility', 'visible')
             let kd_dokter = "{{ Request::get('dokter') }}"
-            // $('.no_resep').val('')
-            // $('.noResepText').text('')
-            // $('.labelTglResep').text(``);
-            modalsoap(id);
-            // cekResep(id);
 
             getRegPeriksa(id).done((regPeriksa) => {
-                // riwayatIcare(regPeriksa.pasien.no_kartu, 284199)
+
                 var form = '';
                 if (regPeriksa.dokter.kd_sps == 'S0003') {
                     $('#li-asmed-ana').removeClass('d-none');
@@ -1358,6 +1353,14 @@
                 $(`${form} input[name="kd_dokter"]`).val(regPeriksa.kd_dokter)
                 $(`${form} input[name="nm_dokter"]`).val(regPeriksa.dokter.nm_dokter)
                 $(`${form} input[name="nm_dokter"]`).attr('readonly', 'readonly')
+
+                const formInfoPasienResep = $('#formInfoPasienResep') 
+                formInfoPasienResep.find(`input[name="no_rawat"]`).val(regPeriksa.no_rawat)
+
+                formInfoPasienResep.find('input[name=no_rawat]').val(no_rawat);
+                formInfoPasienResep.find('input[name=kd_dokter]').val(response.kd_dokter);
+                formInfoPasienResep.find('input[name=no_rkm_medis]').val(response.no_rkm_medis);
+                formInfoPasienResep.find('input[name=status_lanjut]').val(response.status_lanjut?.toLowerCase());
 
             })
             no = 1;
@@ -1560,7 +1563,7 @@
 
 
 
-        $('#modalSoap').on('hidden.bs.modal', function() {
+        $('#modal').on('hidden.bs.modal', function() {
             const nm_pasien = $('#pasien-cari').val();
             tb_pasien(tgl_registrasi, nm_pasien);
             $('#tb-resep tbody').empty();
