@@ -508,9 +508,9 @@
                 status: status_lanjut,
             }).done((response) => {
                 tulisPlan()
-                $('.no_resep').val(response.no_resep)
-                $('.noResepText').text(response.no_resep)
-                $('.labelTglResep').text(`${formatTanggal(response.tgl_peresepan)} ${response.jam_peresepan}`);
+                $('.no_resep').val(response?.data?.no_resep)
+                $('.noResepText').text(response?.data?.no_resep)
+                $('.labelTglResep').text(`${formatTanggal(response?.data?.tgl_peresepan)} ${response?.data?.jam_peresepan}`);
             })
         }
 

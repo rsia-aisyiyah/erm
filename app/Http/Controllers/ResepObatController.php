@@ -17,10 +17,11 @@ use Yajra\DataTables\DataTables;
 
 class ResepObatController extends Controller
 {
+    use ResponseTrait;
     private $resepObat;
     private $track;
 
-    use ResponseTrait;
+    protected string $logChannel = 'resep-log';
     public function __construct()
     {
         $this->resepObat = new ResepObat();
@@ -152,9 +153,9 @@ class ResepObatController extends Controller
             'no_rawat' => $request->no_rawat,
             'tgl_perawatan' => '0000-00-00',
             'jam' => '00:00:00',
-            'tgl_peresepan' => date('Y-m-d'),
-            'jam_peresepan' => date('H:i:s'),
-            'status' => $request->status,
+            'tgl_peresepan' => Carbon::now()->toDateString(),
+            'jam_peresepan' => Carbon::now()->toTimeString(),
+            'status' => $request->status ? $request->status : 'ralan',
             'tgl_penyerahan' => '0000-00-00',
             'jam_penyerahan' => '00:00:00',
         ];
@@ -162,15 +163,7 @@ class ResepObatController extends Controller
         try {
 
             $create = $this->createResep($data);
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Data berhasil disimpan',
-                'no_resep' => $create->no_resep,
-                'jam_peresepan' => $create->jam_peresepan,
-                'tgl_peresepan' => $create->tgl_peresepan
-            ]);
-
+            return $this->successResponse($create, 'Berhasil membuat resep');
         } catch (QueryException $e) {
             return $this->errorResponse($e, $e->getMessage(), 500);
         }
@@ -224,74 +217,32 @@ class ResepObatController extends Controller
         return (int) date('Ymd') . '0001';
     }
 
-    function copyResep($no_resep, Request $request)
+    public function copyResep($no_resep, Request $request)
     {
         try {
-
-            // cek apakah sudah ada resep di rawat ini
-            $resep = ResepObat::where('no_rawat', $request->no_rawat)
-                ->where('status', 'ralan')
-                ->with('resepRacikan')
-                ->first();
-
-            $noResepExist = $resep?->no_resep;
-
-            // ambil template resep
+            // 1. Ambil template resep asal di luar transaksi
             $get = $this->get($no_resep);
-            $data = json_decode($get->content());
+            $template = json_decode($get->content());
 
-            // generate nomor resep jika belum ada
-            $no = $noResepExist ?: $this->generateNoResep();
-
-            // nomor racik terakhir
-            $lastNoRacik = 0;
-            if ($resep?->resepRacikan?->isNotEmpty()) {
-                $lastNoRacik = $resep->resepRacikan->max('no_racik');
+            if (!$template) {
+                throw new \Exception("Data resep asal tidak ditemukan.");
             }
 
-            // mapping resep dokter
-            $resepDokter = collect($data->resep_dokter)->map(function ($item) use ($no) {
-                return [
-                    'kode_brng' => $item->kode_brng,
-                    'jml' => $item->jml,
-                    'aturan_pakai' => $item->aturan_pakai,
-                    'no_resep' => $no,
-                ];
-            });
+            $now = Carbon::now();
 
-            // mapping racikan detail
-            $detailRacikan = collect($data->resep_racikan)->flatMap(function ($item, $key) use ($no, $lastNoRacik) {
-                $no_racik = $lastNoRacik + $key + 1;
+            // 2. Mulai Transaksi
+            return DB::transaction(function () use ($request, $template, $now) {
 
-                return collect($item->detail)->map(function ($detail) use ($no, $no_racik) {
-                    return [
-                        'no_resep' => $no,
-                        'no_racik' => $no_racik,
-                        'kode_brng' => $detail->kode_brng,
-                        'jml' => $detail->jml,
-                        'p1' => $detail->p1,
-                        'p2' => $detail->p2,
-                        'kandungan' => $detail->kandungan,
-                    ];
-                });
-            })->toArray();
+                // Cek apakah sudah ada resep untuk no_rawat ini (Locking)
+                $resep = ResepObat::where('no_rawat', $request->no_rawat)
+                    ->where('status', $request->status ?? 'ralan')
+                    ->lockForUpdate()
+                    ->first();
 
-            // mapping racikan utama
-            $resepRacikan = collect($data->resep_racikan)->map(function ($item, $key) use ($no, $lastNoRacik) {
-                return [
-                    'kd_racik' => $item->kd_racik,
-                    'nama_racik' => $item->nama_racik,
-                    'jml_dr' => $item->jml_dr,
-                    'aturan_pakai' => $item->aturan_pakai,
-                    'no_racik' => $lastNoRacik + $key + 1,
-                    'keterangan' => $item->keterangan,
-                    'no_resep' => $no,
-                ];
-            });
+                $noResepExist = $resep?->no_resep;
+                $no = $noResepExist ?: $this->generateNoResep();
 
-            DB::transaction(function () use ($no, $request, $noResepExist, $resepDokter, $resepRacikan, $detailRacikan) {
-
-                // jika resep belum ada maka buat dulu
+                // Jika resep induk belum ada, buat baru
                 if (!$noResepExist) {
                     $this->createResep([
                         'no_resep' => $no,
@@ -299,31 +250,86 @@ class ResepObatController extends Controller
                         'no_rawat' => $request->no_rawat,
                         'tgl_perawatan' => '0000-00-00',
                         'jam' => '00:00:00',
-                        'tgl_peresepan' => Carbon::now()->toDateString(),
-                        'jam_peresepan' => Carbon::now()->toTimeString(),
-                        'status' => $request->status,
+                        'tgl_peresepan' => $now->toDateString(),
+                        'jam_peresepan' => $now->toTimeString(),
+                        'status' => $request->status ?? 'ralan',
                         'tgl_penyerahan' => '0000-00-00',
                         'jam_penyerahan' => '00:00:00',
                     ]);
                 }
 
-                if ($resepDokter->isEmpty() && $resepRacikan->isEmpty()) {
-                    throw new Exception("Nomor resep tidak ada data obat & racikan");
+                // --- MAPPING DATA ---
+
+                // A. Resep Dokter (Obat Jadi)
+                $dataDokter = collect($template->resep_dokter)->map(fn($item) => [
+                    'no_resep' => $no,
+                    'kode_brng' => $item->kode_brng,
+                    'jml' => $item->jml,
+                    'aturan_pakai' => $item->aturan_pakai,
+                ]);
+
+                // B. Resep Racikan
+                $lastNoRacik = ResepDokterRacikan::where('no_resep', $no)->max('no_racik') ?? 0;
+
+                $dataRacikanHeader = [];
+                $dataRacikanDetail = [];
+
+                foreach ($template->resep_racikan as $index => $racik) {
+                    $currentNoRacik = $lastNoRacik + $index + 1;
+
+                    $dataRacikanHeader[] = [
+                        'no_resep' => $no,
+                        'no_racik' => $currentNoRacik,
+                        'kd_racik' => $racik->kd_racik,
+                        'nama_racik' => $racik->nama_racik,
+                        'jml_dr' => $racik->jml_dr,
+                        'aturan_pakai' => $racik->aturan_pakai,
+                        'keterangan' => $racik->keterangan,
+                    ];
+
+                    foreach ($racik->detail as $det) {
+                        $dataRacikanDetail[] = [
+                            'no_resep' => $no,
+                            'no_racik' => $currentNoRacik,
+                            'kode_brng' => $det->kode_brng,
+                            'jml' => $det->jml,
+                            'p1' => $det->p1,
+                            'p2' => $det->p2,
+                            'kandungan' => $det->kandungan,
+                        ];
+                    }
                 }
 
-                ResepDokter::insert($resepDokter->toArray());
-                ResepDokterRacikan::insert($resepRacikan->toArray());
-                ResepDokterRacikanDetail::insert($detailRacikan);
+                // --- EKSEKUSI INSERT ---
+
+                if ($dataDokter->isEmpty() && empty($dataRacikanHeader)) {
+                    throw new \Exception("Template resep kosong (tidak ada obat/racikan)");
+                }
+
+                if ($dataDokter->isNotEmpty()) {
+                    ResepDokter::insert($dataDokter->toArray());
+                }
+
+                if (!empty($dataRacikanHeader)) {
+                    ResepDokterRacikan::insert($dataRacikanHeader);
+                    ResepDokterRacikanDetail::insert($dataRacikanDetail);
+                }
+
+                $logDetail = [
+                    'no_resep' => $no,
+                    'reqeuest' => $request->all(),
+                    'item_obat' => $dataDokter->map(fn($rd) => $rd['kode_brng'])->toArray(),
+                    'item_racikan' => collect($dataRacikanHeader)->map(fn($rh) => $rh['nama_racik'])->toArray(),
+                    'jumlah_item' => $dataDokter->count() + count($dataRacikanHeader)
+                ];
+
+                return $this->successResponse([
+                    'detail' => $logDetail,
+                ], 'Berhasil menyalin resep');
             });
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Resep berhasil disimpan',
-                'no_resep' => $no
-            ]);
-
         } catch (\Throwable $e) {
-            return $this->errorResponse($e, $e->getMessage(), 500);
+            return $this->errorResponse($e, "Gagal menyalin resep: " . $e->getMessage(), 500);
         }
     }
 }
