@@ -14,6 +14,9 @@ class AskepRanapAnak extends Model
     protected $guarded = [];
     public $timestamps = false;
 
+    protected $primaryKey = 'no_rawat';
+    protected $keyType = 'string';
+
     function regPeriksa()
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
