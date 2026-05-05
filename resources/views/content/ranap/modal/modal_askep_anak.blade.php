@@ -12,38 +12,51 @@
                             <div class="row mb-2">
                                 <label for="pasien">Pasien</label>
                                 <div class="col-sm-12 col-md-6 col-lg-3">
-                                    <input type="text" class="form-control form-control-sm no_rawat" name="no_rawat" placeholder="" aria-label="" id="no_rawat" readonly="" style="background-color: #e9ecef;cursor:not-allowed;">
+                                    <input type="text" class="form-control form-control-sm no_rawat" name="no_rawat"
+                                        placeholder="" aria-label="" id="no_rawat" readonly=""
+                                        style="background-color: #e9ecef;cursor:not-allowed;">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-5">
-                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm pasien" id="pasien" name="pasien" placeholder="" aria-label="" aria-describedby="pasien" readonly="">
+                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
+                                        class="form-control form-control-sm pasien" id="pasien" name="pasien"
+                                        placeholder="" aria-label="" aria-describedby="pasien" readonly="">
                                     <input type="hidden" value="{{ csrf_token() }}" name="_token">
                                     <input type="hidden" value="" name="no_rkm_medis">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-4">
-                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm tgl_lahir" id="tgl_lahir" name="tgl_lahir" placeholder="" aria-label="" aria-describedby="pasien" readonly="">
+                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
+                                        class="form-control form-control-sm tgl_lahir" id="tgl_lahir" name="tgl_lahir"
+                                        placeholder="" aria-label="" aria-describedby="pasien" readonly="">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-4 col-md-6 col-lg-2">
                                     <label for="">Dokter DPJP</label>
-                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm kd_dokter" placeholder="" aria-label="" id="kd_dokter" name="kd_dokter" readonly>
+                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
+                                        class="form-control form-control-sm kd_dokter" placeholder="" aria-label=""
+                                        id="kd_dokter" name="kd_dokter" readonly>
                                 </div>
                                 <div class="col-sm-8 col-md-6 col-lg-4">
                                     <label for=""></label>
-                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed" class="form-control form-control-sm dokter" placeholder="" aria-label="" id="dokter" name="dokter" autocomplete="off" readonly>
+                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
+                                        class="form-control form-control-sm dokter" placeholder="" aria-label=""
+                                        id="dokter" name="dokter" autocomplete="off" readonly>
                                     <div class="list-dokter"></div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="tanggal">Tanggal</label>
-                                    <input type="text" class="form-control form-control-sm tanggal" name="tanggal" placeholder="" aria-label="" id="tanggal" value="{{ date('d-m-Y') }}">
+                                    <input type="text" class="form-control form-control-sm tanggal" name="tanggal"
+                                        placeholder="" aria-label="" id="tanggal" value="{{ date('d-m-Y') }}">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="jam">Jam</label>
-                                    <input type="text" class="form-control form-control-sm jam" name="jam" placeholder="" aria-label="" id="jam" value="{{ date('H:i:s') }}">
+                                    <input type="text" class="form-control form-control-sm jam" name="jam"
+                                        placeholder="" aria-label="" id="jam" value="{{ date('H:i:s') }}">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="kasus_trauma">Kasus</label>
-                                    <select class="form-select form-select-sm" id="kasus_trauma" style="font-size: 12px;height:28px" name="kasus_trauma">
+                                    <select class="form-select form-select-sm" id="kasus_trauma"
+                                        style="font-size: 12px;height:28px" name="kasus_trauma">
                                         <option value="Trauma" selected>Trauma</option>
                                         <option value="Non Trauma">Non Trauma</option>
                                     </select>
@@ -54,20 +67,26 @@
                             <div class="row mb-2">
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="nip1">Pengkaji 1</label>
-                                    <input type="text" class="form-control form-control-sm nip1" placeholder="" aria-label="" id="nip1" name="nip1" readonly>
+                                    <input type="text" class="form-control form-control-sm nip1" placeholder=""
+                                        aria-label="" id="nip1" name="nip1" readonly>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-4">
                                     <label for="nip1"></label>
-                                    <input type="text" class="form-control form-control-sm pengkaji1" placeholder="" aria-label="" id="pengkaji1" name="pengkaji1" onkeyup="cariPetugasAskep(this, 1)">
+                                    <input type="text" class="form-control form-control-sm pengkaji1" placeholder=""
+                                        aria-label="" id="pengkaji1" name="pengkaji1"
+                                        onkeyup="cariPetugasAskep(this, 1)">
                                     <div class="list_petugas1"></div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="nip2">Pengkaji 2</label>
-                                    <input type="text" class="form-control form-control-sm nip2" placeholder="" aria-label="" id="nip2" name="nip2" readonly value="-">
+                                    <input type="text" class="form-control form-control-sm nip2" placeholder=""
+                                        aria-label="" id="nip2" name="nip2" readonly value="-">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-4">
                                     <label for="nip2"></label>
-                                    <input type="text" class="form-control form-control-sm pengkaji2" placeholder="" aria-label="" id="pengkaji2" name="pengkaji2" onkeyup="cariPetugasAskep(this, 2)" value="-">
+                                    <input type="text" class="form-control form-control-sm pengkaji2" placeholder=""
+                                        aria-label="" id="pengkaji2" name="pengkaji2"
+                                        onkeyup="cariPetugasAskep(this, 2)" value="-">
                                     <div class="list_petugas2"></div>
                                 </div>
                             </div>
@@ -75,16 +94,21 @@
                                 <div class="col-sm-12 col-md-5 col-lg-5">
                                     <label for="nip2">Anamnesis</label>
                                     <div class="input-group">
-                                        <select class="form-select form-select-sm" id="anamnesis" name="informasi" style="font-size: 12px">
+                                        <select class="form-select form-select-sm" id="anamnesis" name="informasi"
+                                            style="font-size: 12px">
                                             <option value="Autoanamnesis" selected>Autoanamnesis</option>
                                             <option value="Alloanamnesis">Alloanamnesis</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm hubungan" placeholder="" aria-label="" id="ket_informasi" name="ket_informasi" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <input type="text" class="form-control form-control-sm hubungan" placeholder=""
+                                            aria-label="" id="ket_informasi" name="ket_informasi"
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-4">
                                     <label for="tiba_diruang_rawat">Tiba di ruang</label>
-                                    <select class="form-select form-select-sm" id="tiba_diruang_rawat" name="tiba_diruang_rawat" style="font-size: 12px;height:28px">
+                                    <select class="form-select form-select-sm" id="tiba_diruang_rawat"
+                                        name="tiba_diruang_rawat" style="font-size: 12px;height:28px">
                                         <option value="Jalan Tanpa Bantuan" selected>Jalan Tanpa Bantuan</option>
                                         <option value="Kursi Roda">Kursi Roda</option>
                                         <option value="Brankar">Brankar</option>
@@ -92,7 +116,8 @@
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-3">
                                     <label for="cara_masuk">Cara Masuk</label>
-                                    <select class="form-select form-select-sm" id="cara_masuk" name="cara_masuk" style="font-size: 12px;height:28px">
+                                    <select class="form-select form-select-sm" id="cara_masuk" name="cara_masuk"
+                                        style="font-size: 12px;height:28px">
                                         <option value="Poli" selected>Poli</option>
                                         <option value="IGD">IGD</option>
                                         <option value="Lainnya">Lainnya</option>
@@ -107,31 +132,41 @@
                             <div class="row">
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-6">
                                     <label for="rps">Riwayat Penyakit Sekarang</label>
-                                    <textarea class="form-control" name="rps" id="rps" cols="30" rows="5" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                                    <textarea class="form-control" name="rps" id="rps" cols="30" rows="5"
+                                        onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-6">
                                     <label for="rpd">Riwayat Penyakit Dahulu</label>
-                                    <textarea class="form-control" name="rpd" id="rpd" cols="30" rows="5" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                                    <textarea class="form-control" name="rpd" id="rpd" cols="30" rows="5"
+                                        onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-6">
                                     <label for="rpk">Riwayat Penyakit Keluarga</label>
-                                    <textarea class="form-control" name="rpk" id="rpk" cols="30" rows="2" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                                    <textarea class="form-control" name="rpk" id="rpk" cols="30" rows="2"
+                                        onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-6">
                                     <label for="rpo">Riwayat Penggunaan Obat</label>
-                                    <textarea class="form-control" name="rpo" id="rpo" cols="30" rows="2" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                                    <textarea class="form-control" name="rpo" id="rpo" cols="30" rows="2"
+                                        onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <label for="riwayat_pembedahan">Riwayat Pembedahan</label>
-                                    <input type="text" class="form-control form-control-sm" id="riwayat_pembedahan" name="riwayat_pembedahan" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="riwayat_pembedahan"
+                                        name="riwayat_pembedahan" placeholder="" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <label for="riwayat_dirawat_dirs">Riwayat Perawatan di RS</label>
-                                    <input type="text" class="form-control form-control-sm" id="riwayat_dirawat_dirs" name="riwayat_dirawat_dirs" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="riwayat_dirawat_dirs"
+                                        name="riwayat_dirawat_dirs" placeholder="" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <label for="riwayat_tranfusi">Riwayat Transfusi</label>
-                                    <input type="text" class="form-control form-control-sm" id="riwayat_tranfusi" name="riwayat_tranfusi" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="riwayat_tranfusi"
+                                        name="riwayat_tranfusi" placeholder="" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <label for="alat_bantu_dipakai">Alat Bantu yang Dipakai</label>
@@ -146,7 +181,9 @@
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <label for="rpk">Riwayat Alergi</label>
-                                    <input type="text" class="form-control form-control-sm" id="riwayat_alergi" name="riwayat_alergi" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="riwayat_alergi"
+                                        name="riwayat_alergi" placeholder="" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <label for="riwayat_merokok">Merokok /btg perhari</label>
@@ -155,7 +192,10 @@
                                             <option value="Tidak">Tidak</option>
                                             <option value="Ya">Ya</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" placeholder="" aria-label="" id="riwayat_merokok_jumlah" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" name="riwayat_merokok_jumlah">
+                                        <input type="text" class="form-control form-control-sm" placeholder=""
+                                            aria-label="" id="riwayat_merokok_jumlah" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off"
+                                            name="riwayat_merokok_jumlah">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
@@ -165,7 +205,10 @@
                                             <option value="Tidak">Tidak</option>
                                             <option value="Ya">Ya</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" placeholder="" aria-label="" id="riwayat_alkohol_jumlah" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" name="riwayat_alkohol_jumlah">
+                                        <input type="text" class="form-control form-control-sm" placeholder=""
+                                            aria-label="" id="riwayat_alkohol_jumlah" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off"
+                                            name="riwayat_alkohol_jumlah">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
@@ -198,7 +241,8 @@
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-3">
                                     <label for="pemeriksaan_keadaan_umum">Keadaan Umum:</label>
-                                    <select class="form-select" name="pemeriksaan_keadaan_umum" id="pemeriksaan_keadaan_umum">
+                                    <select class="form-select" name="pemeriksaan_keadaan_umum"
+                                        id="pemeriksaan_keadaan_umum">
                                         <option value="Baik">Baik</option>
                                         <option value="Sedang">Sedang</option>
                                         <option value="Buruk">Buruk</option>
@@ -206,35 +250,51 @@
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-2">
                                     <label for="pemeriksaan_gcs">GCS (E,V,M)</label>
-                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_gcs" name="pemeriksaan_gcs" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_gcs"
+                                        name="pemeriksaan_gcs" placeholder="" maxlength="10" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-2">
                                     <label for="pemeriksaan_td">TD (mmHg)</label>
-                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_td" name="pemeriksaan_td" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_td"
+                                        name="pemeriksaan_td" placeholder="" maxlength="10" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-2">
                                     <label for="pemeriksaan_nadi">Nadi (x/menit)</label>
-                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_nadi" name="pemeriksaan_nadi" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_nadi"
+                                        name="pemeriksaan_nadi" placeholder="" maxlength="10" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-2">
                                     <label for="pemeriksaan_rr">RR (x/menit)</label>
-                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_rr" name="pemeriksaan_rr" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_rr"
+                                        name="pemeriksaan_rr" placeholder="" maxlength="10" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-2">
                                     <label for="pemeriksaan_suhu">Suhu (<sup>0</sup>C)</label>
-                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_suhu" name="pemeriksaan_suhu" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_suhu"
+                                        name="pemeriksaan_suhu" placeholder="" maxlength="10" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-2">
                                     <label for="pemeriksaan_spo2">SpO2(%)</label>
-                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_spo2" name="pemeriksaan_spo2" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_spo2"
+                                        name="pemeriksaan_spo2" placeholder="" maxlength="10" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-3">
                                     <label for="pemeriksaan_tb">TB (cm)</label>
-                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_tb" name="pemeriksaan_tb" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_tb"
+                                        name="pemeriksaan_tb" placeholder="" maxlength="10" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-3">
                                     <label for="pemeriksaan_bb">BB (Kg)</label>
-                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_bb" name="pemeriksaan_bb" placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                    <input type="text" class="form-control form-control-sm" id="pemeriksaan_bb"
+                                        name="pemeriksaan_bb" placeholder="" maxlength="10" onfocus="removeZero(this)"
+                                        onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
                                 <div class="row">
                                     {{-- <div class="separator m-2"></div> --}}
@@ -242,30 +302,39 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_susunan_kepala">Kepala</label>
-                                            <select class="form-select" name="pemeriksaan_susunan_kepala" id="pemeriksaan_susunan_kepala" style="border-radius:6px 0 0 6px">
+                                            <select class="form-select" name="pemeriksaan_susunan_kepala"
+                                                id="pemeriksaan_susunan_kepala" style="border-radius:6px 0 0 6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Hydrocephalus">Hydrocephalus</option>
                                                 <option value="Hematoma">Hematoma</option>
                                                 <option value="Lain-lain">Lain-lain</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label="" id="pemeriksaan_susunan_kepala_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" name="pemeriksaan_susunan_kepala_keterangan">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_susunan_kepala_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off" name="pemeriksaan_susunan_kepala_keterangan">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_susunan_wajah">Wajah</label>
-                                            <select class="form-select" name="pemeriksaan_susunan_wajah" id="pemeriksaan_susunan_wajah" style="border-radius:6px 0 0 6px">
+                                            <select class="form-select" name="pemeriksaan_susunan_wajah"
+                                                id="pemeriksaan_susunan_wajah" style="border-radius:6px 0 0 6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Asimetris">Asimetris</option>
                                                 <option value="Kelainan Kongenital">Kelainan Kongenital</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label="" id="pemeriksaan_susunan_wajah_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" name="pemeriksaan_susunan_wajah_keterangan">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_susunan_wajah_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off" name="pemeriksaan_susunan_wajah_keterangan">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                         <div class="input-group">
                                             <label for="pemeriksaan_susunan_leher">Leher</label>
-                                            <select class="form-select" name="pemeriksaan_susunan_leher" id="pemeriksaan_susunan_leher" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_susunan_leher"
+                                                id="pemeriksaan_susunan_leher" style="border-radius:6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Kaku Kuduk">Kaku Kuduk</option>
                                                 <option value="Pembesaran Thyroid">Pembesaran Thyroid</option>
@@ -276,18 +345,23 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_susunan_kejang" style="padding: 5px">Kejang</label>
-                                            <select class="form-select" name="pemeriksaan_susunan_kejang" id="pemeriksaan_susunan_kejang" style="border-radius:6px 0 0 6px">
+                                            <select class="form-select" name="pemeriksaan_susunan_kejang"
+                                                id="pemeriksaan_susunan_kejang" style="border-radius:6px 0 0 6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Kuat">Kuat</option>
                                                 <option value="Ada">Ada</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label="" id="pemeriksaan_susunan_kejang_keterangan" name="pemeriksaan_susunan_kejang_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_susunan_kejang_keterangan"
+                                                name="pemeriksaan_susunan_kejang_keterangan" onfocus="removeZero(this)"
+                                                onblur="cekKosong(this)" value="-" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                         <div class="input-group">
                                             <label for="pemeriksaan_susunan_sensorik">Sensorik</label>
-                                            <select class="form-select" name="pemeriksaan_susunan_sensorik" id="pemeriksaan_susunan_sensorik" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_susunan_sensorik"
+                                                id="pemeriksaan_susunan_sensorik" style="border-radius:6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Sakit Nyeri">Sakit Nyeri</option>
                                                 <option value="Rasa Kebas">Rasa Kebas</option>
@@ -299,7 +373,8 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                         <div class="input-group">
                                             <label for="pemeriksaan_kardiovaskuler_pulsasi">Pulasasi</label>
-                                            <select class="form-select" name="pemeriksaan_kardiovaskuler_pulsasi" id="pemeriksaan_kardiovaskuler_pulsasi" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_kardiovaskuler_pulsasi"
+                                                id="pemeriksaan_kardiovaskuler_pulsasi" style="border-radius:6px">
                                                 <option value="Kuat">Kuat</option>
                                                 <option value="Lemah">Lemah</option>
                                                 <option value="Lain-lain">Lain-lain</option>
@@ -309,18 +384,25 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_kardiovaskuler_sirkulasi">Sirkulasi</label>
-                                            <select class="form-select" name="pemeriksaan_kardiovaskuler_sirkulasi" id="pemeriksaan_kardiovaskuler_sirkulasi" style="border-radius:6px 0 0 6px">
+                                            <select class="form-select" name="pemeriksaan_kardiovaskuler_sirkulasi"
+                                                id="pemeriksaan_kardiovaskuler_sirkulasi"
+                                                style="border-radius:6px 0 0 6px">
                                                 <option value="Akral Hangat">Akral Hangat</option>
                                                 <option value="Akral Dingin">Akral Dingin</option>
                                                 <option value="Edema">Edema</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label="" id="pemeriksaan_kardiovaskuler_sirkulasi_keterangan" name="pemeriksaan_kardiovaskuler_sirkulasi_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_kardiovaskuler_sirkulasi_keterangan"
+                                                name="pemeriksaan_kardiovaskuler_sirkulasi_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-3">
                                         <div class="input-group">
                                             <label for="pemeriksaan_kardiovaskuler_denyut_nadi">Denyut Nadi</label>
-                                            <select class="form-select" name="pemeriksaan_kardiovaskuler_denyut_nadi" id="pemeriksaan_kardiovaskuler_denyut_nadi" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_kardiovaskuler_denyut_nadi"
+                                                id="pemeriksaan_kardiovaskuler_denyut_nadi" style="border-radius:6px">
                                                 <option value="Teratur">Teratur</option>
                                                 <option value="Tidak Teratur">Tidak Teratur</option>
                                             </select>
@@ -331,7 +413,8 @@
                                     <div class="col-sm-12 col-md-12 col-lg-4">
                                         <div class="input-group">
                                             <label for="pemeriksaan_respirasi_retraksi">Retraksi</label>
-                                            <select class="form-select" name="pemeriksaan_respirasi_retraksi" id="pemeriksaan_respirasi_retraksi" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_respirasi_retraksi"
+                                                id="pemeriksaan_respirasi_retraksi" style="border-radius:6px">
                                                 <option value="Tidak Ada">Tidak Ada</option>
                                                 <option value="Ringan">Ringan</option>
                                                 <option value="Berat">Berat</option>
@@ -341,7 +424,8 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                         <div class="input-group">
                                             <label for="pemeriksaan_respirasi_pola_navas">Pola Nafas</label>
-                                            <select class="form-select" name="pemeriksaan_respirasi_pola_nafas" id="pemeriksaan_respirasi_pola_nafas" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_respirasi_pola_nafas"
+                                                id="pemeriksaan_respirasi_pola_nafas" style="border-radius:6px">
                                                 <option value="Normal">Normal</option>
                                                 <option value="Bradipnea">Bradipnea</option>
                                                 <option value="Tachipnea">Tachipnea</option>
@@ -351,7 +435,8 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                         <div class="input-group">
                                             <label for="pemeriksaan_respirasi_suara_nafas">Suara Nafas</label>
-                                            <select class="form-select" name="pemeriksaan_respirasi_suara_nafas" id="pemeriksaan_respirasi_suara_nafas" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_respirasi_suara_nafas"
+                                                id="pemeriksaan_respirasi_suara_nafas" style="border-radius:6px">
                                                 <option value="Vesikuler">Vesikuler</option>
                                                 <option value="Wheezing">Wheezing</option>
                                                 <option value="Rhonki">Rhonki</option>
@@ -361,7 +446,8 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_respirasi_batuk">Batuk & Sekresi</label>
-                                            <select class="form-select" name="pemeriksaan_respirasi_batuk" id="pemeriksaan_respirasi_batuk" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_respirasi_batuk"
+                                                id="pemeriksaan_respirasi_batuk" style="border-radius:6px">
                                                 <option value="Tidak">Tidak</option>
                                                 <option value="Ya : Produktif">Ya : Produktif</option>
                                                 <option value="Ya : Non Produktif">Ya : Non Produktif</option>
@@ -371,7 +457,8 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_respirasi_volume">Volume</label>
-                                            <select class="form-select" name="pemeriksaan_respirasi_volume_pernafasan" id="pemeriksaan_respirasi_volume_pernafasan" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_respirasi_volume_pernafasan"
+                                                id="pemeriksaan_respirasi_volume_pernafasan" style="border-radius:6px">
                                                 <option value="Normal">Normal</option>
                                                 <option value="Hiperventilasi">Hiperventilasi</option>
                                                 <option value="Hipoventilasi">Hipoventilasi</option>
@@ -381,17 +468,24 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_respirasi_jenis_pernafasan">Jenis Pernafasan</label>
-                                            <select class="form-select" name="pemeriksaan_respirasi_jenis_pernafasan" id="pemeriksaan_respirasi_jenis_pernafasan" style="border-radius:6px 0 0 6px">
+                                            <select class="form-select" name="pemeriksaan_respirasi_jenis_pernafasan"
+                                                id="pemeriksaan_respirasi_jenis_pernafasan"
+                                                style="border-radius:6px 0 0 6px">
                                                 <option value="Pernafasan Dada">Pernafasan Dada</option>
                                                 <option value="Alat Bantu Pernafasaan">Alat Bantu Pernafasan</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label="" id="pemeriksaan_respirasi_jenis_pernafasan_keterangan" name="pemeriksaan_respirasi_jenis_pernafasan_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_respirasi_jenis_pernafasan_keterangan"
+                                                name="pemeriksaan_respirasi_jenis_pernafasan_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_respirasi_irama_nafas">Irama</label>
-                                            <select class="form-select" name="pemeriksaan_respirasi_irama_nafas" id="pemeriksaan_respirasi_irama_nafas" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_respirasi_irama_nafas"
+                                                id="pemeriksaan_respirasi_irama_nafas" style="border-radius:6px">
                                                 <option value="Teratur">Teratur</option>
                                                 <option value="Tidak Teratur">Tidak Teratur</option>
                                             </select>
@@ -402,87 +496,102 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_gastrointestinal_mulut">Mulut</label>
-                                            <select class="form-select" name="pemeriksaan_gastrointestinal_mulut" id="pemeriksaan_gastrointestinal_mulut" style="border-radius:6px 0 0 6px">
+                                            <select class="form-select" name="pemeriksaan_gastrointestinal_mulut"
+                                                id="pemeriksaan_gastrointestinal_mulut"
+                                                style="border-radius:6px 0 0 6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Mukosa Kering">Mukosa Kering</option>
                                                 <option value="Bibir Pucat">Bibir Pucat</option>
                                                 <option value="Lain-lain">Lain-lain</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                                id="pemeriksaan_gastrointestinal_mulut_keterangan"
-                                                name="pemeriksaan_gastrointestinal_mulut_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                                value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_gastrointestinal_mulut_keterangan"
+                                                name="pemeriksaan_gastrointestinal_mulut_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_gastrointestinal_tenggorokan">Tenggorokan</label>
                                             <select class="form-select" name="pemeriksaan_gastrointestinal_tenggorokan"
-                                                id="pemeriksaan_gastrointestinal_tenggorokan" style="border-radius:6px 0 0 6px">
+                                                id="pemeriksaan_gastrointestinal_tenggorokan"
+                                                style="border-radius:6px 0 0 6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Gangguan Menelan">Gangguan Menelan</option>
                                                 <option value="Sakit Menelan">Sakit Menelan</option>
                                                 <option value="Lain-lain">Lain-lain</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                                id="pemeriksaan_gastrointestinal_tenggorokan_keterangan"
-                                                name="pemeriksaan_gastrointestinal_tenggorokan_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                                value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_gastrointestinal_tenggorokan_keterangan"
+                                                name="pemeriksaan_gastrointestinal_tenggorokan_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_gastrointestinal_lidah">Lidah</label>
                                             <select class="form-select" name="pemeriksaan_gastrointestinal_lidah"
-                                                id="pemeriksaan_gastrointestinal_lidah" style="border-radius:6px 0 0 6px">
+                                                id="pemeriksaan_gastrointestinal_lidah"
+                                                style="border-radius:6px 0 0 6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Kotor">Kotor</option>
                                                 <option value="Gerak Asimetris">Gerak Asimetris</option>
                                                 <option value="Lain-lain">Lain-lain</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                                id="pemeriksaan_gastrointestinal_lidah_keterangan"
-                                                name="pemeriksaan_gastrointestinal_lidah_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                                value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_gastrointestinal_lidah_keterangan"
+                                                name="pemeriksaan_gastrointestinal_lidah_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_gastrointestinal_abdomen">Abdomen</label>
                                             <select class="form-select" name="pemeriksaan_gastrointestinal_abdomen"
-                                                id="pemeriksaan_gastrointestinal_abdomen" style="border-radius:6px 0 0 6px">
+                                                id="pemeriksaan_gastrointestinal_abdomen"
+                                                style="border-radius:6px 0 0 6px">
                                                 <option value="Supel">Supel</option>
                                                 <option value="Asictes">Asictes</option>
                                                 <option value=" Tegang">Tegang</option>
                                                 <option value="Nyeri Tekan/Lepas">Nyeri Tekan/Lepas</option>
                                                 <option value="Lain-lain">Lain-lain</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                                id="pemeriksaan_gastrointestinal_abdomen_keterangan"
-                                                name="pemeriksaan_gastrointestinal_abdomen_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                                value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_gastrointestinal_abdomen_keterangan"
+                                                name="pemeriksaan_gastrointestinal_abdomen_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_gastrointestinal_gigi">Gigi</label>
                                             <select class="form-select" name="pemeriksaan_gastrointestinal_gigi"
-                                                id="pemeriksaan_gastrointestinal_gigi" style="border-radius:6px 0 0 6px">
+                                                id="pemeriksaan_gastrointestinal_gigi"
+                                                style="border-radius:6px 0 0 6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Karies">Karies</option>
                                                 <option value="Goyang">Goyang</option>
                                                 <option value="Lain-lain">Lain-lain</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                                id="pemeriksaan_gastrointestinal_gigi_keterangan"
-                                                name="pemeriksaan_gastrointestinal_gigi_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                                value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_gastrointestinal_gigi_keterangan"
+                                                name="pemeriksaan_gastrointestinal_gigi_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-3">
                                         <div class="input-group">
-                                            <label for="pemeriksaan_gastrointestinal_peistatik_usus">Peistatik Usus</label>
-                                            <select class="form-select" name="pemeriksaan_gastrointestinal_peistatik_usus" id="pemeriksaan_gastrointestinal_peistatik_usus" style="border-radius:6px">
+                                            <label for="pemeriksaan_gastrointestinal_peistatik_usus">Peistatik
+                                                Usus</label>
+                                            <select class="form-select"
+                                                name="pemeriksaan_gastrointestinal_peistatik_usus"
+                                                id="pemeriksaan_gastrointestinal_peistatik_usus"
+                                                style="border-radius:6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Tidak Ada Bising Usus">Tidak Ada Bising Usus</option>
                                                 <option value="Hiperistaltik">Hiperistaltik</option>
@@ -492,7 +601,8 @@
                                     <div class="col-sm-12 col-md-12 col-lg-3">
                                         <div class="input-group">
                                             <label for="pemeriksaan_gastrointestinal_anus">Anus</label>
-                                            <select class="form-select" name="pemeriksaan_gastrointestinal_anus" id="pemeriksaan_gastrointestinal_anus" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_gastrointestinal_anus"
+                                                id="pemeriksaan_gastrointestinal_anus" style="border-radius:6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Atresia Ani">Atresia Ani</option>
                                             </select>
@@ -516,21 +626,25 @@
                                         <div class="input-group">
                                             <label for="pemeriksaan_neurologi_pengelihatan">Penglihatan</label>
                                             <select class="form-select" name="pemeriksaan_neurologi_pengelihatan"
-                                                id="pemeriksaan_neurologi_pengelihatan" style="border-radius: 6px 0 0 6px">
+                                                id="pemeriksaan_neurologi_pengelihatan"
+                                                style="border-radius: 6px 0 0 6px">
                                                 <option value="TAK">TAK</option>
                                                 <option value="Ada Kelainan">Ada Kelainan</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                                id="pemeriksaan_neurologi_pengelihatan_keterangan"
-                                                name="pemeriksaan_neurologi_pengelihatan_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                                value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_neurologi_pengelihatan_keterangan"
+                                                name="pemeriksaan_neurologi_pengelihatan_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_neurologi_lidah">Alat Bantu</label>
-                                            <select class="form-select" name="pemeriksaan_neurologi_alat_bantu_penglihatan"
-                                                id="pemeriksaan_neurologi_alat_bantu_penglihatan" style="border-radius:6px">
+                                            <select class="form-select"
+                                                name="pemeriksaan_neurologi_alat_bantu_penglihatan"
+                                                id="pemeriksaan_neurologi_alat_bantu_penglihatan"
+                                                style="border-radius:6px">
                                                 <option value="Tidak">Tidak</option>
                                                 <option value="Kacamata">Kacamata</option>
                                                 <option value="Lensa Kontak">Lensa Kontak</option>
@@ -567,7 +681,8 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                         <div class="input-group">
                                             <label for="pemeriksaan_neurologi_kekuatan_otot">Otot</label>
-                                            <select class="form-select" name="pemeriksaan_neurologi_kekuatan_otot" id="pemeriksaan_neurologi_kekuatan_otot" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_neurologi_kekuatan_otot"
+                                                id="pemeriksaan_neurologi_kekuatan_otot" style="border-radius:6px">
                                                 <option value="Kuat">Kuat</option>
                                                 <option value="Lemah">Lemah</option>
                                             </select>
@@ -581,10 +696,11 @@
                                                 <option value="Jelas">Jelas</option>
                                                 <option value="Tidak Jelas">Tidak Jelas</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                                id="pemeriksaan_neurologi_bicara_keterangan"
-                                                name="pemeriksaan_neurologi_bicara_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                                value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_neurologi_bicara_keterangan"
+                                                name="pemeriksaan_neurologi_bicara_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
 
@@ -593,7 +709,8 @@
                                         <div class="input-group">
                                             <div class="input-group">
                                                 <label for="pemeriksaan_integument_kulit">Kulit</label>
-                                                <select class="form-select" name="pemeriksaan_integument_kulit" id="pemeriksaan_integument_kulit" style="border-radius:6px">
+                                                <select class="form-select" name="pemeriksaan_integument_kulit"
+                                                    id="pemeriksaan_integument_kulit" style="border-radius:6px">
                                                     <option value="Normal">Normal</option>
                                                     <option value="Rash/Kemerahan">Rash/Kemerahan</option>
                                                     <option value="Luka">Luka</option>
@@ -607,7 +724,8 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_integument_warnakulit">Warna Kulit</label>
-                                            <select class="form-select" name="pemeriksaan_integument_warnakulit" id="pemeriksaan_integument_warnakulit" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_integument_warnakulit"
+                                                id="pemeriksaan_integument_warnakulit" style="border-radius:6px">
                                                 <option value="Normal">Normal</option>
                                                 <option value="Pucat">Pucat</option>
                                                 <option value="Sianosis">Sianosis</option>
@@ -618,7 +736,8 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_integument_turgor">Turgor</label>
-                                            <select class="form-select" name="pemeriksaan_integument_turgor" id="pemeriksaan_integument_turgor" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_integument_turgor"
+                                                id="pemeriksaan_integument_turgor" style="border-radius:6px">
                                                 <option value="Baik">Baik</option>
                                                 <option value="Sedang">Sedang</option>
                                                 <option value="Buruk">Buruk</option>
@@ -628,14 +747,17 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_integument_dekubitas">Resiko Dekubitas</label>
-                                            <select class="form-select" name="pemeriksaan_integument_dekubitas" id="pemeriksaan_integument_dekubitas" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_integument_dekubitas"
+                                                id="pemeriksaan_integument_dekubitas" style="border-radius:6px">
                                                 <option value="Tidak Ada">Tidak Ada</option>
                                                 <option value="Usia > 65 Tahun">Usia > 65 Tahun</option>
                                                 <option value="Obesitas">Obesitas</option>
                                                 <option value="Imobilisasi">Imobilisasi</option>
-                                                <option value="Praplegi/Vegetatif State">Praplegi/Vegetatif State</option>
+                                                <option value="Praplegi/Vegetatif State">Praplegi/Vegetatif State
+                                                </option>
                                                 <option value="Dirawat Di HCU">Dirawat Di HCU</option>
-                                                <option value="Penyakit Kronis (DM, CHF, CKD)">Penyakit Kronis (DM, CHF, CKD)</option>
+                                                <option value="Penyakit Kronis (DM, CHF, CKD)">Penyakit Kronis (DM, CHF,
+                                                    CKD)</option>
                                                 <option value="Inkontinentia Uri/Alvi">Inkontinentia Uri/Alvi</option>
                                             </select>
                                         </div>
@@ -645,20 +767,27 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                         <div class="input-group">
                                             <label for="pemeriksaan_muskuloskletal_oedema">Oedema</label>
-                                            <select class="form-select" name="pemeriksaan_muskuloskletal_oedema" id="pemeriksaan_muskuloskletal_oedema" style="border-radius:6px 0 0 6px">
+                                            <select class="form-select" name="pemeriksaan_muskuloskletal_oedema"
+                                                id="pemeriksaan_muskuloskletal_oedema"
+                                                style="border-radius:6px 0 0 6px">
                                                 <option value="Tidak Ada">Tidak Ada</option>
                                                 <option value="Ada">Ada</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                                id="pemeriksaan_muskuloskletal_oedema_keterangan"
-                                                name="pemeriksaan_muskuloskletal_oedema_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                                value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_muskuloskletal_oedema_keterangan"
+                                                name="pemeriksaan_muskuloskletal_oedema_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                         <div class="input-group">
-                                            <label for="pemeriksaan_muskuloskletal_pergerakan_sendi">Pergerakan Sendi</label>
-                                            <select class="form-select" name="pemeriksaan_muskuloskletal_pergerakan_sendi" id="pemeriksaan_muskuloskletal_pergerakan_sendi" style="border-radius:6px">
+                                            <label for="pemeriksaan_muskuloskletal_pergerakan_sendi">Pergerakan
+                                                Sendi</label>
+                                            <select class="form-select"
+                                                name="pemeriksaan_muskuloskletal_pergerakan_sendi"
+                                                id="pemeriksaan_muskuloskletal_pergerakan_sendi"
+                                                style="border-radius:6px">
                                                 <option value="Bebas">Bebas</option>
                                                 <option value="Terbatas">Terbatas</option>
                                             </select>
@@ -667,7 +796,9 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                         <div class="input-group">
                                             <label for="pemeriksaan_muskuloskletal_kekauatan_otot">Kekuatan Otot</label>
-                                            <select class="form-select" name="pemeriksaan_muskuloskletal_kekauatan_otot" id="pemeriksaan_muskuloskletal_kekauatan_otot" style="border-radius:6px">
+                                            <select class="form-select" name="pemeriksaan_muskuloskletal_kekauatan_otot"
+                                                id="pemeriksaan_muskuloskletal_kekauatan_otot"
+                                                style="border-radius:6px">
                                                 <option value="Baik">Baik</option>
                                                 <option value="Lemah">Lemah</option>
                                                 <option value="Tremor">Tremor</option>
@@ -677,27 +808,33 @@
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_muskuloskletal_fraktur">Fraktur</label>
-                                            <select class="form-select" name="pemeriksaan_muskuloskletal_fraktur" id="pemeriksaan_muskuloskletal_fraktur" style="border-radius:6px 0 0 6px">
+                                            <select class="form-select" name="pemeriksaan_muskuloskletal_fraktur"
+                                                id="pemeriksaan_muskuloskletal_fraktur"
+                                                style="border-radius:6px 0 0 6px">
                                                 <option value="Tidak Ada">Tidak Ada</option>
                                                 <option value="Ada">Ada</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                                id="pemeriksaan_muskuloskletal_fraktur_keterangan"
-                                                name="pemeriksaan_muskuloskletal_fraktur_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                                value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_muskuloskletal_fraktur_keterangan"
+                                                name="pemeriksaan_muskuloskletal_fraktur_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
                                             <label for="pemeriksaan_muskuloskletal_nyeri_sendi">Nyeri Sendi</label>
-                                            <select class="form-select" name="pemeriksaan_muskuloskletal_nyeri_sendi" id="pemeriksaan_muskuloskletal_nyeri_sendi" style="border-radius:6px 0 0 6px">
+                                            <select class="form-select" name="pemeriksaan_muskuloskletal_nyeri_sendi"
+                                                id="pemeriksaan_muskuloskletal_nyeri_sendi"
+                                                style="border-radius:6px 0 0 6px">
                                                 <option value="Tidak Ada">Tidak Ada</option>
                                                 <option value="Ada">Ada</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                                id="pemeriksaan_muskuloskletal_nyeri_sendi_keterangan"
-                                                name="pemeriksaan_muskuloskletal_nyeri_sendi_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                                value="-" autocomplete="off">
+                                            <input type="text" class="form-control form-control-sm" placeholder=""
+                                                aria-label="" id="pemeriksaan_muskuloskletal_nyeri_sendi_keterangan"
+                                                name="pemeriksaan_muskuloskletal_nyeri_sendi_keterangan"
+                                                onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -705,64 +842,76 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="pemeriksaan_eliminasi_bab_frekuensi">BAB : Frekuensi</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                            id="pemeriksaan_eliminasi_bab_frekuensi_jumlah"
-                                            name="pemeriksaan_eliminasi_bab_frekuensi_jumlah" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                            value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" placeholder=""
+                                            aria-label="" id="pemeriksaan_eliminasi_bab_frekuensi_jumlah"
+                                            name="pemeriksaan_eliminasi_bab_frekuensi_jumlah" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off"
+                                            style="border-radius: 6px">
                                         <label for="">/x</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                            id="pemeriksaan_eliminasi_bab_frekuensi_durasi"
-                                            name="pemeriksaan_eliminasi_bab_frekuensi_durasi" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                            value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" placeholder=""
+                                            aria-label="" id="pemeriksaan_eliminasi_bab_frekuensi_durasi"
+                                            name="pemeriksaan_eliminasi_bab_frekuensi_durasi" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off"
+                                            style="border-radius: 6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
-                                        <label for="pemeriksaan_eliminasi_bab_konsistensi" style="padding: 5px">Konsistensi</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="" aria-label="" id="pemeriksaan_eliminasi_bab_konsistensi" name="pemeriksaan_eliminasi_bab_konsistensi" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <label for="pemeriksaan_eliminasi_bab_konsistensi"
+                                            style="padding: 5px">Konsistensi</label>
+                                        <input type="text" class="form-control form-control-sm" placeholder=""
+                                            aria-label="" id="pemeriksaan_eliminasi_bab_konsistensi"
+                                            name="pemeriksaan_eliminasi_bab_konsistensi" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off"
+                                            style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="pemeriksaan_eliminasi_bab_warna" style="padding: 5px">Warna</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                            id="pemeriksaan_eliminasi_bab_warna"
-                                            name="pemeriksaan_eliminasi_bab_warna" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                            value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" placeholder=""
+                                            aria-label="" id="pemeriksaan_eliminasi_bab_warna"
+                                            name="pemeriksaan_eliminasi_bab_warna" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off"
+                                            style="border-radius:6px">
                                     </div>
                                 </div>
 
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="pemeriksaan_eliminasi_bab_frekuensi">BAK : Frekuensi</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                            id="pemeriksaan_eliminasi_bak_frekuensi_jumlah"
-                                            name="pemeriksaan_eliminasi_bak_frekuensi_jumlah" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                            value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" placeholder=""
+                                            aria-label="" id="pemeriksaan_eliminasi_bak_frekuensi_jumlah"
+                                            name="pemeriksaan_eliminasi_bak_frekuensi_jumlah" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off"
+                                            style="border-radius: 6px">
                                         <label for="">/x</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                            id="pemeriksaan_eliminasi_bak_frekuensi_durasi"
-                                            name="pemeriksaan_eliminasi_bak_frekuensi_durasi" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                            value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" placeholder=""
+                                            aria-label="" id="pemeriksaan_eliminasi_bak_frekuensi_durasi"
+                                            name="pemeriksaan_eliminasi_bak_frekuensi_durasi" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off"
+                                            style="border-radius: 6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="pemeriksaan_eliminasi_bak_warna">Warna</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                            id="pemeriksaan_eliminasi_bak_warna"
-                                            name="pemeriksaan_eliminasi_bak_warna" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                            value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" placeholder=""
+                                            aria-label="" id="pemeriksaan_eliminasi_bak_warna"
+                                            name="pemeriksaan_eliminasi_bak_warna" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off"
+                                            style="border-radius: 6px">
 
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="pemeriksaan_eliminasi_bak_lainlain">Lain-lain</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="" aria-label=""
-                                            id="pemeriksaan_eliminasi_bak_lainlain"
-                                            name="pemeriksaan_eliminasi_bak_lainlain" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                            value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" placeholder=""
+                                            aria-label="" id="pemeriksaan_eliminasi_bak_lainlain"
+                                            name="pemeriksaan_eliminasi_bak_lainlain" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off"
+                                            style="border-radius: 6px">
                                     </div>
                                 </div>
                             </div>
@@ -773,7 +922,8 @@
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <div class="input-group">
                                         <label for="pola_aktifitas_mandi">Mandi</label>
-                                        <select class="form-select" name="pola_aktifitas_mandi" id="pola_aktifitas_mandi" style="border-radius: 6px">
+                                        <select class="form-select" name="pola_aktifitas_mandi"
+                                            id="pola_aktifitas_mandi" style="border-radius: 6px">
                                             <option value="Mandiri">Mandiri</option>
                                             <option value="Bantuan Orang Lain">Bantuan Orang Lain</option>
                                         </select>
@@ -782,7 +932,8 @@
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <div class="input-group">
                                         <label for="pola_aktifitas_makanminum">Makan/Minum</label>
-                                        <select class="form-select" name="pola_aktifitas_makanminum" id="pola_aktifitas_makanminum" style="border-radius:6px">
+                                        <select class="form-select" name="pola_aktifitas_makanminum"
+                                            id="pola_aktifitas_makanminum" style="border-radius:6px">
                                             <option value="Mandiri">Mandiri</option>
                                             <option value="Bantuan Orang Lain">Bantuan Orang Lain</option>
                                         </select>
@@ -791,7 +942,8 @@
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <div class="input-group">
                                         <label for="pola_aktifitas_berpakaian">Berpakaian</label>
-                                        <select class="form-select" name="pola_aktifitas_berpakaian" id="pola_aktifitas_berpakaian" style="border-radius:6px">
+                                        <select class="form-select" name="pola_aktifitas_berpakaian"
+                                            id="pola_aktifitas_berpakaian" style="border-radius:6px">
                                             <option value="Mandiri">Mandiri</option>
                                             <option value="Bantuan Orang Lain">Bantuan Orang Lain</option>
                                         </select>
@@ -800,7 +952,8 @@
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <div class="input-group">
                                         <label for="pola_aktifitas_eliminasi">Eliminasi</label>
-                                        <select class="form-select" name="pola_aktifitas_eliminasi" id="pola_aktifitas_eliminasi" style="border-radius:6px">
+                                        <select class="form-select" name="pola_aktifitas_eliminasi"
+                                            id="pola_aktifitas_eliminasi" style="border-radius:6px">
                                             <option value="Mandiri">Mandiri</option>
                                             <option value="Bantuan Orang Lain">Bantuan Orang Lain</option>
                                         </select>
@@ -809,7 +962,8 @@
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <div class="input-group">
                                         <label for="pola_aktifitas_berpindah">Berpindah</label>
-                                        <select class="form-select" name="pola_aktifitas_berpindah" id="pola_aktifitas_berpindah" style="border-radius:6px">
+                                        <select class="form-select" name="pola_aktifitas_berpindah"
+                                            id="pola_aktifitas_berpindah" style="border-radius:6px">
                                             <option value="Mandiri">Mandiri</option>
                                             <option value="Bantuan Orang Lain">Bantuan Orang Lain</option>
                                         </select>
@@ -817,14 +971,24 @@
                                 </div>
 
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-12">
-                                    <label for="pola_nutrisi_porsi_makan" style="margin-bottom:2px">b. Pola Makan / Nutrisi : </label>
+                                    <label for="pola_nutrisi_porsi_makan" style="margin-bottom:2px">b. Pola Makan /
+                                        Nutrisi : </label>
                                     <div class="input-group">
                                         <label for="pola_nutrisi_porsi_makan">Porsi </label>
-                                        <input type="text" class="form-control form-control-sm" id="pola_nutrisi_porsi_makan" name="pola_nutrisi_porsi_makan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius: 6px ">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="pola_nutrisi_porsi_makan" name="pola_nutrisi_porsi_makan"
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off" style="border-radius: 6px ">
                                         <label for="pola_nutrisi_porsi_makan">Frekuensi </label>
-                                        <input type="text" class="form-control form-control-sm" id="pola_nutrisi_frekuesi_makan" name="pola_nutrisi_frekuesi_makan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius: 6px ">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="pola_nutrisi_frekuesi_makan" name="pola_nutrisi_frekuesi_makan"
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off" style="border-radius: 6px ">
                                         <label for="pola_nutrisi_porsi_makan">Jenis Makanan </label>
-                                        <input type="text" class="form-control form-control-sm" id="pola_nutrisi_jenis_makanan" name="pola_nutrisi_jenis_makanan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius: 6px ">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="pola_nutrisi_jenis_makanan" name="pola_nutrisi_jenis_makanan"
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off" style="border-radius: 6px ">
                                     </div>
                                 </div>
 
@@ -832,9 +996,13 @@
                                     <label for="pola_tidur_lama_tidur">c. Pola Tidur : </label>
                                     <div class="input-group">
                                         <label for="pola_tidur_lama_tidur">Lama Tidur : </label>
-                                        <input type="text" class="form-control form-control-sm" id="pola_tidur_lama_tidur" name="pola_tidur_lama_tidur" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="pola_tidur_lama_tidur" name="pola_tidur_lama_tidur"
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off" style="border-radius: 6px">
                                         <label for="">Jam / Hari, </label>
-                                        <select class="form-select" name="pola_tidur_gangguan" id="pola_tidur_gangguan" style="border-radius: 6px">
+                                        <select class="form-select" name="pola_tidur_gangguan" id="pola_tidur_gangguan"
+                                            style="border-radius: 6px">
                                             <option value="Tidak Ada Gangguan">Tidak Ada Gangguan</option>
                                             <option value="Insomnia">Insomnia</option>
                                         </select>
@@ -849,8 +1017,10 @@
                             <div class="row">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
-                                        <label for="pengkajian_fungsi_kemampuan_sehari">a. Kemampuan Aktivitas Sehari-hari</label>
-                                        <select class="form-select" name="pengkajian_fungsi_kemampuan_sehari" id="pengkajian_fungsi_kemampuan_sehari" style="border-radius:6px">
+                                        <label for="pengkajian_fungsi_kemampuan_sehari">a. Kemampuan Aktivitas
+                                            Sehari-hari</label>
+                                        <select class="form-select" name="pengkajian_fungsi_kemampuan_sehari"
+                                            id="pengkajian_fungsi_kemampuan_sehari" style="border-radius:6px">
                                             <option value="Mandiri">Mandiri</option>
                                             <option value="Bantuan minimal">Bantuan Minimal</option>
                                             <option value="Bantuan Sebagian">Bantuan Sebagian</option>
@@ -861,7 +1031,8 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="pengkajian_fungsi_berjalan">b. Berjalan</label>
-                                        <select class="form-select" name="pengkajian_fungsi_berjalan" id="pengkajian_fungsi_berjalan" style="border-radius:6px 0 0 6px ">
+                                        <select class="form-select" name="pengkajian_fungsi_berjalan"
+                                            id="pengkajian_fungsi_berjalan" style="border-radius:6px 0 0 6px ">
                                             <option value="TAK">TAK</option>
                                             <option value="Penurunan Kekuatan/ROM">Penurunan Kekuatan/ROM</option>
                                             <option value="Paralisis">Paralisis</option>
@@ -872,13 +1043,17 @@
                                             <option value="Riwayat Patah Tulang">Riwayat Patah Tulang</option>
                                             <option value="Lain-lain">Lain-lain</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_berjalan" name="pengkajian_fungsi_berjalan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="pengkajian_fungsi_berjalan_keterangan" name="pengkajian_fungsi_berjalan_keterangan"
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                     <div class="input-group">
                                         <label for="pengkajian_fungsi_aktifitas">c. Aktivitas</label>
-                                        <select class="form-select" name="pengkajian_fungsi_aktifitas" id="pengkajian_fungsi_aktifitas" style="border-radius:6px">
+                                        <select class="form-select" name="pengkajian_fungsi_aktifitas"
+                                            id="pengkajian_fungsi_aktifitas" style="border-radius:6px">
                                             <option value="Tirah Baring">Tirah Baring</option>
                                             <option value="Duduk">Duduk</option>
                                             <option value="Berjalan">Berjalan</option>
@@ -888,7 +1063,8 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="pengkajian_fungsi_ambulasi">d. Ambulansi</label>
-                                        <select class="form-select" name="pengkajian_fungsi_ambulasi" id="pengkajian_fungsi_ambulasi" style="border-radius:6px">
+                                        <select class="form-select" name="pengkajian_fungsi_ambulasi"
+                                            id="pengkajian_fungsi_ambulasi" style="border-radius:6px">
                                             <option value="Walker">Walker</option>
                                             <option value="Tongkat">Tongkat</option>
                                             <option value="Kursi Roda">Kursi Roda</option>
@@ -899,56 +1075,76 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-5">
                                     <div class="input-group">
                                         <label for="pengkajian_fungsi_ekstrimitas_atas">e. Ekstrimitas Atas</label>
-                                        <select class="form-select" name="pengkajian_fungsi_ekstrimitas_atas" id="pengkajian_fungsi_ekstrimitas_atas" style="border-radius:6px 0 0 6px">
+                                        <select class="form-select" name="pengkajian_fungsi_ekstrimitas_atas"
+                                            id="pengkajian_fungsi_ekstrimitas_atas" style="border-radius:6px 0 0 6px">
                                             <option value="TAK">TAK</option>
                                             <option value="Lemah">Lemah</option>
                                             <option value="Oedema">Oedema</option>
                                             <option value="Tidak Simetris">Tidak Simetris</option>
                                             <option value="Lain-lain">Lain-lain</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_ekstrimitas_atas_keterangan" name="pengkajian_fungsi_ekstrimitas_atas_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="pengkajian_fungsi_ekstrimitas_atas_keterangan"
+                                            name="pengkajian_fungsi_ekstrimitas_atas_keterangan"
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="pengkajian_fungsi_ekstrimitas_bawah">f. Ekstrimitas Bawah</label>
-                                        <select class="form-select" name="pengkajian_fungsi_ekstrimitas_bawah" id="pengkajian_fungsi_ekstrimitas_bawah" style="border-radius:6px 0 0 6px">
+                                        <select class="form-select" name="pengkajian_fungsi_ekstrimitas_bawah"
+                                            id="pengkajian_fungsi_ekstrimitas_bawah" style="border-radius:6px 0 0 6px">
                                             <option value="TAK">TAK</option>
                                             <option value="Lemah">Lemah</option>
                                             <option value="Oedema">Oedema</option>
                                             <option value="Tidak Simetris">Tidak Simetris</option>
                                             <option value="Lain-lain">Lain-lain</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_ekstrimitas_bawah_keterangan" name="pengkajian_fungsi_ekstrimitas_bawah_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="pengkajian_fungsi_ekstrimitas_bawah_keterangan"
+                                            name="pengkajian_fungsi_ekstrimitas_bawah_keterangan"
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="pengkajian_fungsi_menggenggam">g. Kemampuan Menggenggam</label>
-                                        <select class="form-select" name="pengkajian_fungsi_menggenggam" id="pengkajian_fungsi_menggenggam" style="border-radius:6px 0 0 6px">
+                                        <select class="form-select" name="pengkajian_fungsi_menggenggam"
+                                            id="pengkajian_fungsi_menggenggam" style="border-radius:6px 0 0 6px">
                                             <option value="Tidak Ada Kesulitan">Tidak Ada Kesulitan</option>
                                             <option value="Terakhir">Terakhir</option>
                                             <option value="Lain-lain">Lain-lain</option>
 
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_menggenggam_keterangan" name="pengkajian_fungsi_menggenggam_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="pengkajian_fungsi_menggenggam_keterangan"
+                                            name="pengkajian_fungsi_menggenggam_keterangan" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="pengkajian_fungsi_koordinasi">h. Kemampuan Koordinasi</label>
-                                        <select class="form-select" name="pengkajian_fungsi_koordinasi" id="pengkajian_fungsi_koordinasi" style="border-radius:6px 0 0 6px">
+                                        <select class="form-select" name="pengkajian_fungsi_koordinasi"
+                                            id="pengkajian_fungsi_koordinasi" style="border-radius:6px 0 0 6px">
                                             <option value="Tidak Ada Kesulitan">Tidak Ada Kesulitan</option>
                                             <option value="Ada Masalah">Ada Masalah</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="pengkajian_fungsi_koordinasi_keterangan" name="pengkajian_fungsi_koordinasi_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="pengkajian_fungsi_koordinasi_keterangan"
+                                            name="pengkajian_fungsi_koordinasi_keterangan" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="pengkajian_fungsi_kesimpulan">i. Kesimpulan Gangguan Fungsi</label>
-                                        <select class="form-select" name="pengkajian_fungsi_kesimpulan" id="pengkajian_fungsi_kesimpulan" style="border-radius:6px">
-                                            <option value="Tidak (Tidak Perlu Co DPJP)">Tidak (Tidak Perlu Co DPJP)</option>
+                                        <select class="form-select" name="pengkajian_fungsi_kesimpulan"
+                                            id="pengkajian_fungsi_kesimpulan" style="border-radius:6px">
+                                            <option value="Tidak (Tidak Perlu Co DPJP)">Tidak (Tidak Perlu Co DPJP)
+                                            </option>
                                             <option value="Ya (Co DPJP)">Ya (Co DPJP)</option>
                                         </select>
                                     </div>
@@ -959,7 +1155,8 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-5">
                                     <div class="input-group">
                                         <label for="riwayat_psiko_kondisi_psiko">a. Kemampuan Psikologis</label>
-                                        <select class="form-select" name="riwayat_psiko_kondisi_psiko" id="riwayat_psiko_kondisi_psiko" style="border-radius:6px">
+                                        <select class="form-select" name="riwayat_psiko_kondisi_psiko"
+                                            id="riwayat_psiko_kondisi_psiko" style="border-radius:6px">
                                             <option value="Tidak Ada Masalah">Tidak Ada Maslah</option>
                                             <option value="Marah">Marah</option>
                                             <option value="Takut">Takut</option>
@@ -975,22 +1172,28 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-7">
                                     <div class="input-group">
                                         <label for="riwayat_psiko_perilaku">b. Adakah Perilaku</label>
-                                        <select class="form-select" name="riwayat_psiko_perilaku" id="riwayat_psiko_perilaku" style="border-radius:6px 0 0 6px">
+                                        <select class="form-select" name="riwayat_psiko_perilaku"
+                                            id="riwayat_psiko_perilaku" style="border-radius:6px 0 0 6px">
                                             <option value="Tidak Ada Masalah">Tidak Ada Masalah</option>
                                             <option value="Perilaku Kekerasan">Perilaku Kekerasan</option>
                                             <option value="Gangguan Efek">Gangguan Efek</option>
                                             <option value="Gangguan Memori">Gangguan Memori</option>
                                             <option value="Halusinasi">Halusinasi</option>
-                                            <option value="Kecenderungan Percobaan Bunuh Diri">Kecenderungan Percobaan Bunuh Diri</option>
+                                            <option value="Kecenderungan Percobaan Bunuh Diri">Kecenderungan Percobaan
+                                                Bunuh Diri</option>
                                             <option value="Lain-lain">Lain-lain</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="riwayat_psiko_perilaku_keterangan" name="riwayat_psiko_perilaku_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="riwayat_psiko_perilaku_keterangan"
+                                            name="riwayat_psiko_perilaku_keterangan" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                     <div class="input-group">
                                         <label for="riwayat_psiko_gangguan_jiwa">c. Riwayat Gangguan Jiwa</label>
-                                        <select class="form-select" name="riwayat_psiko_gangguan_jiwa" id="riwayat_psiko_gangguan_jiwa" style="border-radius:6px">
+                                        <select class="form-select" name="riwayat_psiko_gangguan_jiwa"
+                                            id="riwayat_psiko_gangguan_jiwa" style="border-radius:6px">
                                             <option value="Tidak">Tidak</option>
                                             <option value="Ya">Ya</option>
                                         </select>
@@ -999,7 +1202,8 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-5">
                                     <div class="input-group">
                                         <label for="riwayat_psiko_hubungan_keluarga">d. Hubungan dg. Keluarga</label>
-                                        <select class="form-select" name="riwayat_psiko_hubungan_keluarga" id="riwayat_psiko_hubungan_keluarga" style="border-radius:6px">
+                                        <select class="form-select" name="riwayat_psiko_hubungan_keluarga"
+                                            id="riwayat_psiko_hubungan_keluarga" style="border-radius:6px">
                                             <option value="Harmonis">Harmonis</option>
                                             <option value="Kurang Harmonis">Kurang Harmonis</option>
                                             <option value="Tidak Harmonis">Tidak Harmonis</option>
@@ -1010,61 +1214,82 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="agama">e. Agama</label>
-                                        <input type="text" class="form-control form-control-sm" id="agama" name="agama" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="agama" name="agama"
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="riwayat_psiko_tinggal">f. Tinggal dg.</label>
-                                        <select class="form-select" name="riwayat_psiko_tinggal" id="riwayat_psiko_tinggal" style="border-radius:6px 0 0 6px">
+                                        <select class="form-select" name="riwayat_psiko_tinggal"
+                                            id="riwayat_psiko_tinggal" style="border-radius:6px 0 0 6px">
                                             <option value="Keluarga">Keluarga</option>
                                             <option value="Sendiri">Sendiri</option>
                                             <option value="Orang Tua">Orang Tua</option>
                                             <option value="Suami/Istri">Suami/Istri</option>
                                             <option value="Lain-lain">Lain-lain</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="riwayat_psiko_tinggal_keterangan" name="riwayat_psiko_tinggal_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="riwayat_psiko_tinggal_keterangan"
+                                            name="riwayat_psiko_tinggal_keterangan" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off" style="">
                                     </div>
                                 </div>
                                 {{-- potong disini --}}
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="pekerjaan">g. Pekerjaan</label>
-                                        <input type="text" class="form-control form-control-sm" id="pekerjaan" name="pekerjaan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="pekerjaan"
+                                            name="pekerjaan" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="penjab">h. Pembiayaan</label>
-                                        <input type="text" class="form-control form-control-sm" id="penjab" name="penjab" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="penjab"
+                                            name="penjab" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-9">
                                     <div class="input-group">
-                                        <label for="riwayat_psiko_nilai_kepercayaan">i. Nilai Kepercayaan/Kebudayaan yang Perlu Diperhatikan</label>
-                                        <select class="form-select" name="riwayat_psiko_nilai_kepercayaan" id="riwayat_psiko_nilai_kepercayaan" style="border-radius:6px 0 0 6px">
+                                        <label for="riwayat_psiko_nilai_kepercayaan">i. Nilai Kepercayaan/Kebudayaan
+                                            yang Perlu Diperhatikan</label>
+                                        <select class="form-select" name="riwayat_psiko_nilai_kepercayaan"
+                                            id="riwayat_psiko_nilai_kepercayaan" style="border-radius:6px 0 0 6px">
                                             <option value="Tidak Ada">Tidak Ada</option>
                                             <option value="Ada">Ada</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="riwayat_psiko_nilai_kepercayaan_keterangan" name="riwayat_psiko_nilai_kepercayaan_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="riwayat_psiko_nilai_kepercayaan_keterangan"
+                                            name="riwayat_psiko_nilai_kepercayaan_keterangan" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off" style="">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="bahasa">j. Bahasa</label>
-                                        <input type="text" class="form-control form-control-sm" id="bahasa" name="bahasa" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="bahasa"
+                                            name="bahasa" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="riwayat_psiko_pendidikan">k. Pendidikan Pasien</label>
-                                        <input type="text" class="form-control form-control-sm" id="riwayat_psiko_pendidikan" name="riwayat_psiko_pendidikan_pj" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="riwayat_psiko_pendidikan" name="riwayat_psiko_pendidikan_pj"
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="riwayat_psiko_pendidikan_pj">l. Pendidikan PJ</label>
-                                        <select class="form-select" name="riwayat_psiko_pendidikan_pj" id="riwayat_psiko_pendidikan_pj" style="border-radius:6px">
+                                        <select class="form-select" name="riwayat_psiko_pendidikan_pj"
+                                            id="riwayat_psiko_pendidikan_pj" style="border-radius:6px">
                                             <option value="-">-</option>
                                             <option value="TS">TS</option>
                                             <option value="TK">TK</option>
@@ -1085,11 +1310,15 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="riwayat_psiko_edukasi_diberikan">m. Edukasi diberikan kepada</label>
-                                        <select class="form-select" name="riwayat_psiko_edukasi_diberikan" id="riwayat_psiko_edukasi_diberikan" style="border-radius:6px 0 0 6px">
+                                        <select class="form-select" name="riwayat_psiko_edukasi_diberikan"
+                                            id="riwayat_psiko_edukasi_diberikan" style="border-radius:6px 0 0 6px">
                                             <option value="Keluarga">Keluarga</option>
                                             <option value="Pasien">Pasien</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="riwayat_psiko_edukasi_diberikan_keterangan" name="riwayat_psiko_edukasi_diberikan_keterangan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="riwayat_psiko_edukasi_diberikan_keterangan"
+                                            name="riwayat_psiko_edukasi_diberikan_keterangan" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off" style="">
                                     </div>
                                 </div>
                             </div>
@@ -1098,26 +1327,34 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="anakke">Anak Ke : </label>
-                                        <input type="text" class="form-control form-control-sm" id="anakke" name="anakke" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" id="anakke"
+                                            name="anakke" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                                            autocomplete="off" style="border-radius: 6px">
                                         <label for=""> dari </label>
-                                        <input type="text" class="form-control form-control-sm" id="darisaudara" name="darisaudara" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="text" class="form-control form-control-sm" id="darisaudara"
+                                            name="darisaudara" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius: 6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="caralahir">Cara Kelahiran : </label>
-                                        <select class="form-select" name="caralahir" id="caralahir" style="border-radius:6px 0 0 6px">
+                                        <select class="form-select" name="caralahir" id="caralahir"
+                                            style="border-radius:6px 0 0 6px">
                                             <option value="Spontan">Spontan</option>
                                             <option value="Sectio Caesaria">Sectio Caesaria</option>
                                             <option value="Lain-lain">Lain-lain</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="ket_caralahir" name="ket_caralahir" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <input type="text" class="form-control form-control-sm" id="ket_caralahir"
+                                            name="ket_caralahir" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="umurkelahiran">Umur Kelahiran : </label>
-                                        <select class="form-select" name="umurkelahiran" id="umurkelahiran" style="border-radius:6px">
+                                        <select class="form-select" name="umurkelahiran" id="umurkelahiran"
+                                            style="border-radius:6px">
                                             <option value="Cukup Bulan">Cukup Bulan</option>
                                             <option value="Kurang Bulan">Kurang Bulan</option>
                                         </select>
@@ -1126,11 +1363,14 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="kelainanbawaan">Kelaian Bawaaan : </label>
-                                        <select class="form-select" name="kelainanbawaan" id="kelainanbawaan" style="border-radius:6px 0 0 6px">
+                                        <select class="form-select" name="kelainanbawaan" id="kelainanbawaan"
+                                            style="border-radius:6px 0 0 6px">
                                             <option value="Tidak Ada">Tidak Ada</option>
                                             <option value="Ada">Ada</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="ket_kelainan_bawaan" name="ket_kelainan_bawaan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                        <input type="text" class="form-control form-control-sm" id="ket_kelainan_bawaan"
+                                            name="ket_kelainan_bawaan" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off">
                                     </div>
                                 </div>
                             </div>
@@ -1152,7 +1392,8 @@
                                             <tr></tr>
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-sm btn-primary" id="riwayatVaksin" name="riwayatVaksin" type="button"> <i class="bi bi-plus"></i> Tambah</button>
+                                    <button class="btn btn-sm btn-primary" id="riwayatVaksin" name="riwayatVaksin"
+                                        type="button"> <i class="bi bi-plus"></i> Tambah</button>
                                 </div>
                             </div>
                             <div class="separator m-2">8. Riwayat Tumbuh Kembang</div>
@@ -1160,55 +1401,74 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="usiatengkurap">a. Tengkurap, usia : </label>
-                                        <input type="text" class="form-control form-control-sm" id="usiatengkurap" name="usiatengkurap" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="usiatengkurap"
+                                            name="usiatengkurap" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="usiaduduk">b. Duduk, usia : </label>
-                                        <input type="text" class="form-control form-control-sm" id="usiaduduk" name="usiaduduk" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="usiaduduk"
+                                            name="usiaduduk" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="usiaberdiri">c. Berdiri, usia : </label>
-                                        <input type="text" class="form-control form-control-sm" id="usiaberdiri" name="usiaberdiri" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="usiaberdiri"
+                                            name="usiaberdiri" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="usiagigipertama">d. Gigi Pertama, usia : </label>
-                                        <input type="text" class="form-control form-control-sm" id="usiagigipertama" name="usiagigipertama" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="usiagigipertama"
+                                            name="usiagigipertama" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                     <div class="input-group">
                                         <label for="usiaberjalan">e. Berdiri, usia : </label>
-                                        <input type="text" class="form-control form-control-sm" id="usiaberjalan" name="usiaberjalan" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="usiaberjalan"
+                                            name="usiaberjalan" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                     <div class="input-group">
                                         <label for="usiabicara">f. Mulai Bicara, usia : </label>
-                                        <input type="text" class="form-control form-control-sm" id="usiabicara" name="usiabicara" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="usiabicara"
+                                            name="usiabicara" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                     <div class="input-group">
                                         <label for="usiamembaca">g. Mulai Membaca, usia : </label>
-                                        <input type="text" class="form-control form-control-sm" id="usiamembaca" name="usiamembaca" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="usiamembaca"
+                                            name="usiamembaca" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                     <div class="input-group">
                                         <label for="usiamenulis">h. Mulai Menulis, usia : </label>
-                                        <input type="text" class="form-control form-control-sm" id="usiamenulis" name="usiamenulis" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <input type="text" class="form-control form-control-sm" id="usiamenulis"
+                                            name="usiamenulis" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-8">
                                     <div class="input-group">
-                                        <label for="gangguanemosi">i. Gangguan perkembangan mental/emosi, jelaskan : </label>
-                                        <input type="text" class="form-control form-control-sm" id="gangguanemosi" name="gangguanemosi" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                        <label for="gangguanemosi">i. Gangguan perkembangan mental/emosi, jelaskan :
+                                        </label>
+                                        <input type="text" class="form-control form-control-sm" id="gangguanemosi"
+                                            name="gangguanemosi" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                            value="-" autocomplete="off" style="border-radius:6px">
                                     </div>
                                 </div>
                             </div>
@@ -1223,11 +1483,14 @@
                                             <option value="Tidak" data-id="0">Tidak</option>
                                             <option value="Ya" data-id="1">Ya</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="nilai_gizi1" name="nilai_gizi1" value="0" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nilai_gizi1"
+                                            name="nilai_gizi1" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-8">
-                                    <label for="skrining_gizi2">b. Apakah terdapat penurunan berat badan sebulan terakhir? (berdasarkan nilai objektif data berat badan bila ada atau untuk bayi < 1 Tahun, berat badan tidak naik selama 3 bulan terakhir)</label>
+                                    <label for="skrining_gizi2">b. Apakah terdapat penurunan berat badan sebulan
+                                        terakhir? (berdasarkan nilai objektif data berat badan bila ada atau untuk bayi
+                                        < 1 Tahun, berat badan tidak naik selama 3 bulan terakhir)</label>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                     <div class="input-group">
@@ -1235,11 +1498,14 @@
                                             <option value="Tidak" data-id="0">Tidak</option>
                                             <option value="Ya" data-id="1">Ya</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="nilai_gizi2" name="nilai_gizi2" value="0" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nilai_gizi2"
+                                            name="nilai_gizi2" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-8">
-                                    <label for="skrining_gizi3">c. Apakah terdapat salah satu dari kondisi tersebut ? Diare >5 kali/sehari, dan atau muntah > 3 kali/sehari dalam seminggu terakhir, asupan makanan berkurang selama 1 minggu terakhir</label>
+                                    <label for="skrining_gizi3">c. Apakah terdapat salah satu dari kondisi tersebut ?
+                                        Diare >5 kali/sehari, dan atau muntah > 3 kali/sehari dalam seminggu terakhir,
+                                        asupan makanan berkurang selama 1 minggu terakhir</label>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                     <div class="input-group">
@@ -1247,11 +1513,13 @@
                                             <option value="Tidak" data-id="0">Tidak</option>
                                             <option value="Ya" data-id="1">Ya</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="nilai_gizi3" name="nilai_gizi3" value="0" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nilai_gizi3"
+                                            name="nilai_gizi3" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-8">
-                                    <label for="skrining_gizi4">d. Apakah terdapat penyakit atau keadaan yang menyebabkan pasien beresiko mengalami malnutrisi ?</label>
+                                    <label for="skrining_gizi4">d. Apakah terdapat penyakit atau keadaan yang
+                                        menyebabkan pasien beresiko mengalami malnutrisi ?</label>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
                                     <div class="input-group">
@@ -1259,7 +1527,8 @@
                                             <option value="Tidak" data-id="0">Tidak</option>
                                             <option value="Ya" data-id="1">Ya</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="nilai_gizi4" name="nilai_gizi4" value="0" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nilai_gizi4"
+                                            name="nilai_gizi4" value="0" readonly>
                                     </div>
                                 </div>
 
@@ -1267,7 +1536,8 @@
                                     <label for="nilai_total_gizi">Total nilai skrining : </label>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-2">
-                                    <input type="text" class="form-control form-control-sm" name="nilai_total_gizi" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm" name="nilai_total_gizi"
+                                        value="0" readonly>
                                 </div>
 
 
@@ -1279,66 +1549,91 @@
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="wajah">Wajah : </label>
-                                        <select class="form-select" name="wajah" id="wajah" style="width:60%;border-radius:6px 0 0 6px">
-                                            <option value="Tersenyum/tidak ada ekspresi khusus" data-id="0">Tersenyum/tidak ada ekspresi khusus</option>
-                                            <option value="Terkadang meringis/menarik diri" data-id="1">Terkadang meringis/menarik diri</option>
-                                            <option value="Sering menggetarkan dagu dan mengatupkan rahang" data-id="2">Sering menggetarkan dagu dan mengatupkan rahang</option>
+                                        <select class="form-select" name="wajah" id="wajah"
+                                            style="width:60%;border-radius:6px 0 0 6px">
+                                            <option value="Tersenyum/tidak ada ekspresi khusus" data-id="0">
+                                                Tersenyum/tidak ada ekspresi khusus</option>
+                                            <option value="Terkadang meringis/menarik diri" data-id="1">Terkadang
+                                                meringis/menarik diri</option>
+                                            <option value="Sering menggetarkan dagu dan mengatupkan rahang" data-id="2">
+                                                Sering menggetarkan dagu dan mengatupkan rahang</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="nilaiwajah" name="nilaiwajah" value="0" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nilaiwajah"
+                                            name="nilaiwajah" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="menangis">Menangis : </label>
-                                        <select class="form-select" name="menangis" id="menangis" style="width:60%;border-radius:6px 0 0 6px">
-                                            <option value="Tidak menangis (mudah bergerak)" data-id="0">Tidak menangis (mudah bergerak)</option>
+                                        <select class="form-select" name="menangis" id="menangis"
+                                            style="width:60%;border-radius:6px 0 0 6px">
+                                            <option value="Tidak menangis (mudah bergerak)" data-id="0">Tidak menangis
+                                                (mudah bergerak)</option>
                                             <option value="Mengerang/merengek" data-id="1">Mengerang/merengek</option>
-                                            <option value="Menangis terus menerus, terisak, menjerit" data-id="2">Menangis terus menerus, terisak, menjerit</option>
+                                            <option value="Menangis terus menerus, terisak, menjerit" data-id="2">
+                                                Menangis terus menerus, terisak, menjerit</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="nilaimenangis" name="nilaimenangis" value="0" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nilaimenangis"
+                                            name="nilaimenangis" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="kaki">Kaki : </label>
-                                        <select class="form-select" name="kaki" id="kaki" style="width:60%;border-radius:6px 0 0 6px">
-                                            <option value="Gerakan normal/relaksasi" data-id="0">Gerakan normal/relaksasi</option>
+                                        <select class="form-select" name="kaki" id="kaki"
+                                            style="width:60%;border-radius:6px 0 0 6px">
+                                            <option value="Gerakan normal/relaksasi" data-id="0">Gerakan
+                                                normal/relaksasi</option>
                                             <option value="Tidak tenang/tegang" data-id="1">Tidak tenang/tegang</option>
-                                            <option value="Kaki dibuat menendang/menarik" data-id="2">Kaki dibuat menendang/menarik</option>
+                                            <option value="Kaki dibuat menendang/menarik" data-id="2">Kaki dibuat
+                                                menendang/menarik</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="nilaikaki" name="nilaikaki" value="0" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nilaikaki"
+                                            name="nilaikaki" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="bersuara">Bersuara : </label>
-                                        <select class="form-select" name="bersuara" id="bersuara" style="width:60%;border-radius:6px 0 0 6px">
-                                            <option value="Bersuara normal/tenang" data-id="0">Bersuara normal/tenang</option>
-                                            <option value="Tenang bila dipeluk, digendong/diajak bicara" data-id="1">Tenang bila dipeluk, digendong/diajak bicara</option>
-                                            <option value="Sulit untuk menenangkan" data-id="2">Sulit untuk menenangkan</option>
+                                        <select class="form-select" name="bersuara" id="bersuara"
+                                            style="width:60%;border-radius:6px 0 0 6px">
+                                            <option value="Bersuara normal/tenang" data-id="0">Bersuara normal/tenang
+                                            </option>
+                                            <option value="Tenang bila dipeluk, digendong/diajak bicara" data-id="1">
+                                                Tenang bila dipeluk, digendong/diajak bicara</option>
+                                            <option value="Sulit untuk menenangkan" data-id="2">Sulit untuk menenangkan
+                                            </option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="nilaibersuara" name="nilaibersuara" value="0" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nilaibersuara"
+                                            name="nilaibersuara" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="aktifitas">Aktifitas : </label>
-                                        <select class="form-select" name="aktifitas" id="aktifitas" style="width:60%;border-radius:6px 0 0 6px">
-                                            <option value="Tidur posisi normal, mudah bergerak" data-id="0">Tidur posisi normal, mudah bergerak</option>
-                                            <option value="Gerakan menggeliat/berguling, kaku" data-id="1">Gerakan menggeliat/berguling, kaku</option>
-                                            <option value="Melengkungkan punggung/kaku menghentak" data-id="2">Melengkungkan punggung/kaku menghentak</option>
+                                        <select class="form-select" name="aktifitas" id="aktifitas"
+                                            style="width:60%;border-radius:6px 0 0 6px">
+                                            <option value="Tidur posisi normal, mudah bergerak" data-id="0">Tidur posisi
+                                                normal, mudah bergerak</option>
+                                            <option value="Gerakan menggeliat/berguling, kaku" data-id="1">Gerakan
+                                                menggeliat/berguling, kaku</option>
+                                            <option value="Melengkungkan punggung/kaku menghentak" data-id="2">
+                                                Melengkungkan punggung/kaku menghentak</option>
                                         </select>
-                                        <input type="text" class="form-control form-control-sm" id="nilaiaktifitas" name="nilaiaktifitas" value="0" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="nilaiaktifitas"
+                                            name="nilaiaktifitas" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="hasilnyeri">Skala Nyeri : </label>
-                                        <input type="text" class="form-control form-control-sm" id="hasilnyeri" name="hasilnyeri" value="0" style="border-radius:6px" readonly>
+                                        <input type="text" class="form-control form-control-sm" id="hasilnyeri"
+                                            name="hasilnyeri" value="0" style="border-radius:6px" readonly>
                                     </div>
                                 </div>
                                 <div class="mt-2 col-sm-12 col-md-12 col-lg-6">
-                                    <img src="{{ asset('/img/skala_nyeri_wong_baker.png') }}" alt="" class="mx-auto d-block" style="max-width:100%;height:auto">
+                                    <img src="{{ asset('/img/skala_nyeri_wong_baker.png') }}" alt=""
+                                        class="mx-auto d-block" style="max-width:100%;height:auto">
                                 </div>
 
                                 <div class="mt-2 col-sm-12 col-md-12 col-lg-6">
@@ -1355,43 +1650,56 @@
                                         <div class="mb-1 col-lg-7">
                                             <div class="input-group">
                                                 <label for="lokasi">Lokasi : </label>
-                                                <input type="text" class="form-control form-control-sm" id="lokasi" name="lokasi" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                                <input type="text" class="form-control form-control-sm" id="lokasi"
+                                                    name="lokasi" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                                    value="-" autocomplete="off" style="border-radius:6px">
                                             </div>
                                         </div>
                                         <div class="mb-1 col-lg-6">
                                             <div class="input-group">
                                                 <label for="durasi">Durasi : </label>
-                                                <input type="text" class="form-control form-control-sm" id="durasi" name="durasi" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                                <input type="text" class="form-control form-control-sm" id="durasi"
+                                                    name="durasi" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                                    value="-" autocomplete="off" style="border-radius:6px">
                                             </div>
                                         </div>
                                         <div class="mb-1 col-lg-6">
                                             <div class="input-group">
                                                 <label for="frekuensi">Frekuensi : </label>
-                                                <input type="text" class="form-control form-control-sm" id="frekuensi" name="frekuensi" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                                <input type="text" class="form-control form-control-sm" id="frekuensi"
+                                                    name="frekuensi" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                                    value="-" autocomplete="off" style="border-radius:6px">
                                             </div>
                                         </div>
                                         <div class="mb-1 col-lg-12">
                                             <div class="input-group">
                                                 <label for="nyeri_hilang">Nyeri Hilang Bila : </label>
-                                                <select class="form-select" name="nyeri_hilang" id="nyeri_hilang" style="border-radius:6px 0 0 6px">
+                                                <select class="form-select" name="nyeri_hilang" id="nyeri_hilang"
+                                                    style="border-radius:6px 0 0 6px">
                                                     <option value="Minum Obat">Minum Obat</option>
                                                     <option value="Istirahat">Istirahat</option>
                                                     <option value="Mendengarkan Musik">Mendengarkan Musik</option>
                                                     <option value="Berubah Posisi/Tidur">Berubah Posisi/Tidur</option>
                                                     <option value="Lain-lain">Lain-lain</option>
                                                 </select>
-                                                <input type="text" class="form-control form-control-sm" id="ket_nyeri" name="ket_nyeri" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                                <input type="text" class="form-control form-control-sm" id="ket_nyeri"
+                                                    name="ket_nyeri" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                                    value="-" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="mb-1 col-lg-12">
                                             <div class="input-group">
                                                 <label for="pada_dokter">Diberitahukan pada dokter ? </label>
-                                                <select class="form-select" name="pada_dokter" id="pada_dokter" style="border-radius:6px">
+                                                <select class="form-select" name="pada_dokter" id="pada_dokter"
+                                                    style="border-radius:6px">
                                                     <option value="Tidak">Tidak</option>
                                                     <option value="Ya">Ya</option>
                                                 </select>
                                                 <label for="ket_dokter">Jam : </label>
-                                                <input type="text" class="form-control form-control-sm" id="ket_dokter" name="ket_dokter" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" style="border-radius:6px">
+                                                <input type="text" class="form-control form-control-sm" id="ket_dokter"
+                                                    name="ket_dokter" onfocus="removeZero(this)"
+                                                    onblur="cekKosong(this)" value="-" autocomplete="off"
+                                                    style="border-radius:6px">
                                             </div>
                                         </div>
                                     </div>
@@ -1412,15 +1720,22 @@
                                 <div class="mb-1 mt-1 col-sm-12 col-md-12 col-lg-6">
                                     <ul class="nav nav-tabs" id="tabMasalah" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button style="font-size:10px;padding:6px" class="nav-link active" id="rancana" data-bs-toggle="tab" data-bs-target="#rancana-pane" type="button" role="tab" aria-controls="rancana-pane" aria-selected="true">Rencana Keperawatan</button>
+                                            <button style="font-size:10px;padding:6px" class="nav-link active"
+                                                id="rancana" data-bs-toggle="tab" data-bs-target="#rancana-pane"
+                                                type="button" role="tab" aria-controls="rancana-pane"
+                                                aria-selected="true">Rencana Keperawatan</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button style="font-size:10px;padding:6px" class="nav-link" id="tindakan" data-bs-toggle="tab" data-bs-target="#tindakan-pane" type="button" role="tab" aria-controls="tindakan-pane" aria-selected="false">Tindakan Keperawatan</button>
+                                            <button style="font-size:10px;padding:6px" class="nav-link" id="tindakan"
+                                                data-bs-toggle="tab" data-bs-target="#tindakan-pane" type="button"
+                                                role="tab" aria-controls="tindakan-pane" aria-selected="false">Tindakan
+                                                Keperawatan</button>
                                         </li>
 
                                     </ul>
                                     <div class="tab-content" id="tabIsiMasalah">
-                                        <div class="tab-pane fade show active p-2" id="rancana-pane" role="tabpanel" aria-labelledby="rancana" tabindex="0">
+                                        <div class="tab-pane fade show active p-2" id="rancana-pane" role="tabpanel"
+                                            aria-labelledby="rancana" tabindex="0">
                                             <table id="tbRencanaKeperawatan" class="table table-striped">
                                                 <thead>
                                                     <tr>
@@ -1433,8 +1748,10 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="tab-pane fade p-2" id="tindakan-pane" role="tabpanel" aria-labelledby="tindakan" tabindex="0">
-                                            <textarea class="form-control" name="rencana" id="rencana" cols="30" rows="15"></textarea>
+                                        <div class="tab-pane fade p-2" id="tindakan-pane" role="tabpanel"
+                                            aria-labelledby="tindakan" tabindex="0">
+                                            <textarea class="form-control" name="rencana" id="rencana" cols="30"
+                                                rows="15"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -1444,8 +1761,10 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
-            <button type="button" class="btn btn-primary simpanAskepAnak" onclick="simpanAskepAnakRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
+                    class="bi bi-x-circle"></i> Keluar</button>
+            <button type="button" class="btn btn-primary simpanAskepAnak" onclick="simpanAskepAnakRanap()"
+                style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
         </div>
     </div>
 </div>
@@ -1624,18 +1943,48 @@
         }
 
         function simpanAskepAnakRanap() {
-            let except = ['no_rkm_medis', 'dokter', 'pengkaji1', 'pengkaji2', 'pasien', 'tgl_lahir', 'bahasa', 'agama', 'penjab', 'pekerjaan', 'rencana', ''];
-            data = getDataForm('#formAskepAnakRanap', ['input', 'select', 'textarea'], except)
+            // let except = ['no_rkm_medis', 'dokter', 'pengkaji1', 'pengkaji2', 'pasien', 'tgl_lahir', 'bahasa', 'agama', 'penjab', 'pekerjaan', 'rencana', ''];
+            let dataMasalah = [];
+            let dataRencana = [];
+            data = getDataForm('#formAskepAnakRanap', ['input', 'select', 'textarea'])
             data['tanggal'] = `${splitTanggal(data.tanggal)} ${data.jam}`
-            delete data.jam
 
+            $('.listMasalahKeperawatan').each((index, element) => {
+                isChecked = $(element).is(':checked');
+                if (isChecked) {
+                    idMasalah = $(element).val()
+                    dataMasalah.push({
+                        'no_rawat': no_rawat,
+                        'kode_masalah': idMasalah,
+                    })
+                }
+            })
 
+            $('.listRencanaKeperawatan').each((index, element) => {
+                isChecked = $(element).is(':checked')
+                if (isChecked) {
+                    idRencana = $(element).val()
+                    dataRencana.push({
+                        'no_rawat': no_rawat,
+                        'kode_rencana': idRencana
+                    })
+                }
+            })
+            
+
+            data['masalah'] = dataMasalah
+            data['rencana'] = dataRencana
+
+            console.log('DATA INPUT ASESMEN ===', data);
+            
             $.ajax({
                 url: '/erm/ranap/askep/anak/create',
                 data: data,
                 method: 'post',
                 success: (response) => {
-                    simpanMasalahKeperawatanAnak(data.no_rawat)
+
+                    
+                    // simpanMasalahKeperawatanAnak(data.no_rawat)
                     swal.fire({
                         title: 'Berhasil',
                         text: 'Berhasil menyimpan data asesmen',
@@ -1647,7 +1996,25 @@
                         tb_ranap();
                     });
                 },
-                error: function(request, status, error) {
+                error: function (request, status, error) {
+                 
+
+                    if(request.status == 422){
+                        let errors = request.responseJSON.errors
+                        let errorMessage = '';
+                        Object.keys(errors).forEach((key) => {
+                            errorMessage += `${errors[key][0]} \n`
+                        })
+
+                        swal.fire({
+                            title: 'Gagal',
+                            text: errorMessage,
+                            showConfirmButton: true,
+                            icon: 'error',
+                        })
+                        return;
+                    }
+                    
                     alertErrorAjax(request)
                 }
             })
@@ -1681,25 +2048,28 @@
             })
 
             getMasalahKeperawatan(no_rawat).done((response) => {
+                console.log('MASALAH DONE');
+
                 if (response.length) {
                     deleteMasalahKeperawatan(no_rawat).done(() => {
-                        insertMasalahKeperawatan(dataMasalah).done((response) => {})
+                        insertMasalahKeperawatan(dataMasalah).done((response) => { })
                     })
                 } else {
                     if (dataMasalah.lenght) {
-                        insertMasalahKeperawatan(dataMasalah).done((response) => {})
+                        insertMasalahKeperawatan(dataMasalah).done((response) => { })
                     }
                 }
             })
 
             getRencanaKeperawatan(no_rawat).done((resRencana) => {
+                console.log('RENCANA DONE');
                 if (resRencana.length) {
                     deleteRencanaKeperawatan(no_rawat).done(() => {
-                        insertRencanaKeperawatan(dataRencana).done((response) => {})
+                        insertRencanaKeperawatan(dataRencana).done((response) => { })
                     })
                 } else {
                     if (dataRencana.length) {
-                        insertRencanaKeperawatan(dataRencana).done((dr) => {})
+                        insertRencanaKeperawatan(dataRencana).done((dr) => { })
                     }
                 }
             })
@@ -1783,8 +2153,8 @@
                     data: '',
                     render: (data, type, row) => {
                         return `<div class="form-check masalahKeperawatan">
-                                    <input class="form-check-input listMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
-                                </div>`
+                                        <input class="form-check-input listMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
+                                    </div>`
                     }
                 }, {
                     data: '',
@@ -1845,29 +2215,29 @@
                     },
                 },
                 columns: [{
-                        data: '',
-                        render: (data, type, row) => {
-                            kode = localStorage.kodeRencana ? JSON.parse(localStorage.kodeRencana) : ''
-                            $.map(kode, (kd) => {
-                                if (kd == row.kode_rencana) {
-                                    $('#kodeRencana' + row.kode_rencana).attr('checked', 'checked')
-                                } else {
-                                    $('#kodeRencana' + row.kode_rencana).removeProp('checked')
-                                }
+                    data: '',
+                    render: (data, type, row) => {
+                        kode = localStorage.kodeRencana ? JSON.parse(localStorage.kodeRencana) : ''
+                        $.map(kode, (kd) => {
+                            if (kd == row.kode_rencana) {
+                                $('#kodeRencana' + row.kode_rencana).attr('checked', 'checked')
+                            } else {
+                                $('#kodeRencana' + row.kode_rencana).removeProp('checked')
+                            }
 
-                            })
+                        })
 
-                            return `<div class="form-check">
-                                    <input class="form-check-input listRencanaKeperawatan" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatan('${row.kode_rencana}')" id="kodeRencana${row.kode_rencana}" onclick="">
-                                </div>`
-                        }
-                    },
-                    {
-                        data: '',
-                        render: (data, type, row) => {
-                            return row.rencana_keperawatan
-                        }
+                        return `<div class="form-check">
+                                        <input class="form-check-input listRencanaKeperawatan" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatan('${row.kode_rencana}')" id="kodeRencana${row.kode_rencana}" onclick="">
+                                    </div>`
                     }
+                },
+                {
+                    data: '',
+                    render: (data, type, row) => {
+                        return row.rencana_keperawatan
+                    }
+                }
                 ],
                 initComplete: (response) => {
                     no_rawat = $('#formAskepAnakRanap input[name=no_rawat]').val();
@@ -1893,7 +2263,7 @@
         function cariPetugasAskep(p, no) {
             getPetugas(p.value, no).done((response) => {
                 html = '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
-                $.map(response, function(data) {
+                $.map(response, function (data) {
                     html += `<li><a data-id="${data.nip}" class="dropdown-item" onclick="setPetugasAskep(this, ${no})">${data.nama}</a><li>`
                 })
                 html += '</ul>';
