@@ -7,51 +7,47 @@
             </div>
             <div class="modal-body">
                 <form action="" id="formAskepAnakRanap">
-                    <div class="row">
+                    <div class="row gy-1">
                         <div class="col-sm-12 col-md-12 col-lg-6">
-                            <div class="row mb-2">
+                            <div class="row mb-2 gy-2">
                                 <label for="pasien">Pasien</label>
                                 <div class="col-sm-12 col-md-6 col-lg-3">
                                     <input type="text" class="form-control form-control-sm no_rawat" name="no_rawat"
-                                        placeholder="" aria-label="" id="no_rawat" readonly=""
-                                        style="background-color: #e9ecef;cursor:not-allowed;">
+                                        placeholder="" aria-label="" id="no_rawat" readonly="">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-5">
-                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
-                                        class="form-control form-control-sm pasien" id="pasien" name="pasien"
-                                        placeholder="" aria-label="" aria-describedby="pasien" readonly="">
-                                    <input type="hidden" value="{{ csrf_token() }}" name="_token">
-                                    <input type="hidden" value="" name="no_rkm_medis">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-sm pasien" id="no_rkm_medis"
+                                            name="no_rkm_medis" placeholder="" aria-label=""
+                                            aria-describedby="no_rkm_medis" readonly="">
+                                        <input type="text" class="form-control form-control-sm pasien w-50" id="pasien"
+                                            name="pasien" placeholder="" aria-label="" aria-describedby="pasien"
+                                            readonly="">
+                                    </div>
+
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-4">
-                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
-                                        class="form-control form-control-sm tgl_lahir" id="tgl_lahir" name="tgl_lahir"
-                                        placeholder="" aria-label="" aria-describedby="pasien" readonly="">
+                                    <input type="text" class="form-control form-control-sm tgl_lahir" id="tgl_lahir"
+                                        name="tgl_lahir" placeholder="" aria-label="" aria-describedby="pasien"
+                                        readonly="">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-4 col-md-6 col-lg-2">
+                            <div class="row gy-1">
+                                <div class="col-sm-4 col-md-6 col-lg-6">
                                     <label for="">Dokter DPJP</label>
-                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
-                                        class="form-control form-control-sm kd_dokter" placeholder="" aria-label=""
-                                        id="kd_dokter" name="kd_dokter" readonly>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-sm kd_dokter" placeholder=""
+                                            aria-label="" id="kd_dokter" name="kd_dokter" readonly>
+                                        <input type="text" class="form-control form-control-sm dokter w-25"
+                                            placeholder="" aria-label="" id="dokter" name="dokter" autocomplete="off"
+                                            readonly>
+                                    </div>
                                 </div>
-                                <div class="col-sm-8 col-md-6 col-lg-4">
-                                    <label for=""></label>
-                                    <input type="text" style="background-color: #e9ecef;cursor:not-allowed"
-                                        class="form-control form-control-sm dokter" placeholder="" aria-label=""
-                                        id="dokter" name="dokter" autocomplete="off" readonly>
-                                    <div class="list-dokter"></div>
-                                </div>
+
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="tanggal">Tanggal</label>
-                                    <input type="text" class="form-control form-control-sm tanggal" name="tanggal"
-                                        placeholder="" aria-label="" id="tanggal" value="{{ date('d-m-Y') }}">
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-2">
-                                    <label for="jam">Jam</label>
-                                    <input type="text" class="form-control form-control-sm jam" name="jam"
-                                        placeholder="" aria-label="" id="jam" value="{{ date('H:i:s') }}">
+                                    <input type="text" class="form-control form-control-sm datetimepicker"
+                                        name="tanggal" placeholder="" aria-label="" id="tanggal" value="-">
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="kasus_trauma">Kasus</label>
@@ -65,32 +61,20 @@
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-6">
                             <div class="row mb-2">
-                                <div class="col-sm-12 col-md-6 col-lg-2">
+                                <div class="col-sm-12 col-md-6 col-lg-4">
                                     <label for="nip1">Pengkaji 1</label>
-                                    <input type="text" class="form-control form-control-sm nip1" placeholder=""
-                                        aria-label="" id="nip1" name="nip1" readonly>
+                                    <select name="nip1" id="nip1" style="width: 100%"></select>
+
                                 </div>
+
                                 <div class="col-sm-12 col-md-6 col-lg-4">
-                                    <label for="nip1"></label>
-                                    <input type="text" class="form-control form-control-sm pengkaji1" placeholder=""
-                                        aria-label="" id="pengkaji1" name="pengkaji1"
-                                        onkeyup="cariPetugasAskep(this, 1)">
-                                    <div class="list_petugas1"></div>
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-2">
                                     <label for="nip2">Pengkaji 2</label>
-                                    <input type="text" class="form-control form-control-sm nip2" placeholder=""
-                                        aria-label="" id="nip2" name="nip2" readonly value="-">
+                                    <select name="nip2" id="nip2" style="width: 100%"></select>
+
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-4">
-                                    <label for="nip2"></label>
-                                    <input type="text" class="form-control form-control-sm pengkaji2" placeholder=""
-                                        aria-label="" id="pengkaji2" name="pengkaji2"
-                                        onkeyup="cariPetugasAskep(this, 2)" value="-">
-                                    <div class="list_petugas2"></div>
-                                </div>
+
                             </div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <div class="col-sm-12 col-md-5 col-lg-5">
                                     <label for="nip2">Anamnesis</label>
                                     <div class="input-group">
@@ -126,10 +110,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row gy-1">
                         <div class="mb-3 col-sm-12 col-md-12 col-lg-6">
                             <div class="separator m-2">1. Riwayat Kesehatan</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-6">
                                     <label for="rps">Riwayat Penyakit Sekarang</label>
                                     <textarea class="form-control" name="rps" id="rps" cols="30" rows="5"
@@ -176,8 +160,6 @@
                                         <option value="Alat Bantu Dengar">Alat Bantu Dengar</option>
                                         <option value="Lain-lain">Lain-lain</option>
                                     </select>
-                                    <input type="hidden" name="riwayat_kehamilan" value="-">
-                                    <input type="hidden" name="riwayat_kehamilan_perkiraan" value="-">
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <label for="rpk">Riwayat Alergi</label>
@@ -228,7 +210,7 @@
                             </div>
 
                             <div class="separator m-2">2. Pemeriksaan Fisik</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <div class="mb-1 col-sm-12 col-md-4 col-lg-3">
                                     <label for="">Kesadaran Mental:</label>
                                     <select class="form-select" name="pemeriksaan_mental" id="pemeriksaan_mental">
@@ -296,8 +278,7 @@
                                         name="pemeriksaan_bb" placeholder="" maxlength="10" onfocus="removeZero(this)"
                                         onblur="cekKosong(this)" value="-" autocomplete="off">
                                 </div>
-                                <div class="row">
-                                    {{-- <div class="separator m-2"></div> --}}
+                                <div class="row gy-1">
                                     <label for="" class="mb-2">a. Sistem Susunan Saraf Pusat</label>
                                     <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                         <div class="input-group">
@@ -917,7 +898,7 @@
                             </div>
 
                             <div class="separator m-2">3. Pola Kehidupan Sehari-hari</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <label class="mb-2">a. Pola Aktivitas</label>
                                 <div class="mb-1 col-sm-12 col-md-6 col-lg-4">
                                     <div class="input-group">
@@ -1014,7 +995,7 @@
                         </div>
                         <div class="mb-3 col-sm-12 col-md-12 col-lg-6">
                             <div class="separator m-2">4. Pengkajian Fungsi</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="pengkajian_fungsi_kemampuan_sehari">a. Kemampuan Aktivitas
@@ -1044,9 +1025,9 @@
                                             <option value="Lain-lain">Lain-lain</option>
                                         </select>
                                         <input type="text" class="form-control form-control-sm"
-                                            id="pengkajian_fungsi_berjalan_keterangan" name="pengkajian_fungsi_berjalan_keterangan"
-                                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
-                                            autocomplete="off">
+                                            id="pengkajian_fungsi_berjalan_keterangan"
+                                            name="pengkajian_fungsi_berjalan_keterangan" onfocus="removeZero(this)"
+                                            onblur="cekKosong(this)" value="-" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-4">
@@ -1151,7 +1132,7 @@
                                 </div>
                             </div>
                             <div class="separator m-2">5. Riwayat Psikologis, Sosial, Ekonomi, Budaya</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-5">
                                     <div class="input-group">
                                         <label for="riwayat_psiko_kondisi_psiko">a. Kemampuan Psikologis</label>
@@ -1323,17 +1304,17 @@
                                 </div>
                             </div>
                             <div class="separator m-2">6. Riwayat Tumbuh Kembang & Perinatal Care</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
                                         <label for="anakke">Anak Ke : </label>
-                                        <input type="text" class="form-control form-control-sm" id="anakke"
-                                            name="anakke" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
-                                            autocomplete="off" style="border-radius: 6px">
+                                        <input type="number" class="form-control form-control-sm" id="anakke"
+                                            name="anakke" onfocus="removeZero(this)" onblur="isEmptyNumber(this)"
+                                            value="0" autocomplete="off" style="border-radius: 6px">
                                         <label for=""> dari </label>
-                                        <input type="text" class="form-control form-control-sm" id="darisaudara"
-                                            name="darisaudara" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                            value="-" autocomplete="off" style="border-radius: 6px">
+                                        <input type="number" class="form-control form-control-sm" id="darisaudara"
+                                            name="darisaudara" onfocus="removeZero(this)" onblur="isEmptyNumber(this)"
+                                            value="0" autocomplete="off" style="border-radius: 6px">
                                     </div>
                                 </div>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
@@ -1375,7 +1356,7 @@
                                 </div>
                             </div>
                             <div class="separator m-2">7. Riwayat Imunisasi</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-12">
                                     <table class="table table-bordered tbRiwayatImunisasi" width="100%">
                                         <thead>
@@ -1397,7 +1378,7 @@
                                 </div>
                             </div>
                             <div class="separator m-2">8. Riwayat Tumbuh Kembang</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-3">
                                     <div class="input-group">
                                         <label for="usiatengkurap">a. Tengkurap, usia : </label>
@@ -1473,7 +1454,7 @@
                                 </div>
                             </div>
                             <div class="separator m-2">9. Skrining Gizi (Strong Kid)</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-8">
                                     <label for="skrining_gizi1">a. Apakah pasien tampak kurus ? : </label>
                                 </div>
@@ -1544,7 +1525,7 @@
                             </div>
 
                             <div class="separator m-2">10. Penilaian Tingkat Nyeri</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <label for="" class="mb-2">Skala FLACCS : </label>
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group">
@@ -1637,7 +1618,7 @@
                                 </div>
 
                                 <div class="mt-2 col-sm-12 col-md-12 col-lg-6">
-                                    <div class="row">
+                                    <div class="row gy-1">
                                         <div class="mb-1 col-lg-5">
                                             <select class="form-select" name="nyeri" id="nyeri">
                                                 <option value="Tidak Ada Nyeri">Tidak Ada Nyeri</option>
@@ -1706,7 +1687,7 @@
                                 </div>
                             </div>
                             <div class="separator m-2">11. Masalah & Rencana Keperawtan</div>
-                            <div class="row">
+                            <div class="row gy-1">
                                 <div class="mb-1 col-sm-12 col-md-12 col-lg-6">
                                     <table id="tbMasalahKeperawatan" class="table table-striped">
                                         <thead>
@@ -1761,10 +1742,12 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i
-                    class="bi bi-x-circle"></i> Keluar</button>
-            <button type="button" class="btn btn-primary simpanAskepAnak" onclick="simpanAskepAnakRanap()"
-                style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i>
+                Keluar</button>
+            <button type="button" class="btn btn-primary btn-sm simpanAskepAnak" onclick="simpanAskepAnakRanap()"><i
+                    class="bi bi-save"></i> Simpan</button>
+            <button type="button" class="btn btn-success btn-sm" id="btnCetakAskepAnakRanap"
+                onclick="cetakAskepAnakRanap()"><i class="bi bi-printer"></i> Cetak Asesmen</button>
         </div>
     </div>
 </div>
@@ -1785,81 +1768,142 @@
             kodeRencana = [];
         })
         $('#modalAskepRanapAnak').on('shown.bs.modal', () => {
+
             localStorage.removeItem('kodeRencana')
 
         })
 
+        function selectPetugasAskepRanap(params) {
+            const select = params.select2({
+                dropdownParent: $('#formAskepAnakRanap'),
+                delay: 0,
+                scrollAfterSelect: false,
 
+                initSelection: function (element, callback) { },
+                ajax: {
+                    url: `${url}/petugas/cari`,
+                    dataType: 'json',
+                    data: (params) => {
+                        const query = {
+                            q: params.term
+                        }
+                        return query
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.nama,
+                                    id: item.nip
+                                }
+                            })
+                        };
+                    },
+                    cache: false
+                }
+            });
 
+            return select;
 
+        }
 
         function askepRanapAnak(no_rawat) {
-            $('#modalAskepRanapAnak').modal('show')
-            tbMasalahKeperawatan()
-            getRegPeriksa(no_rawat).done((regPeriksa) => {
-                jk = regPeriksa.pasien.jk == 'P' ? 'PEREMPUAN' : 'LAKI-LAKI';
-                $('#formAskepAnakRanap input[name=no_rawat]').val(no_rawat)
-                $('#formAskepAnakRanap input[name=pasien]').val(`${regPeriksa.pasien.nm_pasien} (${jk})`)
-                $('#formAskepAnakRanap input[name=tgl_lahir]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} / ${regPeriksa.umurdaftar} ${regPeriksa.sttsumur}`)
-                $('#formAskepAnakRanap input[name=kd_dokter]').val(regPeriksa.kd_dokter)
-                $('#formAskepAnakRanap input[name=dokter]').val(regPeriksa.dokter.nm_dokter)
-                $('#formAskepAnakRanap input[name=agama]').val(regPeriksa.pasien.agama)
-                $('#formAskepAnakRanap input[name=penjab]').val(regPeriksa.penjab.png_jawab)
-                $('#formAskepAnakRanap input[name=pekerjaan]').val(regPeriksa.pasien.pekerjaan)
-                $('#formAskepAnakRanap input[name=bahasa]').val(regPeriksa.pasien.bahasa.nama_bahasa)
-                $('#formAskepAnakRanap input[name=riwayat_psiko_pendidikan]').val(regPeriksa.pasien.pnd)
-                $('#formAskepAnakRanap input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
-                $('#formAskepAnakRanap input[name=pengkaji1]').val("{{ session()->get('pegawai')->nama }}")
-                $('#formAskepAnakRanap input[name=tanggal]').val("{{ date('d-m-Y') }}")
-                $('#formAskepAnakRanap input[name=jam]').val("{{ date('H:i:s') }}")
-                $('#formAskepAnakRanap input[name=no_rkm_medis]').val(regPeriksa.no_rkm_medis)
-                setTbImunisasi(regPeriksa.no_rkm_medis)
-                $('#formRiwayatImunisasi button[name=tambah-imunisasi]').attr('onclick', `insertRiwayatImunisasi('${regPeriksa.no_rkm_medis}')`)
+            const $modal = $('#modalAskepRanapAnak');
+            const $form = $('#formAskepAnakRanap');
+            const $selectPetugas1 = $form.find('select[name=nip1]');
+            const $selectPetugas2 = $form.find('select[name=nip2]');
 
-            })
+            // 1. Initial UI Setup
+            $modal.modal('show');
+            tbMasalahKeperawatan();
+            selectPetugasAskepRanap($selectPetugas1);
+            selectPetugasAskepRanap($selectPetugas2);
+
+            // 2. Helper: Fungsi untuk mengisi data ke elemen form (Input, Select, Textarea)
+            const fillFields = (data) => {
+                $.each(data, (name, value) => {
+                    const $el = $form.find(`[name="${name}"]`);
+                    if ($el.length) $el.val(value).trigger('change');
+                });
+            };
+
+            // 3. Helper: Set Petugas (Select2)
+            const setPetugas = ($select, nip, nama) => {
+                const option = new Option(nama || '-', nip || '-', true, true);
+                $select.append(option).trigger('change');
+            };
+
+            // 4. Main Logic: Fetch Data
             getAskepRanapAnak(no_rawat).done((response) => {
-                nip = "{{ session()->get('pegawai')->nik }}";
+                let no_rkm_medis = '';
                 if (response) {
-                    $.each(response, (index, value) => {
-                        select = $(`#formAskepAnakRanap select[name=${index}]`);
-                        input = $(`#formAskepAnakRanap input[name=${index}]`);
-                        textarea = $(`#formAskepAnakRanap textarea[name=${index}]`);
-                        if (select.length) {
-                            $(`#formAskepAnakRanap select[name=${index}]`).val(value)
-                        } else if (input.length) {
-                            $(`#formAskepAnakRanap input[name=${index}]`).val(value)
-                        } else {
-                            $(`#formAskepAnakRanap textarea[name=${index}]`).val(value)
-                        }
-                    })
+                    // --- DATA EKSISTING ---
+                    fillFields(response);
 
-                    $(`#formAskepAnakRanap input[name=pengkaji2]`).val(response.pengkaji2.nama)
-                    $(`#formAskepAnakRanap input[name=pengkaji1]`).val(response.pengkaji1.nama)
-                    $(`#formAskepAnakRanap input[name=tanggal]`).val(splitTanggal(response.tanggal.split(' ')[0]))
-                    $(`#formAskepAnakRanap input[name=jam]`).val(response.tanggal.split(' ')[1])
-                    // $('#formAskepAnakRanap input[name=tanggal]').datepicker('setDate', splitTanggal(response.tanggal.split(' ')[0]))
+                    const tglLahir = response.pasien.tgl_lahir;
+                    const tglReg = response.reg_periksa.tgl_registrasi;
+                    const umur = hitungUmurDaftar(tglLahir, tglReg);
 
-                    let arrMasalah = []
-                    $.map(response.masalah_keperawatan, (msl) => {
-                        $('#kodeMasalah' + msl.kode_masalah).attr('checked', 'checked')
-                        arrMasalah.push(msl.kode_masalah)
+                    $form.find('input[name=tanggal]').val(splitTanggal(response.tanggal));
+                    $form.find('input[name=pasien]').val(`${response.pasien.nm_pasien} (${response.pasien.jk === 'P' ? 'PEREMPUAN' : 'LAKI-LAKI'})`);
+                    $form.find('input[name=tgl_lahir]').val(`${formatTanggal(tglLahir)} / ${umur.tahun} Th ${umur.bulan} Bln ${umur.hari} Hr`);
+                    $form.find('input[name=dokter]').val(response.dokter.nm_dokter);
 
-                    })
+                    // Masalah & Rencana Keperawatan
+                    const arrMasalah = response.masalah_keperawatan.map(msl => {
+                        $(`#kodeMasalah${msl.kode_masalah}`).prop('checked', true);
+                        return msl.kode_masalah;
+                    });
+                    tbRencanaKeperawatan(arrMasalah);
 
-                    tbRencanaKeperawatan(arrMasalah)
-                    // if (response.nip1 == nip || response.nip2 == nip) {
-                    //     $('.simpanAskepAnak').css('display', 'inline');
-                    // } else if (nip == 'direksi' || nip == 'verifikator') {
-                    //     $('.simpanAskepAnak').css('display', 'inline');
-                    // } else {
-                    //     $('.simpanAskepAnak').css('display', 'none');
-                    // }
+                    // Set Pengkaji
+                    setPetugas($selectPetugas1, response.pengkaji1.nip, response.pengkaji1.nama);
+                    setPetugas($selectPetugas2, response.pengkaji2.nip, response.pengkaji2.nama);
+
+                    no_rkm_medis = response.pasien.no_rkm_medis;
+
+
+
+                    $('#modalAskepRanapAnak').find('button[id=btnCetakAskepAnakRanap]').removeClass('d-none');
                 } else {
-                    $('#formAskepRanapNeonatus input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
-                    $('#formAskepRanapNeonatus input[name=pengkaji1]').val("{{ session()->get('pegawai')->nama }}")
-                }
-            })
+                    $('#modalAskepRanapAnak').find('button[id=btnCetakAskepAnakRanap]').addClass('d-none');
+                    const userNik = "{{ session()->get('pegawai')->nik }}";
+                    const userNama = "{{ session()->get('pegawai')->nama }}";
 
+                    setPetugas($selectPetugas1, userNik, userNama);
+                    setPetugas($selectPetugas2, '-', '-');
+                    $form.find('input[name=tanggal]').val("{{ date('d-m-Y H:i:s') }}");
+
+                    getRegPeriksa(no_rawat).done((reg) => {
+                        const jk = reg.pasien.jk === 'P' ? 'PEREMPUAN' : 'LAKI-LAKI';
+                        no_rkm_medis = reg.no_rkm_medis;
+
+                        fillFields({
+                            no_rawat: no_rawat,
+                            no_rkm_medis: no_rkm_medis,
+                            pasien: `${reg.pasien.nm_pasien} (${jk})`,
+                            tgl_lahir: `${formatTanggal(reg.pasien.tgl_lahir)} / ${reg.umurdaftar} ${reg.sttsumur}`,
+                            kd_dokter: reg.kd_dokter,
+                            dokter: reg.dokter.nm_dokter,
+                            agama: reg.pasien.agama,
+                            penjab: reg.penjab.png_jawab,
+                            pekerjaan: reg.pasien.pekerjaan,
+                            bahasa: reg.pasien.bahasa.nama_bahasa,
+                            riwayat_psiko_pendidikan: reg.pasien.pnd
+                        });
+
+                        // Update UI Imunisasi setelah data registrasi didapat
+                        setTbImunisasi(no_rkm_medis);
+                        $('#formRiwayatImunisasi button[name=tambah-imunisasi]').attr('onclick', `insertRiwayatImunisasi('${no_rkm_medis}')`);
+                    });
+                }
+
+                // Jalankan ini jika response ada (untuk data eksisting)
+                if (no_rkm_medis) {
+                    setTbImunisasi(no_rkm_medis);
+                    $('#formRiwayatImunisasi button[name=tambah-imunisasi]').attr('onclick', `insertRiwayatImunisasi('${no_rkm_medis}')`);
+                }
+            });
         }
 
         $('#formAskepAnakRanap select[name=menangis]').change((e) => {
@@ -1943,12 +1987,10 @@
         }
 
         function simpanAskepAnakRanap() {
-            // let except = ['no_rkm_medis', 'dokter', 'pengkaji1', 'pengkaji2', 'pasien', 'tgl_lahir', 'bahasa', 'agama', 'penjab', 'pekerjaan', 'rencana', ''];
             let dataMasalah = [];
             let dataRencana = [];
             data = getDataForm('#formAskepAnakRanap', ['input', 'select', 'textarea'])
-            data['tanggal'] = `${splitTanggal(data.tanggal)} ${data.jam}`
-
+            data['tanggal'] = splitTanggal(data['tanggal'])
             $('.listMasalahKeperawatan').each((index, element) => {
                 isChecked = $(element).is(':checked');
                 if (isChecked) {
@@ -1970,20 +2012,17 @@
                     })
                 }
             })
-            
 
             data['masalah'] = dataMasalah
             data['rencana'] = dataRencana
 
-            console.log('DATA INPUT ASESMEN ===', data);
-            
             $.ajax({
                 url: '/erm/ranap/askep/anak/create',
                 data: data,
                 method: 'post',
                 success: (response) => {
 
-                    
+
                     // simpanMasalahKeperawatanAnak(data.no_rawat)
                     swal.fire({
                         title: 'Berhasil',
@@ -1993,13 +2032,13 @@
                         timer: 1500,
                     }).then(() => {
                         $('#tb_ranap').DataTable().destroy()
+                         $('#modalAskepRanapAnak').find('button[id=btnCetakAskepAnakRanap]').removeClass('d-none');
                         tb_ranap();
                     });
                 },
                 error: function (request, status, error) {
-                 
-
-                    if(request.status == 422){
+                    
+                    if (request.status == 422) {
                         let errors = request.responseJSON.errors
                         let errorMessage = '';
                         Object.keys(errors).forEach((key) => {
@@ -2014,7 +2053,7 @@
                         })
                         return;
                     }
-                    
+
                     alertErrorAjax(request)
                 }
             })
@@ -2153,8 +2192,8 @@
                     data: '',
                     render: (data, type, row) => {
                         return `<div class="form-check masalahKeperawatan">
-                                        <input class="form-check-input listMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
-                                    </div>`
+                                                                                                                <input class="form-check-input listMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
+                                                                                                            </div>`
                     }
                 }, {
                     data: '',
@@ -2228,8 +2267,8 @@
                         })
 
                         return `<div class="form-check">
-                                        <input class="form-check-input listRencanaKeperawatan" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatan('${row.kode_rencana}')" id="kodeRencana${row.kode_rencana}" onclick="">
-                                    </div>`
+                                                                                                                <input class="form-check-input listRencanaKeperawatan" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatan('${row.kode_rencana}')" id="kodeRencana${row.kode_rencana}" onclick="">
+                                                                                                            </div>`
                     }
                 },
                 {
@@ -2250,15 +2289,15 @@
             })
         }
 
-        $('#modalAskepRanapAnak').on('shown.bs.modal', () => {
+        // $('#modalAskepRanapAnak').on('shown.bs.modal', () => {
 
-            $('#tanggal').datepicker({
-                format: 'dd-mm-yyyy',
-                orientation: 'bottom',
-                autoclose: true,
-                todayHighlight: true,
-            })
-        })
+        //     $('#tanggal').datepicker({
+        //         format: 'dd-mm-yyyy',
+        //         orientation: 'bottom',
+        //         autoclose: true,
+        //         todayHighlight: true,
+        //     })
+        // })
 
         function cariPetugasAskep(p, no) {
             getPetugas(p.value, no).done((response) => {
@@ -2293,5 +2332,12 @@
 
             return rencana
         }
+
+
+        function cetakAskepAnakRanap() {
+            const no_rawat = $('#formAskepAnakRanap input[name=no_rawat]').val();
+            window.open(`/erm/ranap/askep/anak/print?no_rawat=${no_rawat}`, '_blank')
+        }
+
     </script>
 @endpush

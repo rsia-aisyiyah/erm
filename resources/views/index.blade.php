@@ -250,17 +250,27 @@
         }
 
         function splitTanggal(tanggal) {
-            if (tanggal === null || tanggal === undefined) {
-                return null
+            if (!tanggal) {
+                return null;
             }
 
-            let arrTgl = tanggal.split('-');
+            // 1. Pisahkan antara Tanggal dan Jam (jika ada) berdasarkan spasi
+            const parts = tanggal.split(' ');
+            const tglSaja = parts[0]; // "yyyy-mm-dd"
+            const jamSaja = parts[1]; // "H:i:s" atau undefined
+
+            // 2. Pecah bagian tanggal berdasarkan strip
+            const arrTgl = tglSaja.split('-');
+
             if (arrTgl.length !== 3) {
-                return null
+                return null;
             }
 
-            let txtTanggal = arrTgl[2] + '-' + arrTgl[1] + '-' + arrTgl[0];
-            return txtTanggal;
+            // 3. Susun ulang menjadi dd-mm-yyyy
+            const tglBaru = `${arrTgl[2]}-${arrTgl[1]}-${arrTgl[0]}`;
+
+            // 4. Gabungkan kembali dengan jam jika jamnya ada
+            return jamSaja ? `${tglBaru} ${jamSaja}` : tglBaru;
         }
 
         function hitungLamaHari(d1, d2) {

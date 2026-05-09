@@ -8,6 +8,7 @@ use App\Models\AskepRanapAnak;
 use App\Models\MasalahAskepRanap;
 use App\Models\RencanaAskepRanap;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class AskepRanapAnakController extends Controller
 {
@@ -21,7 +22,12 @@ class AskepRanapAnakController extends Controller
 
     function get(Request $request)
     {
-        return $this->askep->where('no_rawat', $request->no_rawat)->with('regPeriksa.pasien.bahasa', 'regPeriksa.pasien.riwayatImunisasi.masterImunisasi', 'regPeriksa.penjab', 'masalahKeperawatan.masterMasalah', 'masalahKeperawatan.rencanaKeperawatan.masterRencana', 'pengkaji1', 'pengkaji2', 'dokter')->first();
+        return $this->askep->where('no_rawat', $request->no_rawat)
+            ->with('regPeriksa.penjab', 'masalahKeperawatan.masterMasalah', 'masalahKeperawatan.rencanaKeperawatan.masterRencana', 'pengkaji1', 'pengkaji2', 'dokter')
+            ->with('pasien', function ($q) {
+                return $q->with('bahasa', 'riwayatImunisasi.masterImunisasi');
+            })
+            ->first();
     }
 
     function insert(AskepRanapAnakRequest $request)
@@ -80,5 +86,44 @@ class AskepRanapAnakController extends Controller
                 'message' => 'Gagal menyimpan data: ' . $th->getMessage(),
             ], 500);
         }
+    }
+
+    function print(Request $request)
+    {
+        // 1. Ambil data dengan relasi lengkap
+        $askep = $this->askep->where('no_rawat', $request->no_rawat)
+            ->with([
+                'regPeriksa.penjab',
+                'masalahKeperawatan.masterMasalah',
+                'masalahKeperawatan.rencanaKeperawatan.masterRencana',
+                'pengkaji1',
+                'pengkaji2',
+                'dokter',
+                'pasien' => function ($q) {
+                    $q->with('bahasa', 'riwayatImunisasi.masterImunisasi');
+                }
+            ])
+            ->first();
+
+        if (!$askep) {
+            return response()->json('Data tidak ditemukan', 404);
+        }
+
+        // 2. Siapkan data untuk view (sesuaikan nama variabel dengan template Blade Anda)
+        // Di template sebelumnya Anda menggunakan variabel $asmed, 
+        // maka kita kirimkan $askep ke dalam key 'asmed'
+        $data = [
+            'asmed' => $askep->toArray(),
+            'title' => 'Asesmen Keperawatan Rawat Inap Anak',
+            
+        ];
+
+        // 3. Load view dan generate PDF
+        // Ganti 'content.print.askep_anak' dengan path blade yang Anda buat sebelumnya
+        $pdf = PDF::loadView('content.print.askep_ranap_anak', $data)
+            ->setPaper('a4', 'portrait'); // Set ukuran kertas
+
+        // 4. Stream PDF ke browser (langsung tampil) atau download() untuk langsung unduh
+        return $pdf->stream('Asesmen_Keperawatan_Anak_' . $request->no_rawat . '.pdf');
     }
 }
