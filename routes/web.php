@@ -171,6 +171,8 @@ Route::middleware('auth')->group(function () {
 	Route::get('ranap/askep/anak', [AskepRanapAnakController::class, 'get']);
 	Route::post('ranap/askep/anak/insert', [AskepRanapAnakController::class, 'insert']);
 	Route::post('ranap/askep/anak/create', [AskepRanapAnakController::class, 'createOrUpdate']);
+	Route::get('ranap/askep/anak/print', [AskepRanapAnakController::class, 'print']);
+	
 	Route::get('ranap/askep/anak/masalah', [MasalahAskepRanapController::class, 'get']);
 	Route::get('ranap/askep/anak/rencana', [RencanaAskepRanapController::class, 'get']);
 	Route::post('ranap/askep/anak/masalah/insert', [MasalahAskepRanapController::class, 'insert']);

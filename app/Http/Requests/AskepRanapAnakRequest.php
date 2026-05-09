@@ -42,8 +42,6 @@ class AskepRanapAnakRequest extends FormRequest
             'riwayat_pembedahan' => 'required|string',
             'riwayat_dirawat_dirs' => 'required|string',
             'alat_bantu_dipakai' => 'required|string',
-            'riwayat_kehamilan' => 'required|string',
-            'riwayat_kehamilan_perkiraan' => 'required|string',
             'riwayat_tranfusi' => 'required|string',
             'riwayat_alergi' => 'required|string',
             'riwayat_merokok' => 'required|string',

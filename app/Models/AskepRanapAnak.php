@@ -45,4 +45,14 @@ class AskepRanapAnak extends Model
     {
         return $this->hasMany(RencanaAskepRanap::class, 'no_rawat', 'no_rawat');
     }
+    function pasien(){
+        return $this->hasOneThrough(
+            Pasien::class,
+            RegPeriksa::class,
+            'no_rawat', // Foreign key on RegPeriksa table
+            'no_rkm_medis', // Foreign key on Pasien table
+            'no_rawat', // Local key on AskepRanapAnak table
+            'no_rkm_medis' // Local key on RegPeriksa table
+        );
+    }
 }
