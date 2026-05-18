@@ -130,6 +130,13 @@
                             Asuhan Gizi Anak
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tabAdimeGizi" data-bs-toggle="tab"
+                            data-bs-target="#tabAdimeGizi-pane"
+                            type="button" role="tab" aria-controls="tabAdimeGizi-pane" aria-selected="false">
+                            ADIME Gizi
+                        </button>
+                    </li>
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -253,6 +260,11 @@
                         aria-labelledby="tabAsuhanGiziAnak"
                         tabindex="0">
                         @include('content.ranap.modal.cppt._formAsuhanGiziAnak')
+                    </div>
+                    <div class="tab-pane fade" id="tabAdimeGizi-pane" role="tabpanel"
+                        aria-labelledby="tabAdimeGizi"
+                        tabindex="0">
+                        @include('content.ranap.modal.cppt._adimeGizi')
                     </div>
                 </div>
             </div>
@@ -427,7 +439,7 @@
                     formInfoPasien.find('input[name="lama"]').val(`${hitungLamaHari(item.tgl_masuk)} Hari`)
                     formInfoPasien.find('input[name="diagnosa_awal"]').val(item.diagnosa_awal);
                     formInfoPasienResep.find('input[name=kelasHarga]').val(item.kamar?.kelas?.toLowerCase().replace(/\s/g, ''));
-                
+
                     if(item.kamar.kelas === 'Kelas Utama') {
                         formInfoPasien.find('input[name="kelasHarga"]').val('kelas3');
                     }
@@ -527,6 +539,16 @@
             const formInfoPasienResep = $('#formInfoPasienResep')
             const no_rawat = formInfoPasienResep.find('[name=no_rawat]').val();
             getResepObat(no_rawat)
+
+        })
+        $('button[data-bs-target="#tabAdimeGizi-pane"]').on('click', function() {
+            const formInfoPasienResep = $('#formInfoPasienResep')
+            const no_rawat = formInfoPasienResep.find('[name=no_rawat]').val();
+            const formAdimeGizi = $('#formAdimeGizi')
+            formAdimeGizi.find('input[name=nip]').val("{{ session()->get('pegawai')->nik }}")
+            formAdimeGizi.find('input[name=nm_petugas]').val("{{ session()->get('pegawai')->nama }}")
+            formAdimeGizi.find('input[name=tanggal]').val(moment().format('DD-MM-YYYY HH:mm:ss'))
+            getCatatanAdimeGizi(no_rawat)
 
         })
     </script>

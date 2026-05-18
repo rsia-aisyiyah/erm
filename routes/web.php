@@ -13,6 +13,7 @@ use App\Http\Controllers\BridgingRujukanBpjsController;
 use App\Http\Controllers\BridgingSepController;
 use App\Http\Controllers\BridgingSPRIController;
 use App\Http\Controllers\BrigdgingRencanaKontrolController;
+use App\Http\Controllers\CatatanAdimeGiziController;
 use App\Http\Controllers\CatatanPerawatanController;
 use App\Http\Controllers\DataBarangController;
 use App\Http\Controllers\DetailPemberianObatController;
@@ -117,6 +118,9 @@ Route::middleware('auth')->group(function () {
 
 	Route::post('/booking/buat', [BookingRegistrasiController::class, 'create']);
 
+	Route::get('/asesmen/medis/ugd/print', function () {
+		return 'asdasdasdasd';
+	});
 	Route::get('/ugd', [UgdController::class, 'index']);
 	Route::get('/ugd/get/table', [UgdController::class, 'getTable']);
 	Route::get('/ugd/soap/table', [PemeriksaanRalanController::class, 'getTable']);
@@ -197,6 +201,9 @@ Route::middleware('auth')->group(function () {
 			$route->get('asuhan/anak', [RsiaAsuhanGiziAnakController::class, 'get']);
 			$route->post('asuhan/anak', [RsiaAsuhanGiziAnakController::class, 'create']);
 			$route->get('asuhan/anak/print', [RsiaAsuhanGiziAnakController::class, 'print']);
+
+			$route->post('catatan-adime', [CatatanAdimeGiziController::class, 'store']);
+			$route->get('catatan-adime', [CatatanAdimeGiziController::class, 'get']);
 		});
 	});
 
