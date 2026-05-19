@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use PDF;
 
 class AsesmenMedisIgdController extends Model
 {
     use HasFactory;
     protected $asesmen;
     protected $track;
+
 
     public function __construct()
     {
@@ -64,6 +66,22 @@ class AsesmenMedisIgdController extends Model
             return response()->json($e->errorInfo, 500);
         }
         return response()->json('Berhasil mengubah asesmen medis', 200);
+
+    }
+
+    public function print(Request $request)
+    {
+        dd($request->all());
+        return $request;
+        $asmed = $this->asesmen->where('no_rawat', $request->no_rawat)->with(['regPeriksa.pasien', 'dokter', 'pengkaji1', 'pengkaji2'])->first();
+        return $data = [
+            'asmed' => $asmed,
+        ];
+
+        $pdf = PDF::loadView('content.print.asmed_igd', $data)
+            ->setPaper('a4', 'portrait');
+        return $pdf->stream('Asesmen_Medis_IGD_' . $request->no_rawat . '.pdf');
+
 
     }
 }

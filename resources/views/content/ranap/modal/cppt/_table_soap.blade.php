@@ -15,8 +15,7 @@
         </select>
     </div>
     <div class="col-md-12 col-lg-3 col-sm-12">
-        <button type="button" class="btn btn-success btn-sm mb-3" id="cariCppt"
-                onclick="cariSoap()">
+        <button type="button" class="btn btn-success btn-sm mb-3" id="cariCppt" onclick="cariSoap()">
             <i class="bi bi-search"> Cari Soap</i>
         </button>
     </div>
@@ -25,11 +24,11 @@
 </div>
 <table class="table table-bordered table-striped table-sm" id="tbSoap" width="100%">
     <thead>
-    <tr>
-        <td>Aksi</td>
-        <td>TTV & Fisik</td>
-        <td>CPPT</td>
-    </tr>
+        <tr>
+            <td>Aksi</td>
+            <td>TTV & Fisik</td>
+            <td>CPPT</td>
+        </tr>
     </thead>
     <tbody>
 
@@ -143,6 +142,9 @@
                         if (row.sbar) {
                             return renderBtnActionSbar(row.sbar)
                         }
+                        if(row.adime){
+                            return '';
+                        }
                         button = '<span class="d-none">' + row.tgl_perawatan + ' ' + row.jam_rawat + '</span><button type="button" class="btn btn-primary btn-sm me-1" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
                         if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
                             button += '<button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
@@ -152,71 +154,78 @@
                     name: 'tgl_perawatan',
                     width: '5%'
                 },
-                    {
-                        data: null,
-                        render: function (data, type, row, meta) {
+                {
+                    data: null,
+                    render: function (data, type, row, meta) {
 
-                            if (row.sbar) {
-                                return renderVerifikasiSbar(row.sbar)
+                        if (row.sbar) {
+                            return renderVerifikasiSbar(row.sbar)
+                        }
+
+                        if(row.adime){
+                            return renderInfoAdime(row)
+                        }
+
+                        list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
+                            '</strong></li>';
+                        list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
+                        $.map(row.grafik_harian, function (grafik) {
+                            if (row.tgl_perawatan === grafik.tgl_perawatan && row.jam_rawat === grafik.jam_rawat) {
+                                list += '<li> O2 : ' + grafik.o2 + '</li>';
                             }
+                        })
+                        list += '<li> GCS : ' + row.gcs + '</li>';
+                        list += '<li> Tensi : ' + row.tensi + ' mmHg</li>';
+                        list += '<li> Nadi : ' + row.nadi + ' /mnt</li>';
+                        list += '<li> SpO2 : ' + row.spo2 + ' %</li>';
+                        list += '<li> Respirasi : ' + row.respirasi + ' /mnt</li>';
+                        list += '<li> Suhu Tubuh : ' + row.suhu_tubuh + '  (<sup>o</sup>C)</li>';
+                        list += '<li> Tinggi : ' + row.tinggi + ' Cm</li>';
+                        list += '<li> Berat : ' + row.berat + ' Kg</li>';
+                        list += '<li> alergi : ' + row.alergi + '</li>';
+                        html = '<ul>' + list + '</ul>';
+
+                        row.log.filter((item) => item.tgl_perawatan === row.tgl_perawatan && item.jam_rawat === row.jam_rawat).map((item) => {
+                            html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${item.aksi.toLowerCase()} oleh : <b>${item.pegawai.nama}
+                                                            , ${formatTanggal(item.waktu)}
+                                                                </i></div>`
+                        })
+
+                        // html+=`<a href="javascript:void(0)" onclick="getTrackerLog('pemeriksaan_ranap','${row.no_rawat}')">Lihat log</a>`
+
+                        return html;
 
 
-                            list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
-                                '</strong></li>';
-                            list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
-                            $.map(row.grafik_harian, function (grafik) {
-                                if (row.tgl_perawatan === grafik.tgl_perawatan && row.jam_rawat === grafik.jam_rawat) {
-                                    list += '<li> O2 : ' + grafik.o2 + '</li>';
-                                }
-                            })
-                            list += '<li> GCS : ' + row.gcs + '</li>';
-                            list += '<li> Tensi : ' + row.tensi + ' mmHg</li>';
-                            list += '<li> Nadi : ' + row.nadi + ' /mnt</li>';
-                            list += '<li> SpO2 : ' + row.spo2 + ' %</li>';
-                            list += '<li> Respirasi : ' + row.respirasi + ' /mnt</li>';
-                            list += '<li> Suhu Tubuh : ' + row.suhu_tubuh + '  (<sup>o</sup>C)</li>';
-                            list += '<li> Tinggi : ' + row.tinggi + ' Cm</li>';
-                            list += '<li> Berat : ' + row.berat + ' Kg</li>';
-                            list += '<li> alergi : ' + row.alergi + '</li>';
-                            html = '<ul>' + list + '</ul>';
-
-                            row.log.filter((item) => item.tgl_perawatan === row.tgl_perawatan && item.jam_rawat === row.jam_rawat).map((item) => {
-                                html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${item.aksi.toLowerCase()} oleh : <b>${item.pegawai.nama}
-                                            , ${formatTanggal(item.waktu)}
-                                                </i></div>`
-                            })
-
-                            // html+=`<a href="javascript:void(0)" onclick="getTrackerLog('pemeriksaan_ranap','${row.no_rawat}')">Lihat log</a>`
-
-                            return html;
-
-
-                        },
-                        name: 'ttv',
-                        width: '20%'
                     },
-                    {
-                        data: null,
-                        render: function (data, type, row, meta) {
+                    name: 'ttv',
+                    width: '20%'
+                },
+                {
+                    data: null,
+                    render: function (data, type, row, meta) {
 
-                            if (row.sbar) {
-                                return renderSbar(row)
-                            }
+                        if (row.sbar) {
+                            return renderSbar(row)
+                        }
 
-                            baris = `<tr>
-                                <th width="5%">Petugas</th>
-                                <td width="5%">:</td>
-                                <td>${row.petugas.nama} </td>
-                                </tr>`
-                            baris += '<tr><th>Subjek </th><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
-                            baris += '<tr><th>Objek </th><td>:</td><td>' + stringPemeriksaan(row.pemeriksaan) + '</td></tr>'
-                            baris += '<tr><th>Assesment</th><td>:</td><td>' + stringPemeriksaan(row.penilaian) + '</td></tr>'
-                            baris += '<tr><th>Plan</th><td>:</td><td>' + stringPemeriksaan(row.rtl) + '</td></tr>'
-                            html = '<table class="table table-striped">' + baris + '</table>'
-                            return html;
-                        },
-                        name: 'soap',
+                        if (row.adime) {
+                            return renderAdime(row)
+                        }
+
+                        baris = `<tr>
+                                                <th width="5%">Petugas</th>
+                                                <td width="5%">:</td>
+                                                <td>${row.petugas.nama} </td>
+                                                </tr>`
+                        baris += '<tr><th>Subjek </th><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
+                        baris += '<tr><th>Objek </th><td>:</td><td>' + stringPemeriksaan(row.pemeriksaan) + '</td></tr>'
+                        baris += '<tr><th>Assesment</th><td>:</td><td>' + stringPemeriksaan(row.penilaian) + '</td></tr>'
+                        baris += '<tr><th>Plan</th><td>:</td><td>' + stringPemeriksaan(row.rtl) + '</td></tr>'
+                        html = '<table class="table table-striped">' + baris + '</table>'
+                        return html;
                     },
+                    name: 'soap',
+                },
                 ],
                 "language": {
                     "zeroRecords": "Tidak ada data  data pemeriksaan",
@@ -236,11 +245,11 @@
                 data: {
                     keywords: args  // otomatis jadi keywords[]=...
                 },
-                success: function(res) {
+                success: function (res) {
                     console.log("RESULT:", res);
                     modalLogTracker.modal('show')
                 },
-                error: function(err) {
+                error: function (err) {
                     console.error("ERROR:", err);
                 }
             });
@@ -343,9 +352,9 @@
                 const qrId = `qr-${data.no_rawat}-${data.tgl_perawatan}-${data.jam_rawat}`;
 
                 isVerified = `<div class="alert alert-success p-2 mt-2" role="alert" style="font-size:10px">
-                        <strong><i class="bi bi-circle-check"></i></strong>
-                        Telah diverifikasi oleh <br/> <strong>${data.verifikasi.dokter.nm_dokter}</strong> pada <strong>${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}</strong>
-                    </div>`;
+                                        <strong><i class="bi bi-circle-check"></i></strong>
+                                        Telah diverifikasi oleh <br/> <strong>${data.verifikasi.dokter.nm_dokter}</strong> pada <strong>${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}</strong>
+                                    </div>`;
 
                 qrDiv = `<div id="${qrId}" class="mt-2"></div>`;
 
@@ -365,22 +374,22 @@
             } else {
                 if (kdDokter === isDokterKonsul) {
                     btn = `<button class="btn btn-sm btn-warning w-100" onclick="verifikasiSoap('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')">
-                    <i class="bi bi-pencil"></i> Verifikasi SBAR
-                </button>`;
+                                    <i class="bi bi-pencil"></i> Verifikasi SBAR
+                                </button>`;
                 }
                 isVerified = `<div class="alert alert-warning p-2 mt-2" role="alert">
-                        <strong><i class="bi bi-exclamation-triangle"></i></strong> Belum diverifikasi oleh Dokter
-                    </div>`;
+                                        <strong><i class="bi bi-exclamation-triangle"></i></strong> Belum diverifikasi oleh Dokter
+                                    </div>`;
             }
 
 
             return `<ul>
-                <li><strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong></li>
-                <li>Konsul Ke : <strong>${data.dokter_konsul ? data.dokter_konsul.dokter_sbar.nm_dokter : formInfoPasien.find('input[name=dokter_dpjp]').val()}</strong></li>
-            </ul> 
-            ${btn}
-            ${isVerified}
-            ${qrDiv}`;
+                                <li><strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong></li>
+                                <li>Konsul Ke : <strong>${data.dokter_konsul ? data.dokter_konsul.dokter_sbar.nm_dokter : formInfoPasien.find('input[name=dokter_dpjp]').val()}</strong></li>
+                            </ul> 
+                            ${btn}
+                            ${isVerified}
+                            ${qrDiv}`;
         }
 
 
@@ -395,33 +404,100 @@
 
         function renderSbar(data) {
             return `<table class="table table-striped">
-        <tr>
-            <th width="5%">Petugas</th>
-            <th width="5%">:</th>
-            <td>${stringPemeriksaan(data.sbar.pegawai.nama)}</td>
-        </tr>
-        <tr>
-            <th width="5%">Situation</th>
-            <th width="5%">:</th>
-            <td>${stringPemeriksaan(data.keluhan)}</td>
-        </tr>
-        <tr>
-            <th width="5%">Background</th>
-            <th width="5%">:</th>
-            <td>${stringPemeriksaan(data.pemeriksaan)}</td>
-        </tr>
-        <tr>
-            <th width="5%">Assesment</th>
-            <th width="5%">:</th>
-            <td>${stringPemeriksaan(data.penilaian)}</td>
-        </tr>
-        <tr>
-            <th width="5%">Recomendation</th>
-            <th width="5%">:</th>
-            <td>${stringPemeriksaan(data.rtl)}</td>
-        </tr>
-    </table>`
+                        <tr>
+                            <th width="5%">Petugas</th>
+                            <th width="5%">:</th>
+                            <td>${stringPemeriksaan(data.sbar.pegawai.nama)}</td>
+                        </tr>
+                        <tr>
+                            <th width="5%">Situation</th>
+                            <th width="5%">:</th>
+                            <td>${stringPemeriksaan(data.keluhan)}</td>
+                        </tr>
+                        <tr>
+                            <th width="5%">Background</th>
+                            <th width="5%">:</th>
+                            <td>${stringPemeriksaan(data.pemeriksaan)}</td>
+                        </tr>
+                        <tr>
+                            <th width="5%">Assesment</th>
+                            <th width="5%">:</th>
+                            <td>${stringPemeriksaan(data.penilaian)}</td>
+                        </tr>
+                        <tr>
+                            <th width="5%">Recomendation</th>
+                            <th width="5%">:</th>
+                            <td>${stringPemeriksaan(data.rtl)}</td>
+                        </tr>
+                    </table>`
         }
+
+        function renderAdime(row) {
+
+            return `
+                        <table class="table table-striped table-sm">
+                            <tr class="table-warning">
+                                <th colspan="3">ADIME GIZI</th>
+                            </tr>
+
+                            <tr>
+                                <th width="5%">Asesmen</th>
+                                <td width="5%">:</td>
+                                <td>${stringPemeriksaan(row.keluhan)}</td>
+                            </tr>
+
+                            <tr>
+                                <th width="5%">Diagnosis</th>
+                                <td width="5%">:</td>
+                                <td>${stringPemeriksaan(row.pemeriksaan)}</td>
+                            </tr>
+
+                            <tr>
+                                <th width="5%">Intervensi</th>
+                                <td width="5%">:</td>
+                                <td>${stringPemeriksaan(row.penilaian)}</td>
+                            </tr>
+
+                            <tr>
+                                <th width="5%">Monitoring</th>
+                                <td width="5%">:</td>
+                                <td>${stringPemeriksaan(row.rtl)}</td>
+                            </tr>
+
+                            <tr>
+                                <th width="5%">Evaluasi</th>
+                                <td width="5%">:</td>
+                                <td>${stringPemeriksaan(row.evaluasi)}</td>
+                            </tr>
+
+                            <tr>
+                                <th width="5%">Instruksi</th>
+                                <td width="5%">:</td>
+                                <td>${stringPemeriksaan(row.instruksi)}</td>
+                            </tr>
+
+                        </table>
+                    `;
+        }
+
+        function renderInfoAdime(row) {
+            let list = `
+                    <li>
+                        <strong>
+                            ${formatTanggal(row.tgl_perawatan)} ${row.jam_rawat}
+                        </strong>
+                    </li>
+                `;
+            list += `
+                    <li>
+                        Petugas :<strong> ${row.petugas.nama} </strong>
+                    </li>
+                `;
+
+            return `<ul>${list}</ul>`
+        }
+
+        
 
         function renderBtnActionSbar(data) {
 
@@ -431,7 +507,7 @@
 
             if (kdPetugas === petugas) {
                 return `<span class="d-none">${data.tgl_perawatan} ${data.jam_rawat}</span><button class="btn btn-sm btn-primary" onclick="getSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>
-    <button class="btn btn-sm btn-danger" onclick="deleteSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`
+                    <button class="btn btn-sm btn-danger" onclick="deleteSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`
             }
 
             return '';
