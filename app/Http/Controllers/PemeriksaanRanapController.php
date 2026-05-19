@@ -51,7 +51,7 @@ class PemeriksaanRanapController extends Controller
 					]);
 			},
 			'petugas',
-			'sbar',
+			'sbar','adime',
 			'kamarInap.kamar.bangsal',
 			'grafikHarian' => function ($q) {
 				$q->where('sumber', 'SBAR');
@@ -333,7 +333,7 @@ class PemeriksaanRanapController extends Controller
 				'pegawai' => function ($query) {
 					return $query->with('dokter');
 				},
-				'grafikHarian',
+				'grafikHarian','adime',
 				'verifikasi.petugas' => function ($q) {
 					return $q->select('nip', 'nama');
 				}
@@ -389,6 +389,8 @@ class PemeriksaanRanapController extends Controller
 						return $q->select(['id', 'nik', 'nama']);
 					}
 				]);
+			}, 'adime.pegawai' => function ($q) {
+				return $q->select(['id', 'nik', 'nama']);
 			}
 		])->orderBy('tgl_perawatan', 'DESC')
 			->orderBy('jam_rawat', 'DESC');

@@ -29,16 +29,28 @@ class CatatanAdimeGizi extends Model
     protected function setKeysForSaveQuery($query)
     {
         foreach ($this->primaryKey as $key) {
-            $query->where($key, '=', $this->getAttribute($key));
+
+            $query->where(
+                $key,
+                '=',
+                $this->getOriginal($key) ?? $this->getAttribute($key)
+            );
         }
+
         return $query;
+    }
+
+    public function getKeyName()
+    {
+        return $this->primaryKey;
     }
 
     public function petugas()
     {
         return $this->belongsTo(Petugas::class, 'nip', 'nip')->select('nip', 'nama');
     }
-    public function pasien(){
+    public function pasien()
+    {
         return $this->hasOneThrough(
             Pasien::class,
             RegPeriksa::class,
@@ -48,11 +60,13 @@ class CatatanAdimeGizi extends Model
             'no_rkm_medis' // Local key on RawatInap table...
         )->select('pasien.no_rkm_medis', 'nm_pasien');
     }
-    public function regPeriksa(){
+    public function regPeriksa()
+    {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat')
-        ->select('no_rawat', 'no_rkm_medis', 'kd_poli', 'kd_dokter', 'tgl_registrasi', 'jam_reg');
+            ->select('no_rawat', 'no_rkm_medis', 'kd_poli', 'kd_dokter', 'tgl_registrasi', 'jam_reg');
     }
-    public function kamarInap(){
+    public function kamarInap()
+    {
         return $this->belongsTo(
             KamarInap::class,
             'no_rawat',

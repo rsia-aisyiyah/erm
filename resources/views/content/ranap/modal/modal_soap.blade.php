@@ -548,6 +548,7 @@
             formAdimeGizi.find('input[name=nip]').val("{{ session()->get('pegawai')->nik }}")
             formAdimeGizi.find('input[name=nm_petugas]').val("{{ session()->get('pegawai')->nama }}")
             formAdimeGizi.find('input[name=tanggal]').val(moment().format('DD-MM-YYYY HH:mm:ss'))
+            formAdimeGizi.find('#btnPrintAdime').prop('href', `/erm/ranap/gizi/catatan-adime/print?no_rawat=${no_rawat}`)
             getCatatanAdimeGizi(no_rawat)
 
         })

@@ -44,6 +44,11 @@ class PemeriksaanRanap extends Model
         return $this->hasOne(RsiaGrafikHarian::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat'])
         ->where('sumber', 'SBAR');
     }
+    function adime(){
+        return $this->hasOne(RsiaGrafikHarian::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat'])
+        ->select('no_rawat', 'tgl_perawatan', 'jam_rawat')
+        ->where('sumber', 'ADIME');
+    }
     function kamarInap(){
         return $this->hasMany(KamarInap::class, 'no_rawat', 'no_rawat');
     }

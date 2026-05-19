@@ -204,6 +204,10 @@ Route::middleware('auth')->group(function () {
 
 			$route->post('catatan-adime', [CatatanAdimeGiziController::class, 'store']);
 			$route->get('catatan-adime', [CatatanAdimeGiziController::class, 'get']);
+			$route->delete('catatan-adime', [CatatanAdimeGiziController::class, 'delete']);
+			$route->get('catatan-adime/edit', [CatatanAdimeGiziController::class, 'edit']);
+			$route->get('catatan-adime/print', [CatatanAdimeGiziController::class, 'print']);
+			$route->put('catatan-adime', [CatatanAdimeGiziController::class, 'update']);
 		});
 	});
 
