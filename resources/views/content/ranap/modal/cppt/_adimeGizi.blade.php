@@ -56,8 +56,10 @@
                     <label for="instruksi">Instruksi</label>
                     <x-textarea cols="10" rows="6" name="instruksi" id="instruksi">-</x-textarea>
                     <div class="d-flex justify-content-end mt-2 gap-2">
-                        <button type="button" id="btnSimpanAdimeGizi" class="btn btn-sm btn-primary"><i class="bi bi-save"></i> Simpan</button>
-                        <button type="button" id="btnUbahAdimeGizi" class="btn btn-sm btn-warning d-none"><i class="bi bi-pencil"></i> Ubah</button>
+                        <button type="button" id="btnSimpanAdimeGizi" class="btn btn-sm btn-primary"><i
+                                class="bi bi-save"></i> Simpan</button>
+                        <button type="button" id="btnUbahAdimeGizi" class="btn btn-sm btn-warning d-none"><i
+                                class="bi bi-pencil"></i> Ubah</button>
                     </div>
                 </div>
             </div>
@@ -82,15 +84,10 @@
                     </tbody>
                 </table>
             </div>
-            <a href="javascript:void(0)" target="_blank" id="btnPrintAdime"
-                class="btn btn-sm btn-success mt-2">
+            <a href="javascript:void(0)" target="_blank" id="btnPrintAdime" class="btn btn-sm btn-success mt-2">
                 <i class="bi bi-printer"></i> Cetak ADIME Gizi
             </a>
         </div>
-    </div>
-    </div>
-    </div>
-
     </div>
 </form>
 
@@ -161,27 +158,27 @@
                         let tanggalFormatted = moment(item.tanggal).format('DD-MM-YYYY HH:mm:ss');
 
                         htmlRow += `
-                                                    <tr class="align-middle">
-                                                        <td class="text-center text-nowrap">${tanggalFormatted}</td>
-                                                        <td>${item.asesmen ?? '-'}</td>
-                                                        <td>${item.diagnosis ?? '-'}</td>
-                                                        <td>${item.intervensi ?? '-'}</td>
-                                                        <td>${item.monitoring ?? '-'}</td>
-                                                        <td>${item.evaluasi ?? '-'}</td>
-                                                        <td>${item.instruksi ?? '-'}</td>
-                                                        <td class="text-center text-nowrap"><span class="badge bg-secondary">${item.petugas?.nama ?? '-'}</span></td>
-                                                        <td class="text-center text-nowrap">
-                                                            <div class="d-flex justify-content-center gap-1">
-                                                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="editCatatanAdimeGizi('${item.no_rawat}', '${item.tanggal}')">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteCatatanAdimeGizi('${item.no_rawat}', '${item.tanggal}')">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                `;
+                                                                <tr class="align-middle">
+                                                                    <td class="text-center text-nowrap">${tanggalFormatted}</td>
+                                                                    <td>${item.asesmen ?? '-'}</td>
+                                                                    <td>${item.diagnosis ?? '-'}</td>
+                                                                    <td>${item.intervensi ?? '-'}</td>
+                                                                    <td>${item.monitoring ?? '-'}</td>
+                                                                    <td>${item.evaluasi ?? '-'}</td>
+                                                                    <td>${item.instruksi ?? '-'}</td>
+                                                                    <td class="text-center text-nowrap"><span class="badge bg-secondary">${item.petugas?.nama ?? '-'}</span></td>
+                                                                    <td class="text-center text-nowrap">
+                                                                        <div class="d-flex justify-content-center gap-1">
+                                                                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="editCatatanAdimeGizi('${item.no_rawat}', '${item.tanggal}')">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </button>
+                                                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteCatatanAdimeGizi('${item.no_rawat}', '${item.tanggal}')">
+                                                                                <i class="fas fa-trash"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            `;
                     });
 
                     // Masukkan baris baru ke dalam tabel
