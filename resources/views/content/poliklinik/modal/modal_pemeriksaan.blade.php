@@ -15,50 +15,49 @@
                     </li>
                     <li class="nav-item" role="presentation" id="li-riwayat-pemeriksaan">
                         <button class="nav-link" id="tab-riwayat-pemeriksaan" data-bs-toggle="tab"
-                            data-bs-target="#tab-riwayat-pane"
-                            type="button" role="tab" aria-controls="tab-riwayat-pemeriksaan" aria-selected="false">
+                            data-bs-target="#tab-riwayat-pane" type="button" role="tab"
+                            aria-controls="tab-riwayat-pemeriksaan" aria-selected="false">
                             Riwayat Pemeriksaan
                         </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-asmed-obg">
                         <button class="nav-link" id="tab-asesmen-obg" data-bs-toggle="tab"
-                            data-bs-target="#tab-asmed-obg"
-                            type="button" role="tab" aria-controls="tab-asmed-obg" aria-selected="false">Asesmen
+                            data-bs-target="#tab-asmed-obg" type="button" role="tab" aria-controls="tab-asmed-obg"
+                            aria-selected="false">Asesmen
                             Medis Rajal Obgyn
                         </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-asmed-ana">
                         <button class="nav-link" id="tab-asesmen-anak" data-bs-toggle="tab"
-                            data-bs-target="#tab-asmed-ana"
-                            type="button" role="tab" aria-controls="tab-asmed-ana" aria-selected="false">Asesmen
+                            data-bs-target="#tab-asmed-ana" type="button" role="tab" aria-controls="tab-asmed-ana"
+                            aria-selected="false">Asesmen
                             Medis Rajal Anak
                         </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-asmed-ranap-obg">
                         <button class="nav-link" id="tab-asesmen-ranap-obg" data-bs-toggle="tab"
-                            data-bs-target="#tab-asmed-ranap-obg"
-                            type="button" role="tab" aria-controls="tab-asmed-ranap-obg" aria-selected="false">
+                            data-bs-target="#tab-asmed-ranap-obg" type="button" role="tab"
+                            aria-controls="tab-asmed-ranap-obg" aria-selected="false">
                             Asesmen Medis Ranap Obgyn
                         </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-asmed-ranap-ana">
                         <button class="nav-link" id="tab-asesmen-ranap-anak" data-bs-toggle="tab"
-                            data-bs-target="#tab-asmed-ranap-ana"
-                            type="button" role="tab" aria-controls="tab-asmed-ranap-ana" aria-selected="false">
+                            data-bs-target="#tab-asmed-ranap-ana" type="button" role="tab"
+                            aria-controls="tab-asmed-ranap-ana" aria-selected="false">
                             Asesmen Medis Ranap Anak
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
-                            data-bs-target="#tabTindakan-pane"
-                            type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan
+                            data-bs-target="#tabTindakan-pane" type="button" role="tab" aria-controls="tabTindakan-pane"
+                            aria-selected="true">Tindakan
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="permintaan-laborat-tab" data-bs-toggle="tab"
-                            data-bs-target="#permintaan-laborat-tab-pane"
-                            type="button" role="tab" aria-controls="permintaan-laborat-tab-pane"
-                            aria-selected="true">Permintaan Lab
+                            data-bs-target="#permintaan-laborat-tab-pane" type="button" role="tab"
+                            aria-controls="permintaan-laborat-tab-pane" aria-selected="true">Permintaan Lab
                         </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-lab-ana">
@@ -69,9 +68,8 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab"
-                            data-bs-target="#permintaan-radiologi-tab-pane"
-                            type="button" role="tab" aria-controls="permintaan-radiologi-tab-pane"
-                            aria-selected="true">Permintaan Radiologi
+                            data-bs-target="#permintaan-radiologi-tab-pane" type="button" role="tab"
+                            aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi
                         </button>
                     </li>
                     <li class="nav-item" role="presentation" id="li-rad-ana">
@@ -93,8 +91,7 @@
                         @include('content.poliklinik.modal.pemeriksaan.soap')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-riwayat-pane" role="tabpanel"
-                        aria-labelledby="tab-riwayat-pemeriksaan"
-                        tabindex="0">
+                        aria-labelledby="tab-riwayat-pemeriksaan" tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.riwayat_pemeriksaan')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-asmed-obg" role="tabpanel" aria-labelledby="tab-asmed"
@@ -106,13 +103,11 @@
                         @include('content.poliklinik.modal.pemeriksaan.asmed_anak')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-asmed-ranap-obg" role="tabpanel"
-                        aria-labelledby="tab-asmed-ranap"
-                        tabindex="0">
+                        aria-labelledby="tab-asmed-ranap" tabindex="0">
                         @include('content.ranap.form.form_asmed_kandungan')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-asmed-ranap-ana" role="tabpanel"
-                        aria-labelledby="tab-asmed-ranap"
-                        tabindex="0">
+                        aria-labelledby="tab-asmed-ranap" tabindex="0">
                         @include('content.ranap.form.form_asemd_anak')
                     </div>
                     <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel"
@@ -124,9 +119,10 @@
                         aria-labelledby="tabTindakan" tabindex="0">
                         @include('content.poliklinik.modal.tab-tindakan')
                     </div>
-                    <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab"
-                        tabindex="0">
-                        {{--                        <small class="d-none mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3" id="alertHasilLab">Belum / Tidak dilakukan pemeriksaan laboratorium</small> --}}
+                    <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab" tabindex="0">
+                        {{-- <small
+                            class="d-none mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3"
+                            id="alertHasilLab">Belum / Tidak dilakukan pemeriksaan laboratorium</small> --}}
                         <div class="row gy-2">
                             <div class="col-lg-8 col-md-12 col-sm-12">
                                 <div class="card">
@@ -168,7 +164,8 @@
                     </div>
                     <div class="tab-pane fade p-3" id="rad-ana" role="tabpanel" aria-labelledby="tab-radiologi"
                         tabindex="0">
-                        <small class="mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3"
+                        <small
+                            class="mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3"
                             id="alertHasilRadiologi" style="display: none">Belum / Tidak dilakukan pemeriksaan
                             radiologi</small>
                         <div class="row" id="viewHasilRadiologi" style="display: none">
@@ -237,8 +234,8 @@
                         <ul class="nav nav-tabs mt-3" id="tabsSkoringTb" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="formSkoringTb-tab" data-bs-toggle="tab"
-                                    data-bs-target="#tabSkoringTb" type="button" role="tab"
-                                    aria-controls="tabSkoringTb" aria-selected="true">Form Skoring
+                                    data-bs-target="#tabSkoringTb" type="button" role="tab" aria-controls="tabSkoringTb"
+                                    aria-selected="true">Form Skoring
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
@@ -294,10 +291,11 @@
                 <button type="button" class="btn btn-success btn-sm btn-soap" onclick="simpanSoapRalan()"><i
                         class="bi bi-save"></i> Simpan SOAP
                 </button>
-                <button type="button" class="btn btn-success btn-sm btn-asmed" name="simpan"><i
-                        class="bi bi-save"></i> Simpan Asmed Rajal
+                <button type="button" class="btn btn-success btn-sm btn-asmed" name="simpan"><i class="bi bi-save"></i>
+                    Simpan Asmed Rajal
                 </button>
-                <button type="button" class="btn btn-success btn-sm btn-asmed-ranap d-none" name="simpan"><i class="bi bi-save"></i> Simpan Asmed Ranap
+                <button type="button" class="btn btn-success btn-sm btn-asmed-ranap d-none" name="simpan"><i
+                        class="bi bi-save"></i> Simpan Asmed Ranap
                 </button>
 
             </div>
@@ -326,14 +324,14 @@
         const btnsSkriningTB = $('button[data-bs-target="#skriningTB-pane"]');
 
 
-        $('button[data-bs-target="#tab-soap-pane"]').on('shown.bs.tab', function(e, x, y) {
+        $('button[data-bs-target="#tab-soap-pane"]').on('shown.bs.tab', function (e, x, y) {
             $('.btn-asmed-ranap').addClass('d-none')
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').removeClass('d-none')
 
         })
 
-        btnTabAsmedAnak.on('shown.bs.tab', function(e, x, y) {
+        btnTabAsmedAnak.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedAnak)
             $('.btn-asmed-ranap').addClass('d-none')
@@ -341,7 +339,7 @@
             $('.btn-soap').addClass('d-none')
 
         })
-        btnTabAsmedObgyn.on('shown.bs.tab', function(e, x, y) {
+        btnTabAsmedObgyn.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRajalKandungan)
             $('.btn-asmed-ranap').addClass('d-none')
@@ -349,7 +347,7 @@
             $('.btn-soap').addClass('d-none')
 
         })
-        btnTabAsmedRanapAnak.on('shown.bs.tab', function(e, x, y) {
+        btnTabAsmedRanapAnak.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRanapAnak)
             $('.btn-asmed-ranap').removeClass('d-none')
@@ -357,7 +355,7 @@
             $('.btn-soap').addClass('d-none')
         })
 
-        btnTabAsmedRanapObgyn.on('shown.bs.tab', function(e, x, y) {
+        btnTabAsmedRanapObgyn.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRanapKandungan)
             $('.btn-asmed-ranap').removeClass('d-none')
@@ -365,7 +363,7 @@
             $('.btn-soap').addClass('d-none')
         });
 
-        btnsSkriningTB.on('shown.bs.tab', function(e, x, y) {
+        btnsSkriningTB.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             drawTbSkriningTb(no_rawat)
             drawTbSkoringTb(no_rawat)
@@ -407,17 +405,17 @@
 
                 const list = data.map((item, index) => {
                     return `<li class="list-group-item"  data-no-rawat="${item.no_rawat}" onclick="hasilLabRalan('${item.no_rawat}')">
-                                <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between">
 
-                                <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
-                                <span>
-                                       ${item.diagnosa_klinis} ${item.informasi_tambahan}
-                                </span>
-                                </div>
-                            </li>`
+                                        <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
+                                        <span>
+                                               ${item.diagnosa_klinis} ${item.informasi_tambahan}
+                                        </span>
+                                        </div>
+                                    </li>`
                 }).join('')
 
-                listRiwayatLaboratorium.on('click', 'li', function() {
+                listRiwayatLaboratorium.on('click', 'li', function () {
                     listRiwayatLaboratorium.find('li').removeClass('active');
                     $(this).addClass('active');
                 });
@@ -427,7 +425,7 @@
 
         }
 
-        $('button[data-bs-target="#lab-ana"]').on('shown.bs.tab', function(e, x, y) {
+        $('button[data-bs-target="#lab-ana"]').on('shown.bs.tab', function (e, x, y) {
             $('.btn-asmed-ranap').addClass('d-none')
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').addClass('d-none')
@@ -453,18 +451,18 @@
 
                         if (item.detail.length) {
                             hasilLab += `<tr class="" >
-                            <td colspan="3" style="background-color:#ffc800;padding:2px">
-                                <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
-                                ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
-                            </td>
-                            <td  style="background-color:#ffc800;padding:2px">${item.petugas.nama}</td></tr>`;
+                                    <td colspan="3" style="background-color:#ffc800;padding:2px">
+                                        <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
+                                        ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
+                                    </td>
+                                    <td  style="background-color:#ffc800;padding:2px">${item.petugas.nama}</td></tr>`;
                             item.detail.sort((a, b) => a.template.urut - b.template.urut);
                             item.detail.forEach((detail, index) => {
                                 hasilLab += `<tr class="${setWarnaPemeriksaan(detail.keterangan)}">
-                                <td>${detail.template.Pemeriksaan}</td>
-                                <td>${detail.nilai} ${detail.template.satuan}</td>
-                                <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
-                                <td>${detail.keterangan}</td></tr>`
+                                        <td>${detail.template.Pemeriksaan}</td>
+                                        <td>${detail.nilai} ${detail.template.satuan}</td>
+                                        <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
+                                        <td>${detail.keterangan}</td></tr>`
                             })
                         }
                     })
@@ -474,13 +472,13 @@
             })
         }
 
-        btnTabPermintaanLab.on('shown.bs.tab', function(e, x, y) {
+        btnTabPermintaanLab.on('shown.bs.tab', function (e, x, y) {
             $('.btn-asmed-ranap').addClass('d-none')
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').addClass('d-none')
         })
 
-        $('button[data-bs-target="#rad-ana"]').on('shown.bs.tab', function(e, x, y) {
+        $('button[data-bs-target="#rad-ana"]').on('shown.bs.tab', function (e, x, y) {
             $('.btn-asmed-ranap').addClass('d-none')
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').addClass('d-none')
@@ -490,10 +488,10 @@
                 if (Object.keys(permintaan).length) {
                     permintaan.map((prm, index) => {
                         html = `<tr><td>${splitTanggal(prm.tgl_hasil)} ${prm.jam_hasil}</td>
-                                <td>${prm.diagnosa_klinis}</td>
-                                <td>${prm.informasi_tambahan}</td>
-                                <td>
-                        `
+                                        <td>${prm.diagnosa_klinis}</td>
+                                        <td>${prm.informasi_tambahan}</td>
+                                        <td>
+                                `
                         prm.periksa_radiologi.map((periksa) => {
                             if (periksa.tgl_periksa == prm.tgl_hasil && periksa.jam == prm.jam_hasil) {
                                 html += `${periksa.jns_perawatan.nm_perawatan}, <br/>`
@@ -514,8 +512,8 @@
                                 if (gambar.tgl_periksa == prm.tgl_hasil && gambar.jam == prm.jam_hasil) {
                                     gbr = `${getBaseUrl(`/webapps/radiologi/${gambar.lokasi_gambar}`)}`
                                     html += `<a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gbr}">
-                                                <i class="bi bi-eye"></i> BUKA GAMBAR
-                                            </a><br/>`
+                                                        <i class="bi bi-eye"></i> BUKA GAMBAR
+                                                    </a><br/>`
                                 } else {
                                     html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
 
@@ -550,9 +548,9 @@
                 data: {
                     no_resep: no_resep,
                 },
-                success: function(response) {
+                success: function (response) {
                     if (Object.keys(response).length >= 1) {
-                        $.map(response, function(data) {
+                        $.map(response, function (data) {
                             no = data.no_racik
                         })
                         no_racik = parseInt(no) + 1;
@@ -697,13 +695,13 @@
         }
 
 
-        $('#simpanObat').on('click', function() {
+        $('#simpanObat').on('click', function () {
             $.ajax({
                 url: '/erm/resep/obat/ambil',
                 data: {
                     'no_resep': $('.no_resep').val(),
                 },
-                success: function(response) {
+                success: function (response) {
                     if (Object.keys(response).length == 0) {
                         simpanResepObat()
                     }
@@ -716,13 +714,13 @@
                             'kode_brng': $('.kode_obat').val(),
                             'jml': $('.jml').val(),
                             'aturan_pakai': $('.aturan_pakai').val() + ' ' + $(
-                                    '.keterangan')
+                                '.keterangan')
                                 .val(),
                         },
-                        success: function(response) {
+                        success: function (response) {
                             cekResep(id)
                         },
-                        error: function() {
+                        error: function () {
                             Swal.fire('Gagal !', 'Obat tidak tersimpan', 'error')
                         }
                     })
@@ -745,7 +743,7 @@
                     no_resep: $('.no_resep').val(),
                 },
                 method: 'POST',
-                error: function(request, status, error) {
+                error: function (request, status, error) {
                     Swal.fire(
                         'Gagal !',
                         'Tidak bisa menambah resep<br/>' + request.responseJSON.message,
@@ -776,7 +774,7 @@
                 data: {
                     no_resep: no_resep,
                 },
-                success: function(response) {
+                success: function (response) {
                     hasil = response;
                 },
             })
@@ -804,10 +802,10 @@
                     no_resep: no_resep,
                     no_racik: no_racik,
                 },
-                success: function(response, status, detail) {
+                success: function (response, status, detail) {
                     html = '';
                     no = 1;
-                    $.map(response, function(res) {
+                    $.map(response, function (res) {
 
                         kandungan = res.kandungan != 0 ? res.kandungan : res.data_barang.kapasitas;
 
@@ -848,7 +846,7 @@
             $('.p2').val(1);
         }
 
-        $('.ubah-obat').on('click', function() {
+        $('.ubah-obat').on('click', function () {
             no_racik = $('.no_racik').val();
             no_resep = $('.no_resep').val();
             kode_brng = $('.kode_obat').val();
@@ -870,23 +868,23 @@
                     jml: jml,
                 },
                 method: 'POST',
-                success: function(response) {
+                success: function (response) {
                     ambilObatRacikan();
                 },
-                error: function(request, status, error) {
+                error: function (request, status, error) {
                     Swal.fire(
                         'Gagal !',
                         'Tidak bisa mengubah obat<br/>' + request.responseJSON.message,
                         'error',
                     )
                 }
-            }).done(function() {
+            }).done(function () {
                 tulisPlan();
             })
         })
 
 
-        $('.obat-baru').on('click', function() {
+        $('.obat-baru').on('click', function () {
             $('.simpan-obat').css('display', '');
             $('.ubah-obat').addClass('d-none');
             $('.obat-baru').addClass('d-none');
@@ -931,22 +929,22 @@
                             no_racik: no_racik,
                             kode_brng: kode_brng,
                         },
-                        success: function() {
+                        success: function () {
                             $('.obat-' + no).remove();
                             hitungBarisObat($('.table-racikan'))
                             cekResep(id);
                             riwayatResep($('#no_rm').val())
                         },
-                        error: function(request, status, error) {
+                        error: function (request, status, error) {
                             Swal.fire(
                                 'Gagal !',
                                 'Tidak menghapus obat<br/>' + request.responseJSON
-                                .message,
+                                    .message,
                                 'error',
                             )
 
                         }
-                    }).done(function() {
+                    }).done(function () {
                         tulisPlan();
                     })
                 }
@@ -954,7 +952,7 @@
         }
 
         function hitungBarisObat($table) {
-            $table.find('tr').each(function(index, element) {
+            $table.find('tr').each(function (index, element) {
                 $(element).attr('class', 'obat-' + index)
                 $(element).find('td:eq(0) input').attr('id', 'kode_brng' + index)
                 $(element).find('td:eq(1) input').attr('id', 'kps' + index)
@@ -969,7 +967,7 @@
             $('.nomor').val($table.find('tr').length);
         }
 
-        $('tbody').on('click', '.edit', function() {
+        $('tbody').on('click', '.edit', function () {
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
             let no_racik = $(this).data('racik');
@@ -986,7 +984,7 @@
             })
         })
 
-        $('#modalObatRacik').on('shown.bs.modal', function() {
+        $('#modalObatRacik').on('shown.bs.modal', function () {
             $('.kps').val('');
             $('.p1').val('');
             $('.p2').val('');
@@ -994,7 +992,7 @@
             $('.kandungan').val('');
             $('.kandungan').val('');
         });
-        $('#modalObatRacik').on('hidden.bs.modal', function() {
+        $('#modalObatRacik').on('hidden.bs.modal', function () {
             $('.no_racik').val('');
             $('.kps').val('');
             $('.p1').val('');
@@ -1020,11 +1018,11 @@
         }
 
         function hapusNomorResep(no_resep) {
-            ambilResep(no_resep).done(function(res) {
+            ambilResep(no_resep).done(function (res) {
                 resepDokter = Object.keys(res.resep_dokter).length
                 resepRacik = Object.keys(res.resep_racikan).length
                 if (resepDokter == 0 && resepRacik == 0) {
-                    hapusResep(no_resep).done(function() {
+                    hapusResep(no_resep).done(function () {
                         Swal.fire({
                             title: 'Berhasil',
                             text: "Resep telah dihapus",
@@ -1056,14 +1054,14 @@
                         tulisPlan()
                         swalToast('Berhasil Hapus Racikan')
                     }).fail((request, status, error) => {
-                        Swal.fire('Gagal !', 'Tidak menghapus obat<br/>' + request.responseJSON.message, 'error', )
+                        Swal.fire('Gagal !', 'Tidak menghapus obat<br/>' + request.responseJSON.message, 'error',)
                     })
                 }
             })
 
         }
 
-        $('tbody').on('click', '.remove', function() {
+        $('tbody').on('click', '.remove', function () {
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
             let no_racik = $(this).attr('data-racik');
@@ -1079,7 +1077,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (no_racik) {
-                        hapusResepRacikan(no_resep, no_racik).done(function(response) {
+                        hapusResepRacikan(no_resep, no_racik).done(function (response) {
                             hapusNomorResep(no_resep)
                             tulisPlan();
                             $('#body_racik').empty();
@@ -1087,7 +1085,7 @@
                             cekResep($('#nomor_rawat').val());
                         })
                     } else {
-                        hapusResepUmum(no_resep, kode_brng).done(function(response) {
+                        hapusResepUmum(no_resep, kode_brng).done(function (response) {
                             hapusNomorResep(no_resep)
                             $('#body_umum').empty();
                             cekResep($('#nomor_rawat').val())
@@ -1102,12 +1100,12 @@
 
 
         function cariDiagnosaSoap(diagnosa) {
-            getDiagnosa(diagnosa.value).done(function(response) {
+            getDiagnosa(diagnosa.value).done(function (response) {
                 if (response) {
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                     no = 1;
-                    $.map(response, function(data) {
+                    $.map(response, function (data) {
                         html +=
                             '<li data-nama="' + data.nm_penyakit + '" data-id="' + data.kd_penyakit + '" onclick="tambahDiagnosa(this)"><a class="dropdown-item" href="#" style="overflow:hidden"> ' + data.kd_penyakit + ' - ' + data.nm_penyakit + '</a></li>'
                         no++;
@@ -1127,12 +1125,12 @@
                         'kode': kode.value,
                     },
                     dataType: 'JSON',
-                    success: function(response) {
+                    success: function (response) {
                         if (response) {
                             html =
                                 '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
                             no = 1;
-                            $.map(response, function(data) {
+                            $.map(response, function (data) {
                                 html +=
                                     '<li data-nama="' + data.deskripsi_pendek + '" data-id="' + data.kode + '" onclick="tambahProsedur(this)"><a class="dropdown-item" href="#" style="overflow:hidden"> ' + data.kode + ' - ' + data.deskripsi_pendek + '</a></li>'
                                 no++;
@@ -1161,7 +1159,7 @@
                     prioritas: prioritas,
                 },
                 method: 'POST',
-                success: function(response) {
+                success: function (response) {
                     ambilDiagnosaPasien(no_rawat)
                     $('#diagnosa').val('').focus();
                 }
@@ -1184,7 +1182,7 @@
                     prioritas: prioritas,
                 },
                 method: 'POST',
-                success: function(response) {
+                success: function (response) {
                     ambilProsedurPasien(no_rawat)
                     $('#prosedur').val('').focus();
                 }
@@ -1198,11 +1196,11 @@
                 data: {
                     no_rawat: no_rawat,
                 },
-                success: function(response) {
+                success: function (response) {
                     nomor = 1;
                     $('.table-diagnosa tbody').empty();
                     if (Object.keys(response).length > 0) {
-                        $.map(response, function(res) {
+                        $.map(response, function (res) {
                             html = '<tr class="diagnosa_' + res.kd_penyakit + '">'
                             html += '<td>'
                             html += res.prioritas
@@ -1238,11 +1236,11 @@
                 data: {
                     no_rawat: no_rawat,
                 },
-                success: function(response) {
+                success: function (response) {
                     nomor = 1;
                     $('.table-prosedur tbody').empty();
                     if (Object.keys(response).length > 0) {
-                        $.map(response, function(res) {
+                        $.map(response, function (res) {
                             html = '<tr class="prosedur_' + res.kode + '">'
                             html += '<td>'
                             html += res.prioritas
@@ -1282,7 +1280,7 @@
                     kode: kode,
                 },
                 method: 'DELETE',
-                success: function(response) {
+                success: function (response) {
 
                     $('.no_prosedur').val(parseInt(no) - 1)
                     ambilProsedurPasien(no_rawat)
@@ -1301,7 +1299,7 @@
                     kd_penyakit: kd_penyakit,
                 },
                 method: 'DELETE',
-                success: function(response) {
+                success: function (response) {
 
                     $('.no_diagnosa').val(parseInt(no) - 1)
                     ambilDiagnosaPasien(no_rawat)
@@ -1311,7 +1309,7 @@
 
 
 
-        $('#modal').on('shown.bs.modal', function() {
+        $('#modal').on('shown.bs.modal', function () {
 
 
             $('.tambah_umum').css('visibility', 'visible')
@@ -1354,7 +1352,7 @@
                 $(`${form} input[name="nm_dokter"]`).val(regPeriksa.dokter.nm_dokter)
                 $(`${form} input[name="nm_dokter"]`).attr('readonly', 'readonly')
 
-                const formInfoPasienResep = $('#formInfoPasienResep') 
+                const formInfoPasienResep = $('#formInfoPasienResep')
                 formInfoPasienResep.find(`input[name="no_rawat"]`).val(regPeriksa.no_rawat)
 
                 formInfoPasienResep.find('input[name=no_rawat]').val(no_rawat);
@@ -1508,9 +1506,11 @@
                             $(`#formAsmedRanapKandungan textarea[name=${index}]`).val(value)
                         }
                     })
+                    
                 } else {
                     const form = $('#formAsmedRanapKandungan');
                     setSoapToAsmed(no_rawat, form);
+                    $('#btnPrintAsmedRanapKandungan').attr('href', `javascript:void(0)`).addClass('d-none');
                 }
             })
         }
@@ -1539,7 +1539,7 @@
                     jml: $('.u_jml_' + no).val(),
                     aturan_pakai: $('.u_aturan_' + no).val(),
                 },
-                success: function(response) {
+                success: function (response) {
                     // alert(response);
                     cekResep(id)
                     tulisPlan()
@@ -1547,7 +1547,7 @@
             })
         }
 
-        $('tbody').on('click', '.ubah-obat', function() {
+        $('tbody').on('click', '.ubah-obat', function () {
             no = $(this).data('id')
             jml = $('.jml_' + no).text();
             aturan_pakai = $('.aturan_pakai_' + no).text();
@@ -1563,7 +1563,7 @@
 
 
 
-        $('#modal').on('hidden.bs.modal', function() {
+        $('#modal').on('hidden.bs.modal', function () {
             const nm_pasien = $('#pasien-cari').val();
             tb_pasien(tgl_registrasi, nm_pasien);
             $('#tb-resep tbody').empty();

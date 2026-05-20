@@ -9,8 +9,12 @@
                 @include('content.ranap.form.form_asemd_anak')
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm btn-asmed-anak" onclick="" name="simpan" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                        class="bi bi-x-circle"></i> Keluar</button>
+                <button type="button" class="btn btn-primary btn-sm btn-asmed-anak" onclick="" name="simpan"><i
+                        class="bi bi-save"></i> Simpan</button>
+                <a href="#" type="button" class="btn btn-warning btn-sm d-none" id="btnPrintAsmedRanapAnak" onclick=""
+                    target="_blank"><i class="bi bi-printer"></i> Print</a>
             </div>
         </div>
     </div>
@@ -23,7 +27,7 @@
                 getDokter(dokter).done((response) => {
                     html =
                         '<ul class="dropdown-menu" style="width:auto;display:block;position:absolute;font-size:12px">';
-                    $.map(response, function(data) {
+                    $.map(response, function (data) {
                         html += '<li>'
                         html += '<a data-id="' + data.kd_dokter + '" data-nama="' + data.nm_dokter + '" class="dropdown-item" onclick="setDokterAsmed(this, \'#anak_kd_dokter\', \'#anak_dokter\')">' + data.nm_dokter + '</a>'
                         html += '</li>'

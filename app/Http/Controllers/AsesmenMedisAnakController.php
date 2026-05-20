@@ -64,15 +64,20 @@ class AsesmenMedisAnakController extends Controller
     
     function print(Request $request){
         $asmed = $this->asmed->where('no_rawat', $request->no_rawat)->with('regPeriksa.pasien', 'regPeriksa.dokter', 'dokter.pegawai')->first();
+        
+        if(!$asmed){
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+         
+        }
+        
         $asmed['sidik'] = $this->setFingerOutput($asmed->dokter->nm_dokter, bcrypt($asmed->dokter->kd_dokter), $asmed->tanggal);
+
 
         $pdf = Pdf::loadView('content.print.asmed_ranap_anak', compact('asmed'))
         ->setOption(['defaultFont' => 'serif', 'isRemoteEnabled' => true])
             ->setPaper(array(0, 0, 595, 935));
         return $pdf->stream($asmed->regPeriksa->pasien->no_rkm_medis . date('YmdHis') . '.pdf');
-        // return response()->json($asmed);
     }
-
      function setFingerOutput($dokter, $id, $tanggal)
     {
         $strId = sha1($id);

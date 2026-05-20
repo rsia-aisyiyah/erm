@@ -37,28 +37,28 @@
                 </td>
             </tr>
             <tr>
-                <td style="font-size:10px; height:60px" colspan="6">
+                <td style="font-size:10px" colspan="6">
                     Keluhan Utama : <br> {{ $asmed['keluhan_utama'] }}
                 </td>
             </tr>
             <tr>
-                <td style="font-size:10px; height:40px" colspan="6">
+                <td style="font-size:10px" colspan="6">
                     Riwayat Penyakit Sekarang: <br>{{ $asmed['rps'] }}
                 </td>
             </tr>
             <tr>
-                <td style="font-size:10px; height:40x" colspan="3">
+                <td style="font-size:10px" colspan="3">
                     Riwayat Penyakit Dahulu:<br> {{ $asmed['rpd'] }}
                 </td>
-                <td style="font-size:10px; height:60px" colspan="3" class="border">
+                <td style="font-size:10px" colspan="3" class="border">
                     Riwayat Penyakit Keluarga:<br> {{ $asmed['rpk'] }}
                 </td>
             </tr>
             <tr>
-                <td style="font-size:10px; height:40px" colspan="3">
+                <td style="font-size:10px" colspan="3">
                     Riwayat Penyakit Pengobatan:<br> {{ $asmed['rpo'] }}
                 </td>
-                <td style="font-size:10px; height:40px" colspan="3" class="border">
+                <td style="font-size:10px" colspan="3" class="border">
                     Riwayat Alergi:<br> {{ $asmed['alergi'] }}
                 </td>
             </tr>
@@ -184,18 +184,18 @@
                 </td>
             </tr>
             <tr>
-                <td style="font-size:10px;" colspan="3" class="border">
+                {{-- <td style="font-size:10px;" colspan="3" class="border">
                     Tanggal & Jam
-                </td>
-                <td style="font-size:10px;" colspan="3" class="border">
+                </td> --}}
+                <td style="font-size:10px;text-align:center" colspan="6" class="border">
                     Nama Dokter & TTD
                 </td>
             </tr>
             <tr>
-                <td style="font-size:10px;vertical-align:center;height:80px;text-align:center" colspan="3" class="border">
+                {{-- <td style="font-size:10px;vertical-align:center;height:80px;text-align:center" colspan="3" class="border">
                     {{ $asmed['tanggal'] }}
-                </td>
-                <td style="font-size:10px;vertical-align:bottom;height:80px;text-align:center" colspan="3" class="border">
+                </td> --}}
+                <td style="font-size:10px;vertical-align:bottom;height:80px;text-align:center" colspan="6" class="border">
                     <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG($asmed['sidik'], 'QRCODE') }}" height="80" width="80" /><br>
                     <b><u>{{ $asmed['dokter']['nm_dokter'] }} </u> <br></b>
                     NIK : {{ $asmed['kd_dokter'] }}
