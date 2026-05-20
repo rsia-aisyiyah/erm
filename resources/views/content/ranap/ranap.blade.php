@@ -1070,6 +1070,9 @@
                             $(`#formAsmedRanapKandungan textarea[name=${index}]`).val(value)
                         }
                     })
+                    $('#btnPrintAsmedRanapKandungan').attr('href', `/erm/asmed/ranap/kandungan/print?no_rawat=${noRawat}`).removeClass('d-none');
+                }else{
+                    $('#btnPrintAsmedRanapKandungan').attr('href', `javascript:void(0)`).addClass('d-none');
 
                 }
             })
@@ -1107,6 +1110,9 @@
                         }
                     })
 
+                    $('#btnPrintAsmedRanapAnak').attr('href', `/erm/asmed/ranap/anak/print?no_rawat=${noRawat}`).removeClass('d-none');
+                }else{
+                    $('#btnPrintAsmedRanapAnak').attr('href', `javascript:void(0)`).addClass('d-none');
                 }
             })
             $('#formAsmedRanapAnak .srcPemeriksaanAsmed').attr('onclick', `listRiwayatTtv('${noRawat}', 'ttv', 'formAsmedRanapAnak')`);

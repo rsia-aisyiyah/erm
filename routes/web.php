@@ -230,6 +230,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('asmed/ranap/anak/simpan', [AsesmenMedisAnakController::class, 'create']);
 	Route::post('asmed/ranap/anak/ubah', [AsesmenMedisAnakController::class, 'update']);
 
+	Route::get('asmed/ranap/kandungan/print', [AsesmenMedisRanapKandunganController::class, 'print']);
 	Route::get('asmed/ranap/kandungan/{noRawat}', [AsesmenMedisRanapKandunganController::class, 'get']);
 	Route::get('asmed/ranap/kandungan/rm/{no_rkm_medis}', [AsesmenMedisRanapKandunganController::class, 'getByNoRm']);
 	Route::post('asmed/ranap/kandungan/simpan', [AsesmenMedisRanapKandunganController::class, 'create']);
