@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AsesmenMedisRanapKandungan;
+use App\Services\PrintService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,11 @@ class AsesmenMedisRanapKandunganController extends Controller
 {
     protected $asmed;
     protected $track;
+    protected $printService;
 
-    public function __construct()
+    public function __construct(PrintService $printService)
     {
+        $this->printService = $printService;
         $this->asmed = new AsesmenMedisRanapKandungan();
         $this->track = new TrackerSqlController();
     }
@@ -55,5 +58,20 @@ class AsesmenMedisRanapKandunganController extends Controller
             $query->where('no_rkm_medis', $no_rkm_medis);
         })->with('dokter', 'regPeriksa.poliklinik')->get();
         return response()->json($asmed);
+    }
+    public function print(Request $request)
+    {
+       $asmed = $this->asmed->where('no_rawat', $request->no_rawat)->with('regPeriksa.pasien', 'regPeriksa.dokter', 'dokter')->first();
+
+        $asmed['sidik'] = $this->printService->fingerOutput(
+            $asmed->dokter->nm_dokter,
+            bcrypt($asmed->dokter->nik),
+            $asmed->tanggal
+        );
+        return $this->printService->stream(
+            'content.print.asmed_ranap_kandungan',
+            compact('asmed'),
+            $asmed->regPeriksa->pasien->no_rkm_medis . date('YmdHis') . '.pdf'
+        );
     }
 }
