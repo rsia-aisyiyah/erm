@@ -8,7 +8,8 @@
                     <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
                     <div class="input-group-text">ke</div>
                     <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
-                    <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i class="bi bi-search"></i></button>
+                    <button class="btn btn-success btn-sm" type="button" id="btn-filter-tgl"><i
+                            class="bi bi-search"></i></button>
                 </div>
             </div>
             @if (session()->get('pegawai')->jnj_jabatan != 'DIRU' && session()->get('pegawai')->bidang != 'Spesialis')
@@ -178,41 +179,41 @@
                         }
                     },
                 },
-                initComplete: function() {
+                initComplete: function () {
                     // toastReload('Menampilkan data pasien UGD', 2000)
                 },
                 columnDefs: [{
-                        target: 0,
-                        width: 10,
-                    }, {
-                        target: 1,
-                        width: 100,
-                    }, {
-                        target: 2,
-                        width: 300,
-                    },
-                    {
-                        target: 3,
-                        width: 200,
-                    },
-                    {
-                        target: 5,
-                        width: 100,
-                    },
-                    {
-                        target: 4,
-                        width: 80,
-                    }, {
-                        target: 6,
-                        width: 80,
+                    target: 0,
+                    width: 10,
+                }, {
+                    target: 1,
+                    width: 100,
+                }, {
+                    target: 2,
+                    width: 300,
+                },
+                {
+                    target: 3,
+                    width: 200,
+                },
+                {
+                    target: 5,
+                    width: 100,
+                },
+                {
+                    target: 4,
+                    width: 80,
+                }, {
+                    target: 6,
+                    width: 80,
 
-                    },
-                    {
-                        target: 7,
-                        width: 100,
-                    }
+                },
+                {
+                    target: 7,
+                    width: 100,
+                }
                 ],
-                createdRow: function(row, data, dataIndex) {
+                createdRow: function (row, data, dataIndex) {
                     $(row).addClass('row-ugd')
                         .attr('data-id', data.no_rawat)
                         .attr('data-no_rkm_medis', data.no_rkm_medis)
@@ -253,174 +254,189 @@
                         });
                 },
                 columns: [{
-                        data: '',
-                        title: '',
-                        render: function(data, type, row, meta) {
+                    data: '',
+                    title: '',
+                    render: function (data, type, row, meta) {
 
-                            list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">CPPT</a></li>';
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')">Pemeriksaan Penunjang</a></li>`
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${row.no_rawat}')">Asesmen Medis UGD ${cekList(row.asmed_igd)} </a></li>`;
-                            list += renderListsAsesmenNyeri(row.pasien.tgl_lahir, row.tgl_registrasi, row.no_rawat)
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${row.no_rawat}')" data-id="${row.no_rawat}">Hasil Kritis</a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+                        list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">CPPT</a></li>';
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')">Pemeriksaan Penunjang</a></li>`
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${row.no_rawat}')">Asesmen Medis UGD ${cekList(row.asmed_igd)} </a></li>`;
+                        list += renderListsAsesmenNyeri(row.pasien.tgl_lahir, row.tgl_registrasi, row.no_rawat)
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${row.no_rawat}')" data-id="${row.no_rawat}">Hasil Kritis</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
 
-                            if (row.kd_pj == 'A01' || row.kd_pj == 'A05') {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${row.pasien.no_peserta}', '${row.dokter.mapping_dokter?.kd_dokter_bpjs}')">Riwayat Perawatan ICare</a></li>`
-                            }
-
-                            if (row.umurdaftar > 13 && row.sttsumur === 'Th') {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${row.no_rawat}')">Asesmen Resiko Jatuh Dewasa</a></li>`;
-                            } else {
-                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
-                            }
-                            button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:11px"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
-                            return button;
+                        if (row.kd_pj == 'A01' || row.kd_pj == 'A05') {
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${row.pasien.no_peserta}', '${row.dokter.mapping_dokter?.kd_dokter_bpjs}')">Riwayat Perawatan ICare</a></li>`
                         }
-                    },
-                    {
-                        title: 'No. Rawat',
-                        data: 'no_rawat',
-                        render: (data, type, row, meta) => {
+
+                        if (row.umurdaftar > 13 && row.sttsumur === 'Th') {
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${row.no_rawat}')">Asesmen Resiko Jatuh Dewasa</a></li>`;
+                        } else {
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
+                        }
+                        button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:11px"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
+                        return button;
+                    }
+                },
+                {
+                    title: 'No. Rawat',
+                    data: 'no_rawat',
+                    render: (data, type, row, meta) => {
 
 
-                            return `<a href="javascript:void(0)" onclick="modalSoapUgd('${row.no_rawat}')" style="text-decoration: none; color: #000">${data}</a>`;
-                        }
-                    },
-                    {
-                        title: 'Pasien',
-                        data: 'pasien',
-                        render: (data, type, row, meta) => {
+                        return `<a href="javascript:void(0)" onclick="modalSoapUgd('${row.no_rawat}')" style="text-decoration: none; color: #000">${data}</a>`;
+                    }
+                },
+                {
+                    title: 'Pasien',
+                    data: 'pasien',
+                    render: (data, type, row, meta) => {
 
 
-                            let asmed = '';
-                            if (!data) {
-                                swal.fire({
-                                    icon: 'error',
-                                    html: `Gagal memuat pasien ${row.no_rawat} dengan No. RM ${row.no_rkm_medis}, periksa kembali data registrasi`,
-                                    title: 'Terjadi Kesalahan',
-                                    showConfirmButton: true,
-                                    confirmButtonColor: '#3085d6',
-                                })
-                                return '';
-                            }
+                        let asmed = '';
+                        if (!data) {
+                            swal.fire({
+                                icon: 'error',
+                                html: `Gagal memuat pasien ${row.no_rawat} dengan No. RM ${row.no_rkm_medis}, periksa kembali data registrasi`,
+                                title: 'Terjadi Kesalahan',
+                                showConfirmButton: true,
+                                confirmButtonColor: '#3085d6',
+                            })
+                            return '';
+                        }
+                        const umurDaftar = hitungUmurDaftar(row?.pasien?.tgl_lahir, row.tgl_registrasi);
+                        const umur = `${umurDaftar.tahun} Th ${umurDaftar.bulan} Bln ${umurDaftar.hari} Hr`;
 
-                            kamarInap = Object.keys(row.kamar_inap).length ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
-                            return `<strong id="pasien" data-no-rkm-medis="${row.no_rkm_medis}">${row.no_rkm_medis}<br/>${row.pasien.nm_pasien} (${row.umurdaftar} ${row.sttsumur})</strong>`
-                        }
-                    },
-                    {
-                        title: 'Dokter',
-                        data: 'dokter',
-                        render: (data, type, row, meta) => {
-                            if (!data) {
-                                swal.fire({
-                                    icon: 'error',
-                                    html: `Gagal memuat pasien ${row.no_rawat} dengan No. ID Dokter ${row.kd_dokter}, periksa kembali data registrasi`,
-                                    title: 'Terjadi Kesalahan',
-                                    showConfirmButton: true,
-                                    confirmButtonColor: '#3085d6',
-                                })
-                                return '';
-                            }
-                            return row.dokter.nm_dokter;
-                        }
-                    },
-                    {
-                        title: 'Tgl. Masuk',
-                        data: 'tgl_registrasi',
-                        render: (data, type, row, meta) => {
-                            return `${moment(data).format('DD-MM-YYYY')} ${row.jam_reg}`;
-                        }
-                    },
+                        kamarInap = Object.keys(row.kamar_inap).length ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
 
-                    {
-                        title: 'Dx. Awal',
-                        data: 'asmed_igd',
-                        render: (data, type, row, meta) => {
-                            if (data == null) {
-                                return '-'
-                            }
-                            return data?.diagnosis;
+                        // Tentukan warna berdasarkan jenis kelamin
+                        const badgeColor = row.pasien.jk == 'L' ? 'bg-primary' : '';
+                        const badgeStyle = row.pasien.jk == 'P' ? 'style="background-color: #ff6aaf;"' : '';
 
+                        return `<div class="d-flex align-items-center gap-2">
+                <span class="badge ${badgeColor} rounded-pill" ${badgeStyle}>
+                    ${row.pasien.jk == 'L' ? '<i class="bi bi-gender-male"></i>' : '<i class="bi bi-gender-female"></i>'}
+                </span>
+                <p class="m-0">
+                    <strong id="pasien" data-no-rkm-medis="${row.no_rkm_medis}">${row.no_rkm_medis}<br/>${row.pasien.nm_pasien}</strong>
+                    <br/><small class="text-muted">${umur}</small>
+                </p>
+            </div>`;
+                    }
+                },
+                {
+                    title: 'Dokter',
+                    data: 'dokter',
+                    render: (data, type, row, meta) => {
+                        if (!data) {
+                            swal.fire({
+                                icon: 'error',
+                                html: `Gagal memuat pasien ${row.no_rawat} dengan No. ID Dokter ${row.kd_dokter}, periksa kembali data registrasi`,
+                                title: 'Terjadi Kesalahan',
+                                showConfirmButton: true,
+                                confirmButtonColor: '#3085d6',
+                            })
+                            return '';
                         }
-                    },
-                    {
-                        title: 'Asesmen Medis',
-                        data: 'asmed_igd',
-                        render: (data, type, row, meta) => {
-                            if (data == null) {
-                                return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
-                            }
-                            return moment(data.tanggal).format('DD-MM-YYYY HH:mm:ss');
-                        }
-                    },
-                    {
-                        title: 'Pembiayaan',
-                        data: 'penjab',
-                        render: (data, type, row, meta) => {
-                            let penjab = '';
-                            if (data.kd_pj == 'A03') {
-                                penjab = `<span class="text-danger"><b>${row.penjab.png_jawab}</b></span>`
-                            } else if (data.kd_pj == 'A01' || row.penjab.kd_pj == 'A05') {
-                                penjab = `<span class="text-success"><b>${row.penjab.png_jawab} ${row.sep?.no_sep ? '<i class="fa fa-check text-success"></i>' : ''}</b></span>`
-                            }
+                        return row.dokter.nm_dokter;
+                    }
+                },
+                {
+                    title: 'Tgl. Masuk',
+                    data: 'tgl_registrasi',
+                    render: (data, type, row, meta) => {
+                        return `${moment(data).format('DD-MM-YYYY')} ${row.jam_reg}`;
+                    }
+                },
 
-                            return penjab;
+                {
+                    title: 'Dx. Awal',
+                    data: 'asmed_igd',
+                    render: (data, type, row, meta) => {
+                        if (data == null) {
+                            return '-'
+                        }
+                        return data?.diagnosis;
 
+                    }
+                },
+                {
+                    title: 'Asesmen Medis',
+                    data: 'asmed_igd',
+                    render: (data, type, row, meta) => {
+                        if (data == null) {
+                            return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
                         }
-                    },
-                    {
-                        title: 'Status',
-                        data: 'status_lanjut',
-                        render: (data, type, row, meta) => {
-                            if (data === 'Ralan') {
-                                return `<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Rawat Jalan"><i class="bi bi-person-wheelchair"></i></button>`
-                            } else {
-                                return `<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Default tooltip"><i class="bi bi-house-add"></i></button>`
-                            }
+                        return moment(data.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                    }
+                },
+                {
+                    title: 'Pembiayaan',
+                    data: 'penjab',
+                    render: (data, type, row, meta) => {
+                        let penjab = '';
+                        if (data.kd_pj == 'A03') {
+                            penjab = `<span class="text-danger"><b>${row.penjab.png_jawab}</b></span>`
+                        } else if (data.kd_pj == 'A01' || row.penjab.kd_pj == 'A05') {
+                            penjab = `<span class="text-success"><b>${row.penjab.png_jawab} ${row.sep?.no_sep ? '<i class="fa fa-check text-success"></i>' : ''}</b></span>`
                         }
-                    },
-                    {
-                        title: 'Catatan',
-                        data: 'reg_periksa.no_rkm_medis',
-                        render: function(data) {
-                            return `<span class="" id="riwayat_lab_${data}"></span>`
-                        },
-                        name: 'no_rkm_medis',
-                    },
-                    {
-                        title: 'Pindah Kamar',
-                        data: '',
-                        render: (data, type, row, meta) => {
-                            return row.kamar_pulang ? row.kamar_pulang.kamar.bangsal.nm_bangsal : '';
-                        }
-                    }, {
-                        title: 'Triase',
-                        data: '',
-                        render: (data, type, row, meta) => {
-                            let ats = '';
-                            let atsClass = '';
-                            if (row.triase_skala1.length > 0) {
-                                ats = `ATS I`
-                                atsClass = 'bg-danger text-white';
-                            } else if (row.triase_skala2.length > 0) {
-                                ats = `ATS II`
-                                atsClass = 'bg-warning text-dark';
-                            } else if (row.triase_skala3.length > 0) {
-                                ats = `ATS III`
-                                atsClass = 'bg-success text-white';
-                            } else if (row.triase_skala4.length > 0) {
-                                ats = `ATS IV`
-                                atsClass = 'bg-primary text-white';
-                            } else if (row.triase_skala5.length > 0) {
-                                ats = `ATS V`
-                                atsClass = 'bg-secondary text-white';
-                            }
-                            return `<div class="${atsClass} p-2 text-center" style="font-family:monospace">${ats}</div>`
+
+                        return penjab;
+
+                    }
+                },
+                {
+                    title: 'Status',
+                    data: 'status_lanjut',
+                    render: (data, type, row, meta) => {
+                        if (data === 'Ralan') {
+                            return `<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Rawat Jalan"><i class="bi bi-person-wheelchair"></i></button>`
+                        } else {
+                            return `<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Default tooltip"><i class="bi bi-house-add"></i></button>`
                         }
                     }
+                },
+                {
+                    title: 'Catatan',
+                    data: 'reg_periksa.no_rkm_medis',
+                    render: function (data) {
+                        return `<span class="" id="riwayat_lab_${data}"></span>`
+                    },
+                    name: 'no_rkm_medis',
+                },
+                {
+                    title: 'Pindah Kamar',
+                    data: '',
+                    render: (data, type, row, meta) => {
+                        return row.kamar_pulang ? row.kamar_pulang.kamar.bangsal.nm_bangsal : '';
+                    }
+                }, {
+                    title: 'Triase',
+                    data: '',
+                    render: (data, type, row, meta) => {
+                        let ats = '';
+                        let atsClass = '';
+                        if (row.triase_skala1.length > 0) {
+                            ats = `ATS I`
+                            atsClass = 'bg-danger text-white';
+                        } else if (row.triase_skala2.length > 0) {
+                            ats = `ATS II`
+                            atsClass = 'bg-warning text-dark';
+                        } else if (row.triase_skala3.length > 0) {
+                            ats = `ATS III`
+                            atsClass = 'bg-success text-white';
+                        } else if (row.triase_skala4.length > 0) {
+                            ats = `ATS IV`
+                            atsClass = 'bg-primary text-white';
+                        } else if (row.triase_skala5.length > 0) {
+                            ats = `ATS V`
+                            atsClass = 'bg-secondary text-white';
+                        }
+                        return `<div class="${atsClass} p-2 text-center" style="font-family:monospace">${ats}</div>`
+                    }
+                }
 
                 ],
                 "language": {
@@ -451,14 +467,14 @@
                         let no = 1;
                         $.map(res.resep_dokter, (rd) => {
                             html = `<tr class="obat-${no}">
-                                    <td>${rd.no_resep}</td>
-                                    <td>${rd.data_barang.nama_brng}</td>
-                                    <td class="jml-${no}">${rd.jml}</td>
-                                    <td class="aturan-${no}">${rd.aturan_pakai}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-danger" onclick="hapusObatUmum('${rd.no_resep}', '${rd.kode_brng}')"><i class="bi bi-trash"></i></button>
-                                        </td>
-                                        </tr>`
+                                                                                                                    <td>${rd.no_resep}</td>
+                                                                                                                    <td>${rd.data_barang.nama_brng}</td>
+                                                                                                                    <td class="jml-${no}">${rd.jml}</td>
+                                                                                                                    <td class="aturan-${no}">${rd.aturan_pakai}</td>
+                                                                                                                    <td>
+                                                                                                                        <button class="btn btn-sm btn-danger" onclick="hapusObatUmum('${rd.no_resep}', '${rd.kode_brng}')"><i class="bi bi-trash"></i></button>
+                                                                                                                        </td>
+                                                                                                                        </tr>`
                             no++;
                             $('#tb-resep-umum-ugd').append(html)
                         })
@@ -468,17 +484,17 @@
                         let no = 1;
                         $.map(res.resep_racikan, (rr) => {
                             html = `<tr class="racikan-${no}">
-                                <td>${rr.no_racik}</td>
-                                    <td>${rr.no_resep}</td>
-                                    <td>${rr.nama_racik}</td>
-                                    <td>${rr.metode.nm_racik}</td>
-                                    <td class="jml_dr-${no}">${rr.jml_dr}</td>
-                                    <td class="aturan_dr-${no}">${rr.aturan_pakai}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-danger" onclick="hapusRacikan('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-trash"></i></button>
-                                        <button class="btn btn-sm btn-warning" onclick="tambahDetail('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-pencil"></i></button>
-                                        </td>
-                                        </tr>`
+                                                                                                                <td>${rr.no_racik}</td>
+                                                                                                                    <td>${rr.no_resep}</td>
+                                                                                                                    <td>${rr.nama_racik}</td>
+                                                                                                                    <td>${rr.metode.nm_racik}</td>
+                                                                                                                    <td class="jml_dr-${no}">${rr.jml_dr}</td>
+                                                                                                                    <td class="aturan_dr-${no}">${rr.aturan_pakai}</td>
+                                                                                                                    <td>
+                                                                                                                        <button class="btn btn-sm btn-danger" onclick="hapusRacikan('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-trash"></i></button>
+                                                                                                                        <button class="btn btn-sm btn-warning" onclick="tambahDetail('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-pencil"></i></button>
+                                                                                                                        </td>
+                                                                                                                        </tr>`
                             if (rr.detail_racikan.length) {
                                 html += `<tr><td colspan="2"></td><td colspan="5">`
                                 $.map(rr.detail_racikan, (dr) => {
