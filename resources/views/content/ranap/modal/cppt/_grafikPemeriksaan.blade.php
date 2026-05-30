@@ -1,7 +1,6 @@
 <div class="p-3 w-full d-flex justify-content-end">
-    <button type="button" class="btn btn-success btn-sm btn-tambah-grafik-harin"
-        onclick="modalGrafikHarian()" style="font-size: 12px"><i
-            class="bi bi-bar-chart-line"></i> Tambah Grafik</button>
+    <button type="button" class="btn btn-success btn-sm btn-tambah-grafik-harin" onclick="modalGrafikHarian()"
+        style="font-size: 12px"><i class="bi bi-bar-chart-line"></i> Tambah Grafik</button>
 </div>
 <div class="table-responsive">
     <div class="chart-container">
@@ -15,22 +14,25 @@
         var tableGrafikHarian;
 
         function buildGrafik(no_rawat) {
+            if (grafikPemeriksaan) {
+                grafikPemeriksaan.destroy();
+            }
             $.ajax({
                 url: 'soap/chart',
                 data: {
                     'no_rawat': no_rawat
                 },
-                success: function(response) {
+                success: function (response) {
                     grafikPemeriksaan = new Chart(ctx, {
                         type: 'line',
                         data: {
-                            labels: response.map(function(e) {
+                            labels: response.map(function (e) {
                                 return e.tgl_perawatan + ' ' + e.jam_rawat;
                             }),
                             datasets: [{
                                 label: 'Suhu Tubuh',
                                 yAxisID: 'yAxis1',
-                                data: response.map(function(e) {
+                                data: response.map(function (e) {
                                     if (e.suhu_tubuh.includes(',')) {
                                         e.suhu_tubuh = e.suhu_tubuh.replace(',', '.');
                                     }
@@ -46,7 +48,7 @@
                             }, {
                                 label: 'Nadi',
                                 yAxisID: 'yAxis2',
-                                data: response.map(function(e) {
+                                data: response.map(function (e) {
                                     return e.nadi;
                                 }),
                                 backgroundColor: 'rgba(255, 99, 132, 1)',
@@ -87,7 +89,7 @@
                                 },
                             }
                         },
-                        onAnimationComplete: function() {
+                        onAnimationComplete: function () {
                             var sourceCanvas = this.chart.ctx.canvas;
                             var copyWidth = this.scale.xScalePaddingLeft - 5;
                             var copyHeight = this.scale.endPoint + 5;
@@ -107,6 +109,7 @@
                 serverSide: true,
                 paging: true,
                 lengthChange: true,
+                destroy: true,
                 lengthMenu: [
                     [7, 10, 25],
                     [7, 10, 25]
@@ -121,7 +124,7 @@
                 ajax: {
                     url: 'soap/grafik/data',
                     type: 'GET',
-                    data: function(data) {
+                    data: function (data) {
                         data.no_rawat = no_rawat;
                     },
                     "language": {
@@ -132,7 +135,7 @@
                     // waktu perawatan, suhu, tensi, nadi, respirasi, spo2, o2, GCS, kesadaran
                     {
                         data: null,
-                        render: function(data, type, row) {
+                        render: function (data, type, row) {
                             return data.tgl_perawatan + ' ' + data.jam_rawat;
                         },
                         name: 'tgl_perawatan'
@@ -171,7 +174,7 @@
                     },
                     {
                         data: null,
-                        render: function(data, type, row) {
+                        render: function (data, type, row) {
                             var htmlButton = `<button type="button" class="btn btn-sm btn-danger btn-hapus-grafik-harian" onClick="deleteGrafikHarian('` + data.no_rawat + `','` + data.tgl_perawatan + `','` + data.jam_rawat + `')"><i class="bi bi-trash"></i></button>`;
                             htmlButton += `<button type="button" class="btn btn-sm btn-warning btn-edit-grafik-harian" onClick="editGrafikHarian('` + data.no_rawat + `','` + data.tgl_perawatan + `','` + data.jam_rawat + `','` + data.suhu_tubuh + `','` + data.tensi + `','` + data.nadi + `','` + data.respirasi + `','` + data.spo2 + `','` + data.o2 + `','` + data.gcs + `','` + data.kesadaran + `')"><i class="bi bi-pencil-square"></i></button>`;
 
@@ -183,7 +186,7 @@
             });
         }
 
-        $('#modalSoapRanap').on('hidden.bs.modal', function() {
+        $('#modalSoapRanap').on('hidden.bs.modal', function () {
             $('#ubah_soap').empty();
             $('#suhu').val("-");
             $('#tinggi').val("-");
@@ -218,7 +221,7 @@
         }
 
         // form tambah grafik harian submit
-        $('#formSaveGrafikHarian').on('submit', function(e) {
+        $('#formSaveGrafikHarian').on('submit', function (e) {
             e.preventDefault();
 
             var kd_dokter = $('#formSaveGrafikHarian #kdDokter').data('kd-dokter');
@@ -246,7 +249,7 @@
                     'jam_rawat': $('#formSaveGrafikHarian input[name="jam_rawat"]').val(),
                 },
                 type: 'POST',
-                beforeSend: function() {
+                beforeSend: function () {
                     swal.fire({
                         title: 'Sedang mengirim data',
                         text: 'Mohon Tunggu',
@@ -256,7 +259,7 @@
                         }
                     })
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
                         if (suhu_tubuh.includes(',')) {
                             suhu_tubuh = suhu_tubuh.replace(',', '.')
@@ -304,13 +307,13 @@
                     }
 
                 },
-                error: function(request, status, error) {
+                error: function (request, status, error) {
                     alertErrorAjax(request)
                 }
             })
         });
 
-        $('#modalGrafikHarian').on('hidden.bs.modal', function() {
+        $('#modalGrafikHarian').on('hidden.bs.modal', function () {
             clearFormGrafikHarian();
 
             $('#formSaveGrafikHarian input[name="action"]').remove();
@@ -343,7 +346,7 @@
                             'jam_rawat': jam_rawat
                         },
                         type: 'DELETE',
-                        beforeSend: function() {
+                        beforeSend: function () {
                             $("#tableGrafikHarian").DataTable().destroy();
                             swal.fire({
                                 title: 'Sedang menghapus data',
@@ -354,7 +357,7 @@
                                 }
                             })
                         },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.success) {
                                 tableGrafikHarian.fnDestroy();
                                 grafikPemeriksaan.destroy();
@@ -374,7 +377,7 @@
                                 console.log(response);
                             }
                         },
-                        error: function(request, status, error) {
+                        error: function (request, status, error) {
                             console.log(request.responseText);
                         }
                     });
@@ -393,8 +396,8 @@
             $('#formSaveGrafikHarian select[name="kesadaran"]').val(kesadaran);
 
             var htmlEdit = `<input type="hidden" name="action" value="update">
-            <input type="hidden" name="tgl_perawatan" value="${tgl_perawatan}">
-            <input type="hidden" name="jam_rawat" value="${jam_rawat}">`;
+                                    <input type="hidden" name="tgl_perawatan" value="${tgl_perawatan}">
+                                    <input type="hidden" name="jam_rawat" value="${jam_rawat}">`;
 
             // clear hidden input
             $('#formSaveGrafikHarian input[name="action"]').remove();
