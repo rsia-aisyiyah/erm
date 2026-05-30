@@ -1107,9 +1107,9 @@
                         data-harga="${data.ralan}"
                         onclick="setObat(this, ${no})">
                         <a class="dropdown-item" href="#" style="overflow:hidden">
-                            ${data.nama_brng} - 
+                            ${data.nama_brng} -
                             <span class="text-primary">
-                                Rp. ${toRupiah(data.ralan)} 
+                                Rp. ${toRupiah(data.ralan)}
                                 <i><b>Stok (${stok})</b></i>
                             </span><br/>
                             <span class="text-disable" style="font-size:9px;color:#8b8b8b">
@@ -1127,7 +1127,7 @@
                         data-harga="${data.ralan}"
                         onclick="setObat(this, ${no})">
                         <a class="dropdown-item" href="#" style="overflow:hidden;color:red">
-                            ${data.nama_brng} - Rp. ${toRupiah(data.ralan)} - 
+                            ${data.nama_brng} - Rp. ${toRupiah(data.ralan)} -
                             <b>Stok Kosong</b>
                             <br/>
                             <span class="text-disable" style="font-size:9px;color:#8b8b8b">
@@ -1570,6 +1570,42 @@
             }
             return `<span class="badge text-bg-warning"><i class="bi bi-gender-female "></i></span> `
 
+        }
+
+        function renderStempelVerifikasi(isVerified) {
+
+            if (!isVerified) {
+                return '';
+            }
+
+            return `
+                        <img
+                            src="{{ asset('img/tulbakon.png') }}"
+                            width="90"
+                            style="
+                                padding:10px;
+                                position:absolute;
+                                top:50%;
+                                right:70%;
+                                transform:translateY(-50%);
+                                opacity:0.4;
+                                pointer-events:none;
+                                z-index:2;
+                            "
+                        />
+                    `;
+        }
+
+        function renderTextWithStempel(content, isVerified) {
+            return `
+                            <div style="position:relative;">
+                                ${renderStempelVerifikasi(isVerified)}
+
+                                <div style="position:relative; z-index:1;">
+                                    ${content}
+                                </div>
+                            </div>
+                        `;
         }
 
     </script>
