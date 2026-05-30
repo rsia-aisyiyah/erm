@@ -76,10 +76,10 @@
 
         <tr>
             <th colspan="6" style="
-                        background:#e3ffa2;
-                        font-size:13px;
-                        text-align:center;
-                    ">
+                                            background:#e3ffa2;
+                                            font-size:13px;
+                                            text-align:center;
+                                        ">
                 CATATAN ADIME GIZI RAWAT INAP
             </th>
         </tr>

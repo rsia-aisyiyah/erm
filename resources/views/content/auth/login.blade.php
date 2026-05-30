@@ -13,8 +13,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,100,100..900;1,100,100..900&display=swap');
+
         * {
-            font-family: "Noto Sans", serif;
+
+            font-family: "Noto Sans", sans-serif;
             font-optical-sizing: auto;
             font-weight: <weight>;
             font-style: normal;
@@ -105,8 +108,7 @@
             <img class="mb-4" src="{{ asset('img/LOGO RSIA AISYIAH.png') }}" alt="" width="300" height="auto">
 
             @if (session()->has('error'))
-                <div class="alert alert-danger fade show p-2" role="alert"
-                    style="background-color:#dc3545;color:#fff;">
+                <div class="alert alert-danger fade show p-2" role="alert" style="background-color:#dc3545;color:#fff;">
 
                     <span class="text-sm" style="font-size:12px">{{ session()->get('error') }}</span>
 
@@ -114,8 +116,8 @@
             @endif
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="username" name="username"
-                    placeholder="Nomor Induk Karyawan" autocomplete="off" autofocus value="{{ old('username') }}">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Nomor Induk Karyawan"
+                    autocomplete="off" autofocus value="{{ old('username') }}">
                 <label for="username">Nomor Induk Karyawan</label>
             </div>
 
@@ -123,7 +125,8 @@
                 <input type="password" class="form-control" id="password" name="password" placeholder="Password"
                     autocomplete="off">
                 <label for="password">Password</label>
-                <span id="togglePassword" class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer;">
+                <span id="togglePassword" class="position-absolute top-50 end-0 translate-middle-y me-3"
+                    style="cursor: pointer;">
                     <i class="bi bi-eye"></i>
                 </span>
             </div>
@@ -148,7 +151,7 @@
         localStorage.removeItem('tgl_kedua');
     });
 
-    document.getElementById('togglePassword').addEventListener('click', function() {
+    document.getElementById('togglePassword').addEventListener('click', function () {
         const passwordInput = document.getElementById('password');
         const icon = this.querySelector('i');
         const input = document.getElementById('password')
