@@ -139,11 +139,11 @@
                     }
 
                     return $(`
-                    <div>
-                        <div>${item.text}</div>
-                        <small class="text-muted">${item.departemen ?? '-'}</small>
-                    </div>
-                `);
+                        <div>
+                            <div>${item.text}</div>
+                            <small class="text-muted">${item.departemen ?? '-'}</small>
+                        </div>
+                    `);
                 },
 
                 templateSelection: function (item) {
@@ -249,7 +249,7 @@
 
             data.no_rawat = formPasienKritis.find('#no_rawat').val();
 
-            $.post(`${url}/hasil/kritis`, data)
+            $.post(`${url}/hasil-kritis`, data)
                 .done((response) => {
                     alertSuccessAjax().then(() => {
                         setInfoPasienKritis(data.no_rawat)
@@ -268,13 +268,13 @@
                             icon: 'error',
                             title: `${xhr.responseJSON?.message || 'Validation Error'}`,
                             html: `
-                                                                                                                                                                                                                                                                                                                                                                            <ul style=" padding-left:20px; list-style-type:none" class="text-danger">
-                                                                                                                                                                                                                                                                                                                                                                                ${Object.values(errors)
+                                                                                                                                                                                                                                                                                                                                                                                <ul style=" padding-left:20px; list-style-type:none" class="text-danger">
+                                                                                                                                                                                                                                                                                                                                                                                    ${Object.values(errors)
                                     .flat()
                                     .map(item => `<li>${item}</li>`)
                                     .join('')}
-                                                                                                                                                                                                                                                                                                                                                                            </ul>
-                                                                                                                                                                                                                                                                                                                                                                        `
+                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                            `
                         });
 
                         return;
@@ -293,7 +293,7 @@
                 info: false,
                 destroy: true,
                 ajax: {
-                    url: `${url}/hasil/kritis`,
+                    url: `${url}/hasil-kritis`,
                     data: {
                         no_rawat: no_rawat,
                     }
@@ -303,7 +303,7 @@
                     title: '',
                     render: (data, type, row, meta) => {
                         return `<button type="button" class="btn btn-sm btn-danger" onclick="hapusHasilKritis(${data})"><i class="bi bi-trash"></i></button>
-                                                                                                                                                <button type="button" class="btn btn-sm btn-warning" onclick="setHasilKritis(${data})"><i class="bi bi-pencil"></i></button>`;
+                                                                                                                                                    <button type="button" class="btn btn-sm btn-warning" onclick="setHasilKritis(${data})"><i class="bi bi-pencil"></i></button>`;
                     }
                 },
                 {
@@ -326,12 +326,12 @@
                                 : '-';
 
                         return `
-                                                                                                                                                    ${petugas}
-                                                                                                                                                    <br/>
-                                                                                                                                                    <span class="text-muted" style="font-size:11px">
-                                                                                                                                                        ${jamPetugas}
-                                                                                                                                                    </span>
-                                                                                                                                                `;
+                                                                                                                                                        ${petugas}
+                                                                                                                                                        <br/>
+                                                                                                                                                        <span class="text-muted" style="font-size:11px">
+                                                                                                                                                            ${jamPetugas}
+                                                                                                                                                        </span>
+                                                                                                                                                    `;
 
 
                     }
@@ -345,9 +345,9 @@
                         const isMyVerifikasi = data.nip === "{{ session()->get('pegawai')->nik }}" ? true : false;
 
                         const buttonVerif = isMyVerifikasi ? `<button class="btn btn-primary btn-sm" type="button" onclick="verifikasiHasilKritis(${row.id}, 'petugas_ruang')">
-                                                                                                                                                            <i class="bi bi-check-circle"></i>
-                                                                                                                                                                Konfirmasi
-                                                                                                                                                                </button>` : '<span class="badge text-bg-danger">Belum dikonfirmasi</span>';
+                                                                                                                                                                <i class="bi bi-check-circle"></i>
+                                                                                                                                                                    Konfirmasi
+                                                                                                                                                                    </button>` : '<span class="badge text-bg-danger">Belum dikonfirmasi</span>';
                         console.log(row.tgl_ruang);
 
                         const jamPetugas =
@@ -355,12 +355,12 @@
                                 ? `${formatTanggal(row.tgl_ruang)}`
                                 : buttonVerif;
                         const content = `
-                                                                                                                                                    ${petugasRuang}
-                                                                                                                                                    <br/>
-                                                                                                                                                    <span class="text-muted" style="font-size:11px">
-                                                                                                                                                        ${jamPetugas}
-                                                                                                                                                    </span>
-                                                                                                                                                `;
+                                                                                                                                                        ${petugasRuang}
+                                                                                                                                                        <br/>
+                                                                                                                                                        <span class="text-muted" style="font-size:11px">
+                                                                                                                                                            ${jamPetugas}
+                                                                                                                                                        </span>
+                                                                                                                                                    `;
                         return renderTextWithStempel(
                             content,
                             row.tgl_ruang != null
@@ -375,22 +375,22 @@
                         const dokter = data ? data.nm_dokter : '-';
                         const isMyVerifikasi = data.kd_dokter === "{{ session()->get('pegawai')->nik }}" ? true : false;
                         const buttonVerif = isMyVerifikasi ? `
-                                                                                                                                                <button class="btn btn-primary btn-sm" type="button" onclick="verifikasiHasilKritis(${row.id}, 'dokter')">
-                                                                                                                                                    <i class="bi bi-check-circle"></i>
-                                                                                                                                                        Konfirmasi
-                                                                                                                                                        </button>` : '<span class="badge text-bg-danger">Belum dikonfirmasi</span>';
+                                                                                                                                                    <button class="btn btn-primary btn-sm" type="button" onclick="verifikasiHasilKritis(${row.id}, 'dokter')">
+                                                                                                                                                        <i class="bi bi-check-circle"></i>
+                                                                                                                                                            Konfirmasi
+                                                                                                                                                            </button>` : '<span class="badge text-bg-danger">Belum dikonfirmasi</span>';
                         const jamDokter =
                             row.tgl_dokter != null
                                 ? `${formatTanggal(row.tgl_dokter)}`
                                 : buttonVerif;
 
                         const content = `
-                                                                                                                                                    ${dokter}
-                                                                                                                                                    <br/>
-                                                                                                                                                    <span class="text-muted" style="font-size:11px">
-                                                                                                                                                        ${jamDokter}
-                                                                                                                                                    </span>
-                                                                                                                                                `;
+                                                                                                                                                        ${dokter}
+                                                                                                                                                        <br/>
+                                                                                                                                                        <span class="text-muted" style="font-size:11px">
+                                                                                                                                                            ${jamDokter}
+                                                                                                                                                        </span>
+                                                                                                                                                    `;
 
                         return renderTextWithStempel(
                             content,
@@ -419,7 +419,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.post(`${url}/hasil/kritis/delete/${id}`).done((response) => {
+                    $.post(`${url}/hasil-kritis/delete/${id}`).done((response) => {
                         alertSuccessAjax().then(() => {
                             setInfoPasienKritis(no_rawat)
                             drawHasilKritis(no_rawat);
@@ -435,7 +435,7 @@
 
         function setHasilKritis(id) {
             const no_rawat = formPasienKritis.find('#no_rawat').val();
-            $.get(`${url}/hasil/kritis/${id}`).done((response) => {
+            $.get(`${url}/hasil-kritis/${id}`).done((response) => {
                 $('#formHasilKritis').find('#hasil').val(response.hasil)
                 $('#formHasilKritis').find('#tgl').val(`${splitTanggal(response.tgl)}`)
 
@@ -479,7 +479,7 @@
                         try {
 
                             const response = await $.ajax({
-                                url: `/erm/hasil/kritis/verifikasi/${id}`,
+                                url: `/erm/hasil-kritis/verifikasi/${id}`,
                                 type: 'POST',
 
                                 data: {

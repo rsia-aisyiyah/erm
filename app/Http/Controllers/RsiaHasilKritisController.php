@@ -8,7 +8,10 @@ use App\Models\Petugas;
 use App\Models\RsiaHasilKritis;
 use App\Models\User;
 use App\Services\AuthVerificationService;
+use App\Services\HasilKritis\HasilKritisFetchService;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
@@ -58,45 +61,25 @@ class RsiaHasilKritisController extends Controller
     }
 
 
-    function getPetugas(Request $request)
+   public function getPetugas(HasilKritisFetchService $fetch, Request $request): JsonResponse
     {
-        // 1. Validasi input NIP agar tidak kosong
-        if (!$request->has('nip') || empty($request->nip)) {
-            return response()->json(['error' => 'NIP/NIK tidak boleh kosong'], 400);
+        // 1. Validasi Input (Memastikan NIP tidak kosong/null)
+        if (!$request->filled('nip')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'NIP/NIK tidak boleh kosong'
+            ], 400);
         }
 
-        $nipUser = $request->nip;
-        $isDokter = Dokter::where('kd_dokter', $nipUser)->exists();
+        // 2. Ambil data melalui Service dengan melemparkan parameter yang dibutuhkan
+        $hasilKritis = $fetch->getByPetugas(
+            nip: $request->input('nip'),
+            status: $request->input('status'),
+            bulanRaw: $request->input('bulan')
+        );
 
-        // 3. Inisialisasi query basic dengan Eager Loading (with)
-        $query = RsiaHasilKritis::with([
-            'petugas' => function ($q) {
-                $q->select(['nip', 'nama']);
-            },
-            'petugasRuang' => function ($q) {
-                $q->select(['nip', 'nama']);
-            },
-            'dokter' => function ($q) {
-                $q->select(['kd_dokter', 'nm_dokter']);
-            },
-            'regPeriksa.pasien' => function ($q) {
-                $q->select(['no_rkm_medis', 'nm_pasien', 'jk']);
-            }
-        ]);
-
-        // 4. Kondisional Filter berdasarkan Role User yang terdeteksi
-        if ($isDokter) {
-            // Jika Dokter: Ambil data hasil kritis yang ditujukan ke Dokter ini
-            $query->where('dokter', $nipUser);
-        } else {
-            // Jika Perawat/Bidan/Petugas Ruang: Ambil berdasarkan kolom petugas_ruang
-            $query->where('petugas_ruang', $nipUser);
-        }
-
-        // 5. Urutkan berdasarkan data terbaru dan parsing ke DataTables
-        $hasil = $query->orderBy('tgl', 'desc');
-
-        return DataTables::of($hasil)->make(true);
+        // 3. Kembalikan Response JSON hasil akhir
+        return response()->json($hasilKritis);
     }
     function create(HasilKritisRequest $request)
     {
@@ -185,5 +168,4 @@ class RsiaHasilKritisController extends Controller
             'message' => 'Verifikasi berhasil'
         ]);
     }
-
 }

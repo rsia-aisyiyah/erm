@@ -44,12 +44,12 @@ class LoginController extends Controller
 
             if ($user) {
 
-                /** 
+                /**
                  * Pembatasan login dari domain sim.rsiaaisyiyah.com
                  */
                 if ($domain == 'sim.rsiaaisyiyah.com') {
                     /**
-                     * Daftar user yang diizinkan login : 
+                     * Daftar user yang diizinkan login :
                      * direksi, verifikator
                      */
                     if (!in_array($user->username, $this->userPublic)) {
