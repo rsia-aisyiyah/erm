@@ -33,13 +33,14 @@ class PemeriksaanRanapController extends Controller
 		$this->logger = $logger;
 	}
 
-	public function index()
+	public function index(Request $request)
 	{
+
 		return view('content.ranap.pemeriksaan.index');
 	}
 	public function dataTable(Request $request)
 	{
-		// 1. Query Dasar (Gunakan scope query agar lebih bersih)
+		// 1. Query Dasar & Eager Loading Relasi
 		$pemeriksaan = PemeriksaanRanap::with([
 			'regPeriksa' => function ($q) {
 				$q->select('no_rawat', 'tgl_registrasi', 'jam_reg', 'kd_poli', 'kd_dokter', 'no_rkm_medis', 'kd_pj', 'umurdaftar', 'sttsumur')
@@ -51,22 +52,39 @@ class PemeriksaanRanapController extends Controller
 					]);
 			},
 			'petugas',
-			'sbar','adime',
+			'sbar',
+			'verifikasi',
+			'adime',
 			'kamarInap.kamar.bangsal',
 			'grafikHarian' => function ($q) {
 				$q->where('sumber', 'SBAR');
 			}
-		])->orderBy('tgl_perawatan', 'ASC')
+		])
+			->orderBy('tgl_perawatan', 'ASC')
 			->orderBy('jam_rawat', 'DESC');
 
-		// 2. Filter Tanggal (Wajib di luar grouping search)
-		if ($request->tgl_perawatan1 && $request->tgl_perawatan2) {
-			$pemeriksaan->whereBetween('tgl_perawatan', [$request->tgl_perawatan1, $request->tgl_perawatan2]);
+		$jenisPemeriksaan = strtolower($request->pemeriksaan);
+		if ($jenisPemeriksaan === 'sbar') {
+
+			$pemeriksaan->whereHas('sbar');
+			if ($request->dokterKonsul) {
+				$pemeriksaan->whereHas('sbar.dokterKonsul', function ($query) use ($request) {
+					$query->where('dokter', $request->dokterKonsul)->whereDoesntHave('sbar.verifikasi');
+				})->whereMonth('tgl_perawatan', date('m'))->whereYear('tgl_perawatan', date('Y'));
+			}
+
 		} else {
-			$pemeriksaan->where('tgl_perawatan', date('Y-m-d'));
+
+			// JIKA BUKAN SBAR: Jalankan filter tanggal standar harian
+			if ($request->tgl_perawatan1 && $request->tgl_perawatan2) {
+				$pemeriksaan->whereBetween('tgl_perawatan', [$request->tgl_perawatan1, $request->tgl_perawatan2]);
+			} else {
+				$pemeriksaan->where('tgl_perawatan', date('Y-m-d'));
+			}
+
 		}
 
-		// 3. Filter Kamar Spesifik
+		// 3. Filter Tambahan Global (Kamar / Bangsal)
 		if ($request->kamar) {
 			$pemeriksaan->whereHas('kamarInap.kamar.bangsal', function ($query) use ($request) {
 				$query->where('nm_bangsal', 'like', '%' . $request->kamar . '%');
@@ -97,14 +115,19 @@ class PemeriksaanRanapController extends Controller
 				$query->orderBy('no_rawat', $order);
 			})
 			->addColumn('flag', function ($row) {
-				// Cek apakah ada data di relasi grafikHarian yang sumbernya SBAR
+				// Indikator visual pembeda data SBAR dan CPPT biasa
 				if ($row->sbar !== null) {
-					return '<span class="badge bg-danger"><i class="fas fa-phone-alt me-1"></i> SBAR</span>';
+
+					if ($row->sbar->verifikasi === null) {
+						$bg = 'bg-danger';
+					} else {
+						$bg = 'bg-success';
+					}
+					return '<span class="badge ' . $bg . '"><i class="fas fa-phone-alt me-1"></i> SBAR</span>';
 				}
 				return '<span class="badge bg-primary"><i class="fas fa-edit me-1"></i> CPPT</span>';
 			})
 			->rawColumns(['flag'])
-			// Tambahkan kolom index jika diperlukan
 			->addIndexColumn()
 			->make(true);
 	}
@@ -132,7 +155,7 @@ class PemeriksaanRanapController extends Controller
 				},
 				'grafikHarian',
 				'sbar' => function ($query) {
-					return $query->with(['dokterKonsul.dokterSbar']);
+					return $query->with(['verifikasi.petugas', 'dokterKonsul.dokterSbar']);
 				}
 			]);
 
@@ -333,7 +356,8 @@ class PemeriksaanRanapController extends Controller
 				'pegawai' => function ($query) {
 					return $query->with('dokter');
 				},
-				'grafikHarian','adime',
+				'grafikHarian',
+				'adime',
 				'verifikasi.petugas' => function ($q) {
 					return $q->select('nip', 'nama');
 				}
@@ -389,7 +413,8 @@ class PemeriksaanRanapController extends Controller
 						return $q->select(['id', 'nik', 'nama']);
 					}
 				]);
-			}, 'adime.pegawai' => function ($q) {
+			},
+			'adime.pegawai' => function ($q) {
 				return $q->select(['id', 'nik', 'nama']);
 			}
 		])->orderBy('tgl_perawatan', 'DESC')

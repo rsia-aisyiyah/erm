@@ -26,19 +26,37 @@
             <div class="row mb-3">
                 <div class="col-md-3">
                     <label>Tanggal Awal</label>
-                    <input type="date" id="tgl_perawatan1" class="form-control" value="{{ date('Y-m-d') }}">
+                    <x-input-group>
+                        <input type="date" id="tgl_perawatan1" class="form-control form-control-sm"
+                            value="{{ date('Y-m-d') }}">
+                        <x-input-group-text class="form-control-sm">S.D</x-input-group-text>
+                        <input type="date" id="tgl_perawatan2" class="form-control form-control-sm"
+                            value="{{ date('Y-m-d') }}">
+
+                    </x-input-group>
                 </div>
                 <div class="col-md-3">
-                    <label>Tanggal Akhir</label>
-                    <input type="date" id="tgl_perawatan2" class="form-control" value="{{ date('Y-m-d') }}">
-                </div>
-                <div class="col-md-4">
                     <label>Nama Kamar</label>
                     <input type="text" id="kamar" class="form-control" placeholder="Cari bangsal/kamar...">
                 </div>
-                <div class="col-md-2 d-flex align-items-end">
-                    <button id="btnFilterPemeriksaan" class="btn btn-primary w-100" type="button"
-                        style="font-size: 12px">Cari Data</button>
+                <div class="col-md-3">
+                    <label for="dokter">Dokter</label>
+                    <input type="text" id="dokter" class="form-control" placeholder="Cari dokter...">
+                </div>
+                <div class="col-md-2">
+                    <label for="pemeriksaan">Pemeriksaan</label>
+                    <select name="pemeriksaan" id="pemeriksaan" class="form-select">
+                        <option value="">Pilih Pemeriksaan</option>
+                        <option value="CPPT">CPPT/SOAP</option>
+                        <option value="SBAR">SBAR</option>
+                        <option value="ADIME">ADIME</option>
+                        <option value="EWS">EWS</option>
+                        <option value="Grafik">Grafik</option>
+                    </select>
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button id="btnFilterPemeriksaan" class="btn btn-primary w-100" type="button" style="font-size: 12px"><i
+                            class="bi bi-search"></i> Cari Data</button>
                 </div>
             </div>
         </div>
@@ -46,104 +64,104 @@
     </div>
 
     <table class="table table-sm table-striped table-hover nowrap" id="tablePemeriksaanRanap"></table>
-        <div class="modal fade" id="modalDetailPemeriksaan" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content border-0 shadow-lg">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title">
-                            <i class="fas fa-file-medical-alt me-2"></i>Detail Pemeriksaan Pasien
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+    <div class="modal fade" id="modalDetailPemeriksaan" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-file-medical-alt me-2"></i>Detail Pemeriksaan Pasien
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    <div class="card mb-3 border-0 shadow-sm">
+                        <div class="card-body py-2 px-3">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 border-end-md">
+                                    <small class="text-muted d-block">No. Rawat</small>
+                                    <span id="detailNoRawat" class="fw-bold text-primary">-</span>
+                                </div>
+                                <div class="col-md-4 border-end-md">
+                                    <small class="text-muted d-block">Nama Pasien</small>
+                                    <span id="detailNamaPasien" class="fw-bold text-primary">-</span>
+                                </div>
+                                <div class="col-md-4 border-end-md">
+                                    <small class="text-muted d-block">Tgl. Lahir/Umur</small>
+                                    <span id="detailTglLahir" class="fw-bold text-primary">-</span>
+                                </div>
+                                <div class="col-md-4 border-end-md">
+                                    <small class="text-muted d-block">Dokter DPJP</small>
+                                    <span id="detailDokterDpjp" class="fw-bold text-dark">-</span>
+                                </div>
+                                <div class="col-md-4 border-end-md">
+                                    <small class="text-muted d-block">Tanggal Pemeriksaan</small>
+                                    <span id="detailTgl" class="fw-bold text-dark">-</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <small class="text-muted d-block">Petugas Input</small>
+                                    <span id="detailPetugas" class="fw-bold text-dark">-</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body bg-light">
-                        <div class="card mb-3 border-0 shadow-sm">
-                            <div class="card-body py-2 px-3">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 border-end-md">
-                                        <small class="text-muted d-block">No. Rawat</small>
-                                        <span id="detailNoRawat" class="fw-bold text-primary">-</span>
+                    <div id="sectionVerifikasi"></div>
+                    <div class="card mb-3 border-0 shadow-sm section-ttv">
+                        <div class="card-header bg-white fw-bold"><i class="fas fa-vitals me-2 text-danger"></i>Tanda-Tanda
+                            Vital</div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-6 col-md-3">
+                                    <div class="p-2 border rounded bg-white text-center h-100">
+                                        <small class="text-muted d-block">Suhu</small>
+                                        <h5 id="detailSuhu" class="mb-0 fw-bold text-danger">-</h5>
                                     </div>
-                                    <div class="col-md-4 border-end-md">
-                                        <small class="text-muted d-block">Nama Pasien</small>
-                                        <span id="detailNamaPasien" class="fw-bold text-primary">-</span>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="p-2 border rounded bg-white text-center h-100">
+                                        <small class="text-muted d-block">Tensi</small>
+                                        <h5 id="detailTensi" class="mb-0 fw-bold">-</h5>
                                     </div>
-                                    <div class="col-md-4 border-end-md">
-                                        <small class="text-muted d-block">Tgl. Lahir/Umur</small>
-                                        <span id="detailTglLahir" class="fw-bold text-primary">-</span>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="p-2 border rounded bg-white text-center h-100">
+                                        <small class="text-muted d-block">Nadi</small>
+                                        <h5 id="detailNadi" class="mb-0 fw-bold">-</h5>
                                     </div>
-                                    <div class="col-md-4 border-end-md">
-                                        <small class="text-muted d-block">Dokter DPJP</small>
-                                        <span id="detailDokterDpjp" class="fw-bold text-dark">-</span>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="p-2 border rounded bg-white text-center h-100">
+                                        <small class="text-muted d-block">SPO2</small>
+                                        <h5 id="detailSpo2" class="mb-0 fw-bold text-success">-</h5>
                                     </div>
-                                    <div class="col-md-4 border-end-md">
-                                        <small class="text-muted d-block">Tanggal Pemeriksaan</small>
-                                        <span id="detailTgl" class="fw-bold text-dark">-</span>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="p-2 border rounded bg-white text-center h-100">
+                                        <small class="text-muted d-block">GCS (E,V,M)</small>
+                                        <h5 id="detailGcs" class="mb-0">-</h5>
                                     </div>
-                                    <div class="col-md-4">
-                                        <small class="text-muted d-block">Petugas Input</small>
-                                        <span id="detailPetugas" class="fw-bold text-dark">-</span>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="p-2 border rounded bg-white text-center h-100">
+                                        <small class="text-muted d-block">Respirasi</small>
+                                        <h5 id="detailRespirasi" class="mb-0">-</h5>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="p-2 border rounded bg-white text-center h-100">
+                                        <small class="text-muted d-block">Tinggi (cm)</small>
+                                        <h5 id="detailTinggi" class="mb-0">-</h5>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="p-2 border rounded bg-white text-center h-100">
+                                        <small class="text-muted d-block">Berat (Kg)</small>
+                                        <h5 id="detailBerat" class="mb-0">-</h5>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="sectionVerifikasi"></div>
-                        <div class="card mb-3 border-0 shadow-sm section-ttv">
-                            <div class="card-header bg-white fw-bold"><i class="fas fa-vitals me-2 text-danger"></i>Tanda-Tanda
-                                Vital</div>
-                            <div class="card-body">
-                                <div class="row g-3">
-                                    <div class="col-6 col-md-3">
-                                        <div class="p-2 border rounded bg-white text-center h-100">
-                                            <small class="text-muted d-block">Suhu</small>
-                                            <h5 id="detailSuhu" class="mb-0 fw-bold text-danger">-</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="p-2 border rounded bg-white text-center h-100">
-                                            <small class="text-muted d-block">Tensi</small>
-                                            <h5 id="detailTensi" class="mb-0 fw-bold">-</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="p-2 border rounded bg-white text-center h-100">
-                                            <small class="text-muted d-block">Nadi</small>
-                                            <h5 id="detailNadi" class="mb-0 fw-bold">-</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="p-2 border rounded bg-white text-center h-100">
-                                            <small class="text-muted d-block">SPO2</small>
-                                            <h5 id="detailSpo2" class="mb-0 fw-bold text-success">-</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="p-2 border rounded bg-white text-center h-100">
-                                            <small class="text-muted d-block">GCS (E,V,M)</small>
-                                            <h5 id="detailGcs" class="mb-0">-</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="p-2 border rounded bg-white text-center h-100">
-                                            <small class="text-muted d-block">Respirasi</small>
-                                            <h5 id="detailRespirasi" class="mb-0">-</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="p-2 border rounded bg-white text-center h-100">
-                                            <small class="text-muted d-block">Tinggi (cm)</small>
-                                            <h5 id="detailTinggi" class="mb-0">-</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="p-2 border rounded bg-white text-center h-100">
-                                            <small class="text-muted d-block">Berat (Kg)</small>
-                                            <h5 id="detailBerat" class="mb-0">-</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
 
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -154,13 +172,15 @@
                         </div>
                         <div class="col-md-6">
                             <div class="card h-100 border-0 shadow-sm">
-                                <div id="labelO" class="card-header bg-success text-white fw-bold">O (Objek/Pemeriksaan)</div>
+                                <div id="labelO" class="card-header bg-success text-white fw-bold">O (Objek/Pemeriksaan)
+                                </div>
                                 <div id="detailPemeriksaan" class="card-body soap-content">-</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card h-100 border-0 shadow-sm">
-                                <div id="labelA" class="card-header bg-warning text-dark fw-bold">A (Asesmen/Penilaian)</div>
+                                <div id="labelA" class="card-header bg-warning text-dark fw-bold">A (Asesmen/Penilaian)
+                                </div>
                                 <div id="detailPenilaian" class="card-body soap-content">-</div>
                             </div>
                         </div>
@@ -171,19 +191,23 @@
                             </div>
                         </div>
                     </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
+    </div>
 
 @endsection
 @push('script')
     <script>
+        let tablePemeriksaanRanap;
         $(document).ready(function () {
-            const tablePemeriksaanRanap = $('#tablePemeriksaanRanap').DataTable({
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramPemeriksaan = urlParams.get('pemeriksaan');
+            const paramDokter = urlParams.get('dokter');
+            tablePemeriksaanRanap = $('#tablePemeriksaanRanap').DataTable({
                 "processing": true,
                 "serverSide": true,
                 "stateSave": true,
@@ -218,6 +242,8 @@
                     "data": function (d) {
                         d.tgl_perawatan1 = $('#tgl_perawatan1').val();
                         d.tgl_perawatan2 = $('#tgl_perawatan2').val();
+                        d.pemeriksaan = paramPemeriksaan;
+                        d.dokterKonsul = paramDokter ? paramDokter : $('#filter_dokter').val();
                         d.kamar = $('#kamar').val();
                     },
                 },
@@ -235,13 +261,16 @@
                         data: 'reg_periksa', name: 'reg_periksa', title: 'Nama Pasien', className: "fw-bold", render: function (data, type, row) {
 
                             let penjabIcon = '';
+                            const umurPasien = hitungUmur(data.tgl_registrasi, data.pasien.tgl_lahir);
 
                             if (data.penjab.kd_pj === 'A03') {
                                 penjabIcon = `<span class="text-danger">${data.penjab.png_jawab}</span> `
                             } else {
                                 penjabIcon = `<span class="text-success">${data.penjab.png_jawab}</span> `
                             }
-                            return `${setIconGender(data.pasien.jk)} ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur}) <br/> ${penjabIcon}`;
+                            return `${setIconGender(data.pasien.jk)} ${data.pasien.nm_pasien}<br/>
+                                                                                                                                                                            <small class="text-muted">${umurPasien}</small><br/>
+                                                                                                                                                                            ${penjabIcon}`;
                         }
                     },
                     {
@@ -308,6 +337,7 @@
                 },
             }).done(function (response) {
                 const data = response;
+                let isVerified = false;
 
                 $('#detailNoRawat').text(data.no_rawat);
                 $('#detailTgl').text(`${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}`);
@@ -318,6 +348,11 @@
 
                 if (data.sbar !== null) {
                     // 1. Sembunyikan TTV & Set Badge
+                    const kdDokter = "{{ session()->get('pegawai')->nik }}"
+                    const isDokterKonsul = data.sbar.dokter_konsul ? data.sbar.dokter_konsul.dokter : null;
+
+
+
                     $('.section-ttv').hide();
                     $('#detailBadgeFlag').html('<span class="badge bg-danger ms-2">SBAR</span>');
 
@@ -325,26 +360,44 @@
                     $('#labelS').html('S (Situation)');
                     $('#labelO').html('B (Background)');
                     $('#labelA').html('A (Assessment)');
-                    $('#labelP').html('R (Recommendation)');
+                    $('#labelP').html(renderTextWithStempel('R (Recommendation)', isVerified));
+
 
                     // 3. Logika Verifikasi (Sesuai kode Anda sebelumnya)
-                    if (data.sbar.dokter_konsul !== null) {
+                    if (data.sbar.verifikasi !== null) {
+                        isVerified = true;
                         $('#sectionVerifikasi').html(`
-            <div class="alert alert-success d-flex align-items-center mb-3">
-                <i class="fas fa-check-circle me-2"></i>
-                <div>
-                    <strong>Terverifikasi:</strong> Dikonfirmasi oleh <strong>${data.sbar.dokter_konsul.dokter_sbar.nm_dokter}</strong> pada ${formatTanggal(data.sbar.dokter_konsul.tgl_perawatan)} ${data.sbar.dokter_konsul.jam_rawat}
-                </div>
-            </div>
-        `);
+                                                <div class="alert alert-success d-flex align-items-center mb-3">
+                                                    <i class="fas fa-check-circle me-2"></i>
+                                                    <div>
+                                                        <strong>Dikonfirmasi:</strong> Dikonfirmasi oleh <strong>${data.sbar.verifikasi?.petugas.nama}</strong> pada ${formatTanggal(data.sbar.verifikasi?.tgl_verif)} ${data.sbar.verifikasi?.jam_verif}
+                                                    </div>
+                                                </div>
+                                            `);
                     } else {
+
+                        let button = ``;
+
+                        if (isDokterKonsul === kdDokter) {
+                            button = `<button type="button" class="btn btn-sm btn-warning fw-bold text-nowrap align-self-end align-self-sm-center text-dark"
+                                                                                    onclick="verifikasiSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')">
+                                                                                <i class="fas fa-check-circle me-1"></i> Verifikasi SBAR
+                                                                            </button>`;
+
+                        }
                         $('#sectionVerifikasi').html(`
-            <div class="alert alert-warning d-flex align-items-center mb-3">
-                <i class="fas fa-exclamation-triangle me-2"></i>
-                <div><strong>Belum Verifikasi:</strong> Menunggu konfirmasi DPJP (TBAK).</div>
-            </div>
-        `);
+                                <div class="alert alert-warning d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2 shadow-sm">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-exclamation-triangle me-2 text-warning fs-5"></i>
+                                        <div>
+                                            <strong>Belum Verifikasi:</strong> Menunggu konfirmasi ${data.sbar.dokter_konsul.dokter_sbar.nm_dokter} (TBAK).
+                                        </div>
+                                    </div>
+                                    ${button}
+                                </div>
+                                                                                                                `);
                     }
+                    $('#labelP').html(renderTextWithStempel('R (Recommendation)', isVerified));
                 } else {
                     // 1. Tampilkan TTV & Set Badge
                     $('.section-ttv').show();
@@ -376,6 +429,84 @@
                 alert("Gagal mengambil data pemeriksaan");
                 console.error(err);
             });
+        }
+        function verifikasiSbar(no_rawat, tgl, jam) {
+            $('.modal').modal('hide');
+            Swal.fire({
+                title: 'Verifikasi Pemeriksaan',
+
+                text: 'Masukkan password Anda untuk melakukan verifikasi',
+
+                icon: 'warning',
+
+                html: `
+                    <input
+                        type="password"
+                        id="password_verifikasi"
+                        class="swal2-input"
+                        placeholder="Masukkan password"/>
+                `,
+
+                showCancelButton: true,
+
+                confirmButtonColor: '#0d6efd',
+                cancelButtonColor: '#dc3545',
+
+                confirmButtonText: 'Ya, Verifikasi',
+                cancelButtonText: 'Batal',
+
+                focusConfirm: false,
+
+                showLoaderOnConfirm: true,
+
+                allowOutsideClick: () => !Swal.isLoading(),
+
+                preConfirm: async () => {
+                    const password = $('#password_verifikasi').val();
+                    if (!password) {
+                        Swal.showValidationMessage(
+                            'Password wajib diisi'
+                        );
+                        return false;
+                    }
+                    try {
+                        const response = await $.ajax({
+                            url: '/erm/soap/verifikasi',
+                            method: 'POST',
+                            dataType: 'JSON',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                no_rawat: no_rawat,
+                                tgl_perawatan: tgl,
+                                jam_rawat: jam,
+                                password: password
+                            }
+
+                        });
+                        return response;
+                    } catch (error) {
+                        Swal.showValidationMessage(
+                            error.responseJSON?.message ??
+                            'Verifikasi gagal'
+                        );
+                        return false;
+                    }
+                }
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Berhasil',
+                        text: 'Hasil pemeriksaan telah diverifikasi',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+                tablePemeriksaanRanap.ajax.reload();
+                setDetailPemeriksaanRanap(no_rawat, tgl, jam)
+            });
+
         }
 
 

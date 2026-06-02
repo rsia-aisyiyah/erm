@@ -33,6 +33,7 @@
             </main>
         </div>
     </div>
+    @include('content.notifikasi')
 
     @include('content.ranap.modal.modal_riwayat_infeksi')
 
@@ -1566,9 +1567,9 @@
 
         function setIconGender(jk) {
             if (jk === 'L') {
-                return `<span class="badge text-bg-primary"><i class="bi bi-gender-male "></i></span> `
+                return `<span class="badge bg-info"><i class="bi bi-gender-male "></i></span> `
             }
-            return `<span class="badge text-bg-warning"><i class="bi bi-gender-female "></i></span> `
+            return `<span class="badge" style="background-color: #ff6aaf;"><i class="bi bi-gender-female "></i></span> `
 
         }
 

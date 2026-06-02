@@ -154,7 +154,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('/soap/simpan', [PemeriksaanRanapController::class, 'simpan']);
 	Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
 	Route::post('/soap/verifikasi', [RsiaVerifPemeriksaanRanapController::class, 'create']);
-	
+
 
 	Route::post('/ranap/sbar/update', [SbarController::class, 'update']);
 	Route::post('/ranap/sbar/delete', [SbarController::class, 'delete']);
@@ -176,7 +176,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('ranap/askep/anak/insert', [AskepRanapAnakController::class, 'insert']);
 	Route::post('ranap/askep/anak/create', [AskepRanapAnakController::class, 'createOrUpdate']);
 	Route::get('ranap/askep/anak/print', [AskepRanapAnakController::class, 'print']);
-	
+
 	Route::get('ranap/askep/anak/masalah', [MasalahAskepRanapController::class, 'get']);
 	Route::get('ranap/askep/anak/rencana', [RencanaAskepRanapController::class, 'get']);
 	Route::post('ranap/askep/anak/masalah/insert', [MasalahAskepRanapController::class, 'insert']);
@@ -215,6 +215,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('master/rencana/keperawatan/table', [MasterRencanaKeperawatanController::class, 'getDataTable']);
 
 	Route::get('ranap/askep/kandungan', [AskepRanapKandunganController::class, 'get']);
+	Route::get('ranap/askep/kandungan/print', [AskepRanapKandunganController::class, 'printAskep']);
 	Route::post('ranap/askep/kandungan/create', [AskepRanapKandunganController::class, 'createOrUpdate']);
 
 	Route::get('ews/{sttsRawat}/{noRawat}', [EwsController::class, 'get']);
@@ -336,11 +337,8 @@ Route::middleware('auth')->group(function () {
 	Route::post('poc/tim/create', [PlanOfCareTimController::class, 'create']);
 	Route::post('poc/tim/personil/delete/{id}', [PlanOfCareTimController::class, 'delete']);
 
-	// Route::get('/hasil/kritis', [RsiaHasilKritisController::class, 'get']);
-	Route::get('/hasil/kritis', [RsiaHasilKritisController::class, 'getHasil']);
-	Route::get('/hasil/kritis/{id}', [RsiaHasilKritisController::class, 'get']);
-	Route::post('/hasil/kritis', [RsiaHasilKritisController::class, 'create']);
-	Route::post('/hasil/kritis/delete/{id}', [RsiaHasilKritisController::class, 'delete']);
+	// Route::get('/hasil-kritis', [RsiaHasilKritisController::class, 'get']);
+
 
 	Route::get('skoring/tb', [SkoringTbController::class, 'get']);
 	Route::post('skoring/tb', [SkoringTbController::class, 'create']);
@@ -353,7 +351,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('skrining/tb/print/{id}', [SkriningTbController::class, 'print']);
 
 
-//	Route::get('spri/get/{nokartu}/{tanggal}', [BridgingSPRIController::class, 'get']);
+	//	Route::get('spri/get/{nokartu}/{tanggal}', [BridgingSPRIController::class, 'get']);
 	Route::get('spri/get/', [BridgingSPRIController::class, 'get']);
 	Route::post('spri/insert', [BridgingSPRIController::class, 'create']);
 	Route::get('spri/print/{noSurat}', [BridgingSPRIController::class, 'print']);
@@ -402,7 +400,7 @@ Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 
 Route::get('/log/track', [\App\Http\Controllers\TrackerSqlController::class, 'get']);
 
-Route::get('/test',[ \App\Http\Controllers\PermintaanLabPAController::class, 'get']);
+Route::get('/test', [\App\Http\Controllers\PermintaanLabPAController::class, 'get']);
 //Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}', [PoliklinikController::class, 'poliPasien']);
 
 
@@ -418,6 +416,7 @@ require __DIR__ . '/partials/tindakan.php';
 require __DIR__ . '/partials/mapping.php';
 require __DIR__ . '/partials/logs.php';
 require __DIR__ . '/partials/ranap.php';
+require __DIR__ . '/partials/hasil_kritis.php';
 
 // Route::get('/file', function () {
 // $file = Storage::disk('custom')->url('LOGO RSIA (2).png');

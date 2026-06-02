@@ -21,15 +21,16 @@ class RsiaVerifPemeriksaanRanap extends Model
 
     function pemeriksaanRanap()
     {
-        return $this->belongsTo(PemeriksaanRanap::class, 'no_rawat', 'no_rawat');
+        return $this->belongsTo(PemeriksaanRanap::class, ['no_rawat', 'no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'no_rawat', 'tgl_perawatan', 'jam_rawat']);
     }
     function dokter()
     {
         return $this->belongsTo(Dokter::class, 'verifikator', 'kd_dokter')
-        ->select('kd_dokter', 'nm_dokter');
+            ->select('kd_dokter', 'nm_dokter');
     }
 
-    function petugas() {
+    function petugas()
+    {
         return $this->belongsTo(Petugas::class, 'verifikator', 'nip');
     }
 }

@@ -312,18 +312,18 @@
                         kamarInap = Object.keys(row.kamar_inap).length ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
 
                         // Tentukan warna berdasarkan jenis kelamin
-                        const badgeColor = row.pasien.jk == 'L' ? 'bg-primary' : '';
+                        const badgeColor = row.pasien.jk == 'L' ? 'bg-info' : '';
                         const badgeStyle = row.pasien.jk == 'P' ? 'style="background-color: #ff6aaf;"' : '';
 
                         return `<div class="d-flex align-items-center gap-2">
-                <span class="badge ${badgeColor} rounded-pill" ${badgeStyle}>
-                    ${row.pasien.jk == 'L' ? '<i class="bi bi-gender-male"></i>' : '<i class="bi bi-gender-female"></i>'}
-                </span>
-                <p class="m-0">
-                    <strong id="pasien" data-no-rkm-medis="${row.no_rkm_medis}">${row.no_rkm_medis}<br/>${row.pasien.nm_pasien}</strong>
-                    <br/><small class="text-muted">${umur}</small>
-                </p>
-            </div>`;
+                            <span class="badge ${badgeColor} rounded-pill" ${badgeStyle}>
+                                ${row.pasien.jk == 'L' ? '<i class="bi bi-gender-male"></i>' : '<i class="bi bi-gender-female"></i>'}
+                            </span>
+                            <p class="m-0">
+                                <strong id="pasien" data-no-rkm-medis="${row.no_rkm_medis}">${row.no_rkm_medis}<br/>${row.pasien.nm_pasien}</strong>
+                                <br/><small class="text-muted">${umur}</small>
+                            </p>
+                        </div>`;
                     }
                 },
                 {
@@ -467,14 +467,14 @@
                         let no = 1;
                         $.map(res.resep_dokter, (rd) => {
                             html = `<tr class="obat-${no}">
-                                                                                                                    <td>${rd.no_resep}</td>
-                                                                                                                    <td>${rd.data_barang.nama_brng}</td>
-                                                                                                                    <td class="jml-${no}">${rd.jml}</td>
-                                                                                                                    <td class="aturan-${no}">${rd.aturan_pakai}</td>
-                                                                                                                    <td>
-                                                                                                                        <button class="btn btn-sm btn-danger" onclick="hapusObatUmum('${rd.no_resep}', '${rd.kode_brng}')"><i class="bi bi-trash"></i></button>
-                                                                                                                        </td>
-                                                                                                                        </tr>`
+                                                                                                                                <td>${rd.no_resep}</td>
+                                                                                                                                <td>${rd.data_barang.nama_brng}</td>
+                                                                                                                                <td class="jml-${no}">${rd.jml}</td>
+                                                                                                                                <td class="aturan-${no}">${rd.aturan_pakai}</td>
+                                                                                                                                <td>
+                                                                                                                                    <button class="btn btn-sm btn-danger" onclick="hapusObatUmum('${rd.no_resep}', '${rd.kode_brng}')"><i class="bi bi-trash"></i></button>
+                                                                                                                                    </td>
+                                                                                                                                    </tr>`
                             no++;
                             $('#tb-resep-umum-ugd').append(html)
                         })
@@ -484,17 +484,17 @@
                         let no = 1;
                         $.map(res.resep_racikan, (rr) => {
                             html = `<tr class="racikan-${no}">
-                                                                                                                <td>${rr.no_racik}</td>
-                                                                                                                    <td>${rr.no_resep}</td>
-                                                                                                                    <td>${rr.nama_racik}</td>
-                                                                                                                    <td>${rr.metode.nm_racik}</td>
-                                                                                                                    <td class="jml_dr-${no}">${rr.jml_dr}</td>
-                                                                                                                    <td class="aturan_dr-${no}">${rr.aturan_pakai}</td>
-                                                                                                                    <td>
-                                                                                                                        <button class="btn btn-sm btn-danger" onclick="hapusRacikan('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-trash"></i></button>
-                                                                                                                        <button class="btn btn-sm btn-warning" onclick="tambahDetail('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-pencil"></i></button>
-                                                                                                                        </td>
-                                                                                                                        </tr>`
+                                                                                                                            <td>${rr.no_racik}</td>
+                                                                                                                                <td>${rr.no_resep}</td>
+                                                                                                                                <td>${rr.nama_racik}</td>
+                                                                                                                                <td>${rr.metode.nm_racik}</td>
+                                                                                                                                <td class="jml_dr-${no}">${rr.jml_dr}</td>
+                                                                                                                                <td class="aturan_dr-${no}">${rr.aturan_pakai}</td>
+                                                                                                                                <td>
+                                                                                                                                    <button class="btn btn-sm btn-danger" onclick="hapusRacikan('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-trash"></i></button>
+                                                                                                                                    <button class="btn btn-sm btn-warning" onclick="tambahDetail('${rr.no_resep}', '${rr.no_racik}')"><i class="bi bi-pencil"></i></button>
+                                                                                                                                    </td>
+                                                                                                                                    </tr>`
                             if (rr.detail_racikan.length) {
                                 html += `<tr><td colspan="2"></td><td colspan="5">`
                                 $.map(rr.detail_racikan, (dr) => {

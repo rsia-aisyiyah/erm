@@ -14,7 +14,8 @@ class RsiaHasilKritis extends Model
 
     function regPeriksa()
     {
-        return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
+        return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat')
+            ->select('no_rawat', 'no_rkm_medis', 'kd_poli', 'kd_dokter', 'tgl_registrasi', 'jam_reg');
     }
     function petugas()
     {
