@@ -9,12 +9,14 @@ use App\Models\RsiaHasilKritis;
 use App\Models\User;
 use App\Services\AuthVerificationService;
 use App\Services\HasilKritis\HasilKritisFetchService;
+use App\Services\HasilKritis\VerifikasiHasilKritis;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Yajra\DataTables\DataTables;
 
 class RsiaHasilKritisController extends Controller
@@ -61,7 +63,7 @@ class RsiaHasilKritisController extends Controller
     }
 
 
-   public function getPetugas(HasilKritisFetchService $fetch, Request $request): JsonResponse
+    public function getPetugas(HasilKritisFetchService $fetch, Request $request): JsonResponse
     {
         // 1. Validasi Input (Memastikan NIP tidak kosong/null)
         if (!$request->filled('nip')) {
@@ -116,56 +118,32 @@ class RsiaHasilKritisController extends Controller
             return response()->json($e->errorInfo, 500);
         }
     }
-    public function verifikasi($id, Request $request)
+    public function verifikasi(VerifikasiHasilKritis $service, $id, Request $request)
     {
+        // Validasi input form dasar tetap di Controller (atau via FormRequest)
         $request->validate([
             'password' => 'required',
             'role' => 'required'
         ]);
 
-        $petugas = $this->authVerifyService->verifyUser();
-
-        if (!$petugas) {
+        try {
+            // Serahkan seluruh logika berat ke Service
+            $service->verifyAndExecute(
+                $id,
+                $request->password,
+                $request->role
+            );
+            $updateNotif = new \App\Services\NotificationService();
             return response()->json([
-                'message' => 'User tidak ditemukan'
-            ], 404);
-        }
+                'message' => 'Verifikasi berhasil',
+                'new_count' => $updateNotif->getHasilKritisCount() // Contoh update count notifikasi setelah verifikasi
+            ]);
 
-        $isValidPassword = $this->authVerifyService->verifyPassword($request->password);
-        if (!$isValidPassword) {
+        } catch (HttpException $e) {
+            // Tangkap error kustom yang dilempar oleh Service beserta Status Code-nya
             return response()->json([
-                'message' => 'Password salah'
-            ], 422);
+                'message' => $e->getMessage()
+            ], $e->getStatusCode());
         }
-        $hasil = RsiaHasilKritis::findOrFail($id);
-        switch ($request->role) {
-            case 'petugas_ruang':
-                if ($hasil->petugas_ruang != $petugas->nip) {
-                    return response()->json([
-                        'message' => 'Anda bukan petugas ruangan'
-                    ], 403);
-                }
-                $hasil->update([
-                    'tgl_ruang' => now()
-                ]);
-                break;
-            case 'dokter':
-                if ($hasil->dokter != $petugas->nip) {
-                    return response()->json([
-                        'message' => 'Anda bukan dokter terkait'
-                    ], 403);
-                }
-                $hasil->update([
-                    'tgl_dokter' => now()
-                ]);
-                break;
-            default:
-                return response()->json([
-                    'message' => 'Role tidak valid'
-                ], 422);
-        }
-        return response()->json([
-            'message' => 'Verifikasi berhasil'
-        ]);
     }
 }

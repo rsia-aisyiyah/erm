@@ -200,13 +200,11 @@
             return select;
 
         }
-
-
         modalHasilKritis.on('show.bs.modal', () => {
             selectPetugasKritis(selectPetugasLab);
             selectPetugasKritis(selectPetugasRuang);
             selectDokterKritis(selectDokter);
-            const optPetugas = new Option("{{ session()->get('pegawai')->nik }}", "{{ session()->get('pegawai')->nama }}", true, true);
+            const optPetugas = new Option("{{ session()->get('pegawai')->nama }}", "{{ session()->get('pegawai')->nik }}", true, true);
             selectPetugasLab.append(optPetugas).trigger('change')
             formPasienKritis.find('#hasil').val('')
         })

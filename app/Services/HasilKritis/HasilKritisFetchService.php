@@ -42,6 +42,7 @@ class HasilKritisFetchService
             'petugas' => fn($q) => $q->select(['nip', 'nama']),
             'petugasRuang' => fn($q) => $q->select(['nip', 'nama']),
             'dokter' => fn($q) => $q->select(['kd_dokter', 'nm_dokter']),
+            'kamar',
             'regPeriksa.pasien' => fn($q) => $q->select(['no_rkm_medis', 'nm_pasien', 'jk'])
         ]);
     }
@@ -68,7 +69,7 @@ class HasilKritisFetchService
     private function applyStatusValidation(Builder $query, string $column, ?string $status): void
     {
         $query->when($status === 'belum', fn($q) => $q->whereNull($column))
-              ->when($status === 'sudah', fn($q) => $q->whereNotNull($column));
+            ->when($status === 'sudah', fn($q) => $q->whereNotNull($column));
     }
 
     /**
@@ -79,7 +80,7 @@ class HasilKritisFetchService
         $query->when($bulanRaw, function ($q, $bulanRaw) {
             $carbon = Carbon::parse($bulanRaw);
             $q->whereMonth('tgl', $carbon->format('m'))
-              ->whereYear('tgl', $carbon->format('Y'));
+                ->whereYear('tgl', $carbon->format('Y'));
         });
     }
 }

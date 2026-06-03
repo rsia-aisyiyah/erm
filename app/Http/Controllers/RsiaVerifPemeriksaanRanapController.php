@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RsiaVerifPemeriksaanRanap;
 use App\Services\AuthVerificationService;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 
 class RsiaVerifPemeriksaanRanapController extends Controller
@@ -45,6 +46,10 @@ class RsiaVerifPemeriksaanRanapController extends Controller
             return response()->json($e->getMessage(), 500);
         }
 
-        return response()->json($verif);
+        $countVerifikasi = new NotificationService();
+        return response()->json([
+            'message' => 'Verifikasi berhasil',
+            'new_count' => $countVerifikasi->getSbarCount()
+        ]);
     }
 }

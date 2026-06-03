@@ -59,9 +59,9 @@
 </div>
 @push('script')
     <script>
+        const filterHasilKritis = $('#filterHasilKritis');
         function showTabelHasilKritis() {
             $('#modalTabelHasilKritis').modal('show');
-            const filterHasilKritis = $('#filterHasilKritis');
             const bulan = filterHasilKritis.find('#bulan').val();
             const status = filterHasilKritis.find('#status option:selected').val() || '0';
             getHasilKritis(bulan, status);
@@ -69,10 +69,10 @@
 
         function getHasilKritis(bulan = '', status = '0') {
             $('#containerHasilKritis').html(`
-                                                    <div class="col-12 text-center py-5 text-muted">
-                                                        <div class="spinner-border text-danger mb-2" role="status"></div><br>Memuat data...
-                                                    </div>
-                                                `);
+                                                                                                                                                                                    <div class="col-12 text-center py-5 text-muted">
+                                                                                                                                                                                        <div class="spinner-border text-danger mb-2" role="status"></div><br>Memuat data...
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                `);
 
             $.ajax({
                 url: "{{ route('hasil-kritis.petugas') }}",
@@ -100,6 +100,8 @@
                     }
 
                     dataList.forEach(function (item) {
+                        console.log('ITEM ===', item);
+
                         const pasien = item.reg_periksa?.pasien || {};
                         const nmPasien = pasien.nm_pasien || 'Tidak Diketahui';
                         const noRm = pasien.no_rkm_medis || '-';
@@ -119,46 +121,46 @@
 
                         // 3. Susun komponen Card
                         cardsHtml += `
-                                            <div class="col-md-6 col-lg-4">
-                                                <div class="card h-100 ${borderClass}">
-                                                    <div class="card-header bg-white pb-0 d-flex justify-content-between align-items-start border-0">
-                                                        <div class="d-flex flex-column">
-                                                            <small class="text-muted fw-semibold" style="font-size:10px;">NO. RAWAT: ${item.no_rawat}</small>
-                                                            <h6 class="text-primary mb-0 fw-bold mt-1">${nmPasien} (${noRm})</h6>
-                                                        </div>
-                                                        ${item.reg_periksa?.kd_poli ? `<span class="badge bg-secondary small">${item.reg_periksa.kd_poli}</span>` : ''}
-                                                    </div>
-                                                    <div class="card-body py-2">
-                                                        <div class="p-2 bg-danger-subtle text-danger rounded border border-danger-subtle mb-2">
-                                                            <small class="fw-bold d-block text-uppercase" style="font-size: 9px; letter-spacing: 0.5px;"><i class="bi bi-exclamation-triangle-fill"></i> Parameter Kritis:</small>
-                                                            <span class="fs-7 fw-bold text-wrap" style="word-break: break-word;">${stringPemeriksaan(item.hasil)}</span>
-                                                        </div>
-                                                        <div class="d-flex flex-column gap-1">
-                                                            <small class="text-muted"><i class="bi bi-clock me-1"></i> Tanggal : <span class="text-dark fw-medium">${formatTanggal(item.tgl)}</span></small>
-                                                            <small class="text-muted"><i class="bi bi-person-badge me-1"></i> Analis Penunjang: <span class="text-dark">${namaSubstring(item.petugas?.nama)}</span></small>
-                                                            <small class="text-muted"><i class="bi bi-building-check me-1"></i> Ruangan: <span class="text-dark">${namaSubstring(item.petugas_ruang?.nama) || '-'}</span></small>
-                                                        </div>
-                                                        <div class="mt-2 text-center">
-                                                            ${badgeStatus}
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-footer bg-white border-0 pt-0">
-                                                        ${btnAksi}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        `;
+                                                                                                                                        <div class="col-md-6 col-lg-4">
+                                                                                                                                            <div class="card h-100 ${borderClass}">
+                                                                                                                                                <div class="card-header bg-white pb-0 d-flex justify-content-between align-items-start border-0">
+                                                                                                                                                    <div class="d-flex flex-column">
+                                                                                                                                                        <small class="text-muted fw-semibold" style="font-size:10px;">NO. RAWAT: ${item.no_rawat}</small>
+                                                                                                                                                        <h6 class="text-primary mb-0 fw-bold mt-1">${setIconGender(item.reg_periksa.pasien.jk)} ${nmPasien} (${noRm})</h6>
+                                                                                                                                                    </div>
+                                                                                                                                                    ${item.kamar?.nm_bangsal ? `<span class="badge bg-secondary small">${item.kamar.nm_bangsal}</span>` : ''}
+                                                                                                                                                </div>
+                                                                                                                                                <div class="card-body py-2">
+                                                                                                                                                    <div class="p-2 bg-danger-subtle text-danger rounded border border-danger-subtle mb-2">
+                                                                                                                                                        <small class="fw-bold d-block text-uppercase" style="font-size: 9px; letter-spacing: 0.5px;"><i class="bi bi-exclamation-triangle-fill"></i> Parameter Kritis:</small>
+                                                                                                                                                        <span class="fs-7 fw-bold text-wrap" style="word-break: break-word;">${stringPemeriksaan(item.hasil)}</span>
+                                                                                                                                                    </div>
+                                                                                                                                                    <div class="d-flex flex-column gap-1">
+                                                                                                                                                        <small class="text-muted"><i class="bi bi-clock me-1"></i> Tanggal : <span class="text-dark fw-medium">${formatTanggal(item.tgl)}</span></small>
+                                                                                                                                                        <small class="text-muted"><i class="bi bi-person-badge me-1"></i> Analis Penunjang: <span class="text-dark">${namaSubstring(item.petugas?.nama)}</span></small>
+                                                                                                                                                        <small class="text-muted"><i class="bi bi-building-check me-1"></i> Ruangan: <span class="text-dark">${namaSubstring(item.petugas_ruang?.nama) || '-'}</span></small>
+                                                                                                                                                    </div>
+                                                                                                                                                    <div class="mt-2 text-center">
+                                                                                                                                                        ${badgeStatus}
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                                <div class="card-footer bg-white border-0 pt-0">
+                                                                                                                                                    ${btnAksi}
+                                                                                                                                                </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    `;
                     });
 
                     $('#containerHasilKritis').html(cardsHtml);
                 },
                 error: function (xhr) {
                     $('#containerHasilKritis').html(`
-                                                                                                                                                        <div class="col-12 text-center text-danger py-5">
-                                                                <i class="bi bi-exclamation-octagon fs-2"></i>
-                                                                <p class="mt-2">Gagal memuat data. Periksa kembali jaringan atau log session.</p>
-                                                            </div>
-                                                        `);
+                                                                                                                                                                                                                                                                                        <div class="col-12 text-center text-danger py-5">
+                                                                                                                                                                                                <i class="bi bi-exclamation-octagon fs-2"></i>
+                                                                                                                                                                                                <p class="mt-2">Gagal memuat data. Periksa kembali jaringan atau log session.</p>
+                                                                                                                                                                                            </div>
+                                                                                                                                                                                        `);
                 }
             });
         }
@@ -179,49 +181,43 @@
                     title: 'Verifikasi Hasil Kritis',
                     text: 'Masukkan password user anda sebagai verifikator/tulbakon',
                     input: 'password',
+                    icon: 'warning',
                     inputPlaceholder: 'Masukkan password',
+                    inputAttributes: {
+                        autocomplete: 'one-time-code'
+                    },
                     showCancelButton: true,
                     confirmButtonText: 'Verifikasi',
                     cancelButtonText: 'Batal',
                     showLoaderOnConfirm: true,
+                    focusConfirm: false,
                     allowOutsideClick: () => !Swal.isLoading(),
                     preConfirm: async (password) => {
                         if (!password) {
-                            Swal.showValidationMessage(
-                                'Password wajib diisi'
-                            );
+                            Swal.showValidationMessage('Password wajib diisi');
                             return false;
                         }
 
                         try {
-
                             const response = await $.ajax({
                                 url: "{{route('hasil-kritis.verifikasi', '')}}/" + id,
                                 type: 'POST',
-
                                 data: {
                                     password: password,
                                     role: role
                                 }
                             });
-
                             return response;
-
                         } catch (error) {
-
                             Swal.showValidationMessage(
-                                error.responseJSON?.message ??
-                                'Password salah'
+                                error.responseJSON?.message ?? 'Password salah'
                             );
-
                             return false;
                         }
                     }
-
                 }).then((result) => {
-
                     if (result.isConfirmed) {
-
+                        const currentCount = result.value.new_count || 0;
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil',
@@ -230,12 +226,30 @@
                             showConfirmButton: false
                         })
 
-                        showTabelHasilKritis()
+                        if (currentCount > 0) {
+                            $('#textCountHasilKritis').text(currentCount);
+                        } else {
+                            $('#textCountHasilKritis').remove();
+                            $('#alertHasilKritis').fadeOut(500, function () {
+                                $(this).remove();
+                            });
+                        }
+                        showTabelHasilKritis();
                     }
-
                 });
-
             }, 300);
         }
+        $('#modalTabelHasilKritis').on('hidden.bs.modal', function () {
+            $('#containerHasilKritis')
+                .html(`
+                                <div class="col-12 text-center py-5 text-muted">
+                                    <div class="spinner-border text-danger mb-2" role="status"></div><br>Memuat data hasil kritis...
+                                </div>
+                        `);
+
+            filterHasilKritis.find('select').val('belum').change();
+            filterHasilKritis.find('input[name=bulan]').val("{{ date('Y-m') }}").change();
+            $('body').removeAttr('style');
+        });
     </script>
 @endpush

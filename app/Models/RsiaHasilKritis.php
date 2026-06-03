@@ -29,4 +29,10 @@ class RsiaHasilKritis extends Model
     {
         return $this->belongsTo(Dokter::class, 'dokter', 'kd_dokter');
     }
+    function kamar()
+    {
+        return $this->hasOneThrough(Kamar::class, KamarInap::class, 'no_rawat', 'kd_kamar', 'no_rawat', 'kd_kamar')
+            ->join('bangsal', 'kamar.kd_bangsal', '=', 'bangsal.kd_bangsal')
+            ->select('kamar.*', 'bangsal.nm_bangsal');
+    }
 }
