@@ -64,6 +64,11 @@
                                         name="tgl" value="{{ date('d-m-Y H:i:s') }}" />
                                 </div>
                                 <div class="col-lg-12">
+                                    <label for="" class="form-label">Dokter PJ. Lab/Radiologi</label>
+                                    <select class="form-select" id="selectDokterPjLab" style="width: 100%"
+                                        name="dokter_pj"></select>
+                                </div>
+                                <div class="col-lg-12">
                                     <label for="" class="form-label">Petugas Ruangan</label>
                                     <select class="form-select" id="selectPetugasRuang" style="width: 100%"
                                         name="petugas_ruang"></select>
@@ -102,6 +107,7 @@
         var selectPetugasLab = $('#selectPetugasLab')
         var selectDokter = $('#selectDokterKritis')
         var selectPetugasRuang = $('#selectPetugasRuang')
+        var selectDokterPjLab = $('#selectDokterPjLab')
         const showHasilPenunjang = $('#showHasilPenunjang')
         const formHasilKritis = $('#formHasilKritis')
 
@@ -139,11 +145,11 @@
                     }
 
                     return $(`
-                        <div>
-                            <div>${item.text}</div>
-                            <small class="text-muted">${item.departemen ?? '-'}</small>
-                        </div>
-                    `);
+                                                                                                                                    <div>
+                                                                                                                                        <div>${item.text}</div>
+                                                                                                                                        <small class="text-muted">${item.departemen ?? '-'}</small>
+                                                                                                                                    </div>
+                                                                                                                                `);
                 },
 
                 templateSelection: function (item) {
@@ -200,20 +206,50 @@
             return select;
 
         }
+        function selectDokterSppk(params) {
+            const select = params.select2({
+                dropdownParent: modalHasilKritis,
+                delay: 0,
+                scrollAfterSelect: false,
+                initSelection: function (element, callback) { },
+                ajax: {
+                    url: `${url}/dokter/cari`,
+                    dataType: 'json',
+                    data: (params) => {
+                        const query = {
+                            nm_dokter: params.term
+                        }
+                        return query
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.nm_dokter,
+                                    id: item.kd_dokter
+                                }
+                            })
+                        };
+                    },
+                    cache: false
+                }
+            });
+
+            return select;
+
+        }
         modalHasilKritis.on('show.bs.modal', () => {
             selectPetugasKritis(selectPetugasLab);
             selectPetugasKritis(selectPetugasRuang);
             selectDokterKritis(selectDokter);
+            selectDokterSppk(selectDokterPjLab);
             const optPetugas = new Option("{{ session()->get('pegawai')->nama }}", "{{ session()->get('pegawai')->nik }}", true, true);
             selectPetugasLab.append(optPetugas).trigger('change')
             formPasienKritis.find('#hasil').val('')
         })
 
         function setInfoPasienKritis(no_rawat) {
-            console.log(formPasienKritis);
-
             resetFormHasilKritis()
-
             getRegPeriksa(no_rawat).done((response) => {
                 const pasien = response.pasien
                 formPasienKritis.find('#no_rawat').val(no_rawat)
@@ -246,6 +282,7 @@
             const data = getDataForm('#formHasilKritis', ['textarea', 'input', 'select']);
 
             data.no_rawat = formPasienKritis.find('#no_rawat').val();
+            console.log(data);
 
             $.post(`${url}/hasil-kritis`, data)
                 .done((response) => {
@@ -266,13 +303,13 @@
                             icon: 'error',
                             title: `${xhr.responseJSON?.message || 'Validation Error'}`,
                             html: `
-                                                                                                                                                                                                                                                                                                                                                                                <ul style=" padding-left:20px; list-style-type:none" class="text-danger">
-                                                                                                                                                                                                                                                                                                                                                                                    ${Object.values(errors)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <ul style=" padding-left:20px; list-style-type:none" class="text-danger">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ${Object.values(errors)
                                     .flat()
                                     .map(item => `<li>${item}</li>`)
                                     .join('')}
-                                                                                                                                                                                                                                                                                                                                                                                </ul>
-                                                                                                                                                                                                                                                                                                                                                                            `
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `
                         });
 
                         return;
@@ -301,7 +338,7 @@
                     title: '',
                     render: (data, type, row, meta) => {
                         return `<button type="button" class="btn btn-sm btn-danger" onclick="hapusHasilKritis(${data})"><i class="bi bi-trash"></i></button>
-                                                                                                                                                    <button type="button" class="btn btn-sm btn-warning" onclick="setHasilKritis(${data})"><i class="bi bi-pencil"></i></button>`;
+                                                                                                                                                                                                                                                                <button type="button" class="btn btn-sm btn-warning" onclick="setHasilKritis(${data})"><i class="bi bi-pencil"></i></button>`;
                     }
                 },
                 {
@@ -324,18 +361,47 @@
                                 : '-';
 
                         return `
-                                                                                                                                                        ${petugas}
-                                                                                                                                                        <br/>
-                                                                                                                                                        <span class="text-muted" style="font-size:11px">
-                                                                                                                                                            ${jamPetugas}
-                                                                                                                                                        </span>
-                                                                                                                                                    `;
+                                                                                                    ${petugas}
+                                                                                                    <br/>
+                                                                                                    <span class="text-muted" style="font-size:11px">
+                                                                                                        ${jamPetugas}
+                                                                                                    </span>
+                                                                                                `;
 
 
                     }
                 },
 
                 {
+                    data: 'dokter_pj',
+                    title: 'Dokter PJ Lab/Radiologi',
+                    render: (data, type, row, meta) => {
+                        const user = data ? data?.nm_dokter : '-';
+                        const isMyVerifikasi = data?.kd_dokter === "{{ session()->get('pegawai')->nik }}" ? true : false;
+                        console.log(isMyVerifikasi, user, data);
+
+                        const buttonVerif = isMyVerifikasi ? `<button class="btn btn-primary btn-sm" type="button" onclick="verifikasiHasilKritis(${row.id}, 'dokter_pj')">
+                                                                                                                                                                                                                                                                            <i class="bi bi-check-circle"></i>
+                                                                                                                                                                                                                                                                                Konfirmasi
+                                                                                                                                                                                                                                                                                </button>` : '<span class="badge text-bg-danger">Belum dikonfirmasi</span>';
+
+                        const jam =
+                            row.tgl_drpj != null
+                                ? `${formatTanggal(row.tgl_drpj)}`
+                                : buttonVerif;
+                        const content = `
+                                                                                                ${user}
+                                                                                                <br/>
+                                                                                                <span class="text-muted" style="font-size:11px">
+                                                                                                    ${jam}
+                                                                                                </span>
+                                                                                            `;
+                        return renderTextWithStempel(
+                            content,
+                            row.tgl_drpj != null
+                        );
+                    }
+                }, {
                     data: 'petugas_ruang',
                     title: 'Petugas Ruangan',
                     render: (data, type, row, meta) => {
@@ -343,22 +409,20 @@
                         const isMyVerifikasi = data.nip === "{{ session()->get('pegawai')->nik }}" ? true : false;
 
                         const buttonVerif = isMyVerifikasi ? `<button class="btn btn-primary btn-sm" type="button" onclick="verifikasiHasilKritis(${row.id}, 'petugas_ruang')">
-                                                                                                                                                                <i class="bi bi-check-circle"></i>
-                                                                                                                                                                    Konfirmasi
-                                                                                                                                                                    </button>` : '<span class="badge text-bg-danger">Belum dikonfirmasi</span>';
-                        console.log(row.tgl_ruang);
-
+                                                                                                                                                                                                                                                                            <i class="bi bi-check-circle"></i>
+                                                                                                                                                                                                                                                                                Konfirmasi
+                                                                                                                                                                                                                                                                                </button>` : '<span class="badge text-bg-danger">Belum dikonfirmasi</span>';
                         const jamPetugas =
                             row.tgl_ruang != null
                                 ? `${formatTanggal(row.tgl_ruang)}`
                                 : buttonVerif;
                         const content = `
-                                                                                                                                                        ${petugasRuang}
-                                                                                                                                                        <br/>
-                                                                                                                                                        <span class="text-muted" style="font-size:11px">
-                                                                                                                                                            ${jamPetugas}
-                                                                                                                                                        </span>
-                                                                                                                                                    `;
+                                                                                                ${petugasRuang}
+                                                                                                <br/>
+                                                                                                <span class="text-muted" style="font-size:11px">
+                                                                                                    ${jamPetugas}
+                                                                                                </span>
+                                                                                            `;
                         return renderTextWithStempel(
                             content,
                             row.tgl_ruang != null
@@ -373,22 +437,22 @@
                         const dokter = data ? data.nm_dokter : '-';
                         const isMyVerifikasi = data.kd_dokter === "{{ session()->get('pegawai')->nik }}" ? true : false;
                         const buttonVerif = isMyVerifikasi ? `
-                                                                                                                                                    <button class="btn btn-primary btn-sm" type="button" onclick="verifikasiHasilKritis(${row.id}, 'dokter')">
-                                                                                                                                                        <i class="bi bi-check-circle"></i>
-                                                                                                                                                            Konfirmasi
-                                                                                                                                                            </button>` : '<span class="badge text-bg-danger">Belum dikonfirmasi</span>';
+                                                                                                                                                                                                                                                                <button class="btn btn-primary btn-sm" type="button" onclick="verifikasiHasilKritis(${row.id}, 'dokter')">
+                                                                                                                                                                                                                                                                    <i class="bi bi-check-circle"></i>
+                                                                                                                                                                                                                                                                        Konfirmasi
+                                                                                                                                                                                                                                                                        </button>` : '<span class="badge text-bg-danger">Belum dikonfirmasi</span>';
                         const jamDokter =
                             row.tgl_dokter != null
                                 ? `${formatTanggal(row.tgl_dokter)}`
                                 : buttonVerif;
 
                         const content = `
-                                                                                                                                                        ${dokter}
-                                                                                                                                                        <br/>
-                                                                                                                                                        <span class="text-muted" style="font-size:11px">
-                                                                                                                                                            ${jamDokter}
-                                                                                                                                                        </span>
-                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                    ${dokter}
+                                                                                                                                                                                                                                                                    <br/>
+                                                                                                                                                                                                                                                                    <span class="text-muted" style="font-size:11px">
+                                                                                                                                                                                                                                                                        ${jamDokter}
+                                                                                                                                                                                                                                                                    </span>
+                                                                                                                                                                                                                                                                `;
 
                         return renderTextWithStempel(
                             content,
@@ -460,7 +524,11 @@
                     title: 'Verifikasi Hasil Kritis',
                     text: 'Masukkan password user anda sebagai verifikator/tulbakon',
                     input: 'password',
+                    icon: 'warning',
                     inputPlaceholder: 'Masukkan password',
+                    inputAttributes: {
+                        autocomplete: 'one-time-code'
+                    },
                     showCancelButton: true,
                     confirmButtonText: 'Verifikasi',
                     cancelButtonText: 'Batal',
@@ -502,7 +570,7 @@
                 }).then((result) => {
 
                     if (result.isConfirmed) {
-
+                        const currentCount = result.value.new_count || 0;
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil',
@@ -513,7 +581,13 @@
                             hasilKritis(no_rawat)
 
                         });
-
+                        if (currentCount > 0) {
+                            // Update the count badge or any other element showing the count
+                            $('#textCountHasilKritis').text(currentCount);
+                        } else {
+                            $('#textCountHasilKritis').text('');
+                            $('#alertHasilKritis').fadeOut(500);
+                        }
                         table.ajax.reload();
                     }
 

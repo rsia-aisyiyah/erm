@@ -20,61 +20,56 @@ class HasilKritisFetchService
 
     public function getByPetugas(string $nip, ?string $status = null, ?string $bulanRaw = null)
     {
-        // 1. Inisialisasi query dasar beserta relasinya
         $query = $this->getBaseQuery();
-
-        // 2. Pisahkan filter Role & Status Petugas
         $this->filterByRoleAndStatus($query, $nip, $status);
-
-        // 3. Pisahkan filter Waktu/Bulan
         $this->filterByMonth($query, $bulanRaw);
 
-        // 4. Eksekusi hasil akhir
         return $query->orderBy('tgl', 'desc')->get();
     }
 
-    /**
-     * Fungsi Terpisah: Mengatur Base Query & Eager Loading
-     */
     private function getBaseQuery(): Builder
     {
         return $this->model->with([
             'petugas' => fn($q) => $q->select(['nip', 'nama']),
             'petugasRuang' => fn($q) => $q->select(['nip', 'nama']),
             'dokter' => fn($q) => $q->select(['kd_dokter', 'nm_dokter']),
+            'dokterPj' => fn($q) => $q->select(['kd_dokter', 'nm_dokter']),
             'kamar',
             'regPeriksa.pasien' => fn($q) => $q->select(['no_rkm_medis', 'nm_pasien', 'jk'])
         ]);
     }
 
     /**
-     * Fungsi Terpisah: Mengatur Filter berdasarkan Role & Status Verifikasi
+     * MODIFIKASI: Mendukung pencarian ganda Dokter (Sebagai DPJP Utama ATAU PJ Laborat/Rad)
      */
     private function filterByRoleAndStatus(Builder $query, string $nip, ?string $status): void
     {
         $isDokter = $this->dokterModel->where('kd_dokter', $nip)->exists();
 
         if ($isDokter) {
-            $query->where('dokter', $nip);
-            $this->applyStatusValidation($query, 'tgl_dokter', $status);
+            // Dokter bisa melihat data jika dia tercatat sebagai Dokter DPJP ATAU Dokter PJ Lab/Rad
+            $query->where(function ($q) use ($nip, $status) {
+                $q->where(function ($sub) use ($nip, $status) {
+                    $sub->where('dokter', $nip);
+                    $this->applyStatusValidation($sub, 'tgl_dokter', $status);
+                })->orWhere(function ($sub) use ($nip, $status) {
+                    $sub->where('dokter_pj', $nip);
+                    $this->applyStatusValidation($sub, 'tgl_drpj', $status);
+                });
+            });
         } else {
+            // Untuk perawat/petugas ruangan tetap sama
             $query->where('petugas_ruang', $nip);
             $this->applyStatusValidation($query, 'tgl_ruang', $status);
         }
     }
 
-    /**
-     * Fungsi Terpisah: Helper khusus validasi status 'belum' / 'sudah'
-     */
     private function applyStatusValidation(Builder $query, string $column, ?string $status): void
     {
         $query->when($status === 'belum', fn($q) => $q->whereNull($column))
             ->when($status === 'sudah', fn($q) => $q->whereNotNull($column));
     }
 
-    /**
-     * Fungsi Terpisah: Mengatur Filter Bulan & Tahun
-     */
     private function filterByMonth(Builder $query, ?string $bulanRaw): void
     {
         $query->when($bulanRaw, function ($q, $bulanRaw) {

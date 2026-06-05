@@ -40,6 +40,9 @@ class RsiaHasilKritisController extends Controller
             'dokter' => function ($q) {
                 return $q->select(['kd_dokter', 'nm_dokter']);
             },
+            'dokterPj' => function ($q) {
+                return $q->select(['kd_dokter', 'nm_dokter']);
+            },
             'regPeriksa'
         ])->first();
         return response()->json($hasil);
@@ -54,6 +57,9 @@ class RsiaHasilKritisController extends Controller
                 return $q->select(['nip', 'nama']);
             },
             'dokter' => function ($q) {
+                return $q->select(['kd_dokter', 'nm_dokter']);
+            },
+            'dokterPj' => function ($q) {
                 return $q->select(['kd_dokter', 'nm_dokter']);
             },
             'regPeriksa'
@@ -117,6 +123,45 @@ class RsiaHasilKritisController extends Controller
         } catch (QueryException $e) {
             return response()->json($e->errorInfo, 500);
         }
+    }
+
+    public function update(HasilKritisRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $hasil = RsiaHasilKritis::findOrFail($request->id);
+
+            $hasil->fill([
+                'hasil' => $data['hasil'],
+                'petugas_ruang' => $data['petugas_ruang'],
+                'dokter' => $data['dokter'],
+                'dokter_pj' => $data['dokter_pj'] ?? null, // <-- Tambahkan field baru
+            ]);
+
+            // Deteksi Perubahan Data Lama vs Baru
+            if ($hasil->isDirty('dokter')) {
+                $hasil->tgl_dokter = null;
+                $data['tgl_dokter'] = null;
+            }
+            if ($hasil->isDirty('petugas_ruang')) {
+                $hasil->tgl_ruang = null;
+                $data['tgl_ruang'] = null;
+            }
+            // TAMBAHAN: Jika Dokter PJ diganti, reset tanggal verifikasinya
+            if ($hasil->isDirty('dokter_pj')) {
+                $hasil->tgl_drpj = null;
+                $data['tgl_drpj'] = null;
+            }
+
+            $isSaved = $hasil->save();
+            if ($isSaved) {
+                $this->track->updateSql(new RsiaHasilKritis(), $data, ['id' => $request->id]);
+            }
+            return response()->json($isSaved);
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
+
     }
     public function verifikasi(VerifikasiHasilKritis $service, $id, Request $request)
     {

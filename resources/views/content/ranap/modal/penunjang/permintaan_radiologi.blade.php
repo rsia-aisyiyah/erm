@@ -1,47 +1,60 @@
-<h5 class="text-center">PERMINTAAN RADIOLOGI</h5>
-<form action="" id="formPermintaanRadiologi">
-    <div class="row gy-2 mb-3">
-        <div class="col-md-2">
-            <label for="noorder" class="form-label">No. Permintaan</label>
-            <input type="text" class="form-control" name="noorder" id="noorder" />
-        </div>
-        <div class="col-md-2">
-            @csrf
-            <label for="no_rawat" class="form-label">No. Rawat</label>
-            <input type="text" class="form-control" name="no_rawat" id="no_rawat" readonly />
-            <input type="hidden" name="kd_dokter" id="kd_dokter" />
-            <input type="hidden" name="status" id="status" />
-        </div>
-        <div class="col-md-4">
-            <label for="diagnosa_klinis" class="form-label">Indikasi/Klinis</label>
-            <input type="text" class="form-control" name="diagnosa_klinis" id="diagnosa_klinis" value="-" onfocus="removeZero(this)" onblur="cekKosong(this)" />
-        </div>
-        <div class="col-md-4">
-            <label for="informasi_tambahan" class="form-label">Informasi Tambahan</label>
-            <input type="text" class="form-control" name="informasi_tambahan" id="informasi_tambahan" value="-" onfocus="removeZero(this)" onblur="cekKosong(this)" />
-        </div>
-        <div class="col-md-12">
-            <label for="pemeriksaan_radiologi" class="form-label">Pemeriksaan Lab</label>
-            <select name="pemeriksaan_radiologi" id="pemeriksaan_radiologi" class="form-select" multiple data-dropdown-parent="#formPermintaanRadiologi" style="width:100%"></select>
-        </div>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Permintaan Radiologi</h5>
     </div>
-    <button type="button" class="btn btn-sm btn-primary" id="btnKirimPermintaanRadiologi"> <i class="bi bi-send me-2"></i>Kirim Permintaan</button>
-    <button type="button" class="btn btn-sm btn-success" id="btnDataPermintaanRadiologi"> <i class="bi bi-eye me-2"></i>History Permintaan</button>
-    <table class="table table-responsive table-bordered table-striped d-none mt-2" id="tableHasilPermintaanRadiologi">
-        <thead>
-            <tr class="table-secondary">
-                <th width="2%"></th>
-                <th>No. Order</th>
-                <th>Tanggal & Jam</th>
-                <th>Informasi Tambahan</th>
-                <th>Diagnosa Klinis</th>
-                <th>Tgl & Jam Sample</th>
-                <th>Tgl & Jam Hasil</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</form>
+    <div class="card-body">
+        <form action="" id="formPermintaanRadiologi">
+            <div class="row gy-2 mb-3">
+                <div class="col-md-2">
+                    <label for="noorder" class="form-label">No. Permintaan</label>
+                    <input type="text" class="form-control" name="noorder" id="noorder" />
+                </div>
+                <div class="col-md-2">
+                    @csrf
+                    <label for="no_rawat" class="form-label">No. Rawat</label>
+                    <input type="text" class="form-control" name="no_rawat" id="no_rawat" readonly />
+                    <input type="hidden" name="kd_dokter" id="kd_dokter" />
+                    <input type="hidden" name="status" id="status" />
+                </div>
+                <div class="col-md-4">
+                    <label for="diagnosa_klinis" class="form-label">Indikasi/Klinis</label>
+                    <input type="text" class="form-control" name="diagnosa_klinis" id="diagnosa_klinis" value="-"
+                        onfocus="removeZero(this)" onblur="cekKosong(this)" />
+                </div>
+                <div class="col-md-4">
+                    <label for="informasi_tambahan" class="form-label">Informasi Tambahan</label>
+                    <input type="text" class="form-control" name="informasi_tambahan" id="informasi_tambahan" value="-"
+                        onfocus="removeZero(this)" onblur="cekKosong(this)" />
+                </div>
+                <div class="col-md-12">
+                    <label for="pemeriksaan_radiologi" class="form-label">Pemeriksaan Lab</label>
+                    <select name="pemeriksaan_radiologi" id="pemeriksaan_radiologi" class="form-select" multiple
+                        data-dropdown-parent="#formPermintaanRadiologi" style="width:100%"></select>
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary" id="btnKirimPermintaanRadiologi"> <i
+                    class="bi bi-send me-2"></i>Kirim Permintaan</button>
+            <button type="button" class="btn btn-sm btn-success" id="btnDataPermintaanRadiologi"> <i
+                    class="bi bi-eye me-2"></i>History Permintaan</button>
+            <table class="table table-responsive table-bordered table-striped d-none mt-2"
+                id="tableHasilPermintaanRadiologi">
+                <thead>
+                    <tr class="table-secondary">
+                        <th width="2%"></th>
+                        <th>No. Order</th>
+                        <th>Tanggal & Jam</th>
+                        <th>Informasi Tambahan</th>
+                        <th>Diagnosa Klinis</th>
+                        <th>Tgl & Jam Sample</th>
+                        <th>Tgl & Jam Hasil</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </form>
+    </div>
+
+</div>
 @push('script')
     <script>
         const btnKirimPermintaanRadiologi = $('#btnKirimPermintaanRadiologi')
@@ -146,18 +159,18 @@
             }).done((response) => {
                 const permintaaan = response.map((item, index) => {
                     return `<tr>
-                            <td>${index+1}</td>
-                            <td>${item.noorder}</td>
-                            <td>${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</td>
-                            <td>${item.informasi_tambahan}</td>
-                            <td>${item.diagnosa_klinis}</td>
-                            <td>${splitTanggal(item.tgl_sampel)} ${item.jam_sampel}</td>
-                            <td>${splitTanggal(item.tgl_hasil)} ${item.jam_hasil}</td>
-                            </tr>
-                        <tr>
-                            <td></td>
-                            <td colspan=6>${renderJenisPermintaanRadiologi(item.permintaan_pemeriksaan)}</td>
-                        </tr>`
+                                        <td>${index + 1}</td>
+                                        <td>${item.noorder}</td>
+                                        <td>${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</td>
+                                        <td>${item.informasi_tambahan}</td>
+                                        <td>${item.diagnosa_klinis}</td>
+                                        <td>${splitTanggal(item.tgl_sampel)} ${item.jam_sampel}</td>
+                                        <td>${splitTanggal(item.tgl_hasil)} ${item.jam_hasil}</td>
+                                        </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan=6>${renderJenisPermintaanRadiologi(item.permintaan_pemeriksaan)}</td>
+                                    </tr>`
                 })
 
                 tableHasilPermintaanRadiologi.find('tbody').empty().append(permintaaan);

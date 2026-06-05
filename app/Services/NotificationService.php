@@ -52,23 +52,38 @@ class NotificationService
         $pegawai = session()->get('pegawai');
         $nik = $pegawai->nik;
 
-        // 2. Tentukan field pencarian berdasarkan data session pegawai
-        // Asumsi: Jika di session ada properti 'kd_sps' atau 'jabatan' mengandung kata Dokter
-        // Atau jika format NIK dokter berbeda, silakan sesuaikan kondisi ini.
+        // 2. Tentukan apakah user adalah Dokter
         $isDokter = isset($pegawai->kd_sps) || (isset($pegawai->jbtn) && str_contains(strtolower($pegawai->jbtn), 'dokter'));
 
         // 3. Bangun query dasar
         $query = RsiaHasilKritis::query();
 
         if ($isDokter) {
-            // Jika Dokter: cari yang kolom 'dokter' sesuai NIK-nya, dan 'tgl_dokter' masih kosong
-            $query->where('dokter', $nik)
-                ->where(function ($q) {
-                    $q->whereNull('tgl_dokter')
-                        ->orWhere('tgl_dokter', '0000-00-00 00:00:00');
-                });
+            // JIKA DOKTER: Hitung penugasan sebagai DPJP Utama ATAU sebagai PJ Lab/Radiologi
+            $query->where(function ($q) use ($nik) {
+
+                // Kondisi A: Sebagai Dokter Utama yang tgl_dokter-nya masih kosong
+                $q->where(function ($sub) use ($nik) {
+                    $sub->where('dokter', $nik)
+                        ->where(function ($empty) {
+                            $empty->whereNull('tgl_dokter')
+                                ->orWhere('tgl_dokter', '0000-00-00 00:00:00');
+                        });
+                })
+
+                    // ATAU Kondisi B: Sebagai Dokter PJ Lab/Rad yang tgl_drpj-nya masih kosong
+                    ->orWhere(function ($sub) use ($nik) {
+                        $sub->where('dokter_pj', $nik)
+                            ->where(function ($empty) {
+                                $empty->whereNull('tgl_drpj')
+                                    ->orWhere('tgl_drpj', '0000-00-00 00:00:00');
+                            });
+                    });
+
+            });
+
         } else {
-            // Jika Petugas Ruang (Perawat/Bidan/Admin): cari yang kolom 'petugas_ruang' sesuai NIK-nya, dan 'tgl_ruang' masih kosong
+            // JIKA PETUGAS RUANG: Tetap seperti logika lama Anda
             $query->where('petugas_ruang', $nik)
                 ->where(function ($q) {
                     $q->whereNull('tgl_ruang')
@@ -76,7 +91,7 @@ class NotificationService
                 });
         }
 
-        // 4. Kembalikan total data yang belum diverifikasi
+        // 4. Kembalikan total data yang belum diverifikasi pada bulan berjalan
         return $query
             ->whereMonth('tgl', date('m'))
             ->whereYear('tgl', date('Y'))

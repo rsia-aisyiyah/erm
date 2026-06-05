@@ -54,27 +54,17 @@
                             aria-selected="true">Tindakan
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="permintaan-laborat-tab" data-bs-toggle="tab"
-                            data-bs-target="#permintaan-laborat-tab-pane" type="button" role="tab"
-                            aria-controls="permintaan-laborat-tab-pane" aria-selected="true">Permintaan Lab
-                        </button>
-                    </li>
+
                     <li class="nav-item" role="presentation" id="li-lab-ana">
                         <button class="nav-link" id="tab-lab" data-bs-toggle="tab" data-bs-target="#lab-ana"
-                            type="button" role="tab" aria-controls="lab-ana" aria-selected="false">Hasil
+                            type="button" role="tab" aria-controls="lab-ana" aria-selected="false">
                             Laboratorium
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab"
-                            data-bs-target="#permintaan-radiologi-tab-pane" type="button" role="tab"
-                            aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan Radiologi
-                        </button>
-                    </li>
+
                     <li class="nav-item" role="presentation" id="li-rad-ana">
                         <button class="nav-link" id="tab-rad" data-bs-toggle="tab" data-bs-target="#rad-ana"
-                            type="button" role="tab" aria-controls="rad-ana" aria-selected="false">Hasil Radiologi
+                            type="button" role="tab" aria-controls="rad-ana" aria-selected="false">Radiologi
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -83,6 +73,13 @@
                             Skrining/Skoring TB
                         </button>
                     </li>
+                    {{-- <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="asesmenNyeriAnak" data-bs-toggle="tab"
+                            data-bs-target="#asesmenNyeriAnak-pane" type="button" role="tab"
+                            aria-controls="asesmenNyeriAnak-pane" aria-selected="true">
+                            Asesmen Nyeri Anak
+                        </button>
+                    </li> --}}
 
                 </ul>
                 <div class="tab-content" id="tabContentPemeriksaan">
@@ -110,80 +107,75 @@
                         aria-labelledby="tab-asmed-ranap" tabindex="0">
                         @include('content.ranap.form.form_asemd_anak')
                     </div>
-                    <div class="tab-pane fade" id="permintaan-laborat-tab-pane" role="tabpanel"
-                        aria-labelledby="permintaan-laborat-tab" tabindex="0">
-                        @include('content.ranap.modal.penunjang.permintaan_lab')
 
-                    </div>
                     <div class="tab-pane fade  p-2 m-2" id="tabTindakan-pane" role="tabpanel"
                         aria-labelledby="tabTindakan" tabindex="0">
                         @include('content.poliklinik.modal.tab-tindakan')
+
+                    </div>
+                    <div class="tab-pane fade  p-2 m-2" id="asesmenNyeriAnak-pane" role="tabpanel"
+                        aria-labelledby="tabTindakan" tabindex="0">
+                        @include('content.ranap.form.form_nyeri_anak')
                     </div>
                     <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab" tabindex="0">
                         {{-- <small
                             class="d-none mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3"
                             id="alertHasilLab">Belum / Tidak dilakukan pemeriksaan laboratorium</small> --}}
-                        <div class="row gy-2">
-                            <div class="col-lg-8 col-md-12 col-sm-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title">
-                                            Hasil Pemeriksaan Laboratorium
-                                        </h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="table table-bordered" width="100%" id="tbHasilLabRalan">
-                                            <thead>
-                                                <tr>
-                                                    <th>Pemeriksaan</th>
-                                                    <th>Hasil</th>
-                                                    <th>Nilai Rujukan</th>
-                                                    <th>Keterangan</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tabel-lab">
-                                            </tbody>
-                                        </table>
-                                        <button type="button" class="mt-1 btn btn-warning btn-sm" id="btnHasilKritis"><i
-                                                class="bi bi-pencil me-2"></i> Hasil Kritis
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-12 col-sm-12">
-                                <ul class="list-group" id='listRiwayatLaboratorium'>
+                        <ul class="nav nav-tabs nav-tabs-expand" id="tab-laborat" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="permintaan-laborat-tab" data-bs-toggle="tab"
+                                    data-bs-target="#permintaan-laborat-tab-pane" type="button" role="tab"
+                                    aria-controls="permintaan-laborat-tab-pane" aria-selected="true">Permintaan Lab
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="hasil-laborat-tab" data-bs-toggle="tab"
+                                    data-bs-target="#hasil-laborat-tab-pane" type="button" role="tab"
+                                    aria-controls="hasil-laborat-tab-pane" aria-selected="false">Hasil
+                                    Laboratorium
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="tabContentLaboratorium">
+                            <div class="tab-pane fade p-3" id="permintaan-laborat-tab-pane" role="tabpanel"
+                                aria-labelledby="permintaan-laborat-tab" tabindex="0">
+                                @include('content.ranap.modal.penunjang.permintaan_lab')
 
-                                </ul>
+                            </div>
+                            <div class="tab-pane fade p-3" id="hasil-laborat-tab-pane" role="tabpanel"
+                                aria-labelledby="hasil-laborat-tab-pane" tabindex="0">
+                                @include('content.ranap.modal.penunjang.hasil_lab')
                             </div>
                         </div>
+                    </div>
 
-                    </div>
-                    <div class="tab-pane fade" id="permintaan-radiologi-tab-pane" role="tabpanel"
-                        aria-labelledby="permintaan-radiologi-tab" tabindex="0">
-                        @include('content.ranap.modal.penunjang.permintaan_radiologi')
-                    </div>
                     <div class="tab-pane fade p-3" id="rad-ana" role="tabpanel" aria-labelledby="tab-radiologi"
                         tabindex="0">
-                        <small
-                            class="mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3"
-                            id="alertHasilRadiologi" style="display: none">Belum / Tidak dilakukan pemeriksaan
-                            radiologi</small>
-                        <div class="row" id="viewHasilRadiologi" style="display: none">
-                            <table class="table text-sm table-bordered" id="tbHasilRadiologi">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal Sampel</th>
-                                        <th>Diagnosa Klinis</th>
-                                        <th>Informasi Medis</th>
-                                        <th>Jenis Pemeriksaan</th>
-                                        <th>Hasil</th>
-                                        <th>Gambar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
+                        <ul class="nav nav-tabs nav-tabs-expand" id="tab-radiologi" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab"
+                                    data-bs-target="#permintaan-radiologi-tab-pane" type="button" role="tab"
+                                    aria-controls="permintaan-radiologi-tab-pane" aria-selected="true">Permintaan
+                                    Radiologi
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="hasil-radiologi-tab" data-bs-toggle="tab"
+                                    data-bs-target="#hasil-radiologi-tab-pane" type="button" role="tab"
+                                    aria-controls="hasil-radiologi-tab-pane" aria-selected="true">Hasil
+                                    Radiologi
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="tabContentRadiologi">
+                            <div class="tab-pane fade p-3" id="permintaan-radiologi-tab-pane" role="tabpanel"
+                                aria-labelledby="permintaan-radiologi-tab" tabindex="0">
+                                @include('content.ranap.modal.penunjang.permintaan_radiologi')
+                            </div>
+                            <div class="tab-pane fade p-3" id="hasil-radiologi-tab-pane" role="tabpanel"
+                                aria-labelledby="hasil-radiologi-tab" tabindex="0">
+                                @include('content.ranap.modal.penunjang.hasil_radiologi')
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade p-3" id="skriningTB-pane" role="tabpanel" aria-labelledby="tab-tb"
@@ -288,14 +280,18 @@
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                         class="bi bi-x-circle"></i> Keluar
                 </button>
-                <button type="button" class="btn btn-success btn-sm btn-soap" onclick="simpanSoapRalan()"><i
+                <button type="button" class="btn btn-success btn-sm btn-soap btnAction" onclick="simpanSoapRalan()"><i
                         class="bi bi-save"></i> Simpan SOAP
                 </button>
-                <button type="button" class="btn btn-success btn-sm btn-asmed" name="simpan"><i class="bi bi-save"></i>
+                <button type="button" class="btn btn-success btn-sm btn-asmed btnAction" name="simpan"><i
+                        class="bi bi-save"></i>
                     Simpan Asmed Rajal
                 </button>
-                <button type="button" class="btn btn-success btn-sm btn-asmed-ranap d-none" name="simpan"><i
+                <button type="button" class="btn btn-success btn-sm btn-asmed-ranap d-none btnAction" name="simpan"><i
                         class="bi bi-save"></i> Simpan Asmed Ranap
+                </button>
+                <button type="button" class="btn btn-success btn-sm d-none btnAction" name="btnCreateAsesmenNyeri"
+                    id="btnCreateAsesmenNyeri"><i class="bi bi-save"></i> Simpan Asesmen Nyeri
                 </button>
 
             </div>
@@ -323,45 +319,57 @@
 
         const btnsSkriningTB = $('button[data-bs-target="#skriningTB-pane"]');
 
+        const btnAsesmenNyeriAnak = $('button[data-bs-target="#asesmenNyeriAnak-pane"]')
 
+        const btnTabLaboratorium = $('button[data-bs-target="#lab-ana"]');
+        const btnTabRadiologi = $('button[data-bs-target="#rad-ana"]');
+
+        function updateActionButtons(selectorToShow) {
+            $('.btnAction').addClass('d-none');
+            $(selectorToShow).removeClass('d-none');
+        }
         $('button[data-bs-target="#tab-soap-pane"]').on('shown.bs.tab', function (e, x, y) {
-            $('.btn-asmed-ranap').addClass('d-none')
-            $('.btn-asmed').addClass('d-none')
-            $('.btn-soap').removeClass('d-none')
+            updateActionButtons('.btn-soap')
 
         })
 
         btnTabAsmedAnak.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedAnak)
-            $('.btn-asmed-ranap').addClass('d-none')
-            $('.btn-asmed').removeClass('d-none')
-            $('.btn-soap').addClass('d-none')
+            updateActionButtons('.btn-asmed')
 
         })
         btnTabAsmedObgyn.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRajalKandungan)
-            $('.btn-asmed-ranap').addClass('d-none')
-            $('.btn-asmed').removeClass('d-none')
-            $('.btn-soap').addClass('d-none')
+            updateActionButtons('.btn-asmed')
 
         })
         btnTabAsmedRanapAnak.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRanapAnak)
-            $('.btn-asmed-ranap').removeClass('d-none')
-            $('.btn-asmed').addClass('d-none')
-            $('.btn-soap').addClass('d-none')
+            updateActionButtons('.btn-asmed-ranap')
         })
 
         btnTabAsmedRanapObgyn.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             setSoapToAsmed(no_rawat, formAsmedRanapKandungan)
-            $('.btn-asmed-ranap').removeClass('d-none')
-            $('.btn-asmed').addClass('d-none')
-            $('.btn-soap').addClass('d-none')
+            updateActionButtons('.btn-asmed-ranap')
         });
+
+        btnAsesmenNyeriAnak.on('shown.bs.tab', function () {
+            const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
+            resetFormAsesmenNyeriAnak(no_rawat);
+            renderAsesmenNyeriAnak(no_rawat)
+            updateActionButtons('#btnCreateAsesmenNyeri')
+            $('#btnCreateAsesmenNyeri').attr('onclick', 'createAsesmenNyeriAnak()')
+        })
+        btnAsesmenNyeriAnak.on('hidden.bs.tab', function () {
+            $('#btnCreateAsesmenNyeri').removeAttr('onclick')
+        })
+
+
+
 
         btnsSkriningTB.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
@@ -386,7 +394,15 @@
             $('.btn-asmed-ranap').addClass('d-none')
             $('.btn-asmed').addClass('d-none')
             $('.btn-soap').addClass('d-none')
+        });
+
+        btnTabLaboratorium.on('shown.bs.tab', function (e, x, y) {
+            $('#permintaan-laborat-tab').tab('show')
         })
+        btnTabRadiologi.on('shown.bs.tab', function (e, x, y) {
+            $('#permintaan-radiologi-tab').tab('show')
+        })
+
 
 
         function setRiwayatLaboratorium(no_rkm_medis) {
@@ -405,14 +421,14 @@
 
                 const list = data.map((item, index) => {
                     return `<li class="list-group-item"  data-no-rawat="${item.no_rawat}" onclick="hasilLabRalan('${item.no_rawat}')">
-                                        <div class="d-flex justify-content-between">
+                                                                                                                                                                                                                                                                                                                                                <div class="d-flex justify-content-between">
 
-                                        <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
-                                        <span>
-                                               ${item.diagnosa_klinis} ${item.informasi_tambahan}
-                                        </span>
-                                        </div>
-                                    </li>`
+                                                                                                                                                                                                                                                                                                                                                <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
+                                                                                                                                                                                                                                                                                                                                                <span>
+                                                                                                                                                                                                                                                                                                                                                       ${item.diagnosa_klinis} ${item.informasi_tambahan}
+                                                                                                                                                                                                                                                                                                                                                </span>
+                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                            </li>`
                 }).join('')
 
                 listRiwayatLaboratorium.on('click', 'li', function () {
@@ -451,18 +467,18 @@
 
                         if (item.detail.length) {
                             hasilLab += `<tr class="" >
-                                    <td colspan="3" style="background-color:#ffc800;padding:2px">
-                                        <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
-                                        ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
-                                    </td>
-                                    <td  style="background-color:#ffc800;padding:2px">${item.petugas.nama}</td></tr>`;
+                                                                                                                                                                                                                                                                                                                                            <td colspan="3" style="background-color:#ffc800;padding:2px">
+                                                                                                                                                                                                                                                                                                                                                <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
+                                                                                                                                                                                                                                                                                                                                                ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
+                                                                                                                                                                                                                                                                                                                                            </td>
+                                                                                                                                                                                                                                                                                                                                            <td  style="background-color:#ffc800;padding:2px">${item.petugas.nama}</td></tr>`;
                             item.detail.sort((a, b) => a.template.urut - b.template.urut);
                             item.detail.forEach((detail, index) => {
                                 hasilLab += `<tr class="${setWarnaPemeriksaan(detail.keterangan)}">
-                                        <td>${detail.template.Pemeriksaan}</td>
-                                        <td>${detail.nilai} ${detail.template.satuan}</td>
-                                        <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
-                                        <td>${detail.keterangan}</td></tr>`
+                                                                                                                                                                                                                                                                                                                                                <td>${detail.template.Pemeriksaan}</td>
+                                                                                                                                                                                                                                                                                                                                                <td>${detail.nilai} ${detail.template.satuan}</td>
+                                                                                                                                                                                                                                                                                                                                                <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
+                                                                                                                                                                                                                                                                                                                                                <td>${detail.keterangan}</td></tr>`
                             })
                         }
                     })
@@ -488,10 +504,10 @@
                 if (Object.keys(permintaan).length) {
                     permintaan.map((prm, index) => {
                         html = `<tr><td>${splitTanggal(prm.tgl_hasil)} ${prm.jam_hasil}</td>
-                                        <td>${prm.diagnosa_klinis}</td>
-                                        <td>${prm.informasi_tambahan}</td>
-                                        <td>
-                                `
+                                                                                                                                                                                                                                                                                                                                                <td>${prm.diagnosa_klinis}</td>
+                                                                                                                                                                                                                                                                                                                                                <td>${prm.informasi_tambahan}</td>
+                                                                                                                                                                                                                                                                                                                                                <td>
+                                                                                                                                                                                                                                                                                                                                        `
                         prm.periksa_radiologi.map((periksa) => {
                             if (periksa.tgl_periksa == prm.tgl_hasil && periksa.jam == prm.jam_hasil) {
                                 html += `${periksa.jns_perawatan.nm_perawatan}, <br/>`
@@ -512,8 +528,8 @@
                                 if (gambar.tgl_periksa == prm.tgl_hasil && gambar.jam == prm.jam_hasil) {
                                     gbr = `${getBaseUrl(`/webapps/radiologi/${gambar.lokasi_gambar}`)}`
                                     html += `<a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gbr}">
-                                                        <i class="bi bi-eye"></i> BUKA GAMBAR
-                                                    </a><br/>`
+                                                                                                                                                                                                                                                                                                                                                                <i class="bi bi-eye"></i> BUKA GAMBAR
+                                                                                                                                                                                                                                                                                                                                                            </a><br/>`
                                 } else {
                                     html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
 
@@ -1506,7 +1522,7 @@
                             $(`#formAsmedRanapKandungan textarea[name=${index}]`).val(value)
                         }
                     })
-                    
+
                 } else {
                     const form = $('#formAsmedRanapKandungan');
                     setSoapToAsmed(no_rawat, form);

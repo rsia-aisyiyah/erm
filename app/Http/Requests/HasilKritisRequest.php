@@ -33,6 +33,8 @@ class HasilKritisRequest extends FormRequest
             'tgl_ruang' => 'nullable',
             'dokter' => 'required|string|max:20',
             'tgl_dokter' => 'nullable',
+            'dokter_pj' => 'required|string|max:20',
+            'tgl_drpj' => 'nullable',
         ];
     }
 
@@ -86,6 +88,7 @@ class HasilKritisRequest extends FormRequest
             'petugas_ruang.required' => 'Petugas ruang wajib diisi.',
 
             'dokter.required' => 'Dokter wajib diisi.',
+            'dokter_pj.required' => 'Dokter PJ wajib diisi.',
 
         ];
     }
