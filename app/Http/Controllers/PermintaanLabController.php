@@ -6,6 +6,7 @@ use App\Models\PermintaanLab;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class PermintaanLabController extends Controller
@@ -59,7 +60,7 @@ class PermintaanLabController extends Controller
         }
     }
 
-    function get(Request $request): JsonResponse
+    function get(Request $request)
     {
         $permintaan = $this->permintaan->with([
             'pemeriksaan' => function ($q) {
@@ -77,13 +78,18 @@ class PermintaanLabController extends Controller
                 ]);
             },
             'saranKesan',
-            'pasien'
+            'pasien',
+            'detailSaran' => function ($q) {
+                $q->join('dokter', 'rsia_saran_kesan.kd_dokter', '=', 'dokter.kd_dokter')
+                    ->select(['noorder', 'created_at', 'updated_at', 'dokter.kd_dokter', 'dokter.nm_dokter', 'saran', 'kesan']);
+            }
         ])->orderBy('noorder', 'desc');
 
         if ($request->noorder) {
             $permintaan = $permintaan->where('noorder', $request->noorder)
                 ->first();
         } else if ($request->tgl_hasil && $request->jam_hasil) {
+
             $permintaan = $permintaan->where('no_rawat', $request->no_rawat)
                 ->where('tgl_permintaan', $request->tgl_hasil)
                 ->where('jam_permintaan', $request->jam_hasil)

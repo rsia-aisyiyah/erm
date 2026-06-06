@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\PemeriksaanRanap;
+use App\Models\PermintaanLab;
 use App\Models\RsiaHasilKritis;
 use Illuminate\Support\Facades\Auth;
 
@@ -96,5 +97,17 @@ class NotificationService
             ->whereMonth('tgl', date('m'))
             ->whereYear('tgl', date('Y'))
             ->count();
+    }
+
+    function getPermintaanLabDoesntHaveSaran()
+    {
+        $query = PermintaanLab::whereDoesntHave('detailSaran')
+            ->whereHas('hasil')
+            ->whereMonth('tgl_permintaan', date('m'))
+            ->whereYear('tgl_permintaan', date('Y'))
+            ->count();
+
+        return $query;
+
     }
 }

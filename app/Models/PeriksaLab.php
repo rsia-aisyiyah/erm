@@ -56,8 +56,9 @@ class PeriksaLab extends Model
     }
     function saranKesan()
     {
-        return $this->hasOne(SaranKesanLab::class, ['no_rawat', 'tgl_periksa', 'jam'], ['no_rawat', 'tgl_periksa', 'jam']);
-    }function regPeriksa()
+        return $this->hasOne(SaranKesanLab::class, ['no_rawat', 'tgl_periksa', 'jam'], ['no_rawat', 'tgl_hasil', 'jam_hasil']);
+    }
+    function regPeriksa()
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
     }

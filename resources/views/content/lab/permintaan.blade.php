@@ -7,9 +7,9 @@
                 <div class="col-lg-3 col-md-12 col-md-12">
                     <label class="form-label">Tgl. Pemeriksaan</label>
                     <x-input-group class="input-group-sm">
-                        <x-input id="tgl_pertama" name="tgl_pertama" class="filterTanggal"/>
+                        <x-input id="tgl_pertama" name="tgl_pertama" class="filterTanggal" />
                         <x-input-group-text>s.d.</x-input-group-text>
-                        <x-input id="tgl_kedua" name="tgl_kedua" class="filterTanggal"/>
+                        <x-input id="tgl_kedua" name="tgl_kedua" class="filterTanggal" />
                         <button class="btn btn-primary" id="btnFilterTglLab">
                             <i class="bi bi-search"></i>
                         </button>
@@ -29,7 +29,7 @@
 
 
     <div class="modal fade" id="modalHasilPermintaanLab" tabindex="-1" aria-labelledby="modalExampleLabel"
-         aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
@@ -43,58 +43,65 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="no_rawat">No. Rawat</label>
-                                        <x-input id="no_rawat" name="no_rawat" readonly/>
+                                        <x-input id="no_rawat" name="no_rawat" readonly />
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-4">
                                         <label for="nm_pasien">Pasien</label>
-                                        <x-input id="nm_pasien" name="nm_pasien" readonly/>
+                                        <x-input id="nm_pasien" name="nm_pasien" readonly />
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="tgl_lahir">Tgl. Lahir/Umur</label>
-                                        <x-input id="tgl_lahir" name="tgl_lahir" readonly/>
+                                        <x-input id="tgl_lahir" name="tgl_lahir" readonly />
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-4">
                                         <label for="dokter">Dokter DPJP</label>
-                                        <x-input id="dokter" name="dokter" readonly/>
+                                        <x-input id="dokter" name="dokter" readonly />
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-3">
                                         <label for="kamarInap">Kamar Inap</label>
-                                        <x-input id="kamarInap" name="kamarInap" readonly/>
+                                        <x-input id="kamarInap" name="kamarInap" readonly />
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-3">
                                         <label for="diagnosis_awal">Dx. Awal</label>
-                                        <x-input id="diagnosis_awal" name="diagnosis_awal" readonly/>
+                                        <x-input id="diagnosis_awal" name="diagnosis_awal" readonly />
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="informasi">Informasi Lain</label>
-                                        <x-input id="informasi" name="informasi" readonly/>
+                                        <x-input id="informasi" name="informasi" readonly />
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="tgl_sampel">Tgl. Sampling/Periksa</label>
-                                        <x-input id="tgl_sampel" name="tgl_sampel" readonly/>
+                                        <x-input id="tgl_sampel" name="tgl_sampel" readonly />
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-2">
                                         <label for="petugas">Tgl. Hasil</label>
-                                        <x-input id="tgl_hasil" name="tgl_hasil" readonly/>
+                                        <x-input id="tgl_hasil" name="tgl_hasil" readonly />
                                     </div>
                                 </div>
-                                <hr/>
+                                <hr />
                             </form>
                             <div class="row gy-2">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <table class="table table-bordered" id="tbHasilPermintaanLab">
-                                        <thead>
-                                        <tr>
-                                            <th>Pemeriksaan</th>
-                                            <th>Hasil</th>
-                                            <th>Nilai Rujukan</th>
-                                            <th>Keterangan</th>
-                                        </tr>
-                                        </thead>
+                                    <div class="card">
+                                        <div class="card-header text-bg-primary">
+                                            <h5 class="card-title m-0">Hasil Pemeriksaan</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered" id="tbHasilPermintaanLab">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Pemeriksaan</th>
+                                                        <th>Hasil</th>
+                                                        <th>Nilai Rujukan</th>
+                                                        <th>Keterangan</th>
+                                                    </tr>
+                                                </thead>
 
-                                        <tbody></tbody>
+                                                <tbody></tbody>
 
-                                    </table>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                                 {{-- <div class="col-lg-6 col-sm-12 col-md-12">
                                     <div id="formSaranKesanLab">
@@ -111,8 +118,8 @@
                             <div class="row gy-3">
                                 <div class="col-lg-12 order-lg-1 order-sm-2 order-md-2">
                                     <p class="h5">Riwayat Permintaan </p>
-                                    <ol class="list-group list-group-numbered overflow-auto"
-                                        id="listRiwayatPermintaanLab" style="max-height: 300px">
+                                    <ol class="list-group list-group-numbered overflow-auto" id="listRiwayatPermintaanLab"
+                                        style="max-height: 300px">
 
                                     </ol>
                                 </div>
@@ -121,15 +128,26 @@
                                         <legend class="w-auto float-none" style="font-size : 14px">Saran & Kesan Hasil
                                         </legend>
                                         <form action="" id="saranKesanLab">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="kd_dokter">No. Order</label>
+                                                    <x-input id="noorder" name="noorder" style="width: 100%;"
+                                                        readonly></x-input>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="kd_dokter">Dokter</label>
+                                                    <select id="kd_dokter" name="kd_dokter" style="width: 100%;"></select>
+                                                </div>
+                                            </div>
                                             <label for="saran">Saran</label>
                                             <x-textarea id="saran" name="saran"></x-textarea>
                                             <label for="kesan">Kesan</label>
                                             <x-textarea id="kesan" name="kesan"></x-textarea>
                                             <button type="button" class="mt-2 btn btn-primary btn-sm"
-                                                    id="btnSimpanHasilSaranLab"><i class="bi bi-save"></i> Simpan
+                                                id="btnSimpanHasilSaranLab"><i class="bi bi-save"></i> Simpan
                                             </button>
                                             <button type="button" class="mt-2 btn btn-danger btn-sm"
-                                                    id="btnHapusHasilSaranLab"><i class="bi bi-trash"></i> Hapus
+                                                id="btnHapusHasilSaranLab"><i class="bi bi-trash"></i> Hapus
                                             </button>
                                         </form>
                                     </fieldset>
@@ -168,6 +186,7 @@
         const saranLab = saranKesanLab.find('#saran');
         const kesanLab = saranKesanLab.find('#kesan');
         const btnHapusHasilSaranLab = $('#btnHapusHasilSaranLab');
+        const selectDokterSaran = saranKesanLab.find('#kd_dokter');
 
         $(document).ready(() => {
             rendertableDataPermintaanLab();
@@ -184,6 +203,34 @@
 
         $('#tgl_pertama').datepicker('setDate', tgl_pertama);
         $('#tgl_kedua').datepicker('setDate', tgl_kedua);
+
+        selectDokterSaran.select2({
+            dropdownParent: modalHasilPermintaanLab,
+            delay: 0,
+            scrollAfterSelect: false,
+            initSelection: function (element, callback) { },
+            ajax: {
+                url: `${url}/dokter/cari`,
+                dataType: 'json',
+                data: (params) => {
+                    const query = {
+                        nm_dokter: params.term
+                    }
+                    return query
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.nm_dokter,
+                                id: item.kd_dokter
+                            }
+                        })
+                    };
+                },
+                cache: false
+            }
+        })
 
         function rendertableDataPermintaanLab() {
             tableDataPermintaanLab.dataTable({
@@ -230,86 +277,86 @@
                     title: 'No. Order',
                     data: 'noorder',
                     name: 'noorder',
-                    render: (data, type, row, meta)=> {
+                    render: (data, type, row, meta) => {
                         return `<a href="javascript:void(0)" style="text-decoration: none;color:#000000" onclick="showHasilPemeriksaanLab('${row.no_rawat}','${data}')">${data}</a>`
                     }
                 },
-                    {
-                        title: 'Nama',
-                        data: 'reg_periksa',
-                        name: 'no_rawat',
-                        render: (data, type, row, meta) => {
-                            return `${data.no_rawat} <br/><strong>${data.no_rkm_medis} - ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})</strong>`
-                        }
-                    },
-                    {
-                        title: 'Diagnosis',
-                        data: 'diagnosa_klinis',
-                        name: 'diagnosa_klinis',
-                    },
-                    {
-                        title: 'Informasi',
-                        data: 'informasi_tambahan',
-                        name: 'informasi_tambahan',
-                    },
+                {
+                    title: 'Nama',
+                    data: 'reg_periksa',
+                    name: 'no_rawat',
+                    render: (data, type, row, meta) => {
+                        return `${data.no_rawat} <br/><strong>${data.no_rkm_medis} - ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})</strong>`
+                    }
+                },
+                {
+                    title: 'Diagnosis',
+                    data: 'diagnosa_klinis',
+                    name: 'diagnosa_klinis',
+                },
+                {
+                    title: 'Informasi',
+                    data: 'informasi_tambahan',
+                    name: 'informasi_tambahan',
+                },
 
-                    {
-                        title: 'Tgl. Permintaan',
-                        data: 'tgl_permintaan',
-                        render: (data, type, row, meta) => {
-                            return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_permintaan}`
+                {
+                    title: 'Tgl. Permintaan',
+                    data: 'tgl_permintaan',
+                    render: (data, type, row, meta) => {
+                        return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_permintaan}`
+                    }
+                }, {
+                    title: 'Tgl. Sampling',
+                    data: 'tgl_sampel',
+                    render: (data, type, row, meta) => {
+                        if (data === '0000-00-00') {
+                            return '-';
                         }
-                    }, {
-                        title: 'Tgl. Sampling',
-                        data: 'tgl_sampel',
-                        render: (data, type, row, meta) => {
-                            if (data === '0000-00-00') {
-                                return '-';
-                            }
-                            return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_sampel}`
+                        return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_sampel}`
+                    }
+                },
+                {
+                    title: 'Tgl. Hasil',
+                    data: 'tgl_hasil',
+                    render: (data, type, row, meta) => {
+                        if (data === '0000-00-00') {
+                            return '-';
                         }
-                    },
-                    {
-                        title: 'Tgl. Hasil',
-                        data: 'tgl_hasil',
-                        render: (data, type, row, meta) => {
-                            if (data === '0000-00-00') {
-                                return '-';
-                            }
-                            return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_hasil}`
+                        return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_hasil}`
+                    }
+                },
+                {
+                    title: 'Dokter Perujuk',
+                    data: 'dokter.nm_dokter',
+                    name: 'dokter_perujuk',
+                },
+                {
+                    title: 'Pembiayaan',
+                    data: 'reg_periksa.penjab',
+                    orderable: false,
+                    // name: 'reg_periksa.penjab',
+                    render: (data, type, row, meta) => {
+                        if (data.kd_pj == 'A01' || data.kd_pj == 'A05') {
+                            return `<strong class="text-success">${data.png_jawab}</strong>`
+                        } else {
+                            return `<strong class="text-danger">${data.png_jawab}</strong>`
                         }
-                    },
-                    {
-                        title: 'Dokter Perujuk',
-                        data: 'dokter.nm_dokter',
-                        name: 'dokter_perujuk',
-                    },
-                    {
-                        title: 'Pembiayaan',
-                        data: 'reg_periksa.penjab',
-                        orderable: false,
-                        // name: 'reg_periksa.penjab',
-                        render: (data, type, row, meta) => {
-                            if (data.kd_pj == 'A01' || data.kd_pj == 'A05') {
-                                return `<strong class="text-success">${data.png_jawab}</strong>`
-                            } else {
-                                return `<strong class="text-danger">${data.png_jawab}</strong>`
-                            }
+                    }
+                },
+                {
+                    title: 'Status',
+                    data: 'status',
+                    name: 'status',
+                    orderable: false,
+                    render: (data, type, row, meta) => {
+                        if (data === 'ralan') {
+                            return '<button type="button" class="btn btn-warning btn-sm ">Rawat Jalan</button>';
+                        } else {
+                            return '<button type="button" class="btn btn-danger btn-sm">Rawat Inap</button>';
                         }
-                    },
-                    {
-                        title: 'Status',
-                        data: 'status',
-                        name: 'status',
-                        orderable: false,
-                        render: (data, type, row, meta) => {
-                            if (data === 'ralan') {
-                                return '<button type="button" class="btn btn-warning btn-sm ">Rawat Jalan</button>';
-                            } else {
-                                return '<button type="button" class="btn btn-danger btn-sm">Rawat Inap</button>';
-                            }
-                        }
-                    },
+                    }
+                },
 
                 ],
             })
@@ -361,7 +408,17 @@
 
                 saranLab.val(response.saran_kesan?.saran);
                 kesanLab.val(response.saran_kesan?.kesan);
+                saranKesanLab.find('#noorder').val(noorder);
 
+                let optDokter
+                if (response.detail_saran !== null) {
+                    optDokter = new Option(response.detail_saran.nm_dokter, response.detail_saran.kd_dokter, true, true);
+                } else {
+                    const kd_dokter = "{{ session()->get('pegawai')->nik }}";
+                    const nm_dokter = "{{ session()->get('pegawai')->nama }}";
+                    optDokter = new Option(nm_dokter, kd_dokter, true, true);
+                }
+                selectDokterSaran.append(optDokter).trigger('change');
             })
         }
 
@@ -371,12 +428,12 @@
             }).done((response) => {
                 const content = response.map((data, index) => {
                     return `<li class="list-group-item d-flex justify-content-between align-items-start" onclick="getRiwayatPemeriksaanLab('${data.noorder}', this)" id="item${data.noorder}">
-                                    <div class="ms-2 me-auto">
-                                        <div class="fw-bold">${data.noorder}</div>
-                                        Tgl. Permintaan ${splitTanggal(data.tgl_permintaan)} ${data.jam_permintaan}
-                                    </div>
-                                    ${data.tgl_hasil === '0000-00-00' ? '<span class="badge bg-danger rounded-pill my-auto">Tidak Ada Pemeriksaan</span>' : `<span class="badge bg-success rounded-pill my-auto">Tgl. Hasil ${splitTanggal(data.tgl_hasil)} ${data.jam_hasil}</span>`}
-                                </li> `
+                                                                                                                                                                                                                                                                    <div class="ms-2 me-auto">
+                                                                                                                                                                                                                                                                        <div class="fw-bold">${data.noorder}</div>
+                                                                                                                                                                                                                                                                        Tgl. Permintaan ${splitTanggal(data.tgl_permintaan)} ${data.jam_permintaan}
+                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                    ${data.tgl_hasil === '0000-00-00' ? '<span class="badge bg-danger rounded-pill my-auto">Tidak Ada Pemeriksaan</span>' : `<span class="badge bg-success rounded-pill my-auto">Tgl. Hasil ${splitTanggal(data.tgl_hasil)} ${data.jam_hasil}</span>`}
+                                                                                                                                                                                                                                                                </li> `
                 })
 
 
@@ -391,13 +448,17 @@
         }
 
         function renderHasilPemeriksaanLab(data, saran = null) {
+
+            let nm_dokter = '';
+            let kd_dokter = '';
+
             if (saran) {
                 btnSimpanHasilSaranLab.removeClass('btn-primary')
                     .addClass('btn-warning')
                     .attr('onclick', `ubahHasilSaranLab()`)
                     .html('<i class="bi bi-pencil"></i> Ubah');
+                btnHapusHasilSaranLab.removeClass('d-none');
 
-                btnHapusHasilSaranLab.removeClass('d-none')
             } else {
                 btnSimpanHasilSaranLab
                     .removeClass('btn-warning')
@@ -406,18 +467,24 @@
                     .html('<i class="bi bi-save"></i> Simpan');
                 btnHapusHasilSaranLab.addClass('d-none')
                     .removeAttr('onclick');
+
+
             }
+
+
 
 
             let content = '';
             data.forEach(element => {
                 content += `
-                <tr>
-                    <td colspan=3><strong>${element.jns_perawatan_lab.nm_perawatan}</strong></td>
-                    <td>${element.petugas.nama}</td>
-                </tr>
-                    ${renderSubHasilPemeriksaanLab(element.detail)}`
+                                                                                                                                                                                                                                                <tr>
+                                                                                                                                                                                                                                                    <td colspan=3><strong>${element.jns_perawatan_lab.nm_perawatan}</strong></td>
+                                                                                                                                                                                                                                                    <td>${element.petugas.nama}</td>
+                                                                                                                                                                                                                                                </tr>
+                                                                                                                                                                                                                                                    ${renderSubHasilPemeriksaanLab(element.detail)}`
             });
+
+
             return content;
         }
 
@@ -427,12 +494,12 @@
 
             data.forEach(element => {
                 content += `
-                    <tr class="${setWarnaPemeriksaan(element.keterangan)}">
-                        <td>${element.template.Pemeriksaan}</td>
-                        <td>${element.nilai} ${element.template.satuan}</td>
-                        <td>${element.nilai_rujukan} ${element.template.satuan}</td>
-                        <td>${element.keterangan}</td>
-                    </tr>`
+                                                                                                                                                                                                                                                    <tr class="${setWarnaPemeriksaan(element.keterangan)}">
+                                                                                                                                                                                                                                                        <td>${element.template.Pemeriksaan}</td>
+                                                                                                                                                                                                                                                        <td>${element.nilai} ${element.template.satuan}</td>
+                                                                                                                                                                                                                                                        <td>${element.nilai_rujukan} ${element.template.satuan}</td>
+                                                                                                                                                                                                                                                        <td>${element.keterangan}</td>
+                                                                                                                                                                                                                                                    </tr>`
             });
             return content;
         }
@@ -475,13 +542,19 @@
             const jam = tglPeriksa.split(' ')[1];
             const saran = $('#saranKesanLab').find('#saran').val();
             const kesan = $('#saranKesanLab').find('#kesan').val();
+            const kd_dokter = saranKesanLab.find('#kd_dokter').val();
+            const noorder = saranKesanLab.find('#noorder').val();
+
 
             $.post(`/erm/lab/saran-kesan`, {
+                no_rawat: no_rawat,
                 no_rawat: no_rawat,
                 tgl_periksa: splitTanggal(tanggal),
                 jam: jam,
                 saran: saran,
-                kesan: kesan
+                kesan: kesan,
+                noorder: noorder,
+                kd_dokter: kd_dokter
             }).done((response) => {
                 alertSuccessAjax('Berhasil menyimpan saran dan kesan').then(() => {
                     btnSimpanHasilSaranLab.removeClass('btn-primary')
@@ -515,8 +588,8 @@
             const jam = tglPeriksa.split(' ')[1];
             const saran = $('#saranKesanLab').find('#saran').val();
             const kesan = $('#saranKesanLab').find('#kesan').val();
-
-
+            const noorder = $('#saranKesanLab').find('#noorder').val();
+            const kd_dokter = $('#saranKesanLab').find('#kd_dokter').val();
             $.ajax({
                 url: `/erm/lab/saran-kesan`,
                 method: 'PUT',
@@ -525,7 +598,9 @@
                     tgl_periksa: splitTanggal(tanggal),
                     jam: jam,
                     saran: saran,
-                    kesan: kesan
+                    kesan: kesan,
+                    noorder: noorder,
+                    kd_dokter: kd_dokter
                 },
             }).done((response) => {
                 alertSuccessAjax('Berhasil menyimpan perubahan saran dan kesan')
@@ -559,6 +634,7 @@
         function deleteHasilSaranLab() {
             const no_rawat = formHasilPermintaanLab.find('#no_rawat').val();
             const tglPeriksa = formHasilPermintaanLab.find('#tgl_hasil').val();
+            const noorder = saranKesanLab.find('#noorder').val();
             const tanggal = tglPeriksa.split(' ')[0];
             const jam = tglPeriksa.split(' ')[1];
             $.ajax({
@@ -567,7 +643,8 @@
                 data: {
                     no_rawat: no_rawat,
                     tgl_periksa: splitTanggal(tanggal),
-                    jam: jam
+                    jam: jam,
+                    noorder: noorder
                 },
             }).done((response) => {
                 alertSuccessAjax('Berhasil menghapus saran dan kesan').then(() => {

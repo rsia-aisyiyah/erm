@@ -68,4 +68,36 @@
                 style="font-size: 0.65rem; top: 7px;"></button>
         </div>
     @endif
+    {{-- @if($notification->getPermintaanLabDoesntHaveSaran() > 0)
+    <div id="alertPermintaanLab"
+        class="alert alert-danger alert-dismissible fade show shadow-sm border-start border-info border-2 p-2 mb-1"
+        role="alert"
+        style="background-color: rgba(205, 249, 255, 0.75) !important; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-size: 0.85rem; max-width: 360px;">
+
+        <div class="d-flex align-items-center justify-content-between pe-4">
+            <div class="d-flex align-items-center me-2">
+                <i class="bi bi-exclamation-triangle-fill text-info me-2 fs-6"></i>
+                <div class="text-dark">
+                    <span class="fw-bold">Hasil Lab!</span> Silahkan cek segera.
+                </div>
+            </div>
+
+            <div>
+                <button class="btn btn-sm btn-info fw-bold px-2 py-05 text-white text-nowrap position-relative"
+                    onclick="showTabelHasilKritis()">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <span id="textCountHasilKritis">{{ $notification->getHasilKritisCount() }}</span>
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                    Cek
+                </button>
+                </a>
+            </div>
+        </div>
+
+        <button type="button" class="btn-close p-2" data-bs-dismiss="alert" aria-label="Close"
+            style="font-size: 0.65rem; top: 7px;"></button>
+    </div>
+    @endif --}}
+    {{-- @dump($notification->getPermintaanLabDoesntHaveSaran()) --}}
 </div>
