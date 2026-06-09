@@ -130,5 +130,22 @@ class PermintaanLabController extends Controller
             ->make(true);
     }
 
+    // public function getHasilPermintaanDoesntHaveSaran()
+    // {
+    //     $query = PermintaanLab::whereDoesntHave('detailSaran')
+    //         ->whereHas('hasil')
+    //         ->with([
+    //             'pasien',
+    //             'hasil' => function ($q) {
+    //                 $q->join('jns_perawatan_lab', 'jns_perawatan_lab.kd_jenis_prw', '=', 'periksa_lab.kd_jenis_prw')
+    //                     ->select(['periksa_lab.*', 'jns_perawatan_lab.nm_perawatan']);
+    //             }
+    //         ])
+    //         ->whereMonth('tgl_permintaan', date('m'))
+    //         ->whereYear('tgl_permintaan', date('Y'))
+    //         ->get();
+
+    //     return $query;
+    // }
 
 }
