@@ -20,6 +20,12 @@
                             Riwayat Pemeriksaan
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation" id="li-askep-obg">
+                        <button class="nav-link" id="tabAskepObgyn" data-bs-toggle="tab"
+                            data-bs-target="#contentAskepObgyn" type="button" role="tab" aria-controls="tabAskepObgyn"
+                            aria-selected="false">Askep Awal Kebidanan
+                        </button>
+                    </li>
                     <li class="nav-item" role="presentation" id="li-asmed-obg">
                         <button class="nav-link" id="tab-asesmen-obg" data-bs-toggle="tab"
                             data-bs-target="#tab-asmed-obg" type="button" role="tab" aria-controls="tab-asmed-obg"
@@ -94,6 +100,10 @@
                     <div class="tab-pane fade p-3" id="tab-asmed-obg" role="tabpanel" aria-labelledby="tab-asmed"
                         tabindex="0">
                         @include('content.poliklinik.modal.pemeriksaan.asmed_kandungan')
+                    </div>
+                    <div class="tab-pane fade p-3" id="contentAskepObgyn" role="tabpanel"
+                        aria-labelledby="tabAskepObgyn" tabindex="0">
+                        @include('content.poliklinik.modal.form.askep_awal_kebidanan')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-asmed-ana" role="tabpanel" aria-labelledby="tab-asmed"
                         tabindex="0">
@@ -287,6 +297,10 @@
                         class="bi bi-save"></i>
                     Simpan Asmed Rajal
                 </button>
+                <button type="button" class="btn btn-success btn-sm btn-askep btnAction" name="createAskepRalan"
+                    id="createAskepRalan"><i class="bi bi-save"></i>
+                    Simpan Asesmen
+                </button>
                 <button type="button" class="btn btn-success btn-sm btn-asmed-ranap d-none btnAction" name="simpan"><i
                         class="bi bi-save"></i> Simpan Asmed Ranap
                 </button>
@@ -323,7 +337,7 @@
 
         const btnTabLaboratorium = $('button[data-bs-target="#lab-ana"]');
         const btnTabRadiologi = $('button[data-bs-target="#rad-ana"]');
-
+        const btnTabAskepObgyn = $('button[data-bs-target="#contentAskepObgyn"]')
         function updateActionButtons(selectorToShow) {
             $('.btnAction').addClass('d-none');
             $(selectorToShow).removeClass('d-none');
@@ -367,9 +381,14 @@
         btnAsesmenNyeriAnak.on('hidden.bs.tab', function () {
             $('#btnCreateAsesmenNyeri').removeAttr('onclick')
         })
-
-
-
+        btnTabAskepObgyn.on('shown.bs.tab', function (e, x, y) {
+            const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
+            const formAskepAwalObgyn = $('#formAskepAwalObgyn');
+            updateActionButtons('#createAskepRalan')
+            $('#createAskepRalan').attr('onclick', 'createAskepAwalObgyn()')
+            setSoapToAsmed(no_rawat, formAskepAwalObgyn);
+            getAskepAwalObgyn(no_rawat)
+        });
 
         btnsSkriningTB.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
@@ -421,14 +440,14 @@
 
                 const list = data.map((item, index) => {
                     return `<li class="list-group-item"  data-no-rawat="${item.no_rawat}" onclick="hasilLabRalan('${item.no_rawat}')">
-                                                                                                                                                                                                                                                                                                                                                <div class="d-flex justify-content-between">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="d-flex justify-content-between">
 
-                                                                                                                                                                                                                                                                                                                                                <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
-                                                                                                                                                                                                                                                                                                                                                <span>
-                                                                                                                                                                                                                                                                                                                                                       ${item.diagnosa_klinis} ${item.informasi_tambahan}
-                                                                                                                                                                                                                                                                                                                                                </span>
-                                                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                                                            </li>`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                               ${item.diagnosa_klinis} ${item.informasi_tambahan}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>`
                 }).join('')
 
                 listRiwayatLaboratorium.on('click', 'li', function () {
@@ -467,18 +486,18 @@
 
                         if (item.detail.length) {
                             hasilLab += `<tr class="" >
-                                                                                                                                                                                                                                                                                                                                            <td colspan="3" style="background-color:#ffc800;padding:2px">
-                                                                                                                                                                                                                                                                                                                                                <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
-                                                                                                                                                                                                                                                                                                                                                ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
-                                                                                                                                                                                                                                                                                                                                            </td>
-                                                                                                                                                                                                                                                                                                                                            <td  style="background-color:#ffc800;padding:2px">${item.petugas.nama}</td></tr>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    <td colspan="3" style="background-color:#ffc800;padding:2px">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    <td  style="background-color:#ffc800;padding:2px">${item.petugas.nama}</td></tr>`;
                             item.detail.sort((a, b) => a.template.urut - b.template.urut);
                             item.detail.forEach((detail, index) => {
                                 hasilLab += `<tr class="${setWarnaPemeriksaan(detail.keterangan)}">
-                                                                                                                                                                                                                                                                                                                                                <td>${detail.template.Pemeriksaan}</td>
-                                                                                                                                                                                                                                                                                                                                                <td>${detail.nilai} ${detail.template.satuan}</td>
-                                                                                                                                                                                                                                                                                                                                                <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
-                                                                                                                                                                                                                                                                                                                                                <td>${detail.keterangan}</td></tr>`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${detail.template.Pemeriksaan}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${detail.nilai} ${detail.template.satuan}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${detail.keterangan}</td></tr>`
                             })
                         }
                     })
@@ -504,10 +523,10 @@
                 if (Object.keys(permintaan).length) {
                     permintaan.map((prm, index) => {
                         html = `<tr><td>${splitTanggal(prm.tgl_hasil)} ${prm.jam_hasil}</td>
-                                                                                                                                                                                                                                                                                                                                                <td>${prm.diagnosa_klinis}</td>
-                                                                                                                                                                                                                                                                                                                                                <td>${prm.informasi_tambahan}</td>
-                                                                                                                                                                                                                                                                                                                                                <td>
-                                                                                                                                                                                                                                                                                                                                        `
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${prm.diagnosa_klinis}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${prm.informasi_tambahan}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                `
                         prm.periksa_radiologi.map((periksa) => {
                             if (periksa.tgl_periksa == prm.tgl_hasil && periksa.jam == prm.jam_hasil) {
                                 html += `${periksa.jns_perawatan.nm_perawatan}, <br/>`
@@ -528,8 +547,8 @@
                                 if (gambar.tgl_periksa == prm.tgl_hasil && gambar.jam == prm.jam_hasil) {
                                     gbr = `${getBaseUrl(`/webapps/radiologi/${gambar.lokasi_gambar}`)}`
                                     html += `<a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gbr}">
-                                                                                                                                                                                                                                                                                                                                                                <i class="bi bi-eye"></i> BUKA GAMBAR
-                                                                                                                                                                                                                                                                                                                                                            </a><br/>`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="bi bi-eye"></i> BUKA GAMBAR
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </a><br/>`
                                 } else {
                                     html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
 

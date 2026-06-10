@@ -9,6 +9,10 @@ class AskepRalanKebidanan extends Model
 {
     use HasFactory;
     protected $table = 'penilaian_awal_keperawatan_kebidanan';
+    protected $guarded = [];
+    public $timestamps = false;
+    protected $primaryKey = 'no_rawat';
+    protected $keyType = 'string';
 
     public function petugas()
     {
@@ -21,5 +25,14 @@ class AskepRalanKebidanan extends Model
     public function semua()
     {
         return $this->with(['petugas', 'regPeriksa.pasien.riwayatPersalinan']);
+    }
+    public function pasien()
+    {
+        return $this->hasOneThrough(Pasien::class, RegPeriksa::class, 'no_rawat', 'no_rkm_medis', 'no_rawat', 'no_rkm_medis')
+            ->select('pasien.jk', 'tgl_lahir', 'nm_pasien', 'pasien.no_rkm_medis');
+    }
+    public function riwayatPersalinan()
+    {
+        return $this->hasManyThrough(RiwayatPersalinan::class, RegPeriksa::class, 'no_rawat', 'no_rkm_medis', 'no_rawat', 'no_rkm_medis');
     }
 }

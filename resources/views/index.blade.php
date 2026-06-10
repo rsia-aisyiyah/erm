@@ -34,8 +34,9 @@
         </div>
     </div>
     @include('content.notifikasi')
-
     @include('content.ranap.modal.modal_riwayat_infeksi')
+    @include('content.poliklinik.modal.modal_riwayat_persalinan')
+
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -510,6 +511,28 @@
 
             }
             return false;
+        }
+
+        function setDataForm($form, data) {
+            Object.entries(data).forEach(([key, value]) => {
+                const $el = $form.find(`[name="${key}"]`);
+
+                if (!$el.length) return;
+
+                const type = $el.attr('type');
+
+                if (type === 'radio') {
+                    // radio: cari yang value-nya cocok lalu check
+                    $form.find(`[name="${key}"][value="${value}"]`).prop('checked', true).trigger('change');
+
+                } else if (type === 'checkbox') {
+                    $el.prop('checked', !!value);
+
+                } else {
+                    // input text, select, textarea, date, time, range, dll
+                    $el.val(value).trigger('change');
+                }
+            });
         }
 
         function getPetugas(nama, no = '') {

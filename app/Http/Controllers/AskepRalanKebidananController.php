@@ -2,19 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAskepRalanKebidananRequest;
 use App\Models\AskepRalanKebidanan;
+use App\Traits\PrintErmTrait;
+use App\Traits\ResponseTrait;
+use App\Traits\TrackSQL;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class AskepRalanKebidananController extends Controller
 {
+    use ResponseTrait, PrintErmTrait;
+    private $track;
     private $askep;
     public function __construct()
     {
         $this->askep = new AskepRalanKebidanan();
+        $this->track = new TrackerSqlController();
     }
     public function ambil(Request $request)
     {
-        $askep =  $this->askep->semua();
+        $askep = $this->askep->semua();
 
         if ($request->no_rawat) {
             $askep->where('no_rawat', $request->no_rawat);
@@ -41,4 +53,108 @@ class AskepRalanKebidananController extends Controller
         $askep = $this->askep->semua()->where('no_rawat', $noRawat)->first();
         return response()->json($askep);
     }
+    public function getFirst(Request $request)
+    {
+        $data = $this->askep
+            ->with(['pasien', 'riwayatPersalinan', 'petugas'])
+            ->where('no_rawat', $request->no_rawat)
+            ->first();
+        return $this->successResponse($data);
+    }
+
+    public function store(StoreAskepRalanKebidananRequest $request)
+    {
+        $data = $request->validated();
+
+        try {
+
+            $askep = $this->askep->updateOrCreate(
+                [
+                    'no_rawat' => $data['no_rawat']
+                ],
+                $data
+            );
+
+            $this->track->insertSql($this->askep, $data);
+
+            return $this->successResponse(
+                $askep,
+                $askep->wasRecentlyCreated
+                ? 'Data berhasil disimpan'
+                : 'Data berhasil diperbarui'
+            );
+
+        } catch (QueryException $e) {
+
+            return $this->errorResponse(
+                $e,
+                'Gagal menyimpan data'
+            );
+
+        }
+    }
+    // public function print(Request $request)
+    // {
+    //     $data = $this->askep
+    //         ->with([
+    //             'pasien',
+    //             'petugas',
+    //             'riwayatPersalinan'
+    //         ])
+    //         ->where('no_rawat', $request->no_rawat)
+    //         ->firstOrFail();
+
+    //     $data->ttd_petugas = $this->setFingerOutput(
+    //         $data->petugas->nama ?? '-',
+    //         $data->nip,
+    //         $data->tanggal
+    //     );
+
+    public function print(Request $request)
+    {
+        $data = $this->askep
+            ->with([
+                'pasien',
+                'petugas',
+                'riwayatPersalinan'
+            ])
+            ->where('no_rawat', $request->no_rawat)
+            ->firstOrFail();
+
+        $data->ttd_petugas = $this->setFingerOutput(
+            $data->petugas->nama ?? '-',
+            $data->nip,
+            $data->tanggal
+        );
+
+        $pdf = Pdf::loadView(
+            'content.poliklinik.modal.pemeriksaan.print.askep_awal_obgyn',
+            compact('data')
+        )
+            ->setOption([
+                'defaultFont' => 'sans-serif',
+                'isRemoteEnabled' => true,
+                'margin_top' => 15,
+                'margin_right' => 15,
+                'margin_bottom' => 15,
+                'margin_left' => 15,
+                'margin_header' => 5,   // tambahkan ini
+                'margin_footer' => 5,   // tambahkan ini
+            ])
+            // ->setOption([
+            //     'defaultFont' => 'serif',
+            //     '
+            // ])
+            ->setPaper('A4');
+
+        return $pdf->stream(
+            ($data->pasien->nm_pasien ?? 'pasien')
+            . '_ASKEP_KEBIDANAN_'
+            . now()->format('YmdHis')
+            . '.pdf'
+        );
+    }
+
+
+
 }
