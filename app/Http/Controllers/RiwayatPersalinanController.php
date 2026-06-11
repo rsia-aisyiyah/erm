@@ -31,7 +31,7 @@ class RiwayatPersalinanController extends Controller
             'jenis_persalinan' => 'nullable',
             'penolong' => 'nullable',
             'penyulit' => 'nullable',
-          'jk' => ['nullable', Rule::in(['L', 'P'])],
+            'jk' => ['nullable', Rule::in(['L', 'P'])],
             'bbpb' => 'nullable',
             'keadaan' => 'nullable',
         ]);

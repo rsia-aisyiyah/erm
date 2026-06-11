@@ -7,13 +7,22 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ERM RSIA AISYIYAH PEKAJANGAN</title>
     <style>
-
         @page {
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
             margin-top: 10px;
             margin-right: 30px;
             margin-left: 30px;
             margin-bottom: 10px;
+        }
+
+
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+        .page-break {
+            page-break-after: always !important;
         }
 
         p {
@@ -595,6 +604,23 @@
             line-height: 1 !important;
         }
 
+        .footer {
+            position: fixed;
+            bottom: -50px;
+            left: 0px;
+            right: 0px;
+            height: 50px;
+            text-align: center;
+            font-size: 10px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        /* Menggunakan fitur penghitung halaman bawaan PDF */
+        .page-number:after {
+            content: counter(page);
+        }
+
         /*table {*/
         /*    font-size: 12px !important;*/
         /*}*/
@@ -604,6 +630,7 @@
 <body>
     @yield('content')
     @stack('script')
+ 
     <script>
         function getBaseUrl(urlSegments = '') {
             const getUrl = "{{ url('') }}"

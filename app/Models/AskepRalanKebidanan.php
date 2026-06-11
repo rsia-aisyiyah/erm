@@ -49,7 +49,7 @@ class AskepRalanKebidanan extends Model
     public function pasien()
     {
         return $this->hasOneThrough(Pasien::class, RegPeriksa::class, 'no_rawat', 'no_rkm_medis', 'no_rawat', 'no_rkm_medis')
-            ->select('pasien.jk', 'tgl_lahir', 'nm_pasien', 'pasien.no_rkm_medis');
+            ->select('pasien.jk', 'tgl_lahir', 'nm_pasien', 'pasien.no_rkm_medis', 'agama');
     }
     public function riwayatPersalinan()
     {

@@ -109,7 +109,7 @@
                         <div class="col-md-2">
                             <label for="bb">BB</label>
                             <x-input-group class="input-group-sm">
-                                <x-input id="bb" name="bb" />
+                                <x-input id="bb" name="bb" type="number" value="0" />
                                 <x-input-group-text>Kg</x-input-group-text>
                             </x-input-group>
                         </div>
@@ -117,7 +117,7 @@
                         <div class="col-md-3">
                             <label for="tb">TB</label>
                             <x-input-group class="input-group-sm">
-                                <x-input id="tb" name="tb" />
+                                <x-input id="tb" name="tb" type="number" value="0" />
                                 <x-input-group-text>cm</x-input-group-text>
                             </x-input-group>
                         </div>
@@ -819,7 +819,7 @@
                             </x-input-group>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="hub_keluarga">Hubungan Keluarga</label>
                             <x-select name="hub_keluarga">
                                 <x-option>Baik</x-option>
@@ -1227,6 +1227,7 @@
                         setDataForm(formAskepAwalObgyn, response.data);
                         optPetugas = new Option(petugas?.nama, petugas?.nik, true, true);
                         formAskepAwalObgyn.find('select[name=nip]').append(optPetugas).trigger('change');
+                        formAskepAwalObgyn.find('input[name=tanggal]').val(response.data.tanggal);
                         return '';
                     }
 
@@ -1235,8 +1236,8 @@
                         true);
                     formAskepAwalObgyn.find('select[name=nip]').append(optPetugas).trigger('change');
                     formAskepAwalObgyn.find('input[name=tanggal]').val(new Date().toISOString().slice(0, -1));
-                    formAskepAwalObgyn.find("input[name=ket_lapor]").val(jam);
-                    formAskepAwalObgyn.find("input[name=ket_dokter]").val(jam);
+                    // formAskepAwalObgyn.find("input[name=ket_lapor]").val(jam);
+                    // formAskepAwalObgyn.find("input[name=ket_dokter]").val(jam);
                 })
                 renderTableRiwayatPersalinan(pasien.no_rkm_medis)
             })
@@ -1251,6 +1252,7 @@
                     if (response.success) {
                         alertSuccessAjax(response.message);
                     }
+                    formAskepAwalObgyn.trigger('reset');
                 })
                 .fail((request) => {
                     if (request.status === 422) {

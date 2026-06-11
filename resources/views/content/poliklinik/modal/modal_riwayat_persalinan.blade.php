@@ -41,7 +41,7 @@
 
                         <div class="col-md-4">
                             <label class="d-block mb-2">Jenis Kelamin</label>
-                            <x-input-radio id="jenis_kelamin" name="jk" value="L" label="Laki-laki" checked />
+                            <x-input-radio id="jenis_kelamin" name="jk" value="L" label="Laki-laki" />
                             <x-input-radio id="jenis_kelamin2" name="jk" value="P" label="Perempuan" />
                         </div>
 
@@ -89,38 +89,38 @@
                 if (response && response.length > 0) {
                     response.forEach((item, index) => {
                         table.append(`
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <button class="btn btn-sm btn-danger" type="button" onclick="hapusRiwayatPersalinan('${item.no_rkm_medis}', '${item.tgl_thn}')">
-                                                                                            <i class="bi bi-trash"></i>
-                                                                                        </button>
-                                                                                    </td>
-                                                                                    <td>${item.tgl_thn}</td>
-                                                                                    <td>${item.tempat_persalinan}</td>
-                                                                                    <td>${item.usia_hamil}</td>
-                                                                                    <td>${item.jenis_persalinan}</td>
-                                                                                    <td>${item.jk}</td>
-                                                                                    <td>${item.penyulit}</td>
-                                                                                    <td>${item.penolong}</td>
-                                                                                    <td>${item.keadaan}</td>
-                                                                                </tr>
-                                                                            `);
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <button class="btn btn-sm btn-danger" type="button" onclick="hapusRiwayatPersalinan('${item.no_rkm_medis}', '${item.tgl_thn}')">
+                                                                                                    <i class="bi bi-trash"></i>
+                                                                                                </button>
+                                                                                            </td>
+                                                                                            <td>${item.tgl_thn}</td>
+                                                                                            <td>${item.tempat_persalinan}</td>
+                                                                                            <td>${item.usia_hamil}</td>
+                                                                                            <td>${item.jenis_persalinan}</td>
+                                                                                            <td>${item.jk ? item.jk : '-'}</td>
+                                                                                            <td>${item.penyulit}</td>
+                                                                                            <td>${item.penolong}</td>
+                                                                                            <td>${item.keadaan}</td>
+                                                                                        </tr>
+                                                                                    `);
                     });
                 } else {
                     // Jika data kosong, tampilkan baris "Tidak Ada Data"
                     table.append(`
-                                                                        <tr>
-                                                                            <td colspan="8" class="text-center">Tidak Ada Data</td>
-                                                                        </tr>
-                                                                    `);
+                                                                                <tr>
+                                                                                    <td colspan="8" class="text-center">Tidak Ada Data</td>
+                                                                                </tr>
+                                                                            `);
                 }
             }).fail(() => {
                 // Handling jika terjadi error pada saat pengambilan data
                 table.append(`
-                                                                <tr>
-                                                                    <td colspan="3" class="text-center text-danger">Gagal memuat data</td>
-                                                                </tr>
-                                                            `);
+                                                                        <tr>
+                                                                            <td colspan="3" class="text-center text-danger">Gagal memuat data</td>
+                                                                        </tr>
+                                                                    `);
             });
         }
         function simpanRiwayatPersalinan() {
