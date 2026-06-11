@@ -237,11 +237,11 @@
                     TP : {{ isset($data->tp) ? date('d/m/Y', strtotime($data->tp)) : '-' }}
                     &nbsp;&nbsp;
                     Riwayat Imunisasi : {{ $data->imunisasi ?? '-' }}, berapa kali {{ $data->jumlah_imunisasi ?? '-' }}<br>
-                    G : {{ $data->gravida ?? '-' }}
+                    G : {{ $data->g ?? '-' }}
                     &nbsp;
-                    P : {{ $data->para ?? '-' }}
+                    P : {{ $data->p ?? '-' }}
                     &nbsp;
-                    A : {{ $data->abortus ?? '-' }}
+                    A : {{ $data->a ?? '-' }}
                     &nbsp;
                     Hidup : {{ $data->hidup ?? '-' }}
 
@@ -270,7 +270,7 @@
                                     <tr>
                                         <td style="padding:2px 3px;text-align:center">{{ $i + 1 }}</td>
                                         <td style="padding:2px 3px;text-align:center">
-                                            {{ isset($rp->tgl_persalinan) ? date('Y-m-d', strtotime($rp->tgl_persalinan)) : '-' }}
+                                            {{ isset($rp->tgl_thn) ? date('Y-m-d', strtotime($rp->tgl_thn)) : '-' }}
                                         </td>
                                         <td style="padding:2px 3px;text-align:center">{{ $rp->tempat_persalinan ?? '-' }}</td>
                                         <td style="padding:2px 3px;text-align:center">{{ $rp->usia_hamil ?? '-' }}</td>
@@ -278,7 +278,7 @@
                                         <td style="padding:2px 3px;text-align:center">{{ $rp->penolong ?? '-' }}</td>
                                         <td style="padding:2px 3px;text-align:center">{{ $rp->penyulit ?? '-' }}</td>
                                         <td style="padding:2px 3px;text-align:center">{{ $rp->jk ?? '-' }}</td>
-                                        <td style="padding:2px 3px;text-align:center">{{ $rp->bb_pb ?? '-' }}</td>
+                                        <td style="padding:2px 3px;text-align:center">{{ $rp->bbpb ?? '-' }}</td>
                                         <td style="padding:2px 3px;text-align:center">{{ $rp->keadaan ?? '-' }}</td>
                                     </tr>
                                 @endforeach
@@ -316,7 +316,7 @@
                     <b>Riwayat Kebiasaan</b>
                 </td>
                 <td colspan="5" style="font-size:10px;padding:3px 5px">
-                    : {{ $data->kebiasaan ?? 'Vitamin' }}.
+                    : {{ $data->kebiasaan ?? '-' }}.
                     Merokok : {{ $data->merokok ?? 'Tidak' }}.
                     Alkohol : {{ $data->alkohol ?? 'Tidak' }}.
                     Obat tidur/Narkoba : {{ $data->narkoba ?? 'Tidak' }}
@@ -353,7 +353,7 @@
                 </td>
                 <td colspan="2" style="font-size:10px;padding:3px 5px">
                     Cacat Fisik : {{ $data->cacat_fisik ?? 'TIDAK ADA' }}
-                    &nbsp;&nbsp;
+                    <br>
                     ADL : {{ $data->adl ?? 'Mandiri' }}
                 </td>
             </tr>
@@ -371,7 +371,7 @@
                     Status Psikologis : {{ $data->status_psikologis ?? '-' }}
                 </td>
                 <td colspan="3" style="font-size:10px;padding:3px 5px;vertical-align:top">
-                    Agama : {{ $data->agama ?? '-' }}
+                    Agama : {{ $data->pasien->agama ?? '-' }}
                 </td>
             </tr>
 
@@ -390,16 +390,17 @@
                     {{ $data->nilai_budaya ?? 'Tidak Ada' }}
                 </td>
                 <td colspan="3" style="font-size:10px;padding:3px 5px;vertical-align:top">
-                    Bahasa yang digunakan sehari-hari : {{ $data->bahasa ?? 'INDONESIA' }}
-                    &nbsp;&nbsp;
+                    Bahasa yang digunakan sehari-hari : {{ $data->bahasa ?? 'INDONESIA' }}<br>
                     Edukasi diberikan kepada : {{ $data->edukasi_kepada ?? 'Pasien' }}
                 </td>
             </tr>
-
+            <tr>
+                <td class="page-break" colspan=6></td>
+            </tr>
             {{-- VI. PENILAIAN RESIKO JATUH --}}
             <tr>
                 <td colspan="6"
-                    style="background:#f3fdd7;font-size:10px;font-weight:bold;text-align:center;padding:3px 5px">
+                    style="background:#f3fdd7;font-size:10px;font-weight:bold;text-align:center;padding:3px 5px;page-break-before: always;">
                     VI. PENILAIAN RESIKO JATUH
                 </td>
             </tr>
@@ -577,5 +578,4 @@
         </tbody>
 
     </table>
-
 @endsection
