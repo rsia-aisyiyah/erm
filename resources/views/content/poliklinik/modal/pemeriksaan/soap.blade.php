@@ -46,7 +46,8 @@
             <label for="nip" class="form-label"> Dokter:</label>
             <div class="d-flex gap-2">
                 <x-input type="hidden" id="role" name="role" value="{{ session()->get('role') }}" />
-                <select id="kd_dokter" name="kd_dokter" data-dropdown-parent="#formSoapPoli" style="width: 100%"></select>
+                <select id="kd_dokter" name="kd_dokter" data-dropdown-parent="#formSoapPoli"
+                    style="width: 100%"></select>
             </div>
         </div>
         <div class="col-lg-2 col-sm-12">
@@ -63,11 +64,13 @@
             <div class="row gy-1">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <label for="subjek" class="form-label">Subjek:</label>
-                    <x-textarea name="keluhan" id="subjek" rows="4" onfocus="removeZero(this)" onblur="cekKosong(this)" />
+                    <x-textarea name="keluhan" id="subjek" rows="4" onfocus="removeZero(this)"
+                        onblur="cekKosong(this)" />
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <label for="pemeriksaan" class="form-label">Objek:</label>
-                    <x-textarea name="pemeriksaan" id="objek" rows="4" onfocus="removeZero(this)" onblur="cekKosong(this)" />
+                    <x-textarea name="pemeriksaan" id="objek" rows="4" onfocus="removeZero(this)"
+                        onblur="cekKosong(this)" />
                 </div>
                 <div class="col-12">
                     <div class="row gy-1">
@@ -123,18 +126,21 @@
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <label for="penilaian" class="form-label">Asesmen :</label>
-                <x-textarea name="penilaian" id="asesmen" rows="4" onfocus="removeZero(this)" onblur="cekKosong(this)" />
+                <x-textarea name="penilaian" id="asesmen" rows="4" onfocus="removeZero(this)"
+                    onblur="cekKosong(this)" />
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <label for="instruksi" class="form-label">Instruksi :</label>
-                <x-textarea name="instruksi" id="instruksi" rows="4" onfocus="removeZero(this)" onblur="cekKosong(this)" />
+                <x-textarea name="instruksi" id="instruksi" rows="4" onfocus="removeZero(this)"
+                    onblur="cekKosong(this)" />
             </div>
 
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12">
             <label for="rtl">Plan</label>
             <x-textarea rows="4" name="rtl" id="rtl"></x-textarea>
-            <button class="btn btn-warning btn-sm mt-2" type="button" style="font-size: 12px" onclick="catatanPasien()"><i class="bi bi-pen"></i> Diagnosa & Catatan</button>
+            <button class="btn btn-warning btn-sm mt-2" type="button" style="font-size: 12px"
+                onclick="catatanPasien()"><i class="bi bi-pen"></i> Diagnosa & Catatan</button>
 
             @include('content.poliklinik.modal.pemeriksaan.resepRalan')
 
@@ -294,7 +300,7 @@
             }
         }
 
-        modalSoapRalan.on('hidden.bs.modal', function() {
+        modalSoapRalan.on('hidden.bs.modal', function () {
             $('.no_resep').val('')
             $('.noResepText').text('')
             $('.labelTglResep').text(``);
@@ -310,6 +316,7 @@
             bodyResepRacikan.empty();
 
             navTabRiwayatPemeriksaan.empty();
+            $('#formAskepAwalObgyn').trigger('reset');
 
         })
 

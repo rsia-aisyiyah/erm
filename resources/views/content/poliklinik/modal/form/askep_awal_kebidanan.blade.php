@@ -1252,7 +1252,6 @@
                     if (response.success) {
                         alertSuccessAjax(response.message);
                     }
-                    formAskepAwalObgyn.trigger('reset');
                 })
                 .fail((request) => {
                     if (request.status === 422) {
