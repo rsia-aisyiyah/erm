@@ -312,9 +312,14 @@ Route::middleware('auth')->group(function () {
 	Route::delete('imunisasi/riwayat/delete', [RiwayatImunisasiController::class, 'delete']);
 	Route::get('imunisasi/riwayat/get/{no_rkm_medis}', [RiwayatImunisasiController::class, 'get']);
 
-	Route::get('riwayat/persalinan/get/{no_rkm_medis}', [RiwayatPersalinanController::class, 'get']);
-	Route::delete('riwayat/persalinan/delete', [RiwayatPersalinanController::class, 'delete']);
-	Route::post('riwayat/persalinan/insert', [RiwayatPersalinanController::class, 'insert']);
+	Route::get('riwayat/persalinan/get/{no_rkm_medis}', [RiwayatPersalinanController::class, 'get'])
+	->name('riwayat.persalinan.get');
+	Route::delete('riwayat/persalinan/delete', [RiwayatPersalinanController::class, 'delete'])
+	->name('riwayat.persalinan.delete');
+		Route::delete('riwayat/persalinan/delete-bulk', [RiwayatPersalinanController::class, 'delete'])
+		->name('riwayat.persalinan.delete.bulk');
+	Route::post('riwayat/persalinan/insert', [RiwayatPersalinanController::class, 'insert'])
+	->name('riwayat.persalinan.insert');
 
 	Route::get('radiologi', [PeriksaRadiologiController::class, 'view']);
 	Route::get('radiologi/riwayat/{no_rkm_medis}', [PeriksaRadiologiController::class, 'riwayat']);

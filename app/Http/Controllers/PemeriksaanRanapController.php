@@ -230,8 +230,8 @@ class PemeriksaanRanapController extends Controller
 		];
 		try {
 			DB::transaction(function () use ($clause, $data, $data1, $request) {
-				$pemeriksaan = PemeriksaanRanap::where($clause)->update($data);
-				$grafikharian = GrafikHarian::where($clause)->update($data1);
+				$pemeriksaan = PemeriksaanRanap::where($clause)->firstOrFail()->update($data);
+				$grafikharian = GrafikHarian::where($clause)->firstOrFail()->update($data1);
 				$this->track->updateSql($this->pemeriksaan, $data, $clause);
 				$this->track->updateSql($this->grafikharian, $data1, $clause);
 				$log = $this->log->insert([

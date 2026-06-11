@@ -595,18 +595,13 @@
                 <td colspan="3" style="text-align:center;font-size:10px;height:120px;vertical-align:top">
 
                     <p>Petugas Pengkaji 1</p>
-
                     <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG($askep['sidik1'], 'QRCODE') }}" height="60"
                         width="60" style="margin:5px" />
-
                     <br>
-
                     <strong>
                         ( {{ $askep['pengkaji1']['nama'] }} )
                     </strong>
-
                     <br>
-
                     NIP :
                     {{ $askep['pengkaji1']['nip'] }}
 

@@ -1602,6 +1602,22 @@
                             </div>
                         `;
         }
+        function handleValidationError(request) {
+            if (request.status !== 422) return;
+
+            const { responseJSON } = request;
+            const errors = responseJSON.errors;
+
+            // Mengambil semua pesan error dan menggabungkannya dengan koma
+            const allMessages = Object.values(errors).flat().join(', ');
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Input Tidak Valid',
+                html: `<small class="text-danger">${allMessages}</small>`, // Gunakan 'text' daripada 'html' agar lebih bersih
+                confirmButtonText: 'Perbaiki',
+            });
+        }
 
     </script>
     <script type="text/javascript" src="{{ asset('js/context-menu/items.js') }}"></script>

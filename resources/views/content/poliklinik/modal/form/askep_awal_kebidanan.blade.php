@@ -581,30 +581,28 @@
                         </div>
 
                         <div class="col-md-12">
-                            <table class="table table-bordered table-sm">
+                            <table class="table table-bordered table-sm tbRiwayatPersalinanPasien">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Tahun</th>
+                                        <th>Tgl Persalinan</th>
                                         <th>Tempat Persalinan</th>
                                         <th>Usia Hamil</th>
                                         <th>Jenis Persalinan</th>
+                                        <th>JK</th>
                                         <th>Penolong</th>
                                         <th>Penyulit</th>
                                         <th>Keadaan</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tabelRiwayatPersalinan">
+                                <tbody>
                                     {{-- Diisi via JS --}}
                                 </tbody>
                             </table>
                             <div class="d-flex gap-2">
                                 <button class="btn btn-primary btn-sm" type="button"
-                                    onclick="showModalRiwayatPersalinan()">
+                                    onclick="showModalRiwayatPersalinanAskep()">
                                     <i class="bi bi-pencil me-2"></i>Tambah
-                                </button>
-                                <button class="btn btn-danger btn-sm" type="button">
-                                    <i class="bi bi-trash me-2"></i>Hapus
                                 </button>
                             </div>
                         </div>
@@ -1176,8 +1174,6 @@
         rangeSkalaNyeri.on('change', function (e) {
             formAskepAwalObgyn.find('span[id=nilai_skala_nyeri]')
                 .text(e.currentTarget.value);
-            console.log('VALUE ===', e.currentTarget.value);
-
         });
 
         function hitungKehamilan() {
@@ -1205,8 +1201,7 @@
         }
         $(document).on('change', '#hpht', hitungKehamilan);
 
-        function
-            getAskepAwalObgyn(no_rawat) {
+        function getAskepAwalObgyn(no_rawat) {
             getRegPeriksa(no_rawat).done((response) => {
                 const {
                     pasien,
@@ -1243,6 +1238,7 @@
                     formAskepAwalObgyn.find("input[name=ket_lapor]").val(jam);
                     formAskepAwalObgyn.find("input[name=ket_dokter]").val(jam);
                 })
+                renderTableRiwayatPersalinan(pasien.no_rkm_medis)
             })
         }
 
@@ -1250,11 +1246,20 @@
             const data = getDataForm('#formAskepAwalObgyn', ['input', 'select', 'textarea']);
             data['no_rawat'] = formInfoAskepAwalObgyn.find('input[name=no_rawat]').val();
 
-            $.post("{{ route('asesmen-keperawatan.kandungan.store') }}", data).done((response) => {
-                console.log('RESPONSE ===', response)
-            }).fail((request) => {
-                console.log(request)
-            });
+            $.post("{{ route('asesmen-keperawatan.kandungan.store') }}", data)
+                .done((response) => {
+                    if (response.success) {
+                        alertSuccessAjax(response.message);
+                    }
+                })
+                .fail((request) => {
+                    if (request.status === 422) {
+                        return handleValidationError(request)
+                    } else {
+                        // Menangani error selain 422 (misal: 500)
+                        alertErrorAjax(request.responseJSON?.message || 'Terjadi kesalahan pada server');
+                    }
+                });
 
         }
         const selectPetugasAskepObgyn = formAskepAwalObgyn.find('select[name=nip]')
@@ -1354,6 +1359,80 @@
             'input[name="berjalan_a"], input[name="berjalan_b"]',
             hitungResikoJatuh
         );
+        formAskepAwalObgyn.find('input[name=lapor]').on('change', function (e) {
+
+            if (e.currentTarget.value == 'Ya') {
+                const jam = moment().format('HH:mm:ss')
+                formAskepAwalObgyn.find('input[name=ket_lapor]')
+                    .prop('disabled', false)
+                    .trigger('change').val(jam);
+            } else {
+                formAskepAwalObgyn.find('input[name=ket_lapor]')
+                    .prop('disabled', true)
+                    .val('');
+            }
+        })
+        formAskepAwalObgyn.find('input[name=pada_dokter]').on('change', function (e) {
+
+            if (e.currentTarget.value == 'Ya') {
+                const jam = moment().format('HH:mm:ss')
+                formAskepAwalObgyn.find('input[name=ket_dokter]')
+                    .prop('disabled', false)
+                    .trigger('change').val(jam);
+            } else {
+                formAskepAwalObgyn.find('input[name=ket_dokter]')
+                    .prop('disabled', true)
+                    .val('');
+            }
+        })
+
+        function printAskepAwalObgyn() {
+            // Ambil nilai no_rawat dari input atau atribut elemen
+            const noRawat = formInfoAskepAwalObgyn.find('input[name="no_rawat"]').val();
+
+            // Pastikan noRawat ada sebelum mencetak
+            if (noRawat) {
+                const url = `/erm/asesmen-keperawatan/kandungan/print?no_rawat=${encodeURIComponent(noRawat)}`;
+                window.open(url, '_blank');
+            } else {
+                alert('Nomor rawat tidak ditemukan!');
+            }
+        }
+        function showModalRiwayatPersalinanAskep() {
+            const no_rkm_medis = formInfoAskepAwalObgyn.find('input[name="no_rkm_medis"]').val()
+            $('#modalRiwayatPersalinan').modal('show')
+            $('#formRiwayatPersalinan').find('input[name=no_rkm_medis]').val(no_rkm_medis);
+        }
+
+        function hapusRiwayatPersalinan(no_rkm_medis, tgl_thn) {
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: "Yakin ingin menghapus data ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('riwayat.persalinan.delete') }}",
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            no_rkm_medis: no_rkm_medis,
+                            tgl_thn: tgl_thn
+                        },
+                        success: (response) => {
+                            alertSuccessAjax('Data berhasil dihapus');
+                            // Panggil ulang fungsi render tabel Anda
+                            renderTableRiwayatPersalinan(no_rkm_medis);
+                        },
+                        error: (xhr) => {
+                            alertErrorAjax('Gagal menghapus data');
+                        }
+                    });
+                }
+            });
+        }
     </script>
 @endpush
 

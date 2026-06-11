@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class AskepRalanKebidananController extends Controller
@@ -65,13 +66,21 @@ class AskepRalanKebidananController extends Controller
     public function store(StoreAskepRalanKebidananRequest $request)
     {
         $data = $request->validated();
+        // $sessionNik = session()->get('pegawai')->nik;
+        // // 1. Cari apakah data sudah ada
+        // $existingAskep = $this->askep->find($data['no_rawat']);
+
+        // // 2. Validasi Khusus Update:
+        // // Jika data sudah ada, pastikan session NIK sama dengan NIK di database
+        // if ($existingAskep && $sessionNik !== $existingAskep->nip) {
+        //     throw ValidationException::withMessages([
+        //         'nip' => ['Anda tidak memiliki akses untuk mengubah data ini. Hubungi perawat penanggung jawab pasien.'],
+        //     ]);
+        // }
 
         try {
-
             $askep = $this->askep->updateOrCreate(
-                [
-                    'no_rawat' => $data['no_rawat']
-                ],
+                ['no_rawat' => $data['no_rawat']],
                 $data
             );
 
@@ -79,18 +88,10 @@ class AskepRalanKebidananController extends Controller
 
             return $this->successResponse(
                 $askep,
-                $askep->wasRecentlyCreated
-                ? 'Data berhasil disimpan'
-                : 'Data berhasil diperbarui'
+                $askep->wasRecentlyCreated ? 'Data berhasil disimpan' : 'Data berhasil diperbarui'
             );
-
         } catch (QueryException $e) {
-
-            return $this->errorResponse(
-                $e,
-                'Gagal menyimpan data'
-            );
-
+            return $this->errorResponse($e, 'Gagal menyimpan data');
         }
     }
     // public function print(Request $request)
@@ -149,12 +150,9 @@ class AskepRalanKebidananController extends Controller
 
         return $pdf->stream(
             ($data->pasien->nm_pasien ?? 'pasien')
-            . '_ASKEP_KEBIDANAN_'
-            . now()->format('YmdHis')
-            . '.pdf'
+                . '_ASKEP_KEBIDANAN_'
+                . now()->format('YmdHis')
+                . '.pdf'
         );
     }
-
-
-
 }

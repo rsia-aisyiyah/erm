@@ -284,7 +284,7 @@ class StoreAskepRalanKebidananRequest extends FormRequest
 
             'hasil' => ['required'],
             'lapor' => ['required', Rule::in(['Ya', 'Tidak'])],
-            'ket_lapor' => 'required|string|max:10',
+            'ket_lapor' => 'nullable|string|max:10',
 
             // SKRINING GIZI
             'sg1' => ['required'],
@@ -349,7 +349,7 @@ class StoreAskepRalanKebidananRequest extends FormRequest
             'ket_nyeri' => 'required|string|max:40',
 
             'pada_dokter' => ['required', Rule::in(['Ya', 'Tidak'])],
-            'ket_dokter' => 'required|string|max:10',
+            'ket_dokter' => 'nullable|string|max:10',
 
             // ASESMEN
             'masalah' => 'required|string|max:1000',
@@ -531,5 +531,16 @@ class StoreAskepRalanKebidananRequest extends FormRequest
             'max' => ':attribute melebihi batas yang diperbolehkan.',
             'min' => ':attribute kurang dari batas minimal.',
         ];
+    }
+    protected function prepareForValidation(): void
+    {
+        if ($this->filled('tanggal')) {
+            $this->merge([
+                'tanggal' => date(
+                    'Y-m-d H:i:s',
+                    strtotime($this->tanggal)
+                )
+            ]);
+        }
     }
 }
