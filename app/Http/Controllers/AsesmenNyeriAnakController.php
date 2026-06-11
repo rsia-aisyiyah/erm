@@ -40,7 +40,7 @@ class AsesmenNyeriAnakController extends Controller
             'penanganan_farmakologi' => $request->penanganan_farmakologi,
             'penanganan_non_farmakologi' => $request->penanganan_non_farmakologi,
             'penanganan_non_farmakologi_lain' => $request->penanganan_non_farmakologi_lain,
-            'skala' => (int)$request->skala,
+            'skala' => (int) $request->skala,
             'ket_skala' => $request->ket_skala,
             'waktu' => $request->waktu,
             'nip' => session()->get('pegawai')->nik
@@ -75,6 +75,7 @@ class AsesmenNyeriAnakController extends Controller
     function first(Request $request)
     {
         $get = $this->model->where('no_rawat', $request->no_rawat)
+            ->where('tanggal', $request->tanggal)
             ->with(['petugas'])
             ->first();
         return response()->json($get);
@@ -102,7 +103,7 @@ class AsesmenNyeriAnakController extends Controller
             'penanganan_farmakologi' => $request->penanganan_farmakologi,
             'penanganan_non_farmakologi' => $request->penanganan_non_farmakologi,
             'penanganan_non_farmakologi_lain' => $request->penanganan_non_farmakologi_lain,
-            'skala' => (int)$request->skala,
+            'skala' => (int) $request->skala,
             'ket_skala' => $request->ket_skala,
             'waktu' => $request->waktu,
         ];

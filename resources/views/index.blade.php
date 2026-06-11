@@ -33,8 +33,10 @@
             </main>
         </div>
     </div>
-
+    @include('content.notifikasi')
     @include('content.ranap.modal.modal_riwayat_infeksi')
+    @include('content.poliklinik.modal.modal_riwayat_persalinan')
+
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -445,84 +447,55 @@
             });
 
         }
+        function kalkulasiIntiUmur(tanggalLahir, tanggalTarget) {
+            // Fungsi pembantu untuk parsing string 'YYYY-MM-DD' atau 'YYYY-MM-DD HH:mm:ss' agar aman dari bias timezone
+            const parseData = (tgl) => {
+                if (tgl instanceof Date) return tgl;
+                let parts = tgl.split(' ')[0].split('-');
+                return new Date(parts[0], parts[1] - 1, parts[2]);
+            };
 
-        function hitungUmur(tgl_lahir) {
-            let sekarang = new Date();
-            let hari = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate());
+            let lahir = parseData(tanggalLahir);
+            let target = parseData(tanggalTarget);
 
-            let tahunSekarang = sekarang.getFullYear();
-            let bulanSekarang = sekarang.getMonth();
-            let tanggalSekarang = sekarang.getDate();
-
-            let splitTgl = tgl_lahir.split('-');
-            let lahir = new Date(splitTgl[0], splitTgl[1] - 1, splitTgl[2]);
-
-            let tahunLahir = lahir.getFullYear();
-            let bulanLahir = lahir.getMonth();
-            let tanggalLahir = lahir.getDate();
-
-            let umurTahun = tahunSekarang - tahunLahir;
-            let umurBulan = bulanSekarang - bulanLahir;
-            let umurTanggal = tanggalSekarang - tanggalLahir;
-
-            if (umurTanggal < 0) {
-                let bulanSebelumnya = new Date(tahunSekarang, bulanSekarang, 0);
-                let jmlHariBulanSebelumnya = bulanSebelumnya.getDate();
-                umurTanggal += jmlHariBulanSebelumnya;
-                umurBulan--;
+            if (target < lahir) {
+                return { tahun: 0, bulan: 0, hari: 0 };
             }
 
-            if (umurBulan < 0) {
-                umurBulan += 12;
-                umurTahun--;
+            let tahun = target.getFullYear() - lahir.getFullYear();
+            let bulan = target.getMonth() - lahir.getMonth();
+            let hari = target.getDate() - lahir.getDate();
+
+            // Logika Pinjam Hari (Selalu jalan jika hari negatif, tidak peduli bulannya berapapun)
+            if (hari < 0) {
+                // Ambil hari terakhir dari bulan sebelumnya dari tanggal target
+                let bulanSebelumnya = new Date(target.getFullYear(), target.getMonth(), 0);
+                hari += bulanSebelumnya.getDate();
+                bulan--;
             }
 
-            // Pastikan tidak ada nilai negatif
-            umurTahun = Math.max(umurTahun, 0);
-            umurBulan = Math.max(umurBulan, 0);
-            umurTanggal = Math.max(umurTanggal, 0);
-
-            return `${umurTahun} Th ${umurBulan} Bln ${umurTanggal} Hari`;
-        }
-
-        function hitungUmurDaftar(tanggalLahir, tanggalUmur) {
-            const lahir = new Date(tanggalLahir);
-            const umur = new Date(tanggalUmur);
-
-            if (umur < lahir) {
-                return {
-                    tahun: 0,
-                    bulan: 0,
-                    hari: 0,
-                };
-            }
-
-            let tahun = umur.getFullYear() - lahir.getFullYear();
-            let bulan = umur.getMonth() - lahir.getMonth();
-            let hari = umur.getDate() - lahir.getDate();
-
-            if (bulan < 0 || (bulan === 0 && hari < 0)) {
-                tahun--;
+            // Logika Pinjam Bulan
+            if (bulan < 0) {
                 bulan += 12;
-                if (hari < 0) {
-                    const hariTerakhirBulanLahir = new Date(
-                        umur.getFullYear(),
-                        umur.getMonth(),
-                        0
-                    ).getDate();
-                    hari += hariTerakhirBulanLahir;
-                    bulan--;
-                    if (bulan < 0) {
-                        bulan += 12;
-                    }
-                }
+                tahun--;
             }
 
             return {
                 tahun: Math.max(tahun, 0),
                 bulan: Math.max(bulan, 0),
-                hari: Math.max(hari, 0),
+                hari: Math.max(hari, 0)
             };
+        }
+
+        function hitungUmur(tgl_lahir) {
+            let hariIni = new Date();
+            let hasil = kalkulasiIntiUmur(tgl_lahir, hariIni);
+
+            return `${hasil.tahun} Th ${hasil.bulan} Bln ${hasil.hari} Hari`;
+        }
+
+        function hitungUmurDaftar(tanggalLahir, tanggalUmur) {
+            return kalkulasiIntiUmur(tanggalLahir, tanggalUmur);
         }
 
 
@@ -538,6 +511,28 @@
 
             }
             return false;
+        }
+
+        function setDataForm($form, data) {
+            Object.entries(data).forEach(([key, value]) => {
+                const $el = $form.find(`[name="${key}"]`);
+
+                if (!$el.length) return;
+
+                const type = $el.attr('type');
+
+                if (type === 'radio') {
+                    // radio: cari yang value-nya cocok lalu check
+                    $form.find(`[name="${key}"][value="${value}"]`).prop('checked', true).trigger('change');
+
+                } else if (type === 'checkbox') {
+                    $el.prop('checked', !!value);
+
+                } else {
+                    // input text, select, textarea, date, time, range, dll
+                    $el.val(value).trigger('change');
+                }
+            });
         }
 
         function getPetugas(nama, no = '') {
@@ -1566,9 +1561,9 @@
 
         function setIconGender(jk) {
             if (jk === 'L') {
-                return `<span class="badge text-bg-primary"><i class="bi bi-gender-male "></i></span> `
+                return `<span class="badge bg-info"><i class="bi bi-gender-male "></i></span> `
             }
-            return `<span class="badge text-bg-warning"><i class="bi bi-gender-female "></i></span> `
+            return `<span class="badge" style="background-color: #ff6aaf;"><i class="bi bi-gender-female "></i></span> `
 
         }
 
@@ -1606,6 +1601,22 @@
                                 </div>
                             </div>
                         `;
+        }
+        function handleValidationError(request) {
+            if (request.status !== 422) return;
+
+            const { responseJSON } = request;
+            const errors = responseJSON.errors;
+
+            // Mengambil semua pesan error dan menggabungkannya dengan koma
+            const allMessages = Object.values(errors).flat().join(', ');
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Input Tidak Valid',
+                html: `<small class="text-danger">${allMessages}</small>`, // Gunakan 'text' daripada 'html' agar lebih bersih
+                confirmButtonText: 'Perbaiki',
+            });
         }
 
     </script>

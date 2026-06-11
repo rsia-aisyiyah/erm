@@ -1382,8 +1382,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px"><i class="bi bi-x-circle"></i> Keluar</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="simpanAskepKandunganRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Keluar</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="simpanAskepKandunganRanap()"><i class="bi bi-save"></i> Simpan</button>
+                <a href="#" class="btn btn-primary btn-sm btn-warning" id="btnCetakAskepKandunganRanap" target="_blank"><i class="bi bi-printer"></i> Cetak</a>
             </div>
         </div>
     </div>
@@ -1481,9 +1482,12 @@
                     $(`#formAskepRanapKandungan input[name=jam]`).val(response.tanggal.split(' ')[1])
                     $(`#formAskepRanapKandungan input[name=riwayat_hamil_tp]`).val(splitTanggal(response.riwayat_hamil_tp))
                     $(`#formAskepRanapKandungan input[name=riwayat_hamil_hpht]`).val(splitTanggal(response.riwayat_hamil_hpht))
+
+                    $('#btnCetakAskepKandunganRanap').attr('href', `/erm/ranap/askep/kandungan/print?no_rawat=${response.no_rawat}`).removeClass('d-none') 
                 } else {
                     $('#formAskepRanapKandungan input[name=nip1]').val("{{ session()->get('pegawai')->nik }}")
                     $('#formAskepRanapKandungan input[name=pengkaji1]').val("{{ session()->get('pegawai')->nama }}")
+                    $('#btnCetakAskepKandunganRanap').attr('href', `javascript:void(0)`).addClass('d-none') 
                 }
                 hitungSkalaNyeriKandungan()
             })

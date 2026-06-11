@@ -1,8 +1,3 @@
-<input
-    type="radio"
-    class="form-check-input"
-    id="{{ $id }}"
-    name="{{ $name }}"
-    value="{{ $value }}"
+<input type="radio" class="form-check-input" id="{{ $id }}" name="{{ $name }}" value="{{ $value }}" {{ $attributes }}
     @if ($checked) checked @endif />
 <label class="form-check-label" for="{{ $id }}">{{ $label }}</label>

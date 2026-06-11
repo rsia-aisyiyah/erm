@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
             $route->get('/nomor', [PermintaanLabController::class, 'getNomor']);
             $route->post('/detail', [DetailPermintaanLabController::class, 'create']);
             $route->post('/pemeriksaan', [PermintaanPemeriksaanLabController::class, 'create']);
+            $route->get('/hasil', [PermintaanLabController::class, 'getHasilPermintaanDoesntHaveSaran'])->name('lab.permintaan.hasil');
         });
 
         $route->get('/template/get', [TemplateLaboratoriumController::class, 'get']);
@@ -36,13 +37,13 @@ Route::middleware('auth')->group(function () {
         $route->put('/saran-kesan', [SaranKesanLabController::class, 'update']);
         $route->delete('/saran-kesan', [SaranKesanLabController::class, 'destroy']);
 
-	    $route->get('/riwayat-hasil/{no_rkm_medis}/{jns_perawatan?}', [DetailPemeriksaanLabController::class, 'history']);
+        $route->get('/riwayat-hasil/{no_rkm_medis}/{jns_perawatan?}', [DetailPemeriksaanLabController::class, 'history']);
 
     });
 
-	Route::prefix('lab-pa')->group(function($route){
-		$route->get('/permintaan', function(){
-			\App\Models\PermintaanLabPA::first();
-		});
-	});
+    Route::prefix('lab-pa')->group(function ($route) {
+        $route->get('/permintaan', function () {
+            \App\Models\PermintaanLabPA::first();
+        });
+    });
 });

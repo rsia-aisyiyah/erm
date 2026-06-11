@@ -132,23 +132,66 @@ class PemeriksaanRalanController extends Controller
     }
 
 
-    function updatePemeriksaanRalan(PemeriksaanRalanRequest $request, array $clause, UpdateJamResepObat $updateJamResepObat)
-    {
-        $data = array_merge($request->pemeriksaanData(), $clause);
-        $updateJamResepObat->handle($request);
-        try {
-            $update = PemeriksaanRalan::where($clause)->update($request->pemeriksaanData());
-            if ($update) {
-                $this->track->updateSql($this->pemeriksaan, $data, $clause);
-                if ($request->o2) {
-                    $this->grafikHarian->update($request);
-                }
-            }
-        } catch (QueryException $e) {
-            return $this->errorResponse($e, $e->getMessage(), 500);
-        }
-        return response()->json('SUKSES UPDATE');
+    // function updatePemeriksaanRalan(PemeriksaanRalanRequest $request, array $clause, UpdateJamResepObat $updateJamResepObat)
+    // {
+    //     $data = array_merge($request->pemeriksaanData(), $clause);
+    //     $updateJamResepObat->handle($request);
+    //     try {
+    //         $update = PemeriksaanRalan::where($clause)->update($request->pemeriksaanData());
+    //         if ($update) {
+    //             $this->track->updateSql($this->pemeriksaan, $data, $clause);
+    //             if ($request->o2) {
+    //                 $this->grafikHarian->update($request);
+    //             }
+    //         }
+    //     } catch (QueryException $e) {
+    //         return $this->errorResponse($e, $e->getMessage(), 500);
+    //     }
+    //     return response()->json('SUKSES UPDATE');
 
+    // }
+    function updatePemeriksaanRalan(
+        PemeriksaanRalanRequest $request,
+        array $clause,
+        UpdateJamResepObat $updateJamResepObat
+    ) {
+
+        $updateJamResepObat->handle($request);
+
+        try {
+
+            $pemeriksaan = PemeriksaanRalan::where($clause)
+                ->firstOrFail();
+
+            $pemeriksaan->update(
+                $request->pemeriksaanData()
+            );
+
+            $data = array_merge(
+                $request->pemeriksaanData(),
+                $clause
+            );
+
+            $this->track->updateSql(
+                $this->pemeriksaan,
+                $data,
+                $clause
+            );
+
+            if ($request->o2) {
+                $this->grafikHarian->update($request);
+            }
+
+        } catch (QueryException $e) {
+
+            return $this->errorResponse(
+                $e,
+                $e->getMessage(),
+                500
+            );
+        }
+
+        return response()->json('SUKSES UPDATE');
     }
     function createPemeriksaanRalan(PemeriksaanRalanRequest $request, array $clause)
     {
@@ -224,40 +267,40 @@ class PemeriksaanRalanController extends Controller
         ];
 
 
-	    try {
+        try {
 
-			DB::transaction(function() use ($request, $clause, $data, $dataGrafik){
-			    $pemeriksaan = PemeriksaanRalan::where($clause)->update($data);
-			    $grafik = GrafikHarian::where($clause)->update($dataGrafik);
-				RsiaLogSoap::create([
-					'no_rawat' => $request->no_rawat,
-					'jam_rawat' => $request->jam_rawat,
-					'tgl_perawatan' => $request->tgl_perawatan,
-					'waktu' => date('Y-m-d H:i:s'),
-					'aksi' => 'Ubah',
-					'nip' => session()->get('pegawai')->nik
-				]);
+            DB::transaction(function () use ($request, $clause, $data, $dataGrafik) {
+                $pemeriksaan = PemeriksaanRalan::where($clause)->update($data);
+                $grafik = GrafikHarian::where($clause)->update($dataGrafik);
+                RsiaLogSoap::create([
+                    'no_rawat' => $request->no_rawat,
+                    'jam_rawat' => $request->jam_rawat,
+                    'tgl_perawatan' => $request->tgl_perawatan,
+                    'waktu' => date('Y-m-d H:i:s'),
+                    'aksi' => 'Ubah',
+                    'nip' => session()->get('pegawai')->nik
+                ]);
 
-				if($pemeriksaan){
-			         $this->track->updateSql($this->pemeriksaan, $data, $clause);
+                if ($pemeriksaan) {
+                    $this->track->updateSql($this->pemeriksaan, $data, $clause);
 
-				}
+                }
 
-				if($grafik){
-			        $this->track->updateSql($this->grafik, $dataGrafik, $clause);
-				}
+                if ($grafik) {
+                    $this->track->updateSql($this->grafik, $dataGrafik, $clause);
+                }
 
-			    if ($request->kd_poli == 'IGDK') {
-			        $sttsPeriksa = ['stts' => 'Sudah'];
-			        RegPeriksa::where('no_rawat', $request->no_rawat)->update($sttsPeriksa);
-			        $this->track->insertSql($this->regPeriksa, $sttsPeriksa);
-			    }
+                if ($request->kd_poli == 'IGDK') {
+                    $sttsPeriksa = ['stts' => 'Sudah'];
+                    RegPeriksa::where('no_rawat', $request->no_rawat)->update($sttsPeriksa);
+                    $this->track->insertSql($this->regPeriksa, $sttsPeriksa);
+                }
 
-			});
+            });
 
-	    }catch (\Exception $e){
-			return response()->json($e->getMessage(), 500);
-	    }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        }
 
         return response()->json('Sukses');
     }

@@ -16,6 +16,7 @@ class RsiaKonsulSbar extends Model
     protected $guarded = [];
     public $timestamps = false;
 
+
     function sbar(){
         return $this->belongsTo(RsiaGrafikHarian::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat']);
     }

@@ -15,6 +15,16 @@
             margin-bottom: 10px;
         }
 
+
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+        .page-break {
+            page-break-after: always !important;
+        }
+
         p {
             font-size: 12px;
             margin: 0px;
@@ -67,8 +77,8 @@
             display: table;
         }
 
-        .d-table > div,
-        .d-table > span {
+        .d-table>div,
+        .d-table>span {
             display: table-cell;
             vertical-align: top;
             padding: 5px;
@@ -594,6 +604,23 @@
             line-height: 1 !important;
         }
 
+        .footer {
+            position: fixed;
+            bottom: -50px;
+            left: 0px;
+            right: 0px;
+            height: 50px;
+            text-align: center;
+            font-size: 10px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        /* Menggunakan fitur penghitung halaman bawaan PDF */
+        .page-number:after {
+            content: counter(page);
+        }
+
         /*table {*/
         /*    font-size: 12px !important;*/
         /*}*/
@@ -601,23 +628,24 @@
 </head>
 
 <body>
-@yield('content')
-@stack('script')
-<script>
-    function getBaseUrl(urlSegments = '') {
-        const getUrl = "{{ url('') }}"
-        const arrDomain = getUrl.split('/');
-        const segment = urlSegments ? `/${urlSegments}` : ''
-        if (arrDomain[2] == 'sim.rsiaaisyiyah.com') {
-            url = 'https://sim.rsiaaisyiyah.com' + segment;
-        } else {
-            url = `${arrDomain[0]}//192.168.100.33${segment}`
+    @yield('content')
+    @stack('script')
+ 
+    <script>
+        function getBaseUrl(urlSegments = '') {
+            const getUrl = "{{ url('') }}"
+            const arrDomain = getUrl.split('/');
+            const segment = urlSegments ? `/${urlSegments}` : ''
+            if (arrDomain[2] == 'sim.rsiaaisyiyah.com') {
+                url = 'https://sim.rsiaaisyiyah.com' + segment;
+            } else {
+                url = `${arrDomain[0]}//192.168.100.33${segment}`
+            }
+            return url;
         }
-        return url;
-    }
 
 
-</script>
+    </script>
 </body>
 
 </html>

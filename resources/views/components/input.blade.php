@@ -1,8 +1,8 @@
 <input
     {{ $attributes->merge(['class' => 'form-control form-control-sm']) }}
     @if ($attributes->has('style') && !empty($attributes->get('style'))) {{ $attributes->merge(['style' => $attributes->get('style')]) }} @endif
-    id="{{ $id }}"
-    name="{{ $name }}"
+    id="{{ $id ?? $name}}"
+    name="{{ $name ?? $id}}"
     placeholder="{{ $placeholder }}"
     onfocus="removeZero(this)"
     onblur="cekKosong(this)"
