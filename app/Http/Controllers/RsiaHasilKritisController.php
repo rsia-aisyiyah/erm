@@ -2,56 +2,97 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\HasilKritisRequest;
+use App\Models\Dokter;
+use App\Models\Petugas;
 use App\Models\RsiaHasilKritis;
+use App\Models\User;
+use App\Services\AuthVerificationService;
+use App\Services\HasilKritis\HasilKritisFetchService;
+use App\Services\HasilKritis\VerifikasiHasilKritis;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Yajra\DataTables\DataTables;
 
 class RsiaHasilKritisController extends Controller
 {
     protected $track;
-    public function __construct()
+    protected $authVerifyService;
+    public function __construct(AuthVerificationService $authVerifyService)
     {
+        $this->authVerifyService = $authVerifyService;
         $this->track = new TrackerSqlController();
     }
     function get($id)
     {
-        $hasil = RsiaHasilKritis::where('id', $id)->with(['petugas' => function ($q) {
-            return $q->select(['nip', 'nama']);
-        }, 'petugasRuang' => function ($q) {
-            return $q->select(['nip', 'nama']);
-        }, 'dokter' => function ($q) {
-            return $q->select(['kd_dokter', 'nm_dokter']);
-        }, 'regPeriksa'])->first();
+        $hasil = RsiaHasilKritis::where('id', $id)->with([
+            'petugas' => function ($q) {
+                return $q->select(['nip', 'nama']);
+            },
+            'petugasRuang' => function ($q) {
+                return $q->select(['nip', 'nama']);
+            },
+            'dokter' => function ($q) {
+                return $q->select(['kd_dokter', 'nm_dokter']);
+            },
+            'dokterPj' => function ($q) {
+                return $q->select(['kd_dokter', 'nm_dokter']);
+            },
+            'regPeriksa'
+        ])->first();
         return response()->json($hasil);
     }
     function getHasil(Request $request)
     {
-        $hasil = RsiaHasilKritis::where('no_rawat', $request->no_rawat)->with(['petugas' => function ($q) {
-            return $q->select(['nip', 'nama']);
-        }, 'petugasRuang' => function ($q) {
-            return $q->select(['nip', 'nama']);
-        }, 'dokter' => function ($q) {
-            return $q->select(['kd_dokter', 'nm_dokter']);
-        }, 'regPeriksa']);
+        $hasil = RsiaHasilKritis::where('no_rawat', $request->no_rawat)->with([
+            'petugas' => function ($q) {
+                return $q->select(['nip', 'nama']);
+            },
+            'petugasRuang' => function ($q) {
+                return $q->select(['nip', 'nama']);
+            },
+            'dokter' => function ($q) {
+                return $q->select(['kd_dokter', 'nm_dokter']);
+            },
+            'dokterPj' => function ($q) {
+                return $q->select(['kd_dokter', 'nm_dokter']);
+            },
+            'regPeriksa'
+        ]);
 
         return DataTables::of($hasil)->make(true);
     }
 
-    function create(Request $request)
-    {
-        $data = [
-            'no_rawat' => $request->no_rawat,
-            'hasil' => $request->hasil,
-            'petugas' => $request->petugas,
-            'tgl' => $request->tgl ? date('Y-m-d H:i:s', strtotime($request->tgl)) : '0000-00-00 00:00:00',
-            'petugas_ruang' => $request->petugas_ruang,
-            'tgl_ruang' => $request->tgl_ruang ? date('Y-m-d H:i:s', strtotime($request->tgl_ruang)) : '0000-00-00 00:00:00',
-            'dokter' => $request->dokter,
-            'tgl_dokter' => $request->tgl_dokter ? date('Y-m-d H:i:s', strtotime($request->tgl_dokter)) : '0000-00-00 00:00:00',
 
-        ];
+    public function getPetugas(HasilKritisFetchService $fetch, Request $request): JsonResponse
+    {
+        // 1. Validasi Input (Memastikan NIP tidak kosong/null)
+        if (!$request->filled('nip')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'NIP/NIK tidak boleh kosong'
+            ], 400);
+        }
+
+        // 2. Ambil data melalui Service dengan melemparkan parameter yang dibutuhkan
+        $hasilKritis = $fetch->getByPetugas(
+            nip: $request->input('nip'),
+            status: $request->input('status'),
+            bulanRaw: $request->input('bulan')
+        );
+
+        // 3. Kembalikan Response JSON hasil akhir
+        return response()->json($hasilKritis);
+    }
+    function create(HasilKritisRequest $request)
+    {
+
+        $data = $request->validated();
 
         if ($request->id) {
             $isAvailable = RsiaHasilKritis::where('id', $request->id)->first();
@@ -83,28 +124,71 @@ class RsiaHasilKritisController extends Controller
             return response()->json($e->errorInfo, 500);
         }
     }
-    function update(Request $request)
+
+    public function update(HasilKritisRequest $request)
     {
-        $data = [
-            'no_rawat' => $request->no_rawat,
-            'hasil' => $request->hasil,
-            'petugas' => $request->petugas,
-            'tgl' => $request->tgl ? date('Y-m-d H:i:s', strtotime($request->tgl)) : '0000-00-00 00:00:00',
-            'petugas_ruang' => $request->petugas_ruang,
-            'tgl_ruang' => $request->tgl_ruang ? date('Y-m-d H:i:s', strtotime($request->tgl_ruang)) : '0000-00-00 00:00:00',
-            'dokter' => $request->dokter,
-            'tgl_dokter' => $request->tgl_dokter ? date('Y-m-d H:i:s', strtotime($request->tgl_dokter)) : '0000-00-00 00:00:00',
-
-        ];
-
         try {
-            $hasil = RsiaHasilKritis::where(['id' => $request->id])->update($data);
-            if ($hasil) {
+            $data = $request->validated();
+            $hasil = RsiaHasilKritis::findOrFail($request->id);
+
+            $hasil->fill([
+                'hasil' => $data['hasil'],
+                'petugas_ruang' => $data['petugas_ruang'],
+                'dokter' => $data['dokter'],
+                'dokter_pj' => $data['dokter_pj'] ?? null, // <-- Tambahkan field baru
+            ]);
+
+            // Deteksi Perubahan Data Lama vs Baru
+            if ($hasil->isDirty('dokter')) {
+                $hasil->tgl_dokter = null;
+                $data['tgl_dokter'] = null;
+            }
+            if ($hasil->isDirty('petugas_ruang')) {
+                $hasil->tgl_ruang = null;
+                $data['tgl_ruang'] = null;
+            }
+            // TAMBAHAN: Jika Dokter PJ diganti, reset tanggal verifikasinya
+            if ($hasil->isDirty('dokter_pj')) {
+                $hasil->tgl_drpj = null;
+                $data['tgl_drpj'] = null;
+            }
+
+            $isSaved = $hasil->save();
+            if ($isSaved) {
                 $this->track->updateSql(new RsiaHasilKritis(), $data, ['id' => $request->id]);
             }
-            return response()->json('SUKSES', 201);
+            return response()->json($isSaved);
         } catch (QueryException $e) {
             return response()->json($e->errorInfo, 500);
+        }
+
+    }
+    public function verifikasi(VerifikasiHasilKritis $service, $id, Request $request)
+    {
+        // Validasi input form dasar tetap di Controller (atau via FormRequest)
+        $request->validate([
+            'password' => 'required',
+            'role' => 'required'
+        ]);
+
+        try {
+            // Serahkan seluruh logika berat ke Service
+            $service->verifyAndExecute(
+                $id,
+                $request->password,
+                $request->role
+            );
+            $updateNotif = new \App\Services\NotificationService();
+            return response()->json([
+                'message' => 'Verifikasi berhasil',
+                'new_count' => $updateNotif->getHasilKritisCount() // Contoh update count notifikasi setelah verifikasi
+            ]);
+
+        } catch (HttpException $e) {
+            // Tangkap error kustom yang dilempar oleh Service beserta Status Code-nya
+            return response()->json([
+                'message' => $e->getMessage()
+            ], $e->getStatusCode());
         }
     }
 }

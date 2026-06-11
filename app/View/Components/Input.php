@@ -12,22 +12,18 @@ class Input extends Component
      * @return void
      */
 
-    public $id;
-    public $name;
-    public $placeholder;
-    public $type;
 
     public function __construct(
-        $id,
-        $name,
-        $type = 'text',
-        $placeholder = ''
+        public ?string $id = null,
+        public ?string $name = null,
+        public ?string $value = null,
+        public ?string $type = null,
+        public ?string $label = null,
+        public ?string $placeholder = null,
     ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->type = $type;
-        $this->placeholder = $placeholder;
+
     }
+
 
     /**
      * Get the view / contents that represent the component.
