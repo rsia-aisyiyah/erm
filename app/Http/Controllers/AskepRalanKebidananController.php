@@ -91,7 +91,8 @@ class AskepRalanKebidananController extends Controller
                 $askep->wasRecentlyCreated ? 'Data berhasil disimpan' : 'Data berhasil diperbarui'
             );
         } catch (QueryException $e) {
-            return $this->errorResponse($e, 'Gagal menyimpan data');
+            return $this->errorResponse($e, 'Gagal menyimpan data '. $e->errorInfo[2]);
+
         }
     }
     // public function print(Request $request)
