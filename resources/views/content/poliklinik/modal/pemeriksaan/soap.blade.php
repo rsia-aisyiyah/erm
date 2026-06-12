@@ -317,6 +317,7 @@
 
             navTabRiwayatPemeriksaan.empty();
             $('#formAskepAwalObgyn').trigger('reset');
+            reloadTabelPoli();
 
         })
 
