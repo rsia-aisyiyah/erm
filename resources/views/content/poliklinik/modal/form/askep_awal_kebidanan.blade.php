@@ -974,24 +974,31 @@
             const b = formAskepAwalObgyn
                 .find('input[name="berjalan_b"]:checked')
                 .val();
+            const c = formAskepAwalObgyn
+                .find('input[name="berjalan_c"]:checked')
+                .val();
 
             let hasil = '';
 
-            if (a === 'Ya' && b === 'Ya') {
-
+            if (a === 'Ya' && c === 'Ya') {
                 hasil = 'Resiko Tinggi (Ditemukan A Dan B)';
-
                 formAskepAwalObgyn
                     .find('input[name="lapor"][value="Ya"]')
-                    .prop('checked', true);
+                    .prop('checked', true)
+                    .trigger('change');
 
             } else if (a === 'Ya' || b === 'Ya') {
 
                 hasil = 'Resiko Rendah (Ditemukan A/B)';
 
+
             } else {
 
                 hasil = 'Tidak Beresiko (Tidak Ditemukan A Dan B)';
+                formAskepAwalObgyn
+                    .find('input[name="lapor"][value="Tidak"]')
+                    .prop('checked', true)
+                    .trigger('change');
             }
 
             formAskepAwalObgyn
@@ -1000,7 +1007,7 @@
         }
         formAskepAwalObgyn.on(
             'change',
-            'input[name="berjalan_a"], input[name="berjalan_b"]',
+            'input[name="berjalan_a"], input[name="berjalan_b"], input[name="berjalan_c"]',
             hitungResikoJatuh
         );
         formAskepAwalObgyn.find('input[name=lapor]').on('change', function (e) {

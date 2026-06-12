@@ -129,7 +129,32 @@
             });
             return sep;
         }
-
+        function tbMasalahKeperawatan() {
+            $('#tbMasalahKeperawatan').dataTable({
+                destroy: true,
+                processing: true,
+                ordering: false,
+                paging: false,
+                scrollY: 250,
+                info: false,
+                ajax: {
+                    url: '/erm/master/masalah/keperawatan/table',
+                },
+                columns: [{
+                    data: '',
+                    render: (data, type, row) => {
+                        return `<div class="form-check masalahKeperawatan">
+                                    <input class="form-check-input listMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
+                                </div>`
+                    }
+                }, {
+                    data: '',
+                    render: (data, type, row) => {
+                        return `<label onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')">${row.nama_masalah}</label>`
+                    }
+                }]
+            })
+        }
 
         function getRujukanPcarePeserta(noka) {
             let rujukan = $.ajax({

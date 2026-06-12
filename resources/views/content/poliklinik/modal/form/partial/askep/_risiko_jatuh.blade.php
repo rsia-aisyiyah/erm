@@ -1,28 +1,35 @@
 <div class="card mb-3">
     <div class="card-header">
-        IV. Risiko Jatuh (Metode Get Up And Go)
+        Risiko Jatuh (Metode Get Up And Go)
     </div>
     <div class="card-body">
         <div class="row g-3">
 
-            <div class="col-md-4">
-                <label class="d-block">A. Perlu bantuan saat duduk ke berdiri?</label>
-                <div class="d-flex gap-3">
-                    <x-input-radio id="berjalan_a_ya" name="berjalan_a" value="Ya" label="Ya" />
-                    <x-input-radio id="berjalan_a_tidak" name="berjalan_a" value="Tidak" label="Tidak" checked />
+            <div class="col-md-12">
+                <strong class="fs-8 d-block">A. Cara Berjalan Pasien</strong>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label class="d-block">1. Perlu bantuan saat duduk ke berdiri?</label>
+                        <div class="d-flex gap-3">
+                            <x-input-radio id="berjalan_a_ya" name="berjalan_a" value="Ya" label="Ya" />
+                            <x-input-radio id="berjalan_a_tidak" name="berjalan_a" value="Tidak" label="Tidak"
+                                checked />
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="d-block">2. Kesulitan berjalan / sempoyongan?</label>
+                        <div class="d-flex gap-3">
+                            <x-input-radio id="berjalan_b_ya" name="berjalan_b" value="Ya" label="Ya" />
+                            <x-input-radio id="berjalan_b_tidak" name="berjalan_b" value="Tidak" label="Tidak"
+                                checked />
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="col-md-4">
-                <label class="d-block">B. Kesulitan berjalan / sempoyongan?</label>
-                <div class="d-flex gap-3">
-                    <x-input-radio id="berjalan_b_ya" name="berjalan_b" value="Ya" label="Ya" />
-                    <x-input-radio id="berjalan_b_tidak" name="berjalan_b" value="Tidak" label="Tidak" checked />
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <label class="d-block">C. Pegangan pada benda saat berjalan?</label>
+            <div class="col-md-8">
+                <strong class="fs-8 d-block">B. Pegangan pada benda saat berjalan?</strong>
                 <div class="d-flex gap-3">
                     <x-input-radio id="berjalan_c_ya" name="berjalan_c" value="Ya" label="Ya" />
                     <x-input-radio id="berjalan_c_tidak" name="berjalan_c" value="Tidak" label="Tidak" checked />

@@ -9,4 +9,10 @@ Route::prefix('asesmen-keperawatan')->group(function ($route) {
         $route->post('/', [AskepRalanKebidananController::class, 'store'])->name('asesmen-keperawatan.kandungan.store');
         $route->get('print', [AskepRalanKebidananController::class, 'print'])->name('asesmen-keperawatan.kandungan.print');
     });
+    $route->prefix('anak')->group(function ($route) {
+        $route->get('test', function () {
+            return view('content.poliklinik.modal.form.askep_awal_anak');
+        });
+    });
+
 });
