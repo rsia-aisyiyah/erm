@@ -2,7 +2,7 @@
 {{-- @section('contents') --}}
 {{-- Form Info Pasien (readonly) --}}
 <div class="border p-2 mb-3 bg-light">
-    <form action="" accept="" id="formInfoAskepAwalObgyn">
+    <form action="" accept="" id="formInfoAskepAwalAnak">
         <div class="row">
             <div class="col-md-2">
                 <label for="no_rawat">No.Rawat</label>
@@ -35,7 +35,7 @@
 </div>
 
 {{-- Form Utama Askep Awal Kebidanan --}}
-<form action="" method="post" id="formAskepAwalObgyn">
+<form action="" method="post" id="formAskepAwalAnak">
 
     <div class="row">
 
@@ -53,7 +53,7 @@
                         <div class="col-md-5">
                             <label for="nip">Petugas</label>
                             <x-select id="nip" name="nip" style="width:100%"
-                                data-dropdown-parent="#formAskepAwalObgyn"></x-select>
+                                data-dropdown-parent="#formAskepAwalAnak"></x-select>
                         </div>
 
                         <div class="col-md-4">
@@ -109,7 +109,7 @@
                         <div class="col-md-2">
                             <label for="bb">BB</label>
                             <x-input-group class="input-group-sm">
-                                <x-input id="bb" name="bb" />
+                                <x-input id="bb" name="bb" type="number" value="0" />
                                 <x-input-group-text>Kg</x-input-group-text>
                             </x-input-group>
                         </div>
@@ -117,26 +117,12 @@
                         <div class="col-md-3">
                             <label for="tb">TB</label>
                             <x-input-group class="input-group-sm">
-                                <x-input id="tb" name="tb" />
+                                <x-input id="tb" name="tb" type="number" value="0" />
                                 <x-input-group-text>cm</x-input-group-text>
                             </x-input-group>
                         </div>
 
-                        <div class="col-md-3">
-                            <label for="lila">LILA</label>
-                            <x-input-group class="input-group-sm">
-                                <x-input id="lila" name="lila" />
-                                <x-input-group-text>cm</x-input-group-text>
-                            </x-input-group>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="bmi">BMI</label>
-                            <x-input-group class="input-group-sm">
-                                <x-input id="bmi" name="bmi" />
-                                <x-input-group-text>Kg/M²</x-input-group-text>
-                            </x-input-group>
-                        </div>
+                      
 
                     </div>
                 </div>
@@ -803,19 +789,19 @@
     {{-- /row --}}
 
 </form>
-{{-- /formAskepAwalObgyn --}}
+{{-- /formAskepAwalAnak --}}
 
 
 
 
 @push('script')
     <script>
-        const formAskepAwalObgyn = $('#formAskepAwalObgyn');
-        const formInfoAskepAwalObgyn = $('#formInfoAskepAwalObgyn');
-        const rangeSkalaNyeri = formAskepAwalObgyn.find('input[name=skala_nyeri]');
+        const formAskepAwalAnak = $('#formAskepAwalAnak');
+        const formInfoAskepAwalAnak = $('#formInfoAskepAwalAnak');
+        const rangeSkalaNyeri = formAskepAwalAnak.find('input[name=skala_nyeri]');
 
         rangeSkalaNyeri.on('change', function (e) {
-            formAskepAwalObgyn.find('span[id=nilai_skala_nyeri]')
+            formAskepAwalAnak.find('span[id=nilai_skala_nyeri]')
                 .text(e.currentTarget.value);
         });
 
@@ -854,41 +840,41 @@
                 } = response;
                 const umur = hitungUmurDaftar(pasien?.tgl_lahir, response.tgl_registrasi);
                 const textUmurDaftar = `${umur.tahun} Tahun ${umur.bulan} Bulan ${umur.hari} Hari`;
-                formInfoAskepAwalObgyn.find('input[name=no_rawat]').val(no_rawat)
-                formInfoAskepAwalObgyn.find('input[name=no_rkm_medis]').val(pasien?.no_rkm_medis)
-                formInfoAskepAwalObgyn.find('input[name=pasien]').val(`${pasien?.nm_pasien} (${pasien?.jk})`)
-                formInfoAskepAwalObgyn.find('input[name=tgl_lahir]').val(`${formatTanggal(pasien?.tgl_lahir)}`)
-                formInfoAskepAwalObgyn.find('input[name=umurdaftar]').val(`${textUmurDaftar}`)
-                formInfoAskepAwalObgyn.find('input[name=penjab]').val(penjab?.png_jawab)
-                formInfoAskepAwalObgyn.find('input[name=dokter]').val(dokter?.nm_dokter)
+                formInfoAskepAwalAnak.find('input[name=no_rawat]').val(no_rawat)
+                formInfoAskepAwalAnak.find('input[name=no_rkm_medis]').val(pasien?.no_rkm_medis)
+                formInfoAskepAwalAnak.find('input[name=pasien]').val(`${pasien?.nm_pasien} (${pasien?.jk})`)
+                formInfoAskepAwalAnak.find('input[name=tgl_lahir]').val(`${formatTanggal(pasien?.tgl_lahir)}`)
+                formInfoAskepAwalAnak.find('input[name=umurdaftar]').val(`${textUmurDaftar}`)
+                formInfoAskepAwalAnak.find('input[name=penjab]').val(penjab?.png_jawab)
+                formInfoAskepAwalAnak.find('input[name=dokter]').val(dokter?.nm_dokter)
                 $.get("{{ route('asesmen-keperawatan.kandungan.get') }}", {
                     no_rawat: no_rawat,
                 }).done((response) => {
                     let optPetugas = ''
                     if (response.data) {
                         const { petugas, pasien } = response.data
-                        setDataForm(formAskepAwalObgyn, response.data);
+                        setDataForm(formAskepAwalAnak, response.data);
                         optPetugas = new Option(petugas?.nama, petugas?.nik, true, true);
-                        formAskepAwalObgyn.find('select[name=nip]').append(optPetugas).trigger('change');
-                        formAskepAwalObgyn.find('input[name=tanggal]').val(response.data.tanggal);
+                        formAskepAwalAnak.find('select[name=nip]').append(optPetugas).trigger('change');
+                        formAskepAwalAnak.find('input[name=tanggal]').val(response.data.tanggal);
                         return '';
                     }
 
                     const jam = moment().format('HH:mm:ss')
                     optPetugas = new Option("{{ session()->get('pegawai')->nama }}", "{{ session()->get('pegawai')->nik }}", true,
                         true);
-                    formAskepAwalObgyn.find('select[name=nip]').append(optPetugas).trigger('change');
-                    formAskepAwalObgyn.find('input[name=tanggal]').val(new Date().toISOString().slice(0, -1));
-                    // formAskepAwalObgyn.find("input[name=ket_lapor]").val(jam);
-                    // formAskepAwalObgyn.find("input[name=ket_dokter]").val(jam);
+                    formAskepAwalAnak.find('select[name=nip]').append(optPetugas).trigger('change');
+                    formAskepAwalAnak.find('input[name=tanggal]').val(new Date().toISOString().slice(0, -1));
+                    // formAskepAwalAnak.find("input[name=ket_lapor]").val(jam);
+                    // formAskepAwalAnak.find("input[name=ket_dokter]").val(jam);
                 })
                 renderTableRiwayatPersalinan(pasien.no_rkm_medis)
             })
         }
 
         function createAskepAwalObgyn() {
-            const data = getDataForm('#formAskepAwalObgyn', ['input', 'select', 'textarea']);
-            data['no_rawat'] = formInfoAskepAwalObgyn.find('input[name=no_rawat]').val();
+            const data = getDataForm('#formAskepAwalAnak', ['input', 'select', 'textarea']);
+            data['no_rawat'] = formInfoAskepAwalAnak.find('input[name=no_rawat]').val();
 
             $.post("{{ route('asesmen-keperawatan.kandungan.store') }}", data)
                 .done((response) => {
@@ -901,17 +887,17 @@
                         return handleValidationError(request)
                     } else {
                         // Menangani error selain 422 (misal: 500)
-                        alertErrorAjax(request);
+                        alertErrorAjax(request.responseJSON?.message || 'Terjadi kesalahan pada server');
                     }
                 });
 
         }
-        const selectPetugasAskepObgyn = formAskepAwalObgyn.find('select[name=nip]')
+        const selectPetugasAskepObgyn = formAskepAwalAnak.find('select[name=nip]')
         selectPetugasAskepObgyn.select2({
             ajax: {
                 url: '/erm/petugas/cari',
                 dataType: 'json',
-                dropdownParent: formAskepAwalObgyn,
+                dropdownParent: formAskepAwalAnak,
                 width: 'resolve',
                 processResults: (data) => {
                     return {
@@ -926,13 +912,13 @@
             }
         })
 
-        formAskepAwalObgyn.on('change', 'select[name=sg1]', function () {
+        formAskepAwalAnak.on('change', 'select[name=sg1]', function () {
 
             const nilai = $(this)
                 .find('option:selected')
                 .data('nilai');
 
-            formAskepAwalObgyn
+            formAskepAwalAnak
                 .find('select[name=nilai1]')
                 .val(nilai)
                 .trigger('change');
@@ -940,11 +926,11 @@
             hitungSkorGizi();
         });
 
-        formAskepAwalObgyn.on('change', 'input[name=sg2]', function () {
+        formAskepAwalAnak.on('change', 'input[name=sg2]', function () {
 
             const nilai = $(this).data('nilai');
 
-            formAskepAwalObgyn
+            formAskepAwalAnak
                 .find('select[name=nilai2]')
                 .val(nilai)
                 .trigger('change');
@@ -954,24 +940,24 @@
         function hitungSkorGizi() {
 
             const nilai1 = parseInt(
-                formAskepAwalObgyn.find('select[name=nilai1]').val() || 0
+                formAskepAwalAnak.find('select[name=nilai1]').val() || 0
             );
 
             const nilai2 = parseInt(
-                formAskepAwalObgyn.find('select[name=nilai2]').val() || 0
+                formAskepAwalAnak.find('select[name=nilai2]').val() || 0
             );
 
             const total = nilai1 + nilai2;
 
-            formAskepAwalObgyn
+            formAskepAwalAnak
                 .find('input[name=total_hasil]')
                 .val(total);
         }
         function hitungResikoJatuh() {
-            const a = formAskepAwalObgyn
+            const a = formAskepAwalAnak
                 .find('input[name="berjalan_a"]:checked')
                 .val();
-            const b = formAskepAwalObgyn
+            const b = formAskepAwalAnak
                 .find('input[name="berjalan_b"]:checked')
                 .val();
 
@@ -981,7 +967,7 @@
 
                 hasil = 'Resiko Tinggi (Ditemukan A Dan B)';
 
-                formAskepAwalObgyn
+                formAskepAwalAnak
                     .find('input[name="lapor"][value="Ya"]')
                     .prop('checked', true);
 
@@ -994,45 +980,45 @@
                 hasil = 'Tidak Beresiko (Tidak Ditemukan A Dan B)';
             }
 
-            formAskepAwalObgyn
+            formAskepAwalAnak
                 .find('select[name="hasil"]')
                 .val(hasil);
         }
-        formAskepAwalObgyn.on(
+        formAskepAwalAnak.on(
             'change',
             'input[name="berjalan_a"], input[name="berjalan_b"]',
             hitungResikoJatuh
         );
-        formAskepAwalObgyn.find('input[name=lapor]').on('change', function (e) {
+        formAskepAwalAnak.find('input[name=lapor]').on('change', function (e) {
 
             if (e.currentTarget.value == 'Ya') {
                 const jam = moment().format('HH:mm:ss')
-                formAskepAwalObgyn.find('input[name=ket_lapor]')
+                formAskepAwalAnak.find('input[name=ket_lapor]')
                     .prop('disabled', false)
                     .trigger('change').val(jam);
             } else {
-                formAskepAwalObgyn.find('input[name=ket_lapor]')
+                formAskepAwalAnak.find('input[name=ket_lapor]')
                     .prop('disabled', true)
-                    .val('00:00:00');
+                    .val('');
             }
         })
-        formAskepAwalObgyn.find('input[name=pada_dokter]').on('change', function (e) {
+        formAskepAwalAnak.find('input[name=pada_dokter]').on('change', function (e) {
 
             if (e.currentTarget.value == 'Ya') {
                 const jam = moment().format('HH:mm:ss')
-                formAskepAwalObgyn.find('input[name=ket_dokter]')
+                formAskepAwalAnak.find('input[name=ket_dokter]')
                     .prop('disabled', false)
                     .trigger('change').val(jam);
             } else {
-                formAskepAwalObgyn.find('input[name=ket_dokter]')
+                formAskepAwalAnak.find('input[name=ket_dokter]')
                     .prop('disabled', true)
-                    .val('00:00:00');
+                    .val('');
             }
         })
 
         function printAskepAwalObgyn() {
             // Ambil nilai no_rawat dari input atau atribut elemen
-            const noRawat = formInfoAskepAwalObgyn.find('input[name="no_rawat"]').val();
+            const noRawat = formInfoAskepAwalAnak.find('input[name="no_rawat"]').val();
 
             // Pastikan noRawat ada sebelum mencetak
             if (noRawat) {
@@ -1043,7 +1029,7 @@
             }
         }
         function showModalRiwayatPersalinanAskep() {
-            const no_rkm_medis = formInfoAskepAwalObgyn.find('input[name="no_rkm_medis"]').val()
+            const no_rkm_medis = formInfoAskepAwalAnak.find('input[name="no_rkm_medis"]').val()
             $('#modalRiwayatPersalinan').modal('show')
             $('#formRiwayatPersalinan').find('input[name=no_rkm_medis]').val(no_rkm_medis);
         }
