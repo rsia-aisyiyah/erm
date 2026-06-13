@@ -1836,7 +1836,7 @@
                                         <thead>
                                             <tr>
                                                 <th>P</th>
-                                                <th>Masalah Keperawatan</th>
+                                                <th>Diagnosis Keperawatan</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -2253,8 +2253,8 @@
                     data: '',
                     render: (data, type, row) => {
                         return `<div class="form-check masalahKeperawatan">
-                                        <input class="form-check-input listMasalahKeperawatanNeo" type="checkbox" id="kodeMasalahNeo${row.kode_masalah}" onclick="cekMasalahKeperawatanNeo(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
-                                    </div>`
+                                            <input class="form-check-input listMasalahKeperawatanNeo" type="checkbox" id="kodeMasalahNeo${row.kode_masalah}" onclick="cekMasalahKeperawatanNeo(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
+                                        </div>`
                     }
                 }, {
                     data: '',
@@ -2327,8 +2327,8 @@
                         })
 
                         return `<div class="form-check">
-                                        <input class="form-check-input listRencanaKeperawatanNeo" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatanNeo('${row.kode_rencana}')" id="kodeRencanaNeo${row.kode_rencana}" onclick="">
-                                    </div>`
+                                            <input class="form-check-input listRencanaKeperawatanNeo" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatanNeo('${row.kode_rencana}')" id="kodeRencanaNeo${row.kode_rencana}" onclick="">
+                                        </div>`
                     }
                 },
                 {

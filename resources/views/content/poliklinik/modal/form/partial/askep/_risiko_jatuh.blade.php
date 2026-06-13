@@ -68,3 +68,45 @@
         </div>
     </div>
 </div>
+@push('script')
+    <script>
+        function hitungResikoJatuh(formParent) {
+            const a = formParent
+                .find('input[name="berjalan_a"]:checked')
+                .val();
+            const b = formParent
+                .find('input[name="berjalan_b"]:checked')
+                .val();
+            const c = formParent
+                .find('input[name="berjalan_c"]:checked')
+                .val();
+
+            let hasil = '';
+
+            if (a === 'Ya' && c === 'Ya') {
+                hasil = 'Resiko Tinggi (Ditemukan A Dan B)';
+                formParent
+                    .find('input[name="lapor"][value="Ya"]')
+                    .prop('checked', true)
+                    .trigger('change');
+
+            } else if (a === 'Ya' || b === 'Ya') {
+
+                hasil = 'Resiko Rendah (Ditemukan A/B)';
+
+
+            } else {
+
+                hasil = 'Tidak Beresiko (Tidak Ditemukan A Dan B)';
+                formParent
+                    .find('input[name="lapor"][value="Tidak"]')
+                    .prop('checked', true)
+                    .trigger('change');
+            }
+
+            formParent
+                .find('select[name="hasil"]')
+                .val(hasil);
+        }
+    </script>
+@endpush

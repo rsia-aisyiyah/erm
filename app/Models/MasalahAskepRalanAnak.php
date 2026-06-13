@@ -3,40 +3,40 @@
 namespace App\Models;
 
 use App\Traits\AuditTrail;
+use App\Traits\HasCompositeKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AskepRalanAnak extends Model
-{
-    use HasFactory, AuditTrail;
 
-    protected $table = 'penilaian_awal_keperawatan_ralan_bayi';
+class MasalahAskepRalanAnak extends Model
+{
+    use HasFactory, HasCompositeKey, AuditTrail;
+    protected $table = 'penilaian_awal_keperawatan_ralan_bayi_masalah';
     protected $guarded = [];
     public $timestamps = false;
-    protected $primaryKey = 'no_rawat';
+    protected $primaryKey = ['no_rawat', 'kode_masalah'];
     public $incrementing = false;
 
 
     protected function getAuditKeys(): array
     {
-        return ['no_rawat' => $this->no_rawat];
+        return [
+            'no_rawat' => $this->no_rawat,
+            'kode_masalah' => $this->kode_masalah
+        ];
     }
-    protected function getAuditNoRm(): ?string
+    protected function getAuditNoRm(): string
     {
-        return $this->pasien->no_rkm_medis;
+        return $this->regPeriksa->no_rkm_medis;
     }
-    protected function getAuditModule(): ?string
+    protected function getAuditModule(): string
     {
-        return 'ASESMEN_RAWAT_JALAN_ANAK_BAYI';
+        return 'MASALAH_ASKEP_RALAN_ANAK';
     }
 
     public function regPeriksa()
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
-    }
-    public function pegawai()
-    {
-        return $this->belongsTo(Pegawai::class, 'nip', 'nik');
     }
     public function pasien()
     {

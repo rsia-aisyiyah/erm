@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AskepRalanAnakController;
 use App\Http\Controllers\AskepRalanKebidananController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,9 +11,8 @@ Route::prefix('asesmen-keperawatan')->group(function ($route) {
         $route->get('print', [AskepRalanKebidananController::class, 'print'])->name('asesmen-keperawatan.kandungan.print');
     });
     $route->prefix('anak')->group(function ($route) {
-        $route->get('test', function () {
-            return view('content.poliklinik.modal.form.askep_awal_anak');
-        });
-    });
 
+        $route->get('/', [AskepRalanAnakController::class, 'ambilDetail'])->name('asesmen-keperawatan.anak.get');
+        $route->post('/', [AskepRalanAnakController::class, 'store'])->name('asesmen-keperawatan.anak.store');
+    });
 });
