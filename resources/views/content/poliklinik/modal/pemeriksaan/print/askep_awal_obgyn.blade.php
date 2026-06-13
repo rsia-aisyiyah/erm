@@ -418,25 +418,25 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="padding:2px 4px;text-align:center">1.</td>
+                                <td style="padding:2px 4px;text-align:center">A.</td>
                                 <td style="padding:2px 4px">
-                                    <b>Cara Berjalan :</b><br>
-                                    A. Tidak seimbang/sempoyongan/ limbung<br>
-                                    B. Jalan dengan menggunakan alat bantu (kruk, tripot, kursi roda, orang lain)
+                                    <b>Cara Berjalan Pasien :</b><br>
+                                    1. Tidak seimbang/sempoyongan/ limbung<br>
+                                    2. Jalan dengan menggunakan alat bantu (kruk, tripot, kursi roda, orang lain)
                                 </td>
                                 <td style="padding:2px 4px;text-align:center">{{ $data->berjalan_a ?? 'Tidak' }}
                                     <br />{{ $data->berjalan_b ?? 'Tidak' }}
                                 </td>
                                 <td rowspan="2" style="padding:2px 4px;vertical-align:middle">
-                                    Hasil : {{ $data->hasil ?? 'Tidak Beresiko (Tidak Ditemukan A Dan B)' }}<br><br>
+                                    Hasil : <br> {{ $data->hasil ?? 'Tidak Beresiko (Tidak Ditemukan A Dan B)' }}<br><br>
                                     Dilaporkan ke dokter ? {{ $data->lapor ?? 'Tidak' }}, pada :
                                     {{ $data->ket_lapor ?? '-' }}
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding:2px 4px;text-align:center">2.</td>
+                                <td style="padding:2px 4px;text-align:center">B.</td>
                                 <td style="padding:2px 4px">
-                                    C. Menopang saat akan duduk, tampak memegang pinggiran kursi atau meja/benda lain
+                                    Menopang saat akan duduk, tampak memegang pinggiran kursi atau meja/benda lain
                                     sebagai penopang
                                 </td>
                                 <td style="padding:2px 4px;text-align:center">{{ $data->berjalan_c ?? 'Tidak' }}</td>

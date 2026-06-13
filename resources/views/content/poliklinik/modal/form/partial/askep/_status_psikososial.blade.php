@@ -1,6 +1,6 @@
 <div class="card mb-3">
     <div class="card-header">
-        IV. Psikososial, Spiritual, Sosial Ekonomi
+        Psikososial, Spiritual, Sosial Ekonomi
     </div>
     <div class="card-body">
         <div class="row g-2">
