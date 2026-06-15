@@ -1693,7 +1693,7 @@
                                         <thead>
                                             <tr>
                                                 <th>P</th>
-                                                <th>Masalah Keperawatan</th>
+                                                <th>Diagnosis Keperawatan</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -2032,12 +2032,12 @@
                         timer: 1500,
                     }).then(() => {
                         $('#tb_ranap').DataTable().destroy()
-                         $('#modalAskepRanapAnak').find('button[id=btnCetakAskepAnakRanap]').removeClass('d-none');
+                        $('#modalAskepRanapAnak').find('button[id=btnCetakAskepAnakRanap]').removeClass('d-none');
                         tb_ranap();
                     });
                 },
                 error: function (request, status, error) {
-                    
+
                     if (request.status == 422) {
                         let errors = request.responseJSON.errors
                         let errorMessage = '';
@@ -2192,8 +2192,8 @@
                     data: '',
                     render: (data, type, row) => {
                         return `<div class="form-check masalahKeperawatan">
-                                                                                                                <input class="form-check-input listMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
-                                                                                                            </div>`
+                                                                                                                    <input class="form-check-input listMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
+                                                                                                                </div>`
                     }
                 }, {
                     data: '',
@@ -2267,8 +2267,8 @@
                         })
 
                         return `<div class="form-check">
-                                                                                                                <input class="form-check-input listRencanaKeperawatan" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatan('${row.kode_rencana}')" id="kodeRencana${row.kode_rencana}" onclick="">
-                                                                                                            </div>`
+                                                                                                                    <input class="form-check-input listRencanaKeperawatan" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatan('${row.kode_rencana}')" id="kodeRencana${row.kode_rencana}" onclick="">
+                                                                                                                </div>`
                     }
                 },
                 {
@@ -2288,16 +2288,6 @@
                 }
             })
         }
-
-        // $('#modalAskepRanapAnak').on('shown.bs.modal', () => {
-
-        //     $('#tanggal').datepicker({
-        //         format: 'dd-mm-yyyy',
-        //         orientation: 'bottom',
-        //         autoclose: true,
-        //         todayHighlight: true,
-        //     })
-        // })
 
         function cariPetugasAskep(p, no) {
             getPetugas(p.value, no).done((response) => {

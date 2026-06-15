@@ -26,8 +26,18 @@
                     <x-option>Tidak Baik</x-option>
                 </x-select>
             </div>
-
-            <div class="col-md-4">
+            <div class="col-md-4 d-none pengasuhAnak">
+                <label for="pengasuh">Pengasuh</label>
+                <x-input-group>
+                    <x-select name="pengasuh">
+                        <x-option>Orang Tua</x-option>
+                        <x-option>Kakek/Nenek</x-option>
+                        <x-option>Keluarga Lainnya</x-option>
+                    </x-select>
+                    <x-input name="ket_pengasuh" class="w-25" />
+                </x-input-group>
+            </div>
+            <div class="col-md-4 d-none tinggalDengan">
                 <label for="tinggal_dengan">Tinggal Dengan</label>
                 <x-input-group>
                     <x-select name="tinggal_dengan">

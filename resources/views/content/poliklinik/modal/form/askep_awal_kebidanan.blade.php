@@ -967,44 +967,7 @@
                 .find('input[name=total_hasil]')
                 .val(total);
         }
-        function hitungResikoJatuh() {
-            const a = formAskepAwalObgyn
-                .find('input[name="berjalan_a"]:checked')
-                .val();
-            const b = formAskepAwalObgyn
-                .find('input[name="berjalan_b"]:checked')
-                .val();
-            const c = formAskepAwalObgyn
-                .find('input[name="berjalan_c"]:checked')
-                .val();
-
-            let hasil = '';
-
-            if (a === 'Ya' && c === 'Ya') {
-                hasil = 'Resiko Tinggi (Ditemukan A Dan B)';
-                formAskepAwalObgyn
-                    .find('input[name="lapor"][value="Ya"]')
-                    .prop('checked', true)
-                    .trigger('change');
-
-            } else if (a === 'Ya' || b === 'Ya') {
-
-                hasil = 'Resiko Rendah (Ditemukan A/B)';
-
-
-            } else {
-
-                hasil = 'Tidak Beresiko (Tidak Ditemukan A Dan B)';
-                formAskepAwalObgyn
-                    .find('input[name="lapor"][value="Tidak"]')
-                    .prop('checked', true)
-                    .trigger('change');
-            }
-
-            formAskepAwalObgyn
-                .find('select[name="hasil"]')
-                .val(hasil);
-        }
+       
         formAskepAwalObgyn.on(
             'change',
             'input[name="berjalan_a"], input[name="berjalan_b"], input[name="berjalan_c"]',
