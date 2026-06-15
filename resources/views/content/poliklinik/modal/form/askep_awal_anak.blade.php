@@ -235,11 +235,10 @@
                     Riwayat Imunisasi
                 </div>
                 <div class="card-body">
-                    <table class="table">
+                    <table class="table table-bordered tbRiwayatImunisasi" width="100%" id="">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Imunisasi</th>
+                                <th width="50%">Nama Imunisasi</th>
                                 <th>Ke 1</th>
                                 <th>Ke 2</th>
                                 <th>Ke 3</th>
@@ -247,9 +246,11 @@
                                 <th>Ke 5</th>
                             </tr>
                         </thead>
-
+                        <tbody>
+                            <tr></tr>
+                        </tbody>
                     </table>
-                    <button type="button" class="btn btn-primary btn-sm">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="showFormRiwayatImunisasi()">
                         <i class="bi bi-plus ms-1"></i> Tambah Imunisasi
                     </button>
                 </div>
@@ -303,7 +304,92 @@
             </div>
             {{-- Riwayat Tumbuh Kembang --}}
             @include('content.poliklinik.modal.form.partial.askep._status_fungsional')
-            @include('content.poliklinik.modal.form.partial.askep._status_psikososial')
+            <div class="card mb-3">
+                <div class="card-header">
+                    Psikososial, Spiritual, Sosial Ekonomi
+                </div>
+                <div class="card-body">
+                    <div class="row g-2">
+
+                        <div class="col-md-3">
+                            <label for="status_psiko">Status Psikologis</label>
+                            <x-input-group>
+                                <x-select name="status_psiko">
+                                    <x-option>Tenang</x-option>
+                                    <x-option>Takut</x-option>
+                                    <x-option>Cemas</x-option>
+                                    <x-option>Depresi</x-option>
+                                    <x-option>Lain-Lain</x-option>
+                                </x-select>
+                                <x-input name="ket_psiko" class="w-25" />
+                            </x-input-group>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="hub_keluarga">Hubungan Keluarga</label>
+                            <x-select name="hub_keluarga">
+                                <x-option>Baik</x-option>
+                                <x-option>Tidak Baik</x-option>
+                            </x-select>
+                        </div>
+                        <div class="col-md-4 pengasuhAnak">
+                            <label for="pengasuh">Pengasuh</label>
+                            <x-input-group>
+                                <x-select name="pengasuh">
+                                    <x-option>Orang Tua</x-option>
+                                    <x-option>Kakek/Nenek</x-option>
+                                    <x-option>Keluarga Lainnya</x-option>
+                                </x-select>
+                                <x-input name="ket_pengasuh" class="w-25" />
+                            </x-input-group>
+                        </div>
+                        <div class="col-md-4 tinggalDengan">
+                            <label for="tinggal_dengan">Tinggal Dengan</label>
+                            <x-input-group>
+                                <x-select name="tinggal_dengan">
+                                    <x-option>Sendiri</x-option>
+                                    <x-option>Orang Tua</x-option>
+                                    <x-option>Suami / Istri</x-option>
+                                    <x-option>Lainnya</x-option>
+                                </x-select>
+                                <x-input name="ket_tinggal" class="w-25" />
+                            </x-input-group>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="ekonomi">Status Ekonomi</label>
+                            <x-select name="ekonomi">
+                                <x-option>Baik</x-option>
+                                <x-option>Cukup</x-option>
+                                <x-option>Kurang</x-option>
+                            </x-select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="budaya">Nilai Budaya</label>
+                            <x-input-group>
+                                <x-select name="budaya">
+                                    <x-option>Tidak Ada</x-option>
+                                    <x-option>Ada</x-option>
+                                </x-select>
+                                <x-input name="ket_budaya" class="w-25" />
+                            </x-input-group>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="edukasi">Edukasi Diberikan Kepada</label>
+                            <x-input-group>
+                                <x-select name="edukasi">
+                                    <x-option>Orang Tua</x-option>
+                                    <x-option>Keluarga</x-option>
+                                </x-select>
+                                <x-input name="ket_edukasi" class="w-25" />
+                            </x-input-group>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
 
@@ -323,7 +409,78 @@
             {{-- /IV. Psikososial --}}
 
             {{-- IV. Risiko Jatuh --}}
-            @include('content.poliklinik.modal.form.partial.askep._risiko_jatuh')
+            <div class="card mb-3">
+                <div class="card-header">
+                    Risiko Jatuh (Metode Get Up And Go)
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+
+                        <div class="col-md-12">
+                            <strong class="fs-8 d-block">A. Cara Berjalan Pasien</strong>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <label class="d-block">1. Perlu bantuan saat duduk ke berdiri?</label>
+                                    <div class="d-flex gap-3">
+                                        <x-input-radio id="berjalan_a_ya" name="berjalan_a" value="Ya" label="Ya" />
+                                        <x-input-radio id="berjalan_a_tidak" name="berjalan_a" value="Tidak"
+                                            label="Tidak" checked />
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="d-block">2. Kesulitan berjalan / sempoyongan?</label>
+                                    <div class="d-flex gap-3">
+                                        <x-input-radio id="berjalan_b_ya" name="berjalan_b" value="Ya" label="Ya" />
+                                        <x-input-radio id="berjalan_b_tidak" name="berjalan_b" value="Tidak"
+                                            label="Tidak" checked />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <strong class="fs-8 d-block">B. Pegangan pada benda saat berjalan?</strong>
+                            <div class="d-flex gap-3">
+                                <x-input-radio id="berjalan_c_ya" name="berjalan_c" value="Ya" label="Ya" />
+                                <x-input-radio id="berjalan_c_tidak" name="berjalan_c" value="Tidak" label="Tidak"
+                                    checked />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-6">
+                            <label for="hasil">Hasil Penilaian</label>
+                            <x-select name="hasil">
+                                <x-option>Tidak beresiko (tidak ditemukan a dan b)</x-option>
+                                <x-option>Resiko rendah (ditemukan a/b)</x-option>
+                                <x-option>Resiko tinggi (ditemukan a dan b)</x-option>
+                            </x-select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="d-block">Dilaporkan ke Dokter</label>
+                            <div class="d-flex gap-3 mt-2">
+                                <x-input-radio id="lapor_ya" name="lapor" value="Ya" label="Ya" />
+                                <x-input-radio id="lapor_tidak" name="lapor" value="Tidak" label="Tidak" checked />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="ket_lapor">Jam Lapor</label>
+                            <x-input-group class="input-group-sm">
+                                <x-input name="ket_lapor" type="time" value="00:00:00" disabled />
+                                <x-input-group-text>WIB</x-input-group-text>
+                            </x-input-group>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
             {{-- /IV. Risiko Jatuh --}}
 
             {{-- V. Skrining Gizi --}}
@@ -639,7 +796,7 @@
                 </div>
             </div>
             {{-- /VII. Masalah dan Tindakan Kebidanan --}}
-            <button class="btn btn-primary btn-sm" onclick="printAskepAwalObgyn()" id="btnPrintAskepAwalObgyn">
+            <button class="btn btn-primary btn-sm" onclick="printAskepAwalAnak()" id="btnprintAskepAwalAnak">
                 <i class="bi bi-printer ms-2 "></i> Cetak Asesmen
             </button>
 
@@ -665,7 +822,7 @@
         var kodeRencana = []
 
         function getAskepAwalAnak(no_rawat) {
-            tbMasalahKeperawatan()
+            localStorage.removeItem('kodeRencana')
             getRegPeriksa(no_rawat).done((response) => {
                 const {
                     pasien,
@@ -682,19 +839,24 @@
                 formInfoAskepAwalAnak.find('input[name=umurdaftar]').val(`${textUmurDaftar}`)
                 formInfoAskepAwalAnak.find('input[name=penjab]').val(penjab?.png_jawab)
                 formInfoAskepAwalAnak.find('input[name=dokter]').val(dokter?.nm_dokter)
+                tbMasalahKeperawatan()
                 $.get("{{ route('asesmen-keperawatan.anak.get') }}", {
                     no_rawat: no_rawat,
                 }).done((response) => {
                     let optPetugas = ''
-                    if (response.data) {
-                        const { petugas, pasien } = response.data
-                        setDataForm(formAskepAwalAnak, response.data);
-                        optPetugas = new Option(petugas?.nama, petugas?.nik, true, true);
+                    if (Object.keys(response).length > 0) {
+                        const { petugas, pasien } = response
+                        setDataForm(formAskepAwalAnak, response);
+                        optPetugas = new Option(response.pegawai?.nama, response.pegawai?.nik, true, true);
                         formAskepAwalAnak.find('select[name=nip]').append(optPetugas).trigger('change');
-                        formAskepAwalAnak.find('input[name=tanggal]').val(response.data.tanggal);
+                        formAskepAwalAnak.find('input[name=tanggal]').val(response.tanggal);
+                        formAskepAwalAnak.find('textarea[name=rencana]').val(response.rencana);
                         return '';
                     }
 
+
+
+                    // getMasalahKeperawatanAnak(no_rawat)
                     const jam = moment().format('HH:mm:ss')
                     optPetugas = new Option("{{ session()->get('pegawai')->nama }}", "{{ session()->get('pegawai')->nik }}", true,
                         true);
@@ -703,6 +865,7 @@
                     // formAskepAwalAnak.find("input[name=ket_lapor]").val(jam);
                     // formAskepAwalAnak.find("input[name=ket_dokter]").val(jam);
                 })
+                setTbImunisasi(pasien.no_rkm_medis)
                 // renderTableRiwayatPersalinan(pasien.no_rkm_medis)
             })
         }
@@ -713,7 +876,8 @@
             const masalahKeperawatan = $('input[name=chekMasalahKeperawatan]').val();
             $.post("{{ route('asesmen-keperawatan.anak.store') }}", data)
                 .done((response) => {
-                    console.log('DATA ===', data, 'RESPONSE ===', response);
+
+                    localStorage.removeItem('kodeRencana')
 
                     if (response.success) {
                         alertSuccessAjax(response.message);
@@ -778,7 +942,7 @@
             'change',
             'input[name="berjalan_a"], input[name="berjalan_b"], input[name="berjalan_c"]',
             function () {
-                hitungResikoJatuh(formAskepAwalAnak)
+                hitungResikoJatuhAnak(formAskepAwalAnak)
             }
         );
         formAskepAwalAnak.find('input[name=lapor]').on('change', function (e) {
@@ -812,13 +976,13 @@
                 .text(e.currentTarget.value);
         });
 
-        function printAskepAwalObgyn() {
+        function printAskepAwalAnak() {
             // Ambil nilai no_rawat dari input atau atribut elemen
             const noRawat = formInfoAskepAwalAnak.find('input[name="no_rawat"]').val();
 
             // Pastikan noRawat ada sebelum mencetak
             if (noRawat) {
-                const url = `/erm/asesmen-keperawatan/kandungan/print?no_rawat=${encodeURIComponent(noRawat)}`;
+                const url = `/erm/asesmen-keperawatan/anak/print?no_rawat=${encodeURIComponent(noRawat)}`;
                 window.open(url, '_blank');
             } else {
                 alert('Nomor rawat tidak ditemukan!');
@@ -829,7 +993,6 @@
             $('#modalRiwayatPersalinan').modal('show')
             $('#formRiwayatPersalinan').find('input[name=no_rkm_medis]').val(no_rkm_medis);
         }
-
 
         function tbMasalahKeperawatan() {
             $('#tbMasalahKeperawatan').dataTable({
@@ -842,23 +1005,45 @@
                 ajax: {
                     url: '/erm/master/masalah/keperawatan/table',
                 },
-                columns: [{
-                    data: '',
-                    render: (data, type, row) => {
-                        return `<div class="form-check masalahKeperawatan">
-                                                                                                                                                                                                                                                                                                    <input class="form-check-input listMasalahKeperawatan" name="checkMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
-                                                                                                                                                                                                                                                                                                </div>`
+                columns: [
+                    {
+                        data: '',
+                        render: (data, type, row) => {
+                            return `
+                                                                    <div class="form-check masalahKeperawatan">
+                                                                        <input
+                                                                            class="form-check-input listMasalahKeperawatan"
+                                                                            name="checkMasalahKeperawatan"
+                                                                            type="checkbox"
+                                                                            id="kodeMasalah${row.kode_masalah}"
+                                                                            onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')"
+                                                                            value="${row.kode_masalah}">
+                                                                    </div>
+                                                                `;
+                        }
+                    },
+                    {
+                        data: '',
+                        render: (data, type, row) => {
+                            return `<label onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')">${row.nama_masalah}</label>`;
+                        }
                     }
-                }, {
-                    data: '',
-                    render: (data, type, row) => {
+                ],
+                initComplete: function () {
+                    $.get(`{{ route('asesmen-keperawatan.anak.masalah') }}`, {
+                        no_rawat: formInfoAskepAwalAnak.find('input[name=no_rawat]').val()
+                    }).done((response) => {
 
-                        return `<label onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')">${row.nama_masalah}</label>`
-                    }
-                }]
-            })
+                        if (response?.data.length > 0) {
+                            response?.data.forEach((item) => {
+                                $(`#kodeMasalah${item.kode_masalah}`).trigger('click')
+                            })
+
+                        }
+                    })
+                }
+            });
         }
-
 
         function getRencanaKeperawatan(no_rawat) {
             const rencana = $.ajax({
@@ -906,7 +1091,7 @@
         }
 
         function tbRencanaKeperawatan(kode) {
-            $('#tbRencanaKeperawatan').dataTable({
+            $('#tbRencanaKeperawatan').DataTable({
                 destroy: true,
                 processing: true,
                 ordering: false,
@@ -919,41 +1104,42 @@
                     data: {
                         kode: kode,
                     },
-                },
-                columns: [{
-                    data: '',
-                    render: (data, type, row) => {
-                        kode = localStorage.kodeRencana ? JSON.parse(localStorage.kodeRencana) : ''
-                        $.map(kode, (kd) => {
-                            if (kd == row.kode_rencana) {
-                                $('#kodeRencana' + row.kode_rencana).attr('checked', 'checked')
-                            } else {
-                                $('#kodeRencana' + row.kode_rencana).removeProp('checked')
-                            }
 
-                        })
-
-                        return `<div class="form-check">
-                                                                                                                                                                                                                                                                                                    <input class="form-check-input listRencanaKeperawatan" name="checkRencanaKeperawatan" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatan('${row.kode_rencana}')" id="kodeRencana${row.kode_rencana}" onclick="">
-                                                                                                                                                                                                                                                                                                </div>`
-                    }
                 },
-                {
-                    data: '',
-                    render: (data, type, row) => {
-                        return row.rencana_keperawatan
+                columns: [
+                    {
+                        data: '',
+                        render: (data, type, row) => {
+                            return `
+                                                                                    <div class="form-check">
+                                                                                        <input
+                                                                                            class="form-check-input listRencanaKeperawatan"
+                                                                                            name="checkRencanaKeperawatan"
+                                                                                            type="checkbox"
+                                                                                            value="${row.kode_rencana}"
+                                                                                            data-masalah="${row.kode_masalah}"
+                                                                                            id="kodeRencana${row.kode_rencana}">
+                                                                                    </div>
+                                                                                `;
+                        }
+                    },
+                    {
+                        data: 'rencana_keperawatan'
                     }
-                }
                 ],
-                initComplete: (response) => {
-                    no_rawat = $('#formAskepAwalAnak input[name=no_rawat]').val();
-                    getRencanaKeperawatan(no_rawat).done((res) => {
-                        $.map(res, (rencana) => {
-                            $('#kodeRencana' + rencana.kode_rencana).attr('checked', 'checked')
-                        })
+                initComplete: function () {
+                    $.get(`{{ route('asesmen-keperawatan.anak.rencana') }}`, {
+                        no_rawat: formInfoAskepAwalAnak.find('input[name=no_rawat]').val()
+                    }).done((response) => {
+                        if (response?.data.length > 0) {
+                            response?.data.forEach((item) => {
+                                $(`#kodeRencana${item.kode_rencana}`).prop('checked', true)
+                            })
+
+                        }
                     })
                 }
-            })
+            });
         }
         $('#formAskepAwalAnak select[name=menangis]').change((e) => {
             const data = $('#formAskepAwalAnak select[name=menangis]').find(':selected').data('id')
@@ -1015,7 +1201,70 @@
                     .val('00:00:00');
             }
         })
+        function showFormRiwayatImunisasi() {
+            $('#modalRiwayatImunisasi').modal('show')
+            const no_rkm_medis = formInfoAskepAwalAnak.find('input[name="no_rkm_medis"]').val()
+            $('button[name=tambah-imunisasi]').removeAttr('onclick')
+                .attr('onclick', `insertRiwayatImunisasi('${no_rkm_medis}')`)
+
+        }
+
+        // function renderMasalah(data) {
+
+        //     data.forEach((item) => {
+        //         formAskepAwalAnak.find(`input[id=kodeMasalah${item.kode_masalah}]`)
+        //             .trigger('click');
+        //     });
+        // }
+        // function renderRencana(data) {
+
+        //     data.forEach((item) => {
+        //         console.log(formAskepAwalAnak.find(`#kodeRencana${item.kode_rencana}`));
+
+        //         $(`#kodeRencana${item.kode_rencana}`)
+        //             .trigger('click', true);
+        //     });
+        // }
+        function hitungResikoJatuhAnak(formParent) {
+            const a = formParent
+                .find('input[name="berjalan_a"]:checked')
+                .val();
+            const b = formParent
+                .find('input[name="berjalan_b"]:checked')
+                .val();
+            const c = formParent
+                .find('input[name="berjalan_c"]:checked')
+                .val();
+
+            let hasil = '';
+
+            if (a === 'Ya' && c === 'Ya') {
+                hasil = 'Tidak beresiko (tidak ditemukan a dan b)';
+                formParent
+                    .find('input[name="lapor"][value="Ya"]')
+                    .prop('checked', true)
+                    .trigger('change');
+
+            } else if (a === 'Ya' || b === 'Ya') {
+
+                hasil = 'Resiko rendah (ditemukan a/b)';
+
+
+            } else {
+
+                hasil = 'Tidak beresiko (tidak ditemukan a dan b)';
+                formParent
+                    .find('input[name="lapor"][value="Tidak"]')
+                    .prop('checked', true)
+                    .trigger('change');
+            }
+
+            formParent
+                .find('select[name="hasil"]')
+                .val(hasil);
+        }
     </script>
 @endpush
+
 
 {{-- @endsection --}}

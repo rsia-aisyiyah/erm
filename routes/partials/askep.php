@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\AskepRalanAnakController;
 use App\Http\Controllers\AskepRalanKebidananController;
+use App\Http\Controllers\MaslahAskepRalanAnakController;
+use App\Http\Controllers\RencanaAskepRalanAnakController;
+use App\Models\MasalahAskepRalanAnak;
+use App\Models\MasalahAskepRanap;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('asesmen-keperawatan')->group(function ($route) {
@@ -11,8 +15,10 @@ Route::prefix('asesmen-keperawatan')->group(function ($route) {
         $route->get('print', [AskepRalanKebidananController::class, 'print'])->name('asesmen-keperawatan.kandungan.print');
     });
     $route->prefix('anak')->group(function ($route) {
-
         $route->get('/', [AskepRalanAnakController::class, 'ambilDetail'])->name('asesmen-keperawatan.anak.get');
         $route->post('/', [AskepRalanAnakController::class, 'store'])->name('asesmen-keperawatan.anak.store');
+        $route->get('masalah', [MaslahAskepRalanAnakController::class, 'get'])->name('asesmen-keperawatan.anak.masalah');
+        $route->get('rencana', [RencanaAskepRalanAnakController::class, 'get'])->name('asesmen-keperawatan.anak.rencana');
+        $route->get('print', [AskepRalanAnakController::class, 'print'])->name('asesmen-keperawatan.anak.print');
     });
 });

@@ -7,14 +7,16 @@ use App\Models\AskepRalanAnak;
 use App\Models\MasalahAskepRalanAnak;
 use App\Models\RencanaAskepRalanAnak;
 use App\Services\MasalahRencanaKeperawatanService;
+use App\Traits\FingerPrintTrait;
 use App\Traits\ResponseTrait;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AskepRalanAnakController extends Controller
 {
-    use ResponseTrait;
+    use ResponseTrait, FingerPrintTrait;
     public function ambil(Request $request)
     {
         if ($request->no_rkm_medis) {
@@ -32,7 +34,10 @@ class AskepRalanAnakController extends Controller
     public function ambilDetail(Request $request)
     {
         if ($request->no_rawat) {
-            $askep = AskepRalanAnak::where('no_rawat', $request->no_rawat)->with('regPeriksa.pasien.riwayatImunisasi.masterImunisasi', 'pegawai')->first();
+            $askep = AskepRalanAnak::where('no_rawat', $request->no_rawat)
+                ->with(['masalah', 'rencanaMasalah'])
+                ->with('regPeriksa.pasien.riwayatImunisasi.masterImunisasi', 'pegawai')
+                ->first();
         }
         return response()->json($askep);
     }
@@ -63,5 +68,46 @@ class AskepRalanAnakController extends Controller
                 500
             );
         }
+    }
+    public function print(Request $request)
+    {
+        $data = AskepRalanAnak::with([
+            'pasien',
+            'petugas',
+            'riwayatImunisasi',
+            'masalah',
+            'rencanaMasalah',
+        ])
+            ->where('no_rawat', $request->no_rawat)
+            ->firstOrFail();
+
+        $data->ttd_petugas = $this->setFingerOutput(
+            $data->petugas->nama ?? '-',
+            $data->nip,
+            $data->tanggal
+        );
+
+        $pdf = Pdf::loadView(
+            'content.print.askep_ralan_anak',
+            compact('data')
+        )
+            ->setOption([
+                'defaultFont' => 'sans-serif',
+                'isRemoteEnabled' => true,
+                'margin_top' => 10,
+                'margin_right' => 10,
+                'margin_bottom' => 10,
+                'margin_left' => 10,
+                'margin_header' => 5,
+                'margin_footer' => 5,
+            ])
+            ->setPaper('A4');
+
+        return $pdf->stream(
+            ($data->pasien->nm_pasien ?? 'pasien')
+            . '_ASKEP_AWAL_ANAK_'
+            . now()->format('YmdHis')
+            . '.pdf'
+        );
     }
 }

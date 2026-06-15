@@ -42,4 +42,8 @@ class MasalahAskepRalanAnak extends Model
     {
         return $this->hasOneThrough(Pasien::class, RegPeriksa::class, 'no_rawat', 'no_rkm_medis', 'no_rawat', 'no_rkm_medis');
     }
+    public function master()
+    {
+        return $this->belongsTo(MasterMasalahKeperawatan::class, 'kode_masalah', 'kode_masalah');
+    }
 }
