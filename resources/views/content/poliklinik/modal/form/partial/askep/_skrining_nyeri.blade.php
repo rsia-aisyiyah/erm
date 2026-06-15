@@ -36,12 +36,12 @@
             <div class="col-md-3">
                 <label for="quality">Karakteristik Nyeri (Q)</label>
                 <x-select name="quality">
+                    <x-option>Lain-Lain</x-option>
                     <x-option>Seperti Tertusuk</x-option>
                     <x-option>Berdenyut</x-option>
                     <x-option>Teriris</x-option>
                     <x-option>Tertindih</x-option>
                     <x-option>Tertiban</x-option>
-                    <x-option>Lain-Lain</x-option>
                 </x-select>
             </div>
 
