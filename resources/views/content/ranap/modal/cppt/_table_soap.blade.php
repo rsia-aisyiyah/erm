@@ -187,8 +187,8 @@
 
                         row.log.filter((item) => item.tgl_perawatan === row.tgl_perawatan && item.jam_rawat === row.jam_rawat).map((item) => {
                             html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${item.aksi.toLowerCase()} oleh : <b>${item.pegawai.nama}
-                                                                                                                                                                                                                                                                                                                                                                                                                                , ${formatTanggal(item.waktu)}
-                                                                                                                                                                                                                                                                                                                                                                                                                                    </i></div>`
+                                                                                                                                                                                                                                                                                                                                                                                                                                    , ${formatTanggal(item.waktu)}
+                                                                                                                                                                                                                                                                                                                                                                                                                                        </i></div>`
                         })
 
                         // html+=`<a href="javascript:void(0)" onclick="getTrackerLog('pemeriksaan_ranap','${row.no_rawat}')">Lihat log</a>`
@@ -213,10 +213,10 @@
                         }
 
                         baris = `<tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <th width="5%">Petugas</th>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <td width="5%">:</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <td>${row.petugas.nama} </td>
-                                                                                                                                                                                                                                                                                                                                                                                                                    </tr>`
+                                                                                                                                                                                                                                                                                                                                                                                                                        <th width="5%">Petugas</th>
+                                                                                                                                                                                                                                                                                                                                                                                                                        <td width="5%">:</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${row.petugas.nama} </td>
+                                                                                                                                                                                                                                                                                                                                                                                                                        </tr>`
                         baris += '<tr><th>Subjek </th><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
                         baris += '<tr><th>Objek </th><td>:</td><td>' + stringPemeriksaan(row.pemeriksaan) + '</td></tr>'
                         baris += '<tr><th>Assesment</th><td>:</td><td>' + stringPemeriksaan(row.penilaian) + '</td></tr>'
@@ -314,12 +314,12 @@
                 icon: 'warning',
 
                 html: `
-                                                                                                    <input
-                                                                                                        type="password"
-                                                                                                        id="password_verifikasi"
-                                                                                                        class="swal2-input"
-                                                                                                        placeholder="Masukkan password">
-                                                                                                `,
+                                                                                                        <input
+                                                                                                            type="password"
+                                                                                                            id="password_verifikasi"
+                                                                                                            class="swal2-input"
+                                                                                                            placeholder="Masukkan password">
+                                                                                                    `,
 
                 showCancelButton: true,
 
@@ -433,14 +433,14 @@
 
 
                 isVerified = `
-                                <div class="alert alert-success p-2 mt-2" role="alert" style="font-size:10px">
-                                    <strong><i class="bi bi-circle-check"></i></strong>
-                                    Tulbakon dioleh <br/>
-                                    <strong>${data.verifikasi.petugas.nama}</strong>
-                                    pada <br/>
-                                    <strong>${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}</strong>
-                                </div>
-                            `;
+                                    <div class="alert alert-success p-2 mt-2" role="alert" style="font-size:10px">
+                                        <strong><i class="bi bi-circle-check"></i></strong>
+                                        Tulbakon dioleh <br/>
+                                        <strong>${data.verifikasi.petugas.nama}</strong>
+                                        pada <br/>
+                                        <strong>${formatTanggal(data.verifikasi.tgl_verif)} ${data.verifikasi.jam_verif}</strong>
+                                    </div>
+                                `;
 
                 qrDiv = `<div id="${qrId}" class="mt-2"></div>`;
                 console.log(data.verifikasi.petugas.nama);
@@ -451,7 +451,7 @@
                     if (qrElement) {
                         qrElement.innerHTML = '';
 
-                        new QRCode(qrElement, {\
+                        new QRCode(qrElement, {
                             text: qrData,
                             width: 100,
                             height: 100
@@ -463,44 +463,44 @@
 
                 if (kdDokter === isDokterKonsul) {
                     btn = `
-                                                                                                                        <button
-                                                                                                                            class="btn btn-sm btn-warning w-100"
-                                                                                                                            onclick="verifikasiSoap('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"
-                                                                                                                        >
-                                                                                                                            <i class="bi bi-pencil"></i> Konfirmasi SBAR
-                                                                                                                        </button>
-                                                                                                                    `;
+                                                                                                                            <button
+                                                                                                                                class="btn btn-sm btn-warning w-100"
+                                                                                                                                onclick="verifikasiSoap('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"
+                                                                                                                            >
+                                                                                                                                <i class="bi bi-pencil"></i> Konfirmasi SBAR
+                                                                                                                            </button>
+                                                                                                                        `;
                 }
 
                 isVerified = `
-                                                                                                                                            <div class="alert alert-warning p-2 mt-2" role="alert">
-                                                                                                                                                <strong><i class="bi bi-exclamation-triangle"></i></strong>
-                                                                                                                                                Belum Tulbakon oleh Dokter
-                                                                                                                                            </div>
-                                                                                                                                        `;
+                                                                                                                                                <div class="alert alert-warning p-2 mt-2" role="alert">
+                                                                                                                                                    <strong><i class="bi bi-exclamation-triangle"></i></strong>
+                                                                                                                                                    Belum Tulbakon oleh Dokter
+                                                                                                                                                </div>
+                                                                                                                                            `;
             }
 
 
             return `
-                                                                                                                                       <ul>
-                                                                                                                                                <li>
-                                                                                                                                                    <strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong>
-                                                                                                                                                </li>
+                                                                                                                                           <ul>
+                                                                                                                                                    <li>
+                                                                                                                                                        <strong>${formatTanggal(data.tgl_perawatan)} ${data.jam_rawat}</strong>
+                                                                                                                                                    </li>
 
-                                                                                                                                                <li>
-                                                                                                                                                    Konsul Ke :
-                                                                                                                                                    <strong>
-                                                                                                                                                        ${data.sbar.dokter_konsul ?
+                                                                                                                                                    <li>
+                                                                                                                                                        Konsul Ke :
+                                                                                                                                                        <strong>
+                                                                                                                                                            ${data.sbar.dokter_konsul ?
                     data.sbar.dokter_konsul.dokter_sbar.nm_dokter :
                     formInfoPasien.find('input[name=dokter_dpjp]').val()}
-                                                                                                                                                    </strong>
-                                                                                                                                                </li>
-                                                                                                                                            </ul>
+                                                                                                                                                        </strong>
+                                                                                                                                                    </li>
+                                                                                                                                                </ul>
 
-                                                                                                                                        ${btn}
-                                                                                                                                        ${isVerified}
-                                                                                                                                        ${qrDiv}
-                                                                                                                                    `;
+                                                                                                                                            ${btn}
+                                                                                                                                            ${isVerified}
+                                                                                                                                            ${qrDiv}
+                                                                                                                                        `;
         }
 
 
@@ -516,38 +516,38 @@
         function renderSbar(data) {
             const verified = !!data.verifikasi;
             const content = `
-                                                                                            <table class="table table-striped">
-                                                                                                <tr>
-                                                                                                    <th width="5%">Petugas</th>
-                                                                                                    <th width="5%">:</th>
-                                                                                                    <td>${stringPemeriksaan(data.sbar.pegawai.nama)}</td>
-                                                                                                </tr>
+                                                                                                <table class="table table-striped">
+                                                                                                    <tr>
+                                                                                                        <th width="5%">Petugas</th>
+                                                                                                        <th width="5%">:</th>
+                                                                                                        <td>${stringPemeriksaan(data.sbar.pegawai.nama)}</td>
+                                                                                                    </tr>
 
-                                                                                                <tr>
-                                                                                                    <th width="5%">Situation</th>
-                                                                                                    <th width="5%">:</th>
-                                                                                                    <td>${stringPemeriksaan(data.keluhan)}</td>
-                                                                                                </tr>
+                                                                                                    <tr>
+                                                                                                        <th width="5%">Situation</th>
+                                                                                                        <th width="5%">:</th>
+                                                                                                        <td>${stringPemeriksaan(data.keluhan)}</td>
+                                                                                                    </tr>
 
-                                                                                                <tr>
-                                                                                                    <th width="5%">Background</th>
-                                                                                                    <th width="5%">:</th>
-                                                                                                    <td>${stringPemeriksaan(data.pemeriksaan)}</td>
-                                                                                                </tr>
+                                                                                                    <tr>
+                                                                                                        <th width="5%">Background</th>
+                                                                                                        <th width="5%">:</th>
+                                                                                                        <td>${stringPemeriksaan(data.pemeriksaan)}</td>
+                                                                                                    </tr>
 
-                                                                                                <tr>
-                                                                                                    <th width="5%">Assesment</th>
-                                                                                                    <th width="5%">:</th>
-                                                                                                    <td>${stringPemeriksaan(data.penilaian)}</td>
-                                                                                                </tr>
+                                                                                                    <tr>
+                                                                                                        <th width="5%">Assesment</th>
+                                                                                                        <th width="5%">:</th>
+                                                                                                        <td>${stringPemeriksaan(data.penilaian)}</td>
+                                                                                                    </tr>
 
-                                                                                                <tr>
-                                                                                                    <th width="5%">Recomendation</th>
-                                                                                                    <th width="5%">:</th>
-                                                                                                    <td>${stringPemeriksaan(data.rtl)}</td>
-                                                                                                </tr>
-                                                                                            </table>
-                                                                                        `;
+                                                                                                    <tr>
+                                                                                                        <th width="5%">Recomendation</th>
+                                                                                                        <th width="5%">:</th>
+                                                                                                        <td>${stringPemeriksaan(data.rtl)}</td>
+                                                                                                    </tr>
+                                                                                                </table>
+                                                                                            `;
 
             return renderTextWithStempel(content, verified);
         }
@@ -555,64 +555,64 @@
         function renderAdime(row) {
 
             return `
-                                                                                                                <table class="table table-striped table-sm">
-                                                                                                                    <tr class="table-warning">
-                                                                                                                        <th colspan="3">ADIME GIZI</th>
-                                                                                                                    </tr>
+                                                                                                                    <table class="table table-striped table-sm">
+                                                                                                                        <tr class="table-warning">
+                                                                                                                            <th colspan="3">ADIME GIZI</th>
+                                                                                                                        </tr>
 
-                                                                                                                    <tr>
-                                                                                                                        <th width="5%">Asesmen</th>
-                                                                                                                        <td width="5%">:</td>
-                                                                                                                        <td>${stringPemeriksaan(row.keluhan)}</td>
-                                                                                                                    </tr>
+                                                                                                                        <tr>
+                                                                                                                            <th width="5%">Asesmen</th>
+                                                                                                                            <td width="5%">:</td>
+                                                                                                                            <td>${stringPemeriksaan(row.keluhan)}</td>
+                                                                                                                        </tr>
 
-                                                                                                                    <tr>
-                                                                                                                        <th width="5%">Diagnosis</th>
-                                                                                                                        <td width="5%">:</td>
-                                                                                                                        <td>${stringPemeriksaan(row.pemeriksaan)}</td>
-                                                                                                                    </tr>
+                                                                                                                        <tr>
+                                                                                                                            <th width="5%">Diagnosis</th>
+                                                                                                                            <td width="5%">:</td>
+                                                                                                                            <td>${stringPemeriksaan(row.pemeriksaan)}</td>
+                                                                                                                        </tr>
 
-                                                                                                                    <tr>
-                                                                                                                        <th width="5%">Intervensi</th>
-                                                                                                                        <td width="5%">:</td>
-                                                                                                                        <td>${stringPemeriksaan(row.penilaian)}</td>
-                                                                                                                    </tr>
+                                                                                                                        <tr>
+                                                                                                                            <th width="5%">Intervensi</th>
+                                                                                                                            <td width="5%">:</td>
+                                                                                                                            <td>${stringPemeriksaan(row.penilaian)}</td>
+                                                                                                                        </tr>
 
-                                                                                                                    <tr>
-                                                                                                                        <th width="5%">Monitoring</th>
-                                                                                                                        <td width="5%">:</td>
-                                                                                                                        <td>${stringPemeriksaan(row.rtl)}</td>
-                                                                                                                    </tr>
+                                                                                                                        <tr>
+                                                                                                                            <th width="5%">Monitoring</th>
+                                                                                                                            <td width="5%">:</td>
+                                                                                                                            <td>${stringPemeriksaan(row.rtl)}</td>
+                                                                                                                        </tr>
 
-                                                                                                                    <tr>
-                                                                                                                        <th width="5%">Evaluasi</th>
-                                                                                                                        <td width="5%">:</td>
-                                                                                                                        <td>${stringPemeriksaan(row.evaluasi)}</td>
-                                                                                                                    </tr>
+                                                                                                                        <tr>
+                                                                                                                            <th width="5%">Evaluasi</th>
+                                                                                                                            <td width="5%">:</td>
+                                                                                                                            <td>${stringPemeriksaan(row.evaluasi)}</td>
+                                                                                                                        </tr>
 
-                                                                                                                    <tr>
-                                                                                                                        <th width="5%">Instruksi</th>
-                                                                                                                        <td width="5%">:</td>
-                                                                                                                        <td>${stringPemeriksaan(row.instruksi)}</td>
-                                                                                                                    </tr>
+                                                                                                                        <tr>
+                                                                                                                            <th width="5%">Instruksi</th>
+                                                                                                                            <td width="5%">:</td>
+                                                                                                                            <td>${stringPemeriksaan(row.instruksi)}</td>
+                                                                                                                        </tr>
 
-                                                                                                                </table>
-                                                                                                                                                                                                                                                                                                                                                                                        `;
+                                                                                                                    </table>
+                                                                                                                                                                                                                                                                                                                                                                                            `;
         }
 
         function renderInfoAdime(row) {
             let list = `
-                                                                                                                                                                                                                                                                                                                                                                                        <li>
-                                                                                                                                                                                                                                                                                                                                                                                            <strong>
-                                                                                                                                                                                                                                                                                                                                                                                                ${formatTanggal(row.tgl_perawatan)} ${row.jam_rawat}
-                                                                                                                                                                                                                                                                                                                                                                                            </strong>
-                                                                                                                                                                                                                                                                                                                                                                                        </li>
-                                                                                                                                                                                                                                                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                                                                                                                                            <li>
+                                                                                                                                                                                                                                                                                                                                                                                                <strong>
+                                                                                                                                                                                                                                                                                                                                                                                                    ${formatTanggal(row.tgl_perawatan)} ${row.jam_rawat}
+                                                                                                                                                                                                                                                                                                                                                                                                </strong>
+                                                                                                                                                                                                                                                                                                                                                                                            </li>
+                                                                                                                                                                                                                                                                                                                                                                                        `;
             list += `
-                                                                                                                                                                                                                                                                                                                                                                                        <li>
-                                                                                                                                                                                                                                                                                                                                                                                            Petugas :<strong> ${row.petugas.nama} </strong>
-                                                                                                                                                                                                                                                                                                                                                                                        </li>
-                                                                                                                                                                                                                                                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                                                                                                                                            <li>
+                                                                                                                                                                                                                                                                                                                                                                                                Petugas :<strong> ${row.petugas.nama} </strong>
+                                                                                                                                                                                                                                                                                                                                                                                            </li>
+                                                                                                                                                                                                                                                                                                                                                                                        `;
 
             return `<ul>${list}</ul>`
         }
@@ -628,7 +628,7 @@
 
             if (kdPetugas === petugas) {
                 return `<span class="d-none">${data.tgl_perawatan} ${data.jam_rawat}</span><button class="btn btn-sm btn-primary" onclick="getSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>
-                                                                                                                                                                                                                                                                                                                                                                                        <button class="btn btn-sm btn-danger" onclick="deleteSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`
+                                                                                                                                                                                                                                                                                                                                                                                            <button class="btn btn-sm btn-danger" onclick="deleteSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`
             }
 
             return '';
