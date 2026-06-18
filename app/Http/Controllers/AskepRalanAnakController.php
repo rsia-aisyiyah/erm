@@ -64,7 +64,8 @@ class AskepRalanAnakController extends Controller
             return $this->successResponse('Data askep ralan anak berhasil disimpan');
         } catch (QueryException $e) {
             return $this->errorResponse(
-                'Gagal menyimpan data askep ralan anak: ' . $e->getMessage(),
+                $e->getMessage(),
+                'Terjadi Kesalahan Pada Server' . $e->errorInfo[2],
                 500
             );
         }

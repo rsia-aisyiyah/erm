@@ -153,14 +153,10 @@ class StoreAskepRalanAnakRequest extends FormRequest
             // Tambahkan alias lain jika diperlukan
         ];
     }
-    // protected function prepareForValidation(): void
-    // {
-    //     $this->merge([
-    //         'td' => $this->td === '-' ? null : $this->td,
-    //         'tb' => $this->tb === '-' ? null : $this->tb,
-    //         'lp' => $this->lp === '-' ? null : $this->lp,
-    //         'lk' => $this->lk === '-' ? null : $this->lk,
-    //         'ld' => $this->ld === '-' ? null : $this->ld,
-    //     ]);
-    // }
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'ket_lapor' => $this->ket_lapor ? $this->ket_lapor : '-',
+        ]);
+    }
 }

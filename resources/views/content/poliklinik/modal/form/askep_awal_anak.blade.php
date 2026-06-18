@@ -888,7 +888,7 @@
                         return handleValidationError(request)
                     } else {
                         // Menangani error selain 422 (misal: 500)
-                        alertErrorAjax(request.responseJSON?.message || 'Terjadi kesalahan pada server');
+                        alertErrorAjax(request);
                     }
                 });
 
@@ -955,7 +955,7 @@
             } else {
                 formAskepAwalAnak.find('input[name=ket_lapor]')
                     .prop('disabled', true)
-                    .val('');
+                    .val('00:00:00');
             }
         })
         formAskepAwalAnak.find('input[name=pada_dokter]').on('change', function (e) {
@@ -968,7 +968,7 @@
             } else {
                 formAskepAwalAnak.find('input[name=ket_dokter]')
                     .prop('disabled', true)
-                    .val('');
+                    .val('00:00:00');
             }
         })
         rangeSkalaNyeriAnak.on('change', function (e) {
@@ -1010,16 +1010,16 @@
                         data: '',
                         render: (data, type, row) => {
                             return `
-                                                                    <div class="form-check masalahKeperawatan">
-                                                                        <input
-                                                                            class="form-check-input listMasalahKeperawatan"
-                                                                            name="checkMasalahKeperawatan"
-                                                                            type="checkbox"
-                                                                            id="kodeMasalah${row.kode_masalah}"
-                                                                            onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')"
-                                                                            value="${row.kode_masalah}">
-                                                                    </div>
-                                                                `;
+                                                                                        <div class="form-check masalahKeperawatan">
+                                                                                            <input
+                                                                                                class="form-check-input listMasalahKeperawatan"
+                                                                                                name="checkMasalahKeperawatan"
+                                                                                                type="checkbox"
+                                                                                                id="kodeMasalah${row.kode_masalah}"
+                                                                                                onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')"
+                                                                                                value="${row.kode_masalah}">
+                                                                                        </div>
+                                                                                    `;
                         }
                     },
                     {
@@ -1111,16 +1111,16 @@
                         data: '',
                         render: (data, type, row) => {
                             return `
-                                                                                    <div class="form-check">
-                                                                                        <input
-                                                                                            class="form-check-input listRencanaKeperawatan"
-                                                                                            name="checkRencanaKeperawatan"
-                                                                                            type="checkbox"
-                                                                                            value="${row.kode_rencana}"
-                                                                                            data-masalah="${row.kode_masalah}"
-                                                                                            id="kodeRencana${row.kode_rencana}">
-                                                                                    </div>
-                                                                                `;
+                                                                                                        <div class="form-check">
+                                                                                                            <input
+                                                                                                                class="form-check-input listRencanaKeperawatan"
+                                                                                                                name="checkRencanaKeperawatan"
+                                                                                                                type="checkbox"
+                                                                                                                value="${row.kode_rencana}"
+                                                                                                                data-masalah="${row.kode_masalah}"
+                                                                                                                id="kodeRencana${row.kode_rencana}">
+                                                                                                        </div>
+                                                                                                    `;
                         }
                     },
                     {
