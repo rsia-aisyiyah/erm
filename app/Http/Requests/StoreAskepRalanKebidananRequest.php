@@ -154,9 +154,9 @@ class StoreAskepRalanKebidananRequest extends FormRequest
             ],
 
             // KEHAMILAN
-            'hpht' => 'required|date',
-            'usia_kehamilan' => 'required|string|max:10',
-            'tp' => 'required|date',
+            'hpht' => 'nullable|date',
+            'usia_kehamilan' => 'nullable|string|max:10',
+            'tp' => 'nullable|date',
 
             'imunisasi' => ['required', Rule::in(['Ya', 'Tidak'])],
             'ket_imunisasi' => 'required|string|max:10',
@@ -539,7 +539,15 @@ class StoreAskepRalanKebidananRequest extends FormRequest
                 'tanggal' => date(
                     'Y-m-d H:i:s',
                     strtotime($this->tanggal)
-                )
+                ),
+                'hpht' => $this->hpht ? date(
+                    'Y-m-d H:i:s',
+                    strtotime($this->hpht)
+                ) : '0000-00-00 00:00:00',
+                'tp' => $this->tp ? date(
+                    'Y-m-d H:i:s',
+                    strtotime($this->tp)
+                ) : '0000-00-00 00:00:00',
             ]);
         }
     }
