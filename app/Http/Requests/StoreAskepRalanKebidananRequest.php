@@ -154,9 +154,9 @@ class StoreAskepRalanKebidananRequest extends FormRequest
             ],
 
             // KEHAMILAN
-            'hpht' => 'nullable|date',
+            'hpht' => 'nullable|string',
             'usia_kehamilan' => 'nullable|string|max:10',
-            'tp' => 'nullable|date',
+            'tp' => 'nullable|string',
 
             'imunisasi' => ['required', Rule::in(['Ya', 'Tidak'])],
             'ket_imunisasi' => 'required|string|max:10',

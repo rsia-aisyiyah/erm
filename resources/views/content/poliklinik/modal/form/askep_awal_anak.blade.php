@@ -753,6 +753,10 @@
                                     </tr>
                                 </thead>
                             </table>
+                            {{-- <button type="button" onclick="tambahMasalahKeperawatanAnak()"
+                                class="btn btn-sm btn-primary mt-2">
+                                <i class="bi bi-plus"></i> Tambah
+                            </button> --}}
                         </div>
                         <div class="mb-1 mt-1 col-sm-12 col-md-12 col-lg-6">
                             <ul class="nav nav-tabs" id="tabMasalah" role="tablist">
@@ -1003,23 +1007,23 @@
                 scrollY: 250,
                 info: false,
                 ajax: {
-                    url: '/erm/master/masalah/keperawatan/table',
+                    url: "{{ route('asesmen-keperawatan.master-masalah.anak.get') }}",
                 },
                 columns: [
                     {
                         data: '',
                         render: (data, type, row) => {
                             return `
-                                                                                        <div class="form-check masalahKeperawatan">
-                                                                                            <input
-                                                                                                class="form-check-input listMasalahKeperawatan"
-                                                                                                name="checkMasalahKeperawatan"
-                                                                                                type="checkbox"
-                                                                                                id="kodeMasalah${row.kode_masalah}"
-                                                                                                onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')"
-                                                                                                value="${row.kode_masalah}">
-                                                                                        </div>
-                                                                                    `;
+                                                                                                                                            <div class="form-check masalahKeperawatan">
+                                                                                                                                                <input
+                                                                                                                                                    class="form-check-input listMasalahKeperawatan"
+                                                                                                                                                    name="checkMasalahKeperawatan"
+                                                                                                                                                    type="checkbox"
+                                                                                                                                                    id="kodeMasalah${row.kode_masalah}"
+                                                                                                                                                    onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')"
+                                                                                                                                                    value="${row.kode_masalah}">
+                                                                                                                                            </div>
+                                                                                                                                        `;
                         }
                     },
                     {
@@ -1091,6 +1095,7 @@
         }
 
         function tbRencanaKeperawatan(kode) {
+
             $('#tbRencanaKeperawatan').DataTable({
                 destroy: true,
                 processing: true,
@@ -1098,11 +1103,11 @@
                 paging: false,
                 scrollY: 240,
                 info: false,
-                searching: false,
+                searching: true,
                 ajax: {
-                    url: '/erm/master/rencana/keperawatan/table/',
+                    url: "{{ route('asesmen-keperawatan.master-rencana.anak.get') }}",
                     data: {
-                        kode: kode,
+                        kode_masalah: kode,
                     },
 
                 },
@@ -1111,16 +1116,16 @@
                         data: '',
                         render: (data, type, row) => {
                             return `
-                                                                                                        <div class="form-check">
-                                                                                                            <input
-                                                                                                                class="form-check-input listRencanaKeperawatan"
-                                                                                                                name="checkRencanaKeperawatan"
-                                                                                                                type="checkbox"
-                                                                                                                value="${row.kode_rencana}"
-                                                                                                                data-masalah="${row.kode_masalah}"
-                                                                                                                id="kodeRencana${row.kode_rencana}">
-                                                                                                        </div>
-                                                                                                    `;
+                                                                                                                                                            <div class="form-check">
+                                                                                                                                                                <input
+                                                                                                                                                                    class="form-check-input listRencanaKeperawatan"
+                                                                                                                                                                    name="checkRencanaKeperawatan"
+                                                                                                                                                                    type="checkbox"
+                                                                                                                                                                    value="${row.kode_rencana}"
+                                                                                                                                                                    data-masalah="${row.kode_masalah}"
+                                                                                                                                                                    id="kodeRencana${row.kode_rencana}">
+                                                                                                                                                            </div>
+                                                                                                                                                        `;
                         }
                     },
                     {

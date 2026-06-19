@@ -1697,6 +1697,7 @@
                                             </tr>
                                         </thead>
                                     </table>
+                                
                                 </div>
                                 <div class="mb-1 mt-1 col-sm-12 col-md-12 col-lg-6">
                                     <ul class="nav nav-tabs" id="tabMasalah" role="tablist">
@@ -2192,8 +2193,8 @@
                     data: '',
                     render: (data, type, row) => {
                         return `<div class="form-check masalahKeperawatan">
-                                                                                                                    <input class="form-check-input listMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
-                                                                                                                </div>`
+                                                                                                                                                                    <input class="form-check-input listMasalahKeperawatan" type="checkbox" id="kodeMasalah${row.kode_masalah}" onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')" value="${row.kode_masalah}">
+                                                                                                                                                                </div>`
                     }
                 }, {
                     data: '',
@@ -2244,9 +2245,8 @@
                 processing: true,
                 ordering: false,
                 paging: false,
-                scrollY: 240,
+                scrollY: 250,
                 info: false,
-                searching: false,
                 ajax: {
                     url: '/erm/master/rencana/keperawatan/table/',
                     data: {
@@ -2267,8 +2267,8 @@
                         })
 
                         return `<div class="form-check">
-                                                                                                                    <input class="form-check-input listRencanaKeperawatan" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatan('${row.kode_rencana}')" id="kodeRencana${row.kode_rencana}" onclick="">
-                                                                                                                </div>`
+                                                                                                                                                                    <input class="form-check-input listRencanaKeperawatan" type="checkbox" value="${row.kode_rencana}" data-masalah="${row.kode_masalah}" onclick="cekRencanaKeperawatan('${row.kode_rencana}')" id="kodeRencana${row.kode_rencana}" onclick="">
+                                                                                                                                                                </div>`
                     }
                 },
                 {
