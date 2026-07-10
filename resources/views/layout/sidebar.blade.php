@@ -8,7 +8,7 @@
             </h6>
             @if (
                     session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->nik == '2.319.1017' ||
-                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik = '3.604.0123' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DNM6'
+                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DNM6' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik == '3.604.0123'
                 )
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('registrasi') ? 'active' : '' }}" href="/erm/registrasi">
@@ -20,7 +20,7 @@
             </h6>
             @if (
                     session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->nik == '2.319.1017' ||
-                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik = '3.604.0123' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DNM6' || session()->get('pegawai')->departemen == 'DM6'
+                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DNM6' || session()->get('pegawai')->departemen == 'DM6' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik == '3.604.0123'
                 )
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('sep') ? 'active' : '' }}" href="/erm/sep">
@@ -31,7 +31,7 @@
             @endif
             @if (
                     session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->nik == '2.319.1017' ||
-                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik = '3.604.0123' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'DNM2'
+                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'DNM2' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik == '3.604.0123'
                 )
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
@@ -43,8 +43,8 @@
 
             @if (
                     (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->nik == '2.319.1017' ||
-                        session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM1' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'DM6' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->dokter) &&
-                    session()->get('pegawai')->jbtn != 'Dokter Spesialis Radiologi' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik = '3.604.0123'
+                        session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM1' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'DM6' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik == '' || session()->get('pegawai')->dokter) &&
+                    session()->get('pegawai')->jbtn != 'Dokter Spesialis Radiologi'
                 )
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('poliklinik') ? 'active' : '' }}" href="/erm/poliklinik">
@@ -69,8 +69,8 @@
             @endif
 
             @if (
-                    session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->nik == '2.319.1017' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik = '3.604.0123' ||
-                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM1'
+                    session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->nik == '2.319.1017' ||
+                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM1' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik == '3.604.0123'
                 )
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep">
@@ -80,8 +80,8 @@
                 </li>
             @endif
             @if (
-                    session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->nik == '2.319.1017' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik = '3.604.0123' ||
-                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->jbtn == 'Dokter Spesialis Radiologi' || session()->get('pegawai')->departemen == 'RAD' || session()->get('pegawai')->departemen == 'CSM'
+                    session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->nik == '2.319.1017' ||
+                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->jbtn == 'Dokter Spesialis Radiologi' || session()->get('pegawai')->departemen == 'RAD' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik == '3.604.0123'
                 )
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('radiologi') ? 'active' : '' }}" href="/erm/radiologi">
@@ -114,7 +114,7 @@
                     session()->get('pegawai')->departemen == 'DIR' ||
                     session()->get('pegawai')->nik == '2.319.1017' ||
                     session()->get('pegawai')->nik == '2.424.0418' ||
-                    session()->get('pegawai')->dokter || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik = '3.604.0123'
+                    session()->get('pegawai')->dokter || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik == '3.604.0123'
                 )
 
                 <li class="nav-item">
@@ -126,9 +126,9 @@
             @endif
 
             @if (
-                    (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM1' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->dokter) &&
+                    (session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->jnj_jabatan == 'DIRU' || session()->get('pegawai')->departemen == 'DM1' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'DM7' || session()->get('pegawai')->departemen == 'SPS' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->dokter) || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik == '3.604.0123' &&
                     session()->get('pegawai')->jbtn != 'Dokter Spesialis Radiologi' || session()->get('pegawai')->nik == '2.319.1017' ||
-                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik = '3.604.0123'
+                    session()->get('pegawai')->nik == '2.424.0418'
                 )
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('ugd') ? 'active' : '' }}" href="/erm/ugd">
