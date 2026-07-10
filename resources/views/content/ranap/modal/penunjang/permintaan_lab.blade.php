@@ -7,7 +7,7 @@
             <div class="row gy-2 mb-3">
                 <div class="col-md-2">
                     <label for="noorder" class="form-label">No. Permintaan</label>
-                    <input type="text" class="form-control" name="noorder" id="noorder" />
+                    <input type="text" class="form-control noorder" name="noorder" id="noorder" readonly />
                 </div>
                 <div class="col-md-2">
                     @csrf
@@ -35,7 +35,7 @@
             <table class="table table-responsive table-bordered" id="tablePermintaanLab">
                 <thead>
                     <tr class="table-secondary">
-                        <th width="2%"><input type="checkbox" name="p" id="p" /></th>
+                        <th width="2%"><input type="checkbox" name="p" id="p" class="p" /></th>
                         <th>Pemeriksaan</th>
                         <th>Satuan</th>
                         <th>Nilai Rujukan</th>
@@ -109,14 +109,14 @@
                 if (Object.values(response).length) {
                     const permintaan = response.map((item, index) => {
                         return `<tr>
-                                    <td>${index + 1}</td>
-                                    <td>${item.noorder}</td>
-                                    <td>${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</td>
-                                    <td>${item.informasi_tambahan}</td>
-                                    <td>${item.diagnosa_klinis}</td>
-                                    <td>${splitTanggal(item.tgl_sampel)} ${item.jam_sampel}</td>
-                                    <td>${splitTanggal(item.tgl_hasil)} ${item.jam_hasil}</td>
-                                    </tr>${getPermintaanPeriksa(item.pemeriksaan)}`
+                                                                <td>${index + 1}</td>
+                                                                <td>${item.noorder}</td>
+                                                                <td>${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</td>
+                                                                <td>${item.informasi_tambahan}</td>
+                                                                <td>${item.diagnosa_klinis}</td>
+                                                                <td>${splitTanggal(item.tgl_sampel)} ${item.jam_sampel}</td>
+                                                                <td>${splitTanggal(item.tgl_hasil)} ${item.jam_hasil}</td>
+                                                                </tr>${getPermintaanPeriksa(item.pemeriksaan)}`
                     }).join('');
                     contentPermintaan = permintaan;
                 } else {
@@ -129,9 +129,9 @@
         function getPermintaanPeriksa(data) {
             return data.map((item) => {
                 return `<tr>
-                                <td></td>
-                                <td colspan=6><strong>${item.jenis.nm_perawatan}</strong> : ${getDetailPermintaan(item.detail)}</td>
-                            </tr>`
+                                                            <td></td>
+                                                            <td colspan=6><strong>${item.jenis.nm_perawatan}</strong> : ${getDetailPermintaan(item.detail)}</td>
+                                                        </tr>`
             }).join('');
         }
 
@@ -143,7 +143,7 @@
 
         function getNomorPermintaan() {
             return $.get(`/erm/lab/permintaan/nomor`).done((response) => {
-                formPermintaanLab.find('#noorder').val(response)
+                formPermintaanLab.find('.noorder').val(response)
             })
         }
 
@@ -186,13 +186,13 @@
                     pemeriksaan = response.map((item) => {
 
                         return `<tr>
-                                <td><input type="checkbox" class="form-check checkJenisPemeriksaan" name="${item.kd_jenis_prw}" id="${item.kd_jenis_prw}" onclick="checkJenisPemeriksaan(this)"/></td>
-                                <td colspan=3><b>${item.nm_perawatan}</b></td>
-                                </tr>${setTemplatePemeriksaan(item.template)}`
+                                                            <td><input type="checkbox" class="form-check checkJenisPemeriksaan" name="${item.kd_jenis_prw}" id="${item.kd_jenis_prw}" onclick="checkJenisPemeriksaan(this)"/></td>
+                                                            <td colspan=3><b>${item.nm_perawatan}</b></td>
+                                                            </tr>${setTemplatePemeriksaan(item.template)}`
                     });
                 })
                 tablePermintaanLab.find('tbody').empty().append(pemeriksaan).append(subPemeriksaan)
-                if ($('#p').prop('checked')) {
+                if ($('.p').prop('checked')) {
                     $('input[type=checkbox]').each((index, e) => {
                         $(e).prop('checked', true);
                     })
@@ -212,14 +212,14 @@
                     response.forEach((item) => {
                         pemeriksaan = response.map((item) => {
                             return `<tr>
-                                    <td><input type="checkbox" class="form-check checkJenisPemeriksaan" name="${item.kd_jenis_prw}" id="${item.kd_jenis_prw}" /></td>
-                                    <td colspan=3><b>${item.nm_perawatan}</b></td>
-                                    </tr>${setTemplatePemeriksaan(item.template)}`
+                                                                <td><input type="checkbox" class="form-check checkJenisPemeriksaan" name="${item.kd_jenis_prw}" id="${item.kd_jenis_prw}" /></td>
+                                                                <td colspan=3><b>${item.nm_perawatan}</b></td>
+                                                                </tr>${setTemplatePemeriksaan(item.template)}`
                         });
                     })
 
                     tablePermintaanLab.find('tbody').empty().append(pemeriksaan).append(subPemeriksaan)
-                    if ($('#p').prop('checked')) {
+                    if ($('.p').prop('checked')) {
                         $('input[type=checkbox]').each((index, e) => {
                             $(e).prop('checked', true);
                         })
@@ -234,17 +234,17 @@
             return data.map((i) => {
                 if (i.Pemeriksaan.length) {
                     return `<tr>
-                                <td><input class="form-checkbox item" type="checkbox" name="${i.id_template}" id="${i.id_template}" data-parent="${i.kd_jenis_prw}" /></td>
-                                <td><span class="ms-4">${i.Pemeriksaan}</span></td>
-                                <td>${i.satuan}</td>
-                                <td><b>LD</b> : ${i.nilai_rujukan_ld} ${i.satuan}, <b>LA</b> : ${i.nilai_rujukan_la} ${i.satuan}, <b>PD</b> : ${i.nilai_rujukan_pd} ${i.satuan}, <b>PA</b> : ${i.nilai_rujukan_pa} ${i.satuan} </td>
-                            </tr>`
+                                                            <td><input class="form-checkbox item" type="checkbox" name="${i.id_template}" id="${i.id_template}" data-parent="${i.kd_jenis_prw}" /></td>
+                                                            <td><span class="ms-4">${i.Pemeriksaan}</span></td>
+                                                            <td>${i.satuan}</td>
+                                                            <td><b>LD</b> : ${i.nilai_rujukan_ld} ${i.satuan}, <b>LA</b> : ${i.nilai_rujukan_la} ${i.satuan}, <b>PD</b> : ${i.nilai_rujukan_pd} ${i.satuan}, <b>PA</b> : ${i.nilai_rujukan_pa} ${i.satuan} </td>
+                                                        </tr>`
 
                 }
             })
         }
 
-        $('#p').on('click', (e) => {
+        $('.p').on('click', (e) => {
             const isCheck = $(e.currentTarget).prop('checked')
             tablePermintaanLab.find('input[type=checkbox]').each((index, el) => {
                 if (isCheck) {
