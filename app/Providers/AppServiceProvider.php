@@ -33,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
         if (request()->isSecure()) {
             URL::forceScheme('https');
         }
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
 
         LogViewer::auth(function ($request) {
             return session()->has('pegawai') && session()->get('pegawai')->nik = 'direksi';
