@@ -137,6 +137,8 @@ Route::middleware('auth')->group(function () {
 	Route::get('persetujuan/loket/{loket}', [RsiaGeneralConsentController::class, 'index']);
 	Route::post('persetujuan/tambah', [RsiaGeneralConsentController::class, 'tambah']);
 	Route::get('persetujuan/ambil', [RsiaGeneralConsentController::class, 'ambil']);
+	Route::post('persetujuan-umum/save', [RsiaGeneralConsentController::class, 'save'])->name('persetujuan-umum.save');
+	Route::get('persetujuan-umum/verify/{uuid}', [RsiaGeneralConsentController::class, 'verify'])->name('persetujuan-umum.verify');
 	Route::post('persetujuan/ttd', [RsiaGeneralConsentController::class, 'simpanTtd']);
 	Route::delete('persetujuan/hapus', [RsiaGeneralConsentController::class, 'delete']);
 
@@ -313,13 +315,13 @@ Route::middleware('auth')->group(function () {
 	Route::get('imunisasi/riwayat/get/{no_rkm_medis}', [RiwayatImunisasiController::class, 'get']);
 
 	Route::get('riwayat/persalinan/get/{no_rkm_medis}', [RiwayatPersalinanController::class, 'get'])
-	->name('riwayat.persalinan.get');
+		->name('riwayat.persalinan.get');
 	Route::delete('riwayat/persalinan/delete', [RiwayatPersalinanController::class, 'delete'])
-	->name('riwayat.persalinan.delete');
-		Route::delete('riwayat/persalinan/delete-bulk', [RiwayatPersalinanController::class, 'delete'])
+		->name('riwayat.persalinan.delete');
+	Route::delete('riwayat/persalinan/delete-bulk', [RiwayatPersalinanController::class, 'delete'])
 		->name('riwayat.persalinan.delete.bulk');
 	Route::post('riwayat/persalinan/insert', [RiwayatPersalinanController::class, 'insert'])
-	->name('riwayat.persalinan.insert');
+		->name('riwayat.persalinan.insert');
 
 	Route::get('radiologi', [PeriksaRadiologiController::class, 'view']);
 	Route::get('radiologi/riwayat/{no_rkm_medis}', [PeriksaRadiologiController::class, 'riwayat']);

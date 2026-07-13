@@ -638,17 +638,17 @@
 
                         // Perbaikan di bagian ini: Menggunakan d-flex dan align-items-center
                         pasien = `
-                                                                                                    <div class="m-0">
-                                                                                                        <div class="d-flex align-items-center gap-2 mt-1">
-                                                                                                            ${labelJK}
-                                                                                                            <span>
-                                                                                                                <strong>${data.no_rkm_medis} <br/>${data.pasien.nm_pasien}</strong>
-                                                                                                                <br/>
-                                                                                                                ${umur}
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                                `;
+                                                                                                            <div class="m-0" onclick="showModalSoapRanap('${data.no_rawat}')" style="cursor:pointer">
+                                                                                                                <div class="d-flex align-items-center gap-2 mt-1">
+                                                                                                                    ${labelJK}
+                                                                                                                    <span>
+                                                                                                                        <strong>${data.no_rkm_medis} <br/>${data.pasien.nm_pasien}</strong>
+                                                                                                                        <br/>
+                                                                                                                        ${umur}
+                                                                                                                    </span>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                                        `;
 
                         let bayiGabung = '';
 
@@ -664,29 +664,29 @@
 
                             // 3. Gabungkan nama bayi dengan bungkus dropdown-nya
                             const namaBayiDropdown = `
-                                    <a class="dropdown-toggle btn btn-warning btn-sm" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        ${regPeriksa.pasien.nm_pasien}
-                                    </a>
-                                    <ul class="dropdown-menu" style="font-size:11px">
-                                        ${listMenuBayi}
-                                    </ul>
-                                `;
+                                            <a class="dropdown-toggle btn btn-warning btn-sm" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                ${regPeriksa.pasien.nm_pasien}
+                                            </a>
+                                            <ul class="dropdown-menu" style="font-size:11px">
+                                                ${listMenuBayi}
+                                            </ul>
+                                        `;
 
                             // 4. Output akhir komponen bayi gabung (Berjejer ke bawah)
                             bayiGabung = `
-                    <hr style="margin:6px 0; border-top: 1px dashed #ccc;"/>
-                    <div class="d-flex flex-column gap-1 small">
-                        <span class="text-muted" style="font-size: 10px;">${noRawatBayi}</span>
-                        <div>
-                            <strong>${namaBayiDropdown}</strong>
-                        </div>
-                    </div>
-                `;
+                            <hr style="margin:6px 0; border-top: 1px dashed #ccc;"/>
+                            <div class="d-flex flex-column gap-1 small">
+                                <span class="text-muted" style="font-size: 10px;">${noRawatBayi}</span>
+                                <div>
+                                    <strong>${namaBayiDropdown}</strong>
+                                </div>
+                            </div>
+                        `;
                         }
 
 
                         return `
-                                                                            <span id="pasien" data-no-rkm-medis="${data.no_rkm_medis}">${pasien}</span> ${bayiGabung}`;
+                                                                                    <span id="pasien" data-no-rkm-medis="${data.no_rkm_medis}">${pasien}</span> ${bayiGabung}`;
 
                     },
                     name: 'reg_periksa',
@@ -878,10 +878,10 @@
                         if (asmed.reg_periksa.kd_poli !== 'IGDK' && asmed.reg_periksa.kd_poli !== 'U0016') {
                             html = '<tr>'
                             html += `<td>${asmed.no_rawat}</td>
-                                                                                            <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
-                                                                                            <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
-                                                                                            <td>${asmed.dokter.nm_dokter}</td>
-                                                                                            <td><button class="btn btn-success btn-sm" type="button" onclick="copyAsmedKandunganRanap('${asmed.no_rawat}')"><i class="bi bi-download"></i> Gunakan</button></td>`
+                                                                                                    <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
+                                                                                                    <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
+                                                                                                    <td>${asmed.dokter.nm_dokter}</td>
+                                                                                                    <td><button class="btn btn-success btn-sm" type="button" onclick="copyAsmedKandunganRanap('${asmed.no_rawat}')"><i class="bi bi-download"></i> Gunakan</button></td>`
                             html += '<tr>'
                             $('#tbRiwayatAsmed tbody').append(html)
                             $('#modalRiwayatAsmed').modal('show')
@@ -922,10 +922,10 @@
                         if (asmed.reg_periksa.kd_poli !== 'IGDK' && asmed.reg_periksa.kd_poli !== 'U0016') {
                             html = '<tr>'
                             html += `<td>${asmed.no_rawat}</td>
-                                                                                    <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
-                                                                                    <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
-                                                                                    <td>${asmed.dokter.nm_dokter}</td>
-                                                                                    <td><button class="btn btn-success btn-sm" type="button" onclick="copyAsmedAnakRanap('${asmed.no_rawat}')"><i class="bi bi-download"></i> Gunakan</button></td>`
+                                                                                            <td>${formatTanggal(asmed.tanggal.split(' ')[0])} ${asmed.tanggal.split(' ')[1]}</td>
+                                                                                            <td>${asmed.reg_periksa.poliklinik.nm_poli}</td>
+                                                                                            <td>${asmed.dokter.nm_dokter}</td>
+                                                                                            <td><button class="btn btn-success btn-sm" type="button" onclick="copyAsmedAnakRanap('${asmed.no_rawat}')"><i class="bi bi-download"></i> Gunakan</button></td>`
                             html += '<tr>'
                             $('#tbRiwayatAsmed tbody').append(html)
                             $('#modalRiwayatAsmed').modal('show')
@@ -1172,15 +1172,15 @@
         }
         function buildDropdownButton(rowIndex, noRawat, listItems) {
             return `
-                                    <div class="dropdown-center">
-                                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownAksi${rowIndex}" data-id="${noRawat}">
-                                            <i class="bi bi-list-task"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" style="font-size:11px">
-                                            ${listItems}
-                                        </ul>
-                                    </div>
-                                `;
+                                            <div class="dropdown-center">
+                                                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownAksi${rowIndex}" data-id="${noRawat}">
+                                                    <i class="bi bi-list-task"></i>
+                                                </button>
+                                                <ul class="dropdown-menu" style="font-size:11px">
+                                                    ${listItems}
+                                                </ul>
+                                            </div>
+                                        `;
         }
         function getResumeMenuBayi(row) {
             const isDokter = "{{ session()->get('pegawai')->departemen }}";

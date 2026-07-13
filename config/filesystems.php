@@ -55,6 +55,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'general_consent' => [
+            'driver' => 'local',
+            'root' => storage_path('general-consent'),
+            'url' => env('APP_URL') . 'app/public/general-consent',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         's3' => [
             'driver' => 's3',

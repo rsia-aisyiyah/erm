@@ -1,61 +1,101 @@
 <div class="modal fade" id="modalTabelHasilKritis" tabindex="-1" aria-labelledby="modalHasilKritisLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h6 class="modal-title fs-5" id="modalHasilKritisLabel">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Panel Hasil Kritis Pasien
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
+        <div class="modal-content" style="height:95vh;">
+
+            <div class="modal-header bg-danger text-white flex-shrink-0">
+                <h6 class="modal-title mb-0" id="modalHasilKritisLabel">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Panel Hasil Kritis Pasien
                 </h6>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body bg-light" style="min-height: 550px">
 
-                <div class="row g-3" id="containerHasilKritis">
-                    <div class="col-12 text-center py-5 text-muted" id="loaderHasilKritis">
-                        <div class="spinner-border text-danger mb-2" role="status"></div>
-                        <br>Memuat data hasil kritis...
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-
-                <div class="d-flex gap-2" id="filterHasilKritis">
-                    {{-- filter berdasarkan bulan --}}
-
-
-                    <div class="d-flex align-items-center">
-                        <div class="me-2">
-                            <small class="text-muted">Bulan:</small>
-                        </div>
-                        <div>
-                            <input class="form-control form-control-sm datepicker" type="month" id="bulan" name="bulan"
-                                accept="" value="{{ date('Y-m') }}">
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <div class="me-2">
-                            <small class="text-muted">Status:</small>
-                        </div>
-                        <div>
-                            <select name="status" id="status" class="form-select form-select-sm">
-                                <option value="belum" selected>Belum diverifikasi</option>
-                                <option value="semua">Semua</option>
-                                <option value="sudah">Sudah diverifikasi</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary btn-sm" id="btnFilterHasilKritis"><i class="bi bi-search"></i>
-                        Cari</button>
-                </div>
-                {{-- tambahkan filter untuk melihat yang sudah dan yang belum --}}
-
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px">
-                    <i class="bi bi-x-circle"></i> Tutup
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
                 </button>
             </div>
+
+            <div class="modal-body bg-light overflow-auto">
+
+                <div class="row g-3" id="containerHasilKritis">
+
+                    <div class="col-12 text-center py-5 text-muted" id="loaderHasilKritis">
+
+                        <div class="spinner-border text-danger mb-2"></div>
+
+                        <br>
+
+                        Memuat data hasil kritis...
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer flex-wrap justify-content-between flex-shrink-0">
+
+                <div class="d-flex flex-wrap align-items-center gap-2" id="filterHasilKritis">
+
+                    <div class="d-flex align-items-center">
+
+                        <label class="me-2 small text-muted mb-0">
+                            Bulan
+                        </label>
+
+                        <input type="month" id="bulan" name="bulan" class="form-control form-control-sm"
+                            value="{{ date('Y-m') }}">
+
+                    </div>
+
+                    <div class="d-flex align-items-center">
+
+                        <label class="me-2 small text-muted mb-0">
+                            Status
+                        </label>
+
+                        <select id="status" name="status" class="form-select form-select-sm">
+
+                            <option value="belum" selected>
+                                Belum diverifikasi
+                            </option>
+
+                            <option value="semua">
+                                Semua
+                            </option>
+
+                            <option value="sudah">
+                                Sudah diverifikasi
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <button class="btn btn-primary btn-sm" id="btnFilterHasilKritis">
+
+                        <i class="bi bi-search"></i>
+
+                        Cari
+
+                    </button>
+
+                </div>
+
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
+
+                    <i class="bi bi-x-circle"></i>
+
+                    Tutup
+
+                </button>
+
+            </div>
+
         </div>
+
     </div>
+
 </div>
 @push('script')
     <script>
@@ -71,10 +111,10 @@
             const loginNik = "{{ session()->get('pegawai')->nik }}";
 
             $('#containerHasilKritis').html(`
-                            <div class="col-12 text-center py-5 text-muted">
-                                <div class="spinner-border text-danger mb-2" role="status"></div><br>Memuat data...
-                            </div>
-                        `);
+                                                <div class="col-12 text-center py-5 text-muted">
+                                                    <div class="spinner-border text-danger mb-2" role="status"></div><br>Memuat data...
+                                                </div>
+                                            `);
 
             $.ajax({
                 url: "{{ route('hasil-kritis.petugas') }}",
@@ -160,71 +200,73 @@
 
                         // 3. Susun Komponen Card dengan Penambahan Grid Status Ikon & Waktu Eksplisit
                         cardsHtml += `
-                                        <div class="col-md-6 col-lg-4">
-                                            <div class="card h-100 ${borderClass}">
-                                                <div class="card-header bg-white pb-0 d-flex justify-content-between align-items-start border-0">
-                                                    <div class="d-flex flex-column">
-                                                        <small class="text-muted fw-semibold" style="font-size:10px;">NO. RAWAT: ${item.no_rawat}</small>
-                                                        <h6 class="text-primary mb-0 fw-bold mt-1">${setIconGender(item.reg_periksa?.pasien?.jk)} ${nmPasien} (${noRm})</h6>
-                                                    </div>
-                                                    ${item.kamar?.nm_bangsal ? `<span class="badge bg-secondary small">${item.kamar.nm_bangsal}</span>` : ''}
-                                                </div>
-                                                <div class="card-body py-2">
-                                                    <div class="p-2 bg-danger-subtle text-danger rounded border border-danger-subtle mb-2">
-                                                        <small class="fw-bold d-block text-uppercase" style="font-size: 9px; letter-spacing: 0.5px;"><i class="bi bi-exclamation-triangle-fill"></i> Parameter Kritis:</small>
-                                                        <span class="fs-7 fw-bold text-wrap" style="word-break: break-word;">${stringPemeriksaan(item.hasil)}</span>
-                                                    </div>
+                                                            <div class="col-md-6 col-lg-4">
+                                                                <div class="card h-100 ${borderClass}">
+                                                                    <div class="card-header bg-white pb-0 d-flex justify-content-between align-items-start border-0">
+                                                                        <div class="d-flex flex-column">
+                                                                            <small class="text-muted fw-semibold" style="font-size:10px;">NO. RAWAT: ${item.no_rawat}</small>
+                                                                            <h6 class="text-primary mb-0 fw-bold mt-1">${setIconGender(item.reg_periksa?.pasien?.jk)} ${nmPasien} (${noRm})</h6>
+                                                                        </div>
+                                                                        ${item.kamar?.nm_bangsal ? `<span class="badge bg-secondary small">${item.kamar.nm_bangsal}</span>` : ''}
+                                                                    </div>
+                                                                    <div class="card-body py-2">
+                                                                        <div class="p-2 bg-danger-subtle text-danger rounded border border-danger-subtle mb-2">
+                                                                            <small class="fw-bold d-block text-uppercase" style="font-size: 9px; letter-spacing: 0.5px;"><i class="bi bi-exclamation-triangle-fill"></i> Parameter Kritis:</small>
+                                                                            <span class="fs-7 fw-bold text-wrap" style="word-break: break-word;">${stringPemeriksaan(item.hasil)}</span>
+                                                                        </div>
 
-                                                    <div class="d-flex flex-column gap-1">
-                                                        <small class="text-muted"><i class="bi bi-clock me-1"></i> Tanggal Input : <span class="text-dark fw-medium">${formatTanggal(item.tgl)}</span></small>
-                                                        <small class="text-muted mb-1"><i class="bi bi-person-badge me-1"></i> Analis Laborat: <span class="text-dark">${namaSubstring(item.petugas?.nama)}</span></small>
+                                                                        <div class="d-flex flex-column gap-1">
+                                                                            <small class="text-muted"><i class="bi bi-clock me-1"></i> Tanggal Input : <span class="text-dark fw-medium">${formatTanggal(item.tgl)}</span></small>
+                                                                            <small class="text-muted mb-1"><i class="bi bi-person-badge me-1"></i> Analis Laborat: <span class="text-dark">${namaSubstring(item.petugas?.nama)}</span></small>
 
-                                                        <small class="text-muted d-flex align-items-center justify-content-between border-top pt-1 mt-1">
-                                                            <div class="d-flex flex-column">
-                                                                <span><i class="bi bi-shield-check me-1"></i> Dokter Lab/Rad: <span class="text-dark">${namaSubstring(item.dokter_pj?.nm_dokter) || '-'}</span></span>
-                                                                ${isPjVerified ? `<span class="text-success fw-medium" style="font-size: 10px; margin-left: 18px;">${formatTanggal(item.tgl_drpj)}</span>` : ''}
+                                                                            <small class="text-muted d-flex align-items-center justify-content-between border-top pt-1 mt-1">
+                                                                                <div class="d-flex flex-column">
+                                                                                    <span><i class="bi bi-shield-check me-1"></i> Dokter Lab/Rad: <span class="text-dark">${namaSubstring(item.dokter_pj?.nm_dokter) || '-'}</span></span>
+                                                                                    ${isPjVerified ? `<span class="text-success fw-medium" style="font-size: 10px; margin-left: 18px;">${formatTanggal(item.tgl_drpj)}</span>` : ''}
+                                                                                </div>
+                                                                                ${iconPj}
+                                                                            </small>
+
+                                                                            <small class="text-muted d-flex align-items-center justify-content-between">
+                                                                                <div class="d-flex flex-column">
+                                                                                    <span><i class="bi bi-building-check me-1"></i> Ruangan: <span class="text-dark">${namaSubstring(item.petugas_ruang?.nama) || '-'}</span></span>
+                                                                                    ${isRuangVerified ? `<span class="text-success fw-medium" style="font-size: 10px; margin-left: 18px;">${formatTanggal(item.tgl_ruang)}</span>` : ''}
+                                                                                </div>
+                                                                                ${iconRuang}
+                                                                            </small>
+
+                                                                            <small class="text-muted d-flex align-items-center justify-content-between">
+                                                                                <div class="d-flex flex-column">
+                                                                                    <span><i class="bi bi-person-check me-1"></i> Dokter DPJP: <span class="text-dark">${namaSubstring(item.dokter?.nm_dokter) || '-'}</span></span>
+                                                                                    ${isDpjpVerified ? `<span class="text-success fw-medium" style="font-size: 10px; margin-left: 18px;">${formatTanggal(item.tgl_dokter)}</span>` : ''}
+                                                                                </div>
+                                                                                ${iconDpjp}
+                                                                            </small>
+                                                                        </div>
+
+                                                                        <div class="mt-2 text-center">
+                                                                            ${badgeStatus}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-footer bg-white border-0 pt-0">
+                                                                        ${btnAksi}
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            ${iconPj}
-                                                        </small>
-
-                                                        <small class="text-muted d-flex align-items-center justify-content-between">
-                                                            <div class="d-flex flex-column">
-                                                                <span><i class="bi bi-building-check me-1"></i> Ruangan: <span class="text-dark">${namaSubstring(item.petugas_ruang?.nama) || '-'}</span></span>
-                                                                ${isRuangVerified ? `<span class="text-success fw-medium" style="font-size: 10px; margin-left: 18px;">${formatTanggal(item.tgl_ruang)}</span>` : ''}
-                                                            </div>
-                                                            ${iconRuang}
-                                                        </small>
-
-                                                        <small class="text-muted d-flex align-items-center justify-content-between">
-                                                            <div class="d-flex flex-column">
-                                                                <span><i class="bi bi-person-check me-1"></i> Dokter DPJP: <span class="text-dark">${namaSubstring(item.dokter?.nm_dokter) || '-'}</span></span>
-                                                                ${isDpjpVerified ? `<span class="text-success fw-medium" style="font-size: 10px; margin-left: 18px;">${formatTanggal(item.tgl_dokter)}</span>` : ''}
-                                                            </div>
-                                                            ${iconDpjp}
-                                                        </small>
-                                                    </div>
-
-                                                    <div class="mt-2 text-center">
-                                                        ${badgeStatus}
-                                                    </div>
-                                                </div>
-                                                <div class="card-footer bg-white border-0 pt-0">
-                                                    ${btnAksi}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `;
+                                                        `;
                     });
 
                     $('#containerHasilKritis').html(cardsHtml);
                 },
                 error: function (xhr) {
+                    console.log('ERROR XHR ===', xhr);
+
                     $('#containerHasilKritis').html(`
-                                    <div class="col-12 text-center text-danger py-5">
-                                        <i class="bi bi-exclamation-octagon fs-2"></i>
-                                        <p class="mt-2">Gagal memuat data. Periksa kembali jaringan atau log session.</p>
-                                    </div>
-                                `);
+                                                        <div class="col-12 text-center text-danger py-5">
+                                                            <i class="bi bi-exclamation-octagon fs-2"></i>
+                                                            <p class="mt-2">Gagal memuat data. Periksa kembali jaringan atau log session.</p>
+                                                        </div>
+                                                    `);
                 }
             });
         }
@@ -306,10 +348,10 @@
         $('#modalTabelHasilKritis').on('hidden.bs.modal', function () {
             $('#containerHasilKritis')
                 .html(`
-                                                                                                                                    <div class="col-12 text-center py-5 text-muted">
-                                                                                                                                        <div class="spinner-border text-danger mb-2" role="status"></div><br>Memuat data hasil kritis...
-                                                                                                                                    </div>
-                                                                                                                            `);
+                                                                                                                                                        <div class="col-12 text-center py-5 text-muted">
+                                                                                                                                                            <div class="spinner-border text-danger mb-2" role="status"></div><br>Memuat data hasil kritis...
+                                                                                                                                                        </div>
+                                                                                                                                                `);
 
             filterHasilKritis.find('select').val('belum').change();
             filterHasilKritis.find('input[name=bulan]').val("{{ date('Y-m') }}").change();

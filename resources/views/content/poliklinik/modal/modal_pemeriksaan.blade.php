@@ -138,32 +138,11 @@
                         @include('content.ranap.form.form_nyeri_anak')
                     </div>
                     <div class="tab-pane fade p-3" id="lab-ana" role="tabpanel" aria-labelledby="tab-lab" tabindex="0">
-                        {{-- <small
-                            class="d-none mb-3 px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger opacity-10 rounded-3"
-                            id="alertHasilLab">Belum / Tidak dilakukan pemeriksaan laboratorium</small> --}}
-                        <ul class="nav nav-tabs nav-tabs-expand" id="tab-laborat" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="permintaan-laborat-tab" data-bs-toggle="tab"
-                                    data-bs-target="#permintaan-laborat-tab-pane" type="button" role="tab"
-                                    aria-controls="permintaan-laborat-tab-pane" aria-selected="true">Permintaan Lab
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="hasil-laborat-tab" data-bs-toggle="tab"
-                                    data-bs-target="#hasil-laborat-tab-pane" type="button" role="tab"
-                                    aria-controls="hasil-laborat-tab-pane" aria-selected="false">Hasil
-                                    Laboratorium
-                                </button>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="tabContentLaboratorium">
-                            <div class="tab-pane fade p-3" id="permintaan-laborat-tab-pane" role="tabpanel"
-                                aria-labelledby="permintaan-laborat-tab" tabindex="0">
+                        <div class="row">
+                            <div class="col-md-6">
                                 @include('content.ranap.modal.penunjang.permintaan_lab')
-
                             </div>
-                            <div class="tab-pane fade p-3" id="hasil-laborat-tab-pane" role="tabpanel"
-                                aria-labelledby="hasil-laborat-tab-pane" tabindex="0">
+                            <div class="col-md-6">
                                 @include('content.ranap.modal.penunjang.hasil_lab')
                             </div>
                         </div>
@@ -171,7 +150,15 @@
 
                     <div class="tab-pane fade p-3" id="rad-ana" role="tabpanel" aria-labelledby="tab-radiologi"
                         tabindex="0">
-                        <ul class="nav nav-tabs nav-tabs-expand" id="tab-radiologi" role="tablist">
+                        <div class="row">
+                            <div class="col-md-6">
+                                @include('content.ranap.modal.penunjang.permintaan_radiologi')
+                            </div>
+                            <div class="col-md-6">
+                                @include('content.ranap.modal.penunjang.hasil_radiologi')
+                            </div>
+                        </div>
+                        {{-- <ul class="nav nav-tabs nav-tabs-expand" id="tab-radiologi" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="permintaan-radiologi-tab" data-bs-toggle="tab"
                                     data-bs-target="#permintaan-radiologi-tab-pane" type="button" role="tab"
@@ -190,13 +177,13 @@
                         <div class="tab-content" id="tabContentRadiologi">
                             <div class="tab-pane fade p-3" id="permintaan-radiologi-tab-pane" role="tabpanel"
                                 aria-labelledby="permintaan-radiologi-tab" tabindex="0">
-                                @include('content.ranap.modal.penunjang.permintaan_radiologi')
+
                             </div>
                             <div class="tab-pane fade p-3" id="hasil-radiologi-tab-pane" role="tabpanel"
                                 aria-labelledby="hasil-radiologi-tab" tabindex="0">
                                 @include('content.ranap.modal.penunjang.hasil_radiologi')
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="tab-pane fade p-3" id="skriningTB-pane" role="tabpanel" aria-labelledby="tab-tb"
                         tabindex="0">
@@ -443,10 +430,45 @@
         });
 
         btnTabLaboratorium.on('shown.bs.tab', function (e, x, y) {
-            $('#permintaan-laborat-tab').tab('show')
+            // $('#permintaan-laborat-tab').tab('show')
+            tablePermintaanLab.find('tbody').empty();
+            tablePermintaanLab.find('input[type=checkbox]').prop('checked', false)
+            tableHasilPermintaan.addClass('d-none');
+            getNomorPermintaan();
+            let no_rawat = '';
+            if (formSoapPoli.length) {
+                no_rawat = formSoapPoli.find('#nomor_rawat').val();
+                kd_dokter = formSoapPoli.find('#kd_dokter').val();
+                nm_dokter = formSoapPoli.find('#kd_dokter').text()
+                nm_pasien = formSoapPoli.find('#nama_pasien').val();
+                const no_rkm_medis = formSoapPoli.find('#no_rkm_medis').val();
+                setSelectPemeriksaanLab(no_rkm_medis)
+
+                formPermintaanLab.find('#no_rawat').val(no_rawat)
+                formPermintaanLab.find('#kd_dokter').val(kd_dokter)
+                formPermintaanLab.find('#nm_dokter').val(nm_dokter)
+                formPermintaanLab.find('#nm_pasien').val(nm_pasien)
+                formPermintaanLab.find('#status').val('Ralan')
+            } else {
+                no_rawat = formPermintaanLab.find('#no_rawat').val()
+            }
         })
         btnTabRadiologi.on('shown.bs.tab', function (e, x, y) {
-            $('#permintaan-radiologi-tab').tab('show')
+            // $('#permintaan-radiologi-tab').tab('show')
+
+            tablePermintaanRadiologi.find('tbody').empty();
+            tableHasilPermintaan.addClass('d-none');
+            getNoPermintaanRadiologi()
+            let no_rawat = '';
+            if (formSoapPoli.length) {
+                no_rawat = formSoapPoli.find('#nomor_rawat').val();
+                kd_dokter = formSoapPoli.find('#kd_dokter').val();
+                formPermintaanRadiologi.find('#no_rawat').val(no_rawat)
+                formPermintaanRadiologi.find('#kd_dokter').val(kd_dokter)
+                formPermintaanRadiologi.find('#status').val('Ralan')
+            } else {
+                no_rawat = formPermintaanRadiologi.find('#no_rawat').val()
+            }
         })
 
 
@@ -464,14 +486,14 @@
 
                 const list = data.map((item, index) => {
                     return `<li class="list-group-item"  data-no-rawat="${item.no_rawat}" onclick="hasilLabRalan('${item.no_rawat}')">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="d-flex justify-content-between">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="d-flex justify-content-between">
 
-                                                                                            <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
-                                                                                            <span>
-                                                                                                    ${item.diagnosa_klinis} ${item.informasi_tambahan}
-                                                                                            </span>
-                                                                                            </div>
-                                                                                        </li>`
+                                                                                                                                                                                                                                        <span><i class="me-2 bi bi-circle-fill ${item.status === 'ralan' ? 'text-warning' : 'text-purple'}"></i> ${formatTanggal(item.tgl_permintaan)}</span>
+                                                                                                                                                                                                                                        <span>
+                                                                                                                                                                                                                                                ${item.diagnosa_klinis} ${item.informasi_tambahan}
+                                                                                                                                                                                                                                        </span>
+                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                    </li>`
                 }).join('')
 
                 listRiwayatLaboratorium.on('click', 'li', function () {
@@ -510,18 +532,18 @@
 
                         if (item.detail.length) {
                             hasilLab += `<tr class="" >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td colspan="3" style="background-color:#ffc800;padding:2px">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td  style="background-color:#ffc800;padding:2px">${item.petugas.nama}</td></tr>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <td colspan="3" style="background-color:#ffc800;padding:2px">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p class="ms-3 mb-0"><strong>${item.jns_perawatan_lab.nm_perawatan}</strong><br/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ${formatTanggal(item.tgl_periksa)} ${item.jam}</p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <td  style="background-color:#ffc800;padding:2px">${item.petugas.nama}</td></tr>`;
                             item.detail.sort((a, b) => a.template.urut - b.template.urut);
                             item.detail.forEach((detail, index) => {
                                 hasilLab += `<tr class="${setWarnaPemeriksaan(detail.keterangan)}">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td>${detail.template.Pemeriksaan}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td>${detail.nilai} ${detail.template.satuan}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td>${detail.keterangan}</td></tr>`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${detail.template.Pemeriksaan}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${detail.nilai} ${detail.template.satuan}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${detail.nilai_rujukan} ${detail.template.satuan}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${detail.keterangan}</td></tr>`
                             })
                         }
                     })
@@ -537,65 +559,7 @@
             $('.btn-soap').addClass('d-none')
         })
 
-        $('button[data-bs-target="#rad-ana"]').on('shown.bs.tab', function (e, x, y) {
-            $('.btn-asmed-ranap').addClass('d-none')
-            $('.btn-asmed').addClass('d-none')
-            $('.btn-soap').addClass('d-none')
-            const no_rawat = $('#nomor_rawat').val();
-            $('#tbHasilRadiologi tbody').empty()
-            getPermintaanRadiologi(no_rawat).done((permintaan) => {
-                if (Object.keys(permintaan).length) {
-                    permintaan.map((prm, index) => {
-                        html = `<tr><td>${splitTanggal(prm.tgl_hasil)} ${prm.jam_hasil}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td>${prm.diagnosa_klinis}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td>${prm.informasi_tambahan}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `
-                        prm.periksa_radiologi.map((periksa) => {
-                            if (periksa.tgl_periksa == prm.tgl_hasil && periksa.jam == prm.jam_hasil) {
-                                html += `${periksa.jns_perawatan.nm_perawatan}, <br/>`
-                            }
-                        })
-
-                        html += `</td>`
-                        html += `<td>`
-                        prm.hasil_radiologi.map((hasil) => {
-                            if (hasil.tgl_periksa == prm.tgl_hasil && hasil.jam == prm.jam_hasil) {
-                                html += `${stringPemeriksaan(hasil.hasil)}`
-                            }
-                        })
-                        html += `</td>`
-                        html += `<td>`
-                        if (prm.gambar_radiologi.length) {
-                            prm.gambar_radiologi.map((gambar) => {
-                                if (gambar.tgl_periksa == prm.tgl_hasil && gambar.jam == prm.jam_hasil) {
-                                    gbr = `${getBaseUrl(`/webapps/radiologi/${gambar.lokasi_gambar}`)}`
-                                    html += `<a class="btn btn-success btn-sm mb-2" id="btnMagnifyImage" class="magnifyImg${index}" data-magnify="gallery" data-src="${gbr}">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="bi bi-eye"></i> BUKA GAMBAR
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </a><br/>`
-                                } else {
-                                    html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
-
-                                }
-                            })
-                        } else {
-                            html += `<button class="btn btn-danger btn-sm mb-2"><i class="bi bi-eye-slash"></i> GAMBAR KOSONG</button>`
-                        }
-                        html += `</td>`
-                        html += `<tr>`
-
-                        $('#tbHasilRadiologi tbody').append(html)
-                    })
-
-                    $('#viewHasilRadiologi').css('display', 'flex')
-                    $('#alertHasilRadiologi').addClass('d-none')
-
-                } else {
-                    $('#viewHasilRadiologi').addClass('d-none')
-                    $('#alertHasilRadiologi').removeClass('d-none')
-                }
-            })
-        })
+        
 
         function setNoRacik(no_resep) {
             let no_racik = '';

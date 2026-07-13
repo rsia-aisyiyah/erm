@@ -119,7 +119,8 @@ class LoginController extends Controller
     private function setSession(Request $request)
     {
         $pegawai = Pegawai::where('nik', $request->get('username'))
-            ->with(['petugas', 'dokter.jadwal', 'dep'])->first();
+            ->with(['petugas', 'dokter.jadwal', 'dep'])
+            ->first();
         $request->session()->regenerate();
         Session::put('pegawai', $pegawai);
         Session::put('status', 'ok');

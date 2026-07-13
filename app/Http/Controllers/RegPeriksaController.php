@@ -354,8 +354,48 @@ class RegPeriksaController extends Controller
             'umurdaftar',
             'sttsumur',
             'status_lanjut'
-        )->where('tgl_registrasi', date('Y-m-d'))
-            ->with('pasien', 'penjab', 'dokter.spesialis', 'poliklinik', 'generalConsent.pegawai', 'sep', 'suratKontrol')->orderBy('no_rawat', 'DESC')->get();
+        )
+            ->with([
+                'pasien',
+                'penjab',
+                'dokter.spesialis',
+                'poliklinik',
+                'generalConsent.pegawai',
+                'sep',
+                'suratKontrol'
+            ]);
+
+        // Filter tanggal
+        if ($request->filled('tgl_registrasi')) {
+            $regPeriksa->whereDate(
+                'tgl_registrasi',
+                $request->tgl_registrasi
+            );
+        } else {
+            $regPeriksa->whereDate(
+                'tgl_registrasi',
+                date('Y-m-d')
+            );
+        }
+
+        // Filter poli
+        if ($request->filled('kd_poli')) {
+            $regPeriksa->where(
+                DB::raw('TRIM(kd_poli)'),
+                trim($request->kd_poli)
+            );
+        }
+
+        // Filter dokter
+        if ($request->filled('kd_dokter')) {
+            $regPeriksa->where(
+                DB::raw('TRIM(kd_dokter)'),
+                trim($request->kd_dokter)
+            );
+        }
+
+        $regPeriksa->orderByDesc('no_rawat');
+
         return DataTables::of($regPeriksa)->make(true);
     }
     public function ubahDpjp(Request $request)

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RsiaGeneralConsent;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Str;
 
 class RsiaGeneralConsentController extends Controller
 {
@@ -68,4 +71,168 @@ class RsiaGeneralConsentController extends Controller
         $general = $this->consent->where('no_rawat', $request->no_rawat)->delete();
         return response()->json($general);
     }
+
+
+    public function save(Request $request)
+    {
+        $request->validate([
+            'signature' => 'required',
+            'no_rawat' => 'required'
+        ]);
+
+        try {
+
+            $data = trim($request->signature);
+            if (strpos($data, 'base64,') !== false) {
+                $parts = explode('base64,', $data);
+                $data = end($parts);
+            }
+
+            $binary = base64_decode($data);
+
+            if ($binary === false) {
+                throw new Exception('Signature base64 tidak valid.');
+            }
+
+            $fileName = Str::uuid() . '.png';
+
+            Storage::disk('public_upload')->put(
+                'ttd/' . $fileName,
+                $binary
+            );
+
+            $signaturePath = asset('ttd/' . $fileName);
+
+            $reg = DB::table('reg_periksa')
+                ->join(
+                    'pasien',
+                    'pasien.no_rkm_medis',
+                    '=',
+                    'reg_periksa.no_rkm_medis'
+                )
+                ->join(
+                    'dokter',
+                    'dokter.kd_dokter',
+                    '=',
+                    'reg_periksa.kd_dokter'
+                )
+                ->join(
+                    'poliklinik',
+                    'poliklinik.kd_poli',
+                    '=',
+                    'reg_periksa.kd_poli'
+                )
+                ->select(
+                    'reg_periksa.*',
+                    'pasien.*',
+                    'dokter.nm_dokter',
+                    'poliklinik.nm_poli'
+                )
+                ->where('no_rawat', $request->no_rawat)
+                ->first();
+
+            if (!$reg) {
+                throw new Exception('Data pasien tidak ditemukan.');
+            }
+
+            $uuid = (string) Str::uuid();
+            $verifyUrl = route('persetujuan-umum.verify', $uuid);
+
+            $pdf = Pdf::loadView(
+                'content.print.persetujuan_umum',
+                [
+                    'petugas' => session()->get('pegawai'),
+                    'reg' => $reg,
+                    'signature' => $signaturePath,
+                    'verifyUrl' => $verifyUrl,
+                ]
+            );
+
+            $pdfName = 'GC_' . $uuid . '.pdf';
+
+            Storage::disk('general_consent')->put(
+                $pdfName,
+                $pdf->output()
+            );
+
+            Storage::disk('public_upload')->delete(
+                'ttd/' . $fileName
+            );
+
+
+            $hash = hash_file(
+                'sha256',
+                Storage::disk('general_consent')
+                    ->path($pdfName)
+            );
+
+            DB::table('rsia_persetujuan_umum')->insert([
+                'uuid' => $uuid,
+                'no_rawat' => $request->no_rawat,
+                'nip' => session('pegawai')->nik,
+                'file' => $pdfName,
+                'hash' => $hash,
+                'signed_at' => $request->signed_at ?? now(),
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'pdf' => $pdfName
+            ]);
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
+
+        }
+    }
+
+    function verify(Request $request, $uuid)
+    {
+        $consent = DB::table('rsia_persetujuan_umum')
+            ->where('uuid', $uuid)
+            ->first();
+
+        if (!$consent) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Persetujuan umum tidak ditemukan.'
+            ], 404);
+        }
+
+        $filePath = Storage::disk('public_upload')->path(
+            'general-consent/' . $consent->file
+        );
+
+        if (!file_exists($filePath)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'File persetujuan umum tidak ditemukan.'
+            ], 404);
+        }
+
+        $hash = hash_file('sha256', $filePath);
+
+        if ($hash !== $consent->hash) {
+            return response()->json([
+                'status' => false,
+                'message' => 'File persetujuan umum telah diubah atau rusak.'
+            ], 400);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'File persetujuan umum valid.',
+            'data' => [
+                'no_rawat' => $consent->no_rawat,
+                'nip' => $consent->nip,
+                'signed_at' => $consent->signed_at,
+                'file_url' => asset('general-consent/' . $consent->file)
+            ]
+        ]);
+    }
+
 }
