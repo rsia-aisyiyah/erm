@@ -78,6 +78,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="{{ asset('/js/wacom/wgssSigCaptX.js') }}"></script>
+    <script src="{{ asset('/js/wacom/base64.js') }}"></script>
 
     @stack('js')
 
@@ -119,6 +121,9 @@
             $('.datetimepicker').datetimepicker({
                 format: 'd-m-Y H:i:s',
             })
+
+            console.log("{{ session()->get('pegawai')->nik }}");
+
         })
 
 

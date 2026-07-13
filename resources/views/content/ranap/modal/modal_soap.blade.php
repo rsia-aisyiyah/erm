@@ -8,23 +8,24 @@
             <div class="modal-body">
                 <div class="row gy-2 mb-2" id="formInfoPasien">
                     <div class="col-lg-2 col-md-6 col-sm-12">
-                        <label for="no_rawat">No. Rawat</label>
-                        <input type="text" class="form-control form-control-sm"
-                            id="no_rawat" name="no_rawat" placeholder="" readonly>
+
+                        <label for="no_rawat">No. Rawat {{ session()->get('pegawai')->nik }}</label>
+                        <input type="text" class="form-control form-control-sm" id="no_rawat" name="no_rawat"
+                            placeholder="" readonly>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <label for="">Pasien</label>
                         <div class="input-group input-group-sm">
-                            <input type="text" class="form-control form-control-sm"
-                                id="no_rkm_medis" name="no_rkm_medis" placeholder="" readonly>
-                            <input type="text" class="form-control form-control-sm w-50"
-                                id="pasien" name="pasien" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm" id="no_rkm_medis"
+                                name="no_rkm_medis" placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm w-50" id="pasien" name="pasien"
+                                placeholder="" readonly>
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <label for="tgl_lahir">Tgl. Lahir</label>
-                        <input type="text" class="form-control form-control-sm" id="tgl_lahir"
-                            name="tgl_lahir" placeholder="" readonly>
+                        <input type="text" class="form-control form-control-sm" id="tgl_lahir" name="tgl_lahir"
+                            placeholder="" readonly>
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="">Keluarga</label>
@@ -51,8 +52,8 @@
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="dokter_dpjp">Dokter DPJP</label>
-                        <input type="text" class="form-control form-control-sm"
-                            id="dokter_dpjp" name="dokter_dpjp" placeholder="" readonly>
+                        <input type="text" class="form-control form-control-sm" id="dokter_dpjp" name="dokter_dpjp"
+                            placeholder="" readonly>
                         <input type="hidden" id="kd_dokter_dpjp" name="kd_dokter_dpjp">
                         <input type="hidden" id="kd_sps_dokter" name="kd_sps_dokter">
                         <input type="hidden" id="status_lanjut" name="status_lanjut">
@@ -67,9 +68,8 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tabSbar" data-bs-toggle="tab"
-                            data-bs-target="#tabSbar-pane" type="button" role="tab" aria-controls="tabSbar-pane"
-                            aria-selected="true">SBAR
+                        <button class="nav-link" id="tabSbar" data-bs-toggle="tab" data-bs-target="#tabSbar-pane"
+                            type="button" role="tab" aria-controls="tabSbar-pane" aria-selected="true">SBAR
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -82,11 +82,11 @@
                         <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
                             type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
                         </button>
-                    </li> 
+                    </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-diagnosa" data-bs-toggle="tab"
-                            data-bs-target="#tab-diagnosa-pane"
-                            type="button" role="tab" aria-controls="tab-diagnosa-pane" aria-selected="false">
+                            data-bs-target="#tab-diagnosa-pane" type="button" role="tab"
+                            aria-controls="tab-diagnosa-pane" aria-selected="false">
                             Diagnosa
                         </button>
                     </li>
@@ -98,8 +98,8 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
-                            data-bs-target="#tabTindakan-pane"
-                            type="button" role="tab" aria-controls="tabTindakan-pane" aria-selected="true">Tindakan
+                            data-bs-target="#tabTindakan-pane" type="button" role="tab" aria-controls="tabTindakan-pane"
+                            aria-selected="true">Tindakan
                             Ranap
                         </button>
                     </li>
@@ -111,29 +111,37 @@
 
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-laboratorium" data-bs-toggle="tab"
-                            data-bs-target="#tab-laboratorium-pane"
-                            type="button" role="tab" aria-controls="tab-laboratorium-pane" aria-selected="false">
+                            data-bs-target="#tab-laboratorium-pane" type="button" role="tab"
+                            aria-controls="tab-laboratorium-pane" aria-selected="false">
                             Laboratorium
+                        </button>
+                    </li>
+
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-radiologi" data-bs-toggle="tab"
+                            data-bs-target="#tab-radiologi-pane" type="button" role="tab"
+                            aria-controls="tab-radiologi-pane" aria-selected="false">
+                            Radiologi
                         </button>
                     </li>
                     <li class="nav-item d-none" role="presentation">
                         <button class="nav-link" id="tabAsuhanGiziDewasa" data-bs-toggle="tab"
-                            data-bs-target="#tabAsuhanGiziDewasa-pane"
-                            type="button" role="tab" aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">
+                            data-bs-target="#tabAsuhanGiziDewasa-pane" type="button" role="tab"
+                            aria-controls="tabAsuhanGiziDewasa-pane" aria-selected="false">
                             Asuhan Gizi Dewasa
                         </button>
                     </li>
                     <li class="nav-item d-none" role="presentation">
                         <button class="nav-link" id="tabAsuhanGiziAnak" data-bs-toggle="tab"
-                            data-bs-target="#tabAsuhanGiziAnak-pane"
-                            type="button" role="tab" aria-controls="tabAsuhanGiziAnak-pane" aria-selected="false">
+                            data-bs-target="#tabAsuhanGiziAnak-pane" type="button" role="tab"
+                            aria-controls="tabAsuhanGiziAnak-pane" aria-selected="false">
                             Asuhan Gizi Anak
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tabAdimeGizi" data-bs-toggle="tab"
-                            data-bs-target="#tabAdimeGizi-pane"
-                            type="button" role="tab" aria-controls="tabAdimeGizi-pane" aria-selected="false">
+                            data-bs-target="#tabAdimeGizi-pane" type="button" role="tab"
+                            aria-controls="tabAdimeGizi-pane" aria-selected="false">
                             ADIME Gizi
                         </button>
                     </li>
@@ -144,8 +152,8 @@
                         aria-labelledby="home-tab" tabindex="0">
                         @include('content.ranap.modal.cppt._form_soap')
                     </div>
-                    <div class="tab-pane fade p-3" id="tabSbar-pane" role="tabpanel"
-                        aria-labelledby="sbar-tab" tabindex="0">
+                    <div class="tab-pane fade p-3" id="tabSbar-pane" role="tabpanel" aria-labelledby="sbar-tab"
+                        tabindex="0">
                         @include('content.ranap.modal.cppt._sbar')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
@@ -164,24 +172,21 @@
                                 <ul class="nav nav-tabs nav-tabs-expand" id="groupTindakan" role="tablist">
                                     <li class="nav-item" role="presentation" id="tabTindakanDokter">
                                         <button class="nav-link" id="btnTabTindakanDokterRanap" data-bs-toggle="tab"
-                                            data-bs-target="#targetTindakanDokterRanap"
-                                            type="button" role="tab" aria-controls="targetTindakanDokter"
-                                            aria-selected="false">Tindakan
+                                            data-bs-target="#targetTindakanDokterRanap" type="button" role="tab"
+                                            aria-controls="targetTindakanDokter" aria-selected="false">Tindakan
                                             Dokter
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation" id="tabTindakanPerawatRanap">
                                         <button class="nav-link" id="btnTabTindakanPerawatRanap" data-bs-toggle="tab"
-                                            data-bs-target="#targetTindakanPerawatRanap"
-                                            type="button" role="tab" aria-controls="targetTindakanPerawat"
-                                            aria-selected="false">Tindakan
+                                            data-bs-target="#targetTindakanPerawatRanap" type="button" role="tab"
+                                            aria-controls="targetTindakanPerawat" aria-selected="false">Tindakan
                                             Perawat
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation" id="tabTindakanDokterPerawat">
                                         <button class="nav-link" id="btnTabTindakanDokterPerawatRanap"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#targetTindakanDokterPerawatRanap"
+                                            data-bs-toggle="tab" data-bs-target="#targetTindakanDokterPerawatRanap"
                                             type="button" role="tab" aria-controls="targetTindakanDokterPerawat"
                                             aria-selected="false">Tindakan
                                             Dokter & Perawat
@@ -243,26 +248,26 @@
                         </div>
                     </div>
                     <div class="tab-pane fade p-3" id="tab-laboratorium-pane" role="tabpanel"
-                        aria-labelledby="tab-laboratorium"
-                        tabindex="0">
+                        aria-labelledby="tab-laboratorium" tabindex="0">
                         <div id="hasilPermintaanLabSoap"></div>
+                    </div>
+                    <div class="tab-pane fade p-3" id="tab-radiologi-pane" role="tabpanel"
+                        aria-labelledby="tab-radiologi" tabindex="0">
+                        <div id="hasilPermintaanRadiologiSoap"></div>
                     </div>
                     <div class="tab-pane fade" id="tab-grafik-pane" role="tabpanel" aria-labelledby="tab-grafik"
                         tabindex="0">
                         @include('content.ranap.modal.cppt._grafikPemeriksaan')
                     </div>
                     <div class="tab-pane fade" id="tabAsuhanGiziDewasa-pane" role="tabpanel"
-                        aria-labelledby="tabAsuhanGiziDewasa"
-                        tabindex="0">
+                        aria-labelledby="tabAsuhanGiziDewasa" tabindex="0">
                         @include('content.ranap.modal.cppt._formAsuhanGiziDewasa')
                     </div>
                     <div class="tab-pane fade" id="tabAsuhanGiziAnak-pane" role="tabpanel"
-                        aria-labelledby="tabAsuhanGiziAnak"
-                        tabindex="0">
+                        aria-labelledby="tabAsuhanGiziAnak" tabindex="0">
                         @include('content.ranap.modal.cppt._formAsuhanGiziAnak')
                     </div>
-                    <div class="tab-pane fade" id="tabAdimeGizi-pane" role="tabpanel"
-                        aria-labelledby="tabAdimeGizi"
+                    <div class="tab-pane fade" id="tabAdimeGizi-pane" role="tabpanel" aria-labelledby="tabAdimeGizi"
                         tabindex="0">
                         @include('content.ranap.modal.cppt._adimeGizi')
                     </div>
@@ -278,21 +283,21 @@
     </div>
 </div>
 
-{{-- <div class="modal fade" id="modalLogTracker" tabindex="-1" aria-labelledby="modalLogTrackerLabel" --}}
-{{--     aria-hidden="true"> --}}
-{{--    <div class="modal-dialog modal-xg modal-dialog-centered modal-dialog-scrollable"> --}}
-{{--        <div class="modal-content"> --}}
-{{--            <div class="modal-header"> --}}
-{{--                <h5 class="modal-title fs-5" id="modalLogTrackerLabel">Catatan Pelaksanaan Edukasi Pasien</h5> --}}
-{{--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
-{{--            </div> --}}
-{{--            <div class="modal-body"> --}}
+{{-- <div class="modal fade" id="modalLogTracker" tabindex="-1" aria-labelledby="modalLogTrackerLabel" --}} {{--
+    aria-hidden="true"> --}}
+    {{-- <div class="modal-dialog modal-xg modal-dialog-centered modal-dialog-scrollable"> --}}
+        {{-- <div class="modal-content"> --}}
+            {{-- <div class="modal-header"> --}}
+                {{-- <h5 class="modal-title fs-5" id="modalLogTrackerLabel">Catatan Pelaksanaan Edukasi Pasien</h5> --}}
+                {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                {{-- </div> --}}
+            {{-- <div class="modal-body"> --}}
 
-{{--            </div> --}}
+                {{-- </div> --}}
 
-{{--        </div> --}}
-{{--    </div> --}}
-{{-- </div> --}}
+            {{-- </div> --}}
+        {{-- </div> --}}
+    {{-- </div> --}}
 @include('content.poliklinik.modal.modal_resep')
 @push('script')
     <script>
@@ -310,6 +315,7 @@
         const departemen = "{{ session()->get('pegawai')->departemen }}";
         const formInfoPasien = $('#formInfoPasien')
         const tabLaboratorium = $('#tab-laboratorium')
+        const tabRadiologi = $('#tab-radiologi')
 
         modalSoapRanap.on('hidden.bs.modal', () => {
             const elementInput = $('input');
@@ -330,33 +336,33 @@
 
                 response.forEach((item) => {
                     table += `
-                    <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
-                        <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
-                        <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
-                        <div class="p-2 bd-highlight fw-bold">Informasi : ${item.informasi_tambahan}</div>
-                        <div class="p-2 bd-highlight fw-bold">Tgl. Permintaan : ${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</div>    
-                    </div>
-                    <table class='table table-bordered table-hover'>
-                        <thead>
-                            <tr>
-                                <td width="">Pemeriksaan</td>    
-                                <td width="20%">Hasil</td>    
-                                <td width="30%">Nilai Rujukan</td>    
-                                <td width="20%">Keterangan</td>    
-                            </tr>
-                        </thead>
-                        <tbody>
-                                ${renderHasilPermintaanLab(item.hasil)}
+                                                <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
+                                                    <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
+                                                    <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
+                                                    <div class="p-2 bd-highlight fw-bold">Informasi : ${item.informasi_tambahan}</div>
+                                                    <div class="p-2 bd-highlight fw-bold">Tgl. Permintaan : ${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</div>
+                                                </div>
+                                                <table class='table table-bordered table-hover'>
+                                                    <thead>
+                                                        <tr>
+                                                            <td width="">Pemeriksaan</td>
+                                                            <td width="20%">Hasil</td>
+                                                            <td width="30%">Nilai Rujukan</td>
+                                                            <td width="20%">Keterangan</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                            ${renderHasilPermintaanLab(item.hasil)}
 
-                                <tr>
-                                    <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil.length ? item.hasil[0].dokter.nm_dokter : ''}</strong></td>    
-                                </tr>
-                                <tr>
-                                    <td colspan="2" class="">Saran : <strong>${item.saran_kesan ? item.saran_kesan.saran : '-'}</strong></td>
-                                    <td colspan="2" class="">Kesan : <strong>${item.saran_kesan ? item.saran_kesan.kesan : '-'}</strong></td>
-                                </tr>
-                        </tbody>
-                    </table>`
+                                                            <tr>
+                                                                <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil.length ? item.hasil[0].dokter.nm_dokter : ''}</strong></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2" class="">Saran : <strong>${item.saran_kesan ? item.saran_kesan.saran : '-'}</strong></td>
+                                                                <td colspan="2" class="">Kesan : <strong>${item.saran_kesan ? item.saran_kesan.kesan : '-'}</strong></td>
+                                                            </tr>
+                                                    </tbody>
+                                                </table>`
 
                 })
 
@@ -365,13 +371,287 @@
             })
         })
 
-        $('#tabTindakan').on('shown.bs.tab', function() {
+        $('#tabTindakan').on('shown.bs.tab', function () {
             $('#btnTabTindakanDokterRanap').click()
             getTindakanDokterRanap()
             getTindakanPerawatRanap()
             getTindakanDokterPerawatRanap()
         })
+        tabRadiologi.on('click', () => {
 
+            const no_rawat = formInfoPasien.find('input[name="no_rawat"]').val();
+            const container = $('#hasilPermintaanRadiologiSoap');
+
+            container.html(`
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary"></div>
+                        <div class="mt-2">Memuat data radiologi...</div>
+                    </div>
+                `);
+
+            $.get('/erm/radiologi/permintaan', {
+                no_rawat: no_rawat
+            }).done((response) => {
+
+                const data = response.data ?? response;
+
+                if (!data.length) {
+                    container.html(`
+                            <div class="alert alert-warning text-center">
+                                <i class="bi bi-exclamation-circle"></i>
+                                Belum ada permintaan radiologi.
+                            </div>
+                        `);
+                    return;
+                }
+
+                let html = '';
+
+                response.forEach((item) => {
+
+                    html += `
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-header bg-primary text-white">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <h6 class="mb-1">
+                                <i class="bi bi-calendar-event"></i>
+                                ${formatTanggal(item.tgl_permintaan)}
+                                ${item.jam_permintaan}
+                            </h6>
+
+                            <small>
+                                No. Order :
+                                <strong>${item.noorder}</strong>
+                            </small>
+                        </div>
+
+                        <span class="badge bg-light text-dark align-self-start">
+                            ${item.status.toUpperCase()}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <div class="border rounded p-3 h-100">
+
+                                <small class="text-muted">
+                                    Dokter Perujuk
+                                </small>
+
+                                <div class="fw-semibold">
+                                    ${item.dokter_rujuk?.nm_dokter ?? '-'}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <div class="border rounded p-3 h-100">
+
+                                <small class="text-muted">
+                                    Diagnosa Klinis
+                                </small>
+
+                                <div class="fw-semibold">
+                                    ${item.diagnosa_klinis || '-'}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 mb-3">
+
+                            <div class="border rounded p-3">
+
+                                <small class="text-muted">
+                                    Informasi Medis
+                                </small>
+
+                                <div class="fw-semibold">
+                                    ${item.informasi_tambahan || '-'}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 mb-3">
+
+                            <label class="fw-bold text-primary mb-2">
+
+                                <i class="bi bi-radioactive"></i>
+
+                                Jenis Pemeriksaan
+
+                            </label>
+
+                            <div>
+            `;
+
+                    item.permintaan_pemeriksaan.forEach((p) => {
+
+                        html += `
+                    <span class="badge bg-primary me-2 mb-2 p-2">
+                        ${p.jns_pemeriksaan.nm_perawatan}
+                    </span>
+                `;
+
+                    });
+
+                    html += `
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 mb-3">
+
+                            <label class="fw-bold text-success mb-2">
+
+                                <i class="bi bi-file-earmark-medical"></i>
+
+                                Hasil Radiologi
+
+                            </label>
+            `;
+
+                    if (item.hasil_radiologi.length) {
+
+                        item.hasil_radiologi.forEach((hasil) => {
+
+                            html += `
+                        <div class="alert alert-light border mb-2">
+
+                            <pre class="mb-0" style="white-space:pre-wrap;font-family:inherit;">
+        ${hasil.hasil}
+                            </pre>
+
+                        </div>
+                    `;
+
+                        });
+
+                    } else {
+
+                        html += `
+                    <div class="alert alert-warning">
+                        Belum ada hasil radiologi.
+                    </div>
+                `;
+
+                    }
+
+                    html += `
+                        </div>
+
+                        <div class="col-12">
+
+                            <label class="fw-bold text-danger mb-2">
+
+                                <i class="bi bi-images"></i>
+
+                                Gambar Radiologi
+
+                            </label>
+
+                            <div class="row">
+            `;
+
+                    if (item.gambar_radiologi.length) {
+
+                        item.gambar_radiologi.forEach((gambar) => {
+
+                            const url = getBaseUrl(`/webapps/radiologi/${gambar.lokasi_gambar}`);
+
+                            html += `
+                        <div class="col-md-3 col-6 mb-3">
+
+                            <div class="card">
+
+                                <img
+                                    src="${url}"
+                                    class="card-img-top"
+                                    style="height:180px;object-fit:cover">
+
+                                <div class="card-body p-2">
+
+                                    <a
+                                        class="btn btn-success btn-sm w-100"
+                                        data-magnify="gallery"
+                                        data-src="${url}">
+
+                                        <i class="bi bi-eye"></i>
+
+                                        Lihat Gambar
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    `;
+
+                        });
+
+                    } else {
+
+                        html += `
+                    <div class="col-12">
+
+                        <div class="alert alert-danger">
+
+                            Tidak ada gambar radiologi.
+
+                        </div>
+
+                    </div>
+                `;
+
+                    }
+
+                    html += `
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            `;
+
+                });
+
+
+                container.html(html);
+
+            }).fail(() => {
+
+                container.html(`
+                        <div class="alert alert-danger text-center">
+                            Gagal mengambil data radiologi.
+                        </div>
+                    `);
+
+            });
+
+        });
 
 
         modalSoapRanap.on('shown.bs.modal', () => {
@@ -440,7 +720,7 @@
                     formInfoPasien.find('input[name="diagnosa_awal"]').val(item.diagnosa_awal);
                     formInfoPasienResep.find('input[name=kelasHarga]').val(item.kamar?.kelas?.toLowerCase().replace(/\s/g, ''));
 
-                    if(item.kamar.kelas === 'Kelas Utama') {
+                    if (item.kamar.kelas === 'Kelas Utama') {
                         formInfoPasien.find('input[name="kelasHarga"]').val('kelas3');
                     }
                 })
@@ -450,6 +730,10 @@
                 $('#nik').val("{{ session()->get('pegawai')->nik }}");
                 $('#nama').val("{{ session()->get('pegawai')->nama }}");
                 $('#formSoapRanap input[name=spesialis]').val(response.dokter.kd_sps);
+                nik = "{{ session()->get('pegawai') }}";
+                console.log('NIK ===', JSON.stringify(nik));
+                console.log('Nama ===', "{{ session()->get('pegawai') }}");
+
 
                 riwayatResep(response.no_rkm_medis);
 
@@ -531,17 +815,17 @@
             }
         }
 
-        $('#cekJam').on('change', function() {
+        $('#cekJam').on('change', function () {
             checkJam();
         })
 
-        $('button[data-bs-target="#tab-resep-pane"]').on('click', function() {
+        $('button[data-bs-target="#tab-resep-pane"]').on('click', function () {
             const formInfoPasienResep = $('#formInfoPasienResep')
             const no_rawat = formInfoPasienResep.find('[name=no_rawat]').val();
             getResepObat(no_rawat)
 
         })
-        $('button[data-bs-target="#tabAdimeGizi-pane"]').on('click', function() {
+        $('button[data-bs-target="#tabAdimeGizi-pane"]').on('click', function () {
             const formInfoPasienResep = $('#formInfoPasienResep')
             const no_rawat = formInfoPasienResep.find('[name=no_rawat]').val();
             const formAdimeGizi = $('#formAdimeGizi')
