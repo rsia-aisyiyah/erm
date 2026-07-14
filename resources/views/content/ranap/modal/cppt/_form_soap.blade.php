@@ -7,8 +7,8 @@
                     <td width="60%" colspan="2">
                         <div class="input-group input-group-sm">
                             <div class="input-group-text"><i class="bi bi-person"></i></div>
-                            <input type="text" class="form-control form-control-sm" id="nik" name="nik"
-                                placeholder="" readonly>
+                            <input type="text" class="form-control form-control-sm" id="nik" name="nik" placeholder=""
+                                readonly>
                             <input type="search" class="form-control form-control-sm w-50" id="nama" name="nama"
                                 placeholder="" readonly>
 
@@ -18,13 +18,15 @@
                 <tr>
                     <td>Subjek : </td>
                     <td colspan="3">
-                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="5" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="5"
+                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>Objek : </td>
                     <td colspan="3">
-                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="5" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="5"
+                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                     </td>
                 </tr>
                 <tr>
@@ -32,21 +34,18 @@
                     <td colspan="3">
                         <table>
                             <td width="12%">
-                                Suhu (<sup>0</sup>C) : <input type="text" class="form-control form-control-sm"
-                                    id="suhu" name="suhu" placeholder="" maxlength="5"
-                                    value="-"
-                                    onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                                Suhu (<sup>0</sup>C) : <input type="text" class="form-control form-control-sm" id="suhu"
+                                    name="suhu" placeholder="" maxlength="5" value="-" onfocus="removeZero(this)"
+                                    onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                             <td width="12%">
                                 Tinggi (Cm): <input type="text" class="form-control form-control-sm" id="tinggi"
-                                    name="tinggi" placeholder="" maxlength="5"
-                                    onfocus="removeZero(this)"
+                                    name="tinggi" placeholder="" maxlength="5" onfocus="removeZero(this)"
                                     onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                             <td width="12%">
                                 Berat (Kg) : <input type="text" class="form-control form-control-sm" id="berat"
-                                    name="berat" placeholder="" maxlength="5"
-                                    onfocus="removeZero(this)"
+                                    name="berat" placeholder="" maxlength="5" onfocus="removeZero(this)"
                                     onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                         </table>
@@ -57,21 +56,18 @@
                     <td colspan="3">
                         <table>
                             <td width="12%">
-                                Tensi : <input type="text" class="form-control form-control-sm" id="tensi"
-                                    name="tensi" placeholder="" maxlength="8"
-                                    onfocus="removeZero(this)"
+                                Tensi : <input type="text" class="form-control form-control-sm" id="tensi" name="tensi"
+                                    placeholder="" maxlength="8" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                    value="-" autocomplete="off">
+                            </td>
+                            <td width="12%">
+                                Respirasi (/mnt): <input type="text" class="form-control form-control-sm" id="respirasi"
+                                    name="respirasi" placeholder="" maxlength="3" onfocus="removeZero(this)"
                                     onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                             <td width="12%">
-                                Respirasi (/mnt): <input type="text" class="form-control form-control-sm"
-                                    id="respirasi" name="respirasi" placeholder="" maxlength="3"
-                                    onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-" autocomplete="off">
-                            </td>
-                            <td width="12%">
-                                Nadi (/mnt) : <input type="text" class="form-control form-control-sm"
-                                    id="nadi" name="nadi" placeholder="" maxlength="3"
-                                    onfocus="removeZero(this)"
+                                Nadi (/mnt) : <input type="text" class="form-control form-control-sm" id="nadi"
+                                    name="nadi" placeholder="" maxlength="3" onfocus="removeZero(this)"
                                     onblur="cekKosong(this)" value="-" autocomplete="off">
                             </td>
                         </table>
@@ -82,22 +78,19 @@
                     <td colspan="3">
                         <table>
                             <td width="12%">
-                                SpO2 (%): <input type="text" class="form-control form-control-sm" id="spo2"
-                                    name="spo2" placeholder="" maxlength="3"
-                                    onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-" autocomplete="off">
+                                SpO2 (%): <input type="text" class="form-control form-control-sm" id="spo2" name="spo2"
+                                    placeholder="" maxlength="3" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                    value="-" autocomplete="off">
                             </td>
                             <td width="12%">
-                                GCS (E,V,M): <input type="text" class="form-control form-control-sm"
-                                    id="gcs" name="gcs" placeholder="" maxlength="10"
-                                    onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-" autocomplete="off">
+                                GCS (E,V,M): <input type="text" class="form-control form-control-sm" id="gcs" name="gcs"
+                                    placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                    value="-" autocomplete="off">
                             </td>
                             <td width="12%">
-                                O2: <input type="text" class="form-control form-control-sm"
-                                    id="o2" name="o2" placeholder="" maxlength="10"
-                                    onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-" autocomplete="off">
+                                O2: <input type="text" class="form-control form-control-sm" id="o2" name="o2"
+                                    placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                    value="-" autocomplete="off">
                             </td>
                             <td width="12%">
                                 Kesadaran :
@@ -159,7 +152,8 @@
                                 </select>
                             </td>
                             <td width="12%">
-                                Tidak Sehat: <select class="form-select" name="terlihat_tidak_sehat" id="terlihat_tidak_sehat">
+                                Tidak Sehat: <select class="form-select" name="terlihat_tidak_sehat"
+                                    id="terlihat_tidak_sehat">
                                     <option value="" style="display:none"></option>
                                     <option value="-" selected>-</option>
                                     <option value="Tidak" selected>Tidak</option>
@@ -178,20 +172,27 @@
                 <tr>
                     <td width="15%" style="font-size:11px;vertical-align:middle">Alergi :</td>
                     <td width="20%">
-                        <input type="text" class="form-control form-control-sm" id="alergi" name="alergi"
-                            placeholder="" style="width:100%"
-                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                        <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder=""
+                            style="width:100%" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
+                            autocomplete="off">
                     </td>
-                    <td width="10%" style="font-size:11px;text-align:right;vertical-align:middle" class="waktuSoap">Tanggal :</td>
+                    <td width="10%" style="font-size:11px;text-align:right;vertical-align:middle" class="waktuSoap">
+                        Tanggal :</td>
                     <td class="waktuSoap">
-                        <input type="text" class="form-control form-control-sm " id="tgl_perawatan_ubah" name="tgl_perawatan_ubah" placeholder="" style="width:100%" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off" disabled>
+                        <input type="text" class="form-control form-control-sm " id="tgl_perawatan_ubah"
+                            name="tgl_perawatan_ubah" placeholder="" style="width:100%" onfocus="removeZero(this)"
+                            onblur="cekKosong(this)" value="-" autocomplete="off" disabled>
                     </td>
                     <td class="waktuSoap">
                         <div class="input-group">
                             <div class="input-group-text" style="padding: 4px">
-                                <input class="form-check-input" type="checkbox" value="" aria-label="Checkbox for following text input" style="width:.8em;height:.8em;margin:0px" id="cekJam">
+                                <input class="form-check-input" type="checkbox" value=""
+                                    aria-label="Checkbox for following text input"
+                                    style="width:.8em;height:.8em;margin:0px" id="cekJam">
                             </div>
-                            <input type="text" class="form-control form-control-sm " id="jam_rawat_ubah" name="jam_rawat_ubah" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)" value="" autocomplete="off" disabled>
+                            <input type="text" class="form-control form-control-sm " id="jam_rawat_ubah"
+                                name="jam_rawat_ubah" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                                value="" autocomplete="off" disabled>
                         </div>
                     </td>
                 </tr>
@@ -199,24 +200,21 @@
                     <td width="5%">Asesmen : </td>
                     <td colspan="4" width="5%">
                         <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="5"
-                            onfocus="removeZero(this)"
-                            onblur="cekKosong(this)">-</textarea>
+                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>Plan : </td>
                     <td colspan="4">
                         <textarea class="form-control" name="plan" id="plan" cols="30" rows="5"
-                            onfocus="removeZero(this)"
-                            onblur="cekKosong(this)">-</textarea>
+                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                     </td>
                 </tr>
                 <tr class="d-none">
                     <td>Instruksi : </td>
                     <td colspan="4">
                         <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="5"
-                            onfocus="removeZero(this)"
-                            onblur="cekKosong(this)">-</textarea>
+                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                         <input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="">
                         <input type="hidden" name="jam_rawat" id="jam_rawat" value="">
                         <input type="hidden" name="spesialis" id="spesialis" value="">
@@ -226,9 +224,12 @@
                 <tr>
                     <td></td>
                     <td colspan="4">
-                        <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRanap()" style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
-                        <button type="button" class="btn btn-warning btn-sm" id="btn-reset" style="font-size:12px;display:none"><i class="bi bi-arrow-clockwise"></i> Baru</button>
-                        <button type="button" class="btn btn-success btn-sm" onclick="editSoap()" id="btn-ubah" style="font-size:12px;display:none"><i class="bi bi-pencil-square"></i> Ubah</button>
+                        <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRanap()"
+                            style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
+                        <button type="button" class="btn btn-warning btn-sm" id="btn-reset"
+                            style="font-size:12px;display:none"><i class="bi bi-arrow-clockwise"></i> Baru</button>
+                        <button type="button" class="btn btn-success btn-sm" onclick="editSoap()" id="btn-ubah"
+                            style="font-size:12px;display:none"><i class="bi bi-pencil-square"></i> Ubah</button>
                     </td>
                 </tr>
             </table>
@@ -238,7 +239,7 @@
 
 @push('script')
     <script>
-        $('#btn-reset').on('click', function(event) {
+        $('#btn-reset').on('click', function (event) {
             no_rawat = formSoapRanap.find('input[name="nomor_rawat"]').val();
             formSoapRanap.find('input').each((index, element) => {
                 $(element).val('-');
@@ -308,7 +309,7 @@
                     'terlihat_tidak_sehat': $('.formEws select[name=terlihat_tidak_sehat]').val(),
                 },
                 method: 'POST',
-                beforeSend: function() {
+                beforeSend: function () {
                     swal.fire({
                         title: 'Sedang mengirim data',
                         text: 'Mohon Tunggu',
@@ -318,7 +319,7 @@
                         }
                     })
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response) {
                         Swal.fire({
                             icon: 'success',
@@ -420,7 +421,7 @@
                     'jam_rawat_ubah': $('#jam_rawat_ubah').val(),
                 },
                 method: 'POST',
-                beforeSend: function() {
+                beforeSend: function () {
                     swal.fire({
                         title: 'Sedang mengirim data',
                         text: 'Mohon Tunggu',
@@ -437,7 +438,7 @@
                         'error',
                     )
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response) {
                         Swal.fire({
                             icon: 'success',
@@ -446,12 +447,14 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
+                            const tgl_pertama = $('#tglSoap1_soap').val();
+                            const tgl_kedua = $('#tglSoap2_soap').val();
                             tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
                             grafikPemeriksaan.destroy();
                             buildGrafik(no_rawat_soap)
                             setEws(no_rawat_soap, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
                             getInstance.show();
-                            const isTriggering = formSoapRanap.reset('triger');
+                            formSoapRanap.trigger('reset');
                             $('#btn-ubah').css('display', 'none')
                             $('#btn-reset').css('display', 'none')
                         })

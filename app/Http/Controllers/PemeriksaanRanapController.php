@@ -171,8 +171,6 @@ class PemeriksaanRanapController extends Controller
 
 	public function ubah(Request $request)
 	{
-
-
 		$clause = [
 			'no_rawat' => $request->no_rawat,
 			'tgl_perawatan' => date('Y-m-d', strtotime($request->tgl_perawatan)),
@@ -198,20 +196,24 @@ class PemeriksaanRanapController extends Controller
 			'kesadaran' => $request->kesadaran,
 		];
 
-		if ($request->tgl_perawatan_ubah == '' && $clause['tgl_perawatan'] == $request->tgl_perawatan_ubah) {
-			$data['tgl_perawatan'] = $clause['tgl_perawatan'];
-		} else {
-			$data['tgl_perawatan'] = $request->tgl_perawatan_ubah;
-		}
+		/*
+		|------------------------------------------------------------
+		| Jika tanggal/jam tidak diubah, gunakan data lama
+		|------------------------------------------------------------
+		*/
 
-		if ($request->jam_rawat_ubah == '' && $clause['jam_rawat'] == $request->jam_rawat_ubah) {
-			$data['jam_rawat'] = $clause['jam_rawat'];
-		} else {
-			$data['jam_rawat'] = $request->jam_rawat_ubah;
-		}
+		$data['tgl_perawatan'] = !empty($request->tgl_perawatan_ubah)
+			? date('Y-m-d', strtotime($request->tgl_perawatan_ubah))
+			: $clause['tgl_perawatan'];
+
+		$data['jam_rawat'] = !empty($request->jam_rawat_ubah)
+			? $request->jam_rawat_ubah
+			: $clause['jam_rawat'];
 
 		$data1 = [
 			'no_rawat' => $request->no_rawat,
+			'tgl_perawatan' => $data['tgl_perawatan'],
+			'jam_rawat' => $data['jam_rawat'],
 			'suhu_tubuh' => $request->suhu_tubuh,
 			'tensi' => $request->tensi,
 			'respirasi' => $request->respirasi,
@@ -228,25 +230,68 @@ class PemeriksaanRanapController extends Controller
 			'o2' => $request->o2,
 			'sumber' => 'SOAP',
 		];
+
 		try {
-			DB::transaction(function () use ($clause, $data, $data1, $request) {
-				$pemeriksaan = PemeriksaanRanap::where($clause)->firstOrFail()->update($data);
-				$grafikharian = GrafikHarian::where($clause)->firstOrFail()->update($data1);
+
+			$update = DB::transaction(function () use ($clause, $data, $data1, $request) {
+
+				/*
+				|------------------------------------------------------------
+				| Ambil data lama
+				|------------------------------------------------------------
+				*/
+
+				$pemeriksaan = PemeriksaanRanap::where($clause)->firstOrFail();
+				$grafikharian = GrafikHarian::where($clause)->firstOrFail();
+
+				/*
+				|------------------------------------------------------------
+				| Update
+				|------------------------------------------------------------
+				*/
+
+				$pemeriksaan->update($data);
+				$grafikharian->update($data1);
+
+				/*
+				|------------------------------------------------------------
+				| Tracking
+				|------------------------------------------------------------
+				*/
+
 				$this->track->updateSql($this->pemeriksaan, $data, $clause);
 				$this->track->updateSql($this->grafikharian, $data1, $clause);
-				$log = $this->log->insert([
+
+				/*
+				|------------------------------------------------------------
+				| Log
+				|------------------------------------------------------------
+				*/
+
+				$this->log->insert([
 					'no_rawat' => $clause['no_rawat'],
 					'tgl_perawatan' => $data['tgl_perawatan'],
 					'jam_rawat' => $data['jam_rawat'],
 				], 'Ubah');
+
 				$this->logger->handle($request, 'UPDATE');
+
+				return true;
 			});
 
 		} catch (\Exception $e) {
-			return response()->json($e->getMessage(), 500);
+
+			return response()->json([
+				'success' => false,
+				'message' => $e->getMessage(),
+			], 500);
+
 		}
 
-		return response()->json('Sukses');
+		return response()->json([
+			'success' => true,
+			'message' => 'Data berhasil diubah.',
+		], 200);
 	}
 
 	public function simpan(Request $request)
