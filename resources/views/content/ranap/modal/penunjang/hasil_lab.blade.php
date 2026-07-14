@@ -28,20 +28,12 @@
                         </table>
                     </div>
                 </div>
-
-
-
                 <button type="button" class="mt-1 btn btn-warning btn-sm" id="btnHasilKritis"><i
                         class="bi bi-pencil me-2"></i> Hasil Kritis
                 </button>
             </div>
         </div>
     </div>
-    {{-- <div class="col-lg-3 col-md-12 col-sm-12">
-        <ul class="list-group" id='listRiwayatLaboratorium'>
-
-        </ul>
-    </div> --}}
 </div>
 @push('script')
     <script>
@@ -88,6 +80,7 @@
                 hasilLabRalan(noRawat);
             }
         });
+       
 
 
     </script>
