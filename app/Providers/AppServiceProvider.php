@@ -30,7 +30,17 @@ class AppServiceProvider extends ServiceProvider
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
         // when user access from domain use https, if not use http
+
+        $host = request()->getHost();
+
+
         if (request()->isSecure()) {
+            URL::forceScheme('https');
+        }
+        if (
+            app()->environment('production') &&
+            !filter_var($host, FILTER_VALIDATE_IP)
+        ) {
             URL::forceScheme('https');
         }
 

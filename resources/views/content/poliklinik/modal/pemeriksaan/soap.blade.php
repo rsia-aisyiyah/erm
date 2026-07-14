@@ -13,6 +13,13 @@
                 <x-input id="nama_pasien" name="nm_pasien" class="w-50" readonly />
             </x-input-group>
         </div>
+        <div class="col-lg-2 col-sm-12 mb-2">
+            <label for="Pasien">Tgl. Lahir & Umur</label>
+            <x-input-group>
+                <x-input id="tgl_lahir" name="tgl_lahir" class="" readonly />
+                <x-input id="umurdaftar" name="umurdaftar" class="w-25" readonly />
+            </x-input-group>
+        </div>
 
         <div class="col-lg-3 col-sm-12 mb-2">
             <label for="png_jawab">Pembiayaan</label>
@@ -28,6 +35,10 @@
         <div class="col-lg-2 col-sm-12 mb-2">
             <label for="p_jawab">Keluarga</label>
             <x-input id="p_jawab" name="p_jawab" readonly />
+        </div>
+        <div class="col-lg-2 col-sm-12 mb-2">
+            <label for="alamat">Alamat</label>
+            <x-input id="alamat" name="alamat" readonly />
         </div>
         <div class="col-lg-2 col-sm-12 mb-2">
             <label for="ket_pasien">Keterangan</label>
@@ -51,9 +62,10 @@
             </div>
         </div>
         <div class="col-lg-2 col-sm-12">
-            <label for="nip" class="form-label"> Perawat/Bidan:</label><br>
+            <label for="nip_pegawai" class="form-label"> Perawat/Bidan:</label><br>
             <div class="d-flex gap-2">
-                <select id="nip" name="nip" data-dropdown-parent="#formSoapPoli" style="width: 100%"></select>
+                <select id="nip_pegawai" name="nip" data-dropdown-parent="#formSoapPoli" style="width: 100%"
+                    class="selectNip"></select>
             </div>
         </div>
     </div>
@@ -117,10 +129,7 @@
                             </select>
 
                         </div>
-                        <div class="col-lg-3 col-sm-12">
-                            <label for="alergi" class="form-label">Alergi :</label>
-                            <x-input id="alergi" name="alergi" />
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -136,7 +145,10 @@
             </div>
 
         </div>
+
         <div class="col-lg-6 col-md-12 col-sm-12">
+            <label for="alergi" class="form-label">Alergi :</label>
+            <x-input id="alergi" name="alergi" />
             <label for="rtl">Plan</label>
             <x-textarea rows="4" name="rtl" id="rtl"></x-textarea>
             <button class="btn btn-warning btn-sm mt-2" type="button" style="font-size: 12px"
@@ -156,6 +168,12 @@
         function showSoapRalan(no_rawat) {
             formSoapPoli.find('input[name="no_rawat"]').val(no_rawat);
             const formInfoPasienResep = $('#formInfoPasienResep')
+
+            const nip = formSoapPoli.find('select[name="nip"]')
+
+            console.log('BIP ===', nip);
+
+
 
             btnTambahObatUmum.removeClass('d-none');
 
@@ -191,13 +209,20 @@
                 const dokter = new Option(response.dokter.nm_dokter, response.kd_dokter, true, true)
                 formSoapPoli.find('select[name=kd_dokter]').append(dokter).trigger('change').prop('disabled', true)
                 const pegawai = new Option("{{ session()->get('pegawai')->nama }}", "{{ session()->get('pegawai')->nik }}", true, true)
-                formSoapPoli.find('select[name=nip]').append(pegawai).trigger('change').trigger('change')
+                formSoapPoli.find('select[name=nip]').append(pegawai).trigger('change')
 
                 formSoapPoli.find('input[name=no_rkm_medis]').val(response.no_rkm_medis)
                 formSoapPoli.find('input[name=no_peserta]').val(response.pasien.no_peserta)
-                formSoapPoli.find('input[name=nm_pasien]').val(`${response.pasien.nm_pasien} (${response.pasien.jk}) / ${hitungUmur(response.pasien.tgl_lahir)}`)
-                formSoapPoli.find('input[name=p_jawab]').val(response.p_jawab)
+                formSoapPoli.find('input[name=nm_pasien]').val(`${response.pasien.nm_pasien} (${response.pasien.jk})`)
+                formSoapPoli.find('input[name=tgl_lahir]').val(`${formatTanggal(response.pasien.tgl_lahir)}`)
+                const objUmur = hitungUmurDaftar(response.pasien.tgl_lahir, response.tgl_registrasi)
+                const umurdaftar = `${objUmur.tahun} Th ${objUmur.bulan} Bln ${objUmur.hari} Hr`
+
+                formSoapPoli.find('input[name=umurdaftar]').val(`${umurdaftar}`)
+                formSoapPoli.find('input[name=alamat]').val(response.pasien.alamat)
                 formSoapPoli.find('input[name=png_jawab]').val(`${response.penjab.png_jawab}`)
+
+
 
                 formInfoPasienResep.find('input[name=no_rawat]').val(no_rawat);
                 formInfoPasienResep.find('input[name=no_rkm_medis]').val(response.no_rkm_medis);
@@ -405,22 +430,33 @@
             })
         }
 
-        formSoapPoli.find('select[name=nip]').select2({
+        formSoapPoli.find('#nip_pegawai ').select2({
+            placeholder: 'Pilih Petugas',
+            allowClear: true,
+            width: '100%',
+            dropdownParent: $('#modalSoapRalan'), // sesuaikan jika di dalam modal
             ajax: {
                 url: '/erm/petugas/cari',
                 dataType: 'json',
-                processResults: (data) => {
+                delay: 250,
+                cache: true,
+                data: function (params) {
                     return {
-                        results: data.map((pegawai) => {
+                        q: params.term // keyword pencarian
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(function (pegawai) {
                             return {
                                 id: pegawai.nip,
                                 text: pegawai.nama
-                            }
+                            };
                         })
-                    }
+                    };
                 }
             }
-        })
+        });
         formSoapPoli.find('select[name=kd_dokter]').select2({
             ajax: {
                 url: '/erm/dokter/cari',
