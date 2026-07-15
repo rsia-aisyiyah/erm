@@ -82,6 +82,7 @@ class PemeriksaanRanap extends Model
     function kamarInap()
     {
         return $this->hasMany(KamarInap::class, 'no_rawat', 'no_rawat');
+
     }
 
 

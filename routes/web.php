@@ -67,6 +67,7 @@ use App\Http\Controllers\RsiaAsuhanGiziDewasaController;
 use App\Http\Controllers\RsiaGeneralConsentController;
 use App\Http\Controllers\RsiaGrafikHarianController;
 use App\Http\Controllers\RsiaHasilKritisController;
+use App\Http\Controllers\RsiaKonfirmasiPemeriksaanRanapController;
 use App\Http\Controllers\RsiaMappingRacikanController;
 use App\Http\Controllers\RsiaMappingRacikanDetailController;
 use App\Http\Controllers\RsiaPenilaianPendaftaranController;
@@ -160,6 +161,7 @@ Route::middleware('auth')->group(function () {
 
 	Route::post('/ranap/sbar/update', [SbarController::class, 'update']);
 	Route::post('/ranap/sbar/delete', [SbarController::class, 'delete']);
+	Route::post('/ranap/konfirmasi-sbar', [RsiaKonfirmasiPemeriksaanRanapController::class, 'create']);
 
 	Route::get('/soap/chart', [PemeriksaanRanapController::class, 'getTTV']);
 	Route::get('/soap/grafik/data', [PemeriksaanRanapController::class, 'getTTVData']);

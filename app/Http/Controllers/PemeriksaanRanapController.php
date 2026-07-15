@@ -393,7 +393,8 @@ class PemeriksaanRanapController extends Controller
 			->with([
 				'regPeriksa',
 				'sbar' => function ($q) {
-					return $q->select('no_rawat', 'jam_rawat', 'tgl_perawatan', 'sumber');
+					return $q->select('no_rawat', 'jam_rawat', 'tgl_perawatan', 'sumber')
+						->with('konfirmasi');
 				},
 				'log',
 				'regPeriksa.pasien',
@@ -451,6 +452,7 @@ class PemeriksaanRanapController extends Controller
 			'sbar' => function ($q) {
 				return $q->with([
 					'verifikasi.dokter',
+					'konfirmasi',
 					'dokterKonsul' => function ($q) {
 						return $q->with('dokterSbar');
 					},

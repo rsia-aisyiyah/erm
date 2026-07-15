@@ -17,7 +17,7 @@
                 <div class="d-flex align-items-center me-2">
                     <i class="bi bi-bell-fill text-warning me-2 fs-6"></i>
                     <div>
-                        <span class="fw-bold">SBAR Baru!</span> Silahkan cek segera.
+                        <span class="fw-bold">SBAR Baru!</span> Mohon verif segera.
                     </div>
                 </div>
 

@@ -3,21 +3,14 @@
 namespace App\Services\HasilKritis;
 
 use App\Models\RsiaHasilKritis;
-use App\Services\AuthVerificationService;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class VerifikasiHasilKritis
 {
-    protected $authVerifyService;
-
-    public function __construct(AuthVerificationService $authVerifyService)
+    public function verifyAndExecute(int $id, string $role): RsiaHasilKritis
     {
-        $this->authVerifyService = $authVerifyService;
-    }
+        $petugas = $this->verifyUser();
 
-    public function verifyAndExecute(int $id, string $password, string $role): RsiaHasilKritis
-    {
-        $petugas = $this->verifyUserCredentials($password);
         $hasilKritis = RsiaHasilKritis::findOrFail($id);
 
         $this->authorizeAndFieldsUpdate($hasilKritis, $petugas, $role);
@@ -25,49 +18,48 @@ class VerifikasiHasilKritis
         return $hasilKritis;
     }
 
-    protected function verifyUserCredentials(string $password)
+    protected function verifyUser()
     {
-        $petugas = $this->authVerifyService->verifyUser();
+        $petugas = session()->get('pegawai');
 
         if (!$petugas) {
-            throw new HttpException(404, 'User tidak ditemukan');
-        }
-
-        $isValidPassword = $this->authVerifyService->verifyPassword($password);
-
-        if (!$isValidPassword) {
-            throw new HttpException(422, 'Password salah');
+            throw new HttpException(401, 'Session login tidak ditemukan');
         }
 
         return $petugas;
     }
 
-    /**
-     * MODIFIKASI: Menambahkan Case Otorisasi untuk Dokter Penanggung Jawab (PJ)
-     */
     protected function authorizeAndFieldsUpdate(RsiaHasilKritis $hasilKritis, $petugas, string $role): void
     {
         switch ($role) {
             case 'petugas_ruang':
-                if ($hasilKritis->petugas_ruang != $petugas->nip) {
+                if ($hasilKritis->petugas_ruang != $petugas->nik) {
                     throw new HttpException(403, 'Anda bukan petugas ruangan');
                 }
-                $hasilKritis->update(['tgl_ruang' => now()]);
+
+                $hasilKritis->update([
+                    'tgl_ruang' => now()
+                ]);
                 break;
 
             case 'dokter':
-                if ($hasilKritis->dokter != $petugas->nip) {
+                if ($hasilKritis->dokter != $petugas->nik) {
                     throw new HttpException(403, 'Anda bukan dokter terkait');
                 }
-                $hasilKritis->update(['tgl_dokter' => now()]);
+
+                $hasilKritis->update([
+                    'tgl_dokter' => now()
+                ]);
                 break;
 
-            // TAMBAHAN: Role baru untuk verifikasi Dokter PJ Laboratorium / Radiologi
             case 'dokter_pj':
-                if ($hasilKritis->dokter_pj != $petugas->nip) {
+                if ($hasilKritis->dokter_pj != $petugas->nik) {
                     throw new HttpException(403, 'Anda bukan Dokter Penanggung Jawab hasil pemeriksaan ini');
                 }
-                $hasilKritis->update(['tgl_drpj' => now()]);
+
+                $hasilKritis->update([
+                    'tgl_drpj' => now()
+                ]);
                 break;
 
             default:

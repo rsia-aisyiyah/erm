@@ -49,4 +49,8 @@ class RsiaGrafikHarian extends Model
     {
         return $this->belongsTo(PemeriksaanRalan::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat']);
     }
+    public function konfirmasi()
+    {
+        return $this->hasOne(RsiaKonfirmasiPemeriksaanRanap::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat']);
+    }
 }

@@ -121,9 +121,6 @@
             $('.datetimepicker').datetimepicker({
                 format: 'd-m-Y H:i:s',
             })
-
-            console.log("{{ session()->get('pegawai')->nik }}");
-
         })
 
 

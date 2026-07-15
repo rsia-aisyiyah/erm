@@ -269,8 +269,8 @@
                                 penjabIcon = `<span class="text-success">${data.penjab.png_jawab}</span> `
                             }
                             return `${setIconGender(data.pasien.jk)} ${data.pasien.nm_pasien}<br/>
-                                                                                                                                                                                                                <small class="text-muted">${umurPasien}</small><br/>
-                                                                                                                                                                                                                ${penjabIcon}`;
+                                                                                                                                                                                                                            <small class="text-muted">${umurPasien}</small><br/>
+                                                                                                                                                                                                                            ${penjabIcon}`;
                         }
                     },
                     {
@@ -367,35 +367,35 @@
                     if (data.sbar.verifikasi !== null) {
                         isVerified = true;
                         $('#sectionVerifikasi').html(`
-                                                                                    <div class="alert alert-success d-flex align-items-center mb-3">
-                                                                                        <i class="fas fa-check-circle me-2"></i>
-                                                                                        <div>
-                                                                                            <strong>Dikonfirmasi:</strong> Dikonfirmasi oleh <strong>${data.sbar.verifikasi?.petugas.nama}</strong> pada ${formatTanggal(data.sbar.verifikasi?.tgl_verif)} ${data.sbar.verifikasi?.jam_verif}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                `);
+                                                                                                <div class="alert alert-success d-flex align-items-center mb-3">
+                                                                                                    <i class="fas fa-check-circle me-2"></i>
+                                                                                                    <div>
+                                                                                                        <strong>Dikonfirmasi:</strong> Dikonfirmasi oleh <strong>${data.sbar.verifikasi?.petugas.nama}</strong> pada ${formatTanggal(data.sbar.verifikasi?.tgl_verif)} ${data.sbar.verifikasi?.jam_verif}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            `);
                     } else {
 
                         let button = ``;
 
                         if (isDokterKonsul === kdDokter) {
                             button = `<button type="button" class="btn btn-sm btn-warning fw-bold text-nowrap align-self-end align-self-sm-center text-dark"
-                                                                                                                        onclick="verifikasiSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')">
-                                                                                                                    <i class="fas fa-check-circle me-1"></i> Verifikasi SBAR
-                                                                                                                </button>`;
+                                                                                                                                    onclick="verifikasiSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')">
+                                                                                                                                <i class="fas fa-check-circle me-1"></i> Verifikasi SBAR
+                                                                                                                            </button>`;
 
                         }
                         $('#sectionVerifikasi').html(`
-                                                                    <div class="alert alert-warning d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2 shadow-sm">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <i class="fas fa-exclamation-triangle me-2 text-warning fs-5"></i>
-                                                                            <div>
-                                                                                <strong>Belum Verifikasi:</strong> Menunggu konfirmasi ${data.sbar.dokter_konsul.dokter_sbar.nm_dokter} (TBAK).
-                                                                            </div>
-                                                                        </div>
-                                                                        ${button}
-                                                                    </div>
-                                                                                                                                                    `);
+                                                                                <div class="alert alert-warning d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2 shadow-sm">
+                                                                                    <div class="d-flex align-items-center">
+                                                                                        <i class="fas fa-exclamation-triangle me-2 text-warning fs-5"></i>
+                                                                                        <div>
+                                                                                            <strong>Belum Verifikasi:</strong> Menunggu konfirmasi ${data.sbar.dokter_konsul.dokter_sbar.nm_dokter} (TBAK).
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    ${button}
+                                                                                </div>
+                                                                                                                                                                `);
                     }
                     $('#labelP').html(renderTextWithStempel('R (Recommendation)', isVerified));
                 } else {
@@ -432,32 +432,20 @@
         }
         function verifikasiSbar(no_rawat, tgl, jam) {
             $('.modal').modal('hide');
+
             setTimeout(() => {
                 Swal.fire({
                     title: 'Verifikasi Pemeriksaan',
-                    text: 'Masukkan password Anda untuk melakukan verifikasi',
+                    text: 'Yakin ingin memverifikasi hasil pemeriksaan?',
                     icon: 'warning',
-                    input: 'password',
-                    inputPlaceholder: 'Masukkan password',
-                    inputAttributes: {
-                        autocapitalize: 'off',
-                        placeholder: 'Password',
-                        autocomplete: 'one-time-code'
-
-                    },
                     showCancelButton: true,
                     confirmButtonText: 'Ya, Verifikasi',
                     cancelButtonText: 'Batal',
                     focusConfirm: false,
                     showLoaderOnConfirm: true,
                     allowOutsideClick: () => !Swal.isLoading(),
-                    preConfirm: async (password) => {
-                        if (!password) {
-                            Swal.showValidationMessage(
-                                'Password wajib diisi'
-                            );
-                            return false;
-                        }
+
+                    preConfirm: async () => {
                         try {
                             const response = await $.ajax({
                                 url: '/erm/soap/verifikasi',
@@ -466,24 +454,23 @@
                                 data: {
                                     no_rawat: no_rawat,
                                     tgl_perawatan: tgl,
-                                    jam_rawat: jam,
-                                    password: password
+                                    jam_rawat: jam
                                 }
-
                             });
+
                             return response;
                         } catch (error) {
                             Swal.showValidationMessage(
-                                error.responseJSON?.message ??
-                                'Verifikasi gagal'
+                                error.responseJSON?.message ?? 'Verifikasi gagal'
                             );
                             return false;
                         }
                     }
 
                 }).then((result) => {
-                    const currentCount = result.value.new_count || 0
                     if (result.isConfirmed) {
+                        const currentCount = result.value?.new_count || 0;
+
                         Swal.fire({
                             title: 'Berhasil',
                             text: 'Hasil pemeriksaan telah diverifikasi',
@@ -491,19 +478,18 @@
                             timer: 1500,
                             showConfirmButton: false
                         });
-                    }
-                    tablePemeriksaanRanap.ajax.reload();
-                    setDetailPemeriksaanRanap(no_rawat, tgl, jam)
 
-                    if (currentCount > 0) {
-                        $('#textCountSbar').text(currentCount)
-                    } else {
-                        $('#alertSbar').fadeOut(500)
+                        tablePemeriksaanRanap.ajax.reload();
+                        setDetailPemeriksaanRanap(no_rawat, tgl, jam);
 
+                        if (currentCount > 0) {
+                            $('#textCountSbar').text(currentCount);
+                        } else {
+                            $('#alertSbar').fadeOut(500);
+                        }
                     }
                 });
-            })
-
+            });
         }
 
 

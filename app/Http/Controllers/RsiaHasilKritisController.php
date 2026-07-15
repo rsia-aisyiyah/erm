@@ -165,27 +165,24 @@ class RsiaHasilKritisController extends Controller
     }
     public function verifikasi(VerifikasiHasilKritis $service, $id, Request $request)
     {
-        // Validasi input form dasar tetap di Controller (atau via FormRequest)
         $request->validate([
-            'password' => 'required',
             'role' => 'required'
         ]);
 
         try {
-            // Serahkan seluruh logika berat ke Service
             $service->verifyAndExecute(
                 $id,
-                $request->password,
                 $request->role
             );
+
             $updateNotif = new \App\Services\NotificationService();
+
             return response()->json([
                 'message' => 'Verifikasi berhasil',
-                'new_count' => $updateNotif->getHasilKritisCount() // Contoh update count notifikasi setelah verifikasi
+                'new_count' => $updateNotif->getHasilKritisCount()
             ]);
 
         } catch (HttpException $e) {
-            // Tangkap error kustom yang dilempar oleh Service beserta Status Code-nya
             return response()->json([
                 'message' => $e->getMessage()
             ], $e->getStatusCode());

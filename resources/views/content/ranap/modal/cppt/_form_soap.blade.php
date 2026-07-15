@@ -449,10 +449,10 @@
                         }).then(() => {
                             const tgl_pertama = $('#tglSoap1_soap').val();
                             const tgl_kedua = $('#tglSoap2_soap').val();
-                            tbSoapRanap(no_rawat_soap, tgl_pertama, tgl_kedua);
+                            tbSoapRanap(no_rawat);
                             grafikPemeriksaan.destroy();
-                            buildGrafik(no_rawat_soap)
-                            setEws(no_rawat_soap, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
+                            buildGrafik(no_rawat)
+                            setEws(no_rawat, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
                             getInstance.show();
                             formSoapRanap.trigger('reset');
                             $('#btn-ubah').css('display', 'none')
