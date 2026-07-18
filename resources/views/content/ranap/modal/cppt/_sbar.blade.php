@@ -1,21 +1,81 @@
-{{-- <ul class="nav nav-underline" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="formSbar" data-bs-toggle="tab" data-bs-target="#formSbar-pane" type="button" role="tab" aria-controls="formSbar-pane" aria-selected="true">Home</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="tableSbar" data-bs-toggle="tab" data-bs-target="#tableSbar-pane" type="button" role="tab" aria-controls="tableSbar-pane" aria-selected="false">Profile</button>
-    </li>
-</ul>
-<div class="tab-content p-2" id="tabContentSbar">
-    <div class="tab-pane fade show active" id="formSbar-pane" role="tabpanel" aria-labelledby="formSbar" tabindex="0">
-        @include('content.ranap.modal.cppt._form_sbar')
-    </div>
-    <div class="tab-pane fade" id="tableSbar-pane" role="tabpanel" aria-labelledby="tableSbar" tabindex="0">
-        @include('content.ranap.modal.cppt._table_sbar')
-    </div>
-</div> --}}
+<form action="" class="" id="formSbarRanap">
+    <div class="row gy-2">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="row">
+                <div class="col-lg-2 col-md-12">
+                    <label for="tgl_pemeriksaan">Tgl & Jam Pemeriksaan</label>
+                    <x-input-group class="input-group-sm">
+                        <x-input-group-text>
+                            <i class="bi bi-calendar3"></i>
+                        </x-input-group-text>
+                        <x-input id="tgl_perawatan" name="tgl_perawatan" class="datetimepicker" />
+                    </x-input-group>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <label for="petugas">Petugas</label>
+                    <x-input-group class="input-group-sm">
+                        <x-input-group-text>
+                            <i class="bi bi-person-fill"></i>
+                        </x-input-group-text>
+                        <x-input name="petugas" id="petugas" readonly />
+                        <x-input name="nm_petugas" id="nm_petugas" class="w-25" readonly />
+                    </x-input-group>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="dokter">Dokter</label>
+                    <select class="search form-select" placeholder="Dokter" name="kd_dokter" id="kd_dokter"
+                        style="width: 100%"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row gy-2">
 
-@include('content.ranap.modal.cppt._form_sbar')
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label for="subjek">Situation</label>
+                        <x-textarea cols="10" rows="8" name="keluhan" id="keluhan">-</x-textarea>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label for="background">Background</label>
+                        <x-textarea cols="10" rows="8" name="pemeriksaan" id="pemeriksaan">-</x-textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row gy-2">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label for="penilaian">Assesment</label>
+                        <x-textarea cols="10" rows="8" name="penilaian" id="penilaian">-</x-textarea>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label for="rtl">Recomendation</label>
+                        <x-textarea cols="10" rows="8" name="rtl" id="rtl">-</x-textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-end my-2 w-m-100">
+            <div class="col-6 order-lg-1 order-md-2 order-sm-2">
+            </div>
+            <div class="col-6 order-lg-2 order-md-1 order-sm-1">
+                <button type="button" class="btn btn-sm btn-primary" id="btnSimpanSbar"><i class="bi bi-save me-1"></i>
+                    Simpan</button>
+                <button type="button" class="btn btn-sm btn-warning d-none" id="btnUbahSbar"><i
+                        class="bi bi-pencil me-1"></i> Ubah</button>
+                <button type="button" class="btn btn-sm btn-danger d-none" id="btnBatalSbar"><i
+                        class="bi bi-x me-1"></i> Batal</button>
+                <x-input type="hidden" name="tgl_perawatan_awal" id="tgl_perawatan_awal" value="" />
+                <x-input type="hidden" name="jam_rawat_awal" id="jam_rawat_awal" value="" />
+            </div>
+        </div>
+    </div>
+</form>
 
 @push('script')
     <script>
@@ -31,6 +91,9 @@
         btnBatalSbar.on('click', () => {
             formSbarRanap.trigger('reset');
             btnTabSbar.trigger('click');
+            formSbarRanap.find('input[name=tgl_perawatan]').val(moment().format('DD-MM-YYYY HH:mm:ss'))
+            formSbarRanap.find('input[name=petugas]').val('{{ session()->get('pegawai')->nik }}')
+            formSbarRanap.find('input[name=nm_petugas]').val('{{ session()->get('pegawai')->nama }}')
         })
 
         btnUbahSbar.on('click', () => {
@@ -59,6 +122,7 @@
             data['sumber'] = 'SBAR';
             data['jam_rawat'] = data['tgl_perawatan'].split(' ')[1];
             data['tgl_perawatan'] = splitTanggal(data['tgl_perawatan'].split(' ')[0]);
+
             $.post(`${url}/soap/simpan`, data).done((response) => {
                 alertSuccessAjax('Data SBAR berhasil disimpan')
                 formSbarRanap.trigger('reset')
@@ -77,15 +141,19 @@
             btnSimpanSbar.removeClass('d-none');
             btnUbahSbar.addClass('d-none');
             btnBatalSbar.addClass('d-none');
-            const kd_dokter = formInfoPasien.find('input[name=kd_dokter_dpjp]').val()
-            const nm_dokter = formInfoPasien.find('input[name=dokter_dpjp]').val()
+            const no_rawat = formInfoPasien.find('input[name=no_rawat]').val();
+            getRegPeriksa(no_rawat).done((response) => {
+                formSbarRanap.find('input[name=dokter]').val(response.kd_dokter)
+                formSbarRanap.find('input[name=nm_dokter]').val(response.dokter.nm_dokter)
+                const option = new Option(response.dokter.nm_dokter, response.kd_dokter, true, true)
+                dokterSbar.append(option).trigger('change')
+            });
+
             formSbarRanap.find('input[name=tgl_perawatan]').val(moment().format('DD-MM-YYYY HH:mm:ss'))
             formSbarRanap.find('input[name=petugas]').val('{{ session()->get('pegawai')->nik }}')
             formSbarRanap.find('input[name=nm_petugas]').val('{{ session()->get('pegawai')->nama }}')
-            formSbarRanap.find('input[name=dokter]').val(kd_dokter)
-            formSbarRanap.find('input[name=nm_dokter]').val(nm_dokter)
-            const option = new Option(nm_dokter, kd_dokter, true, true)
-            dokterSbar.append(option).trigger('change')
+
+
         })
 
         dokterSbar.select2({
@@ -93,7 +161,7 @@
             allowClear: false,
             delay: 0,
             scrollAfterSelect: false,
-            initSelection: function(element, callback) {},
+            initSelection: function (element, callback) { },
             ajax: {
                 url: 'dokter/cari',
                 dataType: 'json',
@@ -103,9 +171,9 @@
                     }
                     return query
                 },
-                processResults: function(data) {
+                processResults: function (data) {
                     return {
-                        results: $.map(data, function(item) {
+                        results: $.map(data, function (item) {
                             return {
                                 text: item.nm_dokter,
                                 id: item.kd_dokter
