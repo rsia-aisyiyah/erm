@@ -151,36 +151,12 @@
                                     menyetujui/
                                     menolak setiap prosedur/ terapi</li>
                                 <li>
-                                    <strong>PERSETUJUAN PELAYANAN KESEHATAN.</strong> Saya menyetujui dan memberikan
-                                    persetujuan
-                                    untuk
-                                    mendapat
-                                    pelayanan kesehatan di RSIA Aisyiyah Pekajangan dan dengan ini saya meminta dan
-                                    memberikan
-                                    kuasa
-                                    kepada
-                                    RSIA Aisyiyah Pekajangan, dokter, perawat dan tenaga kesehatan lainnya untuk memberikan
-                                    asuhan
-                                    perawatan,
-                                    pemeriksaan fisik dan melakukan prosedur diagnostik, radiologi dan/ atau terapi dan
-                                    tatalaksana
-                                    sesuai
-                                    pertimbangan dokter yang diperlukan atau disarankan pada perawatan saya. Hal ini
-                                    mencakup
-                                    seluruh
-                                    pemeriksaan dan
-                                    prosedur diagnostik rutin, termasuk x-ray, pemberian dan atau tindakan medis serta
-                                    penyuntikan dan
-                                    prosedur invasif seperti infus, NGT, DC, dan prosedur invasif lainnya, produk farmasi
-                                    dan
-                                    obat-obatan,
-                                    pemasangan alat
-                                    kesehatan (kecuali yang membutuhkan persetujuan khusus/ tertulis), dan pengambilan darah
-                                    untuk
-                                    pemeriksaan
-                                    laboratorium atau pemeriksaan patologi yang dibutuhkan untuk pengobatan dan tindakan
-                                    yang
-                                    aman.
+                                    <strong>PERSETUJUAN PELAYANAN KESEHATAN.</strong>4. Saya memberikan persetujuan kepada
+                                    RSIA Aisyiyah Pekajangan beserta dokter, perawat dan tenaga kesehatan lainnya
+                                    untuk memberikan pelayanan berupa pemeriksaan umum, laboratorium, radiologi, terapi,
+                                    tindakan medis maupun pelayanan
+                                    lain sesuai indikasimedis.
+
                                 </li>
                                 <li>
                                     <strong>PELAYANAN KEROHANIAN.</strong> Saya memahami pelayanan kerohanian di RSIA
@@ -223,27 +199,16 @@
                                             saya.</li>
                                     </ul>
                                 </li>
-                                <li><strong>BARANG PRIBADI.</strong> Saya setuju untuk tidak membawa barang-barang berharga
-                                    yang
-                                    tidak
-                                    diperlukan (seperti:
-                                    perhiasan, elektronik, dll) selama dalam perawatan. Saya memahami menyetujui bahwa Rumah
-                                    Sakit tidak
-                                    bertanggung jawab atas semua kehilangan, kerusakan atau pencurian barang-barang berharga
+                                <li><strong>BARANG PRIBADI.</strong>Saya setuju untuk tidak membawa barang-barang berharga
+                                    yang tidak diperlukan (perhiasan, elektronik, dll) selama masa
+                                    perawatan. Saya memahami rumah sakit tidak bertanggung jawab atas kehilangan, kerusakan
+                                    atau pencurian barang berharga
                                     milik saya.
-                                    Saya memahami apabila saya membutuhkan perlindungan barang berharga, rumah sakit
-                                    memiliki
-                                    fasilitas
-                                    penitipan barang
-                                    berharga dan rumah sakit hanya bertanggung jawab atas barang berharga yang dititipkan.
                                 </li>
                                 <li>
-                                    <strong>FASILITAS RUMAH SAKIT.</strong> Saya mengerti dan memahami jika terjadi
-                                    kerusakan
-                                    yang
-                                    disebabkan oleh
-                                    pasien maka menjadi tanggung jawab pasien termasuk fasilitas umum dan fasilitas/ alat
-                                    medis.
+                                    <strong>FASILITAS RUMAH SAKIT.</strong> Saya bertanggung jawab atas kerusakan fasilitas
+                                    rumah sakit yang saya sebabkan termasuk fasilitas umum dan
+                                    fasilitas/alat medis.
                                 </li>
                                 <li>
                                     <strong>HASIL PELAYANAN.</strong> Saya menyadari bahwa praktek kedokteran bukanlah ilmu
@@ -1151,13 +1116,13 @@
                         title: 'Pasien',
                         render: function (data, type, row) {
                             return `
-                                                    <div class="d-flex align-items-center">
-                                                                ${setIconGender(row.pasien.jk)}
-                                                                <div class="ms-2">
-                                                                    <b>${row.pasien.nm_pasien}</b><br>
-                                                                    <small>${row.no_rkm_medis}</small>
-                                                                </div>
-                                                    </div>`;
+                                                                <div class="d-flex align-items-center">
+                                                                            ${setIconGender(row.pasien.jk)}
+                                                                            <div class="ms-2">
+                                                                                <b>${row.pasien.nm_pasien}</b><br>
+                                                                                <small>${row.no_rkm_medis}</small>
+                                                                            </div>
+                                                                </div>`;
                         }
                     },
                     {
@@ -1187,13 +1152,13 @@
                             }
 
                             return `
-                                                        <button class="btn btn-primary btn-sm"
-                                                            onclick="modalGeneralConsent('${row.no_rawat}')"
-                                                            data-id="${row.no_rawat}"
-                                                            data-rm="${row.no_rkm_medis}">
-                                                            Proses
-                                                        </button>
-                                                    `;
+                                                                    <button class="btn btn-primary btn-sm"
+                                                                        onclick="modalGeneralConsent('${row.no_rawat}')"
+                                                                        data-id="${row.no_rawat}"
+                                                                        data-rm="${row.no_rkm_medis}">
+                                                                        Proses
+                                                                    </button>
+                                                                `;
                         }
                     }
                 ],
