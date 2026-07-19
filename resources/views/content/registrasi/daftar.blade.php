@@ -60,15 +60,14 @@
         <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
             <div class="modal-content shadow">
 
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalGeneralConsentLabel">
-                        <i class="bi bi-pen me-2"></i>
-                        Tanda Tangan Digital
-                    </h5>
-
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalGeneralConsentLabel">
+                    <i class="bi bi-pen me-2"></i> Tanda Tangan Digital
+                </h5>
+                <!-- Tambahkan fungsi klik manual sebagai cadangan -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
 
                 <div class="modal-body">
                     <form action="" id="formInfoAdministrasiPasien" class="mb-3">
@@ -116,7 +115,15 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="umum">
-                            <h4 class="text-center mt-3">
+                            <div id="loadingPersetujuan" class="text-center py-5 d-none">
+                                <div class="spinner-border text-primary" role="status"></div>
+                                <div class="mt-2">Memuat dokumen...</div>
+                            </div>
+                            <div class="documentPersetujuanUmum d-none">
+                                <iframe id="pdfFrame" src="" width="100%" height="600px" style="border:none;"></iframe>
+                            </div>
+                           <div class="previewPersetujuanUmum">
+                             <h4 class="text-center mt-3">
                                 PERSETUJUAN UMUM / <i>GENERAL
                                     CONSENT</i>
                             </h4>
@@ -151,12 +158,36 @@
                                     menyetujui/
                                     menolak setiap prosedur/ terapi</li>
                                 <li>
-                                    <strong>PERSETUJUAN PELAYANAN KESEHATAN.</strong>4. Saya memberikan persetujuan kepada
-                                    RSIA Aisyiyah Pekajangan beserta dokter, perawat dan tenaga kesehatan lainnya
-                                    untuk memberikan pelayanan berupa pemeriksaan umum, laboratorium, radiologi, terapi,
-                                    tindakan medis maupun pelayanan
-                                    lain sesuai indikasimedis.
-
+                                    <strong>PERSETUJUAN PELAYANAN KESEHATAN.</strong> Saya menyetujui dan memberikan
+                                    persetujuan
+                                    untuk
+                                    mendapat
+                                    pelayanan kesehatan di RSIA Aisyiyah Pekajangan dan dengan ini saya meminta dan
+                                    memberikan
+                                    kuasa
+                                    kepada
+                                    RSIA Aisyiyah Pekajangan, dokter, perawat dan tenaga kesehatan lainnya untuk memberikan
+                                    asuhan
+                                    perawatan,
+                                    pemeriksaan fisik dan melakukan prosedur diagnostik, radiologi dan/ atau terapi dan
+                                    tatalaksana
+                                    sesuai
+                                    pertimbangan dokter yang diperlukan atau disarankan pada perawatan saya. Hal ini
+                                    mencakup
+                                    seluruh
+                                    pemeriksaan dan
+                                    prosedur diagnostik rutin, termasuk x-ray, pemberian dan atau tindakan medis serta
+                                    penyuntikan dan
+                                    prosedur invasif seperti infus, NGT, DC, dan prosedur invasif lainnya, produk farmasi
+                                    dan
+                                    obat-obatan,
+                                    pemasangan alat
+                                    kesehatan (kecuali yang membutuhkan persetujuan khusus/ tertulis), dan pengambilan darah
+                                    untuk
+                                    pemeriksaan
+                                    laboratorium atau pemeriksaan patologi yang dibutuhkan untuk pengobatan dan tindakan
+                                    yang
+                                    aman.
                                 </li>
                                 <li>
                                     <strong>PELAYANAN KEROHANIAN.</strong> Saya memahami pelayanan kerohanian di RSIA
@@ -199,16 +230,27 @@
                                             saya.</li>
                                     </ul>
                                 </li>
-                                <li><strong>BARANG PRIBADI.</strong>Saya setuju untuk tidak membawa barang-barang berharga
-                                    yang tidak diperlukan (perhiasan, elektronik, dll) selama masa
-                                    perawatan. Saya memahami rumah sakit tidak bertanggung jawab atas kehilangan, kerusakan
-                                    atau pencurian barang berharga
+                                <li><strong>BARANG PRIBADI.</strong> Saya setuju untuk tidak membawa barang-barang berharga
+                                    yang
+                                    tidak
+                                    diperlukan (seperti:
+                                    perhiasan, elektronik, dll) selama dalam perawatan. Saya memahami menyetujui bahwa Rumah
+                                    Sakit tidak
+                                    bertanggung jawab atas semua kehilangan, kerusakan atau pencurian barang-barang berharga
                                     milik saya.
+                                    Saya memahami apabila saya membutuhkan perlindungan barang berharga, rumah sakit
+                                    memiliki
+                                    fasilitas
+                                    penitipan barang
+                                    berharga dan rumah sakit hanya bertanggung jawab atas barang berharga yang dititipkan.
                                 </li>
                                 <li>
-                                    <strong>FASILITAS RUMAH SAKIT.</strong> Saya bertanggung jawab atas kerusakan fasilitas
-                                    rumah sakit yang saya sebabkan termasuk fasilitas umum dan
-                                    fasilitas/alat medis.
+                                    <strong>FASILITAS RUMAH SAKIT.</strong> Saya mengerti dan memahami jika terjadi
+                                    kerusakan
+                                    yang
+                                    disebabkan oleh
+                                    pasien maka menjadi tanggung jawab pasien termasuk fasilitas umum dan fasilitas/ alat
+                                    medis.
                                 </li>
                                 <li>
                                     <strong>HASIL PELAYANAN.</strong> Saya menyadari bahwa praktek kedokteran bukanlah ilmu
@@ -248,6 +290,7 @@
                                     Aisyiyah Pekajangan
                                 </li>
                             </ol>
+                           </div>
                         </div>
                         <div class="tab-pane fade" id="pembiayaan">
                             <h4 class="text-center mt-3">
@@ -274,7 +317,7 @@
                                     <tr>
                                         <td>Hubungan dengan Pasien</td>
                                         <td>:</td>
-                                        <td id="png_jawab"></td>
+                                        <td class="png_jawab"></td>
                                     </tr>
                                 </table>
                                 <p class="mt-3">Menyatakan bahwa saya memberikan <b>PERSETUJUAN</b> terhadap diri saya/
@@ -285,17 +328,17 @@
                                     <tr>
                                         <td width="20%">Nama</td>
                                         <td>:</td>
-                                        <td id="nama"></td>
+                                        <td class="png_jawab"></td>
                                     </tr>
                                     <tr>
                                         <td>Tanggal Lahir</td>
                                         <td>:</td>
-                                        <td id="tgl_lhr"></td>
+                                        <td id="tgl_lhrpj"></td>
                                     </tr>
                                     <tr>
                                         <td>Alamat</td>
                                         <td>:</td>
-                                        <td class="alamat"></td>
+                                        <td class="alamatpj"></td>
                                     </tr>
                                 </table>
                                 <p class="mt-3">
@@ -305,12 +348,12 @@
                                     <tr>
                                         <td>Dokter yang memeriksa di UGD</td>
                                         <td>:</td>
-                                        <td id="dokter_ugd"></td>
+                                        <td class="dokter_ugd"></td>
                                     </tr>
                                     <tr>
                                         <td>Dokter yanng merawat (DPJP)</td>
                                         <td>:</td>
-                                        <td id="dokter_dpjp"></td>
+                                        <td class="dokter_dpjp"></td>
                                     </tr>
                                 </table>
                                 <p class="mt-3">
@@ -562,14 +605,16 @@
                                 class="border rounded bg-light d-flex justify-content-center align-items-center"
                                 style="height:220px;">
 
-                                {{-- <img class="img-fluid previewSignature d-none" style="max-height:200px;"
-                                    alt="Preview Tanda Tangan" src=""> --}}
+                                <img class="img-fluid previewSignature d-none" style="max-height:200px;"
+                                    alt="Preview Tanda Tangan" src="">
 
-                                <img class="img-fluid previewSignature" style="max-height:200px;" alt="Preview Tanda Tangan"
+                                {{-- <img class="img-fluid previewSignature" style="max-height:200px;"
+                                    alt="Preview Tanda Tangan"
                                     src="data:image/png;base64,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">
+                                --}}
 
 
-                                <span class="placeholderSignature text-muted d-none">
+                                <span class="placeholderSignature text-muted">
                                     Belum ada tanda tangan
                                 </span>
 
@@ -620,8 +665,10 @@
 
                     </div>
 
-                    <input type="hidden" class="signature_base64"
+                    {{-- <input type="hidden" class="signature_base64"
                         value="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">
+                    --}}
+                    <input type="hidden" class="signature_base64" value="">
                     <input type="hidden" class="reference_id" id="reference_id" value="12345">
                     <input type="hidden" class="signed_at" value="{{ now() }}">
                     <input type="hidden" class="signatory_first" value="Nama Pasien">
@@ -632,6 +679,10 @@
                     <button type="button" id="btnSaveSignature" class="btn btn-success btn-sm">
                         <i class="bi bi-check-circle me-1"></i>
                         Simpan
+                    </button>
+                    <button type="button" id="btnCaptureSignature" class="btn btn-warning btn-sm" onclick="captureSignature()">
+                        <i class="bi bi-pen me-1"></i>
+                        Capture
                     </button>
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal"
                         aria-label="Close">
@@ -696,11 +747,7 @@
 
                 console.log("SigCtl OK");
 
-                // ===========================
-                // Masukkan licence di sini
-                // ===========================
-                // sigCtl.PutLicence(, onSigCtlPutLicence);
-                sigCtl.PutLicence("eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI3YmM5Y2IxYWIxMGE0NmUxODI2N2E5MTJkYTA2ZTI3NiIsImV4cCI6MjE0NzQ4MzY0NywiaWF0IjoxNTYwOTUwMjcyLCJyaWdodHMiOlsiU0lHX1NES19DT1JFIiwiU0lHQ0FQVFhfQUNDRVNTIl0sImRldmljZXMiOlsiV0FDT01fQU5ZIl0sInR5cGUiOiJwcm9kIiwibGljX25hbWUiOiJTaWduYXR1cmUgU0RLIiwid2Fjb21faWQiOiI3YmM5Y2IxYWIxMGE0NmUxODI2N2E5MTJkYTA2ZTI3NiIsImxpY191aWQiOiJiODUyM2ViYi0xOGI3LTQ3OGEtYTlkZS04NDlmZTIyNmIwMDIiLCJhcHBzX3dpbmRvd3MiOltdLCJhcHBzX2lvcyI6W10sImFwcHNfYW5kcm9pZCI6W10sIm1hY2hpbmVfaWRzIjpbXX0.ONy3iYQ7lC6rQhou7rz4iJT_OJ20087gWz7GtCgYX3uNtKjmnEaNuP3QkjgxOK_vgOrTdwzD-nm-ysiTDs2GcPlOdUPErSp_bcX8kFBZVmGLyJtmeInAW6HuSp2-57ngoGFivTH_l1kkQ1KMvzDKHJbRglsPpd4nVHhx9WkvqczXyogldygvl0LRidyPOsS5H2GYmaPiyIp9In6meqeNQ1n9zkxSHo7B11mp_WXJXl0k1pek7py8XYCedCNW5qnLi4UCNlfTd6Mk9qz31arsiWsesPeR9PN121LBJtiPi023yQU8mgb9piw_a-ccciviJuNsEuRDN3sGnqONG3dMSA", function (sigCtlV, status) {
+                sigCtl.PutLicence("{{ env('WACOM_SIGCTL_LICENCE') }}", function (sigCtlV, status) {
 
                     if (status !== wgssSignatureSDK.ResponseStatus.OK) {
                         console.error("Licence gagal", status);
@@ -750,91 +797,47 @@
 
         }
 
-        // ==========================================================
-        // CAPTURE
-        // ==========================================================
         function captureSignature() {
-
-            if (!wgssSignatureSDK.running) {
-                alert("SigCaptX belum berjalan.");
+            if (!wgssSignatureSDK || !wgssSignatureSDK.running) {
+                alert("Service SigCaptX belum berjalan.");
+                return;
+            }
+            if (!sigCtl || !dynCapt) {
+                alert("Wacom belum diinisialisasi sepenuhnya.");
                 return;
             }
 
-            if (!sigCtl || !dynCapt || !sigObj) {
-                alert("Wacom belum selesai diinisialisasi.");
-                return;
-            }
+            const nama = $('.lblSigner').text() || "Pasien";
+            const alasan = "Harap tanda tangan";
+            console.log("Memulai Capture...");
 
             dynCapt.Capture(
-                sigCtl,
-                "Karyawan",
-                "Harap tanda tangan",
-                null,
-                null,
+                sigCtl, nama, alasan, null, null,
                 function (dynCaptV, sigObjV, status) {
-
-                    console.log("Capture Status :", status);
-
+                    console.log("Capture callback :", status);
                     if (status === wgssSignatureSDK.DynamicCaptureResult.DynCaptOK) {
-
-                        const flags =
-                            wgssSignatureSDK.RBFlags.RenderOutputBase64 |
+                        const flags = wgssSignatureSDK.RBFlags.RenderOutputBase64 |
                             wgssSignatureSDK.RBFlags.RenderBackgroundTransparent |
                             wgssSignatureSDK.RBFlags.RenderColor32BPP |
                             wgssSignatureSDK.RBFlags.RenderColorAntiAlias;
 
-                        console.log("Flags:", flags);
-
-
                         sigObjV.RenderBitmap(
-                            "webp",
-                            400,
-                            180,
-                            0.4,
-                            0xFF0000,
-                            0x000000,
-                            flags,
-                            0,
-                            0,
-                            function (sigObjR, bmpObj, renderStatus) {
-
-                                console.log("Render Status:", renderStatus);
-
+                            "png", 400, 180, 0.6, 0x00000000, 0x00FFFFFF, flags, 0, 0,
+                            function (sigObj, bmpObj, renderStatus) {
                                 if (renderStatus === wgssSignatureSDK.ResponseStatus.OK) {
-
                                     $(".signature_base64").val(bmpObj);
-
-                                    $(".previewSignature").attr(
-                                        "src",
-                                        "data:image/png;base64," + bmpObj
-                                    );
-
-                                    console.log("Signature Ready");
-
-                                    invertImageBase64(originalBase64, function (newBase64) {
-                                        console.log("data:image/png;base64," + bmpObj);
-                                        // Anda dapat menetapkan ini ke tag img: document.getElementById('myImg').src = newBase64;
-                                    });
-
+                                    $(".previewSignature").attr("src", "data:image/png;base64," + bmpObj).removeClass('d-none');
+                                    $(".placeholderSignature").addClass("d-none");
                                 } else {
-
-                                    alert("Render bitmap gagal.");
-
+                                    alert("Render Bitmap gagal.");
                                 }
-
                             }
                         );
-
                     } else if (status === wgssSignatureSDK.DynamicCaptureResult.DynCaptCancel) {
-
-                        alert("Tanda tangan dibatalkan.");
-
+                        console.log('Tanda Tangan Dibatalkan');
                     } else {
-
                         alert("Capture gagal. Status = " + status);
-
                     }
-
                 }
             );
 
@@ -917,131 +920,58 @@
 
         });
 
+        $('#modalGeneralConsent').on('hidden.bs.modal', function () {
+            $('#formInfoAdministrasiPasien')[0].reset();
+            $('#tabAdministrasiPendaftaran a[href="#umum"]').tab('show'); // Kembalikan ke tab awal
+            $('#pdfFrame').attr('src', '');
+
+    // Tampilkan kembali tombol proses (kondisi awal)
+    $('.previewPersetujuanUmum').removeClass('d-none');
+    $('.documentPersetujuanUmum').addClass('d-none');
+        });
+
+        function resetSignatureState() {
+            $('.signature_base64').val('');
+            $('.previewSignature').attr('src', '').addClass('d-none');
+            $('.placeholderSignature').removeClass('d-none');
+        }
+
+        // 2. Reset state otomatis setiap kali modal ditutup
+        $('#modalSignature').on('hidden.bs.modal', function () {
+            resetSignatureState();
+        });
+
         tabPembiayaanKelas.on('shown.bs.tab', function () {
             console.log("Tab Pembiayaan Kelas ditampilkan.");
             // Lakukan sesuatu ketika tab Pembiayaan Kelas ditampilkan
         });
 
-        $('#btnCapture').click(function () {
+        $('#btnCapture').off('click').on('click', function () {
             $('#modalSignature').modal('show');
+            let tabActive = $('#tabAdministrasiPendaftaran').find('.nav-link.active');
+            $('.lblReason').text(tabActive.text());
 
-            tabActive = $('#tabAdministrasiPendaftaran').find('.nav-link.active')
-            labelTabActive = tabActive.text();
-            targetTabActive = tabActive.attr('href');
-            $('.lblReason').text(labelTabActive);
+            captureSignature();
+        });
 
-            if (!wgssSignatureSDK || !wgssSignatureSDK.running) {
-                alert("Service SigCaptX belum berjalan.");
-                return;
-            }
-
-            if (!sigCtl) {
-                alert("SigCtl belum diinisialisasi.");
-                return;
-            }
-
-            if (!dynCapt) {
-                alert("DynamicCapture belum diinisialisasi.");
-                return;
-            }
-
-
-
-
-
-            const nama = "Karyawan";
-            const alasan = "Harap tanda tangan";
-
-            console.log("Memulai Capture...");
-
-            dynCapt.Capture(
-                sigCtl,
-                nama,
-                alasan,
-                null,
-                null,
-                function (dynCaptV, sigObjV, status) {
-
-                    console.log("Capture callback :", status);
-
-                    if (status === wgssSignatureSDK.DynamicCaptureResult.DynCaptOK) {
-
-                        console.log("Tanda tangan berhasil.");
-                        const flags =
-                            wgssSignatureSDK.RBFlags.RenderOutputBase64 |
-                            wgssSignatureSDK.RBFlags.RenderBackgroundTransparent |
-                            wgssSignatureSDK.RBFlags.RenderColor32BPP |
-                            wgssSignatureSDK.RBFlags.RenderColorAntiAlias;
-
-
-                        sigObjV.RenderBitmap(
-                            "webp",
-                            // 400,
-                            // 180,
-                            // 0.3,
-                            // 0x00FFFFFF, // Background putih
-                            // 0x00000000, // Tinta hitam
-                            // flags,
-                            // 0,
-                            // 0,
-                            function (sigObj, bmpObj, renderStatus) {
-
-                                console.log("Render status :", renderStatus);
-
-                                if (renderStatus === wgssSignatureSDK.ResponseStatus.OK) {
-
-                                    $(".placeholderSignature").addClass("d-none");
-
-                                    console.log("Preview berhasil dibuat.");
-
-                                    const oriBase64 = "data:image/png;base64," + bmpObj;
-                                    invertImageBase64(oriBase64, function (newBase64) {
-                                        const rawBase64 = newBase64.split(",")[1];
-
-                                        $(".signature_base64").val(rawBase64);
-                                        console.log(newBase64);
-                                        $(".previewSignature")
-                                            .removeClass("d-none")
-                                            .attr("src", newBase64);
-
-                                        // Anda dapat menetapkan ini ke tag img: document.getElementById('myImg').src = newBase64;
-                                    });
-
-                                } else {
-                                    alert("Render Bitmap gagal.");
-                                }
-
-                            }
-                        );
-
-                    } else if (status === wgssSignatureSDK.DynamicCaptureResult.DynCaptCancel) {
-
-                        alert("Penandatanganan dibatalkan.");
-
-                    } else {
-
-                        console.error("Capture gagal. Status :", status);
-
-                        alert("Capture gagal. Status = " + status);
-
-                    }
-
-                }
-            );
-
-        })
-
-        $('#btnSaveSignature').click(function () {
-
-            // const signatureBase64 = $(".signature_base64").val();
+        // 6. Perbaikan bagian Simpan Data
+        $('#btnSaveSignature').off('click').on('click', function () {
             const no_rawat = $('#formInfoAdministrasiPasien').find('#no_rawat').val();
             const signatureBase64 = $(".signature_base64").val();
             const signedAt = $('#signed_at').val();
 
             if (!signatureBase64) {
-                alert("Tanda tangan belum diambil.");
+                Swal.fire({ icon: 'warning', title: 'Perhatian', text: 'Tanda tangan belum diambil.' });
                 return;
             }
+
+            Swal.fire({
+                title: 'Menyimpan...',
+                html: 'Mohon tunggu sebentar',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
 
             $.ajax({
                 url: "{{ route('persetujuan-umum.save') }}",
@@ -1051,37 +981,24 @@
                     no_rawat: no_rawat,
                     signed_at: signedAt,
                 }
-            }).done(function (response) {
+            })
+                .done(function (response) {
+                    Swal.fire({ icon: 'success', title: 'Berhasil', text: response.message });
 
-                Swal.fire(
-                    'Berhasil',
-                    response.message,
-                    'success'
-                );
+                    $('.previewPersetujuanUmum').addClass('d-none');
+                    // Reload atau update src iframe agar file baru muncul
+                    updateViewPersetujuan(no_rawat);
+                    // Hapus kode .empty() yang merusak DOM
+                    $('#modalSignature').modal('hide');
+                    // $('#modalGeneralConsent').modal('hide');
 
-                // reset hidden input
-                $('.signature_base64').val('');
-
-                // reset preview
-                $('#signaturePreview').attr('src', '');
-
-                // kosongkan body
-                $('#modalSignature .modal-body').empty();
-
-                // tutup modal
-                $('#modalSignature').modal('hide');
-
-                $('#tb_daftar_pasien').DataTable().destroy();
-                tbDaftarPasien();
-
-            }).fail(function (xhr, status, error) {
-                swal.fire(
-                    'Gagal',
-                    xhr.responseJSON.message,
-                    'error'
-                )
-            });
-        })
+                    // Cukup reload datatable, tidak perlu di-destroy lalu dirender ulang dari 0
+                    $('#tb_daftar_pasien').DataTable().ajax.reload(null, false);
+                })
+                .fail(function (xhr) {
+                    Swal.fire({ icon: 'error', title: 'Gagal', text: xhr.responseJSON?.message ?? 'Terjadi kesalahan.' });
+                });
+        });
 
         function tbDaftarPasien() {
 
@@ -1116,13 +1033,13 @@
                         title: 'Pasien',
                         render: function (data, type, row) {
                             return `
-                                                                <div class="d-flex align-items-center">
-                                                                            ${setIconGender(row.pasien.jk)}
-                                                                            <div class="ms-2">
-                                                                                <b>${row.pasien.nm_pasien}</b><br>
-                                                                                <small>${row.no_rkm_medis}</small>
-                                                                            </div>
-                                                                </div>`;
+                                                        <div class="d-flex align-items-center">
+                                                                    ${setIconGender(row.pasien.jk)}
+                                                                    <div class="ms-2">
+                                                                        <b>${row.pasien.nm_pasien}</b><br>
+                                                                        <small>${row.no_rkm_medis}</small>
+                                                                    </div>
+                                                        </div>`;
                         }
                     },
                     {
@@ -1152,13 +1069,13 @@
                             }
 
                             return `
-                                                                    <button class="btn btn-primary btn-sm"
-                                                                        onclick="modalGeneralConsent('${row.no_rawat}')"
-                                                                        data-id="${row.no_rawat}"
-                                                                        data-rm="${row.no_rkm_medis}">
-                                                                        Proses
-                                                                    </button>
-                                                                `;
+                                                            <button class="btn btn-primary btn-sm"
+                                                                onclick="modalGeneralConsent('${row.no_rawat}')"
+                                                                data-id="${row.no_rawat}"
+                                                                data-rm="${row.no_rkm_medis}">
+                                                                Proses
+                                                            </button>
+                                                        `;
                         }
                     }
                 ],
@@ -1272,12 +1189,45 @@
                 $('.lblSigner').text(response.p_jawab);
                 $('.lblNoRawat').text(no_rawat);
 
+                updateViewPersetujuan(no_rawat)
+
             });
 
             $('#modalGeneralConsent').modal('show');
 
 
         }
+
+        function updateViewPersetujuan(no_rawat) {
+
+                $('#loadingPersetujuan').removeClass('d-none');
+                $('.documentPersetujuanUmum').addClass('d-none');
+                $('.previewPersetujuanUmum').addClass('d-none');
+
+                $.ajax({
+                    url: "{{ route('persetujuan-umum.get') }}",
+                    data: {
+                        no_rawat: no_rawat
+                    },
+                    success: function (response) {
+
+                        if (response.exists && response.file_url) {
+                            $('#pdfFrame').attr('src', response.file_url);
+                            $('.documentPersetujuanUmum').removeClass('d-none');
+                        } else {
+                            $('.previewPersetujuanUmum').removeClass('d-none');
+                        }
+
+                    },
+                    error: function () {
+                        alert('Gagal memuat data.');
+                    },
+                    complete: function () {
+                        $('#loadingPersetujuan').addClass('d-none');
+                    }
+                });
+
+            }
 
 
     </script>

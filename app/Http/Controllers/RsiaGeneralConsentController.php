@@ -82,6 +82,17 @@ class RsiaGeneralConsentController extends Controller
 
         try {
 
+            $exist = DB::table('rsia_persetujuan_umum')
+                ->where('no_rawat', $request->no_rawat)
+                ->exists();
+
+            if ($exist) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Persetujuan untuk No. Rawat ini sudah ada.'
+                ], 400); // 400 Bad Request
+            }
+
             $data = trim($request->signature);
             if (strpos($data, 'base64,') !== false) {
                 $parts = explode('base64,', $data);
@@ -136,8 +147,7 @@ class RsiaGeneralConsentController extends Controller
             }
 
             $uuid = (string) Str::uuid();
-            $verifyUrl = route('persetujuan-umum.verify', $uuid);
-
+            $verifyUrl = config('app.verify_docs') . '/' . $uuid;
             $pdf = Pdf::loadView(
                 'content.print.persetujuan_umum',
                 [
@@ -203,9 +213,11 @@ class RsiaGeneralConsentController extends Controller
             ], 404);
         }
 
-        $filePath = Storage::disk('public_upload')->path(
-            'general-consent/' . $consent->file
+        $filePath = Storage::disk('general_consent')->path(
+            $consent->file
         );
+
+        $fileUrl = Storage::disk('general_consent')->url($consent->file);
 
         if (!file_exists($filePath)) {
             return response()->json([
@@ -230,9 +242,22 @@ class RsiaGeneralConsentController extends Controller
                 'no_rawat' => $consent->no_rawat,
                 'nip' => $consent->nip,
                 'signed_at' => $consent->signed_at,
-                'file_url' => asset('general-consent/' . $consent->file)
+                'file_url' => $fileUrl
             ]
         ]);
+    }
+    public function get(Request $request)
+    {
+        $data = DB::table('rsia_persetujuan_umum')->where('no_rawat', $request->no_rawat)->first();
+
+        if ($data) {
+            return response()->json([
+                'exists' => true,
+                'file_url' => asset('storage/general-consent/' . $data->file)
+            ]);
+        }
+
+        return response()->json(['exists' => false]);
     }
 
 }

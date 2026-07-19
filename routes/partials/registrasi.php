@@ -5,6 +5,9 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\RegPeriksaController;
 
 Route::middleware('auth')->group(function () {
+    // Route::get('registrasi', function () {
+    //     dd(config('app.verify_docs'));
+    // });
     Route::get('registrasi', [RegPeriksaController::class, 'index']);
     Route::get('registrasi/ambil', [RegPeriksaController::class, 'ambil']);
     Route::get('registrasi/ambil/table', [RegPeriksaController::class, 'ambilTable']);

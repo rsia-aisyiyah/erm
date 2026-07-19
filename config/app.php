@@ -245,5 +245,6 @@ return [
     'apotekUserKey' => env('APOTEK_USER_KEY'),
     'apotekUrl' => env('APOTEK_URL'),
     'kyc' => env('APP_KYC'),
+    'verify_docs' => env('VERIFY_DOCS'),
 
 ];

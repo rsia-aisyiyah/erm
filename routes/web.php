@@ -140,6 +140,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('persetujuan/ambil', [RsiaGeneralConsentController::class, 'ambil']);
 	Route::post('persetujuan-umum/save', [RsiaGeneralConsentController::class, 'save'])->name('persetujuan-umum.save');
 	Route::get('persetujuan-umum/verify/{uuid}', [RsiaGeneralConsentController::class, 'verify'])->name('persetujuan-umum.verify');
+	Route::get('persetujuan-umum/get', [RsiaGeneralConsentController::class, 'get'])->name('persetujuan-umum.get');
 	Route::post('persetujuan/ttd', [RsiaGeneralConsentController::class, 'simpanTtd']);
 	Route::delete('persetujuan/hapus', [RsiaGeneralConsentController::class, 'delete']);
 

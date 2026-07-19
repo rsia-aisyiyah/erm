@@ -4,7 +4,7 @@
 @include('content.lab.modal_hasil_permintaan_lab')
 
 <div class="position-fixed top-0 end-0 pt-3 pe-3 pb-3"
-    style="z-index: 1080; margin-top: 50px; max-width: 360px; width: 100%;">
+    style="z-index: 1000; margin-top: 50px; max-width: 360px; width: 100%;">
 
     {{-- 1. Alert SBAR --}}
     @if($notification->getSbarCount() > 0)

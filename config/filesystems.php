@@ -57,8 +57,8 @@ return [
         ],
         'general_consent' => [
             'driver' => 'local',
-            'root' => storage_path('general-consent'),
-            'url' => env('APP_URL') . 'app/public/general-consent',
+            'root' => storage_path('app/public/general-consent'),
+            'url' => env('APP_URL') . 'public/storage/general-consent',
             'visibility' => 'public',
             'throw' => false,
         ],
