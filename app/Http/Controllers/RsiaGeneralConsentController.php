@@ -248,18 +248,25 @@ class RsiaGeneralConsentController extends Controller
             ]
         ]);
     }
+
     public function get(Request $request)
     {
-        $data = DB::table('rsia_persetujuan_umum')->where('no_rawat', $request->no_rawat)->first();
+        $data = DB::table('rsia_persetujuan_umum')
+            ->where('no_rawat', $request->no_rawat)
+            ->first();
 
-        if ($data) {
-            return response()->json([
-                'exists' => true,
-                'file_url' => asset('storage/general-consent/' . $data->file)
-            ]);
+        if (!$data) {
+            return response()->json(['exists' => false]);
         }
 
-        return response()->json(['exists' => false]);
+        $exists = Storage::disk('public')
+            ->exists('general-consent/' . $data->file);
+
+        return response()->json([
+            'exists' => $exists,
+            'file_exists' => $exists,
+            'file_url' => asset('storage/general-consent/' . $data->file),
+        ]);
     }
 
 }
