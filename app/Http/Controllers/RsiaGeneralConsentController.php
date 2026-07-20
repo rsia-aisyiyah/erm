@@ -112,7 +112,9 @@ class RsiaGeneralConsentController extends Controller
                 $binary
             );
 
-            $signaturePath = asset('ttd/' . $fileName);
+            $signaturePath = Storage::disk('public_upload')->path(
+                'ttd/' . $fileName
+            );
 
             $reg = DB::table('reg_periksa')
                 ->join(
@@ -147,7 +149,7 @@ class RsiaGeneralConsentController extends Controller
             }
 
             $uuid = (string) Str::uuid();
-            $verifyUrl = config('app.verify_docs') . '/' . $uuid;
+            $verifyUrl = config('app.verify_docs') . '/persetujuan_umum/' . $uuid;
             $pdf = Pdf::loadView(
                 'content.print.persetujuan_umum',
                 [

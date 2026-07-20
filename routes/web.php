@@ -139,7 +139,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('persetujuan/tambah', [RsiaGeneralConsentController::class, 'tambah']);
 	Route::get('persetujuan/ambil', [RsiaGeneralConsentController::class, 'ambil']);
 	Route::post('persetujuan-umum/save', [RsiaGeneralConsentController::class, 'save'])->name('persetujuan-umum.save');
-	Route::get('persetujuan-umum/verify/{uuid}', [RsiaGeneralConsentController::class, 'verify'])->name('persetujuan-umum.verify');
+
 	Route::get('persetujuan-umum/get', [RsiaGeneralConsentController::class, 'get'])->name('persetujuan-umum.get');
 	Route::post('persetujuan/ttd', [RsiaGeneralConsentController::class, 'simpanTtd']);
 	Route::delete('persetujuan/hapus', [RsiaGeneralConsentController::class, 'delete']);
@@ -412,6 +412,7 @@ Route::get('/log/track', [\App\Http\Controllers\TrackerSqlController::class, 'ge
 
 Route::get('/test', [\App\Http\Controllers\PermintaanLabPAController::class, 'get']);
 //Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}', [PoliklinikController::class, 'poliPasien']);
+Route::get('/verify/persetujuan-umum/{uuid}', [RsiaGeneralConsentController::class, 'verify'])->name('verify.persetujuan-umum');
 
 
 require __DIR__ . '/partials/asesmen_nyeri.php';
