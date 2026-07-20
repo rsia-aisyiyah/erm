@@ -262,10 +262,13 @@ class RsiaGeneralConsentController extends Controller
         $exists = Storage::disk('public')
             ->exists('general-consent/' . $data->file);
 
+        $url = asset('storage/general-consent/' . $data->file);
+
         return response()->json([
             'exists' => $exists,
-            'file_exists' => $exists,
-            'file_url' => asset('storage/general-consent/' . $data->file),
+            'local_file' => public_path('storage/general-consent/' . $data->file),
+            'local_exists' => file_exists(public_path('storage/general-consent/' . $data->file)),
+            'url' => $url,
         ]);
     }
 
