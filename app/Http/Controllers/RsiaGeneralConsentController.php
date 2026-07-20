@@ -263,7 +263,7 @@ class RsiaGeneralConsentController extends Controller
 
         return response()->json([
             'exists' => true,
-            'file_url' => url('storage/general-consent/' . $data->file),
+            'file_url' => url('public/storage/general-consent/' . $data->file),
         ]);
     }
 
