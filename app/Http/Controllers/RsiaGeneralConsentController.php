@@ -204,6 +204,7 @@ class RsiaGeneralConsentController extends Controller
 
     function verify(Request $request, $uuid)
     {
+        return view('content.verify_dokumen');
         $consent = DB::table('rsia_persetujuan_umum')
             ->where('uuid', $uuid)
             ->first();
