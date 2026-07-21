@@ -77,7 +77,7 @@ class RsiaGeneralConsentController extends Controller
     {
         $request->validate([
             'signature' => 'required',
-            'no_rawat' => 'required'
+            'no_rawat' => 'required',
         ]);
 
         try {
@@ -90,32 +90,41 @@ class RsiaGeneralConsentController extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Persetujuan untuk No. Rawat ini sudah ada.'
-                ], 400); // 400 Bad Request
+                ], 400);
             }
 
+            // Ambil data base64
             $data = trim($request->signature);
+
             if (strpos($data, 'base64,') !== false) {
-                $parts = explode('base64,', $data);
-                $data = end($parts);
+                $data = explode('base64,', $data)[1];
             }
 
             $binary = base64_decode($data);
 
             if ($binary === false) {
-                throw new Exception('Signature base64 tidak valid.');
+                throw new \Exception('Signature base64 tidak valid.');
             }
 
+            // Pastikan folder ttd ada
+            if (!Storage::disk('public')->exists('ttd')) {
+                Storage::disk('public')->makeDirectory('ttd');
+            }
+
+            // Simpan sementara tanda tangan
             $fileName = Str::uuid() . '.png';
 
-            Storage::disk('public_upload')->put(
+            Storage::disk('public')->put(
                 'ttd/' . $fileName,
                 $binary
             );
 
-            $signaturePath = Storage::disk('public_upload')->path(
+            // Path absolut untuk DomPDF
+            $signaturePath = Storage::disk('public')->path(
                 'ttd/' . $fileName
             );
 
+            // Ambil data pasien
             $reg = DB::table('reg_periksa')
                 ->join(
                     'pasien',
@@ -141,43 +150,47 @@ class RsiaGeneralConsentController extends Controller
                     'dokter.nm_dokter',
                     'poliklinik.nm_poli'
                 )
-                ->where('no_rawat', $request->no_rawat)
+                ->where('reg_periksa.no_rawat', $request->no_rawat)
                 ->first();
 
             if (!$reg) {
-                throw new Exception('Data pasien tidak ditemukan.');
+                throw new \Exception('Data pasien tidak ditemukan.');
             }
 
+            // Generate PDF
             $uuid = (string) Str::uuid();
-            $verifyUrl = config('app.verify_docs') . '/persetujuan_umum/' . $uuid;
+
+            $verifyUrl = config('app.verify_docs') . '/dokumen/verify/' . $uuid;
+
             $pdf = Pdf::loadView(
                 'content.print.persetujuan_umum',
                 [
-                    'petugas' => session()->get('pegawai'),
+                    'petugas' => session('pegawai'),
                     'reg' => $reg,
                     'signature' => $signaturePath,
                     'verifyUrl' => $verifyUrl,
                 ]
             );
 
-            $pdfName = 'GC_' . $uuid . '.pdf';
+            $pdfName = 'PU_' . $uuid . '.pdf';
 
             Storage::disk('general_consent')->put(
                 $pdfName,
                 $pdf->output()
             );
 
-            Storage::disk('public_upload')->delete(
+            // Hapus file tanda tangan sementara
+            Storage::disk('public')->delete(
                 'ttd/' . $fileName
             );
 
-
+            // Generate hash PDF
             $hash = hash_file(
                 'sha256',
-                Storage::disk('general_consent')
-                    ->path($pdfName)
+                Storage::disk('general_consent')->path($pdfName)
             );
 
+            // Simpan ke database
             DB::table('rsia_persetujuan_umum')->insert([
                 'uuid' => $uuid,
                 'no_rawat' => $request->no_rawat,
@@ -189,66 +202,24 @@ class RsiaGeneralConsentController extends Controller
 
             return response()->json([
                 'status' => true,
-                'pdf' => $pdfName
+                'pdf' => $pdfName,
             ]);
 
         } catch (\Throwable $e) {
 
+            // Bersihkan file sementara jika masih ada
+            if (isset($fileName) && Storage::disk('public')->exists('ttd/' . $fileName)) {
+                Storage::disk('public')->delete('ttd/' . $fileName);
+            }
+
             return response()->json([
                 'status' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
-
         }
     }
 
-    function verify(Request $request, $uuid)
-    {
-        return view('content.verify_dokumen');
-        $consent = DB::table('rsia_persetujuan_umum')
-            ->where('uuid', $uuid)
-            ->first();
 
-        if (!$consent) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Persetujuan umum tidak ditemukan.'
-            ], 404);
-        }
-
-        $filePath = Storage::disk('general_consent')->path(
-            $consent->file
-        );
-
-        $fileUrl = Storage::disk('general_consent')->url($consent->file);
-
-        if (!file_exists($filePath)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'File persetujuan umum tidak ditemukan.'
-            ], 404);
-        }
-
-        $hash = hash_file('sha256', $filePath);
-
-        if ($hash !== $consent->hash) {
-            return response()->json([
-                'status' => false,
-                'message' => 'File persetujuan umum telah diubah atau rusak.'
-            ], 400);
-        }
-
-        return response()->json([
-            'status' => true,
-            'message' => 'File persetujuan umum valid.',
-            'data' => [
-                'no_rawat' => $consent->no_rawat,
-                'nip' => $consent->nip,
-                'signed_at' => $consent->signed_at,
-                'file_url' => $fileUrl
-            ]
-        ]);
-    }
 
     public function get(Request $request)
     {

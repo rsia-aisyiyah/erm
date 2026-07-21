@@ -78,7 +78,9 @@ use App\Http\Controllers\SkriningTbController;
 use App\Http\Controllers\SuratKontrolUlangController;
 use App\Http\Controllers\TriasePemeriksaanUgd;
 use App\Http\Controllers\UgdController;
+use App\Http\Controllers\UnduhDokumenController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\VerifikasiDokumenController;
 use App\Models\AsesmenMedisIgdController;
 use Illuminate\Support\Facades\Route;
 
@@ -413,7 +415,11 @@ Route::get('/log/track', [\App\Http\Controllers\TrackerSqlController::class, 'ge
 Route::get('/test', [\App\Http\Controllers\PermintaanLabPAController::class, 'get']);
 //Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}', [PoliklinikController::class, 'poliPasien']);
 Route::get('/verify/persetujuan-umum/{uuid}', [RsiaGeneralConsentController::class, 'verify'])->name('verify.persetujuan-umum');
-
+Route::get('/dokumen/verify/{uuid}', [VerifikasiDokumenController::class, 'verify'])->name('dokumen.verify');
+Route::post('/dokumen/verifikasi-unduh', [UnduhDokumenController::class, 'verifikasi'])->name('dokumen.verifikasi-unduh');
+Route::get('/dokumen/{uuid}/unduh-file', [UnduhDokumenController::class, 'file'])
+	->middleware('signed')
+	->name('dokumen.unduh.file');
 
 require __DIR__ . '/partials/asesmen_nyeri.php';
 require __DIR__ . '/partials/pasien.php';

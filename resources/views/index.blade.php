@@ -34,7 +34,6 @@
         </div>
     </div>
     @include('content.notifikasi')
-    @include('content.verify_dokumen')
     @include('content.ranap.modal.modal_riwayat_infeksi')
     @include('content.poliklinik.modal.modal_riwayat_persalinan')
 
