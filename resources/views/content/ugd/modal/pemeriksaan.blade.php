@@ -57,22 +57,17 @@
                         <input type="hidden" id="kd_sps_dokter" name="kd_sps_dokter">
                     </div>
                 </div>
-                <ul class="nav nav-tabs" id="tab-soap-ugd" role="tablist">
+                <ul class="nav nav-tabs" id="navTabUgd" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="tab-soap" data-bs-toggle="tab"
-                            data-bs-target="#tab-soap-pane" type="button" role="tab" aria-controls="tab-soap-pane"
+                        <button class="nav-link active" id="tabSoapUgd" data-bs-toggle="tab"
+                            data-bs-target="#tabSoapPaneUgd" type="button" role="tab" aria-controls="tabSoapPaneUgd"
                             aria-selected="true">SOAP
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
-                            type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab-tabel" data-bs-toggle="tab"
-                            data-bs-target="#tab-pemeriksaan-pane" type="button" role="tab"
-                            aria-controls="tab-pemeriksaan-pane" aria-selected="false">Data
+                        <button class="nav-link" id="tabPemeriksaanUgd-tabel" data-bs-toggle="tab"
+                            data-bs-target="#tabPemeriksaanUgd-pane" type="button" role="tab"
+                            aria-controls="tabPemeriksaanUgd-pane" aria-selected="false">Data
                             Pemeriksaan
                         </button>
                     </li>
@@ -84,6 +79,11 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-tabel" data-bs-toggle="tab" data-bs-target="#tab-tabel-pane"
                             type="button" role="tab" aria-controls="tab-tabel-pane" aria-selected="false">CPPT Ranap
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
+                            type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -101,12 +101,12 @@
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
+                    <div class="tab-pane fade show active p-3" id="tabSoapPaneUgd" role="tabpanel"
                         aria-labelledby="home-tab" tabindex="0">
                         @include('content.ugd.modal.pemeriksaan.soap')
                     </div>
-                    <div class="tab-pane fade p-3" id="tab-pemeriksaan-pane" role="tabpanel" aria-labelledby="tab-tabel"
-                        tabindex="0">
+                    <div class="tab-pane fade p-3" id="tabPemeriksaanUgd-pane" role="tabpanel"
+                        aria-labelledby="tabPemeriksaanUgd-tabel" tabindex="0">
                         @include('content.ugd.modal.pemeriksaan.data')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
@@ -153,114 +153,7 @@
         const formSoapPoli = $('#formSoapPoli');
         const formInfoPasien = $('#formInfoPasien');
 
-        const tabPemeriksaanRanap = $('button[data-bs-target="#tab-tabel-pane"]')
 
-        tabPemeriksaanRanap.on('shown.bs.tab', function () {
-            const no_rawat = formInfoPasien.find('input[name="no_rawat"]').val();
-            tbSoapRanap(no_rawat);
-        })
-
-        function tbSoapUgd(noRawat) {
-            $('#tbSoapUgd').DataTable({
-                processing: true,
-                scrollX: false,
-                serverSide: true,
-                stateSave: true,
-                ordering: false,
-                paging: false,
-                info: false,
-                searching: false,
-                ajax: {
-                    url: '/erm/ugd/soap/table',
-                    data: {
-                        no_rawat: noRawat
-                    },
-                    error: (request) => {
-                        if (request.status == 401) {
-                            Swal.fire({
-                                title: 'Sesi login berakhir !',
-                                icon: 'info',
-                                text: 'Silahkan login kembali ',
-                                showConfirmButton: true,
-                                confirmButtonText: 'OK',
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = '/erm';
-                                }
-                            })
-                        }
-                    },
-                },
-                columns: [{
-                    data: null,
-                    render: (data, type, row, meta) => {
-                        button = `<button type="button" class="btn btn-primary btn-sm mb-2" onclick="ambilSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-pencil-square"></i></button>`;
-                        if (row.nip == "{{ session()->get('pegawai')->nik }}") {
-                            button += `<br/><button type="button" class="btn btn-danger btn-sm" onclick="hapusSoapRalan('${row.no_rawat}', '${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-trash3-fill"></i></button>`;
-                        }
-
-
-                        return button;
-                    },
-                },
-                {
-                    data: null,
-                    render: (data, type, row, meta) => {
-                        list = '<li><strong>' + formatTanggal(row.tgl_perawatan) + ' ' + row.jam_rawat +
-                            '</strong></li>';
-                        list += '<li> Kesadaran : ' + row.kesadaran + '</li>';
-                        $.map(row.grafik_harian, function (grafik) {
-                            if (row.tgl_perawatan == grafik.tgl_perawatan && row.jam_rawat == grafik.jam_rawat) {
-                                list += '<li> O2 : ' + grafik.o2 + '</li>';
-                            }
-                        })
-                        list += '<li> GCS : ' + row.gcs + '</li>';
-                        list += '<li> Tensi : ' + row.tensi + ' mmHg</li>';
-                        list += '<li> Nadi : ' + row.nadi + ' /mnt</li>';
-                        list += '<li> SpO2 : ' + row.spo2 + ' %</li>';
-                        list += '<li> Respirasi : ' + row.respirasi + ' /mnt</li>';
-
-                        $.map(row.grafik, (grafik) => {
-                            if (row.tgl_perawatan == grafik.tgl_perawatan && row.jam_rawat == grafik.jam_rawat) {
-                                list += '<li> Oksigen : ' + grafik.o2 + ' /mnt</li>';
-                            }
-                        })
-                        list += '<li> Suhu Tubuh : ' + row.suhu_tubuh + '  (<sup>o</sup>C)</li>';
-                        list += '<li> Tinggi : ' + row.tinggi + ' Cm</li>';
-                        list += '<li> Berat : ' + row.berat + ' Kg</li>';
-                        list += '<li> Alergi : ' + row.alergi + '</li>';
-                        html = '<ul>' + list + '</ul>';
-
-                        $.map(row.log, function (log) {
-                            if (row.tgl_perawatan === log.tgl_perawatan && row.jam_rawat === log.jam_rawat) {
-                                html += `<div class="alert alert-info" role="alert" style="padding:5px;font-size:10px"><i>Di${log.aksi.toLowerCase()} oleh : <b>${log.pegawai?.nama}</b>
-                                                                                            , ${formatTanggal(log.waktu)}
-                                                                                                </i></div>`
-                            }
-                        })
-
-                        return html;
-                    }
-                },
-                {
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        baris = '<tr><td width="5%">Petugas </td><td width="5%">:</td><td>' + row
-                            .pegawai.nama + '</td></tr>'
-                        baris += '<tr><td>Subjek </td><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
-                        baris += '<tr><td>Objek </td><td>:</td><td>' + stringPemeriksaan(row.pemeriksaan) + '</td></tr>'
-                        baris += '<tr><td>Assesment</td><td>:</td><td>' + stringPemeriksaan(row.penilaian) + '</td></tr>'
-                        baris += '<tr><td>Plan</td><td>:</td><td>' + stringPemeriksaan(row.rtl) + '</td></tr>'
-                        baris += '<tr><td>Instruksi</td><td>:</td><td>' + stringPemeriksaan(row.instruksi) + '</td></tr>'
-                        html = '<table class="table table-striped">' + baris + '</table>'
-                        return html;
-                    },
-                    name: 'soap',
-                }
-
-                ]
-            });
-        }
 
         function ambilSoapRalan(no_rawat, tgl_pemeriksaan, jam_rawat) {
             $.ajax({
@@ -307,7 +200,7 @@
                     }
                 })
 
-                var sel = document.querySelector('#tab-soap-ugd li:first-child button')
+                var sel = document.querySelector('#navTabUgd li:first-child button')
                 bootstrap.Tab.getInstance(sel).show()
             })
         }
@@ -530,5 +423,10 @@
                 }
             })
         }
+
+        $('button[data-bs-toggle="tab"][data-bs-target="#tab-tabel-pane"]').on('shown.bs.tab', function () {
+            const no_rawat = $('#formSoapUgd input[name="no_rawat"]').val()
+            tbSoapRanap(no_rawat);
+        });
     </script>
 @endpush

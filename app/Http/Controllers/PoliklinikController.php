@@ -175,4 +175,12 @@ class PoliklinikController extends Controller
             ->get()->count();
         return response()->json($status);
     }
+    public function get(Request $request)
+    {
+        $poli = Poliklinik::where('kd_poli', 'like', '%' . $request->params . '%')
+            ->orWhere('nm_poli', 'like', '%' . $request->params . '%')
+            ->where('status', '1')
+            ->get();
+        return response()->json($poli);
+    }
 }

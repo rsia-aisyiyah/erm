@@ -967,11 +967,14 @@
                 .find('input[name=total_hasil]')
                 .val(total);
         }
-       
+
         formAskepAwalObgyn.on(
             'change',
             'input[name="berjalan_a"], input[name="berjalan_b"], input[name="berjalan_c"]',
-            hitungResikoJatuh
+            function () {
+                hitungResikoJatuh(formAskepAwalObgyn)
+            }
+
         );
         formAskepAwalObgyn.find('input[name=lapor]').on('change', function (e) {
 

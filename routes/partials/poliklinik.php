@@ -11,6 +11,7 @@ use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/poliklinik', [PoliklinikController::class, 'index'])->name('poliklinik');
+    Route::get('/poliklinik/get', [PoliklinikController::class, 'get'])->name('poliklinik.get');
     Route::get('/poliklinik/dokter', [PoliklinikController::class, 'poliDokter']);
     Route::get('/poliklinik/table', [PoliklinikController::class, 'tbPoliPasien']);
     Route::get('/poliklinik/{kd_poli}', [PoliklinikController::class, 'viewPoliPasien']);

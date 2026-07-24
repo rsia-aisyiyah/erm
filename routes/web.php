@@ -229,7 +229,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('ews/maternal/{sttsRawat}/{noRawat}', [EwsMaternalController::class, 'get']);
 
 	Route::get('dokter/ambil', [DokterController::class, 'ambil']);
-	Route::get('dokter/cari', [DokterController::class, 'cari']);
+	Route::get('dokter/cari', [DokterController::class, 'cari'])->name('dokter.cari');
 
 	Route::get('asmed/kebidanan', [PenilaianMedisKebidananController::class, 'index']);
 	Route::get('asmed/ranap/anak/print', [AsesmenMedisAnakController::class, 'print']);

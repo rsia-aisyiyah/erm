@@ -78,6 +78,13 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tabPemeriksaanUgd-tabel" data-bs-toggle="tab"
+                            data-bs-target="#tabPemeriksaanUgd-pane" type="button" role="tab"
+                            aria-controls="tabPemeriksaanUgd-pane" aria-selected="false">
+                            Pemeriksaan UGD
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
                             type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
                         </button>
@@ -147,6 +154,10 @@
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade p-3" id="tabPemeriksaanUgd-pane" role="tabpanel"
+                        aria-labelledby="tabPemeriksaanUgd-tabel" tabindex="0">
+                        @include('content.ugd.modal.pemeriksaan.data')
+                    </div>
                     <div class="tab-pane fade show active p-3" id="tab-soap-pane" role="tabpanel"
                         aria-labelledby="home-tab" tabindex="0">
                         @include('content.ranap.modal.cppt._form_soap')
@@ -335,33 +346,33 @@
 
                 response.forEach((item) => {
                     table += `
-                                                                    <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
-                                                                        <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
-                                                                        <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
-                                                                        <div class="p-2 bd-highlight fw-bold">Informasi : ${item.informasi_tambahan}</div>
-                                                                        <div class="p-2 bd-highlight fw-bold">Tgl. Permintaan : ${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</div>
-                                                                    </div>
-                                                                    <table class='table table-bordered table-hover'>
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <td width="">Pemeriksaan</td>
-                                                                                <td width="20%">Hasil</td>
-                                                                                <td width="30%">Nilai Rujukan</td>
-                                                                                <td width="20%">Keterangan</td>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                                ${renderHasilPermintaanLab(item.hasil)}
+                                                                                                                                <div class="d-flex align-items-center justify-content-between bg-warning p-1" style="font-size:12px">
+                                                                                                                                    <div class="p-2 bd-highlight fw-bold">No. Order : ${item.noorder}</div>
+                                                                                                                                    <div class="p-2 bd-highlight fw-bold">Diagnosa Klinis : ${item.diagnosa_klinis}</div>
+                                                                                                                                    <div class="p-2 bd-highlight fw-bold">Informasi : ${item.informasi_tambahan}</div>
+                                                                                                                                    <div class="p-2 bd-highlight fw-bold">Tgl. Permintaan : ${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</div>
+                                                                                                                                </div>
+                                                                                                                                <table class='table table-bordered table-hover'>
+                                                                                                                                    <thead>
+                                                                                                                                        <tr>
+                                                                                                                                            <td width="">Pemeriksaan</td>
+                                                                                                                                            <td width="20%">Hasil</td>
+                                                                                                                                            <td width="30%">Nilai Rujukan</td>
+                                                                                                                                            <td width="20%">Keterangan</td>
+                                                                                                                                        </tr>
+                                                                                                                                    </thead>
+                                                                                                                                    <tbody>
+                                                                                                                                            ${renderHasilPermintaanLab(item.hasil)}
 
-                                                                                <tr>
-                                                                                    <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil.length ? item.hasil[0].dokter.nm_dokter : ''}</strong></td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td colspan="2" class="">Saran : <strong>${item.saran_kesan ? item.saran_kesan.saran : '-'}</strong></td>
-                                                                                    <td colspan="2" class="">Kesan : <strong>${item.saran_kesan ? item.saran_kesan.kesan : '-'}</strong></td>
-                                                                                </tr>
-                                                                        </tbody>
-                                                                    </table>`
+                                                                                                                                            <tr>
+                                                                                                                                                <td colspan="4" class="">Dokter PJ. Lab : <strong>${item.hasil.length ? item.hasil[0].dokter.nm_dokter : ''}</strong></td>
+                                                                                                                                            </tr>
+                                                                                                                                            <tr>
+                                                                                                                                                <td colspan="2" class="">Saran : <strong>${item.saran_kesan ? item.saran_kesan.saran : '-'}</strong></td>
+                                                                                                                                                <td colspan="2" class="">Kesan : <strong>${item.saran_kesan ? item.saran_kesan.kesan : '-'}</strong></td>
+                                                                                                                                            </tr>
+                                                                                                                                    </tbody>
+                                                                                                                                </table>`
 
                 })
 
@@ -382,11 +393,11 @@
             const container = $('#hasilPermintaanRadiologiSoap');
 
             container.html(`
-                                        <div class="text-center py-4">
-                                            <div class="spinner-border text-primary"></div>
-                                            <div class="mt-2">Memuat data radiologi...</div>
-                                        </div>
-                                    `);
+                                                                                                    <div class="text-center py-4">
+                                                                                                        <div class="spinner-border text-primary"></div>
+                                                                                                        <div class="mt-2">Memuat data radiologi...</div>
+                                                                                                    </div>
+                                                                                                `);
 
             $.get('/erm/radiologi/permintaan', {
                 no_rawat: no_rawat
@@ -396,11 +407,11 @@
 
                 if (!data.length) {
                     container.html(`
-                                                <div class="alert alert-warning text-center">
-                                                    <i class="bi bi-exclamation-circle"></i>
-                                                    Belum ada permintaan radiologi.
-                                                </div>
-                                            `);
+                                                                                                            <div class="alert alert-warning text-center">
+                                                                                                                <i class="bi bi-exclamation-circle"></i>
+                                                                                                                Belum ada permintaan radiologi.
+                                                                                                            </div>
+                                                                                                        `);
                     return;
                 }
 
@@ -409,165 +420,165 @@
                 response.forEach((item) => {
 
                     html += `
-                                <div class="card shadow-sm border-0 mb-4">
+                                                                                            <div class="card shadow-sm border-0 mb-4">
 
-                                    <div class="card-header bg-primary text-white">
+                                                                                                <div class="card-header bg-primary text-white">
 
-                                        <div class="d-flex justify-content-between">
+                                                                                                    <div class="d-flex justify-content-between">
 
-                                            <div>
-                                                <h6 class="mb-1">
-                                                    <i class="bi bi-calendar-event"></i>
-                                                    ${formatTanggal(item.tgl_permintaan)}
-                                                    ${item.jam_permintaan}
-                                                </h6>
+                                                                                                        <div>
+                                                                                                            <h6 class="mb-1">
+                                                                                                                <i class="bi bi-calendar-event"></i>
+                                                                                                                ${formatTanggal(item.tgl_permintaan)}
+                                                                                                                ${item.jam_permintaan}
+                                                                                                            </h6>
 
-                                                <small>
-                                                    No. Order :
-                                                    <strong>${item.noorder}</strong>
-                                                </small>
-                                            </div>
+                                                                                                            <small>
+                                                                                                                No. Order :
+                                                                                                                <strong>${item.noorder}</strong>
+                                                                                                            </small>
+                                                                                                        </div>
 
-                                            <span class="badge bg-light text-dark align-self-start">
-                                                ${item.status.toUpperCase()}
-                                            </span>
+                                                                                                        <span class="badge bg-light text-dark align-self-start">
+                                                                                                            ${item.status.toUpperCase()}
+                                                                                                        </span>
 
-                                        </div>
+                                                                                                    </div>
 
-                                    </div>
+                                                                                                </div>
 
-                                    <div class="card-body">
+                                                                                                <div class="card-body">
 
-                                        <div class="row">
+                                                                                                    <div class="row">
 
-                                            <div class="col-md-6 mb-3">
+                                                                                                        <div class="col-md-6 mb-3">
 
-                                                <div class="border rounded p-3 h-100">
+                                                                                                            <div class="border rounded p-3 h-100">
 
-                                                    <small class="text-muted">
-                                                        Dokter Perujuk
-                                                    </small>
+                                                                                                                <small class="text-muted">
+                                                                                                                    Dokter Perujuk
+                                                                                                                </small>
 
-                                                    <div class="fw-semibold">
-                                                        ${item.dokter_rujuk?.nm_dokter ?? '-'}
-                                                    </div>
+                                                                                                                <div class="fw-semibold">
+                                                                                                                    ${item.dokter_rujuk?.nm_dokter ?? '-'}
+                                                                                                                </div>
 
-                                                </div>
+                                                                                                            </div>
 
-                                            </div>
+                                                                                                        </div>
 
-                                            <div class="col-md-6 mb-3">
+                                                                                                        <div class="col-md-6 mb-3">
 
-                                                <div class="border rounded p-3 h-100">
+                                                                                                            <div class="border rounded p-3 h-100">
 
-                                                    <small class="text-muted">
-                                                        Diagnosa Klinis
-                                                    </small>
+                                                                                                                <small class="text-muted">
+                                                                                                                    Diagnosa Klinis
+                                                                                                                </small>
 
-                                                    <div class="fw-semibold">
-                                                        ${item.diagnosa_klinis || '-'}
-                                                    </div>
+                                                                                                                <div class="fw-semibold">
+                                                                                                                    ${item.diagnosa_klinis || '-'}
+                                                                                                                </div>
 
-                                                </div>
+                                                                                                            </div>
 
-                                            </div>
+                                                                                                        </div>
 
-                                            <div class="col-12 mb-3">
+                                                                                                        <div class="col-12 mb-3">
 
-                                                <div class="border rounded p-3">
+                                                                                                            <div class="border rounded p-3">
 
-                                                    <small class="text-muted">
-                                                        Informasi Medis
-                                                    </small>
+                                                                                                                <small class="text-muted">
+                                                                                                                    Informasi Medis
+                                                                                                                </small>
 
-                                                    <div class="fw-semibold">
-                                                        ${item.informasi_tambahan || '-'}
-                                                    </div>
+                                                                                                                <div class="fw-semibold">
+                                                                                                                    ${item.informasi_tambahan || '-'}
+                                                                                                                </div>
 
-                                                </div>
+                                                                                                            </div>
 
-                                            </div>
+                                                                                                        </div>
 
-                                            <div class="col-12 mb-3">
+                                                                                                        <div class="col-12 mb-3">
 
-                                                <label class="fw-bold text-primary mb-2">
+                                                                                                            <label class="fw-bold text-primary mb-2">
 
-                                                    <i class="bi bi-radioactive"></i>
+                                                                                                                <i class="bi bi-radioactive"></i>
 
-                                                    Jenis Pemeriksaan
+                                                                                                                Jenis Pemeriksaan
 
-                                                </label>
+                                                                                                            </label>
 
-                                                <div>
-                                `;
+                                                                                                            <div>
+                                                                                            `;
 
                     item.permintaan_pemeriksaan.forEach((p) => {
 
                         html += `
-                                        <span class="badge bg-primary me-2 mb-2 p-2">
-                                            ${p.jns_pemeriksaan.nm_perawatan}
-                                        </span>
-                                    `;
+                                                                                                    <span class="badge bg-primary me-2 mb-2 p-2">
+                                                                                                        ${p.jns_pemeriksaan.nm_perawatan}
+                                                                                                    </span>
+                                                                                                `;
 
                     });
 
                     html += `
-                                                </div>
+                                                                                                            </div>
 
-                                            </div>
+                                                                                                        </div>
 
-                                            <div class="col-12 mb-3">
+                                                                                                        <div class="col-12 mb-3">
 
-                                                <label class="fw-bold text-success mb-2">
+                                                                                                            <label class="fw-bold text-success mb-2">
 
-                                                    <i class="bi bi-file-earmark-medical"></i>
+                                                                                                                <i class="bi bi-file-earmark-medical"></i>
 
-                                                    Hasil Radiologi
+                                                                                                                Hasil Radiologi
 
-                                                </label>
-                                `;
+                                                                                                            </label>
+                                                                                            `;
 
                     if (item.hasil_radiologi.length) {
 
                         item.hasil_radiologi.forEach((hasil) => {
 
                             html += `
-                                            <div class="alert alert-light border mb-2">
+                                                                                                        <div class="alert alert-light border mb-2">
 
-                                                <pre class="mb-0" style="white-space:pre-wrap;font-family:inherit;">
-                            ${hasil.hasil}
-                                                </pre>
+                                                                                                            <pre class="mb-0" style="white-space:pre-wrap;font-family:inherit;">
+                                                                                        ${hasil.hasil}
+                                                                                                            </pre>
 
-                                            </div>
-                                        `;
+                                                                                                        </div>
+                                                                                                    `;
 
                         });
 
                     } else {
 
                         html += `
-                                        <div class="alert alert-warning">
-                                            Belum ada hasil radiologi.
-                                        </div>
-                                    `;
+                                                                                                    <div class="alert alert-warning">
+                                                                                                        Belum ada hasil radiologi.
+                                                                                                    </div>
+                                                                                                `;
 
                     }
 
                     html += `
-                                            </div>
+                                                                                                        </div>
 
-                                            <div class="col-12">
+                                                                                                        <div class="col-12">
 
-                                                <label class="fw-bold text-danger mb-2">
+                                                                                                            <label class="fw-bold text-danger mb-2">
 
-                                                    <i class="bi bi-images"></i>
+                                                                                                                <i class="bi bi-images"></i>
 
-                                                    Gambar Radiologi
+                                                                                                                Gambar Radiologi
 
-                                                </label>
+                                                                                                            </label>
 
-                                                <div class="row">
-                                `;
+                                                                                                            <div class="row">
+                                                                                            `;
 
                     if (item.gambar_radiologi.length) {
 
@@ -576,64 +587,64 @@
                             const url = getBaseUrl(`/webapps/radiologi/${gambar.lokasi_gambar}`);
 
                             html += `
-                                            <div class="col-md-3 col-6 mb-3">
+                                                                                                        <div class="col-md-3 col-6 mb-3">
 
-                                                <div class="card">
+                                                                                                            <div class="card">
 
-                                                    <img
-                                                        src="${url}"
-                                                        class="card-img-top"
-                                                        style="height:180px;object-fit:cover">
+                                                                                                                <img
+                                                                                                                    src="${url}"
+                                                                                                                    class="card-img-top"
+                                                                                                                    style="height:180px;object-fit:cover">
 
-                                                    <div class="card-body p-2">
+                                                                                                                <div class="card-body p-2">
 
-                                                        <a
-                                                            class="btn btn-success btn-sm w-100"
-                                                            data-magnify="gallery"
-                                                            data-src="${url}">
+                                                                                                                    <a
+                                                                                                                        class="btn btn-success btn-sm w-100"
+                                                                                                                        data-magnify="gallery"
+                                                                                                                        data-src="${url}">
 
-                                                            <i class="bi bi-eye"></i>
+                                                                                                                        <i class="bi bi-eye"></i>
 
-                                                            Lihat Gambar
+                                                                                                                        Lihat Gambar
 
-                                                        </a>
+                                                                                                                    </a>
 
-                                                    </div>
+                                                                                                                </div>
 
-                                                </div>
+                                                                                                            </div>
 
-                                            </div>
-                                        `;
+                                                                                                        </div>
+                                                                                                    `;
 
                         });
 
                     } else {
 
                         html += `
-                                        <div class="col-12">
+                                                                                                    <div class="col-12">
 
-                                            <div class="alert alert-danger">
+                                                                                                        <div class="alert alert-danger">
 
-                                                Tidak ada gambar radiologi.
+                                                                                                            Tidak ada gambar radiologi.
 
-                                            </div>
+                                                                                                        </div>
 
-                                        </div>
-                                    `;
+                                                                                                    </div>
+                                                                                                `;
 
                     }
 
                     html += `
-                                                </div>
+                                                                                                            </div>
 
-                                            </div>
+                                                                                                        </div>
 
-                                        </div>
+                                                                                                    </div>
 
-                                    </div>
+                                                                                                </div>
 
-                                </div>
-                                `;
+                                                                                            </div>
+                                                                                            `;
 
                 });
 
@@ -643,10 +654,10 @@
             }).fail(() => {
 
                 container.html(`
-                                            <div class="alert alert-danger text-center">
-                                                Gagal mengambil data radiologi.
-                                            </div>
-                                        `);
+                                                                                                        <div class="alert alert-danger text-center">
+                                                                                                            Gagal mengambil data radiologi.
+                                                                                                        </div>
+                                                                                                    `);
 
             });
 
@@ -783,20 +794,7 @@
             appendDataGrafikHarian(no_rawat);
         }
 
-        function getDetailPemeriksaanRanap(no_rawat, tgl, jam) {
-            const pemeriksaan = $.ajax({
-                url: '/erm/soap/ambil',
-                data: {
-                    'no_rawat': no_rawat,
-                    'tgl_perawatan': tgl,
-                    'jam_rawat': jam
-                },
-                error: (request) => {
-                    alertSessionExpired(request.status)
-                },
-            })
-            return pemeriksaan;
-        }
+
 
 
         function checkJam() {

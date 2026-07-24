@@ -1014,16 +1014,16 @@
                         data: '',
                         render: (data, type, row) => {
                             return `
-                                                                                                                                            <div class="form-check masalahKeperawatan">
-                                                                                                                                                <input
-                                                                                                                                                    class="form-check-input listMasalahKeperawatan"
-                                                                                                                                                    name="checkMasalahKeperawatan"
-                                                                                                                                                    type="checkbox"
-                                                                                                                                                    id="kodeMasalah${row.kode_masalah}"
-                                                                                                                                                    onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')"
-                                                                                                                                                    value="${row.kode_masalah}">
-                                                                                                                                            </div>
-                                                                                                                                        `;
+                                                                                                                                                <div class="form-check masalahKeperawatan">
+                                                                                                                                                    <input
+                                                                                                                                                        class="form-check-input listMasalahKeperawatan"
+                                                                                                                                                        name="checkMasalahKeperawatan"
+                                                                                                                                                        type="checkbox"
+                                                                                                                                                        id="kodeMasalah${row.kode_masalah}"
+                                                                                                                                                        onclick="cekMasalahKeperawatan(this,'${row.kode_masalah}')"
+                                                                                                                                                        value="${row.kode_masalah}">
+                                                                                                                                                </div>
+                                                                                                                                            `;
                         }
                     },
                     {
@@ -1116,16 +1116,16 @@
                         data: '',
                         render: (data, type, row) => {
                             return `
-                                                                                                                                                            <div class="form-check">
-                                                                                                                                                                <input
-                                                                                                                                                                    class="form-check-input listRencanaKeperawatan"
-                                                                                                                                                                    name="checkRencanaKeperawatan"
-                                                                                                                                                                    type="checkbox"
-                                                                                                                                                                    value="${row.kode_rencana}"
-                                                                                                                                                                    data-masalah="${row.kode_masalah}"
-                                                                                                                                                                    id="kodeRencana${row.kode_rencana}">
-                                                                                                                                                            </div>
-                                                                                                                                                        `;
+                                                                                                                                                                <div class="form-check">
+                                                                                                                                                                    <input
+                                                                                                                                                                        class="form-check-input listRencanaKeperawatan"
+                                                                                                                                                                        name="checkRencanaKeperawatan"
+                                                                                                                                                                        type="checkbox"
+                                                                                                                                                                        value="${row.kode_rencana}"
+                                                                                                                                                                        data-masalah="${row.kode_masalah}"
+                                                                                                                                                                        id="kodeRencana${row.kode_rencana}">
+                                                                                                                                                                </div>
+                                                                                                                                                            `;
                         }
                     },
                     {
@@ -1231,6 +1231,10 @@
         //     });
         // }
         function hitungResikoJatuhAnak(formParent) {
+
+            console.log('WKWKKW ===', formParent);
+
+
             const a = formParent
                 .find('input[name="berjalan_a"]:checked')
                 .val();

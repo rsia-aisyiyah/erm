@@ -348,6 +348,7 @@ class RegPeriksaController extends Controller
             'tgl_registrasi',
             'jam_reg',
             'status_bayar',
+            'p_jawab',
             'status_poli',
             'stts_daftar',
             'no_rawat',
@@ -396,7 +397,38 @@ class RegPeriksaController extends Controller
 
         $regPeriksa->orderByDesc('no_rawat');
 
-        return DataTables::of($regPeriksa)->make(true);
+        return DataTables::of($regPeriksa)
+            ->filter(function ($query) {
+                $search = request('search.value');
+
+                if (!empty($search)) {
+                    $query->where(function ($q) use ($search) {
+
+                        // Kolom pada tabel reg_periksa
+                        $q->where('no_rawat', 'like', "%{$search}%")
+                            ->orWhere(DB::raw('TRIM(no_rkm_medis)'), 'like', "%{$search}%");
+
+                        // Relasi pasien
+                        $q->orWhereHas('pasien', function ($pasien) use ($search) {
+                            $pasien->where('nm_pasien', 'like', "%{$search}%");
+                        });
+
+                        // Relasi poliklinik
+                        $q->orWhereHas('poliklinik', function ($poli) use ($search) {
+                            $poli->where('nm_poli', 'like', "%{$search}%");
+                        });
+
+                        // Relasi dokter
+                        $q->orWhereHas('dokter', function ($dokter) use ($search) {
+                            $dokter->where('nm_dokter', 'like', "%{$search}%");
+                        });
+                    });
+                }
+            })
+            ->editColumn('tgl_registrasi', function ($query) {
+                return Carbon::parse($query->tgl_registrasi)->translatedFormat('d F Y');
+            })
+            ->make(true);
     }
     public function ubahDpjp(Request $request)
     {
