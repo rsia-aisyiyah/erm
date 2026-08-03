@@ -31,7 +31,7 @@
             @endif
             @if (
                     session()->get('pegawai')->nik == 'direksi' || session()->get('pegawai')->nik == '2.319.1017' ||
-                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'DNM2' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik == '3.604.0123'
+                    session()->get('pegawai')->nik == '2.424.0418' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->departemen == 'DNM2' || session()->get('pegawai')->nik == '4.219.1021' || session()->get('pegawai')->nik == '3.604.0123' || session()->get('pegawai')->nik == '2.326.0418'
                 )
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}" href="/erm/pasien">
