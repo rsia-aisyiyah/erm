@@ -7,6 +7,7 @@ use App\Http\Controllers\AskepRanapAnakController;
 use App\Http\Controllers\AskepRanapKandunganController;
 use App\Http\Controllers\AskepRanapNeonatusController;
 use App\Http\Controllers\AskepUgdController;
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\BookingRegistrasiController;
 use App\Http\Controllers\Bridging\RencanaKontrolController;
 use App\Http\Controllers\BridgingRujukanBpjsController;
@@ -397,11 +398,14 @@ Route::middleware('auth')->group(function () {
 	Route::get('resep-pulang', [ResepPulangController::class, 'get']);
 
 	Route::post('discharge-planning', [DischargePlanningController::class, 'create']);
+	Route::get('discharge-planning/print', [DischargePlanningController::class, 'print']);
 	Route::get('discharge-planning', [DischargePlanningController::class, 'get']);
 
 	Route::get('sep', [BridgingSepController::class, 'index'])->name('sep.index');
 	Route::get('sep/datatable', [BridgingSepController::class, 'dataTable'])->name('sep.datatable');
 	Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
+
+	Route::get('audit-logs', [AuditLogController::class, 'get'])->name('audit-logs.get');
 });
 Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 

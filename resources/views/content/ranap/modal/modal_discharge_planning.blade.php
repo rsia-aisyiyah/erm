@@ -223,15 +223,22 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" style="font-size: 12px" id="btnCreateDischargePlanning">
-                    <i class="bi bi-save me-1">
-                    </i> Simpan
+            <div class="modal-footer d-flex justify-content-between align-items-center">
+
+                <button type="button" class="btn btn-secondary btn-sm" id="btnPrintDischargePlanning" style="font-size:12px">
+                    <i class="bi bi-printer me-1"></i> Print
                 </button>
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size: 12px">
-                    <i class="bi bi-x-circle me-1">
-                    </i> Keluar
-                </button>
+
+                <div>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnCreateDischargePlanning" style="font-size:12px">
+                        <i class="bi bi-save me-1"></i> Simpan
+                    </button>
+
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size:12px">
+                        <i class="bi bi-x-circle me-1"></i> Keluar
+                    </button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -315,6 +322,7 @@
         const formObatDischargePlanning = $('#formObatDischargePlanning');
         const selectDiagnosaKeluar = formDischargePlanning.find('select[name=diagnosa_keluar]');
         const btnCreateDischargePlanning = $('#btnCreateDischargePlanning');
+        const btnPrintDischargePlanning = $('#btnPrintDischargePlanning');
         const selectObatDischargePlanning = formObatDischargePlanning.find('select[name=obat]');
         const btnCreateObatDischargePlanning = $('#btnCreateObatDischargePlanning');
         const tableObatDischargePlanning = $('#tableObatDischargePlanning');
@@ -584,13 +592,16 @@
                         formDischargePlanning.find('input[name=nip]').val(response.nip);
                         const optionDiagnosa = new Option(response.diagnosa_keluar, response.diagnosa_keluar, true, true)
                         formDischargePlanning.find('select[name=diagnosa_keluar]').append(optionDiagnosa).trigger('change');
-
+                        btnPrintDischargePlanning.attr('disabled', false).off('click').on('click', () => {
+                            window.open(`${url}/discharge-planning/print?no_rawat=${no_rawat}`, '_blank');
+                        })
                         setPenyuluhanDischargePlanning(response.penyuluhan)
                         setDokumenDischargePlanning(response.dokumen_penunjang)
                         setObatDischargePlanning(response.obat_pulang)
                     } else {
                         formDischargePlanning.find('input[name=petugas]').val("{{ session()->get('pegawai')->nama }}");
                         formDischargePlanning.find('input[name=nip]').val("{{ session()->get('pegawai')->nik }}");
+                        btnPrintDischargePlanning.attr('disabled', true).removeAttr('onclick');
                     }
 
                 })

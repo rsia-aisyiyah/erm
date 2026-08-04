@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DischargePlanning;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -11,12 +12,13 @@ class DischargePlanningController extends Controller
     protected $modal;
     protected $track;
     function __construct()
-    {   
+    {
         $this->modal = new DischargePlanning();
         $this->track = new TrackerSqlController();
     }
 
-    function create(Request $request){
+    function create(Request $request)
+    {
         $data = [
             'no_rawat' => $request->no_rawat,
             'tanggal' => date('Y-m-d H:i:s'),
@@ -40,35 +42,36 @@ class DischargePlanningController extends Controller
             'tgl_rencana_pulang' => 'required',
             'diagnosa_keluar' => 'required',
         ]);
-    
+
         $get = $this->modal->where('no_rawat', $request->no_rawat)
             ->with(['petugas'])
             ->first();
 
-        if($get){
+        if ($get) {
             return $this->update($request);
         }
-        try{
+        try {
             $create = $this->modal->create($data);
-            if($create){
+            if ($create) {
                 $this->track->insertSql($this->modal, $data);
             }
-        }catch(QueryException $e){
+        } catch (QueryException $e) {
             return response()->json($e->errorInfo, 500);
         }
         return response()->json(['status' => 'success', 'data' => $data], 201);
     }
 
-    function get(Request $request){
+    function get(Request $request)
+    {
         $get = $this->modal->where('no_rawat', $request->no_rawat)
-        ->with(['petugas'])
-        ->first();
+            ->with(['petugas'])
+            ->first();
         return response()->json($get);
     }
 
     function update(Request $request)
     {
-         $data = [
+        $data = [
             'no_rawat' => $request->no_rawat,
             'tanggal' => date('Y-m-d H:i:s'),
             'rencana_rawat' => $request->rencana_rawat,
@@ -91,22 +94,35 @@ class DischargePlanningController extends Controller
             'tgl_rencana_pulang' => 'required',
             'diagnosa_keluar' => 'required',
         ]);
-       
-          if($data['nip'] !== $request->nip){
-             return response()->json('Anda tidak dapat mengubah data ini, Hubungi perawat penanggung jawab pasien', 401);
+
+        if ($data['nip'] !== $request->nip) {
+            return response()->json('Anda tidak dapat mengubah data ini, Hubungi perawat penanggung jawab pasien', 401);
         }
 
-        try{
+        try {
             $update = $this->modal->where('no_rawat', $request->no_rawat)->update($data);
-            if($update){
+            if ($update) {
                 $this->track->updateSql($this->modal, $data, ['no_rawat' => $request->no_rawat]);
                 return response()->json(['status' => 'success update', 'data' => $data], 200);
             }
-        }catch(QueryException $e){
+        } catch (QueryException $e) {
             return response()->json($e->errorInfo, 500);
         }
         return response()->json(null, 200);
 
+
+    }
+
+    public function print(Request $request)
+    {
+        $get = $this->modal->where('no_rawat', $request->no_rawat)
+            ->with(['petugas', 'regPeriksa.dokter', 'pasien'])
+            ->first();
+
+        return Pdf::loadView(
+            'content.print.discharge_planning',
+            ['data' => $get]
+        )->stream('pdf_discharge_planning_' . $request->no_rawat . '.pdf');
 
     }
 }

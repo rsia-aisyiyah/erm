@@ -295,20 +295,21 @@
 
 {{-- <div class="modal fade" id="modalLogTracker" tabindex="-1" aria-labelledby="modalLogTrackerLabel" --}} {{--
     aria-hidden="true"> --}}
-    {{-- <div class="modal-dialog modal-xg modal-dialog-centered modal-dialog-scrollable"> --}}
-        {{-- <div class="modal-content"> --}}
-            {{-- <div class="modal-header"> --}}
-                {{-- <h5 class="modal-title fs-5" id="modalLogTrackerLabel">Catatan Pelaksanaan Edukasi Pasien</h5> --}}
-                {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
-                {{-- </div> --}}
-            {{-- <div class="modal-body"> --}}
+{{-- <div class="modal-dialog modal-xg modal-dialog-centered modal-dialog-scrollable"> --}}
+{{-- <div class="modal-content"> --}}
+{{-- <div class="modal-header"> --}}
+{{-- <h5 class="modal-title fs-5" id="modalLogTrackerLabel">Catatan Pelaksanaan Edukasi Pasien</h5> --}}
+{{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+{{-- </div> --}}
+{{-- <div class="modal-body"> --}}
 
-                {{-- </div> --}}
+{{-- </div> --}}
 
-            {{-- </div> --}}
-        {{-- </div> --}}
-    {{-- </div> --}}
+{{-- </div> --}}
+{{-- </div> --}}
+{{-- </div> --}}
 @include('content.poliklinik.modal.modal_resep')
+@include('content.ranap.modal.modal_audit_log')
 @push('script')
     <script>
         let no_rawat_soap = '';
@@ -381,7 +382,7 @@
             })
         })
 
-        $('#tabTindakan').on('shown.bs.tab', function () {
+        $('#tabTindakan').on('shown.bs.tab', function() {
             $('#btnTabTindakanDokterRanap').click()
             getTindakanDokterRanap()
             getTindakanPerawatRanap()
@@ -808,17 +809,17 @@
             }
         }
 
-        $('#cekJam').on('change', function () {
+        $('#cekJam').on('change', function() {
             checkJam();
         })
 
-        $('button[data-bs-target="#tab-resep-pane"]').on('click', function () {
+        $('button[data-bs-target="#tab-resep-pane"]').on('click', function() {
             const formInfoPasienResep = $('#formInfoPasienResep')
             const no_rawat = formInfoPasienResep.find('[name=no_rawat]').val();
             getResepObat(no_rawat)
 
         })
-        $('button[data-bs-target="#tabAdimeGizi-pane"]').on('click', function () {
+        $('button[data-bs-target="#tabAdimeGizi-pane"]').on('click', function() {
             const formInfoPasienResep = $('#formInfoPasienResep')
             const no_rawat = formInfoPasienResep.find('[name=no_rawat]').val();
             const formAdimeGizi = $('#formAdimeGizi')

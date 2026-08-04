@@ -128,6 +128,7 @@
 
     @include('content.poliklinik.modal.modal_riwayat')
     @include('content.ranap.modal.modal_hasil_kritis')
+  
     @include('content.ranap.modal.modal_lab')
     @include('content.ranap.modal.modal_soap')
     @include('content.ranap.modal.modal_penunjang')
@@ -312,8 +313,7 @@
             </div>
         </div>
     </div>
-    {{--modal ppra --}}
-
+    {{-- modal ppra --}}
 @endsection
 
 @push('script')
@@ -333,7 +333,7 @@
         var getSpsId = $('#kd_sps').val();
 
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             // new bootstrap.Tab('#tab-resep')
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-grafik')
@@ -364,7 +364,7 @@
             tb_ranap();
         });
 
-        $('#cari-kamar').on('search', function () {
+        $('#cari-kamar').on('search', function() {
             if ($(this).val() === '') {
                 kamar = '';
                 $('#tb_ranap').DataTable().destroy();
@@ -373,7 +373,7 @@
             }
         })
 
-        $('#spesialis').on('change', function () {
+        $('#spesialis').on('change', function() {
             sps = $('#spesialis option:selected').val();
             localStorage.setItem('spesialis', sps);
             if (sps) {
@@ -382,9 +382,9 @@
                     data: {
                         'sps': sps,
                     },
-                    success: function (response) {
+                    success: function(response) {
                         let option = `<option value="" selected>Pilih Dokter</option>`;
-                        response.data.forEach(function (res) {
+                        response.data.forEach(function(res) {
                             $('#dokter').prop('disabled', false)
                             $('#dokter').empty();
                             option += `<option value="${res.kd_dokter}">${res.nm_dokter}</option>`;
@@ -405,11 +405,11 @@
             tb_ranap();
         })
 
-        $("#cari-kamar").bind('keypress', function (e) {
+        $("#cari-kamar").bind('keypress', function(e) {
             // console.log($(this).val())
         })
 
-        $('#cari-kamar').on('keyup', function () {
+        $('#cari-kamar').on('keyup', function() {
             kamar = $(this).val();
             if (kamar.length >= 5) {
                 localStorage.setItem('kamar', kamar);
@@ -422,14 +422,14 @@
             }
         })
 
-        $('#dokter').on('change', function () {
+        $('#dokter').on('change', function() {
             kd_dokter = $(this).val();
             localStorage.setItem('dokter', kd_dokter)
             $('#tb_ranap').DataTable().destroy();
             tb_ranap();
         })
 
-        $('#pulang').on('click', function () {
+        $('#pulang').on('click', function() {
             stts_pulang = 'Pulang';
             if ($('#pulang').is(':checked')) {
                 $('.tgl_pulang').prop('disabled', false)
@@ -439,7 +439,7 @@
                 $('.tgl_masuk').prop('disabled', false)
             }
         })
-        $('#masuk').on('click', function () {
+        $('#masuk').on('click', function() {
             stts_pulang = 'Masuk';
             if ($('#masuk').is(':checked')) {
                 $('.tgl_pulang').prop('disabled', true)
@@ -451,13 +451,13 @@
         })
 
 
-        $('#belum').on('click', function () {
+        $('#belum').on('click', function() {
             stts_pulang = '-';
             $('.tgl_pulang').prop('disabled', true)
             $('.tgl_masuk').prop('disabled', true)
         });
 
-        $('#cari').on('click', function () {
+        $('#cari').on('click', function() {
             let a = '';
             let b = '';
             if (stts_pulang === 'Pulang') {
@@ -498,37 +498,37 @@
                     },
                 },
                 columnDefs: [{
-                    target: 0,
-                    width: 10,
-                }, {
-                    target: 1,
-                    width: 80,
-                }, {
-                    target: 2,
-                    width: 250,
-                },
-                {
-                    target: 3,
-                    width: 150,
-                }, {
-                    target: 4,
-                    width: 80,
-                }, {
-                    target: 5,
-                    width: 20,
-                }, {
-                    target: 6,
-                    width: 100,
-                }, {
-                    target: 7,
-                    width: 50,
-                }, {
-                    target: 8,
-                    width: 180,
-                }, {
-                    target: 9,
-                    width: 150,
-                }
+                        target: 0,
+                        width: 10,
+                    }, {
+                        target: 1,
+                        width: 80,
+                    }, {
+                        target: 2,
+                        width: 250,
+                    },
+                    {
+                        target: 3,
+                        width: 150,
+                    }, {
+                        target: 4,
+                        width: 80,
+                    }, {
+                        target: 5,
+                        width: 20,
+                    }, {
+                        target: 6,
+                        width: 100,
+                    }, {
+                        target: 7,
+                        width: 50,
+                    }, {
+                        target: 8,
+                        width: 180,
+                    }, {
+                        target: 9,
+                        width: 150,
+                    }
                 ],
                 createdRow: (element, data, index, meta) => {
                     const row = $(element);
@@ -590,54 +590,54 @@
 
                 },
                 columns: [{
-                    data: 'reg_periksa',
-                    render: function (data, type, row, meta) {
-                        // 1. Validasi Data Dokter
-                        if (!data.dokter) {
-                            swal.fire({
-                                icon: 'error',
-                                html: `Gagal memuat pasien ${row.no_rawat} dengan ID Dokter ${row}, periksa kembali data registrasi`,
-                                title: 'Terjadi Kesalahan',
-                                showConfirmButton: true,
-                                confirmButtonColor: '#3085d6',
-                            });
-                            return false;
+                        data: 'reg_periksa',
+                        render: function(data, type, row, meta) {
+                            // 1. Validasi Data Dokter
+                            if (!data.dokter) {
+                                swal.fire({
+                                    icon: 'error',
+                                    html: `Gagal memuat pasien ${row.no_rawat} dengan ID Dokter ${row}, periksa kembali data registrasi`,
+                                    title: 'Terjadi Kesalahan',
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                });
+                                return false;
+                            }
+
+                            // Fungsi utilitas bawaan kode Anda (jika dipakai di tempat lain)
+                            const textNoRawat = textRawat(row.no_rawat);
+
+                            // 2. Buat elemen list item (Li) menu dropdown
+                            let listItems = '';
+                            listItems += getMenuUmum(data, row);
+                            listItems += getMenuSpesialis(data, row);
+                            listItems += getMenuAksesKhusus(data, row);
+                            listItems += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+
+                            // 3. Bungkus list ke dalam komponen Dropdown Bootstrap
+                            return buildDropdownButton(meta.row, row.no_rawat, listItems);
                         }
+                    },
+                    {
+                        title: 'No. Rawat',
+                        data: 'no_rawat',
+                        render: function(data) {
+                            return `<a href="javascript:void(0)" class="text-dark" style="text-decoration: none " onclick="showModalSoapRanap('${data}')">${data}</a>`
+                        }
+                    },
+                    {
+                        title: 'Pasien',
+                        data: 'reg_periksa',
+                        render: function(data, type, row, meta) {
 
-                        // Fungsi utilitas bawaan kode Anda (jika dipakai di tempat lain)
-                        const textNoRawat = textRawat(row.no_rawat);
+                            const umurdaftar = hitungUmurDaftar(data.pasien.tgl_lahir, data.tgl_registrasi);
+                            const umur = `<small class="text-muted">${umurdaftar.tahun} tahun ${umurdaftar.bulan} bulan ${umurdaftar.hari} hari</small>`;
+                            const labelJK = data.pasien.jk === 'L' ?
+                                '<span class="badge bg-info"><i class="bi bi-gender-male"></i></span>' :
+                                '<span style="background-color: #ff6aaf;" class="badge"><i class="bi bi-gender-female"></i></span>';
 
-                        // 2. Buat elemen list item (Li) menu dropdown
-                        let listItems = '';
-                        listItems += getMenuUmum(data, row);
-                        listItems += getMenuSpesialis(data, row);
-                        listItems += getMenuAksesKhusus(data, row);
-                        listItems += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
-
-                        // 3. Bungkus list ke dalam komponen Dropdown Bootstrap
-                        return buildDropdownButton(meta.row, row.no_rawat, listItems);
-                    }
-                },
-                {
-                    title: 'No. Rawat',
-                    data: 'no_rawat',
-                    render: function (data) {
-                        return `<a href="javascript:void(0)" class="text-dark" style="text-decoration: none " onclick="showModalSoapRanap('${data}')">${data}</a>`
-                    }
-                },
-                {
-                    title: 'Pasien',
-                    data: 'reg_periksa',
-                    render: function (data, type, row, meta) {
-
-                        const umurdaftar = hitungUmurDaftar(data.pasien.tgl_lahir, data.tgl_registrasi);
-                        const umur = `<small class="text-muted">${umurdaftar.tahun} tahun ${umurdaftar.bulan} bulan ${umurdaftar.hari} hari</small>`;
-                        const labelJK = data.pasien.jk === 'L'
-                            ? '<span class="badge bg-info"><i class="bi bi-gender-male"></i></span>'
-                            : '<span style="background-color: #ff6aaf;" class="badge"><i class="bi bi-gender-female"></i></span>';
-
-                        // Perbaikan di bagian ini: Menggunakan d-flex dan align-items-center
-                        pasien = `
+                            // Perbaikan di bagian ini: Menggunakan d-flex dan align-items-center
+                            pasien = `
                                                                                                             <div class="m-0" onclick="showModalSoapRanap('${data.no_rawat}')" style="cursor:pointer">
                                                                                                                 <div class="d-flex align-items-center gap-2 mt-1">
                                                                                                                     ${labelJK}
@@ -650,20 +650,20 @@
                                                                                                             </div>
                                                                                                                         `;
 
-                        let bayiGabung = '';
+                            let bayiGabung = '';
 
-                        if (row.ranap_gabung) {
-                            const regPeriksa = row.ranap_gabung.reg_periksa;
-                            const noRawatBayi = regPeriksa.no_rawat;
+                            if (row.ranap_gabung) {
+                                const regPeriksa = row.ranap_gabung.reg_periksa;
+                                const noRawatBayi = regPeriksa.no_rawat;
 
-                            // 1. Dapatkan menu resume medis berdasarkan hak akses departemen
-                            const resumeMenu = getResumeMenuBayi(row);
+                                // 1. Dapatkan menu resume medis berdasarkan hak akses departemen
+                                const resumeMenu = getResumeMenuBayi(row);
 
-                            // 2. Dapatkan list menu lengkap untuk bayi
-                            const listMenuBayi = getListMenuBayi(regPeriksa, resumeMenu);
+                                // 2. Dapatkan list menu lengkap untuk bayi
+                                const listMenuBayi = getListMenuBayi(regPeriksa, resumeMenu);
 
-                            // 3. Gabungkan nama bayi dengan bungkus dropdown-nya
-                            const namaBayiDropdown = `
+                                // 3. Gabungkan nama bayi dengan bungkus dropdown-nya
+                                const namaBayiDropdown = `
                                             <a class="dropdown-toggle btn btn-warning btn-sm" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 ${regPeriksa.pasien.nm_pasien}
                                             </a>
@@ -672,8 +672,8 @@
                                             </ul>
                                         `;
 
-                            // 4. Output akhir komponen bayi gabung (Berjejer ke bawah)
-                            bayiGabung = `
+                                // 4. Output akhir komponen bayi gabung (Berjejer ke bawah)
+                                bayiGabung = `
                             <hr style="margin:6px 0; border-top: 1px dashed #ccc;"/>
                             <div class="d-flex flex-column gap-1 small">
                                 <span class="text-muted" style="font-size: 10px;">${noRawatBayi}</span>
@@ -682,166 +682,166 @@
                                 </div>
                             </div>
                         `;
-                        }
+                            }
 
 
-                        return `
+                            return `
                                                                                     <span id="pasien" data-no-rkm-medis="${data.no_rkm_medis}">${pasien}</span> ${bayiGabung}`;
 
+                        },
+                        name: 'reg_periksa',
                     },
-                    name: 'reg_periksa',
-                },
 
-                {
-                    title: 'Kamar',
-                    data: 'kamar',
-                    render: function (data) {
-                        return data.bangsal.nm_bangsal;
+                    {
+                        title: 'Kamar',
+                        data: 'kamar',
+                        render: function(data) {
+                            return data.bangsal.nm_bangsal;
+                        },
+                        name: 'kamar',
                     },
-                    name: 'kamar',
-                },
-                {
-                    title: 'Tgl. Masuk',
-                    data: 'reg_periksa',
-                    render: function (data, type, row, meta) {
-                        return `${splitTanggal(data.tgl_registrasi)} ${data.jam_reg}`;
+                    {
+                        title: 'Tgl. Masuk',
+                        data: 'reg_periksa',
+                        render: function(data, type, row, meta) {
+                            return `${splitTanggal(data.tgl_registrasi)} ${data.jam_reg}`;
+                        },
+                        name: 'tgl_masuk',
                     },
-                    name: 'tgl_masuk',
-                },
-                {
-                    title: 'Lama',
-                    data: 'lama',
-                    render: function (data, type, row) {
-                        return `${data} Hari`;
+                    {
+                        title: 'Lama',
+                        data: 'lama',
+                        render: function(data, type, row) {
+                            return `${data} Hari`;
+                        },
+                        name: 'lama',
                     },
-                    name: 'lama',
-                },
-                {
-                    title: 'Diag. Awal',
-                    data: '',
-                    name: 'diagnosa',
-                    render: function (data, type, row) {
-                        const asmedAnak = row.asmed_anak;
-                        const asmedKandungan = row.asmed_kandungan;
-                        const asmedUmumBBL = row.asmed_umum;
+                    {
+                        title: 'Diag. Awal',
+                        data: '',
+                        name: 'diagnosa',
+                        render: function(data, type, row) {
+                            const asmedAnak = row.asmed_anak;
+                            const asmedKandungan = row.asmed_kandungan;
+                            const asmedUmumBBL = row.asmed_umum;
 
-                        if (asmedAnak) {
-                            return asmedAnak.diagnosis;
-                        } else if (asmedKandungan) {
-                            return asmedKandungan.diagnosis;
-                            // return moment(asmedKandungan.tanggal).format('DD-MM-YYYY HH:mm:ss');
-                        } else if (asmedUmumBBL) {
-                            return asmedUmumBBL.diagnosis;
-                            // return moment(asmedUmumBBL.tanggal).format('DD-MM-YYYY HH:mm:ss');
-                        } else {
-                            return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
-                        }
-                    }
-                },
-                {
-                    title: 'Asesmen Medis',
-                    render: (data, type, row) => {
-                        const asmedAnak = row.asmed_anak;
-                        const asmedKandungan = row.asmed_kandungan;
-                        const asmedUmumBBL = row.asmed_umum;
-
-                        if (asmedAnak) {
-                            return moment(asmedAnak.tanggal).format('DD-MM-YYYY HH:mm:ss');
-                        } else if (asmedKandungan) {
-                            return moment(asmedKandungan.tanggal).format('DD-MM-YYYY HH:mm:ss');
-                        }
-
-                        if (row.reg_periksa.umurdaftar === '0' && row.reg_periksa.sttsumur === 'Hr') {
-                            if (asmedUmumBBL === null) {
-                                // row.addClass('table-danger')
-                                return moment(asmedUmumBBL.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                            if (asmedAnak) {
+                                return asmedAnak.diagnosis;
+                            } else if (asmedKandungan) {
+                                return asmedKandungan.diagnosis;
+                                // return moment(asmedKandungan.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                            } else if (asmedUmumBBL) {
+                                return asmedUmumBBL.diagnosis;
+                                // return moment(asmedUmumBBL.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                            } else {
+                                return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
                             }
                         }
-                        // else if (asmedUmumBBL) {} else {
-                        // }
-                        return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
+                    },
+                    {
+                        title: 'Asesmen Medis',
+                        render: (data, type, row) => {
+                            const asmedAnak = row.asmed_anak;
+                            const asmedKandungan = row.asmed_kandungan;
+                            const asmedUmumBBL = row.asmed_umum;
 
-                        // if (data.reg_periksa.umurdaftar === '0' && data.reg_periksa.sttsumur === 'Hr') {
-                        //     if (asmedUmumBBL === null) {
-                        //         // row.addClass('table-danger')
-                        //     }
-                        // }
-                        // return false;
-                    }
-                },
-                {
-                    title: 'Dokter DPJP',
-                    data: 'reg_periksa',
-                    render: function (data, type, row) {
-                        let dokter = '';
-                        if (!data.dokter) {
-                            swal.fire({
-                                icon: 'error',
-                                html: `Gagal memuat pasien ${row.no_rawat} dengan ID Dokter ${data.kd_dokter}, periksa kembali data registrasi`,
-                                title: 'Terjadi Kesalahan',
-                                showConfirmButton: true,
-                                confirmButtonColor: '#3085d6',
-                            })
-                            return '';
-                        }
-                        if (data.dokter) {
-                            dokter = data.dokter.nm_dokter;
-                        } else {
-                            kd_dokter = data.kd_dokter.replace(/\s/g, '');
-                            $.ajax({
-                                url: 'dokter/ambil',
-                                dataType: 'JSON',
-                                data: {
-                                    'nik': kd_dokter,
-                                },
-                                success: function (response) {
-                                    $.map(response.data, function (res) {
-                                        $('.nm_dokter').text(res.nm_dokter);
-                                    })
+                            if (asmedAnak) {
+                                return moment(asmedAnak.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                            } else if (asmedKandungan) {
+                                return moment(asmedKandungan.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                            }
+
+                            if (row.reg_periksa.umurdaftar === '0' && row.reg_periksa.sttsumur === 'Hr') {
+                                if (asmedUmumBBL === null) {
+                                    // row.addClass('table-danger')
+                                    return moment(asmedUmumBBL.tanggal).format('DD-MM-YYYY HH:mm:ss');
                                 }
-                            });
-                        }
-                        dokterGabung = '';
-                        if (row.ranap_gabung) {
-                            namaBayi =
-                                dokterGabung = `<hr style="margin:0px"/>${row.ranap_gabung.reg_periksa.dokter.nm_dokter}`
+                            }
+                            // else if (asmedUmumBBL) {} else {
+                            // }
+                            return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
 
+                            // if (data.reg_periksa.umurdaftar === '0' && data.reg_periksa.sttsumur === 'Hr') {
+                            //     if (asmedUmumBBL === null) {
+                            //         // row.addClass('table-danger')
+                            //     }
+                            // }
+                            // return false;
                         }
-                        return `<span class="nm_dokter">${dokter} ${dokterGabung}</span>`;
                     },
-                    name: 'dokter'
-                },
+                    {
+                        title: 'Dokter DPJP',
+                        data: 'reg_periksa',
+                        render: function(data, type, row) {
+                            let dokter = '';
+                            if (!data.dokter) {
+                                swal.fire({
+                                    icon: 'error',
+                                    html: `Gagal memuat pasien ${row.no_rawat} dengan ID Dokter ${data.kd_dokter}, periksa kembali data registrasi`,
+                                    title: 'Terjadi Kesalahan',
+                                    showConfirmButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                })
+                                return '';
+                            }
+                            if (data.dokter) {
+                                dokter = data.dokter.nm_dokter;
+                            } else {
+                                kd_dokter = data.kd_dokter.replace(/\s/g, '');
+                                $.ajax({
+                                    url: 'dokter/ambil',
+                                    dataType: 'JSON',
+                                    data: {
+                                        'nik': kd_dokter,
+                                    },
+                                    success: function(response) {
+                                        $.map(response.data, function(res) {
+                                            $('.nm_dokter').text(res.nm_dokter);
+                                        })
+                                    }
+                                });
+                            }
+                            dokterGabung = '';
+                            if (row.ranap_gabung) {
+                                namaBayi =
+                                    dokterGabung = `<hr style="margin:0px"/>${row.ranap_gabung.reg_periksa.dokter.nm_dokter}`
 
-                {
-                    title: 'Pembiayaan',
-                    data: 'reg_periksa.penjab',
-                    render: function (data) {
-                        penjab = `<span class="${data.kd_pj === 'A03' ? 'text-danger' : 'text-success'}"><b>${data.png_jawab}</b></span>`
-                        return penjab;
+                            }
+                            return `<span class="nm_dokter">${dokter} ${dokterGabung}</span>`;
+                        },
+                        name: 'dokter'
                     },
-                    name: 'penjab',
-                }, {
-                    title: 'Catatan',
-                    data: 'reg_periksa.no_rkm_medis',
-                    render: function (data) {
-                        return `<span class="" id="riwayat_lab_${data}"></span>`
-                    },
-                    name: 'no_rkm_medis',
-                },
-                {
-                    title: 'Status',
-                    data: 'stts_pulang',
-                    render: function (data, type, row, meta) {
-                        let tanggal = '';
-                        if (data === '-') {
-                            tanggal = ``;
-                        } else {
-                            tanggal = `${moment(row.tgl_keluar).format('DD-MM-YYYY')} ${row.jam_keluar}`;
 
+                    {
+                        title: 'Pembiayaan',
+                        data: 'reg_periksa.penjab',
+                        render: function(data) {
+                            penjab = `<span class="${data.kd_pj === 'A03' ? 'text-danger' : 'text-success'}"><b>${data.png_jawab}</b></span>`
+                            return penjab;
+                        },
+                        name: 'penjab',
+                    }, {
+                        title: 'Catatan',
+                        data: 'reg_periksa.no_rkm_medis',
+                        render: function(data) {
+                            return `<span class="" id="riwayat_lab_${data}"></span>`
+                        },
+                        name: 'no_rkm_medis',
+                    },
+                    {
+                        title: 'Status',
+                        data: 'stts_pulang',
+                        render: function(data, type, row, meta) {
+                            let tanggal = '';
+                            if (data === '-') {
+                                tanggal = ``;
+                            } else {
+                                tanggal = `${moment(row.tgl_keluar).format('DD-MM-YYYY')} ${row.jam_keluar}`;
+
+                            }
+                            return `${tanggal}<br>${data}`;
                         }
-                        return `${tanggal}<br>${data}`;
                     }
-                }
                 ],
                 "language": {
                     "zeroRecords": "Tidak ada data pasien terdaftar",
@@ -1100,7 +1100,7 @@
             $('#modalAsmedRanapAnak').modal('show')
         }
 
-        $("#modalSoapRanap").on('hidden.bs.modal', function () {
+        $("#modalSoapRanap").on('hidden.bs.modal', function() {
             grafikPemeriksaan.destroy();
             grafikPemeriksaan = null;
 
@@ -1123,6 +1123,7 @@
             menu += renderListsAsesmenNyeri(data.pasien.tgl_lahir, data.tgl_registrasi, data.no_rawat);
             return menu;
         }
+
         function getMenuSpesialis(data, row) {
             let menu = '';
             const kdSps = row.reg_periksa.dokter.kd_sps;
@@ -1148,6 +1149,7 @@
 
             return menu;
         }
+
         function getMenuAksesKhusus(data, row) {
             let menu = '';
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${data.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
@@ -1170,6 +1172,7 @@
 
             return menu;
         }
+
         function buildDropdownButton(rowIndex, noRawat, listItems) {
             return `
                                             <div class="dropdown-center">
@@ -1182,6 +1185,7 @@
                                             </div>
                                         `;
         }
+
         function getResumeMenuBayi(row) {
             const isDokter = "{{ session()->get('pegawai')->departemen }}";
             const grupAksesResume = ['Direksi', 'SPS', '-', 'CSM'];
@@ -1193,6 +1197,7 @@
 
             return ''; // Kembalikan string kosong jika tidak punya akses
         }
+
         function getListMenuBayi(regPeriksa, resumeMenu) {
             let list = '';
             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${regPeriksa.no_rawat}')">Laborat</a></li>`;
