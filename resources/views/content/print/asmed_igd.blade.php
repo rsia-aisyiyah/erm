@@ -88,22 +88,79 @@
         ASESMEN AWAL MEDIS GAWAT DARURAT
     </div>
 
-    <!-- ANAMNESIS, TTV & PEMERIKSAAN FISIK RINGKAS -->
-    <table width="100%" class="table-print" style="margin-bottom: 8px; font-size: 10.5px;">
-        <tr>
-            <td width="50%">
+    <!-- ANAMNESIS, TTV & PEMERIKSAAN FISIK LENGKAP -->
+    <table width="100%" class="table-print" style="margin-bottom: 8px; font-size: 10px; border-collapse: collapse;">
+        <tr style="background-color: #f8f9fa;">
+            <td width="50%" style="padding: 4px 6px;">
                 <strong>Tgl. Asesmen:</strong> {{ date('d-m-Y H:i', strtotime($data->tanggal)) }}<br>
-                <strong>Dokter Pemeriksa:</strong> {{ $data->dokter->nm_dokter ?? '-' }}<br>
-                <strong>Anamnesis:</strong> {{ $data->anamnesis ?? '-' }} ({{ $data->hubungan ?? '-' }})<br>
-                <strong>Keluhan Utama:</strong> {{ $data->keluhan_utama ?? '-' }}<br>
-                <strong>RPS / RPD:</strong> {{ $data->rps ?? '-' }} / {{ $data->rpd ?? '-' }}
+                <strong>Dokter Pemeriksa:</strong> {{ $data->dokter->nm_dokter ?? '-' }}
             </td>
-            <td width="50%">
-                <strong>Keadaan Umum:</strong> {{ $data->keadaan ?? '-' }} | <strong>Kesadaran:</strong> {{ $data->kesadaran ?? '-' }}<br>
-                <strong>TTV:</strong> TD: {{ $data->td ?? '-' }} mmHg | Nadi: {{ $data->nadi ?? '-' }} x/m | RR: {{ $data->rr ?? '-' }} x/m<br>
-                <strong>Suhu:</strong> {{ $data->suhu ?? '-' }} &deg;C | SpO2: {{ $data->spo ?? '-' }} % | GCS: {{ $data->gcs ?? '-' }}<br>
-                <strong>Diagnosis / Asesmen:</strong><br>
-                <span style="font-weight: bold; color: #000;">{{ $data->diagnosis ?? '-' }}</span>
+            <td width="50%" style="padding: 4px 6px;">
+                <strong>Anamnesis:</strong> {{ $data->anamnesis ?? '-' }} @if(!empty($data->hubungan) && $data->hubungan != '-') ({{ $data->hubungan }}) @endif<br>
+                <strong>Alergi:</strong> <span style="{{ (!empty($data->alergi) && $data->alergi != '-') ? 'color: #dc3545; font-weight: bold;' : '' }}">{{ $data->alergi ?? '-' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 5px 6px;">
+                <table width="100%" style="border: none; font-size: 10px; border-collapse: collapse;">
+                    <tr>
+                        <td width="20%" style="vertical-align: top; font-weight: bold; border: none; padding: 1.5px 0;">Keluhan Utama</td>
+                        <td width="2%" style="vertical-align: top; border: none; padding: 1.5px 0;">:</td>
+                        <td width="78%" style="vertical-align: top; border: none; padding: 1.5px 0;">{{ $data->keluhan_utama ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top; font-weight: bold; border: none; padding: 1.5px 0;">RPS</td>
+                        <td style="vertical-align: top; border: none; padding: 1.5px 0;">:</td>
+                        <td style="vertical-align: top; border: none; padding: 1.5px 0;">{{ $data->rps ?? '-' }}</td>
+                    </tr>
+                    @if(!empty($data->rpd) && $data->rpd != '-')
+                    <tr>
+                        <td style="vertical-align: top; font-weight: bold; border: none; padding: 1.5px 0;">RPD</td>
+                        <td style="vertical-align: top; border: none; padding: 1.5px 0;">:</td>
+                        <td style="vertical-align: top; border: none; padding: 1.5px 0;">{{ $data->rpd }}</td>
+                    </tr>
+                    @endif
+                    @if(!empty($data->rpo) && $data->rpo != '-')
+                    <tr>
+                        <td style="vertical-align: top; font-weight: bold; border: none; padding: 1.5px 0;">RPO</td>
+                        <td style="vertical-align: top; border: none; padding: 1.5px 0;">:</td>
+                        <td style="vertical-align: top; border: none; padding: 1.5px 0;">{{ $data->rpo }}</td>
+                    </tr>
+                    @endif
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 4px 6px; background-color: #fafafa;">
+                <div style="font-weight: bold; margin-bottom: 2px;">Tanda Vital & Keadaan Fisik:</div>
+                <table width="100%" class="border" style="font-size: 9.5px; text-align: center; border-collapse: collapse;">
+                    <tr style="background-color: #eaeaea;">
+                        <th style="padding: 2px 4px; border: 1px solid #000; width: 14%;">Keadaan Umum</th>
+                        <th style="padding: 2px 4px; border: 1px solid #000; width: 14%;">Kesadaran</th>
+                        <th style="padding: 2px 4px; border: 1px solid #000; width: 12%;">GCS</th>
+                        <th style="padding: 2px 4px; border: 1px solid #000; width: 12%;">TD</th>
+                        <th style="padding: 2px 4px; border: 1px solid #000; width: 12%;">Nadi</th>
+                        <th style="padding: 2px 4px; border: 1px solid #000; width: 12%;">RR</th>
+                        <th style="padding: 2px 4px; border: 1px solid #000; width: 12%;">Suhu</th>
+                        <th style="padding: 2px 4px; border: 1px solid #000; width: 12%;">SpO2</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->keadaan ?? '-' }}</td>
+                        <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->kesadaran ?? '-' }}</td>
+                        <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->gcs ?? '-' }}</td>
+                        <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->td ?? '-' }} mmHg</td>
+                        <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->nadi ?? '-' }} x/m</td>
+                        <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->rr ?? '-' }} x/m</td>
+                        <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->suhu ?? '-' }} &deg;C</td>
+                        <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->spo ?? '-' }} %</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 4px 6px;">
+                <strong>Diagnosis / Asesmen Medis :</strong>
+                <span style="font-weight: bold; color: #000; margin-left: 6px;">{{ $data->diagnosis ?? '-' }}</span>
             </td>
         </tr>
     </table>
