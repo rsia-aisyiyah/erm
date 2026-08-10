@@ -320,11 +320,10 @@
                             </div>
                         </div>
 
-                        <!-- 6. TERAPI (BREAKDOWN AKP) -->
+                        <!-- 6. TERAPI -->
                         <div class="card mb-3 shadow-sm border-0">
-                            <div class="card-header bg-light fw-bold py-2 text-primary d-flex justify-content-between align-items-center">
-                                <span><i class="bi bi-capsule me-1"></i> 6. TERAPI (Tata Laksana)</span>
-                                <span class="badge bg-secondary">Elemen AKP</span>
+                            <div class="card-header bg-light fw-bold py-2 text-primary">
+                                <i class="bi bi-capsule me-1"></i> 6. TERAPI (Tata Laksana)
                             </div>
                             <div class="card-body py-2">
                                 <div class="p-2 mb-2 bg-light rounded border">
@@ -575,7 +574,7 @@
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Keluar</button>
                 </div>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-warning btn-sm btn-asmed-ugd-print" onclick="cetakAsmedUgd()"><i class="bi bi-printer"></i> Cetak Asesmen (AKP)</button>
+                    <button type="button" class="btn btn-warning btn-sm btn-asmed-ugd-print" onclick="cetakAsmedUgd()"><i class="bi bi-printer"></i> Cetak Asesmen</button>
                     <button type="button" class="btn btn-primary btn-sm btn-asmed-ugd"><i class="bi bi-save"></i> Simpan Asesmen</button>
                 </div>
             </div>
