@@ -145,7 +145,19 @@ ALTER TABLE `rsia_catatan_pelaksanaan_edukasi_pasien`
 #### B. Berkas Dimodifikasi (*Modified Files*)
 | File | Rincian Perubahan |
 | :--- | :--- |
-| `app/Http/Controllers/CatatanPelaksanaanEdukasiPasienController.php` | 1. Mendukung simpan dan get data `jenis_form`, `disiplin`, `durasi`, `nama_penerima`, dan `ttd_pasien`.<br>2. Method `handleSignature()` menyimpan berkas PNG tanda tangan pasien di folder storage.<br>3. Method `printRm23()` dan `printRm24()` untuk generate PDF streaming. |
-| `routes/web.php` | Menambahkan route `/catatan/pelaksanaan/edukasi/pasien/print/rm23` dan `.../print/rm24`. |
 | `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Tab navigasi RM 23 vs RM 24.<br>2. Checklist materi otomatis berdasarkan profesi (DPJP, Farmasi, Perawat/Bidan, Gizi, Nyeri).<br>3. Canvas tanda tangan pasien/keluarga.<br>4. Tombol Cetak RM 23 dan Cetak RM 24 di footer modal. |
+
+---
+
+## Modifikasi 3: BAB SKP (Monitoring Pelaporan Nilai Kritis & Penataan Tab SBAR IGD)
+
+### 1. Deskripsi Perubahan
+Pembaruan tata letak antarmuka dan alur monitoring untuk pemenuhan standar **Sasaran Keselamatan Pasien (SKP)**:
+- **Penataan Tab Komunikasi Efektif (SBAR) di IGD**:
+  - Tab **SBAR** pada modal pemeriksaan pasien IGD (`resources/views/content/ugd/modal/pemeriksaan.blade.php`) digeser posisinya tepat di samping tab **SOAP** (Urutan: `SOAP` &rarr; `SBAR` &rarr; `Data Pemeriksaan` &rarr; `CPPT Ranap` &rarr; `Resep` &rarr; `Tindakan` &rarr; `EWS`).
+- **Fitur Monitoring Pelaporan Nilai Kritis Pasien**:
+  - Tombol pintasan **"Monitoring Nilai Kritis"** ditambahkan pada toolbar/filter bar **UGD** dan **Rawat Inap (Ranap)** untuk memudahkan staf/dokter membuka panel pemantauan nilai kritis kapan saja.
+  - Perbaikan query & filter default pada modal monitoring (`modal_tabel_hasil_kritis.blade.php`) agar otomatis menyaring data yang berstatus **"Belum diverifikasi"**.
+  - Integritas waktu verifikasi (*real-time timestamp*) tetap dijaga otomatis oleh server saat petugas/dokter mengklik konfirmasi untuk mencegah manipulasi data medikolegal.
+
 

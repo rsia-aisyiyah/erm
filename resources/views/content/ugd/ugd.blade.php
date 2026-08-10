@@ -26,6 +26,11 @@
             @else
                 <input type="hidden" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
             @endif
+            <div class="col-md-6 col-lg-3 col-sm-12 d-flex align-items-end">
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="showTabelHasilKritis()" title="Monitoring Pelaporan Nilai Kritis">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Monitoring Nilai Kritis
+                </button>
+            </div>
         </div>
     </form>
     <div class="table-responsive">

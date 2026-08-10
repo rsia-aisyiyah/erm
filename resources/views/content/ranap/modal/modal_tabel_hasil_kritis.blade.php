@@ -103,11 +103,11 @@
         function showTabelHasilKritis() {
             $('#modalTabelHasilKritis').modal('show');
             const bulan = filterHasilKritis.find('#bulan').val();
-            const status = filterHasilKritis.find('#status option:selected').val() || '0';
+            const status = filterHasilKritis.find('#status option:selected').val() || 'belum';
             getHasilKritis(bulan, status);
         }
 
-        function getHasilKritis(bulan = '', status = '0') {
+        function getHasilKritis(bulan = '', status = 'belum') {
             const loginNik = "{{ session()->get('pegawai')->nik }}";
 
             $('#containerHasilKritis').html(`

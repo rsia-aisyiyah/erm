@@ -100,11 +100,14 @@
                             <input type="search" id="cari-kamar" name="cari-kamar" class="form-control form-control-sm"
                                 width="100%" autocomplete="off">
                         </div>
-                        <div class="col-lg-3 col-md-12 col-sm-12 my-4">
+                        <div class="col-lg-3 col-md-12 col-sm-12 my-4 d-flex gap-2">
                             <a href="{{ route('ranap.pemeriksaan-ranap.index') }}" target="_blank"
-                                class="btn btn-primary btn-sm" type="button">
-                                <i class="bi bi-search"></i> Lihat CPPT Harian
+                                class="btn btn-primary btn-sm text-nowrap" type="button">
+                                <i class="bi bi-search"></i> CPPT Harian
                             </a>
+                            <button type="button" class="btn btn-outline-danger btn-sm text-nowrap" onclick="showTabelHasilKritis()" title="Monitoring Pelaporan Nilai Kritis">
+                                <i class="bi bi-exclamation-triangle-fill"></i> Nilai Kritis
+                            </button>
                         </div>
                     </div>
                 </div>

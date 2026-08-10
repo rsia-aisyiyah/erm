@@ -65,15 +65,15 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tabSbar" data-bs-toggle="tab" data-bs-target="#tabSbar-pane"
+                            type="button" role="tab" aria-controls="tabSbar-pane" aria-selected="false">SBAR
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tabPemeriksaanUgd-tabel" data-bs-toggle="tab"
                             data-bs-target="#tabPemeriksaanUgd-pane" type="button" role="tab"
                             aria-controls="tabPemeriksaanUgd-pane" aria-selected="false">Data
                             Pemeriksaan
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tabSbar" data-bs-toggle="tab" data-bs-target="#tabSbar-pane"
-                            type="button" role="tab" aria-controls="tabSbar-pane" aria-selected="true">SBAR
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -89,7 +89,7 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
                             data-bs-target="#tabTindakan-pane" type="button" role="tab" aria-controls="tabTindakan-pane"
-                            aria-selected="true">Tindakan
+                            aria-selected="false">Tindakan
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -97,13 +97,15 @@
                             type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false">EWS
                         </button>
                     </li>
-
-
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="tabSoapPaneUgd" role="tabpanel"
-                        aria-labelledby="home-tab" tabindex="0">
+                        aria-labelledby="tabSoapUgd" tabindex="0">
                         @include('content.ugd.modal.pemeriksaan.soap')
+                    </div>
+                    <div class="tab-pane fade p-3" id="tabSbar-pane" role="tabpanel" aria-labelledby="tabSbar"
+                        tabindex="0">
+                        @include('content.ranap.modal.cppt._sbar')
                     </div>
                     <div class="tab-pane fade p-3" id="tabPemeriksaanUgd-pane" role="tabpanel"
                         aria-labelledby="tabPemeriksaanUgd-tabel" tabindex="0">
@@ -112,10 +114,6 @@
                     <div class="tab-pane fade p-3" id="tab-ews-pane" role="tabpanel" aria-labelledby="tab-ews"
                         tabindex="0">
                         @include('content.ranap.modal.cppt._ewsRanap')
-                    </div>
-                    <div class="tab-pane fade p-3" id="tabSbar-pane" role="tabpanel" aria-labelledby="sbar-tab"
-                        tabindex="0">
-                        @include('content.ranap.modal.cppt._sbar')
                     </div>
                     <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
                         tabindex="0">
