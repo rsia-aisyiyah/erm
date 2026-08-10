@@ -44,6 +44,31 @@ class HasilKritisFetchService
      */
     private function filterByRoleAndStatus(Builder $query, string $nip, ?string $status): void
     {
+        $isDireksi = in_array(strtolower($nip), ['direksi', 'admin', 'verifikator'])
+            || (session()->has('pegawai') && in_array(session()->get('pegawai')->jnj_jabatan ?? '', ['DIRU', 'DIR', 'DIRT']))
+            || (session()->has('pegawai') && in_array(session()->get('pegawai')->departemen ?? '', ['DIR', 'DPM1', 'DPM2', 'DM1', 'DM7', 'CSM', 'SPS']));
+
+        if ($isDireksi) {
+            if ($status === 'belum') {
+                $query->where(function ($q) {
+                    $q->whereNull('tgl_ruang')
+                        ->orWhere('tgl_ruang', '0000-00-00 00:00:00')
+                        ->orWhereNull('tgl_dokter')
+                        ->orWhere('tgl_dokter', '0000-00-00 00:00:00')
+                        ->orWhereNull('tgl_drpj')
+                        ->orWhere('tgl_drpj', '0000-00-00 00:00:00');
+                });
+            } elseif ($status === 'sudah') {
+                $query->whereNotNull('tgl_ruang')
+                    ->where('tgl_ruang', '!=', '0000-00-00 00:00:00')
+                    ->whereNotNull('tgl_dokter')
+                    ->where('tgl_dokter', '!=', '0000-00-00 00:00:00')
+                    ->whereNotNull('tgl_drpj')
+                    ->where('tgl_drpj', '!=', '0000-00-00 00:00:00');
+            }
+            return;
+        }
+
         $isDokter = $this->dokterModel->where('kd_dokter', $nip)->exists();
 
         if ($isDokter) {
@@ -66,8 +91,8 @@ class HasilKritisFetchService
 
     private function applyStatusValidation(Builder $query, string $column, ?string $status): void
     {
-        $query->when($status === 'belum', fn($q) => $q->whereNull($column))
-            ->when($status === 'sudah', fn($q) => $q->whereNotNull($column));
+        $query->when($status === 'belum', fn($q) => $q->where(fn($sub) => $sub->whereNull($column)->orWhere($column, '0000-00-00 00:00:00')))
+            ->when($status === 'sudah', fn($q) => $q->whereNotNull($column)->where($column, '!=', '0000-00-00 00:00:00'));
     }
 
     private function filterByMonth(Builder $query, ?string $bulanRaw): void
