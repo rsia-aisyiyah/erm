@@ -92,3 +92,60 @@ CREATE TABLE `rsia_penilaian_medis_igd` (
 3. **Akses dari Rawat Inap**:
    - Buka `http://localhost:8000/ranap` (atau `/erm/ranap`).
    - Klik tombol menu tindakan pasien &rarr; pilih **Asesmen Medis IGD**.
+
+---
+
+## Modifikasi 2: Catatan Pelaksanaan Edukasi Pasien & Multidisiplin (RM 23 & RM 24)
+
+### 1. Deskripsi Perubahan
+Pembaruan menyeluruh pada modul **Catatan Pelaksanaan Edukasi Pasien** untuk mengakomodasi standar Akreditasi Rumah Sakit (Pokja KE / HPK):
+- **Form RM 23 (Edukasi Multidisiplin PPA)**:
+  - Pembagian profesi: **DPJP (Dokter Spesialis)**, **Farmasi**, **Perawat / Bidan**, **Nutrisionis (Gizi)**, dan **Manajemen Nyeri**.
+  - Pilihan checklist poin-poin materi resmi standar akreditasi untuk masing-masing profesi.
+  - Kolom ketikan materi tambahan jika ada poin edukasi khusus.
+- **Form RM 24 (Edukasi Pasien Terbuka)**:
+  - Form edukasi dengan kolom materi berupa teks bebas (*free text*) untuk mencatat topik edukasi tindakan/penyakit spesifik.
+- **Parameter Bersama**:
+  - Tanggal & waktu edukasi beserta durasi (misal: "10 Menit").
+  - Pilihan metode pembelajaran (*Diskusi / Wawancara, Simulasi, Demonstrasi, Ceramah, Observasi, Praktek Langsung*).
+  - Hambatan belajar dan intervensi cara mengatasinya.
+  - Evaluasi pemahaman pasien (*Tidak mengerti, Mengerti tidak mampu, Mengerti & mampu*).
+  - **Tanda Tangan Digital Pasien/Keluarga** berbasis Canvas Touch/Stylus/Mouse dengan penyimpanan file fisik PNG di `storage/app/public/signatures/catatan_edukasi_pasien/`.
+  - **Barcode QR Code Edukator** otomatis ter-generate berdasarkan akun login petugas/dokter.
+- **Dua Template Cetak PDF Resmi**:
+  - Cetak Form **RM 23** (*Catatan Pelaksanaan Pendidikan Pasien dan Keluarga dari Multi Disiplin*).
+  - Cetak Form **RM 24** (*Catatan Pelaksanaan Edukasi Kepada Pasien*).
+
+---
+
+### 2. Struktur Basis Data (MySQL)
+
+#### Perubahan Kolom Tabel: `rsia_catatan_pelaksanaan_edukasi_pasien`
+```sql
+ALTER TABLE `rsia_catatan_pelaksanaan_edukasi_pasien`
+  ADD COLUMN `jenis_form` ENUM('RM 23', 'RM 24') NOT NULL DEFAULT 'RM 23' AFTER `no_rawat`,
+  ADD COLUMN `disiplin` ENUM('DPJP', 'Perawat/Bidan', 'Farmasi', 'Nutrisionis', 'Manajemen Nyeri', 'Lainnya') NULL AFTER `jenis_form`,
+  ADD COLUMN `durasi` VARCHAR(20) NULL AFTER `tanggal`,
+  ADD COLUMN `nama_penerima` VARCHAR(100) NULL AFTER `nip`,
+  ADD COLUMN `ttd_pasien` VARCHAR(255) NULL AFTER `nama_penerima`,
+  MODIFY COLUMN `materi` TEXT NULL,
+  MODIFY COLUMN `metode` ENUM('Diskusi / Wawancara','Diskusi','Simulasi (S)','Demonstrasi (Demo)','Ceramah','Observasi (O)','Praktek Langsung (PL)') NULL;
+```
+
+---
+
+### 3. Daftar Berkas yang Ditambahkan & Dimodifikasi
+
+#### A. Berkas Baru (*New Files*)
+| File | Fungsi |
+| :--- | :--- |
+| `resources/views/content/print/catatan_edukasi_rm23.blade.php` | Template cetak PDF resmi Form RM 23 (Edukasi Multidisiplin 5 PPA). |
+| `resources/views/content/print/catatan_edukasi_rm24.blade.php` | Template cetak PDF resmi Form RM 24 (Tabel baris edukasi pasien umum). |
+
+#### B. Berkas Dimodifikasi (*Modified Files*)
+| File | Rincian Perubahan |
+| :--- | :--- |
+| `app/Http/Controllers/CatatanPelaksanaanEdukasiPasienController.php` | 1. Mendukung simpan dan get data `jenis_form`, `disiplin`, `durasi`, `nama_penerima`, dan `ttd_pasien`.<br>2. Method `handleSignature()` menyimpan berkas PNG tanda tangan pasien di folder storage.<br>3. Method `printRm23()` dan `printRm24()` untuk generate PDF streaming. |
+| `routes/web.php` | Menambahkan route `/catatan/pelaksanaan/edukasi/pasien/print/rm23` dan `.../print/rm24`. |
+| `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Tab navigasi RM 23 vs RM 24.<br>2. Checklist materi otomatis berdasarkan profesi (DPJP, Farmasi, Perawat/Bidan, Gizi, Nyeri).<br>3. Canvas tanda tangan pasien/keluarga.<br>4. Tombol Cetak RM 23 dan Cetak RM 24 di footer modal. |
+

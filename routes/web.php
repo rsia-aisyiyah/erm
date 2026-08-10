@@ -385,6 +385,8 @@ Route::middleware('auth')->group(function () {
 	Route::get('catatan/pelaksanaan/edukasi/pasien', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'get']);
 	Route::post('catatan/pelaksanaan/edukasi/pasien', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'create']);
 	Route::post('catatan/pelaksanaan/edukasi/pasien/delete', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'delete']);
+	Route::get('catatan/pelaksanaan/edukasi/pasien/print/rm23', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'printRm23']);
+	Route::get('catatan/pelaksanaan/edukasi/pasien/print/rm24', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'printRm24']);
 
 	Route::post('monitoring/cairan/pasien', [MonitoringCairanPasienController::class, 'create']);
 	Route::get('monitoring/cairan/pasien', [MonitoringCairanPasienController::class, 'get']);
