@@ -22,4 +22,14 @@ class AsesmenMedisIgd extends Model
     {
         return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter');
     }
+
+    function rsiaAsmed()
+    {
+        return $this->hasOne(RsiaPenilaianMedisIgd::class, 'no_rawat', 'no_rawat');
+    }
+
+    function rsiaPenilaianMedisIgd()
+    {
+        return $this->hasOne(RsiaPenilaianMedisIgd::class, 'no_rawat', 'no_rawat');
+    }
 }

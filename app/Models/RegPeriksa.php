@@ -221,6 +221,10 @@ class RegPeriksa extends Model
     {
         return $this->hasOne(AsesmenMedisIgd::class, 'no_rawat', 'no_rawat');
     }
+    function rsiaAsmedIgd()
+    {
+        return $this->hasOne(RsiaPenilaianMedisIgd::class, 'no_rawat', 'no_rawat');
+    }
     function skriningTb(): BelongsTo
     {
         return $this->belongsTo(SkriningTb::class, 'no_rawat', 'no_rawat');

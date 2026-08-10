@@ -122,9 +122,7 @@ Route::middleware('auth')->group(function () {
 
 	Route::post('/booking/buat', [BookingRegistrasiController::class, 'create']);
 
-	Route::get('/asesmen/medis/ugd/print', function () {
-		return 'asdasdasdasd';
-	});
+	Route::get('/asesmen/medis/ugd/print', [AsesmenMedisIgdController::class, 'print']);
 	Route::get('/ugd', [UgdController::class, 'index']);
 	Route::get('/ugd/get/table', [UgdController::class, 'getTable']);
 	Route::get('/ugd/soap/table', [PemeriksaanRalanController::class, 'getTable']);

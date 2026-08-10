@@ -1110,6 +1110,7 @@
 
         function getMenuUmum(data, row) {
             let menu = '';
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${data.no_rawat}')"><i class="bi bi-hospital text-danger me-1"></i> Asesmen Medis IGD ${cekList(row.asmed_igd || (row.reg_periksa ? row.reg_periksa.asmed_igd : null))}</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${data.no_rawat}')">Pemeriksaan Penunjang</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${row.reg_periksa.kd_dokter}" onclick="showModalSoapRanap('${data.no_rawat}')">CPPT</a></li>`;
