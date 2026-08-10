@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 
 class AsesmenMedisIgdController extends Model
@@ -30,6 +31,44 @@ class AsesmenMedisIgdController extends Model
             ->with(['regPeriksa.pasien', 'dokter', 'rsiaAsmed.dpjp'])
             ->first();
         return response()->json($asmed);
+    }
+
+    protected function handleSignature(string $noRawat, ?string $signatureData): ?string
+    {
+        if (empty($signatureData)) {
+            return null;
+        }
+
+        // Jika sudah merupakan path file tersimpan (bukan data Base64 baru), pertahankan
+        if (!str_starts_with($signatureData, 'data:image')) {
+            return $signatureData;
+        }
+
+        @list($type, $data) = explode(';', $signatureData);
+        @list(, $data) = explode(',', $data);
+
+        if (empty($data)) {
+            return null;
+        }
+
+        $binary = base64_decode($data);
+        if ($binary === false) {
+            return null;
+        }
+
+        $cleanNoRawat = str_replace(['/', ' '], ['-', '_'], $noRawat);
+        $folder = 'signatures/penilaian_medis_igd';
+
+        if (!Storage::disk('public')->exists($folder)) {
+            Storage::disk('public')->makeDirectory($folder);
+        }
+
+        $fileName = 'ttd_' . $cleanNoRawat . '.png';
+        $filePath = $folder . '/' . $fileName;
+
+        Storage::disk('public')->put($filePath, $binary);
+
+        return $filePath;
     }
 
     public function create(Request $request)
@@ -93,6 +132,9 @@ class AsesmenMedisIgdController extends Model
 
             if (!empty($dataRsia)) {
                 $dataRsia['no_rawat'] = $no_rawat;
+                if (!empty($data['ttd_pasien'])) {
+                    $dataRsia['ttd_pasien'] = $this->handleSignature($no_rawat, $data['ttd_pasien']);
+                }
                 $this->rsiaAsmed->updateOrCreate(['no_rawat' => $no_rawat], $dataRsia);
             }
         } catch (QueryException $e) {
@@ -156,6 +198,9 @@ class AsesmenMedisIgdController extends Model
 
             if (!empty($dataRsia)) {
                 $dataRsia['no_rawat'] = $no_rawat;
+                if (!empty($data['ttd_pasien'])) {
+                    $dataRsia['ttd_pasien'] = $this->handleSignature($no_rawat, $data['ttd_pasien']);
+                }
                 $this->rsiaAsmed->updateOrCreate(['no_rawat' => $no_rawat], $dataRsia);
             }
         } catch (QueryException $e) {

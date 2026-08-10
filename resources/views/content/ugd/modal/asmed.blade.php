@@ -1170,8 +1170,12 @@
                         $('#formAsmedUgd input[name="nama_keluarga_ttd"]').val(rsia.nama_keluarga_ttd || (response.reg_periksa ? response.reg_periksa.pasien.nm_pasien : ''));
 
                         if (rsia.ttd_pasien) {
+                            let ttdUrl = rsia.ttd_pasien;
+                            if (!ttdUrl.startsWith('data:image') && !ttdUrl.startsWith('http')) {
+                                ttdUrl = '{{ asset("storage") }}/' + ttdUrl.replace(/^\/+/, '');
+                            }
                             $('#ttd_pasien').val(rsia.ttd_pasien);
-                            $('#imgPreviewTtd').attr('src', rsia.ttd_pasien);
+                            $('#imgPreviewTtd').attr('src', ttdUrl);
                             $('#wrapperPreviewTtd').removeClass('d-none');
                         }
                     } else {

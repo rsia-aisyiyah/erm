@@ -201,7 +201,19 @@
                 Pasien / Keluarga<br>
                 <div style="height: 65px; margin: 4px 0;">
                     @if (!empty($rsia->ttd_pasien))
-                        <img src="{{ $rsia->ttd_pasien }}" height="60" />
+                        @php
+                            $ttdSrc = $rsia->ttd_pasien;
+                            if (!str_starts_with($ttdSrc, 'data:image')) {
+                                $absStorage = storage_path('app/public/' . ltrim($ttdSrc, '/'));
+                                $absPublic = public_path('storage/' . ltrim($ttdSrc, '/'));
+                                if (file_exists($absStorage)) {
+                                    $ttdSrc = $absStorage;
+                                } elseif (file_exists($absPublic)) {
+                                    $ttdSrc = $absPublic;
+                                }
+                            }
+                        @endphp
+                        <img src="{{ $ttdSrc }}" height="60" />
                     @else
                         <br><br>
                     @endif

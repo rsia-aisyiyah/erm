@@ -13,7 +13,7 @@ Pembaruan formulir **Asesmen Awal Medis Gawat Darurat (UGD/IGD)** yang mencakup:
 - Penamaan "Tata Laksana" diganti menjadi **Terapi** dengan checklist kategori (*Preventif, Kuratif, Rehabilitatif, Paliatif*) serta uraian terpisah untuk *Terapi Farmakologis* dan *Terapi Non Farmakologis*.
 - Panel dinamis **Rencana Tindak Lanjut** (*Rawat Jalan, Rawat Inap, Dirujuk*).
 - Pilihan **Kondisi Pasien Pulang** (*Perbaikan, Menolak Rawat Inap, Meninggal Dunia*).
-- Fitur **Tanda Tangan Digital Pasien/Keluarga** berbasis Canvas Touch/Stylus/Mouse.
+- Fitur **Tanda Tangan Digital Pasien/Keluarga** berbasis Canvas Touch/Stylus/Mouse dengan penyimpanan file fisik PNG di storage disk (`storage/app/public/signatures/penilaian_medis_igd/`) untuk menjaga ukuran database tetap ringan dan performa query maksimal.
 - Integrasi menu ke modul **Rawat Inap (Ranap)**.
 - Template cetak dokumen PDF format A4 standar rumah sakit.
 
