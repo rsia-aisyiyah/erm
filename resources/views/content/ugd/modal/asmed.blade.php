@@ -1069,19 +1069,21 @@
             getAsmedUgd(params).done((response) => {
                 if (Object.keys(response).length == 0) {
                     getRegPeriksa(params).done((regPeriksa) => {
+                        const p = regPeriksa?.pasien || {};
                         $('.btn-asmed-ugd').css('display', 'inline');
-                        $('#formAsmedUgd input[name="no_rawat"]').val(regPeriksa.no_rawat);
-                        $('#formAsmedUgd input[name="pasien"]').val(`${regPeriksa.pasien.nm_pasien} (${regPeriksa.pasien.jk})`);
-                        $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(regPeriksa.pasien.tgl_lahir)} (${hitungUmur(regPeriksa.pasien.tgl_lahir)})`);
+                        $('#formAsmedUgd input[name="no_rawat"]').val(regPeriksa?.no_rawat || params);
+                        $('#formAsmedUgd input[name="pasien"]').val(`${p.nm_pasien || '-'} (${p.jk || '-'})`);
+                        $('#formAsmedUgd input[name="tgl_lahir"]').val(`${p.tgl_lahir ? formatTanggal(p.tgl_lahir) : '-'} (${p.tgl_lahir ? hitungUmur(p.tgl_lahir) : '-'})`);
                         $('#formAsmedUgd input[name="kd_dokter"]').val("{{ session()->get('pegawai')->nik }}");
                         $('#formAsmedUgd input[name="dokter"]').val("{{ session()->get('pegawai')->nama }}");
                         $('#formAsmedUgd input[name="tanggal"]').val(`${formatTanggal("{{ date('Y-m-d') }}")} {{ date('H:i:s') }}`);
-                        $('#formAsmedUgd input[name="nama_keluarga_ttd"]').val(regPeriksa.pasien.nm_pasien);
+                        $('#formAsmedUgd input[name="nama_keluarga_ttd"]').val(p.nm_pasien || '');
                     });
                 } else {
+                    const p = response?.reg_periksa?.pasien || {};
                     $('#formAsmedUgd input[name="no_rawat"]').val(response.no_rawat);
-                    $('#formAsmedUgd input[name="pasien"]').val(`${response.reg_periksa.pasien.nm_pasien} (${response.reg_periksa.pasien.jk})`);
-                    $('#formAsmedUgd input[name="tgl_lahir"]').val(`${formatTanggal(response.reg_periksa.pasien.tgl_lahir)} (${hitungUmur(response.reg_periksa.pasien.tgl_lahir)})`);
+                    $('#formAsmedUgd input[name="pasien"]').val(`${p.nm_pasien || '-'} (${p.jk || '-'})`);
+                    $('#formAsmedUgd input[name="tgl_lahir"]').val(`${p.tgl_lahir ? formatTanggal(p.tgl_lahir) : '-'} (${p.tgl_lahir ? hitungUmur(p.tgl_lahir) : '-'})`);
                     $('#formAsmedUgd input[name="kd_dokter"]').val(response.kd_dokter);
                     $('#formAsmedUgd input[name="dokter"]').val(response.dokter ? response.dokter.nm_dokter : '');
                     $('#formAsmedUgd input[name="tanggal"]').val(response.tanggal);

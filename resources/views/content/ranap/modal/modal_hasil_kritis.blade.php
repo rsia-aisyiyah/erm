@@ -251,23 +251,29 @@
         function setInfoPasienKritis(no_rawat) {
             resetFormHasilKritis()
             getRegPeriksa(no_rawat).done((response) => {
-                const pasien = response.pasien
+                if (!response) return;
+                const pasien = response.pasien || {};
+                const dokter = response.dokter || {};
+                const kamarInapList = response.kamar_inap || [];
+
                 formPasienKritis.find('#no_rawat').val(no_rawat)
-                formPasienKritis.find('#nm_pasien').val(`${response.no_rkm_medis} - ${pasien.nm_pasien}`)
-                formPasienKritis.find('#keluarga').val(response.p_jawab)
-                formPasienKritis.find('#tgl_lahir').val(`${formatTanggal(response.pasien.tgl_lahir)} / ${response.umurdaftar} ${response.sttsumur}`)
-                const kamarInap = response.kamar_inap.map((item) => {
-                    const valKamar = item.stts_pulang != 'Pindah Kamar' ? item.kamar.bangsal.nm_bangsal : '-';
+                formPasienKritis.find('#nm_pasien').val(`${response.no_rkm_medis || ''} - ${pasien.nm_pasien || '-'}`)
+                formPasienKritis.find('#keluarga').val(response.p_jawab || '-')
+                formPasienKritis.find('#tgl_lahir').val(`${pasien.tgl_lahir ? formatTanggal(pasien.tgl_lahir) : '-'} / ${response.umurdaftar || '-'} ${response.sttsumur || ''}`)
+                
+                const kamarInap = kamarInapList.map((item) => {
+                    const valKamar = (item.stts_pulang != 'Pindah Kamar' && item.kamar && item.kamar.bangsal) ? item.kamar.bangsal.nm_bangsal : '-';
                     return [
                         valKamar,
-                        item.diagnosa_awal,
-                        item.tgl_masuk,
+                        item.diagnosa_awal || '',
+                        item.tgl_masuk || '',
                     ];
                 }).join(',')
 
-                formPasienKritis.find('#kamar').val(`${kamarInap.split(',')[0]} / ${hitungLamaHari(kamarInap.split(',')[2])} Hari`);
-                formPasienKritis.find('#diagnosa').val(kamarInap.split(',')[1]);
-                formPasienKritis.find('#dokter').val(response.dokter.nm_dokter);
+                const kamarInfo = kamarInap ? `${kamarInap.split(',')[0]} / ${hitungLamaHari(kamarInap.split(',')[2])} Hari` : (response.poliklinik ? response.poliklinik.nm_poli : 'UGD');
+                formPasienKritis.find('#kamar').val(kamarInfo);
+                formPasienKritis.find('#diagnosa').val(kamarInap ? kamarInap.split(',')[1] : '');
+                formPasienKritis.find('#dokter').val(dokter.nm_dokter || '-');
                 formHasilKritis.find('#tgl').val(moment().format('DD-MM-YYYY HH:mm:ss'))
                 showHasilPenunjang.attr('onclick', `modalPemeriksaanPenunjang('${no_rawat}')`)
             })

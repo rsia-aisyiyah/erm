@@ -219,10 +219,13 @@
             $('#formSoapUgd .formEws select').val('-').change()
 
             getRegPeriksa(no_rawat).done((response) => {
+                if (!response) return;
+                const pasien = response.pasien || {};
+                const dokter = response.dokter || {};
 
-                $('#formSoapUgd input[name="no_rawat"]').val(response.no_rawat)
-                $('#formSoapUgd input[name="nm_pasien"]').val(response.pasien.nm_pasien)
-                $('#formSoapUgd input[name="spesialis"]').val(response.dokter.kd_sps)
+                $('#formSoapUgd input[name="no_rawat"]').val(response.no_rawat || no_rawat)
+                $('#formSoapUgd input[name="nm_pasien"]').val(pasien.nm_pasien || '-')
+                $('#formSoapUgd input[name="spesialis"]').val(dokter.kd_sps || '')
                 $('#formSoapUgd input[name="nama"]').val("{{ session()->get('pegawai')->nama }}")
                 $('#formSoapUgd input[name="nik"]').val("{{ session()->get('pegawai')->nik }}")
 
