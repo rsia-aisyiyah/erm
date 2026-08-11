@@ -1163,12 +1163,16 @@
                         if (rsia.kondisi_pulang) {
                             $(`input[name="kondisi_pulang"][value="${rsia.kondisi_pulang}"]`).prop('checked', true).trigger('change');
                         }
-                        $('#formAsmedUgd input[name="tgl_meninggal"]').val(rsia.tgl_meninggal || '');
-                        $('#formAsmedUgd input[name="jam_meninggal"]').val(rsia.jam_meninggal || '');
+                        let tglMeninggal = (rsia.tgl_meninggal && rsia.tgl_meninggal !== '-' && rsia.tgl_meninggal !== '0000-00-00') ? rsia.tgl_meninggal : '';
+                        let jamMeninggal = (rsia.jam_meninggal && rsia.jam_meninggal !== '-') ? rsia.jam_meninggal : '';
+                        $('#formAsmedUgd input[name="tgl_meninggal"]').val(tglMeninggal);
+                        $('#formAsmedUgd input[name="jam_meninggal"]').val(jamMeninggal);
 
                         // Selesai Layanan & TTD
-                        $('#formAsmedUgd input[name="selesai_layanan_tgl"]').val(rsia.selesai_layanan_tgl || "{{ date('Y-m-d') }}");
-                        $('#formAsmedUgd input[name="selesai_layanan_jam"]').val(rsia.selesai_layanan_jam || "{{ date('H:i') }}");
+                        let tglSelesai = (rsia.selesai_layanan_tgl && rsia.selesai_layanan_tgl !== '-' && rsia.selesai_layanan_tgl !== '0000-00-00') ? rsia.selesai_layanan_tgl : "{{ date('Y-m-d') }}";
+                        let jamSelesai = (rsia.selesai_layanan_jam && rsia.selesai_layanan_jam !== '-') ? rsia.selesai_layanan_jam : "{{ date('H:i') }}";
+                        $('#formAsmedUgd input[name="selesai_layanan_tgl"]').val(tglSelesai);
+                        $('#formAsmedUgd input[name="selesai_layanan_jam"]').val(jamSelesai);
                         $('#formAsmedUgd input[name="nama_keluarga_ttd"]').val(rsia.nama_keluarga_ttd || (response.reg_periksa ? response.reg_periksa.pasien.nm_pasien : ''));
 
                         if (rsia.ttd_pasien) {
