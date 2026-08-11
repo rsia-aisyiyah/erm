@@ -145,7 +145,7 @@ ALTER TABLE `rsia_catatan_pelaksanaan_edukasi_pasien`
 #### B. Berkas Dimodifikasi (*Modified Files*)
 | File | Rincian Perubahan |
 | :--- | :--- |
-| `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Tab navigasi RM 23 vs RM 24.<br>2. Checklist materi otomatis berdasarkan profesi (DPJP, Farmasi, Perawat/Bidan, Gizi, Nyeri).<br>3. Canvas tanda tangan pasien/keluarga.<br>4. Tombol Cetak RM 23 dan Cetak RM 24 di footer modal. |
+| `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Tab navigasi RM 23 vs RM 24.<br>2. Checklist materi otomatis berdasarkan profesi (DPJP, Farmasi, Perawat/Bidan, Gizi, Nyeri) beserta tombol pintas **"Centang Semua"**.<br>3. Canvas tanda tangan pasien/keluarga.<br>4. Tombol Cetak RM 23 dan Cetak RM 24 di footer modal. |
 
 ---
 

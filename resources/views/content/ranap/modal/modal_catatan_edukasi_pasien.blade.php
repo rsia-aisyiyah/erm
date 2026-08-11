@@ -509,7 +509,17 @@
             let container = $('#containerChecklistMateri');
             container.empty();
 
-            let html = `<label class="form-label fw-bold small text-muted d-block mb-1">Checklist Poin Materi Standar (${disiplin}) :</label><div class="row gy-1">`;
+            let html = `
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label fw-bold small text-muted mb-0">Checklist Poin Materi Standar (${disiplin}) :</label>
+                    <div class="form-check form-check-inline m-0">
+                        <input class="form-check-input" type="checkbox" id="checkAllMateri" style="cursor: pointer;">
+                        <label class="form-check-label small fw-bold text-primary" for="checkAllMateri" style="cursor: pointer;">
+                            <i class="bi bi-check-all"></i> Centang Semua
+                        </label>
+                    </div>
+                </div>
+                <div class="row gy-1">`;
             items.forEach((item, idx) => {
                 let isChecked = selectedItems.includes(item) ? 'checked' : '';
                 html += `
@@ -523,7 +533,21 @@
             });
             html += `</div>`;
             container.html(html);
+
+            let allChecked = items.length > 0 && selectedItems.length === items.length;
+            $('#checkAllMateri').prop('checked', allChecked);
         }
+
+        $(document).on('change', '#checkAllMateri', function() {
+            let isChecked = $(this).is(':checked');
+            $('.check-materi-item').prop('checked', isChecked);
+        });
+
+        $(document).on('change', '.check-materi-item', function() {
+            let total = $('.check-materi-item').length;
+            let checked = $('.check-materi-item:checked').length;
+            $('#checkAllMateri').prop('checked', total > 0 && total === checked);
+        });
 
         function catatanEdukasiPasien(no_rawat) {
             modalCatatanEdukasiPasien.modal('show');
