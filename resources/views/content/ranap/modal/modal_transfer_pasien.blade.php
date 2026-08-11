@@ -424,8 +424,6 @@
 
 @push('script')
     <script>
-        let signaturePadTransfer = null;
-        let canvasElemTransfer = null;
         let listTransferCache = [];
         let currentTransferNoRawat = '';
         let currentSelectedTglMasuk = '';
@@ -727,33 +725,107 @@
             $('.list_petugas_transfer').fadeOut();
         }
 
-        // SIGNATURE PAD LOGIC
+        // NATIVE HTML5 CANVAS SIGNATURE LOGIC
+        let canvasTransfer = null;
+        let ctxTransfer = null;
+        let isDrawingTransfer = false;
+        let isCanvasEmptyTransfer = true;
+
+        function getTransferCanvasMousePos(canvas, evt) {
+            let rect = canvas.getBoundingClientRect();
+            return {
+                x: (evt.clientX - rect.left) * (canvas.width / rect.width),
+                y: (evt.clientY - rect.top) * (canvas.height / rect.height)
+            };
+        }
+
+        function getTransferCanvasTouchPos(canvas, evt) {
+            let rect = canvas.getBoundingClientRect();
+            let touch = evt.touches[0];
+            return {
+                x: (touch.clientX - rect.left) * (canvas.width / rect.width),
+                y: (touch.clientY - rect.top) * (canvas.height / rect.height)
+            };
+        }
+
+        function initCanvasTransferEvents() {
+            canvasTransfer = document.getElementById('canvasTransfer');
+            if (!canvasTransfer) return;
+            ctxTransfer = canvasTransfer.getContext('2d');
+
+            canvasTransfer.onmousedown = function(e) {
+                isDrawingTransfer = true;
+                isCanvasEmptyTransfer = false;
+                let pos = getTransferCanvasMousePos(canvasTransfer, e);
+                ctxTransfer.beginPath();
+                ctxTransfer.moveTo(pos.x, pos.y);
+            };
+
+            canvasTransfer.onmousemove = function(e) {
+                if (!isDrawingTransfer) return;
+                let pos = getTransferCanvasMousePos(canvasTransfer, e);
+                ctxTransfer.lineWidth = 2.5;
+                ctxTransfer.lineCap = 'round';
+                ctxTransfer.strokeStyle = '#000';
+                ctxTransfer.lineTo(pos.x, pos.y);
+                ctxTransfer.stroke();
+            };
+
+            window.addEventListener('mouseup', function() {
+                isDrawingTransfer = false;
+            });
+
+            canvasTransfer.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                isDrawingTransfer = true;
+                isCanvasEmptyTransfer = false;
+                let pos = getTransferCanvasTouchPos(canvasTransfer, e);
+                ctxTransfer.beginPath();
+                ctxTransfer.moveTo(pos.x, pos.y);
+            }, { passive: false });
+
+            canvasTransfer.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+                if (!isDrawingTransfer) return;
+                let pos = getTransferCanvasTouchPos(canvasTransfer, e);
+                ctxTransfer.lineWidth = 2.5;
+                ctxTransfer.lineCap = 'round';
+                ctxTransfer.strokeStyle = '#000';
+                ctxTransfer.lineTo(pos.x, pos.y);
+                ctxTransfer.stroke();
+            }, { passive: false });
+
+            canvasTransfer.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                isDrawingTransfer = false;
+            }, { passive: false });
+        }
+
         function bukaModalTtdTransfer() {
             $('#modalSignatureTransfer').modal('show');
             setTimeout(() => {
-                if (!canvasElemTransfer) {
-                    canvasElemTransfer = document.getElementById('canvasTransfer');
-                    signaturePadTransfer = new SignaturePad(canvasElemTransfer, {
-                        backgroundColor: 'rgb(255, 255, 255)',
-                        penColor: 'rgb(0, 0, 0)'
-                    });
-                }
-                signaturePadTransfer.clear();
-            }, 300);
+                initCanvasTransferEvents();
+                resetCanvasTransfer();
+            }, 250);
         }
 
         function resetCanvasTransfer() {
-            if (signaturePadTransfer) {
-                signaturePadTransfer.clear();
+            if (!canvasTransfer) {
+                canvasTransfer = document.getElementById('canvasTransfer');
+                if (canvasTransfer) ctxTransfer = canvasTransfer.getContext('2d');
             }
+            if (ctxTransfer && canvasTransfer) {
+                ctxTransfer.clearRect(0, 0, canvasTransfer.width, canvasTransfer.height);
+            }
+            isCanvasEmptyTransfer = true;
         }
 
         function simpanSignatureTransfer() {
-            if (!signaturePadTransfer || signaturePadTransfer.isEmpty()) {
-                Swal.fire('Peringatan', 'Silakan bubuhkan tanda tangan terlebih dahulu', 'warning');
+            if (isCanvasEmptyTransfer || !canvasTransfer) {
+                Swal.fire('Peringatan', 'Silakan bubuhkan tanda tangan terlebih dahulu pada kanvas', 'warning');
                 return;
             }
-            const dataUrl = signaturePadTransfer.toDataURL('image/png');
+            const dataUrl = canvasTransfer.toDataURL('image/png');
             $('#transfer_photo').val(dataUrl);
             $('#previewTtdTransferImg').attr('src', dataUrl);
             $('#previewTtdTransferWrapper').show();
