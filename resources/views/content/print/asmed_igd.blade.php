@@ -161,7 +161,7 @@
             <td colspan="2" style="padding: 4px 6px;">
                 <div style="font-weight: bold; margin-bottom: 2px;">Pemeriksaan Fisik (Status Generalis):</div>
                 @php
-                    $listOrgan = [
+                    $organKiri = [
                         ['label' => 'Kepala', 'status' => $data->kepala ?? 'Normal', 'ket' => $rsia->ket_kepala ?? ''],
                         ['label' => 'Mata', 'status' => $data->mata ?? 'Normal', 'ket' => $rsia->ket_mata ?? ''],
                         ['label' => 'THT', 'status' => $rsia->tht ?? 'Normal', 'ket' => $rsia->ket_tht ?? ''],
@@ -169,6 +169,8 @@
                         ['label' => 'Leher', 'status' => $data->leher ?? 'Normal', 'ket' => $rsia->ket_leher ?? ''],
                         ['label' => 'Jantung', 'status' => $rsia->jantung ?? 'Normal', 'ket' => $rsia->ket_jantung ?? ''],
                         ['label' => 'Paru-paru', 'status' => $rsia->paru ?? 'Normal', 'ket' => $rsia->ket_paru ?? ''],
+                    ];
+                    $organKanan = [
                         ['label' => 'Dada & Payudara', 'status' => $data->thoraks ?? 'Normal', 'ket' => $rsia->ket_thoraks ?? ''],
                         ['label' => 'Perut', 'status' => $data->abdomen ?? 'Normal', 'ket' => $rsia->ket_abdomen ?? ''],
                         ['label' => 'Urogenital', 'status' => $data->genital ?? 'Normal', 'ket' => $rsia->ket_genital ?? ''],
@@ -177,24 +179,72 @@
                         ['label' => 'Muskuloskeletal', 'status' => $rsia->muskuloskeletal ?? 'Normal', 'ket' => $rsia->ket_muskuloskeletal ?? ''],
                     ];
                 @endphp
+                <table width="100%" style="border-collapse: collapse; border: none; margin-bottom: 2px;">
+                    <tr>
+                        <td style="width: 50%; vertical-align: top; padding: 0 2px 0 0; border: none;">
+                            <table width="100%" class="border" style="font-size: 8px; border-collapse: collapse;">
+                                <tr style="background-color: #eaeaea; text-align: center;">
+                                    <th style="padding: 1.5px 3px; border: 1px solid #000; width: 30%;">Pemeriksaan</th>
+                                    <th style="padding: 1.5px 3px; border: 1px solid #000; width: 22%;">Status</th>
+                                    <th style="padding: 1.5px 3px; border: 1px solid #000; width: 48%;">Jika tidak normal, jelaskan</th>
+                                </tr>
+                                @foreach($organKiri as $org)
+                                <tr>
+                                    <td style="padding: 1px 3px; border: 1px solid #000; font-weight: 500;">{{ $org['label'] }}</td>
+                                    <td style="padding: 1px 3px; border: 1px solid #000; text-align: center;">
+                                        {!! ($org['status'] == 'Normal') ? 'Normal' : (($org['status'] == 'Abnormal') ? '<strong style="color:#d9534f;">Abnormal</strong>' : 'Tidak Diperiksa') !!}
+                                    </td>
+                                    <td style="padding: 1px 3px; border: 1px solid #000;">
+                                        {{ (!empty($org['ket']) && $org['ket'] != '-') ? $org['ket'] : '-' }}
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </td>
+                        <td style="width: 50%; vertical-align: top; padding: 0 0 0 2px; border: none;">
+                            <table width="100%" class="border" style="font-size: 8px; border-collapse: collapse;">
+                                <tr style="background-color: #eaeaea; text-align: center;">
+                                    <th style="padding: 1.5px 3px; border: 1px solid #000; width: 34%;">Pemeriksaan</th>
+                                    <th style="padding: 1.5px 3px; border: 1px solid #000; width: 22%;">Status</th>
+                                    <th style="padding: 1.5px 3px; border: 1px solid #000; width: 44%;">Jika tidak normal, jelaskan</th>
+                                </tr>
+                                @foreach($organKanan as $org)
+                                <tr>
+                                    <td style="padding: 1px 3px; border: 1px solid #000; font-weight: 500;">{{ $org['label'] }}</td>
+                                    <td style="padding: 1px 3px; border: 1px solid #000; text-align: center;">
+                                        {!! ($org['status'] == 'Normal') ? 'Normal' : (($org['status'] == 'Abnormal') ? '<strong style="color:#d9534f;">Abnormal</strong>' : 'Tidak Diperiksa') !!}
+                                    </td>
+                                    <td style="padding: 1px 3px; border: 1px solid #000;">
+                                        {{ (!empty($org['ket']) && $org['ket'] != '-') ? $org['ket'] : '-' }}
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 4px 6px;">
+                <div style="font-weight: bold; margin-bottom: 2px;">Pemeriksaan Penunjang & Status Lokalis :</div>
                 <table width="100%" class="border" style="font-size: 8px; border-collapse: collapse;">
                     <tr style="background-color: #eaeaea; text-align: center;">
-                        <th style="padding: 1.5px 3px; border: 1px solid #000; width: 22%;">Pemeriksaan</th>
-                        <th style="padding: 1.5px 3px; border: 1px solid #000; width: 14%;">Status</th>
-                        <th style="padding: 1.5px 3px; border: 1px solid #000; width: 64%;">Jika tidak normal, jelaskan</th>
+                        <th style="padding: 1.5px 3px; border: 1px solid #000; width: 33%;">Laboratorium</th>
+                        <th style="padding: 1.5px 3px; border: 1px solid #000; width: 33%;">Radiologi</th>
+                        <th style="padding: 1.5px 3px; border: 1px solid #000; width: 34%;">EKG</th>
                     </tr>
-                    @foreach($listOrgan as $org)
                     <tr>
-                        <td style="padding: 1px 3px; border: 1px solid #000; font-weight: 500;">{{ $org['label'] }}</td>
-                        <td style="padding: 1px 3px; border: 1px solid #000; text-align: center;">
-                            {!! ($org['status'] == 'Normal') ? 'Normal' : (($org['status'] == 'Abnormal') ? '<strong style="color:#d9534f;">Abnormal</strong>' : 'Tidak Diperiksa') !!}
-                        </td>
-                        <td style="padding: 1px 3px; border: 1px solid #000;">
-                            {{ (!empty($org['ket']) && $org['ket'] != '-') ? $org['ket'] : '-' }}
-                        </td>
+                        <td style="padding: 2px 4px; border: 1px solid #000; vertical-align: top; min-height: 18px; white-space: pre-line;">{{ (!empty($data->lab) && $data->lab != '-') ? $data->lab : '-' }}</td>
+                        <td style="padding: 2px 4px; border: 1px solid #000; vertical-align: top; min-height: 18px; white-space: pre-line;">{{ (!empty($data->rad) && $data->rad != '-') ? $data->rad : '-' }}</td>
+                        <td style="padding: 2px 4px; border: 1px solid #000; vertical-align: top; min-height: 18px; white-space: pre-line;">{{ (!empty($data->ekg) && $data->ekg != '-') ? $data->ekg : '-' }}</td>
                     </tr>
-                    @endforeach
                 </table>
+                @if(!empty($data->ket_lokalis) && $data->ket_lokalis != '-')
+                <div style="margin-top: 2px; font-size: 8.5px;">
+                    <strong>Status Lokalis :</strong> {{ $data->ket_lokalis }}
+                </div>
+                @endif
             </td>
         </tr>
         <tr>
