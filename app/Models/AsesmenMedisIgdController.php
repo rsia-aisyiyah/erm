@@ -117,7 +117,9 @@ class AsesmenMedisIgdController extends Model
         $dataAsmed = array_intersect_key($data, array_flip($asmedFields));
         $dataRsia = array_intersect_key($data, array_flip($rsiaFields));
 
-        $dataAsmed['tanggal'] = $data['tanggal'] ?? date('Y-m-d H:i:s');
+        if (empty($dataAsmed['tanggal']) || $dataAsmed['tanggal'] === '0000-00-00 00:00:00' || !preg_match('/^\d{4}-\d{2}-\d{2}/', $dataAsmed['tanggal'])) {
+            $dataAsmed['tanggal'] = date('Y-m-d H:i:s');
+        }
 
         $isExist = $this->asesmen->where('no_rawat', $no_rawat)->first();
         if ($isExist) {
@@ -188,6 +190,10 @@ class AsesmenMedisIgdController extends Model
 
         $dataAsmed = array_intersect_key($data, array_flip($asmedFields));
         $dataRsia = array_intersect_key($data, array_flip($rsiaFields));
+
+        if (empty($dataAsmed['tanggal']) || $dataAsmed['tanggal'] === '0000-00-00 00:00:00' || !preg_match('/^\d{4}-\d{2}-\d{2}/', $dataAsmed['tanggal'])) {
+            $dataAsmed['tanggal'] = date('Y-m-d H:i:s');
+        }
 
         try {
             $clause = ['no_rawat' => $no_rawat];

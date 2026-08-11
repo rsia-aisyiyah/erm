@@ -1076,7 +1076,7 @@
                         $('#formAsmedUgd input[name="tgl_lahir"]').val(`${p.tgl_lahir ? formatTanggal(p.tgl_lahir) : '-'} (${p.tgl_lahir ? hitungUmur(p.tgl_lahir) : '-'})`);
                         $('#formAsmedUgd input[name="kd_dokter"]').val("{{ session()->get('pegawai')->nik }}");
                         $('#formAsmedUgd input[name="dokter"]').val("{{ session()->get('pegawai')->nama }}");
-                        $('#formAsmedUgd input[name="tanggal"]').val(`${formatTanggal("{{ date('Y-m-d') }}")} {{ date('H:i:s') }}`);
+                        $('#formAsmedUgd input[name="tanggal"]').val("{{ date('Y-m-d H:i:s') }}");
                         $('#formAsmedUgd input[name="nama_keluarga_ttd"]').val(p.nm_pasien || '');
                     });
                 } else {
