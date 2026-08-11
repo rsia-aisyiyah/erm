@@ -160,4 +160,23 @@ Pembaruan tata letak antarmuka dan alur monitoring untuk pemenuhan standar **Sas
   - Perbaikan query & filter default pada modal monitoring (`modal_tabel_hasil_kritis.blade.php`) agar otomatis menyaring data yang berstatus **"Belum diverifikasi"**.
   - Integritas waktu verifikasi (*real-time timestamp*) tetap dijaga otomatis oleh server saat petugas/dokter mengklik konfirmasi untuk mencegah manipulasi data medikolegal.
 
+---
+
+## Modifikasi 4: Standardisasi Pemanggilan Asset Statis & Berkas Storage (*Asset Helper*)
+
+### 1. Deskripsi Perubahan & Tujuan
+Untuk menjaga portabilitas aplikasi saat dijalankan di berbagai environment (misalnya server lokal dengan `php artisan serve`, Apache virtual host, maupun subdirektori `/erm/`), dilakukan migrasi pemanggilan file statis dari jalur *hardcoded* (`/erm/public/...`) menjadi helper standar Laravel `{{ asset(...) }}`:
+- **Logo Aplikasi**: Header navigasi utama disesuaikan agar logo RS selalu muncul konsisten tanpa *broken image*.
+- **Icon & Stylesheet Font**: File stylesheet Bootstrap Icons pada layout `<head>` dimuat menggunakan helper `asset()`.
+- **Preview Berkas Tanda Tangan Digital**: Penanganan URL tanda tangan pasien/keluarga yang tersimpan di disk fisik `storage/app/public/signatures/` dipastikan di-resolve melalui `{{ asset('storage') }}/...`.
+
+---
+
+### 2. Daftar Berkas & Rincian Perubahan
+| File | Lokasi / Baris | Rincian Perubahan |
+| :--- | :--- | :--- |
+| `resources/views/index.blade.php` | Tag `<img>` logo navbar | Mengubah `src="/erm/public/img/logo.png"` menjadi `src="{{ asset('img/logo.png') }}"`. |
+| `resources/views/layout/head.blade.php` | Tag `<link>` stylesheet | Mengubah `href='/erm/public/css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css'` menjadi `href="{{ asset('css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css') }}"`. |
+| `resources/views/content/ugd/modal/asmed.blade.php` | JS function `modalAsmedUgd` | Menyesuaikan URL gambar preview TTD pasien agar mengarah ke `{{ asset("storage") }}/...` jika format data bukan base64. |
+
 
