@@ -213,7 +213,19 @@
             <td width="33%" style="text-align: center;">
                 Pasien / Keluarga Yang Menyetujui,<br><br>
                 @if($t && $t->bukti && !empty($t->bukti->photo))
-                    <img src="{{ $t->bukti->photo }}" style="max-height: 50px; max-width: 120px;" /><br>
+                    @php
+                        $ttdSrc = $t->bukti->photo;
+                        if (!str_starts_with($ttdSrc, 'data:image')) {
+                            $absStorage = storage_path('app/public/' . ltrim($ttdSrc, '/'));
+                            $absPublic = public_path('storage/' . ltrim($ttdSrc, '/'));
+                            if (file_exists($absStorage)) {
+                                $ttdSrc = $absStorage;
+                            } elseif (file_exists($absPublic)) {
+                                $ttdSrc = $absPublic;
+                            }
+                        }
+                    @endphp
+                    <img src="{{ $ttdSrc }}" style="max-height: 50px; max-width: 120px;" /><br>
                 @else
                     <br><br><br>
                 @endif

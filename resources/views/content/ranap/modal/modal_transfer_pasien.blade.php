@@ -611,8 +611,12 @@
             $('#transfer_nama_menerima').val(namaTerima);
 
             if (data.bukti && data.bukti.photo) {
+                let photoSrc = data.bukti.photo;
+                if (!photoSrc.startsWith('data:image')) {
+                    photoSrc = `{{ asset('storage') }}/${photoSrc.replace(/^\//, '')}`;
+                }
                 $('#transfer_photo').val(data.bukti.photo);
-                $('#previewTtdTransferImg').attr('src', data.bukti.photo);
+                $('#previewTtdTransferImg').attr('src', photoSrc);
                 $('#previewTtdTransferWrapper').show();
             } else {
                 $('#transfer_photo').val('');

@@ -50,6 +50,45 @@ class TransferPasienAntarRuangController extends Controller
 		return response()->json($data);
 	}
 
+	protected function handleSignature(string $noRawat, string $tglMasuk, ?string $signatureData): ?string
+	{
+		if (empty($signatureData)) {
+			return null;
+		}
+
+		// Jika sudah merupakan path file tersimpan, pertahankan
+		if (!str_starts_with($signatureData, 'data:image')) {
+			return $signatureData;
+		}
+
+		@list($type, $data) = explode(';', $signatureData);
+		@list(, $data) = explode(',', $data);
+
+		if (empty($data)) {
+			return null;
+		}
+
+		$binary = base64_decode($data);
+		if ($binary === false) {
+			return null;
+		}
+
+		$cleanNoRawat = str_replace(['/', ' '], ['-', '_'], $noRawat);
+		$cleanTgl = str_replace(['-', ':', ' '], '', $tglMasuk);
+		$folder = 'signatures/transfer_pasien';
+
+		if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($folder)) {
+			\Illuminate\Support\Facades\Storage::disk('public')->makeDirectory($folder);
+		}
+
+		$fileName = 'ttd_transfer_' . $cleanNoRawat . '_' . $cleanTgl . '.png';
+		$filePath = $folder . '/' . $fileName;
+
+		\Illuminate\Support\Facades\Storage::disk('public')->put($filePath, $binary);
+
+		return $filePath;
+	}
+
 	public function create(Request $request): JsonResponse
 	{
 		$data = $request->validate([
@@ -127,17 +166,20 @@ class TransferPasienAntarRuangController extends Controller
 				$pesan = 'Berhasil menyimpan data transfer pasien antar ruang';
 			}
 
-			// Simpan / update tanda tangan jika ada
+			// Simpan / update tanda tangan sebagai file gambar di storage
 			if ($request->has('photo') && !empty($request->photo)) {
-				$buktiExist = $this->bukti->where($clause)->count();
-				if ($buktiExist) {
-					$this->bukti->where($clause)->update(['photo' => $request->photo]);
-				} else {
-					$this->bukti->insert([
-						'no_rawat' => $data['no_rawat'],
-						'tanggal_masuk' => $data['tanggal_masuk'],
-						'photo' => $request->photo,
-					]);
+				$savedPath = $this->handleSignature($data['no_rawat'], $data['tanggal_masuk'], $request->photo);
+				if ($savedPath) {
+					$buktiExist = $this->bukti->where($clause)->count();
+					if ($buktiExist) {
+						$this->bukti->where($clause)->update(['photo' => $savedPath]);
+					} else {
+						$this->bukti->insert([
+							'no_rawat' => $data['no_rawat'],
+							'tanggal_masuk' => $data['tanggal_masuk'],
+							'photo' => $savedPath,
+						]);
+					}
 				}
 			}
 
@@ -160,6 +202,11 @@ class TransferPasienAntarRuangController extends Controller
 		];
 
 		try {
+			$bukti = $this->bukti->where($clause)->first();
+			if ($bukti && !empty($bukti->photo) && \Illuminate\Support\Facades\Storage::disk('public')->exists($bukti->photo)) {
+				\Illuminate\Support\Facades\Storage::disk('public')->delete($bukti->photo);
+			}
+
 			$this->transfer->where($clause)->delete();
 			$this->bukti->where($clause)->delete();
 			try {
