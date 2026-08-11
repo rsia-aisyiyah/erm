@@ -150,8 +150,8 @@ ALTER TABLE `rsia_catatan_pelaksanaan_edukasi_pasien`
 | :--- | :--- |
 | `app/Http/Controllers/CatatanPelaksanaanEdukasiPasienController.php` | Normalisasi array checkbox (`implode(', ', ...)`) pada `create` & `update` untuk field `metode`, `hambatan`, dan `intervensi`. |
 | `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Tab navigasi RM 23 vs RM 24.<br>2. Checklist materi otomatis berdasarkan profesi beserta tombol pintas **"Centang Semua"** dan opsi **"Lain-lain"**.<br>3. Checkbox multiple-selection untuk Metode, Hambatan, dan Intervensi dengan logika eksklusif "Tidak Ada".<br>4. Canvas tanda tangan pasien/keluarga.<br>5. Tombol Cetak RM 23 dan Cetak RM 24 di footer modal. |
-| `resources/views/content/print/catatan_edukasi_rm23.blade.php` | Menampilkan seluruh pilihan metode, hambatan, intervensi, checklist materi standar, dan baris *Catatan: ...* free-text. |
-| `resources/views/content/print/catatan_edukasi_rm24.blade.php` | Menampilkan baris edukasi pasien dengan seluruh pilihan metode, hambatan, dan intervensi. |
+| `resources/views/content/print/catatan_edukasi_rm23.blade.php` | Menampilkan seluruh pilihan metode, hambatan, intervensi, checklist materi standar, baris *Catatan: ...* free-text, serta otomatisasi bukti paraf TTD digital dan nama penerima di kotak pernyataan. |
+| `resources/views/content/print/catatan_edukasi_rm24.blade.php` | Menampilkan baris edukasi pasien dengan seluruh pilihan metode, hambatan, intervensi, serta otomatisasi bukti paraf TTD digital dan nama penerima di kotak pernyataan. |
 
 ---
 
