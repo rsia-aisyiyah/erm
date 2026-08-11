@@ -663,13 +663,13 @@
             <!-- MODAL FOOTER DENGAN TOMBOL CETAK RM 20, RM 23 & RM 24 -->
             <div class="modal-footer d-flex justify-content-between">
                 <div class="d-flex gap-2 flex-wrap">
-                    <button type="button" class="btn btn-success btn-sm fw-bold" onclick="cetakCatatanEdukasi('rm20')">
+                    <button type="button" class="btn btn-success btn-sm fw-bold" id="btnCetakRm20" onclick="cetakCatatanEdukasi('rm20')" disabled title="Cetak aktif jika data asesmen RM 20 sudah disimpan">
                         <i class="bi bi-printer-fill me-1"></i> Cetak RM 20 (Assesmen &amp; Rencana)
                     </button>
-                    <button type="button" class="btn btn-warning btn-sm fw-bold" onclick="cetakCatatanEdukasi('rm23')">
+                    <button type="button" class="btn btn-warning btn-sm fw-bold" id="btnCetakRm23" onclick="cetakCatatanEdukasi('rm23')" disabled title="Cetak aktif jika sudah ada data edukasi RM 23">
                         <i class="bi bi-printer-fill me-1"></i> Cetak RM 23 (Multidisiplin)
                     </button>
-                    <button type="button" class="btn btn-info btn-sm text-white fw-bold" onclick="cetakCatatanEdukasi('rm24')">
+                    <button type="button" class="btn btn-info btn-sm text-white fw-bold" id="btnCetakRm24" onclick="cetakCatatanEdukasi('rm24')" disabled title="Cetak aktif jika sudah ada data edukasi RM 24">
                         <i class="bi bi-printer-fill me-1"></i> Cetak RM 24 (Edukasi Pasien)
                     </button>
                 </div>
@@ -1031,6 +1031,7 @@
         function loadAsesmenRm20(no_rawat) {
             $.get(`${url}/asesmen/kebutuhan/edukasi`, { no_rawat: no_rawat }).done((data) => {
                 if (data && data.no_rawat) {
+                    $('#btnCetakRm20').prop('disabled', false);
                     $('#rm20_no_rawat').val(data.no_rawat);
                     $('#rm20_tanggal').val(data.tanggal);
                     $('#rm20_ruang').val(data.ruang);
@@ -1100,7 +1101,8 @@
                     }
                     renderTableRencanaRm20(savedRencana);
                 } else {
-                    // Belum ada data asesmen, set default
+                    // Belum ada data asesmen, tombol cetak dinonaktifkan
+                    $('#btnCetakRm20').prop('disabled', true);
                     setDefaultRm20();
                 }
             });
@@ -1278,6 +1280,11 @@
             const nm_petugas = "{{ session()->get('pegawai')->nama }}";
             const tanggal = moment().format('DD-MM-YYYY HH:mm:ss');
 
+            // Reset tombol cetak ke disabled hingga data terkonfirmasi
+            $('#btnCetakRm20').prop('disabled', true);
+            $('#btnCetakRm23').prop('disabled', true);
+            $('#btnCetakRm24').prop('disabled', true);
+
             // Set RM 20 fields
             $('#rm20_no_rawat').val(no_rawat);
             $('#rm20_nip').val(nip);
@@ -1325,6 +1332,12 @@
             tableCatatanEdukasiPasien.find('tbody').empty();
             $.get(`${url}/catatan/pelaksanaan/edukasi/pasien`, { no_rawat: no_rawat }).done((response) => {
                 rawCatatanEdukasiList = response || [];
+
+                const hasRm23 = rawCatatanEdukasiList.some(item => (item.jenis_form || 'RM 23') === 'RM 23');
+                const hasRm24 = rawCatatanEdukasiList.some(item => item.jenis_form === 'RM 24');
+                $('#btnCetakRm23').prop('disabled', !hasRm23);
+                $('#btnCetakRm24').prop('disabled', !hasRm24);
+
                 displayFilteredTable();
             });
         }
@@ -1510,6 +1523,19 @@
         }
 
         function cetakCatatanEdukasi(tipe) {
+            if (tipe === 'rm20' && $('#btnCetakRm20').is(':disabled')) {
+                Swal.fire('Informasi', 'Data Asesmen Kebutuhan Edukasi (RM 20) belum disimpan', 'warning');
+                return;
+            }
+            if (tipe === 'rm23' && $('#btnCetakRm23').is(':disabled')) {
+                Swal.fire('Informasi', 'Belum ada data Catatan Edukasi RM 23 yang tersimpan', 'warning');
+                return;
+            }
+            if (tipe === 'rm24' && $('#btnCetakRm24').is(':disabled')) {
+                Swal.fire('Informasi', 'Belum ada data Catatan Edukasi RM 24 yang tersimpan', 'warning');
+                return;
+            }
+
             let no_rawat = formPasienCatatanEdukasi.find('input[name=no_rawat]').val();
             if (!no_rawat) {
                 Swal.fire('Peringatan', 'Nomor rawat tidak ditemukan', 'warning');
