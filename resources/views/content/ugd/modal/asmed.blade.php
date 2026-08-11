@@ -202,194 +202,215 @@
                                     </div>
                                 </div>
                                 <hr class="my-2">
-                                <div class="table-responsive mt-3">
-                                    <table class="table table-bordered table-sm align-middle mb-2 bg-white" id="tblPemeriksaanFisik" style="font-size: 12px;">
-                                        <thead class="table-light">
-                                            <tr class="align-middle">
-                                                <th style="width: 24%;" class="ps-2">Pemeriksaan Fisik</th>
-                                                <th style="width: 22%;" class="text-center">
-                                                    Status
-                                                    <button type="button" class="btn btn-xs btn-outline-primary py-0 px-1 ms-1" id="btnSetSemuaNormalFisik" title="Set Semua Normal" style="font-size: 10px;">
-                                                        <i class="bi bi-check-all"></i> Semua Normal
-                                                    </button>
-                                                </th>
-                                                <th style="width: 54%;" class="ps-2">Jika tidak normal, jelaskan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Kepala</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="kepala" id="kepala" data-target="ket_kepala">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_kepala" id="ket_kepala" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Mata</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="mata" id="mata" data-target="ket_mata">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_mata" id="ket_mata" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">THT</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="tht" id="tht" data-target="ket_tht">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_tht" id="ket_tht" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Mulut</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="gigi" id="gigi" data-target="ket_gigi">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_gigi" id="ket_gigi" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Leher</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="leher" id="leher" data-target="ket_leher">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_leher" id="ket_leher" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Jantung</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="jantung" id="jantung" data-target="ket_jantung">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_jantung" id="ket_jantung" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Paru-paru</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="paru" id="paru" data-target="ket_paru">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_paru" id="ket_paru" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Dada & Payudara</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="thoraks" id="thoraks" data-target="ket_thoraks">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_thoraks" id="ket_thoraks" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Perut</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="abdomen" id="abdomen" data-target="ket_abdomen">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_abdomen" id="ket_abdomen" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Urogenital</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="genital" id="genital" data-target="ket_genital">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_genital" id="ket_genital" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Anggota Gerak</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="ekstremitas" id="ekstremitas" data-target="ket_ekstremitas">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_ekstremitas" id="ket_ekstremitas" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Status Neurologis</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="neurologis" id="neurologis" data-target="ket_neurologis">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_neurologis" id="ket_neurologis" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-semibold ps-2">Muskuloskeletal</td>
-                                                <td>
-                                                    <select class="form-select form-select-sm status-fisik" name="muskuloskeletal" id="muskuloskeletal" data-target="ket_muskuloskeletal">
-                                                        <option value="Normal" selected>Normal</option>
-                                                        <option value="Abnormal">Abnormal</option>
-                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_muskuloskeletal" id="ket_muskuloskeletal" placeholder="Jelaskan kondisi jika abnormal" disabled>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="mt-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label class="form-label mb-0 fw-bold small text-muted">PEMERIKSAAN FISIK (STATUS GENERALIS)</label>
+                                        <button type="button" class="btn btn-xs btn-outline-primary py-0 px-2" id="btnSetSemuaNormalFisik" title="Set Semua Normal" style="font-size: 11px;">
+                                            <i class="bi bi-check-all me-1"></i> Set Semua Normal
+                                        </button>
+                                    </div>
+                                    <div class="row g-2">
+                                        <!-- Kolom Kiri (7 Organ) -->
+                                        <div class="col-lg-6">
+                                            <table class="table table-bordered table-sm align-middle mb-0 bg-white" style="font-size: 11.5px;">
+                                                <thead class="table-light">
+                                                    <tr class="align-middle text-center">
+                                                        <th style="width: 28%;" class="text-start ps-2">Organ</th>
+                                                        <th style="width: 27%;">Status</th>
+                                                        <th style="width: 45%;">Jika tidak normal, jelaskan</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Kepala</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="kepala" id="kepala" data-target="ket_kepala" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_kepala" id="ket_kepala" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Mata</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="mata" id="mata" data-target="ket_mata" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_mata" id="ket_mata" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">THT</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="tht" id="tht" data-target="ket_tht" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_tht" id="ket_tht" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Mulut</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="gigi" id="gigi" data-target="ket_gigi" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_gigi" id="ket_gigi" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Leher</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="leher" id="leher" data-target="ket_leher" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_leher" id="ket_leher" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Jantung</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="jantung" id="jantung" data-target="ket_jantung" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_jantung" id="ket_jantung" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Paru-paru</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="paru" id="paru" data-target="ket_paru" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_paru" id="ket_paru" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- Kolom Kanan (6 Organ) -->
+                                        <div class="col-lg-6">
+                                            <table class="table table-bordered table-sm align-middle mb-0 bg-white" style="font-size: 11.5px;">
+                                                <thead class="table-light">
+                                                    <tr class="align-middle text-center">
+                                                        <th style="width: 32%;" class="text-start ps-2">Organ</th>
+                                                        <th style="width: 27%;">Status</th>
+                                                        <th style="width: 41%;">Jika tidak normal, jelaskan</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Dada & Payudara</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="thoraks" id="thoraks" data-target="ket_thoraks" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_thoraks" id="ket_thoraks" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Perut</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="abdomen" id="abdomen" data-target="ket_abdomen" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_abdomen" id="ket_abdomen" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Urogenital</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="genital" id="genital" data-target="ket_genital" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_genital" id="ket_genital" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Anggota Gerak</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="ekstremitas" id="ekstremitas" data-target="ket_ekstremitas" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_ekstremitas" id="ket_ekstremitas" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Status Neurologis</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="neurologis" id="neurologis" data-target="ket_neurologis" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_neurologis" id="ket_neurologis" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-semibold ps-2">Muskuloskeletal</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm status-fisik py-0" name="muskuloskeletal" id="muskuloskeletal" data-target="ket_muskuloskeletal" style="font-size: 11.5px; height: 28px;">
+                                                                <option value="Normal" selected>Normal</option>
+                                                                <option value="Abnormal">Abnormal</option>
+                                                                <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm ket-fisik py-0" name="ket_muskuloskeletal" id="ket_muskuloskeletal" placeholder="Keterangan..." disabled style="font-size: 11.5px; height: 28px;">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                     <div class="mt-2">
-                                        <label for="ket_fisik" class="form-label mb-1 small fw-bold">Keterangan Tambahan Pemeriksaan Fisik :</label>
+                                        <label for="ket_fisik" class="form-label mb-1 small fw-bold text-muted">Keterangan Tambahan Pemeriksaan Fisik :</label>
                                         <textarea class="form-control form-control-sm" name="ket_fisik" id="ket_fisik" rows="2" placeholder="Catatan tambahan pemeriksaan fisik umum">-</textarea>
                                     </div>
                                 </div>
