@@ -26,27 +26,38 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
-        // when user access from domain use https, if not use http
+
+        /*
+    |--------------------------------------------------------------------------
+    | Dynamic URL Scheme
+    |--------------------------------------------------------------------------
+    | Lokal:
+    | http://192.168.100.31/erm
+    |
+    | Production:
+    | https://rsiap.my.id/erm
+    |--------------------------------------------------------------------------
+    */
 
         $host = request()->getHost();
 
+        if ($host === 'rsiap.my.id') {
+            URL::forceScheme('https');
+        } else {
+            URL::forceScheme('http');
+        }
 
-        if (request()->isSecure()) {
-            URL::forceScheme('https');
-        }
-        if (
-            app()->environment('production') &&
-            !filter_var($host, FILTER_VALIDATE_IP)
-        ) {
-            URL::forceScheme('https');
-        }
+        /*
+    |--------------------------------------------------------------------------
+    | Log Viewer Authorization
+    |--------------------------------------------------------------------------
+    */
 
         LogViewer::auth(function ($request) {
-            return session()->has('pegawai') && session()->get('pegawai')->nik = 'direksi';
+            return session()->has('pegawai')
+                && session()->get('pegawai')->nik === 'direksi';
         });
-
     }
 }
