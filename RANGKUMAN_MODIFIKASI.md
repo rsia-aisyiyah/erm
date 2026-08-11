@@ -199,8 +199,9 @@ Untuk menjaga portabilitas aplikasi saat dijalankan di berbagai environment (mis
   - Tombol **"Cetak Asesmen"** disembunyikan (`d-none`) saat dokter membuka formulir untuk entri baru, dan baru dimunculkan jika data asesmen sudah pernah disimpan/sudah ada di database.
 - **Sinkronisasi Otomatis Triage/Perawat**:
   - Saat membuka form entri baru, data TTV (Tensi, Nadi, RR, Suhu, SpO2, BB, TB, GCS, Kesadaran) dan Keluhan Utama ditarik otomatis dari `pemeriksaan_ralan`.
-- **Integrasi Cetak PDF**:
-  - Format cetak asesmen medis IGD (A4) diperbarui dengan menyertakan tabel 13 organ fisik secara rapi dan profesional.
+- **Integrasi Cetak PDF (A4 Proporsional & Lengkap)**:
+  - Format cetak asesmen medis IGD (A4) diperbarui dengan menyusun tabel 13 organ fisik ke dalam **2 Kolom Berdampingan** (Kiri: 7 organ, Kanan: 6 organ) sehingga menghemat ruang vertikal secara signifikan.
+  - Menambahkan bagian **Pemeriksaan Penunjang (Laboratorium, Radiologi, EKG)** dalam format tabel 3 kolom dan deskripsi **Status Lokalis**.
 
 ---
 
