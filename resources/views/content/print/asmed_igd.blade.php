@@ -159,6 +159,46 @@
         </tr>
         <tr>
             <td colspan="2" style="padding: 4px 6px;">
+                <div style="font-weight: bold; margin-bottom: 2px;">Pemeriksaan Fisik (Status Generalis):</div>
+                @php
+                    $listOrgan = [
+                        ['label' => 'Kepala', 'status' => $data->kepala ?? 'Normal', 'ket' => $rsia->ket_kepala ?? ''],
+                        ['label' => 'Mata', 'status' => $data->mata ?? 'Normal', 'ket' => $rsia->ket_mata ?? ''],
+                        ['label' => 'THT', 'status' => $rsia->tht ?? 'Normal', 'ket' => $rsia->ket_tht ?? ''],
+                        ['label' => 'Mulut', 'status' => $data->gigi ?? 'Normal', 'ket' => $rsia->ket_gigi ?? ''],
+                        ['label' => 'Leher', 'status' => $data->leher ?? 'Normal', 'ket' => $rsia->ket_leher ?? ''],
+                        ['label' => 'Jantung', 'status' => $rsia->jantung ?? 'Normal', 'ket' => $rsia->ket_jantung ?? ''],
+                        ['label' => 'Paru-paru', 'status' => $rsia->paru ?? 'Normal', 'ket' => $rsia->ket_paru ?? ''],
+                        ['label' => 'Dada & Payudara', 'status' => $data->thoraks ?? 'Normal', 'ket' => $rsia->ket_thoraks ?? ''],
+                        ['label' => 'Perut', 'status' => $data->abdomen ?? 'Normal', 'ket' => $rsia->ket_abdomen ?? ''],
+                        ['label' => 'Urogenital', 'status' => $data->genital ?? 'Normal', 'ket' => $rsia->ket_genital ?? ''],
+                        ['label' => 'Anggota Gerak', 'status' => $data->ekstremitas ?? 'Normal', 'ket' => $rsia->ket_ekstremitas ?? ''],
+                        ['label' => 'Status Neurologis', 'status' => $rsia->neurologis ?? 'Normal', 'ket' => $rsia->ket_neurologis ?? ''],
+                        ['label' => 'Muskuloskeletal', 'status' => $rsia->muskuloskeletal ?? 'Normal', 'ket' => $rsia->ket_muskuloskeletal ?? ''],
+                    ];
+                @endphp
+                <table width="100%" class="border" style="font-size: 8px; border-collapse: collapse;">
+                    <tr style="background-color: #eaeaea; text-align: center;">
+                        <th style="padding: 1.5px 3px; border: 1px solid #000; width: 22%;">Pemeriksaan</th>
+                        <th style="padding: 1.5px 3px; border: 1px solid #000; width: 14%;">Status</th>
+                        <th style="padding: 1.5px 3px; border: 1px solid #000; width: 64%;">Jika tidak normal, jelaskan</th>
+                    </tr>
+                    @foreach($listOrgan as $org)
+                    <tr>
+                        <td style="padding: 1px 3px; border: 1px solid #000; font-weight: 500;">{{ $org['label'] }}</td>
+                        <td style="padding: 1px 3px; border: 1px solid #000; text-align: center;">
+                            {!! ($org['status'] == 'Normal') ? 'Normal' : (($org['status'] == 'Abnormal') ? '<strong style="color:#d9534f;">Abnormal</strong>' : 'Tidak Diperiksa') !!}
+                        </td>
+                        <td style="padding: 1px 3px; border: 1px solid #000;">
+                            {{ (!empty($org['ket']) && $org['ket'] != '-') ? $org['ket'] : '-' }}
+                        </td>
+                    </tr>
+                    @endforeach
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 4px 6px;">
                 <strong>Diagnosis / Asesmen Medis :</strong>
                 <span style="font-weight: bold; color: #000; margin-left: 6px;">{{ $data->diagnosis ?? '-' }}</span>
             </td>

@@ -93,6 +93,10 @@ class AsesmenMedisIgdController extends Model
 
         $rsiaFields = [
             'no_rawat', 'terapi_kategori', 'terapi_farmakologis', 'terapi_non_farmakologis',
+            'tht', 'jantung', 'paru', 'neurologis', 'muskuloskeletal',
+            'ket_kepala', 'ket_mata', 'ket_tht', 'ket_gigi', 'ket_leher', 'ket_jantung',
+            'ket_paru', 'ket_thoraks', 'ket_abdomen', 'ket_genital', 'ket_ekstremitas',
+            'ket_neurologis', 'ket_muskuloskeletal',
             'tindak_lanjut', 'kontrol_ke', 'ranap_indikasi', 'ranap_dpjp', 'ranap_smf', 'ranap_ruang',
             'rujuk_tujuan', 'rujuk_nama_faskes', 'rujuk_alasan', 'rujuk_transport',
             'kondisi_pulang', 'tgl_meninggal', 'jam_meninggal',
@@ -112,6 +116,27 @@ class AsesmenMedisIgdController extends Model
         }
         if (!empty($terapiRingkas)) {
             $data['tata'] = implode("\n", $terapiRingkas);
+        }
+
+        // Format summary into 'ket_fisik' for Khanza legacy compatibility
+        $abnormalNotes = [];
+        $organLabels = [
+            'kepala' => 'Kepala', 'mata' => 'Mata', 'tht' => 'THT', 'gigi' => 'Mulut',
+            'leher' => 'Leher', 'jantung' => 'Jantung', 'paru' => 'Paru-paru', 'thoraks' => 'Dada & Payudara',
+            'abdomen' => 'Perut', 'genital' => 'Urogenital', 'ekstremitas' => 'Anggota Gerak',
+            'neurologis' => 'Status Neurologis', 'muskuloskeletal' => 'Muskuloskeletal'
+        ];
+        foreach ($organLabels as $orgKey => $orgLbl) {
+            $ketKey = 'ket_' . $orgKey;
+            if (!empty($data[$ketKey]) && $data[$ketKey] !== '-') {
+                $abnormalNotes[] = $orgLbl . ': ' . $data[$ketKey];
+            }
+        }
+        if (!empty($data['ket_fisik']) && $data['ket_fisik'] !== '-') {
+            $abnormalNotes[] = $data['ket_fisik'];
+        }
+        if (!empty($abnormalNotes)) {
+            $data['ket_fisik'] = implode("\n", array_unique($abnormalNotes));
         }
 
         $dataAsmed = array_intersect_key($data, array_flip($asmedFields));
@@ -168,6 +193,10 @@ class AsesmenMedisIgdController extends Model
 
         $rsiaFields = [
             'no_rawat', 'terapi_kategori', 'terapi_farmakologis', 'terapi_non_farmakologis',
+            'tht', 'jantung', 'paru', 'neurologis', 'muskuloskeletal',
+            'ket_kepala', 'ket_mata', 'ket_tht', 'ket_gigi', 'ket_leher', 'ket_jantung',
+            'ket_paru', 'ket_thoraks', 'ket_abdomen', 'ket_genital', 'ket_ekstremitas',
+            'ket_neurologis', 'ket_muskuloskeletal',
             'tindak_lanjut', 'kontrol_ke', 'ranap_indikasi', 'ranap_dpjp', 'ranap_smf', 'ranap_ruang',
             'rujuk_tujuan', 'rujuk_nama_faskes', 'rujuk_alasan', 'rujuk_transport',
             'kondisi_pulang', 'tgl_meninggal', 'jam_meninggal',
@@ -186,6 +215,27 @@ class AsesmenMedisIgdController extends Model
         }
         if (!empty($terapiRingkas)) {
             $data['tata'] = implode("\n", $terapiRingkas);
+        }
+
+        // Format summary into 'ket_fisik' for Khanza legacy compatibility
+        $abnormalNotes = [];
+        $organLabels = [
+            'kepala' => 'Kepala', 'mata' => 'Mata', 'tht' => 'THT', 'gigi' => 'Mulut',
+            'leher' => 'Leher', 'jantung' => 'Jantung', 'paru' => 'Paru-paru', 'thoraks' => 'Dada & Payudara',
+            'abdomen' => 'Perut', 'genital' => 'Urogenital', 'ekstremitas' => 'Anggota Gerak',
+            'neurologis' => 'Status Neurologis', 'muskuloskeletal' => 'Muskuloskeletal'
+        ];
+        foreach ($organLabels as $orgKey => $orgLbl) {
+            $ketKey = 'ket_' . $orgKey;
+            if (!empty($data[$ketKey]) && $data[$ketKey] !== '-') {
+                $abnormalNotes[] = $orgLbl . ': ' . $data[$ketKey];
+            }
+        }
+        if (!empty($data['ket_fisik']) && $data['ket_fisik'] !== '-') {
+            $abnormalNotes[] = $data['ket_fisik'];
+        }
+        if (!empty($abnormalNotes)) {
+            $data['ket_fisik'] = implode("\n", array_unique($abnormalNotes));
         }
 
         $dataAsmed = array_intersect_key($data, array_flip($asmedFields));

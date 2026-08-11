@@ -202,74 +202,195 @@
                                     </div>
                                 </div>
                                 <hr class="my-2">
-                                <div class="row g-2">
-                                    <div class="col-6 col-md-3 col-lg-3">
-                                        <label class="form-label mb-0 small">Kepala</label>
-                                        <select class="form-select form-select-sm" name="kepala" id="kepala">
-                                            <option value="Normal">Normal</option>
-                                            <option value="Abnormal">Abnormal</option>
-                                            <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-6 col-md-3 col-lg-3">
-                                        <label class="form-label mb-0 small">Mata</label>
-                                        <select class="form-select form-select-sm" name="mata" id="mata">
-                                            <option value="Normal">Normal</option>
-                                            <option value="Abnormal">Abnormal</option>
-                                            <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-6 col-md-3 col-lg-3">
-                                        <label class="form-label mb-0 small">Gigi & Mulut</label>
-                                        <select class="form-select form-select-sm" name="gigi" id="gigi">
-                                            <option value="Normal">Normal</option>
-                                            <option value="Abnormal">Abnormal</option>
-                                            <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-6 col-md-3 col-lg-3">
-                                        <label class="form-label mb-0 small">Leher</label>
-                                        <select class="form-select form-select-sm" name="leher" id="leher">
-                                            <option value="Normal">Normal</option>
-                                            <option value="Abnormal">Abnormal</option>
-                                            <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-6 col-md-3 col-lg-3">
-                                        <label class="form-label mb-0 small">Thoraks</label>
-                                        <select class="form-select form-select-sm" name="thoraks" id="thoraks">
-                                            <option value="Normal">Normal</option>
-                                            <option value="Abnormal">Abnormal</option>
-                                            <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-6 col-md-3 col-lg-3">
-                                        <label class="form-label mb-0 small">Abdomen</label>
-                                        <select class="form-select form-select-sm" name="abdomen" id="abdomen">
-                                            <option value="Normal">Normal</option>
-                                            <option value="Abnormal">Abnormal</option>
-                                            <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-6 col-md-3 col-lg-3">
-                                        <label class="form-label mb-0 small">Genital</label>
-                                        <select class="form-select form-select-sm" name="genital" id="genital">
-                                            <option value="Normal">Normal</option>
-                                            <option value="Abnormal">Abnormal</option>
-                                            <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-6 col-md-3 col-lg-3">
-                                        <label class="form-label mb-0 small">Ekstremitas</label>
-                                        <select class="form-select form-select-sm" name="ekstremitas" id="ekstremitas">
-                                            <option value="Normal">Normal</option>
-                                            <option value="Abnormal">Abnormal</option>
-                                            <option value="Tidak Diperiksa">Tidak Diperiksa</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 mt-2">
-                                        <label for="ket_fisik" class="form-label mb-1">Keterangan Tambahan Pemeriksaan Fisik</label>
-                                        <textarea class="form-control" name="ket_fisik" id="ket_fisik" rows="3" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                                <div class="table-responsive mt-3">
+                                    <table class="table table-bordered table-sm align-middle mb-2 bg-white" id="tblPemeriksaanFisik" style="font-size: 12px;">
+                                        <thead class="table-light">
+                                            <tr class="align-middle">
+                                                <th style="width: 24%;" class="ps-2">Pemeriksaan Fisik</th>
+                                                <th style="width: 22%;" class="text-center">
+                                                    Status
+                                                    <button type="button" class="btn btn-xs btn-outline-primary py-0 px-1 ms-1" id="btnSetSemuaNormalFisik" title="Set Semua Normal" style="font-size: 10px;">
+                                                        <i class="bi bi-check-all"></i> Semua Normal
+                                                    </button>
+                                                </th>
+                                                <th style="width: 54%;" class="ps-2">Jika tidak normal, jelaskan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Kepala</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="kepala" id="kepala" data-target="ket_kepala">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_kepala" id="ket_kepala" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Mata</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="mata" id="mata" data-target="ket_mata">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_mata" id="ket_mata" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">THT</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="tht" id="tht" data-target="ket_tht">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_tht" id="ket_tht" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Mulut</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="gigi" id="gigi" data-target="ket_gigi">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_gigi" id="ket_gigi" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Leher</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="leher" id="leher" data-target="ket_leher">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_leher" id="ket_leher" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Jantung</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="jantung" id="jantung" data-target="ket_jantung">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_jantung" id="ket_jantung" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Paru-paru</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="paru" id="paru" data-target="ket_paru">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_paru" id="ket_paru" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Dada & Payudara</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="thoraks" id="thoraks" data-target="ket_thoraks">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_thoraks" id="ket_thoraks" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Perut</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="abdomen" id="abdomen" data-target="ket_abdomen">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_abdomen" id="ket_abdomen" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Urogenital</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="genital" id="genital" data-target="ket_genital">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_genital" id="ket_genital" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Anggota Gerak</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="ekstremitas" id="ekstremitas" data-target="ket_ekstremitas">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_ekstremitas" id="ket_ekstremitas" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Status Neurologis</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="neurologis" id="neurologis" data-target="ket_neurologis">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_neurologis" id="ket_neurologis" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold ps-2">Muskuloskeletal</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm status-fisik" name="muskuloskeletal" id="muskuloskeletal" data-target="ket_muskuloskeletal">
+                                                        <option value="Normal" selected>Normal</option>
+                                                        <option value="Abnormal">Abnormal</option>
+                                                        <option value="Tidak Diperiksa">Tidak Diperiksa</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm ket-fisik" name="ket_muskuloskeletal" id="ket_muskuloskeletal" placeholder="Jelaskan kondisi jika abnormal" disabled>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="mt-2">
+                                        <label for="ket_fisik" class="form-label mb-1 small fw-bold">Keterangan Tambahan Pemeriksaan Fisik :</label>
+                                        <textarea class="form-control form-control-sm" name="ket_fisik" id="ket_fisik" rows="2" placeholder="Catatan tambahan pemeriksaan fisik umum">-</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -1046,11 +1167,31 @@
             }
         });
 
+        $(document).on('change', '.status-fisik', function() {
+            let target = $(this).data('target');
+            let val = $(this).val();
+            let $input = $(`#${target}`);
+            if (val === 'Abnormal') {
+                $input.prop('disabled', false);
+                $input.addClass('border-warning bg-light');
+            } else {
+                $input.prop('disabled', true).val('');
+                $input.removeClass('border-warning bg-light');
+            }
+        });
+
+        $('#btnSetSemuaNormalFisik').on('click', function() {
+            $('.status-fisik').val('Normal');
+            $('.ket-fisik').val('').prop('disabled', true).removeClass('border-warning bg-light');
+        });
+
         function resetFormAsmedUgd() {
             $('#formAsmedUgd')[0].reset();
             for (let index = 1; index <= 5; index++) {
                 $("#ats_" + index).prop('checked', false);
             }
+            $('.status-fisik').val('Normal');
+            $('.ket-fisik').val('').prop('disabled', true).removeClass('border-warning bg-light');
             $('input[name="terapi_kategori[]"]').prop('checked', false);
             $('input[name="rujuk_alasan[]"]').prop('checked', false);
             $('.panel-tindak-lanjut').addClass('d-none');
@@ -1058,6 +1199,7 @@
             $('#ttd_pasien').val('');
             $('#imgPreviewTtd').attr('src', '');
             $('#wrapperPreviewTtd').addClass('d-none');
+            $('.btn-asmed-ugd-print').addClass('d-none');
             if (ctxTtd && canvasTtd) {
                 ctxTtd.clearRect(0, 0, canvasTtd.width, canvasTtd.height);
             }
@@ -1068,9 +1210,12 @@
 
             getAsmedUgd(params).done((response) => {
                 if (Object.keys(response).length == 0) {
+                    // Entri Baru: Tombol Cetak disembunyikan
+                    $('.btn-asmed-ugd-print').addClass('d-none');
+                    $('.btn-asmed-ugd').html('<i class="bi bi-save"></i> Simpan Asesmen');
+
                     getRegPeriksa(params).done((regPeriksa) => {
                         const p = regPeriksa?.pasien || {};
-                        $('.btn-asmed-ugd').css('display', 'inline');
                         $('#formAsmedUgd input[name="no_rawat"]').val(regPeriksa?.no_rawat || params);
                         $('#formAsmedUgd input[name="pasien"]').val(`${p.nm_pasien || '-'} (${p.jk || '-'})`);
                         $('#formAsmedUgd input[name="tgl_lahir"]').val(`${p.tgl_lahir ? formatTanggal(p.tgl_lahir) : '-'} (${p.tgl_lahir ? hitungUmur(p.tgl_lahir) : '-'})`);
@@ -1078,8 +1223,28 @@
                         $('#formAsmedUgd input[name="dokter"]').val("{{ session()->get('pegawai')->nama }}");
                         $('#formAsmedUgd input[name="tanggal"]').val("{{ date('Y-m-d H:i:s') }}");
                         $('#formAsmedUgd input[name="nama_keluarga_ttd"]').val(p.nm_pasien || '');
+
+                        // Auto pre-fill dari Pemeriksaan Ralan (Pemeriksaan Awal Triage / Perawat)
+                        if (regPeriksa?.pemeriksaan_ralan && regPeriksa.pemeriksaan_ralan.length > 0) {
+                            const pem = regPeriksa.pemeriksaan_ralan[0];
+                            if (pem.keluhan && pem.keluhan !== '-') $('#formAsmedUgd textarea[name="keluhan_utama"]').val(pem.keluhan);
+                            if (pem.alergi && pem.alergi !== '-') $('#formAsmedUgd input[name="alergi"]').val(pem.alergi);
+                            if (pem.tensi && pem.tensi !== '-') $('#formAsmedUgd input[name="td"]').val(pem.tensi);
+                            if (pem.nadi && pem.nadi !== '-') $('#formAsmedUgd input[name="nadi"]').val(pem.nadi);
+                            if (pem.respirasi && pem.respirasi !== '-') $('#formAsmedUgd input[name="rr"]').val(pem.respirasi);
+                            if (pem.suhu_tubuh && pem.suhu_tubuh !== '-') $('#formAsmedUgd input[name="suhu"]').val(pem.suhu_tubuh);
+                            if (pem.spo2 && pem.spo2 !== '-') $('#formAsmedUgd input[name="spo"]').val(pem.spo2);
+                            if (pem.berat && pem.berat !== '-') $('#formAsmedUgd input[name="bb"]').val(pem.berat);
+                            if (pem.tinggi && pem.tinggi !== '-') $('#formAsmedUgd input[name="tb"]').val(pem.tinggi);
+                            if (pem.gcs && pem.gcs !== '-') $('#formAsmedUgd input[name="gcs"]').val(pem.gcs);
+                            if (pem.kesadaran) $('#formAsmedUgd select[name="kesadaran"]').val(pem.kesadaran).change();
+                        }
                     });
                 } else {
+                    // Data Pernah Disimpan: Tombol Cetak ditampilkan
+                    $('.btn-asmed-ugd-print').removeClass('d-none');
+                    $('.btn-asmed-ugd').html('<i class="bi bi-pencil-square"></i> Ubah Asesmen');
+
                     const p = response?.reg_periksa?.pasien || {};
                     $('#formAsmedUgd input[name="no_rawat"]').val(response.no_rawat);
                     $('#formAsmedUgd input[name="pasien"]').val(`${p.nm_pasien || '-'} (${p.jk || '-'})`);
@@ -1105,25 +1270,45 @@
                     $('#formAsmedUgd input[name="rr"]').val(response.rr);
                     $('#formAsmedUgd input[name="suhu"]').val(response.suhu);
                     $('#formAsmedUgd input[name="spo"]').val(response.spo);
-                    $('#formAsmedUgd select[name="kepala"]').val(response.kepala).change();
-                    $('#formAsmedUgd select[name="mata"]').val(response.mata).change();
-                    $('#formAsmedUgd select[name="gigi"]').val(response.gigi).change();
-                    $('#formAsmedUgd select[name="leher"]').val(response.leher).change();
-                    $('#formAsmedUgd select[name="thoraks"]').val(response.thoraks).change();
-                    $('#formAsmedUgd select[name="abdomen"]').val(response.abdomen).change();
-                    $('#formAsmedUgd select[name="genital"]').val(response.genital).change();
-                    $('#formAsmedUgd select[name="ekstremitas"]').val(response.ekstremitas).change();
-                    $('#formAsmedUgd textarea[name="ket_fisik"]').val(response.ket_fisik);
-                    $('#formAsmedUgd textarea[name="ket_lokalis"]').val(response.ket_lokalis);
-                    $('#formAsmedUgd textarea[name="ekg"]').val(response.ekg);
-                    $('#formAsmedUgd textarea[name="lab"]').val(response.lab);
-                    $('#formAsmedUgd textarea[name="rad"]').val(response.rad);
-                    $('#formAsmedUgd textarea[name="diagnosis"]').val(response.diagnosis);
-                    $('#formAsmedUgd textarea[name="tata"]').val(response.tata);
+
+                    // 13 Organ Pemeriksaan Fisik (Status & Keterangan)
+                    let rsia = response.rsia_asmed || response.rsia_penilaian_medis_igd || {};
+                    
+                    const setOrganFisik = (orgName, statusVal, ketVal) => {
+                        let status = statusVal || 'Normal';
+                        $(`#formAsmedUgd select[name="${orgName}"]`).val(status);
+                        let $ket = $(`#formAsmedUgd input[name="ket_${orgName}"]`);
+                        if (status === 'Abnormal') {
+                            $ket.prop('disabled', false).val(ketVal || '').addClass('border-warning bg-light');
+                        } else {
+                            $ket.prop('disabled', true).val('').removeClass('border-warning bg-light');
+                        }
+                    };
+
+                    setOrganFisik('kepala', response.kepala, rsia.ket_kepala);
+                    setOrganFisik('mata', response.mata, rsia.ket_mata);
+                    setOrganFisik('tht', rsia.tht, rsia.ket_tht);
+                    setOrganFisik('gigi', response.gigi, rsia.ket_gigi);
+                    setOrganFisik('leher', response.leher, rsia.ket_leher);
+                    setOrganFisik('jantung', rsia.jantung, rsia.ket_jantung);
+                    setOrganFisik('paru', rsia.paru, rsia.ket_paru);
+                    setOrganFisik('thoraks', response.thoraks, rsia.ket_thoraks);
+                    setOrganFisik('abdomen', response.abdomen, rsia.ket_abdomen);
+                    setOrganFisik('genital', response.genital, rsia.ket_genital);
+                    setOrganFisik('ekstremitas', response.ekstremitas, rsia.ket_ekstremitas);
+                    setOrganFisik('neurologis', rsia.neurologis, rsia.ket_neurologis);
+                    setOrganFisik('muskuloskeletal', rsia.muskuloskeletal, rsia.ket_muskuloskeletal);
+
+                    $('#formAsmedUgd textarea[name="ket_fisik"]').val(response.ket_fisik || '-');
+                    $('#formAsmedUgd textarea[name="ket_lokalis"]').val(response.ket_lokalis || '-');
+                    $('#formAsmedUgd textarea[name="ekg"]').val(response.ekg || '-');
+                    $('#formAsmedUgd textarea[name="lab"]').val(response.lab || '-');
+                    $('#formAsmedUgd textarea[name="rad"]').val(response.rad || '-');
+                    $('#formAsmedUgd textarea[name="diagnosis"]').val(response.diagnosis || '');
+                    $('#formAsmedUgd textarea[name="tata"]').val(response.tata || '-');
 
                     // Load RSIA Akreditasi Extension data
-                    let rsia = response.rsia_asmed || response.rsia_penilaian_medis_igd || null;
-                    if (rsia) {
+                    if (rsia && Object.keys(rsia).length > 0) {
                         // Terapi Kategori
                         if (rsia.terapi_kategori) {
                             let kats = rsia.terapi_kategori.split(',');

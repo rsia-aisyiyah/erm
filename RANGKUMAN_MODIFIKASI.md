@@ -179,4 +179,43 @@ Untuk menjaga portabilitas aplikasi saat dijalankan di berbagai environment (mis
 | `resources/views/layout/head.blade.php` | Tag `<link>` stylesheet | Mengubah `href='/erm/public/css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css'` menjadi `href="{{ asset('css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css') }}"`. |
 | `resources/views/content/ugd/modal/asmed.blade.php` | JS function `modalAsmedUgd` | Menyesuaikan URL gambar preview TTD pasien agar mengarah ke `{{ asset("storage") }}/...` jika format data bukan base64. |
 
+---
+
+## Modifikasi 5: Pemeriksaan Fisik Status Generalis 13 Organ & Kontrol Visibilitas Tombol Cetak
+
+### 1. Deskripsi Perubahan
+- **Tabel 13 Organ Status Generalis**:
+  - Menggantikan tampilan dropdown lama dengan antarmuka tabel 13 organ fisik sesuai formulir akreditasi:
+    1. Kepala
+    2. Mata
+    3. THT *(Organ Baru)*
+    4. Mulut
+    5. Leher
+    6. Jantung *(Organ Baru)*
+    7. Paru-paru *(Organ Baru)*
+    8. Dada & Payudara
+    9. Perut
+    10. Urogenital
+    11. Anggota Gerak
+    12. Status Neurologis *(Organ Baru)*
+    13. Muskuloskeletal *(Organ Baru)*
+  - Setiap baris dilengkapi status `Normal`, `Abnormal`, dan `Tidak Diperiksa`, serta input teks **"Jika tidak normal, jelaskan"** yang otomatis aktif saat status `Abnormal`.
+  - Dilengkapi tombol cepat **"Semua Normal"** untuk efisiensi dokter IGD.
+- **Kontrol Visibilitas Tombol Cetak**:
+  - Tombol **"Cetak Asesmen"** disembunyikan (`d-none`) saat dokter membuka formulir untuk entri baru, dan baru dimunculkan jika data asesmen sudah pernah disimpan/sudah ada di database.
+- **Sinkronisasi Otomatis Triage/Perawat**:
+  - Saat membuka entri baru, sistem secara otomatis menarik data TTV dan Keluhan Utama awal dari `pemeriksaan_ralan`.
+- **Integrasi Cetak PDF**:
+  - Format cetak asesmen medis IGD (A4) diperbarui dengan menyertakan tabel 13 organ fisik secara rapi dan profesional.
+
+---
+
+### 2. Daftar Berkas yang Dimodifikasi
+| File | Rincian Perubahan |
+| :--- | :--- |
+| `app/Models/AsesmenMedisIgdController.php` | Mapping 18 field baru pada `$rsiaFields` (`tht`, `jantung`, `paru`, `neurologis`, `muskuloskeletal`, dan 13 kolom `ket_*`) serta sinkronisasi ringkasan `ket_fisik` otomatis. |
+| `resources/views/content/ugd/modal/asmed.blade.php` | Implementasi tabel UI 13 organ fisik, event handler status/keterangan, tombol cepat semua normal, sembunyikan tombol cetak pada entri baru, dan auto pre-fill pemeriksaan awal. |
+| `resources/views/content/print/asmed_igd.blade.php` | Menambahkan tabel 13 organ status generalis pada cetakan PDF Asesmen IGD. |
+
+
 
