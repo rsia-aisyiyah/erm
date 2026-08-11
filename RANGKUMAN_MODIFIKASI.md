@@ -114,10 +114,14 @@ Pembaruan menyeluruh pada modul **Edukasi Pasien & Keluarga Rawat Inap** untuk m
   - **Hambatan Edukasi & Intervensi** (*Multiple Check* dengan interaktivitas cerdas: opsi "Tidak Ada" otomatis eksklusif, serta opsi "Lain-lain" otomatis membuka input teks keterangan).
   - **Tanda Tangan Digital Pasien/Keluarga** berbasis Canvas Touch/Stylus/Mouse dengan penyimpanan file fisik PNG di `storage/app/public/signatures/catatan_edukasi_pasien/`.
   - **Barcode QR Code Edukator** otomatis ter-generate berdasarkan akun login petugas/dokter.
-- **Tiga Template Cetak PDF Resmi**:
+- **Empat Opsi Cetak PDF Resmi Termasuk Bundling Terpadu**:
   - Cetak Form **RM 20** (*Assesmen Kebutuhan dan Perencanaan Pendidikan Pasien dan Keluarga Rawat Inap*).
   - Cetak Form **RM 23** (*Catatan Pelaksanaan Pendidikan Pasien dan Keluarga dari Multi Disiplin*).
   - Cetak Form **RM 24** (*Catatan Pelaksanaan Edukasi Kepada Pasien*).
+  - **Cetak Bundling (Paket Edukasi Pasien)**: Menggabungkan dokumen RM 20, RM 23, dan RM 24 ke dalam 1 file PDF berhalaman jamak secara cerdas dan kondisional (misal: jika RM 23 kosong, maka otomatis mencetak RM 20 & RM 24 saja).
+- **Kontrol Cerdas & Tooltip Interaktif**:
+  - Seluruh tombol cetak (*RM 20, RM 23, RM 24, & Bundling*) otomatis **Nonaktif (*Disabled*)** jika belum ada data terkait yang disimpan.
+  - Efek **Hover Tooltip**: Saat kursor disorot ke tombol yang sedang nonaktif, otomatis muncul keterangan **"Belum Ada Data Tersimpan"** yang intuitif bagi pengguna.
 
 ---
 
@@ -183,13 +187,14 @@ ALTER TABLE `rsia_catatan_pelaksanaan_edukasi_pasien`
 | `resources/views/content/print/catatan_edukasi_rm20.blade.php` | Template cetak PDF resmi Form RM 20 (Pengkajian & Perencanaan Edukasi). |
 | `resources/views/content/print/catatan_edukasi_rm23.blade.php` | Template cetak PDF resmi Form RM 23 (Edukasi Multidisiplin 5 PPA). |
 | `resources/views/content/print/catatan_edukasi_rm24.blade.php` | Template cetak PDF resmi Form RM 24 (Tabel baris edukasi pasien umum). |
+| `resources/views/content/print/catatan_edukasi_bundle.blade.php` | Template cetak PDF Bundling cerdas untuk menggabungkan RM 20, RM 23, dan RM 24 dalam 1 dokumen. |
 
 #### B. Berkas Dimodifikasi (*Modified Files*)
 | File | Rincian Perubahan |
 | :--- | :--- |
-| `routes/web.php` | Pendaftaran route `asesmen/kebutuhan/edukasi` dan `catatan/pelaksanaan/edukasi/pasien/print/rm20`. |
-| `app/Http/Controllers/CatatanPelaksanaanEdukasiPasienController.php` | Normalisasi array checkbox (`implode(', ', ...)`) pada `create` & `update` untuk field `metode`, `hambatan`, dan `intervensi`. |
-| `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Navigasi 3 Tab terpadu: **RM 20, RM 23, dan RM 24**.<br>2. Form interaktif RM 20 (Pengkajian & Rencana Edukasi) dengan tombol cepat *"Set Standar Normal"*.<br>3. Form RM 23 & 24 dengan multiple check metode/hambatan/intervensi dan TTD canvas.<br>4. Tombol Cetak RM 20, Cetak RM 23, dan Cetak RM 24 di footer modal. |
+| `routes/web.php` | Pendaftaran route `asesmen/kebutuhan/edukasi`, `catatan/pelaksanaan/edukasi/pasien/print/rm20`, dan `catatan/pelaksanaan/edukasi/pasien/print/bundle`. |
+| `app/Http/Controllers/CatatanPelaksanaanEdukasiPasienController.php` | 1. Normalisasi array checkbox (`implode`) untuk metode, hambatan, intervensi.<br>2. Menambahkan method `printBundle()` untuk generate PDF paket edukasi gabungan. |
+| `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Navigasi 3 Tab terpadu: **RM 20, RM 23, dan RM 24**.<br>2. Form interaktif RM 20 dengan tombol cepat *"Set Standar Normal"*.<br>3. Form RM 23 & 24 dengan multiple check metode/hambatan/intervensi dan TTD canvas.<br>4. Tombol Cetak RM 20, RM 23, RM 24, dan Cetak Bundling.<br>5. Fitur auto disable dan hover tooltip *"Belum Ada Data Tersimpan"* jika data belum disimpan. |
 | `resources/views/content/print/catatan_edukasi_rm23.blade.php` | Menampilkan seluruh pilihan metode, hambatan, intervensi, checklist materi standar, baris *Catatan: ...* free-text, serta otomatisasi bukti paraf TTD digital dan nama penerima di kotak pernyataan. |
 | `resources/views/content/print/catatan_edukasi_rm24.blade.php` | Menampilkan baris edukasi pasien dengan seluruh pilihan metode, hambatan, intervensi, serta otomatisasi bukti paraf TTD digital dan nama penerima di kotak pernyataan. |
 

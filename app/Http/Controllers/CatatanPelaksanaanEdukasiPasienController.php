@@ -259,4 +259,50 @@ class CatatanPelaksanaanEdukasiPasienController extends Controller
 
 		return $pdf->stream('RM24_Catatan_Edukasi_' . $request->no_rawat . '.pdf');
 	}
+
+	public function printBundle(Request $request)
+	{
+		$noRawat = str_replace('-', '/', $request->no_rawat);
+		$regPeriksa = RegPeriksa::with(['pasien', 'kamarInap.kamar.bangsal', 'dokter', 'poliklinik'])
+			->where('no_rawat', $noRawat)
+			->first();
+
+		if (!$regPeriksa) {
+			return abort(404, 'Data Pasien tidak ditemukan');
+		}
+
+		$asesmenRm20 = \App\Models\AsesmenKebutuhanEdukasi::with(['petugas', 'pegawai'])->where('no_rawat', $noRawat)->first();
+
+		$edukasiRm23 = $this->catatan->with(['petugas', 'dokter'])
+			->where('no_rawat', $noRawat)
+			->where('jenis_form', 'RM 23')
+			->orderBy('tanggal', 'asc')
+			->get();
+
+		$edukasiRm24 = $this->catatan->with(['petugas', 'dokter'])
+			->where('no_rawat', $noRawat)
+			->where('jenis_form', 'RM 24')
+			->orderBy('tanggal', 'asc')
+			->get();
+
+		$hasRm20 = !empty($asesmenRm20);
+		$hasRm23 = count($edukasiRm23) > 0;
+		$hasRm24 = count($edukasiRm24) > 0;
+
+		if (!$hasRm20 && !$hasRm23 && !$hasRm24) {
+			return abort(404, 'Belum ada data edukasi pasien (RM 20, RM 23, maupun RM 24) yang tersimpan.');
+		}
+
+		$pdf = PDF::loadView('content.print.catatan_edukasi_bundle', [
+			'regPeriksa' => $regPeriksa,
+			'asesmen' => $asesmenRm20,
+			'edukasiRm23' => $edukasiRm23,
+			'edukasiRm24' => $edukasiRm24,
+			'hasRm20' => $hasRm20,
+			'hasRm23' => $hasRm23,
+			'hasRm24' => $hasRm24,
+		])->setPaper('a4', 'portrait');
+
+		return $pdf->stream('Bundling_Edukasi_Pasien_' . $request->no_rawat . '.pdf');
+	}
 }

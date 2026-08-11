@@ -660,18 +660,29 @@
                 </div>
             </div>
 
-            <!-- MODAL FOOTER DENGAN TOMBOL CETAK RM 20, RM 23 & RM 24 -->
+            <!-- MODAL FOOTER DENGAN TOMBOL CETAK RM 20, RM 23, RM 24 & BUNDLING -->
             <div class="modal-footer d-flex justify-content-between">
-                <div class="d-flex gap-2 flex-wrap">
-                    <button type="button" class="btn btn-success btn-sm fw-bold" id="btnCetakRm20" onclick="cetakCatatanEdukasi('rm20')" disabled title="Cetak aktif jika data asesmen RM 20 sudah disimpan">
-                        <i class="bi bi-printer-fill me-1"></i> Cetak RM 20 (Assesmen &amp; Rencana)
-                    </button>
-                    <button type="button" class="btn btn-warning btn-sm fw-bold" id="btnCetakRm23" onclick="cetakCatatanEdukasi('rm23')" disabled title="Cetak aktif jika sudah ada data edukasi RM 23">
-                        <i class="bi bi-printer-fill me-1"></i> Cetak RM 23 (Multidisiplin)
-                    </button>
-                    <button type="button" class="btn btn-info btn-sm text-white fw-bold" id="btnCetakRm24" onclick="cetakCatatanEdukasi('rm24')" disabled title="Cetak aktif jika sudah ada data edukasi RM 24">
-                        <i class="bi bi-printer-fill me-1"></i> Cetak RM 24 (Edukasi Pasien)
-                    </button>
+                <div class="d-flex gap-2 flex-wrap align-items-center">
+                    <span class="d-inline-block wrapper-tooltip-btn" id="wrapperCetakRm20" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Belum Ada Data Tersimpan">
+                        <button type="button" class="btn btn-success btn-sm fw-bold" id="btnCetakRm20" onclick="cetakCatatanEdukasi('rm20')" disabled style="pointer-events: none;">
+                            <i class="bi bi-printer-fill me-1"></i> Cetak RM 20
+                        </button>
+                    </span>
+                    <span class="d-inline-block wrapper-tooltip-btn" id="wrapperCetakRm23" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Belum Ada Data Tersimpan">
+                        <button type="button" class="btn btn-warning btn-sm fw-bold" id="btnCetakRm23" onclick="cetakCatatanEdukasi('rm23')" disabled style="pointer-events: none;">
+                            <i class="bi bi-printer-fill me-1"></i> Cetak RM 23 (Multidisiplin)
+                        </button>
+                    </span>
+                    <span class="d-inline-block wrapper-tooltip-btn" id="wrapperCetakRm24" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Belum Ada Data Tersimpan">
+                        <button type="button" class="btn btn-info btn-sm text-white fw-bold" id="btnCetakRm24" onclick="cetakCatatanEdukasi('rm24')" disabled style="pointer-events: none;">
+                            <i class="bi bi-printer-fill me-1"></i> Cetak RM 24 (Edukasi Pasien)
+                        </button>
+                    </span>
+                    <span class="d-inline-block wrapper-tooltip-btn" id="wrapperCetakBundle" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Belum Ada Data Tersimpan">
+                        <button type="button" class="btn btn-dark btn-sm fw-bold" id="btnCetakBundle" onclick="cetakCatatanEdukasi('bundle')" disabled style="pointer-events: none;">
+                            <i class="bi bi-collection-fill me-1"></i> Cetak Bundling (Paket Edukasi)
+                        </button>
+                    </span>
                 </div>
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-primary btn-sm fw-bold" id="btnSimpanCatatanEdukasi" onclick="handleSimpanEdukasi()">
@@ -1028,10 +1039,48 @@
             }
         });
 
+        let hasDataRm20 = false;
+        let hasDataRm23 = false;
+        let hasDataRm24 = false;
+
+        function refreshAllPrintButtons() {
+            updatePrintButtonState('btnCetakRm20', 'wrapperCetakRm20', hasDataRm20, 'Klik untuk Cetak Form RM 20 (Assesmen & Rencana)');
+            updatePrintButtonState('btnCetakRm23', 'wrapperCetakRm23', hasDataRm23, 'Klik untuk Cetak Form RM 23 (Edukasi Multidisiplin)');
+            updatePrintButtonState('btnCetakRm24', 'wrapperCetakRm24', hasDataRm24, 'Klik untuk Cetak Form RM 24 (Edukasi Pasien Terbuka)');
+
+            let hasAnyData = hasDataRm20 || hasDataRm23 || hasDataRm24;
+            updatePrintButtonState('btnCetakBundle', 'wrapperCetakBundle', hasAnyData, 'Klik untuk Cetak Bundling Seluruh Paket Edukasi Tersimpan');
+        }
+
+        function updatePrintButtonState(btnId, wrapperId, isEnabled, activeTitle) {
+            const btn = $(`#${btnId}`);
+            const wrapper = $(`#${wrapperId}`);
+            if (isEnabled) {
+                btn.prop('disabled', false).css('pointer-events', 'auto');
+                wrapper.attr('title', activeTitle).attr('data-bs-original-title', activeTitle);
+                btn.attr('title', activeTitle);
+            } else {
+                btn.prop('disabled', true).css('pointer-events', 'none');
+                wrapper.attr('title', 'Belum Ada Data Tersimpan').attr('data-bs-original-title', 'Belum Ada Data Tersimpan');
+                btn.attr('title', 'Belum Ada Data Tersimpan');
+            }
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                let el = document.getElementById(wrapperId);
+                if (el) {
+                    let instance = bootstrap.Tooltip.getInstance(el);
+                    if (instance) {
+                        instance.setContent({ '.tooltip-inner': isEnabled ? activeTitle : 'Belum Ada Data Tersimpan' });
+                    }
+                }
+            }
+        }
+
         function loadAsesmenRm20(no_rawat) {
             $.get(`${url}/asesmen/kebutuhan/edukasi`, { no_rawat: no_rawat }).done((data) => {
                 if (data && data.no_rawat) {
-                    $('#btnCetakRm20').prop('disabled', false);
+                    hasDataRm20 = true;
+                    refreshAllPrintButtons();
+
                     $('#rm20_no_rawat').val(data.no_rawat);
                     $('#rm20_tanggal').val(data.tanggal);
                     $('#rm20_ruang').val(data.ruang);
@@ -1102,7 +1151,8 @@
                     renderTableRencanaRm20(savedRencana);
                 } else {
                     // Belum ada data asesmen, tombol cetak dinonaktifkan
-                    $('#btnCetakRm20').prop('disabled', true);
+                    hasDataRm20 = false;
+                    refreshAllPrintButtons();
                     setDefaultRm20();
                 }
             });
@@ -1171,6 +1221,8 @@
 
             $.post(`${url}/asesmen/kebutuhan/edukasi`, postData).done((response) => {
                 alertSuccessAjax(response).then(() => {
+                    hasDataRm20 = true;
+                    refreshAllPrintButtons();
                     loadAsesmenRm20(no_rawat);
                 });
             }).fail((error) => {
@@ -1223,26 +1275,25 @@
             let checked = $('.check-materi-item:checked').length;
             $('#checkAllMateri').prop('checked', total > 0 && total === checked);
 
-            if ($(this).val() === 'Lain-lain (Catatan Tambahan)' && $(this).is(':checked')) {
-                $('#materi').focus();
+            if ($(this).val() === 'Lain-lain (Catatan Tambahan)') {
+                if ($(this).is(':checked')) {
+                    $('#materi').focus();
+                }
             }
         });
 
-        // Event handler checkbox hambatan (eksklusif Tidak Ada vs opsi lain)
+        // Interaksi Checkbox Hambatan (Eksklusif "Tidak Ada" vs "Lain-lain")
         $(document).on('change', '.check-hambatan', function() {
             let val = $(this).val();
-            let isChecked = $(this).is(':checked');
-
-            if (val === 'Tidak Ada' && isChecked) {
-                $('.check-hambatan').not('#hambatan_tidak_ada').prop('checked', false);
+            if (val === 'Tidak Ada' && $(this).is(':checked')) {
+                $('.check-hambatan').not(this).prop('checked', false);
                 $('#hambatan_lain').attr('disabled', 'disabled').val('');
-            } else if (val !== 'Tidak Ada' && isChecked) {
+            } else if (val !== 'Tidak Ada' && $(this).is(':checked')) {
                 $('#hambatan_tidak_ada').prop('checked', false);
-            }
-
-            if ($('#hambatan_lain_chk').is(':checked')) {
-                $('#hambatan_lain').removeAttr('disabled').focus();
-            } else {
+                if (val === 'Lain-lain') {
+                    $('#hambatan_lain').removeAttr('disabled').focus();
+                }
+            } else if (val === 'Lain-lain' && !$(this).is(':checked')) {
                 $('#hambatan_lain').attr('disabled', 'disabled').val('');
             }
 
@@ -1251,21 +1302,18 @@
             }
         });
 
-        // Event handler checkbox intervensi (eksklusif Tidak Ada vs opsi lain)
+        // Interaksi Checkbox Intervensi (Eksklusif "Tidak Ada" vs "Lain-lain")
         $(document).on('change', '.check-intervensi', function() {
             let val = $(this).val();
-            let isChecked = $(this).is(':checked');
-
-            if (val === 'Tidak Ada' && isChecked) {
-                $('.check-intervensi').not('#intervensi_tidak_ada').prop('checked', false);
+            if (val === 'Tidak Ada' && $(this).is(':checked')) {
+                $('.check-intervensi').not(this).prop('checked', false);
                 $('#intervensi_lain').attr('disabled', 'disabled').val('');
-            } else if (val !== 'Tidak Ada' && isChecked) {
+            } else if (val !== 'Tidak Ada' && $(this).is(':checked')) {
                 $('#intervensi_tidak_ada').prop('checked', false);
-            }
-
-            if ($('#intervensi_lain_chk').is(':checked')) {
-                $('#intervensi_lain').removeAttr('disabled').focus();
-            } else {
+                if (val === 'Lain-lain') {
+                    $('#intervensi_lain').removeAttr('disabled').focus();
+                }
+            } else if (val === 'Lain-lain' && !$(this).is(':checked')) {
                 $('#intervensi_lain').attr('disabled', 'disabled').val('');
             }
 
@@ -1281,9 +1329,10 @@
             const tanggal = moment().format('DD-MM-YYYY HH:mm:ss');
 
             // Reset tombol cetak ke disabled hingga data terkonfirmasi
-            $('#btnCetakRm20').prop('disabled', true);
-            $('#btnCetakRm23').prop('disabled', true);
-            $('#btnCetakRm24').prop('disabled', true);
+            hasDataRm20 = false;
+            hasDataRm23 = false;
+            hasDataRm24 = false;
+            refreshAllPrintButtons();
 
             // Set RM 20 fields
             $('#rm20_no_rawat').val(no_rawat);
@@ -1333,10 +1382,9 @@
             $.get(`${url}/catatan/pelaksanaan/edukasi/pasien`, { no_rawat: no_rawat }).done((response) => {
                 rawCatatanEdukasiList = response || [];
 
-                const hasRm23 = rawCatatanEdukasiList.some(item => (item.jenis_form || 'RM 23') === 'RM 23');
-                const hasRm24 = rawCatatanEdukasiList.some(item => item.jenis_form === 'RM 24');
-                $('#btnCetakRm23').prop('disabled', !hasRm23);
-                $('#btnCetakRm24').prop('disabled', !hasRm24);
+                hasDataRm23 = rawCatatanEdukasiList.some(item => (item.jenis_form || 'RM 23') === 'RM 23');
+                hasDataRm24 = rawCatatanEdukasiList.some(item => item.jenis_form === 'RM 24');
+                refreshAllPrintButtons();
 
                 displayFilteredTable();
             });
@@ -1523,16 +1571,20 @@
         }
 
         function cetakCatatanEdukasi(tipe) {
-            if (tipe === 'rm20' && $('#btnCetakRm20').is(':disabled')) {
+            if (tipe === 'rm20' && !hasDataRm20) {
                 Swal.fire('Informasi', 'Data Asesmen Kebutuhan Edukasi (RM 20) belum disimpan', 'warning');
                 return;
             }
-            if (tipe === 'rm23' && $('#btnCetakRm23').is(':disabled')) {
+            if (tipe === 'rm23' && !hasDataRm23) {
                 Swal.fire('Informasi', 'Belum ada data Catatan Edukasi RM 23 yang tersimpan', 'warning');
                 return;
             }
-            if (tipe === 'rm24' && $('#btnCetakRm24').is(':disabled')) {
+            if (tipe === 'rm24' && !hasDataRm24) {
                 Swal.fire('Informasi', 'Belum ada data Catatan Edukasi RM 24 yang tersimpan', 'warning');
+                return;
+            }
+            if (tipe === 'bundle' && (!hasDataRm20 && !hasDataRm23 && !hasDataRm24)) {
+                Swal.fire('Informasi', 'Belum ada satupun data edukasi (RM 20, RM 23, atau RM 24) yang tersimpan untuk dicetak bundling.', 'warning');
                 return;
             }
 
@@ -1545,6 +1597,15 @@
             let printUrl = `${url}/catatan/pelaksanaan/edukasi/pasien/print/${tipe}?no_rawat=${cleanNoRawat}`;
             window.open(printUrl, '_blank');
         }
+
+        $('#modalCatatanEdukasiPasien').on('shown.bs.modal', function () {
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('#modalCatatanEdukasiPasien [data-bs-toggle="tooltip"]'));
+                tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return bootstrap.Tooltip.getOrCreateInstance(tooltipTriggerEl);
+                });
+            }
+        });
     </script>
 @endpush
 
