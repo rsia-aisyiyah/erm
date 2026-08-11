@@ -107,7 +107,7 @@
                             </x-input-group>
                         </div>
                         <div class="col-lg-2 col-md-4 text-end">
-                            <button type="button" class="btn btn-outline-success btn-sm w-100 fw-bold" onclick="setDefaultRm20()">
+                            <button type="button" class="btn btn-outline-success btn-sm w-100 fw-bold" onclick="setDefaultRm20(true)">
                                 <i class="bi bi-magic me-1"></i> Set Standar Normal
                             </button>
                         </div>
@@ -981,7 +981,7 @@
             });
         }
 
-        function setDefaultRm20() {
+        function setDefaultRm20(showAlert = false) {
             if (currentPatientData && currentPatientData.pasien) {
                 $('#rm20_agama').val(currentPatientData.pasien.agama || 'Islam');
                 let pnd = currentPatientData.pasien.pnd || 'SMA';
@@ -1009,6 +1009,16 @@
             toggleAllKebutuhan(true);
             $('#rm20_rencana_individu').prop('checked', true);
             renderTableRencanaRm20();
+
+            if (showAlert) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Standar Normal Diterapkan!',
+                    text: 'Formulir RM 20 telah terisi nilai standar normal. Silakan klik tombol "Simpan Asesmen (RM 20)" di bawah untuk menyimpan.',
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+            }
         }
 
         function toggleAllKebutuhan(status) {

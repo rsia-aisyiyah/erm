@@ -80,14 +80,18 @@ class AsesmenKebutuhanEdukasiController extends Controller
 			if ($isExist) {
 				$clause = ['no_rawat' => $data['no_rawat']];
 				$query = $this->asesmen->where($clause)->update($data);
-				if ($query) {
+				try {
 					$this->track->updateSql($this->asesmen, $data, $clause);
+				} catch (\Throwable $t) {
+					// ignore tracker failure
 				}
 				return response()->json('Berhasil memperbarui asesmen kebutuhan edukasi (RM 20)');
 			} else {
 				$query = $this->asesmen->insert($data);
-				if ($query) {
+				try {
 					$this->track->insertSql($this->asesmen, $data);
+				} catch (\Throwable $t) {
+					// ignore tracker failure
 				}
 				return response()->json('Berhasil menyimpan asesmen kebutuhan edukasi (RM 20)');
 			}
