@@ -220,13 +220,42 @@
     </table>
 
     <!-- PERNYATAAN & TTD PASIEN -->
-    <div style="border: 1px solid #000; border-top: none; padding: 4px 6px; font-size: 8.5px; display: flex; justify-content: space-between; align-items: center;">
-        <div style="width: 75%; font-weight: 500;">
-            <em>"Dengan ini menyatakan bahwa saya telah diberikan informasi dan edukasi serta diberi kesempatan untuk bertanya dan berdiskusi."</em>
-        </div>
-        <div style="width: 25%; text-align: right; font-size: 8px;">
-            Paraf Pasien / Keluarga : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
+    @php
+        $lastEduWithTtd = $edukasiList->filter(fn($e) => !empty($e->ttd_pasien))->last() ?? $edukasiList->last();
+        $namaPenerimaFinal = $lastEduWithTtd->nama_penerima ?? ($regPeriksa->p_jawab ?? ($pasien->nm_pasien ?? ''));
+        $ttdPasienFinal = $lastEduWithTtd->ttd_pasien ?? null;
+        $ttdSrcFinal = null;
+        if (!empty($ttdPasienFinal)) {
+            $ttdSrcFinal = $ttdPasienFinal;
+            if (!str_starts_with($ttdSrcFinal, 'data:image')) {
+                $absStorage = storage_path('app/public/' . ltrim($ttdSrcFinal, '/'));
+                $absPublic = public_path('storage/' . ltrim($ttdSrcFinal, '/'));
+                if (file_exists($absStorage)) {
+                    $ttdSrcFinal = $absStorage;
+                } elseif (file_exists($absPublic)) {
+                    $ttdSrcFinal = $absPublic;
+                }
+            }
+        }
+    @endphp
+    <div style="border: 1px solid #000; border-top: none; padding: 4px 8px; font-size: 8.5px;">
+        <table width="100%" class="table-borderless" style="font-size: 8.5px; line-height: 1.2;">
+            <tr>
+                <td width="68%" style="vertical-align: middle;">
+                    <em>"Dengan ini menyatakan bahwa saya telah diberikan informasi dan edukasi serta diberi kesempatan untuk bertanya dan berdiskusi."</em>
+                </td>
+                <td width="32%" style="vertical-align: middle; text-align: center;">
+                    <div style="font-size: 8px; font-weight: bold; margin-bottom: 2px;">Paraf Pasien / Keluarga :</div>
+                    @if ($ttdSrcFinal)
+                        <img src="{{ $ttdSrcFinal }}" height="32" style="max-width: 60px; display: block; margin: 0 auto;" />
+                        <span style="font-size: 8px; font-weight: bold; text-decoration: underline;">( {{ $namaPenerimaFinal }} )</span>
+                    @else
+                        <div style="height: 25px;"></div>
+                        <span style="font-size: 8px;">( {{ $namaPenerimaFinal ? $namaPenerimaFinal : '...................................................' }} )</span>
+                    @endif
+                </td>
+            </tr>
+        </table>
     </div>
 
     <!-- KETERANGAN KODE KELENGKAPAN -->
