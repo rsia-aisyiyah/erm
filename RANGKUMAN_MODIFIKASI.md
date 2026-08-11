@@ -162,49 +162,43 @@ Pembaruan tata letak antarmuka dan alur monitoring untuk pemenuhan standar **Sas
 
 ---
 
-## Modifikasi 4: Standardisasi Pemanggilan Asset Statis & Berkas Storage (*Asset Helper*)
+## Modifikasi 4: Standardisasi Pemanggilan Asset Statis & Router Server Lokal (*Asset Helper*)
 
 ### 1. Deskripsi Perubahan & Tujuan
 Untuk menjaga portabilitas aplikasi saat dijalankan di berbagai environment (misalnya server lokal dengan `php artisan serve`, Apache virtual host, maupun subdirektori `/erm/`), dilakukan migrasi pemanggilan file statis dari jalur *hardcoded* (`/erm/public/...`) menjadi helper standar Laravel `{{ asset(...) }}`:
 - **Logo Aplikasi**: Header navigasi utama disesuaikan agar logo RS selalu muncul konsisten tanpa *broken image*.
 - **Icon & Stylesheet Font**: File stylesheet Bootstrap Icons pada layout `<head>` dimuat menggunakan helper `asset()`.
 - **Preview Berkas Tanda Tangan Digital**: Penanganan URL tanda tangan pasien/keluarga yang tersimpan di disk fisik `storage/app/public/signatures/` dipastikan di-resolve melalui `{{ asset('storage') }}/...`.
+- **Router Interceptor `server.php`**: Penanganan otomatis permintaan file statis ber-prefix `/erm/public/...` dan `/public/...` pada development server `php artisan serve` sehingga aset lokal maupun path produksi dapat disajikan langsung tanpa error 404.
+- **Sanitasi Komponen Input HTML5 (`<x-input>`)**: Menghilangkan error format browser `The specified value "-" does not conform to the required format, "yyyy-MM-dd"` dengan mengatur default value string kosong `""` khusus untuk input berjenis `date`, `time`, `datetime-local`, dan `number`.
 
 ---
 
 ### 2. Daftar Berkas & Rincian Perubahan
-| File | Lokasi / Baris | Rincian Perubahan |
-| :--- | :--- | :--- |
-| `resources/views/index.blade.php` | Tag `<img>` logo navbar | Mengubah `src="/erm/public/img/logo.png"` menjadi `src="{{ asset('img/logo.png') }}"`. |
-| `resources/views/layout/head.blade.php` | Tag `<link>` stylesheet | Mengubah `href='/erm/public/css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css'` menjadi `href="{{ asset('css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css') }}"`. |
-| `resources/views/content/ugd/modal/asmed.blade.php` | JS function `modalAsmedUgd` | Menyesuaikan URL gambar preview TTD pasien agar mengarah ke `{{ asset("storage") }}/...` jika format data bukan base64. |
+| File | Rincian Perubahan |
+| :--- | :--- |
+| `server.php` | Menambahkan regex matcher `/^(\/erm)?\/public/` untuk melayani aset statis langsung saat menggunakan `php artisan serve`. |
+| `resources/views/components/input.blade.php` | Memisahkan default value tipe input `date`/`time` menjadi `""` (bukan `"-"`) agar mematuhi standar HTML5. |
+| `resources/views/index.blade.php` | Mengubah `src="/erm/public/img/logo.png"` menjadi `src="{{ asset('img/logo.png') }}"`. |
+| `resources/views/layout/head.blade.php` | Mengubah `href='/erm/public/css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css'` menjadi `href="{{ asset('css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css') }}"`. |
+| `resources/views/content/ugd/modal/asmed.blade.php` | Menyesuaikan URL preview tanda tangan dan sanitasi input tanggal selesai/meninggal. |
 
 ---
 
-## Modifikasi 5: Pemeriksaan Fisik Status Generalis 13 Organ & Kontrol Visibilitas Tombol Cetak
+## Modifikasi 5: Pemeriksaan Fisik Status Generalis 13 Organ (Grid 2 Kolom Ringkas) & Kontrol Visibilitas Tombol Cetak
 
 ### 1. Deskripsi Perubahan
-- **Tabel 13 Organ Status Generalis**:
-  - Menggantikan tampilan dropdown lama dengan antarmuka tabel 13 organ fisik sesuai formulir akreditasi:
-    1. Kepala
-    2. Mata
-    3. THT *(Organ Baru)*
-    4. Mulut
-    5. Leher
-    6. Jantung *(Organ Baru)*
-    7. Paru-paru *(Organ Baru)*
-    8. Dada & Payudara
-    9. Perut
-    10. Urogenital
-    11. Anggota Gerak
-    12. Status Neurologis *(Organ Baru)*
-    13. Muskuloskeletal *(Organ Baru)*
-  - Setiap baris dilengkapi status `Normal`, `Abnormal`, dan `Tidak Diperiksa`, serta input teks **"Jika tidak normal, jelaskan"** yang otomatis aktif saat status `Abnormal`.
-  - Dilengkapi tombol cepat **"Semua Normal"** untuk efisiensi dokter IGD.
+- **Tabel 13 Organ Status Generalis (Layout 2 Kolom Ringkas)**:
+  - Menggantikan tampilan dropdown lama dengan antarmuka tabel 13 organ fisik yang disusun dalam **Grid 2 Kolom Berdampingan** (hemat 50% ruang vertikal agar tidak memakan space scroll ke bawah):
+    - **Kolom Kiri (7 Organ)**: Kepala, Mata, THT *(Baru)*, Mulut, Leher, Jantung *(Baru)*, Paru-paru *(Baru)*.
+    - **Kolom Kanan (6 Organ)**: Dada & Payudara, Perut, Urogenital, Anggota Gerak, Status Neurologis *(Baru)*, Muskuloskeletal *(Baru)*.
+  - Setiap baris dilengkapi pilihan status `Normal`, `Abnormal`, dan `Tidak Diperiksa`.
+  - Kolom teks **"Jika tidak normal, jelaskan"** otomatis nonaktif saat status `Normal` dan otomatis aktif + disorot warna kuning saat status `Abnormal`.
+  - Dilengkapi tombol cepat **"Set Semua Normal"** di pojok kanan atas tabel untuk mempercepat waktu entri dokter IGD.
 - **Kontrol Visibilitas Tombol Cetak**:
   - Tombol **"Cetak Asesmen"** disembunyikan (`d-none`) saat dokter membuka formulir untuk entri baru, dan baru dimunculkan jika data asesmen sudah pernah disimpan/sudah ada di database.
 - **Sinkronisasi Otomatis Triage/Perawat**:
-  - Saat membuka entri baru, sistem secara otomatis menarik data TTV dan Keluhan Utama awal dari `pemeriksaan_ralan`.
+  - Saat membuka form entri baru, data TTV (Tensi, Nadi, RR, Suhu, SpO2, BB, TB, GCS, Kesadaran) dan Keluhan Utama ditarik otomatis dari `pemeriksaan_ralan`.
 - **Integrasi Cetak PDF**:
   - Format cetak asesmen medis IGD (A4) diperbarui dengan menyertakan tabel 13 organ fisik secara rapi dan profesional.
 
@@ -213,9 +207,10 @@ Untuk menjaga portabilitas aplikasi saat dijalankan di berbagai environment (mis
 ### 2. Daftar Berkas yang Dimodifikasi
 | File | Rincian Perubahan |
 | :--- | :--- |
-| `app/Models/AsesmenMedisIgdController.php` | Mapping 18 field baru pada `$rsiaFields` (`tht`, `jantung`, `paru`, `neurologis`, `muskuloskeletal`, dan 13 kolom `ket_*`) serta sinkronisasi ringkasan `ket_fisik` otomatis. |
-| `resources/views/content/ugd/modal/asmed.blade.php` | Implementasi tabel UI 13 organ fisik, event handler status/keterangan, tombol cepat semua normal, sembunyikan tombol cetak pada entri baru, dan auto pre-fill pemeriksaan awal. |
+| `app/Models/AsesmenMedisIgdController.php` | Mapping 18 field baru pada `$rsiaFields` (`tht`, `jantung`, `paru`, `neurologis`, `muskuloskeletal`, dan 13 kolom `ket_*`) serta sinkronisasi ringkasan `ket_fisik` otomatis untuk backward-compatibility Khanza. |
+| `resources/views/content/ugd/modal/asmed.blade.php` | Implementasi layout tabel 2 kolom 13 organ fisik, event handler status/keterangan, tombol cepat semua normal, visibilitas tombol cetak berbasis status data, dan auto pre-fill pemeriksaan awal. |
 | `resources/views/content/print/asmed_igd.blade.php` | Menambahkan tabel 13 organ status generalis pada cetakan PDF Asesmen IGD. |
+
 
 
 
