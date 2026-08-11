@@ -382,6 +382,10 @@ Route::middleware('auth')->group(function () {
 	Route::post('resume/ranap/insert', [ResumePasienRanapController::class, 'insert']);
 	Route::post('resume/ranap/edit', [ResumePasienRanapController::class, 'edit']);
 
+	Route::get('asesmen/kebutuhan/edukasi', [\App\Http\Controllers\AsesmenKebutuhanEdukasiController::class, 'get']);
+	Route::post('asesmen/kebutuhan/edukasi', [\App\Http\Controllers\AsesmenKebutuhanEdukasiController::class, 'create']);
+	Route::get('catatan/pelaksanaan/edukasi/pasien/print/rm20', [\App\Http\Controllers\AsesmenKebutuhanEdukasiController::class, 'printRm20']);
+
 	Route::get('catatan/pelaksanaan/edukasi/pasien', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'get']);
 	Route::post('catatan/pelaksanaan/edukasi/pasien', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'create']);
 	Route::post('catatan/pelaksanaan/edukasi/pasien/delete', [\App\Http\Controllers\CatatanPelaksanaanEdukasiPasienController::class, 'delete']);

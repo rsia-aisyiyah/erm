@@ -95,25 +95,27 @@ CREATE TABLE `rsia_penilaian_medis_igd` (
 
 ---
 
-## Modifikasi 2: Catatan Pelaksanaan Edukasi Pasien & Multidisiplin (RM 23 & RM 24)
+## Modifikasi 2: Paket Edukasi Pasien & Keluarga Rawat Inap (RM 20, RM 23 & RM 24)
 
 ### 1. Deskripsi Perubahan
-Pembaruan menyeluruh pada modul **Catatan Pelaksanaan Edukasi Pasien** untuk mengakomodasi standar Akreditasi Rumah Sakit (Pokja KE / HPK):
+Pembaruan menyeluruh pada modul **Edukasi Pasien & Keluarga Rawat Inap** untuk mengakomodasi 1 paket lengkap standar Akreditasi Rumah Sakit (Pokja KE / HPK):
+- **Form RM 20 (Assesmen Kebutuhan dan Perencanaan Pendidikan Pasien & Keluarga)**:
+  - **Bagian A (Pengkajian Kebutuhan)**: Agama & keyakinan, bahasa sehari-hari (Indo/Daerah/Inggris/Lainnya - Aktif/Pasif), kebutuhan penerjemah, bahasa isyarat, cara belajar yang disukai, tingkat pendidikan, kemampuan membaca, hambatan emosi, kesediaan menerima info, keterbatasan fisik/kognitif, dan 11 poin kebutuhan pendidikan.
+  - **Bagian B (Perencanaan Edukasi)**: Rencana individu/kolaboratif, tabel terstruktur 10 topik kebutuhan edukasi lengkap dengan PPA penanggung jawab, sasaran (P/K/P&K), cara edukasi (D/C/Demo/S/O/PL), dan metode evaluasi pemahaman.
+  - **Fitur Cerdas**: Tombol *"Set Standar Normal"* untuk auto-fill cepat dan efisien.
 - **Form RM 23 (Edukasi Multidisiplin PPA)**:
   - Pembagian profesi: **DPJP (Dokter Spesialis)**, **Farmasi**, **Perawat / Bidan**, **Nutrisionis (Gizi)**, dan **Manajemen Nyeri**.
-  - Pilihan checklist poin-poin materi resmi standar akreditasi untuk masing-masing profesi.
-  - Kolom ketikan materi tambahan jika ada poin edukasi khusus.
+  - Pilihan checklist poin-poin materi standar akreditasi + opsi *"Lain-lain (Catatan Tambahan)"*.
 - **Form RM 24 (Edukasi Pasien Terbuka)**:
   - Form edukasi dengan kolom materi berupa teks bebas (*free text*) untuk mencatat topik edukasi tindakan/penyakit spesifik.
 - **Parameter Bersama**:
   - Tanggal & waktu edukasi beserta durasi (misal: "10 Menit").
   - Pilihan **Metode Pembelajaran** (*Multiple Check*: Diskusi / Wawancara, Simulasi, Demonstrasi, Ceramah, Observasi, Praktek Langsung).
   - **Hambatan Edukasi & Intervensi** (*Multiple Check* dengan interaktivitas cerdas: opsi "Tidak Ada" otomatis eksklusif, serta opsi "Lain-lain" otomatis membuka input teks keterangan).
-  - **Materi RM 23 Fleksibel (Checklist + Free-Text "Lain-lain")**: Dilengkapi opsi checklist *"Lain-lain (Catatan Tambahan)"* yang otomatis mengaktifkan textarea materi tambahan, serta tercetak rapi di PDF RM 23 dengan label *"Catatan: [isi materi]"*.
-  - Evaluasi pemahaman pasien (*Tidak mengerti, Mengerti tidak mampu, Mengerti & mampu*).
   - **Tanda Tangan Digital Pasien/Keluarga** berbasis Canvas Touch/Stylus/Mouse dengan penyimpanan file fisik PNG di `storage/app/public/signatures/catatan_edukasi_pasien/`.
   - **Barcode QR Code Edukator** otomatis ter-generate berdasarkan akun login petugas/dokter.
-- **Dua Template Cetak PDF Resmi**:
+- **Tiga Template Cetak PDF Resmi**:
+  - Cetak Form **RM 20** (*Assesmen Kebutuhan dan Perencanaan Pendidikan Pasien dan Keluarga Rawat Inap*).
   - Cetak Form **RM 23** (*Catatan Pelaksanaan Pendidikan Pasien dan Keluarga dari Multi Disiplin*).
   - Cetak Form **RM 24** (*Catatan Pelaksanaan Edukasi Kepada Pasien*).
 
@@ -121,7 +123,41 @@ Pembaruan menyeluruh pada modul **Catatan Pelaksanaan Edukasi Pasien** untuk men
 
 ### 2. Struktur Basis Data (MySQL)
 
-#### Perubahan Kolom Tabel: `rsia_catatan_pelaksanaan_edukasi_pasien`
+#### A. Tabel Baru: `rsia_asesmen_kebutuhan_edukasi` (RM 20)
+```sql
+CREATE TABLE `rsia_asesmen_kebutuhan_edukasi` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `ruang` varchar(50) DEFAULT NULL,
+  `nip` varchar(20) NOT NULL,
+  `agama_keyakinan` varchar(100) DEFAULT NULL,
+  `bahasa_indonesia` enum('-','Aktif','Pasif') DEFAULT 'Aktif',
+  `bahasa_daerah` varchar(50) DEFAULT 'Jawa',
+  `bahasa_daerah_status` enum('-','Aktif','Pasif') DEFAULT 'Aktif',
+  `bahasa_inggris` enum('-','Aktif','Pasif') DEFAULT '-',
+  `bahasa_lain` varchar(50) DEFAULT NULL,
+  `bahasa_lain_status` enum('-','Aktif','Pasif') DEFAULT '-',
+  `perlu_penerjemah` enum('Tidak','Ya') DEFAULT 'Tidak',
+  `penerjemah_bahasa` varchar(50) DEFAULT NULL,
+  `bahasa_isyarat` enum('Tidak','Ya') DEFAULT 'Tidak',
+  `bahasa_isyarat_ket` varchar(50) DEFAULT NULL,
+  `cara_belajar` varchar(255) DEFAULT 'Diskusi, Audio visual/gambar',
+  `tingkat_pendidikan` varchar(50) DEFAULT NULL,
+  `pendidikan_lain` varchar(50) DEFAULT NULL,
+  `mampu_membaca` enum('Ya','Tidak') DEFAULT 'Ya',
+  `hambatan_emosi` enum('Tidak','Ya') DEFAULT 'Tidak',
+  `kesediaan_menerima` enum('Ya','Tidak') DEFAULT 'Ya',
+  `keterbatasan_fisik` enum('Tidak','Ya') DEFAULT 'Tidak',
+  `kebutuhan_edukasi` text DEFAULT NULL,
+  `kebutuhan_edukasi_lain` varchar(255) DEFAULT NULL,
+  `rencana_pelaksanaan` enum('Individu','Kolaboratif') DEFAULT 'Individu',
+  `tabel_rencana` json DEFAULT NULL,
+  PRIMARY KEY (`no_rawat`),
+  KEY `nip` (`nip`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+#### B. Perubahan Kolom Tabel: `rsia_catatan_pelaksanaan_edukasi_pasien` (RM 23 & 24)
 ```sql
 ALTER TABLE `rsia_catatan_pelaksanaan_edukasi_pasien`
   ADD COLUMN `jenis_form` ENUM('RM 23', 'RM 24') NOT NULL DEFAULT 'RM 23' AFTER `no_rawat`,
@@ -142,14 +178,18 @@ ALTER TABLE `rsia_catatan_pelaksanaan_edukasi_pasien`
 #### A. Berkas Baru (*New Files*)
 | File | Fungsi |
 | :--- | :--- |
+| `app/Models/AsesmenKebutuhanEdukasi.php` | Model Eloquent untuk tabel `rsia_asesmen_kebutuhan_edukasi` (RM 20). |
+| `app/Http/Controllers/AsesmenKebutuhanEdukasiController.php` | Controller API simpan/update dan render cetak PDF Form RM 20. |
+| `resources/views/content/print/catatan_edukasi_rm20.blade.php` | Template cetak PDF resmi Form RM 20 (Pengkajian & Perencanaan Edukasi). |
 | `resources/views/content/print/catatan_edukasi_rm23.blade.php` | Template cetak PDF resmi Form RM 23 (Edukasi Multidisiplin 5 PPA). |
 | `resources/views/content/print/catatan_edukasi_rm24.blade.php` | Template cetak PDF resmi Form RM 24 (Tabel baris edukasi pasien umum). |
 
 #### B. Berkas Dimodifikasi (*Modified Files*)
 | File | Rincian Perubahan |
 | :--- | :--- |
+| `routes/web.php` | Pendaftaran route `asesmen/kebutuhan/edukasi` dan `catatan/pelaksanaan/edukasi/pasien/print/rm20`. |
 | `app/Http/Controllers/CatatanPelaksanaanEdukasiPasienController.php` | Normalisasi array checkbox (`implode(', ', ...)`) pada `create` & `update` untuk field `metode`, `hambatan`, dan `intervensi`. |
-| `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Tab navigasi RM 23 vs RM 24.<br>2. Checklist materi otomatis berdasarkan profesi beserta tombol pintas **"Centang Semua"** dan opsi **"Lain-lain"**.<br>3. Checkbox multiple-selection untuk Metode, Hambatan, dan Intervensi dengan logika eksklusif "Tidak Ada".<br>4. Canvas tanda tangan pasien/keluarga.<br>5. Tombol Cetak RM 23 dan Cetak RM 24 di footer modal. |
+| `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Navigasi 3 Tab terpadu: **RM 20, RM 23, dan RM 24**.<br>2. Form interaktif RM 20 (Pengkajian & Rencana Edukasi) dengan tombol cepat *"Set Standar Normal"*.<br>3. Form RM 23 & 24 dengan multiple check metode/hambatan/intervensi dan TTD canvas.<br>4. Tombol Cetak RM 20, Cetak RM 23, dan Cetak RM 24 di footer modal. |
 | `resources/views/content/print/catatan_edukasi_rm23.blade.php` | Menampilkan seluruh pilihan metode, hambatan, intervensi, checklist materi standar, baris *Catatan: ...* free-text, serta otomatisasi bukti paraf TTD digital dan nama penerima di kotak pernyataan. |
 | `resources/views/content/print/catatan_edukasi_rm24.blade.php` | Menampilkan baris edukasi pasien dengan seluruh pilihan metode, hambatan, intervensi, serta otomatisasi bukti paraf TTD digital dan nama penerima di kotak pernyataan. |
 

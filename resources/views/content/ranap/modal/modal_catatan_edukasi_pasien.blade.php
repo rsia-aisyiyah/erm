@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white py-2">
-                <h5 class="modal-title fs-6 fw-bold" id="exampleModalLabel"><i class="bi bi-journal-bookmark me-1"></i> Catatan Pelaksanaan Edukasi Pasien (RM 23 &amp; RM 24)</h5>
+                <h5 class="modal-title fs-6 fw-bold" id="exampleModalLabel"><i class="bi bi-journal-bookmark me-1"></i> Edukasi Pasien &amp; Keluarga Rawat Inap (RM 20, RM 23 &amp; RM 24)</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-3">
@@ -61,10 +61,15 @@
                     </div>
                 </form>
 
-                <!-- NAV TABS RM 23 & RM 24 -->
+                <!-- NAV TABS RM 20, RM 23 & RM 24 -->
                 <ul class="nav nav-pills mb-2" id="tabEdukasi" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active fw-bold py-1 px-3" id="tab-rm23-tab" data-bs-toggle="pill" data-bs-target="#tab-rm23" type="button" role="tab" onclick="switchFormJenis('RM 23')">
+                        <button class="nav-link active fw-bold py-1 px-3" id="tab-rm20-tab" data-bs-toggle="pill" data-bs-target="#tab-rm20" type="button" role="tab" onclick="switchFormJenis('RM 20')">
+                            <i class="bi bi-clipboard2-pulse me-1"></i> Form RM 20 (Assesmen &amp; Rencana Edukasi)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold py-1 px-3" id="tab-rm23-tab" data-bs-toggle="pill" data-bs-target="#tab-rm23" type="button" role="tab" onclick="switchFormJenis('RM 23')">
                             <i class="bi bi-people-fill me-1"></i> Form RM 23 (Edukasi Multidisiplin PPA)
                         </button>
                     </li>
@@ -75,8 +80,273 @@
                     </li>
                 </ul>
 
-                <!-- FORM CATATAN EDUKASI -->
-                <form id="formCatatanEdukasiPasien" class="border p-3 rounded bg-white shadow-sm mb-3">
+                <!-- FORM ASESMEN KEBUTUHAN EDUKASI RM 20 -->
+                <form id="formAsesmenEdukasiRm20" class="border p-3 rounded bg-white shadow-sm mb-3">
+                    @csrf
+                    <input type="hidden" name="no_rawat" id="rm20_no_rawat" />
+                    
+                    <!-- BARIS KONTROL ATAS: TANGGAL, RUANG, PETUGAS & TOMBOL CEPAT -->
+                    <div class="row gy-2 mb-2 p-2 bg-light rounded border">
+                        <div class="col-lg-3 col-md-6">
+                            <x-input-group class="input-group-sm">
+                                <x-input-group-text for="rm20_tanggal" label="Tgl / Jam Asesmen" />
+                                <x-input id="rm20_tanggal" name="tanggal" class="datetimepicker" />
+                            </x-input-group>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <x-input-group class="input-group-sm">
+                                <x-input-group-text for="rm20_ruang" label="Ruang / Kamar" />
+                                <x-input id="rm20_ruang" name="ruang" />
+                            </x-input-group>
+                        </div>
+                        <div class="col-lg-4 col-md-8">
+                            <x-input-group class="input-group-sm">
+                                <x-input-group-text for="rm20_nip" label="Perawat / Pengkaji" />
+                                <x-input id="rm20_nip" name="nip" readonly />
+                                <x-input id="rm20_nama" name="nama" class="w-50" readonly />
+                            </x-input-group>
+                        </div>
+                        <div class="col-lg-2 col-md-4 text-end">
+                            <button type="button" class="btn btn-outline-success btn-sm w-100 fw-bold" onclick="setDefaultRm20()">
+                                <i class="bi bi-magic me-1"></i> Set Standar Normal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- BAGIAN A: PENGKAJIAN KEBUTUHAN PENDIDIKAN -->
+                    <div class="p-2 border rounded bg-light mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2 pb-1 border-bottom">
+                            <span class="fw-bold text-primary fs-6"><i class="bi bi-card-checklist me-1"></i> A. PENGKAJIAN KEBUTUHAN PENDIDIKAN</span>
+                        </div>
+
+                        <div class="row gy-2">
+                            <!-- 1. Agama -->
+                            <div class="col-lg-4 col-md-6">
+                                <label class="form-label small fw-bold mb-1">1. Agama &amp; Keyakinan :</label>
+                                <input type="text" class="form-control form-control-sm" name="agama_keyakinan" id="rm20_agama" placeholder="Agama pasien..." />
+                            </div>
+
+                            <!-- 2. Bahasa Sehari-hari -->
+                            <div class="col-lg-8 col-md-6">
+                                <label class="form-label small fw-bold mb-1">2. Bahasa Sehari-hari :</label>
+                                <div class="row g-1">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text py-0" style="font-size: 11px;">Indo</span>
+                                            <select class="form-select form-select-sm py-0" name="bahasa_indonesia" id="rm20_bahasa_indonesia">
+                                                <option value="Aktif" selected>Aktif</option>
+                                                <option value="Pasif">Pasif</option>
+                                                <option value="-">-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control form-control-sm py-0" name="bahasa_daerah" id="rm20_bahasa_daerah" value="Jawa" placeholder="Daerah..." />
+                                            <select class="form-select form-select-sm py-0" name="bahasa_daerah_status" id="rm20_bahasa_daerah_status">
+                                                <option value="Aktif" selected>Aktif</option>
+                                                <option value="Pasif">Pasif</option>
+                                                <option value="-">-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text py-0" style="font-size: 11px;">Inggris</span>
+                                            <select class="form-select form-select-sm py-0" name="bahasa_inggris" id="rm20_bahasa_inggris">
+                                                <option value="-" selected>-</option>
+                                                <option value="Aktif">Aktif</option>
+                                                <option value="Pasif">Pasif</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control form-control-sm py-0" name="bahasa_lain" id="rm20_bahasa_lain" placeholder="Lain..." />
+                                            <select class="form-select form-select-sm py-0" name="bahasa_lain_status" id="rm20_bahasa_lain_status">
+                                                <option value="-" selected>-</option>
+                                                <option value="Aktif">Aktif</option>
+                                                <option value="Pasif">Pasif</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. Penerjemah & 4. Bahasa Isyarat -->
+                            <div class="col-lg-6 col-md-6">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold mb-1">3. Perlu Penerjemah :</label>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="form-check form-check-inline m-0">
+                                                <input class="form-check-input" type="radio" name="perlu_penerjemah" id="rm20_penerjemah_tidak" value="Tidak" checked>
+                                                <label class="form-check-label small" for="rm20_penerjemah_tidak">Tidak</label>
+                                            </div>
+                                            <div class="form-check form-check-inline m-0">
+                                                <input class="form-check-input" type="radio" name="perlu_penerjemah" id="rm20_penerjemah_ya" value="Ya">
+                                                <label class="form-check-label small" for="rm20_penerjemah_ya">Ya</label>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm py-0" name="penerjemah_bahasa" id="rm20_penerjemah_bahasa" placeholder="Bahasa..." disabled style="height: 28px;" />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold mb-1">4. Bahasa Isyarat :</label>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="form-check form-check-inline m-0">
+                                                <input class="form-check-input" type="radio" name="bahasa_isyarat" id="rm20_isyarat_tidak" value="Tidak" checked>
+                                                <label class="form-check-label small" for="rm20_isyarat_tidak">Tidak</label>
+                                            </div>
+                                            <div class="form-check form-check-inline m-0">
+                                                <input class="form-check-input" type="radio" name="bahasa_isyarat" id="rm20_isyarat_ya" value="Ya">
+                                                <label class="form-check-label small" for="rm20_isyarat_ya">Ya</label>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm py-0" name="bahasa_isyarat_ket" id="rm20_isyarat_ket" placeholder="Keterangan..." disabled style="height: 28px;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 5. Cara Belajar yang Disukai -->
+                            <div class="col-lg-6 col-md-6">
+                                <label class="form-label small fw-bold mb-1">5. Cara Belajar yang Disukai :</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-sm">
+                                        <input class="form-check-input rm20-cara" type="checkbox" name="cara_belajar[]" id="rm20_cara_baca" value="Membaca">
+                                        <label class="form-check-label small" for="rm20_cara_baca">Membaca</label>
+                                    </div>
+                                    <div class="form-check form-check-sm">
+                                        <input class="form-check-input rm20-cara" type="checkbox" name="cara_belajar[]" id="rm20_cara_diskusi" value="Diskusi" checked>
+                                        <label class="form-check-label small" for="rm20_cara_diskusi">Diskusi</label>
+                                    </div>
+                                    <div class="form-check form-check-sm">
+                                        <input class="form-check-input rm20-cara" type="checkbox" name="cara_belajar[]" id="rm20_cara_audio" value="Audio visual / gambar" checked>
+                                        <label class="form-check-label small" for="rm20_cara_audio">Audio visual / gambar</label>
+                                    </div>
+                                    <div class="form-check form-check-sm">
+                                        <input class="form-check-input rm20-cara" type="checkbox" name="cara_belajar[]" id="rm20_cara_tulis" value="Menulis">
+                                        <label class="form-check-label small" for="rm20_cara_tulis">Menulis</label>
+                                    </div>
+                                    <div class="form-check form-check-sm">
+                                        <input class="form-check-input rm20-cara" type="checkbox" name="cara_belajar[]" id="rm20_cara_demo" value="Demonstrasi">
+                                        <label class="form-check-label small" for="rm20_cara_demo">Demonstrasi</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 6. Tingkat Pendidikan & 7-10. Parameter Psikologis -->
+                            <div class="col-lg-6 col-md-12">
+                                <label class="form-label small fw-bold mb-1">6. Tingkat Pendidikan Pasien :</label>
+                                <div class="d-flex flex-wrap gap-2 mb-2">
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="tingkat_pendidikan" id="rm20_pnd_tk" value="TK"><label class="form-check-label small" for="rm20_pnd_tk">TK</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="tingkat_pendidikan" id="rm20_pnd_sd" value="SD"><label class="form-check-label small" for="rm20_pnd_sd">SD</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="tingkat_pendidikan" id="rm20_pnd_smp" value="SMP"><label class="form-check-label small" for="rm20_pnd_smp">SMP</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="tingkat_pendidikan" id="rm20_pnd_sma" value="SMA" checked><label class="form-check-label small" for="rm20_pnd_sma">SMA</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="tingkat_pendidikan" id="rm20_pnd_akademi" value="Akademi"><label class="form-check-label small" for="rm20_pnd_akademi">Akademi</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="tingkat_pendidikan" id="rm20_pnd_sarjana" value="Sarjana"><label class="form-check-label small" for="rm20_pnd_sarjana">Sarjana</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="tingkat_pendidikan" id="rm20_pnd_lainnya" value="Lainnya"><label class="form-check-label small" for="rm20_pnd_lainnya">Lainnya</label></div>
+                                </div>
+
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold mb-1">7. Mampu Membaca :</label>
+                                        <select class="form-select form-select-sm" name="mampu_membaca" id="rm20_mampu_membaca">
+                                            <option value="Ya" selected>Ya</option>
+                                            <option value="Tidak">Tidak</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold mb-1">8. Hambatan Emosi :</label>
+                                        <select class="form-select form-select-sm" name="hambatan_emosi" id="rm20_hambatan_emosi">
+                                            <option value="Tidak" selected>Tidak</option>
+                                            <option value="Ya">Ya</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold mb-1">9. Kesediaan Terima Info :</label>
+                                        <select class="form-select form-select-sm" name="kesediaan_menerima" id="rm20_kesediaan_menerima">
+                                            <option value="Ya" selected>Ya</option>
+                                            <option value="Tidak">Tidak</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold mb-1">10. Keterbatasan Fisik/Kognitif :</label>
+                                        <select class="form-select form-select-sm" name="keterbatasan_fisik" id="rm20_keterbatasan_fisik">
+                                            <option value="Tidak" selected>Tidak</option>
+                                            <option value="Ya">Ya</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 11. Kebutuhan Pendidikan (11 Poin) -->
+                            <div class="col-lg-6 col-md-12">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label class="form-label small fw-bold mb-0">11. Kebutuhan Pendidikan yang Diperlukan :</label>
+                                    <button type="button" class="btn btn-link btn-sm py-0 text-decoration-none fw-bold" onclick="toggleAllKebutuhan(true)">Pilih Semua</button>
+                                </div>
+                                <div class="p-2 border rounded bg-white" style="max-height: 180px; overflow-y: auto;">
+                                    <div class="row g-1">
+                                        <div class="col-12"><div class="form-check form-check-sm"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_1" value="Hak dan kewajiban pasien" checked><label class="form-check-label small" for="rm20_keb_1">Hak dan kewajiban pasien</label></div></div>
+                                        <div class="col-12"><div class="form-check form-check-sm"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_2" value="Orientasi ruangan" checked><label class="form-check-label small" for="rm20_keb_2">Orientasi ruangan</label></div></div>
+                                        <div class="col-12"><div class="form-check form-check-sm"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_3" value="Kondisi medis, diagnosis pasti, asuhan & pengobatan" checked><label class="form-check-label small" for="rm20_keb_3">Kondisi medis, diagnosis pasti, asuhan & pengobatan</label></div></div>
+                                        <div class="col-12"><div class="form-check form-check-sm"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_4" value="Penggunaan obat yang efektif dan aman (potensi efek samping dan interaksi)" checked><label class="form-check-label small" for="rm20_keb_4">Penggunaan obat yang efektif &amp; aman</label></div></div>
+                                        <div class="col-12"><div class="form-check form-check-sm"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_5" value="Penggunaan peralatan medis yang efektif dan aman" checked><label class="form-check-label small" for="rm20_keb_5">Penggunaan peralatan medis yang efektif dan aman</label></div></div>
+                                        <div class="col-12"><div class="form-check form-check-sm"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_6" value="Diet dan nutrisi" checked><label class="form-check-label small" for="rm20_keb_6">Diet dan nutrisi</label></div></div>
+                                        <div class="col-12"><div class="form-check form-check-sm"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_7" value="Rehabilitasi medik" checked><label class="form-check-label small" for="rm20_keb_7">Rehabilitasi medik</label></div></div>
+                                        <div class="col-12"><div class="form-check form-check-sm"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_8" value="Manajemen nyeri" checked><label class="form-check-label small" for="rm20_keb_8">Manajemen nyeri</label></div></div>
+                                        <div class="col-12"><div class="form-check form-check-sm"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_9" value="Pencegahan dan pengendalian infeksi" checked><label class="form-check-label small" for="rm20_keb_9">Pencegahan dan pengendalian infeksi</label></div></div>
+                                        <div class="col-12"><div class="form-check form-check-sm"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_10" value="Pemenuhan kebutuhan kesehatan berkelanjutan" checked><label class="form-check-label small" for="rm20_keb_10">Pemenuhan kebutuhan kesehatan berkelanjutan</label></div></div>
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="form-check form-check-sm mb-0"><input class="form-check-input rm20-kebutuhan" type="checkbox" name="kebutuhan_edukasi[]" id="rm20_keb_11" value="Lain-lain"><label class="form-check-label small" for="rm20_keb_11">Lain-lain</label></div>
+                                                <input type="text" class="form-control form-control-sm py-0" name="kebutuhan_edukasi_lain" id="rm20_kebutuhan_edukasi_lain" placeholder="Sebutkan..." disabled style="height: 26px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BAGIAN B: PERENCANAAN PEMBERIAN EDUKASI -->
+                    <div class="p-2 border rounded bg-light mb-2">
+                        <div class="d-flex justify-content-between align-items-center mb-2 pb-1 border-bottom">
+                            <span class="fw-bold text-success fs-6"><i class="bi bi-calendar-check me-1"></i> B. PERENCANAAN PEMBERIAN EDUKASI</span>
+                            <div>
+                                <span class="small fw-bold me-2">Rencana Pelaksanaan :</span>
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="rencana_pelaksanaan" id="rm20_rencana_individu" value="Individu" checked>
+                                    <label class="form-check-label small" for="rm20_rencana_individu">Individu</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="rencana_pelaksanaan" id="rm20_rencana_kolaboratif" value="Kolaboratif">
+                                    <label class="form-check-label small" for="rm20_rencana_kolaboratif">Kolaboratif</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 260px; overflow-y: auto;">
+                            <table class="table table-bordered table-sm table-hover bg-white mb-0" id="tableRencanaRm20" style="font-size: 11px;">
+                                <thead class="table-secondary text-center sticky-top">
+                                    <tr>
+                                        <th width="32%">Kebutuhan Edukasi</th>
+                                        <th width="18%">Pemberian Edukasi (PPA)</th>
+                                        <th width="15%">Sasaran</th>
+                                        <th width="18%">Cara Edukasi</th>
+                                        <th width="17%">Metode Evaluasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Injected dynamically based on checklist kebutuhan -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- FORM CATATAN EDUKASI (RM 23 & RM 24) -->
+                <form id="formCatatanEdukasiPasien" class="border p-3 rounded bg-white shadow-sm mb-3" style="display: none;">
                     <input type="hidden" name="jenis_form" id="jenis_form" value="RM 23" />
                     <input type="hidden" name="ttd_pasien" id="edukasi_ttd_pasien" value="" />
 
@@ -390,9 +660,12 @@
                 </div>
             </div>
 
-            <!-- MODAL FOOTER DENGAN TOMBOL CETAK RM 23 & RM 24 -->
+            <!-- MODAL FOOTER DENGAN TOMBOL CETAK RM 20, RM 23 & RM 24 -->
             <div class="modal-footer d-flex justify-content-between">
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 flex-wrap">
+                    <button type="button" class="btn btn-success btn-sm fw-bold" onclick="cetakCatatanEdukasi('rm20')">
+                        <i class="bi bi-printer-fill me-1"></i> Cetak RM 20 (Assesmen &amp; Rencana)
+                    </button>
                     <button type="button" class="btn btn-warning btn-sm fw-bold" onclick="cetakCatatanEdukasi('rm23')">
                         <i class="bi bi-printer-fill me-1"></i> Cetak RM 23 (Multidisiplin)
                     </button>
@@ -401,8 +674,8 @@
                     </button>
                 </div>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-primary btn-sm fw-bold" onclick="simpanCatatanEdukasi()">
-                        <i class="bi bi-save me-1"></i> Simpan Catatan Edukasi
+                    <button type="button" class="btn btn-primary btn-sm fw-bold" id="btnSimpanCatatanEdukasi" onclick="handleSimpanEdukasi()">
+                        <i class="bi bi-save me-1"></i> Simpan Asesmen (RM 20)
                     </button>
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle me-1"></i> Keluar
@@ -441,6 +714,7 @@
 @push('script')
     <script>
         const modalCatatanEdukasiPasien = $('#modalCatatanEdukasiPasien');
+        const formAsesmenEdukasiRm20 = $('#formAsesmenEdukasiRm20');
         const formCatatanEdukasiPasien = $('#formCatatanEdukasiPasien');
         const formPasienCatatanEdukasi = $('#formPasienCatatanEdukasi');
         const tableCatatanEdukasiPasien = $('#tableCatatanEdukasiPasien');
@@ -448,6 +722,23 @@
 
         let rawCatatanEdukasiList = [];
         let activeFilterJenis = 'Semua';
+        let activeFormJenis = 'RM 20';
+        let currentPatientData = null;
+
+        // Master Topik Rencana RM 20
+        const masterTopikRm20 = [
+            { key: 'hak_kewajiban', label: 'Hak dan kewajiban pasien', ppa: 'Perawat / Bidan', sasaran: 'Keluarga (K)', cara: 'Diskusi (D)', evaluasi: 'Mampu menjelaskan' },
+            { key: 'orientasi', label: 'Orientasi ruangan', ppa: 'Perawat / Bidan', sasaran: 'Keluarga (K)', cara: 'Demonstrasi (Demo)', evaluasi: 'Mampu mendemonstrasikan' },
+            { key: 'kondisi_medis', label: 'Kondisi medis, diagnosis pasti, asuhan & pengobatan', ppa: 'Dokter (DPJP)', sasaran: 'Pasien & Keluarga (P&K)', cara: 'Diskusi (D)', evaluasi: 'Mampu menjelaskan' },
+            { key: 'penggunaan_obat', label: 'Penggunaan obat yang efektif dan aman', ppa: 'Farmasi / Apoteker', sasaran: 'Pasien & Keluarga (P&K)', cara: 'Diskusi (D)', evaluasi: 'Mampu menjelaskan' },
+            { key: 'peralatan_medis', label: 'Penggunaan peralatan medis yang efektif dan aman', ppa: 'Perawat / Bidan', sasaran: 'Keluarga (K)', cara: 'Demonstrasi (Demo)', evaluasi: 'Mampu mendemonstrasikan' },
+            { key: 'diet_nutrisi', label: 'Diet dan nutrisi', ppa: 'Nutrisionis / Gizi', sasaran: 'Keluarga (K)', cara: 'Diskusi (D)', evaluasi: 'Mampu menjelaskan' },
+            { key: 'rehabilitasi', label: 'Rehabilitasi medik', ppa: 'Fisioterapis / Dokter', sasaran: 'Pasien & Keluarga (P&K)', cara: 'Demonstrasi (Demo)', evaluasi: 'Mampu mendemonstrasikan' },
+            { key: 'manajemen_nyeri', label: 'Manajemen nyeri', ppa: 'Perawat / Tim Nyeri', sasaran: 'Pasien & Keluarga (P&K)', cara: 'Demonstrasi (Demo)', evaluasi: 'Mampu mendemonstrasikan' },
+            { key: 'pencegahan_infeksi', label: 'Pencegahan dan pengendalian infeksi', ppa: 'Perawat / Bidan', sasaran: 'Keluarga (K)', cara: 'Demonstrasi (Demo)', evaluasi: 'Mampu mendemonstrasikan' },
+            { key: 'kesehatan_berkelanjutan', label: 'Pemenuhan kebutuhan kesehatan berkelanjutan', ppa: 'Perawat / Bidan', sasaran: 'Keluarga (K)', cara: 'Diskusi (D)', evaluasi: 'Mampu menjelaskan' },
+            { key: 'lain_lain', label: 'Lain-lain', ppa: 'Perawat / Bidan', sasaran: 'Keluarga (K)', cara: 'Diskusi (D)', evaluasi: 'Mampu menjelaskan' }
+        ];
 
         // Master Checklist RM 23 Berdasarkan Disiplin
         const masterChecklistRm23 = {
@@ -593,17 +884,296 @@
         }
 
         function switchFormJenis(jenis) {
+            activeFormJenis = jenis;
             $('#jenis_form').val(jenis);
-            if (jenis === 'RM 23') {
+
+            if (jenis === 'RM 20') {
+                $('#formAsesmenEdukasiRm20').show();
+                $('#formCatatanEdukasiPasien').hide();
+                $('#btnSimpanCatatanEdukasi').html('<i class="bi bi-save me-1"></i> Simpan Asesmen (RM 20)');
+                let no_rawat = formPasienCatatanEdukasi.find('input[name=no_rawat]').val();
+                if (no_rawat) {
+                    loadAsesmenRm20(no_rawat);
+                }
+            } else if (jenis === 'RM 23') {
+                $('#formAsesmenEdukasiRm20').hide();
+                $('#formCatatanEdukasiPasien').show();
                 $('#sectionRm23').show();
                 $('#labelMateri').text('Materi Edukasi Tambahan / Keterangan Khusus :');
                 $('#materi').attr('placeholder', 'Ketik catatan materi tambahan jika diperlukan...');
+                $('#btnSimpanCatatanEdukasi').html('<i class="bi bi-save me-1"></i> Simpan Catatan Edukasi (RM 23)');
+                filterTableCatatan('RM 23');
                 renderChecklistMateri();
-            } else {
+            } else if (jenis === 'RM 24') {
+                $('#formAsesmenEdukasiRm20').hide();
+                $('#formCatatanEdukasiPasien').show();
                 $('#sectionRm23').hide();
                 $('#labelMateri').text('Materi Edukasi (RM 24) :');
-                $('#materi').attr('placeholder', 'Ketik materi edukasi yang disampaikan ke pasien (contoh: Edukasi penanganan demam)...');
+                $('#materi').attr('placeholder', 'Ketik materi edukasi yang disampaikan ke pasien...');
+                $('#btnSimpanCatatanEdukasi').html('<i class="bi bi-save me-1"></i> Simpan Catatan Edukasi (RM 24)');
+                filterTableCatatan('RM 24');
             }
+        }
+
+        function handleSimpanEdukasi() {
+            if (activeFormJenis === 'RM 20') {
+                simpanAsesmenRm20();
+            } else {
+                simpanCatatanEdukasi();
+            }
+        }
+
+        // ======================== RM 20 LOGIC ========================
+        function renderTableRencanaRm20(savedData = {}) {
+            let tbody = $('#tableRencanaRm20 tbody');
+            tbody.empty();
+
+            masterTopikRm20.forEach(topik => {
+                let rowData = savedData[topik.key] || {};
+                let ppa = rowData.ppa || topik.ppa;
+                let sasaran = rowData.sasaran || topik.sasaran;
+                let cara = rowData.cara || topik.cara;
+                let evaluasi = rowData.evaluasi || topik.evaluasi;
+
+                let rowHtml = `
+                    <tr data-key="${topik.key}">
+                        <td class="fw-bold text-dark py-1">${topik.label}</td>
+                        <td class="py-1">
+                            <input type="text" class="form-control form-control-sm py-0 plan-ppa" value="${ppa}" style="font-size: 11px;" />
+                        </td>
+                        <td class="py-1">
+                            <select class="form-select form-select-sm py-0 plan-sasaran" style="font-size: 11px;">
+                                <option value="Keluarga (K)" ${sasaran === 'Keluarga (K)' ? 'selected' : ''}>Keluarga (K)</option>
+                                <option value="Pasien (P)" ${sasaran === 'Pasien (P)' ? 'selected' : ''}>Pasien (P)</option>
+                                <option value="Pasien & Keluarga (P&K)" ${sasaran === 'Pasien & Keluarga (P&K)' ? 'selected' : ''}>Pasien & Keluarga (P&K)</option>
+                            </select>
+                        </td>
+                        <td class="py-1">
+                            <select class="form-select form-select-sm py-0 plan-cara" style="font-size: 11px;">
+                                <option value="Diskusi (D)" ${cara === 'Diskusi (D)' ? 'selected' : ''}>Diskusi (D)</option>
+                                <option value="Ceramah (C)" ${cara === 'Ceramah (C)' ? 'selected' : ''}>Ceramah (C)</option>
+                                <option value="Demonstrasi (Demo)" ${cara === 'Demonstrasi (Demo)' ? 'selected' : ''}>Demonstrasi (Demo)</option>
+                                <option value="Simulasi (S)" ${cara === 'Simulasi (S)' ? 'selected' : ''}>Simulasi (S)</option>
+                                <option value="Observasi (O)" ${cara === 'Observasi (O)' ? 'selected' : ''}>Observasi (O)</option>
+                                <option value="Praktek Langsung (PL)" ${cara === 'Praktek Langsung (PL)' ? 'selected' : ''}>Praktek Langsung (PL)</option>
+                            </select>
+                        </td>
+                        <td class="py-1">
+                            <select class="form-select form-select-sm py-0 plan-evaluasi" style="font-size: 11px;">
+                                <option value="Mampu menjelaskan" ${evaluasi === 'Mampu menjelaskan' ? 'selected' : ''}>Mampu Menjelaskan</option>
+                                <option value="Mampu mendemonstrasikan" ${evaluasi === 'Mampu mendemonstrasikan' ? 'selected' : ''}>Mampu Mendemonstrasikan</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(rowHtml);
+            });
+        }
+
+        function setDefaultRm20() {
+            if (currentPatientData && currentPatientData.pasien) {
+                $('#rm20_agama').val(currentPatientData.pasien.agama || 'Islam');
+                let pnd = currentPatientData.pasien.pnd || 'SMA';
+                $(`input[name="tingkat_pendidikan"][value="${pnd}"]`).prop('checked', true);
+            }
+            $('#rm20_bahasa_indonesia').val('Aktif');
+            $('#rm20_bahasa_daerah').val('Jawa');
+            $('#rm20_bahasa_daerah_status').val('Aktif');
+            $('#rm20_bahasa_inggris').val('-');
+            $('#rm20_bahasa_lain').val('');
+            $('#rm20_bahasa_lain_status').val('-');
+            $('#rm20_penerjemah_tidak').prop('checked', true);
+            $('#rm20_penerjemah_bahasa').val('').attr('disabled', 'disabled');
+            $('#rm20_isyarat_tidak').prop('checked', true);
+            $('#rm20_isyarat_ket').val('').attr('disabled', 'disabled');
+
+            $('.rm20-cara').prop('checked', false);
+            $('#rm20_cara_diskusi, #rm20_cara_audio').prop('checked', true);
+
+            $('#rm20_mampu_membaca').val('Ya');
+            $('#rm20_hambatan_emosi').val('Tidak');
+            $('#rm20_kesediaan_menerima').val('Ya');
+            $('#rm20_keterbatasan_fisik').val('Tidak');
+
+            toggleAllKebutuhan(true);
+            $('#rm20_rencana_individu').prop('checked', true);
+            renderTableRencanaRm20();
+        }
+
+        function toggleAllKebutuhan(status) {
+            $('.rm20-kebutuhan').not('#rm20_keb_11').prop('checked', status);
+        }
+
+        $(document).on('change', 'input[name="perlu_penerjemah"]', function() {
+            if ($(this).val() === 'Ya') {
+                $('#rm20_penerjemah_bahasa').removeAttr('disabled').focus();
+            } else {
+                $('#rm20_penerjemah_bahasa').attr('disabled', 'disabled').val('');
+            }
+        });
+
+        $(document).on('change', 'input[name="bahasa_isyarat"]', function() {
+            if ($(this).val() === 'Ya') {
+                $('#rm20_isyarat_ket').removeAttr('disabled').focus();
+            } else {
+                $('#rm20_isyarat_ket').attr('disabled', 'disabled').val('');
+            }
+        });
+
+        $(document).on('change', '#rm20_keb_11', function() {
+            if ($(this).is(':checked')) {
+                $('#rm20_kebutuhan_edukasi_lain').removeAttr('disabled').focus();
+            } else {
+                $('#rm20_kebutuhan_edukasi_lain').attr('disabled', 'disabled').val('');
+            }
+        });
+
+        function loadAsesmenRm20(no_rawat) {
+            $.get(`${url}/asesmen/kebutuhan/edukasi`, { no_rawat: no_rawat }).done((data) => {
+                if (data && data.no_rawat) {
+                    $('#rm20_no_rawat').val(data.no_rawat);
+                    $('#rm20_tanggal').val(data.tanggal);
+                    $('#rm20_ruang').val(data.ruang);
+                    $('#rm20_nip').val(data.nip);
+                    $('#rm20_nama').val(data.petugas ? data.petugas.nama : (data.pegawai ? data.pegawai.nama : data.nip));
+                    $('#rm20_agama').val(data.agama_keyakinan || '');
+                    $('#rm20_bahasa_indonesia').val(data.bahasa_indonesia || 'Aktif');
+                    $('#rm20_bahasa_daerah').val(data.bahasa_daerah || 'Jawa');
+                    $('#rm20_bahasa_daerah_status').val(data.bahasa_daerah_status || 'Aktif');
+                    $('#rm20_bahasa_inggris').val(data.bahasa_inggris || '-');
+                    $('#rm20_bahasa_lain').val(data.bahasa_lain || '');
+                    $('#rm20_bahasa_lain_status').val(data.bahasa_lain_status || '-');
+
+                    if (data.perlu_penerjemah === 'Ya') {
+                        $('#rm20_penerjemah_ya').prop('checked', true);
+                        $('#rm20_penerjemah_bahasa').removeAttr('disabled').val(data.penerjemah_bahasa || '');
+                    } else {
+                        $('#rm20_penerjemah_tidak').prop('checked', true);
+                        $('#rm20_penerjemah_bahasa').attr('disabled', 'disabled').val('');
+                    }
+
+                    if (data.bahasa_isyarat === 'Ya') {
+                        $('#rm20_isyarat_ya').prop('checked', true);
+                        $('#rm20_isyarat_ket').removeAttr('disabled').val(data.bahasa_isyarat_ket || '');
+                    } else {
+                        $('#rm20_isyarat_tidak').prop('checked', true);
+                        $('#rm20_isyarat_ket').attr('disabled', 'disabled').val('');
+                    }
+
+                    let caraArr = (data.cara_belajar || '').split(',').map(s => s.trim());
+                    $('.rm20-cara').each(function() {
+                        $(this).prop('checked', caraArr.includes($(this).val()));
+                    });
+
+                    if (data.tingkat_pendidikan) {
+                        $(`input[name="tingkat_pendidikan"][value="${data.tingkat_pendidikan}"]`).prop('checked', true);
+                    }
+
+                    $('#rm20_mampu_membaca').val(data.mampu_membaca || 'Ya');
+                    $('#rm20_hambatan_emosi').val(data.hambatan_emosi || 'Tidak');
+                    $('#rm20_kesediaan_menerima').val(data.kesediaan_menerima || 'Ya');
+                    $('#rm20_keterbatasan_fisik').val(data.keterbatasan_fisik || 'Tidak');
+
+                    let kebText = data.kebutuhan_edukasi || '';
+                    $('.rm20-kebutuhan').each(function() {
+                        let v = $(this).val();
+                        if (v === 'Lain-lain') {
+                            let hasLain = kebText.includes('Lain-lain') || data.kebutuhan_edukasi_lain;
+                            $(this).prop('checked', !!hasLain);
+                            if (hasLain) {
+                                $('#rm20_kebutuhan_edukasi_lain').removeAttr('disabled').val(data.kebutuhan_edukasi_lain || '');
+                            }
+                        } else {
+                            $(this).prop('checked', kebText.includes(v.split(' ')[0]));
+                        }
+                    });
+
+                    if (data.rencana_pelaksanaan === 'Kolaboratif') {
+                        $('#rm20_rencana_kolaboratif').prop('checked', true);
+                    } else {
+                        $('#rm20_rencana_individu').prop('checked', true);
+                    }
+
+                    let savedRencana = data.tabel_rencana || {};
+                    if (typeof savedRencana === 'string') {
+                        try { savedRencana = JSON.parse(savedRencana); } catch(e) { savedRencana = {}; }
+                    }
+                    renderTableRencanaRm20(savedRencana);
+                } else {
+                    // Belum ada data asesmen, set default
+                    setDefaultRm20();
+                }
+            });
+        }
+
+        function simpanAsesmenRm20() {
+            let no_rawat = formPasienCatatanEdukasi.find('input[name=no_rawat]').val();
+            if (!no_rawat) {
+                Swal.fire('Peringatan', 'Nomor rawat tidak ditemukan', 'warning');
+                return;
+            }
+
+            let caraBelajar = [];
+            $('.rm20-cara:checked').each(function() { caraBelajar.push($(this).val()); });
+
+            let kebutuhanEdukasi = [];
+            $('.rm20-kebutuhan:checked').each(function() { kebutuhanEdukasi.push($(this).val()); });
+
+            // Build tabel_rencana object
+            let tabelRencana = {};
+            $('#tableRencanaRm20 tbody tr').each(function() {
+                let key = $(this).data('key');
+                tabelRencana[key] = {
+                    ppa: $(this).find('.plan-ppa').val(),
+                    sasaran: $(this).find('.plan-sasaran').val(),
+                    cara: $(this).find('.plan-cara').val(),
+                    evaluasi: $(this).find('.plan-evaluasi').val(),
+                };
+            });
+
+            let tglRaw = $('#rm20_tanggal').val();
+            let tglFormatted = tglRaw;
+            let tglParts = tglRaw.split(' ');
+            if (tglParts.length > 1) {
+                tglFormatted = `${splitTanggal(tglParts[0])} ${tglParts[1]}`;
+            }
+
+            let postData = {
+                no_rawat: no_rawat,
+                tanggal: tglFormatted,
+                ruang: $('#rm20_ruang').val(),
+                nip: $('#rm20_nip').val(),
+                agama_keyakinan: $('#rm20_agama').val(),
+                bahasa_indonesia: $('#rm20_bahasa_indonesia').val(),
+                bahasa_daerah: $('#rm20_bahasa_daerah').val(),
+                bahasa_daerah_status: $('#rm20_bahasa_daerah_status').val(),
+                bahasa_inggris: $('#rm20_bahasa_inggris').val(),
+                bahasa_lain: $('#rm20_bahasa_lain').val(),
+                bahasa_lain_status: $('#rm20_bahasa_lain_status').val(),
+                perlu_penerjemah: $('input[name="perlu_penerjemah"]:checked').val() || 'Tidak',
+                penerjemah_bahasa: $('#rm20_penerjemah_bahasa').val(),
+                bahasa_isyarat: $('input[name="bahasa_isyarat"]:checked').val() || 'Tidak',
+                bahasa_isyarat_ket: $('#rm20_isyarat_ket').val(),
+                cara_belajar: caraBelajar,
+                tingkat_pendidikan: $('input[name="tingkat_pendidikan"]:checked').val() || 'SMA',
+                mampu_membaca: $('#rm20_mampu_membaca').val(),
+                hambatan_emosi: $('#rm20_hambatan_emosi').val(),
+                kesediaan_menerima: $('#rm20_kesediaan_menerima').val(),
+                keterbatasan_fisik: $('#rm20_keterbatasan_fisik').val(),
+                kebutuhan_edukasi: kebutuhanEdukasi,
+                kebutuhan_edukasi_lain: $('#rm20_kebutuhan_edukasi_lain').val(),
+                rencana_pelaksanaan: $('input[name="rencana_pelaksanaan"]:checked').val() || 'Individu',
+                tabel_rencana: tabelRencana,
+                _token: "{{ csrf_token() }}"
+            };
+
+            $.post(`${url}/asesmen/kebutuhan/edukasi`, postData).done((response) => {
+                alertSuccessAjax(response).then(() => {
+                    loadAsesmenRm20(no_rawat);
+                });
+            }).fail((error) => {
+                alertErrorAjax(error);
+            });
         }
 
         function renderChecklistMateri(selectedItems = []) {
@@ -708,14 +1278,25 @@
             const nm_petugas = "{{ session()->get('pegawai')->nama }}";
             const tanggal = moment().format('DD-MM-YYYY HH:mm:ss');
 
+            // Set RM 20 fields
+            $('#rm20_no_rawat').val(no_rawat);
+            $('#rm20_nip').val(nip);
+            $('#rm20_nama').val(nm_petugas);
+            $('#rm20_tanggal').val(tanggal);
+
+            // Set RM 23/24 fields
             formCatatanEdukasiPasien.find('input[name=nip]').val(nip);
             formCatatanEdukasiPasien.find('input[name=nama]').val(nm_petugas);
             formCatatanEdukasiPasien.find('input[name=tanggal]').val(tanggal);
             formCatatanEdukasiPasien.find('input[name=durasi]').val('10 Menit');
             clearSignatureEdukasi();
-            switchFormJenis('RM 23');
+
+            // Default tab: RM 20
+            $('#tab-rm20-tab').tab('show');
+            switchFormJenis('RM 20');
 
             getRegPeriksa(no_rawat).done((response) => {
+                currentPatientData = response;
                 const { pasien, dokter, kamar_inap } = response;
                 const kamar = (kamar_inap || []).filter((item) => item.stts_pulang !== 'Pindah Kamar');
                 const bangsal = kamar.map((item) => item.kamar.bangsal.nm_bangsal).join('');
@@ -732,8 +1313,10 @@
                 formPasienCatatanEdukasi.find('input[name=dokter]').val(dokter ? dokter.nm_dokter : '-');
                 formPasienCatatanEdukasi.find('input[name=lama]').val(`${hitungLamaHari(response.tgl_registrasi)} Hari`);
 
+                $('#rm20_ruang').val(bangsal);
                 formCatatanEdukasiPasien.find('input[name=nama_penerima]').val(response.p_jawab || response.pasien.nm_pasien);
 
+                loadAsesmenRm20(no_rawat);
                 renderCatatanEdukasiPasien(no_rawat);
             });
         }
@@ -938,3 +1521,4 @@
         }
     </script>
 @endpush
+
