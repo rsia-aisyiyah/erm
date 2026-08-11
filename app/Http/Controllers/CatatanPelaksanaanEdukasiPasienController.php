@@ -102,6 +102,16 @@ class CatatanPelaksanaanEdukasiPasienController extends Controller
 
 		$data['jenis_form'] = $data['jenis_form'] ?? 'RM 23';
 
+		if (isset($data['metode']) && is_array($data['metode'])) {
+			$data['metode'] = implode(', ', $data['metode']);
+		}
+		if (isset($data['hambatan']) && is_array($data['hambatan'])) {
+			$data['hambatan'] = implode(', ', $data['hambatan']);
+		}
+		if (isset($data['intervensi']) && is_array($data['intervensi'])) {
+			$data['intervensi'] = implode(', ', $data['intervensi']);
+		}
+
 		if (!empty($data['ttd_pasien'])) {
 			$data['ttd_pasien'] = $this->handleSignature($data['no_rawat'], $data['ttd_pasien']);
 		}
@@ -145,6 +155,16 @@ class CatatanPelaksanaanEdukasiPasienController extends Controller
 			'nama_penerima' => 'nullable',
 			'ttd_pasien' => 'nullable',
 		]);
+
+		if (isset($data['metode']) && is_array($data['metode'])) {
+			$data['metode'] = implode(', ', $data['metode']);
+		}
+		if (isset($data['hambatan']) && is_array($data['hambatan'])) {
+			$data['hambatan'] = implode(', ', $data['hambatan']);
+		}
+		if (isset($data['intervensi']) && is_array($data['intervensi'])) {
+			$data['intervensi'] = implode(', ', $data['intervensi']);
+		}
 
 		if (!empty($data['ttd_pasien'])) {
 			$data['ttd_pasien'] = $this->handleSignature($data['no_rawat'], $data['ttd_pasien']);

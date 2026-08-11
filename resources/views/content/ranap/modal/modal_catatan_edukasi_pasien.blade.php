@@ -145,30 +145,30 @@
 
                     <!-- METODE -->
                     <div class="mb-2 p-2 bg-light rounded border">
-                        <label class="form-label fw-bold d-block mb-1 text-primary"><i class="bi bi-chat-dots me-1"></i> Metode Pembelajaran :</label>
+                        <label class="form-label fw-bold d-block mb-1 text-primary"><i class="bi bi-chat-dots me-1"></i> Metode Pembelajaran (Dapat Dipilih Lebih Dari 1) :</label>
                         <div class="d-flex flex-wrap gap-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="metode" id="metode_diskusi" value="Diskusi / Wawancara" checked>
+                                <input class="form-check-input check-metode" type="checkbox" name="metode[]" id="metode_diskusi" value="Diskusi / Wawancara" checked>
                                 <label class="form-check-label fw-semibold" for="metode_diskusi">a. Diskusi / Wawancara</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="metode" id="metode_simulasi" value="Simulasi (S)">
+                                <input class="form-check-input check-metode" type="checkbox" name="metode[]" id="metode_simulasi" value="Simulasi (S)">
                                 <label class="form-check-label" for="metode_simulasi">b. Simulasi (S)</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="metode" id="metode_demo" value="Demonstrasi (Demo)">
+                                <input class="form-check-input check-metode" type="checkbox" name="metode[]" id="metode_demo" value="Demonstrasi (Demo)">
                                 <label class="form-check-label" for="metode_demo">c. Demonstrasi (Demo)</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="metode" id="metode_ceramah" value="Ceramah">
+                                <input class="form-check-input check-metode" type="checkbox" name="metode[]" id="metode_ceramah" value="Ceramah">
                                 <label class="form-check-label" for="metode_ceramah">d. Ceramah</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="metode" id="metode_observasi" value="Observasi (O)">
+                                <input class="form-check-input check-metode" type="checkbox" name="metode[]" id="metode_observasi" value="Observasi (O)">
                                 <label class="form-check-label" for="metode_observasi">e. Observasi (O)</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="metode" id="metode_pl" value="Praktek Langsung (PL)">
+                                <input class="form-check-input check-metode" type="checkbox" name="metode[]" id="metode_pl" value="Praktek Langsung (PL)">
                                 <label class="form-check-label" for="metode_pl">f. Praktek Langsung (PL)</label>
                             </div>
                         </div>
@@ -178,44 +178,142 @@
                     <div class="row gy-2 mb-2">
                         <div class="col-lg-6 col-md-12">
                             <div class="p-2 border rounded bg-light h-100">
-                                <label class="form-label fw-bold mb-1 text-danger"><i class="bi bi-exclamation-triangle me-1"></i> Hambatan :</label>
-                                <x-input-group>
-                                    <x-radio-group name="hambatan"
-                                        :radios="[
-                                            'hambatan1' => ['value' => 'Tidak Ada', 'label' => 'Tidak Ada', 'checked' => true],
-                                            'hambatan2' => ['value' => 'Bahasa', 'label' => 'Bahasa'],
-                                            'hambatan3' => ['value' => 'Kehilangan Harapan', 'label' => 'Kehilangan Harapan'],
-                                            'hambatan4' => ['value' => 'Masalah Keuangan', 'label' => 'Masalah Keuangan'],
-                                            'hambatan5' => ['value' => 'Kesalahan', 'label' => 'Kesalahan'],
-                                            'hambatan6' => ['value' => 'Faktor Budaya', 'label' => 'Faktor Budaya'],
-                                            'hambatan7' => ['value' => 'Kelemahan Sensori', 'label' => 'Kelemahan Sensori'],
-                                            'hambatan8' => ['value' => 'Tidak Percaya Diri', 'label' => 'Tidak Percaya Diri'],
-                                            'hambatan9' => ['value' => 'Menyangkal', 'label' => 'Menyangkal'],
-                                            'hambatan10' => ['value' => 'Kecemasan/ketakutan', 'label' => 'Kecemasan/ketakutan'],
-                                            'hambatan11' => ['value' => 'Kelemahan Kognitif', 'label' => 'Kelemahan Kognitif'],
-                                            'hambatan12' => ['value' => 'Tidak tertarik/tidak berminat', 'label' => 'Tidak Tertarik'],
-                                            'hambatan13' => ['value' => 'Lain-lain', 'label' => 'Lain-lain'],
-                                        ]" />
-                                    <input type="text" id="hambatan_lain" name="hambatan_lain" class="form-control form-control-sm mt-1" placeholder="Sebutkan hambatan lain..." disabled />
-                                </x-input-group>
+                                <label class="form-label fw-bold mb-1 text-danger"><i class="bi bi-exclamation-triangle me-1"></i> Hambatan (Dapat Dipilih Lebih Dari 1) :</label>
+                                <div class="row g-1">
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_tidak_ada" value="Tidak Ada" checked>
+                                            <label class="form-check-label small fw-bold" for="hambatan_tidak_ada">Tidak Ada</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_bahasa" value="Bahasa">
+                                            <label class="form-check-label small" for="hambatan_bahasa">Bahasa</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_harapan" value="Kehilangan Harapan">
+                                            <label class="form-check-label small" for="hambatan_harapan">Kehilangan Harapan</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_keuangan" value="Masalah Keuangan">
+                                            <label class="form-check-label small" for="hambatan_keuangan">Masalah Keuangan</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_kesalahan" value="Kesalahan">
+                                            <label class="form-check-label small" for="hambatan_kesalahan">Kesalahan</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_budaya" value="Faktor Budaya">
+                                            <label class="form-check-label small" for="hambatan_budaya">Faktor Budaya</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_sensori" value="Kelemahan Sensori">
+                                            <label class="form-check-label small" for="hambatan_sensori">Kelemahan Sensori</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_pede" value="Tidak Percaya Diri">
+                                            <label class="form-check-label small" for="hambatan_pede">Tidak Percaya Diri</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_menyangkal" value="Menyangkal">
+                                            <label class="form-check-label small" for="hambatan_menyangkal">Menyangkal</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_cemas" value="Kecemasan/ketakutan">
+                                            <label class="form-check-label small" for="hambatan_cemas">Kecemasan/ketakutan</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_kognitif" value="Kelemahan Kognitif">
+                                            <label class="form-check-label small" for="hambatan_kognitif">Kelemahan Kognitif</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_tertarik" value="Tidak tertarik/tidak berminat">
+                                            <label class="form-check-label small" for="hambatan_tertarik">Tidak Tertarik</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-center gap-2 mt-1">
+                                            <div class="form-check mb-0">
+                                                <input class="form-check-input check-hambatan" type="checkbox" name="hambatan[]" id="hambatan_lain_chk" value="Lain-lain">
+                                                <label class="form-check-label small" for="hambatan_lain_chk">Lain-lain</label>
+                                            </div>
+                                            <input type="text" id="hambatan_lain" name="hambatan_lain" class="form-control form-control-sm py-0" placeholder="Sebutkan hambatan lain..." disabled style="height: 28px;" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12">
                             <div class="p-2 border rounded bg-light h-100">
-                                <label class="form-label fw-bold mb-1 text-success"><i class="bi bi-tools me-1"></i> Intervensi Mengatasi Hambatan :</label>
-                                <x-input-group>
-                                    <x-radio-group name="intervensi"
-                                        :radios="[
-                                            'intervensi1' => ['value' => 'Tidak Ada', 'label' => 'Tidak Ada', 'checked' => true],
-                                            'intervensi2' => ['value' => 'Menyediakan Penerjemah', 'label' => 'Menyediakan Penerjemah'],
-                                            'intervensi3' => ['value' => 'Melakukan pendekatan secara budaya/agama', 'label' => 'Pendekatan Budaya/Agama'],
-                                            'intervensi4' => ['value' => 'Mengulangi materi', 'label' => 'Mengulangi Materi'],
-                                            'intervensi5' => ['value' => 'Melibatkan keluarga terdekat', 'label' => 'Melibatkan Keluarga'],
-                                            'intervensi6' => ['value' => 'Melakukan pendekatan dengan cara memakai role model untuk merubah perilaku', 'label' => 'Memakai Role Model'],
-                                            'intervensi7' => ['value' => 'Lain-lain', 'label' => 'Lain-lain'],
-                                        ]" />
-                                    <input type="text" id="intervensi_lain" name="intervensi_lain" class="form-control form-control-sm mt-1" placeholder="Sebutkan intervensi lain..." disabled />
-                                </x-input-group>
+                                <label class="form-label fw-bold mb-1 text-success"><i class="bi bi-tools me-1"></i> Intervensi Mengatasi Hambatan (Dapat Dipilih Lebih Dari 1) :</label>
+                                <div class="row g-1">
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-intervensi" type="checkbox" name="intervensi[]" id="intervensi_tidak_ada" value="Tidak Ada" checked>
+                                            <label class="form-check-label small fw-bold" for="intervensi_tidak_ada">Tidak Ada</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-intervensi" type="checkbox" name="intervensi[]" id="intervensi_penerjemah" value="Menyediakan Penerjemah">
+                                            <label class="form-check-label small" for="intervensi_penerjemah">Menyediakan Penerjemah</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-intervensi" type="checkbox" name="intervensi[]" id="intervensi_budaya" value="Melakukan pendekatan secara budaya/agama">
+                                            <label class="form-check-label small" for="intervensi_budaya">Pendekatan Budaya/Agama</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-intervensi" type="checkbox" name="intervensi[]" id="intervensi_ulangi" value="Mengulangi materi">
+                                            <label class="form-check-label small" for="intervensi_ulangi">Mengulangi Materi</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-intervensi" type="checkbox" name="intervensi[]" id="intervensi_keluarga" value="Melibatkan keluarga terdekat">
+                                            <label class="form-check-label small" for="intervensi_keluarga">Melibatkan Keluarga</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input check-intervensi" type="checkbox" name="intervensi[]" id="intervensi_rolemodel" value="Melakukan pendekatan dengan cara memakai role model untuk merubah perilaku">
+                                            <label class="form-check-label small" for="intervensi_rolemodel">Memakai Role Model</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-center gap-2 mt-1">
+                                            <div class="form-check mb-0">
+                                                <input class="form-check-input check-intervensi" type="checkbox" name="intervensi[]" id="intervensi_lain_chk" value="Lain-lain">
+                                                <label class="form-check-label small" for="intervensi_lain_chk">Lain-lain</label>
+                                            </div>
+                                            <input type="text" id="intervensi_lain" name="intervensi_lain" class="form-control form-control-sm py-0" placeholder="Sebutkan intervensi lain..." disabled style="height: 28px;" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -361,31 +459,36 @@
                 'Kemungkinan alternatif',
                 'Kemungkinan keberhasilan',
                 'Kemungkinan timbulnya masalah selama masa pemulihan',
-                'Kemungkinan yang terjadi apabila tidak diobat'
+                'Kemungkinan yang terjadi apabila tidak diobat',
+                'Lain-lain (Catatan Tambahan)'
             ],
             'Farmasi': [
                 'Obat-obatan yang di dapat pasien',
                 'Aturan pemakaian dan dosis obat',
                 'Efek samping obat',
                 'Kontra Indikasi obat',
-                'Interaksi obat'
+                'Interaksi obat',
+                'Lain-lain (Catatan Tambahan)'
             ],
             'Perawat/Bidan': [
                 'Penggunaan peralatan medis yg aman',
                 'Pencegahan & pengendalian infeksi (Cuci tangan / Lainnya)',
                 'Pendidikan kesehatan berkelanjutan',
                 'Orientasi Ruangan',
-                'Hak dan Kewajiban pasien'
+                'Hak dan Kewajiban pasien',
+                'Lain-lain (Catatan Tambahan)'
             ],
             'Nutrisionis': [
                 'Status gizi & pelayanan makanan RS',
                 'Diet selama perawatan',
                 'Diet untuk di rumah',
-                'Penyimpanan makanan / cegah kontaminasi'
+                'Penyimpanan makanan / cegah kontaminasi',
+                'Lain-lain (Catatan Tambahan)'
             ],
             'Manajemen Nyeri': [
                 'a. Farmakologi',
-                'b. Non farmakologi (Relaksasi / Distraksi / Massage / Kompres)'
+                'b. Non farmakologi (Relaksasi / Distraksi / Massage / Kompres)',
+                'Lain-lain (Catatan Tambahan)'
             ]
         };
 
@@ -547,6 +650,56 @@
             let total = $('.check-materi-item').length;
             let checked = $('.check-materi-item:checked').length;
             $('#checkAllMateri').prop('checked', total > 0 && total === checked);
+
+            if ($(this).val() === 'Lain-lain (Catatan Tambahan)' && $(this).is(':checked')) {
+                $('#materi').focus();
+            }
+        });
+
+        // Event handler checkbox hambatan (eksklusif Tidak Ada vs opsi lain)
+        $(document).on('change', '.check-hambatan', function() {
+            let val = $(this).val();
+            let isChecked = $(this).is(':checked');
+
+            if (val === 'Tidak Ada' && isChecked) {
+                $('.check-hambatan').not('#hambatan_tidak_ada').prop('checked', false);
+                $('#hambatan_lain').attr('disabled', 'disabled').val('');
+            } else if (val !== 'Tidak Ada' && isChecked) {
+                $('#hambatan_tidak_ada').prop('checked', false);
+            }
+
+            if ($('#hambatan_lain_chk').is(':checked')) {
+                $('#hambatan_lain').removeAttr('disabled').focus();
+            } else {
+                $('#hambatan_lain').attr('disabled', 'disabled').val('');
+            }
+
+            if (!$('.check-hambatan:checked').length) {
+                $('#hambatan_tidak_ada').prop('checked', true);
+            }
+        });
+
+        // Event handler checkbox intervensi (eksklusif Tidak Ada vs opsi lain)
+        $(document).on('change', '.check-intervensi', function() {
+            let val = $(this).val();
+            let isChecked = $(this).is(':checked');
+
+            if (val === 'Tidak Ada' && isChecked) {
+                $('.check-intervensi').not('#intervensi_tidak_ada').prop('checked', false);
+                $('#intervensi_lain').attr('disabled', 'disabled').val('');
+            } else if (val !== 'Tidak Ada' && isChecked) {
+                $('#intervensi_tidak_ada').prop('checked', false);
+            }
+
+            if ($('#intervensi_lain_chk').is(':checked')) {
+                $('#intervensi_lain').removeAttr('disabled').focus();
+            } else {
+                $('#intervensi_lain').attr('disabled', 'disabled').val('');
+            }
+
+            if (!$('.check-intervensi:checked').length) {
+                $('#intervensi_tidak_ada').prop('checked', true);
+            }
         });
 
         function catatanEdukasiPasien(no_rawat) {
@@ -651,32 +804,15 @@
             tableCatatanEdukasiPasien.find('tbody').append(dataCatatan);
         }
 
-        // Event handler radio hambatan & intervensi lain
-        formCatatanEdukasiPasien.find('input[name="hambatan"]').on('change', function() {
-            const hambatanLain = formCatatanEdukasiPasien.find('#hambatan_lain');
-            if ($(this).val() === 'Lain-lain') {
-                hambatanLain.removeAttr('disabled').focus();
-            } else {
-                hambatanLain.attr('disabled', 'disabled').val('');
-            }
-        });
-
-        formCatatanEdukasiPasien.find('input[name="intervensi"]').on('change', function() {
-            const intervensiLain = formCatatanEdukasiPasien.find('#intervensi_lain');
-            if ($(this).val() === 'Lain-lain') {
-                intervensiLain.removeAttr('disabled').focus();
-            } else {
-                intervensiLain.attr('disabled', 'disabled').val('');
-            }
-        });
-
         function simpanCatatanEdukasi() {
             const jenisForm = $('#jenis_form').val() || 'RM 23';
             let finalMateriLines = [];
 
             if (jenisForm === 'RM 23') {
                 $('.check-materi-item:checked').each(function() {
-                    finalMateriLines.push($(this).val());
+                    if ($(this).val() !== 'Lain-lain (Catatan Tambahan)') {
+                        finalMateriLines.push($(this).val());
+                    }
                 });
             }
 
@@ -694,8 +830,38 @@
             data['no_rawat'] = formPasienCatatanEdukasi.find('input[name=no_rawat]').val();
             data['jenis_form'] = jenisForm;
             data['materi'] = finalMateriLines.join("\n");
-            data['hambatan_lain'] = data['hambatan'] === 'Lain-lain' ? $('#hambatan_lain').val() : '';
-            data['intervensi_lain'] = data['intervensi'] === 'Lain-lain' ? $('#intervensi_lain').val() : '';
+
+            let metodeArr = [];
+            $('.check-metode:checked').each(function() { metodeArr.push($(this).val()); });
+            data['metode'] = metodeArr.length ? metodeArr.join(', ') : 'Diskusi / Wawancara';
+
+            let hambatanArr = [];
+            $('.check-hambatan:checked').each(function() {
+                if ($(this).val() !== 'Lain-lain') {
+                    hambatanArr.push($(this).val());
+                }
+            });
+            if ($('#hambatan_lain_chk').is(':checked') && $('#hambatan_lain').val().trim()) {
+                hambatanArr.push('Lain-lain: ' + $('#hambatan_lain').val().trim());
+            } else if ($('#hambatan_lain_chk').is(':checked')) {
+                hambatanArr.push('Lain-lain');
+            }
+            data['hambatan'] = hambatanArr.length ? hambatanArr.join(', ') : 'Tidak Ada';
+            data['hambatan_lain'] = $('#hambatan_lain_chk').is(':checked') ? $('#hambatan_lain').val() : '';
+
+            let intervensiArr = [];
+            $('.check-intervensi:checked').each(function() {
+                if ($(this).val() !== 'Lain-lain') {
+                    intervensiArr.push($(this).val());
+                }
+            });
+            if ($('#intervensi_lain_chk').is(':checked') && $('#intervensi_lain').val().trim()) {
+                intervensiArr.push('Lain-lain: ' + $('#intervensi_lain').val().trim());
+            } else if ($('#intervensi_lain_chk').is(':checked')) {
+                intervensiArr.push('Lain-lain');
+            }
+            data['intervensi'] = intervensiArr.length ? intervensiArr.join(', ') : 'Tidak Ada';
+            data['intervensi_lain'] = $('#intervensi_lain_chk').is(':checked') ? $('#intervensi_lain').val() : '';
 
             const tanggalArr = data['tanggal'].split(' ');
             if (tanggalArr.length > 1) {
@@ -707,7 +873,16 @@
                     renderCatatanEdukasiPasien(data['no_rawat']);
                     $('#materi').val('');
                     $('.check-materi-item').prop('checked', false);
+                    $('#checkAllMateri').prop('checked', false);
                     clearSignatureEdukasi();
+
+                    // Reset checklist metode, hambatan, intervensi ke default
+                    $('.check-metode').prop('checked', false);
+                    $('#metode_diskusi').prop('checked', true);
+                    $('.check-hambatan').prop('checked', false);
+                    $('#hambatan_tidak_ada').prop('checked', true);
+                    $('.check-intervensi').prop('checked', false);
+                    $('#intervensi_tidak_ada').prop('checked', true);
 
                     const nip = "{{ session()->get('pegawai')->nik }}";
                     const nm_petugas = "{{ session()->get('pegawai')->nama }}";

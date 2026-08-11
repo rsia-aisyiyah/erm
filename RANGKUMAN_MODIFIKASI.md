@@ -107,8 +107,9 @@ Pembaruan menyeluruh pada modul **Catatan Pelaksanaan Edukasi Pasien** untuk men
   - Form edukasi dengan kolom materi berupa teks bebas (*free text*) untuk mencatat topik edukasi tindakan/penyakit spesifik.
 - **Parameter Bersama**:
   - Tanggal & waktu edukasi beserta durasi (misal: "10 Menit").
-  - Pilihan metode pembelajaran (*Diskusi / Wawancara, Simulasi, Demonstrasi, Ceramah, Observasi, Praktek Langsung*).
-  - Hambatan belajar dan intervensi cara mengatasinya.
+  - Pilihan **Metode Pembelajaran** (*Multiple Check*: Diskusi / Wawancara, Simulasi, Demonstrasi, Ceramah, Observasi, Praktek Langsung).
+  - **Hambatan Edukasi & Intervensi** (*Multiple Check* dengan interaktivitas cerdas: opsi "Tidak Ada" otomatis eksklusif, serta opsi "Lain-lain" otomatis membuka input teks keterangan).
+  - **Materi RM 23 Fleksibel (Checklist + Free-Text "Lain-lain")**: Dilengkapi opsi checklist *"Lain-lain (Catatan Tambahan)"* yang otomatis mengaktifkan textarea materi tambahan, serta tercetak rapi di PDF RM 23 dengan label *"Catatan: [isi materi]"*.
   - Evaluasi pemahaman pasien (*Tidak mengerti, Mengerti tidak mampu, Mengerti & mampu*).
   - **Tanda Tangan Digital Pasien/Keluarga** berbasis Canvas Touch/Stylus/Mouse dengan penyimpanan file fisik PNG di `storage/app/public/signatures/catatan_edukasi_pasien/`.
   - **Barcode QR Code Edukator** otomatis ter-generate berdasarkan akun login petugas/dokter.
@@ -129,7 +130,9 @@ ALTER TABLE `rsia_catatan_pelaksanaan_edukasi_pasien`
   ADD COLUMN `nama_penerima` VARCHAR(100) NULL AFTER `nip`,
   ADD COLUMN `ttd_pasien` VARCHAR(255) NULL AFTER `nama_penerima`,
   MODIFY COLUMN `materi` TEXT NULL,
-  MODIFY COLUMN `metode` ENUM('Diskusi / Wawancara','Diskusi','Simulasi (S)','Demonstrasi (Demo)','Ceramah','Observasi (O)','Praktek Langsung (PL)') NULL;
+  MODIFY COLUMN `metode` VARCHAR(255) NULL,
+  MODIFY COLUMN `hambatan` VARCHAR(255) NULL,
+  MODIFY COLUMN `intervensi` VARCHAR(255) NULL;
 ```
 
 ---
@@ -145,7 +148,10 @@ ALTER TABLE `rsia_catatan_pelaksanaan_edukasi_pasien`
 #### B. Berkas Dimodifikasi (*Modified Files*)
 | File | Rincian Perubahan |
 | :--- | :--- |
-| `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Tab navigasi RM 23 vs RM 24.<br>2. Checklist materi otomatis berdasarkan profesi (DPJP, Farmasi, Perawat/Bidan, Gizi, Nyeri) beserta tombol pintas **"Centang Semua"**.<br>3. Canvas tanda tangan pasien/keluarga.<br>4. Tombol Cetak RM 23 dan Cetak RM 24 di footer modal. |
+| `app/Http/Controllers/CatatanPelaksanaanEdukasiPasienController.php` | Normalisasi array checkbox (`implode(', ', ...)`) pada `create` & `update` untuk field `metode`, `hambatan`, dan `intervensi`. |
+| `resources/views/content/ranap/modal/modal_catatan_edukasi_pasien.blade.php` | 1. Tab navigasi RM 23 vs RM 24.<br>2. Checklist materi otomatis berdasarkan profesi beserta tombol pintas **"Centang Semua"** dan opsi **"Lain-lain"**.<br>3. Checkbox multiple-selection untuk Metode, Hambatan, dan Intervensi dengan logika eksklusif "Tidak Ada".<br>4. Canvas tanda tangan pasien/keluarga.<br>5. Tombol Cetak RM 23 dan Cetak RM 24 di footer modal. |
+| `resources/views/content/print/catatan_edukasi_rm23.blade.php` | Menampilkan seluruh pilihan metode, hambatan, intervensi, checklist materi standar, dan baris *Catatan: ...* free-text. |
+| `resources/views/content/print/catatan_edukasi_rm24.blade.php` | Menampilkan baris edukasi pasien dengan seluruh pilihan metode, hambatan, dan intervensi. |
 
 ---
 

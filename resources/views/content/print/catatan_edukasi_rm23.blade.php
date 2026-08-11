@@ -226,10 +226,20 @@
                     </td>
 
                     <!-- HAMBATAN & INTERVENSI -->
-                    <td>
+                    <td style="font-size: 8px;">
                         @if ($edu)
-                            <strong>H:</strong> {{ ($edu->hambatan == 'Lain-lain' && $edu->hambatan_lain) ? $edu->hambatan_lain : ($edu->hambatan ?? 'Tidak Ada') }}<br>
-                            <strong>I:</strong> {{ ($edu->intervensi == 'Lain-lain' && $edu->intervensi_lain) ? $edu->intervensi_lain : ($edu->intervensi ?? 'Tidak Ada') }}
+                            @php
+                                $hambatanText = $edu->hambatan ?? 'Tidak Ada';
+                                if ($edu->hambatan_lain && !str_contains($hambatanText, $edu->hambatan_lain)) {
+                                    $hambatanText = str_replace('Lain-lain', 'Lain-lain: ' . $edu->hambatan_lain, $hambatanText);
+                                }
+                                $intervensiText = $edu->intervensi ?? 'Tidak Ada';
+                                if ($edu->intervensi_lain && !str_contains($intervensiText, $edu->intervensi_lain)) {
+                                    $intervensiText = str_replace('Lain-lain', 'Lain-lain: ' . $edu->intervensi_lain, $intervensiText);
+                                }
+                            @endphp
+                            <strong>H:</strong> {{ $hambatanText }}<br>
+                            <strong>I:</strong> {{ $intervensiText }}
                         @else
                             -
                         @endif
