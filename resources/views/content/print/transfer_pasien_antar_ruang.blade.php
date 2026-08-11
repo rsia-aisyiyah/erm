@@ -5,7 +5,7 @@
             border: 1.5px solid #000;
             text-align: center;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 12px;
             padding: 4px;
             margin-top: 4px;
             margin-bottom: 6px;
@@ -15,20 +15,20 @@
         .table-borderless td, .table-borderless th {
             border: none;
             padding: 2px 4px;
-            font-size: 9px;
+            font-size: 9.5px;
             vertical-align: top;
         }
         .table-transfer {
             width: 100%;
             border-collapse: collapse;
-            font-size: 8.5px;
+            font-size: 9.5px;
             margin-bottom: 6px;
         }
         .table-transfer th {
             border: 1px solid #000;
             padding: 3px 4px;
             background-color: #f0f0f0;
-            font-size: 8.5px;
+            font-size: 9.5px;
             text-align: left;
         }
         .table-transfer td {
@@ -38,7 +38,7 @@
         }
         .section-title {
             font-weight: bold;
-            font-size: 9.5px;
+            font-size: 10.5px;
             margin-top: 5px;
             margin-bottom: 3px;
             border-bottom: 1px solid #000;
@@ -64,13 +64,13 @@
                 <img src="{{ public_path('img/logo.png') }}" width="50" />
             </td>
             <td width="55%" style="vertical-align: middle;">
-                <strong style="font-size: 11px; display: block;">RUMAH SAKIT IBU DAN ANAK AISYIYAH</strong>
-                <strong style="font-size: 11px; display: block;">PEKAJANGAN &ndash; PEKALONGAN</strong>
-                <span style="font-size: 8px; display: block;">Jl. Raya Pekajangan No. 610 Pekajangan, Pekalongan, 51172</span>
-                <span style="font-size: 8px; display: block;">Telp. (0285) 785909 Email: rsiaaisyiyah@gmail.com Website: www.rsiaaisyiyah.com</span>
+                <strong style="font-size: 11.5px; display: block;">RUMAH SAKIT IBU DAN ANAK AISYIYAH</strong>
+                <strong style="font-size: 11.5px; display: block;">PEKAJANGAN &ndash; PEKALONGAN</strong>
+                <span style="font-size: 8.5px; display: block;">Jl. Raya Pekajangan No. 610 Pekajangan, Pekalongan, 51172</span>
+                <span style="font-size: 8.5px; display: block;">Telp. (0285) 785909 Email: rsiaaisyiyah@gmail.com Website: www.rsiaaisyiyah.com</span>
             </td>
             <td width="35%" style="vertical-align: top;">
-                <table width="100%" class="border" style="font-size: 8.5px; border-collapse: collapse;">
+                <table width="100%" class="border" style="font-size: 9px; border-collapse: collapse;">
                     <tr>
                         <td width="35%" style="border: 1px solid #000; padding: 1.5px 3px;"><strong>No. RM</strong></td>
                         <td style="border: 1px solid #000; padding: 1.5px 3px;">: {{ $pasien->no_rkm_medis ?? '-' }}</td>
@@ -186,60 +186,83 @@
             </tr>
             <tr>
                 <td><strong>Tekanan Darah (TD)</strong></td>
-                <td>{{ $t->td_sebelum_transfer ?? '-' }} mmHg</td>
-                <td>{{ $t->td_sesudah_transfer ?? '-' }} mmHg</td>
+                <td>{{ $t->td_sebelum_transfer ? $t->td_sebelum_transfer . ' mmHg' : '-' }}</td>
+                <td>{{ $t->td_sesudah_transfer ? $t->td_sesudah_transfer . ' mmHg' : '-' }}</td>
             </tr>
             <tr>
                 <td><strong>Nadi</strong></td>
-                <td>{{ $t->nadi_sebelum_transfer ?? '-' }} x/menit</td>
-                <td>{{ $t->nadi_sesudah_transfer ?? '-' }} x/menit</td>
+                <td>{{ $t->nadi_sebelum_transfer ? $t->nadi_sebelum_transfer . ' x/menit' : '-' }}</td>
+                <td>{{ $t->nadi_sesudah_transfer ? $t->nadi_sesudah_transfer . ' x/menit' : '-' }}</td>
             </tr>
             <tr>
                 <td><strong>Respirasi (RR)</strong></td>
-                <td>{{ $t->rr_sebelum_transfer ?? '-' }} x/menit</td>
-                <td>{{ $t->rr_sesudah_transfer ?? '-' }} x/menit</td>
+                <td>{{ $t->rr_sebelum_transfer ? $t->rr_sebelum_transfer . ' x/menit' : '-' }}</td>
+                <td>{{ $t->rr_sesudah_transfer ? $t->rr_sesudah_transfer . ' x/menit' : '-' }}</td>
             </tr>
             <tr>
                 <td><strong>Suhu Tubuh</strong></td>
-                <td>{{ $t->suhu_sebelum_transfer ?? '-' }} &deg;C</td>
-                <td>{{ $t->suhu_sesudah_transfer ?? '-' }} &deg;C</td>
+                <td>{{ $t->suhu_sebelum_transfer ? $t->suhu_sebelum_transfer . ' °C' : '-' }}</td>
+                <td>{{ $t->suhu_sesudah_transfer ? $t->suhu_sesudah_transfer . ' °C' : '-' }}</td>
             </tr>
         </tbody>
     </table>
 
     <!-- 5. TANDA TANGAN & SERAH TERIMA -->
-    <table width="100%" class="table-borderless" style="margin-top: 15px;">
+    <table width="100%" class="table-borderless" style="margin-top: 10px;">
         <tr>
-            <td width="33%" style="text-align: center;">
-                Pasien / Keluarga Yang Menyetujui,<br><br>
-                @if($t && $t->bukti && !empty($t->bukti->photo))
-                    @php
-                        $ttdSrc = $t->bukti->photo;
-                        if (!str_starts_with($ttdSrc, 'data:image')) {
-                            $absStorage = storage_path('app/public/' . ltrim($ttdSrc, '/'));
-                            $absPublic = public_path('storage/' . ltrim($ttdSrc, '/'));
-                            if (file_exists($absStorage)) {
-                                $ttdSrc = $absStorage;
-                            } elseif (file_exists($absPublic)) {
-                                $ttdSrc = $absPublic;
+            <td width="33%" style="text-align: center; vertical-align: top;">
+                Pasien / Keluarga Yang Menyetujui,<br>
+                <div style="height: 60px; margin: 4px 0; text-align: center;">
+                    @if($t && $t->bukti && !empty($t->bukti->photo))
+                        @php
+                            $ttdSrc = $t->bukti->photo;
+                            if (!str_starts_with($ttdSrc, 'data:image')) {
+                                $absStorage = storage_path('app/public/' . ltrim($ttdSrc, '/'));
+                                $absPublic = public_path('storage/' . ltrim($ttdSrc, '/'));
+                                if (file_exists($absStorage)) {
+                                    $ttdSrc = $absStorage;
+                                } elseif (file_exists($absPublic)) {
+                                    $ttdSrc = $absPublic;
+                                }
                             }
-                        }
-                    @endphp
-                    <img src="{{ $ttdSrc }}" style="max-height: 50px; max-width: 120px;" /><br>
-                @else
-                    <br><br><br>
-                @endif
-                <strong>( {{ $t->nama_menyetujui ?: ($pasien->nm_pasien ?? '..................................') }} )</strong>
+                        @endphp
+                        <img src="{{ $ttdSrc }}" style="max-height: 55px; max-width: 120px;" />
+                    @else
+                        <br><br><br>
+                    @endif
+                </div>
+                <strong>( {{ $t->nama_menyetujui ?: ($pasien->nm_pasien ?? '..................................') }} )</strong><br>
+                <span style="font-size: 8.5px; color: #555;">Tanda tangan dan nama terang</span>
             </td>
-            <td width="33%" style="text-align: center;">
-                Petugas Yang Menyerahkan,<br><br><br><br><br>
+            <td width="33%" style="text-align: center; vertical-align: top;">
+                Petugas Yang Menyerahkan,<br>
+                <div style="height: 60px; margin: 4px 0; text-align: center;">
+                    @if (!empty($t->nip_menyerahkan))
+                        @php
+                            $qrTextSerah = 'Diverifikasi secara elektronik oleh: ' . $petugasSerahNama . ' (NIP. ' . ($t->nip_menyerahkan ?? '-') . ') pada ' . $tglMasuk;
+                        @endphp
+                        <img src="data:image/png;base64,{!! DNS2D::getBarcodePNG($qrTextSerah, 'QRCODE', 2.5, 2.5) !!}" height="55" />
+                    @else
+                        <br><br><br>
+                    @endif
+                </div>
                 <strong>( {{ $petugasSerahNama }} )</strong><br>
-                <span style="font-size: 8px;">NIP. {{ $t->nip_menyerahkan ?? '-' }}</span>
+                <span style="font-size: 8.5px; color: #555;">NIP. {{ $t->nip_menyerahkan ?? '-' }}</span>
             </td>
-            <td width="34%" style="text-align: center;">
-                Petugas Yang Menerima,<br><br><br><br><br>
+            <td width="34%" style="text-align: center; vertical-align: top;">
+                Petugas Yang Menerima,<br>
+                <div style="height: 60px; margin: 4px 0; text-align: center;">
+                    @if (!empty($t->nip_menerima))
+                        @php
+                            $qrTextTerima = 'Diverifikasi secara elektronik oleh: ' . $petugasTerimaNama . ' (NIP. ' . ($t->nip_menerima ?? '-') . ') pada ' . $tglPindah;
+                        @endphp
+                        <img src="data:image/png;base64,{!! DNS2D::getBarcodePNG($qrTextTerima, 'QRCODE', 2.5, 2.5) !!}" height="55" />
+                    @else
+                        <br><br><br>
+                    @endif
+                </div>
                 <strong>( {{ $petugasTerimaNama }} )</strong><br>
-                <span style="font-size: 8px;">NIP. {{ $t->nip_menerima ?? '-' }}</span>
+                <span style="font-size: 8.5px; color: #555;">NIP. {{ $t->nip_menerima ?? '-' }}</span>
             </td>
         </tr>
     </table>
