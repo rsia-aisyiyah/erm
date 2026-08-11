@@ -406,6 +406,11 @@ Route::middleware('auth')->group(function () {
 	Route::get('discharge-planning/print', [DischargePlanningController::class, 'print']);
 	Route::get('discharge-planning', [DischargePlanningController::class, 'get']);
 
+	Route::get('transfer/pasien/antar-ruang', [\App\Http\Controllers\TransferPasienAntarRuangController::class, 'get']);
+	Route::post('transfer/pasien/antar-ruang', [\App\Http\Controllers\TransferPasienAntarRuangController::class, 'create']);
+	Route::post('transfer/pasien/antar-ruang/delete', [\App\Http\Controllers\TransferPasienAntarRuangController::class, 'delete']);
+	Route::get('transfer/pasien/antar-ruang/print', [\App\Http\Controllers\TransferPasienAntarRuangController::class, 'print']);
+
 	Route::get('sep', [BridgingSepController::class, 'index'])->name('sep.index');
 	Route::get('sep/datatable', [BridgingSepController::class, 'dataTable'])->name('sep.datatable');
 	Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
