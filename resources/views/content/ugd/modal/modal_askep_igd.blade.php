@@ -1126,15 +1126,66 @@
     // Reset Form Asesmen Keperawatan UGD
     function resetFormAskepUgd() {
         $('#formAskepUgd')[0].reset();
+        
+        // Reset Anamnesis
+        $('#askep_keluhan_utama, #askep_rpd, #askep_rpo').val('-');
+        
+        // Reset Kehamilan
         $('#askep_status_kehamilan').val('Tidak Hamil').trigger('change');
-        $('#askep_nyeri').val('Tidak Ada Nyeri').trigger('change');
-        $('#askep_perdarahan').val('Tidak Ada').trigger('change');
+        $('#askep_gravida, #askep_para, #askep_abortus, #askep_hpht').val('-');
+        
+        // Reset Fisik
+        $('#askep_tekanan').val('TAK');
+        $('#askep_pupil').val('Isokor');
+        $('#askep_neurosensorik').val('TAK');
+        $('#askep_integumen').val('TAK');
+        $('#askep_turgor').val('Baik');
+        $('#askep_edema').val('Tidak Ada');
+        $('#askep_mukosa').val('Lembab');
+        $('#askep_intoksikasi').val('Tidak Ada');
+        $('#askep_perdarahan').val('Tidak Ada');
+        $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').val('-').prop('disabled', true);
         $('#askep_bab, #askep_xbab, #askep_kbab, #askep_wbab, #askep_bak, #askep_xbak, #askep_wbak, #askep_lbak').val('-');
+        
+        // Reset Psikososial & Fungsional
+        $('#askep_psikologis').val('Tidak Ada Masalah');
+        $('#askep_jiwa').val('Tidak');
+        $('#askep_perilaku, #askep_dilaporkan, #askep_sebutkan').val('-');
+        $('#askep_hubungan').val('Harmonis');
+        $('#askep_tinggal_dengan').val('Orang Tua');
+        $('#askep_ket_tinggal, #askep_budaya, #askep_ket_budaya, #askep_ket_pendidikan_pj, #askep_ket_edukasi, #askep_ket_bantu, #askep_ket_lapor').val('-');
+        $('#askep_pendidikan_pj').val('SMA');
+        $('#askep_edukasi').val('Pasien');
+        $('#askep_kemampuan').val('Mandiri');
+        $('#askep_aktifitas').val('Berjalan');
+        $('#askep_alat_bantu').val('Tidak');
+        $('#askep_lapor').val('Tidak');
+        
+        // Reset Risiko Jatuh
         $('input[name="berjalan_a"][value="Tidak"]').prop('checked', true);
         $('input[name="berjalan_b"][value="Tidak"]').prop('checked', true);
         $('input[name="berjalan_c"][value="Tidak"]').prop('checked', true);
         updateKalkulasiRisikoJatuh();
-        updateVisualSkalaNyeri(0);
+        
+        // Reset Nyeri
+        $('#askep_nyeri').val('Tidak Ada Nyeri').trigger('change');
+        $('#askep_skala_nyeri').val(0).trigger('change');
+        $('#askep_provokes').val('Proses Penyakit');
+        $('#askep_ket_provokes, #askep_ket_quality, #askep_lokasi, #askep_ket_nyeri, #askep_ket_dokter').val('-');
+        $('#askep_quality').val('Seperti Tertusuk');
+        $('#askep_menyebar').val('Tidak');
+        $('#askep_durasi').val('-');
+        $('#askep_nyeri_hilang').val('Istirahat');
+        $('#askep_pada_dokter').val('Tidak');
+        
+        // Reset Masalah & Rencana
+        $('#askep_rencana').val('-');
+        resetSemuaMasalahAskep();
+        if (window.masterAskepIgdData && window.masterAskepIgdData.length > 0) {
+            renderMasterMasalahList([], []);
+        }
+
+        // Tombol & Status
         $('#btnCetakAskepUgd, #btnHapusAskepUgd').addClass('d-none');
         $('#badgeStatusAskepUgd').attr('class', 'badge bg-light text-primary px-2 py-1').html('<i class="bi bi-file-earmark-plus me-1"></i> Data Baru');
         $('#btnSimpanAskepUgd').html('<i class="bi bi-save me-1"></i> Simpan Asesmen');
@@ -1206,13 +1257,13 @@
                     $('#askep_jumlah_perdarahan').val(response.jumlah_perdarahan || '-');
                     $('#askep_warna_perdarahan').val(response.warna_perdarahan || '-');
 
-                    $('#askep_bab').val(response.bab || '1');
-                    $('#askep_xbab').val(response.xbab || 'Hari');
-                    $('#askep_kbab').val(response.kbab || 'Lunak');
-                    $('#askep_wbab').val(response.wbab || 'Kuning');
-                    $('#askep_bak').val(response.bak || '4');
-                    $('#askep_xbak').val(response.xbak || 'Hari');
-                    $('#askep_wbak').val(response.wbak || 'Kuning Jernih');
+                    $('#askep_bab').val(response.bab || '-');
+                    $('#askep_xbab').val(response.xbab || '-');
+                    $('#askep_kbab').val(response.kbab || '-');
+                    $('#askep_wbab').val(response.wbab || '-');
+                    $('#askep_bak').val(response.bak || '-');
+                    $('#askep_xbak').val(response.xbak || '-');
+                    $('#askep_wbak').val(response.wbak || '-');
                     $('#askep_lbak').val(response.lbak || '-');
 
                     $('#askep_psikologis').val(response.psikologis || 'Tidak Ada Masalah');
@@ -1267,6 +1318,8 @@
                     // MODE BARU
                     renderMasterMasalahList([], []);
                 }
+            }).fail(function() {
+                renderMasterMasalahList([], []);
             });
         });
 
