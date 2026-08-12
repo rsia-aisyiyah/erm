@@ -662,14 +662,9 @@
                                             <div class="border rounded-2 p-2 bg-light h-100">
                                                 <div class="d-flex align-items-center justify-content-between pb-2 border-bottom mb-2">
                                                     <strong class="text-dark small"><i class="bi bi-journal-medical me-1"></i> Rencana Intervensi Keperawatan :</strong>
-                                                    <div class="d-flex gap-1">
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2 btn-uncheck-all-rencana-global" style="font-size: 11px;">
-                                                            <i class="bi bi-dash-square me-1"></i> Uncheck Semua
-                                                        </button>
-                                                        <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" id="btnSalinRencanaKeCatatan" style="font-size: 11px;">
-                                                            <i class="bi bi-clipboard-plus me-1"></i> Salin ke Catatan
-                                                        </button>
-                                                    </div>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" id="btnSalinRencanaKeCatatan" style="font-size: 11px;">
+                                                        <i class="bi bi-clipboard-plus me-1"></i> Salin ke Catatan
+                                                    </button>
                                                 </div>
                                                 <div id="containerListRencanaAskep" style="max-height: 280px; overflow-y: auto;">
                                                     <div class="text-center text-muted py-4 small">
@@ -863,9 +858,12 @@
                             <span class="small fw-bold text-primary" style="font-size: 11.5px;">
                                 <i class="bi bi-check2-square me-1"></i> [${m.kode_masalah}] ${m.nama_masalah}
                             </span>
-                            <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none btn-check-all-rencana text-primary fw-semibold" data-target="rencana_group_${m.kode_masalah}" style="font-size: 10.5px;">
-                                ${isAllChecked ? 'Uncheck Semua' : 'Pilih Semua'}
-                            </button>
+                            <div class="form-check form-check-inline mb-0 me-0 d-flex align-items-center">
+                                <input class="form-check-input chk-select-all-rencana me-1" type="checkbox" id="selectAll_${m.kode_masalah}" data-target="rencana_group_${m.kode_masalah}" ${isAllChecked ? 'checked' : ''} style="cursor: pointer; transform: scale(0.9);">
+                                <label class="form-check-label text-primary fw-semibold small cursor-pointer" for="selectAll_${m.kode_masalah}" style="font-size: 11px; cursor: pointer;">
+                                    Pilih Semua
+                                </label>
+                            </div>
                         </div>
                         <div class="card-body p-2 bg-white" id="rencana_group_${m.kode_masalah}">
                 `;
@@ -912,28 +910,20 @@
         });
     });
 
-    // Toggle Pilih Semua / Uncheck Semua per Grup Masalah
-    $(document).on('click', '.btn-check-all-rencana', function() {
+    // Toggle Pilih Semua Checkbox di Header Grup Rencana
+    $(document).on('change', '.chk-select-all-rencana', function() {
+        const isChecked = $(this).is(':checked');
         const targetId = $(this).data('target');
-        const checkboxes = $(`#${targetId} .chk-rencana-askep`);
-        const allChecked = checkboxes.length === checkboxes.filter(':checked').length;
-        checkboxes.prop('checked', !allChecked);
-        $(this).text(!allChecked ? 'Uncheck Semua' : 'Pilih Semua');
+        $(`#${targetId} .chk-rencana-askep`).prop('checked', isChecked);
     });
 
-    // Update Status Tombol Saat Checkbox Rencana Berubah
+    // Update Checkbox "Pilih Semua" di Header jika ada checkbox rencana yang diubah secara manual
     $(document).on('change', '.chk-rencana-askep', function() {
         const $group = $(this).closest('.card-body');
         const groupId = $group.attr('id');
         const checkboxes = $group.find('.chk-rencana-askep');
         const allChecked = checkboxes.length > 0 && (checkboxes.length === checkboxes.filter(':checked').length);
-        $(`button[data-target="${groupId}"]`).text(allChecked ? 'Uncheck Semua' : 'Pilih Semua');
-    });
-
-    // Tombol Global Uncheck Semua Rencana Intervensi
-    $(document).on('click', '.btn-uncheck-all-rencana-global', function() {
-        $('.chk-rencana-askep').prop('checked', false);
-        $('.btn-check-all-rencana').text('Pilih Semua');
+        $(`.chk-select-all-rencana[data-target="${groupId}"]`).prop('checked', allChecked);
     });
 
     // Tombol Global Reset / Uncheck Semua Masalah Keperawatan
