@@ -256,13 +256,143 @@ Untuk menjaga portabilitas aplikasi saat dijalankan di berbagai environment (mis
 
 ---
 
-### 2. Daftar Berkas yang Dimodifikasi
+### 2. Struktur Basis Data (MySQL)
+
+#### Perubahan Kolom Tabel: `rsia_penilaian_medis_igd` (18 Kolom 13 Organ Fisik)
+```sql
+ALTER TABLE `rsia_penilaian_medis_igd`
+  ADD COLUMN `tht` enum('Normal','Abnormal','Tidak Diperiksa') DEFAULT 'Normal' AFTER `terapi_non_farmakologis`,
+  ADD COLUMN `jantung` enum('Normal','Abnormal','Tidak Diperiksa') DEFAULT 'Normal' AFTER `tht`,
+  ADD COLUMN `paru` enum('Normal','Abnormal','Tidak Diperiksa') DEFAULT 'Normal' AFTER `jantung`,
+  ADD COLUMN `neurologis` enum('Normal','Abnormal','Tidak Diperiksa') DEFAULT 'Normal' AFTER `paru`,
+  ADD COLUMN `muskuloskeletal` enum('Normal','Abnormal','Tidak Diperiksa') DEFAULT 'Normal' AFTER `neurologis`,
+  ADD COLUMN `ket_kepala` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_mata` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_tht` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_gigi` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_leher` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_jantung` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_paru` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_thoraks` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_abdomen` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_genital` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_ekstremitas` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_neurologis` varchar(255) DEFAULT NULL,
+  ADD COLUMN `ket_muskuloskeletal` varchar(255) DEFAULT NULL;
+```
+
+---
+
+### 3. Daftar Berkas yang Dimodifikasi
 | File | Rincian Perubahan |
 | :--- | :--- |
 | `app/Models/AsesmenMedisIgdController.php` | Mapping 18 field baru pada `$rsiaFields` (`tht`, `jantung`, `paru`, `neurologis`, `muskuloskeletal`, dan 13 kolom `ket_*`) serta sinkronisasi ringkasan `ket_fisik` otomatis untuk backward-compatibility Khanza. |
 | `resources/views/content/ugd/modal/asmed.blade.php` | Implementasi layout tabel 2 kolom 13 organ fisik, event handler status/keterangan, tombol cepat semua normal, visibilitas tombol cetak berbasis status data, dan auto pre-fill pemeriksaan awal. |
 | `resources/views/content/print/asmed_igd.blade.php` | Menambahkan tabel 13 organ status generalis pada cetakan PDF Asesmen IGD. |
 
+---
 
+## Modifikasi 6: Fitur Transfer Pasien Antar Ruang (UGD & Rawat Inap)
 
+### 1. Deskripsi Perubahan
+Implementasi modul **Transfer Pasien Antar Ruang** mengadopsi struktur data standar `RMTransferPasienAntarRuang.java` SIMRS Khanza:
+- **Antarmuka Formulir Interaktif & Modern**:
+  - **Header Pasien**: Banner identitas pasien (No. Rawat, No. RM, Nama, Tgl Lahir, JK, Kamar/Ruangan saat ini).
+  - **Bagian A (Informasi Pemindahan Ruang)**: Tanggal masuk, tanggal pindah, asal ruang, ruang selanjutnya/tujuan, metode pemindahan (*Kursi Roda, Tempat Tidur, Brankar, Berjalan*), dan indikasi pindah ruang (+ keterangan).
+  - **Bagian B (Kondisi Klinis & Riwayat Tindakan)**: Diagnosa utama & sekunder, prosedur yang sudah dilakukan, obat yang telah diberikan, pemeriksaan penunjang, dan peralatan yang menyertai (+ keterangan).
+  - **Bagian C (Persetujuan Pemindahan)**: Status persetujuan (*Ya/Tidak*), nama penanggung jawab, hubungan keluarga, dan **Tanda Tangan Digital Pasien/Keluarga** berbasis Canvas Touch/Mouse.
+  - **Bagian D (Evaluasi TTV Sebelum vs Sesudah)**: *Side-by-side card* untuk membandingkan Keluhan Utama, Kesadaran/Keadaan Umum, Tekanan Darah (TD), Nadi, Respirasi (RR), dan Suhu Tubuh sebelum dan sesudah transfer.
+  - **Bagian E (Serah Terima Petugas)**: Petugas yang menyerahkan (otomatis terisi dari user login) dan Petugas yang menerima (*Live Search Autocomplete* dari database pegawai/petugas).
+- **Tab Riwayat Transfer Pasien**:
+  - Daftar seluruh riwayat pemindahan pasien antar ruangan dengan tombol aksi **Edit**, **Hapus**, dan **Cetak PDF**.
+- **Penyimpanan Tanda Tangan Fisik Ringan**:
+  - Tanda tangan digital pasien disimpan sebagai file PNG di `storage/app/public/signatures/transfer_pasien/` dengan path relatif di database (sama seperti Asmed IGD) untuk efisiensi basis data.
+- **Cetak Dokumen PDF Format A4 Resmi**:
+  - Format standar rekam medis akreditasi rumah sakit dengan kop resmi RSIA Aisyiyah Pekajangan.
+  - Tabel perbandingan kondisi klinis & TTV sebelum vs sesudah transfer.
+  - **Verifikasi Elektronik (QRCode)** untuk tanda tangan staf internal (*Petugas Menyerahkan & Petugas Menerima*) serta embed tanda tangan digital pasien/keluarga.
+- **Integrasi Menu**:
+  - Tersedia di dropdown aksi pasien pada modul **UGD (`/erm/ugd`)** dan **Rawat Inap (`/erm/ranap`)**.
 
+---
+
+### 2. Struktur Basis Data (MySQL)
+
+#### A. Tabel Utama: `transfer_pasien_antar_ruang` (Tabel Standar SIMRS Khanza)
+```sql
+CREATE TABLE IF NOT EXISTS `transfer_pasien_antar_ruang` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal_masuk` datetime NOT NULL,
+  `tanggal_pindah` datetime NOT NULL,
+  `asal_ruang` varchar(30) DEFAULT NULL,
+  `ruang_selanjutnya` varchar(30) DEFAULT NULL,
+  `diagnosa_utama` varchar(50) DEFAULT NULL,
+  `diagnosa_sekunder` varchar(100) DEFAULT NULL,
+  `indikasi_pindah_ruang` enum('Kondisi Pasien Stabil','Kondisi Pasien Tidak Ada Perubahan','Kondisi Pasien Memburuk','Fasilitas Kurang Memadai','Fasilitas Butuh Lebih Baik','Tenaga Membutuhkan Yang Lebih Ahli','Tenaga Kurang','Lain-lain') DEFAULT NULL,
+  `keterangan_indikasi_pindah_ruang` varchar(50) DEFAULT NULL,
+  `prosedur_yang_sudah_dilakukan` varchar(800) DEFAULT NULL,
+  `obat_yang_telah_diberikan` varchar(800) DEFAULT NULL,
+  `metode_pemindahan_pasien` enum('Kursi Roda','Tempat Tidur','Brankar','Berjalan') DEFAULT NULL,
+  `peralatan_yang_menyertai` enum('Oksigen Portable','Infus','NGT','Syringe Pump','Suction','Kateter Urin') DEFAULT NULL,
+  `keterangan_peralatan_yang_menyertai` varchar(50) DEFAULT NULL,
+  `pemeriksaan_penunjang_yang_dilakukan` varchar(500) DEFAULT NULL,
+  `pasien_keluarga_menyetujui` enum('Ya','Tidak') DEFAULT 'Ya',
+  `nama_menyetujui` varchar(50) DEFAULT NULL,
+  `hubungan_menyetujui` enum('Kakak','Adik','Saudara','Keluarga','Kakek','Nenek','Orang Tua','Suami','Istri','Penanggung Jawab','Menantu','Ipar','Mertua','-') DEFAULT '-',
+  `keluhan_utama_sebelum_transfer` varchar(200) DEFAULT NULL,
+  `keadaan_umum_sebelum_transfer` enum('Compos Mentis','Gelisah','Delirium','Koma') DEFAULT NULL,
+  `td_sebelum_transfer` varchar(7) DEFAULT NULL,
+  `nadi_sebelum_transfer` varchar(5) DEFAULT NULL,
+  `rr_sebelum_transfer` varchar(5) DEFAULT NULL,
+  `suhu_sebelum_transfer` varchar(5) DEFAULT NULL,
+  `keluhan_utama_sesudah_transfer` varchar(200) DEFAULT NULL,
+  `keadaan_umum_sesudah_transfer` enum('Compos Mentis','Gelisah','Delirium','Koma') DEFAULT NULL,
+  `td_sesudah_transfer` varchar(7) DEFAULT NULL,
+  `nadi_sesudah_transfer` varchar(5) DEFAULT NULL,
+  `rr_sesudah_transfer` varchar(5) DEFAULT NULL,
+  `suhu_sesudah_transfer` varchar(5) DEFAULT NULL,
+  `nip_menyerahkan` varchar(20) NOT NULL,
+  `nip_menerima` varchar(20) NOT NULL,
+  PRIMARY KEY (`no_rawat`,`tanggal_masuk`),
+  KEY `nip_menyerahkan` (`nip_menyerahkan`),
+  KEY `nip_menerima` (`nip_menerima`),
+  CONSTRAINT `transfer_pasien_antar_ruang_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `transfer_pasien_antar_ruang_ibfk_2` FOREIGN KEY (`nip_menyerahkan`) REFERENCES `petugas` (`nip`) ON UPDATE CASCADE,
+  CONSTRAINT `transfer_pasien_antar_ruang_ibfk_3` FOREIGN KEY (`nip_menerima`) REFERENCES `petugas` (`nip`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+#### B. Tabel Tanda Tangan: `bukti_persetujuan_transfer_pasien_antar_ruang`
+```sql
+CREATE TABLE IF NOT EXISTS `bukti_persetujuan_transfer_pasien_antar_ruang` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal_masuk` datetime NOT NULL,
+  `photo` longtext DEFAULT NULL,
+  PRIMARY KEY (`no_rawat`,`tanggal_masuk`),
+  CONSTRAINT `bukti_persetujuan_transfer_pasien_antar_ruang_ibfk_1` FOREIGN KEY (`no_rawat`, `tanggal_masuk`) REFERENCES `transfer_pasien_antar_ruang` (`no_rawat`, `tanggal_masuk`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Alter penyesuaian kolom photo
+ALTER TABLE `bukti_persetujuan_transfer_pasien_antar_ruang` 
+  MODIFY COLUMN `photo` LONGTEXT NULL;
+```
+
+---
+
+### 3. Daftar Berkas yang Ditambahkan & Dimodifikasi
+
+#### A. Berkas Baru (*New Files*)
+| File | Fungsi |
+| :--- | :--- |
+| `app/Models/TransferPasienAntarRuang.php` | Model Eloquent tabel `transfer_pasien_antar_ruang` (Composite PK: `no_rawat` & `tanggal_masuk`). |
+| `app/Models/BuktiPersetujuanTransferPasienAntarRuang.php` | Model Eloquent tabel `bukti_persetujuan_transfer_pasien_antar_ruang`. |
+| `app/Http/Controllers/TransferPasienAntarRuangController.php` | Controller CRUD dan render cetak PDF transfer pasien antar ruang. |
+| `resources/views/content/ranap/modal/modal_transfer_pasien.blade.php` | Modal form interaktif transfer pasien, canvas TTD, auto search petugas penerima, dan tab riwayat transfer. |
+| `resources/views/content/print/transfer_pasien_antar_ruang.blade.php` | Template cetak PDF resmi format A4 dengan Kop, perbandingan TTV, TTD digital keluarga, dan QR Code petugas. |
+
+#### B. Berkas Dimodifikasi (*Modified Files*)
+| File | Rincian Perubahan |
+| :--- | :--- |
+| `routes/web.php` | Mendaftarkan route `/transfer/pasien/antar-ruang` (GET, POST, DELETE, PRINT). |
+| `resources/views/content/ranap/ranap.blade.php` | Inklusi modal transfer dan penambahan item menu **"Transfer Pasien Antar Ruang"** pada dropdown aksi pasien Ranap. |
+| `resources/views/content/ugd/ugd.blade.php` | Inklusi modal transfer dan penambahan item menu **"Transfer Pasien Antar Ruang"** pada dropdown aksi pasien UGD. |
