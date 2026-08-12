@@ -242,11 +242,14 @@ class StoreAskepRalanKebidananRequest extends FormRequest
                     'Takut',
                     'Cemas',
                     'Depresi',
-                    'Lain-Lain'
+                    'Marah',
+                    'Sedih',
+                    'Lain-Lain',
+                    'Lain-lain'
                 ])
             ],
 
-            'ket_psiko' => 'required|string|max:50',
+            'ket_psiko' => 'nullable|string|max:50',
 
             'hub_keluarga' => ['required', Rule::in(['Baik', 'Tidak Baik'])],
 
@@ -255,12 +258,15 @@ class StoreAskepRalanKebidananRequest extends FormRequest
                 Rule::in([
                     'Sendiri',
                     'Orang Tua',
+                    'Suami',
                     'Suami / Istri',
-                    'Lainnya'
+                    'Lainnya',
+                    'Lain-lain',
+                    'Lain-Lain'
                 ])
             ],
 
-            'ket_tinggal' => 'required|string|max:50',
+            'ket_tinggal' => 'nullable|string|max:50',
 
             'ekonomi' => [
                 'required',
@@ -272,10 +278,10 @@ class StoreAskepRalanKebidananRequest extends FormRequest
             ],
 
             'budaya' => ['required', Rule::in(['Ada', 'Tidak Ada'])],
-            'ket_budaya' => 'required|string|max:50',
+            'ket_budaya' => 'nullable|string|max:50',
 
             'edukasi' => ['required', Rule::in(['Pasien', 'Keluarga'])],
-            'ket_edukasi' => 'required|string|max:50',
+            'ket_edukasi' => 'nullable|string|max:50',
 
             // RESIKO JATUH
             'berjalan_a' => ['required', Rule::in(['Ya', 'Tidak'])],
@@ -310,11 +316,12 @@ class StoreAskepRalanKebidananRequest extends FormRequest
                 Rule::in([
                     'Proses Penyakit',
                     'Benturan',
-                    'Lain-Lain'
+                    'Lain-Lain',
+                    'Lain-lain'
                 ])
             ],
 
-            'ket_provokes' => 'required|string|max:40',
+            'ket_provokes' => 'nullable|string|max:40',
 
             'quality' => [
                 'required',
@@ -324,29 +331,33 @@ class StoreAskepRalanKebidananRequest extends FormRequest
                     'Teriris',
                     'Tertindih',
                     'Tertiban',
-                    'Lain-Lain'
+                    'Terbakar',
+                    'Lain-Lain',
+                    'Lain-lain'
                 ])
             ],
 
-            'ket_quality' => 'required|string|max:40',
+            'ket_quality' => 'nullable|string|max:40',
 
             'lokasi' => 'required|string|max:40',
             'menyebar' => ['required', Rule::in(['Ya', 'Tidak'])],
 
             'skala_nyeri' => 'required|integer|min:0|max:10',
 
-            'durasi' => 'required|string|max:5',
+            'durasi' => 'nullable|string|max:50',
 
             'nyeri_hilang' => [
                 'required',
                 Rule::in([
                     'Istirahat',
                     'Mendengar Musik',
-                    'Minum Obat'
+                    'Minum Obat',
+                    'Lain-Lain',
+                    'Lain-lain'
                 ])
             ],
 
-            'ket_nyeri' => 'required|string|max:40',
+            'ket_nyeri' => 'nullable|string|max:40',
 
             'pada_dokter' => ['required', Rule::in(['Ya', 'Tidak'])],
             'ket_dokter' => 'nullable|string|max:10',

@@ -671,12 +671,15 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label small mb-0">Tinggal Bersama</label>
-                                            <select id="kebidanan_tinggal_dengan" name="tinggal_dengan" class="form-select form-select-sm">
-                                                <option value="Suami">Suami</option>
-                                                <option value="Orang Tua">Orang Tua</option>
-                                                <option value="Sendiri">Sendiri</option>
-                                                <option value="Lainnya">Lainnya</option>
-                                            </select>
+                                            <div class="input-group input-group-sm">
+                                                <select id="kebidanan_tinggal_dengan" name="tinggal_dengan" class="form-select form-select-sm" style="max-width: 120px;">
+                                                    <option value="Suami / Istri">Suami / Istri</option>
+                                                    <option value="Orang Tua">Orang Tua</option>
+                                                    <option value="Sendiri">Sendiri</option>
+                                                    <option value="Lainnya">Lainnya</option>
+                                                </select>
+                                                <input type="text" id="kebidanan_ket_tinggal" name="ket_tinggal" class="form-control form-control-sm" placeholder="Keterangan" value="-">
+                                            </div>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label small mb-0">Status Ekonomi</label>
@@ -1159,7 +1162,8 @@
         $('#kebidanan_status_psiko').val('Tenang');
         $('#kebidanan_ket_psiko, #kebidanan_ket_tinggal, #kebidanan_ket_budaya, #kebidanan_ket_edukasi').val('-');
         $('#kebidanan_hub_keluarga').val('Baik');
-        $('#kebidanan_tinggal_dengan').val('Suami');
+        $('#kebidanan_tinggal_dengan').val('Suami / Istri');
+        $('#kebidanan_ket_tinggal').val('-');
         $('#kebidanan_ekonomi').val('Baik');
         $('#kebidanan_budaya').val('Tidak Ada');
         $('#kebidanan_edukasi').val('Pasien');
@@ -1329,7 +1333,7 @@
                 $('#kebidanan_status_psiko').val(data.status_psiko || 'Tenang');
                 $('#kebidanan_ket_psiko').val(data.ket_psiko || '-');
                 $('#kebidanan_hub_keluarga').val(data.hub_keluarga || 'Baik');
-                $('#kebidanan_tinggal_dengan').val(data.tinggal_dengan || 'Suami');
+                $('#kebidanan_tinggal_dengan').val(data.tinggal_dengan || 'Suami / Istri');
                 $('#kebidanan_ket_tinggal').val(data.ket_tinggal || '-');
                 $('#kebidanan_ekonomi').val(data.ekonomi || 'Baik');
                 $('#kebidanan_budaya').val(data.budaya || 'Tidak Ada');
