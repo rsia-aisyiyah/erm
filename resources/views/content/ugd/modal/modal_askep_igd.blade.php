@@ -230,7 +230,7 @@
                                                 <div class="row g-2 align-items-center">
                                                     <div class="col-md-4">
                                                         <label class="form-label fw-semibold small mb-0">Perdarahan :</label>
-                                                        <select class="form-select form-select-sm mt-1" name="perdarahan" id="askep_perdarahan">
+                                                        <select class="form-select form-select-sm mt-1" name="perdarahan" id="askep_perdarahan" onchange="onPerdarahanChanged(this)">
                                                             <option value="Tidak Ada" selected>Tidak Ada</option>
                                                             <option value="Ada">Ada</option>
                                                         </select>
@@ -982,10 +982,26 @@
         }
     });
 
-    $('#askep_perdarahan').on('change', function() {
-        if ($(this).val() === 'Ada') {
+    // Handler Perubahan Status Perdarahan
+    function onPerdarahanChanged(elem) {
+        const val = $(elem).val();
+        if (val === 'Ada') {
+            $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').prop('disabled', false);
+            if ($('#askep_jumlah_perdarahan').val() === '-') {
+                $('#askep_jumlah_perdarahan').val('');
+            }
+            if ($('#askep_warna_perdarahan').val() === '-') {
+                $('#askep_warna_perdarahan').val('');
+            }
+            $('#askep_jumlah_perdarahan').focus();
             autoTriggerMasalah('008', true); // 008 - Risiko Perdarahan
+        } else {
+            $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').prop('disabled', true).val('-');
         }
+    }
+
+    $(document).on('change', '#askep_perdarahan', function() {
+        onPerdarahanChanged(this);
     });
 
     $('#askep_turgor').on('change', function() {
@@ -1072,15 +1088,6 @@
             $('#panel_detail_hamil').slideDown(200);
         } else {
             $('#panel_detail_hamil').slideUp(200);
-        }
-    });
-
-    // Toggle Perdarahan
-    $('#askep_perdarahan').on('change', function() {
-        if ($(this).val() === 'Ada') {
-            $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').prop('disabled', false).val('');
-        } else {
-            $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').prop('disabled', true).val('-');
         }
     });
 
