@@ -1234,7 +1234,8 @@
             $('#ttd_pasien').val('');
             $('#imgPreviewTtd').attr('src', '');
             $('#wrapperPreviewTtd').addClass('d-none');
-            $('.btn-asmed-ugd-print').addClass('d-none');
+            $('#formAsmedUgd select[name="ranap_dpjp"]').val('').find('.option-temp-dpjp').remove();
+            $('#formAsmedUgd select[name="ranap_smf"]').val('');
             if (ctxTtd && canvasTtd) {
                 ctxTtd.clearRect(0, 0, canvasTtd.width, canvasTtd.height);
             }
@@ -1361,7 +1362,32 @@
                         $('#formAsmedUgd input[name="kontrol_ke"]').val(rsia.kontrol_ke || '');
                         $('#formAsmedUgd input[name="ranap_indikasi"]').val(rsia.ranap_indikasi || '');
                         $('#formAsmedUgd select[name="ranap_smf"]').val(rsia.ranap_smf || '');
-                        $('#formAsmedUgd select[name="ranap_dpjp"]').val(rsia.ranap_dpjp || '');
+                        
+                        // Handler Backward Compatibility DPJP Ranap (Mendukung kd_dokter & Free Text Nama Dokter Lama)
+                        const $dpjpSelect = $('#formAsmedUgd select[name="ranap_dpjp"]');
+                        $dpjpSelect.find('.option-temp-dpjp').remove();
+                        if (rsia.ranap_dpjp) {
+                            if ($dpjpSelect.find(`option[value="${rsia.ranap_dpjp}"]`).length > 0) {
+                                $dpjpSelect.val(rsia.ranap_dpjp);
+                            } else {
+                                let matched = false;
+                                const cleanSearch = rsia.ranap_dpjp.toLowerCase().replace(/dr\.|drg\.|sp\.[a-z]+/g, '').trim();
+                                $dpjpSelect.find('option').each(function() {
+                                    const optText = $(this).text().toLowerCase();
+                                    if ($(this).val() && (optText.includes(rsia.ranap_dpjp.toLowerCase()) || (cleanSearch.length > 2 && optText.includes(cleanSearch)))) {
+                                        $dpjpSelect.val($(this).val());
+                                        matched = true;
+                                        return false;
+                                    }
+                                });
+                                if (!matched) {
+                                    $dpjpSelect.append(`<option class="option-temp-dpjp" value="${rsia.ranap_dpjp}" selected>${rsia.ranap_dpjp} (Teks Lama)</option>`);
+                                }
+                            }
+                        } else {
+                            $dpjpSelect.val('');
+                        }
+
                         if (rsia.ranap_ruang) {
                             $(`input[name="ranap_ruang"][value="${rsia.ranap_ruang}"]`).prop('checked', true);
                         }
