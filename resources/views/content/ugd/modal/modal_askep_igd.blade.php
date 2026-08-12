@@ -737,11 +737,11 @@
         window.masterAskepIgdData.forEach(function(m) {
             const isChecked = selectedMasalahCodes.includes(m.kode_masalah);
             html += `
-                <div class="card item-masalah-card border ${isChecked ? 'border-primary bg-primary-subtle' : 'border-light-subtle bg-white'} shadow-sm mb-1 p-2" data-kode="${m.kode_masalah}" style="cursor: pointer; transition: all 0.2s;">
+                <div class="card item-masalah-card border ${isChecked ? 'border-primary bg-primary-subtle' : 'border-light-subtle bg-white'} shadow-sm mb-1 p-2" id="card_masalah_${m.kode_masalah}" onclick="toggleMasalahCheckbox('${m.kode_masalah}')" style="cursor: pointer; transition: all 0.2s;">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="form-check mb-0">
-                            <input class="form-check-input chk-masalah-askep" type="checkbox" name="masalah[]" value="${m.kode_masalah}" id="masalah_${m.kode_masalah}" ${isChecked ? 'checked' : ''} style="cursor: pointer;">
-                            <label class="form-check-label small fw-semibold text-dark ms-1 cursor-pointer" for="masalah_${m.kode_masalah}" style="cursor: pointer;">
+                            <input class="form-check-input chk-masalah-askep" type="checkbox" name="masalah[]" value="${m.kode_masalah}" id="masalah_${m.kode_masalah}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation();" onchange="onMasalahChanged('${m.kode_masalah}', this.checked)" style="cursor: pointer;">
+                            <label class="form-check-label small fw-semibold text-dark ms-1 cursor-pointer" onclick="event.stopPropagation(); toggleMasalahCheckbox('${m.kode_masalah}');" style="cursor: pointer;">
                                 ${m.kode_masalah} - ${m.nama_masalah}
                             </label>
                         </div>
@@ -756,6 +756,55 @@
         container.html(html);
         updateBadgeCountMasalah();
         renderRencanaIntervensiList(selectedRencanaCodes);
+    }
+
+    // Toggle Masalah via Card / Label Click
+    function toggleMasalahCheckbox(kodeMasalah) {
+        const $chk = $(`#masalah_${kodeMasalah}`);
+        const nextState = !$chk.is(':checked');
+        $chk.prop('checked', nextState);
+        onMasalahChanged(kodeMasalah, nextState);
+    }
+
+    // Handler Utama Saat Masalah Berubah
+    function onMasalahChanged(kodeMasalah, isChecked) {
+        const $card = $(`#card_masalah_${kodeMasalah}`);
+        const $chk = $(`#masalah_${kodeMasalah}`);
+        $chk.prop('checked', isChecked);
+
+        if (isChecked) {
+            $card.removeClass('border-light-subtle bg-white').addClass('border-primary bg-primary-subtle');
+            $card.find('.badge-rencana-count').removeClass('bg-light text-muted border').addClass('bg-primary');
+        } else {
+            $card.removeClass('border-primary bg-primary-subtle').addClass('border-light-subtle bg-white');
+            $card.find('.badge-rencana-count').removeClass('bg-primary').addClass('bg-light text-muted border');
+        }
+
+        updateBadgeCountMasalah();
+
+        // Kumpulkan rencana aktif saat ini
+        let activeRencana = [];
+        $('.chk-rencana-askep:checked').each(function() {
+            activeRencana.push($(this).val());
+        });
+
+        const m = (window.masterAskepIgdData || []).find(item => item.kode_masalah === kodeMasalah);
+        if (isChecked) {
+            if (m && m.master_rencana) {
+                m.master_rencana.forEach(r => {
+                    if (!activeRencana.includes(r.kode_rencana)) {
+                        activeRencana.push(r.kode_rencana);
+                    }
+                });
+            }
+        } else {
+            if (m && m.master_rencana) {
+                const rencanaToRemove = m.master_rencana.map(r => r.kode_rencana);
+                activeRencana = activeRencana.filter(rCode => !rencanaToRemove.includes(rCode));
+            }
+        }
+
+        renderRencanaIntervensiList(activeRencana);
     }
 
     // Update Badge Total Masalah Terpilih
@@ -800,7 +849,6 @@
 
                 if (m.master_rencana && m.master_rencana.length > 0) {
                     m.master_rencana.forEach(function(r) {
-                        // Jika ada array terpilih eksplisit, gunakan. Jika array kosong (misal baru dicentang), defaultkan checked true!
                         const isRencanaChecked = (selectedRencanaCodes && selectedRencanaCodes.length > 0)
                             ? selectedRencanaCodes.includes(r.kode_rencana)
                             : true;
@@ -839,52 +887,6 @@
                 $(this).addClass('d-none');
             }
         });
-    });
-
-    // Klik Card / Baris Masalah Keperawatan
-    $(document).on('click', '.item-masalah-card', function(e) {
-        if ($(e.target).is('input[type="checkbox"]')) {
-            return; // Biarkan event checkbox jalan normal
-        }
-        const $chk = $(this).find('.chk-masalah-askep');
-        $chk.prop('checked', !$chk.is(':checked')).trigger('change');
-    });
-
-    // Toggle Rencana Intervensi saat checklist masalah diklik
-    $(document).on('change', '.chk-masalah-askep', function() {
-        const $card = $(this).closest('.item-masalah-card');
-        const isChecked = $(this).is(':checked');
-        const kodeMasalah = $(this).val();
-
-        if (isChecked) {
-            $card.removeClass('border-light-subtle bg-white').addClass('border-primary bg-primary-subtle');
-            $card.find('.badge-rencana-count').removeClass('bg-light text-muted border').addClass('bg-primary');
-        } else {
-            $card.removeClass('border-primary bg-primary-subtle').addClass('border-light-subtle bg-white');
-            $card.find('.badge-rencana-count').removeClass('bg-primary').addClass('bg-light text-muted border');
-        }
-
-        updateBadgeCountMasalah();
-
-        // Kumpulkan rencana yang saat ini aktif
-        const currentlyCheckedRencana = [];
-        $('.chk-rencana-askep:checked').each(function() {
-            currentlyCheckedRencana.push($(this).val());
-        });
-
-        // Jika masalah baru saja dicentang, tambahkan semua rencananya secara otomatis
-        if (isChecked) {
-            const m = (window.masterAskepIgdData || []).find(item => item.kode_masalah === kodeMasalah);
-            if (m && m.master_rencana) {
-                m.master_rencana.forEach(r => {
-                    if (!currentlyCheckedRencana.includes(r.kode_rencana)) {
-                        currentlyCheckedRencana.push(r.kode_rencana);
-                    }
-                });
-            }
-        }
-
-        renderRencanaIntervensiList(currentlyCheckedRencana);
     });
 
     // Tombol Pilih Semua / Batal Semua Rencana per Masalah
@@ -932,9 +934,7 @@
         const $chk = $(`#masalah_${kodeMasalah}`);
         if ($chk.length > 0) {
             if (shouldCheck && !$chk.is(':checked')) {
-                $chk.prop('checked', true).trigger('change');
-            } else if (!shouldCheck && $chk.is(':checked')) {
-                // Jangan paksa uncheck jika user mungkin memilih manual, kecuali diinginkan
+                onMasalahChanged(kodeMasalah, true);
             }
         }
     }
