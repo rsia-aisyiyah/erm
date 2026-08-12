@@ -793,16 +793,9 @@
             activeRencana.push($(this).val());
         });
 
-        const m = (window.masterAskepIgdData || []).find(item => item.kode_masalah === kodeMasalah);
-        if (isChecked) {
-            if (m && m.master_rencana) {
-                m.master_rencana.forEach(r => {
-                    if (!activeRencana.includes(r.kode_rencana)) {
-                        activeRencana.push(r.kode_rencana);
-                    }
-                });
-            }
-        } else {
+        // Jika masalah di-uncheck, bersihkan rencana yang terkait masalah tersebut
+        if (!isChecked) {
+            const m = (window.masterAskepIgdData || []).find(item => item.kode_masalah === kodeMasalah);
             if (m && m.master_rencana) {
                 const rencanaToRemove = m.master_rencana.map(r => r.kode_rencana);
                 activeRencana = activeRencana.filter(rCode => !rencanaToRemove.includes(rCode));
@@ -846,7 +839,7 @@
                     m.master_rencana.forEach(function(r) {
                         const isRencanaChecked = (selectedRencanaCodes && selectedRencanaCodes.length > 0)
                             ? selectedRencanaCodes.includes(r.kode_rencana)
-                            : true;
+                            : false;
                         if (isRencanaChecked) checkedCount++;
                     });
                 }
@@ -872,7 +865,7 @@
                     m.master_rencana.forEach(function(r) {
                         const isRencanaChecked = (selectedRencanaCodes && selectedRencanaCodes.length > 0)
                             ? selectedRencanaCodes.includes(r.kode_rencana)
-                            : true;
+                            : false;
 
                         html += `
                             <div class="form-check small py-1 mb-0 border-bottom border-light">
