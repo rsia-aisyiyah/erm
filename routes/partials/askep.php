@@ -23,6 +23,7 @@ Route::prefix('asesmen-keperawatan')->group(function ($route) {
     $route->prefix('kandungan')->group(function ($route) {
         $route->get('/', [AskepRalanKebidananController::class, 'getFirst'])->name('asesmen-keperawatan.kandungan.get');
         $route->post('/', [AskepRalanKebidananController::class, 'store'])->name('asesmen-keperawatan.kandungan.store');
+        $route->delete('/', [AskepRalanKebidananController::class, 'delete'])->name('asesmen-keperawatan.kandungan.delete');
         $route->get('print', [AskepRalanKebidananController::class, 'print'])->name('asesmen-keperawatan.kandungan.print');
     });
     $route->prefix('anak')->group(function ($route) {

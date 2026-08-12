@@ -156,4 +156,20 @@ class AskepRalanKebidananController extends Controller
                 . '.pdf'
         );
     }
+
+    public function delete(Request $request)
+    {
+        $no_rawat = $request->no_rawat;
+        if (!$no_rawat) {
+            return $this->errorResponse(null, 'No. Rawat wajib diisi.', 422);
+        }
+
+        try {
+            $this->askep->where('no_rawat', $no_rawat)->delete();
+            $this->track->deleteSql($this->askep, ['no_rawat' => $no_rawat]);
+            return $this->successResponse(null, 'Asesmen Keperawatan Kebidanan berhasil dihapus.');
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th, 'Gagal menghapus data: ' . $th->getMessage(), 500);
+        }
+    }
 }

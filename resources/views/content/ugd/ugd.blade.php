@@ -46,6 +46,7 @@
     @include('content.ugd.modal.pemeriksaan')
     @include('content.ugd.modal.asmed')
     @include('content.ugd.modal.modal_askep_igd')
+    @include('content.ugd.modal.modal_askep_kebidanan')
     @include('content.ranap.modal.modal_penunjang')
     @include('content.poliklinik.modal.modal_riwayat')
     @include('content.ranap.modal.modal_riwayat')
@@ -271,6 +272,9 @@
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')">Pemeriksaan Penunjang</a></li>`
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${row.no_rawat}')">Asesmen Medis UGD ${cekList(row.asmed_igd)} </a></li>`;
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAskepUgd('${row.no_rawat}')">Asesmen Keperawatan UGD ${cekList(row.askep_igd)} </a></li>`;
+                        if ((pasien.jk || '').toUpperCase() === 'P') {
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAskepKebidananUgd('${row.no_rawat}')"><i class="bi bi-gender-female text-danger me-1"></i> Asesmen Keperawatan Kebidanan ${cekList(row.askep_kebidanan)} </a></li>`;
+                        }
                         if (pasien.tgl_lahir) {
                             list += renderListsAsesmenNyeri(pasien.tgl_lahir, row.tgl_registrasi, row.no_rawat);
                         }

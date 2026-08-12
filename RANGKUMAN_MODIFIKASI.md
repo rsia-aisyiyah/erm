@@ -498,4 +498,46 @@ CREATE TABLE IF NOT EXISTS `rsia_penilaian_gizi_igd` (
 | `routes/web.php` | Pendaftaran route `/ugd/asesmen/keperawatan` (GET, MASTER, SIMPAN, HAPUS, PRINT). |
 | `resources/views/content/ugd/ugd.blade.php` | Inklusi `modal_askep_igd` dan penambahan menu aksi **"Asesmen Keperawatan UGD"**. |
 
+---
+
+## Modifikasi 8: Fitur Asesmen Keperawatan Kebidanan & Kandungan UGD
+
+### 1. Deskripsi Perubahan
+Mengintegrasikan modul pengkajian klinis keperawatan obstetri dan ginekologi gawat darurat (kebidanan) ke dalam layanan UGD:
+- **Formulir Interaktif Komprehensif (6 Kartu Seksi / 11 Bagian)**:
+  1. **I. Keadaan Umum & Tanda Vital**: Petugas/Bidan Pengkaji (Select2), Anamnesis (Auto/Allo), Tanggal Asesmen, TD, Nadi, RR, Suhu, GCS, BB, TB, LILA, dan Auto-Kalkulasi BMI.
+  2. **II. Pemeriksaan Kebidanan & Penunjang**: TFU, TBJ, Letak, Presentasi, Penurunan, HIS/Kontraksi (frekuensi, kekuatan, durasi), Gerak Janin / BJJ (frekuensi & keteraturan), Pemeriksaan Dalam (Portio, Serviks, Ketuban, Hodge), serta Penunjang Kebidanan (Inspekulo, CTG, USG, Laboratorium, Lakmus, Evaluasi Panggul).
+  3. **III. Riwayat Kesehatan, Reproduksi & Obstetri**: Keluhan Utama, Riwayat Menstruasi (Menarche, Siklus, Lama, Jumlah, Keteraturan, Keluhan), Riwayat Perkawinan (Status, Frekuensi, Usia Nikah 1/2/3 & Status), Riwayat Kehamilan Sekarang (HPHT dengan Auto-Kalkulasi Usia Hamil & HPL/TP, G, P, A, Hidup, Imunisasi TT), Riwayat Persalinan yang Lalu (Tabel CRUD Riwayat Partus), serta Riwayat KB & Ginekologi.
+  4. **IV. Status Fungsional, Psikososial & Risiko Jatuh**: Alat Bantu, Prothesa, ADL (Mandiri/Dibantu), Status Psikologis, Hubungan Keluarga, Tinggal Bersama, Status Ekonomi, Budaya, Edukasi, serta Evaluasi Risiko Jatuh (*Get Up and Go Test*) dengan Auto-Kalkulasi Tingkat Risiko.
+  5. **V. Skrining Gizi (MST) & Pengkajian Nyeri**: Penurunan BB 6 bulan terakhir, asupan makan berkurang, total skor gizi MST otomatis, serta Skrining Nyeri PQRST dengan visual color slider (0-10) dan pelaporan dokter.
+  6. **VI. Masalah & Rencana Tindakan Kebidanan**: Diagnosis masalah kebidanan yang ditemukan dan rencana tindakan asuhan kebidanan yang diberikan.
+- **Integrasi Menu UGD**:
+  - Menu aksi **"Asesmen Keperawatan Kebidanan"** otomatis muncul pada dropdown aksi pasien wanita (`jk == 'P'`) dengan indikator centang hijau `cekList(row.askep_kebidanan)`.
+  - Tombol CRUD lengkap (Simpan, Perbarui, Hapus dengan konfirmasi SweetAlert2, dan Cetak PDF A4 resmi).
+
+---
+
+### 2. Struktur Basis Data (Standar SIMRS Khanza)
+- `penilaian_awal_keperawatan_kebidanan` (Primary Key: `no_rawat`)
+- `riwayat_persalinan_pasien` (Relasi: `no_rkm_medis`)
+
+---
+
+### 3. Daftar Berkas yang Ditambahkan & Dimodifikasi
+
+#### A. Berkas Baru (*New Files*)
+| File | Fungsi |
+| :--- | :--- |
+| `resources/views/content/ugd/modal/modal_askep_kebidanan.blade.php` | Modal form interaktif Asesmen Keperawatan Kebidanan UGD lengkap dengan kalkulasi BMI, HPHT/TP, risiko jatuh, skrining gizi MST, visual pain slider, tabel partus, dan tombol cetak/hapus. |
+
+#### B. Berkas Dimodifikasi (*Modified Files*)
+| File | Rincian Perubahan |
+| :--- | :--- |
+| `app/Models/RegPeriksa.php` | Menambahkan relasi `askepKebidanan()` ke model `AskepRalanKebidanan`. |
+| `app/Http/Controllers/UgdController.php` | Eager load `'askepKebidanan'` untuk status centang hijau di DataTables UGD. |
+| `app/Http/Controllers/AskepRalanKebidananController.php` | Menambahkan method `delete()` untuk menghapus data asesmen kebidanan. |
+| `routes/partials/askep.php` | Mendaftarkan route `DELETE /asesmen-keperawatan/kandungan`. |
+| `resources/views/content/ugd/ugd.blade.php` | Inklusi `modal_askep_kebidanan` dan penambahan menu aksi **"Asesmen Keperawatan Kebidanan"** pada dropdown aksi pasien UGD. |
+
+
 
