@@ -1,43 +1,108 @@
 @extends('content.print.main')
 @section('content')
     <style>
-        .box-title {
-            border: 1.5px solid #000;
-            text-align: center;
-            font-weight: bold;
-            font-size: 11.5px;
-            padding: 3px;
-            margin-top: 3px;
-            margin-bottom: 5px;
-            background-color: #f2f2f2;
-            letter-spacing: 0.5px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1a1a1a;
+            font-size: 9pt;
+            line-height: 1.25;
         }
-        .table-borderless td, .table-borderless th {
+        .table-kop {
+            width: 100%;
+            border-collapse: collapse;
+            border-bottom: 2px solid #000;
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+        }
+        .table-kop td {
+            vertical-align: middle;
             border: none;
-            padding: 1.5px 3px;
-            font-size: 9.5px;
+            padding: 1px;
+        }
+        .table-pasien {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 8.5pt;
+        }
+        .table-pasien td {
+            border: 1px solid #333;
+            padding: 2px 4px;
             vertical-align: top;
         }
-        .box-section {
-            border: 1px solid #000;
-            padding: 4px 6px;
+        .doc-title {
+            border: 1.5px solid #222;
+            background-color: #f1f4f8;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10.5pt;
+            padding: 4px;
+            margin: 4px 0 6px 0;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+        .table-data {
+            width: 100%;
+            border-collapse: collapse;
             margin-bottom: 5px;
-            font-size: 9.5px;
+            font-size: 8.5pt;
             page-break-inside: avoid;
         }
-        .section-header {
-            background-color: #e9ecef;
-            font-weight: bold;
-            font-size: 9.5px;
-            padding: 2.5px 5px;
-            border: 1px solid #000;
-            margin-top: 4px;
-            margin-bottom: 2px;
+        .table-data td, .table-data th {
+            border: 1px solid #444;
+            padding: 3px 5px;
+            vertical-align: top;
         }
-        .checkbox-symbol {
-            font-family: DejaVu Sans, sans-serif;
-            font-size: 10.5px;
+        .th-section {
+            background-color: #e9eef4;
+            color: #0f2d59;
             font-weight: bold;
+            font-size: 8.8pt;
+            text-align: left;
+            padding: 3.5px 6px !important;
+            border: 1px solid #444;
+            letter-spacing: 0.3px;
+        }
+        .bg-light-row {
+            background-color: #fcfcfc;
+        }
+        .label-cell {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .badge-status {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 8pt;
+        }
+        .badge-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+        .badge-warning {
+            background-color: #fff8e1;
+            color: #f57f17;
+            border: 1px solid #ffe082;
+        }
+        .badge-danger {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+        .badge-info {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+        .list-unstyled {
+            margin: 0;
+            padding-left: 14px;
+        }
+        .list-unstyled li {
+            margin-bottom: 2px;
         }
         .avoid-break {
             page-break-inside: avoid;
@@ -58,43 +123,43 @@
         <thead>
             <tr>
                 <th style="border: none; padding: 0; font-weight: normal; text-align: left;">
-                    <!-- HEADER KOP & DATA PASIEN -->
-                    <table width="100%" class="table-borderless" style="border-bottom: 2px solid #000; padding-bottom: 3px; margin-bottom: 2px;">
+                    <!-- HEADER KOP RUMAH SAKIT & DATA PASIEN -->
+                    <table class="table-kop">
                         <tr>
-                            <td width="10%" style="vertical-align: middle; text-align: center;">
-                                <img src="{{ public_path('img/logo.png') }}" width="50" />
+                            <td width="9%" style="text-align: center;">
+                                <img src="{{ public_path('img/logo.png') }}" width="48" />
                             </td>
-                            <td width="55%" style="vertical-align: middle;">
-                                <strong style="font-size: 11.5px; display: block;">RUMAH SAKIT IBU DAN ANAK AISYIYAH</strong>
-                                <strong style="font-size: 11.5px; display: block;">PEKAJANGAN &ndash; PEKALONGAN</strong>
-                                <span style="font-size: 8.5px; display: block;">Jl. Raya Pekajangan No. 610 Pekajangan, Pekalongan, 51172</span>
-                                <span style="font-size: 8.5px; display: block;">Telp. (0285) 785909 Email: pekajangan@rsiaaisyiyah.com Website: www.rsiaaisyiyah.com</span>
+                            <td width="53%" style="padding-left: 6px;">
+                                <strong style="font-size: 11pt; color: #0b3c5d; display: block;">RUMAH SAKIT IBU DAN ANAK AISYIYAH</strong>
+                                <strong style="font-size: 11pt; color: #0b3c5d; display: block;">PEKAJANGAN &ndash; PEKALONGAN</strong>
+                                <span style="font-size: 8pt; color: #444; display: block; margin-top: 1px;">Jl. Raya Pekajangan No. 610 Pekajangan, Pekalongan, 51172</span>
+                                <span style="font-size: 8pt; color: #444; display: block;">Telp. (0285) 785909 &bull; Email: pekajangan@rsiaaisyiyah.com</span>
                             </td>
-                            <td width="35%" style="vertical-align: top;">
-                                <table width="100%" class="border" style="font-size: 9px; border-collapse: collapse;">
+                            <td width="38%">
+                                <table class="table-pasien">
                                     <tr>
-                                        <td width="35%" style="padding: 1.5px 3px; border: 1px solid #000;"><strong>No. RM</strong></td>
-                                        <td width="65%" style="padding: 1.5px 3px; border: 1px solid #000;">: {{ $pasien->no_rkm_medis ?? '-' }}</td>
+                                        <td width="30%" class="label-cell"><strong>No. RM</strong></td>
+                                        <td width="70%">: <strong>{{ $pasien->no_rkm_medis ?? '-' }}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 1.5px 3px; border: 1px solid #000;"><strong>Nama</strong></td>
-                                        <td style="padding: 1.5px 3px; border: 1px solid #000;">: {{ $pasien->nm_pasien ?? '-' }}</td>
+                                        <td class="label-cell"><strong>Nama Pasien</strong></td>
+                                        <td>: <strong>{{ $pasien->nm_pasien ?? '-' }}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 1.5px 3px; border: 1px solid #000;"><strong>Tgl. Lahir</strong></td>
-                                        <td style="padding: 1.5px 3px; border: 1px solid #000;">: {{ $pasien && $pasien->tgl_lahir ? date('d-m-Y', strtotime($pasien->tgl_lahir)) : '-' }} ({{ $pasien->jk ?? '-' }})</td>
+                                        <td class="label-cell"><strong>Tgl. Lahir / JK</strong></td>
+                                        <td>: {{ $pasien && $pasien->tgl_lahir ? date('d-m-Y', strtotime($pasien->tgl_lahir)) : '-' }} ({{ $pasien->jk ?? '-' }})</td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 1.5px 3px; border: 1px solid #000;"><strong>Alamat</strong></td>
-                                        <td style="padding: 1.5px 3px; border: 1px solid #000;">: {{ $pasien->alamat ?? '-' }}</td>
+                                        <td class="label-cell"><strong>Alamat</strong></td>
+                                        <td>: {{ $pasien->alamat ?? '-' }}</td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
                     </table>
 
-                    <div class="box-title">
-                        PENGKAJIAN AWAL KEPERAWATAN GAWAT DARURAT
+                    <div class="doc-title">
+                        PENGKAJIAN AWAL KEPERAWATAN GAWAT DARURAT (IGD)
                     </div>
                 </th>
             </tr>
@@ -103,290 +168,360 @@
             <tr>
                 <td style="border: none; padding: 0;">
                     <!-- META DATA ASESMEN -->
-                    <table width="100%" class="table-print" style="margin-bottom: 4px; font-size: 9px; border-collapse: collapse;">
-                        <tr style="background-color: #f8f9fa;">
-                            <td width="33%" style="padding: 2.5px 4px;">
-                                <strong>Tgl. Asuhan:</strong> {{ date('d-m-Y H:i', strtotime($data->tanggal)) }}
+                    <table class="table-data" style="margin-bottom: 5px;">
+                        <tr style="background-color: #f8fafc;">
+                            <td width="33%">
+                                <strong>Tgl. Masuk / Asuhan:</strong> {{ date('d-m-Y H:i', strtotime($data->tanggal)) }}
                             </td>
-                            <td width="33%" style="padding: 2.5px 4px;">
+                            <td width="37%">
                                 <strong>Perawat Pengkaji:</strong> {{ $petugas->nama ?? $data->nip ?? '-' }}
                             </td>
-                            <td width="34%" style="padding: 2.5px 4px;">
-                                <strong>Informasi:</strong> {{ $data->informasi ?? '-' }}
+                            <td width="30%">
+                                <strong>Sumber Informasi:</strong> {{ $data->informasi ?? '-' }}
                             </td>
                         </tr>
                     </table>
 
-                    <!-- SEKSI I. RIWAYAT KESEHATAN -->
-                    <div class="section-header">I. RIWAYAT KESEHATAN PASIEN</div>
-                    <table width="100%" class="table-print" style="margin-bottom: 4px; font-size: 9px; border-collapse: collapse;">
-                        <tr>
-                            <td width="22%" style="padding: 2px 4px; font-weight: bold;">Keluhan Utama (RPS)</td>
-                            <td width="2%" style="padding: 2px 4px; text-align: center;">:</td>
-                            <td width="76%" style="padding: 2px 4px;">{{ $data->keluhan_utama ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 2px 4px; font-weight: bold;">Riwayat Penyakit Dahulu (RPD)</td>
-                            <td style="padding: 2px 4px; text-align: center;">:</td>
-                            <td style="padding: 2px 4px;">{{ $data->rpd ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 2px 4px; font-weight: bold;">Riwayat Penggunaan Obat (RPO)</td>
-                            <td style="padding: 2px 4px; text-align: center;">:</td>
-                            <td style="padding: 2px 4px;">{{ $data->rpo ?? '-' }}</td>
-                        </tr>
-                        @if(($pasien->jk ?? '') == 'P' || ($data->status_kehamilan ?? '') == 'Hamil')
-                        <tr>
-                            <td style="padding: 2px 4px; font-weight: bold;">Status Obstetrik / Kehamilan</td>
-                            <td style="padding: 2px 4px; text-align: center;">:</td>
-                            <td style="padding: 2px 4px;">
-                                <strong>Status:</strong> {{ $data->status_kehamilan ?? 'Tidak Hamil' }} &nbsp;&bull;&nbsp;
-                                <strong>G:</strong> {{ $data->gravida ?? '-' }} &nbsp;&bull;&nbsp;
-                                <strong>P:</strong> {{ $data->para ?? '-' }} &nbsp;&bull;&nbsp;
-                                <strong>A:</strong> {{ $data->abortus ?? '-' }} &nbsp;&bull;&nbsp;
-                                <strong>HPHT:</strong> {{ $data->hpht ?? '-' }}
-                            </td>
-                        </tr>
-                        @endif
-                    </table>
-
-                    <!-- SEKSI II. PEMERIKSAAN FISIK KEPERAWATAN -->
-                    <div class="section-header">II. PEMERIKSAAN FISIK SISTEMATIS</div>
-                    <table width="100%" class="border" style="margin-bottom: 4px; font-size: 8.5px; border-collapse: collapse;">
-                        <tr style="background-color: #fafafa;">
-                            <td width="20%" style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Tekanan Intrakranial</td>
-                            <td width="30%" style="padding: 2px 4px; border: 1px solid #000;">{{ $data->tekanan ?? '-' }}</td>
-                            <td width="20%" style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Pupil</td>
-                            <td width="30%" style="padding: 2px 4px; border: 1px solid #000;">{{ $data->pupil ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Neurosensorik / Muskuloskeletal</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->neurosensorik ?? '-' }}</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Integumen</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->integumen ?? '-' }}</td>
-                        </tr>
-                        <tr style="background-color: #fafafa;">
-                            <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Turgor Kulit</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->turgor ?? '-' }}</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Edema</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->edema ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Mukosa Mulut</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->mukosa ?? '-' }}</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Perdarahan</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000;">
-                                {{ $data->perdarahan ?? 'Tidak Ada' }}
-                                @if(($data->perdarahan ?? '') == 'Ada')
-                                    ({{ $data->jumlah_perdarahan ?? '-' }} cc, Warna: {{ $data->warna_perdarahan ?? '-' }})
-                                @endif
-                            </td>
-                        </tr>
-                        <tr style="background-color: #fafafa;">
-                            <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Intoksikasi</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->intoksikasi ?? 'Tidak Ada' }}</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Eliminasi</td>
-                            <td style="padding: 2px 4px; border: 1px solid #000;">
-                                <strong>BAB:</strong> {{ $data->bab ? $data->bab . ' x/' . $data->xbab : '-' }}, Konsistensi: {{ $data->kbab ?? '-' }}, Warna: {{ $data->wbab ?? '-' }}<br>
-                                <strong>BAK:</strong> {{ $data->bak ? $data->bak . ' x/' . $data->xbak : '-' }}, Warna: {{ $data->wbak ?? '-' }} {{ (!empty($data->lbak) && $data->lbak != '-') ? '('.$data->lbak.')' : '' }}
-                            </td>
-                        </tr>
-                    </table>
-
-                    <!-- SEKSI III & IV. PSIKOSOSIAL & FUNGSIONAL (2 KOLOM) -->
-                    <div class="avoid-break">
-                        <table width="100%" style="border-collapse: collapse; border: none; margin-bottom: 4px;">
+                    <!-- I. RIWAYAT KESEHATAN PASIEN -->
+                    <table class="table-data">
+                        <thead>
                             <tr>
-                                <td width="50%" style="vertical-align: top; padding: 0 2px 0 0; border: none;">
-                                    <div class="section-header">III. PSIKOSOSIAL, BUDAYA &amp; SPIRITUAL</div>
-                                    <table width="100%" class="border" style="font-size: 8.5px; border-collapse: collapse;">
-                                        <tr>
-                                            <td width="42%" style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Kondisi Psikologis</td>
-                                            <td width="58%" style="padding: 2px 3px; border: 1px solid #000;">{{ $data->psikologis ?? '-' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Gangguan Jiwa Masa Lalu</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">{{ $data->jiwa ?? '-' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Perilaku Berisiko</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">
-                                                {{ $data->perilaku ?? '-' }}
-                                                @if(!empty($data->dilaporkan) && $data->dilaporkan != '-') (Lapor: {{ $data->dilaporkan }}, {{ $data->sebutkan }}) @endif
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Hubungan Keluarga</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">{{ $data->hubungan ?? '-' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Tinggal Dengan</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">{{ $data->tinggal_dengan ?? '-' }} {{ (!empty($data->ket_tinggal) && $data->ket_tinggal != '-') ? '('.$data->ket_tinggal.')' : '' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Nilai Budaya / Khusus</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">{{ $data->budaya ?? '-' }} {{ (!empty($data->ket_budaya) && $data->ket_budaya != '-') ? '('.$data->ket_budaya.')' : '' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Pendidikan PJ</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">{{ $data->pendidikan_pj ?? '-' }} {{ (!empty($data->ket_pendidikan_pj) && $data->ket_pendidikan_pj != '-') ? '('.$data->ket_pendidikan_pj.')' : '' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Edukasi Diberikan</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">{{ $data->edukasi ?? '-' }} {{ (!empty($data->ket_edukasi) && $data->ket_edukasi != '-') ? '('.$data->ket_edukasi.')' : '' }}</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td width="50%" style="vertical-align: top; padding: 0 0 0 2px; border: none;">
-                                    <div class="section-header">IV. PENGKAJIAN FUNGSIONAL (ADL)</div>
-                                    <table width="100%" class="border" style="font-size: 8.5px; border-collapse: collapse;">
-                                        <tr>
-                                            <td width="42%" style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Kemampuan Aktivitas</td>
-                                            <td width="58%" style="padding: 2px 3px; border: 1px solid #000;">{{ $data->kemampuan ?? '-' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Aktivitas Sehari-hari</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">{{ $data->aktifitas ?? '-' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Alat Bantu Jalan</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">{{ $data->alat_bantu ?? 'Tidak' }} {{ (!empty($data->ket_bantu) && $data->ket_bantu != '-') ? '('.$data->ket_bantu.')' : '' }}</td>
-                                        </tr>
-                                    </table>
-
-                                    <div class="section-header" style="margin-top: 4px;">VI. PENILAIAN RISIKO JATUH</div>
-                                    <table width="100%" class="border" style="font-size: 8.5px; border-collapse: collapse;">
-                                        <tr>
-                                            <td width="70%" style="padding: 2px 3px; border: 1px solid #000;">a. Cara berjalan sempoyongan / limbung</td>
-                                            <td width="30%" style="padding: 2px 3px; border: 1px solid #000; text-align: center;"><strong>{{ $data->berjalan_a ?? 'Tidak' }}</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">b. Memegang penopang saat akan duduk</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; text-align: center;"><strong>{{ $data->berjalan_b ?? 'Tidak' }}</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">c. Menggunakan alat bantu jalan</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; text-align: center;"><strong>{{ $data->berjalan_c ?? 'Tidak' }}</strong></td>
-                                        </tr>
-                                        <tr style="background-color: #f8f9fa;">
-                                            <td style="padding: 2px 3px; border: 1px solid #000; font-weight: bold;">Hasil Evaluasi Risiko Jatuh</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; text-align: center; font-weight: bold; color: {{ str_contains($data->hasil ?? '', 'tinggi') ? '#d9534f' : (str_contains($data->hasil ?? '', 'rendah') ? '#f0ad4e' : '#5cb85c') }};">
-                                                {{ $data->hasil ?? 'Tidak beresiko' }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px 3px; border: 1px solid #000;">Lapor Dokter</td>
-                                            <td style="padding: 2px 3px; border: 1px solid #000; text-align: center;">{{ $data->lapor ?? 'Tidak' }} {{ (!empty($data->ket_lapor) && $data->ket_lapor != '-') ? '('.$data->ket_lapor.')' : '' }}</td>
-                                        </tr>
-                                    </table>
-                                </td>
+                                <th colspan="3" class="th-section">I. RIWAYAT KESEHATAN PASIEN</th>
                             </tr>
-                        </table>
-                    </div>
-
-                    <!-- SEKSI V. PENGKAJIAN NYERI (PQRST) -->
-                    <div class="avoid-break">
-                        <div class="section-header">V. PENGKAJIAN TINGKAT SKALA NYERI (PQRST)</div>
-                        <table width="100%" class="border" style="margin-bottom: 4px; font-size: 8.5px; border-collapse: collapse;">
-                            <tr style="background-color: #fafafa;">
-                                <td width="15%" style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Status Nyeri</td>
-                                <td width="35%" style="padding: 2px 4px; border: 1px solid #000;"><strong>{{ $data->nyeri ?? 'Tidak Ada Nyeri' }}</strong></td>
-                                <td width="15%" style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Skala Nyeri (0-10)</td>
-                                <td width="35%" style="padding: 2px 4px; border: 1px solid #000;">
-                                    <strong style="font-size: 10px; color: {{ ($data->skala_nyeri ?? 0) >= 7 ? '#d9534f' : (($data->skala_nyeri ?? 0) >= 4 ? '#f0ad4e' : '#5cb85c') }};">
-                                        Skala {{ $data->skala_nyeri ?? '0' }} / 10
-                                    </strong>
-                                </td>
-                            </tr>
-                            @if(($data->nyeri ?? '') != 'Tidak Ada Nyeri' && ($data->nyeri ?? '') != '')
+                        </thead>
+                        <tbody>
                             <tr>
-                                <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Provokes (Pemicu)</td>
-                                <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->provokes ?? '-' }} {{ (!empty($data->ket_provokes) && $data->ket_provokes != '-') ? '('.$data->ket_provokes.')' : '' }}</td>
-                                <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Quality (Kualitas)</td>
-                                <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->quality ?? '-' }} {{ (!empty($data->ket_quality) && $data->ket_quality != '-') ? '('.$data->ket_quality.')' : '' }}</td>
-                            </tr>
-                            <tr style="background-color: #fafafa;">
-                                <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Region (Lokasi / Radiasi)</td>
-                                <td style="padding: 2px 4px; border: 1px solid #000;">{{ $data->lokasi ?? '-' }} (Menyebar: {{ $data->menyebar ?? 'Tidak' }})</td>
-                                <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Timing &amp; Nyeri Hilang</td>
-                                <td style="padding: 2px 4px; border: 1px solid #000;">Durasi: {{ $data->durasi ?? '-' }}, Hilang: {{ $data->nyeri_hilang ?? '-' }} {{ (!empty($data->ket_nyeri) && $data->ket_nyeri != '-') ? '('.$data->ket_nyeri.')' : '' }}</td>
+                                <td width="24%" class="label-cell">Keluhan Utama (RPS) <span style="color:red;">*</span></td>
+                                <td width="2%" style="text-align: center;">:</td>
+                                <td width="74%">{{ $data->keluhan_utama ?? '-' }}</td>
                             </tr>
                             <tr>
-                                <td style="padding: 2px 4px; border: 1px solid #000; font-weight: bold;">Lapor Ke Dokter</td>
-                                <td colspan="3" style="padding: 2px 4px; border: 1px solid #000;">{{ $data->pada_dokter ?? 'Tidak' }} {{ (!empty($data->ket_dokter) && $data->ket_dokter != '-') ? ' (Jam Lapor: '.$data->ket_dokter.')' : '' }}</td>
+                                <td class="label-cell">Riwayat Penyakit Dahulu (RPD)</td>
+                                <td style="text-align: center;">:</td>
+                                <td>{{ $data->rpd ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Riwayat Penggunaan Obat (RPO)</td>
+                                <td style="text-align: center;">:</td>
+                                <td>{{ $data->rpo ?? '-' }}</td>
+                            </tr>
+                            @if(($pasien->jk ?? '') == 'P' || ($data->status_kehamilan ?? '') == 'Hamil')
+                            <tr>
+                                <td class="label-cell">Status Obstetrik / Kehamilan</td>
+                                <td style="text-align: center;">:</td>
+                                <td>
+                                    <strong>Status:</strong> <span class="badge-status {{ ($data->status_kehamilan ?? '') == 'Hamil' ? 'badge-info' : 'badge-success' }}">{{ $data->status_kehamilan ?? 'Tidak Hamil' }}</span>
+                                    @if(($data->status_kehamilan ?? '') == 'Hamil')
+                                        &nbsp;&bull;&nbsp; <strong>Gravida (G):</strong> {{ $data->gravida ?? '-' }}
+                                        &nbsp;&bull;&nbsp; <strong>Para (P):</strong> {{ $data->para ?? '-' }}
+                                        &nbsp;&bull;&nbsp; <strong>Abortus (A):</strong> {{ $data->abortus ?? '-' }}
+                                        &nbsp;&bull;&nbsp; <strong>HPHT:</strong> {{ $data->hpht ?? '-' }}
+                                    @endif
+                                </td>
                             </tr>
                             @endif
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
 
-                    <!-- SEKSI VII. MASALAH & RENCANA KEPERAWATAN -->
+                    <!-- II. PEMERIKSAAN FISIK KEPERAWATAN SISTEMATIS -->
+                    <table class="table-data">
+                        <thead>
+                            <tr>
+                                <th colspan="4" class="th-section">II. PEMERIKSAAN FISIK KEPERAWATAN SISTEMATIS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width="20%" class="label-cell">Tekanan Intrakranial</td>
+                                <td width="30%">{{ $data->tekanan ?? '-' }}</td>
+                                <td width="20%" class="label-cell">Pupil</td>
+                                <td width="30%">{{ $data->pupil ?? '-' }}</td>
+                            </tr>
+                            <tr class="bg-light-row">
+                                <td class="label-cell">Neurosensorik / Muskulo</td>
+                                <td>{{ $data->neurosensorik ?? '-' }}</td>
+                                <td class="label-cell">Integumen</td>
+                                <td>{{ $data->integumen ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Turgor Kulit</td>
+                                <td>{{ $data->turgor ?? '-' }}</td>
+                                <td class="label-cell">Edema</td>
+                                <td>{{ $data->edema ?? '-' }}</td>
+                            </tr>
+                            <tr class="bg-light-row">
+                                <td class="label-cell">Mukosa Mulut</td>
+                                <td>{{ $data->mukosa ?? '-' }}</td>
+                                <td class="label-cell">Intoksikasi</td>
+                                <td>{{ $data->intoksikasi ?? 'Tidak Ada' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Perdarahan</td>
+                                <td colspan="3">
+                                    <strong>{{ $data->perdarahan ?? 'Tidak Ada' }}</strong>
+                                    @if(($data->perdarahan ?? '') == 'Ada')
+                                        &nbsp;( Jumlah: <strong>{{ $data->jumlah_perdarahan ?? '-' }} cc</strong>, Warna: <strong>{{ $data->warna_perdarahan ?? '-' }}</strong> )
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr class="bg-light-row">
+                                <td class="label-cell">Status Eliminasi</td>
+                                <td colspan="3">
+                                    <strong>BAB :</strong> {{ $data->bab ? $data->bab . ' x / ' . $data->xbab : '-' }} &nbsp;&bull;&nbsp;
+                                    <strong>Konsistensi :</strong> {{ $data->kbab ?? '-' }} &nbsp;&bull;&nbsp;
+                                    <strong>Warna :</strong> {{ $data->wbab ?? '-' }}
+                                    <br>
+                                    <strong>BAK :</strong> {{ $data->bak ? $data->bak . ' x / ' . $data->xbak : '-' }} &nbsp;&bull;&nbsp;
+                                    <strong>Warna :</strong> {{ $data->wbak ?? '-' }}
+                                    @if(!empty($data->lbak) && $data->lbak != '-')
+                                        &nbsp;&bull;&nbsp; <strong>Keterangan :</strong> {{ $data->lbak }}
+                                    @endif
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- III & IV. PSIKOSOSIAL & FUNGSIONAL (SIDE BY SIDE 50% - 50%) -->
                     <div class="avoid-break">
-                        <div class="section-header">VII. MASALAH &amp; RENCANA KEPERAWATAN (INTERVENSI)</div>
-                        <table width="100%" class="border" style="margin-bottom: 4px; font-size: 8.5px; border-collapse: collapse;">
-                            <tr style="background-color: #eaeaea; text-align: center;">
-                                <th width="45%" style="padding: 2.5px 4px; border: 1px solid #000;">Masalah Keperawatan Teridentifikasi</th>
-                                <th width="55%" style="padding: 2.5px 4px; border: 1px solid #000;">Rencana Intervensi Keperawatan</th>
-                            </tr>
+                        <table width="100%" style="border-collapse: collapse; border: none; margin-bottom: 5px;">
                             <tr>
-                                <td style="vertical-align: top; padding: 4px 6px; border: 1px solid #000;">
-                                    @if(count($masalahList) > 0)
-                                        <ul style="margin: 0; padding-left: 15px;">
-                                            @foreach($masalahList as $masalah)
-                                                <li style="margin-bottom: 2px;">
-                                                    <strong>{{ $masalah->masterMasalah->nama_masalah ?? $masalah->kode_masalah }}</strong>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @else
-                                        <em>- Tidak ada masalah keperawatan yang dipilih -</em>
-                                    @endif
+                                <!-- KOLOM KIRI: PSIKOSOSIAL -->
+                                <td width="50%" style="vertical-align: top; padding: 0 3px 0 0; border: none;">
+                                    <table class="table-data" style="margin-bottom: 0;">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2" class="th-section">III. PSIKOSOSIAL, BUDAYA &amp; SPIRITUAL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td width="44%" class="label-cell">Kondisi Psikologis</td>
+                                                <td width="56%">{{ $data->psikologis ?? '-' }}</td>
+                                            </tr>
+                                            <tr class="bg-light-row">
+                                                <td class="label-cell">Riwayat Jiwa Masa Lalu</td>
+                                                <td>{{ $data->jiwa ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-cell">Perilaku Berisiko</td>
+                                                <td>
+                                                    {{ $data->perilaku ?? '-' }}
+                                                    @if(!empty($data->dilaporkan) && $data->dilaporkan != '-') <br><span style="font-size: 7.5pt; color: #555;">(Lapor: {{ $data->dilaporkan }}, {{ $data->sebutkan }})</span> @endif
+                                                </td>
+                                            </tr>
+                                            <tr class="bg-light-row">
+                                                <td class="label-cell">Hubungan Keluarga</td>
+                                                <td>{{ $data->hubungan ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-cell">Tinggal Bersama</td>
+                                                <td>{{ $data->tinggal_dengan ?? '-' }} {{ (!empty($data->ket_tinggal) && $data->ket_tinggal != '-') ? '('.$data->ket_tinggal.')' : '' }}</td>
+                                            </tr>
+                                            <tr class="bg-light-row">
+                                                <td class="label-cell">Nilai Budaya / Khusus</td>
+                                                <td>{{ $data->budaya ?? '-' }} {{ (!empty($data->ket_budaya) && $data->ket_budaya != '-') ? '('.$data->ket_budaya.')' : '' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-cell">Pendidikan Penanggung Jawab</td>
+                                                <td>{{ $data->pendidikan_pj ?? '-' }} {{ (!empty($data->ket_pendidikan_pj) && $data->ket_pendidikan_pj != '-') ? '('.$data->ket_pendidikan_pj.')' : '' }}</td>
+                                            </tr>
+                                            <tr class="bg-light-row">
+                                                <td class="label-cell">Edukasi Diberikan Kepada</td>
+                                                <td>{{ $data->edukasi ?? '-' }} {{ (!empty($data->ket_edukasi) && $data->ket_edukasi != '-') ? '('.$data->ket_edukasi.')' : '' }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </td>
-                                <td style="vertical-align: top; padding: 4px 6px; border: 1px solid #000;">
-                                    @if(count($rencanaList) > 0)
-                                        <ul style="margin: 0; padding-left: 15px;">
-                                            @foreach($rencanaList as $rencana)
-                                                <li style="margin-bottom: 2px;">
-                                                    {{ $rencana->masterRencana->rencana_keperawatan ?? $rencana->kode_rencana }}
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @else
-                                        <em>- Tidak ada rencana intervensi yang dipilih -</em>
-                                    @endif
 
-                                    @if(!empty($data->rencana) && $data->rencana != '-')
-                                        <div style="margin-top: 4px; border-top: 1px dashed #ccc; padding-top: 2px;">
-                                            <strong>Catatan / Rencana Tambahan:</strong><br>
-                                            <span style="white-space: pre-line;">{{ $data->rencana }}</span>
-                                        </div>
-                                    @endif
+                                <!-- KOLOM KANAN: FUNGSIONAL & RISIKO JATUH -->
+                                <td width="50%" style="vertical-align: top; padding: 0 0 0 3px; border: none;">
+                                    <table class="table-data" style="margin-bottom: 4px;">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2" class="th-section">IV. PENGKAJIAN FUNGSIONAL (ADL)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td width="44%" class="label-cell">Kemampuan Aktivitas</td>
+                                                <td width="56%">{{ $data->kemampuan ?? '-' }}</td>
+                                            </tr>
+                                            <tr class="bg-light-row">
+                                                <td class="label-cell">Aktivitas Sehari-hari</td>
+                                                <td>{{ $data->aktifitas ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-cell">Penggunaan Alat Bantu Jalan</td>
+                                                <td>{{ $data->alat_bantu ?? 'Tidak' }} {{ (!empty($data->ket_bantu) && $data->ket_bantu != '-') ? '('.$data->ket_bantu.')' : '' }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table-data" style="margin-bottom: 0;">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2" class="th-section">V. PENILAIAN RISIKO JATUH (GET UP &amp; GO)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td width="72%">a. Cara berjalan tidak seimbang / sempoyongan / limbung</td>
+                                                <td width="28%" style="text-align: center;"><strong>{{ $data->berjalan_a ?? 'Tidak' }}</strong></td>
+                                            </tr>
+                                            <tr class="bg-light-row">
+                                                <td>b. Memegang pinggiran kursi / meja saat akan duduk</td>
+                                                <td style="text-align: center;"><strong>{{ $data->berjalan_b ?? 'Tidak' }}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td>c. Menggunakan alat bantu jalan saat masuk IGD</td>
+                                                <td style="text-align: center;"><strong>{{ $data->berjalan_c ?? 'Tidak' }}</strong></td>
+                                            </tr>
+                                            <tr style="background-color: #f1f4f8;">
+                                                <td class="label-cell"><strong>Tingkat Risiko Jatuh</strong></td>
+                                                <td style="text-align: center;">
+                                                    @php
+                                                        $hasilJatuh = $data->hasil ?? 'Tidak beresiko';
+                                                        $isTinggi = str_contains(strtolower($hasilJatuh), 'tinggi');
+                                                        $isRendah = str_contains(strtolower($hasilJatuh), 'rendah');
+                                                    @endphp
+                                                    <span class="badge-status {{ $isTinggi ? 'badge-danger' : ($isRendah ? 'badge-warning' : 'badge-success') }}">
+                                                        {{ $hasilJatuh }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-cell">Pemberitahuan / Lapor Dokter</td>
+                                                <td style="text-align: center;">{{ $data->lapor ?? 'Tidak' }} {{ (!empty($data->ket_lapor) && $data->ket_lapor != '-') ? '('.$data->ket_lapor.')' : '' }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </td>
                             </tr>
                         </table>
                     </div>
 
-                    <!-- TANDA TANGAN PERAWAT PENGKAJI -->
-                    <div class="avoid-break" style="margin-top: 6px;">
-                        <table width="100%" class="table-borderless" style="text-align: right; font-size: 9.5px;">
+                    <!-- VI. PENGKAJIAN TINGKAT SKALA NYERI (PQRST) -->
+                    <div class="avoid-break">
+                        <table class="table-data">
+                            <thead>
+                                <tr>
+                                    <th colspan="4" class="th-section">VI. PENGKAJIAN TINGKAT SKALA NYERI (PQRST)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td width="20%" class="label-cell">Status Nyeri</td>
+                                    <td width="30%"><strong>{{ $data->nyeri ?? 'Tidak Ada Nyeri' }}</strong></td>
+                                    <td width="20%" class="label-cell">Tingkat Skala Nyeri</td>
+                                    <td width="30%">
+                                        @php
+                                            $skala = (int)($data->skala_nyeri ?? 0);
+                                            $nyeriBadge = 'badge-success';
+                                            if ($skala >= 7) $nyeriBadge = 'badge-danger';
+                                            elseif ($skala >= 4) $nyeriBadge = 'badge-warning';
+                                            elseif ($skala >= 1) $nyeriBadge = 'badge-info';
+                                        @endphp
+                                        <span class="badge-status {{ $nyeriBadge }}">
+                                            Skala {{ $skala }} / 10
+                                        </span>
+                                    </td>
+                                </tr>
+                                @if(($data->nyeri ?? '') != 'Tidak Ada Nyeri' && ($data->nyeri ?? '') != '')
+                                <tr class="bg-light-row">
+                                    <td class="label-cell">Provokes (Pemicu)</td>
+                                    <td>{{ $data->provokes ?? '-' }} {{ (!empty($data->ket_provokes) && $data->ket_provokes != '-') ? '('.$data->ket_provokes.')' : '' }}</td>
+                                    <td class="label-cell">Quality (Kualitas)</td>
+                                    <td>{{ $data->quality ?? '-' }} {{ (!empty($data->ket_quality) && $data->ket_quality != '-') ? '('.$data->ket_quality.')' : '' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Region (Lokasi / Radiasi)</td>
+                                    <td>{{ $data->lokasi ?? '-' }} (Menyebar: {{ $data->menyebar ?? 'Tidak' }})</td>
+                                    <td class="label-cell">Timing (Durasi &amp; Hilang)</td>
+                                    <td>Durasi: {{ $data->durasi ?? '-' }}, Hilang Saat: {{ $data->nyeri_hilang ?? '-' }} {{ (!empty($data->ket_nyeri) && $data->ket_nyeri != '-') ? '('.$data->ket_nyeri.')' : '' }}</td>
+                                </tr>
+                                <tr class="bg-light-row">
+                                    <td class="label-cell">Lapor Ke Dokter</td>
+                                    <td colspan="3">{{ $data->pada_dokter ?? 'Tidak' }} {{ (!empty($data->ket_dokter) && $data->ket_dokter != '-') ? ' &bull; Jam Lapor: '.$data->ket_dokter : '' }}</td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- VII. MASALAH & RENCANA KEPERAWATAN (INTERVENSI) -->
+                    <div class="avoid-break">
+                        <table class="table-data">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" class="th-section">VII. MASALAH &amp; RENCANA KEPERAWATAN (INTERVENSI)</th>
+                                </tr>
+                                <tr style="background-color: #f1f4f8; text-align: center;">
+                                    <th width="42%" style="padding: 3px 5px; font-weight: bold; border: 1px solid #444;">Masalah Keperawatan Teridentifikasi</th>
+                                    <th width="58%" style="padding: 3px 5px; font-weight: bold; border: 1px solid #444;">Rencana Intervensi Tindakan Keperawatan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: top; padding: 5px 8px;">
+                                        @if(count($masalahList) > 0)
+                                            <ul class="list-unstyled">
+                                                @foreach($masalahList as $masalah)
+                                                    <li>
+                                                        <strong>[{{ $masalah->kode_masalah }}]</strong> {{ $masalah->masterMasalah->nama_masalah ?? $masalah->kode_masalah }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <em style="color: #777;">- Tidak ada masalah keperawatan yang teridentifikasi -</em>
+                                        @endif
+                                    </td>
+                                    <td style="vertical-align: top; padding: 5px 8px;">
+                                        @if(count($rencanaList) > 0)
+                                            <ul class="list-unstyled">
+                                                @foreach($rencanaList as $rencana)
+                                                    <li>
+                                                        {{ $rencana->masterRencana->rencana_keperawatan ?? $rencana->kode_rencana }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <em style="color: #777;">- Tidak ada rencana intervensi spesifik yang dipilih -</em>
+                                        @endif
+
+                                        @if(!empty($data->rencana) && $data->rencana != '-')
+                                            <div style="margin-top: 6px; border-top: 1px dashed #bbb; padding-top: 4px;">
+                                                <strong style="color: #0b3c5d;">Catatan / Rencana Tambahan:</strong><br>
+                                                <span style="white-space: pre-line; color: #222;">{{ $data->rencana }}</span>
+                                            </div>
+                                        @endif
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- TANDA TANGAN PERAWAT PENGKAJI DENGAN VERIFIKASI ELEKTRONIK QR CODE -->
+                    <div class="avoid-break" style="margin-top: 8px;">
+                        <table width="100%" style="border: none; border-collapse: collapse; font-size: 9pt;">
                             <tr>
-                                <td width="55%"></td>
-                                <td width="45%" style="text-align: center;">
+                                <td width="55%" style="border: none;"></td>
+                                <td width="45%" style="border: none; text-align: center;">
                                     Pekalongan, {{ date('d-m-Y H:i', strtotime($data->tanggal)) }}<br>
-                                    Perawat Pengkaji UGD,<br>
-                                    <div style="height: 55px; margin: 3px 0; text-align: center;">
+                                    <strong>Perawat Pengkaji UGD,</strong><br>
+                                    <div style="height: 58px; margin: 4px 0; text-align: center;">
                                         @if (!empty($petugas->nip) || !empty($data->nip))
                                             @php
                                                 $namaPetugas = $petugas->nama ?? $data->nip;
                                                 $nipPetugas = $petugas->nip ?? $data->nip;
                                                 $qrText = 'Diverifikasi secara elektronik oleh Perawat Pengkaji: ' . $namaPetugas . ' (NIP: ' . $nipPetugas . ') pada ' . date('d-m-Y H:i', strtotime($data->tanggal));
                                             @endphp
-                                            <img src="data:image/png;base64,{!! DNS2D::getBarcodePNG($qrText, 'QRCODE', 2.3, 2.3) !!}" height="50" />
+                                            <img src="data:image/png;base64,{!! DNS2D::getBarcodePNG($qrText, 'QRCODE', 2.4, 2.4) !!}" height="54" style="border: 1px solid #ddd; padding: 2px;" />
                                         @else
                                             <br><br>
                                         @endif
                                     </div>
-                                    ( <strong>{{ $petugas->nama ?? $data->nip ?? '............................................' }}</strong> )<br>
-                                    <span style="font-size: 8px; color: #555;">NIP. {{ $petugas->nip ?? $data->nip ?? '-' }}</span>
+                                    ( <strong><u>{{ $petugas->nama ?? $data->nip ?? '............................................' }}</u></strong> )<br>
+                                    <span style="font-size: 8pt; color: #555;">NIP. {{ $petugas->nip ?? $data->nip ?? '-' }}</span>
                                 </td>
                             </tr>
                         </table>
