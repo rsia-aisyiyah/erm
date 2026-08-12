@@ -1310,8 +1310,10 @@
                     $('#badgeStatusAskepUgd').attr('class', 'badge bg-success px-2 py-1').html('<i class="bi bi-check-circle-fill me-1"></i> Data Tersimpan');
                     $('#btnCetakAskepUgd, #btnHapusAskepUgd').removeClass('d-none');
                     $btn.html('<i class="bi bi-save me-1"></i> Perbarui Asesmen');
-                    if (typeof tb_ugd !== 'undefined') {
-                        tb_ugd.ajax.reload(null, false);
+                    if (typeof tbUgd === 'function') {
+                        tbUgd();
+                    } else if ($.fn.DataTable && $.fn.DataTable.isDataTable('#tb_ugd')) {
+                        $('#tb_ugd').DataTable().ajax.reload(null, false);
                     }
                 } else {
                     Swal.fire('Gagal', response.message || 'Terjadi kesalahan saat menyimpan.', 'error');
@@ -1354,8 +1356,10 @@
                     if (res.success) {
                         Swal.fire('Terhapus!', res.message, 'success');
                         $('#modalAskepUgd').modal('hide');
-                        if (typeof tb_ugd !== 'undefined') {
-                            tb_ugd.ajax.reload(null, false);
+                        if (typeof tbUgd === 'function') {
+                            tbUgd();
+                        } else if ($.fn.DataTable && $.fn.DataTable.isDataTable('#tb_ugd')) {
+                            $('#tb_ugd').DataTable().ajax.reload(null, false);
                         }
                     } else {
                         Swal.fire('Gagal', res.message, 'error');
