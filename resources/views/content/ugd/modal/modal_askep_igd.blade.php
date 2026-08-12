@@ -137,8 +137,8 @@
                                     <span class="fw-bold text-primary" style="font-size: 13px;">
                                         <i class="bi bi-body-text me-1"></i> II. PEMERIKSAAN FISIK KEPERAWATAN
                                     </span>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2" id="btnAskepSetSemuaNormal" style="font-size: 11px;">
-                                        <i class="bi bi-check-all"></i> Set Semua Normal / TAK
+                                    <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" id="btnAskepSetSemuaNormal" onclick="setSemuaNormalFisikAskep()" style="font-size: 11px;">
+                                        <i class="bi bi-check-all me-1"></i> Set Semua Normal / TAK
                                     </button>
                                 </div>
                                 <div class="card-body p-3">
@@ -1085,17 +1085,35 @@
     });
 
     // Set Semua Normal Fisik
-    $('#btnAskepSetSemuaNormal').on('click', function() {
-        $('#askep_tekanan').val('TAK');
-        $('#askep_pupil').val('Isokor');
-        $('#askep_neurosensorik').val('TAK');
-        $('#askep_integumen').val('TAK');
-        $('#askep_turgor').val('Baik');
-        $('#askep_edema').val('Tidak Ada');
-        $('#askep_mukosa').val('Lembab');
-        $('#askep_intoksikasi').val('Tidak Ada');
+    function setSemuaNormalFisikAskep() {
+        $('#askep_tekanan').val('TAK').trigger('change');
+        $('#askep_pupil').val('Isokor').trigger('change');
+        $('#askep_neurosensorik').val('TAK').trigger('change');
+        $('#askep_integumen').val('TAK').trigger('change');
+        $('#askep_turgor').val('Baik').trigger('change');
+        $('#askep_edema').val('Tidak Ada').trigger('change');
+        $('#askep_mukosa').val('Lembab').trigger('change');
+        $('#askep_intoksikasi').val('Tidak Ada').trigger('change');
         $('#askep_perdarahan').val('Tidak Ada').trigger('change');
-    });
+        $('#askep_jumlah_perdarahan').val('-').prop('disabled', true);
+        $('#askep_warna_perdarahan').val('-').prop('disabled', true);
+        $('#askep_bab').val('1');
+        $('#askep_xbab').val('Hari');
+        $('#askep_kbab').val('Lunak');
+        $('#askep_wbab').val('Kuning');
+        $('#askep_bak').val('4');
+        $('#askep_xbak').val('Hari');
+        $('#askep_wbak').val('Kuning Jernih');
+        $('#askep_lbak').val('-');
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'Pemeriksaan fisik diset Normal / TAK.',
+            timer: 1000,
+            showConfirmButton: false
+        });
+    }
 
     // Reset Form Asesmen Keperawatan UGD
     function resetFormAskepUgd() {
