@@ -315,11 +315,11 @@
                             <div style="margin-top: 2px;">
                                 <span class="checkbox-symbol">{!! $isRanap ? '&#9745;' : '&#9744;' !!}</span> <strong>Rawat Inap</strong> &nbsp;&nbsp; Indikasi : {{ $isRanap ? ($rsia->ranap_indikasi ?? '..................................') : '..................................' }}<br>
                                 <div style="margin-left: 15px;">
-                                    DPJP : {{ $isRanap ? ($rsia->dpjp->nm_dokter ?? $rsia->ranap_dpjp ?? '..................................') : '..................................' }} &nbsp;&nbsp;&nbsp;&nbsp;
                                     SMF : 
                                     <span class="checkbox-symbol">{!! ($isRanap && ($rsia->ranap_smf ?? '') == 'Obsgyn') ? '&#9745;' : '&#9744;' !!}</span> Obsgyn &nbsp;&nbsp;
                                     <span class="checkbox-symbol">{!! ($isRanap && ($rsia->ranap_smf ?? '') == 'Anak') ? '&#9745;' : '&#9744;' !!}</span> Anak &nbsp;&nbsp;
-                                    <span class="checkbox-symbol">{!! ($isRanap && !in_array($rsia->ranap_smf ?? '', ['Obsgyn','Anak',''])) ? '&#9745;' : '&#9744;' !!}</span> {{ ($isRanap && !in_array($rsia->ranap_smf ?? '', ['Obsgyn','Anak',''])) ? $rsia->ranap_smf : '..........' }}<br>
+                                    <span class="checkbox-symbol">{!! ($isRanap && !in_array($rsia->ranap_smf ?? '', ['Obsgyn','Anak',''])) ? '&#9745;' : '&#9744;' !!}</span> {{ ($isRanap && !in_array($rsia->ranap_smf ?? '', ['Obsgyn','Anak',''])) ? $rsia->ranap_smf : '..........' }} &nbsp;&nbsp;&nbsp;&nbsp;
+                                    DPJP : {{ $isRanap ? ($rsia->dpjp->nm_dokter ?? $rsia->ranap_dpjp ?? '..................................') : '..................................' }}<br>
                                     Jenis Ruang : 
                                     <span class="checkbox-symbol">{!! ($isRanap && ($rsia->ranap_ruang ?? '') == 'Bangsal') ? '&#9745;' : '&#9744;' !!}</span> Bangsal &nbsp;&nbsp;
                                     <span class="checkbox-symbol">{!! ($isRanap && ($rsia->ranap_ruang ?? '') == 'Isolasi') ? '&#9745;' : '&#9744;' !!}</span> Isolasi &nbsp;&nbsp;

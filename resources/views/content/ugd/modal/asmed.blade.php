@@ -543,13 +543,9 @@
                                 <!-- PANEL RAWAT INAP -->
                                 <div id="panel_ranap" class="panel-tindak-lanjut border rounded p-3 mb-2 bg-white d-none">
                                     <div class="row g-2">
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
                                             <label for="ranap_indikasi" class="form-label fw-semibold">Indikasi Rawat Inap :</label>
                                             <input type="text" class="form-control form-control-sm" name="ranap_indikasi" id="ranap_indikasi" placeholder="Indikasi medis masuk rawat inap">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="ranap_dpjp" class="form-label fw-semibold">DPJP Ranap :</label>
-                                            <input type="text" class="form-control form-control-sm" name="ranap_dpjp" id="ranap_dpjp" placeholder="Nama DPJP">
                                         </div>
                                         <div class="col-md-3">
                                             <label for="ranap_smf" class="form-label fw-semibold">SMF :</label>
@@ -560,6 +556,24 @@
                                                 <option value="Bedah">Bedah</option>
                                                 <option value="Penyakit Dalam">Penyakit Dalam</option>
                                                 <option value="Umum">Umum / Lainnya</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="ranap_dpjp" class="form-label fw-semibold">DPJP Ranap :</label>
+                                            @php
+                                                $listDokterRanap = \App\Models\Dokter::where('status', '1')
+                                                    ->where('kd_dokter', '!=', '-')
+                                                    ->with('spesialis')
+                                                    ->orderBy('nm_dokter', 'asc')
+                                                    ->get();
+                                            @endphp
+                                            <select class="form-select form-select-sm" name="ranap_dpjp" id="ranap_dpjp">
+                                                <option value="">-- Pilih DPJP Ranap --</option>
+                                                @foreach ($listDokterRanap as $doc)
+                                                    <option value="{{ $doc->kd_dokter }}">
+                                                        {{ $doc->nm_dokter }} {{ (!empty($doc->spesialis->nm_sps) && $doc->spesialis->nm_sps != '-') ? '('.$doc->spesialis->nm_sps.')' : '' }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="col-12 mt-2">
@@ -1346,8 +1360,8 @@
                         }
                         $('#formAsmedUgd input[name="kontrol_ke"]').val(rsia.kontrol_ke || '');
                         $('#formAsmedUgd input[name="ranap_indikasi"]').val(rsia.ranap_indikasi || '');
-                        $('#formAsmedUgd input[name="ranap_dpjp"]').val(rsia.ranap_dpjp || '');
                         $('#formAsmedUgd select[name="ranap_smf"]').val(rsia.ranap_smf || '');
+                        $('#formAsmedUgd select[name="ranap_dpjp"]').val(rsia.ranap_dpjp || '');
                         if (rsia.ranap_ruang) {
                             $(`input[name="ranap_ruang"][value="${rsia.ranap_ruang}"]`).prop('checked', true);
                         }
