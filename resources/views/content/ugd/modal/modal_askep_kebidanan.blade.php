@@ -13,7 +13,7 @@
                         <h6 class="modal-title fw-bold mb-0 text-white" id="modalAskepKebidananUgdLabel">
                             PENGKAJIAN AWAL KEPERAWATAN KEBIDANAN &amp; KANDUNGAN (UGD)
                         </h6>
-                        <small class="text-white-50" style="font-size: 11px;">Standar Akreditasi Rekam Medis Keperawatan Obstetri &amp; Ginekologi Gawat Darurat</small>
+                        <small class="text-white-50" style="font-size: 11px;">Pelayanan Asuhan Keperawatan Kebidanan &amp; Kandungan UGD</small>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">

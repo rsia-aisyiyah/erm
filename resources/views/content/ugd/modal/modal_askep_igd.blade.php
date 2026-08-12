@@ -1,16 +1,18 @@
 <div class="modal fade" id="modalAskepUgd" tabindex="-1" aria-labelledby="modalAskepUgdLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-gradient-primary text-white py-2 px-3" style="background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);">
+            <div class="modal-header text-white py-2 px-3 justify-content-between align-items-center" style="background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%); border-bottom: 1px solid rgba(255,255,255,0.15);">
                 <div class="d-flex align-items-center gap-2">
-                    <i class="bi bi-heart-pulse-fill fs-5"></i>
+                    <div class="rounded-circle bg-white bg-opacity-25 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                        <i class="bi bi-heart-pulse-fill fs-5 text-white"></i>
+                    </div>
                     <div>
-                        <h6 class="modal-title fw-bold mb-0" id="modalAskepUgdLabel">PENGKAJIAN AWAL KEPERAWATAN GAWAT DARURAT</h6>
-                        <small class="opacity-75" style="font-size: 11px;">Standar Akreditasi Rekam Medis Keperawatan IGD</small>
+                        <h6 class="modal-title fw-bold mb-0 text-white" id="modalAskepUgdLabel">PENGKAJIAN AWAL KEPERAWATAN GAWAT DARURAT</h6>
+                        <small class="text-white-50" style="font-size: 11px;">Pelayanan Asuhan Keperawatan Pasien IGD</small>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <span id="badgeStatusAskepUgd" class="badge bg-light text-primary px-2 py-1" style="font-size: 11px;">
+                    <span id="badgeStatusAskepUgd" class="badge bg-light text-primary px-2.5 py-1.5 shadow-sm" style="font-size: 11px;">
                         <i class="bi bi-file-earmark-plus me-1"></i> Data Baru
                     </span>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
