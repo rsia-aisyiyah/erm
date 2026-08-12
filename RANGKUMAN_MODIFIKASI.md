@@ -396,3 +396,58 @@ ALTER TABLE `bukti_persetujuan_transfer_pasien_antar_ruang`
 | `routes/web.php` | Mendaftarkan route `/transfer/pasien/antar-ruang` (GET, POST, DELETE, PRINT). |
 | `resources/views/content/ranap/ranap.blade.php` | Inklusi modal transfer dan penambahan item menu **"Transfer Pasien Antar Ruang"** pada dropdown aksi pasien Ranap. |
 | `resources/views/content/ugd/ugd.blade.php` | Inklusi modal transfer dan penambahan item menu **"Transfer Pasien Antar Ruang"** pada dropdown aksi pasien UGD. |
+
+---
+
+## Modifikasi 7: Fitur Asesmen Keperawatan UGD (Penilaian Awal Keperawatan IGD Standar SIMRS Khanza)
+
+### 1. Deskripsi Perubahan
+Mengadopsi dan mengintegrasikan seluruh alur dan struktur data asesmen keperawatan IGD dari SIMRS Khanza (`RMPenilaianAwalKeperawatanIGD.java`) ke dalam aplikasi ERM Web:
+- **Formulir Interaktif Modern & Lengkap (7 Bagian)**:
+  1. **I. Informasi & Anamnesis**: Autoanamnesis/Alloanamnesis, RPS/Keluhan Utama, RPD, RPO, Status Kehamilan Obstetrik (G/P/A/HPHT) otomatis aktif/nonaktif sesuai jenis kelamin.
+  2. **II. Pemeriksaan Fisik Keperawatan**: Tekanan Intrakranial, Pupil, Neurosensorik/Muskuloskeletal, Integumen, Turgor Kulit, Edema, Mukosa Mulut, Perdarahan (cc & warna), Intoksikasi, Eliminasi BAB & BAK (frekuensi, konsistensi, warna, keterangan).
+  3. **III. Psikososial, Budaya & Spiritual**: Kondisi Psikologis, Riwayat Gangguan Jiwa, Perilaku Berisiko (pelaporan), Hubungan Keluarga, Tinggal Dengan, Nilai Budaya Khusus, Pendidikan PJ, Edukasi Pasien/Keluarga.
+  4. **IV. Pengkajian Fungsi (ADL)**: Kemampuan Beraktivitas (Mandiri/Bantuan/Total), Aktivitas Fisik, Alat Bantu Jalan.
+  5. **V. Pengkajian Skala Nyeri (PQRST)**: Skrining Nyeri Akut/Kronis, visual pain scale slider (0-10) berwarna, Provokes, Quality, Region (lokasi & radiasi), Timing (durasi), faktor pereda nyeri, lapor dokter.
+  6. **VI. Penilaian Risiko Jatuh (Get Up and Go Test)**: Evaluasi 3 indikator berjalan dengan **Auto-Kalkulasi Cerdas** (*Tidak Berisiko*, *Risiko Rendah*, *Risiko Tinggi*).
+  7. **VII. Masalah & Rencana Keperawatan (SDKI / Khanza)**: Checklist diagnosis keperawatan IGD interaktif dengan panel rencana intervensi dinamis yang muncul otomatis sesuai diagnosis terpilih.
+- **Fitur Cetak PDF Resmi Format A4**:
+  - Kop Rumah Sakit RSIA Aisyiyah Pekajangan dengan repeating header.
+  - Ringkasan rekam medis pengkajian keperawatan terstruktur per-seksi.
+  - Tabel Masalah & Rencana Intervensi Keperawatan terpilih.
+  - Tanda Tangan Elektronik QR Code Perawat Pengkaji.
+- **Integrasi Menu UGD**:
+  - Tombol menu **"Asesmen Keperawatan UGD"** pada dropdown aksi pasien UGD dengan indikator centang hijau `cekList(row.askep_igd)`.
+
+---
+
+### 2. Struktur Basis Data (Tabel Standar SIMRS Khanza)
+Fitur ini menggunakan tabel-tabel standar SIMRS Khanza berikut tanpa memerlukan alter schema tambahan:
+- `penilaian_awal_keperawatan_igd` (Tabel Utama 69 kolom)
+- `penilaian_awal_keperawatan_igd_masalah` (Tabel relasi masalah keperawatan terpilih)
+- `penilaian_awal_keperawatan_ralan_rencana_igd` (Tabel relasi rencana keperawatan terpilih)
+- `master_masalah_keperawatan_igd` & `master_rencana_keperawatan_igd` (Master diagnosis & intervensi)
+
+---
+
+### 3. Daftar Berkas yang Ditambahkan & Dimodifikasi
+
+#### A. Berkas Baru (*New Files*)
+| File | Fungsi |
+| :--- | :--- |
+| `resources/views/content/ugd/modal/modal_askep_igd.blade.php` | Modal form interaktif Asesmen Keperawatan UGD lengkap dengan kalkulasi risiko jatuh otomatis, visual pain scale, dan checklist SDKI. |
+| `resources/views/content/print/askep_igd.blade.php` | Template cetak PDF resmi format A4 Akreditasi dengan Kop, tabel sistematis, dan QR Code verifikasi perawat. |
+
+#### B. Berkas Dimodifikasi (*Modified Files*)
+| File | Rincian Perubahan |
+| :--- | :--- |
+| `app/Models/AskepUgd.php` | Menetapkan `primaryKey = 'no_rawat'`, `incrementing = false`, dan relasi lengkap. |
+| `app/Models/MasalahAskepUgd.php` | Menambahkan `$guarded = []` dan `$timestamps = false`. |
+| `app/Models/RencanaAskepUgd.php` | Menambahkan `$guarded = []` dan `$timestamps = false`. |
+| `app/Models/RegPeriksa.php` | Menambahkan relasi `askepIgd()`. |
+| `app/Http/Controllers/UgdController.php` | Eager load `'askepIgd'` untuk indikator centang status pengisian di tabel UGD. |
+| `app/Http/Controllers/AskepUgdController.php` | Implementasi method `get()`, `getMaster()`, `createOrUpdate()`, `hapus()`, dan `print()`. |
+| `app/Http/Controllers/TrackerSqlController.php` | Null safety pada sesi NIK pegawai. |
+| `routes/web.php` | Pendaftaran route `/ugd/asesmen/keperawatan` (GET, MASTER, SIMPAN, HAPUS, PRINT). |
+| `resources/views/content/ugd/ugd.blade.php` | Inklusi `modal_askep_igd` dan penambahan menu aksi **"Asesmen Keperawatan UGD"**. |
+

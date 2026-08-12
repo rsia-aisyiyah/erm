@@ -13,6 +13,9 @@ class AskepUgd extends Model
 {
     use HasFactory;
     protected $table = 'penilaian_awal_keperawatan_igd';
+    protected $primaryKey = 'no_rawat';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $guarded = [];
     public $timestamps = false;
 

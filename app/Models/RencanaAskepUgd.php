@@ -10,6 +10,8 @@ class RencanaAskepUgd extends Model
 {
     use HasFactory;
     protected $table = 'penilaian_awal_keperawatan_ralan_rencana_igd';
+    protected $guarded = [];
+    public $timestamps = false;
 
     function masterRencana()
     {

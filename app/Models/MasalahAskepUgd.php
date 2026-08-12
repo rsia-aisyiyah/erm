@@ -9,6 +9,8 @@ class MasalahAskepUgd extends Model
 {
     use HasFactory;
     protected $table = 'penilaian_awal_keperawatan_igd_masalah';
+    protected $guarded = [];
+    public $timestamps = false;
 
     function masterMasalah()
     {

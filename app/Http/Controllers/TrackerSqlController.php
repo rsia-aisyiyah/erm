@@ -64,7 +64,7 @@ class TrackerSqlController extends Controller
         $data = [
             'tanggal' => date('Y-m-d H:i:s'),
             'sqle' => $sql,
-            'usere' => session()->get('pegawai')->nik,
+            'usere' => session()->get('pegawai')->nik ?? '-',
         ];
         try {
             $result = $this->tracker->create($data);

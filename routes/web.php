@@ -126,7 +126,13 @@ Route::middleware('auth')->group(function () {
 	Route::get('/ugd', [UgdController::class, 'index']);
 	Route::get('/ugd/get/table', [UgdController::class, 'getTable']);
 	Route::get('/ugd/soap/table', [PemeriksaanRalanController::class, 'getTable']);
+	// Asesmen Keperawatan UGD
 	Route::get('/ugd/asesmen/keperawatan', [AskepUgdController::class, 'get']);
+	Route::get('/ugd/asesmen/keperawatan/master', [AskepUgdController::class, 'getMaster']);
+	Route::post('/ugd/asesmen/keperawatan/simpan', [AskepUgdController::class, 'createOrUpdate']);
+	Route::post('/ugd/asesmen/keperawatan/hapus', [AskepUgdController::class, 'hapus']);
+	Route::get('/ugd/asesmen/keperawatan/print', [AskepUgdController::class, 'print']);
+
 	Route::post('/ugd/asesmen/medis/simpan', [AsesmenMedisIgdController::class, 'create']);
 	Route::post('/ugd/asesmen/medis/ubah', [AsesmenMedisIgdController::class, 'edit']);
 	Route::get('/ugd/asesmen/medis/{noRawat}', [AsesmenMedisIgdController::class, 'get']);

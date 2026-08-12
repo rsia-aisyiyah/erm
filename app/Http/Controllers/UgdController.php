@@ -50,6 +50,7 @@ class UgdController extends Controller
                 'asmedRanapAnak',
                 'asmedRanapKandungan',
                 'asmedIgd',
+                'askepIgd',
                 'skriningTb',
                 'triaseSkala1',
                 'triaseSkala2',
