@@ -80,15 +80,15 @@
 
                                         <div class="col-md-4">
                                             <label class="form-label fw-semibold small mb-1">Keluhan Utama (RPS) <span class="text-danger">*</span></label>
-                                            <textarea class="form-control form-control-sm" name="keluhan_utama" id="askep_keluhan_utama" rows="3" placeholder="Riwayat Penyakit Sekarang / Keluhan Utama Masuk UGD" required></textarea>
+                                            <textarea class="form-control form-control-sm" name="keluhan_utama" id="askep_keluhan_utama" rows="4" style="min-height: 90px;" placeholder="Riwayat Penyakit Sekarang / Keluhan Utama Masuk UGD" required></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label fw-semibold small mb-1">Riwayat Penyakit Dahulu (RPD)</label>
-                                            <textarea class="form-control form-control-sm" name="rpd" id="askep_rpd" rows="3" placeholder="Penyakit / riwayat operasi masa lalu">-</textarea>
+                                            <textarea class="form-control form-control-sm" name="rpd" id="askep_rpd" rows="4" style="min-height: 90px;" placeholder="Penyakit / riwayat operasi masa lalu">-</textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label fw-semibold small mb-1">Riwayat Penggunaan Obat (RPO)</label>
-                                            <textarea class="form-control form-control-sm" name="rpo" id="askep_rpo" rows="3" placeholder="Obat-obatan yang sedang dikonsumsi">-</textarea>
+                                            <textarea class="form-control form-control-sm" name="rpo" id="askep_rpo" rows="4" style="min-height: 90px;" placeholder="Obat-obatan yang sedang dikonsumsi">-</textarea>
                                         </div>
 
                                         <!-- STATUS KEHAMILAN -->
