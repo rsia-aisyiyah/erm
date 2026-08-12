@@ -694,11 +694,11 @@
                                         <div class="p-2 bg-light rounded border">
                                             <div class="row g-2 mb-2">
                                                 <div class="col-6">
-                                                    <label class="form-label small mb-0">Tgl Selesai UGD :</label>
+                                                    <label class="form-label small mb-0">Tanggal Selesai Pelayanan UGD :</label>
                                                     <input type="date" class="form-control form-control-sm" name="selesai_layanan_tgl" id="selesai_layanan_tgl" value="{{ date('Y-m-d') }}">
                                                 </div>
                                                 <div class="col-6">
-                                                    <label class="form-label small mb-0">Jam Selesai UGD :</label>
+                                                    <label class="form-label small mb-0">Jam Selesai Pelayanan UGD :</label>
                                                     <input type="time" class="form-control form-control-sm" name="selesai_layanan_jam" id="selesai_layanan_jam" value="{{ date('H:i') }}">
                                                 </div>
                                                 <div class="col-12">
