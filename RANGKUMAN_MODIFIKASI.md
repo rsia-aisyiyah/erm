@@ -399,34 +399,80 @@ ALTER TABLE `bukti_persetujuan_transfer_pasien_antar_ruang`
 
 ---
 
-## Modifikasi 7: Fitur Asesmen Keperawatan UGD (Penilaian Awal Keperawatan IGD Standar SIMRS Khanza)
+## Modifikasi 7: Fitur Asesmen Keperawatan UGD (Penilaian Awal Keperawatan IGD & Skrining Gizi Dewasa/Anak)
 
 ### 1. Deskripsi Perubahan
-Mengadopsi dan mengintegrasikan seluruh alur dan struktur data asesmen keperawatan IGD dari SIMRS Khanza (`RMPenilaianAwalKeperawatanIGD.java`) ke dalam aplikasi ERM Web:
-- **Formulir Interaktif Modern & Lengkap (7 Bagian)**:
+Mengadopsi dan mengintegrasikan seluruh alur dan struktur data asesmen keperawatan IGD dari SIMRS Khanza (`RMPenilaianAwalKeperawatanIGD.java`) yang disempurnakan dengan fitur **Skrining Gizi Terintegrasi (MST & Strong-Kids)** ke dalam aplikasi ERM Web:
+- **Formulir Interaktif Modern & Lengkap (8 Bagian)**:
   1. **I. Informasi & Anamnesis**: Autoanamnesis/Alloanamnesis, RPS/Keluhan Utama, RPD, RPO, Status Kehamilan Obstetrik (G/P/A/HPHT) otomatis aktif/nonaktif sesuai jenis kelamin.
-  2. **II. Pemeriksaan Fisik Keperawatan**: Tekanan Intrakranial, Pupil, Neurosensorik/Muskuloskeletal, Integumen, Turgor Kulit, Edema, Mukosa Mulut, Perdarahan (cc & warna), Intoksikasi, Eliminasi BAB & BAK (frekuensi, konsistensi, warna, keterangan).
+  2. **II. Pemeriksaan Fisik Keperawatan**: Tekanan Intrakranial, Pupil, Neurosensorik/Muskuloskeletal, Integumen, Turgor Kulit, Edema, Mukosa Mulut, Perdarahan (cc & warna), Intoksikasi, Eliminasi BAB & BAK (default `-`, frekuensi, konsistensi, warna, keterangan).
   3. **III. Psikososial, Budaya & Spiritual**: Kondisi Psikologis, Riwayat Gangguan Jiwa, Perilaku Berisiko (pelaporan), Hubungan Keluarga, Tinggal Dengan, Nilai Budaya Khusus, Pendidikan PJ, Edukasi Pasien/Keluarga.
   4. **IV. Pengkajian Fungsi (ADL)**: Kemampuan Beraktivitas (Mandiri/Bantuan/Total), Aktivitas Fisik, Alat Bantu Jalan.
-  5. **V. Pengkajian Skala Nyeri (PQRST)**: Skrining Nyeri Akut/Kronis, visual pain scale slider (0-10) berwarna, Provokes, Quality, Region (lokasi & radiasi), Timing (durasi), faktor pereda nyeri, lapor dokter.
-  6. **VI. Penilaian Risiko Jatuh (Get Up and Go Test)**: Evaluasi 3 indikator berjalan dengan **Auto-Kalkulasi Cerdas** (*Tidak Berisiko*, *Risiko Rendah*, *Risiko Tinggi*).
-  7. **VII. Masalah & Rencana Keperawatan (SDKI / Khanza)**: Checklist diagnosis keperawatan IGD interaktif dengan panel rencana intervensi dinamis yang muncul otomatis sesuai diagnosis terpilih.
-- **Fitur Cetak PDF Resmi Format A4**:
-  - Kop Rumah Sakit RSIA Aisyiyah Pekajangan dengan repeating header.
-  - Ringkasan rekam medis pengkajian keperawatan terstruktur per-seksi.
-  - Tabel Masalah & Rencana Intervensi Keperawatan terpilih.
-  - Tanda Tangan Elektronik QR Code Perawat Pengkaji.
+  5. **V. Penilaian Risiko Jatuh (Get Up and Go Test)**: Evaluasi 3 indikator berjalan dengan **Auto-Kalkulasi Cerdas** (*Tidak Berisiko*, *Risiko Rendah*, *Risiko Tinggi*).
+  6. **VI. Pengkajian Skala Nyeri (PQRST)**: Skrining Nyeri Akut/Kronis, visual pain scale slider (0-10) berwarna, Provokes, Quality, Region (lokasi & radiasi), Timing (durasi), faktor pereda nyeri, lapor dokter.
+  7. **VII. Skrining Gizi (Dewasa - MST & Anak - Strong-Kids)**:
+     - **Auto-Detect Usia Pasien**: Otomatis memilih form **Strong-Kids** jika usia `< 18 tahun`, dan form **MST** jika usia `≥ 18 tahun` (dapat di-switch manual).
+     - **Kalkulasi Real-Time**: Perhitungan skor total dan badge tingkat risiko (*Risiko Rendah*, *Risiko Sedang*, *Risiko Tinggi*) terhitung otomatis.
+     - **Pelaporan Gizi**: Fitur notifikasi/lapor ke petugas gizi jika ditemukan risiko malnutrisi tinggi.
+  8. **VIII. Masalah & Rencana Keperawatan (SDKI / Khanza)**: Checklist diagnosis keperawatan IGD interaktif dengan panel rencana intervensi dinamis yang muncul otomatis sesuai diagnosis terpilih.
+- **Fitur Cetak PDF Resmi Format A4 (1 Halaman Pas)**:
+  - Kop Rumah Sakit RSIA Aisyiyah Pekajangan dengan data identitas pasien.
+  - Penataan tabel ringkas dan proporsional untuk seluruh Seksi I s.d. VIII.
+  - Seluruh teks berwarna hitam solid (`#000000`) sesuai standar rekam medis fisik.
+  - Tanda Tangan Elektronik QR Code Perawat Pengkaji UGD.
 - **Integrasi Menu UGD**:
   - Tombol menu **"Asesmen Keperawatan UGD"** pada dropdown aksi pasien UGD dengan indikator centang hijau `cekList(row.askep_igd)`.
 
 ---
 
-### 2. Struktur Basis Data (Tabel Standar SIMRS Khanza)
-Fitur ini menggunakan tabel-tabel standar SIMRS Khanza berikut tanpa memerlukan alter schema tambahan:
+### 2. Struktur Basis Data
+
+#### A. Tabel Standar SIMRS Khanza
 - `penilaian_awal_keperawatan_igd` (Tabel Utama 69 kolom)
 - `penilaian_awal_keperawatan_igd_masalah` (Tabel relasi masalah keperawatan terpilih)
 - `penilaian_awal_keperawatan_ralan_rencana_igd` (Tabel relasi rencana keperawatan terpilih)
 - `master_masalah_keperawatan_igd` & `master_rencana_keperawatan_igd` (Master diagnosis & intervensi)
+
+#### B. Tabel Tambahan Skrining Gizi: `rsia_penilaian_gizi_igd`
+Tabel relasi khusus *one-to-one* dengan `reg_periksa` (`no_rawat`) untuk menjaga kompatibilitas murni dengan Khanza versi Desktop:
+
+```sql
+CREATE TABLE IF NOT EXISTS `rsia_penilaian_gizi_igd` (
+  `no_rawat` VARCHAR(17) NOT NULL,
+  `kategori_pasien` ENUM('Dewasa', 'Anak') NOT NULL DEFAULT 'Dewasa',
+  `sg1` VARCHAR(100) NOT NULL DEFAULT '-',
+  `nilai1` INT(11) NOT NULL DEFAULT 0,
+  `sg2` VARCHAR(100) NOT NULL DEFAULT '-',
+  `nilai2` INT(11) NOT NULL DEFAULT 0,
+  `sg3` VARCHAR(100) NOT NULL DEFAULT '-',
+  `nilai3` INT(11) NOT NULL DEFAULT 0,
+  `sg4` VARCHAR(100) NOT NULL DEFAULT '-',
+  `nilai4` INT(11) NOT NULL DEFAULT 0,
+  `total_skor` INT(11) NOT NULL DEFAULT 0,
+  `tingkat_risiko` VARCHAR(50) NOT NULL DEFAULT 'Risiko Rendah',
+  `lapor_gizi` ENUM('Tidak', 'Ya') NOT NULL DEFAULT 'Tidak',
+  `ket_lapor` VARCHAR(100) NOT NULL DEFAULT '-',
+  PRIMARY KEY (`no_rawat`),
+  CONSTRAINT `fk_rsia_penilaian_gizi_igd_reg` 
+    FOREIGN KEY (`no_rawat`) 
+    REFERENCES `reg_periksa` (`no_rawat`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+**Rincian Parameter Skrining Gizi:**
+| Field Tabel | **Dewasa (Metode MST)** | **Anak (Metode Strong-Kids)** |
+| :--- | :--- | :--- |
+| `kategori_pasien` | `'Dewasa'` | `'Anak'` |
+| `sg1` & `nilai1` | Penurunan BB dalam 6 bulan terakhir (0, 1, 2, 3, 4) | Apakah pasien tampak kurus? (0, 1) |
+| `sg2` & `nilai2` | Asupan makan berkurang karena nafsu makan turun (0, 1) | Penurunan BB sebulan terakhir / BB tdk naik (0, 1) |
+| `sg3` & `nilai3` | `-` (0) | Diare >5x/hari, muntah >3x/hari, asupan turun (0, 1) |
+| `sg4` & `nilai4` | `-` (0) | Penyakit / keadaan berisiko malnutrisi (0, 1) |
+| `total_skor` | Penjumlahan: `nilai1 + nilai2` | Penjumlahan: `nilai1 + nilai2 + nilai3 + nilai4` |
+| `tingkat_risiko` | `≥ 2` = Risiko Tinggi, `< 2` = Risiko Rendah | `≥ 4` = Risiko Tinggi, `1-3` = Risiko Sedang, `0` = Risiko Rendah |
+| `lapor_gizi` | `Tidak` / `Ya` | `Tidak` / `Ya` |
+| `ket_lapor` | Keterangan / Jam lapor konsul gizi | Keterangan / Jam lapor konsul gizi |
 
 ---
 
@@ -435,19 +481,21 @@ Fitur ini menggunakan tabel-tabel standar SIMRS Khanza berikut tanpa memerlukan 
 #### A. Berkas Baru (*New Files*)
 | File | Fungsi |
 | :--- | :--- |
-| `resources/views/content/ugd/modal/modal_askep_igd.blade.php` | Modal form interaktif Asesmen Keperawatan UGD lengkap dengan kalkulasi risiko jatuh otomatis, visual pain scale, dan checklist SDKI. |
-| `resources/views/content/print/askep_igd.blade.php` | Template cetak PDF resmi format A4 Akreditasi dengan Kop, tabel sistematis, dan QR Code verifikasi perawat. |
+| `app/Models/RsiaPenilaianGiziIgd.php` | Model Eloquent tabel `rsia_penilaian_gizi_igd` (Primary Key: `no_rawat`). |
+| `resources/views/content/ugd/modal/modal_askep_igd.blade.php` | Modal form interaktif Asesmen Keperawatan UGD lengkap dengan kalkulasi risiko jatuh otomatis, visual pain scale, skrining gizi (MST & Strong-Kids), dan checklist SDKI. |
+| `resources/views/content/print/askep_igd.blade.php` | Template cetak PDF resmi format A4 Akreditasi dengan Kop, tabel sistematis 1 halaman, skrining gizi, dan QR Code verifikasi perawat. |
 
 #### B. Berkas Dimodifikasi (*Modified Files*)
 | File | Rincian Perubahan |
 | :--- | :--- |
-| `app/Models/AskepUgd.php` | Menetapkan `primaryKey = 'no_rawat'`, `incrementing = false`, dan relasi lengkap. |
+| `app/Models/AskepUgd.php` | Menetapkan `primaryKey = 'no_rawat'`, `incrementing = false`, relasi lengkap dan penambahan relasi *one-to-one* `gizi()`. |
 | `app/Models/MasalahAskepUgd.php` | Menambahkan `$guarded = []` dan `$timestamps = false`. |
 | `app/Models/RencanaAskepUgd.php` | Menambahkan `$guarded = []` dan `$timestamps = false`. |
 | `app/Models/RegPeriksa.php` | Menambahkan relasi `askepIgd()`. |
 | `app/Http/Controllers/UgdController.php` | Eager load `'askepIgd'` untuk indikator centang status pengisian di tabel UGD. |
-| `app/Http/Controllers/AskepUgdController.php` | Implementasi method `get()`, `getMaster()`, `createOrUpdate()`, `hapus()`, dan `print()`. |
+| `app/Http/Controllers/AskepUgdController.php` | Implementasi method `get()`, `getMaster()`, `createOrUpdate()`, `hapus()`, dan `print()` dengan dukungan sinkronisasi tabel skrining gizi `rsia_penilaian_gizi_igd`. |
 | `app/Http/Controllers/TrackerSqlController.php` | Null safety pada sesi NIK pegawai. |
 | `routes/web.php` | Pendaftaran route `/ugd/asesmen/keperawatan` (GET, MASTER, SIMPAN, HAPUS, PRINT). |
 | `resources/views/content/ugd/ugd.blade.php` | Inklusi `modal_askep_igd` dan penambahan menu aksi **"Asesmen Keperawatan UGD"**. |
+
 
