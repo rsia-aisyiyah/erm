@@ -256,14 +256,24 @@
                             <tr class="bg-light-row">
                                 <td class="label-cell">Status Eliminasi</td>
                                 <td colspan="3">
-                                    <strong>BAB :</strong> {{ $data->bab ? $data->bab . ' x / ' . $data->xbab : '-' }} &nbsp;&bull;&nbsp;
-                                    <strong>Konsistensi :</strong> {{ $data->kbab ?? '-' }} &nbsp;&bull;&nbsp;
-                                    <strong>Warna :</strong> {{ $data->wbab ?? '-' }}
+                                    <strong>BAB :</strong>
+                                    @if(!empty($data->bab) && $data->bab != '-')
+                                        {{ $data->bab }} x / {{ $data->xbab ?? 'Hari' }} &nbsp;&bull;&nbsp;
+                                        <strong>Konsistensi :</strong> {{ $data->kbab ?? '-' }} &nbsp;&bull;&nbsp;
+                                        <strong>Warna :</strong> {{ $data->wbab ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
                                     <br>
-                                    <strong>BAK :</strong> {{ $data->bak ? $data->bak . ' x / ' . $data->xbak : '-' }} &nbsp;&bull;&nbsp;
-                                    <strong>Warna :</strong> {{ $data->wbak ?? '-' }}
-                                    @if(!empty($data->lbak) && $data->lbak != '-')
-                                        &nbsp;&bull;&nbsp; <strong>Keterangan :</strong> {{ $data->lbak }}
+                                    <strong>BAK :</strong>
+                                    @if(!empty($data->bak) && $data->bak != '-')
+                                        {{ $data->bak }} x / {{ $data->xbak ?? 'Hari' }} &nbsp;&bull;&nbsp;
+                                        <strong>Warna :</strong> {{ $data->wbak ?? '-' }}
+                                        @if(!empty($data->lbak) && $data->lbak != '-')
+                                            &nbsp;&bull;&nbsp; <strong>Keterangan :</strong> {{ $data->lbak }}
+                                        @endif
+                                    @else
+                                        -
                                     @endif
                                 </td>
                             </tr>

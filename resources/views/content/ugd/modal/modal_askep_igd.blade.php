@@ -253,26 +253,26 @@
                                                 <label class="form-label fw-semibold small mb-1 text-primary">Status Eliminasi (BAB &amp; BAK) :</label>
                                                 <div class="row g-2">
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="bab" id="askep_bab" placeholder="BAB x" value="1">
+                                                        <input type="text" class="form-control form-control-sm" name="bab" id="askep_bab" placeholder="BAB x" value="-">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="xbab" id="askep_xbab" placeholder="Hari/Mgg" value="Hari">
+                                                        <input type="text" class="form-control form-control-sm" name="xbab" id="askep_xbab" placeholder="Hari/Mgg" value="-">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="kbab" id="askep_kbab" placeholder="Konsistensi" value="Lunak">
+                                                        <input type="text" class="form-control form-control-sm" name="kbab" id="askep_kbab" placeholder="Konsistensi" value="-">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="wbab" id="askep_wbab" placeholder="Warna BAB" value="Kuning">
+                                                        <input type="text" class="form-control form-control-sm" name="wbab" id="askep_wbab" placeholder="Warna BAB" value="-">
                                                     </div>
 
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="bak" id="askep_bak" placeholder="BAK x" value="4">
+                                                        <input type="text" class="form-control form-control-sm" name="bak" id="askep_bak" placeholder="BAK x" value="-">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="xbak" id="askep_xbak" placeholder="Hari/Jam" value="Hari">
+                                                        <input type="text" class="form-control form-control-sm" name="xbak" id="askep_xbak" placeholder="Hari/Jam" value="-">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="wbak" id="askep_wbak" placeholder="Warna BAK" value="Kuning Jernih">
+                                                        <input type="text" class="form-control form-control-sm" name="wbak" id="askep_wbak" placeholder="Warna BAK" value="-">
                                                     </div>
                                                     <div class="col-3">
                                                         <input type="text" class="form-control form-control-sm" name="lbak" id="askep_lbak" placeholder="Lain-lain" value="-">
@@ -1129,6 +1129,7 @@
         $('#askep_status_kehamilan').val('Tidak Hamil').trigger('change');
         $('#askep_nyeri').val('Tidak Ada Nyeri').trigger('change');
         $('#askep_perdarahan').val('Tidak Ada').trigger('change');
+        $('#askep_bab, #askep_xbab, #askep_kbab, #askep_wbab, #askep_bak, #askep_xbak, #askep_wbak, #askep_lbak').val('-');
         $('input[name="berjalan_a"][value="Tidak"]').prop('checked', true);
         $('input[name="berjalan_b"][value="Tidak"]').prop('checked', true);
         $('input[name="berjalan_c"][value="Tidak"]').prop('checked', true);
