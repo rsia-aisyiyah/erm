@@ -3,14 +3,14 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #1a1a1a;
+            color: #000000;
             font-size: 9pt;
             line-height: 1.25;
         }
         .table-kop {
             width: 100%;
             border-collapse: collapse;
-            border-bottom: 2px solid #000;
+            border-bottom: 2px solid #000000;
             padding-bottom: 4px;
             margin-bottom: 4px;
         }
@@ -18,6 +18,7 @@
             vertical-align: middle;
             border: none;
             padding: 1px;
+            color: #000000;
         }
         .table-pasien {
             width: 100%;
@@ -25,13 +26,15 @@
             font-size: 8.5pt;
         }
         .table-pasien td {
-            border: 1px solid #333;
+            border: 1px solid #000000;
             padding: 2px 4px;
             vertical-align: top;
+            color: #000000;
         }
         .doc-title {
-            border: 1.5px solid #222;
-            background-color: #f1f4f8;
+            border: 1.5px solid #000000;
+            background-color: #f2f2f2;
+            color: #000000;
             text-align: center;
             font-weight: bold;
             font-size: 10.5pt;
@@ -48,27 +51,28 @@
             page-break-inside: avoid;
         }
         .table-data td, .table-data th {
-            border: 1px solid #444;
+            border: 1px solid #000000;
             padding: 3px 5px;
             vertical-align: top;
+            color: #000000;
         }
         .th-section {
-            background-color: #e9eef4;
-            color: #0f2d59;
+            background-color: #e9ecef;
+            color: #000000;
             font-weight: bold;
             font-size: 8.8pt;
             text-align: left;
             padding: 3.5px 6px !important;
-            border: 1px solid #444;
+            border: 1px solid #000000;
             letter-spacing: 0.3px;
         }
         .bg-light-row {
-            background-color: #fcfcfc;
+            background-color: #fafafa;
         }
         .label-cell {
-            background-color: #f8fafc;
-            font-weight: 600;
-            color: #2c3e50;
+            background-color: #f5f5f5;
+            font-weight: bold;
+            color: #000000;
         }
         .badge-status {
             display: inline-block;
@@ -76,33 +80,18 @@
             border-radius: 3px;
             font-weight: bold;
             font-size: 8pt;
-        }
-        .badge-success {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #a5d6a7;
-        }
-        .badge-warning {
-            background-color: #fff8e1;
-            color: #f57f17;
-            border: 1px solid #ffe082;
-        }
-        .badge-danger {
-            background-color: #ffebee;
-            color: #c62828;
-            border: 1px solid #ef9a9a;
-        }
-        .badge-info {
-            background-color: #e3f2fd;
-            color: #1565c0;
-            border: 1px solid #90caf9;
+            color: #000000;
+            border: 1px solid #666666;
+            background-color: #f8f9fa;
         }
         .list-unstyled {
             margin: 0;
             padding-left: 14px;
+            color: #000000;
         }
         .list-unstyled li {
             margin-bottom: 2px;
+            color: #000000;
         }
         .avoid-break {
             page-break-inside: avoid;
@@ -130,10 +119,10 @@
                                 <img src="{{ public_path('img/logo.png') }}" width="48" />
                             </td>
                             <td width="53%" style="padding-left: 6px;">
-                                <strong style="font-size: 11pt; color: #0b3c5d; display: block;">RUMAH SAKIT IBU DAN ANAK AISYIYAH</strong>
-                                <strong style="font-size: 11pt; color: #0b3c5d; display: block;">PEKAJANGAN &ndash; PEKALONGAN</strong>
-                                <span style="font-size: 8pt; color: #444; display: block; margin-top: 1px;">Jl. Raya Pekajangan No. 610 Pekajangan, Pekalongan, 51172</span>
-                                <span style="font-size: 8pt; color: #444; display: block;">Telp. (0285) 785909 &bull; Email: pekajangan@rsiaaisyiyah.com</span>
+                                <strong style="font-size: 11pt; color: #000000; display: block;">RUMAH SAKIT IBU DAN ANAK AISYIYAH</strong>
+                                <strong style="font-size: 11pt; color: #000000; display: block;">PEKAJANGAN &ndash; PEKALONGAN</strong>
+                                <span style="font-size: 8pt; color: #000000; display: block; margin-top: 1px;">Jl. Raya Pekajangan No. 610 Pekajangan, Pekalongan, 51172</span>
+                                <span style="font-size: 8pt; color: #000000; display: block;">Telp. (0285) 785909 &bull; Email: pekajangan@rsiaaisyiyah.com</span>
                             </td>
                             <td width="38%">
                                 <table class="table-pasien">
@@ -169,7 +158,7 @@
                 <td style="border: none; padding: 0;">
                     <!-- META DATA ASESMEN -->
                     <table class="table-data" style="margin-bottom: 5px;">
-                        <tr style="background-color: #f8fafc;">
+                        <tr style="background-color: #f8f9fa;">
                             <td width="33%">
                                 <strong>Tgl. Masuk / Asuhan:</strong> {{ date('d-m-Y H:i', strtotime($data->tanggal)) }}
                             </td>
@@ -210,7 +199,7 @@
                                 <td class="label-cell">Status Obstetrik / Kehamilan</td>
                                 <td style="text-align: center;">:</td>
                                 <td>
-                                    <strong>Status:</strong> <span class="badge-status {{ ($data->status_kehamilan ?? '') == 'Hamil' ? 'badge-info' : 'badge-success' }}">{{ $data->status_kehamilan ?? 'Tidak Hamil' }}</span>
+                                    <strong>Status:</strong> <strong>{{ $data->status_kehamilan ?? 'Tidak Hamil' }}</strong>
                                     @if(($data->status_kehamilan ?? '') == 'Hamil')
                                         &nbsp;&bull;&nbsp; <strong>Gravida (G):</strong> {{ $data->gravida ?? '-' }}
                                         &nbsp;&bull;&nbsp; <strong>Para (P):</strong> {{ $data->para ?? '-' }}
@@ -306,7 +295,7 @@
                                                 <td class="label-cell">Perilaku Berisiko</td>
                                                 <td>
                                                     {{ $data->perilaku ?? '-' }}
-                                                    @if(!empty($data->dilaporkan) && $data->dilaporkan != '-') <br><span style="font-size: 7.5pt; color: #555;">(Lapor: {{ $data->dilaporkan }}, {{ $data->sebutkan }})</span> @endif
+                                                    @if(!empty($data->dilaporkan) && $data->dilaporkan != '-') <br><span style="font-size: 7.5pt; color: #333;">(Lapor: {{ $data->dilaporkan }}, {{ $data->sebutkan }})</span> @endif
                                                 </td>
                                             </tr>
                                             <tr class="bg-light-row">
@@ -379,14 +368,7 @@
                                             <tr style="background-color: #f1f4f8;">
                                                 <td class="label-cell"><strong>Tingkat Risiko Jatuh</strong></td>
                                                 <td style="text-align: center;">
-                                                    @php
-                                                        $hasilJatuh = $data->hasil ?? 'Tidak beresiko';
-                                                        $isTinggi = str_contains(strtolower($hasilJatuh), 'tinggi');
-                                                        $isRendah = str_contains(strtolower($hasilJatuh), 'rendah');
-                                                    @endphp
-                                                    <span class="badge-status {{ $isTinggi ? 'badge-danger' : ($isRendah ? 'badge-warning' : 'badge-success') }}">
-                                                        {{ $hasilJatuh }}
-                                                    </span>
+                                                    <strong>{{ $data->hasil ?? 'Tidak beresiko' }}</strong>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -414,16 +396,7 @@
                                     <td width="30%"><strong>{{ $data->nyeri ?? 'Tidak Ada Nyeri' }}</strong></td>
                                     <td width="20%" class="label-cell">Tingkat Skala Nyeri</td>
                                     <td width="30%">
-                                        @php
-                                            $skala = (int)($data->skala_nyeri ?? 0);
-                                            $nyeriBadge = 'badge-success';
-                                            if ($skala >= 7) $nyeriBadge = 'badge-danger';
-                                            elseif ($skala >= 4) $nyeriBadge = 'badge-warning';
-                                            elseif ($skala >= 1) $nyeriBadge = 'badge-info';
-                                        @endphp
-                                        <span class="badge-status {{ $nyeriBadge }}">
-                                            Skala {{ $skala }} / 10
-                                        </span>
+                                        <strong>Skala {{ $data->skala_nyeri ?? '0' }} / 10</strong>
                                     </td>
                                 </tr>
                                 @if(($data->nyeri ?? '') != 'Tidak Ada Nyeri' && ($data->nyeri ?? '') != '')
@@ -456,8 +429,8 @@
                                     <th colspan="2" class="th-section">VII. MASALAH &amp; RENCANA KEPERAWATAN (INTERVENSI)</th>
                                 </tr>
                                 <tr style="background-color: #f1f4f8; text-align: center;">
-                                    <th width="42%" style="padding: 3px 5px; font-weight: bold; border: 1px solid #444;">Masalah Keperawatan Teridentifikasi</th>
-                                    <th width="58%" style="padding: 3px 5px; font-weight: bold; border: 1px solid #444;">Rencana Intervensi Tindakan Keperawatan</th>
+                                    <th width="42%" style="padding: 3px 5px; font-weight: bold; border: 1px solid #000000;">Masalah Keperawatan Teridentifikasi</th>
+                                    <th width="58%" style="padding: 3px 5px; font-weight: bold; border: 1px solid #000000;">Rencana Intervensi Tindakan Keperawatan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -472,7 +445,7 @@
                                                 @endforeach
                                             </ul>
                                         @else
-                                            <em style="color: #777;">- Tidak ada masalah keperawatan yang teridentifikasi -</em>
+                                            <em style="color: #444444;">- Tidak ada masalah keperawatan yang teridentifikasi -</em>
                                         @endif
                                     </td>
                                     <td style="vertical-align: top; padding: 5px 8px;">
@@ -485,13 +458,13 @@
                                                 @endforeach
                                             </ul>
                                         @else
-                                            <em style="color: #777;">- Tidak ada rencana intervensi spesifik yang dipilih -</em>
+                                            <em style="color: #444444;">- Tidak ada rencana intervensi spesifik yang dipilih -</em>
                                         @endif
 
                                         @if(!empty($data->rencana) && $data->rencana != '-')
-                                            <div style="margin-top: 6px; border-top: 1px dashed #bbb; padding-top: 4px;">
-                                                <strong style="color: #0b3c5d;">Catatan / Rencana Tambahan:</strong><br>
-                                                <span style="white-space: pre-line; color: #222;">{{ $data->rencana }}</span>
+                                            <div style="margin-top: 6px; border-top: 1px dashed #666666; padding-top: 4px;">
+                                                <strong style="color: #000000;">Catatan / Rencana Tambahan:</strong><br>
+                                                <span style="white-space: pre-line; color: #000000;">{{ $data->rencana }}</span>
                                             </div>
                                         @endif
                                     </td>
@@ -505,7 +478,7 @@
                         <table width="100%" style="border: none; border-collapse: collapse; font-size: 9pt;">
                             <tr>
                                 <td width="55%" style="border: none;"></td>
-                                <td width="45%" style="border: none; text-align: center;">
+                                <td width="45%" style="border: none; text-align: center; color: #000000;">
                                     Pekalongan, {{ date('d-m-Y H:i', strtotime($data->tanggal)) }}<br>
                                     <strong>Perawat Pengkaji UGD,</strong><br>
                                     <div style="height: 58px; margin: 4px 0; text-align: center;">
@@ -515,13 +488,13 @@
                                                 $nipPetugas = $petugas->nip ?? $data->nip;
                                                 $qrText = 'Diverifikasi secara elektronik oleh Perawat Pengkaji: ' . $namaPetugas . ' (NIP: ' . $nipPetugas . ') pada ' . date('d-m-Y H:i', strtotime($data->tanggal));
                                             @endphp
-                                            <img src="data:image/png;base64,{!! DNS2D::getBarcodePNG($qrText, 'QRCODE', 2.4, 2.4) !!}" height="54" style="border: 1px solid #ddd; padding: 2px;" />
+                                            <img src="data:image/png;base64,{!! DNS2D::getBarcodePNG($qrText, 'QRCODE', 2.4, 2.4) !!}" height="54" style="border: 1px solid #888888; padding: 2px;" />
                                         @else
                                             <br><br>
                                         @endif
                                     </div>
                                     ( <strong><u>{{ $petugas->nama ?? $data->nip ?? '............................................' }}</u></strong> )<br>
-                                    <span style="font-size: 8pt; color: #555;">NIP. {{ $petugas->nip ?? $data->nip ?? '-' }}</span>
+                                    <span style="font-size: 8pt; color: #000000;">NIP. {{ $petugas->nip ?? $data->nip ?? '-' }}</span>
                                 </td>
                             </tr>
                         </table>
