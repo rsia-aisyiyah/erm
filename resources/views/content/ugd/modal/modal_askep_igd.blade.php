@@ -709,6 +709,7 @@
     </div>
 </div>
 
+@push('script')
 <script>
     // Global Cache Master Masalah & Rencana Keperawatan IGD
     window.masterAskepIgdData = [];
@@ -1366,3 +1367,4 @@
         });
     });
 </script>
+@endpush
