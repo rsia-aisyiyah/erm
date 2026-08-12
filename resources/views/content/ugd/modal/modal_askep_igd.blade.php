@@ -852,7 +852,7 @@
                                 <i class="bi bi-check2-square me-1"></i> [${m.kode_masalah}] ${m.nama_masalah}
                             </span>
                             <div class="form-check form-check-inline mb-0 me-0 d-flex align-items-center">
-                                <input class="form-check-input chk-select-all-rencana me-1" type="checkbox" id="selectAll_${m.kode_masalah}" data-target="rencana_group_${m.kode_masalah}" ${isAllChecked ? 'checked' : ''} style="cursor: pointer; transform: scale(0.9);">
+                                <input class="form-check-input chk-select-all-rencana me-1" type="checkbox" id="selectAll_${m.kode_masalah}" ${isAllChecked ? 'checked' : ''} onchange="toggleSelectAllRencana(this, '${m.kode_masalah}')" style="cursor: pointer; transform: scale(0.9);">
                                 <label class="form-check-label text-primary fw-semibold small cursor-pointer" for="selectAll_${m.kode_masalah}" style="font-size: 11px; cursor: pointer;">
                                     Pilih Semua
                                 </label>
@@ -869,7 +869,7 @@
 
                         html += `
                             <div class="form-check small py-1 mb-0 border-bottom border-light">
-                                <input class="form-check-input chk-rencana-askep" type="checkbox" name="rencana_keperawatan[]" value="${r.kode_rencana}" id="rencana_${r.kode_rencana}" ${isRencanaChecked ? 'checked' : ''} style="cursor: pointer;">
+                                <input class="form-check-input chk-rencana-askep" type="checkbox" name="rencana_keperawatan[]" value="${r.kode_rencana}" id="rencana_${r.kode_rencana}" ${isRencanaChecked ? 'checked' : ''} onchange="onRencanaItemChanged('${m.kode_masalah}')" style="cursor: pointer;">
                                 <label class="form-check-label cursor-pointer text-dark ms-1" for="rencana_${r.kode_rencana}" style="font-size: 11.5px; cursor: pointer;">
                                     ${r.rencana_keperawatan}
                                 </label>
@@ -904,20 +904,18 @@
     });
 
     // Toggle Pilih Semua Checkbox di Header Grup Rencana
-    $(document).on('change', '.chk-select-all-rencana', function() {
-        const isChecked = $(this).is(':checked');
-        const targetId = $(this).data('target');
-        $(`#${targetId} .chk-rencana-askep`).prop('checked', isChecked);
-    });
+    function toggleSelectAllRencana(el, kodeMasalah) {
+        const isChecked = $(el).is(':checked');
+        $(`#rencana_group_${kodeMasalah} input.chk-rencana-askep`).prop('checked', isChecked);
+    }
 
     // Update Checkbox "Pilih Semua" di Header jika ada checkbox rencana yang diubah secara manual
-    $(document).on('change', '.chk-rencana-askep', function() {
-        const $group = $(this).closest('.card-body');
-        const groupId = $group.attr('id');
-        const checkboxes = $group.find('.chk-rencana-askep');
+    function onRencanaItemChanged(kodeMasalah) {
+        const $group = $(`#rencana_group_${kodeMasalah}`);
+        const checkboxes = $group.find('input.chk-rencana-askep');
         const allChecked = checkboxes.length > 0 && (checkboxes.length === checkboxes.filter(':checked').length);
-        $(`.chk-select-all-rencana[data-target="${groupId}"]`).prop('checked', allChecked);
-    });
+        $(`#selectAll_${kodeMasalah}`).prop('checked', allChecked);
+    }
 
     // Tombol Global Reset / Uncheck Semua Masalah Keperawatan
     $(document).on('click', '.btn-uncheck-all-masalah', function() {
