@@ -625,12 +625,147 @@
                             </div>
                         </div>
 
-                        <!-- BAGIAN VII. MASALAH & RENCANA KEPERAWATAN (SDKI / KHANZA) -->
+                        <!-- BAGIAN VII. SKRINING GIZI (DEWASA - MST / ANAK - STRONG-KIDS) -->
                         <div class="col-12">
                             <div class="card border-0 shadow-sm rounded-3">
                                 <div class="card-header bg-white py-2 px-3 border-bottom d-flex align-items-center justify-content-between">
                                     <span class="fw-bold text-primary" style="font-size: 13px;">
-                                        <i class="bi bi-list-check me-1"></i> VII. MASALAH &amp; RENCANA KEPERAWATAN (INTERVENSI)
+                                        <i class="bi bi-heart-pulse me-1"></i> VII. SKRINING GIZI
+                                    </span>
+                                    <div class="btn-group btn-group-sm" role="group" id="btnGroupKategoriGizi">
+                                        <button type="button" class="btn btn-outline-primary active btn-sm py-0 px-2" id="btnGiziDewasa" onclick="setKategoriSkriningGizi('Dewasa')">
+                                            <i class="bi bi-person me-1"></i> Dewasa (MST)
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" id="btnGiziAnak" onclick="setKategoriSkriningGizi('Anak')">
+                                            <i class="bi bi-emoji-smile me-1"></i> Anak (Strong-Kids)
+                                        </button>
+                                    </div>
+                                    <input type="hidden" name="gizi_kategori_pasien" id="gizi_kategori_pasien" value="Dewasa">
+                                    <input type="hidden" name="gizi_sg1" id="gizi_sg1" value="Tidak Ada">
+                                    <input type="hidden" name="gizi_nilai1" id="gizi_nilai1" value="0">
+                                    <input type="hidden" name="gizi_sg2" id="gizi_sg2" value="Tidak">
+                                    <input type="hidden" name="gizi_nilai2" id="gizi_nilai2" value="0">
+                                    <input type="hidden" name="gizi_sg3" id="gizi_sg3" value="-">
+                                    <input type="hidden" name="gizi_nilai3" id="gizi_nilai3" value="0">
+                                    <input type="hidden" name="gizi_sg4" id="gizi_sg4" value="-">
+                                    <input type="hidden" name="gizi_nilai4" id="gizi_nilai4" value="0">
+                                    <input type="hidden" name="gizi_total_skor" id="gizi_total_skor" value="0">
+                                    <input type="hidden" name="gizi_tingkat_risiko" id="gizi_tingkat_risiko" value="Risiko Rendah">
+                                </div>
+                                <div class="card-body p-3">
+                                    <!-- PANEL SKRINING GIZI DEWASA (MST) -->
+                                    <div id="panel_gizi_dewasa">
+                                        <div class="row g-2">
+                                            <div class="col-md-9">
+                                                <label class="form-label small mb-1">1. Apakah terdapat penurunan berat badan yang tidak diinginkan dalam 6 bulan terakhir?</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-select form-select-sm" id="select_gizi_dewasa_sg1" onchange="hitungSkorGiziDewasa()">
+                                                    <option value="Tidak Ada" data-nilai="0">Tidak Ada (Skor 0)</option>
+                                                    <option value="Tidak Yakin / Ragu-ragu" data-nilai="2">Tidak Yakin / Ragu-ragu (Skor 2)</option>
+                                                    <option value="Ya, 1 - 5 kg" data-nilai="1">Ya, 1 - 5 kg (Skor 1)</option>
+                                                    <option value="Ya, 6 - 10 kg" data-nilai="2">Ya, 6 - 10 kg (Skor 2)</option>
+                                                    <option value="Ya, 11 - 15 kg" data-nilai="3">Ya, 11 - 15 kg (Skor 3)</option>
+                                                    <option value="Ya, > 15 kg" data-nilai="4">Ya, > 15 kg (Skor 4)</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-9">
+                                                <label class="form-label small mb-1">2. Apakah asupan makan berkurang karena penurunan nafsu makan?</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-select form-select-sm" id="select_gizi_dewasa_sg2" onchange="hitungSkorGiziDewasa()">
+                                                    <option value="Tidak" data-nilai="0">Tidak (Skor 0)</option>
+                                                    <option value="Ya" data-nilai="1">Ya (Skor 1)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- PANEL SKRINING GIZI ANAK (STRONG-KIDS) -->
+                                    <div id="panel_gizi_anak" class="d-none">
+                                        <div class="row g-2">
+                                            <div class="col-md-9">
+                                                <label class="form-label small mb-1">1. Apakah pasien tampak kurus?</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-select form-select-sm" id="select_gizi_anak_sg1" onchange="hitungSkorGiziAnak()">
+                                                    <option value="Tidak" data-nilai="0">Tidak (Skor 0)</option>
+                                                    <option value="Ya" data-nilai="1">Ya (Skor 1)</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-9">
+                                                <label class="form-label small mb-1">2. Apakah terdapat penurunan BB sebulan terakhir? (Untuk bayi &lt; 1 thn, BB tidak naik 3 bln terakhir)</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-select form-select-sm" id="select_gizi_anak_sg2" onchange="hitungSkorGiziAnak()">
+                                                    <option value="Tidak" data-nilai="0">Tidak (Skor 0)</option>
+                                                    <option value="Ya" data-nilai="1">Ya (Skor 1)</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-9">
+                                                <label class="form-label small mb-1">3. Diare &gt;5x/hari, muntah &gt;3x/hari, atau asupan berkurang dlm 1 minggu terakhir?</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-select form-select-sm" id="select_gizi_anak_sg3" onchange="hitungSkorGiziAnak()">
+                                                    <option value="Tidak" data-nilai="0">Tidak (Skor 0)</option>
+                                                    <option value="Ya" data-nilai="1">Ya (Skor 1)</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-9">
+                                                <label class="form-label small mb-1">4. Apakah terdapat penyakit / keadaan yang menyebabkan pasien berisiko malnutrisi?</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-select form-select-sm" id="select_gizi_anak_sg4" onchange="hitungSkorGiziAnak()">
+                                                    <option value="Tidak" data-nilai="0">Tidak (Skor 0)</option>
+                                                    <option value="Ya" data-nilai="1">Ya (Skor 1)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- HASIL SKRINING & PELAPORAN -->
+                                    <div class="mt-3 pt-2 border-top bg-light rounded-2 p-2">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-md-3">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span class="small fw-bold text-dark">Total Skor:</span>
+                                                    <span id="display_gizi_total_skor" class="badge bg-secondary fs-6 px-2 py-1">0</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span class="small fw-bold text-dark">Tingkat Risiko:</span>
+                                                    <span id="display_gizi_tingkat_risiko" class="badge bg-success px-2 py-1" style="font-size: 12px;">Risiko Rendah</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="d-flex align-items-center gap-1">
+                                                    <label class="form-label small mb-0 fw-semibold text-nowrap">Lapor Gizi?</label>
+                                                    <select class="form-select form-select-sm" name="gizi_lapor" id="gizi_lapor">
+                                                        <option value="Tidak" selected>Tidak</option>
+                                                        <option value="Ya">Ya</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control form-control-sm" name="gizi_ket_lapor" id="gizi_ket_lapor" placeholder="Ket / Jam lapor..." value="-">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BAGIAN VIII. MASALAH & RENCANA KEPERAWATAN (SDKI / KHANZA) -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-header bg-white py-2 px-3 border-bottom d-flex align-items-center justify-content-between">
+                                    <span class="fw-bold text-primary" style="font-size: 13px;">
+                                        <i class="bi bi-list-check me-1"></i> VIII. MASALAH &amp; RENCANA KEPERAWATAN (INTERVENSI)
                                     </span>
                                 </div>
                                 <div class="card-body p-3">
@@ -1123,6 +1258,91 @@
         });
     }
 
+    // Switch Kategori Skrining Gizi (Dewasa / Anak)
+    function setKategoriSkriningGizi(kategori) {
+        $('#gizi_kategori_pasien').val(kategori);
+        if (kategori === 'Anak') {
+            $('#btnGiziAnak').addClass('active');
+            $('#btnGiziDewasa').removeClass('active');
+            $('#panel_gizi_anak').removeClass('d-none');
+            $('#panel_gizi_dewasa').addClass('d-none');
+            hitungSkorGiziAnak();
+        } else {
+            $('#btnGiziDewasa').addClass('active');
+            $('#btnGiziAnak').removeClass('active');
+            $('#panel_gizi_dewasa').removeClass('d-none');
+            $('#panel_gizi_anak').addClass('d-none');
+            hitungSkorGiziDewasa();
+        }
+    }
+
+    // Kalkulasi Skrining Gizi Dewasa (MST)
+    function hitungSkorGiziDewasa() {
+        const sg1Val = $('#select_gizi_dewasa_sg1').val() || 'Tidak Ada';
+        const sg1Score = parseInt($('#select_gizi_dewasa_sg1 option:selected').data('nilai') || 0);
+        const sg2Val = $('#select_gizi_dewasa_sg2').val() || 'Tidak';
+        const sg2Score = parseInt($('#select_gizi_dewasa_sg2 option:selected').data('nilai') || 0);
+
+        $('#gizi_sg1').val(sg1Val);
+        $('#gizi_nilai1').val(sg1Score);
+        $('#gizi_sg2').val(sg2Val);
+        $('#gizi_nilai2').val(sg2Score);
+        $('#gizi_sg3').val('-');
+        $('#gizi_nilai3').val(0);
+        $('#gizi_sg4').val('-');
+        $('#gizi_nilai4').val(0);
+
+        const total = sg1Score + sg2Score;
+        $('#gizi_total_skor').val(total);
+        $('#display_gizi_total_skor').text(total);
+
+        let risiko = 'Risiko Rendah';
+        let badgeClass = 'badge bg-success px-2 py-1';
+        if (total >= 2) {
+            risiko = 'Risiko Tinggi';
+            badgeClass = 'badge bg-danger px-2 py-1';
+        }
+        $('#gizi_tingkat_risiko').val(risiko);
+        $('#display_gizi_tingkat_risiko').attr('class', badgeClass).text(risiko);
+    }
+
+    // Kalkulasi Skrining Gizi Anak (Strong-Kids)
+    function hitungSkorGiziAnak() {
+        const sg1Val = $('#select_gizi_anak_sg1').val() || 'Tidak';
+        const sg1Score = parseInt($('#select_gizi_anak_sg1 option:selected').data('nilai') || 0);
+        const sg2Val = $('#select_gizi_anak_sg2').val() || 'Tidak';
+        const sg2Score = parseInt($('#select_gizi_anak_sg2 option:selected').data('nilai') || 0);
+        const sg3Val = $('#select_gizi_anak_sg3').val() || 'Tidak';
+        const sg3Score = parseInt($('#select_gizi_anak_sg3 option:selected').data('nilai') || 0);
+        const sg4Val = $('#select_gizi_anak_sg4').val() || 'Tidak';
+        const sg4Score = parseInt($('#select_gizi_anak_sg4 option:selected').data('nilai') || 0);
+
+        $('#gizi_sg1').val(sg1Val);
+        $('#gizi_nilai1').val(sg1Score);
+        $('#gizi_sg2').val(sg2Val);
+        $('#gizi_nilai2').val(sg2Score);
+        $('#gizi_sg3').val(sg3Val);
+        $('#gizi_nilai3').val(sg3Score);
+        $('#gizi_sg4').val(sg4Val);
+        $('#gizi_nilai4').val(sg4Score);
+
+        const total = sg1Score + sg2Score + sg3Score + sg4Score;
+        $('#gizi_total_skor').val(total);
+        $('#display_gizi_total_skor').text(total);
+
+        let risiko = 'Risiko Rendah';
+        let badgeClass = 'badge bg-success px-2 py-1';
+        if (total >= 4) {
+            risiko = 'Risiko Tinggi';
+            badgeClass = 'badge bg-danger px-2 py-1';
+        } else if (total >= 1) {
+            risiko = 'Risiko Sedang';
+            badgeClass = 'badge bg-warning text-dark px-2 py-1';
+        }
+        $('#gizi_tingkat_risiko').val(risiko);
+        $('#display_gizi_tingkat_risiko').attr('class', badgeClass).text(risiko);
+    }
+
     // Reset Form Asesmen Keperawatan UGD
     function resetFormAskepUgd() {
         $('#formAskepUgd')[0].reset();
@@ -1177,6 +1397,15 @@
         $('#askep_durasi').val('-');
         $('#askep_nyeri_hilang').val('Istirahat');
         $('#askep_pada_dokter').val('Tidak');
+
+        // Reset Skrining Gizi
+        setKategoriSkriningGizi('Dewasa');
+        $('#select_gizi_dewasa_sg1').val('Tidak Ada');
+        $('#select_gizi_dewasa_sg2').val('Tidak');
+        $('#select_gizi_anak_sg1, #select_gizi_anak_sg2, #select_gizi_anak_sg3, #select_gizi_anak_sg4').val('Tidak');
+        hitungSkorGiziDewasa();
+        $('#gizi_lapor').val('Tidak');
+        $('#gizi_ket_lapor').val('-');
         
         // Reset Masalah & Rencana
         $('#askep_rencana').val('-');
@@ -1210,6 +1439,19 @@
                 $('#wrapper_status_hamil').hide();
             } else {
                 $('#wrapper_status_hamil').show();
+            }
+
+            // Auto-detect usia pasien untuk Skrining Gizi (Anak < 18 thn vs Dewasa >= 18 thn)
+            if (p?.tgl_lahir) {
+                const birthDate = new Date(p.tgl_lahir);
+                const ageDifMs = Date.now() - birthDate.getTime();
+                const ageDate = new Date(ageDifMs);
+                const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+                if (age < 18) {
+                    setKategoriSkriningGizi('Anak');
+                } else {
+                    setKategoriSkriningGizi('Dewasa');
+                }
             }
 
             // Pre-fill Riwayat Pemeriksaan Ralan jika entri baru
@@ -1307,6 +1549,25 @@
                     $('#askep_ket_nyeri').val(response.ket_nyeri || '-');
                     $('#askep_pada_dokter').val(response.pada_dokter || 'Tidak');
                     $('#askep_ket_dokter').val(response.ket_dokter || '-');
+
+                    // Data Skrining Gizi Pasien
+                    if (response.gizi) {
+                        const g = response.gizi;
+                        setKategoriSkriningGizi(g.kategori_pasien || 'Dewasa');
+                        if (g.kategori_pasien === 'Anak') {
+                            $('#select_gizi_anak_sg1').val(g.sg1 || 'Tidak');
+                            $('#select_gizi_anak_sg2').val(g.sg2 || 'Tidak');
+                            $('#select_gizi_anak_sg3').val(g.sg3 || 'Tidak');
+                            $('#select_gizi_anak_sg4').val(g.sg4 || 'Tidak');
+                            hitungSkorGiziAnak();
+                        } else {
+                            $('#select_gizi_dewasa_sg1').val(g.sg1 || 'Tidak Ada');
+                            $('#select_gizi_dewasa_sg2').val(g.sg2 || 'Tidak');
+                            hitungSkorGiziDewasa();
+                        }
+                        $('#gizi_lapor').val(g.lapor_gizi || 'Tidak');
+                        $('#gizi_ket_lapor').val(g.ket_lapor || '-');
+                    }
 
                     $('#askep_rencana').val(response.rencana || '-');
 

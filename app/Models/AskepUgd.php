@@ -35,4 +35,8 @@ class AskepUgd extends Model
     {
         return $this->hasMany(RencanaAskepUgd::class, 'no_rawat', 'no_rawat');
     }
+    function gizi()
+    {
+        return $this->hasOne(RsiaPenilaianGiziIgd::class, 'no_rawat', 'no_rawat');
+    }
 }

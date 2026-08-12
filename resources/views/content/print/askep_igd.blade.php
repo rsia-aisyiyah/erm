@@ -411,11 +411,59 @@
         </tbody>
     </table>
 
-    <!-- VII. MASALAH & RENCANA KEPERAWATAN (INTERVENSI) -->
+    <!-- VII. SKRINING GIZI (DEWASA - MST / ANAK - STRONG-KIDS) -->
+    @php
+        $gizi = $data->gizi ?? null;
+        $kategoriGizi = $gizi->kategori_pasien ?? 'Dewasa';
+    @endphp
     <table class="table-data">
         <thead>
             <tr>
-                <th colspan="2" class="th-section">VII. MASALAH &amp; RENCANA KEPERAWATAN (INTERVENSI)</th>
+                <th colspan="4" class="th-section">
+                    VII. SKRINING GIZI ({{ $kategoriGizi == 'Anak' ? 'STRONG-KIDS - ANAK' : 'MST - DEWASA' }})
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if($kategoriGizi == 'Anak')
+                <tr>
+                    <td width="35%" class="label-cell">1. Pasien tampak kurus?</td>
+                    <td width="15%">{{ $gizi->sg1 ?? 'Tidak' }} (Skor: {{ $gizi->nilai1 ?? 0 }})</td>
+                    <td width="35%" class="label-cell">2. Penurunan BB / BB tdk naik?</td>
+                    <td width="15%">{{ $gizi->sg2 ?? 'Tidak' }} (Skor: {{ $gizi->nilai2 ?? 0 }})</td>
+                </tr>
+                <tr class="bg-light-row">
+                    <td class="label-cell">3. Diare &gt;5x/hr, muntah &gt;3x/hr, asupan &darr;?</td>
+                    <td>{{ $gizi->sg3 ?? 'Tidak' }} (Skor: {{ $gizi->nilai3 ?? 0 }})</td>
+                    <td class="label-cell">4. Penyakit berisiko malnutrisi?</td>
+                    <td>{{ $gizi->sg4 ?? 'Tidak' }} (Skor: {{ $gizi->nilai4 ?? 0 }})</td>
+                </tr>
+            @else
+                <tr>
+                    <td width="35%" class="label-cell">1. Penurunan BB dlm 6 bln terakhir</td>
+                    <td width="65%" colspan="3">{{ $gizi->sg1 ?? 'Tidak Ada' }} (Skor: {{ $gizi->nilai1 ?? 0 }})</td>
+                </tr>
+                <tr class="bg-light-row">
+                    <td class="label-cell">2. Asupan makan berkurang</td>
+                    <td colspan="3">{{ $gizi->sg2 ?? 'Tidak' }} (Skor: {{ $gizi->nilai2 ?? 0 }})</td>
+                </tr>
+            @endif
+            <tr>
+                <td class="label-cell"><strong>Total Skor &amp; Tingkat Risiko</strong></td>
+                <td colspan="3">
+                    <strong>Skor: {{ $gizi->total_skor ?? 0 }}</strong> &nbsp;&bull;&nbsp; 
+                    <strong>Tingkat Risiko:</strong> <span class="badge-status">{{ $gizi->tingkat_risiko ?? 'Risiko Rendah' }}</span>
+                    &nbsp;&bull;&nbsp; <strong>Lapor Gizi:</strong> {{ $gizi->lapor_gizi ?? 'Tidak' }} {{ (!empty($gizi->ket_lapor) && $gizi->ket_lapor != '-') ? '('.$gizi->ket_lapor.')' : '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- VIII. MASALAH & RENCANA KEPERAWATAN (INTERVENSI) -->
+    <table class="table-data">
+        <thead>
+            <tr>
+                <th colspan="2" class="th-section">VIII. MASALAH &amp; RENCANA KEPERAWATAN (INTERVENSI)</th>
             </tr>
             <tr style="background-color: #f1f4f8; text-align: center;">
                 <th width="42%" style="padding: 2px 4px; font-weight: bold; border: 1px solid #000000;">Masalah Keperawatan Teridentifikasi</th>

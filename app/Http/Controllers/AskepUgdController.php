@@ -7,6 +7,7 @@ use App\Models\MasalahAskepUgd;
 use App\Models\MasterMasalahAskepUgd;
 use App\Models\MasterRencanaAskepUgd;
 use App\Models\RencanaAskepUgd;
+use App\Models\RsiaPenilaianGiziIgd;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,8 @@ class AskepUgdController extends Controller
                 'regPeriksa.dokter',
                 'masalahKeperawatan.masterMasalah',
                 'rencanaKeperawatan.masterRencana',
-                'pengkaji'
+                'pengkaji',
+                'gizi'
             ])
             ->first();
 
@@ -69,6 +71,24 @@ class AskepUgdController extends Controller
         $dataMasalah = $request->input('masalah', []);
         $dataRencana = $request->input('rencana_keperawatan', $request->input('rencana_intervensi', []));
 
+        // Data Skrining Gizi
+        $dataGizi = [
+            'no_rawat' => $no_rawat,
+            'kategori_pasien' => $request->input('gizi_kategori_pasien', 'Dewasa'),
+            'sg1' => $request->input('gizi_sg1', '-'),
+            'nilai1' => (int) $request->input('gizi_nilai1', 0),
+            'sg2' => $request->input('gizi_sg2', '-'),
+            'nilai2' => (int) $request->input('gizi_nilai2', 0),
+            'sg3' => $request->input('gizi_sg3', '-'),
+            'nilai3' => (int) $request->input('gizi_nilai3', 0),
+            'sg4' => $request->input('gizi_sg4', '-'),
+            'nilai4' => (int) $request->input('gizi_nilai4', 0),
+            'total_skor' => (int) $request->input('gizi_total_skor', 0),
+            'tingkat_risiko' => $request->input('gizi_tingkat_risiko', 'Risiko Rendah'),
+            'lapor_gizi' => $request->input('gizi_lapor', 'Tidak'),
+            'ket_lapor' => $request->input('gizi_ket_lapor', '-'),
+        ];
+
         // Catatan teks rencana keperawatan tambahan
         $catatanRencana = $request->input('rencana');
         $data['rencana'] = is_string($catatanRencana) ? $catatanRencana : '-';
@@ -103,8 +123,11 @@ class AskepUgdController extends Controller
         $data['rencana'] = $data['rencana'] ?? '-';
 
         try {
-            DB::transaction(function () use ($no_rawat, $data, $dataMasalah, $dataRencana) {
+            DB::transaction(function () use ($no_rawat, $data, $dataMasalah, $dataRencana, $dataGizi) {
                 $askep = $this->askep->updateOrCreate(['no_rawat' => $no_rawat], $data);
+
+                // Simpan Skrining Gizi
+                RsiaPenilaianGiziIgd::updateOrCreate(['no_rawat' => $no_rawat], $dataGizi);
 
                 // Sinkronisasi Masalah Keperawatan
                 MasalahAskepUgd::where('no_rawat', $no_rawat)->delete();
@@ -160,6 +183,7 @@ class AskepUgdController extends Controller
 
         try {
             DB::transaction(function () use ($no_rawat) {
+                RsiaPenilaianGiziIgd::where('no_rawat', $no_rawat)->delete();
                 MasalahAskepUgd::where('no_rawat', $no_rawat)->delete();
                 RencanaAskepUgd::where('no_rawat', $no_rawat)->delete();
                 $this->askep->where('no_rawat', $no_rawat)->delete();
@@ -182,7 +206,8 @@ class AskepUgdController extends Controller
                 'regPeriksa.dokter',
                 'masalahKeperawatan.masterMasalah',
                 'rencanaKeperawatan.masterRencana',
-                'pengkaji'
+                'pengkaji',
+                'gizi'
             ])
             ->first();
 
