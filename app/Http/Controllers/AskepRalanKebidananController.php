@@ -135,13 +135,13 @@ class AskepRalanKebidananController extends Controller
         )
             ->setOption([
                 'defaultFont' => 'sans-serif',
-                'isRemoteEnabled' => true,
+                'isRemoteEnabled' => false,
                 'margin_top' => 15,
                 'margin_right' => 15,
                 'margin_bottom' => 15,
                 'margin_left' => 15,
-                'margin_header' => 5,   // tambahkan ini
-                'margin_footer' => 5,   // tambahkan ini
+                'margin_header' => 5,
+                'margin_footer' => 5,
             ])
             // ->setOption([
             //     'defaultFont' => 'serif',

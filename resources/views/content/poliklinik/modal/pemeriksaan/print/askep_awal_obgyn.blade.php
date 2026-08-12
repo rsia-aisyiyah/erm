@@ -513,7 +513,13 @@
 
             <tr>
                 <td colspan="3" style="font-size:9px;padding:3px 5px;vertical-align:top">
-                    <img src="{{ asset('img/skala_nyeri_wong_baker.png') }}" style="width: 100%;height: auto" />
+                    @php
+                        $wongBakerPath = public_path('img/skala_nyeri_wong_baker.png');
+                        $wongBakerBase64 = file_exists($wongBakerPath) ? 'data:image/png;base64,' . base64_encode(file_get_contents($wongBakerPath)) : '';
+                    @endphp
+                    @if(!empty($wongBakerBase64))
+                        <img src="{{ $wongBakerBase64 }}" style="width: 100%;height: auto" />
+                    @endif
                 </td>
                 <td colspan="3" style="font-size:10px;padding:3px 5px;vertical-align:top">
                     <b>Kualitas Nyeri</b>/br> Penyebab : {{ $data->nyeri_penyebab ?? '-' }}<br>
