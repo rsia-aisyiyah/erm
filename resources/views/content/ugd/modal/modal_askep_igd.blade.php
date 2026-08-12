@@ -642,8 +642,8 @@
                                                     <strong class="text-dark small"><i class="bi bi-clipboard2-pulse me-1"></i> Masalah Keperawatan (Diagnosa) :</strong>
                                                     <div class="d-flex align-items-center gap-1">
                                                         <span id="badgeCountMasalahTerpilih" class="badge bg-primary" style="font-size: 10px;">0 Terpilih</span>
-                                                        <button type="button" class="btn btn-link text-danger p-0 text-decoration-none btn-uncheck-all-masalah" style="font-size: 10.5px;" title="Batalkan semua pilihan masalah">
-                                                            <i class="bi bi-x-circle"></i> Reset
+                                                        <button type="button" class="btn btn-outline-danger btn-sm py-0 px-2" onclick="resetSemuaMasalahAskep()" style="font-size: 10.5px;" title="Batalkan semua pilihan masalah">
+                                                            <i class="bi bi-x-circle me-1"></i> Reset
                                                         </button>
                                                     </div>
                                                 </div>
@@ -918,13 +918,15 @@
     }
 
     // Tombol Global Reset / Uncheck Semua Masalah Keperawatan
-    $(document).on('click', '.btn-uncheck-all-masalah', function() {
-        $('.chk-masalah-askep').prop('checked', false);
-        $('.item-masalah-card').removeClass('border-primary bg-primary-subtle').addClass('border-light-subtle bg-white');
-        $('.badge-rencana-count').removeClass('bg-primary').addClass('bg-light text-muted border');
+    function resetSemuaMasalahAskep() {
+        $('#containerListMasalahAskep .chk-masalah-askep').prop('checked', false);
+        $('#containerListMasalahAskep .item-masalah-card').removeClass('border-primary bg-primary-subtle').addClass('border-light-subtle bg-white');
+        $('#containerListMasalahAskep .badge-rencana-count').removeClass('bg-primary').addClass('bg-light text-muted border');
+        $('#cariMasalahAskep').val('');
+        $('#containerListMasalahAskep .item-masalah-card').removeClass('d-none');
         updateBadgeCountMasalah();
         renderRencanaIntervensiList([]);
-    });
+    }
 
     // Tombol Salin Rencana Intervensi ke Textarea Catatan
     $(document).on('click', '#btnSalinRencanaKeCatatan', function() {
