@@ -96,10 +96,9 @@ Route::post('/login', [LoginController::class, 'authenticate'])
 	->name('login')
 	->middleware('guest');
 
-//Route::get('/erm', function () {
-////		return redirect('/poliklinik');
-//	return 'wkwkwkwkw';
-//});
+Route::get('/erm', function () {
+	return redirect('/');
+});
 
 Route::middleware('auth')->group(function () {
 	Route::get('/logout', [LoginController::class, 'logout']);

@@ -16,9 +16,13 @@
         </p>
     </div>
 
-    <hr style="margin-top:10px;padding:0">
-
-    <img src="{{ asset('img/logo.png') }}" style="position:absolute;top:10px;left:30px" width="60" />
+    @php
+        $logoPath = public_path('img/logo.png');
+        $logoBase64 = file_exists($logoPath) ? 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath)) : '';
+    @endphp
+    @if(!empty($logoBase64))
+        <img src="{{ $logoBase64 }}" style="position:absolute;top:10px;left:30px" width="60" />
+    @endif
 
     <br>
 
