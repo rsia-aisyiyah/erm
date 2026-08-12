@@ -4,52 +4,56 @@
         <div class="modal-content">
             
             <!-- Modal Header -->
-            <div class="modal-header bg-primary text-white py-2 px-3">
+            <div class="modal-header text-white py-2 px-3 justify-content-between align-items-center" style="background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%); border-bottom: 1px solid rgba(255,255,255,0.15);">
                 <div class="d-flex align-items-center gap-2">
-                    <i class="bi bi-gender-female fs-4 text-warning"></i>
+                    <div class="rounded-circle bg-white bg-opacity-25 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                        <i class="bi bi-gender-female fs-5 text-warning"></i>
+                    </div>
                     <div>
-                        <h5 class="modal-title fs-6 fw-bold mb-0" id="modalAskepKebidananUgdLabel">
-                            Asesmen Awal Keperawatan Kebidanan &amp; Kandungan (UGD)
-                        </h5>
-                        <small class="text-white-50">Pengkajian klinis keperawatan obstetri &amp; ginekologi gawat darurat</small>
+                        <h6 class="modal-title fw-bold mb-0 text-white" id="modalAskepKebidananUgdLabel">
+                            PENGKAJIAN AWAL KEPERAWATAN KEBIDANAN &amp; KANDUNGAN (UGD)
+                        </h6>
+                        <small class="text-white-50" style="font-size: 11px;">Standar Akreditasi Rekam Medis Keperawatan Obstetri &amp; Ginekologi Gawat Darurat</small>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <span id="badgeStatusAskepKebidananUgd" class="badge bg-light text-primary px-2 py-1">
+                    <span id="badgeStatusAskepKebidananUgd" class="badge bg-light text-primary px-2 py-1 shadow-sm" style="font-size: 11px;">
                         <i class="bi bi-file-earmark-plus me-1"></i> Data Baru
                     </span>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
             </div>
 
-            <!-- Patient Info Header (Readonly Banner) -->
-            <div class="bg-light border-bottom px-3 py-2">
-                <div class="row g-2 align-items-center" style="font-size: 11.5px;">
-                    <div class="col-md-2 col-6">
-                        <span class="text-muted d-block">No. Rawat:</span>
-                        <strong id="kebidanan_info_no_rawat" class="text-primary">-</strong>
-                    </div>
-                    <div class="col-md-2 col-6">
-                        <span class="text-muted d-block">No. Rekam Medis:</span>
-                        <strong id="kebidanan_info_no_rkm_medis">-</strong>
-                    </div>
-                    <div class="col-md-3 col-12">
-                        <span class="text-muted d-block">Nama Pasien:</span>
-                        <strong id="kebidanan_info_nm_pasien" class="text-dark fs-6">-</strong>
-                    </div>
-                    <div class="col-md-2 col-6">
-                        <span class="text-muted d-block">Tgl Lahir / Umur:</span>
-                        <span id="kebidanan_info_tgl_lahir">-</span>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <span class="text-muted d-block">Dokter DPJP / Penjab:</span>
-                        <span id="kebidanan_info_dokter_penjab" class="text-truncate d-inline-block" style="max-width: 100%;">-</span>
-                    </div>
-                </div>
-            </div>
-
             <!-- Modal Body Form -->
             <div class="modal-body p-3 bg-light">
+                <!-- Patient Info Header (Readonly Banner) -->
+                <div class="card border-0 shadow-sm rounded-3 mb-3" style="background: #ffffff;">
+                    <div class="card-body p-3">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-md-2 col-6">
+                                <label class="text-muted small mb-0" style="font-size: 10px;">NO. RAWAT</label>
+                                <div class="fw-bold text-primary font-monospace" id="kebidanan_info_no_rawat" style="font-size: 12px;">-</div>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <label class="text-muted small mb-0" style="font-size: 10px;">NO. REKAM MEDIS</label>
+                                <div class="fw-bold text-dark font-monospace" id="kebidanan_info_no_rkm_medis" style="font-size: 12px;">-</div>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <label class="text-muted small mb-0" style="font-size: 10px;">NAMA PASIEN</label>
+                                <div class="fw-bold text-dark" id="kebidanan_info_nm_pasien" style="font-size: 12px;">-</div>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <label class="text-muted small mb-0" style="font-size: 10px;">TGL. LAHIR / UMUR</label>
+                                <div class="fw-semibold text-dark" id="kebidanan_info_tgl_lahir" style="font-size: 12px;">-</div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <label class="text-muted small mb-0" style="font-size: 10px;">DOKTER DPJP / PENJAB</label>
+                                <div class="fw-semibold text-dark text-truncate" id="kebidanan_info_dokter_penjab" style="font-size: 12px;">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <form id="formAskepKebidananUgd" autocomplete="off">
                     <input type="hidden" id="kebidanan_no_rawat" name="no_rawat">
                     <input type="hidden" id="kebidanan_no_rkm_medis" name="no_rkm_medis">
@@ -1229,7 +1233,7 @@
         $.get(`/erm/asesmen-keperawatan/kandungan?no_rawat=${encodeURIComponent(noRawat)}`).done(function(res) {
             const data = res?.data;
             if (data && data.no_rawat) {
-                $('#badgeStatusAskepKebidananUgd').attr('class', 'badge bg-success px-2 py-1').html('<i class="bi bi-check-circle-fill me-1"></i> Data Tersimpan');
+                $('#badgeStatusAskepKebidananUgd').attr('class', 'badge bg-success text-white px-2 py-1 shadow-sm').html('<i class="bi bi-check2-circle me-1"></i> Data Tersimpan');
                 $('#btnCetakAskepKebidananUgd, #btnHapusAskepKebidananUgd').removeClass('d-none');
                 $('#btnSimpanAskepKebidananUgd').html('<i class="bi bi-save me-1"></i> Perbarui Asesmen');
 
