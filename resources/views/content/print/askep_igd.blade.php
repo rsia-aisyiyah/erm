@@ -95,7 +95,8 @@
     </style>
 
     @php
-        $pasien = $data->regPeriksa->pasien ?? null;
+        $regPeriksa = $data->regPeriksa ?? null;
+        $pasien = $regPeriksa->pasien ?? null;
         $petugas = $data->pengkaji ?? null;
         $masalahList = $data->masalahKeperawatan ?? [];
         $rencanaList = $data->rencanaKeperawatan ?? [];
@@ -414,7 +415,21 @@
     <!-- VII. SKRINING GIZI (DEWASA - MST / ANAK - STRONG-KIDS) -->
     @php
         $gizi = $data->gizi ?? null;
-        $kategoriGizi = $gizi->kategori_pasien ?? 'Dewasa';
+        
+        // Deteksi kategori pasien (Anak vs Dewasa) secara cerdas
+        $umurTahun = 0;
+        if ($regPeriksa) {
+            if (($regPeriksa->sttsumur ?? 'Th') != 'Th') {
+                $umurTahun = 0; // Balita / Bayi (Bulan / Hari)
+            } else {
+                $umurTahun = (int) ($regPeriksa->umurdaftar ?? 0);
+            }
+        } elseif ($pasien && $pasien->tgl_lahir) {
+            $umurTahun = \Carbon\Carbon::parse($pasien->tgl_lahir)->age;
+        }
+        $isAnak = ($umurTahun < 18);
+
+        $kategoriGizi = $gizi->kategori_pasien ?? ($isAnak ? 'Anak' : 'Dewasa');
     @endphp
     <table class="table-data">
         <thead>
