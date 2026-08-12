@@ -1241,7 +1241,8 @@
                     $('#kebidanan_nip').append(opt).trigger('change');
                 }
 
-                $('#kebidanan_tanggal').val(data.tanggal ? data.tanggal.replace(' ', 'T') : '');
+                const tglVal = (data.tanggal && !data.tanggal.startsWith('0000-00-00')) ? data.tanggal.replace(' ', 'T') : '';
+                $('#kebidanan_tanggal').val(tglVal);
                 $('#kebidanan_informasi').val(data.informasi || 'Autoanamnesis');
                 $('#kebidanan_td').val(data.td || '120/80');
                 $('#kebidanan_nadi').val(data.nadi || '80');
@@ -1298,9 +1299,9 @@
                 $('#kebidanan_usia3').val(data.usia3 || '-');
                 $('#kebidanan_ket3').val(data.ket3 || '-');
 
-                $('#kebidanan_hpht').val(data.hpht || '');
+                $('#kebidanan_hpht').val((data.hpht && data.hpht !== '0000-00-00') ? data.hpht : '');
                 $('#kebidanan_usia_kehamilan').val(data.usia_kehamilan || '-');
-                $('#kebidanan_tp').val(data.tp || '');
+                $('#kebidanan_tp').val((data.tp && data.tp !== '0000-00-00') ? data.tp : '');
                 $('#kebidanan_g').val(data.g || '0');
                 $('#kebidanan_p').val(data.p || '0');
                 $('#kebidanan_a').val(data.a || '0');
