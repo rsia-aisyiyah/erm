@@ -638,8 +638,13 @@
                                         <!-- KOLOM MASALAH KEPERAWATAN -->
                                         <div class="col-md-5">
                                             <div class="border rounded-2 p-2 bg-light h-100">
-                                                <div class="d-flex align-items-center justify-content-between pb-2 border-bottom mb-2">
+                                                <div class="d-flex align-items-center justify-content-between pb-1 border-bottom mb-2">
                                                     <strong class="text-dark small"><i class="bi bi-clipboard2-pulse me-1"></i> Masalah Keperawatan (Diagnosa) :</strong>
+                                                    <span id="badgeCountMasalahTerpilih" class="badge bg-primary" style="font-size: 10px;">0 Terpilih</span>
+                                                </div>
+                                                <div class="input-group input-group-sm mb-2">
+                                                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                                                    <input type="text" class="form-control border-start-0" id="cariMasalahAskep" placeholder="Cari masalah keperawatan...">
                                                 </div>
                                                 <div id="containerListMasalahAskep" style="max-height: 380px; overflow-y: auto;">
                                                     <div class="text-center text-muted py-3 small"><div class="spinner-border spinner-border-sm me-1"></div> Memuat daftar masalah keperawatan...</div>
@@ -652,10 +657,13 @@
                                             <div class="border rounded-2 p-2 bg-light h-100">
                                                 <div class="d-flex align-items-center justify-content-between pb-2 border-bottom mb-2">
                                                     <strong class="text-dark small"><i class="bi bi-journal-medical me-1"></i> Rencana Intervensi Keperawatan :</strong>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" id="btnSalinRencanaKeCatatan" style="font-size: 11px;">
+                                                        <i class="bi bi-clipboard-plus me-1"></i> Salin ke Catatan
+                                                    </button>
                                                 </div>
                                                 <div id="containerListRencanaAskep" style="max-height: 280px; overflow-y: auto;">
-                                                    <div class="text-center text-muted py-3 small">
-                                                        <i class="bi bi-arrow-left-circle me-1"></i> Centang salah satu masalah di sebelah kiri untuk melihat dan memilih rencana intervensi.
+                                                    <div class="text-center text-muted py-4 small">
+                                                        <i class="bi bi-arrow-left-circle me-1"></i> Centang salah satu masalah di sebelah kiri untuk memunculkan dan memilih rencana intervensi.
                                                     </div>
                                                 </div>
 
@@ -729,17 +737,31 @@
         window.masterAskepIgdData.forEach(function(m) {
             const isChecked = selectedMasalahCodes.includes(m.kode_masalah);
             html += `
-                <div class="form-check p-1 px-3 border-bottom bg-white rounded-1 mb-1 shadow-sm">
-                    <input class="form-check-input chk-masalah-askep" type="checkbox" name="masalah[]" value="${m.kode_masalah}" id="masalah_${m.kode_masalah}" ${isChecked ? 'checked' : ''}>
-                    <label class="form-check-label small fw-semibold text-dark cursor-pointer ms-1" for="masalah_${m.kode_masalah}">
-                        ${m.kode_masalah} - ${m.nama_masalah}
-                    </label>
+                <div class="card item-masalah-card border ${isChecked ? 'border-primary bg-primary-subtle' : 'border-light-subtle bg-white'} shadow-sm mb-1 p-2" data-kode="${m.kode_masalah}" style="cursor: pointer; transition: all 0.2s;">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="form-check mb-0">
+                            <input class="form-check-input chk-masalah-askep" type="checkbox" name="masalah[]" value="${m.kode_masalah}" id="masalah_${m.kode_masalah}" ${isChecked ? 'checked' : ''} style="cursor: pointer;">
+                            <label class="form-check-label small fw-semibold text-dark ms-1 cursor-pointer" for="masalah_${m.kode_masalah}" style="cursor: pointer;">
+                                ${m.kode_masalah} - ${m.nama_masalah}
+                            </label>
+                        </div>
+                        <span class="badge ${isChecked ? 'bg-primary' : 'bg-light text-muted border'} rounded-pill badge-rencana-count" style="font-size: 10px;">
+                            ${(m.master_rencana || []).length} intervensi
+                        </span>
+                    </div>
                 </div>
             `;
         });
 
         container.html(html);
+        updateBadgeCountMasalah();
         renderRencanaIntervensiList(selectedRencanaCodes);
+    }
+
+    // Update Badge Total Masalah Terpilih
+    function updateBadgeCountMasalah() {
+        const totalChecked = $('.chk-masalah-askep:checked').length;
+        $('#badgeCountMasalahTerpilih').text(`${totalChecked} Terpilih`);
     }
 
     // Render Rencana Intervensi yang aktif sesuai masalah yang dicentang
@@ -754,7 +776,7 @@
         if (checkedMasalah.length === 0) {
             container.html(`
                 <div class="text-center text-muted py-4 small">
-                    <i class="bi bi-arrow-left-circle me-1"></i> Centang salah satu masalah di sebelah kiri untuk melihat dan memilih rencana intervensi.
+                    <i class="bi bi-arrow-left-circle me-1"></i> Centang salah satu masalah di sebelah kiri untuk memunculkan dan memilih rencana intervensi.
                 </div>
             `);
             return;
@@ -766,10 +788,10 @@
                 html += `
                     <div class="card border border-primary-subtle shadow-sm mb-2">
                         <div class="card-header bg-primary bg-opacity-10 py-1 px-2 d-flex align-items-center justify-content-between">
-                            <span class="small fw-bold text-primary" style="font-size: 11px;">
+                            <span class="small fw-bold text-primary" style="font-size: 11.5px;">
                                 <i class="bi bi-check2-square me-1"></i> [${m.kode_masalah}] ${m.nama_masalah}
                             </span>
-                            <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none btn-check-all-rencana" data-target="rencana_group_${m.kode_masalah}" style="font-size: 10px;">
+                            <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none btn-check-all-rencana text-primary fw-semibold" data-target="rencana_group_${m.kode_masalah}" style="font-size: 10.5px;">
                                 Pilih Semua
                             </button>
                         </div>
@@ -778,11 +800,15 @@
 
                 if (m.master_rencana && m.master_rencana.length > 0) {
                     m.master_rencana.forEach(function(r) {
-                        const isRencanaChecked = selectedRencanaCodes.includes(r.kode_rencana);
+                        // Jika ada array terpilih eksplisit, gunakan. Jika array kosong (misal baru dicentang), defaultkan checked true!
+                        const isRencanaChecked = (selectedRencanaCodes && selectedRencanaCodes.length > 0)
+                            ? selectedRencanaCodes.includes(r.kode_rencana)
+                            : true;
+
                         html += `
-                            <div class="form-check small py-0 mb-1">
-                                <input class="form-check-input chk-rencana-askep" type="checkbox" name="rencana_keperawatan[]" value="${r.kode_rencana}" id="rencana_${r.kode_rencana}" ${isRencanaChecked ? 'checked' : ''}>
-                                <label class="form-check-label cursor-pointer text-secondary" for="rencana_${r.kode_rencana}" style="font-size: 11.5px;">
+                            <div class="form-check small py-1 mb-0 border-bottom border-light">
+                                <input class="form-check-input chk-rencana-askep" type="checkbox" name="rencana_keperawatan[]" value="${r.kode_rencana}" id="rencana_${r.kode_rencana}" ${isRencanaChecked ? 'checked' : ''} style="cursor: pointer;">
+                                <label class="form-check-label cursor-pointer text-dark ms-1" for="rencana_${r.kode_rencana}" style="font-size: 11.5px; cursor: pointer;">
                                     ${r.rencana_keperawatan}
                                 </label>
                             </div>
@@ -802,22 +828,147 @@
         container.html(html);
     }
 
+    // Filter Live Search Masalah Keperawatan
+    $(document).on('input', '#cariMasalahAskep', function() {
+        const query = $(this).val().toLowerCase().trim();
+        $('.item-masalah-card').each(function() {
+            const text = $(this).text().toLowerCase();
+            if (text.includes(query)) {
+                $(this).removeClass('d-none');
+            } else {
+                $(this).addClass('d-none');
+            }
+        });
+    });
+
+    // Klik Card / Baris Masalah Keperawatan
+    $(document).on('click', '.item-masalah-card', function(e) {
+        if ($(e.target).is('input[type="checkbox"]')) {
+            return; // Biarkan event checkbox jalan normal
+        }
+        const $chk = $(this).find('.chk-masalah-askep');
+        $chk.prop('checked', !$chk.is(':checked')).trigger('change');
+    });
+
     // Toggle Rencana Intervensi saat checklist masalah diklik
     $(document).on('change', '.chk-masalah-askep', function() {
+        const $card = $(this).closest('.item-masalah-card');
+        const isChecked = $(this).is(':checked');
+        const kodeMasalah = $(this).val();
+
+        if (isChecked) {
+            $card.removeClass('border-light-subtle bg-white').addClass('border-primary bg-primary-subtle');
+            $card.find('.badge-rencana-count').removeClass('bg-light text-muted border').addClass('bg-primary');
+        } else {
+            $card.removeClass('border-primary bg-primary-subtle').addClass('border-light-subtle bg-white');
+            $card.find('.badge-rencana-count').removeClass('bg-primary').addClass('bg-light text-muted border');
+        }
+
+        updateBadgeCountMasalah();
+
+        // Kumpulkan rencana yang saat ini aktif
         const currentlyCheckedRencana = [];
         $('.chk-rencana-askep:checked').each(function() {
             currentlyCheckedRencana.push($(this).val());
         });
+
+        // Jika masalah baru saja dicentang, tambahkan semua rencananya secara otomatis
+        if (isChecked) {
+            const m = (window.masterAskepIgdData || []).find(item => item.kode_masalah === kodeMasalah);
+            if (m && m.master_rencana) {
+                m.master_rencana.forEach(r => {
+                    if (!currentlyCheckedRencana.includes(r.kode_rencana)) {
+                        currentlyCheckedRencana.push(r.kode_rencana);
+                    }
+                });
+            }
+        }
+
         renderRencanaIntervensiList(currentlyCheckedRencana);
     });
 
-    // Tombol Pilih Semua Rencana per Masalah
+    // Tombol Pilih Semua / Batal Semua Rencana per Masalah
     $(document).on('click', '.btn-check-all-rencana', function() {
         const targetId = $(this).data('target');
         const checkboxes = $(`#${targetId} .chk-rencana-askep`);
         const allChecked = checkboxes.length === checkboxes.filter(':checked').length;
         checkboxes.prop('checked', !allChecked);
         $(this).text(allChecked ? 'Pilih Semua' : 'Batal Semua');
+    });
+
+    // Tombol Salin Rencana Intervensi ke Textarea Catatan
+    $(document).on('click', '#btnSalinRencanaKeCatatan', function() {
+        const listText = [];
+        $('.chk-rencana-askep:checked').each(function() {
+            const labelText = $(this).siblings('label').text().trim();
+            if (labelText) listText.push(`- ${labelText}`);
+        });
+
+        if (listText.length === 0) {
+            Swal.fire('Informasi', 'Belum ada rencana intervensi yang dicentang.', 'info');
+            return;
+        }
+
+        const currentNote = $('#askep_rencana').val().trim();
+        const generatedText = listText.join('\n');
+
+        if (!currentNote || currentNote === '-') {
+            $('#askep_rencana').val(generatedText);
+        } else {
+            $('#askep_rencana').val(currentNote + '\n' + generatedText);
+        }
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Tersalin!',
+            text: 'Rencana intervensi berhasil disalin ke Catatan Tambahan.',
+            timer: 1200,
+            showConfirmButton: false
+        });
+    });
+
+    // Auto-Trigger Masalah Keperawatan dari Hasil Pengkajian Fisik
+    function autoTriggerMasalah(kodeMasalah, shouldCheck = true) {
+        const $chk = $(`#masalah_${kodeMasalah}`);
+        if ($chk.length > 0) {
+            if (shouldCheck && !$chk.is(':checked')) {
+                $chk.prop('checked', true).trigger('change');
+            } else if (!shouldCheck && $chk.is(':checked')) {
+                // Jangan paksa uncheck jika user mungkin memilih manual, kecuali diinginkan
+            }
+        }
+    }
+
+    // Listener Auto-Trigger
+    $('#askep_nyeri').on('change', function() {
+        if ($(this).val() === 'Nyeri Akut') {
+            autoTriggerMasalah('006', true); // 006 - Nyeri Akut
+        }
+    });
+
+    $('#askep_integumen').on('change', function() {
+        if ($(this).val() !== 'TAK') {
+            autoTriggerMasalah('007', true); // 007 - Gangguan Integritas Kulit
+        }
+    });
+
+    $('#askep_perdarahan').on('change', function() {
+        if ($(this).val() === 'Ada') {
+            autoTriggerMasalah('008', true); // 008 - Risiko Perdarahan
+        }
+    });
+
+    $('#askep_turgor').on('change', function() {
+        if ($(this).val() === 'Menurun') {
+            autoTriggerMasalah('004', true); // 004 - Risiko Ketidakseimbangan Cairan
+        }
+    });
+
+    $('#askep_kbab').on('change blur', function() {
+        const val = $(this).val().toLowerCase();
+        if (val.includes('cair') || val.includes('diare')) {
+            autoTriggerMasalah('009', true); // 009 - Diare
+        }
     });
 
     // Auto-Kalkulasi Risiko Jatuh (Get Up and Go Test)
