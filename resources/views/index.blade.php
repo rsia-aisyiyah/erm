@@ -26,7 +26,23 @@
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">
-                        {{ (Request::segment(1) == null ? 'DASHBOARD' : Request::segment(1) == 'ranap') ? 'Rawat Inap' : strtoupper(Request::segment(1)) }}
+                        @php
+                            $seg = Request::segment(1) == 'erm' ? Request::segment(2) : Request::segment(1);
+                            $titles = [
+                                'ugd' => 'UGD',
+                                'ranap' => 'Rawat Inap',
+                                'poliklinik' => 'Poliklinik',
+                                'pasien' => 'Pasien',
+                                'registrasi' => 'Pendaftaran',
+                                'sep' => 'SEP Terbit',
+                                'obat' => 'Obat & BHP',
+                                'resep' => 'Resep',
+                                'radiologi' => 'Radiologi',
+                                'lab' => 'Laboratorium',
+                                'racikan' => 'Template Racikan',
+                            ];
+                        @endphp
+                        {{ $titles[strtolower($seg)] ?? (empty($seg) ? 'DASHBOARD' : strtoupper($seg)) }}
                     </h1>
                 </div>
                 @yield('contents')
