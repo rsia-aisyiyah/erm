@@ -53,59 +53,36 @@ class NotificationService
         $pegawai = session()->get('pegawai');
         $nik = $pegawai->nik;
 
-        $isDireksi = in_array(strtolower($nik), ['direksi', 'admin', 'verifikator'])
-            || in_array($pegawai->jnj_jabatan ?? '', ['DIRU', 'DIR', 'DIRT'])
-            || in_array($pegawai->departemen ?? '', ['DIR', 'DPM1', 'DPM2', 'DM1', 'DM7', 'CSM', 'SPS']);
-
-        // 2. Bangun query dasar
-        $query = RsiaHasilKritis::query();
-
-        if ($isDireksi) {
-            // JIKA DIREKSI / ADMIN: Hitung seluruh data RS yang belum selesai diverifikasi
-            $query->where(function ($q) {
-                $q->whereNull('tgl_ruang')
-                    ->orWhere('tgl_ruang', '0000-00-00 00:00:00')
-                    ->orWhereNull('tgl_dokter')
-                    ->orWhere('tgl_dokter', '0000-00-00 00:00:00')
-                    ->orWhereNull('tgl_drpj')
-                    ->orWhere('tgl_drpj', '0000-00-00 00:00:00');
-            });
-        } else {
-            // Tentukan apakah user adalah Dokter
-            $isDokter = isset($pegawai->kd_sps) || (isset($pegawai->jbtn) && str_contains(strtolower($pegawai->jbtn), 'dokter'));
-
-            if ($isDokter) {
-                // JIKA DOKTER: Hitung penugasan sebagai DPJP Utama ATAU sebagai PJ Lab/Radiologi
-                $query->where(function ($q) use ($nik) {
-                    $q->where(function ($sub) use ($nik) {
-                        $sub->where('dokter', $nik)
-                            ->where(function ($empty) {
-                                $empty->whereNull('tgl_dokter')
-                                    ->orWhere('tgl_dokter', '0000-00-00 00:00:00');
-                            });
-                    })
-                    ->orWhere(function ($sub) use ($nik) {
-                        $sub->where('dokter_pj', $nik)
-                            ->where(function ($empty) {
-                                $empty->whereNull('tgl_drpj')
-                                    ->orWhere('tgl_drpj', '0000-00-00 00:00:00');
-                            });
-                    });
-                });
-            } else {
-                // JIKA PETUGAS RUANG
-                $query->where('petugas_ruang', $nik)
-                    ->where(function ($q) {
-                        $q->whereNull('tgl_ruang')
-                            ->orWhere('tgl_ruang', '0000-00-00 00:00:00');
-                    });
-            }
-        }
-
-        // 4. Kembalikan total data yang belum diverifikasi pada bulan berjalan
-        return $query
-            ->whereMonth('tgl', date('m'))
+        // 2. Notifikasi HANYA muncul untuk user spesifik (Petugas Ruang, DPJP, atau PJ Lab)
+        //    yang tercatat pada data hasil kritis tersebut DAN belum melakukan verifikasi.
+        return RsiaHasilKritis::whereMonth('tgl', date('m'))
             ->whereYear('tgl', date('Y'))
+            ->where(function ($q) use ($nik) {
+                // Petugas Ruangan belum verifikasi
+                $q->where(function ($sub) use ($nik) {
+                    $sub->where('petugas_ruang', $nik)
+                        ->where(function ($empty) {
+                            $empty->whereNull('tgl_ruang')
+                                ->orWhere('tgl_ruang', '0000-00-00 00:00:00');
+                        });
+                })
+                // Dokter DPJP belum verifikasi
+                ->orWhere(function ($sub) use ($nik) {
+                    $sub->where('dokter', $nik)
+                        ->where(function ($empty) {
+                            $empty->whereNull('tgl_dokter')
+                                ->orWhere('tgl_dokter', '0000-00-00 00:00:00');
+                        });
+                })
+                // Dokter PJ Lab/Rad belum verifikasi
+                ->orWhere(function ($sub) use ($nik) {
+                    $sub->where('dokter_pj', $nik)
+                        ->where(function ($empty) {
+                            $empty->whereNull('tgl_drpj')
+                                ->orWhere('tgl_drpj', '0000-00-00 00:00:00');
+                        });
+                });
+            })
             ->count();
     }
 
