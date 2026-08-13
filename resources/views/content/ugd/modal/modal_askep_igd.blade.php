@@ -811,7 +811,7 @@
 
                                                 <div class="mt-2 pt-2 border-top">
                                                     <label class="form-label fw-semibold small mb-1">Catatan / Rencana Tambahan :</label>
-                                                    <textarea class="form-control form-control-sm" name="rencana" id="askep_rencana" rows="2" placeholder="Tuliskan rencana atau instruksi keperawatan tambahan jika ada...">-</textarea>
+                                                    <textarea class="form-control form-control-sm" name="rencana" id="askep_rencana" rows="5" style="min-height: 140px;" placeholder="Tuliskan rencana atau instruksi keperawatan tambahan jika ada...">-</textarea>
                                                 </div>
                                             </div>
                                         </div>
