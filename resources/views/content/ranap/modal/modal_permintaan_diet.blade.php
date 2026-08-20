@@ -51,6 +51,28 @@
                     </div>
                 </div>
 
+                <!-- ALERT WARNING SKRINING GIZI BELUM ADA -->
+                <div class="alert alert-warning border-warning border-start border-4 rounded-3 d-none p-2.5 mb-3" id="alertSkriningGiziBelumAda">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill text-warning fs-4"></i>
+                        <div>
+                            <strong class="d-block text-dark">Skrining Gizi Belum Diisi!</strong>
+                            <small class="text-muted" style="font-size: 11.5px;">Pasien ini belum memiliki data Skrining Gizi. Silakan lengkapi Skrining Gizi pada Asesmen Keperawatan / Asuhan Gizi terlebih dahulu sebelum mengajukan Permintaan Diet Pasien.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SKRINING GIZI SUMMARY BADGE -->
+                <div class="alert alert-info border-info border-start border-4 rounded-3 d-none p-2 mb-3" id="alertSkriningGiziAda">
+                    <div class="d-flex align-items-center gap-2" style="font-size: 11.5px;">
+                        <i class="bi bi-check-circle-fill text-info fs-5"></i>
+                        <div>
+                            <span class="fw-bold text-dark">Skrining Gizi Terisi:</span>
+                            <span class="text-muted ms-1" id="infoSkriningGiziText">-</span>
+                        </div>
+                    </div>
+                </div>
+
                 <form id="formPermintaanDiet" autocomplete="off">
                     @csrf
                     <input type="hidden" id="diet_no_rawat" name="no_rawat">
@@ -289,6 +311,33 @@
             if (res.success && res.data) {
                 const p = res.data.permintaan;
                 const kdDiet = res.data.kd_diet;
+                const skrining = res.data.skrining_gizi;
+
+                // Check Skrining Gizi Status
+                if (skrining && skrining.has_skrining) {
+                    $('#alertSkriningGiziBelumAda').addClass('d-none');
+                    $('#alertSkriningGiziAda').removeClass('d-none');
+                    const info = skrining.info || {};
+                    $('#infoSkriningGiziText').text(`BB: ${info.bb} kg | TB: ${info.tb} cm | IMT/Skor: ${info.imt} (${info.keterangan || '-'})`);
+
+                    // Enable form inputs & button
+                    $('#diet_kd_diet, input[name="pagi"], input[name="siang"], input[name="sore"], #diet_permintaan_khusus').prop('disabled', false);
+                    $('#btnSimpanPermintaanDiet').prop('disabled', false);
+                } else {
+                    $('#alertSkriningGiziAda').addClass('d-none');
+                    $('#alertSkriningGiziBelumAda').removeClass('d-none');
+
+                    // Disable form inputs & button
+                    $('#diet_kd_diet, input[name="pagi"], input[name="siang"], input[name="sore"], #diet_permintaan_khusus').prop('disabled', true);
+                    $('#btnSimpanPermintaanDiet').prop('disabled', true);
+
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Skrining Gizi Belum Diisi',
+                        text: 'Pasien ini belum memiliki data Skrining Gizi. Silakan lengkapi Skrining Gizi pada Asesmen Keperawatan / Asuhan Gizi terlebih dahulu.',
+                        confirmButtonText: 'Tutup'
+                    });
+                }
 
                 if (kdDiet) {
                     $('#diet_kd_diet').val(kdDiet);

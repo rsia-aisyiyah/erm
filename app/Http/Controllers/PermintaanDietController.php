@@ -6,6 +6,8 @@ use App\Models\DetailBeriDiet;
 use App\Models\Diet;
 use App\Models\KamarInap;
 use App\Models\RsiaPermintaanDiet;
+use App\Models\RsiaSkriningGizi;
+use App\Models\SkriningGizi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,6 +18,60 @@ class PermintaanDietController extends Controller
     public function __construct()
     {
         $this->track = new TrackerSqlController();
+    }
+
+    private function checkSkriningGizi($no_rawat)
+    {
+        $rsiaSkrining = RsiaSkriningGizi::where('no_rawat', $no_rawat)->first();
+        if ($rsiaSkrining) {
+            return [
+                'has_skrining' => true,
+                'sumber' => 'rsia_skrining_gizi',
+                'info' => [
+                    'bb' => $rsiaSkrining->bb ?? '-',
+                    'tb' => $rsiaSkrining->tb ?? '-',
+                    'imt' => $rsiaSkrining->imt ?? '-',
+                    'skor' => $rsiaSkrining->skor ?? '-',
+                    'keterangan' => $rsiaSkrining->keterangan ?? '-',
+                ]
+            ];
+        }
+
+        $skriningKz = SkriningGizi::where('no_rawat', $no_rawat)->first();
+        if ($skriningKz) {
+            return [
+                'has_skrining' => true,
+                'sumber' => 'skrining_gizi',
+                'info' => [
+                    'bb' => $skriningKz->skrining_bb ?? '-',
+                    'tb' => $skriningKz->skrining_tb ?? '-',
+                    'imt' => $skriningKz->parameter_imt ?? '-',
+                    'skor' => $skriningKz->skor_total ?? '-',
+                    'keterangan' => $skriningKz->parameter_total ?? '-',
+                ]
+            ];
+        }
+
+        $asuhanGizi = DB::table('asuhan_gizi')->where('no_rawat', $no_rawat)->first();
+        if ($asuhanGizi) {
+            return [
+                'has_skrining' => true,
+                'sumber' => 'asuhan_gizi',
+                'info' => [
+                    'bb' => $asuhanGizi->antropometri_bb ?? '-',
+                    'tb' => $asuhanGizi->antropometri_tb ?? '-',
+                    'imt' => $asuhanGizi->antropometri_imt ?? '-',
+                    'skor' => '-',
+                    'keterangan' => $asuhanGizi->diagnosis ?? '-',
+                ]
+            ];
+        }
+
+        return [
+            'has_skrining' => false,
+            'sumber' => null,
+            'info' => null,
+        ];
     }
 
     public function getMasterDiet()
@@ -46,6 +102,7 @@ class PermintaanDietController extends Controller
             ->get();
 
         $kdDiet = $detailDiet->first()?->kd_diet ?? '';
+        $skriningStatus = $this->checkSkriningGizi($no_rawat);
 
         return response()->json([
             'success' => true,
@@ -53,6 +110,7 @@ class PermintaanDietController extends Controller
                 'permintaan' => $permintaan,
                 'detail_diet' => $detailDiet,
                 'kd_diet' => $kdDiet,
+                'skrining_gizi' => $skriningStatus,
             ]
         ]);
     }
@@ -65,6 +123,15 @@ class PermintaanDietController extends Controller
         ]);
 
         $no_rawat = $request->input('no_rawat');
+
+        $skriningStatus = $this->checkSkriningGizi($no_rawat);
+        if (!$skriningStatus['has_skrining']) {
+            return response()->json([
+                'success' => false,
+                'code' => 'SKRINING_GIZI_REQUIRED',
+                'message' => 'Pasien belum memiliki data Skrining Gizi. Silakan lengkapi Skrining Gizi terlebih dahulu.',
+            ], 422);
+        }
         $tanggal = $request->input('tanggal');
         $kd_diet = $request->input('kd_diet', '');
         $pagi = $request->input('pagi', '-');
