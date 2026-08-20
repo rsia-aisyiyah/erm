@@ -67,6 +67,66 @@ class PermintaanDietController extends Controller
             ];
         }
 
+        $askepAnak = DB::table('penilaian_awal_keperawatan_ranap_anak')->where('no_rawat', $no_rawat)->first();
+        if ($askepAnak) {
+            return [
+                'has_skrining' => true,
+                'sumber' => 'askep_ranap_anak',
+                'info' => [
+                    'bb' => $askepAnak->pemeriksaan_bb ?? '-',
+                    'tb' => $askepAnak->pemeriksaan_tb ?? '-',
+                    'imt' => '-',
+                    'skor' => $askepAnak->nilai_total_gizi ?? 0,
+                    'keterangan' => ($askepAnak->nilai_total_gizi >= 4 ? 'Resiko Tinggi' : ($askepAnak->nilai_total_gizi >= 2 ? 'Resiko Sedang' : 'Resiko Rendah')),
+                ]
+            ];
+        }
+
+        $askepKebidanan = DB::table('penilaian_awal_keperawatan_kebidanan_ranap')->where('no_rawat', $no_rawat)->first();
+        if ($askepKebidanan) {
+            return [
+                'has_skrining' => true,
+                'sumber' => 'askep_ranap_kebidanan',
+                'info' => [
+                    'bb' => $askepKebidanan->bb ?? '-',
+                    'tb' => $askepKebidanan->tb ?? '-',
+                    'imt' => '-',
+                    'skor' => $askepKebidanan->total_nilai_skrining_gizi ?? 0,
+                    'keterangan' => 'Asesmen Kebidanan',
+                ]
+            ];
+        }
+
+        $askepNeonatus = DB::table('penilaian_awal_keperawatan_ranap_neonatus')->where('no_rawat', $no_rawat)->first();
+        if ($askepNeonatus) {
+            return [
+                'has_skrining' => true,
+                'sumber' => 'askep_ranap_neonatus',
+                'info' => [
+                    'bb' => $askepNeonatus->pemeriksaan_bb ?? '-',
+                    'tb' => $askepNeonatus->pemeriksaan_tb ?? '-',
+                    'imt' => '-',
+                    'skor' => $askepNeonatus->nilai_total_gizi ?? 0,
+                    'keterangan' => 'Asesmen Neonatus',
+                ]
+            ];
+        }
+
+        $askepRanap = DB::table('penilaian_awal_keperawatan_ranap')->where('no_rawat', $no_rawat)->first();
+        if ($askepRanap) {
+            return [
+                'has_skrining' => true,
+                'sumber' => 'askep_ranap',
+                'info' => [
+                    'bb' => $askepRanap->bb ?? '-',
+                    'tb' => $askepRanap->tb ?? '-',
+                    'imt' => '-',
+                    'skor' => $askepRanap->total_skor ?? '-',
+                    'keterangan' => 'Asesmen Keperawatan Ranap',
+                ]
+            ];
+        }
+
         return [
             'has_skrining' => false,
             'sumber' => null,
