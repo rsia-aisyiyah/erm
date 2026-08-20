@@ -100,6 +100,74 @@
                                 <textarea class="form-control form-control-sm" id="skrining_diagnosa_medis" name="diagnosa_medis" rows="2" placeholder="Masukkan diagnosa medis pasien..." required></textarea>
                             </div>
 
+                            <!-- HASIL PEMERIKSAAN PENUNJANG -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-dark small mb-2">Hasil Pemeriksaan Penunjang</label>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small mb-1 fw-semibold">HB</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-white"><i class="bi bi-pencil-square text-muted"></i></span>
+                                            <input type="number" step="0.1" class="form-control" id="skrining_hb" name="hb" placeholder="Nilai HB...">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label small mb-1 fw-semibold">HIV</label>
+                                        <div class="d-flex gap-3 align-items-center mt-1" style="font-size: 13px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="hiv" id="hiv_reaktif" value="Reaktif">
+                                                <label class="form-check-label" for="hiv_reaktif">Reaktif</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="hiv" id="hiv_non_reaktif" value="Non Reaktif">
+                                                <label class="form-check-label" for="hiv_non_reaktif">Non Reaktif</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="hiv" id="hiv_tidak_periksa" value="Tidak Periksa" checked>
+                                                <label class="form-check-label text-muted" for="hiv_tidak_periksa">Tidak Periksa</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label small mb-1 fw-semibold">HBSAG</label>
+                                        <div class="d-flex gap-3 align-items-center mt-1" style="font-size: 13px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="hbsag" id="hbsag_reaktif" value="Reaktif">
+                                                <label class="form-check-label" for="hbsag_reaktif">Reaktif</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="hbsag" id="hbsag_non_reaktif" value="Non Reaktif">
+                                                <label class="form-check-label" for="hbsag_non_reaktif">Non Reaktif</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="hbsag" id="hbsag_tidak_periksa" value="Tidak Periksa" checked>
+                                                <label class="form-check-label text-muted" for="hbsag_tidak_periksa">Tidak Periksa</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label small mb-1 fw-semibold">Syphilis</label>
+                                        <div class="d-flex gap-3 align-items-center mt-1" style="font-size: 13px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="syphilis" id="syphilis_reaktif" value="Reaktif">
+                                                <label class="form-check-label" for="syphilis_reaktif">Reaktif</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="syphilis" id="syphilis_non_reaktif" value="Non Reaktif">
+                                                <label class="form-check-label" for="syphilis_non_reaktif">Non Reaktif</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="syphilis" id="syphilis_tidak_periksa" value="Tidak Periksa" checked>
+                                                <label class="form-check-label text-muted" for="syphilis_tidak_periksa">Tidak Periksa</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- PERTANYAAN SKRINING CONTAINER -->
                             <div class="card border-0 shadow-sm rounded-3 p-3 mb-3" style="background: #ffffff;">
                                 
@@ -445,6 +513,10 @@
                     $('#skrining_imt').val(d.imt || '');
                     $('#skrining_lila').val(d.lila || '');
                     $('#skrining_diagnosa_medis').val(d.diagnosa_medis || '');
+                    $('#skrining_hb').val(d.hb || '');
+                    setRadioByNameCaseInsensitive('hiv', d.hiv || 'Tidak Periksa');
+                    setRadioByNameCaseInsensitive('hbsag', d.hbsag || 'Tidak Periksa');
+                    setRadioByNameCaseInsensitive('syphilis', d.syphilis || 'Tidak Periksa');
                     $('#skrining_status_assesment_lanjut').val(d.status_assesment_lanjut || 'Belum');
                     $('#skrining_keterangan').val(d.keterangan || '');
 
