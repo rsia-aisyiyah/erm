@@ -301,6 +301,14 @@
         });
     }
 
+    function bukaModalSkriningGiziDariDiet(noRawat) {
+        if (!noRawat) noRawat = $('#diet_no_rawat').val();
+        $('#modalPermintaanDiet').modal('hide');
+        setTimeout(function() {
+            showModalSkriningGizi(noRawat, true);
+        }, 350);
+    }
+
     // Change Tanggal Event
     $('#diet_tanggal').on('change', function() {
         const noRawat = $('#diet_no_rawat').val();
@@ -323,7 +331,8 @@
                     $('#alertSkriningGiziBelumAda').addClass('d-none');
                     $('#alertSkriningGiziAda').removeClass('d-none');
                     const info = skrining.info || {};
-                    $('#infoSkriningGiziText').text(`BB: ${info.bb} kg | TB: ${info.tb} cm | IMT/Skor: ${info.imt} (${info.keterangan || '-'})`);
+                    const recDietStr = info.jenis_diet ? ` | Diet Skrining: ${info.jenis_diet}` : '';
+                    $('#infoSkriningGiziText').text(`BB: ${info.bb} kg | TB: ${info.tb} cm | IMT/Skor: ${info.imt} (${info.keterangan || '-'})${recDietStr}`);
 
                     // Enable form inputs & button
                     $('#diet_kd_diet, input[name="pagi"], input[name="siang"], input[name="sore"], #diet_permintaan_khusus').prop('disabled', false);
@@ -351,16 +360,25 @@
                     });
                 }
 
-    function bukaModalSkriningGiziDariDiet(noRawat) {
-        if (!noRawat) noRawat = $('#diet_no_rawat').val();
-        $('#modalPermintaanDiet').modal('hide');
-        setTimeout(function() {
-            showModalSkriningGizi(noRawat, true);
-        }, 350);
-    }
-
                 if (kdDiet) {
                     $('#diet_kd_diet').val(kdDiet);
+                } else if (skrining && skrining.info && skrining.info.jenis_diet) {
+                    const rec = skrining.info.jenis_diet;
+                    let found = false;
+                    $('#diet_kd_diet option').each(function() {
+                        if ($(this).text().toUpperCase().includes(rec.toUpperCase()) || $(this).val() === rec) {
+                            $(this).prop('selected', true);
+                            found = true;
+                            return false;
+                        }
+                    });
+                    if (!found) {
+                        if ($(`#diet_kd_diet option[value="${rec}"]`).length === 0) {
+                            $('#diet_kd_diet').append(new Option(rec, rec, true, true));
+                        } else {
+                            $('#diet_kd_diet').val(rec);
+                        }
+                    }
                 } else {
                     $('#diet_kd_diet').val('');
                 }

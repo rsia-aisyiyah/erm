@@ -33,6 +33,7 @@ class PermintaanDietController extends Controller
                     'imt' => $rsiaSkrining->imt ?? '-',
                     'skor' => $rsiaSkrining->skor ?? '-',
                     'keterangan' => $rsiaSkrining->keterangan ?? '-',
+                    'jenis_diet' => $rsiaSkrining->jenis_diet ?? '',
                 ]
             ];
         }
