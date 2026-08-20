@@ -53,12 +53,17 @@
 
                 <!-- ALERT WARNING SKRINING GIZI BELUM ADA -->
                 <div class="alert alert-warning border-warning border-start border-4 rounded-3 d-none p-2.5 mb-3" id="alertSkriningGiziBelumAda">
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-exclamation-triangle-fill text-warning fs-4"></i>
-                        <div>
-                            <strong class="d-block text-dark">Skrining Gizi Belum Diisi!</strong>
-                            <small class="text-muted" style="font-size: 11.5px;">Pasien ini belum memiliki data Skrining Gizi. Silakan lengkapi Skrining Gizi pada Asesmen Keperawatan / Asuhan Gizi terlebih dahulu sebelum mengajukan Permintaan Diet Pasien.</small>
+                    <div class="d-flex align-items-center justify-content-between gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-exclamation-triangle-fill text-warning fs-4"></i>
+                            <div>
+                                <strong class="d-block text-dark">Skrining Gizi Belum Diisi!</strong>
+                                <small class="text-muted" style="font-size: 11.5px;">Pasien ini belum memiliki data Skrining Gizi. Silakan isi Form Skrining Gizi terlebih dahulu sebelum mengajukan Permintaan Diet Pasien.</small>
+                            </div>
                         </div>
+                        <button type="button" class="btn btn-warning btn-sm text-dark fw-bold text-nowrap px-3" onclick="showModalSkriningGizi($('#diet_no_rawat').val())">
+                            <i class="bi bi-clipboard2-check me-1"></i> Isi Skrining Gizi
+                        </button>
                     </div>
                 </div>
 
@@ -334,8 +339,15 @@
                     Swal.fire({
                         icon: 'warning',
                         title: 'Skrining Gizi Belum Diisi',
-                        text: 'Pasien ini belum memiliki data Skrining Gizi. Silakan lengkapi Skrining Gizi pada Asesmen Keperawatan / Asuhan Gizi terlebih dahulu.',
-                        confirmButtonText: 'Tutup'
+                        text: 'Pasien ini belum memiliki data Skrining Gizi. Silakan isi Skrining Gizi terlebih dahulu.',
+                        showCancelButton: true,
+                        confirmButtonText: '<i class="bi bi-clipboard2-check me-1"></i> Isi Skrining Gizi',
+                        cancelButtonText: 'Batal',
+                        confirmButtonColor: '#198754'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            showModalSkriningGizi(noRawat);
+                        }
                     });
                 }
 
