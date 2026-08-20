@@ -239,7 +239,7 @@
 
 @push('script')
     <script>
-        $('#btn-reset').on('click', function (event) {
+        $('#btn-reset').on('click', function(event) {
             no_rawat = formSoapRanap.find('input[name="nomor_rawat"]').val();
             formSoapRanap.find('input').each((index, element) => {
                 $(element).val('-');
@@ -309,7 +309,7 @@
                     'terlihat_tidak_sehat': $('.formEws select[name=terlihat_tidak_sehat]').val(),
                 },
                 method: 'POST',
-                beforeSend: function () {
+                beforeSend: function() {
                     swal.fire({
                         title: 'Sedang mengirim data',
                         text: 'Mohon Tunggu',
@@ -319,7 +319,7 @@
                         }
                     })
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response) {
                         Swal.fire({
                             icon: 'success',
@@ -421,7 +421,7 @@
                     'jam_rawat_ubah': $('#jam_rawat_ubah').val(),
                 },
                 method: 'POST',
-                beforeSend: function () {
+                beforeSend: function() {
                     swal.fire({
                         title: 'Sedang mengirim data',
                         text: 'Mohon Tunggu',
@@ -438,7 +438,7 @@
                         'error',
                     )
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response) {
                         Swal.fire({
                             icon: 'success',

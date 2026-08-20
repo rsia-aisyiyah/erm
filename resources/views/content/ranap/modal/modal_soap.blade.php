@@ -738,8 +738,8 @@
 
                 $('#nomor_rawat').val(response.no_rawat);
                 $('#nm_pasien').val(response.pasien.nm_pasien + ' (' + hitungUmur(response.pasien.tgl_lahir) + ')');
-                $('#nik').val("{{ session()->get('pegawai')->nik }}");
-                $('#nama').val("{{ session()->get('pegawai')->nama }}");
+                $('#formSoapRanap input[name=nik]').val("{{ session()->get('pegawai')->nik }}");
+                $('#formSoapRanap input[name=nama]').val("{{ session()->get('pegawai')->nama }}");
                 $('#formSoapRanap input[name=spesialis]').val(response.dokter.kd_sps);
 
                 riwayatResep(response.no_rkm_medis);
