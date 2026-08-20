@@ -8,7 +8,7 @@
                 <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-clipboard2-check-fill fs-5"></i>
                     <h6 class="modal-title fw-bold mb-0 text-white" id="modalSkriningGiziLabel">
-                        Skrining Gizi
+                        Skrining Gizi Pasien
                     </h6>
                 </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -37,7 +37,7 @@
                     <div class="row g-3">
                         
                         <!-- LEFT PANEL: Kategori (OBGYN / ANAK) -->
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="form-label fw-bold text-success mb-2" style="font-size: 13px;">Kategori</label>
                             <div class="d-flex flex-column gap-2">
                                 <label class="card border p-2 text-center rounded-3 cursor-pointer mb-0 kategori-card" id="cardKategoriObgyn">
@@ -55,14 +55,12 @@
                         </div>
 
                         <!-- RIGHT PANEL: Form Inputs -->
-                        <div class="col-md-9">
+                        <div class="col-md-10">
                             
                             <!-- DATA ANTROPOMETRI -->
                             <div class="mb-3">
-                                <h6 class="fw-bold text-success small border-bottom pb-1 mb-2">Data Antropometri</h6>
                                 <div class="row g-2">
-                                    
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label class="form-label small mb-1">Berat Badan (Kg) <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-white"><i class="bi bi-speedometer2 text-muted"></i></span>
@@ -70,7 +68,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label class="form-label small mb-1">Tinggi Badan (cm) <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-white"><i class="bi bi-ruler text-muted"></i></span>
@@ -78,7 +76,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label class="form-label small mb-1">IMT</label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-light"><i class="bi bi-calculator text-muted"></i></span>
@@ -86,100 +84,283 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-3">
+                                        <label class="form-label small mb-1">LILA (cm)</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-white"><i class="bi bi-circle text-muted"></i></span>
+                                            <input type="number" step="0.1" class="form-control" id="skrining_lila" name="lila" placeholder="0">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- DIAGNOSA MEDIS -->
                             <div class="mb-3">
-                                <h6 class="fw-bold text-success small mb-1">Diagnosa Medis <span class="text-danger">*</span></h6>
+                                <label class="form-label fw-bold text-dark small mb-1">Diagnosa Medis <span class="text-danger">*</span></label>
                                 <textarea class="form-control form-control-sm" id="skrining_diagnosa_medis" name="diagnosa_medis" rows="2" placeholder="Masukkan diagnosa medis pasien..." required></textarea>
                             </div>
 
-                            <!-- HASIL PEMERIKSAAN PENUNJANG -->
-                            <div class="mb-3">
-                                <h6 class="fw-bold text-success small border-bottom pb-1 mb-2">Hasil Pemeriksaan Penunjang</h6>
-                                <div class="row g-2">
-                                    
-                                    <div class="col-md-3 col-6">
-                                        <label class="form-label small mb-1">HB</label>
-                                        <div class="input-group input-group-sm">
-                                            <input type="number" step="0.1" class="form-control" id="skrining_hb" name="hb" placeholder="0">
-                                            <span class="input-group-text bg-light" style="font-size: 11px;">g/dL</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-6">
-                                        <label class="form-label small mb-1">HIV</label>
-                                        <select class="form-select form-select-sm" id="skrining_hiv" name="hiv">
-                                            <option value="Tidak Periksa">Tidak Periksa</option>
-                                            <option value="Non Reaktif">Non Reaktif</option>
-                                            <option value="Reaktif">Reaktif</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-3 col-6">
-                                        <label class="form-label small mb-1">HBsAg</label>
-                                        <select class="form-select form-select-sm" id="skrining_hbsag" name="hbsag">
-                                            <option value="Tidak Periksa">Tidak Periksa</option>
-                                            <option value="Non Reaktif">Non Reaktif</option>
-                                            <option value="Reaktif">Reaktif</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-3 col-6">
-                                        <label class="form-label small mb-1">Syphilis</label>
-                                        <select class="form-select form-select-sm" id="skrining_syphilis" name="syphilis">
-                                            <option value="Tidak Periksa">Tidak Periksa</option>
-                                            <option value="Non Reaktif">Non Reaktif</option>
-                                            <option value="Reaktif">Reaktif</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <!-- PERTANYAAN SKRINING DINAMIS (ANAK / OBGYN) -->
-                            <div class="mb-3 p-3 bg-white border rounded-3 shadow-sm">
-                                <h6 class="fw-bold text-dark small mb-2.5 border-bottom pb-1" id="titlePertanyaanSkrining">Pertanyaan Skrining Nutrisi</h6>
+                            <!-- PERTANYAAN SKRINING CONTAINER -->
+                            <div class="card border-0 shadow-sm rounded-3 p-3 mb-3" style="background: #ffffff;">
                                 
-                                <div id="panelPertanyaanAnak" class="px-1">
-                                    <div class="row g-2 align-items-center mb-2" style="font-size: 12px;">
-                                        <div class="col-md-8">a. Apakah pasien tampak kurus?</div>
-                                        <div class="col-md-4">
-                                            <select class="form-select form-select-sm q-anak-select" id="q_anak_1">
-                                                <option value="0">Tidak (0)</option>
-                                                <option value="1">Ya (1)</option>
-                                            </select>
+                                <!-- PANEL PERTANYAAN OBGYN -->
+                                <div id="panelPertanyaanObgyn" class="d-none">
+                                    
+                                    <!-- 1. Apakah asupan makan berkurang... -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small text-dark mb-2">1. Apakah asupan makan berkurang karena kurang nafsu makan?</label>
+                                        <div class="d-flex gap-3 ms-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input q-obgyn-radio" type="radio" name="q_obgyn_1" id="q_obgyn_1_ya" value="Ya">
+                                                <label class="form-check-label text-success fw-bold" for="q_obgyn_1_ya">Ya</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input q-obgyn-radio" type="radio" name="q_obgyn_1" id="q_obgyn_1_tidak" value="Tidak" checked>
+                                                <label class="form-check-label text-secondary" for="q_obgyn_1_tidak">Tidak</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row g-2 align-items-center" style="font-size: 12px;">
-                                        <div class="col-md-8">b. Apakah terdapat penurunan berat badan sebulan terakhir?</div>
-                                        <div class="col-md-4">
-                                            <select class="form-select form-select-sm q-anak-select" id="q_anak_2">
-                                                <option value="0">Tidak (0)</option>
-                                                <option value="1">Ya (1)</option>
-                                            </select>
+
+                                    <!-- 2. Apakah terdapat gangguan metabolisme? -->
+                                    <div class="mb-3 border-top pt-2">
+                                        <label class="form-label fw-semibold small text-dark mb-2">2. Apakah terdapat gangguan metabolisme?</label>
+                                        <div class="row g-2 ms-1" style="font-size: 12px;">
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-obgyn" type="checkbox" value="DM" id="cb_obgyn_dm">
+                                                    <label class="form-check-label" for="cb_obgyn_dm">DM</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-obgyn" type="checkbox" value="Gangguan fungsi kronis" id="cb_obgyn_gangguan">
+                                                    <label class="form-check-label" for="cb_obgyn_gangguan">Gangguan fungsi kronis</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-obgyn" type="checkbox" value="Infeksi kronis" id="cb_obgyn_infeksi">
+                                                    <label class="form-check-label" for="cb_obgyn_infeksi">Infeksi kronis</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-obgyn" type="checkbox" value="TB" id="cb_obgyn_tb">
+                                                    <label class="form-check-label" for="cb_obgyn_tb">TB</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-obgyn" type="checkbox" value="HIV/AIDS" id="cb_obgyn_hiv">
+                                                    <label class="form-check-label" for="cb_obgyn_hiv">HIV/AIDS</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-obgyn" type="checkbox" value="Lainnya" id="cb_obgyn_lainnya">
+                                                    <label class="form-check-label" for="cb_obgyn_lainnya">Lainnya</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-obgyn" type="checkbox" value="Tidak ada" id="cb_obgyn_tidak" checked>
+                                                    <label class="form-check-label text-muted" for="cb_obgyn_tidak">Tidak ada</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <!-- 3 & 4 Side by side -->
+                                    <div class="row border-top pt-2">
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label fw-semibold small text-dark mb-2">3. Ada kenaikan BB kurang/lebih saat hamil?</label>
+                                            <div class="d-flex gap-3 ms-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input q-obgyn-radio" type="radio" name="q_obgyn_3" id="q_obgyn_3_ya" value="Ya">
+                                                    <label class="form-check-label text-success fw-bold" for="q_obgyn_3_ya">Ya</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input q-obgyn-radio" type="radio" name="q_obgyn_3" id="q_obgyn_3_tidak" value="Tidak" checked>
+                                                    <label class="form-check-label text-secondary" for="q_obgyn_3_tidak">Tidak</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label fw-semibold small text-dark mb-2">4. Nilai Hb < 11 g/dL atau HCT < 30%?</label>
+                                            <div class="d-flex gap-3 ms-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input q-obgyn-radio" type="radio" name="q_obgyn_4" id="q_obgyn_4_ya" value="Ya">
+                                                    <label class="form-check-label text-success fw-bold" for="q_obgyn_4_ya">Ya</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input q-obgyn-radio" type="radio" name="q_obgyn_4" id="q_obgyn_4_tidak" value="Tidak" checked>
+                                                    <label class="form-check-label text-secondary" for="q_obgyn_4_tidak">Tidak</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
 
-                                <div id="panelPertanyaanObgyn" class="d-none px-1">
-                                    <div class="row g-2 align-items-center mb-2" style="font-size: 12px;">
-                                        <div class="col-md-8">a. Penurunan BB tidak diinginkan selama 6 bulan terakhir?</div>
-                                        <div class="col-md-4">
-                                            <select class="form-select form-select-sm q-obgyn-select" id="q_obgyn_1">
-                                                <option value="0">Tidak (0)</option>
-                                                <option value="1">Ya (1)</option>
-                                            </select>
+                                <!-- PANEL PERTANYAAN ANAK -->
+                                <div id="panelPertanyaanAnak">
+                                    
+                                    <!-- 1 & 2 Side by side -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small text-dark mb-2">1. Apakah pasien tampak kurus?</label>
+                                            <div class="d-flex gap-3 ms-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input q-anak-radio" type="radio" name="q_anak_1" id="q_anak_1_ya" value="Ya">
+                                                    <label class="form-check-label text-success fw-bold" for="q_anak_1_ya">Ya</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input q-anak-radio" type="radio" name="q_anak_1" id="q_anak_1_tidak" value="Tidak" checked>
+                                                    <label class="form-check-label text-secondary" for="q_anak_1_tidak">Tidak</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small text-dark mb-2">2. Penurunan BB / Tidak ada peningkatan BB?</label>
+                                            <div class="d-flex gap-3 ms-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input q-anak-radio" type="radio" name="q_anak_2" id="q_anak_2_ya" value="Ya">
+                                                    <label class="form-check-label text-success fw-bold" for="q_anak_2_ya">Ya</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input q-anak-radio" type="radio" name="q_anak_2" id="q_anak_2_tidak" value="Tidak" checked>
+                                                    <label class="form-check-label text-secondary" for="q_anak_2_tidak">Tidak</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row g-2 align-items-center" style="font-size: 12px;">
-                                        <div class="col-md-8">b. Asupan makan berkurang karena tidak nafsu makan?</div>
-                                        <div class="col-md-4">
-                                            <select class="form-select form-select-sm q-obgyn-select" id="q_obgyn_2">
-                                                <option value="0">Tidak (0)</option>
-                                                <option value="1">Ya (1)</option>
-                                            </select>
+
+                                    <!-- 3. Kondisi (Diare / Muntah / Asupan Kurang)? -->
+                                    <div class="mb-3 border-top pt-2">
+                                        <label class="form-label fw-semibold small text-dark mb-2">3. Kondisi (Diare / Muntah / Asupan Kurang)?</label>
+                                        <div class="row g-2 ms-1" style="font-size: 12px;">
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-anak1" type="checkbox" value="Diare > 5x/hari" id="cb_anak1_diare">
+                                                    <label class="form-check-label" for="cb_anak1_diare">Diare > 5x/hari</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-anak1" type="checkbox" value="Muntah >3x/hari" id="cb_anak1_muntah">
+                                                    <label class="form-check-label" for="cb_anak1_muntah">Muntah >3x/hari</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-anak1" type="checkbox" value="Asupan makanan berkurang" id="cb_anak1_asupan">
+                                                    <label class="form-check-label" for="cb_anak1_asupan">Asupan makanan berkurang</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input cb-anak1" type="checkbox" value="Tidak ada" id="cb_anak1_tidak" checked>
+                                                    <label class="form-check-label text-muted" for="cb_anak1_tidak">Tidak ada</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 4. Penyakit beresiko malnutrisi? -->
+                                    <div class="mb-3 border-top pt-2">
+                                        <label class="form-label fw-semibold small text-dark mb-2">4. Penyakit beresiko malnutrisi?</label>
+                                        <div class="row g-2 ms-1" style="font-size: 12px;">
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Diare kronik" id="cb_anak2_diare">
+                                                    <label class="form-check-label" for="cb_anak2_diare">Diare kronik</label>
+                                                </div>
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Retardasi mental" id="cb_anak2_retardasi">
+                                                    <label class="form-check-label" for="cb_anak2_retardasi">Retardasi mental</label>
+                                                </div>
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Gangguan psikiatrik" id="cb_anak2_psikiatrik">
+                                                    <label class="form-check-label" for="cb_anak2_psikiatrik">Gangguan psikiatrik</label>
+                                                </div>
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Trauma / Cidera berat" id="cb_anak2_trauma">
+                                                    <label class="form-check-label" for="cb_anak2_trauma">Trauma / Cidera berat</label>
+                                                </div>
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Penyakit jantung kronis" id="cb_anak2_jantung">
+                                                    <label class="form-check-label" for="cb_anak2_jantung">Penyakit jantung kronis</label>
+                                                </div>
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Penyakit ginjal kronis" id="cb_anak2_ginjal">
+                                                    <label class="form-check-label" for="cb_anak2_ginjal">Penyakit ginjal kronis</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="TB Paru" id="cb_anak2_tb">
+                                                    <label class="form-check-label" for="cb_anak2_tb">TB Paru</label>
+                                                </div>
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Kelainan anatomi mulut" id="cb_anak2_mulut">
+                                                    <label class="form-check-label" for="cb_anak2_mulut">Kelainan anatomi mulut</label>
+                                                </div>
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Luka Bakar Luas" id="cb_anak2_bakar">
+                                                    <label class="form-check-label" for="cb_anak2_bakar">Luka Bakar Luas</label>
+                                                </div>
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Penyakit metabolisme (DM)" id="cb_anak2_dm">
+                                                    <label class="form-check-label" for="cb_anak2_dm">Penyakit metabolisme (DM)</label>
+                                                </div>
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Penyakit liver kronis" id="cb_anak2_liver">
+                                                    <label class="form-check-label" for="cb_anak2_liver">Penyakit liver kronis</label>
+                                                </div>
+                                                <div class="form-check mb-1">
+                                                    <input class="form-check-input cb-anak2" type="checkbox" value="Tidak ada" id="cb_anak2_tidak" checked>
+                                                    <label class="form-check-label text-muted" for="cb_anak2_tidak">Tidak ada</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- PERMINTAAN JENIS DIET -->
+                                <div class="border-top pt-3 mt-3">
+                                    <label class="form-label fw-bold text-success small mb-2">Permintaan Jenis Diet</label>
+                                    <div class="d-flex flex-wrap gap-2" id="wrapperJenisDiet">
+                                        <div class="form-check form-check-inline me-3">
+                                            <input class="form-check-input" type="radio" name="jenis_diet" id="diet_nasi" value="Diet Nasi" checked>
+                                            <label class="form-check-label text-success fw-semibold" for="diet_nasi">Diet Nasi</label>
+                                        </div>
+                                        <div class="form-check form-check-inline me-3">
+                                            <input class="form-check-input" type="radio" name="jenis_diet" id="diet_bubur" value="Diet Bubur">
+                                            <label class="form-check-label text-success fw-semibold" for="diet_bubur">Diet Bubur</label>
+                                        </div>
+                                        <div class="form-check form-check-inline me-3">
+                                            <input class="form-check-input" type="radio" name="jenis_diet" id="diet_nasi_tim" value="Diet Nasi Tim">
+                                            <label class="form-check-label text-success fw-semibold" for="diet_nasi_tim">Diet Nasi Tim</label>
+                                        </div>
+                                        <div class="form-check form-check-inline me-3">
+                                            <input class="form-check-input" type="radio" name="jenis_diet" id="diet_cair" value="Diet Cair">
+                                            <label class="form-check-label text-success fw-semibold" for="diet_cair">Diet Cair</label>
+                                        </div>
+                                        <div class="form-check form-check-inline me-3">
+                                            <input class="form-check-input" type="radio" name="jenis_diet" id="diet_puasa" value="Puasa">
+                                            <label class="form-check-label text-danger fw-semibold" for="diet_puasa">Puasa</label>
+                                        </div>
+                                        <div class="form-check form-check-inline me-3">
+                                            <input class="form-check-input" type="radio" name="jenis_diet" id="diet_bubur_tim" value="Diet Bubur Tim">
+                                            <label class="form-check-label text-success fw-semibold" for="diet_bubur_tim">Diet Bubur Tim</label>
+                                        </div>
+                                        <div class="form-check form-check-inline me-3">
+                                            <input class="form-check-input" type="radio" name="jenis_diet" id="diet_bubur_saring" value="Diet Bubur Tim Saring">
+                                            <label class="form-check-label text-success fw-semibold" for="diet_bubur_saring">Diet Bubur Tim Saring</label>
                                         </div>
                                     </div>
                                 </div>
@@ -187,6 +368,9 @@
                                 <input type="hidden" name="skor" id="skrining_skor_val" value="0">
                                 <input type="hidden" name="q_anak" id="skrining_q_anak" value="">
                                 <input type="hidden" name="q_obgyn" id="skrining_q_obgyn" value="">
+                                <input type="hidden" name="cb_obgyn" id="skrining_cb_obgyn" value="">
+                                <input type="hidden" name="cb_anak1" id="skrining_cb_anak1" value="">
+                                <input type="hidden" name="cb_anak2" id="skrining_cb_anak2" value="">
                             </div>
 
                             <!-- GREEN SKOR CARD -->
@@ -259,16 +443,48 @@
                     $('#skrining_bb').val(d.bb || '');
                     $('#skrining_tb').val(d.tb || '');
                     $('#skrining_imt').val(d.imt || '');
+                    $('#skrining_lila').val(d.lila || '');
                     $('#skrining_diagnosa_medis').val(d.diagnosa_medis || '');
-                    $('#skrining_hb').val(d.hb || '');
-                    $('#skrining_hiv').val(d.hiv || 'Tidak Periksa');
-                    $('#skrining_hbsag').val(d.hbsag || 'Tidak Periksa');
-                    $('#skrining_syphilis').val(d.syphilis || 'Tidak Periksa');
                     $('#skrining_status_assesment_lanjut').val(d.status_assesment_lanjut || 'Belum');
                     $('#skrining_keterangan').val(d.keterangan || '');
 
+                    if (d.jenis_diet) {
+                        $(`input[name="jenis_diet"][value="${d.jenis_diet}"]`).prop('checked', true);
+                    }
+
                     const kat = d.kategori || 'ANAK';
                     $(`input[name="kategori"][value="${kat}"]`).prop('checked', true).trigger('change');
+
+                    // Set OBGYN values
+                    if (kat === 'OBGYN') {
+                        const qArr = (d.q_obgyn || '').split(',');
+                        if (qArr[0]) $(`input[name="q_obgyn_1"][value="${qArr[0]}"]`).prop('checked', true);
+                        if (qArr[1]) $(`input[name="q_obgyn_3"][value="${qArr[1]}"]`).prop('checked', true);
+                        if (qArr[2]) $(`input[name="q_obgyn_4"][value="${qArr[2]}"]`).prop('checked', true);
+
+                        $('.cb-obgyn').prop('checked', false);
+                        const cbObgyn = (d.cb_obgyn || '').split(', ');
+                        cbObgyn.forEach(val => {
+                            $(`.cb-obgyn[value="${val}"]`).prop('checked', true);
+                        });
+                    } else {
+                        // Set ANAK values
+                        const qArr = (d.q_anak || '').split(',');
+                        if (qArr[0]) $(`input[name="q_anak_1"][value="${qArr[0]}"]`).prop('checked', true);
+                        if (qArr[1]) $(`input[name="q_anak_2"][value="${qArr[1]}"]`).prop('checked', true);
+
+                        $('.cb-anak1').prop('checked', false);
+                        const cbAnak1 = (d.cb_anak1 || '').split(', ');
+                        cbAnak1.forEach(val => {
+                            $(`.cb-anak1[value="${val}"]`).prop('checked', true);
+                        });
+
+                        $('.cb-anak2').prop('checked', false);
+                        const cbAnak2 = (d.cb_anak2 || '').split(', ');
+                        cbAnak2.forEach(val => {
+                            $(`.cb-anak2[value="${val}"]`).prop('checked', true);
+                        });
+                    }
                 } else {
                     $(`input[name="kategori"][value="ANAK"]`).prop('checked', true).trigger('change');
                 }
@@ -297,7 +513,7 @@
     });
 
     // Auto Calculate IMT & Skor
-    $('#skrining_bb, #skrining_tb, .q-anak-select, .q-obgyn-select').on('input change', function() {
+    $('#skrining_bb, #skrining_tb, .q-obgyn-radio, .q-anak-radio, .cb-obgyn, .cb-anak1, .cb-anak2').on('input change', function() {
         hitungImtDanSkorSkrining();
     });
 
@@ -316,14 +532,46 @@
         let skor = 0;
 
         if (kat === 'OBGYN') {
-            const q1 = parseInt($('#q_obgyn_1').val()) || 0;
-            const q2 = parseInt($('#q_obgyn_2').val()) || 0;
-            skor = q1 + q2;
-            $('#skrining_q_obgyn').val(`${q1},${q2}`);
+            const q1 = $('input[name="q_obgyn_1"]:checked').val() || 'Tidak';
+            const q3 = $('input[name="q_obgyn_3"]:checked').val() || 'Tidak';
+            const q4 = $('input[name="q_obgyn_4"]:checked').val() || 'Tidak';
+
+            let cbVals = [];
+            $('.cb-obgyn:checked').each(function() {
+                cbVals.push($(this).val());
+            });
+            const cbObgynStr = cbVals.join(', ') || '-';
+            $('#skrining_cb_obgyn').val(cbObgynStr);
+
+            if (q1 === 'Ya') skor += 1;
+            if (cbVals.length > 0 && !cbVals.includes('Tidak ada')) skor += 1;
+            if (q3 === 'Ya') skor += 1;
+            if (q4 === 'Ya') skor += 1;
+
+            $('#skrining_q_obgyn').val(`${q1},${q3},${q4}`);
         } else {
-            const q1 = parseInt($('#q_anak_1').val()) || 0;
-            const q2 = parseInt($('#q_anak_2').val()) || 0;
-            skor = q1 + q2;
+            const q1 = $('input[name="q_anak_1"]:checked').val() || 'Tidak';
+            const q2 = $('input[name="q_anak_2"]:checked').val() || 'Tidak';
+
+            let cb1Vals = [];
+            $('.cb-anak1:checked').each(function() {
+                cb1Vals.push($(this).val());
+            });
+            const cbAnak1Str = cb1Vals.join(', ') || '-';
+            $('#skrining_cb_anak1').val(cbAnak1Str);
+
+            let cb2Vals = [];
+            $('.cb-anak2:checked').each(function() {
+                cb2Vals.push($(this).val());
+            });
+            const cbAnak2Str = cb2Vals.join(', ') || '-';
+            $('#skrining_cb_anak2').val(cbAnak2Str);
+
+            if (q1 === 'Ya') skor += 1;
+            if (q2 === 'Ya') skor += 1;
+            if (cb1Vals.length > 0 && !cb1Vals.includes('Tidak ada')) skor += 1;
+            if (cb2Vals.length > 0 && !cb2Vals.includes('Tidak ada')) skor += 2;
+
             $('#skrining_q_anak').val(`${q1},${q2}`);
         }
 
