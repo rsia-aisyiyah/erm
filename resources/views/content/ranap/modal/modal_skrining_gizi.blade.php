@@ -366,11 +366,11 @@
                                 </div>
 
                                 <input type="hidden" name="skor" id="skrining_skor_val" value="0">
-                                <input type="hidden" name="q_anak" id="skrining_q_anak" value="">
-                                <input type="hidden" name="q_obgyn" id="skrining_q_obgyn" value="">
-                                <input type="hidden" name="cb_obgyn" id="skrining_cb_obgyn" value="">
-                                <input type="hidden" name="cb_anak1" id="skrining_cb_anak1" value="">
-                                <input type="hidden" name="cb_anak2" id="skrining_cb_anak2" value="">
+                                <input type="hidden" name="q_anak" id="skrining_q_anak" value="TIDAK,TIDAK">
+                                <input type="hidden" name="q_obgyn" id="skrining_q_obgyn" value="TIDAK,TIDAK,TIDAK">
+                                <input type="hidden" name="cb_obgyn" id="skrining_cb_obgyn" value="-">
+                                <input type="hidden" name="cb_anak1" id="skrining_cb_anak1" value="-">
+                                <input type="hidden" name="cb_anak2" id="skrining_cb_anak2" value="-">
                             </div>
 
                             <!-- GREEN SKOR CARD -->
@@ -463,10 +463,12 @@
                         if (qArr[2]) $(`input[name="q_obgyn_4"][value="${qArr[2]}"]`).prop('checked', true);
 
                         $('.cb-obgyn').prop('checked', false);
-                        const cbObgyn = (d.cb_obgyn || '').split(', ');
+                        const cbObgyn = (d.cb_obgyn || '').split(',');
                         cbObgyn.forEach(val => {
-                            $(`.cb-obgyn[value="${val}"]`).prop('checked', true);
+                            const trimmed = val.trim();
+                            $(`.cb-obgyn[value="${trimmed}"]`).prop('checked', true);
                         });
+                        if ($('.cb-obgyn:checked').length === 0) $('#cb_obgyn_tidak').prop('checked', true);
                     } else {
                         // Set ANAK values
                         const qArr = (d.q_anak || '').split(',');
@@ -474,16 +476,20 @@
                         if (qArr[1]) $(`input[name="q_anak_2"][value="${qArr[1]}"]`).prop('checked', true);
 
                         $('.cb-anak1').prop('checked', false);
-                        const cbAnak1 = (d.cb_anak1 || '').split(', ');
+                        const cbAnak1 = (d.cb_anak1 || '').split(',');
                         cbAnak1.forEach(val => {
-                            $(`.cb-anak1[value="${val}"]`).prop('checked', true);
+                            const trimmed = val.trim();
+                            $(`.cb-anak1[value="${trimmed}"]`).prop('checked', true);
                         });
+                        if ($('.cb-anak1:checked').length === 0) $('#cb_anak1_tidak').prop('checked', true);
 
                         $('.cb-anak2').prop('checked', false);
-                        const cbAnak2 = (d.cb_anak2 || '').split(', ');
+                        const cbAnak2 = (d.cb_anak2 || '').split(',');
                         cbAnak2.forEach(val => {
-                            $(`.cb-anak2[value="${val}"]`).prop('checked', true);
+                            const trimmed = val.trim();
+                            $(`.cb-anak2[value="${trimmed}"]`).prop('checked', true);
                         });
+                        if ($('.cb-anak2:checked').length === 0) $('#cb_anak2_tidak').prop('checked', true);
                     }
                 } else {
                     $(`input[name="kategori"][value="ANAK"]`).prop('checked', true).trigger('change');
@@ -494,6 +500,34 @@
             });
         });
     }
+
+    // Checkbox "Tidak ada" exclusive toggle logic
+    $('.cb-obgyn').on('change', function() {
+        if ($(this).attr('id') === 'cb_obgyn_tidak' && $(this).is(':checked')) {
+            $('.cb-obgyn').not(this).prop('checked', false);
+        } else if ($(this).is(':checked')) {
+            $('#cb_obgyn_tidak').prop('checked', false);
+        }
+        hitungImtDanSkorSkrining();
+    });
+
+    $('.cb-anak1').on('change', function() {
+        if ($(this).attr('id') === 'cb_anak1_tidak' && $(this).is(':checked')) {
+            $('.cb-anak1').not(this).prop('checked', false);
+        } else if ($(this).is(':checked')) {
+            $('#cb_anak1_tidak').prop('checked', false);
+        }
+        hitungImtDanSkorSkrining();
+    });
+
+    $('.cb-anak2').on('change', function() {
+        if ($(this).attr('id') === 'cb_anak2_tidak' && $(this).is(':checked')) {
+            $('.cb-anak2').not(this).prop('checked', false);
+        } else if ($(this).is(':checked')) {
+            $('#cb_anak2_tidak').prop('checked', false);
+        }
+        hitungImtDanSkorSkrining();
+    });
 
     // Toggle Kategori (ANAK / OBGYN)
     $('input[name="kategori"]').on('change', function() {
@@ -513,7 +547,7 @@
     });
 
     // Auto Calculate IMT & Skor
-    $('#skrining_bb, #skrining_tb, .q-obgyn-radio, .q-anak-radio, .cb-obgyn, .cb-anak1, .cb-anak2').on('input change', function() {
+    $('#skrining_bb, #skrining_tb, .q-obgyn-radio, .q-anak-radio').on('input change', function() {
         hitungImtDanSkorSkrining();
     });
 
@@ -530,62 +564,79 @@
 
         const kat = $('input[name="kategori"]:checked').val();
         let skor = 0;
+        let ket = 'Resiko Rendah';
 
         if (kat === 'OBGYN') {
             const q1 = $('input[name="q_obgyn_1"]:checked').val() || 'Tidak';
             const q3 = $('input[name="q_obgyn_3"]:checked').val() || 'Tidak';
             const q4 = $('input[name="q_obgyn_4"]:checked').val() || 'Tidak';
 
+            if (q1.toUpperCase() === 'YA') skor += 1;
+
             let cbVals = [];
             $('.cb-obgyn:checked').each(function() {
-                cbVals.push($(this).val());
+                const v = $(this).val();
+                if (v !== 'Tidak ada') cbVals.push(v);
             });
-            const cbObgynStr = cbVals.join(', ') || '-';
-            $('#skrining_cb_obgyn').val(cbObgynStr);
+            if (cbVals.length > 0) skor += 1;
 
-            if (q1 === 'Ya') skor += 1;
-            if (cbVals.length > 0 && !cbVals.includes('Tidak ada')) skor += 1;
-            if (q3 === 'Ya') skor += 1;
-            if (q4 === 'Ya') skor += 1;
+            if (q3.toUpperCase() === 'YA') skor += 1;
+            if (q4.toUpperCase() === 'YA') skor += 1;
 
-            $('#skrining_q_obgyn').val(`${q1},${q3},${q4}`);
+            // OBGYN: Jika skor >= 1 -> "Asesmen Lanjut oleh Ahli Gizi", jika 0 -> "Resiko Rendah"
+            ket = skor >= 1 ? 'Asesmen Lanjut oleh Ahli Gizi' : 'Resiko Rendah';
+
+            const allCb = [];
+            $('.cb-obgyn:checked').each(function() { allCb.push($(this).val()); });
+            $('#skrining_cb_obgyn').val(allCb.length > 0 ? allCb.join(', ') : '-');
+            $('#skrining_q_obgyn').val(`${q1.toUpperCase()},${q3.toUpperCase()},${q4.toUpperCase()}`);
+
         } else {
+            // ANAK
             const q1 = $('input[name="q_anak_1"]:checked').val() || 'Tidak';
             const q2 = $('input[name="q_anak_2"]:checked').val() || 'Tidak';
 
+            if (q1.toUpperCase() === 'YA') skor += 1;
+            if (q2.toUpperCase() === 'YA') skor += 1;
+
             let cb1Vals = [];
             $('.cb-anak1:checked').each(function() {
-                cb1Vals.push($(this).val());
+                const v = $(this).val();
+                if (v !== 'Tidak ada') cb1Vals.push(v);
             });
-            const cbAnak1Str = cb1Vals.join(', ') || '-';
-            $('#skrining_cb_anak1').val(cbAnak1Str);
+            if (cb1Vals.length > 0) skor += 1;
 
             let cb2Vals = [];
             $('.cb-anak2:checked').each(function() {
-                cb2Vals.push($(this).val());
+                const v = $(this).val();
+                if (v !== 'Tidak ada') cb2Vals.push(v);
             });
-            const cbAnak2Str = cb2Vals.join(', ') || '-';
-            $('#skrining_cb_anak2').val(cbAnak2Str);
+            if (cb2Vals.length > 0) skor += 2;
 
-            if (q1 === 'Ya') skor += 1;
-            if (q2 === 'Ya') skor += 1;
-            if (cb1Vals.length > 0 && !cb1Vals.includes('Tidak ada')) skor += 1;
-            if (cb2Vals.length > 0 && !cb2Vals.includes('Tidak ada')) skor += 2;
+            // ANAK: 0 = Resiko Rendah, 1-3 = Resiko Sedang, >=4 = Resiko Tinggi
+            if (skor === 0) {
+                ket = 'Resiko Rendah';
+            } else if (skor >= 1 && skor <= 3) {
+                ket = 'Resiko Sedang';
+            } else {
+                ket = 'Resiko Tinggi';
+            }
 
-            $('#skrining_q_anak').val(`${q1},${q2}`);
+            const allCb1 = [];
+            $('.cb-anak1:checked').each(function() { allCb1.push($(this).val()); });
+            $('#skrining_cb_anak1').val(allCb1.length > 0 ? allCb1.join(', ') : '-');
+
+            const allCb2 = [];
+            $('.cb-anak2:checked').each(function() { allCb2.push($(this).val()); });
+            $('#skrining_cb_anak2').val(allCb2.length > 0 ? allCb2.join(', ') : '-');
+
+            $('#skrining_q_anak').val(`${q1.toUpperCase()},${q2.toUpperCase()}`);
         }
 
         $('#skrining_skor_val').val(skor);
         $('#skrining_skor_display').text(skor);
-
-        let ket = 'Resiko Rendah';
-        if (skor >= 4) ket = 'Resiko Tinggi';
-        else if (skor >= 2) ket = 'Resiko Sedang';
-        
         $('#skrining_keterangan_display').text(ket);
-        if (!$('#skrining_keterangan').val() || $('#skrining_keterangan').val() === 'Resiko Rendah' || $('#skrining_keterangan').val() === 'Resiko Sedang' || $('#skrining_keterangan').val() === 'Resiko Tinggi') {
-            $('#skrining_keterangan').val(ket);
-        }
+        $('#skrining_keterangan').val(ket);
     }
 
     // Submit Simpan Skrining Gizi

@@ -45,12 +45,61 @@ class SkriningGiziController extends Controller
         $tbMeter = $tb > 0 ? $tb / 100 : 0;
         $imt = $tbMeter > 0 ? round($bb / ($tbMeter * $tbMeter), 2) : 0;
 
-        $kategori = $request->input('kategori', 'ANAK');
-        $skor = intval($request->input('skor', 0));
-        
-        $keterangan = $request->input('keterangan', '');
-        if (empty($keterangan)) {
-            $keterangan = $skor >= 4 ? 'Resiko Tinggi' : ($skor >= 2 ? 'Resiko Sedang' : 'Resiko Rendah');
+        $kategori = strtoupper($request->input('kategori', 'ANAK'));
+
+        $skor = 0;
+        $keterangan = 'Resiko Rendah';
+
+        if ($kategori === 'OBGYN') {
+            $q_obgyn = $request->input('q_obgyn', 'TIDAK,TIDAK,TIDAK');
+            $qParts = explode(',', $q_obgyn);
+            $q1 = strtoupper(trim($qParts[0] ?? 'TIDAK'));
+            $q3 = strtoupper(trim($qParts[1] ?? 'TIDAK'));
+            $q4 = strtoupper(trim($qParts[2] ?? 'TIDAK'));
+
+            if ($q1 === 'YA') $skor += 1;
+            if ($q3 === 'YA') $skor += 1;
+            if ($q4 === 'YA') $skor += 1;
+
+            $cb_obgyn = $request->input('cb_obgyn', '-');
+            if ($cb_obgyn !== '-' && !empty($cb_obgyn) && $cb_obgyn !== 'Tidak ada') {
+                $skor += 1;
+            }
+
+            $keterangan = $skor >= 1 ? 'Asesmen Lanjut oleh Ahli Gizi' : 'Resiko Rendah';
+
+        } else {
+            // ANAK
+            $q_anak = $request->input('q_anak', 'TIDAK,TIDAK');
+            $qParts = explode(',', $q_anak);
+            $q1 = strtoupper(trim($qParts[0] ?? 'TIDAK'));
+            $q2 = strtoupper(trim($qParts[1] ?? 'TIDAK'));
+
+            if ($q1 === 'YA') $skor += 1;
+            if ($q2 === 'YA') $skor += 1;
+
+            $cb_anak1 = $request->input('cb_anak1', '-');
+            if ($cb_anak1 !== '-' && !empty($cb_anak1) && $cb_anak1 !== 'Tidak ada') {
+                $skor += 1;
+            }
+
+            $cb_anak2 = $request->input('cb_anak2', '-');
+            if ($cb_anak2 !== '-' && !empty($cb_anak2) && $cb_anak2 !== 'Tidak ada') {
+                $skor += 2;
+            }
+
+            if ($skor == 0) {
+                $keterangan = 'Resiko Rendah';
+            } elseif ($skor >= 1 && $skor <= 3) {
+                $keterangan = 'Resiko Sedang';
+            } else {
+                $keterangan = 'Resiko Tinggi';
+            }
+        }
+
+        // Allow user override for keterangan if provided
+        if ($request->filled('keterangan') && !empty($request->input('keterangan'))) {
+            $keterangan = $request->input('keterangan');
         }
 
         $data = [
@@ -69,12 +118,12 @@ class SkriningGiziController extends Controller
             'hiv' => $request->input('hiv', 'Tidak Periksa'),
             'hbsag' => $request->input('hbsag', 'Tidak Periksa'),
             'syphilis' => $request->input('syphilis', 'Tidak Periksa'),
-            'cb_obgyn' => $request->input('cb_obgyn', ''),
-            'cb_anak1' => $request->input('cb_anak1', ''),
-            'cb_anak2' => $request->input('cb_anak2', ''),
+            'cb_obgyn' => $request->input('cb_obgyn', '-'),
+            'cb_anak1' => $request->input('cb_anak1', '-'),
+            'cb_anak2' => $request->input('cb_anak2', '-'),
             'kategori' => $kategori,
-            'q_anak' => $request->input('q_anak', ''),
-            'q_obgyn' => $request->input('q_obgyn', ''),
+            'q_anak' => $request->input('q_anak', 'TIDAK,TIDAK'),
+            'q_obgyn' => $request->input('q_obgyn', 'TIDAK,TIDAK,TIDAK'),
         ];
 
         try {
