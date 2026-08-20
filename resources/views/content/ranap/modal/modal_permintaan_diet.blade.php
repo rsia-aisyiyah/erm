@@ -99,7 +99,14 @@
                                 <div class="col-md-12">
                                     <label class="form-label fw-semibold small mb-1">Jenis Diet Pasien <span class="text-danger">*</span></label>
                                     <select class="form-select form-select-sm" id="diet_kd_diet" name="kd_diet" required>
-                                        <option value="">-- Pilih Master Jenis Diet --</option>
+                                        <option value="">-- Pilih Jenis Diet --</option>
+                                        <option value="Diet Nasi">Diet Nasi</option>
+                                        <option value="Diet Bubur">Diet Bubur</option>
+                                        <option value="Diet Nasi Tim">Diet Nasi Tim</option>
+                                        <option value="Diet Cair">Diet Cair</option>
+                                        <option value="Puasa">Puasa</option>
+                                        <option value="Diet Bubur Tim">Diet Bubur Tim</option>
+                                        <option value="Diet Bubur Tim Saring">Diet Bubur Tim Saring</option>
                                     </select>
                                 </div>
 
@@ -237,26 +244,10 @@
 <script>
     let masterDietLoaded = false;
 
-    // Load Master Diet Select Options
+    // Load Master Diet Select Options (Static Hardcoded)
     function loadMasterDietOptions(callback) {
-        if (masterDietLoaded && $('#diet_kd_diet option').length > 1) {
-            if (typeof callback === 'function') callback();
-            return;
-        }
-
-        $.get('/erm/ranap/permintaan-diet/master').done(function(res) {
-            if (res.success && res.data) {
-                let options = '<option value="">-- Pilih Jenis Diet --</option>';
-                res.data.forEach(function(item) {
-                    options += `<option value="${item.kd_diet}">${item.nama_diet}</option>`;
-                });
-                $('#diet_kd_diet').html(options);
-                masterDietLoaded = true;
-            }
-            if (typeof callback === 'function') callback();
-        }).fail(function() {
-            if (typeof callback === 'function') callback();
-        });
+        masterDietLoaded = true;
+        if (typeof callback === 'function') callback();
     }
 
     // Open Modal Permintaan Diet
@@ -361,7 +352,21 @@
                 }
 
                 if (kdDiet) {
-                    $('#diet_kd_diet').val(kdDiet);
+                    let matchedVal = '';
+                    const searchKd = kdDiet.trim().toUpperCase();
+                    $('#diet_kd_diet option').each(function() {
+                        const optText = $(this).text().trim().toUpperCase();
+                        const optVal = $(this).val().trim().toUpperCase();
+                        if (optText === searchKd || optVal === searchKd) {
+                            matchedVal = $(this).val();
+                            return false;
+                        }
+                    });
+                    if (matchedVal) {
+                        $('#diet_kd_diet').val(matchedVal);
+                    } else {
+                        $('#diet_kd_diet').val(kdDiet);
+                    }
                 } else if (skrining && skrining.info && skrining.info.jenis_diet) {
                     const rec = skrining.info.jenis_diet.trim().toUpperCase();
                     let matchedVal = '';

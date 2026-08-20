@@ -210,6 +210,24 @@ class PermintaanDietController extends Controller
         $sore = $request->input('sore', '-');
         $permintaan_khusus = $request->input('permintaan_khusus', '');
 
+        // Resolve kd_diet code jika nama diet hardcoded yang dikirim dari frontend
+        if (!empty($kd_diet) && !Diet::where('kd_diet', $kd_diet)->exists()) {
+            $matchedDiet = Diet::where('nama_diet', $kd_diet)->first();
+            if ($matchedDiet) {
+                $kd_diet = $matchedDiet->kd_diet;
+            } else {
+                $maxNum = Diet::where('kd_diet', 'LIKE', 'D%')->get()->map(function($d) {
+                    return intval(str_replace('D', '', $d->kd_diet));
+                })->max() ?: 15;
+                $nextKd = 'D' . str_pad($maxNum + 1, 2, '0', STR_PAD_LEFT);
+                $newDiet = Diet::create([
+                    'kd_diet' => $nextKd,
+                    'nama_diet' => $kd_diet,
+                ]);
+                $kd_diet = $newDiet->kd_diet;
+            }
+        }
+
         // Cari kamar inap aktif pasien
         $kamarInap = KamarInap::where('no_rawat', $no_rawat)
             ->where('stts_pulang', '-')
