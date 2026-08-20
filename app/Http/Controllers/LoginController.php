@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    public $userPublic = ['direksi', 'verifikator', '1.112.0823', '1.218.0921', '2.311.0314', '1.101.1112', '1.114.0525', '1.210.0825'];
+    public $userPublic = ['direksi', 'verifikator', '1.112.0823', '1.218.0921', '2.311.0314', '1.101.1112', '1.114.0525', '1.210.0825', '2.326.0418', '2.357.0121', '2.423.0418', '2.310.0113', '3.402.1023', '2.319.1017'];
     public $trackLogin;
     public function __construct()
     {
