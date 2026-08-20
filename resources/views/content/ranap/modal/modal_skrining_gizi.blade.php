@@ -60,7 +60,7 @@
                             <!-- DATA ANTROPOMETRI -->
                             <div class="mb-3">
                                 <div class="row g-2">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4" id="col_bb">
                                         <label class="form-label small mb-1">Berat Badan (Kg) <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-white"><i class="bi bi-speedometer2 text-muted"></i></span>
@@ -68,7 +68,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-4" id="col_tb">
                                         <label class="form-label small mb-1">Tinggi Badan (cm) <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-white"><i class="bi bi-ruler text-muted"></i></span>
@@ -76,7 +76,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-4" id="col_imt">
                                         <label class="form-label small mb-1">IMT</label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-light"><i class="bi bi-calculator text-muted"></i></span>
@@ -84,7 +84,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 d-none" id="wrapperLila">
                                         <label class="form-label small mb-1">LILA (cm)</label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-white"><i class="bi bi-circle text-muted"></i></span>
@@ -537,11 +537,20 @@
             $('#cardKategoriAnak').removeClass('border-success active').find('i').removeClass('text-success').addClass('text-secondary');
             $('#panelPertanyaanAnak').addClass('d-none');
             $('#panelPertanyaanObgyn').removeClass('d-none');
+
+            // Tampilkan LILA untuk OBGYN (col-md-3)
+            $('#wrapperLila').removeClass('d-none');
+            $('#col_bb, #col_tb, #col_imt').removeClass('col-md-4').addClass('col-md-3');
         } else {
             $('#cardKategoriAnak').addClass('border-success active').find('i').removeClass('text-secondary').addClass('text-success');
             $('#cardKategoriObgyn').removeClass('border-success active').find('i').removeClass('text-success').addClass('text-secondary');
             $('#panelPertanyaanObgyn').addClass('d-none');
             $('#panelPertanyaanAnak').removeClass('d-none');
+
+            // Sembunyikan LILA untuk ANAK (col-md-4)
+            $('#wrapperLila').addClass('d-none');
+            $('#skrining_lila').val('');
+            $('#col_bb, #col_tb, #col_imt').removeClass('col-md-3').addClass('col-md-4');
         }
         hitungImtDanSkorSkrining();
     });
