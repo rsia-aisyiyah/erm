@@ -373,13 +373,13 @@
                                 <input type="hidden" name="cb_anak2" id="skrining_cb_anak2" value="-">
                             </div>
 
-                            <!-- GREEN SKOR CARD -->
-                            <div class="card border-0 rounded-3 p-3" style="background: #e8f5e9; border: 1px solid #c8e6c9 !important;">
+                            <!-- DYNAMIC SKOR CARD -->
+                            <div class="card border-0 rounded-3 p-3" id="cardSkorSkrining" style="background: #e8f5e9; border: 1px solid #c8e6c9 !important;">
                                 <div class="row align-items-center">
-                                    <div class="col-md-4 text-center border-end border-success border-opacity-25">
-                                        <small class="fw-bold text-success d-block mb-0" style="font-size: 11px;">Skor Skrining</small>
-                                        <span class="display-5 fw-bold text-success" id="skrining_skor_display">0</span>
-                                        <small class="d-block text-muted" id="skrining_keterangan_display">Resiko Rendah</small>
+                                    <div class="col-md-4 text-center border-end border-opacity-25" id="borderSkorDivider">
+                                        <small class="fw-bold d-block mb-0" id="labelSkorTitle" style="font-size: 11px; color: #198754;">Skor Skrining</small>
+                                        <span class="display-5 fw-bold" id="skrining_skor_display" style="color: #198754;">0</span>
+                                        <small class="d-block fw-bold" id="skrining_keterangan_display" style="color: #198754;">Resiko Rendah</small>
                                     </div>
                                     <div class="col-md-8 ps-md-3">
                                         <div class="mb-2">
@@ -637,6 +637,35 @@
         $('#skrining_skor_display').text(skor);
         $('#skrining_keterangan_display').text(ket);
         $('#skrining_keterangan').val(ket);
+
+        // Dynamic Color Styling based on Risk Level
+        const card = $('#cardSkorSkrining');
+        const titleLbl = $('#labelSkorTitle');
+        const numDisp = $('#skrining_skor_display');
+        const ketDisp = $('#skrining_keterangan_display');
+
+        if (ket === 'Resiko Tinggi') {
+            card.css({ 'background': '#ffebee', 'border': '1px solid #ffcdd2' });
+            titleLbl.css('color', '#dc3545');
+            numDisp.css('color', '#dc3545');
+            ketDisp.css('color', '#dc3545');
+        } else if (ket === 'Resiko Sedang') {
+            card.css({ 'background': '#fff8e1', 'border': '1px solid #ffe082' });
+            titleLbl.css('color', '#b78103');
+            numDisp.css('color', '#d97706');
+            ketDisp.css('color', '#b78103');
+        } else if (ket === 'Asesmen Lanjut oleh Ahli Gizi') {
+            card.css({ 'background': '#e0f2fe', 'border': '1px solid #bae6fd' });
+            titleLbl.css('color', '#0284c7');
+            numDisp.css('color', '#0284c7');
+            ketDisp.css('color', '#0284c7');
+        } else {
+            // Resiko Rendah
+            card.css({ 'background': '#e8f5e9', 'border': '1px solid #c8e6c9' });
+            titleLbl.css('color', '#198754');
+            numDisp.css('color', '#198754');
+            ketDisp.css('color', '#198754');
+        }
     }
 
     // Submit Simpan Skrining Gizi
