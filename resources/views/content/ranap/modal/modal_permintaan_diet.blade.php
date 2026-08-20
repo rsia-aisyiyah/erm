@@ -95,19 +95,10 @@
                         <div class="card-body p-3">
                             <div class="row g-3">
                                 
-                                <!-- Jenis Diet -->
+                                <!-- Jenis Diet Pasien (Dari Skrining Gizi) -->
                                 <div class="col-md-12">
-                                    <label class="form-label fw-semibold small mb-1">Jenis Diet Pasien <span class="text-danger">*</span></label>
-                                    <select class="form-select form-select-sm" id="diet_kd_diet" name="kd_diet" required>
-                                        <option value="">-- Pilih Jenis Diet --</option>
-                                        <option value="Diet Nasi">Diet Nasi</option>
-                                        <option value="Diet Bubur">Diet Bubur</option>
-                                        <option value="Diet Nasi Tim">Diet Nasi Tim</option>
-                                        <option value="Diet Cair">Diet Cair</option>
-                                        <option value="Puasa">Puasa</option>
-                                        <option value="Diet Bubur Tim">Diet Bubur Tim</option>
-                                        <option value="Diet Bubur Tim Saring">Diet Bubur Tim Saring</option>
-                                    </select>
+                                    <label class="form-label fw-semibold small mb-1"><i class="bi bi-info-circle text-info me-1"></i> Jenis Diet Pasien (Rekomendasi Skrining Gizi)</label>
+                                    <input type="text" class="form-control form-control-sm bg-light fw-bold text-success" id="display_jenis_diet" readonly value="-">
                                 </div>
 
                                 <!-- Waktu Pemberian Diet (Pagi, Siang, Sore) -->
@@ -322,18 +313,20 @@
                     $('#alertSkriningGiziBelumAda').addClass('d-none');
                     $('#alertSkriningGiziAda').removeClass('d-none');
                     const info = skrining.info || {};
-                    const recDietStr = info.jenis_diet ? ` | Diet Skrining: ${info.jenis_diet}` : '';
+                    const recDietStr = info.jenis_diet ? ` | Jenis Diet: ${info.jenis_diet}` : '';
                     $('#infoSkriningGiziText').text(`BB: ${info.bb} kg | TB: ${info.tb} cm | IMT/Skor: ${info.imt} (${info.keterangan || '-'})${recDietStr}`);
+                    $('#display_jenis_diet').val(info.jenis_diet || '-');
 
                     // Enable form inputs & button
-                    $('#diet_kd_diet, input[name="pagi"], input[name="siang"], input[name="sore"], #diet_permintaan_khusus').prop('disabled', false);
+                    $('input[name="pagi"], input[name="siang"], input[name="sore"], #diet_permintaan_khusus').prop('disabled', false);
                     $('#btnSimpanPermintaanDiet').prop('disabled', false);
                 } else {
                     $('#alertSkriningGiziAda').addClass('d-none');
                     $('#alertSkriningGiziBelumAda').removeClass('d-none');
+                    $('#display_jenis_diet').val('-');
 
                     // Disable form inputs & button
-                    $('#diet_kd_diet, input[name="pagi"], input[name="siang"], input[name="sore"], #diet_permintaan_khusus').prop('disabled', true);
+                    $('input[name="pagi"], input[name="siang"], input[name="sore"], #diet_permintaan_khusus').prop('disabled', true);
                     $('#btnSimpanPermintaanDiet').prop('disabled', true);
 
                     Swal.fire({
@@ -349,42 +342,6 @@
                             bukaModalSkriningGiziDariDiet(noRawat);
                         }
                     });
-                }
-
-                if (kdDiet) {
-                    let matchedVal = '';
-                    const searchKd = kdDiet.trim().toUpperCase();
-                    $('#diet_kd_diet option').each(function() {
-                        const optText = $(this).text().trim().toUpperCase();
-                        const optVal = $(this).val().trim().toUpperCase();
-                        if (optText === searchKd || optVal === searchKd) {
-                            matchedVal = $(this).val();
-                            return false;
-                        }
-                    });
-                    if (matchedVal) {
-                        $('#diet_kd_diet').val(matchedVal);
-                    } else {
-                        $('#diet_kd_diet').val(kdDiet);
-                    }
-                } else if (skrining && skrining.info && skrining.info.jenis_diet) {
-                    const rec = skrining.info.jenis_diet.trim().toUpperCase();
-                    let matchedVal = '';
-                    $('#diet_kd_diet option').each(function() {
-                        const optText = $(this).text().trim().toUpperCase();
-                        const optVal = $(this).val().trim().toUpperCase();
-                        if (optText === rec || optVal === rec) {
-                            matchedVal = $(this).val();
-                            return false;
-                        }
-                    });
-                    if (matchedVal) {
-                        $('#diet_kd_diet').val(matchedVal);
-                    } else {
-                        $('#diet_kd_diet').val('');
-                    }
-                } else {
-                    $('#diet_kd_diet').val('');
                 }
 
                 if (p) {
@@ -404,7 +361,6 @@
 
     // Reset Form Permintaan Diet
     function resetFormPermintaanDiet() {
-        $('#diet_kd_diet').val('');
         resetWaktuRadio();
         $('#diet_permintaan_khusus').val('');
         $('#btnHapusPermintaanDiet').addClass('d-none');

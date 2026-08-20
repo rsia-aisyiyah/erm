@@ -203,83 +203,25 @@ class PermintaanDietController extends Controller
                 'message' => 'Pasien belum memiliki data Skrining Gizi. Silakan lengkapi Skrining Gizi terlebih dahulu.',
             ], 422);
         }
+
         $tanggal = $request->input('tanggal');
-        $kd_diet = $request->input('kd_diet', '');
         $pagi = $request->input('pagi', '-');
         $siang = $request->input('siang', '-');
         $sore = $request->input('sore', '-');
         $permintaan_khusus = $request->input('permintaan_khusus', '');
 
-        // Resolve kd_diet code jika nama diet hardcoded yang dikirim dari frontend
-        if (!empty($kd_diet) && !Diet::where('kd_diet', $kd_diet)->exists()) {
-            $matchedDiet = Diet::where('nama_diet', $kd_diet)->first();
-            if ($matchedDiet) {
-                $kd_diet = $matchedDiet->kd_diet;
-            } else {
-                $maxNum = Diet::where('kd_diet', 'LIKE', 'D%')->get()->map(function($d) {
-                    return intval(str_replace('D', '', $d->kd_diet));
-                })->max() ?: 15;
-                $nextKd = 'D' . str_pad($maxNum + 1, 2, '0', STR_PAD_LEFT);
-                $newDiet = Diet::create([
-                    'kd_diet' => $nextKd,
-                    'nama_diet' => $kd_diet,
-                ]);
-                $kd_diet = $newDiet->kd_diet;
-            }
-        }
-
-        // Cari kamar inap aktif pasien
-        $kamarInap = KamarInap::where('no_rawat', $no_rawat)
-            ->where('stts_pulang', '-')
-            ->first();
-
-        $kd_kamar = $request->input('kd_kamar') ?: ($kamarInap->kd_kamar ?? '-');
-
         try {
-            DB::transaction(function () use ($no_rawat, $tanggal, $kd_kamar, $kd_diet, $pagi, $siang, $sore, $permintaan_khusus) {
-                // 1. Simpan ke rsia_permintaan_diet
-                $dataPermintaan = [
+            RsiaPermintaanDiet::updateOrCreate(
+                ['no_rawat' => $no_rawat, 'tanggal' => $tanggal],
+                [
                     'no_rawat' => $no_rawat,
                     'tanggal' => $tanggal,
                     'pagi' => $pagi,
                     'siang' => $siang,
                     'sore' => $sore,
                     'permintaan_khusus' => $permintaan_khusus ?? '',
-                ];
-
-                RsiaPermintaanDiet::updateOrCreate(
-                    ['no_rawat' => $no_rawat, 'tanggal' => $tanggal],
-                    $dataPermintaan
-                );
-
-                // 2. Sinkronkan ke detail_beri_diet untuk jam makan (Pagi, Siang, Sore)
-                $waktuMap = [
-                    'Pagi' => $pagi,
-                    'Siang' => $siang,
-                    'Sore' => $sore,
-                ];
-
-                foreach ($waktuMap as $waktu => $status) {
-                    if ($status === 'Ya' && !empty($kd_diet)) {
-                        DetailBeriDiet::updateOrCreate(
-                            [
-                                'no_rawat' => $no_rawat,
-                                'tanggal' => $tanggal,
-                                'waktu' => $waktu,
-                            ],
-                            [
-                                'kd_kamar' => $kd_kamar,
-                                'kd_diet' => $kd_diet,
-                            ]
-                        );
-                    } else {
-                        DetailBeriDiet::where('no_rawat', $no_rawat)
-                            ->where('tanggal', $tanggal)
-                            ->where('waktu', $waktu)
-                            ->delete();
-                    }
-                }
-            });
+                ]
+            );
 
             return response()->json([
                 'success' => true,
@@ -303,10 +245,7 @@ class PermintaanDietController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($no_rawat, $tanggal) {
-                RsiaPermintaanDiet::where('no_rawat', $no_rawat)->where('tanggal', $tanggal)->delete();
-                DetailBeriDiet::where('no_rawat', $no_rawat)->where('tanggal', $tanggal)->delete();
-            });
+            RsiaPermintaanDiet::where('no_rawat', $no_rawat)->where('tanggal', $tanggal)->delete();
 
             return response()->json([
                 'success' => true,
@@ -332,22 +271,17 @@ class PermintaanDietController extends Controller
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        $listDetail = DetailBeriDiet::where('no_rawat', $no_rawat)
-            ->with('diet')
-            ->get()
-            ->groupBy('tanggal');
+        $rsiaSkrining = RsiaSkriningGizi::where('no_rawat', $no_rawat)->first();
+        $jenisDietSkrining = $rsiaSkrining->jenis_diet ?? '-';
 
-        $result = $listPermintaan->map(function ($item) use ($listDetail) {
-            $details = $listDetail->get($item->tanggal);
-            $namaDiet = $details ? $details->first()?->diet?->nama_diet ?? '-' : '-';
-
+        $result = $listPermintaan->map(function ($item) use ($jenisDietSkrining) {
             return [
                 'tanggal' => $item->tanggal,
                 'pagi' => $item->pagi,
                 'siang' => $item->siang,
                 'sore' => $item->sore,
                 'permintaan_khusus' => $item->permintaan_khusus,
-                'nama_diet' => $namaDiet,
+                'nama_diet' => $jenisDietSkrining,
             ];
         });
 
