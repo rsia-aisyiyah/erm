@@ -157,6 +157,7 @@
     @include('content.ranap.modal.modal_monitoring_cairan')
     @include('content.ranap.modal.modal_edukasi_obat_pulang')
     @include('content.ranap.modal.modal_discharge_planning')
+    @include('content.ranap.modal.modal_permintaan_diet')
     @include('content.ranap.modal.modal_resep_pulang')
     @include('content.ranap.modal.modal_asesmen_nyeri_dewasa')
     @include('content.ranap.modal.modal_asesmen_nyeri_batita_flacc')
@@ -1123,6 +1124,7 @@
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')">Monitoring Cairan Pasien</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')">Edukasi Obat Pulang ${cekList(row.edukasi_obat_pulang)}</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalDischargePlanning('${data.no_rawat}')">Discharge Planning ${cekList(row.discharge_planning)}</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalPermintaanDiet('${data.no_rawat}')"><i class="bi bi-cup-hot text-success me-1"></i> Permintaan Diet Pasien</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${data.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
 
             // Asesmen nyeri bawaan dinamis
