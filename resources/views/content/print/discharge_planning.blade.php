@@ -141,6 +141,15 @@
             </td>
         </tr>
 
+        @if (!empty($data->target_asuhan))
+        <tr>
+            <td class="label">Target Asuhan yang Terukur</td>
+            <td colspan="3">
+                {!! nl2br(e($data->target_asuhan)) !!}
+            </td>
+        </tr>
+        @endif
+
         <tr>
             <td class="label">Diet di Rumah</td>
             <td colspan="3">

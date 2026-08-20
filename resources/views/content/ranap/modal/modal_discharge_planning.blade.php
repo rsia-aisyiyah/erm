@@ -209,11 +209,15 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <label for="target_asuhan" class="form-label">Target Asuhan yang Terukur</label>
+                            <x-input id="target_asuhan" name="target_asuhan" placeholder="Target Asuhan yang terukur" />
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
                             <label for="diet_dirumah" class="form-label">Diet Dirumah</label>
                             <x-input id="diet_dirumah" name="diet_dirumah" />
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
                             <label for="instruksi" class="form-label">Instruksi Tindak Lanjut</label>
                             <x-input id="instruksi" name="instruksi" />
                             @csrf
@@ -586,6 +590,7 @@
                         formDischargePlanning.find(`input[name=mobilisasi][value="${response.mobilisasi}"]`).prop('checked', true).trigger('change');
                         formDischargePlanning.find(`input[name=alat_terpasang][value="${response.alat_terpasang}"]`).prop('checked', true).trigger('change');
                         formDischargePlanning.find(`input[name=kondisi_pulang][value="${response.kondisi_pulang}"]`).prop('checked', true).trigger('change');
+                        formDischargePlanning.find(`input[name=target_asuhan]`).val(response.target_asuhan || '');
                         formDischargePlanning.find(`input[name=diet_dirumah]`).val(response.diet_dirumah);
                         formDischargePlanning.find(`input[name=instruksi]`).val(response.instruksi);
                         formDischargePlanning.find('input[name=petugas]').val(response.petugas.nama);

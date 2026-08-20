@@ -32,6 +32,7 @@ class DischargePlanningController extends Controller
             'penyuluhan_lain' => $request->penyuluhan_lain,
             'dokumen_penunjang' => $request->dokumen_penunjang,
             'obat_pulang' => $request->obat_pulang,
+            'target_asuhan' => $request->target_asuhan,
             'diet_dirumah' => $request->diet_dirumah,
             'instruksi' => $request->instruksi,
             'nip' => session()->get('pegawai')->nik
@@ -84,6 +85,7 @@ class DischargePlanningController extends Controller
             'penyuluhan_lain' => $request->penyuluhan_lain,
             'dokumen_penunjang' => $request->dokumen_penunjang,
             'obat_pulang' => $request->obat_pulang,
+            'target_asuhan' => $request->target_asuhan,
             'diet_dirumah' => $request->diet_dirumah,
             'instruksi' => $request->instruksi,
             'nip' => session()->get('pegawai')->nik
