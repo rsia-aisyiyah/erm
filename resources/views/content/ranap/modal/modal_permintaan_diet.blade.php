@@ -246,7 +246,7 @@
 
         $.get('/erm/ranap/permintaan-diet/master').done(function(res) {
             if (res.success && res.data) {
-                let options = '<option value="">-- Pilih Master Jenis Diet --</option>';
+                let options = '<option value="">-- Pilih Jenis Diet --</option>';
                 res.data.forEach(function(item) {
                     options += `<option value="${item.kd_diet}">${item.nama_diet}</option>`;
                 });

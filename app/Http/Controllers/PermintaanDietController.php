@@ -137,7 +137,17 @@ class PermintaanDietController extends Controller
 
     public function getMasterDiet()
     {
-        $diet = Diet::orderBy('nama_diet', 'asc')->get();
+        $stdNames = [
+            'Diet Nasi',
+            'Diet Bubur',
+            'Diet Nasi Tim',
+            'Diet Cair',
+            'Puasa',
+            'Diet Bubur Tim',
+            'Diet Bubur Tim Saring'
+        ];
+
+        $diet = Diet::whereIn('nama_diet', $stdNames)->orderBy('nama_diet', 'asc')->get();
         return response()->json([
             'success' => true,
             'data' => $diet
