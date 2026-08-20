@@ -61,7 +61,7 @@
                                 <small class="text-muted" style="font-size: 11.5px;">Pasien ini belum memiliki data Skrining Gizi. Silakan isi Form Skrining Gizi terlebih dahulu sebelum mengajukan Permintaan Diet Pasien.</small>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-warning btn-sm text-dark fw-bold text-nowrap px-3" onclick="showModalSkriningGizi($('#diet_no_rawat').val())">
+                        <button type="button" class="btn btn-warning btn-sm text-dark fw-bold text-nowrap px-3" onclick="bukaModalSkriningGiziDariDiet($('#diet_no_rawat').val())">
                             <i class="bi bi-clipboard2-check me-1"></i> Isi Skrining Gizi
                         </button>
                     </div>
@@ -346,10 +346,18 @@
                         confirmButtonColor: '#198754'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            showModalSkriningGizi(noRawat);
+                            bukaModalSkriningGiziDariDiet(noRawat);
                         }
                     });
                 }
+
+    function bukaModalSkriningGiziDariDiet(noRawat) {
+        if (!noRawat) noRawat = $('#diet_no_rawat').val();
+        $('#modalPermintaanDiet').modal('hide');
+        setTimeout(function() {
+            showModalSkriningGizi(noRawat, true);
+        }, 350);
+    }
 
                 if (kdDiet) {
                     $('#diet_kd_diet').val(kdDiet);

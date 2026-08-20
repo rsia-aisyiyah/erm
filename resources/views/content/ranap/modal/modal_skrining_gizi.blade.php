@@ -1,5 +1,5 @@
 <!-- Modal Form Skrining Gizi Pasien -->
-<div class="modal fade" id="modalSkriningGizi" tabindex="-1" aria-labelledby="modalSkriningGiziLabel" aria-hidden="true" data-bs-backdrop="static">
+<div class="modal fade" id="modalSkriningGizi" tabindex="-1" aria-labelledby="modalSkriningGiziLabel" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">
             
@@ -237,10 +237,13 @@
 
 @push('script')
 <script>
+    let skriningOpenedFromDiet = false;
+
     // Open Modal Skrining Gizi
-    function showModalSkriningGizi(noRawat) {
+    function showModalSkriningGizi(noRawat, fromDiet = false) {
         if (!noRawat) return;
 
+        skriningOpenedFromDiet = fromDiet;
         $('#skrining_no_rawat').val(noRawat);
         $('#formSkriningGizi')[0].reset();
         
@@ -364,9 +367,10 @@
                 });
                 $('#modalSkriningGizi').modal('hide');
 
-                // Reload Permintaan Diet Modal if opened
-                if ($('#modalPermintaanDiet').is(':visible') || $('#diet_no_rawat').val() === noRawat) {
-                    loadPermintaanDietByDate(noRawat, $('#diet_tanggal').val() || moment().format('YYYY-MM-DD'));
+                if (skriningOpenedFromDiet) {
+                    setTimeout(function() {
+                        showModalPermintaanDiet(noRawat);
+                    }, 350);
                 }
             } else {
                 Swal.fire('Gagal', res.message || 'Gagal menyimpan data.', 'error');
