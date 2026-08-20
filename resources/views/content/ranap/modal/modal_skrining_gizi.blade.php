@@ -458,9 +458,9 @@
                     // Set OBGYN values
                     if (kat === 'OBGYN') {
                         const qArr = (d.q_obgyn || '').split(',');
-                        if (qArr[0]) $(`input[name="q_obgyn_1"][value="${qArr[0]}"]`).prop('checked', true);
-                        if (qArr[1]) $(`input[name="q_obgyn_3"][value="${qArr[1]}"]`).prop('checked', true);
-                        if (qArr[2]) $(`input[name="q_obgyn_4"][value="${qArr[2]}"]`).prop('checked', true);
+                        if (qArr[0]) setRadioByNameCaseInsensitive('q_obgyn_1', qArr[0]);
+                        if (qArr[1]) setRadioByNameCaseInsensitive('q_obgyn_3', qArr[1]);
+                        if (qArr[2]) setRadioByNameCaseInsensitive('q_obgyn_4', qArr[2]);
 
                         $('.cb-obgyn').prop('checked', false);
                         const cbObgyn = (d.cb_obgyn || '').split(',');
@@ -472,8 +472,8 @@
                     } else {
                         // Set ANAK values
                         const qArr = (d.q_anak || '').split(',');
-                        if (qArr[0]) $(`input[name="q_anak_1"][value="${qArr[0]}"]`).prop('checked', true);
-                        if (qArr[1]) $(`input[name="q_anak_2"][value="${qArr[1]}"]`).prop('checked', true);
+                        if (qArr[0]) setRadioByNameCaseInsensitive('q_anak_1', qArr[0]);
+                        if (qArr[1]) setRadioByNameCaseInsensitive('q_anak_2', qArr[1]);
 
                         $('.cb-anak1').prop('checked', false);
                         const cbAnak1 = (d.cb_anak1 || '').split(',');
@@ -498,6 +498,16 @@
                 hitungImtDanSkorSkrining();
                 $('#modalSkriningGizi').modal('show');
             });
+        });
+    }
+
+    function setRadioByNameCaseInsensitive(name, val) {
+        if (!val) return;
+        const target = val.trim().toUpperCase();
+        $(`input[name="${name}"]`).each(function() {
+            if ($(this).val().trim().toUpperCase() === target) {
+                $(this).prop('checked', true);
+            }
         });
     }
 
