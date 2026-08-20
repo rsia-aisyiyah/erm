@@ -97,7 +97,12 @@
                                 
                                 <!-- Jenis Diet Pasien (Dari Skrining Gizi) -->
                                 <div class="col-md-12">
-                                    <label class="form-label fw-semibold small mb-1"><i class="bi bi-info-circle text-info me-1"></i> Jenis Diet Pasien (Rekomendasi Skrining Gizi)</label>
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label class="form-label fw-semibold small mb-0"><i class="bi bi-info-circle text-info me-1"></i> Jenis Diet Pasien (Rekomendasi Skrining Gizi)</label>
+                                        <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none text-success small fw-semibold" onclick="bukaModalSkriningGiziDariDiet($('#diet_no_rawat').val())">
+                                            <i class="bi bi-pencil-square me-1"></i> Edit Skrining Gizi / Jenis Diet
+                                        </button>
+                                    </div>
                                     <input type="text" class="form-control form-control-sm bg-light fw-bold text-success" id="display_jenis_diet" readonly value="-">
                                 </div>
 
@@ -390,8 +395,10 @@
                     const badgeSore = getBadgeWaktuStatus(row.sore);
 
                     html += `
-                        <tr>
-                            <td class="fw-bold text-primary font-monospace">${moment(row.tanggal).format('DD-MM-YYYY')}</td>
+                        <tr style="cursor: pointer;" onclick="pilihRiwayatDietTanggal('${row.tanggal}')" class="align-middle text-nowrap" title="Klik untuk edit / tampilkan permintaan diet tanggal ini">
+                            <td class="fw-bold text-primary font-monospace">
+                                <i class="bi bi-pencil-square text-muted me-1 small"></i>${moment(row.tanggal).format('DD-MM-YYYY')}
+                            </td>
                             <td class="fw-semibold text-dark">${row.nama_diet || '-'}</td>
                             <td class="text-center">${badgePagi}</td>
                             <td class="text-center">${badgeSiang}</td>
@@ -407,6 +414,11 @@
         }).fail(function() {
             tbody.html('<tr><td colspan="6" class="text-center py-3 text-danger">Gagal memuat riwayat diet.</td></tr>');
         });
+    }
+
+    function pilihRiwayatDietTanggal(tanggal) {
+        $('#diet_tanggal').val(tanggal);
+        loadPermintaanDietByDate($('#diet_no_rawat').val(), tanggal);
     }
 
     function getBadgeWaktuStatus(status) {
