@@ -363,21 +363,20 @@
                 if (kdDiet) {
                     $('#diet_kd_diet').val(kdDiet);
                 } else if (skrining && skrining.info && skrining.info.jenis_diet) {
-                    const rec = skrining.info.jenis_diet;
-                    let found = false;
+                    const rec = skrining.info.jenis_diet.trim().toUpperCase();
+                    let matchedVal = '';
                     $('#diet_kd_diet option').each(function() {
-                        if ($(this).text().toUpperCase().includes(rec.toUpperCase()) || $(this).val() === rec) {
-                            $(this).prop('selected', true);
-                            found = true;
+                        const optText = $(this).text().trim().toUpperCase();
+                        const optVal = $(this).val().trim().toUpperCase();
+                        if (optText === rec || optVal === rec) {
+                            matchedVal = $(this).val();
                             return false;
                         }
                     });
-                    if (!found) {
-                        if ($(`#diet_kd_diet option[value="${rec}"]`).length === 0) {
-                            $('#diet_kd_diet').append(new Option(rec, rec, true, true));
-                        } else {
-                            $('#diet_kd_diet').val(rec);
-                        }
+                    if (matchedVal) {
+                        $('#diet_kd_diet').val(matchedVal);
+                    } else {
+                        $('#diet_kd_diet').val('');
                     }
                 } else {
                     $('#diet_kd_diet').val('');
