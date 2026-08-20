@@ -7,7 +7,7 @@
             <div class="modal-header text-white py-2 px-3 justify-content-between align-items-center" style="background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);">
                 <div class="d-flex align-items-center gap-2">
                     <div class="rounded-circle bg-white bg-opacity-25 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                        <i class="bi bi-cup-hot-fill fs-5 text-warning"></i>
+                        <i class="bi bi-egg-fried fs-5 text-warning"></i>
                     </div>
                     <div>
                         <h6 class="modal-title fw-bold mb-0 text-white" id="modalPermintaanDietLabel">
