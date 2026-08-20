@@ -19,7 +19,7 @@
                 
                 <!-- PATIENT BANNER CARD -->
                 <div class="card border-0 shadow-sm rounded-3 mb-3" style="background: #ffffff;">
-                    <div class="card-body p-2.5 d-flex align-items-center gap-3">
+                    <div class="card-body p-3 d-flex align-items-center gap-3">
                         <div class="rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; min-width: 42px;">
                             <i class="bi bi-person-fill fs-4"></i>
                         </div>
@@ -139,10 +139,10 @@
                             </div>
 
                             <!-- PERTANYAAN SKRINING DINAMIS (ANAK / OBGYN) -->
-                            <div class="mb-3 p-2.5 bg-white border rounded-3">
-                                <h6 class="fw-bold text-dark small mb-2" id="titlePertanyaanSkrining">Pertanyaan Skrining Nutrisi</h6>
+                            <div class="mb-3 p-3 bg-white border rounded-3 shadow-sm">
+                                <h6 class="fw-bold text-dark small mb-2.5 border-bottom pb-1" id="titlePertanyaanSkrining">Pertanyaan Skrining Nutrisi</h6>
                                 
-                                <div id="panelPertanyaanAnak">
+                                <div id="panelPertanyaanAnak" class="px-1">
                                     <div class="row g-2 align-items-center mb-2" style="font-size: 12px;">
                                         <div class="col-md-8">a. Apakah pasien tampak kurus?</div>
                                         <div class="col-md-4">
@@ -163,7 +163,7 @@
                                     </div>
                                 </div>
 
-                                <div id="panelPertanyaanObgyn" class="d-none">
+                                <div id="panelPertanyaanObgyn" class="d-none px-1">
                                     <div class="row g-2 align-items-center mb-2" style="font-size: 12px;">
                                         <div class="col-md-8">a. Penurunan BB tidak diinginkan selama 6 bulan terakhir?</div>
                                         <div class="col-md-4">
