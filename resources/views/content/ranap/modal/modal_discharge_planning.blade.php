@@ -211,15 +211,15 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label for="target_asuhan" class="form-label">Target Asuhan yang Terukur</label>
-                            <x-input id="target_asuhan" name="target_asuhan" placeholder="Target Asuhan yang terukur" />
+                            <textarea id="target_asuhan" name="target_asuhan" class="form-control form-control-sm" rows="3" placeholder="Target Asuhan yang terukur"></textarea>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label for="diet_dirumah" class="form-label">Diet Dirumah</label>
-                            <x-input id="diet_dirumah" name="diet_dirumah" />
+                            <textarea id="diet_dirumah" name="diet_dirumah" class="form-control form-control-sm" rows="3" placeholder="Diet di rumah"></textarea>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label for="instruksi" class="form-label">Instruksi Tindak Lanjut</label>
-                            <x-input id="instruksi" name="instruksi" />
+                            <textarea id="instruksi" name="instruksi" class="form-control form-control-sm" rows="3" placeholder="Instruksi tindak lanjut"></textarea>
                             @csrf
                         </div>
 
@@ -590,9 +590,9 @@
                         formDischargePlanning.find(`input[name=mobilisasi][value="${response.mobilisasi}"]`).prop('checked', true).trigger('change');
                         formDischargePlanning.find(`input[name=alat_terpasang][value="${response.alat_terpasang}"]`).prop('checked', true).trigger('change');
                         formDischargePlanning.find(`input[name=kondisi_pulang][value="${response.kondisi_pulang}"]`).prop('checked', true).trigger('change');
-                        formDischargePlanning.find(`input[name=target_asuhan]`).val(response.target_asuhan || '');
-                        formDischargePlanning.find(`input[name=diet_dirumah]`).val(response.diet_dirumah);
-                        formDischargePlanning.find(`input[name=instruksi]`).val(response.instruksi);
+                        formDischargePlanning.find(`[name=target_asuhan]`).val(response.target_asuhan || '');
+                        formDischargePlanning.find(`[name=diet_dirumah]`).val(response.diet_dirumah || '');
+                        formDischargePlanning.find(`[name=instruksi]`).val(response.instruksi || '');
                         formDischargePlanning.find('input[name=petugas]').val(response.petugas.nama);
                         formDischargePlanning.find('input[name=nip]').val(response.nip);
                         const optionDiagnosa = new Option(response.diagnosa_keluar, response.diagnosa_keluar, true, true)
