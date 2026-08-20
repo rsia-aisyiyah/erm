@@ -42,7 +42,7 @@
                             <div class="d-flex flex-column gap-2">
                                 <label class="card border p-2 text-center rounded-3 cursor-pointer mb-0 kategori-card" id="cardKategoriObgyn">
                                     <input type="radio" name="kategori" id="kat_obgyn" value="OBGYN" class="d-none">
-                                    <i class="bi bi-person-standing-female fs-3 text-secondary d-block mb-1"></i>
+                                    <i class="bi bi-person-heart fs-3 text-secondary d-block mb-1"></i>
                                     <span class="fw-bold small text-dark">OBGYN</span>
                                 </label>
 
