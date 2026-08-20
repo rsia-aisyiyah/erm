@@ -211,17 +211,29 @@ class PermintaanDietController extends Controller
         $permintaan_khusus = $request->input('permintaan_khusus', '');
 
         try {
-            RsiaPermintaanDiet::updateOrCreate(
-                ['no_rawat' => $no_rawat, 'tanggal' => $tanggal],
-                [
+            $existing = RsiaPermintaanDiet::where('no_rawat', $no_rawat)
+                ->where('tanggal', $tanggal)
+                ->first();
+
+            if ($existing) {
+                RsiaPermintaanDiet::where('no_rawat', $no_rawat)
+                    ->where('tanggal', $tanggal)
+                    ->update([
+                        'pagi' => $pagi,
+                        'siang' => $siang,
+                        'sore' => $sore,
+                        'permintaan_khusus' => $permintaan_khusus ?? '',
+                    ]);
+            } else {
+                RsiaPermintaanDiet::create([
                     'no_rawat' => $no_rawat,
                     'tanggal' => $tanggal,
                     'pagi' => $pagi,
                     'siang' => $siang,
                     'sore' => $sore,
                     'permintaan_khusus' => $permintaan_khusus ?? '',
-                ]
-            );
+                ]);
+            }
 
             return response()->json([
                 'success' => true,
