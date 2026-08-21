@@ -314,6 +314,8 @@ class PermintaanDietController extends Controller
             abort(404, 'No Rawat tidak ditemukan.');
         }
 
+        $no_rawat = str_replace('-', '/', $no_rawat);
+
         $permintaan = RsiaPermintaanDiet::where('no_rawat', $no_rawat)
             ->where('tanggal', $tanggal)
             ->first();
@@ -329,8 +331,8 @@ class PermintaanDietController extends Controller
             'skrining' => $skrining,
             'regPeriksa' => $regPeriksa,
             'tanggal' => $tanggal,
-        ]);
+        ])->setPaper('a4', 'portrait');
 
-        return $pdf->stream('permintaan_diet_' . str_replace('/', '_', $no_rawat) . '_' . $tanggal . '.pdf');
+        return $pdf->stream('permintaan_diet_' . str_replace(['/', ' '], '_', $no_rawat) . '_' . $tanggal . '.pdf');
     }
 }

@@ -154,6 +154,8 @@ class SkriningGiziController extends Controller
             abort(404, 'No Rawat tidak ditemukan.');
         }
 
+        $no_rawat = str_replace('-', '/', $no_rawat);
+
         $skrining = RsiaSkriningGizi::where('no_rawat', $no_rawat)->first();
         if (!$skrining) {
             abort(404, 'Data Skrining Gizi belum diisi untuk pasien ini.');
@@ -166,8 +168,8 @@ class SkriningGiziController extends Controller
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('content.print.skrining_gizi', [
             'data' => $skrining,
             'regPeriksa' => $regPeriksa,
-        ]);
+        ])->setPaper('a4', 'portrait');
 
-        return $pdf->stream('skrining_gizi_' . str_replace('/', '_', $no_rawat) . '.pdf');
+        return $pdf->stream('skrining_gizi_' . str_replace(['/', ' '], '_', $no_rawat) . '.pdf');
     }
 }

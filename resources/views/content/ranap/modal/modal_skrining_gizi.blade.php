@@ -814,7 +814,8 @@
 
     function cetakSkriningGizi(noRawat) {
         if (!noRawat) return;
-        window.open(`${url}/ranap/skrining-gizi/cetak?no_rawat=${encodeURIComponent(noRawat)}`, '_blank');
+        const cleanNoRawat = noRawat.replaceAll('/', '-');
+        window.open(`${url}/ranap/skrining-gizi/cetak?no_rawat=${cleanNoRawat}`, '_blank');
     }
 </script>
 @endpush
