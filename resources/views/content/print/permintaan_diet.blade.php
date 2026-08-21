@@ -7,7 +7,7 @@
                 : $regPeriksa->kamarInap) 
             : null;
     @endphp
-    <img src="{{ asset('img/logo.png') }}" style="position: absolute;top:30px;left:20px;margin:0px;padding:0px" width="70" /><br />
+    <img src="{{ public_path('img/logo.png') }}" style="position: absolute;top:30px;left:20px;margin:0px;padding:0px" width="70" /><br />
     <div style="text-align: center; margin-bottom: 15px;">
         <h3 style="margin-bottom: 0px">RSIA AISYIYAH PEKAJANGAN</h3>
         <p style="font-size: 11px">Jl. Raya Pekajangan No. 610, Kabupaten Pekalongan, Jawa Tengah </p>
