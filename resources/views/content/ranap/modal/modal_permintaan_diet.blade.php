@@ -179,14 +179,19 @@
                             </div>
                         </div>
                         <div class="card-footer bg-white py-2 px-3 d-flex justify-content-between align-items-center">
-                            <button type="button" class="btn btn-outline-danger btn-sm d-none" id="btnHapusPermintaanDiet">
-                                <i class="bi bi-trash me-1"></i> Hapus Diet Tanggal Ini
-                            </button>
+                            <div>
+                                <button type="button" class="btn btn-outline-danger btn-sm d-none me-2" id="btnHapusPermintaanDiet">
+                                    <i class="bi bi-trash me-1"></i> Hapus Diet Tanggal Ini
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm px-3" id="btnCetakPermintaanDiet" onclick="cetakPermintaanDiet($('#diet_no_rawat').val(), $('#diet_tanggal').val())">
+                                    <i class="bi bi-printer me-1"></i> Cetak Permintaan Diet
+                                </button>
+                            </div>
                             <div class="ms-auto d-flex gap-2">
                                 <button type="button" class="btn btn-secondary btn-sm" id="btnResetPermintaanDiet">
                                     <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
                                 </button>
-                                <button type="button" class="btn btn-primary btn-sm px-3" id="btnSimpanPermintaanDiet">
+                                <button type="button" class="btn btn-success btn-sm px-3" id="btnSimpanPermintaanDiet">
                                     <i class="bi bi-save me-1"></i> Simpan Permintaan Diet
                                 </button>
                             </div>
@@ -206,11 +211,12 @@
                                 <thead class="table-light sticky-top">
                                     <tr>
                                         <th width="15%">Tanggal</th>
-                                        <th width="25%">Jenis Diet</th>
-                                        <th width="12%" class="text-center">Pagi</th>
-                                        <th width="12%" class="text-center">Siang</th>
-                                        <th width="12%" class="text-center">Sore</th>
-                                        <th width="24%">Permintaan Khusus</th>
+                                        <th width="22%">Jenis Diet</th>
+                                        <th width="10%" class="text-center">Pagi</th>
+                                        <th width="10%" class="text-center">Siang</th>
+                                        <th width="10%" class="text-center">Sore</th>
+                                        <th width="23%">Permintaan Khusus</th>
+                                        <th width="10%" class="text-center">Cetak</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -404,21 +410,32 @@
                             <td class="text-center">${badgeSiang}</td>
                             <td class="text-center">${badgeSore}</td>
                             <td class="text-wrap">${row.permintaan_khusus || '-'}</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-outline-primary btn-sm py-0 px-1.5" onclick="event.stopPropagation(); cetakPermintaanDiet($('#diet_no_rawat').val(), '${row.tanggal}')" title="Cetak permintaan diet tanggal ini">
+                                    <i class="bi bi-printer"></i>
+                                </button>
+                            </td>
                         </tr>
                     `;
                 });
                 tbody.html(html);
             } else {
-                tbody.html('<tr><td colspan="6" class="text-center py-3 text-muted">Belum ada riwayat permintaan diet.</td></tr>');
+                tbody.html('<tr><td colspan="7" class="text-center py-3 text-muted">Belum ada riwayat permintaan diet.</td></tr>');
             }
         }).fail(function() {
-            tbody.html('<tr><td colspan="6" class="text-center py-3 text-danger">Gagal memuat riwayat diet.</td></tr>');
+            tbody.html('<tr><td colspan="7" class="text-center py-3 text-danger">Gagal memuat riwayat diet.</td></tr>');
         });
     }
 
     function pilihRiwayatDietTanggal(tanggal) {
         $('#diet_tanggal').val(tanggal);
         loadPermintaanDietByDate($('#diet_no_rawat').val(), tanggal);
+    }
+
+    function cetakPermintaanDiet(noRawat, tanggal) {
+        if (!noRawat) return;
+        const tgl = tanggal || $('#diet_tanggal').val() || '';
+        window.open(`/erm/ranap/permintaan-diet/cetak?no_rawat=${encodeURIComponent(noRawat)}&tanggal=${encodeURIComponent(tgl)}`, '_blank');
     }
 
     function getBadgeWaktuStatus(status) {

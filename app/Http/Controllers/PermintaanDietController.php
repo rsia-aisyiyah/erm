@@ -302,4 +302,33 @@ class PermintaanDietController extends Controller
             'data' => $result,
         ]);
     }
+
+    public function cetak(Request $request)
+    {
+        $no_rawat = $request->input('no_rawat');
+        $tanggal = $request->input('tanggal', date('Y-m-d'));
+
+        if (!$no_rawat) {
+            abort(404, 'No Rawat tidak ditemukan.');
+        }
+
+        $permintaan = RsiaPermintaanDiet::where('no_rawat', $no_rawat)
+            ->where('tanggal', $tanggal)
+            ->first();
+
+        $skrining = RsiaSkriningGizi::where('no_rawat', $no_rawat)->first();
+
+        $regPeriksa = \App\Models\RegPeriksa::with(['pasien', 'kamarInap.kamar.bangsal'])
+            ->where('no_rawat', $no_rawat)
+            ->first();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('content.print.permintaan_diet', [
+            'permintaan' => $permintaan,
+            'skrining' => $skrining,
+            'regPeriksa' => $regPeriksa,
+            'tanggal' => $tanggal,
+        ]);
+
+        return $pdf->stream('permintaan_diet_' . str_replace('/', '_', $no_rawat) . '_' . $tanggal . '.pdf');
+    }
 }

@@ -144,4 +144,28 @@ class SkriningGiziController extends Controller
             ], 500);
         }
     }
+
+    public function cetak(Request $request)
+    {
+        $no_rawat = $request->input('no_rawat');
+        if (!$no_rawat) {
+            abort(404, 'No Rawat tidak ditemukan.');
+        }
+
+        $skrining = RsiaSkriningGizi::where('no_rawat', $no_rawat)->first();
+        if (!$skrining) {
+            abort(404, 'Data Skrining Gizi belum diisi untuk pasien ini.');
+        }
+
+        $regPeriksa = \App\Models\RegPeriksa::with(['pasien', 'dokter', 'kamarInap.kamar.bangsal'])
+            ->where('no_rawat', $no_rawat)
+            ->first();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('content.print.skrining_gizi', [
+            'data' => $skrining,
+            'regPeriksa' => $regPeriksa,
+        ]);
+
+        return $pdf->stream('skrining_gizi_' . str_replace('/', '_', $no_rawat) . '.pdf');
+    }
 }

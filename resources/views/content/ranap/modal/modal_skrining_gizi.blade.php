@@ -474,13 +474,20 @@
             </div>
 
             <!-- Modal Footer -->
-            <div class="modal-footer py-2 px-3 bg-white">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle me-1"></i> Batal
-                </button>
-                <button type="button" class="btn btn-success btn-sm px-3 fw-semibold" id="btnSimpanSkriningGizi">
-                    <i class="bi bi-check-lg me-1"></i> Simpan Skrining Gizi
-                </button>
+            <div class="modal-footer py-2 px-3 bg-white justify-content-between">
+                <div>
+                    <button type="button" class="btn btn-primary btn-sm px-3 d-none" id="btnCetakSkriningGizi" onclick="cetakSkriningGizi($('#skrining_no_rawat').val())">
+                        <i class="bi bi-printer me-1"></i> Cetak Skrining Gizi
+                    </button>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i> Batal
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm px-3 fw-semibold" id="btnSimpanSkriningGizi">
+                        <i class="bi bi-check-lg me-1"></i> Simpan Skrining Gizi
+                    </button>
+                </div>
             </div>
 
         </div>
@@ -497,6 +504,7 @@
 
         skriningOpenedFromDiet = fromDiet;
         $('#skrining_no_rawat').val(noRawat);
+        $('#btnCetakSkriningGizi').addClass('d-none');
         $('#formSkriningGizi')[0].reset();
         
         getRegPeriksa(noRawat).done(function(res) {
@@ -507,6 +515,7 @@
             // Load Existing Skrining Gizi Data
             $.get(`/erm/ranap/skrining-gizi?no_rawat=${encodeURIComponent(noRawat)}`).done(function(resp) {
                 if (resp.success && resp.data) {
+                    $('#btnCetakSkriningGizi').removeClass('d-none');
                     const d = resp.data;
                     $('#skrining_bb').val(d.bb || '');
                     $('#skrining_tb').val(d.tb || '');
@@ -802,5 +811,10 @@
             Swal.fire('Error', msg, 'error');
         });
     });
+
+    function cetakSkriningGizi(noRawat) {
+        if (!noRawat) return;
+        window.open(`/erm/ranap/skrining-gizi/cetak?no_rawat=${encodeURIComponent(noRawat)}`, '_blank');
+    }
 </script>
 @endpush
