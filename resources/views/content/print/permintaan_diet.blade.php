@@ -7,14 +7,20 @@
                 : $regPeriksa->kamarInap) 
             : null;
     @endphp
-    <img src="{{ public_path('img/logo.png') }}" style="position: absolute;top:30px;left:20px;margin:0px;padding:0px" width="70" /><br />
-    <div style="text-align: center; margin-bottom: 15px;">
-        <h3 style="margin-bottom: 0px">RSIA AISYIYAH PEKAJANGAN</h3>
-        <p style="font-size: 11px">Jl. Raya Pekajangan No. 610, Kabupaten Pekalongan, Jawa Tengah </p>
-        <p style="font-size: 11px">Telp. (0285) 785909, Email : rba610@gmail.com </p>
-    </div>
-    <hr style="margin:0;padding:0">
-    <h3 style="text-align: center; margin-top: 10px; margin-bottom: 15px;"><u>LEMBAR PERMINTAAN & PEMBERIAN DIET PASIEN</u></h3>
+    <table width="100%" style="border: none; border-collapse: collapse; margin-bottom: 5px;">
+        <tr>
+            <td width="15%" style="border: none; vertical-align: middle; text-align: center; padding: 0;">
+                <img src="{{ public_path('img/logo.png') }}" width="60" />
+            </td>
+            <td width="85%" style="border: none; text-align: center; vertical-align: middle; padding: 0;">
+                <h3 style="margin: 0; font-size: 16px; font-weight: bold;">RSIA AISYIYAH PEKAJANGAN</h3>
+                <p style="margin: 2px 0 0 0; font-size: 11px;">Jl. Raya Pekajangan No. 610, Kabupaten Pekalongan, Jawa Tengah</p>
+                <p style="margin: 2px 0 0 0; font-size: 11px;">Telp. (0285) 785909, Email : rba610@gmail.com</p>
+            </td>
+        </tr>
+    </table>
+    <hr style="margin: 5px 0 15px 0; border: 0; border-top: 1.5px solid #000;">
+    <h3 style="text-align: center; margin-top: 0; margin-bottom: 15px;"><u>LEMBAR PERMINTAAN & PEMBERIAN DIET PASIEN</u></h3>
 
     <table style="font-size: 12px; margin-bottom: 15px;" width="100%">
         <tr>
