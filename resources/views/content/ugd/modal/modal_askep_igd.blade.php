@@ -1367,7 +1367,7 @@
         $('#askep_intoksikasi').val('Tidak Ada');
         $('#askep_perdarahan').val('Tidak Ada');
         $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').val('-').prop('disabled', true);
-        $('#askep_bab, #askep_xbab, #askep_kbab, #askep_wbab, #askep_bak, #askep_xbak, #askep_wbak, #askep_lbak').val('-');
+        $('#askep_bab, #askep_xbab, #askep_kbab, #askep_wbab, #askep_bak, #askep_xbak, #askep_wbak, #askep_lbak').val('');
         
         // Reset Psikososial & Fungsional
         $('#askep_psikologis').val('Tidak Ada Masalah');
@@ -1501,14 +1501,14 @@
                     $('#askep_jumlah_perdarahan').val(response.jumlah_perdarahan || '-');
                     $('#askep_warna_perdarahan').val(response.warna_perdarahan || '-');
 
-                    $('#askep_bab').val(response.bab || '-');
-                    $('#askep_xbab').val(response.xbab || '-');
-                    $('#askep_kbab').val(response.kbab || '-');
-                    $('#askep_wbab').val(response.wbab || '-');
-                    $('#askep_bak').val(response.bak || '-');
-                    $('#askep_xbak').val(response.xbak || '-');
-                    $('#askep_wbak').val(response.wbak || '-');
-                    $('#askep_lbak').val(response.lbak || '-');
+                    $('#askep_bab').val(response.bab && response.bab !== '-' ? response.bab : '');
+                    $('#askep_xbab').val(response.xbab && response.xbab !== '-' ? response.xbab : '');
+                    $('#askep_kbab').val(response.kbab && response.kbab !== '-' ? response.kbab : '');
+                    $('#askep_wbab').val(response.wbab && response.wbab !== '-' ? response.wbab : '');
+                    $('#askep_bak').val(response.bak && response.bak !== '-' ? response.bak : '');
+                    $('#askep_xbak').val(response.xbak && response.xbak !== '-' ? response.xbak : '');
+                    $('#askep_wbak').val(response.wbak && response.wbak !== '-' ? response.wbak : '');
+                    $('#askep_lbak').val(response.lbak && response.lbak !== '-' ? response.lbak : '');
 
                     $('#askep_psikologis').val(response.psikologis || 'Tidak Ada Masalah');
                     $('#askep_jiwa').val(response.jiwa || 'Tidak');
