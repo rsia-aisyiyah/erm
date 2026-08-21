@@ -49,6 +49,21 @@ $.contextMenu({
                     icon: "fa-regular fa-lightbulb",
                     callback: () => showModalDischargePlanning(data.no_rawat)
                 },
+                "skriningGizi": {
+                    name: "Form Skrining Gizi",
+                    icon: "fa-regular fa-clipboard-check",
+                    callback: () => showModalSkriningGizi(data.no_rawat)
+                },
+                "permintaanDiet": {
+                    name: "Permintaan Diet Pasien",
+                    icon: "fa-solid fa-utensils",
+                    callback: () => showModalPermintaanDiet(data.no_rawat)
+                },
+                "transferPasien": {
+                    name: "Transfer Pasien Antar Ruang",
+                    icon: "fa-solid fa-arrow-right-arrow-left",
+                    callback: () => showModalTransferPasien(data.no_rawat)
+                },
                 "resumeMedis": {
                     name: "Resume Medis",
                     icon: "fa-regular fa-file-alt",
