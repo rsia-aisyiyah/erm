@@ -255,29 +255,29 @@
                                                 <label class="form-label fw-semibold small mb-1 text-primary">Status Eliminasi (BAB &amp; BAK) :</label>
                                                 <div class="row g-2">
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="bab" id="askep_bab" placeholder="BAB x" value="-">
+                                                        <input type="text" class="form-control form-control-sm" name="bab" id="askep_bab" placeholder="BAB x">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="xbab" id="askep_xbab" placeholder="Hari/Mgg" value="-">
+                                                        <input type="text" class="form-control form-control-sm" name="xbab" id="askep_xbab" placeholder="Hari/Mgg">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="kbab" id="askep_kbab" placeholder="Konsistensi" value="-">
+                                                        <input type="text" class="form-control form-control-sm" name="kbab" id="askep_kbab" placeholder="Konsistensi">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="wbab" id="askep_wbab" placeholder="Warna BAB" value="-">
+                                                        <input type="text" class="form-control form-control-sm" name="wbab" id="askep_wbab" placeholder="Warna BAB">
                                                     </div>
 
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="bak" id="askep_bak" placeholder="BAK x" value="-">
+                                                        <input type="text" class="form-control form-control-sm" name="bak" id="askep_bak" placeholder="BAK x">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="xbak" id="askep_xbak" placeholder="Hari/Jam" value="-">
+                                                        <input type="text" class="form-control form-control-sm" name="xbak" id="askep_xbak" placeholder="Hari/Jam">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="wbak" id="askep_wbak" placeholder="Warna BAK" value="-">
+                                                        <input type="text" class="form-control form-control-sm" name="wbak" id="askep_wbak" placeholder="Warna BAK">
                                                     </div>
                                                     <div class="col-3">
-                                                        <input type="text" class="form-control form-control-sm" name="lbak" id="askep_lbak" placeholder="Lain-lain" value="-">
+                                                        <input type="text" class="form-control form-control-sm" name="lbak" id="askep_lbak" placeholder="Lain-lain">
                                                     </div>
                                                 </div>
                                             </div>

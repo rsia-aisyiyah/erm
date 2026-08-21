@@ -122,6 +122,16 @@ class AskepUgdController extends Controller
         $data['ket_lapor'] = $data['ket_lapor'] ?? '-';
         $data['rencana'] = $data['rencana'] ?? '-';
 
+        // Sanitasi Status Eliminasi BAB & BAK (bila dikosongkan user)
+        $data['bab'] = (!empty($data['bab']) || $data['bab'] === '0') ? $data['bab'] : '-';
+        $data['xbab'] = (!empty($data['xbab']) || $data['xbab'] === '0') ? $data['xbab'] : '-';
+        $data['kbab'] = (!empty($data['kbab']) || $data['kbab'] === '0') ? $data['kbab'] : '-';
+        $data['wbab'] = (!empty($data['wbab']) || $data['wbab'] === '0') ? $data['wbab'] : '-';
+        $data['bak'] = (!empty($data['bak']) || $data['bak'] === '0') ? $data['bak'] : '-';
+        $data['xbak'] = (!empty($data['xbak']) || $data['xbak'] === '0') ? $data['xbak'] : '-';
+        $data['wbak'] = (!empty($data['wbak']) || $data['wbak'] === '0') ? $data['wbak'] : '-';
+        $data['lbak'] = (!empty($data['lbak']) || $data['lbak'] === '0') ? $data['lbak'] : '-';
+
         try {
             DB::transaction(function () use ($no_rawat, $data, $dataMasalah, $dataRencana, $dataGizi) {
                 $askep = $this->askep->updateOrCreate(['no_rawat' => $no_rawat], $data);
