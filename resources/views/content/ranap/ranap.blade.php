@@ -1126,7 +1126,7 @@
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')">Edukasi Obat Pulang ${cekList(row.edukasi_obat_pulang)}</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalDischargePlanning('${data.no_rawat}')">Discharge Planning ${cekList(row.discharge_planning)}</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalSkriningGizi('${data.no_rawat}')"><i class="bi bi-clipboard2-check text-success me-1"></i> Form Skrining Gizi ${cekList(row.rsia_skrining_gizi || row.skrining_gizi)}</a></li>`;
-            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalPermintaanDiet('${data.no_rawat}')"><i class="bi bi-egg-fried text-success me-1"></i> Permintaan Diet Pasien</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalPermintaanDiet('${data.no_rawat}')"><i class="fa-solid fa-utensils text-success me-1"></i> Permintaan Diet Pasien</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${data.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
 
             // Asesmen nyeri bawaan dinamis
