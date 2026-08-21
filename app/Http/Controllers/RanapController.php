@@ -65,7 +65,9 @@ class RanapController extends Controller
             'kamar.bangsal',
             'resume',
             'skoringTb',
-            'skriningTb'
+            'skriningTb',
+            'rsiaSkriningGizi',
+            'skriningGizi'
         ])->orderBy('no_rawat', 'DESC');
 
         if ($request->stts_pulang == '-') {

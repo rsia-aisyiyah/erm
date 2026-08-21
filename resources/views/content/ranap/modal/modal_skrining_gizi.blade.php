@@ -785,6 +785,9 @@
                     showConfirmButton: false
                 });
                 $('#modalSkriningGizi').modal('hide');
+                if (typeof tb_ranap !== 'undefined') {
+                    tb_ranap.draw(false);
+                }
 
                 if (skriningOpenedFromDiet) {
                     setTimeout(function() {
