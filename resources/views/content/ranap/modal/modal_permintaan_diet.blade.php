@@ -435,7 +435,7 @@
     function cetakPermintaanDiet(noRawat, tanggal) {
         if (!noRawat) return;
         const tgl = tanggal || $('#diet_tanggal').val() || '';
-        window.open(`/erm/ranap/permintaan-diet/cetak?no_rawat=${encodeURIComponent(noRawat)}&tanggal=${encodeURIComponent(tgl)}`, '_blank');
+        window.open(`${url}/ranap/permintaan-diet/cetak?no_rawat=${encodeURIComponent(noRawat)}&tanggal=${encodeURIComponent(tgl)}`, '_blank');
     }
 
     function getBadgeWaktuStatus(status) {
