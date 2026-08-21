@@ -8,8 +8,11 @@ const asesmenMenuItems = (noRawat, umur, sttsumur, totalHari, kd_sps) => ({
         },
         asesmenKeperawatan: {
             name: "Asesmen Keperawatan UGD",
-            disabled: () => true,
-            callback: () => false
+            callback: () => modalAskepUgd(noRawat)
+        },
+        asesmenKeperawatanKebidanan: {
+            name: "Asesmen Keperawatan Kebidanan",
+            callback: () => modalAskepKebidananUgd(noRawat)
         },
         asesmenRanap: {
             name: "Asesmen Ranap",

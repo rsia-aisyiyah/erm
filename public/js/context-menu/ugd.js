@@ -36,6 +36,13 @@ $.contextMenu({
                 },
                 "pemeriksaanPenunjang": pemeriksaanPenunjangMenuItems(no_rawat),
                 "asesmen": asesmenMenuItems(no_rawat, umur, sttsumur, totalHari),
+                "transferPasien": {
+                    name: "Transfer Pasien Antar Ruang",
+                    icon: "fa-solid fa-arrow-right-arrow-left",
+                    callback: function () {
+                        showModalTransferPasien(no_rawat);
+                    }
+                },
                 "skoringTb": skoringTbMenuItems(no_rawat),
                 "hasilKritis": hasilKritisMenuItems(no_rawat),
                 "uploadBerkas": uploadBerkasMenuItems(no_rawat),
