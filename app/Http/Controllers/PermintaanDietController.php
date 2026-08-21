@@ -326,11 +326,16 @@ class PermintaanDietController extends Controller
             ->where('no_rawat', $no_rawat)
             ->first();
 
+        $riwayatDiet = RsiaPermintaanDiet::where('no_rawat', $no_rawat)
+            ->orderBy('tanggal', 'asc')
+            ->get();
+
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('content.print.permintaan_diet', [
             'permintaan' => $permintaan,
             'skrining' => $skrining,
             'regPeriksa' => $regPeriksa,
             'tanggal' => $tanggal,
+            'riwayatDiet' => $riwayatDiet,
         ])->setPaper('a4', 'portrait');
 
         return $pdf->stream('permintaan_diet_' . str_replace(['/', ' '], '_', $no_rawat) . '_' . $tanggal . '.pdf');

@@ -44,53 +44,57 @@
         <tr>
             <td><strong>Tgl. Lahir / Umur</strong></td>
             <td>:</td>
-            <td colspan="4">{{ date('d-m-Y', strtotime($regPeriksa->pasien->tgl_lahir ?? 'now')) }} ({{ $regPeriksa->umurdaftar ?? 0 }} {{ $regPeriksa->sttsumur ?? 'Th' }})</td>
+            <td>{{ date('d-m-Y', strtotime($regPeriksa->pasien->tgl_lahir ?? 'now')) }} ({{ $regPeriksa->umurdaftar ?? 0 }} {{ $regPeriksa->sttsumur ?? 'Th' }})</td>
+            <td><strong>Jenis Diet Pasien</strong></td>
+            <td>:</td>
+            <td><strong style="color: #0d6efd;">{{ $skrining->jenis_diet ?? 'Diet Nasi' }}</strong></td>
         </tr>
     </table>
 
-    <h4 style="margin-bottom: 5px; font-size: 13px;">Detail Permintaan Diet</h4>
-    <table class="table-bordered" width="100%" style="font-size: 12px; margin-bottom: 20px;">
-        <tr style="background-color: #f2f2f2;">
-            <th width="30%" style="padding: 6px; text-align: left;">Item</th>
-            <th width="70%" style="padding: 6px; text-align: left;">Keterangan / Status</th>
-        </tr>
-        <tr>
-            <td style="padding: 6px;"><strong>Jenis Diet Pasien</strong></td>
-            <td style="padding: 6px;">
-                <strong style="color: #0d6efd; font-size: 13px;">{{ $skrining->jenis_diet ?? 'Diet Nasi' }}</strong>
-                @if($skrining)
-                    <br/><span style="font-size: 11px; color: #6c757d;">(Sesuai Rekomendasi Skrining Gizi - Diagnosa: {{ $skrining->diagnosa_medis ?? '-' }})</span>
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 6px;"><strong>Jadwal Makan Pagi (06:00 - 07:00)</strong></td>
-            <td style="padding: 6px;">
-                <strong style="color: {{ ($permintaan->pagi ?? '-') == 'Ya' ? '#198754' : (($permintaan->pagi ?? '-') == 'Puasa' ? '#d97706' : '#6c757d') }};">
-                    {{ $permintaan->pagi ?? '-' }}
-                </strong>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 6px;"><strong>Jadwal Makan Siang (11:30 - 12:30)</strong></td>
-            <td style="padding: 6px;">
-                <strong style="color: {{ ($permintaan->siang ?? '-') == 'Ya' ? '#198754' : (($permintaan->siang ?? '-') == 'Puasa' ? '#d97706' : '#6c757d') }};">
-                    {{ $permintaan->siang ?? '-' }}
-                </strong>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 6px;"><strong>Jadwal Makan Sore (16:30 - 17:30)</strong></td>
-            <td style="padding: 6px;">
-                <strong style="color: {{ ($permintaan->sore ?? '-') == 'Ya' ? '#198754' : (($permintaan->sore ?? '-') == 'Puasa' ? '#d97706' : '#6c757d') }};">
-                    {{ $permintaan->sore ?? '-' }}
-                </strong>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 6px;"><strong>Catatan / Permintaan Khusus</strong></td>
-            <td style="padding: 6px;">{{ $permintaan->permintaan_khusus && $permintaan->permintaan_khusus !== '-' ? $permintaan->permintaan_khusus : 'Tidak ada catatan khusus' }}</td>
-        </tr>
+    <h4 style="margin-bottom: 5px; font-size: 13px;">Riwayat Permintaan & Pemberian Diet Pasien</h4>
+    <table class="table-bordered" width="100%" style="font-size: 11px; margin-bottom: 20px;">
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th width="5%" style="padding: 5px; text-align: center;">No</th>
+                <th width="15%" style="padding: 5px; text-align: center;">Tanggal</th>
+                <th width="22%" style="padding: 5px; text-align: left;">Jenis Diet</th>
+                <th width="10%" style="padding: 5px; text-align: center;">Pagi</th>
+                <th width="10%" style="padding: 5px; text-align: center;">Siang</th>
+                <th width="10%" style="padding: 5px; text-align: center;">Sore</th>
+                <th width="28%" style="padding: 5px; text-align: left;">Permintaan Khusus</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(isset($riwayatDiet) && count($riwayatDiet) > 0)
+                @foreach($riwayatDiet as $index => $item)
+                    <tr style="{{ $item->tanggal == $tanggal ? 'background-color: #eef6ff;' : '' }}">
+                        <td style="padding: 5px; text-align: center;">{{ $index + 1 }}</td>
+                        <td style="padding: 5px; text-align: center;"><strong>{{ date('d-m-Y', strtotime($item->tanggal)) }}</strong></td>
+                        <td style="padding: 5px;">{{ $skrining->jenis_diet ?? 'Diet Nasi' }}</td>
+                        <td style="padding: 5px; text-align: center;">
+                            <strong style="color: {{ $item->pagi == 'Ya' ? '#198754' : ($item->pagi == 'Puasa' ? '#d97706' : '#6c757d') }};">
+                                {{ $item->pagi }}
+                            </strong>
+                        </td>
+                        <td style="padding: 5px; text-align: center;">
+                            <strong style="color: {{ $item->siang == 'Ya' ? '#198754' : ($item->siang == 'Puasa' ? '#d97706' : '#6c757d') }};">
+                                {{ $item->siang }}
+                            </strong>
+                        </td>
+                        <td style="padding: 5px; text-align: center;">
+                            <strong style="color: {{ $item->sore == 'Ya' ? '#198754' : ($item->sore == 'Puasa' ? '#d97706' : '#6c757d') }};">
+                                {{ $item->sore }}
+                            </strong>
+                        </td>
+                        <td style="padding: 5px;">{{ $item->permintaan_khusus && $item->permintaan_khusus !== '-' ? $item->permintaan_khusus : '-' }}</td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="7" style="padding: 10px; text-align: center; color: #6c757d;">Belum ada riwayat permintaan diet.</td>
+                </tr>
+            @endif
+        </tbody>
     </table>
 
     <table width="100%" style="font-size: 12px; margin-top: 30px;">
