@@ -1,17 +1,11 @@
 @extends('content.print.main')
 @section('content')
-    <table width="100%" style="border: none; border-collapse: collapse; margin-bottom: 5px;">
-        <tr>
-            <td width="15%" style="border: none; vertical-align: middle; text-align: center; padding: 0;">
-                <img src="{{ public_path('img/logo.png') }}" width="60" />
-            </td>
-            <td width="85%" style="border: none; text-align: center; vertical-align: middle; padding: 0;">
-                <h3 style="margin: 0; font-size: 16px; font-weight: bold;">RSIA AISYIYAH PEKAJANGAN</h3>
-                <p style="margin: 2px 0 0 0; font-size: 11px;">Jl. Raya Pekajangan No. 610, Kabupaten Pekalongan, Jawa Tengah</p>
-                <p style="margin: 2px 0 0 0; font-size: 11px;">Telp. (0285) 785909, Email : rba610@gmail.com</p>
-            </td>
-        </tr>
-    </table>
+    <img src="{{ public_path('img/logo.png') }}" style="position: absolute; top: 0px; left: 10px; width: 60px;" />
+    <div style="text-align: center; margin-bottom: 10px; min-height: 65px;">
+        <h3 style="margin: 0; font-size: 16px; font-weight: bold;">RSIA AISYIYAH PEKAJANGAN</h3>
+        <p style="margin: 3px 0 0 0; font-size: 11px;">Jl. Raya Pekajangan No. 610, Kabupaten Pekalongan, Jawa Tengah</p>
+        <p style="margin: 3px 0 0 0; font-size: 11px;">Telp. (0285) 785909, Email : rba610@gmail.com</p>
+    </div>
     <hr style="margin: 5px 0 15px 0; border: 0; border-top: 1.5px solid #000;">
     <h3 style="text-align: center; margin-top: 0; margin-bottom: 15px;"><u>FORM SKRINING GIZI PASIEN</u></h3>
 
