@@ -305,6 +305,8 @@ class PermintaanDietController extends Controller
 
     public function cetak(Request $request)
     {
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
         $no_rawat = $request->input('no_rawat');
         $tanggal = $request->input('tanggal', date('Y-m-d'));
 

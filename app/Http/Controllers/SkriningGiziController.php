@@ -147,6 +147,8 @@ class SkriningGiziController extends Controller
 
     public function cetak(Request $request)
     {
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
         $no_rawat = $request->input('no_rawat');
         if (!$no_rawat) {
             abort(404, 'No Rawat tidak ditemukan.');
