@@ -618,7 +618,7 @@
                             listItems += getMenuUmum(data, row);
                             listItems += getMenuSpesialis(data, row);
                             listItems += getMenuAksesKhusus(data, row);
-                            listItems += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+                            listItems += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}"><i class="bi bi-clock-history text-secondary me-1"></i> Riwayat Pemeriksaan</a></li>`;
 
                             // 3. Bungkus list ke dalam komponen Dropdown Bootstrap
                             return buildDropdownButton(meta.row, row.no_rawat, listItems);
