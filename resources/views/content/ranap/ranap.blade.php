@@ -1117,14 +1117,14 @@
         function getMenuUmum(data, row) {
             let menu = '';
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${data.no_rawat}')"><i class="bi bi-hospital text-danger me-1"></i> Asesmen Medis IGD ${cekList(row.asmed_igd || (row.reg_periksa ? row.reg_periksa.asmed_igd : null))}</a></li>`;
-            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${data.no_rawat}')">Pemeriksaan Penunjang</a></li>`;
-            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}">Hasil Kritis</a></li>`;
-            menu += `<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${row.reg_periksa.kd_dokter}" onclick="showModalSoapRanap('${data.no_rawat}')">CPPT</a></li>`;
-            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')">Upload Berkas Penunjang</a></li>`;
-            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="catatanEdukasiPasien('${data.no_rawat}')">Catatan Edukasi Pasien</a></li>`;
-            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')">Monitoring Cairan Pasien</a></li>`;
-            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')">Edukasi Obat Pulang ${cekList(row.edukasi_obat_pulang)}</a></li>`;
-            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalDischargePlanning('${data.no_rawat}')">Discharge Planning ${cekList(row.discharge_planning)}</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${data.no_rawat}')"><i class="bi bi-file-earmark-medical text-primary me-1"></i> Pemeriksaan Penunjang</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}"><i class="bi bi-exclamation-triangle text-danger me-1"></i> Hasil Kritis</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${row.reg_periksa.kd_dokter}" onclick="showModalSoapRanap('${data.no_rawat}')"><i class="bi bi-journal-medical text-info me-1"></i> CPPT</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')"><i class="bi bi-upload text-secondary me-1"></i> Upload Berkas Penunjang</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="catatanEdukasiPasien('${data.no_rawat}')"><i class="bi bi-person-video3 text-warning me-1"></i> Catatan Edukasi Pasien</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')"><i class="bi bi-droplet text-info me-1"></i> Monitoring Cairan Pasien</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')"><i class="bi bi-capsule text-danger me-1"></i> Edukasi Obat Pulang ${cekList(row.edukasi_obat_pulang)}</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalDischargePlanning('${data.no_rawat}')"><i class="bi bi-box-arrow-right text-warning me-1"></i> Discharge Planning ${cekList(row.discharge_planning)}</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalSkriningGizi('${data.no_rawat}')"><i class="bi bi-clipboard2-check text-success me-1"></i> Form Skrining Gizi ${cekList(row.rsia_skrining_gizi || row.skrining_gizi)}</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalPermintaanDiet('${data.no_rawat}')"><i class="fa-solid fa-utensils text-success me-1"></i> Permintaan Diet Pasien</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${data.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
@@ -1140,21 +1140,21 @@
 
             // Spesialis Anak
             if (kdSps === 'S0003') {
-                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')">Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
-                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${data.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
+                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')"><i class="bi bi-person-badge text-primary me-1"></i> Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
+                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${data.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Anak</a></li>`;
 
                 // Kondisi umur Anak / Neonatus
                 if (data.sttsumur === 'Hr') {
-                    menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
+                    menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')"><i class="bi bi-heart-pulse text-danger me-1"></i> Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
                 } else {
-                    menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')">Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
+                    menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')"><i class="bi bi-clipboard-pulse text-info me-1"></i> Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
                 }
             }
             // Spesialis Kandungan
             else if (kdSps === 'S0001') {
-                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')">Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
-                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')">Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
-                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${data.no_rawat}')">Asesmen Resiko Jatuh Dewasa</a></li>`;
+                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')"><i class="bi bi-gender-female text-danger me-1"></i> Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
+                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')"><i class="bi bi-balloon-heart text-danger me-1"></i> Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
+                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${data.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Dewasa</a></li>`;
             }
 
             return menu;
@@ -1162,7 +1162,7 @@
 
         function getMenuAksesKhusus(data, row) {
             let menu = '';
-            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${data.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${data.no_rawat}')"><i class="bi bi-lungs text-danger me-1"></i> Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
 
             // Mengambil session departemen laravel via blade
             const isDokter = "{{ session()->get('pegawai')->departemen }}";
@@ -1171,13 +1171,13 @@
 
             // Validasi Plan of Care
             if (grupAksesPoc.includes(isDokter)) {
-                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPlanOfCare('${data.no_rawat}')"><i>Plan of Care</i> ${cekList(row.reg_periksa.poc)}</a></li>`;
+                menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPlanOfCare('${data.no_rawat}')"><i class="bi bi-clipboard-data text-primary me-1"></i> <i>Plan of Care</i> ${cekList(row.reg_periksa.poc)}</a></li>`;
             }
 
             // Validasi Resume Medis
             if (grupAksesResume.includes(isDokter)) {
-                const iconCheck = row.resume ? '<i class="bi bi-check-circle text-success"></i>' : '';
-                menu += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
+                const iconCheck = row.resume ? '<i class="bi bi-check-circle text-success ms-1"></i>' : '';
+                menu += `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${data.no_rawat}')"><i class="bi bi-file-text text-dark me-1"></i> Resume Medis ${iconCheck}</a></li>`;
             }
 
             return menu;
@@ -1196,13 +1196,13 @@
                                         `;
         }
 
-        function getResumeMenuBayi(row) {
+        function getMenuResumeGabung(row) {
             const isDokter = "{{ session()->get('pegawai')->departemen }}";
             const grupAksesResume = ['Direksi', 'SPS', '-', 'CSM'];
 
             if (grupAksesResume.includes(isDokter)) {
-                const iconCheck = row.resume ? '<i class="bi bi-check-circle text-success"></i>' : '';
-                return `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${row.ranap_gabung.reg_periksa.no_rawat}')">Resume Medis ${iconCheck}</a></li>`;
+                const iconCheck = row.resume ? '<i class="bi bi-check-circle text-success ms-1"></i>' : '';
+                return `<li><a class="dropdown-item" href="#" onclick="resumeMedis('${row.ranap_gabung.reg_periksa.no_rawat}')"><i class="bi bi-file-text text-dark me-1"></i> Resume Medis ${iconCheck}</a></li>`;
             }
 
             return ''; // Kembalikan string kosong jika tidak punya akses
@@ -1210,18 +1210,18 @@
 
         function getListMenuBayi(regPeriksa, resumeMenu) {
             let list = '';
-            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${regPeriksa.no_rawat}')">Laborat</a></li>`;
-            list += `<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${regPeriksa.kd_dokter}" onclick="showModalSoapRanap('${regPeriksa.no_rawat}')">CPPT</a></li>`;
-            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${regPeriksa.no_rawat}')">Asesmen Medis Anak ${cekList(regPeriksa.asmed_ranap_anak)}</a></li>`;
-            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${regPeriksa.no_rawat}')">Asesmen Keperawatan Neonatus ${cekList(regPeriksa.askep_ranap_neonatus)}</a></li>`;
-            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanap('${regPeriksa.no_rawat}')">Pemeriksaan Penunjang</a></li>`;
+            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${regPeriksa.no_rawat}')"><i class="bi bi-file-earmark-medical text-primary me-1"></i> Laborat</a></li>`;
+            list += `<li><a class="dropdown-item" href="javascript:void(0)" data-kd-dokter="${regPeriksa.kd_dokter}" onclick="showModalSoapRanap('${regPeriksa.no_rawat}')"><i class="bi bi-journal-medical text-info me-1"></i> CPPT</a></li>`;
+            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="asmedRanapAnak('${regPeriksa.no_rawat}')"><i class="bi bi-person-badge text-primary me-1"></i> Asesmen Medis Anak ${cekList(regPeriksa.asmed_ranap_anak)}</a></li>`;
+            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${regPeriksa.no_rawat}')"><i class="bi bi-heart-pulse text-danger me-1"></i> Asesmen Keperawatan Neonatus ${cekList(regPeriksa.askep_ranap_neonatus)}</a></li>`;
+            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanap('${regPeriksa.no_rawat}')"><i class="bi bi-file-earmark-medical text-primary me-1"></i> Pemeriksaan Penunjang</a></li>`;
 
             // Memasukkan menu resume jika ada aksesnya
             if (resumeMenu) {
                 list += resumeMenu;
             }
 
-            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${regPeriksa.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${regPeriksa.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalRiwayat('${regPeriksa.no_rkm_medis}')" data-bs-toggle="modal" data-bs-target="#modalRiwayat" data-id="${regPeriksa.no_rkm_medis}"><i class="bi bi-clock-history text-secondary me-1"></i> Riwayat Pemeriksaan</a></li>`;
 
             return list;
         }
