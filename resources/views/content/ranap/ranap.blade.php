@@ -1196,7 +1196,7 @@
                                         `;
         }
 
-        function getMenuResumeGabung(row) {
+        function getResumeMenuBayi(row) {
             const isDokter = "{{ session()->get('pegawai')->departemen }}";
             const grupAksesResume = ['Direksi', 'SPS', '-', 'CSM'];
 
