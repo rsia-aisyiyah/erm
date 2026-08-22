@@ -268,29 +268,29 @@
                         const pasien = row.pasien || {};
                         const dokter = row.dokter || {};
 
-                        list = '<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd(\'' + row.no_rawat + '\')">CPPT</a></li>';
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')">Pemeriksaan Penunjang</a></li>`
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${row.no_rawat}')">Asesmen Medis UGD ${cekList(row.asmed_igd)} </a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAskepUgd('${row.no_rawat}')">Asesmen Keperawatan UGD ${cekList(row.askep_igd)} </a></li>`;
+                        list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd('${row.no_rawat}')"><i class="bi bi-journal-medical text-info me-1"></i> CPPT</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')"><i class="bi bi-file-earmark-medical text-primary me-1"></i> Pemeriksaan Penunjang</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${row.no_rawat}')"><i class="bi bi-hospital text-danger me-1"></i> Asesmen Medis UGD ${cekList(row.asmed_igd)} </a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAskepUgd('${row.no_rawat}')"><i class="bi bi-clipboard-pulse text-info me-1"></i> Asesmen Keperawatan UGD ${cekList(row.askep_igd)} </a></li>`;
                         if ((pasien.jk || '').toUpperCase() === 'P') {
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAskepKebidananUgd('${row.no_rawat}')"><i class="bi bi-gender-female text-danger me-1"></i> Asesmen Keperawatan Kebidanan ${cekList(row.askep_kebidanan)} </a></li>`;
                         }
                         if (pasien.tgl_lahir) {
                             list += renderListsAsesmenNyeri(pasien.tgl_lahir, row.tgl_registrasi, row.no_rawat);
                         }
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${row.no_rawat}')" data-id="${row.no_rawat}">Hasil Kritis</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')">Upload Berkas Penunjang</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')">Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-id="${row.no_rkm_medis}">Riwayat Pemeriksaan</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${row.no_rawat}')" data-id="${row.no_rawat}"><i class="bi bi-exclamation-triangle text-danger me-1"></i> Hasil Kritis</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')"><i class="bi bi-upload text-secondary me-1"></i> Upload Berkas Penunjang</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')"><i class="bi bi-lungs text-danger me-1"></i> Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-id="${row.no_rkm_medis}"><i class="bi bi-clock-history text-secondary me-1"></i> Riwayat Pemeriksaan</a></li>`;
 
                         if (row.kd_pj == 'A01' || row.kd_pj == 'A05') {
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${pasien.no_peserta || ''}', '${dokter.mapping_dokter?.kd_dokter_bpjs || ''}')">Riwayat Perawatan ICare</a></li>`
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${pasien.no_peserta || ''}', '${dokter.mapping_dokter?.kd_dokter_bpjs || ''}')"><i class="bi bi-card-checklist text-primary me-1"></i> Riwayat Perawatan ICare</a></li>`;
                         }
 
                         if (row.umurdaftar > 13 && row.sttsumur === 'Th') {
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${row.no_rawat}')">Asesmen Resiko Jatuh Dewasa</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${row.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Dewasa</a></li>`;
                         } else {
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')">Asesmen Resiko Jatuh Anak</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Anak</a></li>`;
                         }
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${row.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
                         button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:11px"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
