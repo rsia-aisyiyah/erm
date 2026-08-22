@@ -95,7 +95,7 @@
 
         <tr>
             <td class="label">Rencana Rawat</td>
-            <td>{{ $data->rencana_rawat }} Jam</td>
+            <td>{{ $data->rencana_rawat }} Hari</td>
 
             <td class="label">Tanggal Rencana Pulang</td>
             <td>{{ date('d/m/Y H:i', strtotime($data->tgl_rencana_pulang)) }}</td>
@@ -141,14 +141,12 @@
             </td>
         </tr>
 
-        @if (!empty($data->target_asuhan))
         <tr>
             <td class="label">Target Asuhan yang Terukur</td>
             <td colspan="3">
-                {!! nl2br(e($data->target_asuhan)) !!}
+                {!! nl2br(e($data->target_asuhan && $data->target_asuhan != '-' ? $data->target_asuhan : '-')) !!}
             </td>
         </tr>
-        @endif
 
         <tr>
             <td class="label">Diet di Rumah</td>

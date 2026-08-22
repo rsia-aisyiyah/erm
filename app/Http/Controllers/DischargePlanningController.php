@@ -117,6 +117,8 @@ class DischargePlanningController extends Controller
 
     public function print(Request $request)
     {
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
         $get = $this->modal->where('no_rawat', $request->no_rawat)
             ->with(['petugas', 'regPeriksa.dokter', 'pasien'])
             ->first();
