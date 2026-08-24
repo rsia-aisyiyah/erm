@@ -42,44 +42,61 @@
         }
     </style>
 
+    @php
+        $pasien = optional($data->regPeriksa)->pasien;
+        $dokter = optional($data->regPeriksa)->dokter;
+    @endphp
+
     <!-- HALAMAN 1 -->
-    <table style="border:none; margin-bottom: 5px;">
-        <tr style="border:none;">
-            <td style="border:none; width: 15%;">
-                <img src="{{ public_path('img/logo.png') }}" width="60">
+    <table width="100%" style="border-collapse: collapse; border-bottom: 2px solid #000; padding-bottom: 3px; margin-bottom: 8px;">
+        <tr>
+            <td width="10%" style="vertical-align: middle; text-align: center; border: none;">
+                <img src="{{ public_path('img/logo.png') }}" width="50" />
             </td>
-            <td style="border:none; text-align: center; width: 60%;">
-                <h3 style="margin:0;">PEMERINTAH PROVINSI JAWA TENGAH</h3>
-                <h2 style="margin:0;">RSIA AISYIYAH PEKAJANGAN</h2>
-                <h3 style="margin:5px 0 0 0;">ASESMEN AWAL GERIATRI</h3>
+            <td width="55%" style="vertical-align: middle; border: none;">
+                <strong style="font-size: 11.5px; display: block;">RUMAH SAKIT IBU DAN ANAK AISYIYAH</strong>
+                <strong style="font-size: 11.5px; display: block;">PEKAJANGAN &ndash; PEKALONGAN</strong>
+                <span style="font-size: 8.5px; display: block;">Jl. Raya Pekajangan No. 610 Pekajangan, Pekalongan, 51172</span>
+                <span style="font-size: 8.5px; display: block;">Telp. (0285) 785909 Email: pekajangan@rsiaaisyiyah.com Website: www.rsiaaisyiyah.com</span>
             </td>
-            <td style="border:none; text-align: right; width: 25%; font-weight: bold; font-size: 11px;">
-                <div style="border:1px solid #000; padding:5px; text-align:center;">
-                    RM 06 K/2015<br><br>
-                    <small style="font-weight:normal;">TEMPEL STIKER DI SINI</small>
-                </div>
+            <td width="35%" style="vertical-align: top; border: none;">
+                <table width="100%" style="font-size: 9px; border-collapse: collapse;">
+                    <tr>
+                        <td width="35%" style="padding: 1.5px 3px; border: 1px solid #000;"><strong>No. RM</strong></td>
+                        <td width="65%" style="padding: 1.5px 3px; border: 1px solid #000;">: {{ $pasien->no_rkm_medis ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1.5px 3px; border: 1px solid #000;"><strong>Nama</strong></td>
+                        <td style="padding: 1.5px 3px; border: 1px solid #000;">: {{ $pasien->nm_pasien ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1.5px 3px; border: 1px solid #000;"><strong>Tgl. Lahir</strong></td>
+                        <td style="padding: 1.5px 3px; border: 1px solid #000;">: {{ $pasien && $pasien->tgl_lahir ? date('d-m-Y', strtotime($pasien->tgl_lahir)) : '-' }} ({{ $pasien->jk ?? '-' }})</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1.5px 3px; border: 1px solid #000;"><strong>Alamat</strong></td>
+                        <td style="padding: 1.5px 3px; border: 1px solid #000;">: {{ $pasien->alamat ?? '-' }}</td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
 
-    <table style="margin-bottom: 5px;">
+    <table width="100%" style="margin-bottom: 8px;">
+        <tr>
+            <td class="header-bg" colspan="4" style="text-align: center; font-size: 11px; padding: 5px;">
+                ASESMEN AWAL GERIATRI (RM 06 K/2015)
+            </td>
+        </tr>
         <tr>
             <td class="label" style="width: 15%;">No. Rawat</td>
             <td style="width: 35%;">{{ $data->no_rawat }}</td>
-            <td class="label" style="width: 15%;">Nama Pasien</td>
-            <td style="width: 35%;">{{ optional($data->regPeriksa->pasien)->nm_pasien ?? '-' }}</td>
+            <td class="label" style="width: 15%;">Tanggal Asesmen</td>
+            <td style="width: 35%;">{{ date('d-m-Y H:i', strtotime($data->tanggal)) }}</td>
         </tr>
         <tr>
-            <td class="label">No. RM</td>
-            <td>{{ optional($data->regPeriksa->pasien)->no_rkm_medis ?? '-' }}</td>
-            <td class="label">Tgl. Lahir / J.K.</td>
-            <td>{{ optional($data->regPeriksa->pasien)->tgl_lahir ? date('d-m-Y', strtotime($data->regPeriksa->pasien->tgl_lahir)) : '-' }} / {{ optional($data->regPeriksa->pasien)->jk ?? '-' }}</td>
-        </tr>
-        <tr>
-            <td class="label">Tanggal Asesmen</td>
-            <td>{{ date('d-m-Y H:i', strtotime($data->tanggal)) }}</td>
             <td class="label">Dokter DPJP</td>
-            <td>{{ optional($data->regPeriksa->dokter)->nm_dokter ?? '-' }}</td>
+            <td colspan="3">{{ $dokter->nm_dokter ?? '-' }}</td>
         </tr>
     </table>
 
