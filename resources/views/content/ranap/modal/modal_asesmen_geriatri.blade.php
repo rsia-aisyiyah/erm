@@ -740,14 +740,14 @@
             data: formData,
             success: function(res) {
                 if (res.status === 'success' || res.status === 'success update') {
-                    alertSession('Data Asesmen Awal Geriatri berhasil disimpan');
+                    alertSuccessAjax('Data Asesmen Awal Geriatri berhasil disimpan');
                     $('#modalAsesmenGeriatri').modal('hide');
                 } else {
-                    alertError(res.message || 'Gagal menyimpan data');
+                    alertErrorAjax(res);
                 }
             },
             error: function(err) {
-                alertError('Terjadi kesalahan server saat menyimpan data');
+                alertErrorAjax(err);
             }
         });
     });
