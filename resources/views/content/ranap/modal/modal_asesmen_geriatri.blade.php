@@ -714,7 +714,7 @@
                 } else {
                     // Fetch Basic Registration Info if no existing Geriatri record
                     $.ajax({
-                        url: `${url}/registrasi/get`,
+                        url: `${url}/registrasi/ambil`,
                         type: 'GET',
                         data: { no_rawat: no_rawat },
                         success: function(reg) {
