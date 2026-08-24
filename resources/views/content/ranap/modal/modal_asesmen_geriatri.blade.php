@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalAsesmenGeriatri" tabindex="-1" aria-labelledby="modalAsesmenGeriatriLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+    <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
                 <h5 class="modal-title fs-5" id="modalAsesmenGeriatriLabel">
