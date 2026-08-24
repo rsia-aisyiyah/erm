@@ -29,7 +29,10 @@
             background: #88c425;
             color: #000;
             font-weight: bold;
-            padding: 5px;
+            padding: 4px 6px;
+            page-break-after: avoid;
+            margin-top: 6px;
+            margin-bottom: 2px;
         }
 
         .label {
@@ -37,8 +40,12 @@
             background: #f7f7f7;
         }
 
-        .page-break {
-            page-break-after: always;
+        table {
+            page-break-inside: auto;
+        }
+
+        tr {
+            page-break-inside: avoid;
         }
     </style>
 
@@ -191,8 +198,6 @@
         </tr>
     </table>
 
-    <div class="page-break"></div>
-
     <!-- HALAMAN 2 -->
     <div class="section-header">III. ASSESMEN SINDROM GERIATRI (10 Penapisan)</div>
     <table style="margin-bottom: 5px;">
@@ -263,8 +268,6 @@
             <td>{!! nl2br(e($data->impairment_disability ?: '-')) !!}</td>
         </tr>
     </table>
-
-    <div class="page-break"></div>
 
     <!-- HALAMAN 3 -->
     <div class="section-header">IV. REKOMENDASI, RENCANA TATA LAKSANA & DISPOSISI</div>
