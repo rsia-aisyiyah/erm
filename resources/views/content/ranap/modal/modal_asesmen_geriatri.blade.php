@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
                 <h5 class="modal-title fs-5" id="modalAsesmenGeriatriLabel">
-                    <i class="bi bi-person-heart me-2"></i> <i>ASESMEN AWAL GERIATRI (RM 06 K/2015)</i>
+                    <i class="bi bi-person-heart me-2"></i> <i>ASESMEN AWAL GERIATRI</i>
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

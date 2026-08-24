@@ -85,7 +85,7 @@
     <table width="100%" style="margin-bottom: 8px;">
         <tr>
             <td class="header-bg" colspan="4" style="text-align: center; font-size: 11px; padding: 5px;">
-                ASESMEN AWAL GERIATRI (RM 06 K/2015)
+                ASESMEN AWAL GERIATRI
             </td>
         </tr>
         <tr>
