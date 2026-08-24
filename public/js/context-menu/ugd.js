@@ -43,6 +43,13 @@ $.contextMenu({
                         showModalTransferPasien(no_rawat);
                     }
                 },
+                "asesmenGeriatri": {
+                    name: "Asesmen Awal Geriatri",
+                    icon: "fa-solid fa-heart-pulse",
+                    callback: function () {
+                        showModalAsesmenGeriatri(no_rawat);
+                    }
+                },
                 "skoringTb": skoringTbMenuItems(no_rawat),
                 "hasilKritis": hasilKritisMenuItems(no_rawat),
                 "uploadBerkas": uploadBerkasMenuItems(no_rawat),

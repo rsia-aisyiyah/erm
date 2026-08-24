@@ -64,6 +64,11 @@ $.contextMenu({
                     icon: "fa-solid fa-arrow-right-arrow-left",
                     callback: () => showModalTransferPasien(data.no_rawat)
                 },
+                "asesmenGeriatri": {
+                    name: "Asesmen Awal Geriatri",
+                    icon: "fa-solid fa-heart-pulse",
+                    callback: () => showModalAsesmenGeriatri(data.no_rawat)
+                },
                 "resumeMedis": {
                     name: "Resume Medis",
                     icon: "fa-regular fa-file-alt",

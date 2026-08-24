@@ -62,6 +62,7 @@
     @include('content.ranap.modal.modal_asesmen_resiko_jatuh_anak')
     @include('content.poliklinik.modal.modal_icare')
     @include('content.ranap.modal.modal_transfer_pasien')
+    @include('content.ranap.modal.modal_asesmen_geriatri')
 @endsection
 
 
@@ -293,6 +294,7 @@
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Anak</a></li>`;
                         }
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${row.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
+                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenGeriatri('${row.no_rawat}')"><i class="bi bi-person-heart text-success me-1"></i> Asesmen Awal Geriatri ${cekList(row.asesmen_geriatri)}</a></li>`;
                         button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:11px"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                         return button;
                     }

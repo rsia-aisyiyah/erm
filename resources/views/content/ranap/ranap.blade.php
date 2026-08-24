@@ -171,6 +171,7 @@
     @include('content.ugd.modal.asmed')
     @include('content.ranap.modal.modal_persetujuan_ppra')
     @include('content.ranap.modal.modal_transfer_pasien')
+    @include('content.ranap.modal.modal_asesmen_geriatri')
 
     <div class="modal fade" id="modalEwsRanap" tabindex="-1" aria-labelledby="modalEwsRanapLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -1128,6 +1129,7 @@
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalSkriningGizi('${data.no_rawat}')"><i class="bi bi-clipboard2-check text-success me-1"></i> Form Skrining Gizi ${cekList(row.rsia_skrining_gizi || row.skrining_gizi)}</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalPermintaanDiet('${data.no_rawat}')"><i class="fa-solid fa-utensils text-success me-1"></i> Permintaan Diet Pasien</a></li>`;
             menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${data.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
+            menu += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenGeriatri('${data.no_rawat}')"><i class="bi bi-person-heart text-success me-1"></i> Asesmen Awal Geriatri ${cekList(row.asesmen_geriatri)}</a></li>`;
 
             // Asesmen nyeri bawaan dinamis
             menu += renderListsAsesmenNyeri(data.pasien.tgl_lahir, data.tgl_registrasi, data.no_rawat);

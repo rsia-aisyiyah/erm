@@ -416,6 +416,10 @@ Route::middleware('auth')->group(function () {
 	Route::post('transfer/pasien/antar-ruang/delete', [\App\Http\Controllers\TransferPasienAntarRuangController::class, 'delete']);
 	Route::get('transfer/pasien/antar-ruang/print', [\App\Http\Controllers\TransferPasienAntarRuangController::class, 'print']);
 
+	Route::get('asesmen-geriatri', [\App\Http\Controllers\AsesmenGeriatriController::class, 'get']);
+	Route::post('asesmen-geriatri', [\App\Http\Controllers\AsesmenGeriatriController::class, 'create']);
+	Route::get('asesmen-geriatri/print', [\App\Http\Controllers\AsesmenGeriatriController::class, 'print']);
+
 	Route::get('sep', [BridgingSepController::class, 'index'])->name('sep.index');
 	Route::get('sep/datatable', [BridgingSepController::class, 'dataTable'])->name('sep.datatable');
 	Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
