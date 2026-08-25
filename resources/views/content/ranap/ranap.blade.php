@@ -1108,11 +1108,15 @@
         }
 
         $("#modalSoapRanap").on('hidden.bs.modal', function() {
-            grafikPemeriksaan.destroy();
-            grafikPemeriksaan = null;
+            if (typeof grafikPemeriksaan !== 'undefined' && grafikPemeriksaan) {
+                grafikPemeriksaan.destroy();
+                grafikPemeriksaan = null;
+            }
 
-            tableGrafikHarian.fnDestroy();
-            tableGrafikHarian = null;
+            if (typeof tableGrafikHarian !== 'undefined' && tableGrafikHarian && typeof tableGrafikHarian.fnDestroy === 'function') {
+                tableGrafikHarian.fnDestroy();
+                tableGrafikHarian = null;
+            }
         });
 
         function getMenuUmum(data, row) {

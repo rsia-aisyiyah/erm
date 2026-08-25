@@ -334,7 +334,9 @@
             elementInput.hasClass('is-valid') && elementInput.removeClass('is-valid');
             formAsuhanGiziDewasa.trigger('reset')
             formAsuhanGiziAnak.trigger('reset')
-            grafikPemeriksaan.destroy();
+            if (typeof grafikPemeriksaan !== 'undefined' && grafikPemeriksaan) {
+                grafikPemeriksaan.destroy();
+            }
         })
 
         tabLaboratorium.on('click', () => {

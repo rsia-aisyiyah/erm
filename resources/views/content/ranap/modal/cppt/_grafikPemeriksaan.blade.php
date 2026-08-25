@@ -14,7 +14,7 @@
         var tableGrafikHarian;
 
         function buildGrafik(no_rawat) {
-            if (grafikPemeriksaan) {
+            if (typeof grafikPemeriksaan !== 'undefined' && grafikPemeriksaan) {
                 grafikPemeriksaan.destroy();
             }
             $.ajax({
@@ -289,7 +289,9 @@
                         }
 
                         $('#modalGrafikHarian').modal('toggle');
-                        grafikPemeriksaan.destroy();
+                        if (typeof grafikPemeriksaan !== 'undefined' && grafikPemeriksaan) {
+                            grafikPemeriksaan.destroy();
+                        }
 
                         swal.fire({
                             title: 'Berhasil',
@@ -359,9 +361,13 @@
                         },
                         success: function (response) {
                             if (response.success) {
-                                tableGrafikHarian.fnDestroy();
-                                grafikPemeriksaan.destroy();
-                                grafikPemeriksaan = null;
+                                if (typeof tableGrafikHarian !== 'undefined' && tableGrafikHarian && typeof tableGrafikHarian.fnDestroy === 'function') {
+                                    tableGrafikHarian.fnDestroy();
+                                }
+                                if (typeof grafikPemeriksaan !== 'undefined' && grafikPemeriksaan) {
+                                    grafikPemeriksaan.destroy();
+                                    grafikPemeriksaan = null;
+                                }
                                 swal.fire({
                                     title: 'Berhasil',
                                     text: response.message,

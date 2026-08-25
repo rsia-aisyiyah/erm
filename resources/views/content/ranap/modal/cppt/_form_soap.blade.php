@@ -329,7 +329,9 @@
                             timer: 1500
                         }).then(() => {
                             tbSoapRanap(no_rawat);
-                            grafikPemeriksaan.destroy();
+                            if (typeof grafikPemeriksaan !== 'undefined' && grafikPemeriksaan) {
+                                grafikPemeriksaan.destroy();
+                            }
                             buildGrafik(no_rawat)
                             setEws(no_rawat, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
                             formSoapRanap.trigger('reset');
@@ -450,7 +452,9 @@
                             const tgl_pertama = $('#tglSoap1_soap').val();
                             const tgl_kedua = $('#tglSoap2_soap').val();
                             tbSoapRanap(no_rawat);
-                            grafikPemeriksaan.destroy();
+                            if (typeof grafikPemeriksaan !== 'undefined' && grafikPemeriksaan) {
+                                grafikPemeriksaan.destroy();
+                            }
                             buildGrafik(no_rawat)
                             setEws(no_rawat, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
                             getInstance.show();

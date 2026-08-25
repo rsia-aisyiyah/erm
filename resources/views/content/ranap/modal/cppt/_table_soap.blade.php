@@ -336,7 +336,9 @@
                                     timer: 1500
                                 });
                                 tbSoapRanap(no);
-                                grafikPemeriksaan.destroy();
+                                if (typeof grafikPemeriksaan !== 'undefined' && grafikPemeriksaan) {
+                                    grafikPemeriksaan.destroy();
+                                }
                                 buildGrafik(no)
                                 setEws(no, 'ranap', formSoapRanap.find('input[name=spesialis]').val())
                             }
