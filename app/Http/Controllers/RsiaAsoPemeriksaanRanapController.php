@@ -14,17 +14,32 @@ class RsiaAsoPemeriksaanRanapController extends Controller
         $this->aso = new RsiaAsoPemeriksaanRanap();
     }
 
+    private function checkIsApoteker($pegawai)
+    {
+        if (!$pegawai) return false;
+        $jbtn = strtolower($pegawai->jbtn ?? '');
+        $dep = strtolower($pegawai->departemen ?? '');
+        $nik = strtolower($pegawai->nik ?? '');
+        $nama = strtolower($pegawai->nama ?? '');
+
+        return (
+            str_contains($jbtn, 'apoteker') ||
+            str_contains($jbtn, 'farmasi') ||
+            str_contains($jbtn, 'kefarmasian') ||
+            str_contains($jbtn, 'ttk') ||
+            str_contains($dep, 'farmasi') ||
+            $dep === 'far' ||
+            $dep === 'dpm1' ||
+            str_contains($nama, 'farm') ||
+            str_contains($nama, 'apt') ||
+            $nik === 'direksi'
+        );
+    }
+
     public function create(Request $request)
     {
         $pegawai = session()->get('pegawai');
-        $jbtn = strtolower($pegawai->jbtn ?? '');
-        $dep = strtolower($pegawai->departemen ?? '');
-        $nik = $pegawai->nik ?? '';
-
-        // Hak Akses Khusus: Hanya Apoteker, Farmasi, atau Direksi/Admin
-        $isApoteker = (str_contains($jbtn, 'apoteker') || str_contains($dep, 'farmasi') || $dep === 'far' || $nik === 'direksi');
-
-        if (!$isApoteker) {
+        if (!$this->checkIsApoteker($pegawai)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Akses ditolak. Fitur stempel ASO hanya dapat diakses oleh akun Apoteker / Farmasi.'
@@ -46,7 +61,7 @@ class RsiaAsoPemeriksaanRanapController extends Controller
                 ],
                 [
                     'tgl_aso' => date('Y-m-d H:i:s'),
-                    'nip_apoteker' => $nik,
+                    'nip_apoteker' => $pegawai->nik ?? '',
                     'status_aso' => 'AKTIF',
                     'catatan_aso' => $request->catatan_aso ?? 'Automatic Stop Order (ASO) telah dilakukan oleh Apoteker.',
                 ]
@@ -68,13 +83,7 @@ class RsiaAsoPemeriksaanRanapController extends Controller
     public function delete(Request $request)
     {
         $pegawai = session()->get('pegawai');
-        $jbtn = strtolower($pegawai->jbtn ?? '');
-        $dep = strtolower($pegawai->departemen ?? '');
-        $nik = $pegawai->nik ?? '';
-
-        $isApoteker = (str_contains($jbtn, 'apoteker') || str_contains($dep, 'farmasi') || $dep === 'far' || $nik === 'direksi');
-
-        if (!$isApoteker) {
+        if (!$this->checkIsApoteker($pegawai)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Akses ditolak. Pembatalan stempel ASO hanya dapat dilakukan oleh akun Apoteker / Farmasi.'

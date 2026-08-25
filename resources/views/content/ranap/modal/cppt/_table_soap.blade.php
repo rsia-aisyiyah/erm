@@ -153,10 +153,23 @@
                             }
 
                             // Tombol & Status Stempel ASO (Automatic Stop Order)
-                            const isUserApoteker = ("{{ session()->get('pegawai')->jbtn }}".toLowerCase().includes("apoteker") ||
-                                "{{ session()->get('pegawai')->departemen }}".toLowerCase().includes("farmasi") ||
-                                "{{ session()->get('pegawai')->departemen }}" === "FAR" ||
-                                "{{ session()->get('pegawai')->nik }}" === "direksi");
+                            const userJbtn = "{{ session()->get('pegawai')->jbtn }}".toLowerCase();
+                            const userDep = "{{ session()->get('pegawai')->departemen }}".toLowerCase();
+                            const userNik = "{{ session()->get('pegawai')->nik }}".toLowerCase();
+                            const userNama = "{{ session()->get('pegawai')->nama }}".toLowerCase();
+
+                            const isUserApoteker = (
+                                userJbtn.includes("apoteker") ||
+                                userJbtn.includes("farmasi") ||
+                                userJbtn.includes("kefarmasian") ||
+                                userJbtn.includes("ttk") ||
+                                userDep.includes("farmasi") ||
+                                userDep === "far" ||
+                                userDep === "dpm1" ||
+                                userNama.includes("farm") ||
+                                userNama.includes("apt") ||
+                                userNik === "direksi"
+                            );
 
                             const depStr = typeof row.petugas?.pegawai?.departemen === 'object' 
                                 ? JSON.stringify(row.petugas?.pegawai?.departemen || '').toLowerCase() 
@@ -166,9 +179,20 @@
                                 ? JSON.stringify(row.petugas?.pegawai?.jbtn || '').toLowerCase()
                                 : String(row.petugas?.pegawai?.jbtn || '').toLowerCase();
 
-                            const isSoapApoteker = (row.petugas && row.petugas.pegawai && 
-                                (jbtnStr.includes('apoteker') || depStr.includes('farmasi') || depStr.includes('far'))) || 
-                                (row.petugas && ['J018', 'J019', 'J032'].includes(row.petugas.kd_jbtn));
+                            const namaPetugasStr = String(row.petugas?.nama || row.petugas?.pegawai?.nama || '').toLowerCase();
+
+                            const isSoapApoteker = (
+                                jbtnStr.includes('apoteker') ||
+                                jbtnStr.includes('farmasi') ||
+                                jbtnStr.includes('kefarmasian') ||
+                                jbtnStr.includes('ttk') ||
+                                depStr.includes('farmasi') ||
+                                depStr.includes('far') ||
+                                depStr.includes('dpm1') ||
+                                namaPetugasStr.includes('farm') ||
+                                namaPetugasStr.includes('apt') ||
+                                (row.petugas && ['J018', 'J019', 'J032', 'J067'].includes(row.petugas.kd_jbtn))
+                            );
 
                             if (isSoapApoteker || row.aso) {
                                 if (row.aso) {
