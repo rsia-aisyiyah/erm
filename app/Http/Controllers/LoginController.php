@@ -99,6 +99,7 @@ class LoginController extends Controller
             'DM2' => '/ranap',
             'DPM2' => '/ranap',
             'RAD' => '/radiologi',
+            'IT' => '/pasien',
         ];
 
         if (isset($routes[$pegawai->departemen])) {
