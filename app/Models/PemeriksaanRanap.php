@@ -63,6 +63,11 @@ class PemeriksaanRanap extends Model
     {
         return $this->hasOne(RsiaVerifPemeriksaanRanap::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat']);
     }
+    function aso()
+    {
+        return $this->hasOne(RsiaAsoPemeriksaanRanap::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat'])
+            ->with('petugas');
+    }
     function log()
     {
         return $this->hasMany(RsiaLogSoap::class, ['no_rawat', 'tgl_perawatan', 'jam_rawat'], ['no_rawat', 'tgl_perawatan', 'jam_rawat']);

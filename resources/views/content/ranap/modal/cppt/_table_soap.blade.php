@@ -151,6 +151,27 @@
                             if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
                                 button += '<button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
                             }
+
+                            // Tombol & Status Stempel ASO (Automatic Stop Order)
+                            const isUserApoteker = ("{{ session()->get('pegawai')->jbtn }}".toLowerCase().includes("apoteker") ||
+                                "{{ session()->get('pegawai')->departemen }}".toLowerCase().includes("farmasi") ||
+                                "{{ session()->get('pegawai')->departemen }}" === "FAR" ||
+                                "{{ session()->get('pegawai')->nik }}" === "direksi");
+
+                            const isSoapApoteker = (row.petugas && row.petugas.pegawai && 
+                                (row.petugas.pegawai.jbtn?.toLowerCase().includes('apoteker') || 
+                                 row.petugas.pegawai.departemen?.toLowerCase().includes('farmasi') || 
+                                 row.petugas.pegawai.departemen === 'FAR')) || 
+                                (row.petugas && ['J018', 'J019', 'J032'].includes(row.petugas.kd_jbtn));
+
+                            if (isSoapApoteker || row.aso) {
+                                if (row.aso) {
+                                    button += `<div class="mt-1"><button type="button" class="btn btn-warning btn-sm fw-bold w-100 p-1" style="font-size:10px;" title="ASO distempel oleh ${row.aso.petugas?.nama || row.aso.nip_apoteker} pada ${formatTanggal(row.aso.tgl_aso)}" ${isUserApoteker ? `onclick="batalAso('${row.no_rawat}','${row.tgl_perawatan}','${row.jam_rawat}')"` : 'disabled'}><i class="bi bi-clock-history"></i> ASO <i class="bi bi-check-circle-fill text-success ms-1"></i></button></div>`;
+                                } else if (isUserApoteker) {
+                                    button += `<div class="mt-1"><button type="button" class="btn btn-outline-warning btn-sm text-dark fw-bold w-100 p-1" style="font-size:10px;" onclick="stempelAso('${row.no_rawat}','${row.tgl_perawatan}','${row.jam_rawat}')"><i class="bi bi-clock-history"></i> + ASO</button></div>`;
+                                }
+                            }
+
                             return button;
                         },
                         name: 'tgl_perawatan',
@@ -194,8 +215,6 @@
                                         </i></div>`
                             })
 
-                            // html+=`<a href="javascript:void(0)" onclick="getTrackerLog('pemeriksaan_ranap','${row.no_rawat}')">Lihat log</a>`
-
                             return html;
 
 
@@ -215,12 +234,10 @@
                                 return renderAdime(row)
                             }
 
-                            baris =
-                                `<tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <th width="5%">Petugas</th>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <td width="5%">:</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <td>${row.petugas.nama} </td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </tr>`
+                            baris = `<tr><th width="5%">Petugas</th><td width="5%">:</td><td>${row.petugas.nama}</td></tr>`;
+                            if (row.aso) {
+                                baris += `<tr><td colspan="3"><div class="alert alert-warning p-1.5 mb-1 border-warning border-2 rounded-2" style="font-size:11px;"><i class="bi bi-clock-history me-1 text-danger"></i> <strong>AUTOMATIC STOP ORDER (ASO)</strong> <span class="ms-1">Distempel oleh <b>${row.aso.petugas?.nama || row.aso.nip_apoteker}</b> pada <b>${formatTanggal(row.aso.tgl_aso)}</b></span>${row.aso.catatan_aso ? `<br><small class="fst-italic text-dark">Catatan: "${row.aso.catatan_aso}"</small>` : ''}</div></td></tr>`;
+                            }
                             baris += '<tr><th>Subjek </th><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
                             baris += '<tr><th>Objek </th><td>:</td><td>' + stringPemeriksaan(row.pemeriksaan) + '</td></tr>'
                             baris += '<tr><th>Assesment</th><td>:</td><td>' + stringPemeriksaan(row.penilaian) + '</td></tr>'
@@ -740,6 +757,77 @@
                 },
             })
             return pemeriksaan;
+        }
+
+        function stempelAso(no_rawat, tgl, jam) {
+            Swal.fire({
+                title: 'Stempel Automatic Stop Order (ASO)',
+                text: 'Apakah Anda yakin ingin membubuhi Stempel ASO pada catatan SOAP ini?',
+                icon: 'question',
+                input: 'text',
+                inputPlaceholder: 'Catatan ASO (opsional, misal: Stop Antibiotik hari ke-7)',
+                showCancelButton: true,
+                confirmButtonColor: '#ffc107',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="bi bi-clock-history"></i> Ya, Stempel ASO',
+                cancelButtonText: 'Batal',
+                showLoaderOnConfirm: true,
+                allowOutsideClick: () => !Swal.isLoading(),
+                preConfirm: (catatan) => {
+                    return $.ajax({
+                        url: `${url}/soap/aso/simpan`,
+                        type: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_rawat: no_rawat,
+                            tgl_perawatan: tgl,
+                            jam_rawat: jam,
+                            catatan_aso: catatan
+                        }
+                    }).catch(error => {
+                        Swal.showValidationMessage(error.responseJSON?.message || 'Gagal menyimpan stempel ASO');
+                    });
+                }
+            }).then((result) => {
+                if (result.isConfirmed && result.value) {
+                    alertSuccessAjax('Stempel ASO berhasil diposting');
+                    tbSoapRanap(no_rawat);
+                }
+            });
+        }
+
+        function batalAso(no_rawat, tgl, jam) {
+            Swal.fire({
+                title: 'Batalkan Stempel ASO?',
+                text: 'Stempel Automatic Stop Order pada catatan SOAP ini akan dihapus.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Batalkan Stempel',
+                cancelButtonText: 'Batal',
+                showLoaderOnConfirm: true,
+                allowOutsideClick: () => !Swal.isLoading(),
+                preConfirm: () => {
+                    return $.ajax({
+                        url: `${url}/soap/aso/hapus`,
+                        type: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_rawat: no_rawat,
+                            tgl_perawatan: tgl,
+                            jam_rawat: jam
+                        }
+                    }).catch(error => {
+                        Swal.showValidationMessage(error.responseJSON?.message || 'Gagal membatalkan stempel ASO');
+                    });
+                }
+            }).then((result) => {
+                if (result.isConfirmed && result.value) {
+                    alertSuccessAjax('Stempel ASO berhasil dibatalkan');
+                    tbSoapRanap(no_rawat);
+                }
+            });
         }
     </script>
 @endpush

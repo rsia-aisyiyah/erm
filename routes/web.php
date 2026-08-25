@@ -164,6 +164,8 @@ Route::middleware('auth')->group(function () {
 	Route::post('/soap/simpan', [PemeriksaanRanapController::class, 'simpan']);
 	Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
 	Route::post('/soap/verifikasi', [RsiaVerifPemeriksaanRanapController::class, 'create']);
+	Route::post('/soap/aso/simpan', [\App\Http\Controllers\RsiaAsoPemeriksaanRanapController::class, 'create']);
+	Route::post('/soap/aso/hapus', [\App\Http\Controllers\RsiaAsoPemeriksaanRanapController::class, 'delete']);
 
 
 	Route::post('/ranap/sbar/update', [SbarController::class, 'update']);

@@ -449,6 +449,9 @@ class PemeriksaanRanapController extends Controller
 			'verifikasi.petugas' => function ($q) {
 				return $q->select('nip', 'nama');
 			},
+			'aso.petugas' => function ($q) {
+				return $q->select('nip', 'nama');
+			},
 			'sbar' => function ($q) {
 				return $q->with([
 					'verifikasi.dokter',
