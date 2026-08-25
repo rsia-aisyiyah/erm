@@ -792,7 +792,9 @@
         }
 
         function stempelAso(no_rawat, tgl, jam) {
+            const containerTarget = document.querySelector('.modal.show') || document.getElementById('modalSoapRanap') || 'body';
             Swal.fire({
+                target: containerTarget,
                 title: 'Stempel Automatic Stop Order (ASO)',
                 text: 'Apakah Anda yakin ingin membubuhi Stempel ASO pada catatan SOAP ini?',
                 icon: 'question',
@@ -805,6 +807,14 @@
                 cancelButtonText: 'Batal',
                 showLoaderOnConfirm: true,
                 allowOutsideClick: () => !Swal.isLoading(),
+                didOpen: () => {
+                    setTimeout(() => {
+                        const input = Swal.getInput();
+                        if (input) {
+                            input.focus();
+                        }
+                    }, 100);
+                },
                 preConfirm: (catatan) => {
                     return $.ajax({
                         url: `${url}/soap/aso/simpan`,
@@ -829,7 +839,9 @@
         }
 
         function batalAso(no_rawat, tgl, jam) {
+            const containerTarget = document.querySelector('.modal.show') || document.getElementById('modalSoapRanap') || 'body';
             Swal.fire({
+                target: containerTarget,
                 title: 'Batalkan Stempel ASO?',
                 text: 'Stempel Automatic Stop Order pada catatan SOAP ini akan dihapus.',
                 icon: 'warning',
