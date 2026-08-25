@@ -158,10 +158,16 @@
                                 "{{ session()->get('pegawai')->departemen }}" === "FAR" ||
                                 "{{ session()->get('pegawai')->nik }}" === "direksi");
 
+                            const depStr = typeof row.petugas?.pegawai?.departemen === 'object' 
+                                ? JSON.stringify(row.petugas?.pegawai?.departemen || '').toLowerCase() 
+                                : String(row.petugas?.pegawai?.departemen || '').toLowerCase();
+
+                            const jbtnStr = typeof row.petugas?.pegawai?.jbtn === 'object'
+                                ? JSON.stringify(row.petugas?.pegawai?.jbtn || '').toLowerCase()
+                                : String(row.petugas?.pegawai?.jbtn || '').toLowerCase();
+
                             const isSoapApoteker = (row.petugas && row.petugas.pegawai && 
-                                (row.petugas.pegawai.jbtn?.toLowerCase().includes('apoteker') || 
-                                 row.petugas.pegawai.departemen?.toLowerCase().includes('farmasi') || 
-                                 row.petugas.pegawai.departemen === 'FAR')) || 
+                                (jbtnStr.includes('apoteker') || depStr.includes('farmasi') || depStr.includes('far'))) || 
                                 (row.petugas && ['J018', 'J019', 'J032'].includes(row.petugas.kd_jbtn));
 
                             if (isSoapApoteker || row.aso) {
