@@ -147,11 +147,6 @@
                             if (row.adime) {
                                 return '';
                             }
-                            button = '<span class="d-none">' + row.tgl_perawatan + ' ' + row.jam_rawat + '</span><button type="button" class="btn btn-primary btn-sm me-1" onclick="ambilSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-pencil-square"></i></button>';
-                            if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
-                                button += '<button type="button" class="btn btn-danger btn-sm" onclick="hapusSoap(\'' + row.no_rawat + '\',\'' + row.tgl_perawatan + '\', \'' + row.jam_rawat + '\')"><i class="bi bi-trash3-fill"></i></button>';
-                            }
-
                             // Tombol & Status Stempel ASO (Automatic Stop Order)
                             const userJbtn = "{{ session()->get('pegawai')->jbtn }}".toLowerCase();
                             const userDep = "{{ session()->get('pegawai')->departemen }}".toLowerCase();
@@ -194,15 +189,28 @@
                                 (row.petugas && ['J018', 'J019', 'J032', 'J067'].includes(row.petugas.kd_jbtn))
                             );
 
+                            let buttonHtml = '<span class="d-none">' + row.tgl_perawatan + ' ' + row.jam_rawat + '</span>';
+                            buttonHtml += '<div class="d-flex flex-column gap-1 align-items-center my-1">';
+
+                            // Edit Button (Blue)
+                            buttonHtml += `<button type="button" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center" style="width:34px; height:34px; padding:0;" title="Edit SOAP" onclick="ambilSoap('${row.no_rawat}','${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-pencil-square fs-6"></i></button>`;
+
+                            // Delete Button (Red)
+                            if (row.nip === "{{ session()->get('pegawai')->nik }}" || "{{ session()->get('pegawai')->nik }}" === "direksi") {
+                                buttonHtml += `<button type="button" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center" style="width:34px; height:34px; padding:0;" title="Hapus SOAP" onclick="hapusSoap('${row.no_rawat}','${row.tgl_perawatan}', '${row.jam_rawat}')"><i class="bi bi-trash3-fill fs-6"></i></button>`;
+                            }
+
+                            // ASO Button (Yellow/Green)
                             if (isSoapApoteker || row.aso) {
                                 if (row.aso) {
-                                    button += `<div class="mt-1"><button type="button" class="btn btn-warning btn-sm fw-bold w-100 p-1" style="font-size:10px;" title="ASO distempel oleh ${row.aso.petugas?.nama || row.aso.nip_apoteker} pada ${formatTanggal(row.aso.tgl_aso)}" ${isUserApoteker ? `onclick="batalAso('${row.no_rawat}','${row.tgl_perawatan}','${row.jam_rawat}')"` : 'disabled'}><i class="bi bi-clock-history"></i> ASO <i class="bi bi-check-circle-fill text-success ms-1"></i></button></div>`;
+                                    buttonHtml += `<button type="button" class="btn btn-warning btn-sm d-flex align-items-center justify-content-center text-dark position-relative" style="width:34px; height:34px; padding:0;" title="ASO Aktif (Di-stempel oleh ${row.aso.petugas?.nama || row.aso.nip_apoteker} pada ${formatTanggal(row.aso.tgl_aso)}) - Klik untuk batalkan" ${isUserApoteker ? `onclick="batalAso('${row.no_rawat}','${row.tgl_perawatan}','${row.jam_rawat}')"` : 'disabled'}><i class="bi bi-clock-history fs-6"></i><span class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle"><span class="visually-hidden">Aktif</span></span></button>`;
                                 } else if (isUserApoteker) {
-                                    button += `<div class="mt-1"><button type="button" class="btn btn-outline-warning btn-sm text-dark fw-bold w-100 p-1" style="font-size:10px;" onclick="stempelAso('${row.no_rawat}','${row.tgl_perawatan}','${row.jam_rawat}')"><i class="bi bi-clock-history"></i> + ASO</button></div>`;
+                                    buttonHtml += `<button type="button" class="btn btn-outline-warning btn-sm d-flex align-items-center justify-content-center text-dark" style="width:34px; height:34px; padding:0;" title="Stempel Automatic Stop Order (ASO)" onclick="stempelAso('${row.no_rawat}','${row.tgl_perawatan}','${row.jam_rawat}')"><i class="bi bi-clock-history fs-6"></i></button>`;
                                 }
                             }
 
-                            return button;
+                            buttonHtml += '</div>';
+                            return buttonHtml;
                         },
                         name: 'tgl_perawatan',
                         width: '5%'
