@@ -617,7 +617,143 @@
 
         function showModalTriasePreReg() {
             $('#formTriasePreReg')[0].reset();
+            for (let i = 1; i <= 5; i++) {
+                $(`#ats_prereg_${i}`).prop('checked', false);
+            }
             $('#modalTriasePreReg').modal('show');
+            loadTriasePreRegTable();
+        }
+
+        function loadTriasePreRegTable() {
+            if ($.fn.DataTable.isDataTable('.tblTriasePreReg')) {
+                $('.tblTriasePreReg').DataTable().destroy();
+            }
+
+            $('.tblTriasePreReg').DataTable({
+                responsive: true,
+                paging: false,
+                searching: false,
+                info: false,
+                ordering: false,
+                ajax: {
+                    url: '/erm/triase/get/indikator',
+                    data: { no_rawat: '' }
+                },
+                columns: [
+                    { data: 'nama_pemeriksaan' },
+                    {
+                        data: 'skala1',
+                        render: function(data) {
+                            var skala1 = JSON.parse(data);
+                            var html = '<div class="d-flex flex-column">';
+                            skala1.forEach(function(item) {
+                                html += '<div class="form-check form-check-inline">';
+                                html += '<input class="form-check-input item-prereg-skala1" type="checkbox" name="skala1[' + item.kode_skala1 + ']" id="prereg_skala1_' + item.kode_skala1 + '" value="' + item.kode_skala1 + '" onchange="recalculatePreRegAts()">';
+                                html += '<label class="form-check-label text-nowrap" for="prereg_skala1_' + item.kode_skala1 + '">' + item.pengkajian_skala1 + '</label>';
+                                html += '</div>';
+                            });
+                            html += '</div>';
+                            return html;
+                        }
+                    },
+                    {
+                        data: 'skala2',
+                        render: function(data) {
+                            var skala2 = JSON.parse(data);
+                            var html = '<div class="d-flex flex-column">';
+                            skala2.forEach(function(item) {
+                                html += '<div class="form-check form-check-inline">';
+                                html += '<input class="form-check-input item-prereg-skala2" type="checkbox" name="skala2[' + item.kode_skala2 + ']" id="prereg_skala2_' + item.kode_skala2 + '" value="' + item.kode_skala2 + '" onchange="recalculatePreRegAts()">';
+                                html += '<label class="form-check-label text-nowrap" for="prereg_skala2_' + item.kode_skala2 + '">' + item.pengkajian_skala2 + '</label>';
+                                html += '</div>';
+                            });
+                            html += '</div>';
+                            return html;
+                        }
+                    },
+                    {
+                        data: 'skala3',
+                        render: function(data) {
+                            var skala3 = JSON.parse(data);
+                            var html = '<div class="d-flex flex-column">';
+                            skala3.forEach(function(item) {
+                                html += '<div class="form-check form-check-inline">';
+                                html += '<input class="form-check-input item-prereg-skala3" type="checkbox" name="skala3[' + item.kode_skala3 + ']" id="prereg_skala3_' + item.kode_skala3 + '" value="' + item.kode_skala3 + '" onchange="recalculatePreRegAts()">';
+                                html += '<label class="form-check-label text-nowrap" for="prereg_skala3_' + item.kode_skala3 + '">' + item.pengkajian_skala3 + '</label>';
+                                html += '</div>';
+                            });
+                            html += '</div>';
+                            return html;
+                        }
+                    },
+                    {
+                        data: 'skala4',
+                        render: function(data) {
+                            var skala4 = JSON.parse(data);
+                            var html = '<div class="d-flex flex-column">';
+                            skala4.forEach(function(item) {
+                                html += '<div class="form-check form-check-inline">';
+                                html += '<input class="form-check-input item-prereg-skala4" type="checkbox" name="skala4[' + item.kode_skala4 + ']" id="prereg_skala4_' + item.kode_skala4 + '" value="' + item.kode_skala4 + '" onchange="recalculatePreRegAts()">';
+                                html += '<label class="form-check-label text-nowrap" for="prereg_skala4_' + item.kode_skala4 + '">' + item.pengkajian_skala4 + '</label>';
+                                html += '</div>';
+                            });
+                            html += '</div>';
+                            return html;
+                        }
+                    },
+                    {
+                        data: 'skala5',
+                        render: function(data) {
+                            var skala5 = JSON.parse(data);
+                            var html = '<div class="d-flex flex-column">';
+                            skala5.forEach(function(item) {
+                                html += '<div class="form-check form-check-inline">';
+                                html += '<input class="form-check-input item-prereg-skala5" type="checkbox" name="skala5[' + item.kode_skala5 + ']" id="prereg_skala5_' + item.kode_skala5 + '" value="' + item.kode_skala5 + '" onchange="recalculatePreRegAts()">';
+                                html += '<label class="form-check-label text-nowrap" for="prereg_skala5_' + item.kode_skala5 + '">' + item.pengkajian_skala5 + '</label>';
+                                html += '</div>';
+                            });
+                            html += '</div>';
+                            return html;
+                        }
+                    }
+                ]
+            });
+        }
+
+        function onHeaderAtsChange(scaleIndex) {
+            const isChecked = $(`#ats_prereg_${scaleIndex}`).is(':checked');
+            $(`.item-prereg-skala${scaleIndex}`).prop('checked', isChecked);
+            recalculatePreRegAts();
+        }
+
+        function recalculatePreRegAts() {
+            let highestScale = 5;
+            let highestCategory = 'HIJAU';
+
+            for (let i = 1; i <= 5; i++) {
+                let count = $(`.item-prereg-skala${i}:checked`).length;
+                $(`#ats_prereg_${i}`).prop('checked', count > 0);
+            }
+
+            if ($('.item-prereg-skala1:checked').length > 0) {
+                highestScale = 1;
+                highestCategory = 'MERAH';
+            } else if ($('.item-prereg-skala2:checked').length > 0) {
+                highestScale = 2;
+                highestCategory = 'KUNING';
+            } else if ($('.item-prereg-skala3:checked').length > 0) {
+                highestScale = 3;
+                highestCategory = 'KUNING';
+            } else if ($('.item-prereg-skala4:checked').length > 0) {
+                highestScale = 4;
+                highestCategory = 'HIJAU';
+            } else if ($('.item-prereg-skala5:checked').length > 0) {
+                highestScale = 5;
+                highestCategory = 'HIJAU';
+            }
+
+            $('#skala_triase_select').val(highestScale);
+            $('#kategori_triase_select').val(highestCategory);
         }
 
         function simpanTriasePreReg() {
@@ -628,11 +764,27 @@
                 return;
             }
 
+            const detailSkalaJson = {
+                skala1: [],
+                skala2: [],
+                skala3: [],
+                skala4: [],
+                skala5: [],
+            };
+            for (let i = 1; i <= 5; i++) {
+                $(`.item-prereg-skala${i}:checked`).each(function() {
+                    detailSkalaJson[`skala${i}`].push($(this).val());
+                });
+            }
+
+            let formData = form.serializeArray();
+            formData.push({ name: 'detail_skala_json', value: JSON.stringify(detailSkalaJson) });
+
             $('#btnSimpanTriasePreReg').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...');
             $.ajax({
                 url: '/erm/triase/prereg/simpan',
                 type: 'POST',
-                data: form.serialize(),
+                data: $.param(formData),
                 success: function (res) {
                     $('#btnSimpanTriasePreReg').prop('disabled', false).html('<i class="bi bi-check-lg me-1"></i> Simpan Triase Pre-Registrasi');
                     if (res.status === 'success') {

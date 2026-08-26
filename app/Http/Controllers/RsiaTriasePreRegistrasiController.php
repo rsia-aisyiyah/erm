@@ -63,6 +63,8 @@ class RsiaTriasePreRegistrasiController extends Controller
 
         DB::beginTransaction();
         try {
+            $detailSkala = is_string($request->detail_skala_json) ? json_decode($request->detail_skala_json, true) : ($request->detail_skala_json ?? []);
+
             $triase = RsiaTriasePreRegistrasi::create([
                 'id_triase' => $idTriase,
                 'tgl_triase' => date('Y-m-d H:i:s'),
@@ -83,7 +85,7 @@ class RsiaTriasePreRegistrasiController extends Controller
                 'nyeri' => $request->nyeri ?? '-',
                 'skala_triase' => $request->skala_triase,
                 'kategori_triase' => $request->kategori_triase,
-                'detail_skala_json' => $request->detail_skala_json ?? [],
+                'detail_skala_json' => $detailSkala,
                 'nip_petugas' => $nip,
                 'status_link' => 'UNLINKED',
             ]);

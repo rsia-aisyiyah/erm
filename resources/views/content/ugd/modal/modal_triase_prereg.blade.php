@@ -1,6 +1,6 @@
 <!-- Modal Form Triase Pre-Registrasi UGD -->
 <div class="modal fade" id="modalTriasePreReg" tabindex="-1" aria-labelledby="modalTriasePreRegLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white py-2">
                 <h5 class="modal-title fs-6 fw-bold" id="modalTriasePreRegLabel">
@@ -102,16 +102,65 @@
                         </div>
                     </div>
 
-                    <!-- Skala Triase ATS -->
+                    <!-- Skala Triase ATS (Tabel Matrix Indikator Lengkap Persis Asmed) -->
                     <div class="card mb-3 border-0 shadow-sm">
                         <div class="card-header bg-white py-2 fw-bold text-danger">
-                            <i class="bi bi-shield-exclamation me-1"></i> 3. HASIL HASIL TRIASE (ATS / AUSTRALIAN TRIAGE SCALE)
+                            <i class="bi bi-diagram-3-fill me-1"></i> 3. TRIASE ( AUSTRALIAN TRIAGE SCALE )
                         </div>
-                        <div class="card-body">
-                            <div class="row g-2 mb-3">
+                        <div class="card-body p-2">
+                            <div class="table-responsive mb-3">
+                                <table class="table table-bordered table-striped table-hover tblTriasePreReg mb-0" style="font-size:11px;" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="all">
+                                                <div class="text-nowrap">Prioritas</div>
+                                                <div class="text-xs text-nowrap">Waktu Tunggu</div>
+                                            </th>
+                                            <th class="text-center text-nowrap bg-danger text-white">
+                                                <div class="text-nowrap d-flex align-items-center justify-content-center">
+                                                    <input type="checkbox" class="form-check-input me-2" name="ats_prereg_1" id="ats_prereg_1" onchange="onHeaderAtsChange(1)">
+                                                    <span class="mt-1">ATS I</span>
+                                                </div>
+                                                <div class="text-xs text-nowrap">Segera</div>
+                                            </th>
+                                            <th class="text-center bg-warning text-white">
+                                                <div class="text-nowrap d-flex align-items-center justify-content-center">
+                                                    <input type="checkbox" class="form-check-input me-2" name="ats_prereg_2" id="ats_prereg_2" onchange="onHeaderAtsChange(2)">
+                                                    <span class="mt-1">ATS II</span>
+                                                </div>
+                                                <div class="text-xs text-nowrap">10 Menit</div>
+                                            </th>
+                                            <th class="text-center bg-success text-white">
+                                                <div class="text-nowrap d-flex align-items-center justify-content-center">
+                                                    <input type="checkbox" class="form-check-input me-2" name="ats_prereg_3" id="ats_prereg_3" onchange="onHeaderAtsChange(3)">
+                                                    <span class="mt-1">ATS III</span>
+                                                </div>
+                                                <div class="text-xs text-nowrap">30 Menit</div>
+                                            </th>
+                                            <th class="text-center bg-primary text-white">
+                                                <div class="text-nowrap d-flex align-items-center justify-content-center">
+                                                    <input type="checkbox" class="form-check-input me-2" name="ats_prereg_4" id="ats_prereg_4" onchange="onHeaderAtsChange(4)">
+                                                    <span class="mt-1">ATS IV</span>
+                                                </div>
+                                                <div class="text-xs text-nowrap">60 Menit</div>
+                                            </th>
+                                            <th class="text-center bg-secondary text-white">
+                                                <div class="text-nowrap d-flex align-items-center justify-content-center">
+                                                    <input type="checkbox" class="form-check-input me-2" name="ats_prereg_5" id="ats_prereg_5" onchange="onHeaderAtsChange(5)">
+                                                    <span class="mt-1">ATS V</span>
+                                                </div>
+                                                <div class="text-xs text-nowrap">120 Menit</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+
+                            <div class="row g-2 mb-2 p-2 bg-white rounded border">
                                 <div class="col-md-6">
-                                    <label class="form-label text-xs fw-bold">Skala Utama ATS <span class="text-danger">*</span></label>
-                                    <select class="form-select form-select-sm" name="skala_triase" id="skala_triase_select" required>
+                                    <label class="form-label text-xs fw-bold">Hasil Skala Utama ATS <span class="text-danger">*</span></label>
+                                    <select class="form-select form-select-sm fw-bold" name="skala_triase" id="skala_triase_select" required>
                                         <option value="1">ATS I - Resusitasi (Segera / Red Zone)</option>
                                         <option value="2">ATS II - Emergency (Waktu Tunggu < 10 Menit)</option>
                                         <option value="3" selected>ATS III - Urgent (Waktu Tunggu < 30 Menit)</option>
@@ -121,7 +170,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label text-xs fw-bold">Kategori Warna Triase <span class="text-danger">*</span></label>
-                                    <select class="form-select form-select-sm" name="kategori_triase" id="kategori_triase_select" required>
+                                    <select class="form-select form-select-sm fw-bold" name="kategori_triase" id="kategori_triase_select" required>
                                         <option value="MERAH">MERAH (Emergency / Resusitasi)</option>
                                         <option value="KUNING" selected>KUNING (Urgent / Membutuhkan Penanganan Segera)</option>
                                         <option value="HIJAU">HIJAU (Non-Urgent / Rawat Jalan)</option>
