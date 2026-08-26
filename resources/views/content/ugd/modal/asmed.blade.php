@@ -54,8 +54,16 @@
 
                         <!-- TRIASE (ATS) -->
                         <div class="card mb-3 shadow-sm border-0">
-                            <div class="card-header bg-light fw-bold py-2 text-primary">
-                                <i class="bi bi-diagram-3-fill me-1"></i> TRIASE ( AUSTRALIAN TRIAGE SCALE )
+                            <div class="card-header bg-light fw-bold py-2 text-primary d-flex align-items-center justify-content-between">
+                                <div>
+                                    <i class="bi bi-diagram-3-fill me-1"></i> TRIASE ( AUSTRALIAN TRIAGE SCALE )
+                                    <span id="badgeAsmedTriaseLinkedStatus"></span>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-outline-danger fw-bold py-0 text-xs d-none" id="btnAsmedTarikTriasePreReg" onclick="triggerLinkTriaseFromAsmed()">
+                                        <i class="bi bi-link-45deg me-1"></i> Tarik Data Triase Pre-Reg
+                                    </button>
+                                </div>
                             </div>
                             <div class="card-body p-2">
                                 <table class="table table-bordered table-striped table-hover tblTriase mb-0" style="font-size:11px;">
@@ -1280,6 +1288,8 @@
                         $.get('/erm/triase/prereg/by-no-rawat', { no_rawat: params }).done((resPre) => {
                             if (resPre.status === 'success' && resPre.data) {
                                 const tri = resPre.data;
+                                $('#badgeAsmedTriaseLinkedStatus').html(`<span class="badge bg-success ms-2 text-xs" title="ID Triase: ${tri.id_triase}"><i class="bi bi-check-circle-fill"></i> Data Ditarik dari Triase Pre-Reg (${tri.id_triase})</span>`);
+                                $('#btnAsmedTarikTriasePreReg').addClass('d-none');
                                 if (tri.keterangan_kedatangan && tri.keterangan_kedatangan !== '-') $('#formAsmedUgd textarea[name="keluhan_utama"]').val(tri.keterangan_kedatangan);
                                 if (tri.tekanan_darah && tri.tekanan_darah !== '-') $('#formAsmedUgd input[name="td"]').val(tri.tekanan_darah);
                                 if (tri.nadi && tri.nadi !== '-') $('#formAsmedUgd input[name="nadi"]').val(tri.nadi);
@@ -1290,6 +1300,9 @@
                                 if (tri.skala_triase) {
                                     $(`#ats_${tri.skala_triase}`).prop('checked', true).change();
                                 }
+                            } else {
+                                $('#badgeAsmedTriaseLinkedStatus').html('');
+                                $('#btnAsmedTarikTriasePreReg').removeClass('d-none');
                             }
                         });
                     });
@@ -1455,7 +1468,24 @@
                 }
             });
 
-            $('#modalAsmedUgd').modal('show');
+        }
+
+        function triggerLinkTriaseFromAsmed() {
+            const no_rawat = $('#formAsmedUgd input[name="no_rawat"]').val();
+            if (!no_rawat) return;
+            getRegPeriksa(no_rawat).done((regPeriksa) => {
+                if (!regPeriksa) return;
+                const p = regPeriksa.pasien || {};
+                showModalLinkTriasePreReg(
+                    no_rawat,
+                    regPeriksa.no_rkm_medis || '',
+                    p.nm_pasien || '',
+                    p.jk || '',
+                    `${hitungUmur(p.tgl_lahir)}`
+                );
+            });
+        }
+        $('#modalAsmedUgd').modal('show');
         }
     </script>
 @endpush

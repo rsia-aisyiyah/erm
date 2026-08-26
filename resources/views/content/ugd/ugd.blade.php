@@ -903,6 +903,14 @@
                         $('#tb_ugd').DataTable().destroy();
                         tbUgd();
                         loadUnlinkedTriaseCount();
+
+                        if ($('#modalAsmedUgd').is(':visible')) {
+                            const openNoRawat = $('#formAsmedUgd input[name="no_rawat"]').val();
+                            if (openNoRawat === targetLinkNoRawat) {
+                                modalAsmedUgd(openNoRawat);
+                                loadTriase(openNoRawat);
+                            }
+                        }
                     } else {
                         alertErrorAjax(res.message);
                     }
