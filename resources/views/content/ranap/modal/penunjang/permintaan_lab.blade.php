@@ -88,8 +88,19 @@
         const tableHasilPermintaan = $('#tableHasilPermintaan');
 
 
-        $('button[id="permintaan-laborat-tab"]').on('shown.bs.tab', (e) => {
 
+
+        $('button[id="permintaan-laborat-tab"]').on('shown.bs.tab', (e) => {
+            console.log('ACTION ===');
+            const no_rawat = formSoapPoli.length ? formSoapPoli.find('#nomor_rawat').val() : formPermintaanLab.find('#no_rawat').val();
+            getNomorPermintaan();
+            getRegPeriksa(no_rawat).done((regPeriksa) => {
+                formPermintaanLab.find('#no_rawat').val(regPeriksa.no_rawat)
+                formPermintaanLab.find('#kd_dokter').val(regPeriksa.kd_dokter)
+                formPermintaanLab.find('#nm_dokter').val(regPeriksa.dokter.nm_dokter)
+                formPermintaanLab.find('#nm_pasien').val(regPeriksa.pasien.nm_pasien)
+                formPermintaanLab.find('#status').val(regPeriksa.status_lanjut.toLowerCase())
+            });
         })
 
         $('#btnDataPermintaan').on('click', () => {
@@ -107,14 +118,14 @@
                 if (Object.values(response).length) {
                     const permintaan = response.map((item, index) => {
                         return `<tr>
-                                                                                                                                                                        <td>${index + 1}</td>
-                                                                                                                                                                        <td>${item.noorder}</td>
-                                                                                                                                                                        <td>${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</td>
-                                                                                                                                                                        <td>${item.informasi_tambahan}</td>
-                                                                                                                                                                        <td>${item.diagnosa_klinis}</td>
-                                                                                                                                                                        <td>${splitTanggal(item.tgl_sampel)} ${item.jam_sampel}</td>
-                                                                                                                                                                        <td>${splitTanggal(item.tgl_hasil)} ${item.jam_hasil}</td>
-                                                                                                                                                                        </tr>${getPermintaanPeriksa(item.pemeriksaan)}`
+                                <td>${index + 1}</td>
+                                <td>${item.noorder}</td>
+                                <td>${splitTanggal(item.tgl_permintaan)} ${item.jam_permintaan}</td>
+                                <td>${item.informasi_tambahan}</td>
+                                <td>${item.diagnosa_klinis}</td>
+                                <td>${splitTanggal(item.tgl_sampel)} ${item.jam_sampel}</td>
+                                <td>${splitTanggal(item.tgl_hasil)} ${item.jam_hasil}</td>
+                                </tr>${getPermintaanPeriksa(item.pemeriksaan)}`
                     }).join('');
                     contentPermintaan = permintaan;
                 } else {
@@ -127,9 +138,9 @@
         function getPermintaanPeriksa(data) {
             return data.map((item) => {
                 return `<tr>
-                                                                                                                                                                    <td></td>
-                                                                                                                                                                    <td colspan=6><strong>${item.jenis.nm_perawatan}</strong> : ${getDetailPermintaan(item.detail)}</td>
-                                                                                                                                                                </tr>`
+                    <td></td>
+                    <td colspan=6><strong>${item.jenis.nm_perawatan}</strong> : ${getDetailPermintaan(item.detail)}</td>
+                </tr>`
             }).join('');
         }
 
@@ -232,11 +243,11 @@
             return data.map((i) => {
                 if (i.Pemeriksaan.length) {
                     return `<tr>
-                                                                                                                                                                    <td><input class="form-checkbox item" type="checkbox" name="${i.id_template}" id="${i.id_template}" data-parent="${i.kd_jenis_prw}" /></td>
-                                                                                                                                                                    <td><span class="ms-4">${i.Pemeriksaan}</span></td>
-                                                                                                                                                                    <td>${i.satuan}</td>
-                                                                                                                                                                    <td><b>LD</b> : ${i.nilai_rujukan_ld} ${i.satuan}, <b>LA</b> : ${i.nilai_rujukan_la} ${i.satuan}, <b>PD</b> : ${i.nilai_rujukan_pd} ${i.satuan}, <b>PA</b> : ${i.nilai_rujukan_pa} ${i.satuan} </td>
-                                                                                                                                                                </tr>`
+                    <td><input class="form-checkbox item" type="checkbox" name="${i.id_template}" id="${i.id_template}" data-parent="${i.kd_jenis_prw}" /></td>
+                    <td><span class="ms-4">${i.Pemeriksaan}</span></td>
+                    <td>${i.satuan}</td>
+                    <td><b>LD</b> : ${i.nilai_rujukan_ld} ${i.satuan}, <b>LA</b> : ${i.nilai_rujukan_la} ${i.satuan}, <b>PD</b> : ${i.nilai_rujukan_pd} ${i.satuan}, <b>PA</b> : ${i.nilai_rujukan_pa} ${i.satuan} </td>
+                </tr>`
 
                 }
             })
