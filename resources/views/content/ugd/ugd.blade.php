@@ -756,6 +756,25 @@
             }
         }
 
+        function showModalTriasePreReg() {
+            batalEditTriasePreReg();
+            $('#nav-form-tab').click();
+            $('#modalTriasePreReg').modal('show');
+        }
+
+        function batalEditTriasePreReg() {
+            const form = $('#formTriasePreReg');
+            form[0].reset();
+            $('#id_triase_prereg_hidden').val('');
+            $('#bannerEditTriasePreReg').addClass('d-none');
+            $('#lblEditIdTriase').text('');
+            $('#skala_triase_select').val('');
+            $('#kategori_triase_select').val('');
+            $('.item-prereg-skala1, .item-prereg-skala2, .item-prereg-skala3, .item-prereg-skala4, .item-prereg-skala5').prop('checked', false);
+            $('#ats_prereg_1, #ats_prereg_2, #ats_prereg_3, #ats_prereg_4, #ats_prereg_5').prop('checked', false);
+            $('#btnSimpanTriasePreReg').html('<i class="bi bi-check-lg me-1"></i> Simpan Triase Pre-Registrasi');
+        }
+
         function simpanTriasePreReg() {
             const form = $('#formTriasePreReg');
             const nama = form.find('input[name="nama_pasien_temp"]').val();
@@ -795,7 +814,12 @@
                     if (res.status === 'success') {
                         alertSuccessAjax(res.message);
                         $('#modalTriasePreReg').modal('hide');
+                        batalEditTriasePreReg();
                         loadUnlinkedTriaseCount();
+                        if (typeof tbUgd === 'function') {
+                            $('#tb_ugd').DataTable().destroy();
+                            tbUgd();
+                        }
                     } else {
                         alertErrorAjax(res.message);
                     }
@@ -803,6 +827,138 @@
                 error: function (xhr) {
                     $('#btnSimpanTriasePreReg').prop('disabled', false).html('<i class="bi bi-check-lg me-1"></i> Simpan Triase Pre-Registrasi');
                     alertErrorAjax(xhr.responseJSON?.message || 'Gagal menyimpan Triase Pre-Registrasi');
+                }
+            });
+        }
+
+        function loadRiwayatTriasePreReg() {
+            const search = $('#searchTriasePreRegList').val() || '';
+            $.get('/erm/triase/prereg/list', { search: search }).done((res) => {
+                let html = '';
+                if (res.status === 'success' && res.data && res.data.length > 0) {
+                    res.data.forEach((item) => {
+                        let colorBadge = 'bg-success text-white';
+                        if (item.kategori_triase === 'MERAH') colorBadge = 'bg-danger text-white';
+                        else if (item.kategori_triase === 'KUNING') colorBadge = 'bg-warning text-dark';
+                        else if (item.kategori_triase === 'HITAM') colorBadge = 'bg-dark text-white';
+
+                        let statusBadge = '<span class="badge bg-secondary">UNLINKED</span>';
+                        if (item.status_link === 'LINKED') {
+                            statusBadge = `<span class="badge bg-success" title="Linked to ${item.no_rawat}"><i class="bi bi-link-45deg me-1"></i> ${item.no_rawat}</span>`;
+                        }
+
+                        let deleteBtn = '';
+                        if (item.status_link === 'UNLINKED') {
+                            deleteBtn = `<button class="btn btn-outline-danger btn-xs py-0 px-2 text-xs ms-1" onclick="hapusTriasePreReg('${item.id_triase}', '${item.nama_pasien_temp}')" title="Hapus Data"><i class="bi bi-trash"></i> Hapus</button>`;
+                        }
+
+                        html += `<tr>
+                            <td class="text-nowrap">
+                                <strong>${item.id_triase}</strong><br>
+                                <small class="text-muted">${formatTanggal(item.tgl_triase)}</small>
+                            </td>
+                            <td><strong>${item.nama_pasien_temp}</strong></td>
+                            <td>${item.jk == 'L' ? 'Laki-Laki' : 'Perempuan'} / ${item.umur_temp || '-'}</td>
+                            <td><small>${item.keterangan_kedatangan || '-'}</small></td>
+                            <td class="text-center">
+                                <span class="badge ${colorBadge}">ATS ${item.skala_triase} (${item.kategori_triase})</span>
+                            </td>
+                            <td class="text-center">${statusBadge}</td>
+                            <td class="text-center text-nowrap">
+                                <button class="btn btn-warning btn-xs py-0 px-2 text-xs fw-bold" onclick="editTriasePreReg('${item.id_triase}')"><i class="bi bi-pencil-square me-1"></i> Ubah</button>
+                                ${deleteBtn}
+                            </td>
+                        </tr>`;
+                    });
+                } else {
+                    html = '<tr><td colspan="7" class="text-center py-3 text-muted">Belum ada riwayat data triase pre-registrasi.</td></tr>';
+                }
+                $('#tbodyRiwayatTriasePreReg').html(html);
+            });
+        }
+
+        function editTriasePreReg(id_triase) {
+            $.get('/erm/triase/prereg/detail/' + id_triase).done((res) => {
+                if (res.status === 'success' && res.data) {
+                    const data = res.data;
+                    batalEditTriasePreReg();
+
+                    $('#id_triase_prereg_hidden').val(data.id_triase);
+                    $('#lblEditIdTriase').text(`${data.id_triase} (${data.nama_pasien_temp})`);
+                    $('#bannerEditTriasePreReg').removeClass('d-none');
+
+                    const form = $('#formTriasePreReg');
+                    form.find('input[name="nama_pasien_temp"]').val(data.nama_pasien_temp);
+                    form.find('select[name="jk"]').val(data.jk);
+                    form.find('input[name="umur_temp"]').val(data.umur_temp);
+                    form.find('select[name="cara_masuk"]').val(data.cara_masuk);
+                    form.find('select[name="alat_transportasi"]').val(data.alat_transportasi);
+                    form.find('select[name="alasan_kedatangan"]').val(data.alasan_kedatangan);
+                    form.find('textarea[name="keterangan_kedatangan"]').val(data.keterangan_kedatangan);
+
+                    form.find('input[name="tekanan_darah"]').val(data.tekanan_darah);
+                    form.find('input[name="nadi"]').val(data.nadi);
+                    form.find('input[name="pernapasan"]').val(data.pernapasan);
+                    form.find('input[name="suhu"]').val(data.suhu);
+                    form.find('input[name="saturasi_o2"]').val(data.saturasi_o2);
+                    form.find('input[name="gcs"]').val(data.gcs);
+
+                    $('#skala_triase_select').val(data.skala_triase);
+                    $('#kategori_triase_select').val(data.kategori_triase);
+
+                    // Restore checkboxes detail_skala_json
+                    if (data.detail_skala_json) {
+                        const detail = data.detail_skala_json;
+                        for (let i = 1; i <= 5; i++) {
+                            const keySkala = 'skala' + i;
+                            if (detail[keySkala] && Array.isArray(detail[keySkala])) {
+                                detail[keySkala].forEach(val => {
+                                    $(`.item-prereg-skala${i}[value="${val}"]`).prop('checked', true);
+                                });
+                            }
+                        }
+                    }
+
+                    $('#btnSimpanTriasePreReg').html('<i class="bi bi-check-circle-fill me-1"></i> Update Data Triase');
+                    $('#nav-form-tab').click();
+                } else {
+                    alertErrorAjax(res.message || 'Gagal memuat detail Triase');
+                }
+            });
+        }
+
+        function hapusTriasePreReg(id_triase, nama_pasien) {
+            Swal.fire({
+                title: 'Hapus Data Triase?',
+                text: `Data Triase Pre-Registrasi "${nama_pasien}" (${id_triase}) akan dihapus permanen.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/erm/triase/prereg/delete',
+                        type: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id_triase: id_triase
+                        },
+                        success: function (res) {
+                            if (res.status === 'success') {
+                                alertSuccessAjax(res.message);
+                                loadRiwayatTriasePreReg();
+                                loadUnlinkedTriaseCount();
+                            } else {
+                                alertErrorAjax(res.message);
+                            }
+                        },
+                        error: function (xhr) {
+                            alertErrorAjax(xhr.responseJSON?.message || 'Gagal menghapus Triase');
+                        }
+                    });
                 }
             });
         }

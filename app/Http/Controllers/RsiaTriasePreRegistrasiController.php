@@ -64,6 +64,104 @@ class RsiaTriasePreRegistrasiController extends Controller
         DB::beginTransaction();
         try {
             $detailSkala = is_string($request->detail_skala_json) ? json_decode($request->detail_skala_json, true) : ($request->detail_skala_json ?? []);
+            $kodeKasus = ($request->kode_kasus && $request->kode_kasus !== '-') ? $request->kode_kasus : '006';
+
+            if ($request->id_triase) {
+                $triase = RsiaTriasePreRegistrasi::find($request->id_triase);
+                if ($triase) {
+                    $triase->update([
+                        'nama_pasien_temp' => $request->nama_pasien_temp,
+                        'jk' => $request->jk ?? 'L',
+                        'umur_temp' => $request->umur_temp ?? '-',
+                        'cara_masuk' => $request->cara_masuk ?? 'Sendiri',
+                        'alat_transportasi' => $request->alat_transportasi ?? 'Kendaraan Pribadi',
+                        'alasan_kedatangan' => $request->alasan_kedatangan ?? 'Penyakit Non Trauma',
+                        'keterangan_kedatangan' => $request->keterangan_kedatangan ?? '-',
+                        'kode_kasus' => $kodeKasus,
+                        'tekanan_darah' => $request->tekanan_darah ?? '-',
+                        'nadi' => $request->nadi ?? '-',
+                        'pernapasan' => $request->pernapasan ?? '-',
+                        'suhu' => $request->suhu ?? '-',
+                        'saturasi_o2' => $request->saturasi_o2 ?? '-',
+                        'gcs' => $request->gcs ?? '-',
+                        'nyeri' => $request->nyeri ?? '-',
+                        'skala_triase' => $request->skala_triase,
+                        'kategori_triase' => $request->kategori_triase,
+                        'detail_skala_json' => $detailSkala,
+                    ]);
+
+                    // Sync update jika sudah terhubung ke no_rawat
+                    if ($triase->status_link === 'LINKED' && $triase->no_rawat) {
+                        $validKasus = DB::table('master_triase_macam_kasus')->where('kode_kasus', $kodeKasus)->first();
+                        if (!$validKasus) {
+                            $kodeKasus = '006';
+                        }
+
+                        DB::table('data_triase_igd')->updateOrInsert(
+                            ['no_rawat' => $triase->no_rawat],
+                            [
+                                'tgl_kunjungan' => $triase->tgl_triase,
+                                'cara_masuk' => $triase->cara_masuk,
+                                'alat_transportasi' => $triase->alat_transportasi,
+                                'alasan_kedatangan' => $triase->alasan_kedatangan,
+                                'keterangan_kedatangan' => $triase->keterangan_kedatangan,
+                                'kode_kasus' => $kodeKasus,
+                                'tekanan_darah' => $triase->tekanan_darah,
+                                'nadi' => $triase->nadi,
+                                'pernapasan' => $triase->pernapasan,
+                                'suhu' => $triase->suhu,
+                                'saturasi_o2' => $triase->saturasi_o2,
+                                'nyeri' => $triase->nyeri,
+                            ]
+                        );
+
+                        // Sync detail indikator skala
+                        $skalaModels = [
+                            1 => RsiaDataTriaseUgdDetailSkala1::class,
+                            2 => RsiaDataTriaseUgdDetailSkala2::class,
+                            3 => RsiaDataTriaseUgdDetailSkala3::class,
+                            4 => RsiaDataTriaseUgdDetailSkala4::class,
+                            5 => RsiaDataTriaseUgdDetailSkala5::class,
+                        ];
+                        foreach ($skalaModels as $skalaNum => $modelClass) {
+                            $modelClass::where('no_rawat', $triase->no_rawat)->delete();
+                            $keySkala = 'skala' . $skalaNum;
+                            if (isset($detailSkala[$keySkala]) && is_array($detailSkala[$keySkala])) {
+                                foreach ($detailSkala[$keySkala] as $item) {
+                                    $kodeKey = 'kode_skala' . $skalaNum;
+                                    if (!empty($item[$kodeKey])) {
+                                        $modelClass::create([
+                                            'no_rawat' => $triase->no_rawat,
+                                            $kodeKey => $item[$kodeKey]
+                                        ]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    DB::commit();
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Data Triase Pre-Registrasi berhasil diperbarui',
+                        'data' => $triase
+                    ]);
+                }
+            }
+
+            // Generate ID Triase jika simpan baru: TR-YYYYMMDD-XXXX
+            $datePrefix = 'TR-' . date('Ymd') . '-';
+            $lastTriase = RsiaTriasePreRegistrasi::where('id_triase', 'like', $datePrefix . '%')
+                ->orderBy('id_triase', 'DESC')
+                ->first();
+
+            if ($lastTriase) {
+                $lastNum = (int) substr($lastTriase->id_triase, -4);
+                $newNum = str_pad($lastNum + 1, 4, '0', STR_PAD_LEFT);
+            } else {
+                $newNum = '0001';
+            }
+            $idTriase = $datePrefix . $newNum;
 
             $triase = RsiaTriasePreRegistrasi::create([
                 'id_triase' => $idTriase,
@@ -75,7 +173,7 @@ class RsiaTriasePreRegistrasiController extends Controller
                 'alat_transportasi' => $request->alat_transportasi ?? 'Kendaraan Pribadi',
                 'alasan_kedatangan' => $request->alasan_kedatangan ?? 'Penyakit Non Trauma',
                 'keterangan_kedatangan' => $request->keterangan_kedatangan ?? '-',
-                'kode_kasus' => ($request->kode_kasus && $request->kode_kasus !== '-') ? $request->kode_kasus : '006',
+                'kode_kasus' => $kodeKasus,
                 'tekanan_darah' => $request->tekanan_darah ?? '-',
                 'nadi' => $request->nadi ?? '-',
                 'pernapasan' => $request->pernapasan ?? '-',
@@ -103,6 +201,55 @@ class RsiaTriasePreRegistrasiController extends Controller
                 'message' => 'Gagal menyimpan Triase Pre-Registrasi: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function getRecentList(Request $request)
+    {
+        $query = RsiaTriasePreRegistrasi::with('petugas');
+        if ($request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_pasien_temp', 'like', "%{$search}%")
+                  ->orWhere('id_triase', 'like', "%{$search}%")
+                  ->orWhere('no_rawat', 'like', "%{$search}%");
+            });
+        }
+        $triaseList = $query->orderBy('tgl_triase', 'DESC')->limit(50)->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $triaseList
+        ]);
+    }
+
+    public function getDetail($id_triase)
+    {
+        $triase = RsiaTriasePreRegistrasi::with('petugas')->find($id_triase);
+        if (!$triase) {
+            return response()->json(['status' => 'error', 'message' => 'Data Triase tidak ditemukan'], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => $triase
+        ]);
+    }
+
+    public function destroy(Request $request)
+    {
+        $triase = RsiaTriasePreRegistrasi::find($request->id_triase);
+        if (!$triase) {
+            return response()->json(['status' => 'error', 'message' => 'Data Triase tidak ditemukan'], 404);
+        }
+
+        if ($triase->status_link === 'LINKED') {
+            return response()->json(['status' => 'error', 'message' => 'Triase yang sudah terhubung ke registrasi tidak dapat dihapus langsung. Lepas tautan terlebih dahulu.'], 400);
+        }
+
+        $triase->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data Triase Pre-Registrasi berhasil dihapus'
+        ]);
     }
 
     public function link(Request $request)

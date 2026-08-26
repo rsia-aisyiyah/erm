@@ -143,9 +143,12 @@ Route::middleware('auth')->group(function () {
 
 	// triase UGD Pre-Registrasi
 	Route::get('/triase/prereg/unlinked', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'getUnlinked']);
+	Route::get('/triase/prereg/list', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'getRecentList']);
+	Route::get('/triase/prereg/detail/{id}', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'getDetail']);
 	Route::post('/triase/prereg/simpan', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'store']);
 	Route::post('/triase/prereg/link', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'link']);
 	Route::post('/triase/prereg/unlink', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'unlink']);
+	Route::post('/triase/prereg/delete', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'destroy']);
 	Route::get('/triase/prereg/by-no-rawat', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'getByNoRawat']);
 
 	Route::get('persetujuan/loket/{loket}', [RsiaGeneralConsentController::class, 'index']);
