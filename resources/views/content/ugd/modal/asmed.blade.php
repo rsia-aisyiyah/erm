@@ -1045,10 +1045,11 @@
                     $('#tb_ranap').DataTable().ajax.reload(null, false);
                 }
             }).fail((err) => {
+                let errorMsg = err.responseJSON?.message || err.responseText || 'Terjadi kesalahan sistem';
                 Swal.fire({
                     icon: 'error',
-                    title: 'Gagal Menyimpan',
-                    text: err.responseText || 'Terjadi kesalahan sistem'
+                    title: 'Akses Ditolak / Gagal',
+                    text: errorMsg
                 });
             });
         });

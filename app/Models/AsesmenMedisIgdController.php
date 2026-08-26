@@ -146,13 +146,13 @@ class AsesmenMedisIgdController extends Model
             $dataAsmed['tanggal'] = date('Y-m-d H:i:s');
         }
 
-        // Safeguard FK 1452: Validasi kd_dokter terhadap tabel dokter
-        $dokterValid = \DB::table('dokter')->where('kd_dokter', $dataAsmed['kd_dokter'] ?? '')->first();
+        // Validasi Otorisasi: kd_dokter harus terdaftar sebagai Dokter di tabel dokter
+        $kdDokterCheck = $dataAsmed['kd_dokter'] ?? session()->get('pegawai')->nik;
+        $dokterValid = \DB::table('dokter')->where('kd_dokter', $kdDokterCheck)->first();
         if (!$dokterValid) {
-            $reg = \DB::table('reg_periksa')->where('no_rawat', $no_rawat)->first();
-            if ($reg && \DB::table('dokter')->where('kd_dokter', $reg->kd_dokter)->exists()) {
-                $dataAsmed['kd_dokter'] = $reg->kd_dokter;
-            }
+            return response()->json([
+                'message' => 'Akun Anda bukan Dokter (tidak terdaftar sebagai Dokter). Anda tidak memiliki akses untuk menyimpan Asesmen Medis UGD.'
+            ], 403);
         }
 
         $isExist = $this->asesmen->where('no_rawat', $no_rawat)->first();
@@ -254,13 +254,13 @@ class AsesmenMedisIgdController extends Model
             $dataAsmed['tanggal'] = date('Y-m-d H:i:s');
         }
 
-        // Safeguard FK 1452: Validasi kd_dokter terhadap tabel dokter
-        $dokterValid = \DB::table('dokter')->where('kd_dokter', $dataAsmed['kd_dokter'] ?? '')->first();
+        // Validasi Otorisasi: kd_dokter harus terdaftar sebagai Dokter di tabel dokter
+        $kdDokterCheck = $dataAsmed['kd_dokter'] ?? session()->get('pegawai')->nik;
+        $dokterValid = \DB::table('dokter')->where('kd_dokter', $kdDokterCheck)->first();
         if (!$dokterValid) {
-            $reg = \DB::table('reg_periksa')->where('no_rawat', $no_rawat)->first();
-            if ($reg && \DB::table('dokter')->where('kd_dokter', $reg->kd_dokter)->exists()) {
-                $dataAsmed['kd_dokter'] = $reg->kd_dokter;
-            }
+            return response()->json([
+                'message' => 'Akun Anda bukan Dokter (tidak terdaftar sebagai Dokter). Anda tidak memiliki akses untuk menyimpan Asesmen Medis UGD.'
+            ], 403);
         }
 
         try {
