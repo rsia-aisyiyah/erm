@@ -75,7 +75,7 @@ class RsiaTriasePreRegistrasiController extends Controller
                 'alat_transportasi' => $request->alat_transportasi ?? 'Kendaraan Pribadi',
                 'alasan_kedatangan' => $request->alasan_kedatangan ?? 'Penyakit Non Trauma',
                 'keterangan_kedatangan' => $request->keterangan_kedatangan ?? '-',
-                'kode_kasus' => $request->kode_kasus ?? '-',
+                'kode_kasus' => ($request->kode_kasus && $request->kode_kasus !== '-') ? $request->kode_kasus : '006',
                 'tekanan_darah' => $request->tekanan_darah ?? '-',
                 'nadi' => $request->nadi ?? '-',
                 'pernapasan' => $request->pernapasan ?? '-',
@@ -125,6 +125,13 @@ class RsiaTriasePreRegistrasiController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Data Registrasi Pasien tidak ditemukan.'], 404);
         }
 
+        // Cek validasi kode_kasus terhadap master_triase_macam_kasus untuk cegah FK 1452 error
+        $kodeKasus = $triase->kode_kasus;
+        $validKasus = DB::table('master_triase_macam_kasus')->where('kode_kasus', $kodeKasus)->first();
+        if (!$validKasus) {
+            $kodeKasus = '006'; // Default kode_kasus "-" pada Khanza
+        }
+
         DB::beginTransaction();
         try {
             // Update status link pada rsia_triase_pre_registrasi
@@ -145,7 +152,7 @@ class RsiaTriasePreRegistrasiController extends Controller
                     'alat_transportasi' => $triase->alat_transportasi,
                     'alasan_kedatangan' => $triase->alasan_kedatangan,
                     'keterangan_kedatangan' => $triase->keterangan_kedatangan,
-                    'kode_kasus' => $triase->kode_kasus,
+                    'kode_kasus' => $kodeKasus,
                     'tekanan_darah' => $triase->tekanan_darah,
                     'nadi' => $triase->nadi,
                     'pernapasan' => $triase->pernapasan,
