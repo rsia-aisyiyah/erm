@@ -1468,6 +1468,7 @@
                 }
             });
 
+            $('#modalAsmedUgd').modal('show');
         }
 
         function triggerLinkTriaseFromAsmed() {
@@ -1484,8 +1485,6 @@
                     `${hitungUmur(p.tgl_lahir)}`
                 );
             });
-        }
-        $('#modalAsmedUgd').modal('show');
         }
     </script>
 @endpush
