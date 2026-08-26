@@ -1275,6 +1275,23 @@
                             if (pem.gcs && pem.gcs !== '-') $('#formAsmedUgd input[name="gcs"]').val(pem.gcs);
                             if (pem.kesadaran) $('#formAsmedUgd select[name="kesadaran"]').val(pem.kesadaran).change();
                         }
+
+                        // Auto pre-fill dari Triase Pre-Registrasi jika ada
+                        $.get('/erm/triase/prereg/by-no-rawat', { no_rawat: params }).done((resPre) => {
+                            if (resPre.status === 'success' && resPre.data) {
+                                const tri = resPre.data;
+                                if (tri.keterangan_kedatangan && tri.keterangan_kedatangan !== '-') $('#formAsmedUgd textarea[name="keluhan_utama"]').val(tri.keterangan_kedatangan);
+                                if (tri.tekanan_darah && tri.tekanan_darah !== '-') $('#formAsmedUgd input[name="td"]').val(tri.tekanan_darah);
+                                if (tri.nadi && tri.nadi !== '-') $('#formAsmedUgd input[name="nadi"]').val(tri.nadi);
+                                if (tri.pernapasan && tri.pernapasan !== '-') $('#formAsmedUgd input[name="rr"]').val(tri.pernapasan);
+                                if (tri.suhu && tri.suhu !== '-') $('#formAsmedUgd input[name="suhu"]').val(tri.suhu);
+                                if (tri.saturasi_o2 && tri.saturasi_o2 !== '-') $('#formAsmedUgd input[name="spo"]').val(tri.saturasi_o2);
+                                if (tri.gcs && tri.gcs !== '-') $('#formAsmedUgd input[name="gcs"]').val(tri.gcs);
+                                if (tri.skala_triase) {
+                                    $(`#ats_${tri.skala_triase}`).prop('checked', true).change();
+                                }
+                            }
+                        });
                     });
                 } else {
                     // Data Pernah Disimpan: Tombol Cetak ditampilkan

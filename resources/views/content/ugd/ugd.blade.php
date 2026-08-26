@@ -26,9 +26,12 @@
             @else
                 <input type="hidden" value="{{ session()->get('pegawai')->nik }}" name="kd_dokter">
             @endif
-            <div class="col-md-6 col-lg-3 col-sm-12 d-flex align-items-end">
+            <div class="col-md-6 col-lg-3 col-sm-12 d-flex align-items-end gap-2">
                 <button type="button" class="btn btn-outline-danger btn-sm" onclick="showTabelHasilKritis()" title="Monitoring Pelaporan Nilai Kritis">
-                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Monitoring Nilai Kritis
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Nilai Kritis
+                </button>
+                <button type="button" class="btn btn-danger btn-sm fw-bold text-nowrap" onclick="showModalTriasePreReg()" title="Input Triase Pasien Baru Sebelum Registrasi">
+                    <i class="bi bi-diagram-3-fill me-1"></i> + Triase Pre-Reg <span class="badge bg-white text-danger ms-1" id="badgeCountUnlinkedTriase">0</span>
                 </button>
             </div>
         </div>
@@ -47,6 +50,8 @@
     @include('content.ugd.modal.asmed')
     @include('content.ugd.modal.modal_askep_igd')
     @include('content.ugd.modal.modal_askep_kebidanan')
+    @include('content.ugd.modal.modal_triase_prereg')
+    @include('content.ugd.modal.modal_link_triase_prereg')
     @include('content.ranap.modal.modal_penunjang')
     @include('content.poliklinik.modal.modal_riwayat')
     @include('content.ranap.modal.modal_riwayat')
@@ -295,6 +300,12 @@
                         }
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${row.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenGeriatri('${row.no_rawat}')"><i class="bi bi-person-heart text-success me-1"></i> Asesmen Awal Geriatri ${cekList(row.asesmen_geriatri)}</a></li>`;
+                        
+                        if (row.triase_pre_reg) {
+                            list += `<li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="unlinkTriasePreReg('${row.no_rawat}', '${pasien.nm_pasien || ''}')"><i class="bi bi-link-45deg me-1"></i> Lepas Tautan Triase Pre-Reg</a></li>`;
+                        } else {
+                            list += `<li><a class="dropdown-item text-primary" href="javascript:void(0)" onclick="showModalLinkTriasePreReg('${row.no_rawat}', '${row.no_rkm_medis}', '${pasien.nm_pasien || ''}', '${pasien.jk || ''}', '${row.sttsumur || ''} ${row.umurdaftar || ''}')"><i class="bi bi-link-45deg me-1"></i> Tautkan Triase Pre-Reg</a></li>`;
+                        }
                         button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:11px"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                         return button;
                     }
@@ -416,23 +427,26 @@
                     render: (data, type, row, meta) => {
                         let ats = '';
                         let atsClass = '';
-                        if (row.triase_skala1.length > 0) {
+                        if (row.triase_skala1.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '1')) {
                             ats = `ATS I`
                             atsClass = 'bg-danger text-white';
-                        } else if (row.triase_skala2.length > 0) {
+                        } else if (row.triase_skala2.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '2')) {
                             ats = `ATS II`
                             atsClass = 'bg-warning text-dark';
-                        } else if (row.triase_skala3.length > 0) {
+                        } else if (row.triase_skala3.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '3')) {
                             ats = `ATS III`
                             atsClass = 'bg-success text-white';
-                        } else if (row.triase_skala4.length > 0) {
+                        } else if (row.triase_skala4.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '4')) {
                             ats = `ATS IV`
                             atsClass = 'bg-primary text-white';
-                        } else if (row.triase_skala5.length > 0) {
+                        } else if (row.triase_skala5.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '5')) {
                             ats = `ATS V`
                             atsClass = 'bg-secondary text-white';
                         }
-                        return `<div class="${atsClass} p-2 text-center" style="font-family:monospace">${ats}</div>`
+                        
+                        let preBadge = row.triase_pre_reg ? `<div class="mt-1"><span class="badge bg-dark" style="font-size:9px;" title="Pre-Reg Linked: ${row.triase_pre_reg.id_triase}"><i class="bi bi-link-45deg"></i> Pre-Reg</span></div>` : '';
+
+                        return `<div class="${atsClass} p-1 text-center" style="font-family:monospace">${ats}${preBadge}</div>`
                     }
                 }
 
@@ -581,6 +595,201 @@
             tbSoapUgd(noRawat);
 
 
+        }
+
+        // ================= TRIASE PRE-REGISTRASI UGD =================
+        let targetLinkNoRawat = '';
+        let targetLinkNoRkmMedis = '';
+        let targetLinkPasienJk = '';
+        let selectedIdTriasePreReg = '';
+
+        $(document).ready(() => {
+            loadUnlinkedTriaseCount();
+        });
+
+        function loadUnlinkedTriaseCount() {
+            $.get('/erm/triase/prereg/unlinked').done((res) => {
+                if (res.status === 'success' && res.data) {
+                    $('#badgeCountUnlinkedTriase').text(res.data.length);
+                }
+            });
+        }
+
+        function showModalTriasePreReg() {
+            $('#formTriasePreReg')[0].reset();
+            $('#modalTriasePreReg').modal('show');
+        }
+
+        function simpanTriasePreReg() {
+            const form = $('#formTriasePreReg');
+            const nama = form.find('input[name="nama_pasien_temp"]').val();
+            if (!nama) {
+                alertWarning('Nama pasien / anonim wajib diisi!');
+                return;
+            }
+
+            $('#btnSimpanTriasePreReg').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...');
+            $.ajax({
+                url: '/erm/triase/prereg/simpan',
+                type: 'POST',
+                data: form.serialize(),
+                success: function (res) {
+                    $('#btnSimpanTriasePreReg').prop('disabled', false).html('<i class="bi bi-check-lg me-1"></i> Simpan Triase Pre-Registrasi');
+                    if (res.status === 'success') {
+                        alertSuccessAjax(res.message);
+                        $('#modalTriasePreReg').modal('hide');
+                        loadUnlinkedTriaseCount();
+                    } else {
+                        alertErrorAjax(res.message);
+                    }
+                },
+                error: function (xhr) {
+                    $('#btnSimpanTriasePreReg').prop('disabled', false).html('<i class="bi bi-check-lg me-1"></i> Simpan Triase Pre-Registrasi');
+                    alertErrorAjax(xhr.responseJSON?.message || 'Gagal menyimpan Triase Pre-Registrasi');
+                }
+            });
+        }
+
+        function showModalLinkTriasePreReg(no_rawat, no_rkm_medis, nm_pasien, jk, umur) {
+            targetLinkNoRawat = no_rawat;
+            targetLinkNoRkmMedis = no_rkm_medis;
+            targetLinkPasienJk = (jk || '').toUpperCase();
+            selectedIdTriasePreReg = '';
+
+            $('#link_simrs_no_rawat').text(no_rawat);
+            $('#link_simrs_no_rkm_medis').text(no_rkm_medis);
+            $('#link_simrs_nm_pasien').text(nm_pasien);
+            $('#link_simrs_jk_umur').html(`${jk == 'L' ? 'Laki-Laki (L)' : 'Perempuan (P)'} - ${umur}`);
+            $('#btnEksekusiLinkTriase').prop('disabled', true);
+            $('#alertLinkMismatch').addClass('d-none');
+
+            loadUnlinkedTriaseList();
+            $('#modalLinkTriasePreReg').modal('show');
+        }
+
+        function loadUnlinkedTriaseList() {
+            const search = $('#searchUnlinkedTriase').val() || '';
+            $.get('/erm/triase/prereg/unlinked', { search: search }).done((res) => {
+                let html = '';
+                if (res.status === 'success' && res.data && res.data.length > 0) {
+                    res.data.forEach((item) => {
+                        let colorBadge = 'bg-success text-white';
+                        if (item.kategori_triase === 'MERAH') colorBadge = 'bg-danger text-white';
+                        else if (item.kategori_triase === 'KUNING') colorBadge = 'bg-warning text-dark';
+                        else if (item.kategori_triase === 'HITAM') colorBadge = 'bg-dark text-white';
+
+                        const itemJk = (item.jk || '').toUpperCase();
+                        const isMismatch = (targetLinkPasienJk && itemJk && targetLinkPasienJk !== itemJk);
+
+                        html += `<tr class="${isMismatch ? 'table-warning' : ''}" style="cursor:pointer;" onclick="selectRowTriasePreReg('${item.id_triase}', '${itemJk}')">
+                            <td class="text-center">
+                                <input type="radio" name="radio_triase_prereg" value="${item.id_triase}" id="radio_${item.id_triase}">
+                            </td>
+                            <td>
+                                <strong>${item.id_triase}</strong><br>
+                                <small class="text-muted">${formatTanggal(item.tgl_triase)}</small>
+                            </td>
+                            <td><strong>${item.nama_pasien_temp}</strong></td>
+                            <td>${item.jk == 'L' ? 'L' : 'P'} / ${item.umur_temp || '-'}</td>
+                            <td>${item.keterangan_kedatangan || '-'}</td>
+                            <td>
+                                TD: ${item.tekanan_darah || '-'}, N: ${item.nadi || '-'}, S: ${item.suhu || '-'}, SpO2: ${item.saturasi_o2 || '-'}
+                            </td>
+                            <td class="text-center">
+                                <span class="badge ${colorBadge}">ATS ${item.skala_triase} (${item.kategori_triase})</span>
+                            </td>
+                            <td><small>${item.petugas ? item.petugas.nama : item.nip_petugas}</small></td>
+                        </tr>`;
+                    });
+                } else {
+                    html = '<tr><td colspan="8" class="text-center py-3 text-muted">Tidak ada data Triase Pre-Registrasi unlinked yang tersedia.</td></tr>';
+                }
+                $('#tbodyUnlinkedTriase').html(html);
+            });
+        }
+
+        function selectRowTriasePreReg(idTriase, triaseJk) {
+            $(`#radio_${idTriase}`).prop('checked', true);
+            selectedIdTriasePreReg = idTriase;
+            $('#btnEksekusiLinkTriase').prop('disabled', false);
+
+            if (targetLinkPasienJk && triaseJk && targetLinkPasienJk !== triaseJk) {
+                $('#textLinkMismatch').text(`Peringatan: Jenis Kelamin Registrasi (${targetLinkPasienJk == 'L' ? 'Laki-Laki' : 'Perempuan'}) TIDAK COCOK dengan Triase Pre-Reg (${triaseJk == 'L' ? 'Laki-Laki' : 'Perempuan'}). Harap periksa kembali!`);
+                $('#alertLinkMismatch').removeClass('d-none');
+            } else {
+                $('#alertLinkMismatch').addClass('d-none');
+            }
+        }
+
+        function eksekusiLinkTriase() {
+            if (!selectedIdTriasePreReg || !targetLinkNoRawat) {
+                alertWarning('Pilih salah satu data Triase Pre-Registrasi!');
+                return;
+            }
+
+            $('#btnEksekusiLinkTriase').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Menautkan...');
+            $.ajax({
+                url: '/erm/triase/prereg/link',
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id_triase: selectedIdTriasePreReg,
+                    no_rawat: targetLinkNoRawat
+                },
+                success: function (res) {
+                    $('#btnEksekusiLinkTriase').prop('disabled', false).html('<i class="bi bi-link-45deg me-1"></i> Tautkan Data Triase Ini');
+                    if (res.status === 'success') {
+                        alertSuccessAjax(res.message);
+                        $('#modalLinkTriasePreReg').modal('hide');
+                        $('#tb_ugd').DataTable().destroy();
+                        tbUgd();
+                        loadUnlinkedTriaseCount();
+                    } else {
+                        alertErrorAjax(res.message);
+                    }
+                },
+                error: function (xhr) {
+                    $('#btnEksekusiLinkTriase').prop('disabled', false).html('<i class="bi bi-link-45deg me-1"></i> Tautkan Data Triase Ini');
+                    alertErrorAjax(xhr.responseJSON?.message || 'Gagal menautkan Triase');
+                }
+            });
+        }
+
+        function unlinkTriasePreReg(no_rawat, nm_pasien) {
+            Swal.fire({
+                title: 'Lepaskan Tautan Triase?',
+                text: `Tautan data Triase Pre-Registrasi untuk pasien "${nm_pasien}" (${no_rawat}) akan dilepaskan.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Lepas Tautan',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/erm/triase/prereg/unlink',
+                        type: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_rawat: no_rawat
+                        },
+                        success: function (res) {
+                            if (res.status === 'success') {
+                                alertSuccessAjax(res.message);
+                                $('#tb_ugd').DataTable().destroy();
+                                tbUgd();
+                                loadUnlinkedTriaseCount();
+                            } else {
+                                alertErrorAjax(res.message);
+                            }
+                        },
+                        error: function (xhr) {
+                            alertErrorAjax(xhr.responseJSON?.message || 'Gagal melepaskan tautan Triase');
+                        }
+                    });
+                }
+            });
         }
     </script>
 @endpush

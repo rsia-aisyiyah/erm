@@ -141,6 +141,13 @@ Route::middleware('auth')->group(function () {
 	route::post('/triase/simpan', [TriasePemeriksaanUgd::class, 'simpan']);
 	route::get('/triase/get', [TriasePemeriksaanUgd::class, 'get']);
 
+	// triase UGD Pre-Registrasi
+	Route::get('/triase/prereg/unlinked', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'getUnlinked']);
+	Route::post('/triase/prereg/simpan', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'store']);
+	Route::post('/triase/prereg/link', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'link']);
+	Route::post('/triase/prereg/unlink', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'unlink']);
+	Route::get('/triase/prereg/by-no-rawat', [\App\Http\Controllers\RsiaTriasePreRegistrasiController::class, 'getByNoRawat']);
+
 	Route::get('persetujuan/loket/{loket}', [RsiaGeneralConsentController::class, 'index']);
 	Route::post('persetujuan/tambah', [RsiaGeneralConsentController::class, 'tambah']);
 	Route::get('persetujuan/ambil', [RsiaGeneralConsentController::class, 'ambil']);

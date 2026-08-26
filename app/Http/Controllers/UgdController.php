@@ -58,6 +58,7 @@ class UgdController extends Controller
                 'triaseSkala3',
                 'triaseSkala4',
                 'triaseSkala5',
+                'triasePreReg',
                 'kamarPulang' => function ($q) {
                     return $q->where('stts_pulang', '!=', 'Pindah Kamar')->with('kamar.bangsal');
                 }

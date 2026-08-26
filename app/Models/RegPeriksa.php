@@ -181,6 +181,10 @@ class RegPeriksa extends Model
     {
         return $this->hasOne(AsesmenMedisAnak::class, 'no_rawat', 'no_rawat');
     }
+    function triasePreReg()
+    {
+        return $this->hasOne(RsiaTriasePreRegistrasi::class, 'no_rawat', 'no_rawat');
+    }
     function askepRanapAnak()
     {
         return $this->hasOne(AskepRanapAnak::class, 'no_rawat', 'no_rawat');
