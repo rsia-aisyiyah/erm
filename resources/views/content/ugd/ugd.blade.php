@@ -727,8 +727,8 @@
         }
 
         function recalculatePreRegAts() {
-            let highestScale = 5;
-            let highestCategory = 'HIJAU';
+            let highestScale = '';
+            let highestCategory = '';
 
             for (let i = 1; i <= 5; i++) {
                 let count = $(`.item-prereg-skala${i}:checked`).length;
@@ -752,8 +752,10 @@
                 highestCategory = 'HIJAU';
             }
 
-            $('#skala_triase_select').val(highestScale);
-            $('#kategori_triase_select').val(highestCategory);
+            if (highestScale !== '') {
+                $('#skala_triase_select').val(highestScale);
+                $('#kategori_triase_select').val(highestCategory);
+            }
         }
 
         function simpanTriasePreReg() {
@@ -761,6 +763,11 @@
             const nama = form.find('input[name="nama_pasien_temp"]').val();
             if (!nama) {
                 alertWarning('Nama pasien / anonim wajib diisi!');
+                return;
+            }
+
+            if (!form.find('select[name="skala_triase"]').val()) {
+                alertWarning('Pilih Hasil Skala Utama ATS terlebih dahulu atau centang salah satu indikator triase!');
                 return;
             }
 

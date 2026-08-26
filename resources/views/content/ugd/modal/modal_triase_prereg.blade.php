@@ -161,9 +161,10 @@
                                 <div class="col-md-6">
                                     <label class="form-label text-xs fw-bold">Hasil Skala Utama ATS <span class="text-danger">*</span></label>
                                     <select class="form-select form-select-sm fw-bold" name="skala_triase" id="skala_triase_select" required>
+                                        <option value="" selected disabled>-- Pilih Skala Utama ATS --</option>
                                         <option value="1">ATS I - Resusitasi (Segera / Red Zone)</option>
                                         <option value="2">ATS II - Emergency (Waktu Tunggu < 10 Menit)</option>
-                                        <option value="3" selected>ATS III - Urgent (Waktu Tunggu < 30 Menit)</option>
+                                        <option value="3">ATS III - Urgent (Waktu Tunggu < 30 Menit)</option>
                                         <option value="4">ATS IV - Semi-Urgent (Waktu Tunggu < 60 Menit)</option>
                                         <option value="5">ATS V - Non-Urgent (Waktu Tunggu < 120 Menit)</option>
                                     </select>
@@ -171,8 +172,9 @@
                                 <div class="col-md-6">
                                     <label class="form-label text-xs fw-bold">Kategori Warna Triase <span class="text-danger">*</span></label>
                                     <select class="form-select form-select-sm fw-bold" name="kategori_triase" id="kategori_triase_select" required>
+                                        <option value="" selected disabled>-- Pilih Kategori Warna Triase --</option>
                                         <option value="MERAH">MERAH (Emergency / Resusitasi)</option>
-                                        <option value="KUNING" selected>KUNING (Urgent / Membutuhkan Penanganan Segera)</option>
+                                        <option value="KUNING">KUNING (Urgent / Membutuhkan Penanganan Segera)</option>
                                         <option value="HIJAU">HIJAU (Non-Urgent / Rawat Jalan)</option>
                                         <option value="HITAM">HITAM (Meninggal / DOA)</option>
                                     </select>
