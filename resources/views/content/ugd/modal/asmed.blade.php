@@ -65,8 +65,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="card-body p-2">
-                                <table class="table table-bordered table-striped table-hover tblTriase mb-0" style="font-size:11px;">
+                            <div class="card-body p-0 table-responsive">
+                                <table class="table table-bordered table-striped table-hover tblTriase mb-0 w-100" style="font-size:11px; width: 100%;">
                                     <thead>
                                         <tr>
                                             <th class="all">
