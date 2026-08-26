@@ -1263,8 +1263,16 @@
                         $('#formAsmedUgd input[name="no_rawat"]').val(regPeriksa?.no_rawat || params);
                         $('#formAsmedUgd input[name="pasien"]').val(`${p.nm_pasien || '-'} (${p.jk || '-'})`);
                         $('#formAsmedUgd input[name="tgl_lahir"]').val(`${p.tgl_lahir ? formatTanggal(p.tgl_lahir) : '-'} (${p.tgl_lahir ? hitungUmur(p.tgl_lahir) : '-'})`);
-                        $('#formAsmedUgd input[name="kd_dokter"]').val("{{ session()->get('pegawai')->nik }}");
-                        $('#formAsmedUgd input[name="dokter"]').val("{{ session()->get('pegawai')->nama }}");
+                        const doc = regPeriksa?.dokter || {};
+                        const userNik = "{{ session()->get('pegawai')->nik }}";
+                        const userNama = "{{ session()->get('pegawai')->nama }}";
+                        const isUserDokter = "{{ session()->get('pegawai')->bidang }}" === 'Spesialis' || "{{ session()->get('pegawai')->jbtn }}".includes('Dokter') || "{{ session()->get('pegawai')->jnj_jabatan }}".includes('Dokter');
+                        
+                        const kdDokterVal = (isUserDokter && userNik) ? userNik : (doc.kd_dokter || userNik);
+                        const nmDokterVal = (isUserDokter && userNama) ? userNama : (doc.nm_dokter || userNama);
+
+                        $('#formAsmedUgd input[name="kd_dokter"]').val(kdDokterVal);
+                        $('#formAsmedUgd input[name="dokter"]').val(nmDokterVal);
                         $('#formAsmedUgd input[name="tanggal"]').val("{{ date('Y-m-d H:i:s') }}");
                         $('#formAsmedUgd input[name="nama_keluarga_ttd"]').val(p.nm_pasien || '');
 

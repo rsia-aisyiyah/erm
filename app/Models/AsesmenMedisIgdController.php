@@ -146,6 +146,15 @@ class AsesmenMedisIgdController extends Model
             $dataAsmed['tanggal'] = date('Y-m-d H:i:s');
         }
 
+        // Safeguard FK 1452: Validasi kd_dokter terhadap tabel dokter
+        $dokterValid = \DB::table('dokter')->where('kd_dokter', $dataAsmed['kd_dokter'] ?? '')->first();
+        if (!$dokterValid) {
+            $reg = \DB::table('reg_periksa')->where('no_rawat', $no_rawat)->first();
+            if ($reg && \DB::table('dokter')->where('kd_dokter', $reg->kd_dokter)->exists()) {
+                $dataAsmed['kd_dokter'] = $reg->kd_dokter;
+            }
+        }
+
         $isExist = $this->asesmen->where('no_rawat', $no_rawat)->first();
         if ($isExist) {
             return $this->edit($request);
@@ -243,6 +252,15 @@ class AsesmenMedisIgdController extends Model
 
         if (empty($dataAsmed['tanggal']) || $dataAsmed['tanggal'] === '0000-00-00 00:00:00' || !preg_match('/^\d{4}-\d{2}-\d{2}/', $dataAsmed['tanggal'])) {
             $dataAsmed['tanggal'] = date('Y-m-d H:i:s');
+        }
+
+        // Safeguard FK 1452: Validasi kd_dokter terhadap tabel dokter
+        $dokterValid = \DB::table('dokter')->where('kd_dokter', $dataAsmed['kd_dokter'] ?? '')->first();
+        if (!$dokterValid) {
+            $reg = \DB::table('reg_periksa')->where('no_rawat', $no_rawat)->first();
+            if ($reg && \DB::table('dokter')->where('kd_dokter', $reg->kd_dokter)->exists()) {
+                $dataAsmed['kd_dokter'] = $reg->kd_dokter;
+            }
         }
 
         try {
