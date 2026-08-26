@@ -303,8 +303,6 @@
                         
                         if (row.triase_pre_reg) {
                             list += `<li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="unlinkTriasePreReg('${row.no_rawat}', '${pasien.nm_pasien || ''}')"><i class="bi bi-link-45deg me-1"></i> Lepas Tautan Triase Pre-Reg</a></li>`;
-                        } else {
-                            list += `<li><a class="dropdown-item text-primary" href="javascript:void(0)" onclick="showModalLinkTriasePreReg('${row.no_rawat}', '${row.no_rkm_medis}', '${pasien.nm_pasien || ''}', '${pasien.jk || ''}', '${row.sttsumur || ''} ${row.umurdaftar || ''}')"><i class="bi bi-link-45deg me-1"></i> Tautkan Triase Pre-Reg</a></li>`;
                         }
                         button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:11px"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
                         return button;

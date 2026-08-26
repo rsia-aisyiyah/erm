@@ -1307,9 +1307,18 @@
                         });
                     });
                 } else {
-                    // Data Pernah Disimpan: Tombol Cetak ditampilkan
+                    // Data Pernah Disimpan: Tombol Cetak ditampilkan, sembunyikan tombol Tarik Triase
                     $('.btn-asmed-ugd-print').removeClass('d-none');
                     $('.btn-asmed-ugd').html('<i class="bi bi-pencil-square"></i> Ubah Asesmen');
+                    $('#btnAsmedTarikTriasePreReg').addClass('d-none');
+
+                    $.get('/erm/triase/prereg/by-no-rawat', { no_rawat: response.no_rawat }).done((resPre) => {
+                        if (resPre.status === 'success' && resPre.data) {
+                            $('#badgeAsmedTriaseLinkedStatus').html(`<span class="badge bg-success ms-2 text-xs" title="ID Triase: ${resPre.data.id_triase}"><i class="bi bi-check-circle-fill"></i> Data Ditarik dari Triase Pre-Reg (${resPre.data.id_triase})</span>`);
+                        } else {
+                            $('#badgeAsmedTriaseLinkedStatus').html('');
+                        }
+                    });
 
                     const p = response?.reg_periksa?.pasien || {};
                     $('#formAsmedUgd input[name="no_rawat"]').val(response.no_rawat);
