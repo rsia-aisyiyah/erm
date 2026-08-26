@@ -906,7 +906,6 @@
                             const openNoRawat = $('#formAsmedUgd input[name="no_rawat"]').val();
                             if (openNoRawat === targetLinkNoRawat) {
                                 modalAsmedUgd(openNoRawat);
-                                loadTriase(openNoRawat);
                             }
                         }
                     } else {
