@@ -760,6 +760,7 @@
             batalEditTriasePreReg();
             $('#nav-form-tab').click();
             $('#modalTriasePreReg').modal('show');
+            loadTriasePreRegTable();
         }
 
         function batalEditTriasePreReg() {
@@ -878,6 +879,7 @@
         }
 
         function editTriasePreReg(id_triase) {
+            loadTriasePreRegTable();
             $.get('/erm/triase/prereg/detail/' + id_triase).done((res) => {
                 if (res.status === 'success' && res.data) {
                     const data = res.data;
@@ -907,17 +909,22 @@
                     $('#kategori_triase_select').val(data.kategori_triase);
 
                     // Restore checkboxes detail_skala_json
-                    if (data.detail_skala_json) {
-                        const detail = data.detail_skala_json;
-                        for (let i = 1; i <= 5; i++) {
-                            const keySkala = 'skala' + i;
-                            if (detail[keySkala] && Array.isArray(detail[keySkala])) {
-                                detail[keySkala].forEach(val => {
-                                    $(`.item-prereg-skala${i}[value="${val}"]`).prop('checked', true);
-                                });
+                    const applyCheckboxes = () => {
+                        if (data.detail_skala_json) {
+                            const detail = data.detail_skala_json;
+                            for (let i = 1; i <= 5; i++) {
+                                const keySkala = 'skala' + i;
+                                if (detail[keySkala] && Array.isArray(detail[keySkala])) {
+                                    detail[keySkala].forEach(val => {
+                                        $(`.item-prereg-skala${i}[value="${val}"]`).prop('checked', true);
+                                    });
+                                }
                             }
                         }
-                    }
+                    };
+
+                    applyCheckboxes();
+                    setTimeout(applyCheckboxes, 400);
 
                     $('#btnSimpanTriasePreReg').html('<i class="bi bi-check-circle-fill me-1"></i> Update Data Triase');
                     $('#nav-form-tab').click();
