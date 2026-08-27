@@ -537,7 +537,104 @@ Mengintegrasikan modul pengkajian klinis keperawatan obstetri dan ginekologi gaw
 | `app/Http/Controllers/UgdController.php` | Eager load `'askepKebidanan'` untuk status centang hijau di DataTables UGD. |
 | `app/Http/Controllers/AskepRalanKebidananController.php` | Menambahkan method `delete()` untuk menghapus data asesmen kebidanan. |
 | `routes/partials/askep.php` | Mendaftarkan route `DELETE /asesmen-keperawatan/kandungan`. |
-| `resources/views/content/ugd/ugd.blade.php` | Inklusi `modal_askep_kebidanan` dan penambahan menu aksi **"Asesmen Keperawatan Kebidanan"** pada dropdown aksi pasien UGD. |
+---
+
+## Modifikasi 9: Sistem Triase Pre-Registrasi UGD (Sebelum Pendaftaran SIMRS)
+
+### 1. Deskripsi Perubahan
+Mengimplementasikan sistem **Triase Pre-Registrasi UGD (Triase Sebelum Pendaftaran/Registrasi SIMRS)** untuk menangani pasien yang baru tiba di UGD yang membutuhkan penanganan medis dan triase cepat sebelum terdaftar di loket pendaftaran SIMRS:
+- **Tujuan & Manfaat**:
+  - Pasien darurat dapat segera dilakukan penilaian Triase ATS (Australian Triage Scale 1-5), pengukuran Tanda Vital (TTV), dan pencatatan keluhan awal tanpa harus menunggu antrean pendaftaran SIMRS selesai.
+  - Memastikan *Response Time* UGD memenuhi standar keselamatan pasien & akreditasi.
+- **Fitur Utama**:
+  1. **Quick Input Triase Pre-Registrasi**: Modal pencatatan triase dengan identitas temporary pasien (misal: *Mr. X / Ny. Anita*), estimasi umur, cara datang, alat transportasi, keluhan utama, TTV awal, dan tabel matriks indikator ATS I-V yang identik dengan Form Asmed UGD.
+  2. **Auto-Generate ID Triase**: Penomoran otomatis format `TR-YYYYMMDD-XXXX` (contoh: `TR-20260826-0001`).
+  3. **Multi-Layer Safety Linking System**:
+     - Sistem penautan data triase temporary ke nomor rawat (`no_rawat`) pasien setelah pendaftaran SIMRS selesai.
+     - Proteksi keselamatan pasien: Alert peringatan jika ada ketidaksesuaian Jenis Kelamin (*Gender Mismatch Alert*).
+     - Fitur *Unlink* (Lepas Tautan) jika terjadi kesalahan penautan.
+  4. **Auto-Pull & Live Auto-Fill ke Form Asmed UGD**:
+     - Saat dokter/perawat membuka Form Asmed UGD untuk pasien yang telah ditautkan triase pre-reg, seluruh data TTV dan centang skala ATS I-V **otomatis ditarik dan terisi di Form Asmed UGD tanpa perlu ketik ulang**.
+     - Tombol **`[ 🔗 Tarik Data Triase Pre-Reg ]`** langsung tersedia di header card Triase pada Form Asmed UGD (hanya tampil jika pasien belum pernah disimpan Asmed-nya dan data triase belum terhubung).
+  5. **Navigasi Tab Form & Riwayat/Edit**:
+     - Tab **Form Input / Edit Triase**: Untuk entri baru dan edit data triase.
+     - Tab **Riwayat & Edit Data Triase**: Menampilkan riwayat 50 data triase pre-registrasi terakhir dengan fitur pencarian live, tombol **`[ ✏️ Ubah ]`**, dan tombol **`[ 🗑️ Hapus ]`** (khusus data unlinked).
+     - Jika data triase yang diedit sudah berstatus `LINKED`, perubahan otomatis tersinkronisasi langsung ke tabel SIMRS Khanza `data_triase_igd` dan `rsia_data_triase_ugddetail_skala1...5`.
+  6. **Sistem Otorisasi Ketat Dokter pada Asmed UGD**:
+     - Validasi akun simpan Asmed UGD: Hanya akun yang terdaftar sebagai Dokter di tabel `dokter` yang diizinkan menyimpan Asmed UGD. Akun non-dokter/direksi/admin akan ditolak dengan pesan error yang ramah pengguna.
+
+---
+
+### 2. Struktur Basis Data (MySQL)
+
+#### Tabel Baru: `rsia_triase_pre_registrasi`
+Tabel penyimpanan utama data triase sebelum pasien terdaftar di SIMRS.
+
+```sql
+CREATE TABLE `rsia_triase_pre_registrasi` (
+  `id_triase` varchar(30) NOT NULL COMMENT 'ID Unik Triase (contoh: TR-20260826-0001)',
+  `tgl_triase` datetime NOT NULL COMMENT 'Waktu Pasien Tiba & Triase Dilakukan',
+  `nama_pasien_temp` varchar(100) NOT NULL COMMENT 'Nama Pasien / Anonim (Mr. X / Ms. Y)',
+  `jk` enum('L','P') DEFAULT 'L',
+  `umur_temp` varchar(30) DEFAULT NULL COMMENT 'Estimasi Umur (misal: ~30 Th / Bayi)',
+  `cara_masuk` varchar(50) DEFAULT NULL COMMENT 'Sendiri / Ambulans / Rujukan / Polisi',
+  `alat_transportasi` varchar(50) DEFAULT NULL,
+  `alasan_kedatangan` varchar(100) DEFAULT NULL,
+  `keterangan_kedatangan` text DEFAULT NULL COMMENT 'Keluhan Utama',
+  `kode_kasus` varchar(20) DEFAULT '006' COMMENT 'Foreign Key master_triase_macam_kasus',
+  
+  -- Tanda-tanda Vital (TTV) awal
+  `tekanan_darah` varchar(15) DEFAULT NULL,
+  `nadi` varchar(10) DEFAULT NULL,
+  `pernapasan` varchar(10) DEFAULT NULL,
+  `suhu` varchar(10) DEFAULT NULL,
+  `saturasi_o2` varchar(10) DEFAULT NULL,
+  `gcs` varchar(10) DEFAULT NULL,
+  `nyeri` varchar(10) DEFAULT NULL,
+  
+  -- Hasil Triase
+  `skala_triase` enum('1','2','3','4','5') NOT NULL COMMENT 'Skala Triase ATS',
+  `kategori_triase` enum('MERAH','KUNING','HIJAU','HITAM') NOT NULL COMMENT 'Kategori Warna Triase',
+  `detail_skala_json` json DEFAULT NULL COMMENT 'JSON array indikator ATS yang dicentang',
+  
+  -- Metadata Petugas & Status Linking SIMRS
+  `nip_petugas` varchar(20) NOT NULL COMMENT 'NIP Perawat / Petugas Pengkaji',
+  `status_link` enum('UNLINKED','LINKED') DEFAULT 'UNLINKED' COMMENT 'Status Penautan ke Registrasi SIMRS',
+  `no_rawat` varchar(17) DEFAULT NULL COMMENT 'No Rawat SIMRS setelah di-link',
+  `no_rkm_medis` varchar(15) DEFAULT NULL COMMENT 'No RM Pasien setelah di-link',
+  `tgl_linked` datetime DEFAULT NULL COMMENT 'Waktu Penautan Dilakukan',
+  `nip_linker` varchar(20) DEFAULT NULL COMMENT 'NIP Petugas yang Melakukan Penautan',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_triase`),
+  KEY `idx_status_link` (`status_link`),
+  KEY `idx_no_rawat` (`no_rawat`),
+  KEY `idx_tgl_triase` (`tgl_triase`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+---
+
+### 3. Daftar Berkas yang Ditambahkan & Dimodifikasi
+
+#### A. Berkas Baru (*New Files*)
+| File | Fungsi |
+| :--- | :--- |
+| `app/Models/RsiaTriasePreRegistrasi.php` | Model Eloquent untuk tabel `rsia_triase_pre_registrasi` beserta relasi ke petugas NIP. |
+| `app/Http/Controllers/RsiaTriasePreRegistrasiController.php` | Controller handler untuk `store` (create & edit update), `getUnlinked`, `getRecentList`, `getDetail`, `link` (sinkronisasi otomatis ke `data_triase_igd` & `rsia_data_triase_ugddetail_skala1...5`), `unlink`, `getByNoRawat`, dan `destroy`. |
+| `resources/views/content/ugd/modal/modal_triase_prereg.blade.php` | Modal form Quick Input Triase Pre-Reg dengan Nav Tabs (Input/Edit & Riwayat 50 data), matriks indikator ATS I-V, dan penanganan default value kosong. |
+| `resources/views/content/ugd/modal/modal_link_triase_prereg.blade.php` | Modal penautan (*linking*) triase pre-reg ke pasien registrasi SIMRS dengan perbandingan data *side-by-side* dan alert proteksi *gender mismatch*. |
+
+#### B. Berkas Dimodifikasi (*Modified Files*)
+| File | Rincian Perubahan |
+| :--- | :--- |
+| `app/Models/RegPeriksa.php` | Menambahkan relasi `triasePreReg()` ke model `RsiaTriasePreRegistrasi`. |
+| `app/Http/Controllers/UgdController.php` | Eager load `'triasePreReg'` untuk menampilkan badge status `[🔗 Pre-Reg]` pada DataTables antrean UGD. |
+| `app/Models/AsesmenMedisIgdController.php` | Menambahkan validasi otorisasi dokter ketat pada method `create()` dan `edit()` (menolak NIP non-dokter/direksi dengan pesan HTTP 403 yang informatif). |
+| `routes/web.php` | Mendaftarkan seluruh route `/triase/prereg/...` (`unlinked`, `list`, `detail`, `simpan`, `link`, `unlink`, `delete`, `by-no-rawat`). |
+| `resources/views/content/ugd/ugd.blade.php` | 1. Menambahkan tombol header **`[ + Triase Pre-Reg (Counter Badge) ]`**.<br>2. Menambahkan badge kolom triase `[🔗 Pre-Reg]` di tabel UGD.<br>3. Menambahkan JavaScript penanganan kalkulasi ATS matrix, AJAX linking/unlinking, live auto-fill, dan fungsi edit/hapus triase pre-reg. |
+| `resources/views/content/ugd/modal/asmed.blade.php` | 1. Auto-pull data TTV dan ATS indikator dari Triase Pre-Reg saat dokter/perawat membuka Asmed UGD.<br>2. Menambahkan tombol **`[ 🔗 Tarik Data Triase Pre-Reg ]`** pada card-header Triase (dengan kondisi hanya tampil jika belum terisi Asmed/Triase).<br>3. Perbaikan CSS tabel triase menjadi *100% full-width* (tanpa margin samping).<br>4. Penanganan error alert SweetAlert2 yang informatif jika akun non-dokter mencoba menyimpan Asmed. |
+
 
 
 
