@@ -635,6 +635,152 @@ CREATE TABLE `rsia_triase_pre_registrasi` (
 | `resources/views/content/ugd/ugd.blade.php` | 1. Menambahkan tombol header **`[ + Triase Pre-Reg (Counter Badge) ]`**.<br>2. Menambahkan badge kolom triase `[🔗 Pre-Reg]` di tabel UGD.<br>3. Menambahkan JavaScript penanganan kalkulasi ATS matrix, AJAX linking/unlinking, live auto-fill, dan fungsi edit/hapus triase pre-reg. |
 | `resources/views/content/ugd/modal/asmed.blade.php` | 1. Auto-pull data TTV dan ATS indikator dari Triase Pre-Reg saat dokter/perawat membuka Asmed UGD.<br>2. Menambahkan tombol **`[ 🔗 Tarik Data Triase Pre-Reg ]`** pada card-header Triase (dengan kondisi hanya tampil jika belum terisi Asmed/Triase).<br>3. Perbaikan CSS tabel triase menjadi *100% full-width* (tanpa margin samping).<br>4. Penanganan error alert SweetAlert2 yang informatif jika akun non-dokter mencoba menyimpan Asmed. |
 
+---
+
+## Modifikasi 10: Fitur Asesmen Geriatri Kompleks (UGD & Ranap)
+
+### 1. Deskripsi Perubahan
+Mengimplementasikan modul **Asesmen Awal & Pengkajian Komprehensif Pasien Geriatri** (pasien usia lanjut $\ge 60$ tahun) untuk pelayanan UGD dan Rawat Inap:
+- **Tujuan & Manfaat**:
+  - Penilaian multifaktorial khusus pasien lanjut usia mencakup aspek fisik, fungsional, kognitif, nutrisi, dan psikososial untuk mendukung keselamatan pasien dan Akreditasi Rumah Sakit.
+- **Fitur Utama**:
+  1. **Pemeriksaan Fisik & Organ Geriatri Lengkap**: THT (Lidah, Bibir), Leher (JVP, Kelenjar, Kaku Kuduk), Thoraks (Simetris, Cor, Pulmo), Abdomen (Distensi, Meteorismus, Peristaltik, Ascites, Nyeri Tekan, Hepar, Lien), Ekstremitas (Suhu, Oedema).
+  2. **Pengkajian Fungsi & Penapisan Geriatri**: ADL Barthel Index, IADL Lawton, ACS Delirium, MNA (Mini Nutritional Assessment), MMSE, GDS (Geriatric Depression Scale), Inkontinensia Urin/Alvi, Wells DVT, Norton Ulkus Dekubitus, Insomnia.
+  3. **Diagnosa & Disposisi**: Diagnosa ICD, Sindrom Geriatri, Impairment/Disability, Rekomendasi, Rencana Medis & Keperawatan, serta Disposisi Akhir (Boleh Pulang, Kontrol Poliklinik, Dirawat di Ruang).
+  4. **Template Cetak Dokumen PDF**: Format A4 standar dokumen rekam medis geriatri.
+
+---
+
+### 2. Struktur Basis Data (MySQL)
+
+#### Tabel Baru: `rsia_asesmen_geriatri`
+```sql
+CREATE TABLE `rsia_asesmen_geriatri` (
+  `no_rawat` varchar(17) NOT NULL,
+  `nip_perawat` varchar(20) DEFAULT NULL,
+  `kd_dokter` varchar(20) DEFAULT NULL,
+  `kd_dokter_ruangan` varchar(20) DEFAULT NULL,
+  `tanggal` datetime DEFAULT CURRENT_TIMESTAMP,
+  `tht_lidah` enum('+','-') DEFAULT '-',
+  `tht_bibir` enum('+','-') DEFAULT '-',
+  `leher_jvp` enum('+','-') DEFAULT '-',
+  `leher_kelenjar` enum('+','-') DEFAULT '-',
+  `leher_kaku_kuduk` enum('+','-') DEFAULT '-',
+  `thoraks_simetris` enum('Simetris','Asimetris') DEFAULT 'Simetris',
+  `thoraks_cor` text,
+  `thoraks_pulmo` text,
+  `abdomen_distensi` enum('+','-') DEFAULT '-',
+  `abdomen_meteorismus` enum('+','-') DEFAULT '-',
+  `abdomen_peristaltic` enum('Normal','Meningkat','Menurun') DEFAULT 'Normal',
+  `abdomen_ascites` enum('+','-') DEFAULT '-',
+  `abdomen_nyeri_tekan` enum('+','-') DEFAULT '-',
+  `abdomen_lokasi_nyeri` varchar(100) DEFAULT NULL,
+  `abdomen_hepar` varchar(100) DEFAULT NULL,
+  `abdomen_lien` varchar(100) DEFAULT NULL,
+  `abdomen_lain` text,
+  `ekstremitas_suhu` enum('Hangat','Dingin') DEFAULT 'Hangat',
+  `ekstremitas_oedema` varchar(100) DEFAULT NULL,
+  `ekstremitas_lain` text,
+  `adl_barthel` varchar(100) DEFAULT NULL,
+  `iadl` varchar(100) DEFAULT NULL,
+  `acs_delirium` enum('Ya','Tidak') DEFAULT 'Tidak',
+  `mna_penapisan` varchar(100) DEFAULT NULL,
+  `mna_pengkajian` varchar(100) DEFAULT NULL,
+  `mna_lingkar_lengan` varchar(10) DEFAULT NULL,
+  `mna_lingkar_betis` varchar(10) DEFAULT NULL,
+  `mmse` varchar(100) DEFAULT NULL,
+  `gds` varchar(100) DEFAULT NULL,
+  `inkontinensia` varchar(100) DEFAULT NULL,
+  `wells_dvt` varchar(100) DEFAULT NULL,
+  `norton_ulkus` varchar(100) DEFAULT NULL,
+  `insomnia` varchar(100) DEFAULT NULL,
+  `penapisan_lain` text,
+  `pemeriksaan_penunjang` text,
+  `diagnosis_icd` text,
+  `sindrom_geriatri` text,
+  `impairment_disability` text,
+  `rekomendasi` text,
+  `rencana_medis` text,
+  `rencana_keperawatan` text,
+  `disposisi` enum('Boleh Pulang','Kontrol Poliklinik','Dirawat di Ruang') DEFAULT 'Boleh Pulang',
+  `disposisi_jam_keluar` time DEFAULT NULL,
+  `disposisi_tgl_keluar` date DEFAULT NULL,
+  `disposisi_tgl_kontrol` date DEFAULT NULL,
+  `disposisi_ruangan` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`no_rawat`),
+  CONSTRAINT `fk_rsia_asesmen_geriatri_reg` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+---
+
+### 3. Daftar Berkas yang Ditambahkan & Dimodifikasi
+
+#### A. Berkas Baru (*New Files*)
+| File | Fungsi |
+| :--- | :--- |
+| `app/Models/RsiaAsesmenGeriatri.php` | Model Eloquent tabel `rsia_asesmen_geriatri` beserta relasi ke regPeriksa, perawat, dan dokter. |
+| `app/Http/Controllers/AsesmenGeriatriController.php` | Controller handler untuk `get()`, `simpan()`, `hapus()`, dan `print()`. |
+| `resources/views/content/ugd/modal/modal_asesmen_geriatri.blade.php` | Modal form Asesmen Geriatri komprehensif. |
+| `resources/views/content/print/asesmen_geriatri.blade.php` | Template cetak PDF resmi dokumen Asesmen Geriatri A4. |
+
+---
+
+## Modifikasi 11: Fitur Automatic Stop Order (ASO) Farmasi / Apoteker pada CPPT Ranap
+
+### 1. Deskripsi Perubahan
+Mengimplementasikan fitur **Automatic Stop Order (ASO)** bagi Tenaga Kefarmasian (Apoteker / TTK) pada lembar Catatan Perkembangan Pasien Terintegrasi (CPPT) Rawat Inap:
+- **Tujuan & Manfaat**:
+  - Memberikan hak akses verifikasi & penghentian otomatis (*Automatic Stop Order*) atas resep obat yang memiliki batas waktu pemberian (misal: Antibiotik empiris 3-5 hari, Narkotika, Psikotropika) sesuai standar Standar Akreditasi Rumah Sakit (STARKES).
+  - Stempel digital & penandaan visual status ASO aktif pada CPPT Ranap.
+- **Fitur Utama**:
+  1. Tombol Stempel ASO khusus untuk user Apoteker / Tenaga Teknis Kefarmasian (TTK) / Departemen Farmasi.
+  2. Modal konfirmasi Stempel ASO dengan input tanggal ASO dan catatan penghentian obat.
+  3. Badge visual & status `AKTIF` / `BATAL` pada baris CPPT Ranap terkait.
+  4. Penguncian otorisasi: Hanya Staf Farmasi/Apoteker yang berhak membubuhkan stempel ASO.
+
+---
+
+### 2. Struktur Basis Data (MySQL)
+
+#### Tabel Baru: `rsia_aso_pemeriksaan_ranap`
+```sql
+CREATE TABLE `rsia_aso_pemeriksaan_ranap` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tgl_perawatan` date NOT NULL,
+  `jam_rawat` time NOT NULL,
+  `tgl_aso` datetime NOT NULL,
+  `nip_apoteker` varchar(20) NOT NULL,
+  `status_aso` enum('AKTIF','BATAL') DEFAULT 'AKTIF',
+  `catatan_aso` text,
+  PRIMARY KEY (`no_rawat`,`tgl_perawatan`,`jam_rawat`),
+  KEY `idx_nip_apoteker` (`nip_apoteker`),
+  CONSTRAINT `fk_rsia_aso_pemeriksaan_ranap` FOREIGN KEY (`no_rawat`, `tgl_perawatan`, `jam_rawat`) 
+    REFERENCES `pemeriksaan_ranap` (`no_rawat`, `tgl_perawatan`, `jam_rawat`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+---
+
+### 3. Daftar Berkas yang Ditambahkan & Dimodifikasi
+
+#### A. Berkas Baru (*New Files*)
+| File | Fungsi |
+| :--- | :--- |
+| `app/Models/RsiaAsoPemeriksaanRanap.php` | Model Eloquent tabel `rsia_aso_pemeriksaan_ranap` menggunakan Compoships multi-primary key (`no_rawat`, `tgl_perawatan`, `jam_rawat`). |
+| `app/Http/Controllers/RsiaAsoPemeriksaanRanapController.php` | Controller handler simpan stempel ASO (`simpan()`) dan pembatalan ASO (`batal()`). |
+
+#### B. Berkas Dimodifikasi (*Modified Files*)
+| File | Rincian Perubahan |
+| :--- | :--- |
+| `app/Models/PemeriksaanRanap.php` | Menambahkan relasi `aso()` ke model `RsiaAsoPemeriksaanRanap`. |
+| `app/Http/Controllers/PemeriksaanRanapController.php` | Load relasi `'aso.petugas'` untuk penandaan stempel ASO pada query CPPT Ranap. |
+| `routes/web.php` | Mendaftarkan route `/ranap/cppt/aso/simpan` dan `/ranap/cppt/aso/batal`. |
+| `resources/views/content/ranap/modal/cppt/_stempelAso.blade.php` | Modal stempel ASO & tampilan tombol flex 34x34px pada CPPT Ranap. |
+
+
 
 
 
