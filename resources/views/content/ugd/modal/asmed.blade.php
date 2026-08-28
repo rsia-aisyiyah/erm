@@ -80,28 +80,28 @@
                                                 </div>
                                                 <div class="text-xs text-nowrap">Segera</div>
                                             </th>
-                                            <th class="text-center bg-warning text-white">
+                                            <th class="text-center bg-warning text-dark">
                                                 <div class="text-nowrap d-flex align-items-center justify-content-center">
                                                     <input type="checkbox" class="form-check-input me-2" name="ats_2" id="ats_2">
                                                     <span class="mt-1">ATS II</span>
                                                 </div>
                                                 <div class="text-xs text-nowrap">10 Menit</div>
                                             </th>
-                                            <th class="text-center bg-success text-white">
+                                            <th class="text-center bg-warning text-dark">
                                                 <div class="text-nowrap d-flex align-items-center justify-content-center">
                                                     <input type="checkbox" class="form-check-input me-2" name="ats_3" id="ats_3">
                                                     <span class="mt-1">ATS III</span>
                                                 </div>
                                                 <div class="text-xs text-nowrap">30 Menit</div>
                                             </th>
-                                            <th class="text-center bg-primary text-white">
+                                            <th class="text-center bg-success text-white">
                                                 <div class="text-nowrap d-flex align-items-center justify-content-center">
                                                     <input type="checkbox" class="form-check-input me-2" name="ats_4" id="ats_4">
                                                     <span class="mt-1">ATS IV</span>
                                                 </div>
                                                 <div class="text-xs text-nowrap">60 Menit</div>
                                             </th>
-                                            <th class="text-center">
+                                            <th class="text-center bg-success text-white">
                                                 <div class="text-nowrap d-flex align-items-center justify-content-center">
                                                     <input type="checkbox" class="form-check-input me-2" name="ats_5" id="ats_5">
                                                     <span class="mt-1">ATS V</span>
