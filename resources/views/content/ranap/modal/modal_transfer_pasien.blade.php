@@ -434,6 +434,13 @@
             $('#modalTransferPasien').modal('show');
             $('#tab-form-transfer-tab').tab('show');
 
+            if ($.fn.datetimepicker) {
+                $('#transfer_tanggal_masuk, #transfer_tanggal_pindah').datetimepicker({
+                    format: 'Y-m-d H:i:s',
+                    step: 1
+                });
+            }
+
             // Ambil data pasien dan registrasi
             getRegPeriksa(no_rawat).done((response) => {
                 const p = response.pasien || {};
@@ -635,6 +642,35 @@
                 return;
             }
 
+            let tglMasukVal = $('#transfer_tanggal_masuk').val();
+            let tglPindahVal = $('#transfer_tanggal_pindah').val();
+
+            if (!tglMasukVal) {
+                Swal.fire('Peringatan', 'Tanggal Masuk Ruang Asal wajib diisi', 'warning');
+                return;
+            }
+            if (!tglPindahVal) {
+                Swal.fire('Peringatan', 'Tanggal / Jam Pindah wajib diisi', 'warning');
+                return;
+            }
+
+            // Standardize format tanggal ke YYYY-MM-DD HH:mm:ss
+            if (tglMasukVal && typeof moment === 'function') {
+                if (moment(tglMasukVal, ['YYYY-MM-DD HH:mm:ss', 'DD-MM-YYYY HH:mm:ss', 'D-M-Y H:i:s'], true).isValid()) {
+                    tglMasukVal = moment(tglMasukVal, ['YYYY-MM-DD HH:mm:ss', 'DD-MM-YYYY HH:mm:ss', 'D-M-Y H:i:s']).format('YYYY-MM-DD HH:mm:ss');
+                } else if (moment(tglMasukVal).isValid()) {
+                    tglMasukVal = moment(tglMasukVal).format('YYYY-MM-DD HH:mm:ss');
+                }
+            }
+
+            if (tglPindahVal && typeof moment === 'function') {
+                if (moment(tglPindahVal, ['YYYY-MM-DD HH:mm:ss', 'DD-MM-YYYY HH:mm:ss', 'D-M-Y H:i:s'], true).isValid()) {
+                    tglPindahVal = moment(tglPindahVal, ['YYYY-MM-DD HH:mm:ss', 'DD-MM-YYYY HH:mm:ss', 'D-M-Y H:i:s']).format('YYYY-MM-DD HH:mm:ss');
+                } else if (moment(tglPindahVal).isValid()) {
+                    tglPindahVal = moment(tglPindahVal).format('YYYY-MM-DD HH:mm:ss');
+                }
+            }
+
             const nipMenerima = $('#transfer_nip_menerima').val();
             if (!nipMenerima) {
                 Swal.fire('Peringatan', 'Harap pilih Petugas yang Menerima transfer terlebih dahulu', 'warning');
@@ -647,6 +683,9 @@
             $.each(formData, function(i, field) {
                 postData[field.name] = field.value;
             });
+
+            postData['tanggal_masuk'] = tglMasukVal;
+            postData['tanggal_pindah'] = tglPindahVal;
 
             $.post(`${url}/transfer/pasien/antar-ruang`, postData).done((response) => {
                 alertSuccessAjax(response).then(() => {

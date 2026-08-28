@@ -23,6 +23,18 @@ class TransferPasienAntarRuangController extends Controller
 		$this->track = new TrackerSqlController();
 	}
 
+	protected function parseDateTime(?string $dateTime): ?string
+	{
+		if (empty($dateTime)) {
+			return null;
+		}
+		try {
+			return \Carbon\Carbon::parse($dateTime)->format('Y-m-d H:i:s');
+		} catch (\Throwable $e) {
+			return $dateTime;
+		}
+	}
+
 	public function get(Request $request): JsonResponse
 	{
 		$query = $this->transfer->with([
@@ -36,8 +48,9 @@ class TransferPasienAntarRuangController extends Controller
 		]);
 
 		if ($request->no_rawat && $request->tanggal_masuk) {
+			$tglMasuk = $this->parseDateTime($request->tanggal_masuk);
 			$data = $query->where('no_rawat', $request->no_rawat)
-				->where('tanggal_masuk', $request->tanggal_masuk)
+				->where('tanggal_masuk', $tglMasuk)
 				->first();
 		} elseif ($request->no_rawat) {
 			$data = $query->where('no_rawat', $request->no_rawat)
@@ -126,6 +139,10 @@ class TransferPasienAntarRuangController extends Controller
 			'nip_menerima' => 'required',
 		]);
 
+		// Parse & format tanggal ke format SQL YYYY-MM-DD HH:mm:ss untuk mencegah nilai 0000-00-00 00:00:00
+		$data['tanggal_masuk'] = $this->parseDateTime($data['tanggal_masuk']);
+		$data['tanggal_pindah'] = $this->parseDateTime($data['tanggal_pindah']);
+
 		// Pastikan nip_menyerahkan dan nip_menerima valid di tabel petugas (mencegah foreign key failure)
 		if (!\App\Models\Petugas::where('nip', $data['nip_menyerahkan'])->exists()) {
 			$defPetugas = \App\Models\Petugas::first();
@@ -196,9 +213,10 @@ class TransferPasienAntarRuangController extends Controller
 			'tanggal_masuk' => 'required',
 		]);
 
+		$tglMasuk = $this->parseDateTime($request->tanggal_masuk);
 		$clause = [
 			'no_rawat' => $request->no_rawat,
-			'tanggal_masuk' => $request->tanggal_masuk,
+			'tanggal_masuk' => $tglMasuk,
 		];
 
 		try {
@@ -249,7 +267,8 @@ class TransferPasienAntarRuangController extends Controller
 		])->where('no_rawat', $cleanNoRawat);
 
 		if ($request->tanggal_masuk) {
-			$transfer = $query->where('tanggal_masuk', $request->tanggal_masuk)->first();
+			$tglMasuk = $this->parseDateTime($request->tanggal_masuk);
+			$transfer = $query->where('tanggal_masuk', $tglMasuk)->first();
 		} else {
 			$transfer = $query->orderBy('tanggal_pindah', 'desc')->first();
 		}
