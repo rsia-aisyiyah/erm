@@ -141,11 +141,24 @@
         PENGKAJIAN AWAL KEPERAWATAN GAWAT DARURAT (IGD)
     </div>
 
+@php
+    $formattedTglAsuhan = '-';
+    if (!empty($data->tanggal) && $data->tanggal !== '0000-00-00 00:00:00') {
+        try {
+            $formattedTglAsuhan = \Carbon\Carbon::parse($data->tanggal)->format('d-m-Y H:i');
+        } catch (\Throwable $e) {
+            $formattedTglAsuhan = date('d-m-Y H:i');
+        }
+    } else {
+        $formattedTglAsuhan = date('d-m-Y H:i');
+    }
+@endphp
+
     <!-- META DATA ASESMEN -->
     <table class="table-data">
         <tr style="background-color: #f8f9fa;">
             <td width="33%">
-                <strong>Tgl. Masuk / Asuhan:</strong> {{ date('d-m-Y H:i', strtotime($data->tanggal)) }}
+                <strong>Tgl. Masuk / Asuhan:</strong> {{ $formattedTglAsuhan }}
             </td>
             <td width="37%">
                 <strong>Perawat Pengkaji:</strong> {{ $petugas->nama ?? $data->nip ?? '-' }}
@@ -529,14 +542,14 @@
         <tr>
             <td width="58%" style="border: none;"></td>
             <td width="42%" style="border: none; text-align: center; color: #000000;">
-                Pekalongan, {{ date('d-m-Y H:i', strtotime($data->tanggal)) }}<br>
+                Pekalongan, {{ $formattedTglAsuhan }}<br>
                 <strong>Perawat Pengkaji UGD,</strong><br>
                 <div style="height: 48px; margin: 2px 0; text-align: center;">
                     @if (!empty($petugas->nip) || !empty($data->nip))
                         @php
                             $namaPetugas = $petugas->nama ?? $data->nip;
                             $nipPetugas = $petugas->nip ?? $data->nip;
-                            $qrText = 'Diverifikasi secara elektronik oleh Perawat Pengkaji: ' . $namaPetugas . ' (NIP: ' . $nipPetugas . ') pada ' . date('d-m-Y H:i', strtotime($data->tanggal));
+                            $qrText = 'Diverifikasi secara elektronik oleh Perawat Pengkaji: ' . $namaPetugas . ' (NIP: ' . $nipPetugas . ') pada ' . $formattedTglAsuhan;
                         @endphp
                         <img src="data:image/png;base64,{!! DNS2D::getBarcodePNG($qrText, 'QRCODE', 2.1, 2.1) !!}" height="44" style="border: 1px solid #888888; padding: 1px;" />
                     @else

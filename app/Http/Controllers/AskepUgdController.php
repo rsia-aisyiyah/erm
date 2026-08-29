@@ -47,6 +47,18 @@ class AskepUgdController extends Controller
         return response()->json($master);
     }
 
+    protected function parseDateTime(?string $dateTime): string
+    {
+        if (empty($dateTime) || $dateTime === '-') {
+            return date('Y-m-d H:i:s');
+        }
+        try {
+            return \Carbon\Carbon::parse($dateTime)->format('Y-m-d H:i:s');
+        } catch (\Throwable $e) {
+            return date('Y-m-d H:i:s');
+        }
+    }
+
     public function createOrUpdate(Request $request)
     {
         $no_rawat = $request->input('no_rawat');
@@ -93,8 +105,8 @@ class AskepUgdController extends Controller
         $catatanRencana = $request->input('rencana');
         $data['rencana'] = is_string($catatanRencana) ? $catatanRencana : '-';
 
-        // Sanitasi nilai default
-        $data['tanggal'] = $data['tanggal'] ?? date('Y-m-d H:i:s');
+        // Sanitasi nilai default & parse format tanggal SQL YYYY-MM-DD HH:mm:ss
+        $data['tanggal'] = $this->parseDateTime($data['tanggal'] ?? null);
         $nipCandidate = $data['nip'] ?? (session()->get('pegawai')->nik ?? '-');
         if (!\App\Models\Petugas::where('nip', $nipCandidate)->exists()) {
             $nipCandidate = '-';

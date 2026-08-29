@@ -1427,6 +1427,13 @@
         resetFormAskepUgd();
         $('#askep_no_rawat').val(noRawat);
 
+        if ($.fn.datetimepicker) {
+            $('#askep_tanggal').datetimepicker({
+                format: 'Y-m-d H:i:s',
+                step: 1
+            });
+        }
+
         // Ambil Data Registrasi Pasien
         getRegPeriksa(noRawat).done(function(reg) {
             const p = reg?.pasien || {};
@@ -1605,6 +1612,17 @@
             Swal.fire('Peringatan', 'Keluhan Utama (RPS) wajib diisi.', 'warning');
             $('#askep_keluhan_utama').focus();
             return;
+        }
+
+        // Standardize format tanggal ke YYYY-MM-DD HH:mm:ss
+        let tglVal = $('#askep_tanggal').val();
+        if (tglVal && typeof moment === 'function') {
+            if (moment(tglVal, ['YYYY-MM-DD HH:mm:ss', 'DD-MM-YYYY HH:mm:ss', 'D-M-Y H:i:s'], true).isValid()) {
+                tglVal = moment(tglVal, ['YYYY-MM-DD HH:mm:ss', 'DD-MM-YYYY HH:mm:ss', 'D-M-Y H:i:s']).format('YYYY-MM-DD HH:mm:ss');
+            } else if (moment(tglVal).isValid()) {
+                tglVal = moment(tglVal).format('YYYY-MM-DD HH:mm:ss');
+            }
+            $('#askep_tanggal').val(tglVal);
         }
 
         const formData = $('#formAskepUgd').serialize();
