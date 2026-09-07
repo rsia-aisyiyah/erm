@@ -1,7 +1,16 @@
 @extends('index')
 
 @section('contents')
-    @if (session()->get('pegawai')->nama == 'direksi' || session()->get('pegawai')->departemen == 'DPM2' || session()->get('pegawai')->departemen == 'DIR' || session()->get('pegawai')->departemen == 'CSM' || session()->get('pegawai')->bidang == 'Kebidanan' || session()->get('pegawai')->bidang == 'Keperawatan' || session()->get('pegawai')->jbtn == 'Asisten Apoteker' || session()->get('pegawai')->jbtn == 'Apoteker' || session()->get('pegawai')->jbtn == 'TTK' || session()->get('pegawai')->jbtn == '-')
+    @if (session()->get('pegawai')->nama == 'direksi' ||
+            session()->get('pegawai')->departemen == 'DPM2' ||
+            session()->get('pegawai')->departemen == 'DIR' ||
+            session()->get('pegawai')->departemen == 'CSM' ||
+            session()->get('pegawai')->bidang == 'Kebidanan' ||
+            session()->get('pegawai')->bidang == 'Keperawatan' ||
+            session()->get('pegawai')->jbtn == 'Asisten Apoteker' ||
+            session()->get('pegawai')->jbtn == 'Apoteker' ||
+            session()->get('pegawai')->jbtn == 'TTK' ||
+            session()->get('pegawai')->jbtn == '-')
         <div class="row gy-2">
             <div class="col-lg-3 col-md-12 col-sm-12">
                 <div class="card">
@@ -10,9 +19,11 @@
                         <div class="d-grid gap-2">
                             @foreach ($data as $d)
                                 @if ($d->dokter->kd_sps == 'S0001' && $d->kd_poli != 'U0017')
-                                    <a style="font-size:12px" href="poliklinik/{{ $d->kd_poli }}?dokter={{ $d->dokter->kd_dokter }}"
-                                        class="btn btn-primary">{{ $d->dokter->nm_dokter }} <br>
-                                        {{ $d->nama }}
+                                    <a style="font-size:12px"
+                                        href="poliklinik/{{ $d->kd_poli }}?dokter={{ $d->dokter->kd_dokter }}"
+                                        class="btn btn-primary">
+                                        <h6>{{ $d->dokter->nm_dokter }}</h6>
+                                        {{ $d->poli->nm_poli }}
                                     </a>
                                 @endif
                             @endforeach
@@ -27,9 +38,11 @@
                         <div class="d-grid gap-2">
                             @foreach ($data as $d)
                                 @if ($d->dokter->kd_sps == 'S0003' && $d->kd_poli != 'U0017')
-                                    <a style="font-size:12px" href="poliklinik/{{ $d->kd_poli }}?dokter={{ $d->dokter->kd_dokter }}"
-                                        class="btn btn-success">{{ $d->dokter->nm_dokter }} <br>
-                                        {{ $d->nama }}
+                                    <a style="font-size:12px"
+                                        href="poliklinik/{{ $d->kd_poli }}?dokter={{ $d->dokter->kd_dokter }}"
+                                        class="btn btn-success">
+                                        <h6>{{ $d->dokter->nm_dokter }}</h6>
+                                        {{ $d->poli->nm_poli }}
                                     </a>
                                 @endif
                             @endforeach
@@ -64,12 +77,14 @@
                                 <h5 class="card-title">Lainnya</h5>
                                 <div class="d-grid gap-2 mb-2">
                                     <a href="poliklinik/P006" class="btn text-light"
-                                        style="background-color: #dc3700;height:55px; padding-top:10px;font-size:20px">Poliklinik Umum<br>
+                                        style="background-color: #dc3700;height:55px; padding-top:10px;font-size:20px">Poliklinik
+                                        Umum<br>
                                     </a>
                                 </div>
                                 <div class="d-grid gap-2">
                                     <a href="poliklinik/PKIA" class="btn text-light"
-                                        style="background-color:#d63384;height:55px; padding-top:10px;font-size:20px">Poliklinik KIA<br>
+                                        style="background-color:#d63384;height:55px; padding-top:10px;font-size:20px">Poliklinik
+                                        KIA<br>
                                     </a>
                                 </div>
                             </div>
