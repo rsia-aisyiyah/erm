@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\Dokter;
 use App\Models\Poliklinik;
 use App\Models\RegPeriksa;
-use App\Models\Jadwal;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\MappingPoliklinik;
@@ -34,17 +33,10 @@ class PoliklinikController extends Controller
     }
     public function poliDokter()
     {
-
-        $todayNameStringIndonesia = Carbon::now()->locale('id')->isoFormat('dddd');
-
-        return Jadwal::with('dokter', 'poli')
-        ->where('hari_kerja', strtoupper($todayNameStringIndonesia))
-        ->get();
-
-        // return $poliklinik = MappingPoliklinik::with([
-        //     'dokter',
-        //     'poliklinik',
-        // ])->whereHas('jadwal')->get();
+        return $poliklinik = MappingPoliklinik::with([
+            'dokter',
+            'poliklinik',
+        ])->whereHas('jadwal')->get();
     }
     public function poliPasien($kd_poli = '', $kd_dokter = '', $tgl_registrasi)
     {
