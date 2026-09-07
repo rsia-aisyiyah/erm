@@ -80,6 +80,12 @@
             aman.
         </li>
         <li>
+            <strong>RUMAH SAKIT WAHANA PENDIDIKAN.</strong> Saya telah mendapatkan informasi bahwa
+            Rumah Sakit merupakan wahana pendidikan dan dalam proses pelayanan dapat terdapat
+            peserta didik/mahasiswa yang mengikuti kegiatan pendidikan klinis di bawah supervisi
+            tenaga kesehatan yang berwenang dan kompeten.
+        </li>
+        <li>
             <strong>PELAYANAN KEROHANIAN.</strong> Saya memahami pelayanan kerohanian di RSIA
             Aisyiyah
             Pekajangan

@@ -157,28 +157,28 @@
                                                         </div>
                                                         <div class="text-xs text-nowrap">Segera</div>
                                                     </th>
-                                                    <th class="text-center bg-warning text-white">
+                                                    <th class="text-center bg-warning text-dark">
                                                         <div class="text-nowrap d-flex align-items-center justify-content-center">
                                                             <input type="checkbox" class="form-check-input me-2" name="ats_prereg_2" id="ats_prereg_2" onchange="onHeaderAtsChange(2)">
                                                             <span class="mt-1">ATS II</span>
                                                         </div>
                                                         <div class="text-xs text-nowrap">10 Menit</div>
                                                     </th>
-                                                    <th class="text-center bg-success text-white">
+                                                    <th class="text-center bg-warning text-dark">
                                                         <div class="text-nowrap d-flex align-items-center justify-content-center">
                                                             <input type="checkbox" class="form-check-input me-2" name="ats_prereg_3" id="ats_prereg_3" onchange="onHeaderAtsChange(3)">
                                                             <span class="mt-1">ATS III</span>
                                                         </div>
                                                         <div class="text-xs text-nowrap">30 Menit</div>
                                                     </th>
-                                                    <th class="text-center bg-primary text-white">
+                                                    <th class="text-center bg-success text-white">
                                                         <div class="text-nowrap d-flex align-items-center justify-content-center">
                                                             <input type="checkbox" class="form-check-input me-2" name="ats_prereg_4" id="ats_prereg_4" onchange="onHeaderAtsChange(4)">
                                                             <span class="mt-1">ATS IV</span>
                                                         </div>
                                                         <div class="text-xs text-nowrap">60 Menit</div>
                                                     </th>
-                                                    <th class="text-center bg-secondary text-white">
+                                                    <th class="text-center bg-success text-white">
                                                         <div class="text-nowrap d-flex align-items-center justify-content-center">
                                                             <input type="checkbox" class="form-check-input me-2" name="ats_prereg_5" id="ats_prereg_5" onchange="onHeaderAtsChange(5)">
                                                             <span class="mt-1">ATS V</span>
