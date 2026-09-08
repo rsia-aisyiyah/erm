@@ -114,6 +114,7 @@ class RegPeriksaController extends Controller
             'no_rawat',
             'umurdaftar',
             'sttsumur',
+            'almt_pj',
             'status_lanjut'
         )->where('no_rawat', $request->no_rawat)
             ->with([

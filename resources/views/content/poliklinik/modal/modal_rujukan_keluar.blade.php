@@ -81,6 +81,7 @@
             <div class="modal-footer">
                 <button class="btn btn-sm btn-primary btn-buat-rujukan mr-auto" onclick="simpanRujukanKeluar()"><i class="bi bi-envelope-plus-fill"></i> Buat Rujukan Keluar</button>
                 <a href="" target="_blank" class="btn btn-sm btn-success btn-print-rujukan mr-auto"><i class="bi bi-printer"></i> Cetak Rujukan Keluar</a>
+                <button class="btn btn-sm btn-warning mr-auto" onclick="generateRujukanKeluar()">Tarik Rujukan Keluar</button>
             </div>
         </div>
     </div>
@@ -476,6 +477,58 @@
                     $('.btn-buat-rujukan').removeClass('d-none')
                     $('.btn-print-rujukan').prop('href', `javascript:void(0)`).addClass('d-none')
                 }
+            })
+        }
+
+        function generateRujukanKeluar() {
+            tanggal = "{{ date('Y-m-d') }}";
+            no_sep = $('#no_sep_rujuk').val();
+            tanggal = "{{ date('Y-m-d') }}";
+            getListRujukanKeluar(tanggal, tanggal).done(function(response) {
+                console.log('RESPONSE ===', response);
+                const result = response.response.list.find(val => val.noSep === no_sep);
+
+
+                getRujukanKeluar(result.noRujukan).done(function(response) {
+
+                    if (response.metaData.code !== "200") {
+                        swal.fire(
+                            'Peringatan',
+                            `Coba lagi ${response.metaData.message}`,
+                            'warning'
+                        );
+                        return;
+                    }
+
+                    const result = response.response.rujukan;
+
+                    const dataRujukan = {
+                        'no_sep': result.noSep,
+                        'tglRujukan': splitTanggal(result.tglRujukan),
+                        'tglRencanaKunjungan': splitTanggal(result.tglRujukan),
+                        'ppkDirujuk': result.ppkDirujuk,
+                        'nm_ppkDirujuk': result.namaPpkDirujuk,
+                        'jnsPelayanan': result.jnsPelayanan,
+                        'catatan': result.catatan,
+                        'diagRujukan': result.diagRujukan,
+                        'nama_diagRujukan': result.namaDiagRujukan,
+                        'tipeRujukan': result.tipeRujukan,
+                        'poliRujukan': result.poliRujukan,
+                        'nama_poliRujukan': result.namaPoliRujukan,
+                        'no_rujukan': result.noRujukan,
+                        'user': "{{ session()->get('pegawai')->nik }}",
+                    };
+                    Swal.fire({
+                        title: 'Sedang mengirim data',
+                        text: 'Mohon Tunggu',
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    tarikRujukanKeluar(dataRujukan)
+                    modalRujukanKeluar.modal('hide')
+                })
             })
         }
     </script>

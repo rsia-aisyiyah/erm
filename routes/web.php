@@ -116,7 +116,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('/upload', [UploadController::class, 'upload']);
 	Route::get('/upload/status', [PoliklinikController::class, 'statusUpload']);
 
-	Route::get('/petugas/cari', [PetugasController::class, 'cari']);
+	Route::get('/petugas/cari', [PetugasController::class, 'cari'])->name('petugas.cari');
 
 
 	Route::post('/booking/buat', [BookingRegistrasiController::class, 'create']);
@@ -439,6 +439,14 @@ Route::middleware('auth')->group(function () {
 	Route::get('sep', [BridgingSepController::class, 'index'])->name('sep.index');
 	Route::get('sep/datatable', [BridgingSepController::class, 'dataTable'])->name('sep.datatable');
 	Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
+
+	Route::prefix('persetujuan-anestesi')->group(function () {
+		Route::get('/get', [\App\Http\Controllers\RsiaPersetujuanAnestesiController::class, 'get'])->name('persetujuan-anestesi.get');
+		Route::get('/dokter-anestesi', [\App\Http\Controllers\RsiaPersetujuanAnestesiController::class, 'getDokterAnestesi'])->name('persetujuan-anestesi.dokter');
+		Route::post('/simpan', [\App\Http\Controllers\RsiaPersetujuanAnestesiController::class, 'simpan'])->name('persetujuan-anestesi.simpan');
+		Route::delete('/hapus', [\App\Http\Controllers\RsiaPersetujuanAnestesiController::class, 'hapus'])->name('persetujuan-anestesi.hapus');
+		Route::get('/print', [\App\Http\Controllers\RsiaPersetujuanAnestesiController::class, 'print'])->name('persetujuan-anestesi.print');
+	});
 
 	Route::get('audit-logs', [AuditLogController::class, 'get'])->name('audit-logs.get');
 });

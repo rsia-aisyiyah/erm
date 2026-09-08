@@ -14,20 +14,20 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap');
     </style>
     {{-- <link href="/erm/public/css/select2/select2.min.css" rel="stylesheet" /> --}}
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
-          rel="stylesheet"/>
+        rel="stylesheet" />
     {{-- Datatable --}}
-    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet"/>
-    <link href="https://cdn.datatables.net/fixedcolumns/4.2.1/css/fixedColumns.dataTables.min.css" rel="stylesheet"/>
+    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/fixedcolumns/4.2.1/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
     @stack('css')
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
     {{-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> --}}
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.toast.min.css') }}">
     <link rel="icon" href="{{ asset('img/LOGO RSIA .png') }}">
@@ -36,13 +36,13 @@
     {{-- sweetalert --}}
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
 
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css"/>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" />
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
 
 
@@ -58,7 +58,7 @@
         #table-ews tbody,
         #table-ews thead {
             border: 1px solid #000;
-            color : black;
+            color: black;
             background-color: inherit;
             vertical-align: middle;
             padding: 2px;
@@ -83,24 +83,28 @@
 
         /* Seluruh Baris Awal Grup */
         #table-ews .ews-group-start td {
-            border-top: 2px solid black !important; /* Border tebal di atas grup baru */
+            border-top: 2px solid black !important;
+            /* Border tebal di atas grup baru */
         }
 
         /* Seluruh Baris Akhir Grup */
         #table-ews .ews-group-end td {
-            border-bottom: 2px solid black !important; /* Border tebal di bawah grup */
+            border-bottom: 2px solid black !important;
+            /* Border tebal di bawah grup */
         }
 
         /* Seluruh Baris Tengah Grup */
         #table-ews .ews-group-middle td {
 
-            border-bottom: none !important; /* Hapus border internal */
+            border-bottom: none !important;
+            /* Hapus border internal */
         }
 
         /* Perbaiki Border Seluruh Baris Hasil */
         /* Seluruh baris di tbody harus menghilangkan border bawah, kecuali ews-group-end */
         #table-ews tbody tr:not(.ews-group-end) td:not(.criteria-cell):not(.criteria-cell-hidden) {
-            border-bottom: 1px solid #ccc !important; /* Tentukan border tipis antar baris data (jika diinginkan) */
+            border-bottom: 1px solid #ccc !important;
+            /* Tentukan border tipis antar baris data (jika diinginkan) */
         }
     </style>
 
@@ -186,17 +190,17 @@
             padding: 11px;
         }
 
-        .list_obat ul li.active > a {
+        .list_obat ul li.active>a {
             background-color: #0d6efd;
             color: #fff;
         }
 
-        .list_aturan ul li.active > a {
+        .list_aturan ul li.active>a {
             background-color: #0d6efd;
             color: #fff;
         }
 
-        .list_racik ul li.active > a {
+        .list_racik ul li.active>a {
             background-color: #0d6efd;
             color: #fff;
         }
@@ -325,7 +329,7 @@
         }
 
         tr th {
-            background-color:: inherit;
+            background-color: : inherit;
         }
 
         .row-danger {
@@ -525,7 +529,8 @@
         .form-underline:focus {
             border-bottom: 1px dashed #ececec;
             box-shadow: none;
-            transition: background-size .3s ease;;
+            transition: background-size .3s ease;
+            ;
         }
 
         form label {
@@ -638,7 +643,16 @@
             font-size: 11px;
         }
 
-        .is-valid + .select2-container .select2-selection {
+        .select2-container {
+            display: block;
+        }
+
+        .select2-selection {
+            display: block;
+            width: 100%;
+        }
+
+        .select2 .is-valid+.select2-container .select2-selection {
             border-color: #28a745;
             /* Green border color for valid state */
             color: #155724;
@@ -666,9 +680,8 @@
             border-width: 0;
         }
 
-        tr
+        tr @media (min-width: 367px) {
 
-        @media (min-width: 367px) {
             /* .batasan-lebar { */
             /* width: 497px;
                 margin-left: auto;
@@ -748,8 +761,10 @@
         /* Ukuran teks di dalam pilihan multiple (tag) */
 
         .select2-selection--multiple .select2-selection__choice__display {
-            font-size: 12px !important; /* ubah ukuran sesuai selera, misal 12–13px */
-            padding: 2px 6px; /* atur padding biar proporsional */
+            font-size: 12px !important;
+            /* ubah ukuran sesuai selera, misal 12–13px */
+            padding: 2px 6px;
+            /* atur padding biar proporsional */
             margin-top: 3px;
         }
 
@@ -760,7 +775,8 @@
 
         /* Border dan tinggi area utama */
         .select2-selection--multiple {
-            min-height: 34px; /* pastikan tidak terlalu tinggi */
+            min-height: 34px;
+            /* pastikan tidak terlalu tinggi */
             padding: 2px;
             font-size: 12px !important;
         }

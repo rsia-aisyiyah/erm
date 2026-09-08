@@ -8,8 +8,8 @@
         }
 
         /* =========================
-                   PAGE HEADER
-                ========================= */
+                           PAGE HEADER
+                        ========================= */
         .clinic-page-header {
             display: flex;
             align-items: center;
@@ -51,8 +51,8 @@
         }
 
         /* =========================
-                   CLINIC CARD
-                ========================= */
+                           CLINIC CARD
+                        ========================= */
         .clinic-card {
             height: 100%;
             background: #fff;
@@ -73,8 +73,8 @@
         }
 
         /* =========================
-                   CLINIC HEADER
-                ========================= */
+                           CLINIC HEADER
+                        ========================= */
         .clinic-header {
             display: flex;
             align-items: center;
@@ -108,8 +108,8 @@
         }
 
         /* =========================
-                   DOCTOR ITEM
-                ========================= */
+                           DOCTOR ITEM
+                        ========================= */
         .doctor-list {
             display: flex;
             flex-direction: column;
@@ -181,8 +181,8 @@
         }
 
         /* =========================
-                   SPECIALTY COLORS
-                ========================= */
+                           SPECIALTY COLORS
+                        ========================= */
 
         .clinic-kandungan .clinic-icon {
             background: #fceef3;
@@ -200,8 +200,8 @@
         }
 
         /* =========================
-                   OTHER SERVICES
-                ========================= */
+                           OTHER SERVICES
+                        ========================= */
         .other-service {
             display: flex;
             align-items: center;
@@ -266,8 +266,8 @@
         }
 
         /* =========================
-                   EMPTY STATE
-                ========================= */
+                           EMPTY STATE
+                        ========================= */
         .empty-doctor {
             padding: 20px 12px;
             text-align: center;
@@ -284,8 +284,8 @@
         }
 
         /* =========================
-                   USER / DOCTOR PERSONAL PAGE
-                ========================= */
+                           USER / DOCTOR PERSONAL PAGE
+                        ========================= */
         .personal-clinic {
             max-width: 760px;
             margin: 0 auto;
@@ -323,8 +323,8 @@
         }
 
         /* =========================
-                   RESPONSIVE
-                ========================= */
+                           RESPONSIVE
+                        ========================= */
         @media (max-width: 767px) {
             .clinic-page-title h4 {
                 font-size: 18px;
@@ -341,24 +341,6 @@
     </style>
 
     <div class="clinic-page">
-
-        {{-- =========================
-             PAGE HEADER
-        ========================= --}}
-        <div class="clinic-page-header">
-            <div class="clinic-page-title">
-                <div class="clinic-page-icon">
-                    <i class="bi bi-hospital"></i>
-                </div>
-
-                <div>
-                    <h4>Poliklinik</h4>
-                    <p>Pilih layanan dan dokter yang ingin Anda akses</p>
-                </div>
-            </div>
-        </div>
-
-
         @if (session()->get('pegawai')->nama == 'direksi' ||
                 session()->get('pegawai')->departemen == 'DPM2' ||
                 session()->get('pegawai')->departemen == 'DIR' ||
