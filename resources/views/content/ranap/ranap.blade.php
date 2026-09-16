@@ -89,6 +89,7 @@
                                 <option value="1.113.1023" class="S0001">dr. Achmad Dahlan Kadir, Sp.OG</option>
                                 <option value="1.101.1112" class="S0003">dr. Himawan Budityastomo, Sp.OG</option>
                                 <option value="1.109.1119" class="S0003">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
+                                <option value="1.116.0926" class="S0003"> dr. Ilham Rizka Putra, Sp.OG</option>
                                 <option value="1.111.1221" class="S0001">dr. Rendy Yoga Ardian, Sp.A</option>
                                 <option value="1.227.0824" class="S0001">dr. Alifa Nofia Febriani, Sp.A</option>
                                 <option value="1.210.0825" class="S0001">dr. Hanif Hary Setyawan, Sp.A</option>
