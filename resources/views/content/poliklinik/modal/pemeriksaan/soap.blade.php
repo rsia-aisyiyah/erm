@@ -221,6 +221,7 @@
                 formSoapPoli.find('input[name=umurdaftar]').val(`${umurdaftar}`)
                 formSoapPoli.find('input[name=alamat]').val(response.pasien.alamat)
                 formSoapPoli.find('input[name=png_jawab]').val(`${response.penjab.png_jawab}`)
+                formSoapPoli.find('input[name=p_jawab]').val(`${response.p_jawab} (${response.hubunganpj})`)
 
 
 
@@ -325,7 +326,7 @@
             }
         }
 
-        modalSoapRalan.on('hidden.bs.modal', function () {
+        modalSoapRalan.on('hidden.bs.modal', function() {
             $('.no_resep').val('')
             $('.noResepText').text('')
             $('.labelTglResep').text(``);
@@ -440,14 +441,14 @@
                 dataType: 'json',
                 delay: 250,
                 cache: true,
-                data: function (params) {
+                data: function(params) {
                     return {
                         q: params.term // keyword pencarian
                     };
                 },
-                processResults: function (data) {
+                processResults: function(data) {
                     return {
-                        results: data.map(function (pegawai) {
+                        results: data.map(function(pegawai) {
                             return {
                                 id: pegawai.nip,
                                 text: pegawai.nama
