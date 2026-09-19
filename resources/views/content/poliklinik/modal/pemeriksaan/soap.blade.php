@@ -164,7 +164,7 @@
         </div>
     </div>
 </form>
-@push('script')
+@push('js')
     <script>
         const modalSoapRalan = $('#modalSoapRalan');
         const formSoapPoli = $('#formSoapPoli');
@@ -765,39 +765,39 @@
                 const borderLeftColor = statusLanjut === 'Ranap' ? '#dc3545' : '#0d6efd';
 
                 html += `
-                    <div class="card mb-3 shadow-sm border-0 rounded-3 overflow-hidden" style="border-left: 4px solid ${borderLeftColor} !important; background: #ffffff;">
-                        <div class="card-header bg-light bg-gradient py-2 px-3 border-bottom d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="badge ${badgeClass} rounded-pill px-2.5 py-1" style="font-size: 10px; font-weight: 600;">${statusLanjut}</span>
-                                <strong class="text-dark fw-bold" style="font-size: 12.5px;"><i class="bi bi-calendar3 me-1 text-primary"></i>${tgl}</strong>
+                    <div class="card mb-3 shadow-sm border-0 rounded-3 overflow-hidden" style="border-left: 4px solid ${borderLeftColor} !important; background: #ffffff; user-select: text !important; -webkit-user-select: text !important;">
+                        <div class="card-header bg-light bg-gradient py-2 px-3 border-bottom d-flex justify-content-between align-items-center" style="user-select: text !important; -webkit-user-select: text !important;">
+                            <div class="d-flex align-items-center gap-2" style="user-select: text !important; -webkit-user-select: text !important;">
+                                <span class="badge ${badgeClass} rounded-pill px-2.5 py-1" style="font-size: 10px; font-weight: 600; user-select: text !important; -webkit-user-select: text !important;">${statusLanjut}</span>
+                                <strong class="text-dark fw-bold" style="font-size: 12.5px; user-select: text !important; -webkit-user-select: text !important;"><i class="bi bi-calendar3 me-1 text-primary"></i>${tgl}</strong>
                             </div>
-                            <span class="badge bg-white text-secondary border rounded-pill px-2 py-1 shadow-2xs" style="font-size: 10px; font-weight: 500;"><i class="bi bi-hospital me-1 text-muted"></i>${poli}</span>
+                            <span class="badge bg-white text-secondary border rounded-pill px-2 py-1 shadow-2xs" style="font-size: 10px; font-weight: 500; user-select: text !important; -webkit-user-select: text !important;"><i class="bi bi-hospital me-1 text-muted"></i>${poli}</span>
                         </div>
-                        <div class="card-body p-2.5" style="font-size: 12px;">
-                            <div class="text-secondary small fw-semibold mb-2 d-flex align-items-center gap-1">
+                        <div class="card-body p-2.5" style="font-size: 12px; user-select: text !important; -webkit-user-select: text !important;">
+                            <div class="text-secondary small fw-semibold mb-2 d-flex align-items-center gap-1" style="user-select: text !important; -webkit-user-select: text !important;">
                                 <i class="bi bi-person-badge text-primary"></i>
-                                <span class="text-dark">${dokter}</span>
+                                <span class="text-dark" style="user-select: text !important; -webkit-user-select: text !important;">${dokter}</span>
                             </div>
                             ${diagnosaHtml}
-                            <div class="p-2.5 rounded-3 border mb-2" style="background-color: #f8fafc; border-color: #e2e8f0 !important; font-size: 11px;">
-                                <div class="mb-1.5 d-flex align-items-start gap-1">
-                                    <span class="badge bg-primary text-white me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center;">S</span>
-                                    <span class="text-dark" style="flex:1;">${soapS}</span>
+                            <div class="p-2.5 rounded-3 border mb-2" style="background-color: #f8fafc; border-color: #e2e8f0 !important; font-size: 11px; user-select: text !important; -webkit-user-select: text !important;">
+                                <div class="mb-1.5 d-flex align-items-start gap-1" style="user-select: text !important; -webkit-user-select: text !important;">
+                                    <span class="badge bg-primary text-white me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center; user-select: text !important; -webkit-user-select: text !important;">S</span>
+                                    <span class="text-dark" style="flex:1; user-select: text !important; -webkit-user-select: text !important;">${soapS}</span>
                                 </div>
-                                <div class="mb-1.5 d-flex align-items-start gap-1">
-                                    <span class="badge bg-info text-white me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center;">O</span>
-                                    <span class="text-dark" style="flex:1;">${soapO}</span>
+                                <div class="mb-1.5 d-flex align-items-start gap-1" style="user-select: text !important; -webkit-user-select: text !important;">
+                                    <span class="badge bg-info text-white me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center; user-select: text !important; -webkit-user-select: text !important;">O</span>
+                                    <span class="text-dark" style="flex:1; user-select: text !important; -webkit-user-select: text !important;">${soapO}</span>
                                 </div>
-                                <div class="mb-1.5 d-flex align-items-start gap-1">
-                                    <span class="badge bg-warning text-dark me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center;">A</span>
-                                    <span class="text-dark" style="flex:1;">${soapA}</span>
+                                <div class="mb-1.5 d-flex align-items-start gap-1" style="user-select: text !important; -webkit-user-select: text !important;">
+                                    <span class="badge bg-warning text-dark me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center; user-select: text !important; -webkit-user-select: text !important;">A</span>
+                                    <span class="text-dark" style="flex:1; user-select: text !important; -webkit-user-select: text !important;">${soapA}</span>
                                 </div>
-                                <div class="d-flex align-items-start gap-1">
-                                    <span class="badge bg-success text-white me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center;">P</span>
-                                    <span class="text-dark" style="flex:1; white-space: pre-line;">${soapP}</span>
+                                <div class="d-flex align-items-start gap-1" style="user-select: text !important; -webkit-user-select: text !important;">
+                                    <span class="badge bg-success text-white me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center; user-select: text !important; -webkit-user-select: text !important;">P</span>
+                                    <span class="text-dark" style="flex:1; white-space: pre-line; user-select: text !important; -webkit-user-select: text !important;">${soapP}</span>
                                 </div>
                             </div>
-                            <div class="d-flex gap-1.5 flex-wrap mb-1">
+                            <div class="d-flex gap-1.5 flex-wrap mb-1" style="user-select: none !important;">
                                 <button type="button" class="btn btn-xs btn-light border shadow-2xs rounded-pill py-0.5 px-2.5 text-secondary" style="font-size: 10px; font-weight: 500;" onclick="copySideToSoap('subjek', decodeURIComponent('${jsonS}'))"><i class="bi bi-clipboard-check text-primary me-1"></i>Copy S</button>
                                 <button type="button" class="btn btn-xs btn-light border shadow-2xs rounded-pill py-0.5 px-2.5 text-secondary" style="font-size: 10px; font-weight: 500;" onclick="copySideToSoap('objek', decodeURIComponent('${jsonO}'))"><i class="bi bi-clipboard-check text-info me-1"></i>Copy O</button>
                                 <button type="button" class="btn btn-xs btn-light border shadow-2xs rounded-pill py-0.5 px-2.5 text-secondary" style="font-size: 10px; font-weight: 500;" onclick="copySideToSoap('plan', decodeURIComponent('${jsonP}'))"><i class="bi bi-clipboard-check text-success me-1"></i>Copy P</button>
@@ -832,40 +832,46 @@
         }
     </script>
 
+    <!-- Offcanvas Drawer Riwayat Kunjungan Pasien (SOAP) -->
     <style>
         #offcanvasRiwayatSoap,
+        #offcanvasRiwayatSoap *,
+        #offcanvasRiwayatSoap .badge,
+        #offcanvasRiwayatSoap .card,
+        #offcanvasRiwayatSoap .card-body,
+        #offcanvasRiwayatSoap .card-header,
         #offcanvasRiwayatSoap div,
         #offcanvasRiwayatSoap span,
         #offcanvasRiwayatSoap p,
         #offcanvasRiwayatSoap li,
         #offcanvasRiwayatSoap strong,
         #offcanvasRiwayatSoap h6 {
-            user-select: text !important;
             -webkit-user-select: text !important;
             -moz-user-select: text !important;
             -ms-user-select: text !important;
+            user-select: text !important;
         }
         #offcanvasRiwayatSoap .btn,
         #offcanvasRiwayatSoap .btn-close {
-            user-select: none !important;
             -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
         }
     </style>
-
-    <!-- Offcanvas Drawer Riwayat Kunjungan Pasien (SOAP) -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRiwayatSoap" data-bs-scroll="true" data-bs-backdrop="false" style="width: 440px; z-index: 1065; box-shadow: -6px 0 20px rgba(0,0,0,0.18); border-left: 2px solid #0d6efd;">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRiwayatSoap" data-bs-scroll="true" data-bs-backdrop="false" style="width: 440px; z-index: 1065; box-shadow: -6px 0 20px rgba(0,0,0,0.18); border-left: 2px solid #0d6efd; user-select: text !important; -webkit-user-select: text !important;">
         <div class="offcanvas-header bg-primary text-white py-2 px-3 align-items-center">
             <h6 class="offcanvas-title fw-bold mb-0 text-white" id="offcanvasRiwayatSoapLabel">
                 <i class="bi bi-clock-history me-1"></i> Riwayat Kunjungan Pasien
             </h6>
             <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas" aria-label="Close" onclick="closeSideRiwayatSoap()"></button>
         </div>
-        <div class="offcanvas-body p-2 bg-light" id="bodyOffcanvasRiwayatSoap" style="overflow-y: auto;">
+        <div class="offcanvas-body p-2 bg-light" id="bodyOffcanvasRiwayatSoap" style="overflow-y: auto; user-select: text !important; -webkit-user-select: text !important;">
             <div class="text-center py-5" id="loadingRiwayatSoap">
                 <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
                 <div class="small text-muted mt-2">Memuat riwayat kunjungan...</div>
             </div>
-            <div id="contentRiwayatSoap" class="d-none"></div>
+            <div id="contentRiwayatSoap" class="d-none" style="user-select: text !important; -webkit-user-select: text !important;"></div>
         </div>
     </div>
 @endpush
