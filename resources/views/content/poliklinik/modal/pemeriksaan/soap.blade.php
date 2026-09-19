@@ -164,10 +164,58 @@
         </div>
     </div>
 </form>
-@push('js')
+
+<!-- Offcanvas Drawer Riwayat Kunjungan Pasien (SOAP) -->
+<style>
+    #offcanvasRiwayatSoap,
+    #offcanvasRiwayatSoap *,
+    #offcanvasRiwayatSoap .badge,
+    #offcanvasRiwayatSoap .card,
+    #offcanvasRiwayatSoap .card-body,
+    #offcanvasRiwayatSoap .card-header,
+    #offcanvasRiwayatSoap div,
+    #offcanvasRiwayatSoap span,
+    #offcanvasRiwayatSoap p,
+    #offcanvasRiwayatSoap li,
+    #offcanvasRiwayatSoap strong,
+    #offcanvasRiwayatSoap h6 {
+        -webkit-user-select: text !important;
+        -moz-user-select: text !important;
+        -ms-user-select: text !important;
+        user-select: text !important;
+    }
+    #offcanvasRiwayatSoap .btn,
+    #offcanvasRiwayatSoap .btn-close {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+    }
+</style>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRiwayatSoap" data-bs-scroll="true" data-bs-backdrop="false" style="width: 440px; z-index: 1065; box-shadow: -6px 0 20px rgba(0,0,0,0.18); border-left: 2px solid #0d6efd; user-select: text !important; -webkit-user-select: text !important;">
+    <div class="offcanvas-header bg-primary text-white py-2 px-3 align-items-center">
+        <h6 class="offcanvas-title fw-bold mb-0 text-white" id="offcanvasRiwayatSoapLabel">
+            <i class="bi bi-clock-history me-1"></i> Riwayat Kunjungan Pasien
+        </h6>
+        <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas" aria-label="Close" onclick="closeSideRiwayatSoap()"></button>
+    </div>
+    <div class="offcanvas-body p-2 bg-light" id="bodyOffcanvasRiwayatSoap" style="overflow-y: auto; user-select: text !important; -webkit-user-select: text !important;">
+        <div class="text-center py-5" id="loadingRiwayatSoap">
+            <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+            <div class="small text-muted mt-2">Memuat riwayat kunjungan...</div>
+        </div>
+        <div id="contentRiwayatSoap" class="d-none" style="user-select: text !important; -webkit-user-select: text !important;"></div>
+    </div>
+</div>
+
+@push('script')
     <script>
         const modalSoapRalan = $('#modalSoapRalan');
         const formSoapPoli = $('#formSoapPoli');
+
+        $(document).on('mousedown selectstart pointerdown', '#offcanvasRiwayatSoap', function(e) {
+            e.stopPropagation();
+        });
 
 
         function showSoapRalan(no_rawat) {
@@ -830,48 +878,11 @@
                 }
             }
         }
-    </script>
 
-    <!-- Offcanvas Drawer Riwayat Kunjungan Pasien (SOAP) -->
-    <style>
-        #offcanvasRiwayatSoap,
-        #offcanvasRiwayatSoap *,
-        #offcanvasRiwayatSoap .badge,
-        #offcanvasRiwayatSoap .card,
-        #offcanvasRiwayatSoap .card-body,
-        #offcanvasRiwayatSoap .card-header,
-        #offcanvasRiwayatSoap div,
-        #offcanvasRiwayatSoap span,
-        #offcanvasRiwayatSoap p,
-        #offcanvasRiwayatSoap li,
-        #offcanvasRiwayatSoap strong,
-        #offcanvasRiwayatSoap h6 {
-            -webkit-user-select: text !important;
-            -moz-user-select: text !important;
-            -ms-user-select: text !important;
-            user-select: text !important;
-        }
-        #offcanvasRiwayatSoap .btn,
-        #offcanvasRiwayatSoap .btn-close {
-            -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
-            user-select: none !important;
-        }
-    </style>
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRiwayatSoap" data-bs-scroll="true" data-bs-backdrop="false" style="width: 440px; z-index: 1065; box-shadow: -6px 0 20px rgba(0,0,0,0.18); border-left: 2px solid #0d6efd; user-select: text !important; -webkit-user-select: text !important;">
-        <div class="offcanvas-header bg-primary text-white py-2 px-3 align-items-center">
-            <h6 class="offcanvas-title fw-bold mb-0 text-white" id="offcanvasRiwayatSoapLabel">
-                <i class="bi bi-clock-history me-1"></i> Riwayat Kunjungan Pasien
-            </h6>
-            <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas" aria-label="Close" onclick="closeSideRiwayatSoap()"></button>
-        </div>
-        <div class="offcanvas-body p-2 bg-light" id="bodyOffcanvasRiwayatSoap" style="overflow-y: auto; user-select: text !important; -webkit-user-select: text !important;">
-            <div class="text-center py-5" id="loadingRiwayatSoap">
-                <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                <div class="small text-muted mt-2">Memuat riwayat kunjungan...</div>
-            </div>
-            <div id="contentRiwayatSoap" class="d-none" style="user-select: text !important; -webkit-user-select: text !important;"></div>
-        </div>
-    </div>
+        $(document).ready(function() {
+            $(document).on('mousedown selectstart pointerdown focusin', '#offcanvasRiwayatSoap', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
 @endpush
