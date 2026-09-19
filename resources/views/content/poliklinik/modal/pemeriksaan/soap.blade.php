@@ -515,6 +515,15 @@
         }
 
         let bsOffcanvasRiwayatSoap = null;
+        let rawRiwayatSoapData = [];
+        let filterDoctorRiwayatMode = 'current'; // 'current' or 'all'
+
+        function cleanVal(v) {
+            if (v === null || v === undefined) return '';
+            const str = String(v).trim();
+            if (str === '' || str === '-') return '';
+            return str;
+        }
 
         function toggleSideRiwayatSoap() {
             const el = document.getElementById('offcanvasRiwayatSoap');
@@ -544,6 +553,11 @@
             }
         }
 
+        function setSideRiwayatFilter(mode) {
+            filterDoctorRiwayatMode = mode;
+            renderSideRiwayatSoap();
+        }
+
         function loadSideRiwayatSoap(noRm) {
             $('#loadingRiwayatSoap').removeClass('d-none');
             $('#contentRiwayatSoap').addClass('d-none').empty();
@@ -552,110 +566,8 @@
                 $('#loadingRiwayatSoap').addClass('d-none');
                 $('#contentRiwayatSoap').removeClass('d-none');
 
-                const regList = response.reg_periksa || [];
-                if (!regList || regList.length === 0) {
-                    $('#contentRiwayatSoap').html(`
-                        <div class="alert alert-warning text-center small my-3">
-                            <i class="bi bi-info-circle me-1"></i> Belum ada data riwayat kunjungan medis untuk pasien ini.
-                        </div>
-                    `);
-                    return;
-                }
-
-                let html = '';
-                regList.forEach(function(item) {
-                    const tgl = item.tgl_registrasi ? (typeof formatTanggal === 'function' ? formatTanggal(item.tgl_registrasi) : item.tgl_registrasi) : '-';
-                    const statusLanjut = item.status_lanjut || 'Ralan';
-                    const badgeClass = statusLanjut === 'Ranap' ? 'bg-danger' : 'bg-primary';
-                    const poli = item.poliklinik?.nm_poli || '-';
-                    const dokter = item.dokter?.nm_dokter || '-';
-
-                    // Extract Diagnosa
-                    let diagnosaHtml = '';
-                    if (item.diagnosa_pasien && item.diagnosa_pasien.length > 0) {
-                        const diagList = item.diagnosa_pasien.map(d => `<span class="badge bg-secondary me-1 mb-1" style="font-size:10px;">${d.kd_penyakit} - ${d.penyakit?.nm_penyakit || ''}</span>`).join('');
-                        diagnosaHtml = `<div class="mb-2"><strong class="small">Diagnosa:</strong><br>${diagList}</div>`;
-                    }
-
-                    // Extract SOAP (Ralan / Ranap)
-                    let soapS = '-', soapO = '-', soapA = '-', soapP = '-';
-
-                    if (item.pemeriksaan_ralan && item.pemeriksaan_ralan.length > 0) {
-                        const pr = item.pemeriksaan_ralan[0];
-                        soapS = pr.keluhan || '-';
-                        soapO = pr.pemeriksaan || '-';
-                        if (pr.suhu_tubuh && pr.suhu_tubuh !== '-') soapO += ` | Suhu: ${pr.suhu_tubuh}°C`;
-                        if (pr.tensi && pr.tensi !== '-') soapO += ` | Tensi: ${pr.tensi}`;
-                        if (pr.nadi && pr.nadi !== '-') soapO += ` | Nadi: ${pr.nadi}`;
-                        if (pr.spo2 && pr.spo2 !== '-') soapO += ` | SpO2: ${pr.spo2}%`;
-                        soapA = pr.penilaian || '-';
-                        soapP = pr.instruksi || pr.rtl || '-';
-                    } else if (item.pemeriksaan_ranap && item.pemeriksaan_ranap.length > 0) {
-                        const pr = item.pemeriksaan_ranap[0];
-                        soapS = pr.keluhan || '-';
-                        soapO = pr.pemeriksaan || '-';
-                        soapA = pr.penilaian || '-';
-                        soapP = pr.instruksi || pr.rtl || '-';
-                    }
-
-                    // Extract Resep
-                    let resepHtml = '';
-                    if (item.resep_obat && item.resep_obat.length > 0) {
-                        let listObat = [];
-                        item.resep_obat.forEach(r => {
-                            if (r.resep_dokter && r.resep_dokter.length > 0) {
-                                r.resep_dokter.forEach(d => {
-                                    const nm = d.databarang?.nama_brng || d.kode_brng || '';
-                                    const jml = d.jml || '';
-                                    const aturan = d.aturan_pakai || '';
-                                    listObat.push(`<li><strong>${nm}</strong> (${jml}) - <em>${aturan}</em></li>`);
-                                });
-                            }
-                        });
-                        if (listObat.length > 0) {
-                            resepHtml = `
-                                <div class="mt-2 pt-2 border-top">
-                                    <strong class="text-success small"><i class="bi bi-capsule me-1"></i> Resep Obat:</strong>
-                                    <ul class="ps-3 mb-1 small text-dark" style="font-size:11px;">${listObat.join('')}</ul>
-                                </div>
-                            `;
-                        }
-                    }
-
-                    const jsonS = encodeURIComponent(soapS);
-                    const jsonO = encodeURIComponent(soapO);
-                    const jsonP = encodeURIComponent(soapP);
-
-                    html += `
-                        <div class="card mb-2 shadow-sm border-0">
-                            <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="badge ${badgeClass} me-1" style="font-size:10px;">${statusLanjut}</span>
-                                    <strong class="small text-dark">${tgl}</strong>
-                                </div>
-                                <span class="small text-muted" style="font-size: 11px;">${poli}</span>
-                            </div>
-                            <div class="card-body p-2" style="font-size: 12px;">
-                                <div class="text-muted small mb-2"><i class="bi bi-person-doctor me-1"></i>${dokter}</div>
-                                ${diagnosaHtml}
-                                <div class="bg-white p-2 rounded border mb-2" style="font-size:11px;">
-                                    <div class="mb-1"><strong>S:</strong> ${soapS}</div>
-                                    <div class="mb-1"><strong>O:</strong> ${soapO}</div>
-                                    <div class="mb-1"><strong>A:</strong> ${soapA}</div>
-                                    <div><strong>P:</strong> ${soapP}</div>
-                                </div>
-                                <div class="d-flex gap-1 flex-wrap mb-1">
-                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('subjek', decodeURIComponent('${jsonS}'))"><i class="bi bi-clipboard me-1"></i>Copy S</button>
-                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('objek', decodeURIComponent('${jsonO}'))"><i class="bi bi-clipboard me-1"></i>Copy O</button>
-                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('plan', decodeURIComponent('${jsonP}'))"><i class="bi bi-clipboard me-1"></i>Copy P</button>
-                                </div>
-                                ${resepHtml}
-                            </div>
-                        </div>
-                    `;
-                });
-
-                $('#contentRiwayatSoap').html(html);
+                rawRiwayatSoapData = response.reg_periksa || [];
+                renderSideRiwayatSoap();
             }).fail(function() {
                 $('#loadingRiwayatSoap').addClass('d-none');
                 $('#contentRiwayatSoap').removeClass('d-none').html(`
@@ -664,6 +576,183 @@
                     </div>
                 `);
             });
+        }
+
+        function renderSideRiwayatSoap() {
+            const container = $('#contentRiwayatSoap');
+            container.empty();
+
+            if (!rawRiwayatSoapData || rawRiwayatSoapData.length === 0) {
+                container.html(`
+                    <div class="alert alert-warning text-center small my-3">
+                        <i class="bi bi-info-circle me-1"></i> Belum ada data riwayat kunjungan medis untuk pasien ini.
+                    </div>
+                `);
+                return;
+            }
+
+            const curKdDokter = $('#kd_dokter').val() || '';
+            let filteredList = rawRiwayatSoapData;
+
+            if (filterDoctorRiwayatMode === 'current' && curKdDokter) {
+                filteredList = rawRiwayatSoapData.filter(function(item) {
+                    return String(item.kd_dokter).trim() === String(curKdDokter).trim();
+                });
+            }
+
+            const btnCurrentClass = filterDoctorRiwayatMode === 'current' ? 'btn-primary' : 'btn-outline-primary';
+            const btnAllClass = filterDoctorRiwayatMode === 'all' ? 'btn-primary' : 'btn-outline-primary';
+
+            let filterBar = `
+                <div class="d-flex justify-content-between align-items-center mb-2 p-1 bg-white rounded border">
+                    <button type="button" class="btn btn-xs ${btnCurrentClass} fw-bold" onclick="setSideRiwayatFilter('current')" style="font-size: 11px;">
+                        <i class="bi bi-person-check me-1"></i> Dokter Ini Saja
+                    </button>
+                    <button type="button" class="btn btn-xs ${btnAllClass} fw-bold" onclick="setSideRiwayatFilter('all')" style="font-size: 11px;">
+                        <i class="bi bi-people me-1"></i> Semua Dokter (${rawRiwayatSoapData.length})
+                    </button>
+                </div>
+            `;
+
+            if (filteredList.length === 0) {
+                container.html(filterBar + `
+                    <div class="alert alert-info text-center small my-3">
+                        <i class="bi bi-info-circle me-1"></i> Tidak ada riwayat pemeriksaan khusus Dokter ini.<br>
+                        <a href="javascript:void(0)" onclick="setSideRiwayatFilter('all')" class="fw-bold mt-1 d-inline-block">Klik di sini untuk melihat Semua Dokter</a>
+                    </div>
+                `);
+                return;
+            }
+
+            let html = filterBar;
+
+            filteredList.forEach(function(item) {
+                const tgl = item.tgl_registrasi ? (typeof formatTanggal === 'function' ? formatTanggal(item.tgl_registrasi) : item.tgl_registrasi) : '-';
+                const statusLanjut = item.status_lanjut || 'Ralan';
+                const badgeClass = statusLanjut === 'Ranap' ? 'bg-danger' : 'bg-primary';
+                const poli = item.poliklinik?.nm_poli || '-';
+                const dokter = item.dokter?.nm_dokter || '-';
+
+                // Extract Diagnosa
+                let diagnosaHtml = '';
+                if (item.diagnosa_pasien && item.diagnosa_pasien.length > 0) {
+                    const diagList = item.diagnosa_pasien.map(d => `<span class="badge bg-secondary me-1 mb-1" style="font-size:10px;">${d.kd_penyakit} - ${d.penyakit?.nm_penyakit || ''}</span>`).join('');
+                    diagnosaHtml = `<div class="mb-2"><strong class="small">Diagnosa:</strong><br>${diagList}</div>`;
+                }
+
+                // Extract SOAP (Ralan / Ranap)
+                let soapS = '-', soapO = '-', soapA = '-', soapP = '-';
+
+                if (item.pemeriksaan_ralan && item.pemeriksaan_ralan.length > 0) {
+                    const pr = item.pemeriksaan_ralan[0];
+                    soapS = cleanVal(pr.keluhan) || '-';
+
+                    let oParts = [];
+                    const prm = cleanVal(pr.pemeriksaan);
+                    if (prm) oParts.push(prm);
+                    if (cleanVal(pr.suhu_tubuh)) oParts.push(`Suhu: ${pr.suhu_tubuh}°C`);
+                    if (cleanVal(pr.tensi)) oParts.push(`Tensi: ${pr.tensi}`);
+                    if (cleanVal(pr.nadi)) oParts.push(`Nadi: ${pr.nadi}`);
+                    if (cleanVal(pr.spo2)) oParts.push(`SpO2: ${pr.spo2}%`);
+                    soapO = oParts.length > 0 ? oParts.join(' | ') : '-';
+
+                    soapA = cleanVal(pr.penilaian);
+                    if (!soapA && item.diagnosa_pasien && item.diagnosa_pasien.length > 0) {
+                        soapA = item.diagnosa_pasien.map(d => `${d.kd_penyakit} - ${d.penyakit?.nm_penyakit || ''}`).join(', ');
+                    }
+                    if (!soapA) soapA = '-';
+
+                    let pParts = [];
+                    const rtlVal = cleanVal(pr.rtl);
+                    const instVal = cleanVal(pr.instruksi);
+                    const evalVal = cleanVal(pr.evaluasi);
+
+                    if (rtlVal) pParts.push(rtlVal);
+                    if (instVal && instVal !== rtlVal) pParts.push(instVal);
+                    if (evalVal && evalVal !== rtlVal && evalVal !== instVal) pParts.push(evalVal);
+
+                    soapP = pParts.length > 0 ? pParts.join(' | ') : '-';
+                } else if (item.pemeriksaan_ranap && item.pemeriksaan_ranap.length > 0) {
+                    const pr = item.pemeriksaan_ranap[0];
+                    soapS = cleanVal(pr.keluhan) || '-';
+                    soapO = cleanVal(pr.pemeriksaan) || '-';
+
+                    soapA = cleanVal(pr.penilaian);
+                    if (!soapA && item.diagnosa_pasien && item.diagnosa_pasien.length > 0) {
+                        soapA = item.diagnosa_pasien.map(d => `${d.kd_penyakit} - ${d.penyakit?.nm_penyakit || ''}`).join(', ');
+                    }
+                    if (!soapA) soapA = '-';
+
+                    let pParts = [];
+                    const rtlVal = cleanVal(pr.rtl);
+                    const instVal = cleanVal(pr.instruksi);
+                    const evalVal = cleanVal(pr.evaluasi);
+
+                    if (rtlVal) pParts.push(rtlVal);
+                    if (instVal && instVal !== rtlVal) pParts.push(instVal);
+                    if (evalVal && evalVal !== rtlVal && evalVal !== instVal) pParts.push(evalVal);
+
+                    soapP = pParts.length > 0 ? pParts.join(' | ') : '-';
+                }
+
+                // Extract Resep
+                let resepHtml = '';
+                if (item.resep_obat && item.resep_obat.length > 0) {
+                    let listObat = [];
+                    item.resep_obat.forEach(r => {
+                        if (r.resep_dokter && r.resep_dokter.length > 0) {
+                            r.resep_dokter.forEach(d => {
+                                const nm = d.databarang?.nama_brng || d.kode_brng || '';
+                                const jml = d.jml || '';
+                                const aturan = d.aturan_pakai || '';
+                                listObat.push(`<li><strong>${nm}</strong> (${jml}) - <em>${aturan}</em></li>`);
+                            });
+                        }
+                    });
+                    if (listObat.length > 0) {
+                        resepHtml = `
+                            <div class="mt-2 pt-2 border-top">
+                                <strong class="text-success small"><i class="bi bi-capsule me-1"></i> Resep Obat:</strong>
+                                <ul class="ps-3 mb-1 small text-dark" style="font-size:11px;">${listObat.join('')}</ul>
+                            </div>
+                        `;
+                    }
+                }
+
+                const jsonS = encodeURIComponent(soapS);
+                const jsonO = encodeURIComponent(soapO);
+                const jsonP = encodeURIComponent(soapP);
+
+                html += `
+                    <div class="card mb-2 shadow-sm border-0">
+                        <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge ${badgeClass} me-1" style="font-size:10px;">${statusLanjut}</span>
+                                <strong class="small text-dark">${tgl}</strong>
+                            </div>
+                            <span class="small text-muted" style="font-size: 11px;">${poli}</span>
+                        </div>
+                        <div class="card-body p-2" style="font-size: 12px;">
+                            <div class="text-muted small mb-2"><i class="bi bi-person-doctor me-1"></i>${dokter}</div>
+                            ${diagnosaHtml}
+                            <div class="bg-white p-2 rounded border mb-2" style="font-size:11px;">
+                                <div class="mb-1"><strong>S:</strong> ${soapS}</div>
+                                <div class="mb-1"><strong>O:</strong> ${soapO}</div>
+                                <div class="mb-1"><strong>A:</strong> ${soapA}</div>
+                                <div><strong>P:</strong> ${soapP}</div>
+                            </div>
+                            <div class="d-flex gap-1 flex-wrap mb-1">
+                                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('subjek', decodeURIComponent('${jsonS}'))"><i class="bi bi-clipboard me-1"></i>Copy S</button>
+                                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('objek', decodeURIComponent('${jsonO}'))"><i class="bi bi-clipboard me-1"></i>Copy O</button>
+                                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('plan', decodeURIComponent('${jsonP}'))"><i class="bi bi-clipboard me-1"></i>Copy P</button>
+                            </div>
+                            ${resepHtml}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.html(html);
         }
 
         function copySideToSoap(field, text) {
