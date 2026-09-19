@@ -677,7 +677,7 @@
                 }
 
                 // Extract Resep List & Pemberian Obat (Filter non-drug consumables & deduplicate)
-                const nonDrugKeywords = /spuit|handscoon|glove|needle|hypafix|leukoplast|kassa|nasal|spalk|infuset|gelang|masker|o2|pot|cover glass|objek glass|tabung|cellpack|sulfolycer|lycer|flourocell|qc xnl|thermal|abocath|pipet|otsu water|wfi|mucus|suction|oneswab/i;
+                const nonDrugKeywords = /spuit|handscoon|glove|needle|hypafix|leukoplast|kassa|nasal|spalk|infuset|gelang|masker|o2|pot|cover glass|objek glass|tabung|cellpack|sulfolycer|lycer|flourocell|qc xnl|thermal|abocath|pipet|otsu water|wfi|mucus|suction|oneswab|sendok/i;
 
                 let listObat = [];
                 let setObat = new Set();
@@ -686,7 +686,7 @@
                     item.resep_obat.forEach(r => {
                         if (r.resep_dokter && r.resep_dokter.length > 0) {
                             r.resep_dokter.forEach(d => {
-                                const nm = d.databarang?.nama_brng || d.kode_brng || '';
+                                const nm = d.data_barang?.nama_brng || d.dataBarang?.nama_brng || d.databarang?.nama_brng || d.kode_brng || '';
                                 const jml = d.jml ? ` (${d.jml})` : '';
                                 const aturan = d.aturan_pakai ? ` - ${d.aturan_pakai}` : '';
                                 if (nm && !nonDrugKeywords.test(nm) && !setObat.has(nm.trim())) {
@@ -711,7 +711,7 @@
 
                 if (item.detail_pemberian_obat && item.detail_pemberian_obat.length > 0) {
                     item.detail_pemberian_obat.forEach(d => {
-                        const nm = d.data_barang?.nama_brng || d.kode_brng || '';
+                        const nm = d.data_barang?.nama_brng || d.dataBarang?.nama_brng || d.databarang?.nama_brng || d.kode_brng || '';
                         if (nm && !nonDrugKeywords.test(nm) && !setObat.has(nm.trim())) {
                             setObat.add(nm.trim());
                             const jml = d.jml ? ` (${d.jml})` : '';
@@ -800,15 +800,8 @@
                     if (diagStr) aParts.push(diagStr);
                 }
 
-                // Plan (P) value extraction
-                let soapP = '-';
-                if (pParts.length > 0) {
-                    soapP = pParts.join('\n');
-                } else if (listObat.length > 0) {
-                    soapP = listObat.join('\n');
-                } else if (listTindakan.length > 0) {
-                    soapP = listTindakan.join('\n');
-                }
+                // Plan (P) value extraction (Strictly Plan text only, no fallback to listObat)
+                let soapP = pParts.length > 0 ? pParts.join('\n') : '-';
 
                 const soapS = sParts.length > 0 ? sParts.join(' | ') : '-';
                 const soapO = oParts.length > 0 ? oParts.join(' | ') : '-';

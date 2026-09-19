@@ -157,7 +157,7 @@ class RegPeriksaController extends Controller
                 })->with([
                             'upload',
                             'resepObat' => function ($q) {
-                                return $q->with('resepDokter', 'resepRacikan');
+                                return $q->with('resepDokter.dataBarang', 'resepRacikan');
                             },
                             'poliklinik',
                             'dokter',
