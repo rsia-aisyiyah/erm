@@ -187,7 +187,7 @@
             }
 
             modalSoapRalan.modal('show');
-            btnTabRiwayatPemeriksaan.trigger('click')
+            $('button[data-bs-target="#tab-soap-pane"]').tab('show');
 
             getRegPeriksa(no_rawat).done((response) => {
                 // Swal.fire({
