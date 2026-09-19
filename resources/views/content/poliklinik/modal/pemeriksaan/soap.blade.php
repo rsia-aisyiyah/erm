@@ -832,6 +832,26 @@
         }
     </script>
 
+    <style>
+        #offcanvasRiwayatSoap,
+        #offcanvasRiwayatSoap div,
+        #offcanvasRiwayatSoap span,
+        #offcanvasRiwayatSoap p,
+        #offcanvasRiwayatSoap li,
+        #offcanvasRiwayatSoap strong,
+        #offcanvasRiwayatSoap h6 {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+        }
+        #offcanvasRiwayatSoap .btn,
+        #offcanvasRiwayatSoap .btn-close {
+            user-select: none !important;
+            -webkit-user-select: none !important;
+        }
+    </style>
+
     <!-- Offcanvas Drawer Riwayat Kunjungan Pasien (SOAP) -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRiwayatSoap" data-bs-scroll="true" data-bs-backdrop="false" style="width: 440px; z-index: 1065; box-shadow: -6px 0 20px rgba(0,0,0,0.18); border-left: 2px solid #0d6efd;">
         <div class="offcanvas-header bg-primary text-white py-2 px-3 align-items-center">
