@@ -615,8 +615,17 @@
                 // Extract Diagnosa
                 let diagnosaHtml = '';
                 if (item.diagnosa_pasien && item.diagnosa_pasien.length > 0) {
-                    const diagList = item.diagnosa_pasien.map(d => `<span class="badge bg-secondary me-1 mb-1" style="font-size:10px;">${d.kd_penyakit} - ${d.penyakit?.nm_penyakit || ''}</span>`).join('');
-                    diagnosaHtml = `<div class="mb-2"><strong class="small">Diagnosa:</strong><br>${diagList}</div>`;
+                    const diagList = item.diagnosa_pasien.map(d => `
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill me-1 mb-1 px-2 py-1" style="font-size: 10px; font-weight: 500;">
+                            <strong>${d.kd_penyakit}</strong> - ${d.penyakit?.nm_penyakit || ''}
+                        </span>
+                    `).join('');
+                    diagnosaHtml = `
+                        <div class="mb-2">
+                            <div class="text-muted fw-bold mb-1" style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;"><i class="bi bi-activity me-1"></i>Diagnosa:</div>
+                            <div>${diagList}</div>
+                        </div>
+                    `;
                 }
 
                 // Extract Resep List & Pemberian Obat
@@ -655,9 +664,11 @@
                 if (listObat.length > 0) {
                     const obatUl = listObat.map(o => `<li>${o}</li>`).join('');
                     resepHtml = `
-                        <div class="mt-2 pt-2 border-top">
-                            <strong class="text-success small"><i class="bi bi-capsule me-1"></i> Resep / Pemberian Obat:</strong>
-                            <ul class="ps-3 mb-1 small text-dark" style="font-size:11px;">${obatUl}</ul>
+                        <div class="mt-2 p-2 rounded-3 border border-success-subtle bg-success-subtle bg-opacity-10">
+                            <div class="text-success fw-bold d-flex align-items-center mb-1" style="font-size: 11px;">
+                                <i class="bi bi-capsule me-1"></i> Resep / Pemberian Obat:
+                            </div>
+                            <ul class="ps-3 mb-0 text-dark" style="font-size: 11px; line-height: 1.5;">${obatUl}</ul>
                         </div>
                     `;
                 }
@@ -751,28 +762,45 @@
                 const jsonO = encodeURIComponent(soapO);
                 const jsonP = encodeURIComponent(soapP);
 
+                const borderLeftColor = statusLanjut === 'Ranap' ? '#dc3545' : '#0d6efd';
+
                 html += `
-                    <div class="card mb-2 shadow-sm border-0">
-                        <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="badge ${badgeClass} me-1" style="font-size:10px;">${statusLanjut}</span>
-                                <strong class="small text-dark">${tgl}</strong>
+                    <div class="card mb-3 shadow-sm border-0 rounded-3 overflow-hidden" style="border-left: 4px solid ${borderLeftColor} !important; background: #ffffff;">
+                        <div class="card-header bg-light bg-gradient py-2 px-3 border-bottom d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge ${badgeClass} rounded-pill px-2.5 py-1" style="font-size: 10px; font-weight: 600;">${statusLanjut}</span>
+                                <strong class="text-dark fw-bold" style="font-size: 12.5px;"><i class="bi bi-calendar3 me-1 text-primary"></i>${tgl}</strong>
                             </div>
-                            <span class="small text-muted" style="font-size: 11px;">${poli}</span>
+                            <span class="badge bg-white text-secondary border rounded-pill px-2 py-1 shadow-2xs" style="font-size: 10px; font-weight: 500;"><i class="bi bi-hospital me-1 text-muted"></i>${poli}</span>
                         </div>
-                        <div class="card-body p-2" style="font-size: 12px;">
-                            <div class="text-muted small mb-2"><i class="bi bi-person-doctor me-1"></i>${dokter}</div>
-                            ${diagnosaHtml}
-                            <div class="bg-white p-2 rounded border mb-2" style="font-size:11px;">
-                                <div class="mb-1"><strong>S:</strong> ${soapS}</div>
-                                <div class="mb-1"><strong>O:</strong> ${soapO}</div>
-                                <div class="mb-1"><strong>A:</strong> ${soapA}</div>
-                                <div style="white-space: pre-line;"><strong>P:</strong> ${soapP}</div>
+                        <div class="card-body p-2.5" style="font-size: 12px;">
+                            <div class="text-secondary small fw-semibold mb-2 d-flex align-items-center gap-1">
+                                <i class="bi bi-person-badge text-primary"></i>
+                                <span class="text-dark">${dokter}</span>
                             </div>
-                            <div class="d-flex gap-1 flex-wrap mb-1">
-                                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('subjek', decodeURIComponent('${jsonS}'))"><i class="bi bi-clipboard me-1"></i>Copy S</button>
-                                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('objek', decodeURIComponent('${jsonO}'))"><i class="bi bi-clipboard me-1"></i>Copy O</button>
-                                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('plan', decodeURIComponent('${jsonP}'))"><i class="bi bi-clipboard me-1"></i>Copy P</button>
+                            ${diagnosaHtml}
+                            <div class="p-2.5 rounded-3 border mb-2" style="background-color: #f8fafc; border-color: #e2e8f0 !important; font-size: 11px;">
+                                <div class="mb-1.5 d-flex align-items-start gap-1">
+                                    <span class="badge bg-primary text-white me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center;">S</span>
+                                    <span class="text-dark" style="flex:1;">${soapS}</span>
+                                </div>
+                                <div class="mb-1.5 d-flex align-items-start gap-1">
+                                    <span class="badge bg-info text-white me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center;">O</span>
+                                    <span class="text-dark" style="flex:1;">${soapO}</span>
+                                </div>
+                                <div class="mb-1.5 d-flex align-items-start gap-1">
+                                    <span class="badge bg-warning text-dark me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center;">A</span>
+                                    <span class="text-dark" style="flex:1;">${soapA}</span>
+                                </div>
+                                <div class="d-flex align-items-start gap-1">
+                                    <span class="badge bg-success text-white me-1 px-1.5 py-0.5 rounded fw-bold" style="font-size: 9px; min-width: 18px; text-align: center;">P</span>
+                                    <span class="text-dark" style="flex:1; white-space: pre-line;">${soapP}</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-1.5 flex-wrap mb-1">
+                                <button type="button" class="btn btn-xs btn-light border shadow-2xs rounded-pill py-0.5 px-2.5 text-secondary" style="font-size: 10px; font-weight: 500;" onclick="copySideToSoap('subjek', decodeURIComponent('${jsonS}'))"><i class="bi bi-clipboard-check text-primary me-1"></i>Copy S</button>
+                                <button type="button" class="btn btn-xs btn-light border shadow-2xs rounded-pill py-0.5 px-2.5 text-secondary" style="font-size: 10px; font-weight: 500;" onclick="copySideToSoap('objek', decodeURIComponent('${jsonO}'))"><i class="bi bi-clipboard-check text-info me-1"></i>Copy O</button>
+                                <button type="button" class="btn btn-xs btn-light border shadow-2xs rounded-pill py-0.5 px-2.5 text-secondary" style="font-size: 10px; font-weight: 500;" onclick="copySideToSoap('plan', decodeURIComponent('${jsonP}'))"><i class="bi bi-clipboard-check text-success me-1"></i>Copy P</button>
                             </div>
                             ${resepHtml}
                         </div>
