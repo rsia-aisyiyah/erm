@@ -676,8 +676,12 @@
                     `;
                 }
 
-                // Extract Resep List & Pemberian Obat
+                // Extract Resep List & Pemberian Obat (Filter non-drug consumables & deduplicate)
+                const nonDrugKeywords = /spuit|handscoon|glove|needle|hypafix|leukoplast|kassa|nasal|spalk|infuset|gelang|masker|o2|pot|cover glass|objek glass|tabung|cellpack|sulfolycer|lycer|flourocell|qc xnl|thermal|abocath|pipet|otsu water|wfi|mucus|suction|oneswab/i;
+
                 let listObat = [];
+                let setObat = new Set();
+
                 if (item.resep_obat && item.resep_obat.length > 0) {
                     item.resep_obat.forEach(r => {
                         if (r.resep_dokter && r.resep_dokter.length > 0) {
@@ -685,7 +689,10 @@
                                 const nm = d.databarang?.nama_brng || d.kode_brng || '';
                                 const jml = d.jml ? ` (${d.jml})` : '';
                                 const aturan = d.aturan_pakai ? ` - ${d.aturan_pakai}` : '';
-                                if (nm) listObat.push(`${nm}${jml}${aturan}`);
+                                if (nm && !nonDrugKeywords.test(nm) && !setObat.has(nm.trim())) {
+                                    setObat.add(nm.trim());
+                                    listObat.push(`${nm}${jml}${aturan}`);
+                                }
                             });
                         }
                         if (r.resep_racikan && r.resep_racikan.length > 0) {
@@ -693,18 +700,25 @@
                                 const nm = rc.nama_racik ? `Racikan: ${rc.nama_racik}` : 'Racikan';
                                 const jml = rc.jml_dr ? ` (${rc.jml_dr})` : '';
                                 const aturan = rc.aturan_pakai ? ` - ${rc.aturan_pakai}` : '';
-                                listObat.push(`${nm}${jml}${aturan}`);
+                                if (nm && !setObat.has(nm.trim())) {
+                                    setObat.add(nm.trim());
+                                    listObat.push(`${nm}${jml}${aturan}`);
+                                }
                             });
                         }
                     });
                 }
-                if (listObat.length === 0 && item.detail_pemberian_obat && item.detail_pemberian_obat.length > 0) {
+
+                if (item.detail_pemberian_obat && item.detail_pemberian_obat.length > 0) {
                     item.detail_pemberian_obat.forEach(d => {
                         const nm = d.data_barang?.nama_brng || d.kode_brng || '';
-                        const jml = d.jml ? ` (${d.jml})` : '';
-                        const aturanStr = d.aturan_pakai?.aturan || (typeof d.aturan_pakai === 'string' ? d.aturan_pakai : '');
-                        const aturan = aturanStr ? ` - ${aturanStr}` : '';
-                        if (nm) listObat.push(`${nm}${jml}${aturan}`);
+                        if (nm && !nonDrugKeywords.test(nm) && !setObat.has(nm.trim())) {
+                            setObat.add(nm.trim());
+                            const jml = d.jml ? ` (${d.jml})` : '';
+                            const aturanStr = d.aturan_pakai?.aturan || (typeof d.aturan_pakai === 'string' ? d.aturan_pakai : '');
+                            const aturan = aturanStr ? ` - ${aturanStr}` : '';
+                            listObat.push(`${nm}${jml}${aturan}`);
+                        }
                     });
                 }
 
@@ -733,8 +747,22 @@
                 // Extract SOAP (Ralan / Ranap)
                 let sParts = [], oParts = [], aParts = [], pParts = [];
 
+                let targetSoapList = [];
                 if (item.pemeriksaan_ralan && item.pemeriksaan_ralan.length > 0) {
-                    item.pemeriksaan_ralan.forEach(pr => {
+                    targetSoapList = item.pemeriksaan_ralan;
+                } else if (item.pemeriksaan_ranap && item.pemeriksaan_ranap.length > 0) {
+                    targetSoapList = item.pemeriksaan_ranap;
+                }
+
+                if (targetSoapList.length > 0) {
+                    let docEntries = targetSoapList.filter(pr => pr.pegawai?.dokter || (curKdDokter && String(pr.nip) === String(curKdDokter)));
+                    let entriesToProcess = docEntries.length > 0 ? docEntries : targetSoapList;
+
+                    if (statusLanjut === 'Ranap' && entriesToProcess.length > 2) {
+                        entriesToProcess = entriesToProcess.slice(-2);
+                    }
+
+                    entriesToProcess.forEach(pr => {
                         const kel = cleanVal(pr.keluhan);
                         if (kel && !sParts.includes(kel)) sParts.push(kel);
 
@@ -750,26 +778,6 @@
                             const vStr = vitals.join(' | ');
                             if (!oParts.includes(vStr)) oParts.push(vStr);
                         }
-
-                        const pen = cleanVal(pr.penilaian);
-                        if (pen && !aParts.includes(pen)) aParts.push(pen);
-
-                        const rtlVal = cleanVal(pr.rtl);
-                        const instVal = cleanVal(pr.instruksi);
-                        const evalVal = cleanVal(pr.evaluasi);
-                        if (rtlVal && !pParts.includes(rtlVal)) pParts.push(rtlVal);
-                        if (instVal && !pParts.includes(instVal)) pParts.push(instVal);
-                        if (evalVal && !pParts.includes(evalVal)) pParts.push(evalVal);
-                    });
-                }
-
-                if (item.pemeriksaan_ranap && item.pemeriksaan_ranap.length > 0) {
-                    item.pemeriksaan_ranap.forEach(pr => {
-                        const kel = cleanVal(pr.keluhan);
-                        if (kel && !sParts.includes(kel)) sParts.push(kel);
-
-                        const prm = cleanVal(pr.pemeriksaan);
-                        if (prm && !oParts.includes(prm)) oParts.push(prm);
 
                         const pen = cleanVal(pr.penilaian);
                         if (pen && !aParts.includes(pen)) aParts.push(pen);
