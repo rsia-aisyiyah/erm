@@ -736,16 +736,16 @@
                 // Plan (P) value extraction
                 let soapP = '-';
                 if (pParts.length > 0) {
-                    soapP = pParts.join(' | ');
+                    soapP = pParts.join('\n');
                 } else if (listObat.length > 0) {
-                    soapP = listObat.join('; ');
+                    soapP = listObat.join('\n');
                 } else if (listTindakan.length > 0) {
-                    soapP = listTindakan.join(', ');
+                    soapP = listTindakan.join('\n');
                 }
 
-                const soapS = sParts.length > 0 ? sParts.join(' | ') : '-';
-                const soapO = oParts.length > 0 ? oParts.join(' | ') : '-';
-                const soapA = aParts.length > 0 ? aParts.join(' | ') : '-';
+                const soapS = sParts.length > 0 ? sParts.join('\n') : '-';
+                const soapO = oParts.length > 0 ? oParts.join('\n') : '-';
+                const soapA = aParts.length > 0 ? aParts.join('\n') : '-';
 
                 const jsonS = encodeURIComponent(soapS);
                 const jsonO = encodeURIComponent(soapO);
@@ -763,7 +763,7 @@
                         <div class="card-body p-2" style="font-size: 12px;">
                             <div class="text-muted small mb-2"><i class="bi bi-person-doctor me-1"></i>${dokter}</div>
                             ${diagnosaHtml}
-                            <div class="bg-white p-2 rounded border mb-2" style="font-size:11px;">
+                            <div class="bg-white p-2 rounded border mb-2" style="font-size:11px; white-space: pre-line;">
                                 <div class="mb-1"><strong>S:</strong> ${soapS}</div>
                                 <div class="mb-1"><strong>O:</strong> ${soapO}</div>
                                 <div class="mb-1"><strong>A:</strong> ${soapA}</div>
