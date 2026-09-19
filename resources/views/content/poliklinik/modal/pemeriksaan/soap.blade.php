@@ -44,6 +44,11 @@
             <label for="ket_pasien">Keterangan</label>
             <x-input id="ket_pasien" name="ket_pasien" />
         </div>
+        <div class="col-lg-3 col-sm-12 mb-2 d-flex align-items-end">
+            <button type="button" class="btn btn-sm btn-outline-primary fw-bold w-100 shadow-sm" id="btnToggleSideRiwayat" onclick="toggleSideRiwayatSoap()" style="height: 31px;">
+                <i class="bi bi-clock-history me-1"></i> Riwayat Kunjungan Pasien
+            </button>
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-2 col-sm-12">
@@ -497,6 +502,7 @@
                 formSoapPoli.find('input').val('-')
                 formSoapPoli.find('textarea').val('-').trigger('change');
                 formSoapPoli.find('input[name=role]').val("{{ session()->get('role') }}")
+                closeSideRiwayatSoap();
                 $('#modalSoapRalan').modal('hide');
             }).fail((request) => {
                 Swal.fire({
@@ -507,5 +513,194 @@
 
             })
         }
+
+        let bsOffcanvasRiwayatSoap = null;
+
+        function toggleSideRiwayatSoap() {
+            const el = document.getElementById('offcanvasRiwayatSoap');
+            if (!el) return;
+
+            if (!bsOffcanvasRiwayatSoap) {
+                bsOffcanvasRiwayatSoap = new bootstrap.Offcanvas(el);
+            }
+
+            if (el.classList.contains('show')) {
+                bsOffcanvasRiwayatSoap.hide();
+            } else {
+                const noRm = $('#no_rm').val() || $('#no_rkm_medis').val() || '';
+                if (!noRm) {
+                    Swal.fire('Peringatan', 'Nomor Rekam Medis tidak ditemukan', 'warning');
+                    return;
+                }
+                bsOffcanvasRiwayatSoap.show();
+                loadSideRiwayatSoap(noRm);
+            }
+        }
+
+        function closeSideRiwayatSoap() {
+            const el = document.getElementById('offcanvasRiwayatSoap');
+            if (el && bsOffcanvasRiwayatSoap && el.classList.contains('show')) {
+                bsOffcanvasRiwayatSoap.hide();
+            }
+        }
+
+        function loadSideRiwayatSoap(noRm) {
+            $('#loadingRiwayatSoap').removeClass('d-none');
+            $('#contentRiwayatSoap').addClass('d-none').empty();
+
+            $.get('/erm/registrasi/riwayat', { no_rkm_medis: noRm }).done(function(response) {
+                $('#loadingRiwayatSoap').addClass('d-none');
+                $('#contentRiwayatSoap').removeClass('d-none');
+
+                const regList = response.reg_periksa || [];
+                if (!regList || regList.length === 0) {
+                    $('#contentRiwayatSoap').html(`
+                        <div class="alert alert-warning text-center small my-3">
+                            <i class="bi bi-info-circle me-1"></i> Belum ada data riwayat kunjungan medis untuk pasien ini.
+                        </div>
+                    `);
+                    return;
+                }
+
+                let html = '';
+                regList.forEach(function(item) {
+                    const tgl = item.tgl_registrasi ? (typeof formatTanggal === 'function' ? formatTanggal(item.tgl_registrasi) : item.tgl_registrasi) : '-';
+                    const statusLanjut = item.status_lanjut || 'Ralan';
+                    const badgeClass = statusLanjut === 'Ranap' ? 'bg-danger' : 'bg-primary';
+                    const poli = item.poliklinik?.nm_poli || '-';
+                    const dokter = item.dokter?.nm_dokter || '-';
+
+                    // Extract Diagnosa
+                    let diagnosaHtml = '';
+                    if (item.diagnosa_pasien && item.diagnosa_pasien.length > 0) {
+                        const diagList = item.diagnosa_pasien.map(d => `<span class="badge bg-secondary me-1 mb-1" style="font-size:10px;">${d.kd_penyakit} - ${d.penyakit?.nm_penyakit || ''}</span>`).join('');
+                        diagnosaHtml = `<div class="mb-2"><strong class="small">Diagnosa:</strong><br>${diagList}</div>`;
+                    }
+
+                    // Extract SOAP (Ralan / Ranap)
+                    let soapS = '-', soapO = '-', soapA = '-', soapP = '-';
+
+                    if (item.pemeriksaan_ralan && item.pemeriksaan_ralan.length > 0) {
+                        const pr = item.pemeriksaan_ralan[0];
+                        soapS = pr.keluhan || '-';
+                        soapO = pr.pemeriksaan || '-';
+                        if (pr.suhu_tubuh && pr.suhu_tubuh !== '-') soapO += ` | Suhu: ${pr.suhu_tubuh}°C`;
+                        if (pr.tensi && pr.tensi !== '-') soapO += ` | Tensi: ${pr.tensi}`;
+                        if (pr.nadi && pr.nadi !== '-') soapO += ` | Nadi: ${pr.nadi}`;
+                        if (pr.spo2 && pr.spo2 !== '-') soapO += ` | SpO2: ${pr.spo2}%`;
+                        soapA = pr.penilaian || '-';
+                        soapP = pr.instruksi || pr.rtl || '-';
+                    } else if (item.pemeriksaan_ranap && item.pemeriksaan_ranap.length > 0) {
+                        const pr = item.pemeriksaan_ranap[0];
+                        soapS = pr.keluhan || '-';
+                        soapO = pr.pemeriksaan || '-';
+                        soapA = pr.penilaian || '-';
+                        soapP = pr.instruksi || pr.rtl || '-';
+                    }
+
+                    // Extract Resep
+                    let resepHtml = '';
+                    if (item.resep_obat && item.resep_obat.length > 0) {
+                        let listObat = [];
+                        item.resep_obat.forEach(r => {
+                            if (r.resep_dokter && r.resep_dokter.length > 0) {
+                                r.resep_dokter.forEach(d => {
+                                    const nm = d.databarang?.nama_brng || d.kode_brng || '';
+                                    const jml = d.jml || '';
+                                    const aturan = d.aturan_pakai || '';
+                                    listObat.push(`<li><strong>${nm}</strong> (${jml}) - <em>${aturan}</em></li>`);
+                                });
+                            }
+                        });
+                        if (listObat.length > 0) {
+                            resepHtml = `
+                                <div class="mt-2 pt-2 border-top">
+                                    <strong class="text-success small"><i class="bi bi-capsule me-1"></i> Resep Obat:</strong>
+                                    <ul class="ps-3 mb-1 small text-dark" style="font-size:11px;">${listObat.join('')}</ul>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    const jsonS = encodeURIComponent(soapS);
+                    const jsonO = encodeURIComponent(soapO);
+                    const jsonP = encodeURIComponent(soapP);
+
+                    html += `
+                        <div class="card mb-2 shadow-sm border-0">
+                            <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="badge ${badgeClass} me-1" style="font-size:10px;">${statusLanjut}</span>
+                                    <strong class="small text-dark">${tgl}</strong>
+                                </div>
+                                <span class="small text-muted" style="font-size: 11px;">${poli}</span>
+                            </div>
+                            <div class="card-body p-2" style="font-size: 12px;">
+                                <div class="text-muted small mb-2"><i class="bi bi-person-doctor me-1"></i>${dokter}</div>
+                                ${diagnosaHtml}
+                                <div class="bg-white p-2 rounded border mb-2" style="font-size:11px;">
+                                    <div class="mb-1"><strong>S:</strong> ${soapS}</div>
+                                    <div class="mb-1"><strong>O:</strong> ${soapO}</div>
+                                    <div class="mb-1"><strong>A:</strong> ${soapA}</div>
+                                    <div><strong>P:</strong> ${soapP}</div>
+                                </div>
+                                <div class="d-flex gap-1 flex-wrap mb-1">
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('subjek', decodeURIComponent('${jsonS}'))"><i class="bi bi-clipboard me-1"></i>Copy S</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('objek', decodeURIComponent('${jsonO}'))"><i class="bi bi-clipboard me-1"></i>Copy O</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('plan', decodeURIComponent('${jsonP}'))"><i class="bi bi-clipboard me-1"></i>Copy P</button>
+                                </div>
+                                ${resepHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                $('#contentRiwayatSoap').html(html);
+            }).fail(function() {
+                $('#loadingRiwayatSoap').addClass('d-none');
+                $('#contentRiwayatSoap').removeClass('d-none').html(`
+                    <div class="alert alert-danger text-center small my-3">
+                        <i class="bi bi-exclamation-triangle me-1"></i> Gagal memuat data riwayat kunjungan.
+                    </div>
+                `);
+            });
+        }
+
+        function copySideToSoap(field, text) {
+            if (!text || text === '-') return;
+            let target = null;
+            if (field === 'subjek') target = $('#subjek');
+            else if (field === 'objek') target = $('#objek');
+            else if (field === 'plan') target = $('#plan');
+
+            if (target && target.length > 0) {
+                const cur = target.val();
+                if (!cur || cur === '-') {
+                    target.val(text);
+                } else {
+                    target.val(cur + '\n' + text);
+                }
+                if (typeof swalToast === 'function') {
+                    swalToast(`Teks ${field.toUpperCase()} berhasil disalin`, 'success');
+                }
+            }
+        }
     </script>
+
+    <!-- Offcanvas Drawer Riwayat Kunjungan Pasien (SOAP) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRiwayatSoap" data-bs-scroll="true" data-bs-backdrop="false" style="width: 440px; z-index: 1065; box-shadow: -6px 0 20px rgba(0,0,0,0.18); border-left: 2px solid #0d6efd;">
+        <div class="offcanvas-header bg-primary text-white py-2 px-3 align-items-center">
+            <h6 class="offcanvas-title fw-bold mb-0 text-white" id="offcanvasRiwayatSoapLabel">
+                <i class="bi bi-clock-history me-1"></i> Riwayat Kunjungan Pasien
+            </h6>
+            <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas" aria-label="Close" onclick="closeSideRiwayatSoap()"></button>
+        </div>
+        <div class="offcanvas-body p-2 bg-light" id="bodyOffcanvasRiwayatSoap" style="overflow-y: auto;">
+            <div class="text-center py-5" id="loadingRiwayatSoap">
+                <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                <div class="small text-muted mt-2">Memuat riwayat kunjungan...</div>
+            </div>
+            <div id="contentRiwayatSoap" class="d-none"></div>
+        </div>
+    </div>
 @endpush
