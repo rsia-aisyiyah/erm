@@ -208,7 +208,7 @@ class RegPeriksaController extends Controller
                             'periksaRadiologi.dokter',
                             'periksaRadiologi.jnsPerawatan',
                             'periksaRadiologi.hasilRadiologi'
-                        ])->orderBy('no_rawat', $request->sortir);
+                        ])->orderBy('no_rawat', in_array(strtolower($request->sortir ?? ''), ['asc', 'desc'], true) ? strtolower($request->sortir) : 'desc');
             })
             ->first();
 
