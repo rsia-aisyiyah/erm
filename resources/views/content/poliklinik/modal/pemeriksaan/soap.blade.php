@@ -733,33 +733,19 @@
                     if (diagStr) aParts.push(diagStr);
                 }
 
-                // Fallback / Enhancement for P
-                let finalPList = [...pParts];
-                if (listObat.length > 0) {
-                    const pJoined = pParts.join(' ').toLowerCase();
-                    const hasObatMention = listObat.some(o => {
-                        const firstWord = o.split(' ')[0].toLowerCase();
-                        return firstWord.length > 2 && pJoined.includes(firstWord);
-                    });
-                    if (!hasObatMention) {
-                        if (finalPList.length === 0) {
-                            finalPList.push(listObat.join('; '));
-                        } else {
-                            finalPList.push("Obat: " + listObat.join('; '));
-                        }
-                    }
-                }
-                if (listTindakan.length > 0) {
-                    const pJoined = pParts.join(' ').toLowerCase();
-                    if (!pJoined.includes('tindakan')) {
-                        finalPList.push("Tindakan: " + listTindakan.join(', '));
-                    }
+                // Plan (P) value extraction
+                let soapP = '-';
+                if (pParts.length > 0) {
+                    soapP = pParts.join(' | ');
+                } else if (listObat.length > 0) {
+                    soapP = listObat.join('; ');
+                } else if (listTindakan.length > 0) {
+                    soapP = listTindakan.join(', ');
                 }
 
                 const soapS = sParts.length > 0 ? sParts.join(' | ') : '-';
                 const soapO = oParts.length > 0 ? oParts.join(' | ') : '-';
                 const soapA = aParts.length > 0 ? aParts.join(' | ') : '-';
-                const soapP = finalPList.length > 0 ? finalPList.join(' | ') : '-';
 
                 const jsonS = encodeURIComponent(soapS);
                 const jsonO = encodeURIComponent(soapO);
