@@ -743,9 +743,9 @@
                     soapP = listTindakan.join('\n');
                 }
 
-                const soapS = sParts.length > 0 ? sParts.join('\n') : '-';
-                const soapO = oParts.length > 0 ? oParts.join('\n') : '-';
-                const soapA = aParts.length > 0 ? aParts.join('\n') : '-';
+                const soapS = sParts.length > 0 ? sParts.join(' | ') : '-';
+                const soapO = oParts.length > 0 ? oParts.join(' | ') : '-';
+                const soapA = aParts.length > 0 ? aParts.join(' | ') : '-';
 
                 const jsonS = encodeURIComponent(soapS);
                 const jsonO = encodeURIComponent(soapO);
@@ -763,11 +763,11 @@
                         <div class="card-body p-2" style="font-size: 12px;">
                             <div class="text-muted small mb-2"><i class="bi bi-person-doctor me-1"></i>${dokter}</div>
                             ${diagnosaHtml}
-                            <div class="bg-white p-2 rounded border mb-2" style="font-size:11px; white-space: pre-line;">
+                            <div class="bg-white p-2 rounded border mb-2" style="font-size:11px;">
                                 <div class="mb-1"><strong>S:</strong> ${soapS}</div>
                                 <div class="mb-1"><strong>O:</strong> ${soapO}</div>
                                 <div class="mb-1"><strong>A:</strong> ${soapA}</div>
-                                <div><strong>P:</strong> ${soapP}</div>
+                                <div style="white-space: pre-line;"><strong>P:</strong> ${soapP}</div>
                             </div>
                             <div class="d-flex gap-1 flex-wrap mb-1">
                                 <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 10px;" onclick="copySideToSoap('subjek', decodeURIComponent('${jsonS}'))"><i class="bi bi-clipboard me-1"></i>Copy S</button>
