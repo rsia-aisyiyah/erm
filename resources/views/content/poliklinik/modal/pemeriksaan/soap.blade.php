@@ -238,6 +238,12 @@
 
             modalSoapRalan.modal('show');
             $('button[data-bs-target="#tab-soap-pane"]').tab('show');
+            if (typeof updateActionButtons === 'function') {
+                updateActionButtons('.btn-soap');
+            } else {
+                $('.btnAction').addClass('d-none');
+                $('.btn-soap').removeClass('d-none');
+            }
 
             getRegPeriksa(no_rawat).done((response) => {
                 // Swal.fire({

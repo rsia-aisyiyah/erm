@@ -172,9 +172,11 @@
                 $('#btnTabTindakanDokter').trigger('click')
             })
 
-            $('.btn-asmed-ranap').addClass('d-none')
-            $('.btn-asmed').addClass('d-none')
-            $('.btn-soap').addClass('d-none')
+            if (typeof updateActionButtons === 'function') {
+                updateActionButtons('');
+            } else {
+                $('.btnAction').addClass('d-none');
+            }
 
             getTindakanDilakukanDr(no_rawat)
             getTindakanDilakukanPr(no_rawat)

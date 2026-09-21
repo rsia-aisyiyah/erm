@@ -290,11 +290,11 @@
                 <button type="button" class="btn btn-success btn-sm btn-soap btnAction" onclick="simpanSoapRalan()"><i
                         class="bi bi-save"></i> Simpan SOAP
                 </button>
-                <button type="button" class="btn btn-success btn-sm btn-asmed btnAction" name="simpan"><i
+                <button type="button" class="btn btn-success btn-sm btn-asmed d-none btnAction" name="simpan"><i
                         class="bi bi-save"></i>
                     Simpan Asmed Rajal
                 </button>
-                <button type="button" class="btn btn-success btn-sm btn-askep btnAction" name="createAskepRalan"
+                <button type="button" class="btn btn-success btn-sm btn-askep d-none btnAction" name="createAskepRalan"
                     id="createAskepRalan"><i class="bi bi-save"></i>
                     Simpan Asesmen
                 </button>
@@ -338,12 +338,16 @@
         const btnTabAskepAnak = $('button[data-bs-target="#contentAskepAnak"]')
         function updateActionButtons(selectorToShow) {
             $('.btnAction').addClass('d-none');
-            $(selectorToShow).removeClass('d-none');
+            if (selectorToShow) {
+                $(selectorToShow).removeClass('d-none');
+            }
         }
+        $('#modalSoapRalan').on('show.bs.modal shown.bs.modal', function () {
+            updateActionButtons('.btn-soap');
+        });
         $('button[data-bs-target="#tab-soap-pane"]').on('shown.bs.tab', function (e, x, y) {
-            updateActionButtons('.btn-soap')
-
-        })
+            updateActionButtons('.btn-soap');
+        });
 
         btnTabAsmedAnak.on('shown.bs.tab', function (e, x, y) {
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
@@ -424,9 +428,7 @@
                 formPasienSkoringTb.find('input[name=kd_dokter]').val(response.kd_dokter)
             })
 
-            $('.btn-asmed-ranap').addClass('d-none')
-            $('.btn-asmed').addClass('d-none')
-            $('.btn-soap').addClass('d-none')
+            updateActionButtons('')
         });
 
         btnTabLaboratorium.on('shown.bs.tab', function (e, x, y) {
@@ -508,9 +510,7 @@
         }
 
         $('button[data-bs-target="#lab-ana"]').on('shown.bs.tab', function (e, x, y) {
-            $('.btn-asmed-ranap').addClass('d-none')
-            $('.btn-asmed').addClass('d-none')
-            $('.btn-soap').addClass('d-none')
+            updateActionButtons('')
             const no_rawat = formSoapPoli.find('input[name="no_rawat"]').val();
             const no_rkm_medis = formSoapPoli.find('input[name="no_rkm_medis"]').val();
 
@@ -557,9 +557,7 @@
         }
 
         btnTabPermintaanLab.on('shown.bs.tab', function (e, x, y) {
-            $('.btn-asmed-ranap').addClass('d-none')
-            $('.btn-asmed').addClass('d-none')
-            $('.btn-soap').addClass('d-none')
+            updateActionButtons('')
         })
 
 
