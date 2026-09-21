@@ -194,7 +194,7 @@
         user-select: none !important;
     }
 </style>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRiwayatSoap" data-bs-scroll="true" data-bs-backdrop="false" style="width: 440px; z-index: 1065; box-shadow: -6px 0 20px rgba(0,0,0,0.18); border-left: 2px solid #0d6efd; user-select: text !important; -webkit-user-select: text !important;">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRiwayatSoap" data-bs-scroll="true" data-bs-backdrop="false" data-bs-keyboard="false" style="width: 440px; z-index: 1065; box-shadow: -6px 0 20px rgba(0,0,0,0.18); border-left: 2px solid #0d6efd; user-select: text !important; -webkit-user-select: text !important;">
     <div class="offcanvas-header bg-primary text-white py-2 px-3 align-items-center">
         <h6 class="offcanvas-title fw-bold mb-0 text-white" id="offcanvasRiwayatSoapLabel">
             <i class="bi bi-clock-history me-1"></i> Riwayat Kunjungan Pasien
@@ -889,25 +889,28 @@
             });
 
             // Shortcut keyboard untuk Buka / Tutup Riwayat Kunjungan Pasien
-            // Mendukung kombinasi: Alt + R (Option + R di Mac), Alt + H, dan tombol F2
-            $(document).on('keydown', function(e) {
-                // Hanya aktif jika modal Pemeriksaan / SOAP (#modalSoapRalan) sedang terbuka
-                if (!$('#modalSoapRalan').hasClass('show') && !$('#modalSoapRalan').is(':visible')) {
-                    return;
-                }
-
-                // 1. Tombol Escape: jika panel side riwayat sedang terbuka, tutup panel riwayat terlebih dahulu
+            // Menggunakan capture-phase (useCapture: true) di window agar event ditangkap
+            // SEBELUM Bootstrap modal menerima event Escape, sehingga modal SOAP tidak ikut tertutup!
+            window.addEventListener('keydown', function(e) {
+                // 1. Tombol Escape: jika panel side riwayat sedang terbuka, cegah event sampai ke modal Bootstrap
                 if (e.key === 'Escape' || e.keyCode === 27) {
                     const offcanvasEl = document.getElementById('offcanvasRiwayatSoap');
                     if (offcanvasEl && offcanvasEl.classList.contains('show')) {
                         e.preventDefault();
                         e.stopPropagation();
+                        e.stopImmediatePropagation();
                         closeSideRiwayatSoap();
-                        return;
+                        return false;
                     }
                 }
 
-                // 2. Shortcut Buka / Tutup: Alt+R, Alt+H, atau F2
+                // 2. Shortcut Buka / Tutup: Alt+R (Option+R di Mac), Alt+H, atau F2
+                // Hanya aktif jika modal Pemeriksaan / SOAP (#modalSoapRalan) sedang terbuka
+                const modalEl = document.getElementById('modalSoapRalan');
+                if (!modalEl || (!modalEl.classList.contains('show') && modalEl.style.display === 'none')) {
+                    return;
+                }
+
                 const isAltR = e.altKey && (e.key === 'r' || e.key === 'R' || e.keyCode === 82);
                 const isAltH = e.altKey && (e.key === 'h' || e.key === 'H' || e.keyCode === 72);
                 const isF2 = e.key === 'F2' || e.keyCode === 113;
@@ -915,9 +918,11 @@
                 if (isAltR || isAltH || isF2) {
                     e.preventDefault();
                     e.stopPropagation();
+                    e.stopImmediatePropagation();
                     toggleSideRiwayatSoap();
+                    return false;
                 }
-            });
+            }, true);
 
             // Sinkronisasi status visual tombol saat drawer riwayat dibuka / ditutup
             $('#offcanvasRiwayatSoap').on('show.bs.offcanvas', function () {
