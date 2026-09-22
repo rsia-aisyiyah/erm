@@ -1582,8 +1582,12 @@
 
                     $('#askep_rencana').val(response.rencana || '-');
 
-                    // Set checklist masalah & rencana
-                    const selectedMasalahCodes = (response.masalah_keperawatan || []).map(m => m.kode_masalah);
+                    // Set checklist masalah & rencana (dengan alias/mapping kode lama jika ada)
+                    const legacyMasalahMap = {
+                        '013': '016', // ketidakefektifan pola nafas -> Pola Napas Tidak Efektif
+                        '014': '010', // hiperbilirubin -> Ikterik Neonatus
+                    };
+                    const selectedMasalahCodes = (response.masalah_keperawatan || []).map(m => legacyMasalahMap[m.kode_masalah] || m.kode_masalah);
                     const selectedRencanaCodes = (response.rencana_keperawatan || []).map(r => r.kode_rencana);
                     renderMasterMasalahList(selectedMasalahCodes, selectedRencanaCodes);
                 } else {
