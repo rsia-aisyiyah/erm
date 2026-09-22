@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class MasterAskepUgdSeeder extends Seeder
 {
@@ -14,10 +15,23 @@ class MasterAskepUgdSeeder extends Seeder
      */
     public function run()
     {
-        // Safe column length adjustment
+        // Safe column length & add status/urutan columns if not exist
         DB::statement("ALTER TABLE master_rencana_keperawatan_igd MODIFY COLUMN rencana_keperawatan VARCHAR(255) NOT NULL");
         DB::statement("ALTER TABLE master_rencana_keperawatan_igd MODIFY COLUMN kode_rencana VARCHAR(10) NOT NULL");
         DB::statement("ALTER TABLE master_masalah_keperawatan_igd MODIFY COLUMN nama_masalah VARCHAR(150) NOT NULL");
+
+        if (!Schema::hasColumn('master_masalah_keperawatan_igd', 'status')) {
+            DB::statement("ALTER TABLE master_masalah_keperawatan_igd ADD COLUMN status ENUM('1', '0') NOT NULL DEFAULT '1'");
+        }
+        if (!Schema::hasColumn('master_masalah_keperawatan_igd', 'urutan')) {
+            DB::statement("ALTER TABLE master_masalah_keperawatan_igd ADD COLUMN urutan INT NOT NULL DEFAULT 99");
+        }
+
+        // Set all existing master masalah as non-active by default
+        DB::table('master_masalah_keperawatan_igd')->update([
+            'status' => '0',
+            'urutan' => 99
+        ]);
 
         $dataMaster = [
             [
@@ -222,19 +236,22 @@ class MasterAskepUgdSeeder extends Seeder
             ],
         ];
 
-        // Safe update: update or insert master masalah and replace its intervensi list
+        $urutan = 1;
         foreach ($dataMaster as $m) {
             DB::table('master_masalah_keperawatan_igd')->updateOrInsert(
                 ['kode_masalah' => $m['kode']],
-                ['nama_masalah' => $m['nama']]
+                [
+                    'nama_masalah' => $m['nama'],
+                    'status' => '1',
+                    'urutan' => $urutan++
+                ]
             );
 
-            // Delete old intervensi items for this specific kode_masalah to refresh with new ones
+            // Refresh intervensi untuk kode_masalah aktif ini
             DB::table('master_rencana_keperawatan_igd')->where('kode_masalah', $m['kode'])->delete();
 
             $subIdx = 1;
             foreach ($m['rencana'] as $r) {
-                // Generate a clear sub-code e.g., '001-1', '001-2', or numeric key string fits varchar(10)
                 $kodeRencana = $m['kode'] . '-' . $subIdx;
                 DB::table('master_rencana_keperawatan_igd')->insert([
                     'kode_masalah' => $m['kode'],

@@ -43,12 +43,9 @@ class AskepUgdController extends Controller
 
     public function getMaster(Request $request)
     {
-        $activeCodes = ['001', '002', '016', '008', '017', '015', '003', '004', '009', '018', '019', '006', '010', '020', '021', '007', '012'];
-        $orderRaw = "FIELD(kode_masalah, '" . implode("','", $activeCodes) . "')";
-
-        $master = MasterMasalahAskepUgd::whereIn('kode_masalah', $activeCodes)
+        $master = MasterMasalahAskepUgd::where('status', '1')
             ->with('masterRencana')
-            ->orderByRaw($orderRaw)
+            ->orderBy('urutan', 'asc')
             ->get();
 
         return response()->json($master);
