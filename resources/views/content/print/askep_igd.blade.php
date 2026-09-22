@@ -505,7 +505,7 @@
                         <ul class="list-unstyled">
                             @foreach($masalahList as $masalah)
                                 <li>
-                                    <strong>[{{ $masalah->kode_masalah }}]</strong> {{ $masalah->masterMasalah->nama_masalah ?? $masalah->kode_masalah }}
+                                    <strong>[{{ str_pad($masalah->masterMasalah->urutan ?? $masalah->kode_masalah, 3, '0', STR_PAD_LEFT) }}]</strong> {{ $masalah->masterMasalah->nama_masalah ?? $masalah->kode_masalah }}
                                 </li>
                             @endforeach
                         </ul>

@@ -879,13 +879,14 @@
         let html = '';
         window.masterAskepIgdData.forEach(function(m) {
             const isChecked = selectedMasalahCodes.includes(m.kode_masalah);
+            const displayNum = String(m.urutan || m.kode_masalah).padStart(3, '0');
             html += `
                 <div class="card item-masalah-card border ${isChecked ? 'border-primary bg-primary-subtle' : 'border-light-subtle bg-white'} shadow-sm mb-1 p-2" id="card_masalah_${m.kode_masalah}" onclick="toggleMasalahCheckbox('${m.kode_masalah}')" style="cursor: pointer; transition: all 0.2s;">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="form-check mb-0">
                             <input class="form-check-input chk-masalah-askep" type="checkbox" name="masalah[]" value="${m.kode_masalah}" id="masalah_${m.kode_masalah}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation();" onchange="onMasalahChanged('${m.kode_masalah}', this.checked)" style="cursor: pointer;">
                             <label class="form-check-label small fw-semibold text-dark ms-1 cursor-pointer" onclick="event.stopPropagation(); toggleMasalahCheckbox('${m.kode_masalah}');" style="cursor: pointer;">
-                                ${m.kode_masalah} - ${m.nama_masalah}
+                                ${displayNum} - ${m.nama_masalah}
                             </label>
                         </div>
                         <span class="badge ${isChecked ? 'bg-primary' : 'bg-light text-muted border'} rounded-pill badge-rencana-count" style="font-size: 10px;">
@@ -970,6 +971,7 @@
         let html = '';
         window.masterAskepIgdData.forEach(function(m) {
             if (checkedMasalah.includes(m.kode_masalah)) {
+                const displayNum = String(m.urutan || m.kode_masalah).padStart(3, '0');
                 // Periksa apakah semua rencana dalam masalah ini tercentang
                 const totalRencana = (m.master_rencana || []).length;
                 let checkedCount = 0;
@@ -987,7 +989,7 @@
                     <div class="card border border-primary-subtle shadow-sm mb-2">
                         <div class="card-header bg-primary bg-opacity-10 py-1 px-2 d-flex align-items-center justify-content-between">
                             <span class="small fw-bold text-primary" style="font-size: 11.5px;">
-                                <i class="bi bi-check2-square me-1"></i> [${m.kode_masalah}] ${m.nama_masalah}
+                                <i class="bi bi-check2-square me-1"></i> [${displayNum}] ${m.nama_masalah}
                             </span>
                             <div class="form-check form-check-inline mb-0 me-0 d-flex align-items-center">
                                 <input class="form-check-input chk-select-all-rencana me-1" type="checkbox" id="selectAll_${m.kode_masalah}" ${isAllChecked ? 'checked' : ''} onchange="toggleSelectAllRencana(this, '${m.kode_masalah}')" style="cursor: pointer; transform: scale(0.9);">
