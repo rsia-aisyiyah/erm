@@ -18,6 +18,7 @@ class MasterAskepUgdSeeder extends Seeder
         // Safe column length & add status/urutan columns if not exist
         DB::statement("ALTER TABLE master_rencana_keperawatan_igd MODIFY COLUMN rencana_keperawatan VARCHAR(255) NOT NULL");
         DB::statement("ALTER TABLE master_rencana_keperawatan_igd MODIFY COLUMN kode_rencana VARCHAR(10) NOT NULL");
+        DB::statement("ALTER TABLE penilaian_awal_keperawatan_ralan_rencana_igd MODIFY COLUMN kode_rencana VARCHAR(10) NOT NULL");
         DB::statement("ALTER TABLE master_masalah_keperawatan_igd MODIFY COLUMN nama_masalah VARCHAR(150) NOT NULL");
 
         if (!Schema::hasColumn('master_masalah_keperawatan_igd', 'status')) {
