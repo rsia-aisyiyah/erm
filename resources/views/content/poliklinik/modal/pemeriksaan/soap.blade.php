@@ -44,10 +44,10 @@
             <label for="ket_pasien">Keterangan</label>
             <x-input id="ket_pasien" name="ket_pasien" />
         </div>
-        <div class="col-lg-3 col-sm-12 mb-2 d-flex align-items-end">
+        <div class="col-lg-2 col-sm-12 mb-2 d-flex align-items-end">
             <button type="button" class="btn btn-sm btn-outline-primary fw-bold w-100 shadow-sm d-flex align-items-center justify-content-center" id="btnToggleSideRiwayat" onclick="toggleSideRiwayatSoap()" style="height: 31px;" title="Buka / Tutup Riwayat Kunjungan Pasien (Alt + R / F2)">
                 <i class="bi bi-clock-history me-1"></i>
-                <span>Riwayat Kunjungan Pasien</span>
+                <span>Riwayat Pasien</span>
                 <span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-1 py-0 px-1" style="font-size: 10px;">Alt+R</span>
             </button>
         </div>
