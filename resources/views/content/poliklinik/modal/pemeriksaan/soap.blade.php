@@ -805,7 +805,11 @@
                         if (cleanVal(pr.suhu_tubuh)) vitals.push(`Suhu: ${pr.suhu_tubuh}°C`);
                         if (cleanVal(pr.tensi)) vitals.push(`Tensi: ${pr.tensi}`);
                         if (cleanVal(pr.nadi)) vitals.push(`Nadi: ${pr.nadi}`);
+                        if (cleanVal(pr.respirasi)) vitals.push(`RR: ${pr.respirasi}`);
+                        if (cleanVal(pr.berat) && String(pr.berat) !== '0' && String(pr.berat) !== '0.0' && String(pr.berat) !== '0.00') vitals.push(`BB: ${pr.berat} kg`);
+                        if (cleanVal(pr.tinggi) && String(pr.tinggi) !== '0' && String(pr.tinggi) !== '0.0' && String(pr.tinggi) !== '0.00') vitals.push(`TB: ${pr.tinggi} cm`);
                         if (cleanVal(pr.spo2)) vitals.push(`SpO2: ${pr.spo2}%`);
+                        if (cleanVal(pr.gcs)) vitals.push(`GCS: ${pr.gcs}`);
                         if (vitals.length > 0) {
                             const vStr = vitals.join(' | ');
                             if (!oParts.includes(vStr)) oParts.push(vStr);
