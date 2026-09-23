@@ -64,7 +64,7 @@ class MasterAskepUgdSeeder extends Seeder
                 'rencana' => [
                     'Monitor pola napas pasien (frekuensi, kedalaman, dan usaha napas)',
                     'Monitor bunyi napas tambahan (misalnya ronkhi, wheezing, gurgling, atau stridor)',
-                    'Monitor nilai saturasi oksigen (SpO₂)',
+                    'Monitor nilai saturasi oksigen (SpO2)',
                     'Posisikan pasien Semi Fowler atau Fowler',
                     'Berikan oksigenasi tambahan',
                     'Kolaborasi dengan dokter untuk pemberian bronkodilator, kortikosteroid, atau terapi inhalasi',
