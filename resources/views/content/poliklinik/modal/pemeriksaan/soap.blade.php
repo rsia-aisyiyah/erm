@@ -764,11 +764,34 @@
                 }
 
                 if (targetSoapList.length > 0) {
-                    let docEntries = targetSoapList.filter(pr => pr.pegawai?.dokter || (curKdDokter && String(pr.nip) === String(curKdDokter)));
-                    let entriesToProcess = docEntries.length > 0 ? docEntries : targetSoapList;
+                    let entriesToProcess = [];
 
-                    if (statusLanjut === 'Ranap' && entriesToProcess.length > 2) {
-                        entriesToProcess = entriesToProcess.slice(-2);
+                    if (statusLanjut === 'Ranap') {
+                        // Khusus Ranap: Murni ambil entri CPPT dari Dokter Spesialis
+                        entriesToProcess = targetSoapList.filter(pr => {
+                            const nip = String(pr.nip || '').trim();
+                            const dpjp = String(item.kd_dokter || '').trim();
+
+                            const docObj = pr.pegawai?.dokter;
+                            if (docObj) {
+                                const kdSps = String(docObj.kd_sps || '').trim();
+                                const nmSps = String(docObj.spesialis?.nm_sps || '').toLowerCase();
+                                if (kdSps && kdSps !== '-' && kdSps !== 'S0007' && kdSps !== 'UMUM' && !nmSps.includes('umum')) {
+                                    return true;
+                                }
+                            } else if (nip && dpjp && nip === dpjp) {
+                                return true;
+                            }
+                            return false;
+                        });
+
+                        if (entriesToProcess.length > 2) {
+                            entriesToProcess = entriesToProcess.slice(-2);
+                        }
+                    } else {
+                        // Ralan
+                        let docEntries = targetSoapList.filter(pr => pr.pegawai?.dokter || (curKdDokter && String(pr.nip) === String(curKdDokter)));
+                        entriesToProcess = docEntries.length > 0 ? docEntries : targetSoapList;
                     }
 
                     entriesToProcess.forEach(pr => {

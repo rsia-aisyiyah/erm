@@ -162,8 +162,8 @@ class RegPeriksaController extends Controller
                             'poliklinik',
                             'dokter',
                             'penjab',
-                            'pemeriksaanRalan.pegawai',
-                            'pemeriksaanRanap.pegawai',
+                            'pemeriksaanRalan.pegawai.dokter.spesialis',
+                            'pemeriksaanRanap.pegawai.dokter.spesialis',
                             'catatanPerawatan',
                             'diagnosaPasien' => function ($q) {
                                 return $q->with('penyakit')->orderBy('prioritas', 'ASC');
