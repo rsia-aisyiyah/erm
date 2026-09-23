@@ -686,7 +686,7 @@
                 }
 
                 // Extract Resep List & Pemberian Obat (Filter non-drug consumables & deduplicate)
-                const nonDrugKeywords = /spuit|handscoon|glove|needle|hypafix|leukoplast|kassa|nasal|spalk|infuset|gelang|masker|o2|pot|cover glass|objek glass|tabung|cellpack|sulfolycer|lycer|flourocell|qc xnl|thermal|abocath|pipet|otsu water|wfi|mucus|suction|oneswab|sendok/i;
+                const nonDrugKeywords = /spuit|handscoon|glove|needle|hypafix|leukoplast|kassa|nasal|spalk|infuset|gelang|masker|o2|pot|cover glass|objek glass|tabung|cellpack|sulfolycer|lycer|flourocell|qc xnl|thermal|abocath|pipet|otsu water|wfi|mucus|suction|oneswab|sendok|reagen|reagent|stromatolizer|syphilis|strip|washcloth|tube|tip|cup|sampel|sample|tes|test|sysmex|aim|sinoheart|octenic/i;
 
                 let listObat = [];
                 let setObat = new Set();
