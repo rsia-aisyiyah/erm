@@ -841,6 +841,7 @@
 
                 const jsonS = encodeURIComponent(soapS);
                 const jsonO = encodeURIComponent(soapO);
+                const jsonA = encodeURIComponent(soapA);
                 const jsonP = encodeURIComponent(soapP);
 
                 const borderLeftColor = statusLanjut === 'Ranap' ? '#dc3545' : '#0d6efd';
@@ -881,6 +882,7 @@
                             <div class="d-flex gap-1.5 flex-wrap mb-1" style="user-select: none !important;">
                                 <button type="button" class="btn btn-xs btn-light border shadow-2xs rounded-pill py-0.5 px-2.5 text-secondary" style="font-size: 10px; font-weight: 500;" onclick="copySideToSoap('subjek', decodeURIComponent('${jsonS}'))"><i class="bi bi-clipboard-check text-primary me-1"></i>Copy S</button>
                                 <button type="button" class="btn btn-xs btn-light border shadow-2xs rounded-pill py-0.5 px-2.5 text-secondary" style="font-size: 10px; font-weight: 500;" onclick="copySideToSoap('objek', decodeURIComponent('${jsonO}'))"><i class="bi bi-clipboard-check text-info me-1"></i>Copy O</button>
+                                <button type="button" class="btn btn-xs btn-light border shadow-2xs rounded-pill py-0.5 px-2.5 text-secondary" style="font-size: 10px; font-weight: 500;" onclick="copySideToSoap('asesmen', decodeURIComponent('${jsonA}'))"><i class="bi bi-clipboard-check text-warning me-1"></i>Copy A</button>
                                 <button type="button" class="btn btn-xs btn-light border shadow-2xs rounded-pill py-0.5 px-2.5 text-secondary" style="font-size: 10px; font-weight: 500;" onclick="copySideToSoap('plan', decodeURIComponent('${jsonP}'))"><i class="bi bi-clipboard-check text-success me-1"></i>Copy P</button>
                             </div>
                             ${resepHtml}
@@ -897,6 +899,7 @@
             let target = null;
             if (field === 'subjek') target = $('#subjek');
             else if (field === 'objek') target = $('#objek');
+            else if (field === 'asesmen' || field === 'penilaian') target = $('#asesmen');
             else if (field === 'plan') target = $('#rtl');
 
             if (target && target.length > 0) {
