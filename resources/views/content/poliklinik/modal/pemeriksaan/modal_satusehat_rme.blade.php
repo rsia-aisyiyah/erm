@@ -1,26 +1,27 @@
 <div class="modal fade" id="modalSatuSehatRme" tabindex="-1" aria-labelledby="modalSatuSehatRmeLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 580px;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 640px;">
         <div class="modal-content shadow-lg border-0 rounded-4 overflow-hidden">
             <!-- Modal Header -->
-            <div class="modal-header py-2.5 px-3 text-white" style="background: linear-gradient(135deg, #00877a 0%, #00b4a4 100%);">
-                <div class="d-flex align-items-center gap-2">
-                    <div class="bg-white text-teal rounded-circle p-1.5 d-flex align-items-center justify-content-center shadow-xs" style="width: 32px; height: 32px; color: #00877a;">
+            <div class="modal-header py-2.5 px-3.5 text-white d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #00877a 0%, #00b4a4 100%);">
+                <div class="d-flex align-items-center gap-2.5 overflow-hidden me-3" style="min-width: 0; flex: 1;">
+                    <div class="bg-white rounded-circle p-1 d-flex align-items-center justify-content-center shadow-xs flex-shrink-0" style="width: 34px; height: 34px; color: #00877a;">
                         <i class="bi bi-shield-check fs-5"></i>
                     </div>
-                    <div>
-                        <h6 class="modal-title fw-bold mb-0 text-white" id="modalSatuSehatRmeLabel" style="font-size: 13.5px; letter-spacing: 0.3px;">
-                            SATUSEHAT Rekam Medis Elektronik
+                    <div class="overflow-hidden" style="min-width: 0; flex: 1;">
+                        <h6 class="modal-title fw-bold mb-0 text-white text-truncate" id="modalSatuSehatRmeLabel" style="font-size: 14px; letter-spacing: 0.2px;">
+                            SATUSEHAT Rekam Medis
                         </h6>
-                        <small class="text-white-50" style="font-size: 11px;">
+                        <div class="text-white-50 text-truncate" style="font-size: 11.5px;">
                             Kemenkes RI &bull; <span id="ssrme_patient_header" class="text-white fw-semibold">-</span>
-                        </small>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center gap-1.5">
-                    <button type="button" class="btn btn-sm btn-light border-0 text-teal rounded-circle p-1 d-flex align-items-center justify-content-center" onclick="retryOpenSatuSehatRme()" style="width: 28px; height: 28px; color: #00877a;" title="Muat Ulang">
+                <div class="d-flex align-items-center gap-2 flex-shrink-0 ms-auto">
+                    <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-2.5 py-0.5 border-white-50 text-white d-flex align-items-center gap-1 shadow-2xs" onclick="retryOpenSatuSehatRme()" style="font-size: 11.5px; font-weight: 500;" title="Muat Ulang">
                         <i class="bi bi-arrow-clockwise"></i>
+                        <span>Refresh</span>
                     </button>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white ms-1" data-bs-dismiss="modal" aria-label="Close" style="font-size: 11px;"></button>
                 </div>
             </div>
 
