@@ -39,7 +39,7 @@
                     </p>
                 </div>
 
-                <!-- 2. VIEWER STATE (BUKA DI TAB BARU) -->
+                <!-- 2. VIEWER STATE (PILIHAN: TAB BARU / POPUP JENDELA) -->
                 <div id="ssrme_view_viewer" class="d-none d-flex flex-column align-items-center justify-content-center py-4 px-2 text-center">
                     <div class="mb-3 rounded-circle d-flex align-items-center justify-content-center shadow-xs" style="width: 68px; height: 68px; background-color: #e6f7f5; color: #00877a;">
                         <i class="bi bi-box-arrow-up-right fs-1"></i>
@@ -48,19 +48,23 @@
                         <i class="bi bi-check2-circle me-1"></i>Izin Akses Pasien Terverifikasi
                     </span>
                     <h5 class="fw-bold text-dark mb-1">RME SATUSEHAT Siap Diakses</h5>
-                    <p class="text-secondary small mb-4 px-3" style="max-width: 440px;">
-                        Viewer rekam medis nasional resmi dari Kemenkes RI dibuka pada tab baru browser agar tampilan lebih luas dan tidak terhalang proteksi keamanan.
+                    <p class="text-secondary small mb-4 px-3" style="max-width: 480px; font-size: 12.5px;">
+                        Viewer rekam medis nasional resmi dari Kemenkes RI siap dibuka. Silakan pilih mode tampilan yang dokter inginkan:
                     </p>
 
-                    <div class="w-100 px-3 mb-3">
-                        <a id="btnSsrmeOpenDirect" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-success w-100 rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #00877a; border-color: #00877a; font-size: 14px;">
+                    <div class="w-100 px-3 mb-3 d-flex flex-column flex-sm-row gap-2.5 justify-content-center">
+                        <a id="btnSsrmeOpenDirect" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-success flex-fill rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #00877a; border-color: #00877a; font-size: 13.5px;">
                             <i class="bi bi-box-arrow-up-right"></i>
-                            <span>Buka RME SATUSEHAT (Tab Baru)</span>
+                            <span>Buka di Tab Baru</span>
                         </a>
+                        <button type="button" id="btnSsrmeOpenPopup" class="btn btn-lg btn-outline-success flex-fill rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" onclick="openSsrmeAsPopup()" style="color: #00877a; border: 1.5px solid #00877a; font-size: 13.5px;">
+                            <i class="bi bi-window-stack"></i>
+                            <span>Buka Jendela Pop-up</span>
+                        </button>
                     </div>
 
                     <p class="text-muted small mb-0" style="font-size: 11px;">
-                        <i class="bi bi-shield-check me-1 text-success"></i>Tautan viewer resmi aman dan memiliki masa berlaku dari SATUSEHAT.
+                        <i class="bi bi-shield-check me-1 text-success"></i>Tautan viewer resmi aman dan memiliki masa berlaku dari SATUSEHAT. Mode pop-up memudahkan dokter melihat RME bersandingan dengan layar ERM.
                     </p>
                 </div>
 
@@ -191,11 +195,17 @@
             </div>
         </div>
     </div>
-</div>
+<style>
+    #btnSsrmeOpenPopup:hover {
+        background-color: #00877a !important;
+        color: #ffffff !important;
+    }
+</style>
 
 @push('script')
 <script>
     let ssrmeQrInstance = null;
+    let currentShlinkUrl = '';
 
     $(document).ready(function() {
         // Hentikan bubbling event modal agar tidak memicu reset form di modal induk (#modalSoapRalan)
@@ -212,7 +222,37 @@
         });
     });
 
+    function openSsrmeAsPopup() {
+        const url = currentShlinkUrl || $('#btnSsrmeOpenDirect').attr('href');
+        if (!url || url === '#' || url === 'javascript:void(0)') {
+            return;
+        }
+
+        // Tentukan ukuran pop-up optimal (90% layar atau max 1300x850)
+        const width = Math.min(1300, Math.floor(window.screen.availWidth * 0.9));
+        const height = Math.min(850, Math.floor(window.screen.availHeight * 0.9));
+        const left = Math.max(0, Math.floor((window.screen.availWidth - width) / 2));
+        const top = Math.max(0, Math.floor((window.screen.availHeight - height) / 2));
+
+        const win = window.open(
+            url,
+            'SatuSehatRmePopup',
+            `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`
+        );
+
+        if (win) {
+            win.focus();
+        } else {
+            if (typeof swalToast === 'function') {
+                swalToast('Pop-up terhalang oleh proteksi browser. Silakan izinkan pop-up atau klik "Buka di Tab Baru".', 'warning');
+            } else {
+                alert('Pop-up terhalang oleh proteksi browser. Silakan izinkan pop-up atau klik "Buka di Tab Baru".');
+            }
+        }
+    }
+
     function openSatuSehatRme() {
+        currentShlinkUrl = '';
         const noRawat = $('#nomor_rawat').val() || $('input[name="no_rawat"]').val();
         const kdDokter = $('#kd_dokter').val() || (typeof kd_dokter !== 'undefined' ? kd_dokter : '');
         const nmPasien = $('#nama_pasien').val() || '-';
@@ -257,6 +297,7 @@
             success: function(res) {
                 if (res.status === 'ready' && res.shlink_url) {
                     // Kasus 1: Siap Tampil (Tautan siap diakses)
+                    currentShlinkUrl = res.shlink_url;
                     $('#btnSsrmeOpenDirect').attr('href', res.shlink_url);
                     showSsrmeView('viewer');
                     $('#btnSsrmeOpenDirect').focus();
