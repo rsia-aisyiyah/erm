@@ -108,26 +108,20 @@ class SatuSehatRmeController extends Controller
                 ]);
             }
 
-            // 2. Jika Consent Diperlukan (HTTP 403), Otomatis Buat CHLink untuk Verifikasi Pasien
+            // 2. Jika Consent Diperlukan (HTTP 403), Otomatis Coba Buat CHLink untuk Verifikasi Pasien
             if ($shlResult['status'] === 'consent_required') {
                 $chlResult = $this->rmeService->generateChlink($payload);
-
-                if ($chlResult['status'] === 'success') {
-                    return response()->json([
-                        'success' => true,
-                        'status' => 'consent_required',
-                        'verification_url' => $chlResult['verification_url'],
-                        'expired_at' => $chlResult['expired_at'],
-                        'patient_name' => $pasien->nm_pasien,
-                        'message' => 'Persetujuan (Consent) pasien diperlukan untuk melihat rekam medis SATUSEHAT. Silakan minta pasien melakukan verifikasi.',
-                    ]);
-                }
+                $hasQr = ($chlResult['status'] === 'success' && !empty($chlResult['verification_url']));
 
                 return response()->json([
-                    'success' => false,
+                    'success' => true,
                     'status' => 'consent_required',
-                    'message' => 'Persetujuan pasien diperlukan, namun gagal membuat link verifikasi: ' . ($chlResult['message'] ?? 'Unknown error'),
-                ], 400);
+                    'has_qr' => $hasQr,
+                    'verification_url' => $hasQr ? $chlResult['verification_url'] : null,
+                    'expired_at' => $hasQr ? ($chlResult['expired_at'] ?? null) : null,
+                    'patient_name' => $pasien->nm_pasien,
+                    'message' => 'Persetujuan (Consent) pasien diperlukan melalui aplikasi SATUSEHAT Mobile.',
+                ]);
             }
 
             return response()->json([

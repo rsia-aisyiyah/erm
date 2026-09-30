@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalSatuSehatRme" tabindex="-1" aria-labelledby="modalSatuSehatRmeLabel" aria-hidden="true" style="z-index: 1065;">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 640px;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 760px;">
         <div class="modal-content shadow-lg border-0 rounded-4 overflow-hidden">
             <!-- Modal Header -->
             <div class="modal-header py-2.5 px-3.5 text-white d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #00877a 0%, #00b4a4 100%);">
@@ -64,37 +64,109 @@
                     </p>
                 </div>
 
-                <!-- 3. CONSENT REQUIRED STATE (QR CODE & LINK) -->
-                <div id="ssrme_view_consent" class="d-none d-flex flex-column align-items-center justify-content-center py-3 text-center">
-                    <div class="mb-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 58px; height: 58px; background-color: #fff8e6; color: #b78103;">
-                        <i class="bi bi-qr-code-scan fs-2"></i>
+                <!-- 3. CONSENT REQUIRED STATE (PANDUAN SATUSEHAT MOBILE) -->
+                <div id="ssrme_view_consent" class="d-none d-flex flex-column align-items-center justify-content-center py-2 px-1 text-center">
+                    
+                    <!-- Header Badge & Title -->
+                    <div class="d-inline-flex align-items-center gap-1.5 px-3 py-1 rounded-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle mb-2" style="font-size: 11.5px; font-weight: 600;">
+                        <i class="bi bi-shield-lock-fill text-warning"></i>
+                        <span>Persetujuan Pasien Diperlukan</span>
                     </div>
-                    <h6 class="fw-bold text-dark mb-1">Persetujuan Pasien Diperlukan</h6>
-                    <p class="text-secondary small mb-2 px-3">
-                        Akses rekam medis nasional membutuhkan persetujuan pasien melalui aplikasi <strong>SATUSEHAT Mobile</strong>.
+
+                    <h5 class="fw-bold text-dark mb-1">Panduan Izin Akses di SATUSEHAT Mobile</h5>
+                    <p class="text-secondary small mb-3 px-2" style="max-width: 620px; font-size: 12px;">
+                        Sesuai petunjuk teknis <strong>SATUSEHAT Rekam Medis (SSRME V2.0)</strong>, minta pasien membuka aplikasi <strong>SATUSEHAT Mobile</strong> di ponselnya dan ikuti 4 langkah berikut:
                     </p>
 
-                    <!-- QR Code Container -->
-                    <div class="p-2.5 bg-white rounded-3 border shadow-2xs d-inline-block mx-auto mb-2">
-                        <div id="ssrme_qrcode" class="d-flex justify-content-center align-items-center"></div>
+                    <!-- 4 Langkah Visual sesuai Slide Kemenkes -->
+                    <div class="row g-2 mb-3 w-100 text-start">
+                        <!-- Langkah 1 -->
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="card h-100 border border-light-subtle shadow-2xs rounded-3 p-2.5 bg-white position-relative overflow-hidden" style="border-top: 3px solid #00877a !important;">
+                                <div class="d-flex align-items-center justify-content-between mb-1.5">
+                                    <span class="badge rounded-pill fw-bold text-white px-2 py-0.5" style="background-color: #00877a; font-size: 9.5px; letter-spacing: 0.3px;">
+                                        Langkah 01
+                                    </span>
+                                    <i class="bi bi-grid-fill text-muted" style="font-size: 13px;"></i>
+                                </div>
+                                <div class="fw-bold text-dark mb-1" style="font-size: 12px;">Menu Fitur</div>
+                                <p class="text-secondary mb-0" style="font-size: 11px; line-height: 1.4;">
+                                    Buka aplikasi <strong>SATUSEHAT Mobile</strong> di ponsel, lalu klik menu <strong>Fitur</strong> di bilah bawah.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 2 -->
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="card h-100 border border-light-subtle shadow-2xs rounded-3 p-2.5 bg-white position-relative overflow-hidden" style="border-top: 3px solid #00877a !important;">
+                                <div class="d-flex align-items-center justify-content-between mb-1.5">
+                                    <span class="badge rounded-pill fw-bold text-white px-2 py-0.5" style="background-color: #00877a; font-size: 9.5px; letter-spacing: 0.3px;">
+                                        Langkah 02
+                                    </span>
+                                    <i class="bi bi-clipboard2-pulse text-muted" style="font-size: 13px;"></i>
+                                </div>
+                                <div class="fw-bold text-dark mb-1" style="font-size: 12px;">Pilih Rawat Jalan</div>
+                                <p class="text-secondary mb-0" style="font-size: 11px; line-height: 1.4;">
+                                    Pada kelompok <strong>Resume Medis</strong>, pilih ikon menu <strong>Rawat Jalan</strong> (atau Rawat Inap).
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 3 -->
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="card h-100 border border-light-subtle shadow-2xs rounded-3 p-2.5 bg-white position-relative overflow-hidden" style="border-top: 3px solid #00877a !important;">
+                                <div class="d-flex align-items-center justify-content-between mb-1.5">
+                                    <span class="badge rounded-pill fw-bold text-white px-2 py-0.5" style="background-color: #00877a; font-size: 9.5px; letter-spacing: 0.3px;">
+                                        Langkah 03
+                                    </span>
+                                    <i class="bi bi-box-arrow-up-right text-muted" style="font-size: 13px;"></i>
+                                </div>
+                                <div class="fw-bold text-dark mb-1" style="font-size: 12px;">Bagikan Akses</div>
+                                <p class="text-secondary mb-0" style="font-size: 11px; line-height: 1.4;">
+                                    Klik tombol <strong>Bagikan Akses Resume Medis</strong> di layar ponsel pasien.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Langkah 4 -->
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="card h-100 border border-light-subtle shadow-2xs rounded-3 p-2.5 bg-white position-relative overflow-hidden" style="border-top: 3px solid #00877a !important;">
+                                <div class="d-flex align-items-center justify-content-between mb-1.5">
+                                    <span class="badge rounded-pill fw-bold text-white px-2 py-0.5" style="background-color: #00877a; font-size: 9.5px; letter-spacing: 0.3px;">
+                                        Langkah 04
+                                    </span>
+                                    <i class="bi bi-check-circle-fill text-muted" style="font-size: 13px;"></i>
+                                </div>
+                                <div class="fw-bold text-dark mb-1" style="font-size: 12px;">Setujui Akses</div>
+                                <p class="text-secondary mb-0" style="font-size: 11px; line-height: 1.4;">
+                                    Centang persetujuan, lalu klik tombol biru <strong>Bagikan Kode Akses</strong>.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="alert alert-warning py-2 px-3 small text-start mb-2.5 w-100" style="font-size: 11px;">
-                        <ol class="mb-0 ps-3">
-                            <li>Minta pasien membuka aplikasi <strong>SATUSEHAT Mobile</strong> di ponselnya.</li>
-                            <li>Scan QR Code di atas atau buka tautan verifikasi.</li>
-                            <li>Klik <strong>Setujui</strong> pada layar ponsel pasien.</li>
-                        </ol>
-                    </div>
-
-                    <div class="d-flex gap-2 justify-content-center w-100">
-                        <a id="ssrme_verify_link" href="#" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1.5" style="font-size: 12px;">
-                            <i class="bi bi-link-45deg me-1"></i>Link Manual
+                    <!-- Opsional QR Code & Manual Link (Tampil hanya jika verification_url tersedia) -->
+                    <div id="ssrme_qr_container" class="d-none mb-3 p-2 bg-white rounded-3 border shadow-2xs text-center">
+                        <div class="small fw-semibold text-secondary mb-1" style="font-size: 11px;">
+                            <i class="bi bi-qr-code-scan me-1 text-teal"></i>Atau scan QR Code / buka link berikut:
+                        </div>
+                        <div id="ssrme_qrcode" class="d-flex justify-content-center align-items-center my-1.5"></div>
+                        <a id="ssrme_verify_link" href="#" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1" style="font-size: 11px;">
+                            <i class="bi bi-box-arrow-up-right me-1"></i>Buka Link Verifikasi
                         </a>
-                        <button type="button" class="btn btn-sm btn-success rounded-pill px-4 py-1.5 fw-semibold" onclick="retryOpenSatuSehatRme()" style="background-color: #00877a; border-color: #00877a; font-size: 12px;">
-                            <i class="bi bi-check-circle me-1"></i>Pasien Sudah Setuju, Buka RME
-                        </button>
                     </div>
+
+                    <!-- Tombol Aksi Utama -->
+                    <div class="w-100 px-2 mt-1">
+                        <button type="button" class="btn btn-lg btn-success rounded-pill px-4 py-2.5 fw-bold shadow-sm d-inline-flex align-items-center gap-2" onclick="retryOpenSatuSehatRme()" style="background-color: #00877a; border-color: #00877a; font-size: 13.5px;">
+                            <i class="bi bi-check-circle-fill fs-5"></i>
+                            <span>Pasien Sudah Menyetujui, Buka RME</span>
+                        </button>
+                        <p class="text-muted small mt-2 mb-0" style="font-size: 11px;">
+                            <i class="bi bi-shield-check text-success me-1"></i>Setelah pasien menyelesaikan Langkah 4 di ponselnya, izin akses akan aktif otomatis secara real-time.
+                        </p>
+                    </div>
+
                 </div>
 
                 <!-- 4. ERROR STATE -->
@@ -195,33 +267,46 @@
                 } else if (res.status === 'consent_required') {
                     // Kasus 2: Butuh Persetujuan Pasien
                     showSsrmeView('consent');
-                    $('#ssrme_verify_link').attr('href', res.verification_url || '#');
 
-                    // Generate QR Code
+                    const qrBox = $('#ssrme_qr_container');
                     const qrContainer = document.getElementById('ssrme_qrcode');
                     qrContainer.innerHTML = '';
+
                     if (res.verification_url && typeof QRCode !== 'undefined') {
+                        qrBox.removeClass('d-none');
+                        $('#ssrme_verify_link').attr('href', res.verification_url);
                         ssrmeQrInstance = new QRCode(qrContainer, {
                             text: res.verification_url,
-                            width: 160,
-                            height: 160,
+                            width: 130,
+                            height: 130,
                             colorDark: "#0f172a",
                             colorLight: "#ffffff",
                             correctLevel: QRCode.CorrectLevel.M
                         });
+                    } else {
+                        qrBox.addClass('d-none');
                     }
                 } else {
                     showSsrmeError(res.message || 'Respons tidak valid dari server');
                 }
             },
             error: function(xhr) {
-                let msg = 'Gagal mengakses RME SATUSEHAT.';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    msg = xhr.responseJSON.message;
-                } else if (xhr.statusText) {
-                    msg += ' (' + xhr.statusText + ')';
+                const res = xhr.responseJSON;
+                const msg = res && res.message ? res.message : '';
+                // Jika berkaitan dengan consent, alihkan langsung ke tampilan panduan
+                if (res && (res.status === 'consent_required' || msg.toLowerCase().includes('consent') || msg.toLowerCase().includes('charme') || msg.toLowerCase().includes('persetujuan'))) {
+                    showSsrmeView('consent');
+                    $('#ssrme_qr_container').addClass('d-none');
+                    return;
                 }
-                showSsrmeError(msg);
+
+                let errorMsg = 'Gagal mengakses RME SATUSEHAT.';
+                if (msg) {
+                    errorMsg = msg;
+                } else if (xhr.statusText) {
+                    errorMsg += ' (' + xhr.statusText + ')';
+                }
+                showSsrmeError(errorMsg);
             }
         });
     }
