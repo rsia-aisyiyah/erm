@@ -2,26 +2,26 @@
     <div class="modal-dialog modal-dialog-centered" style="max-width: 760px;">
         <div class="modal-content shadow-lg border-0 rounded-4 overflow-hidden">
             <!-- Modal Header -->
-            <div class="modal-header py-2.5 px-3.5 text-white d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #00877a 0%, #00b4a4 100%);">
-                <div class="d-flex align-items-center gap-2.5 overflow-hidden me-3" style="min-width: 0; flex: 1;">
-                    <div class="bg-white rounded-circle p-1 d-flex align-items-center justify-content-center shadow-xs flex-shrink-0" style="width: 34px; height: 34px; color: #00877a;">
+            <div class="modal-header text-white d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #00877a 0%, #00b4a4 100%); padding: 12px 18px;">
+                <div class="d-flex align-items-center overflow-hidden me-3" style="min-width: 0; flex: 1;">
+                    <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-xs flex-shrink-0" style="width: 38px; height: 38px; min-width: 38px; color: #00877a; margin-right: 12px;">
                         <i class="bi bi-shield-check fs-5"></i>
                     </div>
                     <div class="overflow-hidden" style="min-width: 0; flex: 1;">
-                        <h6 class="modal-title fw-bold mb-0 text-white text-truncate" id="modalSatuSehatRmeLabel" style="font-size: 14px; letter-spacing: 0.2px;">
+                        <h6 class="modal-title fw-bold mb-0 text-white text-truncate" id="modalSatuSehatRmeLabel" style="font-size: 14.5px; letter-spacing: 0.2px;">
                             SATUSEHAT Rekam Medis
                         </h6>
-                        <div class="text-white-50 text-truncate" style="font-size: 11.5px;">
+                        <div class="text-white-50 text-truncate" style="font-size: 12px; margin-top: 2px;">
                             Kemenkes RI &bull; <span id="ssrme_patient_header" class="text-white fw-semibold">-</span>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2 flex-shrink-0 ms-auto">
-                    <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-2.5 py-0.5 border-white-50 text-white d-flex align-items-center gap-1 shadow-2xs" onclick="retryOpenSatuSehatRme()" style="font-size: 11.5px; font-weight: 500;" title="Muat Ulang">
+                    <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-2.5 py-1 border-white-50 text-white d-flex align-items-center gap-1 shadow-2xs" onclick="retryOpenSatuSehatRme()" style="font-size: 11.5px; font-weight: 500;" title="Muat Ulang">
                         <i class="bi bi-arrow-clockwise"></i>
                         <span>Refresh</span>
                     </button>
-                    <button type="button" class="btn-close btn-close-white ms-1" data-bs-dismiss="modal" aria-label="Close" style="font-size: 11px;"></button>
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 11px;"></button>
                 </div>
             </div>
 
