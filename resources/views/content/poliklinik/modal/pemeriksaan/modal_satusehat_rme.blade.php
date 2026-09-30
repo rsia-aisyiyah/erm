@@ -1,5 +1,5 @@
-<div class="modal fade" id="modalSatuSehatRme" tabindex="-1" aria-labelledby="modalSatuSehatRmeLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-fullscreen-lg-down" style="max-width: 92vw;">
+<div class="modal fade" id="modalSatuSehatRme" tabindex="-1" aria-labelledby="modalSatuSehatRmeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 580px;">
         <div class="modal-content shadow-lg border-0 rounded-4 overflow-hidden">
             <!-- Modal Header -->
             <div class="modal-header py-2.5 px-3 text-white" style="background: linear-gradient(135deg, #00877a 0%, #00b4a4 100%);">
@@ -8,18 +8,15 @@
                         <i class="bi bi-shield-check fs-5"></i>
                     </div>
                     <div>
-                        <h6 class="modal-title fw-bold mb-0 text-white" id="modalSatuSehatRmeLabel" style="font-size: 14px; letter-spacing: 0.3px;">
-                            SATUSEHAT Rekam Medis Elektronik (SSRME)
+                        <h6 class="modal-title fw-bold mb-0 text-white" id="modalSatuSehatRmeLabel" style="font-size: 13.5px; letter-spacing: 0.3px;">
+                            SATUSEHAT Rekam Medis Elektronik
                         </h6>
                         <small class="text-white-50" style="font-size: 11px;">
-                            Kementerian Kesehatan RI &bull; <span id="ssrme_patient_header" class="text-white fw-semibold">-</span>
+                            Kemenkes RI &bull; <span id="ssrme_patient_header" class="text-white fw-semibold">-</span>
                         </small>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-1.5">
-                    <a id="btnSsrmeNewTab" href="#" target="_blank" class="btn btn-sm btn-light border-0 text-teal rounded-pill px-2.5 py-1 d-none" style="font-size: 11px; font-weight: 600; color: #00877a;" title="Buka di Tab Baru">
-                        <i class="bi bi-box-arrow-up-right me-1"></i>Tab Baru
-                    </a>
                     <button type="button" class="btn btn-sm btn-light border-0 text-teal rounded-circle p-1 d-flex align-items-center justify-content-center" onclick="retryOpenSatuSehatRme()" style="width: 28px; height: 28px; color: #00877a;" title="Muat Ulang">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
@@ -28,86 +25,93 @@
             </div>
 
             <!-- Modal Body -->
-            <div class="modal-body p-0 position-relative" style="min-height: 80vh; background-color: #f8fafc;">
+            <div class="modal-body p-3 position-relative" style="background-color: #f8fafc; min-height: 380px;">
                 
                 <!-- 1. LOADING STATE -->
-                <div id="ssrme_view_loading" class="d-flex flex-column align-items-center justify-content-center h-100 py-5" style="min-height: 75vh;">
+                <div id="ssrme_view_loading" class="d-flex flex-column align-items-center justify-content-center py-5">
                     <div class="spinner-border text-teal mb-3" style="width: 3rem; height: 3rem; color: #00877a;" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                    <h6 class="fw-bold text-dark mb-1">Menghubungkan ke SATUSEHAT Platform</h6>
+                    <h6 class="fw-bold text-dark mb-1">Menghubungkan ke SATUSEHAT</h6>
                     <p class="text-secondary small mb-0 text-center px-3" id="ssrme_loading_text">
-                        Sedang memverifikasi izin akses & mengambil data rekam medis nasional pasien...
+                        Sedang memverifikasi izin akses & menyiapkan tautan RME Nasional...
                     </p>
                 </div>
 
-                <!-- 2. VIEWER STATE (IFRAME) -->
-                <div id="ssrme_view_viewer" class="d-none w-100 h-100 d-flex flex-column" style="height: 82vh;">
-                    <div class="bg-teal-subtle py-1.5 px-3 border-bottom d-flex justify-content-between align-items-center" style="background-color: #e6f7f5; font-size: 11.5px;">
-                        <span class="text-dark fw-medium">
-                            <i class="bi bi-info-circle text-teal me-1" style="color: #00877a;"></i>
-                            Menampilkan riwayat rekam medis terpadu nasional (Alergi, Diagnosis, Terapi, Lab & Radiologi).
-                        </span>
-                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-0.5" style="font-size: 10px;">
-                            <i class="bi bi-check2-circle me-1"></i>Izin Akses Aktif
-                        </span>
+                <!-- 2. VIEWER STATE (BUKA DI TAB BARU) -->
+                <div id="ssrme_view_viewer" class="d-none d-flex flex-column align-items-center justify-content-center py-4 px-2 text-center">
+                    <div class="mb-3 rounded-circle d-flex align-items-center justify-content-center shadow-xs" style="width: 68px; height: 68px; background-color: #e6f7f5; color: #00877a;">
+                        <i class="bi bi-box-arrow-up-right fs-1"></i>
                     </div>
-                    <iframe id="ssrme_iframe" src="about:blank" class="w-100 flex-grow-1 border-0" allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"></iframe>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 mb-2 fw-semibold" style="font-size: 11px;">
+                        <i class="bi bi-check2-circle me-1"></i>Izin Akses Pasien Terverifikasi
+                    </span>
+                    <h5 class="fw-bold text-dark mb-1">RME SATUSEHAT Siap Diakses</h5>
+                    <p class="text-secondary small mb-4 px-3" style="max-width: 440px;">
+                        Viewer rekam medis nasional resmi dari Kemenkes RI dibuka pada tab baru browser agar tampilan lebih luas dan tidak terhalang proteksi keamanan.
+                    </p>
+
+                    <div class="w-100 px-3 mb-3">
+                        <a id="btnSsrmeOpenDirect" href="#" target="_blank" class="btn btn-lg btn-success w-100 rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #00877a; border-color: #00877a; font-size: 14px;">
+                            <i class="bi bi-box-arrow-up-right"></i>
+                            <span>Buka RME SATUSEHAT (Tab Baru)</span>
+                        </a>
+                    </div>
+
+                    <p class="text-muted small mb-0" style="font-size: 11px;">
+                        <i class="bi bi-shield-check me-1 text-success"></i>Tautan viewer resmi aman dan memiliki masa berlaku dari SATUSEHAT.
+                    </p>
                 </div>
 
-                <!-- 3. CONSENT REQUIRED STATE -->
-                <div id="ssrme_view_consent" class="d-none d-flex flex-column align-items-center justify-content-center py-5 px-3" style="min-height: 75vh;">
-                    <div class="card border-0 shadow-sm rounded-4 p-4 text-center" style="max-width: 520px; background: #ffffff;">
-                        <div class="mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 64px; height: 64px; background-color: #fff8e6; color: #b78103;">
-                            <i class="bi bi-qr-code-scan fs-1"></i>
-                        </div>
-                        <h5 class="fw-bold text-dark mb-1">Persetujuan Pasien Diperlukan</h5>
-                        <p class="text-secondary small mb-3">
-                            Akses rekam medis nasional membutuhkan izin dari pasien sesuai standar keamanan SATUSEHAT Kemenkes RI.
-                        </p>
+                <!-- 3. CONSENT REQUIRED STATE (QR CODE & LINK) -->
+                <div id="ssrme_view_consent" class="d-none d-flex flex-column align-items-center justify-content-center py-3 text-center">
+                    <div class="mb-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 58px; height: 58px; background-color: #fff8e6; color: #b78103;">
+                        <i class="bi bi-qr-code-scan fs-2"></i>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">Persetujuan Pasien Diperlukan</h6>
+                    <p class="text-secondary small mb-2 px-3">
+                        Akses rekam medis nasional membutuhkan persetujuan pasien melalui aplikasi <strong>SATUSEHAT Mobile</strong>.
+                    </p>
 
-                        <!-- QR Code Container -->
-                        <div class="p-3 bg-light rounded-3 border d-inline-block mx-auto mb-3">
-                            <div id="ssrme_qrcode" class="d-flex justify-content-center align-items-center"></div>
-                        </div>
+                    <!-- QR Code Container -->
+                    <div class="p-2.5 bg-white rounded-3 border shadow-2xs d-inline-block mx-auto mb-2">
+                        <div id="ssrme_qrcode" class="d-flex justify-content-center align-items-center"></div>
+                    </div>
 
-                        <div class="alert alert-warning py-2 px-3 small text-start mb-3" style="font-size: 11.5px;">
-                            <ol class="mb-0 ps-3">
-                                <li>Minta pasien membuka aplikasi <strong>SATUSEHAT Mobile</strong> di ponselnya.</li>
-                                <li>Scan QR Code di atas atau buka tautan verifikasi.</li>
-                                <li>Setujui pembagian data rekam medis untuk fasilitas kesehatan ini.</li>
-                            </ol>
-                        </div>
+                    <div class="alert alert-warning py-2 px-3 small text-start mb-2.5 w-100" style="font-size: 11px;">
+                        <ol class="mb-0 ps-3">
+                            <li>Minta pasien membuka aplikasi <strong>SATUSEHAT Mobile</strong> di ponselnya.</li>
+                            <li>Scan QR Code di atas atau buka tautan verifikasi.</li>
+                            <li>Klik <strong>Setujui</strong> pada layar ponsel pasien.</li>
+                        </ol>
+                    </div>
 
-                        <div class="d-flex gap-2 justify-content-center">
-                            <a id="ssrme_verify_link" href="#" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1.5" style="font-size: 12px;">
-                                <i class="bi bi-link-45deg me-1"></i>Buka Link di Browser
-                            </a>
-                            <button type="button" class="btn btn-sm btn-success rounded-pill px-4 py-1.5 fw-semibold" onclick="retryOpenSatuSehatRme()" style="background-color: #00877a; border-color: #00877a; font-size: 12px;">
-                                <i class="bi bi-check-circle me-1"></i>Pasien Sudah Setuju, Buka RME
-                            </button>
-                        </div>
+                    <div class="d-flex gap-2 justify-content-center w-100">
+                        <a id="ssrme_verify_link" href="#" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1.5" style="font-size: 12px;">
+                            <i class="bi bi-link-45deg me-1"></i>Link Manual
+                        </a>
+                        <button type="button" class="btn btn-sm btn-success rounded-pill px-4 py-1.5 fw-semibold" onclick="retryOpenSatuSehatRme()" style="background-color: #00877a; border-color: #00877a; font-size: 12px;">
+                            <i class="bi bi-check-circle me-1"></i>Pasien Sudah Setuju, Buka RME
+                        </button>
                     </div>
                 </div>
 
                 <!-- 4. ERROR STATE -->
-                <div id="ssrme_view_error" class="d-none d-flex flex-column align-items-center justify-content-center py-5 px-3" style="min-height: 75vh;">
-                    <div class="card border-0 shadow-sm rounded-4 p-4 text-center" style="max-width: 480px; background: #ffffff;">
-                        <div class="mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #fde8e8; color: #dc2626;">
-                            <i class="bi bi-exclamation-triangle fs-2"></i>
-                        </div>
-                        <h6 class="fw-bold text-dark mb-1">Gagal Membuka RME SATUSEHAT</h6>
-                        <p class="text-secondary small mb-3" id="ssrme_error_message">
-                            Terjadi kendala saat menghubungkan ke server SATUSEHAT.
-                        </p>
-                        <div class="d-flex gap-2 justify-content-center">
-                            <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3" data-bs-dismiss="modal">
-                                Tutup
-                            </button>
-                            <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 fw-semibold" onclick="retryOpenSatuSehatRme()">
-                                <i class="bi bi-arrow-clockwise me-1"></i>Coba Lagi
-                            </button>
-                        </div>
+                <div id="ssrme_view_error" class="d-none d-flex flex-column align-items-center justify-content-center py-4 text-center">
+                    <div class="mb-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 56px; height: 56px; background-color: #fde8e8; color: #dc2626;">
+                        <i class="bi bi-exclamation-triangle fs-2"></i>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">Gagal Membuka RME SATUSEHAT</h6>
+                    <p class="text-secondary small mb-3 px-3" id="ssrme_error_message">
+                        Terjadi kendala saat menghubungkan ke server SATUSEHAT.
+                    </p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3" data-bs-dismiss="modal">
+                            Tutup
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 fw-semibold" onclick="retryOpenSatuSehatRme()">
+                            <i class="bi bi-arrow-clockwise me-1"></i>Coba Lagi
+                        </button>
                     </div>
                 </div>
 
@@ -141,8 +145,7 @@
 
         // Reset view ke loading state
         showSsrmeView('loading');
-        $('#btnSsrmeNewTab').addClass('d-none').attr('href', '#');
-        $('#ssrme_iframe').attr('src', 'about:blank');
+        $('#btnSsrmeOpenDirect').attr('href', '#');
 
         fetchSatuSehatRme(noRawat, kdDokter);
     }
@@ -165,13 +168,20 @@
             dataType: 'json',
             success: function(res) {
                 if (res.status === 'ready' && res.shlink_url) {
-                    // Kasus 1: Siap Tampil (Iframe)
-                    $('#ssrme_iframe').attr('src', res.shlink_url);
-                    $('#btnSsrmeNewTab').removeClass('d-none').attr('href', res.shlink_url);
+                    // Kasus 1: Siap Tampil (Buka di Tab Baru)
+                    $('#btnSsrmeOpenDirect').attr('href', res.shlink_url);
                     showSsrmeView('viewer');
 
-                    if (typeof swalToast === 'function') {
-                        swalToast('RME SATUSEHAT berhasil dimuat', 'success');
+                    // Otomatis buka di tab baru
+                    const win = window.open(res.shlink_url, '_blank');
+                    if (!win || win.closed || typeof win.closed === 'undefined') {
+                        if (typeof swalToast === 'function') {
+                            swalToast('RME siap dibuka. Silakan klik tombol di layar jika tab tidak otomatis terbuka.', 'info');
+                        }
+                    } else {
+                        if (typeof swalToast === 'function') {
+                            swalToast('RME SATUSEHAT berhasil dibuka di tab baru', 'success');
+                        }
                     }
                 } else if (res.status === 'consent_required') {
                     // Kasus 2: Butuh Persetujuan Pasien
@@ -184,8 +194,8 @@
                     if (res.verification_url && typeof QRCode !== 'undefined') {
                         ssrmeQrInstance = new QRCode(qrContainer, {
                             text: res.verification_url,
-                            width: 170,
-                            height: 170,
+                            width: 160,
+                            height: 160,
                             colorDark: "#0f172a",
                             colorLight: "#ffffff",
                             correctLevel: QRCode.CorrectLevel.M
