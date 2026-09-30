@@ -53,7 +53,7 @@
                     </p>
 
                     <div class="w-100 px-3 mb-3">
-                        <a id="btnSsrmeOpenDirect" href="#" target="_blank" class="btn btn-lg btn-success w-100 rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #00877a; border-color: #00877a; font-size: 14px;">
+                        <a id="btnSsrmeOpenDirect" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-success w-100 rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #00877a; border-color: #00877a; font-size: 14px;">
                             <i class="bi bi-box-arrow-up-right"></i>
                             <span>Buka RME SATUSEHAT (Tab Baru)</span>
                         </a>
@@ -169,20 +169,13 @@
             dataType: 'json',
             success: function(res) {
                 if (res.status === 'ready' && res.shlink_url) {
-                    // Kasus 1: Siap Tampil (Buka di Tab Baru)
+                    // Kasus 1: Siap Tampil (Tautan siap diakses)
                     $('#btnSsrmeOpenDirect').attr('href', res.shlink_url);
                     showSsrmeView('viewer');
+                    $('#btnSsrmeOpenDirect').focus();
 
-                    // Otomatis buka di tab baru
-                    const win = window.open(res.shlink_url, '_blank');
-                    if (!win || win.closed || typeof win.closed === 'undefined') {
-                        if (typeof swalToast === 'function') {
-                            swalToast('RME siap dibuka. Silakan klik tombol di layar jika tab tidak otomatis terbuka.', 'info');
-                        }
-                    } else {
-                        if (typeof swalToast === 'function') {
-                            swalToast('RME SATUSEHAT berhasil dibuka di tab baru', 'success');
-                        }
+                    if (typeof swalToast === 'function') {
+                        swalToast('Tautan RME SATUSEHAT siap dibuka', 'success');
                     }
                 } else if (res.status === 'consent_required') {
                     // Kasus 2: Butuh Persetujuan Pasien
