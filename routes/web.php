@@ -482,6 +482,7 @@ require __DIR__ . '/partials/logs.php';
 require __DIR__ . '/partials/ranap.php';
 require __DIR__ . '/partials/hasil_kritis.php';
 require __DIR__ . '/partials/askep.php';
+require __DIR__ . '/partials/satusehat.php';
 
 // Route::get('/file', function () {
 // $file = Storage::disk('custom')->url('LOGO RSIA (2).png');

@@ -51,6 +51,12 @@
                 <span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-1 py-0 px-1" style="font-size: 10px;">Alt+R</span>
             </button>
         </div>
+        <div class="col-lg-2 col-sm-12 mb-2 d-flex align-items-end">
+            <button type="button" class="btn btn-sm btn-outline-success fw-bold w-100 shadow-sm d-flex align-items-center justify-content-center" id="btnSatuSehatRme" onclick="openSatuSehatRme()" style="height: 31px; border-color: #00877a; color: #007a6c;" title="Akses Rekam Medis Nasional SATUSEHAT (SSRME)">
+                <i class="bi bi-shield-check me-1" style="color: #00877a;"></i>
+                <span>RME SATUSEHAT</span>
+            </button>
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-2 col-sm-12">
@@ -209,6 +215,8 @@
         <div id="contentRiwayatSoap" class="d-none" style="user-select: text !important; -webkit-user-select: text !important;"></div>
     </div>
 </div>
+
+@include('content.poliklinik.modal.pemeriksaan.modal_satusehat_rme')
 
 @push('script')
     <script>
