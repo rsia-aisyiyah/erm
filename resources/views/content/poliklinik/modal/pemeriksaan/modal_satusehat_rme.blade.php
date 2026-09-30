@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalSatuSehatRme" tabindex="-1" aria-labelledby="modalSatuSehatRmeLabel" aria-hidden="true">
+<div class="modal fade" id="modalSatuSehatRme" tabindex="-1" aria-labelledby="modalSatuSehatRmeLabel" aria-hidden="true" style="z-index: 1065;">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 640px;">
         <div class="modal-content shadow-lg border-0 rounded-4 overflow-hidden">
             <!-- Modal Header -->
@@ -125,13 +125,28 @@
 <script>
     let ssrmeQrInstance = null;
 
+    $(document).ready(function() {
+        // Hentikan bubbling event modal agar tidak memicu reset form di modal induk (#modalSoapRalan)
+        $('#modalSatuSehatRme').on('hidden.bs.modal hide.bs.modal shown.bs.modal show.bs.modal', function(e) {
+            e.stopPropagation();
+        });
+
+        // Jaga agar scroll modal induk tetap aktif saat modal SATUSEHAT ditutup
+        $('#modalSatuSehatRme').on('hidden.bs.modal', function(e) {
+            e.stopPropagation();
+            if ($('#modalSoapRalan').hasClass('show') || $('.modal.show').length > 0) {
+                $('body').addClass('modal-open');
+            }
+        });
+    });
+
     function openSatuSehatRme() {
-        const noRawat = $('#nomor_rawat').val();
-        const kdDokter = $('#kd_dokter').val();
+        const noRawat = $('#nomor_rawat').val() || $('input[name="no_rawat"]').val();
+        const kdDokter = $('#kd_dokter').val() || (typeof kd_dokter !== 'undefined' ? kd_dokter : '');
         const nmPasien = $('#nama_pasien').val() || '-';
         const noRm = $('#no_rm').val() || '-';
 
-        if (!noRawat) {
+        if (!noRawat || noRawat === '-') {
             if (typeof swalToast === 'function') {
                 swalToast('Silakan pilih data pasien terlebih dahulu', 'warning');
             } else {
@@ -152,8 +167,8 @@
     }
 
     function retryOpenSatuSehatRme() {
-        const noRawat = $('#nomor_rawat').val();
-        const kdDokter = $('#kd_dokter').val();
+        const noRawat = $('#nomor_rawat').val() || $('input[name="no_rawat"]').val();
+        const kdDokter = $('#kd_dokter').val() || (typeof kd_dokter !== 'undefined' ? kd_dokter : '');
         showSsrmeView('loading');
         fetchSatuSehatRme(noRawat, kdDokter);
     }

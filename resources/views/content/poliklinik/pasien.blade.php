@@ -126,6 +126,7 @@
     @include('content.ranap.modal.modal_hasil_kritis')
     @include('content.ranap.modal.modal_penunjang')
     @include('content.ranap.modal.modal_riwayat_vaksin')
+    @include('content.poliklinik.modal.pemeriksaan.modal_satusehat_rme')
 @endsection
 
 @push('script')

@@ -216,8 +216,6 @@
     </div>
 </div>
 
-@include('content.poliklinik.modal.pemeriksaan.modal_satusehat_rme')
-
 @push('script')
     <script>
         const modalSoapRalan = $('#modalSoapRalan');
@@ -395,7 +393,10 @@
             }
         }
 
-        modalSoapRalan.on('hidden.bs.modal', function() {
+        modalSoapRalan.on('hidden.bs.modal', function(e) {
+            if (e.target !== this) {
+                return;
+            }
             closeSideRiwayatSoap();
             $('.no_resep').val('')
             $('.noResepText').text('')
