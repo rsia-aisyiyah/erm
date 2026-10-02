@@ -68,6 +68,7 @@
     @include('content.poliklinik.modal.modal_icare')
     @include('content.ranap.modal.modal_transfer_pasien')
     @include('content.ranap.modal.modal_asesmen_geriatri')
+    @include('content.poliklinik.modal.pemeriksaan.modal_satusehat_rme')
 @endsection
 
 

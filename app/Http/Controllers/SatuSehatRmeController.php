@@ -27,7 +27,10 @@ class SatuSehatRmeController extends Controller
         $request->validate([
             'no_rawat' => 'required|string',
             'kd_dokter' => 'nullable|string',
+            'is_emergency' => 'nullable',
         ]);
+
+        $isEmergency = $request->boolean('is_emergency') || ($request->input('is_emergency') == '1');
 
         try {
             $regPeriksa = RegPeriksa::with(['pasien', 'dokter.pegawai'])
@@ -92,7 +95,12 @@ class SatuSehatRmeController extends Controller
                 'patient_name' => $pasien->nm_pasien,
                 'practitioner_id' => $practitionerId,
                 'practitioner_name' => $dokter->nm_dokter,
+                'is_emergency' => $isEmergency,
             ];
+
+            if ($isEmergency) {
+                $payload['type_medical_summary'] = 'EMERGENCY';
+            }
 
             // 1. Coba Buka SHLink (National RME Viewer)
             $shlResult = $this->rmeService->generateShlink($payload);
@@ -101,6 +109,7 @@ class SatuSehatRmeController extends Controller
                 return response()->json([
                     'success' => true,
                     'status' => 'ready',
+                    'is_emergency' => $isEmergency,
                     'shlink_url' => $shlResult['shlink_url'],
                     'patient_name' => $pasien->nm_pasien,
                     'practitioner_name' => $dokter->nm_dokter,
@@ -116,16 +125,20 @@ class SatuSehatRmeController extends Controller
                 return response()->json([
                     'success' => true,
                     'status' => 'consent_required',
+                    'is_emergency' => $isEmergency,
                     'has_qr' => $hasQr,
                     'verification_url' => $hasQr ? $chlResult['verification_url'] : null,
                     'expired_at' => $hasQr ? ($chlResult['expired_at'] ?? null) : null,
                     'patient_name' => $pasien->nm_pasien,
-                    'message' => 'Persetujuan (Consent) pasien diperlukan melalui aplikasi SATUSEHAT Mobile.',
+                    'message' => $isEmergency
+                        ? 'Formulir persetujuan emergency diperlukan untuk otorisasi kedaruratan.'
+                        : 'Persetujuan (Consent) pasien diperlukan melalui aplikasi SATUSEHAT Mobile.',
                 ]);
             }
 
             return response()->json([
                 'success' => false,
+                'is_emergency' => $isEmergency,
                 'message' => $shlResult['message'] ?? 'Gagal mengakses RME SATUSEHAT.',
                 'raw' => $shlResult['raw'] ?? null,
             ], 400);

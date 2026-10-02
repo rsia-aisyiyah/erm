@@ -138,6 +138,12 @@ class SatuSehatRmeService
             'organization_name' => $params['organization_name'] ?? $this->organizationName,
         ];
 
+        if (!empty($params['type_medical_summary'])) {
+            $payload['type_medical_summary'] = $params['type_medical_summary'];
+        } elseif (!empty($params['is_emergency'])) {
+            $payload['type_medical_summary'] = 'EMERGENCY';
+        }
+
         $response = Http::withToken($token)
             ->withHeaders(['Content-Type' => 'application/json'])
             ->timeout(20)
@@ -191,6 +197,12 @@ class SatuSehatRmeService
             'organization_id' => $params['organization_id'] ?? $this->organizationId,
             'organization_name' => $params['organization_name'] ?? $this->organizationName,
         ];
+
+        if (!empty($params['type_medical_summary'])) {
+            $payload['type_medical_summary'] = $params['type_medical_summary'];
+        } elseif (!empty($params['is_emergency'])) {
+            $payload['type_medical_summary'] = 'EMERGENCY';
+        }
 
         $response = Http::withToken($token)
             ->withHeaders(['Content-Type' => 'application/json'])

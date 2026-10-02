@@ -34,6 +34,20 @@ $.contextMenu({
                     }
 
                 },
+                "satusehatEmergency": {
+                    name: "RME SATUSEHAT (Emergency)",
+                    icon: "fa-solid fa-shield-halved text-danger",
+                    callback: function () {
+                        openSatuSehatRme(1, no_rawat, dokter_bpjs, pasien.nm_pasien, no_rkm_medis);
+                    }
+                },
+                "satusehatReguler": {
+                    name: "RME SATUSEHAT (Reguler)",
+                    icon: "fa-solid fa-shield-check text-success",
+                    callback: function () {
+                        openSatuSehatRme(0, no_rawat, dokter_bpjs, pasien.nm_pasien, no_rkm_medis);
+                    }
+                },
                 "pemeriksaanPenunjang": pemeriksaanPenunjangMenuItems(no_rawat),
                 "asesmen": asesmenMenuItems(no_rawat, umur, sttsumur, totalHari),
                 "transferPasien": {

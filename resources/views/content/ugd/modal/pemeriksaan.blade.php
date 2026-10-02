@@ -56,6 +56,18 @@
                         <input type="hidden" id="kd_dokter_dpjp" name="kd_dokter_dpjp">
                         <input type="hidden" id="kd_sps_dokter" name="kd_sps_dokter">
                     </div>
+                    <div class="col-lg-5 col-md-12 col-sm-12 d-flex align-items-end justify-content-lg-end gap-1.5 mt-2 mt-lg-0">
+                        <div class="btn-group shadow-xs">
+                            <button type="button" class="btn btn-sm btn-danger fw-bold d-flex align-items-center" onclick="openSatuSehatRmeUgd(1)" style="height: 31px; background-color: #dc2626; border-color: #dc2626;" title="Akses Emergency RME SATUSEHAT (Bypass Kode Akses Pasien)">
+                                <i class="bi bi-shield-fill-exclamation me-1.5 fs-6"></i>
+                                <span>SSRME Emergency</span>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-success fw-bold d-flex align-items-center" onclick="openSatuSehatRmeUgd(0)" style="height: 31px; border-color: #00877a; color: #007a6c; background-color: #ffffff;" title="Akses Reguler RME SATUSEHAT (Persetujuan Consent Pasien)">
+                                <i class="bi bi-shield-check me-1 fs-6" style="color: #00877a;"></i>
+                                <span>Reguler (Consent)</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <ul class="nav nav-tabs" id="navTabUgd" role="tablist">
                     <li class="nav-item" role="presentation">
