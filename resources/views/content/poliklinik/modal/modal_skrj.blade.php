@@ -219,7 +219,7 @@
                     const data = {
                         no_sep: noSep,
                         no_surat: result.noSuratKontrol,
-                        tgl_surat: result.tglTerbitKontrol ?? result.tglRencanaKontrol,
+                        tgl_surat: (result.tglTerbitKontrol && result.tglTerbitKontrol !== result.tglRencanaKontrol) ? result.tglTerbitKontrol : "{{ date('Y-m-d') }}",
                         tgl_rencana: result.tglRencanaKontrol,
                         kd_dokter_bpjs: result.kodeDokter,
                         nm_dokter_bpjs: result.namaDokter,
@@ -391,10 +391,14 @@
             }
 
             // Fallback: simpan via ajax kedua jika belum tersimpan di backend
+            const tglSuratVal = (r.tglTerbitKontrol && r.tglTerbitKontrol !== r.tglRencanaKontrol) 
+                ? r.tglTerbitKontrol 
+                : ($('#tgl_surat').val() || "{{ date('Y-m-d') }}");
+
             const dataInsert = {
                 no_sep: noSep,
                 no_surat: noSurat,
-                tgl_surat: r.tglTerbitKontrol ?? r.tglRencanaKontrol,
+                tgl_surat: tglSuratVal,
                 tgl_rencana: r.tglRencanaKontrol,
                 kd_dokter_bpjs: payloadBpjs.kodeDokter,
                 nm_dokter_bpjs: nmDokter,
@@ -459,6 +463,7 @@
                 } else {
                     $('#btn-spesialis').removeAttr('onclick');
                     formModalSkrj.find('input[name=no_surat]').val('-').removeClass('is-valid');
+                    formModalSkrj.find('input[name=tgl_surat]').val("{{ date('Y-m-d') }}").removeClass('is-valid');
                     const tglRencanaSoap = $('#tgl_rencana_kontrol').val();
                     const tglDefault = tglRencanaSoap ? tglRencanaSoap : "{{ date('Y-m-d') }}";
                     formModalSkrj.find('input[name=tgl_kontrol]').val(tglDefault).removeClass('is-valid').prop('disabled', false);

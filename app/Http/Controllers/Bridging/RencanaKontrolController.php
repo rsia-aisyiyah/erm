@@ -115,7 +115,9 @@ class RencanaKontrolController extends Controller
         if ($res && isset($res->metaData) && $res->metaData->code == '200' && !empty($res->response) && !empty($res->response->noSuratKontrol)) {
             $noSurat = $res->response->noSuratKontrol;
             $tglRencana = $res->response->tglRencanaKontrol ?? $tglRencanaKontrol;
-            $tglSurat = $res->response->tglTerbitKontrol ?? ($res->response->tglSurat ?? date('Y-m-d'));
+            $tglSurat = (!empty($res->response->tglTerbitKontrol) && $res->response->tglTerbitKontrol !== $tglRencana)
+                ? $res->response->tglTerbitKontrol
+                : date('Y-m-d');
 
             $sep = BridgingSep::where('no_sep', $noSep)->with('regPeriksa.dokter')->first();
 
