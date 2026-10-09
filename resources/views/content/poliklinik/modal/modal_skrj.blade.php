@@ -409,34 +409,47 @@
         function kontrolUlang(noSep) {
             const formModalSkrj = $('#formModalSkrj');
             cekSep(noSep).done(function (response) {
-                getRujukanPcarePeserta(response.no_kartu).done(function (rujukan) {
-                    if (rujukan.metaData.code == 200 && rujukan.response) {
-                        rujukanExpired(rujukan.response.rujukan.tglKunjungan)
-                    } else {
-                        $('.rujukan-expired').empty()
-                        $('.rujukan-expired').append('<div class="alert alert-danger" style="padding:8px;border-radius:0px;font-size:12px;margin:5px" role="alert"><i class="bi bi-info-circle-fill"></i> Tidak ada rujukan dari FKTP</div>');
-                    }
-                })
+                if (!response) {
+                    Swal.fire('Error', 'Data SEP tidak ditemukan.', 'error');
+                    return;
+                }
 
-                $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + response.no_kartu + '\', \'' + response.tglsep + '\')');
-                formModalSkrj.find('input[name=no_rawat]').val(response.no_rawat)
-                formModalSkrj.find('input[name=no_sep]').val(response.no_sep)
-                formModalSkrj.find('input[name=tglSep]').val(response.tglsep)
-                formModalSkrj.find('input[name=pasien]').val(response.nomr + ' - ' + response.nama_pasien + ' (' + response.reg_periksa.umurdaftar + ')');
-                formModalSkrj.find('input[name=tgl_lahir]').val(splitTanggal(response.tanggal_lahir))
-                formModalSkrj.find('input[name=kode_poli]').val(response.kdpolitujuan)
-                formModalSkrj.find('input[name=nama_poli]').val(response.nmpolitujuan)
-                formModalSkrj.find('input[name=diagnosa]').val(response.nmdiagnosaawal)
-                formModalSkrj.find('input[name=nama_dokter]').val(response.reg_periksa.dokter.nm_dokter)
-                formModalSkrj.find('input[name=kode_dokter]').val(response.kddpjp)
-                formModalSkrj.find('input[name=noka]').val(response.no_kartu)
+                if (response.no_kartu) {
+                    getRujukanPcarePeserta(response.no_kartu).done(function (rujukan) {
+                        if (rujukan && rujukan.metaData && rujukan.metaData.code == 200 && rujukan.response) {
+                            rujukanExpired(rujukan.response.rujukan.tglKunjungan);
+                        } else {
+                            $('.rujukan-expired').empty();
+                            $('.rujukan-expired').append('<div class="alert alert-danger" style="padding:8px;border-radius:0px;font-size:12px;margin:5px" role="alert"><i class="bi bi-info-circle-fill"></i> Tidak ada rujukan dari FKTP</div>');
+                        }
+                    }).fail(function() {
+                        $('.rujukan-expired').empty();
+                    });
+                }
+
+                $('.btn-cari-peserta').attr('onclick', 'getPesertaDetail(\'' + (response.no_kartu || '') + '\', \'' + (response.tglsep || '') + '\')');
+                formModalSkrj.find('input[name=no_rawat]').val(response.no_rawat || '');
+                formModalSkrj.find('input[name=no_sep]').val(response.no_sep || '');
+                formModalSkrj.find('input[name=tglSep]').val(response.tglsep || '');
+
+                const umur = response.reg_periksa?.umurdaftar ? ` (${response.reg_periksa.umurdaftar})` : '';
+                formModalSkrj.find('input[name=pasien]').val(`${response.nomr || ''} - ${response.nama_pasien || ''}${umur}`);
+                formModalSkrj.find('input[name=tgl_lahir]').val(response.tanggal_lahir ? splitTanggal(response.tanggal_lahir) : '-');
+                formModalSkrj.find('input[name=kode_poli]').val(response.kdpolitujuan || '');
+                formModalSkrj.find('input[name=nama_poli]').val(response.nmpolitujuan || '');
+                formModalSkrj.find('input[name=diagnosa]').val(response.nmdiagnosaawal || '');
+
+                const nmDokter = response.reg_periksa?.dokter?.nm_dokter || response.nmdpdjp || response.nmdpjplayanan || '';
+                formModalSkrj.find('input[name=nama_dokter]').val(nmDokter);
+                formModalSkrj.find('input[name=kode_dokter]').val(response.kddpjp || response.kddpjplayanan || '');
+                formModalSkrj.find('input[name=noka]').val(response.no_kartu || '');
 
                 if (response.surat_kontrol != null) {
-                    formModalSkrj.find('input[name=no_surat]').val(response.surat_kontrol.no_surat).addClass('is-valid')
-                    formModalSkrj.find('input[name=tgl_kontrol]').val(response.surat_kontrol?.tgl_rencana).addClass('is-valid').prop('disabled', true)
-                    formModalSkrj.find('input[name=tgl_surat]').val(response.surat_kontrol?.tgl_surat).addClass('is-valid')
-                    formModalSkrj.find('.nama_dokter').val(response.surat_kontrol.nm_dokter_bpjs)
-                    formModalSkrj.find('.kode_dokter').val(response.surat_kontrol.kd_dokter_bpjs)
+                    formModalSkrj.find('input[name=no_surat]').val(response.surat_kontrol.no_surat).addClass('is-valid');
+                    formModalSkrj.find('input[name=tgl_kontrol]').val(response.surat_kontrol?.tgl_rencana).addClass('is-valid').prop('disabled', true);
+                    formModalSkrj.find('input[name=tgl_surat]').val(response.surat_kontrol?.tgl_surat).addClass('is-valid');
+                    formModalSkrj.find('.nama_dokter').val(response.surat_kontrol.nm_dokter_bpjs || nmDokter);
+                    formModalSkrj.find('.kode_dokter').val(response.surat_kontrol.kd_dokter_bpjs || response.kddpjp || '');
                     formModalSkrj.find('.btn-buat-skrj').css('display', 'none');
                     formModalSkrj.find('#btn-spesialis').removeAttr('onclick');
 
@@ -444,9 +457,8 @@
                     $('.btn-print-skrj').removeClass('d-none');
                     $('.btn-buat-skrj').addClass('d-none');
                 } else {
-
                     $('#btn-spesialis').removeAttr('onclick');
-                    formModalSkrj.find('input[name=no_surat]').val('-').removeClass('is-valid')
+                    formModalSkrj.find('input[name=no_surat]').val('-').removeClass('is-valid');
                     const tglRencanaSoap = $('#tgl_rencana_kontrol').val();
                     const tglDefault = tglRencanaSoap ? tglRencanaSoap : "{{ date('Y-m-d') }}";
                     formModalSkrj.find('input[name=tgl_kontrol]').val(tglDefault).removeClass('is-valid').prop('disabled', false);
@@ -456,8 +468,13 @@
                     $('.btn-print-skrj').prop('href', `javascript:void(0)`);
                     $('.btn-print-skrj').addClass('d-none');
                 }
-                $('#modalSkrj').modal('show')
-            })
+
+                Swal.close();
+                $('#modalSkrj').modal('show');
+            }).fail(function (xhr) {
+                Swal.close();
+                alertErrorAjax(xhr);
+            });
         }
 
 

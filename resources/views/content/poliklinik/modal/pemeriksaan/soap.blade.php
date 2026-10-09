@@ -603,10 +603,10 @@
                 `);
                 $('#sku_action_buttons').html(`
                     <div class="d-flex align-items-center gap-1">
-                        <button type="button" class="btn btn-xs btn-success rounded-pill px-2.5 py-1 fw-bold shadow-2xs d-inline-flex align-items-center gap-1" onclick="cetakSkrjLangsung('${suratKontrol.no_surat}')" style="font-size: 11px;">
+                        <a href="/erm/rencanaKontrol/print/${suratKontrol.no_surat}" target="_blank" class="btn btn-xs btn-success rounded-pill px-2.5 py-1 fw-bold shadow-2xs d-inline-flex align-items-center gap-1 text-white text-decoration-none" style="font-size: 11px;">
                             <i class="bi bi-printer"></i>
                             <span>Cetak SKU</span>
-                        </button>
+                        </a>
                         <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill px-2 py-1 shadow-2xs d-inline-flex align-items-center gap-1" onclick="bukaModalSkrjLengkap()" title="Buka Detail Modal Form" style="font-size: 11px;">
                             <i class="bi bi-eye"></i>
                             <span>Detail</span>
@@ -732,7 +732,17 @@
 
         function cetakSkrjLangsung(noSurat) {
             if (!noSurat) return;
-            window.open(`/erm/rencanaKontrol/print/${noSurat}`, '_blank');
+            const url = `/erm/rencanaKontrol/print/${noSurat}`;
+            const win = window.open(url, '_blank');
+            if (!win || win.closed || typeof win.closed === 'undefined') {
+                const a = document.createElement('a');
+                a.href = url;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
         }
 
         function bukaModalSkrjLengkap() {
@@ -743,6 +753,12 @@
 
             const noSep = currentRegPeriksaSoap.sep?.no_sep;
             if (noSep && typeof kontrolUlang === 'function') {
+                Swal.fire({
+                    title: 'Memuat Form SKRJ...',
+                    text: 'Mengambil data rujukan & SEP BPJS, mohon tunggu',
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading()
+                });
                 kontrolUlang(noSep);
             } else {
                 const isBpjs = (currentRegPeriksaSoap.penjab && currentRegPeriksaSoap.penjab.png_jawab && currentRegPeriksaSoap.penjab.png_jawab.includes('BPJS')) || currentRegPeriksaSoap.kd_pj === 'BPJ';
