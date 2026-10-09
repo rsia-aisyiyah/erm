@@ -115,7 +115,7 @@
     @include('content.ranap.modal.modal_riwayat')
     @include('content.poliklinik.modal.modal_askep')
     @include('content.poliklinik.modal.modal_askep_anak')
-    @include('content.poliklinik.modal.modal_resep')
+    {{-- @include('content.poliklinik.modal.modal_resep') --}}
     @include('content.poliklinik.modal.modal_skrj')
     @include('content.poliklinik.modal.modal_spri')
     @include('content.poliklinik.modal.modal_rujukan_keluar')

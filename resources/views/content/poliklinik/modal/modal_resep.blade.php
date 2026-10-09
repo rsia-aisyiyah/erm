@@ -1,5 +1,13 @@
+<style>
+    #modalObatRacik {
+        z-index: 1070 !important;
+    }
+    .swal2-container {
+        z-index: 2000 !important;
+    }
+</style>
 <div class="modal fade" id="modalObatRacik" aria-labelledby="modalObatRacik" aria-hidden="true"
-    style="background-color: #00000062!important;">
+    style="background-color: #00000062!important; z-index: 1070 !important;">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -89,6 +97,26 @@
 </div>
 @push('script')
     <script>
+        $('#modalObatRacik').on('show.bs.modal', function () {
+            $(this).css('z-index', 1070);
+        });
+
+        $('#modalObatRacik').on('shown.bs.modal', function () {
+            const backdrops = $('.modal-backdrop');
+            if (backdrops.length > 1) {
+                backdrops.last().css('z-index', 1065);
+            }
+        });
+
+        $('#modalObatRacik').on('hidden.bs.modal', function () {
+            $('.modal-backdrop').first().css('z-index', '');
+            const activeModals = $('.modal.show').length;
+            const backdrops = $('.modal-backdrop');
+            if (backdrops.length > activeModals) {
+                backdrops.slice(activeModals).remove();
+            }
+        });
+
         function hitungObatRacik(no) {
 
             kps = $('#kps' + no).val();
