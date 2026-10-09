@@ -38,6 +38,7 @@ use App\Http\Controllers\MasterMasalahKeperawatanController;
 use App\Http\Controllers\MasterRencanaKeperawatanController;
 use App\Http\Controllers\MonitoringCairanPasienController;
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\RsiaRencanaKontrolRalanController;
 use App\Http\Controllers\PemeriksaanRalanController;
 use App\Http\Controllers\PemeriksaanRanapController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
@@ -165,6 +166,9 @@ Route::middleware('auth')->group(function () {
 	Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
 	Route::post('/pemeriksaan/edit', [PemeriksaanRalanController::class, 'edit']);
 	Route::delete('/pemeriksaan/delete', [PemeriksaanRalanController::class, 'delete']);
+
+	Route::get('/rencana-kontrol/ralan', [RsiaRencanaKontrolRalanController::class, 'get']);
+	Route::post('/rencana-kontrol/ralan/simpan', [RsiaRencanaKontrolRalanController::class, 'simpan']);
 
 	Route::get('/soap/get', [PemeriksaanRanapController::class, 'ambilPemeriksaan']);
 	Route::get('/soap/get/table', [PemeriksaanRanapController::class, 'getDataTable']);

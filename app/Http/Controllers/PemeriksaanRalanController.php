@@ -13,6 +13,7 @@ use App\Models\PemeriksaanRalan;
 use App\Models\RegPeriksa;
 use App\Models\ResepObat;
 use App\Models\RsiaLogSoap;
+use App\Models\RsiaRencanaKontrolRalan;
 use App\Traits\ResponseTrait;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
@@ -182,6 +183,8 @@ class PemeriksaanRalanController extends Controller
                 $this->grafikHarian->update($request);
             }
 
+            $this->syncRencanaKontrol($request);
+
         } catch (QueryException $e) {
 
             return $this->errorResponse(
@@ -210,12 +213,62 @@ class PemeriksaanRalanController extends Controller
                 if ($request->o2) {
                     $this->grafikHarian->create($request);
                 }
+                $this->syncRencanaKontrol($request);
             }
         } catch (QueryException $e) {
             return $this->errorResponse($e, $e->getMessage(), 500);
         }
 
         return $this->successResponse('SUKSES CREATE');
+    }
+
+    protected function syncRencanaKontrol(Request $request): void
+    {
+        if ($request->filled('status_tindak_lanjut')) {
+            try {
+                $status = $request->status_tindak_lanjut;
+                $validStatuses = ['KONTROL', 'SEMBUH', 'RUJUK_BALIK', 'RUJUK_LANJUT', 'RAWAT_INAP', 'KONSUL_SELESAI'];
+                if (!in_array($status, $validStatuses)) {
+                    $status = 'KONTROL';
+                }
+
+                $tglKontrol = ($status === 'KONTROL' && $request->filled('tgl_rencana_kontrol')) ? $request->tgl_rencana_kontrol : null;
+
+                $kdDokter = $request->kd_dokter ?: ($request->nip ?: '-');
+                $kdPoli = $request->kd_poli ?: null;
+
+                if ($kdDokter === '-' || empty($kdPoli)) {
+                    $reg = RegPeriksa::where('no_rawat', $request->no_rawat)->first();
+                    if ($reg) {
+                        if ($kdDokter === '-') {
+                            $kdDokter = $reg->kd_dokter;
+                        }
+                        if (empty($kdPoli)) {
+                            $kdPoli = $reg->kd_poli;
+                        }
+                    }
+                }
+
+                $catatan = $request->catatan_disposisi ?: ($request->catatan ?: null);
+                if ($catatan === '-') {
+                    $catatan = null;
+                }
+
+                RsiaRencanaKontrolRalan::updateOrCreate(
+                    ['no_rawat' => $request->no_rawat],
+                    [
+                        'kd_dokter' => $kdDokter,
+                        'kd_poli' => $kdPoli,
+                        'status_tindak_lanjut' => $status,
+                        'tgl_rencana_kontrol' => $tglKontrol,
+                        'catatan' => $catatan,
+                        'nip' => session()->get('pegawai') ? session()->get('pegawai')->nik : null,
+                    ]
+                );
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::warning('Gagal sync rencana kontrol ralan: ' . $e->getMessage());
+            }
+        }
     }
 
     public function edit(Request $request)
@@ -296,6 +349,7 @@ class PemeriksaanRalanController extends Controller
                     $this->track->insertSql($this->regPeriksa, $sttsPeriksa);
                 }
 
+                $this->syncRencanaKontrol($request);
             });
 
         } catch (\Exception $e) {

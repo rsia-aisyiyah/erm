@@ -128,7 +128,9 @@ class RegPeriksaController extends Controller
                 'diagnosaPasien.penyakit',
                 'bayiGabung.kamarInap.kamar.bangsal',
                 'poliklinik',
-                'pasien.ketPasien'
+                'pasien.ketPasien',
+                'sep.suratKontrol',
+                'rencanaKontrolRalan',
             ])
             ->first();
         return response()->json($regPeriksa);

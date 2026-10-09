@@ -33,8 +33,26 @@ class BrigdgingRencanaKontrolController extends Controller
         $data['nm_poli_bpjs'] = ucfirst(strtolower($data['nm_poli_bpjs']));
 
         try {
-            $rencanaKontrol = $this->rencanaKontrol->create($data);
+            $rencanaKontrol = $this->rencanaKontrol->updateOrCreate(['no_surat' => $data['no_surat']], $data);
             $track = $this->track->insertSql($this->rencanaKontrol, $data);
+
+            if (!empty($data['no_sep'])) {
+                $sep = \App\Models\BridgingSep::where('no_sep', $data['no_sep'])->with('regPeriksa')->first();
+                if ($sep && $sep->no_rawat) {
+                    \App\Models\RsiaRencanaKontrolRalan::updateOrCreate(
+                        ['no_rawat' => $sep->no_rawat],
+                        [
+                            'kd_dokter' => $sep->regPeriksa ? $sep->regPeriksa->kd_dokter : ($data['kd_dokter_bpjs'] ?? '-'),
+                            'kd_poli' => $sep->regPeriksa ? $sep->regPeriksa->kd_poli : ($data['kd_poli_bpjs'] ?? null),
+                            'status_tindak_lanjut' => 'KONTROL',
+                            'tgl_rencana_kontrol' => $data['tgl_rencana'],
+                            'catatan' => 'SKU BPJS: ' . $data['no_surat'],
+                            'nip' => session()->get('pegawai') ? session()->get('pegawai')->nik : null,
+                        ]
+                    );
+                }
+            }
+
             return response()->json($rencanaKontrol);
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);

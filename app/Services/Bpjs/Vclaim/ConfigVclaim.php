@@ -52,12 +52,14 @@ class ConfigVclaim extends ManageService
 
     public function setTimestamp()
     {
-        return GenerateBpjs::bpjsTimestamp();
+        $this->timestamps = GenerateBpjs::bpjsTimestamp();
+        return $this->timestamps;
     }
 
-    public function setsignature()
+    public function setsignature($timestamp = null)
     {
-        return GenerateBpjs::generateSignature($this->setConsId(), $this->setSecretKey());
+        $t = $timestamp ?: ($this->timestamps ?: $this->setTimestamp());
+        return GenerateBpjs::generateSignature($this->setConsId(), $this->setSecretKey(), $t);
     }
 
     public function setUrlEncode()
@@ -72,41 +74,45 @@ class ConfigVclaim extends ManageService
 
     public function setHeader()
     {
+        $t = $this->setTimestamp();
         return [
             'Accept' => 'application/json',
             'X-cons-id'   => $this->setConsid(),
-            'X-timestamp' => $this->setTimestamp(),
-            'X-signature' => $this->setSignature(),
+            'X-timestamp' => $t,
+            'X-signature' => $this->setsignature($t),
             'user_key'    => $this->setUserKey()
         ];
     }
     public function setHeaderPost()
     {
+        $t = $this->setTimestamp();
         return [
             'Accept' => 'application/json',
             'X-cons-id'   => $this->setConsid(),
-            'X-timestamp' => $this->setTimestamp(),
-            'X-signature' => $this->setSignature(),
+            'X-timestamp' => $t,
+            'X-signature' => $this->setsignature($t),
             'user_key'    => $this->setUserKey(),
-            'Content-Type'    => $this->setUrlEncode()
+            'Content-Type' => 'Application/x-www-form-urlencoded'
         ];
     }
 
     public function setHeaderIcare()
     {
+        $t = $this->setTimestamp();
         return [
             'Accept' => 'application/json',
             'X-cons-id'   => $this->setConsid(),
-            'X-timestamp' => $this->setTimestamp(),
-            'X-signature' => $this->setSignature(),
+            'X-timestamp' => $t,
+            'X-signature' => $this->setsignature($t),
             'user_key'    => $this->setUserKey(),
-            'Content-Type'    => $this->setUrlJson()
+            'Content-Type' => 'Application/Json'
         ];
     }
 
-    public function keyDecrypt($timestamp)
+    public function keyDecrypt($timestamp = null)
     {
-        return $this->setConsid() . $this->setSecretKey() . $timestamp;
+        $t = $timestamp ?: ($this->timestamps ?: $this->setTimestamp());
+        return $this->setConsid() . $this->setSecretKey() . $t;
     }
 
     public function setHeaders($header)

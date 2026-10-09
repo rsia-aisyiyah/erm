@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalSatuSehatRme" tabindex="-1" aria-labelledby="modalSatuSehatRmeLabel" aria-hidden="true" style="z-index: 1065;">
+<div class="modal fade" id="modalSatuSehatRme" data-bs-focus="false" aria-labelledby="modalSatuSehatRmeLabel" aria-hidden="true" style="z-index: 1065;">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 760px;">
         <div class="modal-content shadow-lg border-0 rounded-4 overflow-hidden">
             <!-- Modal Header -->
@@ -287,6 +287,12 @@
 </div>
 
 <style>
+    #modalSatuSehatRme {
+        z-index: 1065 !important;
+    }
+    .modal-backdrop + .modal-backdrop {
+        z-index: 1060 !important;
+    }
     #btnSsrmeOpenPopup:hover {
         background-color: #00877a !important;
         color: #ffffff !important;
@@ -306,11 +312,6 @@
     let currentTargetKdDokter = '';
 
     $(document).ready(function() {
-        // Hentikan bubbling event modal agar tidak memicu reset form di modal induk
-        $('#modalSatuSehatRme').on('hidden.bs.modal hide.bs.modal shown.bs.modal show.bs.modal', function(e) {
-            e.stopPropagation();
-        });
-
         // Jaga agar scroll modal induk tetap aktif saat modal SATUSEHAT ditutup
         $('#modalSatuSehatRme').on('hidden.bs.modal', function(e) {
             e.stopPropagation();
@@ -375,11 +376,29 @@
             return;
         }
 
+        try {
+            if (document.activeElement && typeof document.activeElement.blur === 'function') {
+                document.activeElement.blur();
+            }
+        } catch (e) {}
+
         // Terapkan Tema Header Sesuai Mode (Reguler vs Emergency)
         applySsrmeTheme(isCurrentEmergency);
 
         $('#ssrme_patient_header').text(`${noRm} - ${nmPasien}`);
-        $('#modalSatuSehatRme').modal('show');
+        
+        // Buka modal secara aman tanpa focus trap
+        const modalEl = document.getElementById('modalSatuSehatRme');
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            const ssrmeModal = bootstrap.Modal.getOrCreateInstance(modalEl, {
+                backdrop: true,
+                keyboard: true,
+                focus: false
+            });
+            ssrmeModal.show();
+        } else {
+            $('#modalSatuSehatRme').modal({ focus: false }).modal('show');
+        }
 
         // Reset view ke loading state
         showSsrmeView('loading');
@@ -402,6 +421,12 @@
     }
 
     function retryOpenSatuSehatRme() {
+        if (!currentTargetNoRawat) {
+            currentTargetNoRawat = $('#modalSoapUgd #no_rawat').val() || $('#nomor_rawat').val() || $('#no_rawat').val() || $('input[name="no_rawat"]').val();
+        }
+        if (!currentTargetKdDokter) {
+            currentTargetKdDokter = $('#modalSoapUgd #kd_dokter_dpjp').val() || $('#kd_dokter').val() || (typeof kd_dokter !== 'undefined' ? kd_dokter : '');
+        }
         showSsrmeView('loading');
         fetchSatuSehatRme(currentTargetNoRawat, currentTargetKdDokter, isCurrentEmergency);
     }
@@ -477,7 +502,6 @@
                     currentShlinkUrl = res.shlink_url;
                     $('#btnSsrmeOpenDirect').attr('href', res.shlink_url);
                     showSsrmeView('viewer');
-                    $('#btnSsrmeOpenDirect').focus();
 
                     if (typeof swalToast === 'function') {
                         swalToast('Tautan RME SATUSEHAT siap dibuka', 'success');
@@ -487,7 +511,9 @@
                     const targetUrl = res.verification_url || res.shlink_url || '';
                     currentShlinkUrl = targetUrl;
 
-                    if (isEmergency) {
+                    const isModeEmergency = Boolean(isEmergency || (res && res.is_emergency));
+
+                    if (isModeEmergency) {
                         // Tampilkan Form Panduan Emergency
                         $('#btnSsrmeEmergencyOpenDirect').attr('href', targetUrl || '#');
                         showSsrmeView('emergency');

@@ -52,8 +52,7 @@
     @include('content.notifikasi')
     @include('content.ranap.modal.modal_riwayat_infeksi')
     @include('content.poliklinik.modal.modal_riwayat_persalinan')
-
-
+    @include('content.poliklinik.modal.pemeriksaan.modal_satusehat_rme')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {{--
@@ -61,6 +60,59 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>
+    <script>
+        // Mencegah infinite focus loop pada modal bertumpuk (stacked modals) di Bootstrap 5
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            try {
+                Object.defineProperty(bootstrap.Modal, 'Default', {
+                    get: function() {
+                        return {
+                            backdrop: true,
+                            focus: false,
+                            keyboard: true
+                        };
+                    }
+                });
+            } catch (err) {}
+
+            bootstrap.Modal.prototype._initializeFocusTrap = function() {
+                return {
+                    activate: function() {},
+                    deactivate: function() {},
+                    _handleFocusin: function() {},
+                    _handleKeydown: function() {}
+                };
+            };
+        }
+        if (typeof jQuery !== 'undefined' && jQuery.fn && jQuery.fn.modal && jQuery.fn.modal.Constructor) {
+            if (jQuery.fn.modal.Constructor.prototype) {
+                jQuery.fn.modal.Constructor.prototype._initializeFocusTrap = function() {
+                    return {
+                        activate: function() {},
+                        deactivate: function() {},
+                        _handleFocusin: function() {},
+                        _handleKeydown: function() {}
+                    };
+                };
+                jQuery.fn.modal.Constructor.prototype._enforceFocus = function() {};
+                jQuery.fn.modal.Constructor.prototype.enforceFocus = function() {};
+            }
+        }
+
+        // Matikan event listener focusin focus-trap di document saat modal ditampilkan
+        document.addEventListener('show.bs.modal', function() {
+            if (typeof jQuery !== 'undefined') {
+                $(document).off('focusin.bs.focustrap focusin.bs.modal');
+            }
+        }, true);
+
+        // Capture phase focusin: jangan biarkan bubbling focus event memicu loop saat modal aktif
+        window.addEventListener('focusin', function(e) {
+            if (document.querySelectorAll('.modal.show').length > 1) {
+                e.stopImmediatePropagation();
+            }
+        }, true);
+    </script>
     {{--
     <script src="{{ asset('js/select2/select2.full.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -114,7 +166,12 @@
             }
         });
 
-        window.onerror = function (msg, url, linenumber) {
+        window.onerror = function (msg, url, linenumber, colno, error) {
+            console.error('GLOBAL JS ERROR:', msg, 'at', url, ':', linenumber, error);
+            if (msg && msg.toString().toLowerCase().includes('call stack')) {
+                console.error('Call stack error suppressed from SweetAlert loop:', error ? error.stack : msg);
+                return true;
+            }
             const messageError = 'Error message : ' + msg + '<br/>Muat ulang halaman ?';
             Swal.fire({
                 title: 'Terjadi Masalah!',

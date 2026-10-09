@@ -68,6 +68,10 @@ class RegPeriksa extends Model
     {
         return $this->hasOne(BridgingSep::class, 'no_rawat', 'no_rawat');
     }
+    public function rencanaKontrolRalan()
+    {
+        return $this->hasOne(RsiaRencanaKontrolRalan::class, 'no_rawat', 'no_rawat');
+    }
     public function ranapGabung()
     {
         return $this->belongsTo(RanapGabung::class, 'no_rawat', 'no_rawat');

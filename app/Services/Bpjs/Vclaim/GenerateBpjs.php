@@ -8,9 +8,10 @@ class GenerateBpjs
 {
 	public const ENCRYPT_METHOD = 'AES-256-CBC';
 
-	public static function generateSignature($conId, $secId)
+	public static function generateSignature($conId, $secId, $timestamp = null)
 	{
-		return base64_encode(hash_hmac('sha256', $conId . "&" . self::bpjsTimestamp(), $secId, true));
+		$t = $timestamp ?: self::bpjsTimestamp();
+		return base64_encode(hash_hmac('sha256', $conId . "&" . $t, $secId, true));
 	}
 
 	public static function stringDecrypt($key, $string)

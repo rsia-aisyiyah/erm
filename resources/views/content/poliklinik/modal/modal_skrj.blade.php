@@ -1,4 +1,15 @@
-<div class="modal fade" id="modalSkrj" tabindex="-1" aria-labelledby="modalSkrj" aria-hidden="true">
+<style>
+    #modalSkrj {
+        z-index: 1070 !important;
+    }
+    .modal-backdrop + .modal-backdrop {
+        z-index: 1065 !important;
+    }
+    .modal-backdrop + .modal-backdrop + .modal-backdrop {
+        z-index: 1075 !important;
+    }
+</style>
+<div class="modal fade" id="modalSkrj" tabindex="-1" aria-labelledby="modalSkrj" aria-hidden="true" style="z-index: 1070 !important;">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header text-bg-success" style="border-radius:0px">
@@ -145,9 +156,38 @@
 
         })
 
+        $('#modalSkrj').on('show.bs.modal', function () {
+            $(this).css('z-index', 1070);
+        });
+
+        $('#modalSkrj').on('shown.bs.modal', function () {
+            const backdrops = $('.modal-backdrop');
+            if (backdrops.length > 1) {
+                backdrops.last().css('z-index', 1065);
+            }
+        });
+
         $('#modalSkrj').on('hidden.bs.modal', function () {
             $('.opt-rawat').empty();
             $('#formModalSkrj').trigger('reset');
+
+            // Reset inline style z-index pada backdrop yang tersisa agar tidak menutupi modal sebelumnya
+            $('.modal-backdrop').first().css('z-index', '');
+
+            // Bersihkan backdrop gantung / berlebih jika ada
+            const activeModals = $('.modal.show').length;
+            const backdrops = $('.modal-backdrop');
+            if (backdrops.length > activeModals) {
+                backdrops.slice(activeModals).remove();
+            }
+
+            if (activeModals > 0) {
+                $('body').addClass('modal-open');
+                $('.modal.show').css('overflow-y', 'auto');
+            } else {
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open');
+            }
         });
 
         function tarikSkrjBridging() {
@@ -256,7 +296,9 @@
                 kodeDokter: form.find('input[name=kode_dokter]').val(),
                 poliKontrol: form.find('input[name=kode_poli]').val(),
                 tglRencanaKontrol: tglKontrol,
-                user: "{{ session()->get('pegawai')->nik }}"
+                user: "{{ session()->get('pegawai')->nik }}",
+                nama_dokter: form.find('input[name=nama_dokter]').val(),
+                nama_poli: form.find('input[name=nama_poli]').val(),
             };
             $.ajax({
                 url: '/erm/bridging/rencanaKontrol/insert',
@@ -266,7 +308,7 @@
 
                 beforeSend() {
                     Swal.fire({
-                        title: 'Sedang mengirim data',
+                        title: 'Sedang mengirim data ke BPJS',
                         text: 'Mohon tunggu',
                         showConfirmButton: false,
                         allowOutsideClick: false,
@@ -277,26 +319,32 @@
                 success(res) {
                     Swal.close();
 
-                    if (res.metaData.code !== "200") {
-
+                    if (!res || !res.metaData || res.metaData.code !== "200") {
                         btn.prop('disabled', false);
-
+                        const msg = (res && res.metaData && res.metaData.message) ? res.metaData.message : 'Gagal membuat SKRJ ke server BPJS';
                         Swal.fire(
                             'Peringatan',
-                            res.metaData.message,
+                            msg,
                             'warning'
                         );
                         return;
-                    } else if (res.metaData.code === "200" && res.response == null) {
+                    }
 
+                    if (res.metaData.code === "200" && (!res.response || !res.response.noSuratKontrol)) {
                         btn.prop('disabled', false);
-                        Swal.fire(
-                            'Informasi',
-                            'SKRJ dibuat tapi tidak mendapatkan response dari BPJS, silahkan cek di menu rencana kontrol',
-                            'info'
-                        );
+                        Swal.fire({
+                            title: 'Response Kosong dari BPJS',
+                            text: 'SKRJ mungkin sudah terbentuk di server BPJS namun respon belum diterima lengkap. Ingin mencoba menarik data SKRJ otomatis?',
+                            icon: 'info',
+                            showCancelButton: true,
+                            confirmButtonText: 'Tarik SKRJ Sekarang',
+                            cancelButtonText: 'Tutup'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                tarikSkrjOnline();
+                            }
+                        });
                         return;
-
                     }
 
                     handleSkrjResponse(res, payloadBpjs);
@@ -312,19 +360,40 @@
 
 
         function handleSkrjResponse(res, payloadBpjs) {
-
             const form = $('#formModalSkrj');
-
             const noSep = payloadBpjs.noSEP;
-
             const nmPoli = form.find('input[name=nama_poli]').val();
             const nmDokter = form.find('input[name=nama_dokter]').val();
-
             const r = res.response;
+            const noSurat = r ? (r.noSuratKontrol || r.noSurat) : '';
 
+            if (noSurat) {
+                $('.nokontrol').val(noSurat);
+            }
+
+            // Jika backend sudah berhasil menyimpan langsung ke database RS (bridging_surat_kontrol_bpjs)
+            if (res.saved_local) {
+                Swal.fire(
+                    'Berhasil',
+                    'Berhasil membuat SKRJ: ' + noSurat,
+                    'success'
+                );
+                $('.btn-buat-skrj').addClass('d-none');
+                $('.btn-print-skrj')
+                    .removeClass('d-none')
+                    .attr('href', `/erm/rencanaKontrol/print/${noSurat}`);
+                if ($('#tb_pasien').length) {
+                    reloadTabelPoli();
+                } else if ($.fn.DataTable && $('#tableSep').length && $.fn.DataTable.isDataTable('#tableSep')) {
+                    $('#tableSep').DataTable().ajax.reload(null, true);
+                }
+                return;
+            }
+
+            // Fallback: simpan via ajax kedua jika belum tersimpan di backend
             const dataInsert = {
                 no_sep: noSep,
-                no_surat: r.noSuratKontrol,
+                no_surat: noSurat,
                 tgl_surat: r.tglTerbitKontrol ?? r.tglRencanaKontrol,
                 tgl_rencana: r.tglRencanaKontrol,
                 kd_dokter_bpjs: payloadBpjs.kodeDokter,
@@ -332,8 +401,6 @@
                 kd_poli_bpjs: payloadBpjs.poliKontrol,
                 nm_poli_bpjs: nmPoli
             };
-
-            $('.nokontrol').val(r.noSuratKontrol);
 
             tarikRencanaKontrol(dataInsert);
         }
@@ -380,8 +447,9 @@
 
                     $('#btn-spesialis').removeAttr('onclick');
                     formModalSkrj.find('input[name=no_surat]').val('-').removeClass('is-valid')
-                    formModalSkrj.find('input[name=tgl_surat]').val('').removeClass('is-valid')
-                    formModalSkrj.find('input[name=tgl_kontrol]').val("{{ date('Y-m-d') }}").removeClass('is-valid').prop('disabled', false)
+                    const tglRencanaSoap = $('#tgl_rencana_kontrol').val();
+                    const tglDefault = tglRencanaSoap ? tglRencanaSoap : "{{ date('Y-m-d') }}";
+                    formModalSkrj.find('input[name=tgl_kontrol]').val(tglDefault).removeClass('is-valid').prop('disabled', false);
 
                     $('.btn-buat-skrj').removeClass('d-none');
 
