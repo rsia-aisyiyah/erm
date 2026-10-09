@@ -607,7 +607,7 @@
                             $('#btn-rujuk-' + no_rawat).text('SEP Sudah Terbit');
                             html = '<ul class="dropdown-menu" style="font-size:12px">'
                             html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="kontrolUlang(\'' + row.sep.no_sep + '\')">Kontrol Ulang / SKRJ</a></li>'
-                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rkm_medis + '\', \'' + row.tgl_registrasi + '\')">Perintah Rawat Inap / SPRI</a></li>'
+                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rawat + '\')">Perintah Rawat Inap / SPRI</a></li>'
                             html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rujukanKeluar(\'' + row.sep.no_sep + '\')">Rujukan Keluar</a></li>'
                             html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
                             html += '</ul>'
@@ -626,7 +626,7 @@
                         } else if (!row.sep && row.kd_pj != "A03") {
                             $('#btn-rujuk-' + no_rawat).addClass('btn btn-danger dropdown-toggle');
                             html = '<ul class="dropdown-menu" style="font-size:12px">'
-                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rkm_medis + '\', \'' + row.tgl_registrasi + '\')">Perintah Rawat Inap / SPRI</a></li>'
+                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rawat + '\')">Perintah Rawat Inap / SPRI</a></li>'
                             html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
                             html += '</ul>'
                             $('#dropdown-sep-' + no_rawat).append(html)

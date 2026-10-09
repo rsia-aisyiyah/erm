@@ -154,112 +154,150 @@
         })
 
         function cariFaskes() {
-            faskes = $('#ppk_rujuk').val();
+            const faskes = $('#ppk_rujuk').val();
 
-            if (faskes.length < 3) {
+            if (!faskes || faskes.length < 3) {
                 swal.fire({
                     title: 'Gagal',
-                    text: 'Minimal 3 digit kata kunci FKTP',
+                    text: 'Minimal 3 digit kata kunci FKTP/Faskes',
                     showConfirmButton: true,
                     icon: 'error',
                 });
-            } else {
-                for (let jenis = 2; jenis >= 1; jenis--) {
-                    data = [];
-                    no = 2;
-                    html = '';
-                    $.ajax({
-                        url: '/erm/bridging/referensi/faskes/' + faskes + '/' + jenis,
-                        dataType: 'JSON',
-                        method: 'GET',
-                    }).done(function(response) {
-                        html = '';
-                        html += '<tr>'
-                        html += '<td></td>'
-                        html += '<td colspan="2">FASKES TINGKAT ' + jenis + ' </td></tr>'
-                        no--;
-                        if (response.metaData.code == "200" && response.response != null) {
-                            urut = 1;
-                            $.map(response.response.faskes, function(val) {
-                                html += '<tr class="urut" >'
-                                html += '<td>' + urut + '</td>'
-                                html += '<td><span style="cursor:pointer" class="badge text-bg-primary" onclick="setPpkRujukan(\'' + val.kode + '\', \'' + val.nama + '\')">' + val.kode + '</span></td>'
-                                html += '<td>' + val.nama + '</td>'
-                                html += '</tr>'
-                                urut++;
-                            })
-                        } else {
-                            html += '<tr>'
-                            html += '<td></td><td colspan="3" ><strong class="text-danger">' + response.metaData.message + '</strong></td>'
-                            html += '</tr>'
-                        }
-                        $('.table-faskes tbody').append(html);
-                        $('#modalFaskes').css('background-color', 'rgba(0,0,0,.25)')
-                        $('#modalFaskes').modal('show')
-
-                    })
-                }
+                return;
             }
 
+            $('.table-faskes tbody').empty().html('<tr><td colspan="3" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div> Mencari data faskes BPJS...</td></tr>');
+            $('#modalFaskes').modal('show');
 
+            const reqFaskes2 = $.ajax({
+                url: '/erm/bridging/referensi/faskes/' + encodeURIComponent(faskes) + '/2',
+                dataType: 'JSON',
+                method: 'GET'
+            });
+
+            const reqFaskes1 = $.ajax({
+                url: '/erm/bridging/referensi/faskes/' + encodeURIComponent(faskes) + '/1',
+                dataType: 'JSON',
+                method: 'GET'
+            });
+
+            $.when(reqFaskes2, reqFaskes1).always(function(res2, res1) {
+                let html = '';
+                const data2 = Array.isArray(res2) ? res2[0] : res2;
+                const data1 = Array.isArray(res1) ? res1[0] : res1;
+
+                // 1. Faskes Tingkat 2
+                html += '<tr class="table-light"><td colspan="3" class="fw-bold text-muted py-1" style="font-size:12px;">FASKES TINGKAT 2 (Rumah Sakit)</td></tr>';
+                if (data2 && data2.metaData && data2.metaData.code == "200" && data2.response && data2.response.faskes) {
+                    let urut = 1;
+                    $.each(data2.response.faskes, function(i, val) {
+                        const safeNama = (val.nama || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                        html += `<tr class="row-faskes" style="cursor:pointer;" onclick="setPpkRujukan('${val.kode}', '${safeNama}')" title="Klik untuk memilih faskes ini">`;
+                        html += `<td>${urut}</td>`;
+                        html += `<td><span class="badge text-bg-primary">${val.kode}</span></td>`;
+                        html += `<td class="fw-semibold text-primary">${val.nama}</td>`;
+                        html += `</tr>`;
+                        urut++;
+                    });
+                } else {
+                    html += `<tr><td colspan="3" class="text-muted ps-3 fst-italic" style="font-size:12px;">${(data2 && data2.metaData) ? data2.metaData.message : 'Tidak ada faskes tingkat 2'}</td></tr>`;
+                }
+
+                // 2. Faskes Tingkat 1
+                html += '<tr class="table-light"><td colspan="3" class="fw-bold text-muted py-1" style="font-size:12px;">FASKES TINGKAT 1 (Puskesmas/Klinik/Dokter)</td></tr>';
+                if (data1 && data1.metaData && data1.metaData.code == "200" && data1.response && data1.response.faskes) {
+                    let urut = 1;
+                    $.each(data1.response.faskes, function(i, val) {
+                        const safeNama = (val.nama || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                        html += `<tr class="row-faskes" style="cursor:pointer;" onclick="setPpkRujukan('${val.kode}', '${safeNama}')" title="Klik untuk memilih faskes ini">`;
+                        html += `<td>${urut}</td>`;
+                        html += `<td><span class="badge text-bg-primary">${val.kode}</span></td>`;
+                        html += `<td class="fw-semibold text-primary">${val.nama}</td>`;
+                        html += `</tr>`;
+                        urut++;
+                    });
+                } else {
+                    html += `<tr><td colspan="3" class="text-muted ps-3 fst-italic" style="font-size:12px;">${(data1 && data1.metaData) ? data1.metaData.message : 'Tidak ada faskes tingkat 1'}</td></tr>`;
+                }
+
+                $('.table-faskes tbody').html(html);
+            });
         }
 
         function cariDiagnosaRujuk() {
-            diagnosa = $('#diagnosa_rujuk').val();
+            const diagnosa = $('#diagnosa_rujuk').val();
+            if (!diagnosa || diagnosa.length < 3) {
+                swal.fire({
+                    title: 'Gagal',
+                    text: 'Minimal 3 digit kata kunci diagnosa',
+                    showConfirmButton: true,
+                    icon: 'error',
+                });
+                return;
+            }
+            $('.table-diagnosa tbody').empty().html('<tr><td colspan="3" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div> Mencari data diagnosa...</td></tr>');
+            $('#modalDiagnosa').modal('show');
+
             $.ajax({
-                url: '/erm/bridging/referensi/diagnosa/' + diagnosa,
+                url: '/erm/bridging/referensi/diagnosa/' + encodeURIComponent(diagnosa),
                 method: 'GET',
                 dataType: 'JSON',
             }).done(function(response) {
-                html = '';
-                if (response.metaData.code == "200" && response.response != null) {
-                    urut = 1;
-                    $.map(response.response.diagnosa, function(val) {
-                        html += '<tr class="diagnosa' + val.kode + '" >'
-                        html += '<td>' + urut + '</td>'
-                        html += '<td><span style="cursor:pointer" class="badge text-bg-primary" onclick="setDiagnosa(\'' + val.kode + '\', \'' + val.nama + '\')">' + val.kode + '</span></td>'
-                        html += '<td>' + val.nama + '</td>'
-                        html += '</tr>'
+                let html = '';
+                if (response.metaData && response.metaData.code == "200" && response.response != null && response.response.diagnosa) {
+                    let urut = 1;
+                    $.each(response.response.diagnosa, function(i, val) {
+                        const safeNama = (val.nama || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                        html += `<tr class="row-diagnosa" style="cursor:pointer;" onclick="setDiagnosa('${val.kode}', '${safeNama}')" title="Klik untuk memilih diagnosa ini">`;
+                        html += `<td>${urut}</td>`;
+                        html += `<td><span class="badge text-bg-primary">${val.kode}</span></td>`;
+                        html += `<td class="fw-semibold text-primary">${val.nama}</td>`;
+                        html += `</tr>`;
                         urut++;
-                    })
+                    });
                 } else {
-                    html += '<tr>'
-                    html += '<td colspan="3" ><strong class="text-danger text-center">' + response.metaData.message + '</strong></td>'
-                    html += '</tr>'
+                    html += `<tr><td colspan="3" class="text-danger text-center">${response.metaData ? response.metaData.message : 'Diagnosa tidak ditemukan'}</td></tr>`;
                 }
-                $('.table-diagnosa tbody').append(html);
-                $('#modalDiagnosa').css('background-color', 'rgba(0,0,0,.25)')
-                $('#modalDiagnosa').modal('show')
-            })
+                $('.table-diagnosa tbody').html(html);
+            });
         }
 
         function cariPoli() {
-            poli = $('#poli_rujuk').val();
+            const poli = $('#poli_rujuk').val();
+            if (!poli || poli.length < 3) {
+                swal.fire({
+                    title: 'Gagal',
+                    text: 'Minimal 3 digit kata kunci poli',
+                    showConfirmButton: true,
+                    icon: 'error',
+                });
+                return;
+            }
+            $('.table-poli tbody').empty().html('<tr><td colspan="3" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div> Mencari data poli...</td></tr>');
+            $('#modalPoliRujuk').modal('show');
+
             $.ajax({
-                url: '/erm/bridging/referensi/poli/' + poli,
+                url: '/erm/bridging/referensi/poli/' + encodeURIComponent(poli),
                 method: 'GET',
                 dataType: 'JSON',
             }).done(function(response) {
-                html = '';
-                if (response.metaData.code == "200" && response.response != null) {
-                    urut = 1;
-                    $.map(response.response.poli, function(val) {
-                        html += '<tr class="poli' + val.kode + '" >'
-                        html += '<td>' + urut + '</td>'
-                        html += '<td><span style="cursor:pointer" class="badge text-bg-primary" onclick="setPoli(\'' + val.kode + '\', \'' + val.nama + '\')">' + val.kode + '</span></td>'
-                        html += '<td>' + val.nama + '</td>'
-                        html += '</tr>'
+                let html = '';
+                if (response.metaData && response.metaData.code == "200" && response.response != null && response.response.poli) {
+                    let urut = 1;
+                    $.each(response.response.poli, function(i, val) {
+                        const safeNama = (val.nama || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                        html += `<tr class="row-poli" style="cursor:pointer;" onclick="setPoli('${val.kode}', '${safeNama}')" title="Klik untuk memilih poli ini">`;
+                        html += `<td>${urut}</td>`;
+                        html += `<td><span class="badge text-bg-primary">${val.kode}</span></td>`;
+                        html += `<td class="fw-semibold text-primary">${val.nama}</td>`;
+                        html += `</tr>`;
                         urut++;
-                    })
+                    });
                 } else {
-                    html += '<tr>'
-                    html += '<td colspan="3" ><strong class="text-danger text-center">' + response.metaData.message + '</strong></td>'
-                    html += '</tr>'
+                    html += `<tr><td colspan="3" class="text-danger text-center">${response.metaData ? response.metaData.message : 'Poli tidak ditemukan'}</td></tr>`;
                 }
-                $('.table-poli tbody').append(html);
-                $('#modalPoliRujuk').css('background-color', 'rgba(0,0,0,.25)')
-                $('#modalPoliRujuk').modal('show')
-            })
+                $('.table-poli tbody').html(html);
+            });
         }
 
         function setPpkRujukan(kode, nama) {
