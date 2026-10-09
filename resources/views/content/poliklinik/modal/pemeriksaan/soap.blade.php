@@ -165,15 +165,15 @@
                             <i class="bi bi-signpost-split text-primary fs-6"></i>
                             <span class="fw-bold text-dark small" style="font-size: 12.5px;">Rencana Tindak Lanjut &amp; Disposisi</span>
                         </div>
-                        <span id="badge_status_disposisi" class="badge rounded-pill bg-primary small fw-semibold" style="font-size: 10px;">
-                            <i class="bi bi-calendar-check me-1"></i>Kontrol Ulang
+                        <span id="badge_status_disposisi" class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary-subtle small fw-semibold" style="font-size: 10px;">
+                            <i class="bi bi-dash-circle me-1"></i>Belum Dipilih
                         </span>
                     </div>
                     <div class="card-body p-3">
                         <!-- Pilihan Radio Disposisi -->
                         <div class="d-flex flex-wrap align-items-center" style="gap: 6px 8px; row-gap: 8px; column-gap: 6px; margin-bottom: 14px;">
                             <div class="m-0">
-                                <input class="btn-check" type="radio" name="status_tindak_lanjut" id="tl_kontrol" value="KONTROL" checked onchange="onChangeStatusTindakLanjut('KONTROL')">
+                                <input class="btn-check" type="radio" name="status_tindak_lanjut" id="tl_kontrol" value="KONTROL" onchange="onChangeStatusTindakLanjut('KONTROL')">
                                 <label class="btn btn-sm btn-outline-primary rounded-pill px-2 py-1 text-nowrap" for="tl_kontrol" style="font-size: 11px;">
                                     <i class="bi bi-calendar-check me-1"></i>Kontrol Ulang
                                 </label>
@@ -211,7 +211,7 @@
                         </div>
 
                         <!-- Panel Detail KONTROL -->
-                        <div id="panel_tindak_lanjut_kontrol" class="border rounded-3 p-3 bg-light-subtle mb-2.5" style="background-color: #f8fafc; border-color: #e2e8f0 !important;">
+                        <div id="panel_tindak_lanjut_kontrol" class="border rounded-3 p-3 bg-light-subtle mb-2.5 d-none" style="background-color: #f8fafc; border-color: #e2e8f0 !important;">
                             <div class="row g-2 align-items-center">
                                 <div class="col-sm-5 col-12">
                                     <label class="form-label mb-1 text-secondary small fw-semibold" style="font-size: 11px;">
@@ -569,10 +569,10 @@
                     $('#catatan_disposisi').val('');
                     onChangeStatusTindakLanjut('KONTROL', false);
                 } else {
-                    $('input[name="status_tindak_lanjut"][value="KONTROL"]').prop('checked', true);
+                    $('input[name="status_tindak_lanjut"]').prop('checked', false);
                     $('#tgl_rencana_kontrol').val('');
                     $('#catatan_disposisi').val('');
-                    onChangeStatusTindakLanjut('KONTROL', false);
+                    onChangeStatusTindakLanjut('', false);
                 }
             }
 
@@ -637,17 +637,9 @@
             }
         }
 
+        let lastSelectedStatusTindakLanjut = null;
+
         function onChangeStatusTindakLanjut(status, autoFillDate = true) {
-            if (!status) return;
-
-            $('input[name="status_tindak_lanjut"]').each(function() {
-                if ($(this).val() === status) {
-                    $(this).prop('checked', true);
-                } else {
-                    $(this).prop('checked', false);
-                }
-            });
-
             const badge = $('#badge_status_disposisi');
             const panelKontrol = $('#panel_tindak_lanjut_kontrol');
             const panelSelesai = $('#panel_tindak_lanjut_selesai');
@@ -659,7 +651,23 @@
             panelRanap.addClass('d-none');
             panelRujukLanjut.addClass('d-none');
 
-            badge.removeClass('bg-primary bg-success bg-info bg-warning bg-danger bg-secondary text-dark text-white');
+            badge.removeClass('bg-primary bg-success bg-info bg-warning bg-danger bg-secondary bg-secondary-subtle text-dark text-white text-secondary border border-secondary-subtle');
+
+            lastSelectedStatusTindakLanjut = status || null;
+
+            if (!status) {
+                $('input[name="status_tindak_lanjut"]').prop('checked', false);
+                badge.addClass('bg-secondary-subtle text-secondary border border-secondary-subtle').html('<i class="bi bi-dash-circle me-1"></i>Belum Dipilih');
+                return;
+            }
+
+            $('input[name="status_tindak_lanjut"]').each(function() {
+                if ($(this).val() === status) {
+                    $(this).prop('checked', true);
+                } else {
+                    $(this).prop('checked', false);
+                }
+            });
 
             switch (status) {
                 case 'KONTROL':
@@ -712,6 +720,15 @@
             $('input[name="status_tindak_lanjut"][value="KONTROL"]').prop('checked', true);
             onChangeStatusTindakLanjut('KONTROL', false);
         }
+
+        $(document).on('click', 'input[name="status_tindak_lanjut"]', function () {
+            const val = $(this).val();
+            if (val === lastSelectedStatusTindakLanjut) {
+                $(this).prop('checked', false);
+                lastSelectedStatusTindakLanjut = null;
+                onChangeStatusTindakLanjut('');
+            }
+        });
 
         function cetakSkrjLangsung(noSurat) {
             if (!noSurat) return;
@@ -952,10 +969,9 @@
             $('#tl_ranap').val('RAWAT_INAP');
             $('#tl_konsul').val('KONSUL_SELESAI');
             $('input[name="status_tindak_lanjut"]').prop('checked', false);
-            $('#tl_kontrol').prop('checked', true);
             $('#tgl_rencana_kontrol').val('');
             $('#catatan_disposisi').val('');
-            onChangeStatusTindakLanjut('KONTROL', false);
+            onChangeStatusTindakLanjut('', false);
             $('#box_sku_bpjs_info').addClass('d-none');
         }
 

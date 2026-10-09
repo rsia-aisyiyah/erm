@@ -229,7 +229,7 @@ class PemeriksaanRalanController extends Controller
                 $status = $request->status_tindak_lanjut;
                 $validStatuses = ['KONTROL', 'SEMBUH', 'RUJUK_BALIK', 'RUJUK_LANJUT', 'RAWAT_INAP', 'KONSUL_SELESAI'];
                 if (!in_array($status, $validStatuses)) {
-                    $status = 'KONTROL';
+                    return;
                 }
 
                 $tglKontrol = ($status === 'KONTROL' && $request->filled('tgl_rencana_kontrol')) ? $request->tgl_rencana_kontrol : null;
