@@ -785,5 +785,10 @@
         .select2-results__option {
             font-size: 12px;
         }
+
+        /* Sweetalert container z-index agar selalu di atas modal bertumpuk */
+        .swal2-container {
+            z-index: 2000 !important;
+        }
     </style>
 </head>

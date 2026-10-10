@@ -112,6 +112,57 @@
                 e.stopImmediatePropagation();
             }
         }, true);
+
+        // Global Stacked Modal Manager: Menangani z-index dan backdrop untuk modal bertumpuk di seluruh modul
+        function adjustModalZIndex() {
+            if (typeof jQuery === 'undefined') return;
+            const openModals = $('.modal.show');
+            const backdrops = $('.modal-backdrop');
+            const numModals = openModals.length;
+            const numBackdrops = backdrops.length;
+
+            openModals.each(function(index) {
+                const modalZ = 1055 + (index * 20);
+                this.style.setProperty('z-index', modalZ, 'important');
+            });
+
+            backdrops.each(function(bIndex) {
+                const modalIndex = numModals - numBackdrops + bIndex;
+                const targetModalIndex = modalIndex >= 0 ? modalIndex : bIndex;
+                const backdropZ = 1050 + (targetModalIndex * 20);
+                this.style.setProperty('z-index', backdropZ, 'important');
+            });
+        }
+
+        if (typeof jQuery !== 'undefined') {
+            $(document).on('show.bs.modal', '.modal', function() {
+                const numOpen = $('.modal.show').not(this).length;
+                const modalZ = 1055 + (numOpen * 20);
+                this.style.setProperty('z-index', modalZ, 'important');
+                setTimeout(adjustModalZIndex, 0);
+            });
+
+            $(document).on('shown.bs.modal', '.modal', function() {
+                adjustModalZIndex();
+            });
+
+            $(document).on('hidden.bs.modal', '.modal', function() {
+                this.style.removeProperty('z-index');
+                const openModals = $('.modal.show');
+                const backdrops = $('.modal-backdrop');
+
+                if (openModals.length > 0) {
+                    $('body').addClass('modal-open');
+                    if (backdrops.length > openModals.length) {
+                        backdrops.slice(openModals.length).remove();
+                    }
+                    adjustModalZIndex();
+                } else {
+                    $('.modal-backdrop').remove();
+                    $('body').removeClass('modal-open').css('overflow', '');
+                }
+            });
+        }
     </script>
     {{--
     <script src="{{ asset('js/select2/select2.full.min.js') }}"></script> --}}

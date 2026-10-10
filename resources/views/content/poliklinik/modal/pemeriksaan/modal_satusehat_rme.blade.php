@@ -290,9 +290,6 @@
     #modalSatuSehatRme {
         z-index: 1065 !important;
     }
-    .modal-backdrop + .modal-backdrop {
-        z-index: 1060 !important;
-    }
     #btnSsrmeOpenPopup:hover {
         background-color: #00877a !important;
         color: #ffffff !important;

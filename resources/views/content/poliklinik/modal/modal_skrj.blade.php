@@ -2,12 +2,6 @@
     #modalSkrj {
         z-index: 1070 !important;
     }
-    .modal-backdrop + .modal-backdrop {
-        z-index: 1065 !important;
-    }
-    .modal-backdrop + .modal-backdrop + .modal-backdrop {
-        z-index: 1075 !important;
-    }
 </style>
 <div class="modal fade" id="modalSkrj" tabindex="-1" aria-labelledby="modalSkrj" aria-hidden="true" style="z-index: 1070 !important;">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
