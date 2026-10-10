@@ -45,6 +45,22 @@
                     </div>
                 </div>
 
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-3 p-2 bg-light rounded border">
+                    <span class="text-secondary small fw-bold me-1"><i class="bi bi-tag-fill me-1 text-primary"></i>Status Kontrol (SKU):</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-filter-skrj active py-0 px-2" data-status="" style="font-size: 12px; border-radius: 20px;">
+                        Semua SEP <span class="badge bg-secondary ms-1 count-total">0</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-primary btn-filter-skrj py-0 px-2" data-status="flagged" style="font-size: 12px; border-radius: 20px;">
+                        <i class="bi bi-calendar-event me-1"></i>Flagging Kontrol <span class="badge bg-primary ms-1 count-flagged">0</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-success btn-filter-skrj py-0 px-2" data-status="terbit" style="font-size: 12px; border-radius: 20px;">
+                        <i class="bi bi-check-circle me-1"></i>SKRJ Terbit <span class="badge bg-success ms-1 count-terbit">0</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-warning text-dark btn-filter-skrj py-0 px-2" data-status="belum" style="font-size: 12px; border-radius: 20px;">
+                        <i class="bi bi-exclamation-circle me-1"></i>Belum Terbit <span class="badge bg-warning text-dark ms-1 count-belum">0</span>
+                    </button>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-striped table-sm" id="tableSep"></table>
                 </div>
@@ -72,10 +88,26 @@
         const kdDokter = $('#kd_dokter');
         const filter = $('#filter');
         const btnReset = $('#btn-reset');
+        let statusSkrj = '';
 
         $('#kd_poli, #kd_dokter').select2({
             width: '100%'
         });
+
+        function updateSummaryCount() {
+            $.get("{{ route('sep.count') }}", {
+                start_date: start.val(),
+                end_date: end.val(),
+                jnspelayanan: jnsPelayanan.val(),
+                kd_poli: kdPoli.val(),
+                kd_dokter: kdDokter.val()
+            }).done(function(res) {
+                $('.count-total').text(res.total || 0);
+                $('.count-flagged').text(res.flagged || 0);
+                $('.count-terbit').text(res.terbit || 0);
+                $('.count-belum').text(res.belum || 0);
+            });
+        }
 
         const tableSep = $('#tableSep').DataTable({
             processing: true,
@@ -93,6 +125,7 @@
                     d.jnspelayanan = jnsPelayanan.val();
                     d.kd_poli = kdPoli.val();
                     d.kd_dokter = kdDokter.val();
+                    d.status_skrj = statusSkrj;
                 }
             },
             createdRow: (element, data, index, meta) => {
@@ -226,9 +259,18 @@
 
         filter.on('click', function() {
             tableSep.ajax.reload(null, true);
+            updateSummaryCount();
         });
 
         $('#jnspelayanan, #kd_poli, #kd_dokter').on('change', function() {
+            tableSep.ajax.reload(null, true);
+            updateSummaryCount();
+        });
+
+        $('.btn-filter-skrj').on('click', function() {
+            $('.btn-filter-skrj').removeClass('active');
+            $(this).addClass('active');
+            statusSkrj = $(this).data('status');
             tableSep.ajax.reload(null, true);
         });
 
@@ -238,7 +280,13 @@
             jnsPelayanan.val('');
             kdPoli.val('').trigger('change.select2');
             kdDokter.val('').trigger('change.select2');
+            statusSkrj = '';
+            $('.btn-filter-skrj').removeClass('active');
+            $('.btn-filter-skrj[data-status=""]').addClass('active');
             tableSep.ajax.reload(null, true);
+            updateSummaryCount();
         });
+
+        updateSummaryCount();
     </script>
 @endpush

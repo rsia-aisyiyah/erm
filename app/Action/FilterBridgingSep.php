@@ -33,6 +33,20 @@ class FilterBridgingSep
             });
         }
 
+        if (!empty($params['status_skrj'])) {
+            if ($params['status_skrj'] === 'flagged') {
+                $filtered = $filtered->whereHas('regPeriksa.rencanaKontrolRalan', function ($query) {
+                    $query->where('status_tindak_lanjut', 'KONTROL');
+                });
+            } else if ($params['status_skrj'] === 'terbit') {
+                $filtered = $filtered->has('suratKontrol');
+            } else if ($params['status_skrj'] === 'belum') {
+                $filtered = $filtered->whereHas('regPeriksa.rencanaKontrolRalan', function ($query) {
+                    $query->where('status_tindak_lanjut', 'KONTROL');
+                })->doesntHave('suratKontrol');
+            }
+        }
+
         return $filtered;
 
     }

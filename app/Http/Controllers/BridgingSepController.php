@@ -35,6 +35,29 @@ class BridgingSepController extends Controller
 
     }
 
+    function countSummary(FilterBridgingSep $action, Request $request)
+    {
+        $base = $action->handle(new BridgingSep(), $request->except('status_skrj'));
+
+        $total = (clone $base)->count();
+
+        $flaggedKontrol = (clone $base)->whereHas('regPeriksa.rencanaKontrolRalan', function ($query) {
+            $query->where('status_tindak_lanjut', 'KONTROL');
+        });
+        $countFlagged = (clone $flaggedKontrol)->count();
+
+        $countTerbit = (clone $base)->has('suratKontrol')->count();
+
+        $countBelum = (clone $flaggedKontrol)->doesntHave('suratKontrol')->count();
+
+        return response()->json([
+            'total' => $total,
+            'flagged' => $countFlagged,
+            'terbit' => $countTerbit,
+            'belum' => $countBelum,
+        ]);
+    }
+
     function ambilSep($no_sep)
     {
         $sep = $this->sep->where('no_sep', $no_sep)->with(['regPeriksa.pasien.sep', 'suratKontrol', 'regPeriksa.dokter', 'rujukanKeluar', 'regPeriksa.rencanaKontrolRalan'])->first();

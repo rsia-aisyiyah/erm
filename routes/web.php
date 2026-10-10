@@ -441,6 +441,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('ranap/asesmen-geriatri/print', [\App\Http\Controllers\AsesmenGeriatriController::class, 'print']);
 
 	Route::get('sep', [BridgingSepController::class, 'index'])->name('sep.index');
+	Route::get('sep/count', [BridgingSepController::class, 'countSummary'])->name('sep.count');
 	Route::get('sep/datatable', [BridgingSepController::class, 'dataTable'])->name('sep.datatable');
 	Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
 
