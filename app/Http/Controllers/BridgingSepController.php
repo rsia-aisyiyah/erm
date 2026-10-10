@@ -34,7 +34,7 @@ class BridgingSepController extends Controller
 
     function ambilSep($no_sep)
     {
-        $sep = $this->sep->where('no_sep', $no_sep)->with(['regPeriksa.pasien.sep', 'suratKontrol', 'regPeriksa.dokter', 'rujukanKeluar'])->first();
+        $sep = $this->sep->where('no_sep', $no_sep)->with(['regPeriksa.pasien.sep', 'suratKontrol', 'regPeriksa.dokter', 'rujukanKeluar', 'regPeriksa.rencanaKontrolRalan'])->first();
         return response()->json($sep);
     }
 

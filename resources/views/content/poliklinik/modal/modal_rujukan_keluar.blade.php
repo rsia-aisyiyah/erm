@@ -512,8 +512,23 @@
                     $('.btn-print-rujukan').prop('href', `/erm/rujukan/print/${response.rujukan_keluar.no_rujukan}`).removeClass('d-none')
                     $('.btn-buat-rujukan').addClass('d-none')
                 } else {
-                    $('.btn-buat-rujukan').removeClass('d-none')
-                    $('.btn-print-rujukan').prop('href', `javascript:void(0)`).addClass('d-none')
+                    $('#ppk_rujuk').removeAttr('disabled').val('');
+                    $('#poli_rujuk').removeAttr('disabled').val('');
+                    $('#tipe_rujuk').removeAttr('disabled');
+                    $('#tgl_kunjungan_rujuk').removeAttr('disabled');
+                    $('#diagnosa_rujuk').removeAttr('disabled').val('');
+                    $('#catatan_rujuk').removeAttr('disabled');
+                    $('.btn-cari').css('display', '');
+
+                    const rtlCatatan = response.reg_periksa?.rencana_kontrol_ralan?.catatan;
+                    if (rtlCatatan && rtlCatatan !== '-') {
+                        $('#catatan_rujuk').val(rtlCatatan);
+                    } else {
+                        $('#catatan_rujuk').val('');
+                    }
+
+                    $('.btn-buat-rujukan').removeClass('d-none');
+                    $('.btn-print-rujukan').prop('href', `javascript:void(0)`).addClass('d-none');
                 }
             })
         }

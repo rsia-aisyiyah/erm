@@ -12,6 +12,7 @@
             </div>
             <div class="modal-body">
                 <div class="rujukan-expired"></div>
+                <div class="soap-instruction-wrapper"></div>
                 <form action="" id="formModalSkrj">
                     <div class="row gy-2">
                         <div class="col-md-3 col-sm-12">
@@ -443,6 +444,7 @@
                 formModalSkrj.find('input[name=noka]').val(response.no_kartu || '');
 
                 if (response.surat_kontrol != null) {
+                    $('.soap-instruction-wrapper').empty();
                     formModalSkrj.find('input[name=no_surat]').val(response.surat_kontrol.no_surat).addClass('is-valid');
                     formModalSkrj.find('input[name=tgl_kontrol]').val(response.surat_kontrol?.tgl_rencana).addClass('is-valid').prop('disabled', true);
                     formModalSkrj.find('input[name=tgl_surat]').val(response.surat_kontrol?.tgl_surat).addClass('is-valid');
@@ -458,9 +460,15 @@
                     $('#btn-spesialis').removeAttr('onclick');
                     formModalSkrj.find('input[name=no_surat]').val('-').removeClass('is-valid');
                     formModalSkrj.find('input[name=tgl_surat]').val("{{ date('Y-m-d') }}").removeClass('is-valid');
-                    const tglRencanaSoap = $('#tgl_rencana_kontrol').val();
+                    const rtl = response.reg_periksa?.rencana_kontrol_ralan;
+                    const tglRencanaSoap = rtl?.tgl_rencana_kontrol || $('#tgl_rencana_kontrol').val();
                     const tglDefault = tglRencanaSoap ? tglRencanaSoap : "{{ date('Y-m-d') }}";
                     formModalSkrj.find('input[name=tgl_kontrol]').val(tglDefault).removeClass('is-valid').prop('disabled', false);
+
+                    $('.soap-instruction-wrapper').empty();
+                    if (rtl && rtl.catatan && rtl.catatan !== '-') {
+                        $('.soap-instruction-wrapper').html(`<div class="alert alert-info py-2 px-3 mb-2" style="font-size: 12px; border-radius: 4px;"><i class="bi bi-chat-left-text-fill me-1 text-primary"></i><strong>Instruksi Catatan Dokter (SOAP):</strong> ${rtl.catatan}</div>`);
+                    }
 
                     $('.btn-buat-skrj').removeClass('d-none');
 

@@ -21,7 +21,7 @@ class BridgingSep extends Model
 
     public $timestamps = false;
 
-    protected $with = ['regPeriksa.poliklinik', 'pasien','suratKontrol'];
+    protected $with = ['regPeriksa.poliklinik', 'pasien', 'suratKontrol', 'regPeriksa.rencanaKontrolRalan', 'rujukanKeluar'];
     public function scopeBetweenTanggal(Builder $query, $start, $end)
     {
         return $query->whereBetween('tglsep', [$start, $end]);
