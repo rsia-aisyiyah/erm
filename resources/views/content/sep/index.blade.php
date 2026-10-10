@@ -8,16 +8,40 @@
                 <span class="text-muted small" style="font-size: 11.5px;"><i class="bi bi-info-circle me-1"></i>Klik kanan pada baris tabel untuk memproses menu (SKRJ, SPRI, Rujuk Keluar)</span>
             </div>
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-md-3">
+                <div class="row g-2 mb-3 align-items-center">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
                         <x-input-group class="input-group-sm">
                             <x-input class="form-control" id="start_date" name="start_date" value="{{ date('Y-m-d') }}" type="date"></x-input>
                             <x-input-group-text for="no_sep" label="s/d"></x-input-group-text>
                             <x-input class="form-control" id="end_date" name="end_date" value="{{ date('Y-m-d') }}" type="date"></x-input>
                         </x-input-group>
                     </div>
-                    <div class="col-md-3">
-                        <button id="filter" class="btn btn-primary btn-sm"><i class="bi bi-filter"></i> Filter</button>
+                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6">
+                        <select class="form-select form-select-sm" id="jnspelayanan" name="jnspelayanan">
+                            <option value="">Semua Pelayanan</option>
+                            <option value="2">Rawat Jalan</option>
+                            <option value="1">Rawat Inap</option>
+                        </select>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                        <select class="form-select form-select-sm select2" id="kd_poli" name="kd_poli">
+                            <option value="">Semua Poliklinik</option>
+                            @foreach ($poliklinik as $p)
+                                <option value="{{ $p->kd_poli }}">{{ $p->nm_poli }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                        <select class="form-select form-select-sm select2" id="kd_dokter" name="kd_dokter">
+                            <option value="">Semua Dokter</option>
+                            @foreach ($dokter as $d)
+                                <option value="{{ $d->kd_dokter }}">{{ $d->nm_dokter }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-xl-2 col-lg-1 col-md-6 col-sm-12 d-flex gap-1">
+                        <button id="filter" class="btn btn-primary btn-sm flex-fill" title="Terapkan Filter"><i class="bi bi-filter"></i> Filter</button>
+                        <button id="btn-reset" class="btn btn-secondary btn-sm" title="Reset Filter"><i class="bi bi-arrow-clockwise"></i></button>
                     </div>
                 </div>
 
@@ -43,10 +67,15 @@
     <script>
         const start = $('#start_date');
         const end = $('#end_date');
+        const jnsPelayanan = $('#jnspelayanan');
+        const kdPoli = $('#kd_poli');
+        const kdDokter = $('#kd_dokter');
         const filter = $('#filter');
+        const btnReset = $('#btn-reset');
 
-        // $(document).ready(function() {
-
+        $('#kd_poli, #kd_dokter').select2({
+            width: '100%'
+        });
 
         const tableSep = $('#tableSep').DataTable({
             processing: true,
@@ -61,6 +90,9 @@
                 data: function(d) {
                     d.start_date = start.val();
                     d.end_date = end.val();
+                    d.jnspelayanan = jnsPelayanan.val();
+                    d.kd_poli = kdPoli.val();
+                    d.kd_dokter = kdDokter.val();
                 }
             },
             createdRow: (element, data, index, meta) => {
@@ -194,6 +226,19 @@
 
         filter.on('click', function() {
             tableSep.ajax.reload(null, true);
-        })
+        });
+
+        $('#jnspelayanan, #kd_poli, #kd_dokter').on('change', function() {
+            tableSep.ajax.reload(null, true);
+        });
+
+        btnReset.on('click', function() {
+            start.val("{{ date('Y-m-d') }}");
+            end.val("{{ date('Y-m-d') }}");
+            jnsPelayanan.val('');
+            kdPoli.val('').trigger('change.select2');
+            kdDokter.val('').trigger('change.select2');
+            tableSep.ajax.reload(null, true);
+        });
     </script>
 @endpush

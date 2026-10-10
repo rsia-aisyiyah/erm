@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Action\FilterBridgingSep;
 use App\DataTables\BridgingSepDataTable;
 use App\Models\BridgingSep;
+use App\Models\Dokter;
+use App\Models\Poliklinik;
 use Carbon\Carbon;
 use DeepCopy\Filter\Filter;
 use Illuminate\Http\Request;
@@ -20,8 +22,9 @@ class BridgingSepController extends Controller
 
     function index()
     {
-
-        return view('content.sep.index');
+        $poliklinik = Poliklinik::where('status', '1')->where('kd_poli', '!=', '-')->orderBy('nm_poli')->get();
+        $dokter = Dokter::where('status', '1')->where('kd_dokter', '!=', '-')->orderBy('nm_dokter')->get();
+        return view('content.sep.index', compact('poliklinik', 'dokter'));
     }
 
     function filter(FilterBridgingSep $action, Request $request)
