@@ -192,7 +192,7 @@
                             </div>
                             <div class="m-0">
                                 <input class="btn-check" type="radio" name="status_tindak_lanjut" id="tl_rujuk_lanjut" value="RUJUK_LANJUT" onchange="onChangeStatusTindakLanjut('RUJUK_LANJUT')">
-                                <label class="btn btn-sm btn-outline-warning rounded-pill px-2 py-1 text-nowrap" for="tl_rujuk_lanjut" style="font-size: 11px;">
+                                <label class="btn btn-sm btn-outline-purple rounded-pill px-2 py-1 text-nowrap" for="tl_rujuk_lanjut" style="font-size: 11px;">
                                     <i class="bi bi-hospital me-1"></i>Rujuk RS Lain
                                 </label>
                             </div>
@@ -200,12 +200,6 @@
                                 <input class="btn-check" type="radio" name="status_tindak_lanjut" id="tl_ranap" value="RAWAT_INAP" onchange="onChangeStatusTindakLanjut('RAWAT_INAP')">
                                 <label class="btn btn-sm btn-outline-danger rounded-pill px-2 py-1 text-nowrap" for="tl_ranap" style="font-size: 11px;">
                                     <i class="bi bi-door-open me-1"></i>Rawat Inap
-                                </label>
-                            </div>
-                            <div class="m-0">
-                                <input class="btn-check" type="radio" name="status_tindak_lanjut" id="tl_konsul" value="KONSUL_SELESAI" onchange="onChangeStatusTindakLanjut('KONSUL_SELESAI')">
-                                <label class="btn btn-sm btn-outline-secondary rounded-pill px-2 py-1 text-nowrap" for="tl_konsul" style="font-size: 11px;">
-                                    <i class="bi bi-check2-circle me-1"></i>Konsul Selesai
                                 </label>
                             </div>
                         </div>
@@ -279,9 +273,9 @@
                         </div>
 
                         <!-- Panel Status Rujuk RS Lain -->
-                        <div id="panel_tindak_lanjut_rujuk_lanjut" class="alert alert-warning py-2 px-3 mb-2 rounded-2 d-none" style="font-size: 11.5px;">
+                        <div id="panel_tindak_lanjut_rujuk_lanjut" class="alert alert-purple py-2 px-3 mb-2 rounded-2 d-none" style="font-size: 11.5px;">
                             <div class="d-flex align-items-center gap-2">
-                                <i class="bi bi-box-arrow-up-right text-warning fs-5"></i>
+                                <i class="bi bi-box-arrow-up-right text-purple fs-5"></i>
                                 <div>
                                     <span class="fw-bold">Rujuk ke Faskes Lain:</span>
                                     <span>Pasien dirujuk ke Rumah Sakit / Faskes tingkat lanjutan.</span>
@@ -315,6 +309,30 @@
 
 <!-- Offcanvas Drawer Riwayat Kunjungan Pasien (SOAP) -->
 <style>
+    .btn-outline-purple {
+        color: #6f42c1 !important;
+        border-color: #6f42c1 !important;
+    }
+    .btn-outline-purple:hover,
+    .btn-check:checked + .btn-outline-purple,
+    .btn-check:active + .btn-outline-purple {
+        color: #ffffff !important;
+        background-color: #6f42c1 !important;
+        border-color: #6f42c1 !important;
+    }
+    .bg-purple {
+        background-color: #6f42c1 !important;
+        color: #ffffff !important;
+    }
+    .alert-purple {
+        background-color: #f3e8ff !important;
+        border-color: #d8b4fe !important;
+        color: #581c87 !important;
+    }
+    .text-purple {
+        color: #6f42c1 !important;
+    }
+
     #offcanvasRiwayatSoap,
     #offcanvasRiwayatSoap *,
     #offcanvasRiwayatSoap .badge,
@@ -553,7 +571,6 @@
             $('#tl_fktp').val('RUJUK_BALIK');
             $('#tl_rujuk_lanjut').val('RUJUK_LANJUT');
             $('#tl_ranap').val('RAWAT_INAP');
-            $('#tl_konsul').val('KONSUL_SELESAI');
 
             if (disposisi && disposisi.status_tindak_lanjut && disposisi.status_tindak_lanjut !== '') {
                 const status = disposisi.status_tindak_lanjut;
@@ -651,7 +668,7 @@
             panelRanap.addClass('d-none');
             panelRujukLanjut.addClass('d-none');
 
-            badge.removeClass('bg-primary bg-success bg-info bg-warning bg-danger bg-secondary bg-secondary-subtle text-dark text-white text-secondary border border-secondary-subtle');
+            badge.removeClass('bg-primary bg-success bg-info bg-warning bg-danger bg-secondary bg-secondary-subtle bg-purple text-dark text-white text-secondary border border-secondary-subtle');
 
             lastSelectedStatusTindakLanjut = status || null;
 
@@ -679,6 +696,7 @@
                     break;
 
                 case 'SEMBUH':
+                case 'KONSUL_SELESAI':
                     badge.addClass('bg-success text-white').html('<i class="bi bi-heart-pulse me-1"></i>Sembuh / Selesai');
                     panelSelesai.removeClass('d-none');
                     $('#panel_tindak_lanjut_selesai strong.badge').text('PATUH (TIDAK PERLU KONTROL)');
@@ -690,14 +708,8 @@
                     $('#panel_tindak_lanjut_selesai strong.badge').text('PATUH (RUJUK BALIK FKTP)');
                     break;
 
-                case 'KONSUL_SELESAI':
-                    badge.addClass('bg-secondary text-white').html('<i class="bi bi-check2-circle me-1"></i>Konsul Selesai');
-                    panelSelesai.removeClass('d-none');
-                    $('#panel_tindak_lanjut_selesai strong.badge').text('PATUH (KONSUL SELESAI)');
-                    break;
-
                 case 'RUJUK_LANJUT':
-                    badge.addClass('bg-warning text-dark').html('<i class="bi bi-hospital me-1"></i>Rujuk RS Lain');
+                    badge.addClass('bg-purple text-white').html('<i class="bi bi-hospital me-1"></i>Rujuk RS Lain');
                     panelRujukLanjut.removeClass('d-none');
                     break;
 
@@ -983,7 +995,6 @@
             $('#tl_fktp').val('RUJUK_BALIK');
             $('#tl_rujuk_lanjut').val('RUJUK_LANJUT');
             $('#tl_ranap').val('RAWAT_INAP');
-            $('#tl_konsul').val('KONSUL_SELESAI');
             $('input[name="status_tindak_lanjut"]').prop('checked', false);
             $('#tgl_rencana_kontrol').val('');
             $('#catatan_disposisi').val('');
