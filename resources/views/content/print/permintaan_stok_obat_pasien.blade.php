@@ -226,14 +226,14 @@
     </div>
     <table class="table-telaah">
         <tr style="background-color: #f9f9f9;">
-            <td width="33%">[ &#10003; ] 1. Tepat Pasien &amp; Ruangan</td>
-            <td width="33%">[ &#10003; ] 3. Tepat Dosis &amp; Frekuensi</td>
-            <td width="34%">[ &#10003; ] 5. Tepat Waktu Pemberian UDD</td>
+            <td width="33%"><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 1. Tepat Pasien &amp; Ruangan</td>
+            <td width="33%"><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 3. Tepat Dosis &amp; Frekuensi</td>
+            <td width="34%"><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 5. Tepat Waktu Pemberian UDD</td>
         </tr>
         <tr style="background-color: #f9f9f9;">
-            <td>[ &#10003; ] 2. Tepat Indikasi &amp; Obat</td>
-            <td>[ &#10003; ] 4. Tepat Rute Pemberian</td>
-            <td>[ &#10003; ] 6. Tidak Ada Duplikasi / Interaksi</td>
+            <td><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 2. Tepat Indikasi &amp; Obat</td>
+            <td><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 4. Tepat Rute Pemberian</td>
+            <td><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 6. Tidak Ada Duplikasi / Interaksi</td>
         </tr>
     </table>
 
