@@ -1,4 +1,31 @@
 <!-- Modal Pemberian Obat Pasien Ranap (E-MAR) -->
+<style>
+    .swal2-popup.swal2-toast {
+        font-size: 11.5px !important;
+        padding: 6px 12px !important;
+        width: auto !important;
+        max-width: 320px !important;
+        border-radius: 8px !important;
+    }
+    .swal2-popup.swal2-toast .swal2-title {
+        font-size: 11.5px !important;
+        margin: 0 !important;
+        font-weight: 600 !important;
+    }
+    .swal2-popup.swal2-toast .swal2-html-container {
+        font-size: 11px !important;
+        margin: 0 !important;
+    }
+    .swal2-popup.swal2-toast .swal2-icon {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        min-width: 1.25rem !important;
+        margin: 0 8px 0 0 !important;
+    }
+    .swal2-popup.swal2-toast .swal2-icon .swal2-icon-content {
+        font-size: 0.85rem !important;
+    }
+</style>
 <div class="modal fade" id="modalPemberianObatRanap" tabindex="-1" aria-labelledby="modalPemberianObatRanapLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">
