@@ -9,6 +9,8 @@ class DetailPemberianObat extends Model
 {
     use HasFactory;
     protected $table = 'detail_pemberian_obat';
+    public $timestamps = false;
+    protected $guarded = [];
     public function regPeriksa()
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');

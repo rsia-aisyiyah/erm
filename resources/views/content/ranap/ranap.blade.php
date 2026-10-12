@@ -174,6 +174,8 @@
     @include('content.ranap.modal.modal_persetujuan_ppra')
     @include('content.ranap.modal.modal_transfer_pasien')
     @include('content.ranap.modal.modal_asesmen_geriatri')
+    @include('content.ranap.modal.modal_permintaan_stok_obat_pasien')
+    @include('content.ranap.modal.modal_pemberian_obat_pasien')
 
     <div class="modal fade" id="modalEwsRanap" tabindex="-1" aria-labelledby="modalEwsRanapLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -1172,6 +1174,10 @@
             menu +=
                 `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalPermintaanDiet('${data.no_rawat}')"><i class="fa-solid fa-utensils text-success me-1"></i> Permintaan Diet Pasien</a></li>`;
             menu +=
+                `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPermintaanObatRanap('${data.no_rawat}')"><i class="bi bi-cart-plus text-success me-1"></i> Permintaan Obat Pasien</a></li>`;
+            menu +=
+                `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemberianObatRanap('${data.no_rawat}')"><i class="bi bi-capsule-pill text-primary me-1"></i> Jadwal & Pemberian Obat (E-MAR)</a></li>`;
+            menu +=
                 `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${data.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
             menu +=
                 `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenGeriatri('${data.no_rawat}')"><i class="bi bi-person-heart text-success me-1"></i> Asesmen Awal Geriatri ${cekList(row.asesmen_geriatri)}</a></li>`;
@@ -1279,6 +1285,10 @@
                 `<li><a class="dropdown-item" href="javascript:void(0)" onclick="askepRanapNeonatus('${regPeriksa.no_rawat}')"><i class="bi bi-heart-pulse text-danger me-1"></i> Asesmen Keperawatan Neonatus ${cekList(regPeriksa.askep_ranap_neonatus)}</a></li>`;
             list +=
                 `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPenunjangRanap('${regPeriksa.no_rawat}')"><i class="bi bi-file-earmark-medical text-primary me-1"></i> Pemeriksaan Penunjang</a></li>`;
+            list +=
+                `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPermintaanObatRanap('${regPeriksa.no_rawat}')"><i class="bi bi-cart-plus text-success me-1"></i> Permintaan Obat</a></li>`;
+            list +=
+                `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemberianObatRanap('${regPeriksa.no_rawat}')"><i class="bi bi-capsule-pill text-primary me-1"></i> Jadwal & Pemberian Obat (E-MAR)</a></li>`;
 
             // Memasukkan menu resume jika ada aksesnya
             if (resumeMenu) {

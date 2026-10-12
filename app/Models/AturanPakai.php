@@ -9,6 +9,8 @@ class AturanPakai extends Model
 {
     use HasFactory;
     protected $table = 'aturan_pakai';
+    public $timestamps = false;
+    protected $guarded = [];
     public function detailPemberianObat()
     {
         return $this->hasMany(DetailPemberianObat::class, ['no_rawat', 'kd_barang'], ['no_rawat', 'kd_barang']);

@@ -269,4 +269,13 @@ class RegPeriksa extends Model
 		return $this->hasOne(BridgingSPRI::class, 'no_rawat', 'no_rawat');
 	}
 
+    public function permintaanStokObatPasien()
+    {
+        return $this->hasMany(PermintaanStokObatPasien::class, 'no_rawat', 'no_rawat');
+    }
+
+    public function stokObatPasien()
+    {
+        return $this->hasMany(StokObatPasien::class, 'no_rawat', 'no_rawat');
+    }
 }
