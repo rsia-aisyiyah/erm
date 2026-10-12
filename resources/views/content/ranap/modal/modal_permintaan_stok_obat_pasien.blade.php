@@ -304,25 +304,6 @@
                     </div>
                 </div>
 
-                <!-- Bagian Pilih Depo Pengeluaran untuk Validasi Farmasi -->
-                <div class="alert alert-info py-2 px-3 mb-2 d-none" id="boxValidasiFarmasi">
-                    <div class="row g-2 align-items-center" style="font-size: 11.5px;">
-                        <div class="col-md-7 col-12">
-                            <label class="form-label small fw-bold mb-0">Depo Farmasi Pengeluaran Stok:</label>
-                            <select class="form-select form-select-sm" id="selDepoValidasiFarmasi">
-                                <option value="RM" selected>Apotek Rinap (RM)</option>
-                                <option value="B0015">Gudang Farmasi (B0015)</option>
-                                <option value="LB">Laboratorium (LB)</option>
-                            </select>
-                        </div>
-                        <div class="col-md-5 col-12 text-md-end text-start mt-md-3">
-                            <button type="button" class="btn btn-success btn-sm w-100 fw-bold" id="btnEksekusiValidasiFarmasi">
-                                <i class="bi bi-check2-circle me-1"></i> Validasi &amp; Siapkan Obat
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="table-responsive border rounded-3">
                     <table class="table table-bordered table-sm align-middle mb-0" id="tbDetailObatPermintaan" style="font-size: 11.5px;">
                         <thead class="table-light text-center">
@@ -799,11 +780,8 @@
 
                 if (row.status === 'Belum') {
                     aksiHtml += `
-                        <button type="button" class="btn btn-outline-success btn-sm py-0 px-2 ms-1" onclick="siapkanValidasiFarmasi('${row.no_permintaan}')" title="Validasi Farmasi">
-                            <i class="bi bi-check2-circle"></i> Validasi
-                        </button>
                         <button type="button" class="btn btn-outline-danger btn-sm py-0 px-2 ms-1" onclick="hapusPermintaanObat('${row.no_permintaan}')" title="Batalkan Permintaan">
-                            <i class="bi bi-trash"></i>
+                            <i class="bi bi-trash"></i> Batalkan
                         </button>
                     `;
                 }
@@ -824,20 +802,12 @@
     }
 
     // Detail Permintaan Modal
-    let activeNoPermintaanDetail = '';
-    function showDetailPermintaanObat(noPermintaan, forValidation = false) {
-        activeNoPermintaanDetail = noPermintaan;
+    function showDetailPermintaanObat(noPermintaan) {
         $.get(`{{ url('/ranap/permintaan-obat/detail') }}/${noPermintaan}`).done(function(res) {
             $('#lblDetNoPermintaan').text(res.no_permintaan);
             $('#lblDetTglJam').text(`${res.tgl_permintaan} ${res.jam}`);
             $('#lblDetStatus').html(res.status === 'Sudah' ? '<span class="badge bg-success">Sudah Disiapkan</span>' : '<span class="badge bg-warning text-dark">Menunggu Farmasi</span>');
             $('#lblDetDokter').text(res.dokter?.nm_dokter || '-');
-
-            if (forValidation && res.status === 'Belum') {
-                $('#boxValidasiFarmasi').removeClass('d-none');
-            } else {
-                $('#boxValidasiFarmasi').addClass('d-none');
-            }
 
             const $tbody = $('#tbodyDetailObatPermintaan');
             $tbody.empty();
@@ -877,50 +847,6 @@
             $('#modalDetailPermintaanObat').modal('show');
         });
     }
-
-    function siapkanValidasiFarmasi(noPermintaan) {
-        showDetailPermintaanObat(noPermintaan, true);
-    }
-
-    // Eksekusi Validasi Farmasi
-    $('#btnEksekusiValidasiFarmasi').on('click', function() {
-        if (!activeNoPermintaanDetail) return;
-        const kdBangsal = $('#selDepoValidasiFarmasi').val() || 'RM';
-
-        Swal.fire({
-            title: 'Validasi & Siapkan Obat?',
-            text: `Validasi permintaan ${activeNoPermintaanDetail} dan kurangi stok depo ${kdBangsal}?`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#198754',
-            confirmButtonText: 'Ya, Validasi Sekarang',
-            cancelButtonText: 'Batal'
-        }).then((res) => {
-            if (res.isConfirmed) {
-                $.ajax({
-                    url: "{{ route('ranap.permintaan-obat.validasi') }}",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        no_permintaan: activeNoPermintaanDetail,
-                        kd_bangsal: kdBangsal
-                    },
-                    beforeSend: function() {
-                        Swal.fire({ title: 'Memvalidasi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-                    },
-                    success: function(resp) {
-                        Swal.fire('Sukses!', resp.message || 'Obat berhasil disiapkan dan divalidasi ke Stok Pasien', 'success');
-                        $('#modalDetailPermintaanObat').modal('hide');
-                        loadRiwayatPermintaanPasien();
-                    },
-                    error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || 'Gagal memvalidasi permintaan';
-                        Swal.fire('Gagal!', msg, 'error');
-                    }
-                });
-            }
-        });
-    });
 
     // Hapus Permintaan Obat (Belum Dilayani)
     function hapusPermintaanObat(noPermintaan) {
