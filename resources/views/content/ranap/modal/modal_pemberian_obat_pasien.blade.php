@@ -317,6 +317,7 @@
                                     <span class="d-block" style="font-size: 8.5px;">${pemberianJam.jml}</span>
                                 </div>
                             </div>
+                        `;
                     } else if (isDijadwalkan) {
                         if (item.sisa_stok <= 0) {
                             // Dijadwalkan tapi Stok Pasien Sudah Habis
