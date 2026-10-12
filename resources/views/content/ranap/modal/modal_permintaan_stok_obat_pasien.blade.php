@@ -165,8 +165,11 @@
                                         </div>
                                     </div>
 
-                                    <!-- Tombol Tambah Obat ke List -->
-                                    <div class="d-flex justify-content-end mb-3">
+                                    <!-- Tombol Tambah / Update Obat ke List -->
+                                    <div class="d-flex justify-content-end mb-3 gap-2">
+                                        <button type="button" class="btn btn-secondary btn-sm px-3 d-none shadow-sm" id="btnBatalEditItem" onclick="batalEditItemSementara()">
+                                            <i class="bi bi-x-lg me-1"></i> Batal Edit
+                                        </button>
                                         <button type="button" class="btn btn-success btn-sm px-3 shadow-sm" id="btnTambahItemPermintaan">
                                             <i class="bi bi-plus-lg me-1"></i> Tambahkan ke Daftar Order
                                         </button>
@@ -367,6 +370,8 @@
         $('#modalPermintaanObatRanap').modal('show');
     }
 
+    let itemEditIndex = null;
+
     // Reset Form Input Obat
     function resetFormInputObat() {
         $('#permintaan_cari_obat').val('');
@@ -380,6 +385,15 @@
         $('#permintaan_aturan_pakai').val('');
         setPresetJam('clear');
         $('#permintaan_dropdown_obat').addClass('d-none').empty();
+    }
+
+    // Batal Mode Edit Item
+    function batalEditItemSementara() {
+        itemEditIndex = null;
+        resetFormInputObat();
+        $('#btnBatalEditItem').addClass('d-none');
+        $('#btnTambahItemPermintaan').removeClass('btn-warning').addClass('btn-success')
+            .html('<i class="bi bi-plus-lg me-1"></i> Tambahkan ke Daftar Order');
     }
 
     // Set Preset Jadwal Jam (Pagi, Malam, 2x, 3x, 4x, etc.)
@@ -466,7 +480,7 @@
         }
     });
 
-    // Tambah item ke tabel sementara
+    // Tambah / Update item ke tabel sementara
     $('#btnTambahItemPermintaan').on('click', function() {
         const kode = $('#permintaan_kode_brng').val();
         const nama = $('#permintaan_nama_brng').val();
@@ -497,29 +511,100 @@
             }
         }
 
-        // Cek duplikasi di order sementara
-        const existingIdx = listOrderSementara.findIndex(i => i.kode_brng === kode);
-        if (existingIdx !== -1) {
-            listOrderSementara[existingIdx].jml += jml;
-            listOrderSementara[existingIdx].aturan_pakai = aturan;
-            listOrderSementara[existingIdx].jam = jamObj;
-            listOrderSementara[existingIdx].jam_list = jamAktifList;
+        if (itemEditIndex !== null && listOrderSementara[itemEditIndex]) {
+            // Mode UPDATE
+            listOrderSementara[itemEditIndex].kode_brng = kode;
+            listOrderSementara[itemEditIndex].nama_brng = nama;
+            listOrderSementara[itemEditIndex].satuan = satuan;
+            listOrderSementara[itemEditIndex].jml = jml;
+            listOrderSementara[itemEditIndex].aturan_pakai = aturan;
+            listOrderSementara[itemEditIndex].jam = jamObj;
+            listOrderSementara[itemEditIndex].jam_list = jamAktifList;
+            batalEditItemSementara();
         } else {
-            listOrderSementara.push({
-                kode_brng: kode,
-                nama_brng: nama,
-                satuan: satuan,
-                jml: jml,
-                aturan_pakai: aturan,
-                jam: jamObj,
-                jam_list: jamAktifList,
-            });
+            // Mode TAMBAH BARU (cek duplikasi)
+            const existingIdx = listOrderSementara.findIndex(i => i.kode_brng === kode);
+            if (existingIdx !== -1) {
+                listOrderSementara[existingIdx].jml += jml;
+                listOrderSementara[existingIdx].aturan_pakai = aturan;
+                listOrderSementara[existingIdx].jam = jamObj;
+                listOrderSementara[existingIdx].jam_list = jamAktifList;
+            } else {
+                listOrderSementara.push({
+                    kode_brng: kode,
+                    nama_brng: nama,
+                    satuan: satuan,
+                    jml: jml,
+                    aturan_pakai: aturan,
+                    jam: jamObj,
+                    jam_list: jamAktifList,
+                });
+            }
+            resetFormInputObat();
         }
 
         renderTableItemSementara();
-        resetFormInputObat();
         $('#permintaan_cari_obat').focus();
     });
+
+    // Edit Item (Muat kembali ke Form Input)
+    function editItemSementara(idx) {
+        if (!listOrderSementara[idx]) return;
+        const item = listOrderSementara[idx];
+        itemEditIndex = idx;
+
+        $('#permintaan_kode_brng').val(item.kode_brng);
+        $('#permintaan_nama_brng').val(item.nama_brng);
+        $('#permintaan_satuan').val(item.satuan);
+        $('#permintaan_cari_obat').val(item.nama_brng);
+        $('#lblObatTerpilih').text(item.nama_brng);
+        $('#lblSatuanObat').text(item.satuan);
+        $('#permintaan_jml').val(item.jml);
+        $('#permintaan_aturan_pakai').val(item.aturan_pakai !== '-' ? item.aturan_pakai : '');
+
+        // Pulihkan centang jam
+        $('.chk-jam-order').prop('checked', false);
+        for (let h = 0; h <= 23; h++) {
+            const key = `jam${String(h).padStart(2, '0')}`;
+            if (item.jam && item.jam[key]) {
+                $(`#chk_${key}`).prop('checked', true);
+            }
+        }
+
+        // Tampilkan tombol Batal & ubah tombol Simpan
+        $('#btnBatalEditItem').removeClass('d-none');
+        $('#btnTambahItemPermintaan').removeClass('btn-success').addClass('btn-warning')
+            .html('<i class="bi bi-check-lg me-1"></i> Simpan Perubahan');
+
+        // Scroll halus ke form dan fokus ke input jumlah
+        document.getElementById('formPermintaanObatRanap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        $('#permintaan_jml').focus().select();
+    }
+
+    // Ubah Jumlah Langsung dari Tabel (Inline)
+    function ubahJumlahItemSementara(idx, val) {
+        const num = parseFloat(val);
+        if (isNaN(num) || num <= 0) {
+            Swal.fire('Peringatan', 'Jumlah obat harus lebih dari 0.', 'warning');
+            renderTableItemSementara();
+            return;
+        }
+
+        if (listOrderSementara[idx]) {
+            listOrderSementara[idx].jml = num;
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
+            });
+            Toast.fire({
+                icon: 'success',
+                title: `Jumlah ${listOrderSementara[idx].nama_brng} diubah jadi ${num}`
+            });
+        }
+    }
 
     // Render tabel item sementara
     function renderTableItemSementara() {
@@ -545,15 +630,20 @@
             }
 
             const tr = `
-                <tr>
+                <tr class="${itemEditIndex === idx ? 'table-warning' : ''}">
                     <td class="text-center">${idx + 1}</td>
                     <td class="font-monospace">${item.kode_brng}</td>
                     <td><strong>${item.nama_brng}</strong></td>
-                    <td class="text-center fw-bold">${item.jml}</td>
+                    <td class="text-center" style="width: 90px;">
+                        <input type="number" class="form-control form-control-sm text-center fw-bold py-0.5 px-1 shadow-sm" value="${item.jml}" min="0.1" step="any" onchange="ubahJumlahItemSementara(${idx}, this.value)" style="font-size: 11.5px;" title="Ketik angka untuk ubah langsung">
+                    </td>
                     <td class="text-center">${item.satuan}</td>
                     <td>${item.aturan_pakai}</td>
                     <td>${jamBadge}</td>
-                    <td class="text-center">
+                    <td class="text-center text-nowrap">
+                        <button type="button" class="btn btn-outline-warning btn-sm p-1 me-1" onclick="editItemSementara(${idx})" title="Edit Lengkap (Aturan / Jam / Dosis)">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
                         <button type="button" class="btn btn-outline-danger btn-sm p-1" onclick="hapusItemSementara(${idx})" title="Hapus Baris">
                             <i class="bi bi-trash"></i>
                         </button>
@@ -567,6 +657,9 @@
     }
 
     function hapusItemSementara(index) {
+        if (itemEditIndex === index) {
+            batalEditItemSementara();
+        }
         listOrderSementara.splice(index, 1);
         renderTableItemSementara();
     }
