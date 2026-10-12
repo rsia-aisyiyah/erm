@@ -317,18 +317,30 @@
                                     <span class="d-block" style="font-size: 8.5px;">${pemberianJam.jml}</span>
                                 </div>
                             </div>
-                        `;
                     } else if (isDijadwalkan) {
-                        // Dijadwalkan tapi Belum Diberikan
-                        timelineBoxes += `
-                            <div class="p-1 text-center" style="flex: 1 0 4%; min-width: 38px;">
-                                <button type="button" class="btn btn-warning btn-sm p-1 w-100 shadow-sm" style="font-size: 9.5px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch}', '${item.no_faktur}', '${item.kd_bangsal}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '${pad}:00:00')" title="Klik untuk catat pemberian jam ${pad}:00">
-                                    <span class="d-block fw-bold">${pad}:00</span>
-                                    <i class="bi bi-plus-circle"></i>
-                                    <span class="d-block" style="font-size: 8.5px;">Beri</span>
-                                </button>
-                            </div>
-                        `;
+                        if (item.sisa_stok <= 0) {
+                            // Dijadwalkan tapi Stok Pasien Sudah Habis
+                            timelineBoxes += `
+                                <div class="p-1 text-center" style="flex: 1 0 4%; min-width: 38px;">
+                                    <button type="button" class="btn btn-secondary btn-sm p-1 w-100 opacity-50 shadow-sm" style="font-size: 9.5px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch}', '${item.no_faktur}', '${item.kd_bangsal}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '${pad}:00:00')" title="Stok pasien habis (0 ${item.satuan})">
+                                        <span class="d-block fw-bold">${pad}:00</span>
+                                        <i class="bi bi-x-circle"></i>
+                                        <span class="d-block" style="font-size: 8.5px;">Habis</span>
+                                    </button>
+                                </div>
+                            `;
+                        } else {
+                            // Dijadwalkan tapi Belum Diberikan
+                            timelineBoxes += `
+                                <div class="p-1 text-center" style="flex: 1 0 4%; min-width: 38px;">
+                                    <button type="button" class="btn btn-warning btn-sm p-1 w-100 shadow-sm" style="font-size: 9.5px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch}', '${item.no_faktur}', '${item.kd_bangsal}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '${pad}:00:00')" title="Klik untuk catat pemberian jam ${pad}:00">
+                                        <span class="d-block fw-bold">${pad}:00</span>
+                                        <i class="bi bi-plus-circle"></i>
+                                        <span class="d-block" style="font-size: 8.5px;">Beri</span>
+                                    </button>
+                                </div>
+                            `;
+                        }
                     } else {
                         // Tidak Dijadwalkan
                         timelineBoxes += `
@@ -343,6 +355,14 @@
                 }
 
                 const sisaBadgeClass = item.sisa_stok > 0 ? 'bg-success' : 'bg-danger';
+
+                const btnCatatHtml = item.sisa_stok > 0
+                    ? `<button type="button" class="btn btn-outline-success btn-sm py-1 px-2.5 shadow-sm" style="font-size: 11px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch}', '${item.no_faktur}', '${item.kd_bangsal}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '')">
+                           <i class="bi bi-plus-lg me-1"></i> Catat Pemberian
+                       </button>`
+                    : `<button type="button" class="btn btn-secondary btn-sm py-1 px-2.5 opacity-75 shadow-sm" style="font-size: 11px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch}', '${item.no_faktur}', '${item.kd_bangsal}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '')" title="Stok obat pasien habis">
+                           <i class="bi bi-x-circle me-1"></i> Stok Habis
+                       </button>`;
 
                 const cardHtml = `
                     <div class="card border rounded-3 mb-2 shadow-sm bg-white">
@@ -369,9 +389,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-12 text-md-end text-start">
-                                    <button type="button" class="btn btn-outline-success btn-sm py-1 px-2.5 shadow-sm" style="font-size: 11px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch}', '${item.no_faktur}', '${item.kd_bangsal}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '')">
-                                        <i class="bi bi-plus-lg me-1"></i> Catat Pemberian
-                                    </button>
+                                    ${btnCatatHtml}
                                 </div>
                             </div>
 
@@ -437,6 +455,16 @@
 
     // Buka Dialog Eksekusi Pemberian Obat
     function bukaDialogBeriObat(kode, nama, satuan, batch, faktur, bangsal, aturan, sisa, presetJam = '') {
+        if (sisa <= 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Stok Obat Pasien Habis',
+                text: `Stok ${nama} untuk pasien ini sudah habis (0 ${satuan}). Harap buat order permintaan stok obat baru ke Depo Farmasi terlebih dahulu.`,
+                confirmButtonColor: '#0d6efd',
+            });
+            return;
+        }
+
         $('#eksekusi_kode_brng').val(kode);
         $('#eksekusi_no_batch').val(batch || '');
         $('#eksekusi_no_faktur').val(faktur || '');
@@ -446,7 +474,7 @@
         $('#lblEksekusiSisaStok').text(`Sisa Stok Pasien: ${sisa} ${satuan}`);
         $('#eksekusi_tanggal').val($('#emar_filter_tanggal').val() || moment().format('YYYY-MM-DD'));
         $('#eksekusi_jam').val(presetJam || moment().format('HH:mm:ss'));
-        $('#eksekusi_jml').val('1');
+        $('#eksekusi_jml').val('1').attr('max', sisa).data('max-sisa', sisa);
         $('#eksekusi_aturan_pakai').val(aturan || '');
 
         $('#modalDialogEksekusiBeriObat').modal('show');
@@ -459,6 +487,7 @@
         const tgl = $('#eksekusi_tanggal').val();
         const jam = $('#eksekusi_jam').val();
         const jml = parseFloat($('#eksekusi_jml').val()) || 0;
+        const maxSisa = parseFloat($('#eksekusi_jml').data('max-sisa')) || 0;
         const batch = $('#eksekusi_no_batch').val();
         const faktur = $('#eksekusi_no_faktur').val();
         const bangsal = $('#eksekusi_kd_bangsal').val();
@@ -466,6 +495,11 @@
 
         if (jml <= 0) {
             Swal.fire('Peringatan', 'Jumlah pemberian obat harus lebih dari 0.', 'warning');
+            return;
+        }
+
+        if (maxSisa > 0 && jml > maxSisa) {
+            Swal.fire('Peringatan', `Jumlah pemberian (${jml}) melebihi sisa stok obat pasien (${maxSisa}).`, 'warning');
             return;
         }
 

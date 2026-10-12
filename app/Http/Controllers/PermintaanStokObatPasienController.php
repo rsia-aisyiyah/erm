@@ -475,9 +475,41 @@ class PermintaanStokObatPasienController extends Controller
         $kelas = $kamarInap->kamar->kelas ?? 'Kelas 1';
 
         // Ambil data barang & harga jual sesuai kelas
-        $barang = DataBarang::where('kode_brng', $kodeBrng)->first();
+        $barang = DataBarang::with('kodeSatuan')->where('kode_brng', $kodeBrng)->first();
         if (!$barang) {
             return response()->json(['message' => 'Data obat tidak ditemukan'], 404);
+        }
+
+        $satuan = $barang->kodeSatuan->satuan ?? 'satuan';
+
+        // Validasi ketersediaan stok obat pasien (UDD)
+        $totalMasuk = (float) StokObatPasien::where('no_rawat', $noRawat)
+            ->where('kode_brng', $kodeBrng)
+            ->where('no_batch', $noBatch)
+            ->where('no_faktur', $noFaktur)
+            ->sum('jumlah');
+
+        $totalKeluar = (float) DetailPemberianObat::where('no_rawat', $noRawat)
+            ->where('kode_brng', $kodeBrng)
+            ->where('no_batch', $noBatch)
+            ->where('no_faktur', $noFaktur)
+            ->where('status', 'Ranap')
+            ->sum('jml');
+
+        $sisaStok = $totalMasuk - $totalKeluar;
+
+        if ($sisaStok <= 0) {
+            return response()->json([
+                'status' => false,
+                'message' => "Stok obat {$barang->nama_brng} untuk pasien ini sudah habis (Sisa: 0 {$satuan}). Silakan buat order permintaan stok obat baru ke Farmasi.",
+            ], 422);
+        }
+
+        if ($jml > $sisaStok) {
+            return response()->json([
+                'status' => false,
+                'message' => "Jumlah yang diberikan ({$jml} {$satuan}) melebihi sisa stok yang tersedia ({$sisaStok} {$satuan}).",
+            ], 422);
         }
 
         $hBeli = (float) $barang->dasar ?: (float) $barang->h_beli;
