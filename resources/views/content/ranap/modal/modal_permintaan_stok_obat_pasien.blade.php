@@ -44,6 +44,9 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-outline-light btn-sm py-0.5 px-2 shadow-sm" onclick="cetakPermintaanTerbaru()" title="Cetak Lembar Permintaan Terakhir">
+                        <i class="bi bi-printer me-1"></i> Cetak Terakhir
+                    </button>
                     <span class="badge bg-light text-success px-2 py-1 shadow-sm font-monospace" id="badgeNoPermintaanAktif" style="font-size: 11px;">
                         SP-BARU
                     </span>
@@ -321,7 +324,10 @@
                     </table>
                 </div>
             </div>
-            <div class="modal-footer py-1 px-3">
+            <div class="modal-footer py-1 px-3 d-flex justify-content-between">
+                <button type="button" class="btn btn-primary btn-sm" onclick="cetakPermintaanObat($('#lblDetNoPermintaan').text())">
+                    <i class="bi bi-printer me-1"></i> Cetak Lembar Permintaan
+                </button>
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
@@ -727,12 +733,25 @@
                         });
                     },
                     success: function(response) {
-                        Swal.fire('Berhasil!', response.message || 'Permintaan berhasil dikirim ke Farmasi', 'success');
                         listOrderSementara = [];
                         renderTableItemSementara();
                         // Pindah ke Tab Riwayat
                         $('#tab-riwayat-order-link').tab('show');
                         loadRiwayatPermintaanPasien();
+
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: response.message || 'Permintaan berhasil dikirim ke Farmasi',
+                            icon: 'success',
+                            showCancelButton: true,
+                            confirmButtonText: '<i class="bi bi-printer me-1"></i> Cetak Lembar Order',
+                            cancelButtonText: 'Tutup',
+                            confirmButtonColor: '#198754'
+                        }).then((res) => {
+                            if (res.isConfirmed && response.no_permintaan) {
+                                cetakPermintaanObat(response.no_permintaan);
+                            }
+                        });
                     },
                     error: function(xhr) {
                         const msg = xhr.responseJSON?.message || 'Terjadi kesalahan saat menyimpan permintaan.';
@@ -775,6 +794,9 @@
                 let aksiHtml = `
                     <button type="button" class="btn btn-outline-info btn-sm py-0 px-2" onclick="showDetailPermintaanObat('${row.no_permintaan}')" title="Lihat Detail Item">
                         <i class="bi bi-eye"></i> Detail
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2 ms-1" onclick="cetakPermintaanObat('${row.no_permintaan}')" title="Cetak Lembar Resmi Permintaan">
+                        <i class="bi bi-printer"></i> Cetak
                     </button>
                 `;
 
@@ -875,6 +897,27 @@
                 });
             }
         });
+    }
+
+    // Cetak Lembar Resmi Permintaan Stok Obat Pasien
+    function cetakPermintaanObat(noPermintaan) {
+        if (!noPermintaan || noPermintaan === '-') {
+            Swal.fire('Peringatan', 'Nomor permintaan tidak valid.', 'warning');
+            return;
+        }
+        const printUrl = `{{ route('ranap.permintaan-obat.cetak') }}?no_permintaan=${encodeURIComponent(noPermintaan)}`;
+        window.open(printUrl, '_blank');
+    }
+
+    // Cetak Permintaan Terakhir untuk Pasien Aktif
+    function cetakPermintaanTerbaru() {
+        const noRawat = $('#permintaan_no_rawat').val();
+        if (!noRawat) {
+            Swal.fire('Peringatan', 'No. Rawat tidak valid.', 'warning');
+            return;
+        }
+        const printUrl = `{{ route('ranap.permintaan-obat.cetak') }}?no_rawat=${encodeURIComponent(noRawat)}`;
+        window.open(printUrl, '_blank');
     }
 </script>
 @endpush

@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
         $q->get('permintaan-obat/detail/{no_permintaan}', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'getDetail'])->name('ranap.permintaan-obat.detail');
         $q->post('permintaan-obat', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'simpan'])->name('ranap.permintaan-obat.simpan');
         $q->delete('permintaan-obat/{no_permintaan}', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'hapus'])->name('ranap.permintaan-obat.hapus');
+        $q->get('permintaan-obat/cetak', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'cetak'])->name('ranap.permintaan-obat.cetak');
 
         // Farmasi Validasi & Penyiapan Obat
         $q->post('permintaan-obat/validasi', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'validasi'])->name('ranap.permintaan-obat.validasi');

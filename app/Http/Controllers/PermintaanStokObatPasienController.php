@@ -650,4 +650,56 @@ class PermintaanStokObatPasienController extends Controller
 
         return response()->json($data);
     }
+
+    /**
+     * Cetak Lembar Resmi Permintaan Stok Obat Pasien (UDD Rawat Inap)
+     */
+    public function cetak(Request $request)
+    {
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
+        $no_permintaan = $request->input('no_permintaan');
+        $no_rawat = $request->input('no_rawat');
+
+        $query = PermintaanStokObatPasien::with([
+            'detailPermintaan.dataBarang.kodeSatuan',
+            'regPeriksa.pasien',
+            'regPeriksa.kamarInap' => function ($q) {
+                $q->with('kamar.bangsal');
+            },
+            'dokter',
+        ]);
+
+        if ($no_permintaan) {
+            $permintaan = $query->where('no_permintaan', $no_permintaan)->first();
+        } elseif ($no_rawat) {
+            $no_rawat = str_replace('-', '/', $no_rawat);
+            $permintaan = $query->where('no_rawat', $no_rawat)
+                ->orderBy('tgl_permintaan', 'desc')
+                ->orderBy('jam', 'desc')
+                ->first();
+        } else {
+            abort(404, 'Parameter no_permintaan atau no_rawat tidak ditemukan.');
+        }
+
+        if (!$permintaan) {
+            abort(404, 'Data permintaan stok obat tidak ditemukan.');
+        }
+
+        $regPeriksa = $permintaan->regPeriksa;
+        $kamar = null;
+        if ($regPeriksa && $regPeriksa->kamarInap) {
+            $kamar = is_iterable($regPeriksa->kamarInap)
+                ? ($regPeriksa->kamarInap->filter(fn($k) => $k->stts_pulang != 'Pindah Kamar')->first() ?? $regPeriksa->kamarInap->first())
+                : $regPeriksa->kamarInap;
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('content.print.permintaan_stok_obat_pasien', [
+            'permintaan' => $permintaan,
+            'regPeriksa' => $regPeriksa,
+            'kamar' => $kamar,
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream('permintaan_obat_' . $permintaan->no_permintaan . '.pdf');
+    }
 }
