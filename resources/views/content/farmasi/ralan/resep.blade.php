@@ -1407,11 +1407,16 @@
                 // 1. Cek Ralan
                 let countRalanTunggu = 0;
                 let countRalanSelesai = 0;
+                let countRalanTidakAmbil = 0;
                 let countRalanTotal = 0;
                 dataRalan.forEach(function(row) {
                     countRalanTotal++;
-                    const isWaiting = row.tgl_perawatan === '0000-00-00';
-                    if (isWaiting) {
+                    const isTidakAmbil = (row.tgl_perawatan === '0000-00-00' && row.reg_periksa?.status_bayar === 'Sudah Bayar');
+                    const isWaiting = (row.tgl_perawatan === '0000-00-00' && !isTidakAmbil);
+
+                    if (isTidakAmbil) {
+                        countRalanTidakAmbil++;
+                    } else if (isWaiting) {
                         countRalanTunggu++;
                         if (!knownRalanIds.has(row.no_resep)) {
                             if (!isInitialNotifCheck) {
@@ -1533,6 +1538,7 @@
                 $('#count-resep').text(countRalanTotal);
                 $('#count-tunggu').text(countRalanTunggu);
                 $('#count-selesai').text(countRalanSelesai);
+                $('#count-tidak').text(countRalanTidakAmbil);
                 $('#badgeCountResepRanapTunggu').text(countRanapTunggu);
                 $('#badgeCountRanapTunggu').text(countUddTunggu);
                 $('#badgeCountPulangTunggu').text(countPulangTunggu);
@@ -1768,7 +1774,7 @@
                         if (res.tgl_perawatan != '0000-00-00') {
                             valid += parseInt(1);
                         } else {
-                            if (res.reg_periksa.status_bayar == 'Sudah Bayar') {
+                            if (res.reg_periksa && res.reg_periksa.status_bayar == 'Sudah Bayar') {
                                 tidak += parseInt(1);
                             }
                         }
@@ -1778,8 +1784,8 @@
                         if (res.tgl_penyerahan != '0000-00-00' && res.jam_penyerahan) {
                             selesai += parseInt(1);
                         }
-                        tunggu = resep - valid - tidak;
                     });
+                    tunggu = Math.max(0, resep - valid - tidak);
                     $('#count-resep').text(resep);
                     $('#count-tunggu').text(tunggu);
                     $('#count-selesai').text(selesai);
