@@ -221,19 +221,32 @@
     </table>
 
     <!-- TELAAH RESEP & SKRINING FARMASI UDD (5 BENAR / 7 BENAR) -->
+    @php
+        $telaah = $permintaan->telaahFarmasi ?? null;
+        $boxEmpty = '<span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span>';
+        $markCheck = function($val) use ($boxEmpty) {
+            if (!$val) return $boxEmpty;
+            return $val === 'Ya' ? '<strong style="color: #198754; font-size: 11px;">[ &#10003; ]</strong>' : '<strong style="color: #dc3545; font-size: 11px;">[ &#10007; ]</strong>';
+        };
+        $nmPetugasFarmasi = $telaah && $telaah->petugas ? $telaah->petugas->nama : '..................................................';
+        $nipPetugasFarmasi = $telaah && $telaah->nip ? "NIP. {$telaah->nip}" : 'Tgl & Jam: .................................';
+    @endphp
     <div style="font-size: 10.5px; font-weight: bold; margin-bottom: 3px;">
         TELAAH RESEP &amp; KESIAPAN FARMASI (CLINICAL &amp; DISPENSING CHECK)
+        @if($telaah)
+            <span style="font-size: 9.5px; font-weight: normal; color: #198754; margin-left: 5px;">(Tervalidasi oleh Apoteker / TTK: {{ $telaah->petugas->nama ?? $telaah->nip }})</span>
+        @endif
     </div>
     <table class="table-telaah">
         <tr style="background-color: #f9f9f9;">
-            <td width="33%"><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 1. Tepat Pasien &amp; Ruangan</td>
-            <td width="33%"><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 3. Tepat Dosis &amp; Frekuensi</td>
-            <td width="34%"><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 5. Tepat Waktu Pemberian UDD</td>
+            <td width="33%">{!! $markCheck($telaah->obat_tepat_pasien ?? $telaah->resep_identifikasi_pasien ?? null) !!} 1. Tepat Pasien &amp; Ruangan</td>
+            <td width="33%">{!! $markCheck($telaah->resep_tepat_dosis ?? $telaah->obat_tepat_dosis ?? null) !!} 3. Tepat Dosis &amp; Frekuensi</td>
+            <td width="34%">{!! $markCheck($telaah->resep_tepat_waktu_pemberian ?? $telaah->obat_tepat_waktu_pemberian ?? null) !!} 5. Tepat Waktu Pemberian UDD</td>
         </tr>
         <tr style="background-color: #f9f9f9;">
-            <td><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 2. Tepat Indikasi &amp; Obat</td>
-            <td><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 4. Tepat Rute Pemberian</td>
-            <td><span style="display: inline-block; width: 10px; height: 10px; border: 1.2px solid #333; margin-right: 4px; vertical-align: middle;"></span> 6. Tidak Ada Duplikasi / Interaksi</td>
+            <td>{!! $markCheck($telaah->resep_tepat_obat ?? $telaah->obat_tepat_obat ?? null) !!} 2. Tepat Indikasi &amp; Obat</td>
+            <td>{!! $markCheck($telaah->resep_tepat_cara_pemberian ?? $telaah->obat_tepat_cara_pemberian ?? null) !!} 4. Tepat Rute Pemberian</td>
+            <td>{!! $markCheck($telaah->resep_ada_tidak_duplikasi_obat ?? null) !!} 6. Tidak Ada Duplikasi / Interaksi</td>
         </tr>
     </table>
 
@@ -249,8 +262,8 @@
             <td width="34%">
                 <strong>Yang Menyerahkan</strong><br>
                 Petugas Farmasi (Depo Inap),<br><br><br><br><br>
-                ( .................................................. )<br>
-                <span style="font-size: 9.5px; color: #555;">Tgl &amp; Jam: .................................</span>
+                ( {{ $nmPetugasFarmasi }} )<br>
+                <span style="font-size: 9.5px; color: #555;">{{ $nipPetugasFarmasi }}</span>
             </td>
             <td width="33%">
                 Pekalongan, {{ date('d-m-Y', strtotime($permintaan->tgl_permintaan)) }}<br>

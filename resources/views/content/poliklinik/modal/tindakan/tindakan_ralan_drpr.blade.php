@@ -20,7 +20,7 @@
                 </div>
 
                 <button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanDokterPerawat"
-                        onclick="createTindakanDokterPerawat()"><i class="bi bi-floppy"></i> Buat
+                        onclick="createTindakanDokterPerawat()"><i class="bi bi-floppy"></i> Simpan
                 </button>
             </div>
         </div>

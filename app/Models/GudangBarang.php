@@ -9,6 +9,8 @@ class GudangBarang extends Model
 {
     use HasFactory;
     protected $table = 'gudangbarang';
+    public $timestamps = false;
+    protected $guarded = [];
 
     public function bangsal()
     {

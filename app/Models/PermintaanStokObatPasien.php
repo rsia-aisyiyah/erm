@@ -30,4 +30,9 @@ class PermintaanStokObatPasien extends Model
     {
         return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter');
     }
+
+    public function telaahFarmasi()
+    {
+        return $this->hasOne(TelaahFarmasi::class, 'no_resep', 'no_permintaan');
+    }
 }

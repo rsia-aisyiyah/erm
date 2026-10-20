@@ -64,9 +64,72 @@ class JurnalService
 	public function generateNoJurnal(): string
 	{
 		$date = date('Y-m-d');
-		$count = DB::table('jurnal')->whereDate('tgl_jurnal', $date)->count();
-		$count++;
-		return 'JR' . date('Ymd') . str_pad($count, 6, '0', STR_PAD_LEFT);
+		$maxUrut = DB::table('jurnal')
+			->whereDate('tgl_jurnal', $date)
+			->selectRaw('IFNULL(MAX(CONVERT(RIGHT(no_jurnal, 6), SIGNED)), 0) as last_urut')
+			->value('last_urut');
+		$nextUrut = ((int)$maxUrut) + 1;
+		return 'JR' . date('Ymd') . sprintf('%06d', $nextUrut);
+	}
+
+	/**
+	 * Simpan transaksi jurnal retur penjualan (retur obat) sesuai DlgReturJual.java SIMRS Khanza
+	 *
+	 * @param string $noReturJual
+	 * @param float $ttlRetur
+	 * @param string $kdBangsal
+	 * @param string $nikPetugas
+	 * @return string|null Nomor jurnal yang dibuat
+	 */
+	public function createJurnalReturJual(string $noReturJual, float $ttlRetur, string $kdBangsal, string $nikPetugas): ?string
+	{
+		if ($ttlRetur <= 0) {
+			return null;
+		}
+
+		$setAkun = DB::table('set_akun')->first();
+		if (!$setAkun || empty($setAkun->Retur_Dari_pembeli) || empty($setAkun->Kontra_Retur_Dari_Pembeli)) {
+			return null;
+		}
+
+		$nmBangsal = DB::table('bangsal')->where('kd_bangsal', $kdBangsal)->value('nm_bangsal') ?? $kdBangsal;
+
+		// Ambil nama rekening
+		$rekRetur = DB::table('rekening')->where('kd_rek', $setAkun->Retur_Dari_pembeli)->value('nm_rek') ?? 'RETUR PENJUALAN';
+		$rekKontra = DB::table('rekening')->where('kd_rek', $setAkun->Kontra_Retur_Dari_Pembeli)->value('nm_rek') ?? 'KAS DI TANGAN';
+
+		// Bersihkan dan masukkan ke tampjurnal sesuai DlgReturJual.java Khanza
+		DB::table('tampjurnal')->delete();
+		DB::table('tampjurnal')->insert([
+			[
+				'kd_rek' => $setAkun->Retur_Dari_pembeli,
+				'nm_rek' => $rekRetur,
+				'debet' => 0,
+				'kredit' => $ttlRetur,
+			],
+			[
+				'kd_rek' => $setAkun->Kontra_Retur_Dari_Pembeli,
+				'nm_rek' => $rekKontra,
+				'debet' => $ttlRetur,
+				'kredit' => 0,
+			],
+		]);
+
+		$noJurnal = $this->generateNoJurnal();
+		$keterangan = 'RETUR PENJUALAN DI ' . strtoupper(trim($nmBangsal)) . ', OLEH ' . $nikPetugas;
+
+		DB::table('jurnal')->insert([
+			'no_jurnal' => $noJurnal,
+			'no_bukti' => $noReturJual,
+			'tgl_jurnal' => date('Y-m-d'),
+			'jam_jurnal' => date('H:i:s'),
+			'jenis' => 'U',
+			'keterangan' => $keterangan,
+		]);
+
+		$this->createDetailJurnal($noJurnal);
+
+		return $noJurnal;
 	}
 
 	private function createTampJurnal($rekening, $totals, $reverse = false, string $jenis = 'ralan')

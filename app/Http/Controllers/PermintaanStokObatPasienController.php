@@ -310,9 +310,14 @@ class PermintaanStokObatPasienController extends Controller
                 $stokAkhir = $stokAwal - $detail->jml;
 
                 if ($gudang) {
-                    $gudang->decrement('stok', $detail->jml);
+                    DB::table('gudangbarang')
+                        ->where('kode_brng', $gudang->kode_brng)
+                        ->where('kd_bangsal', $gudang->kd_bangsal)
+                        ->where('no_batch', $gudang->no_batch)
+                        ->where('no_faktur', $gudang->no_faktur)
+                        ->decrement('stok', $detail->jml);
                 } else {
-                    GudangBarang::create([
+                    DB::table('gudangbarang')->insert([
                         'kode_brng' => $detail->kode_brng,
                         'kd_bangsal' => $kdBangsal,
                         'stok' => -$detail->jml,
@@ -351,6 +356,106 @@ class PermintaanStokObatPasienController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Gagal memvalidasi permintaan: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Ambil antrean permintaan obat rawat inap untuk dashboard Farmasi
+     */
+    public function getFarmasiData(Request $request): JsonResponse
+    {
+        $query = PermintaanStokObatPasien::with([
+            'detailPermintaan.dataBarang.kodeSatuan',
+            'regPeriksa.pasien',
+            'regPeriksa.penjab',
+            'regPeriksa.kamarInap' => function ($q) {
+                $q->where('stts_pulang', '-')->with('kamar.bangsal');
+            },
+            'dokter',
+            'telaahFarmasi.petugas',
+        ]);
+
+        if ($request->filled('tgl_awal') && $request->filled('tgl_akhir')) {
+            $query->whereBetween('tgl_permintaan', [$request->tgl_awal, $request->tgl_akhir]);
+        } elseif ($request->filled('tgl_permintaan')) {
+            $query->where('tgl_permintaan', $request->tgl_permintaan);
+        } else {
+            $query->where('tgl_permintaan', date('Y-m-d'));
+        }
+
+        if ($request->filled('status') && $request->status !== 'Semua') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('keyword')) {
+            $kw = '%' . $request->keyword . '%';
+            $query->where(function ($q) use ($kw) {
+                $q->where('no_permintaan', 'like', $kw)
+                    ->orWhere('no_rawat', 'like', $kw)
+                    ->orWhereHas('regPeriksa.pasien', function ($qp) use ($kw) {
+                        $qp->where('nm_pasien', 'like', $kw)->orWhere('no_rkm_medis', 'like', $kw);
+                    })
+                    ->orWhereHas('dokter', function ($qd) use ($kw) {
+                        $qd->where('nm_dokter', 'like', $kw);
+                    });
+            });
+        }
+
+        $data = $query->orderBy('tgl_permintaan', 'desc')
+            ->orderBy('jam', 'desc')
+            ->get();
+
+        return response()->json($data);
+    }
+
+    /**
+     * Substitusi / Ganti item obat pada permintaan stok obat pasien
+     */
+    public function substitusi(Request $request): JsonResponse
+    {
+        $request->validate([
+            'no_permintaan' => 'required',
+            'kode_brng_lama' => 'required',
+            'kode_brng_baru' => 'required',
+        ]);
+
+        $permintaan = PermintaanStokObatPasien::where('no_permintaan', $request->no_permintaan)->first();
+        if (!$permintaan) {
+            return response()->json(['message' => 'Permintaan obat tidak ditemukan'], 404);
+        }
+
+        if ($permintaan->status === 'Sudah') {
+            return response()->json(['message' => 'Permintaan sudah divalidasi, tidak dapat mensubstitusi obat.'], 422);
+        }
+
+        $detail = DetailPermintaanStokObatPasien::where('no_permintaan', $request->no_permintaan)
+            ->where('kode_brng', $request->kode_brng_lama)
+            ->first();
+
+        if (!$detail) {
+            return response()->json(['message' => 'Item obat asal tidak ditemukan pada permintaan ini'], 404);
+        }
+
+        DB::beginTransaction();
+        try {
+            $detail->update([
+                'kode_brng' => $request->kode_brng_baru,
+                'jml' => $request->filled('jml') ? (float)$request->jml : $detail->jml,
+                'aturan_pakai' => $request->filled('aturan_pakai') ? $request->aturan_pakai : $detail->aturan_pakai,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Item obat berhasil disubstitusi / diganti',
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal mensubstitusi obat: ' . $e->getMessage(),
             ], 500);
         }
     }

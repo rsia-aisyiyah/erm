@@ -313,10 +313,11 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="15%">Kode</th>
-                                <th width="35%">Nama Obat</th>
+                                <th width="30%">Nama Obat</th>
                                 <th width="10%">Jumlah</th>
                                 <th width="10%">Satuan</th>
-                                <th width="25%">Aturan Pakai &amp; Jam</th>
+                                <th width="20%">Aturan Pakai &amp; Jam</th>
+                                <th width="10%">Substitusi</th>
                             </tr>
                         </thead>
                         <tbody id="tbodyDetailObatPermintaan">
@@ -325,14 +326,22 @@
                 </div>
             </div>
             <div class="modal-footer py-1 px-3 d-flex justify-content-between">
-                <button type="button" class="btn btn-primary btn-sm" onclick="cetakPermintaanObat($('#lblDetNoPermintaan').text())">
-                    <i class="bi bi-printer me-1"></i> Cetak Lembar Permintaan
-                </button>
+                <div>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="cetakPermintaanObat($('#lblDetNoPermintaan').text())">
+                        <i class="bi bi-printer me-1"></i> Cetak Lembar Permintaan
+                    </button>
+                    <button type="button" class="btn btn-teal btn-sm text-white ms-1" style="background-color: #0f766e;" onclick="bukaModalTelaahFarmasi($('#lblDetNoPermintaan').text(), $('#permintaan_no_rawat').val(), $('#permintaan_info_nm_pasien').text(), $('#permintaan_info_kamar').text())">
+                        <i class="bi bi-shield-check me-1"></i> Telaah Farmasi
+                    </button>
+                </div>
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
 </div>
+
+@include('content.farmasi.modal.modal_telaah_farmasi')
+@include('content.farmasi.modal.modal_substitusi_obat')
 
 @push('script')
 <script>
@@ -849,6 +858,15 @@
                     }
                     const jamStr = jamList.length > 0 ? jamList.map(j => `<span class="badge bg-success-subtle text-success border border-success me-0.5" style="font-size: 9px;">${j}</span>`).join(' ') : '-';
 
+                    let btnSubstitusiHtml = '-';
+                    if (res.status === 'Belum') {
+                        btnSubstitusiHtml = `
+                            <button type="button" class="btn btn-outline-warning btn-sm py-0 px-1 text-dark" onclick="bukaModalSubstitusi('${res.no_permintaan}', '${det.kode_brng}', '${(det.data_barang?.nama_brng || det.kode_brng).replace(/'/g, "\\'")}', ${det.jml}, '${(det.aturan_pakai || '').replace(/'/g, "\\'")}')" title="Substitusi / Ganti Obat">
+                                <i class="bi bi-arrow-left-right"></i> Ganti
+                            </button>
+                        `;
+                    }
+
                     const tr = `
                         <tr>
                             <td class="text-center">${idx + 1}</td>
@@ -860,6 +878,7 @@
                                 <div>${det.aturan_pakai}</div>
                                 <div class="mt-1">${jamStr}</div>
                             </td>
+                            <td class="text-center">${btnSubstitusiHtml}</td>
                         </tr>
                     `;
                     $tbody.append(tr);

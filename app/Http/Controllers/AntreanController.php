@@ -19,6 +19,34 @@ class AntreanController extends Controller
         return view('antrian');
     }
 
+    public function getSuara(Request $request)
+    {
+        $text = $request->query('text', 'Nomor antrian');
+        $text = substr(trim($text), 0, 150);
+
+        $url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=id&client=tw-ob&q=' . urlencode($text);
+
+        try {
+            $context = stream_context_create([
+                'http' => [
+                    'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\r\n",
+                    'timeout' => 5
+                ]
+            ]);
+            $audio = @file_get_contents($url, false, $context);
+            if ($audio !== false && strlen($audio) > 0) {
+                return response($audio, 200, [
+                    'Content-Type' => 'audio/mpeg',
+                    'Cache-Control' => 'public, max-age=86400',
+                ]);
+            }
+        } catch (\Exception $e) {
+            // ignore
+        }
+
+        return response('Gagal memuat suara', 500);
+    }
+
     function getAntrian()
     {
         $data = $this->resepObat

@@ -1,9 +1,14 @@
 <div class="modal fade" id="modalEdukasiObatPulang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fs-5" id="exampleModalLabel"><i>EDUKASI OBAT PULANG</i></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header justify-content-between align-items-center">
+                <h5 class="modal-title fs-5 mb-0" id="exampleModalLabel"><i>EDUKASI OBAT PULANG</i></h5>
+                <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2.5" onclick="bukaModalPermintaanResepPulang($('#formEdukasiObatPulang input[name=no_rawat]').val())">
+                        <i class="bi bi-prescription2 me-1"></i> Permintaan Resep Pulang
+                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
             </div>
             <div class="modal-body">
                 <form action="" id="formEdukasiObatPulang">

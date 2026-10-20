@@ -12,7 +12,10 @@
             <img src="/erm/public/img/logo.png" alt="Logo" style="max-width: 30px" />
             {{ config('app.name') }}
         </a>
-        <button style="border-radius:0px" class="navbar-toggler position-absolute d-md-none collapsed" type="button"
+        <div class="d-flex align-items-center ms-auto pe-3">
+            @include('layout.notifikasi_respon_farmasi')
+        </div>
+        <button style="border-radius:0px" class="navbar-toggler position-relative d-md-none collapsed ms-2 me-3" type="button"
             data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
             aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -424,6 +427,11 @@
 
             // 4. Gabungkan kembali dengan jam jika jamnya ada
             return jamSaja ? `${tglBaru} ${jamSaja}` : tglBaru;
+        }
+
+        function formatRupiah(angka) {
+            const num = parseFloat(angka) || 0;
+            return 'Rp ' + num.toLocaleString('id-ID');
         }
 
         function hitungLamaHari(d1, d2) {
