@@ -78,11 +78,11 @@
                     </div>
                 </div>
 
-                <!-- Tabel Item Obat Pulang -->
+                <!-- Tabel Item Obat Non-Racikan -->
                 <div class="card border shadow-none mb-3">
                     <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
                         <span class="fw-bold text-dark" style="font-size: 12.5px;">
-                            <i class="bi bi-capsule text-primary me-1"></i> Daftar Obat Resep Pulang
+                            <i class="bi bi-capsule text-primary me-1"></i> Daftar Obat Non-Racikan (Obat Jadi)
                         </span>
                         <span class="badge bg-light text-muted border" id="fPulangCountItem">0 Item</span>
                     </div>
@@ -110,6 +110,19 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <!-- Section Daftar Obat Racikan Pulang -->
+                <div class="card border shadow-none mb-3" id="sectionRacikanPulangContainer">
+                    <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-dark" style="font-size: 12.5px;">
+                            <i class="bi bi-mortar-pestle text-primary me-1"></i> Daftar Obat Racikan Resep Pulang
+                        </span>
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle" id="fPulangCountRacikan">0 Racikan</span>
+                    </div>
+                    <div class="card-body p-2" id="fPulangRacikanContainer">
+                        <div class="text-center text-muted py-2" style="font-size: 12px;"><i>Tidak ada obat racikan pada permintaan ini.</i></div>
                     </div>
                 </div>
 
@@ -141,6 +154,9 @@
                     <i class="bi bi-x-circle me-1"></i> Tutup
                 </button>
                 <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary px-3 fw-bold" id="btnCetakEtiketPulangModal" onclick="bukaModalCetakEtiketPulang(currentNoPermintaanPulang)">
+                        <i class="bi bi-printer me-1"></i> Cetak Etiket
+                    </button>
                     <button type="button" class="btn btn-sm btn-success px-3 fw-bold" id="btnEksekusiValidasiResepPulang">
                         <i class="bi bi-check2-circle me-1"></i> Validasi Resep Pulang Sekarang
                     </button>

@@ -277,6 +277,8 @@ Route::middleware('auth')->group(function () {
 	Route::get('/resep/ambil/sekarang', [ResepObatController::class, 'ambilSekarang']);
 	Route::get('/resep/riwayat/{no_rkm_medis}', [ResepObatController::class, 'getByNoRm']);
 	Route::post('/resep/copy/{noResep}', [ResepObatController::class, 'copyResep']);
+	Route::get('/resep/etiket/{no_resep?}', [ResepObatController::class, 'printEtiket'])->name('resep.etiket');
+	Route::get('/resep/etiket-items/{no_resep}', [ResepObatController::class, 'getEtiketItems'])->name('resep.etiket-items');
 
 	// Telaah Farmasi (Telaah Resep & Verifikasi Obat DlgResepObat)
 	Route::get('/farmasi/telaah/{no_resep}', [\App\Http\Controllers\TelaahFarmasiController::class, 'get'])->name('farmasi.telaah.get');
@@ -306,6 +308,9 @@ Route::middleware('auth')->group(function () {
 	Route::post('/farmasi/resep-pulang/validasi', [ResepPulangController::class, 'validasiPermintaan'])->name('farmasi.resep-pulang.validasi');
 	Route::post('/farmasi/resep-pulang/simpan-item', [ResepPulangController::class, 'simpanItemPermintaan'])->name('farmasi.resep-pulang.simpan-item');
 	Route::delete('/farmasi/resep-pulang/hapus-item', [ResepPulangController::class, 'hapusItemPermintaan'])->name('farmasi.resep-pulang.hapus-item');
+	Route::delete('/farmasi/resep-pulang/hapus-racikan', [ResepPulangController::class, 'hapusRacikanPermintaan'])->name('farmasi.resep-pulang.hapus-racikan');
+	Route::get('/farmasi/resep-pulang/etiket/{noPermintaan?}', [ResepPulangController::class, 'printEtiket'])->name('farmasi.resep-pulang.etiket');
+	Route::get('/farmasi/resep-pulang/etiket-items/{noPermintaan}', [ResepPulangController::class, 'getEtiketItems'])->name('farmasi.resep-pulang.etiket-items');
 
 	// Permintaan Resep Pulang dari Rawat Inap (Sesuai Khanza DlgPermintaanResepPulang)
 	Route::get('/resep-pulang/nomor', [ResepPulangController::class, 'getNomorPermintaan'])->name('resep-pulang.nomor');

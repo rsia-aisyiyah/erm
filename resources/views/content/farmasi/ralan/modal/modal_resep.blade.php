@@ -208,9 +208,12 @@
 
             <!-- Modal Footer -->
             <div class="modal-footer bg-white py-2 px-3 d-flex justify-content-between align-items-center">
-                <div>
+                <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-teal btn-sm text-white" id="btnModalTelaahRalan" style="background-color: #0f766e;">
                         <i class="bi bi-shield-check me-1"></i> Form Telaah Resep
+                    </button>
+                    <button type="button" class="btn btn-outline-primary btn-sm px-3 fw-semibold" id="btnModalEtiketRalan" onclick="bukaModalEtiket(currentNoResepRalan)" title="Cetak Etiket Aturan Pakai Obat">
+                        <i class="bi bi-printer me-1"></i> Cetak Etiket
                     </button>
                 </div>
                 <div class="d-flex gap-2">
@@ -502,6 +505,21 @@
             }
 
             // Bind Tombol Telaah
+            const isTelaahRalan = !!resep.telaah_farmasi;
+            if (isTelaahRalan) {
+                $('#btnModalTelaahRalan')
+                    .removeClass('btn-outline-danger')
+                    .addClass('text-white')
+                    .css('background-color', '#0f766e')
+                    .html('<i class="bi bi-shield-check me-1"></i> Telaah Farmasi <span class="badge bg-white text-dark ms-1" style="font-size:10px;">Sudah</span>');
+            } else {
+                $('#btnModalTelaahRalan')
+                    .removeClass('text-white')
+                    .css('background-color', '')
+                    .addClass('btn-outline-danger fw-semibold')
+                    .html('<i class="bi bi-shield-exclamation me-1"></i> Telaah Farmasi (Belum)');
+            }
+
             $('#btnModalTelaahRalan').off('click').on('click', function() {
                 bukaModalTelaahFarmasi(
                     resep.no_resep,
@@ -604,19 +622,31 @@
                 : `<span class="badge bg-danger rounded-pill font-monospace" style="font-size: 10.5px;" title="Stok depo kurang!">${item.stok_depo}</span>`;
 
             let aksiButtons = '';
+            const btnEtiketItem = `
+                <button type="button" class="btn btn-outline-primary btn-sm shadow-sm" style="padding: 4px 8px; font-size: 12px;" onclick="bukaModalEtiket(currentNoResepRalan, 'umum_${item.kode_brng}')" title="Cetak Etiket Item Ini">
+                    <i class="bi bi-printer"></i>
+                </button>
+            `;
+
             if (!currentIsValidatedRalan) {
                 aksiButtons = `
                     <div class="d-inline-flex gap-1 align-items-center">
-                        <button type="button" class="btn btn-outline-warning btn-sm text-dark shadow-sm" style="padding: 4px 10px; font-size: 13px;" onclick="bukaModalEditItem('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', ${item.jml}, '${(item.aturan_pakai || '').replace(/'/g, "\\'")}')" title="Ubah / Substitusi Obat">
+                        ${btnEtiketItem}
+                        <button type="button" class="btn btn-outline-warning btn-sm text-dark shadow-sm" style="padding: 4px 8px; font-size: 12px;" onclick="bukaModalEditItem('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', ${item.jml}, '${(item.aturan_pakai || '').replace(/'/g, "\\'")}')" title="Ubah / Substitusi Obat">
                             <i class="bi bi-pencil fs-6"></i>
                         </button>
-                        <button type="button" class="btn btn-outline-danger btn-sm shadow-sm" style="padding: 4px 10px; font-size: 13px;" onclick="hapusItemResep('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}')" title="Hapus Item Obat">
+                        <button type="button" class="btn btn-outline-danger btn-sm shadow-sm" style="padding: 4px 8px; font-size: 12px;" onclick="hapusItemResep('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}')" title="Hapus Item Obat">
                             <i class="bi bi-trash fs-6"></i>
                         </button>
                     </div>
                 `;
             } else {
-                aksiButtons = '<span class="badge bg-light text-muted border">Terkunci</span>';
+                aksiButtons = `
+                    <div class="d-inline-flex gap-1 align-items-center">
+                        ${btnEtiketItem}
+                        <span class="badge bg-light text-muted border">Terkunci</span>
+                    </div>
+                `;
             }
 
             const tr = `
@@ -702,22 +732,27 @@
                 rowsDetailHtml = `<tr><td colspan="12" class="text-center text-muted py-2 fst-italic">Belum ada bahan obat di racikan ini. Klik <strong>Tambah Obat</strong> untuk mengisi bahan racikan.</td></tr>`;
             }
 
-            let aksiHeaderBtn = '';
+            let aksiHeaderBtn = `
+                <div class="d-inline-flex gap-1 align-items-center">
+                    <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2.5 shadow-sm" onclick="bukaModalEtiket(currentNoResepRalan, 'racik_${r.no_racik}')" title="Cetak Etiket Racikan Ini">
+                        <i class="bi bi-printer me-1"></i> Etiket
+                    </button>
+            `;
+
             if (!currentIsValidatedRalan) {
-                aksiHeaderBtn = `
-                    <div class="d-inline-flex gap-1 align-items-center">
-                        <button type="button" class="btn btn-success btn-sm text-white shadow-sm py-1 px-2.5" onclick="bukaModalTambahItemRacikan(${r.no_racik}, '${r.nama_racik.replace(/'/g, "\\'")}')" title="Tambah Obat / Bahan ke racikan ini">
-                            <i class="bi bi-plus-lg me-1"></i> Tambah Obat
-                        </button>
-                        <button type="button" class="btn btn-outline-warning btn-sm text-dark shadow-sm py-1 px-2" onclick="bukaModalEditHeaderRacikan(${r.no_racik}, '${r.nama_racik.replace(/'/g, "\\'")}', '${r.kd_racik}', ${r.jml_dr}, '${(r.aturan_pakai || '').replace(/'/g, "\\'")}', '${(r.keterangan || '').replace(/'/g, "\\'")}')" title="Ubah Info Racikan">
-                            <i class="bi bi-pencil fs-6"></i>
-                        </button>
-                        <button type="button" class="btn btn-outline-danger btn-sm shadow-sm py-1 px-2" onclick="hapusRacikan(${r.no_racik}, '${r.nama_racik.replace(/'/g, "\\'")}')" title="Hapus Racikan ini">
-                            <i class="bi bi-trash fs-6"></i>
-                        </button>
-                    </div>
+                aksiHeaderBtn += `
+                    <button type="button" class="btn btn-success btn-sm text-white shadow-sm py-1 px-2.5" onclick="bukaModalTambahItemRacikan(${r.no_racik}, '${r.nama_racik.replace(/'/g, "\\'")}')" title="Tambah Obat / Bahan ke racikan ini">
+                        <i class="bi bi-plus-lg me-1"></i> Tambah Obat
+                    </button>
+                    <button type="button" class="btn btn-outline-warning btn-sm text-dark shadow-sm py-1 px-2" onclick="bukaModalEditHeaderRacikan(${r.no_racik}, '${r.nama_racik.replace(/'/g, "\\'")}', '${r.kd_racik}', ${r.jml_dr}, '${(r.aturan_pakai || '').replace(/'/g, "\\'")}', '${(r.keterangan || '').replace(/'/g, "\\'")}')" title="Ubah Info Racikan">
+                        <i class="bi bi-pencil fs-6"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm shadow-sm py-1 px-2" onclick="hapusRacikan(${r.no_racik}, '${r.nama_racik.replace(/'/g, "\\'")}')" title="Hapus Racikan ini">
+                        <i class="bi bi-trash fs-6"></i>
+                    </button>
                 `;
             }
+            aksiHeaderBtn += '</div>';
 
             const html = `
                 <div class="card border mb-3 shadow-sm bg-white">

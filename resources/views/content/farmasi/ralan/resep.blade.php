@@ -782,6 +782,7 @@
     @include('content.farmasi.modal.modal_substitusi_obat')
     @include('content.farmasi.ralan.modal.modal_resep_pulang_farmasi')
     @include('content.farmasi.modal.modal_validasi_retur_farmasi')
+    @include('content.farmasi.ralan.modal.modal_cetak_etiket')
 @endsection
 
 @push('script')
@@ -1827,7 +1828,12 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             const penjab = row.reg_periksa.kd_pj == 'A03' ? '<b><span class="text-danger">(UMUM)</span></b>' : '<b><span class="text-success">(BPJS)</span></b>';
-                            let html = `<span class="font-monospace fw-bold text-primary">${row.no_resep}</span><br/>`;
+                            const isTelaah = !!row.telaah_farmasi;
+                            const badgeTelaah = isTelaah
+                                ? '<span class="badge bg-success-subtle text-success border border-success-subtle ms-1" style="font-size: 10px;" title="Sudah Ditelaah Farmasi"><i class="bi bi-shield-check me-1"></i>Sudah Telaah</span>'
+                                : '<span class="badge bg-danger-subtle text-danger border border-danger-subtle ms-1" style="font-size: 10px;" title="Belum Ditelaah Farmasi"><i class="bi bi-shield-exclamation me-1"></i>Belum Telaah</span>';
+
+                            let html = `<span class="font-monospace fw-bold text-primary">${row.no_resep}</span> ${badgeTelaah}<br/>`;
                             html += `<h6 style="margin:0px">${row.reg_periksa.pasien.nm_pasien}</h6>`;
                             html += `${row.no_rawat}<br/>`;
                             html += `${row.reg_periksa.poliklinik.nm_poli} ${penjab}<br/>`;
@@ -1855,10 +1861,16 @@
                             let safeNoRawat = safeJsStr(row.no_rawat);
                             let safeKdPoli = safeJsStr(row.reg_periksa?.kd_poli);
 
-                            let html = `<button onclick="tampilResep('${safeNoResep}', '${safeKdPoli}')" class="btn btn-sm mb-2 status-${safeNoResep}" type="button" style="width:110px;display:inline" data-id="${safeNoRawat}"></button><br/>`;
-                            html += `<button onclick="bukaModalTelaahFarmasi('${safeNoResep}', '${safeNoRawat}', '${safeNmPasien}', '${safeNmPoli}')" class="btn btn-sm btn-outline-teal text-white mb-2" style="background-color: #0f766e; width:110px;" type="button"><i class="bi bi-shield-check"></i> TELAAH</button><br/>`;
-                            html += `<button onclick="panggilResep('${safeNoResep}', false, '${safeNmPasien}')" class="btn btn-sm btn-warning mb-2 panggil-${safeNoResep}" style="width:110px;display:none" type="button" data-id="${safeNoRawat}">PANGGIL</button><br/>`;
-                            html += `<button onclick="panggilResep('${safeNoResep}', true, '${safeNmPasien}')" class="btn btn-sm btn-success mb-2 selesai-${safeNoResep}" style="width:110px;display:none" type="button" data-id="${safeNoRawat}">SELESAI</button>`;
+                            const isTelaah = !!row.telaah_farmasi;
+                            const btnTelaah = isTelaah
+                                ? `<button onclick="bukaModalTelaahFarmasi('${safeNoResep}', '${safeNoRawat}', '${safeNmPasien}', '${safeNmPoli}')" class="btn btn-sm text-white mb-1" style="background-color: #0f766e; width:110px;" type="button" title="Sudah Ditelaah Farmasi (Klik untuk melihat/mengubah)"><i class="bi bi-shield-check me-1"></i> TELAAH <i class="bi bi-check-lg fw-bold"></i></button><br/>`
+                                : `<button onclick="bukaModalTelaahFarmasi('${safeNoResep}', '${safeNoRawat}', '${safeNmPasien}', '${safeNmPoli}')" class="btn btn-sm btn-outline-danger mb-1 fw-bold" style="width:110px;" type="button" title="Belum Ditelaah Farmasi (Klik untuk menelaah)"><i class="bi bi-shield-exclamation me-1"></i> BLM TELAAH</button><br/>`;
+
+                            let html = `<button onclick="tampilResep('${safeNoResep}', '${safeKdPoli}')" class="btn btn-sm mb-1 status-${safeNoResep}" type="button" style="width:110px;display:inline" data-id="${safeNoRawat}"></button><br/>`;
+                            html += btnTelaah;
+                            html += `<button onclick="bukaModalEtiket('${safeNoResep}')" class="btn btn-sm btn-outline-primary mb-1" style="width:110px;" type="button" title="Cetak Etiket Aturan Pakai Obat"><i class="bi bi-printer me-1"></i> ETIKET</button><br/>`;
+                            html += `<button onclick="panggilResep('${safeNoResep}', false, '${safeNmPasien}')" class="btn btn-sm btn-warning mb-1 panggil-${safeNoResep}" style="width:110px;display:none" type="button" data-id="${safeNoRawat}">PANGGIL</button><br/>`;
+                            html += `<button onclick="panggilResep('${safeNoResep}', true, '${safeNmPasien}')" class="btn btn-sm btn-success mb-1 selesai-${safeNoResep}" style="width:110px;display:none" type="button" data-id="${safeNoRawat}">SELESAI</button>`;
 
                             if (row.tgl_perawatan == '0000-00-00') {
                                 if (row.reg_periksa.status_bayar == 'Belum Bayar') {
@@ -2255,6 +2267,9 @@
                                     <button type="button" class="btn btn-sm text-white px-2.5 py-1 fw-semibold text-nowrap d-inline-flex align-items-center gap-1 rounded" style="background-color: #0f766e; font-size: 11.5px; height: 30px;" onclick="bukaModalTelaahFarmasi('${safeNoResep}', '${safeNoRawat}', '${safeNmPasien}', '${safeKamar}')" title="Telaah Resep Farmasi">
                                         <i class="bi bi-shield-check"></i> <span>TELAAH</span>
                                     </button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm px-2.5 py-1 fw-semibold text-nowrap d-inline-flex align-items-center gap-1 rounded" style="font-size: 11.5px; height: 30px;" onclick="bukaModalEtiket('${safeNoResep}')" title="Cetak Etiket Aturan Pakai Obat">
+                                        <i class="bi bi-printer"></i> <span>ETIKET</span>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -2322,7 +2337,7 @@
                         ? '<span class="badge bg-success-subtle text-success border border-success">BPJS</span>'
                         : '<span class="badge bg-danger-subtle text-danger border border-danger">UMUM</span>';
 
-                    const hasRacikan = (row.detail || []).some(d => (d.dosis || '').startsWith('[Racikan:'));
+                    const hasRacikan = (row.detail || []).some(d => (d.dosis || '').startsWith('[Racikan:')) || (row.racikan && row.racikan.length > 0);
                     const racikanBadge = hasRacikan 
                         ? '<span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-1" style="font-size: 10px;"><i class="bi bi-mortar-pestle me-1"></i>Ada Racikan</span>' 
                         : '';
@@ -2349,9 +2364,14 @@
                             <td class="align-middle"><small>${row.dokter?.nm_dokter || '-'}</small></td>
                             <td class="text-center align-middle">${statusBadge}</td>
                             <td class="text-center align-middle">
-                                <button type="button" class="btn ${btnClass} btn-sm px-2.5 py-1 fw-semibold text-nowrap d-inline-flex align-items-center gap-1 shadow-xs" onclick="bukaDetailResepPulangFarmasi('${safeNoPermintaan}')" title="Detail Item &amp; Validasi" style="font-size: 11.5px; height: 30px;">
-                                    <i class="bi bi-box-arrow-right"></i> <span>Detail &amp; Validasi</span>
-                                </button>
+                                <div class="d-flex justify-content-center gap-1">
+                                    <button type="button" class="btn ${btnClass} btn-sm px-2.5 py-1 fw-semibold text-nowrap d-inline-flex align-items-center gap-1 shadow-xs" onclick="bukaDetailResepPulangFarmasi('${safeNoPermintaan}')" title="Detail Item &amp; Validasi" style="font-size: 11.5px; height: 30px;">
+                                        <i class="bi bi-box-arrow-right"></i> <span>Detail &amp; Validasi</span>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm px-2.5 py-1 fw-semibold text-nowrap d-inline-flex align-items-center gap-1 shadow-xs" onclick="bukaModalCetakEtiketPulang('${safeNoPermintaan}')" title="Cetak Etiket Aturan Pakai Obat Pulang" style="font-size: 11.5px; height: 30px;">
+                                        <i class="bi bi-printer"></i> <span>Etiket</span>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     `;
@@ -2390,30 +2410,20 @@
                     });
                 }
 
-                renderTbodyResepPulangFarmasi(res.items || [], isValidated);
+                renderTbodyResepPulangFarmasi(res.items_non_racikan || res.items || [], res.items_racikan || [], isValidated, res);
                 initSelect2ObatPulang();
                 $('#modalDetailResepPulangFarmasi').modal('show');
             });
         }
 
-        function renderTbodyResepPulangFarmasi(items, isValidated) {
+        function renderTbodyResepPulangFarmasi(itemsNonRacik, itemsRacik, isValidated, res) {
             const $tbody = $('#tbodyDetailResepPulangFarmasi');
             $tbody.empty();
 
-            let grandTotal = 0;
-            let totalBiayaObat = 0;
-            let totalEmbalase = 0;
-            let totalTuslah = 0;
-
-            if (!items || items.length === 0) {
-                $tbody.html('<tr><td colspan="12" class="text-center text-muted py-3">Tidak ada obat pada permintaan resep pulang ini.</td></tr>');
+            if (!itemsNonRacik || itemsNonRacik.length === 0) {
+                $tbody.html('<tr><td colspan="12" class="text-center text-muted py-3">Tidak ada obat non-racikan pada permintaan ini.</td></tr>');
             } else {
-                items.forEach(function(item, idx) {
-                    grandTotal += (item.total || 0);
-                    totalBiayaObat += (item.biaya_obat || 0);
-                    totalEmbalase += (item.embalase || 0);
-                    totalTuslah += (item.tuslah || 0);
-
+                itemsNonRacik.forEach(function(item, idx) {
                     const safeKodeBrng = safeJsStr(item.kode_brng);
                     const stokClass = (item.stok_depo <= 0) ? 'text-danger fw-bold' : ((item.stok_depo < item.jml) ? 'text-warning fw-bold' : 'text-success fw-bold');
                     const aksiHtml = isValidated ? '' : `
@@ -2424,8 +2434,8 @@
                         </td>
                     `;
 
-                    const isRacikan = (item.dosis || '').startsWith('[Racikan:');
-                    const dosisHtml = isRacikan 
+                    const isRacikanLegacy = (item.dosis || '').startsWith('[Racikan:');
+                    const dosisHtml = isRacikanLegacy 
                         ? `<span class="badge bg-primary text-white me-1" style="font-size: 10px;"><i class="bi bi-mortar-pestle me-1"></i>Racikan</span><strong>${item.dosis}</strong>` 
                         : (item.dosis || '-');
 
@@ -2449,11 +2459,92 @@
                 });
             }
 
-            $('#fPulangCountItem').text(`${items.length} Item`);
-            $('#fPulangBiayaObatNetto').text(`Rp ${new Intl.NumberFormat('id-ID').format(totalBiayaObat)}`);
-            $('#fPulangTotalEmbalase').text(`Rp ${new Intl.NumberFormat('id-ID').format(totalEmbalase)}`);
-            $('#fPulangTotalTuslah').text(`Rp ${new Intl.NumberFormat('id-ID').format(totalTuslah)}`);
-            $('#fPulangGrandTotal').text(`Rp ${new Intl.NumberFormat('id-ID').format(grandTotal)}`);
+            // Render Section Racikan
+            const $racikanContainer = $('#fPulangRacikanContainer');
+            $racikanContainer.empty();
+
+            if (!itemsRacik || itemsRacik.length === 0) {
+                $racikanContainer.html('<div class="text-center text-muted py-2" style="font-size: 12px;"><i>Tidak ada obat racikan pada permintaan ini.</i></div>');
+            } else {
+                itemsRacik.forEach(function(r) {
+                    let bahanRows = '';
+                    (r.bahan || []).forEach(function(b, bIdx) {
+                        const stokBahanClass = (b.stok_depo <= 0) ? 'text-danger fw-bold' : ((b.stok_depo < b.jml) ? 'text-warning fw-bold' : 'text-success fw-bold');
+                        const p1p2 = (b.p1 && b.p2) ? `${b.p1}/${b.p2}` : '-';
+                        const kand = b.kandungan ? `${b.kandungan} mg` : '-';
+                        bahanRows += `
+                            <tr>
+                                <td class="text-center text-muted">${bIdx + 1}</td>
+                                <td class="font-monospace">${b.kode_brng}</td>
+                                <td><strong>${b.nama_brng}</strong></td>
+                                <td class="text-center">${p1p2}</td>
+                                <td class="text-center">${kand}</td>
+                                <td class="text-center fw-bold text-primary">${b.jml}</td>
+                                <td class="text-center">${b.satuan}</td>
+                                <td class="text-center ${stokBahanClass}">${b.stok_depo}</td>
+                                <td class="text-end font-monospace">Rp ${new Intl.NumberFormat('id-ID').format(b.harga)}</td>
+                                <td class="text-end font-monospace">Rp ${new Intl.NumberFormat('id-ID').format(b.embalase)}</td>
+                                <td class="text-end font-monospace">Rp ${new Intl.NumberFormat('id-ID').format(b.tuslah)}</td>
+                                <td class="text-end font-monospace fw-bold text-primary">Rp ${new Intl.NumberFormat('id-ID').format(b.total)}</td>
+                            </tr>
+                        `;
+                    });
+
+                    const btnHapusRacik = isValidated ? '' : `
+                        <button type="button" class="btn btn-outline-danger btn-sm py-0 px-2" onclick="hapusRacikanResepPulang(${r.no_racik})" title="Hapus Seluruh Racikan Ini">
+                            <i class="bi bi-trash me-1"></i> Hapus Racikan
+                        </button>
+                    `;
+
+                    const racikCard = `
+                        <div class="card border mb-2 shadow-xs rounded-2">
+                            <div class="card-header bg-light py-1.5 px-3 d-flex justify-content-between align-items-center flex-wrap gap-1">
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <span class="badge bg-primary px-2 py-1"><i class="bi bi-mortar-pestle me-1"></i>RACIKAN #${r.no_racik} (${r.kd_racik})</span>
+                                    <strong class="text-dark fs-6">${r.nama_racik}</strong>
+                                    <span class="badge bg-secondary">${r.jml_dr} ${r.kd_racik}</span>
+                                    <span class="text-muted ms-2"><i class="bi bi-clock-history me-1"></i>Aturan Pakai: <strong class="text-dark">${r.aturan_pakai}</strong></span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="font-monospace fw-bold text-primary" style="font-size: 12px;">Subtotal Racikan: Rp ${new Intl.NumberFormat('id-ID').format(r.subtotal)}</span>
+                                    ${btnHapusRacik}
+                                </div>
+                            </div>
+                            <div class="table-responsive p-0">
+                                <table class="table table-sm table-bordered align-middle mb-0" style="font-size: 11px;">
+                                    <thead class="table-light text-center">
+                                        <tr>
+                                            <th width="3%">#</th>
+                                            <th width="11%">Kode</th>
+                                            <th>Nama Bahan Obat</th>
+                                            <th width="7%">P1/P2</th>
+                                            <th width="9%">Kandungan</th>
+                                            <th width="8%">Total Diambil</th>
+                                            <th width="7%">Satuan</th>
+                                            <th width="8%">Stok Depo</th>
+                                            <th width="10%">Harga</th>
+                                            <th width="8%">Embalase</th>
+                                            <th width="8%">Tuslah</th>
+                                            <th width="11%">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${bahanRows}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                    $racikanContainer.append(racikCard);
+                });
+            }
+
+            $('#fPulangCountItem').text(`${(itemsNonRacik || []).length} Item`);
+            $('#fPulangCountRacikan').text(`${(itemsRacik || []).length} Racikan`);
+            $('#fPulangBiayaObatNetto').text(`Rp ${new Intl.NumberFormat('id-ID').format(res.biaya_obat_netto || 0)}`);
+            $('#fPulangTotalEmbalase').text(`Rp ${new Intl.NumberFormat('id-ID').format(res.total_embalase || 0)}`);
+            $('#fPulangTotalTuslah').text(`Rp ${new Intl.NumberFormat('id-ID').format(res.total_tuslah || 0)}`);
+            $('#fPulangGrandTotal').text(`Rp ${new Intl.NumberFormat('id-ID').format(res.grand_total || 0)}`);
         }
 
         function initSelect2ObatPulang() {
@@ -2542,6 +2633,36 @@
                         },
                         error: function(xhr) {
                             Swal.fire('Gagal', xhr.responseJSON?.message || 'Gagal menghapus item obat', 'error');
+                        }
+                    });
+                }
+            });
+        }
+
+        function hapusRacikanResepPulang(noRacik) {
+            Swal.fire({
+                title: 'Hapus Racikan?',
+                text: 'Hapus seluruh racikan ini dari permintaan resep pulang?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Ya, Hapus Racikan',
+                cancelButtonText: 'Batal'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('farmasi.resep-pulang.hapus-racikan') }}",
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_permintaan: currentNoPermintaanPulang,
+                            no_racik: noRacik
+                        },
+                        success: function() {
+                            bukaDetailResepPulangFarmasi(currentNoPermintaanPulang);
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Gagal', xhr.responseJSON?.message || 'Gagal menghapus racikan', 'error');
                         }
                     });
                 }

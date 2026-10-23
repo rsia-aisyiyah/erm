@@ -436,8 +436,20 @@
                 Swal.fire('Berhasil!', resp.message || 'Hasil telaah farmasi berhasil disimpan.', 'success');
                 $('#modalTelaahFarmasi').modal('hide');
                 // Trigger refresh tabel jika ada
+                if (typeof tbResep === 'function' && $.fn.DataTable.isDataTable('#tb_resep')) {
+                    $('#tb_resep').DataTable().ajax.reload(null, false);
+                }
+                if (typeof loadDataDetailResepRalan === 'function' && $('#modalResepObat').hasClass('show') && typeof currentNoResepRalan !== 'undefined' && currentNoResepRalan) {
+                    loadDataDetailResepRalan(currentNoResepRalan);
+                }
+                if (typeof loadResepRanapFarmasi === 'function') {
+                    loadResepRanapFarmasi();
+                }
                 if (typeof loadPermintaanRanapFarmasi === 'function') {
                     loadPermintaanRanapFarmasi();
+                }
+                if (typeof loadPermintaanResepPulang === 'function') {
+                    loadPermintaanResepPulang();
                 }
                 if (typeof loadRiwayatPermintaanPasien === 'function') {
                     loadRiwayatPermintaanPasien();

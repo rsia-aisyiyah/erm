@@ -172,7 +172,7 @@ class ResepObatController extends Controller
                   ->orWhere('tgl_penyerahan', date('Y-m-d', strtotime($request->tgl_penyerahan)));
             })
             ->where('status', 'ralan')
-            ->with('regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis')
+            ->with(['regPeriksa.pasien', 'regPeriksa.poliklinik', 'regPeriksa.dokter.spesialis', 'telaahFarmasi'])
             ->orderBy('jam_peresepan', 'DESC');
 
         return DataTables::of($resepObat)
@@ -1079,5 +1079,369 @@ class ResepObatController extends Controller
                 'message' => 'Gagal memvalidasi resep: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function getEtiketItems($no_resep)
+    {
+        $resep = $this->resepObat->where('no_resep', $no_resep)
+            ->with([
+                'regPeriksa.pasien',
+                'regPeriksa.poliklinik',
+                'regPeriksa.dokter',
+                'dokter',
+                'resepDokter.dataBarang.kodeSatuan',
+                'resepRacikan.metode',
+            ])->first();
+
+        if (!$resep) {
+            return response()->json(['message' => 'Resep tidak ditemukan'], 404);
+        }
+
+        $itemsUmum = [];
+        if ($resep->resepDokter && count($resep->resepDokter) > 0) {
+            foreach ($resep->resepDokter as $rd) {
+                $itemsUmum[] = [
+                    'kode' => $rd->kode_brng,
+                    'nama' => $rd->dataBarang->nama_brng ?? $rd->kode_brng,
+                    'satuan' => $rd->dataBarang->kodeSatuan->satuan ?? ($rd->dataBarang->kode_sat ?? 'TAB'),
+                    'jml' => (float)$rd->jml,
+                    'aturan_pakai' => $rd->aturan_pakai ?? '',
+                ];
+            }
+        } else {
+            // Fallback ke detail_pemberian_obat & aturan_pakai jika resep sudah divalidasi
+            $pemberian = DB::table('detail_pemberian_obat')
+                ->join('databarang', 'detail_pemberian_obat.kode_brng', '=', 'databarang.kode_brng')
+                ->leftJoin('kodesatuan', 'databarang.kode_sat', '=', 'kodesatuan.kode_sat')
+                ->leftJoin('aturan_pakai', function ($join) use ($resep) {
+                    $join->on('detail_pemberian_obat.kode_brng', '=', 'aturan_pakai.kode_brng')
+                        ->where('aturan_pakai.no_rawat', '=', $resep->no_rawat)
+                        ->where('aturan_pakai.tgl_perawatan', '=', $resep->tgl_perawatan)
+                        ->where('aturan_pakai.jam', '=', $resep->jam);
+                })
+                ->where('detail_pemberian_obat.no_rawat', $resep->no_rawat)
+                ->where('detail_pemberian_obat.tgl_perawatan', $resep->tgl_perawatan)
+                ->where('detail_pemberian_obat.jam', $resep->jam)
+                ->whereNotIn('detail_pemberian_obat.kode_brng', function ($q) use ($resep) {
+                    $q->select('kode_brng')->from('detail_obat_racikan')
+                        ->where('no_rawat', $resep->no_rawat)
+                        ->where('tgl_perawatan', $resep->tgl_perawatan)
+                        ->where('jam', $resep->jam);
+                })
+                ->select(
+                    'detail_pemberian_obat.kode_brng',
+                    'databarang.nama_brng',
+                    'kodesatuan.satuan',
+                    'detail_pemberian_obat.jml',
+                    'aturan_pakai.aturan as aturan_pakai'
+                )->get();
+
+            foreach ($pemberian as $pb) {
+                $itemsUmum[] = [
+                    'kode' => $pb->kode_brng,
+                    'nama' => $pb->nama_brng,
+                    'satuan' => $pb->satuan ?? 'TAB',
+                    'jml' => (float)$pb->jml,
+                    'aturan_pakai' => $pb->aturan_pakai ?? '',
+                ];
+            }
+        }
+
+        $itemsRacik = [];
+        if ($resep->resepRacikan && count($resep->resepRacikan) > 0) {
+            foreach ($resep->resepRacikan as $rr) {
+                $itemsRacik[] = [
+                    'kode' => $rr->no_racik,
+                    'nama' => ($rr->metode->nm_racik ?? 'Racik') . ' ' . $rr->nama_racik,
+                    'satuan' => $rr->metode->nm_racik ?? 'Bungkus',
+                    'jml' => (float)$rr->jml_dr,
+                    'aturan_pakai' => $rr->aturan_pakai ?? '',
+                ];
+            }
+        } else {
+            // Fallback ke obat_racikan jika resep sudah divalidasi
+            $racikanVal = DB::table('obat_racikan')
+                ->leftJoin('metode_racik', 'obat_racikan.kd_racik', '=', 'metode_racik.kd_racik')
+                ->where('no_rawat', $resep->no_rawat)
+                ->where('tgl_perawatan', $resep->tgl_perawatan)
+                ->where('jam', $resep->jam)
+                ->select(
+                    'obat_racikan.no_racik',
+                    'obat_racikan.nama_racik',
+                    'obat_racikan.jml_dr',
+                    'obat_racikan.aturan_pakai',
+                    'metode_racik.nm_racik'
+                )->get();
+
+            foreach ($racikanVal as $rv) {
+                $itemsRacik[] = [
+                    'kode' => $rv->no_racik,
+                    'nama' => ($rv->nm_racik ?? 'Racik') . ' ' . $rv->nama_racik,
+                    'satuan' => $rv->nm_racik ?? 'Bungkus',
+                    'jml' => (float)$rv->jml_dr,
+                    'aturan_pakai' => $rv->aturan_pakai ?? '',
+                ];
+            }
+        }
+
+        return response()->json([
+            'no_resep' => $resep->no_resep,
+            'pasien' => $resep->regPeriksa->pasien ?? null,
+            'dokter' => $resep->dokter->nm_dokter ?? ($resep->regPeriksa->dokter->nm_dokter ?? '-'),
+            'poli' => $resep->regPeriksa->poliklinik->nm_poli ?? ($resep->status === 'ranap' ? 'Rawat Inap' : 'Rawat Jalan'),
+            'items_umum' => $itemsUmum,
+            'items_racik' => $itemsRacik,
+        ]);
+    }
+
+    public function printEtiket(Request $request, $no_resep = null)
+    {
+        $no_resep = $no_resep ?: $request->no_resep;
+        if (!$no_resep) {
+            abort(404, 'Nomor Resep tidak ditemukan');
+        }
+
+        $ukuran = $request->ukuran ?: '6.5x4';
+        $itemType = $request->item_type; // 'all', 'umum', 'racik'
+        $itemKey = $request->item_key;
+
+        $resep = $this->resepObat->where('no_resep', $no_resep)
+            ->with([
+                'regPeriksa.pasien',
+                'regPeriksa.poliklinik',
+                'regPeriksa.dokter',
+                'regPeriksa.kamarInap' => function ($q) {
+                    $q->with('kamar.bangsal')->orderBy('tgl_masuk', 'desc')->orderBy('jam_masuk', 'desc');
+                },
+                'dokter',
+                'resepDokter.dataBarang.kodeSatuan',
+                'resepDokter.dataBarang.jenis',
+                'resepRacikan.metode',
+                'telaahFarmasi',
+            ])->first();
+
+        if (!$resep) {
+            abort(404, 'Data resep tidak ditemukan');
+        }
+
+        $setting = DB::table('setting')->first();
+        $logoFile = public_path('img/LOGO RSIA .png');
+        if (file_exists($logoFile)) {
+            $logoBase64 = base64_encode(file_get_contents($logoFile));
+        } else {
+            $logoBase64 = ($setting && !empty($setting->logo)) ? base64_encode($setting->logo) : null;
+        }
+
+        $tglResep = (!empty($resep->tgl_peresepan) && $resep->tgl_peresepan !== '0000-00-00')
+            ? date('d/m/Y', strtotime($resep->tgl_peresepan))
+            : date('d/m/Y', strtotime($resep->tgl_perawatan ?: date('Y-m-d')));
+
+        $jamResep = (!empty($resep->jam_peresepan) && $resep->jam_peresepan !== '00:00:00')
+            ? substr($resep->jam_peresepan, 0, 8)
+            : substr($resep->jam && $resep->jam !== '00:00:00' ? $resep->jam : date('H:i:s'), 0, 8);
+
+        $kamarDisplay = '-';
+        if ($resep->status === 'ranap' && $resep->regPeriksa && $resep->regPeriksa->kamarInap) {
+            $currentKamar = is_iterable($resep->regPeriksa->kamarInap)
+                ? ($resep->regPeriksa->kamarInap->filter(fn($k) => $k->stts_pulang != 'Pindah Kamar')->first() ?? $resep->regPeriksa->kamarInap->first())
+                : $resep->regPeriksa->kamarInap;
+            if ($currentKamar && $currentKamar->kamar) {
+                $bangsal = $currentKamar->kamar->bangsal->nm_bangsal ?? '';
+                $kdKamar = $currentKamar->kd_kamar ?? '';
+                $kamarDisplay = $bangsal ? "{$bangsal} ({$kdKamar})" : $kdKamar;
+            }
+        }
+
+        $items = [];
+
+        // 1. Obat Non-Racik (resep_dokter)
+        if (!$itemType || $itemType === 'all' || $itemType === 'umum') {
+            if ($resep->resepDokter && count($resep->resepDokter) > 0) {
+                foreach ($resep->resepDokter as $rd) {
+                    if ($itemKey && $itemType === 'umum' && $rd->kode_brng != $itemKey) {
+                        continue;
+                    }
+                    $items[] = [
+                        'tipe' => 'umum',
+                        'kode' => $rd->kode_brng,
+                        'nama' => $rd->dataBarang->nama_brng ?? $rd->kode_brng,
+                        'satuan' => $rd->dataBarang->kodeSatuan->satuan ?? ($rd->dataBarang->kode_sat ?? 'TAB'),
+                        'jml' => (float)$rd->jml,
+                        'aturan_pakai' => $rd->aturan_pakai ?: 'Sesuai Petunjuk Dokter',
+                        'jenis' => $rd->dataBarang->jenis->nama ?? '',
+                        'keterangan' => '',
+                        'detail_racik' => [],
+                    ];
+                }
+            } else {
+                // Fallback jika sudah masuk detail_pemberian_obat & aturan_pakai
+                $pemberian = DB::table('detail_pemberian_obat')
+                    ->join('databarang', 'detail_pemberian_obat.kode_brng', '=', 'databarang.kode_brng')
+                    ->leftJoin('kodesatuan', 'databarang.kode_sat', '=', 'kodesatuan.kode_sat')
+                    ->leftJoin('jenis', 'databarang.kdjns', '=', 'jenis.kdjns')
+                    ->leftJoin('aturan_pakai', function ($join) use ($resep) {
+                        $join->on('detail_pemberian_obat.kode_brng', '=', 'aturan_pakai.kode_brng')
+                            ->where('aturan_pakai.no_rawat', '=', $resep->no_rawat)
+                            ->where('aturan_pakai.tgl_perawatan', '=', $resep->tgl_perawatan)
+                            ->where('aturan_pakai.jam', '=', $resep->jam);
+                    })
+                    ->where('detail_pemberian_obat.no_rawat', $resep->no_rawat)
+                    ->where('detail_pemberian_obat.tgl_perawatan', $resep->tgl_perawatan)
+                    ->where('detail_pemberian_obat.jam', $resep->jam)
+                    ->whereNotIn('detail_pemberian_obat.kode_brng', function ($q) use ($resep) {
+                        $q->select('kode_brng')->from('detail_obat_racikan')
+                            ->where('no_rawat', $resep->no_rawat)
+                            ->where('tgl_perawatan', $resep->tgl_perawatan)
+                            ->where('jam', $resep->jam);
+                    })
+                    ->select(
+                        'detail_pemberian_obat.kode_brng',
+                        'databarang.nama_brng',
+                        'kodesatuan.satuan',
+                        'jenis.nama as nama_jenis',
+                        'detail_pemberian_obat.jml',
+                        'aturan_pakai.aturan as aturan_pakai'
+                    )->get();
+
+                foreach ($pemberian as $pb) {
+                    if ($itemKey && $itemType === 'umum' && $pb->kode_brng != $itemKey) {
+                        continue;
+                    }
+                    $items[] = [
+                        'tipe' => 'umum',
+                        'kode' => $pb->kode_brng,
+                        'nama' => $pb->nama_brng,
+                        'satuan' => $pb->satuan ?? 'TAB',
+                        'jml' => (float)$pb->jml,
+                        'aturan_pakai' => $pb->aturan_pakai ?: 'Sesuai Petunjuk Dokter',
+                        'jenis' => $pb->nama_jenis ?? '',
+                        'keterangan' => '',
+                        'detail_racik' => [],
+                    ];
+                }
+            }
+        }
+
+        // 2. Obat Racikan (resep_dokter_racikan)
+        if (!$itemType || $itemType === 'all' || $itemType === 'racik') {
+            if ($resep->resepRacikan && count($resep->resepRacikan) > 0) {
+                foreach ($resep->resepRacikan as $rr) {
+                    if ($itemKey && $itemType === 'racik' && $rr->no_racik != $itemKey) {
+                        continue;
+                    }
+
+                    $detailList = [];
+                    $details = ResepDokterRacikanDetail::where('no_resep', $no_resep)
+                        ->where('no_racik', $rr->no_racik)
+                        ->with('dataBarang')
+                        ->get();
+
+                    foreach ($details as $dtl) {
+                        $nmObat = $dtl->dataBarang->nama_brng ?? $dtl->kode_brng;
+                        $detailList[] = $nmObat;
+                    }
+
+                    $items[] = [
+                        'tipe' => 'racik',
+                        'kode' => $rr->no_racik,
+                        'nama' => ($rr->metode->nm_racik ?? 'Racikan') . ' ' . $rr->nama_racik,
+                        'satuan' => $rr->metode->nm_racik ?? 'Bungkus',
+                        'jml' => (float)$rr->jml_dr,
+                        'aturan_pakai' => $rr->aturan_pakai ?: 'Sesuai Petunjuk Dokter',
+                        'jenis' => '',
+                        'keterangan' => $rr->keterangan ?: '',
+                        'detail_racik' => $detailList,
+                    ];
+                }
+            } else {
+                // Fallback jika sudah masuk obat_racikan
+                $racikans = DB::table('obat_racikan')
+                    ->leftJoin('metode_racik', 'obat_racikan.kd_racik', '=', 'metode_racik.kd_racik')
+                    ->where('no_rawat', $resep->no_rawat)
+                    ->where('tgl_perawatan', $resep->tgl_perawatan)
+                    ->where('jam', $resep->jam)
+                    ->select(
+                        'obat_racikan.no_racik',
+                        'obat_racikan.nama_racik',
+                        'obat_racikan.jml_dr',
+                        'obat_racikan.aturan_pakai',
+                        'obat_racikan.keterangan',
+                        'metode_racik.nm_racik'
+                    )->get();
+
+                foreach ($racikans as $rv) {
+                    if ($itemKey && $itemType === 'racik' && $rv->no_racik != $itemKey) {
+                        continue;
+                    }
+
+                    $detailObat = DB::table('detail_obat_racikan')
+                        ->join('databarang', 'detail_obat_racikan.kode_brng', '=', 'databarang.kode_brng')
+                        ->where('detail_obat_racikan.no_rawat', $resep->no_rawat)
+                        ->where('detail_obat_racikan.tgl_perawatan', $resep->tgl_perawatan)
+                        ->where('detail_obat_racikan.jam', $resep->jam)
+                        ->where('detail_obat_racikan.no_racik', $rv->no_racik)
+                        ->pluck('databarang.nama_brng')
+                        ->toArray();
+
+                    $items[] = [
+                        'tipe' => 'racik',
+                        'kode' => $rv->no_racik,
+                        'nama' => ($rv->nm_racik ?? 'Racikan') . ' ' . $rv->nama_racik,
+                        'satuan' => $rv->nm_racik ?? 'Bungkus',
+                        'jml' => (float)$rv->jml_dr,
+                        'aturan_pakai' => $rv->aturan_pakai ?: 'Sesuai Petunjuk Dokter',
+                        'jenis' => '',
+                        'keterangan' => $rv->keterangan ?: '',
+                        'detail_racik' => $detailObat,
+                    ];
+                }
+            }
+        }
+
+        if (empty($items)) {
+            $items[] = [
+                'tipe' => 'umum',
+                'kode' => '-',
+                'nama' => 'Tidak Ada Obat',
+                'satuan' => '-',
+                'jml' => 0,
+                'aturan_pakai' => '-',
+                'jenis' => '',
+                'keterangan' => '',
+                'detail_racik' => [],
+            ];
+        }
+
+        // Ukuran stiker dalam satuan points (1 cm = 28.3465 pt)
+        $dimensions = [
+            '6.5x4' => [184.25, 113.39], // Default SIMRS Khanza Model 1 & 2 (184pt x 113pt)
+            '8x5'   => [226.77, 141.73], // 8 x 5 cm
+            '7x5'   => [198.43, 141.73], // 7 x 5 cm
+            '8x6'   => [226.77, 170.08], // 8 x 6 cm
+            '5x3'   => [141.73, 85.04],  // 5 x 3 cm
+            '5x5.8' => [144.00, 165.00], // SIMRS Khanza Model 3 Portrait (144pt x 165pt)
+        ];
+
+        $paperSize = $dimensions[$ukuran] ?? $dimensions['6.5x4'];
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('content.print.etiket_obat', [
+            'resep' => $resep,
+            'items' => $items,
+            'setting' => $setting,
+            'ukuran' => $ukuran,
+            'paperSize' => $paperSize,
+            'logoBase64' => $logoBase64,
+            'tglResep' => $tglResep,
+            'jamResep' => $jamResep,
+            'kamarDisplay' => $kamarDisplay,
+        ])
+        ->setPaper([0, 0, $paperSize[0], $paperSize[1]])
+        ->setOptions([
+            'defaultFont' => 'Helvetica',
+            'isRemoteEnabled' => true,
+            'isHtml5ParserEnabled' => true,
+        ]);
+
+        return $pdf->stream("etiket-{$no_resep}-{$ukuran}.pdf");
     }
 }

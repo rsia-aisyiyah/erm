@@ -1113,24 +1113,27 @@
             return;
         }
 
-        // Flatten data agar sesuai tabel detail_permintaan_resep_pulang SIMRS Khanza
-        let itemsToSend = [];
+        // Pisahkan item non-racikan dan item racikan terstruktur
+        let itemsNonRacik = [];
+        let itemsRacik = [];
+
         draftResepPulangItems.forEach(item => {
             if (item.type === 'racikan') {
-                item.bahan.forEach(b => {
-                    let detBahan = [];
-                    if (b.p1 && b.p2) detBahan.push(`P:${b.p1}/${b.p2}`);
-                    if (b.kandungan > 0) detBahan.push(`${b.kandungan}mg`);
-                    const detStr = detBahan.length > 0 ? ` [${detBahan.join(' ')}]` : '';
-                    const dosisRacik = `[Racikan: ${item.nama_racik} (${item.jml_kemasan} ${item.metode})] ${item.aturan_pakai}${detStr}`;
-                    itemsToSend.push({
+                itemsRacik.push({
+                    nama_racik: item.nama_racik,
+                    metode: item.metode,
+                    jml_kemasan: item.jml_kemasan,
+                    aturan_pakai: item.aturan_pakai,
+                    bahan: item.bahan.map(b => ({
                         kode_brng: b.kode_brng,
-                        jml: b.jml,
-                        dosis: dosisRacik
-                    });
+                        p1: b.p1 || 1,
+                        p2: b.p2 || 1,
+                        kandungan: b.kandungan || 0,
+                        jml: b.jml
+                    }))
                 });
             } else {
-                itemsToSend.push({
+                itemsNonRacik.push({
                     kode_brng: item.kode_brng,
                     jml: item.jml,
                     dosis: item.dosis
@@ -1150,7 +1153,8 @@
                 kd_dokter: kd_dokter,
                 tgl_permintaan: tgl_permintaan,
                 jam: jam,
-                items: itemsToSend
+                items_non_racikan: itemsNonRacik,
+                items_racikan: itemsRacik
             },
             success: function(res) {
                 $btn.prop('disabled', false).html('<i class="bi bi-save me-1"></i> Simpan Permintaan');
@@ -1210,11 +1214,16 @@
                 if (item.detail && item.detail.length > 0) {
                     item.detail.forEach(function(d) {
                         const sat = d.barang?.kode_satuan?.satuan || d.barang?.kode_sat || '';
-                        const isRacikan = (d.dosis || '').startsWith('[Racikan:');
-                        const racikBadge = isRacikan ? '<span class="badge bg-primary text-white me-1" style="font-size: 9.5px;">Racikan</span>' : '';
-                        rincianHtml += `<li>${racikBadge}<strong>${d.barang?.nama_brng || d.kode_brng}</strong> (${d.jml} ${sat}) - <i>${d.dosis || '-'}</i></li>`;
+                        rincianHtml += `<li><strong>${d.barang?.nama_brng || d.kode_brng}</strong> (${d.jml} ${sat}) - <i>${d.dosis || '-'}</i></li>`;
                     });
-                } else {
+                }
+                if (item.racikan && item.racikan.length > 0) {
+                    item.racikan.forEach(function(r) {
+                        let bahanNames = (r.detail || []).map(b => `${b.barang?.nama_brng || b.kode_brng} (${b.jml})`).join(', ');
+                        rincianHtml += `<li><span class="badge bg-primary text-white me-1" style="font-size: 9.5px;">Racikan (${r.kd_racik})</span> <strong>${r.nama_racik}</strong> (${r.jml_dr} ${r.kd_racik}) - <i>${r.aturan_pakai}</i><br><small class="text-muted ps-2">&bull; Komposisi: ${bahanNames}</small></li>`;
+                    });
+                }
+                if ((!item.detail || item.detail.length === 0) && (!item.racikan || item.racikan.length === 0)) {
                     rincianHtml += '<li>-</li>';
                 }
                 rincianHtml += '</ul>';

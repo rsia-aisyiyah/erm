@@ -21,6 +21,11 @@ class PermintaanResepPulang extends Model
         return $this->hasMany(DetailPermintaanResepPulang::class, 'no_permintaan', 'no_permintaan');
     }
 
+    public function racikan()
+    {
+        return $this->hasMany(PermintaanResepPulangRacikan::class, 'no_permintaan', 'no_permintaan');
+    }
+
     public function regPeriksa()
     {
         return $this->belongsTo(RegPeriksa::class, 'no_rawat', 'no_rawat');
