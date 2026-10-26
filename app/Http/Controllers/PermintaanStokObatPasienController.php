@@ -437,13 +437,29 @@ class PermintaanStokObatPasienController extends Controller
             return response()->json(['message' => 'Item obat asal tidak ditemukan pada permintaan ini'], 404);
         }
 
+        if ($request->kode_brng_lama !== $request->kode_brng_baru) {
+            $isExist = DB::table('detail_permintaan_stok_obat_pasien')
+                ->where('no_permintaan', $request->no_permintaan)
+                ->where('kode_brng', $request->kode_brng_baru)
+                ->exists();
+
+            if ($isExist) {
+                return response()->json([
+                    'message' => 'Obat pengganti sudah ada dalam daftar permintaan ini. Silakan sesuaikan jumlah obat yang sudah ada.'
+                ], 422);
+            }
+        }
+
         DB::beginTransaction();
         try {
-            $detail->update([
-                'kode_brng' => $request->kode_brng_baru,
-                'jml' => $request->filled('jml') ? (float)$request->jml : $detail->jml,
-                'aturan_pakai' => $request->filled('aturan_pakai') ? $request->aturan_pakai : $detail->aturan_pakai,
-            ]);
+            DB::table('detail_permintaan_stok_obat_pasien')
+                ->where('no_permintaan', $request->no_permintaan)
+                ->where('kode_brng', $request->kode_brng_lama)
+                ->update([
+                    'kode_brng' => $request->kode_brng_baru,
+                    'jml' => $request->filled('jml') ? (float)$request->jml : $detail->jml,
+                    'aturan_pakai' => $request->filled('aturan_pakai') ? $request->aturan_pakai : $detail->aturan_pakai,
+                ]);
 
             DB::commit();
 
@@ -490,6 +506,7 @@ class PermintaanStokObatPasienController extends Controller
                     'no_faktur' => $item->no_faktur,
                     'kd_bangsal' => $item->kd_bangsal,
                     'aturan_pakai' => $item->aturan_pakai,
+                    'first_udd_date' => $item->tanggal,
                     'total_masuk' => 0,
                     'masuk_hari_ini' => 0,
                     'total_diberikan' => 0,
@@ -503,6 +520,10 @@ class PermintaanStokObatPasienController extends Controller
                     $jamCol = 'jam' . sprintf('%02d', $i);
                     $grouped[$key]['jadwal_jam'][$jamCol] = false;
                 }
+            }
+
+            if ($item->tanggal < $grouped[$key]['first_udd_date']) {
+                $grouped[$key]['first_udd_date'] = $item->tanggal;
             }
 
             $grouped[$key]['total_masuk'] += (float) $item->jumlah;
@@ -519,14 +540,19 @@ class PermintaanStokObatPasienController extends Controller
             }
         }
 
-        // Hitung total pengeluaran obat dari detail_pemberian_obat (Status Ranap)
+        // Hitung total pengeluaran obat dari detail_pemberian_obat (Status Ranap) sejak obat masuk alur UDD
         foreach ($grouped as $key => &$val) {
-            $pemberianTotal = DetailPemberianObat::where('no_rawat', $noRawat)
+            $pemberianQuery = DetailPemberianObat::where('no_rawat', $noRawat)
                 ->where('kode_brng', $val['kode_brng'])
                 ->where('no_batch', $val['no_batch'])
                 ->where('no_faktur', $val['no_faktur'])
-                ->where('status', 'Ranap')
-                ->sum('jml');
+                ->where('status', 'Ranap');
+
+            if (!empty($val['first_udd_date'])) {
+                $pemberianQuery->where('tgl_perawatan', '>=', $val['first_udd_date']);
+            }
+
+            $pemberianTotal = $pemberianQuery->sum('jml');
 
             $val['total_diberikan'] = (float) $pemberianTotal;
             $val['sisa_stok'] = max(0, $val['total_masuk'] - $val['total_diberikan']);
@@ -587,19 +613,30 @@ class PermintaanStokObatPasienController extends Controller
 
         $satuan = $barang->kodeSatuan->satuan ?? 'satuan';
 
-        // Validasi ketersediaan stok obat pasien (UDD)
+        // Validasi ketersediaan stok obat pasien (UDD) - hanya hitung pengeluaran sejak obat masuk alur UDD
+        $firstUddDate = StokObatPasien::where('no_rawat', $noRawat)
+            ->where('kode_brng', $kodeBrng)
+            ->where('no_batch', $noBatch)
+            ->where('no_faktur', $noFaktur)
+            ->min('tanggal');
+
         $totalMasuk = (float) StokObatPasien::where('no_rawat', $noRawat)
             ->where('kode_brng', $kodeBrng)
             ->where('no_batch', $noBatch)
             ->where('no_faktur', $noFaktur)
             ->sum('jumlah');
 
-        $totalKeluar = (float) DetailPemberianObat::where('no_rawat', $noRawat)
+        $totalKeluarQuery = DetailPemberianObat::where('no_rawat', $noRawat)
             ->where('kode_brng', $kodeBrng)
             ->where('no_batch', $noBatch)
             ->where('no_faktur', $noFaktur)
-            ->where('status', 'Ranap')
-            ->sum('jml');
+            ->where('status', 'Ranap');
+
+        if ($firstUddDate) {
+            $totalKeluarQuery->where('tgl_perawatan', '>=', $firstUddDate);
+        }
+
+        $totalKeluar = (float) $totalKeluarQuery->sum('jml');
 
         $sisaStok = $totalMasuk - $totalKeluar;
 

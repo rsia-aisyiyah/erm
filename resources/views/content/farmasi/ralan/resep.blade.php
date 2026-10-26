@@ -196,6 +196,12 @@
                 <span class="badge bg-danger rounded-pill ms-1" id="badgeCountReturTunggu">0</span>
             </button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link py-2 fw-semibold" id="tab-farmasi-retur-udd-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-retur-udd" type="button" role="tab" style="font-size: 13px;">
+                <i class="bi bi-box-arrow-in-down-left me-1"></i> 6. Retur Sisa UDD
+                <span class="badge bg-danger rounded-pill ms-1" id="badgeCountReturUddTunggu">0</span>
+            </button>
+        </li>
     </ul>
 
     <div class="tab-content" id="pills-farmasi-tabContent">
@@ -693,6 +699,116 @@
             </div>
         </div>
 
+        <!-- TAB 6: RETUR SISA STOK OBAT UDD (LOGISTIK RAWAT INAP) -->
+        <div class="tab-pane fade" id="tab-farmasi-retur-udd" role="tabpanel">
+            <div class="row gy-2">
+                <!-- Counter Badges Retur UDD -->
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-3">
+                            <div class="row g-2 text-center">
+                                <div class="col-md-3 col-6">
+                                    <div class="p-2 border rounded-3 bg-light">
+                                        <small class="text-muted d-block" style="font-size: 11px;">TOTAL PENGEMBALIAN UDD</small>
+                                        <span class="fs-5 fw-bold text-primary font-monospace" id="count-retur-udd-total">0</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="p-2 border rounded-3 bg-warning-subtle border-warning">
+                                        <small class="text-warning-emphasis d-block fw-semibold" style="font-size: 11px;">MENUNGGU DITERIMA</small>
+                                        <span class="fs-5 fw-bold text-warning-emphasis font-monospace" id="count-retur-udd-menunggu">0</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="p-2 border rounded-3 bg-success-subtle border-success">
+                                        <small class="text-success-emphasis d-block fw-semibold" style="font-size: 11px;">SUDAH DITERIMA (STOK BERTAMBAH)</small>
+                                        <span class="fs-5 fw-bold text-success font-monospace" id="count-retur-udd-diterima">0</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="p-2 border rounded-3 bg-light">
+                                        <small class="text-muted d-block fw-semibold" style="font-size: 11px;">DITOLAK / BATAL</small>
+                                        <span class="fs-5 fw-bold text-secondary font-monospace" id="count-retur-udd-ditolak">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Controls Retur UDD -->
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-2.5">
+                            <div class="row g-2 align-items-end">
+                                <div class="col-md-2 col-6">
+                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Awal</label>
+                                    <input type="text" class="form-control form-control-sm" id="farmasi_retur_udd_tgl_awal" value="{{ date('d-m-Y') }}" autocomplete="off">
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Akhir</label>
+                                    <input type="text" class="form-control form-control-sm" id="farmasi_retur_udd_tgl_akhir" value="{{ date('d-m-Y') }}" autocomplete="off">
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Status Retur</label>
+                                    <select class="form-select form-select-sm" id="farmasi_retur_udd_status">
+                                        <option value="Semua">Semua Status</option>
+                                        <option value="Menunggu Diterima" selected>Menunggu Diterima</option>
+                                        <option value="Diterima">Diterima</option>
+                                        <option value="Ditolak">Ditolak</option>
+                                        <option value="Batal">Batal</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 col-6">
+                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Pencarian (Keyword)</label>
+                                    <input type="text" class="form-control form-control-sm" id="farmasi_retur_udd_keyword" placeholder="No. Retur / Pasien / Kamar / Petugas...">
+                                </div>
+                                <div class="col-md-2 col-12">
+                                    <div class="d-flex gap-1">
+                                        <button type="button" class="btn btn-warning text-dark fw-semibold btn-sm w-100" onclick="loadReturUddFarmasi()">
+                                            <i class="bi bi-search me-1"></i> Filter
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="loadReturUddFarmasi()" title="Refresh Data">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabel Retur UDD -->
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-2">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped table-sm align-middle text-sm mb-0" id="tb_farmasi_retur_udd" width="100%">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="text-center" width="15%">No. Retur &amp; Waktu</th>
+                                            <th width="15%">Kamar / Bangsal</th>
+                                            <th width="20%">Pasien &amp; No. RM</th>
+                                            <th width="13%">Petugas Ruangan</th>
+                                            <th width="15%">Alasan Pengembalian</th>
+                                            <th width="12%">Rincian Obat</th>
+                                            <th class="text-center" width="9%">Status</th>
+                                            <th class="text-center" width="11%">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_farmasi_retur_udd">
+                                        <tr>
+                                            <td colspan="8" class="text-center text-muted py-3">Klik tombol filter atau buka tab untuk memuat data pengembalian sisa UDD.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Submodal Detail Permintaan & Validasi Kesiapan Stok Farmasi -->
@@ -782,6 +898,7 @@
     @include('content.farmasi.modal.modal_substitusi_obat')
     @include('content.farmasi.ralan.modal.modal_resep_pulang_farmasi')
     @include('content.farmasi.modal.modal_validasi_retur_farmasi')
+    @include('content.farmasi.modal.modal_verifikasi_retur_udd')
     @include('content.farmasi.ralan.modal.modal_cetak_etiket')
 @endsection
 
@@ -838,9 +955,12 @@
             $('#tab-farmasi-retur-link').on('shown.bs.tab', function() {
                 loadPengajuanReturFarmasi();
             });
+            $('#tab-farmasi-retur-udd-link').on('shown.bs.tab', function() {
+                loadReturUddFarmasi();
+            });
         });
 
-        $('#tgl_peresepan, #tgl_penyerahan, #farmasi_retur_tgl_awal, #farmasi_retur_tgl_akhir').datepicker({
+        $('#tgl_peresepan, #tgl_penyerahan, #farmasi_retur_tgl_awal, #farmasi_retur_tgl_akhir, #farmasi_retur_udd_tgl_awal, #farmasi_retur_udd_tgl_akhir').datepicker({
             format: 'dd-mm-yyyy',
             orientation: 'bottom',
             autoclose: true,
@@ -2439,6 +2559,12 @@
                         ? `<span class="badge bg-primary text-white me-1" style="font-size: 10px;"><i class="bi bi-mortar-pestle me-1"></i>Racikan</span><strong>${item.dosis}</strong>` 
                         : (item.dosis || '-');
 
+                    const btnEditDosis = isValidated ? '' : `
+                        <button type="button" class="btn btn-outline-primary btn-sm py-0 px-1 ms-1 shadow-none" onclick="editAturanPakaiResepPulang('${safeKodeBrng}', '${safeJsStr(item.dosis || '')}', 'non_racik', '${safeJsStr(item.nama_brng)}')" title="Ubah Aturan Pakai">
+                            <i class="bi bi-pencil-square" style="font-size: 11px;"></i>
+                        </button>
+                    `;
+
                     const tr = `
                         <tr>
                             <td class="text-center">${idx + 1}</td>
@@ -2446,7 +2572,12 @@
                             <td><strong>${item.nama_brng}</strong></td>
                             <td class="text-center fw-bold text-primary">${item.jml}</td>
                             <td class="text-center">${item.satuan}</td>
-                            <td>${dosisHtml}</td>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <span>${dosisHtml}</span>
+                                    ${btnEditDosis}
+                                </div>
+                            </td>
                             <td class="text-center ${stokClass}">${item.stok_depo}</td>
                             <td class="text-end font-monospace">Rp ${new Intl.NumberFormat('id-ID').format(item.harga)}</td>
                             <td class="text-end font-monospace">Rp ${new Intl.NumberFormat('id-ID').format(item.embalase)}</td>
@@ -2496,6 +2627,12 @@
                         </button>
                     `;
 
+                    const btnEditAturanRacik = isValidated ? '' : `
+                        <button type="button" class="btn btn-outline-primary btn-sm py-0 px-1 ms-1 shadow-none" onclick="editAturanPakaiResepPulang(${r.no_racik}, '${safeJsStr(r.aturan_pakai || '')}', 'racik', '${safeJsStr(r.nama_racik)}')" title="Ubah Aturan Pakai Racikan">
+                            <i class="bi bi-pencil-square" style="font-size: 11px;"></i>
+                        </button>
+                    `;
+
                     const racikCard = `
                         <div class="card border mb-2 shadow-xs rounded-2">
                             <div class="card-header bg-light py-1.5 px-3 d-flex justify-content-between align-items-center flex-wrap gap-1">
@@ -2503,7 +2640,11 @@
                                     <span class="badge bg-primary px-2 py-1"><i class="bi bi-mortar-pestle me-1"></i>RACIKAN #${r.no_racik} (${r.kd_racik})</span>
                                     <strong class="text-dark fs-6">${r.nama_racik}</strong>
                                     <span class="badge bg-secondary">${r.jml_dr} ${r.kd_racik}</span>
-                                    <span class="text-muted ms-2"><i class="bi bi-clock-history me-1"></i>Aturan Pakai: <strong class="text-dark">${r.aturan_pakai}</strong></span>
+                                    <span class="text-muted ms-2 d-inline-flex align-items-center">
+                                        <i class="bi bi-clock-history me-1"></i>Aturan Pakai: 
+                                        <strong class="text-dark ms-1">${r.aturan_pakai}</strong>
+                                        ${btnEditAturanRacik}
+                                    </span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="font-monospace fw-bold text-primary" style="font-size: 12px;">Subtotal Racikan: Rp ${new Intl.NumberFormat('id-ID').format(r.subtotal)}</span>
@@ -2663,6 +2804,65 @@
                         },
                         error: function(xhr) {
                             Swal.fire('Gagal', xhr.responseJSON?.message || 'Gagal menghapus racikan', 'error');
+                        }
+                    });
+                }
+            });
+        }
+
+        function editAturanPakaiResepPulang(idOrKode, currentVal, tipe, namaObat) {
+            const noPermintaan = currentNoPermintaanPulang || $('#fPulangNoPermintaan').text();
+            if (!noPermintaan) return;
+
+            Swal.fire({
+                title: 'Ubah Aturan Pakai',
+                html: `
+                    <div class="text-start mb-2" style="font-size: 13px;">
+                        <span class="text-muted d-block">Nama Obat / Racikan:</span>
+                        <strong class="text-primary">${namaObat}</strong>
+                    </div>
+                `,
+                input: 'text',
+                inputValue: currentVal || '',
+                inputPlaceholder: 'Contoh: 3 x 1 tablet sesudah makan',
+                inputAttributes: { autocapitalize: 'off', autocomplete: 'off' },
+                showCancelButton: true,
+                confirmButtonText: '<i class="bi bi-check-lg me-1"></i> Simpan',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#0d6efd',
+                inputValidator: (value) => {
+                    if (!value || !value.trim()) return 'Aturan pakai tidak boleh kosong!';
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const postData = {
+                        _token: "{{ csrf_token() }}",
+                        no_permintaan: noPermintaan,
+                        tipe: tipe,
+                        aturan_pakai: result.value.trim()
+                    };
+                    if (tipe === 'non_racik') {
+                        postData.kode_brng = idOrKode;
+                    } else {
+                        postData.no_racik = idOrKode;
+                    }
+
+                    $.ajax({
+                        url: "{{ route('farmasi.resep-pulang.ubah-aturan-pakai') }}",
+                        type: "POST",
+                        data: postData,
+                        success: function(res) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: res.message || 'Aturan pakai berhasil diperbarui',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
+                            bukaDetailResepPulangFarmasi(noPermintaan);
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Gagal!', xhr.responseJSON?.message || 'Gagal mengubah aturan pakai.', 'error');
                         }
                     });
                 }
@@ -2832,6 +3032,331 @@
                 },
                 error: function() {
                     $tbody.html('<tr><td colspan="7" class="text-center text-danger py-3">Gagal memuat daftar pengajuan retur.</td></tr>');
+                }
+            });
+        }
+
+        // ========================================================
+        // TAB 6: PENGEMBALIAN SISA STOK OBAT UDD (LOGISTIK RAWAT INAP)
+        // ========================================================
+        let currentVerifikasiReturUddData = null;
+
+        function loadReturUddFarmasi(isBackgroundCountOnly = false) {
+            const $tbody = $('#tbody_farmasi_retur_udd');
+            if (!isBackgroundCountOnly) {
+                $tbody.html('<tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-warning me-1"></div> Memuat data pengembalian sisa UDD...</td></tr>');
+            }
+
+            const tglAwalRaw = $('#farmasi_retur_udd_tgl_awal').val();
+            const tglAkhirRaw = $('#farmasi_retur_udd_tgl_akhir').val();
+            const status = $('#farmasi_retur_udd_status').val();
+            const keyword = ($('#farmasi_retur_udd_keyword').val() || '').toLowerCase();
+
+            const tglAwal = tglAwalRaw ? moment(tglAwalRaw, 'DD-MM-YYYY').format('YYYY-MM-DD') : '';
+            const tglAkhir = tglAkhirRaw ? moment(tglAkhirRaw, 'DD-MM-YYYY').format('YYYY-MM-DD') : '';
+
+            $.ajax({
+                url: "{{ route('retur-stok-udd.daftar') }}",
+                type: "GET",
+                data: {
+                    tgl_awal: tglAwal,
+                    tgl_akhir: tglAkhir,
+                    status: status
+                },
+                success: function(data) {
+                    let list = Array.isArray(data) ? data : [];
+
+                    if (keyword) {
+                        list = list.filter(item => {
+                            const noRetur = (item.no_retur_udd || '').toLowerCase();
+                            const noRawat = (item.no_rawat || '').toLowerCase();
+                            const nmPasien = (item.reg_periksa?.pasien?.nm_pasien || '').toLowerCase();
+                            const noRm = (item.reg_periksa?.pasien?.no_rkm_medis || '').toLowerCase();
+                            const petugas = (item.pegawai_ruangan?.nama || item.petugas_ruangan || '').toLowerCase();
+                            return noRetur.includes(keyword) || noRawat.includes(keyword) || nmPasien.includes(keyword) || noRm.includes(keyword) || petugas.includes(keyword);
+                        });
+                    }
+
+                    // Update summary counts
+                    let countTotal = list.length;
+                    let countMenunggu = 0;
+                    let countDiterima = 0;
+                    let countDitolak = 0;
+
+                    list.forEach(function(item) {
+                        if (item.status === 'Menunggu Diterima') countMenunggu++;
+                        else if (item.status === 'Diterima') countDiterima++;
+                        else countDitolak++;
+                    });
+
+                    $('#count-retur-udd-total').text(countTotal);
+                    $('#count-retur-udd-menunggu').text(countMenunggu);
+                    $('#count-retur-udd-diterima').text(countDiterima);
+                    $('#count-retur-udd-ditolak').text(countDitolak);
+                    $('#badgeCountReturUddTunggu').text(countMenunggu);
+
+                    if (isBackgroundCountOnly) return;
+
+                    $tbody.empty();
+                    if (list.length === 0) {
+                        $tbody.html('<tr><td colspan="8" class="text-center text-muted py-4"><i class="bi bi-inbox fs-4 d-block mb-1 text-secondary"></i> Tidak ada data pengembalian sisa UDD pada filter ini.</td></tr>');
+                        return;
+                    }
+
+                    list.forEach(function(row) {
+                        const safeNoRetur = safeJsStr(row.no_retur_udd);
+                        const kamarText = getKamarFormat(row.reg_periksa);
+                        const pasien = row.reg_periksa?.pasien || {};
+                        const safeNmPasien = safeJsStr(pasien.nm_pasien || '-');
+                        const safeNoRm = safeJsStr(pasien.no_rkm_medis || '-');
+
+                        const isMenunggu = row.status === 'Menunggu Diterima';
+                        const isDiterima = row.status === 'Diterima';
+
+                        let badgeStatus = `<span class="badge bg-warning-subtle text-warning-emphasis border border-warning px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1"><i class="bi bi-hourglass-split"></i> Menunggu</span>`;
+                        if (isDiterima) {
+                            badgeStatus = `<span class="badge bg-success-subtle text-success border border-success px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1"><i class="bi bi-check-circle"></i> Diterima</span>`;
+                        } else if (row.status === 'Ditolak') {
+                            badgeStatus = `<span class="badge bg-danger-subtle text-danger border border-danger px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1"><i class="bi bi-x-circle"></i> Ditolak</span>`;
+                        } else if (row.status === 'Batal') {
+                            badgeStatus = `<span class="badge bg-secondary-subtle text-secondary border border-secondary px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1"><i class="bi bi-slash-circle"></i> Batal</span>`;
+                        }
+
+                        // Summary items
+                        const details = row.details || [];
+                        const detailsHtml = details.map(d => `<span class="badge bg-light text-dark border me-1 mb-1" style="font-size:10.5px;">${d.barang?.nama_brng || d.kode_brng} (<b>${d.jml_retur}</b>)</span>`).slice(0, 3).join('') + (details.length > 3 ? `<span class="badge bg-secondary-subtle text-secondary border" style="font-size:9.5px;">+${details.length - 3} lainnya</span>` : '');
+
+                        const btnAksi = isMenunggu
+                            ? `<button type="button" class="btn btn-sm btn-warning text-dark fw-semibold d-inline-flex align-items-center gap-1 py-1 px-2.5 shadow-sm" onclick="bukaModalVerifikasiReturUdd('${safeNoRetur}')" title="Periksa Fisik & Terima ke Depo">
+                                <i class="bi bi-box-arrow-in-down-left"></i> <span>Verifikasi</span>
+                               </button>`
+                            : `<button type="button" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 py-1 px-2.5" onclick="bukaModalVerifikasiReturUdd('${safeNoRetur}')" title="Lihat Rincian Penerimaan">
+                                <i class="bi bi-eye"></i> <span>Detail</span>
+                               </button>`;
+
+                        const btnCetak = `<button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" onclick="window.open('{{ url('/retur-stok-udd/cetak') }}/${safeNoRetur}', '_blank')" title="Cetak Bukti Serah Terima">
+                            <i class="bi bi-printer"></i>
+                        </button>`;
+
+                        const tr = `
+                            <tr>
+                                <td class="text-center align-middle">
+                                    <span class="font-monospace fw-bold text-primary" style="font-size: 12px;">${safeNoRetur}</span><br>
+                                    <small class="text-muted">${splitTanggal(row.tgl_retur)} ${row.jam_retur}</small>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="text-dark fw-medium">${kamarText}</span>
+                                </td>
+                                <td class="align-middle">
+                                    <strong class="text-dark">${safeNmPasien}</strong><br>
+                                    <span class="text-muted font-monospace" style="font-size: 11px;">RM: ${safeNoRm} • ${row.no_rawat}</span>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="text-dark">${row.pegawai_ruangan?.nama || row.petugas_ruangan}</span>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="fw-semibold text-secondary">${row.alasan}</span>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="d-flex flex-wrap">${detailsHtml}</div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    ${badgeStatus}
+                                </td>
+                                <td class="text-center align-middle">
+                                    <div class="d-inline-flex gap-1">
+                                        ${btnAksi}
+                                        ${btnCetak}
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                        $tbody.append(tr);
+                    });
+                },
+                error: function() {
+                    $tbody.html('<tr><td colspan="8" class="text-center text-danger py-3">Gagal memuat data pengembalian sisa UDD.</td></tr>');
+                }
+            });
+        }
+
+        // Buka Modal Verifikasi Penerimaan Sisa UDD oleh Farmasi
+        function bukaModalVerifikasiReturUdd(noReturUdd) {
+            $.get("{{ url('/retur-stok-udd/detail') }}/" + noReturUdd)
+                .done(function(data) {
+                    currentVerifikasiReturUddData = data;
+                    const pasien = data.reg_periksa?.pasien || {};
+                    const kamar = getKamarFormat(data.reg_periksa);
+
+                    $('#v_retur_udd_nomor').text(data.no_retur_udd);
+                    $('#v_retur_udd_waktu').text(`${splitTanggal(data.tgl_retur)} ${data.jam_retur}`);
+                    $('#v_retur_udd_nm_pasien').text(pasien.nm_pasien || '-');
+                    $('#v_retur_udd_no_rkm_medis').text(`(RM: ${pasien.no_rkm_medis || '-'})`);
+                    $('#v_retur_udd_kamar').text(kamar);
+                    $('#v_retur_udd_petugas_ruangan').text(data.pegawai_ruangan?.nama || data.petugas_ruangan);
+                    $('#v_retur_udd_alasan').text(data.alasan || '-');
+                    $('#v_retur_udd_catatan_ruangan').text(data.catatan || '-');
+
+                    // Badge status
+                    const isMenunggu = data.status === 'Menunggu Diterima';
+                    let badgeClass = isMenunggu ? 'bg-warning text-dark' : (data.status === 'Diterima' ? 'bg-success text-white' : 'bg-danger text-white');
+                    $('#v_retur_udd_badge_status').attr('class', `badge ${badgeClass} px-2 py-1`).text(data.status);
+
+                    // Items table
+                    const tbody = $('#v_retur_udd_tbody_items');
+                    tbody.empty();
+                    const details = data.details || [];
+
+                    details.forEach(function(d, idx) {
+                        const jmlDiterimaVal = (data.status === 'Diterima') ? d.jml_diterima : d.jml_retur;
+                        const inputJml = isMenunggu
+                            ? `<input type="number" step="0.01" min="0" max="${d.jml_retur}" class="form-control form-control-sm text-center fw-bold v-item-diterima" data-id="${d.id}" value="${jmlDiterimaVal}">`
+                            : `<strong class="text-success">${jmlDiterimaVal}</strong>`;
+
+                        const inputKet = isMenunggu
+                            ? `<input type="text" class="form-control form-control-sm v-item-ket" data-id="${d.id}" value="${d.keterangan || ''}" placeholder="Kondisi kemasan...">`
+                            : `<span>${d.keterangan || '-'}</span>`;
+
+                        const tr = `
+                            <tr>
+                                <td class="text-center text-muted">${idx + 1}</td>
+                                <td class="text-center font-monospace">${d.kode_brng}</td>
+                                <td>
+                                    <strong>${d.barang?.nama_brng || d.kode_brng}</strong>
+                                    ${d.no_batch ? `<small class="text-muted d-block" style="font-size:10px;">Batch: ${d.no_batch}</small>` : ''}
+                                </td>
+                                <td class="text-center">${d.barang?.kode_satuan?.satuan || '-'}</td>
+                                <td class="text-center fw-bold text-danger">${d.jml_retur}</td>
+                                <td class="text-center">${inputJml}</td>
+                                <td>${inputKet}</td>
+                            </tr>
+                        `;
+                        tbody.append(tr);
+                    });
+
+                    // Input & Button Controls
+                    if (isMenunggu) {
+                        $('#v_retur_udd_card_catatan_farmasi').show();
+                        $('#v_retur_udd_input_catatan_farmasi').val('').prop('readonly', false);
+                        $('#v_retur_udd_btn_tolak').show();
+                        $('#v_retur_udd_btn_terima').show();
+                        $('#v_retur_udd_btn_cetak').hide();
+                    } else {
+                        $('#v_retur_udd_card_catatan_farmasi').toggle(!!data.catatan_farmasi);
+                        $('#v_retur_udd_input_catatan_farmasi').val(data.catatan_farmasi || '').prop('readonly', true);
+                        $('#v_retur_udd_btn_tolak').hide();
+                        $('#v_retur_udd_btn_terima').hide();
+                        $('#v_retur_udd_btn_cetak').show().attr('onclick', `window.open('{{ url('/retur-stok-udd/cetak') }}/${data.no_retur_udd}', '_blank')`);
+                    }
+
+                    $('#modalVerifikasiReturUdd').modal('show');
+                })
+                .fail(function(xhr) {
+                    Swal.fire('Gagal!', xhr.responseJSON?.message || 'Gagal memuat detail pengembalian sisa UDD.', 'error');
+                });
+        }
+
+        // Submit Verifikasi Penerimaan Sisa UDD oleh Farmasi (Terima / Tolak)
+        function submitVerifikasiReturUdd(aksi) {
+            if (!currentVerifikasiReturUddData) return;
+            const noReturUdd = currentVerifikasiReturUddData.no_retur_udd;
+            const catatanFarmasi = $('#v_retur_udd_input_catatan_farmasi').val();
+
+            if (aksi === 'tolak') {
+                Swal.fire({
+                    title: 'Tolak Pengembalian Sisa UDD?',
+                    text: 'Fisik obat tidak akan dimasukkan kembali ke stok Depo Farmasi.',
+                    icon: 'warning',
+                    input: 'text',
+                    inputPlaceholder: 'Alasan penolakan (misal: blister rusak/terbuka)...',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: 'Ya, Tolak Pengembalian',
+                    cancelButtonText: 'Batal',
+                    inputValidator: (val) => {
+                        if (!val || !val.trim()) return 'Alasan penolakan wajib diisi!';
+                    }
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        $.post("{{ url('/retur-stok-udd/terima') }}/" + noReturUdd, {
+                            _token: "{{ csrf_token() }}",
+                            aksi: 'tolak',
+                            catatan_farmasi: res.value.trim()
+                        }).done(function(resp) {
+                            $('#modalVerifikasiReturUdd').modal('hide');
+                            Swal.fire('Ditolak!', resp.message || 'Pengembalian sisa UDD telah ditolak.', 'info');
+                            loadReturUddFarmasi();
+                        }).fail(function(xhr) {
+                            Swal.fire('Gagal!', xhr.responseJSON?.message || 'Gagal menolak pengembalian.', 'error');
+                        });
+                    }
+                });
+                return;
+            }
+
+            // Aksi === 'terima'
+            const items = [];
+            let isValid = true;
+            $('.v-item-diterima').each(function() {
+                const id = $(this).data('id');
+                const jmlDiterima = parseFloat($(this).val());
+                const ket = $(`.v-item-ket[data-id="${id}"]`).val();
+
+                if (isNaN(jmlDiterima) || jmlDiterima < 0) {
+                    Swal.fire('Peringatan', 'Jumlah fisik yang diterima masuk rak tidak valid.', 'warning');
+                    isValid = false;
+                    return false;
+                }
+
+                items.push({
+                    id: id,
+                    jml_diterima: jmlDiterima,
+                    keterangan: ket
+                });
+            });
+
+            if (!isValid) return;
+
+            Swal.fire({
+                title: 'Terima Sisa Obat UDD?',
+                text: 'Fisik obat yang diterima akan otomatis bertambah kembali ke stok Depo Farmasi (RM), dan sisa stok pasien di E-MAR akan berkurang.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#198754',
+                confirmButtonText: '<i class="bi bi-check-circle me-1"></i> Ya, Terima ke Stok Depo',
+                cancelButtonText: 'Batal'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('/retur-stok-udd/terima') }}/" + noReturUdd,
+                        type: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            aksi: 'terima',
+                            catatan_farmasi: catatanFarmasi,
+                            items: items
+                        },
+                        success: function(resp) {
+                            $('#modalVerifikasiReturUdd').modal('hide');
+                            Swal.fire({
+                                title: 'Berhasil Diterima!',
+                                text: resp.message || 'Sisa obat UDD telah diterima dan stok Depo Farmasi telah bertambah kembali.',
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonColor: '#198754',
+                                confirmButtonText: '<i class="bi bi-printer me-1"></i> Cetak Bukti Serah Terima',
+                                cancelButtonText: 'Tutup'
+                            }).then((pRes) => {
+                                if (pRes.isConfirmed) {
+                                    window.open("{{ url('/retur-stok-udd/cetak') }}/" + noReturUdd, '_blank');
+                                }
+                            });
+                            loadReturUddFarmasi();
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Gagal!', xhr.responseJSON?.message || 'Gagal memproses penerimaan sisa UDD.', 'error');
+                        }
+                    });
                 }
             });
         }

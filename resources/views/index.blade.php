@@ -760,7 +760,16 @@
         }
 
         function formatTanggal(oldTgl) {
+            if (!oldTgl || oldTgl === '0000-00-00' || oldTgl === '0000-00-00 00:00:00') {
+                return '-';
+            }
+            if (typeof oldTgl !== 'string') {
+                oldTgl = String(oldTgl);
+            }
             let t = new Date(oldTgl);
+            if (isNaN(t.getTime())) {
+                return oldTgl;
+            }
             let bulan = '';
             switch ((t.getMonth() + 1)) {
                 case 1:
@@ -807,7 +816,7 @@
 
                 return t.getDate() + ' ' + bulan + ' ' + t.getFullYear() + ' ' + oldTgl.split(' ')[1];
             }
-            return tanggal = t.getDate() + ' ' + bulan + ' ' + t.getFullYear();
+            return t.getDate() + ' ' + bulan + ' ' + t.getFullYear();
         }
 
         function isKosong(x, satuan = '') {

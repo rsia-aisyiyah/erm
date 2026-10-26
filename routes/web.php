@@ -309,6 +309,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('/farmasi/resep-pulang/simpan-item', [ResepPulangController::class, 'simpanItemPermintaan'])->name('farmasi.resep-pulang.simpan-item');
 	Route::delete('/farmasi/resep-pulang/hapus-item', [ResepPulangController::class, 'hapusItemPermintaan'])->name('farmasi.resep-pulang.hapus-item');
 	Route::delete('/farmasi/resep-pulang/hapus-racikan', [ResepPulangController::class, 'hapusRacikanPermintaan'])->name('farmasi.resep-pulang.hapus-racikan');
+	Route::post('/farmasi/resep-pulang/ubah-aturan-pakai', [ResepPulangController::class, 'ubahAturanPakai'])->name('farmasi.resep-pulang.ubah-aturan-pakai');
 	Route::get('/farmasi/resep-pulang/etiket/{noPermintaan?}', [ResepPulangController::class, 'printEtiket'])->name('farmasi.resep-pulang.etiket');
 	Route::get('/farmasi/resep-pulang/etiket-items/{noPermintaan}', [ResepPulangController::class, 'getEtiketItems'])->name('farmasi.resep-pulang.etiket-items');
 
@@ -326,6 +327,15 @@ Route::middleware('auth')->group(function () {
 	Route::post('/retur-obat/batal/{no_pengajuan}', [\App\Http\Controllers\ReturObatRanapController::class, 'batalkanPengajuan'])->name('retur-obat.batal');
 	Route::post('/retur-obat/validasi/{no_pengajuan}', [\App\Http\Controllers\ReturObatRanapController::class, 'prosesValidasiFarmasi'])->name('retur-obat.validasi');
 	Route::get('/retur-obat/cetak/{no_pengajuan}', [\App\Http\Controllers\ReturObatRanapController::class, 'cetakSlip'])->name('retur-obat.cetak');
+
+	// Retur Sisa Stok Obat UDD (Logistik Fisik Loker Pasien -> Depo Farmasi Ranap)
+	Route::get('/retur-stok-udd/sisa', [\App\Http\Controllers\ReturStokUddController::class, 'getSisaStokPasien'])->name('retur-stok-udd.sisa');
+	Route::post('/retur-stok-udd/ajukan', [\App\Http\Controllers\ReturStokUddController::class, 'simpanPengajuan'])->name('retur-stok-udd.ajukan');
+	Route::get('/retur-stok-udd/daftar', [\App\Http\Controllers\ReturStokUddController::class, 'getDaftar'])->name('retur-stok-udd.daftar');
+	Route::get('/retur-stok-udd/detail/{no_retur_udd}', [\App\Http\Controllers\ReturStokUddController::class, 'getDetail'])->name('retur-stok-udd.detail');
+	Route::post('/retur-stok-udd/batal/{no_retur_udd}', [\App\Http\Controllers\ReturStokUddController::class, 'batalkan'])->name('retur-stok-udd.batal');
+	Route::post('/retur-stok-udd/terima/{no_retur_udd}', [\App\Http\Controllers\ReturStokUddController::class, 'prosesPenerimaan'])->name('retur-stok-udd.terima');
+	Route::get('/retur-stok-udd/cetak/{no_retur_udd}', [\App\Http\Controllers\ReturStokUddController::class, 'cetak'])->name('retur-stok-udd.cetak');
 
 	// Notifikasi Respon Balik Farmasi ke Rawat Inap / Orderer
 	Route::get('/notifikasi/respon-farmasi', [\App\Http\Controllers\NotifikasiFarmasiController::class, 'getResponFarmasi'])->name('notifikasi.respon-farmasi');

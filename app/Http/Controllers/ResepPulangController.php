@@ -490,6 +490,54 @@ class ResepPulangController extends Controller
     }
 
     /**
+     * Ubah Aturan Pakai (Dosis) Item Non-Racikan atau Racikan Resep Pulang
+     */
+    public function ubahAturanPakai(Request $request)
+    {
+        $request->validate([
+            'no_permintaan' => 'required',
+            'tipe' => 'required|in:non_racik,racik',
+            'aturan_pakai' => 'required|string',
+        ]);
+
+        $permintaan = PermintaanResepPulang::where('no_permintaan', $request->no_permintaan)->first();
+        if (!$permintaan || $permintaan->status === 'Sudah') {
+            return response()->json(['message' => 'Permintaan sudah divalidasi atau tidak ditemukan'], 422);
+        }
+
+        $aturanPakai = trim($request->aturan_pakai);
+
+        if ($request->tipe === 'non_racik') {
+            $request->validate(['kode_brng' => 'required']);
+
+            $updated = DB::table('detail_permintaan_resep_pulang')
+                ->where('no_permintaan', $request->no_permintaan)
+                ->where('kode_brng', $request->kode_brng)
+                ->update(['dosis' => $aturanPakai]);
+
+            if ($updated === false) {
+                return response()->json(['message' => 'Gagal mengubah aturan pakai obat'], 500);
+            }
+        } else {
+            $request->validate(['no_racik' => 'required']);
+
+            $updated = DB::table('permintaan_resep_pulang_racikan')
+                ->where('no_permintaan', $request->no_permintaan)
+                ->where('no_racik', $request->no_racik)
+                ->update(['aturan_pakai' => $aturanPakai]);
+
+            if ($updated === false) {
+                return response()->json(['message' => 'Gagal mengubah aturan pakai racikan'], 500);
+            }
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Aturan pakai berhasil diperbarui'
+        ]);
+    }
+
+    /**
      * Generate Nomor Permintaan Resep Pulang (Sesuai Khanza DlgPermintaanResepPulang: RP + YYYYMMDD + 4 digit counter)
      */
     public function getNomorPermintaan(Request $request)

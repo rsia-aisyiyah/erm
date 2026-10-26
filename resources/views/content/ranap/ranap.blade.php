@@ -178,6 +178,7 @@
     @include('content.ranap.modal.modal_asesmen_geriatri')
     @include('content.ranap.modal.modal_permintaan_stok_obat_pasien')
     @include('content.ranap.modal.modal_pemberian_obat_pasien')
+    @include('content.ranap.modal.modal_retur_stok_udd')
 
     <div class="modal fade" id="modalEwsRanap" tabindex="-1" aria-labelledby="modalEwsRanapLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">

@@ -44,6 +44,9 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-warning btn-sm py-1 px-2.5 shadow-sm text-dark fw-bold" onclick="bukaModalReturUdd()" title="Kembalikan sisa obat UDD yang tidak digunakan ke Depo Farmasi (Pasien Pulang / Stop Terapi)">
+                        <i class="bi bi-arrow-return-left me-1"></i> Retur Sisa UDD
+                    </button>
                     <span class="badge bg-light text-primary px-2 py-1 shadow-sm font-monospace" id="badgeTanggalEmar" style="font-size: 11px;">
                         <i class="bi bi-calendar3 me-1"></i> Hari Ini
                     </span>
