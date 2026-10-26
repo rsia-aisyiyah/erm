@@ -330,9 +330,6 @@
                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="cetakPermintaanObat($('#lblDetNoPermintaan').text())">
                         <i class="bi bi-printer me-1"></i> Cetak Lembar Permintaan
                     </button>
-                    <button type="button" class="btn btn-teal btn-sm text-white ms-1" style="background-color: #0f766e;" onclick="bukaModalTelaahFarmasi($('#lblDetNoPermintaan').text(), $('#permintaan_no_rawat').val(), $('#permintaan_info_nm_pasien').text(), $('#permintaan_info_kamar').text())">
-                        <i class="bi bi-shield-check me-1"></i> Telaah Farmasi
-                    </button>
                 </div>
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
             </div>
@@ -340,7 +337,6 @@
     </div>
 </div>
 
-@include('content.farmasi.modal.modal_telaah_farmasi')
 @include('content.farmasi.modal.modal_substitusi_obat')
 
 @push('script')
