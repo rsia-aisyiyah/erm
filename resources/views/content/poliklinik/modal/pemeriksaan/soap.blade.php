@@ -396,10 +396,6 @@
 
             btnTambahObatUmum.removeClass('d-none');
 
-            if (role == 'dokter') {
-                panggil(textRawat(no_rawat));
-            }
-
             modalSoapRalan.modal('show');
             $('button[data-bs-target="#tab-soap-pane"]').tab('show');
             if (typeof updateActionButtons === 'function') {
@@ -1031,6 +1027,20 @@
 
 
 
+        function catatEstimasiAwal(no_rawat) {
+            $.ajax({
+                url: '/erm/poliklinik/estimasi',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'no_rawat': no_rawat,
+                },
+                method: 'POST',
+                success: function (data) {
+                    console.log('Estimasi poli (Task 4) tercatat:', data);
+                }
+            });
+        }
+
         function setPemeriksaanPoli(no_rawat, kd_poli) {
             $.get(`/erm/pemeriksaan`, {
                 no_rawat: no_rawat,
@@ -1042,6 +1052,11 @@
                     formSoapPoli.find('input[name=tgl_perawatan]').val("{{ date('Y-m-d') }}");
                     formSoapPoli.find('textarea').val("-");
                     return false;
+                }
+
+                const userRole = $('#formSoapPoli input[name="role"]').val() || "{{ session('role') }}";
+                if (userRole === 'dokter') {
+                    catatEstimasiAwal(no_rawat);
                 }
 
                 const filterByDokter = response.filter((pemeriksaan) => {
