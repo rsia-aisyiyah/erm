@@ -165,41 +165,35 @@
         </div>
     </div>
 
-    <!-- NAVIGASI TAB UTAMA FARMASI (SESUAI KHANZA DlgDaftarPermintaanResep) -->
+    <!-- NAVIGASI TAB UTAMA FARMASI (5 TAB RINGKAS & TIDAK TURUN BARIS) -->
     <ul class="nav nav-pills nav-fill mb-3 bg-white p-1 rounded-3 shadow-sm border" id="pills-farmasi-tab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active py-2 fw-semibold" id="tab-farmasi-ralan-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-ralan" type="button" role="tab" style="font-size: 13px;">
-                <i class="bi bi-hospital me-1"></i> 1. Antrean Resep Rawat Jalan (Ralan)
+            <button class="nav-link active py-2 fw-semibold text-nowrap" id="tab-farmasi-ralan-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-ralan" type="button" role="tab" style="font-size: 13px;">
+                <i class="bi bi-hospital me-1"></i> 1. Resep Ralan
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link py-2 fw-semibold" id="tab-farmasi-resep-ranap-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-resep-ranap" type="button" role="tab" style="font-size: 13px;">
-                <i class="bi bi-file-earmark-medical me-1"></i> 2. Resep Dokter Rawat Inap (Ranap)
+            <button class="nav-link py-2 fw-semibold text-nowrap" id="tab-farmasi-resep-ranap-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-resep-ranap" type="button" role="tab" style="font-size: 13px;">
+                <i class="bi bi-file-earmark-medical me-1"></i> 2. Resep Ranap
                 <span class="badge bg-danger rounded-pill ms-1" id="badgeCountResepRanapTunggu">0</span>
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link py-2 fw-semibold" id="tab-farmasi-ranap-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-ranap" type="button" role="tab" style="font-size: 13px;">
-                <i class="bi bi-inbox-fill me-1"></i> 3. Permintaan Stok Ranap (UDD)
+            <button class="nav-link py-2 fw-semibold text-nowrap" id="tab-farmasi-ranap-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-ranap" type="button" role="tab" style="font-size: 13px;">
+                <i class="bi bi-inbox-fill me-1"></i> 3. Stok UDD
                 <span class="badge bg-danger rounded-pill ms-1" id="badgeCountRanapTunggu">0</span>
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link py-2 fw-semibold" id="tab-farmasi-pulang-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-pulang" type="button" role="tab" style="font-size: 13px;">
-                <i class="bi bi-box-arrow-right me-1"></i> 4. Permintaan Resep Pulang
+            <button class="nav-link py-2 fw-semibold text-nowrap" id="tab-farmasi-pulang-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-pulang" type="button" role="tab" style="font-size: 13px;">
+                <i class="bi bi-box-arrow-right me-1"></i> 4. Resep Pulang
                 <span class="badge bg-danger rounded-pill ms-1" id="badgeCountPulangTunggu">0</span>
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link py-2 fw-semibold" id="tab-farmasi-retur-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-retur" type="button" role="tab" style="font-size: 13px;">
-                <i class="bi bi-arrow-return-left me-1"></i> 5. Pengajuan Retur Ranap
-                <span class="badge bg-danger rounded-pill ms-1" id="badgeCountReturTunggu">0</span>
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link py-2 fw-semibold" id="tab-farmasi-retur-udd-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-retur-udd" type="button" role="tab" style="font-size: 13px;">
-                <i class="bi bi-box-arrow-in-down-left me-1"></i> 6. Retur Sisa UDD
-                <span class="badge bg-danger rounded-pill ms-1" id="badgeCountReturUddTunggu">0</span>
+            <button class="nav-link py-2 fw-semibold text-nowrap" id="tab-farmasi-retur-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-retur" type="button" role="tab" style="font-size: 13px;">
+                <i class="bi bi-arrow-return-left me-1"></i> 5. Retur Ranap
+                <span class="badge bg-danger rounded-pill ms-1" id="badgeCountReturTotalTunggu">0</span>
             </button>
         </li>
     </ul>
@@ -590,145 +584,136 @@
             </div>
         </div>
 
-        <!-- TAB 5: PENGAJUAN RETUR OBAT RANAP -->
+        <!-- TAB 5: RETUR RANAP (KONSOLIDASI RETUR BILLING & SISA UDD) -->
         <div class="tab-pane fade" id="tab-farmasi-retur" role="tabpanel">
-            <div class="row gy-2">
-                <!-- Counter Badges Retur Obat -->
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm rounded-3">
-                        <div class="card-body p-3">
-                            <div class="row g-2 text-center">
-                                <div class="col-md-3 col-6">
-                                    <div class="p-2 border rounded-3 bg-light">
-                                        <small class="text-muted d-block" style="font-size: 11px;">TOTAL PENGAJUAN RETUR</small>
-                                        <span class="fs-5 fw-bold text-primary font-monospace" id="count-retur-total">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="p-2 border rounded-3 bg-warning-subtle border-warning">
-                                        <small class="text-warning-emphasis d-block fw-semibold" style="font-size: 11px;">MENUNGGU VALIDASI</small>
-                                        <span class="fs-5 fw-bold text-warning-emphasis font-monospace" id="count-retur-menunggu">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="p-2 border rounded-3 bg-success-subtle border-success">
-                                        <small class="text-success-emphasis d-block fw-semibold" style="font-size: 11px;">SUDAH DISETUJUI</small>
-                                        <span class="fs-5 fw-bold text-success font-monospace" id="count-retur-disetujui">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="p-2 border rounded-3 bg-light">
-                                        <small class="text-muted d-block fw-semibold" style="font-size: 11px;">DITOLAK / BATAL</small>
-                                        <span class="fs-5 fw-bold text-secondary font-monospace" id="count-retur-ditolak">0</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Filter Controls Retur Obat -->
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm rounded-3">
-                        <div class="card-body p-2.5">
-                            <div class="row g-2 align-items-end">
-                                <div class="col-md-2 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Awal</label>
-                                    <input type="text" class="form-control form-control-sm" id="farmasi_retur_tgl_awal" value="{{ date('d-m-Y') }}" autocomplete="off">
-                                </div>
-                                <div class="col-md-2 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Akhir</label>
-                                    <input type="text" class="form-control form-control-sm" id="farmasi_retur_tgl_akhir" value="{{ date('d-m-Y') }}" autocomplete="off">
-                                </div>
-                                <div class="col-md-2 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Status Pengajuan</label>
-                                    <select class="form-select form-select-sm" id="farmasi_retur_status">
-                                        <option value="Semua">Semua Status</option>
-                                        <option value="Menunggu Validasi" selected>Menunggu Validasi</option>
-                                        <option value="Disetujui">Disetujui</option>
-                                        <option value="Ditolak">Ditolak</option>
-                                        <option value="Batal">Batal</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Pencarian (Keyword)</label>
-                                    <input type="text" class="form-control form-control-sm" id="farmasi_retur_keyword" placeholder="No. Pengajuan / Pasien / Kamar / Petugas...">
-                                </div>
-                                <div class="col-md-2 col-12">
-                                    <div class="d-flex gap-1">
-                                        <button type="button" class="btn btn-primary btn-sm w-100" onclick="loadPengajuanReturFarmasi()">
-                                            <i class="bi bi-search me-1"></i> Filter
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="loadPengajuanReturFarmasi()" title="Refresh Data">
-                                            <i class="bi bi-arrow-clockwise"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tabel Retur Obat -->
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm rounded-3">
-                        <div class="card-body p-2">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-striped table-sm align-middle text-sm mb-0" id="tb_farmasi_retur" width="100%">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th class="text-center" width="16%">No. Pengajuan &amp; Waktu</th>
-                                            <th width="15%">Kamar / Bangsal</th>
-                                            <th width="22%">Pasien &amp; No. RM</th>
-                                            <th width="13%">Petugas Pengaju</th>
-                                            <th width="18%">Ringkasan Obat</th>
-                                            <th class="text-center" width="10%">Status</th>
-                                            <th class="text-center" width="16%">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody_farmasi_retur">
-                                        <tr>
-                                            <td colspan="7" class="text-center text-muted py-3">Klik tombol filter atau buka tab untuk memuat data pengajuan retur.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+            <!-- Sub-Navigasi Retur Ranap -->
+            <div class="card border-0 shadow-sm rounded-3 mb-3 bg-white">
+                <div class="card-body p-2 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <ul class="nav nav-pills bg-light p-1 rounded-pill border" id="pills-sub-retur-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active py-1.5 px-3 rounded-pill fw-semibold text-nowrap" id="subtab-retur-billing-link" data-bs-toggle="pill" data-bs-target="#subtab-retur-billing" type="button" role="tab" style="font-size: 12.5px;">
+                                <i class="bi bi-receipt me-1"></i> A. Retur Billing Pasien
+                                <span class="badge bg-danger rounded-pill ms-1" id="badgeSubReturBilling">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link py-1.5 px-3 rounded-pill fw-semibold text-nowrap text-secondary" id="subtab-retur-udd-link" data-bs-toggle="pill" data-bs-target="#subtab-retur-udd" type="button" role="tab" style="font-size: 12.5px;">
+                                <i class="bi bi-box-arrow-in-down-left me-1"></i> B. Retur Sisa Stok UDD
+                                <span class="badge bg-warning text-dark rounded-pill ms-1" id="badgeSubReturUdd">0</span>
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="text-muted small d-none d-md-flex align-items-center gap-1.5" style="font-size: 11.5px;">
+                        <i class="bi bi-info-circle text-primary"></i>
+                        <span>Pilih jenis retur: <b>Billing Pasien</b> (retur penjualan/nota) atau <b>Sisa UDD</b> (fisik obat kembali ke depo).</span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- TAB 6: RETUR SISA STOK OBAT UDD (LOGISTIK RAWAT INAP) -->
-        <div class="tab-pane fade" id="tab-farmasi-retur-udd" role="tabpanel">
-            <div class="row gy-2">
-                <!-- Counter Badges Retur UDD -->
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm rounded-3">
-                        <div class="card-body p-3">
-                            <div class="row g-2 text-center">
-                                <div class="col-md-3 col-6">
-                                    <div class="p-2 border rounded-3 bg-light">
-                                        <small class="text-muted d-block" style="font-size: 11px;">TOTAL PENGEMBALIAN UDD</small>
-                                        <span class="fs-5 fw-bold text-primary font-monospace" id="count-retur-udd-total">0</span>
+            <!-- Sub Tab Content -->
+            <div class="tab-content" id="pills-sub-retur-tabContent">
+                <!-- SUB-TAB A: RETUR BILLING PASIEN -->
+                <div class="tab-pane fade show active" id="subtab-retur-billing" role="tabpanel">
+                    <div class="row gy-2">
+                        <!-- Counter Badges Retur Obat -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-3">
+                                    <div class="row g-2 text-center">
+                                        <div class="col-md-3 col-6">
+                                            <div class="p-2 border rounded-3 bg-light">
+                                                <small class="text-muted d-block" style="font-size: 11px;">TOTAL PENGAJUAN RETUR</small>
+                                                <span class="fs-5 fw-bold text-primary font-monospace" id="count-retur-total">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <div class="p-2 border rounded-3 bg-warning-subtle border-warning">
+                                                <small class="text-warning-emphasis d-block fw-semibold" style="font-size: 11px;">MENUNGGU VALIDASI</small>
+                                                <span class="fs-5 fw-bold text-warning-emphasis font-monospace" id="count-retur-menunggu">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <div class="p-2 border rounded-3 bg-success-subtle border-success">
+                                                <small class="text-success-emphasis d-block fw-semibold" style="font-size: 11px;">SUDAH DISETUJUI</small>
+                                                <span class="fs-5 fw-bold text-success font-monospace" id="count-retur-disetujui">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <div class="p-2 border rounded-3 bg-light">
+                                                <small class="text-muted d-block fw-semibold" style="font-size: 11px;">DITOLAK / BATAL</small>
+                                                <span class="fs-5 fw-bold text-secondary font-monospace" id="count-retur-ditolak">0</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="p-2 border rounded-3 bg-warning-subtle border-warning">
-                                        <small class="text-warning-emphasis d-block fw-semibold" style="font-size: 11px;">MENUNGGU DITERIMA</small>
-                                        <span class="fs-5 fw-bold text-warning-emphasis font-monospace" id="count-retur-udd-menunggu">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Filter Controls Retur Obat -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-2.5">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-md-2 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Awal</label>
+                                            <input type="text" class="form-control form-control-sm" id="farmasi_retur_tgl_awal" value="{{ date('d-m-Y') }}" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-2 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Akhir</label>
+                                            <input type="text" class="form-control form-control-sm" id="farmasi_retur_tgl_akhir" value="{{ date('d-m-Y') }}" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-2 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Status Pengajuan</label>
+                                            <select class="form-select form-select-sm" id="farmasi_retur_status">
+                                                <option value="Semua">Semua Status</option>
+                                                <option value="Menunggu Validasi" selected>Menunggu Validasi</option>
+                                                <option value="Disetujui">Disetujui</option>
+                                                <option value="Ditolak">Ditolak</option>
+                                                <option value="Batal">Batal</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Pencarian (Keyword)</label>
+                                            <input type="text" class="form-control form-control-sm" id="farmasi_retur_keyword" placeholder="No. Pengajuan / Pasien / Kamar / Petugas...">
+                                        </div>
+                                        <div class="col-md-2 col-12">
+                                            <div class="d-flex gap-1">
+                                                <button type="button" class="btn btn-primary btn-sm w-100" onclick="loadPengajuanReturFarmasi()">
+                                                    <i class="bi bi-search me-1"></i> Filter
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="loadPengajuanReturFarmasi()" title="Refresh Data">
+                                                    <i class="bi bi-arrow-clockwise"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="p-2 border rounded-3 bg-success-subtle border-success">
-                                        <small class="text-success-emphasis d-block fw-semibold" style="font-size: 11px;">SUDAH DITERIMA (STOK BERTAMBAH)</small>
-                                        <span class="fs-5 fw-bold text-success font-monospace" id="count-retur-udd-diterima">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="p-2 border rounded-3 bg-light">
-                                        <small class="text-muted d-block fw-semibold" style="font-size: 11px;">DITOLAK / BATAL</small>
-                                        <span class="fs-5 fw-bold text-secondary font-monospace" id="count-retur-udd-ditolak">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Tabel Retur Obat -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-2">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-striped table-sm align-middle text-sm mb-0" id="tb_farmasi_retur" width="100%">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th class="text-center" width="16%">No. Pengajuan &amp; Waktu</th>
+                                                    <th width="15%">Kamar / Bangsal</th>
+                                                    <th width="22%">Pasien &amp; No. RM</th>
+                                                    <th width="13%">Petugas Pengaju</th>
+                                                    <th width="18%">Ringkasan Obat</th>
+                                                    <th class="text-center" width="10%">Status</th>
+                                                    <th class="text-center" width="16%">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbody_farmasi_retur">
+                                                <tr>
+                                                    <td colspan="7" class="text-center text-muted py-3">Klik tombol filter atau buka tab untuk memuat data pengajuan retur.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -736,72 +721,111 @@
                     </div>
                 </div>
 
-                <!-- Filter Controls Retur UDD -->
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm rounded-3">
-                        <div class="card-body p-2.5">
-                            <div class="row g-2 align-items-end">
-                                <div class="col-md-2 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Awal</label>
-                                    <input type="text" class="form-control form-control-sm" id="farmasi_retur_udd_tgl_awal" value="{{ date('d-m-Y') }}" autocomplete="off">
-                                </div>
-                                <div class="col-md-2 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Akhir</label>
-                                    <input type="text" class="form-control form-control-sm" id="farmasi_retur_udd_tgl_akhir" value="{{ date('d-m-Y') }}" autocomplete="off">
-                                </div>
-                                <div class="col-md-2 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Status Retur</label>
-                                    <select class="form-select form-select-sm" id="farmasi_retur_udd_status">
-                                        <option value="Semua">Semua Status</option>
-                                        <option value="Menunggu Diterima" selected>Menunggu Diterima</option>
-                                        <option value="Diterima">Diterima</option>
-                                        <option value="Ditolak">Ditolak</option>
-                                        <option value="Batal">Batal</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Pencarian (Keyword)</label>
-                                    <input type="text" class="form-control form-control-sm" id="farmasi_retur_udd_keyword" placeholder="No. Retur / Pasien / Kamar / Petugas...">
-                                </div>
-                                <div class="col-md-2 col-12">
-                                    <div class="d-flex gap-1">
-                                        <button type="button" class="btn btn-warning text-dark fw-semibold btn-sm w-100" onclick="loadReturUddFarmasi()">
-                                            <i class="bi bi-search me-1"></i> Filter
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="loadReturUddFarmasi()" title="Refresh Data">
-                                            <i class="bi bi-arrow-clockwise"></i>
-                                        </button>
+                <!-- SUB-TAB B: RETUR SISA STOK OBAT UDD (LOGISTIK RAWAT INAP) -->
+                <div class="tab-pane fade" id="subtab-retur-udd" role="tabpanel">
+                    <div class="row gy-2">
+                        <!-- Counter Badges Retur UDD -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-3">
+                                    <div class="row g-2 text-center">
+                                        <div class="col-md-3 col-6">
+                                            <div class="p-2 border rounded-3 bg-light">
+                                                <small class="text-muted d-block" style="font-size: 11px;">TOTAL PENGEMBALIAN UDD</small>
+                                                <span class="fs-5 fw-bold text-primary font-monospace" id="count-retur-udd-total">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <div class="p-2 border rounded-3 bg-warning-subtle border-warning">
+                                                <small class="text-warning-emphasis d-block fw-semibold" style="font-size: 11px;">MENUNGGU DITERIMA</small>
+                                                <span class="fs-5 fw-bold text-warning-emphasis font-monospace" id="count-retur-udd-menunggu">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <div class="p-2 border rounded-3 bg-success-subtle border-success">
+                                                <small class="text-success-emphasis d-block fw-semibold" style="font-size: 11px;">SUDAH DITERIMA (STOK BERTAMBAH)</small>
+                                                <span class="fs-5 fw-bold text-success font-monospace" id="count-retur-udd-diterima">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <div class="p-2 border rounded-3 bg-light">
+                                                <small class="text-muted d-block fw-semibold" style="font-size: 11px;">DITOLAK / BATAL</small>
+                                                <span class="fs-5 fw-bold text-secondary font-monospace" id="count-retur-udd-ditolak">0</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Tabel Retur UDD -->
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm rounded-3">
-                        <div class="card-body p-2">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-striped table-sm align-middle text-sm mb-0" id="tb_farmasi_retur_udd" width="100%">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th class="text-center" width="15%">No. Retur &amp; Waktu</th>
-                                            <th width="15%">Kamar / Bangsal</th>
-                                            <th width="20%">Pasien &amp; No. RM</th>
-                                            <th width="13%">Petugas Ruangan</th>
-                                            <th width="15%">Alasan Pengembalian</th>
-                                            <th width="12%">Rincian Obat</th>
-                                            <th class="text-center" width="9%">Status</th>
-                                            <th class="text-center" width="11%">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody_farmasi_retur_udd">
-                                        <tr>
-                                            <td colspan="8" class="text-center text-muted py-3">Klik tombol filter atau buka tab untuk memuat data pengembalian sisa UDD.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <!-- Filter Controls Retur UDD -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-2.5">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-md-2 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Awal</label>
+                                            <input type="text" class="form-control form-control-sm" id="farmasi_retur_udd_tgl_awal" value="{{ date('d-m-Y') }}" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-2 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Akhir</label>
+                                            <input type="text" class="form-control form-control-sm" id="farmasi_retur_udd_tgl_akhir" value="{{ date('d-m-Y') }}" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-2 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Status Retur</label>
+                                            <select class="form-select form-select-sm" id="farmasi_retur_udd_status">
+                                                <option value="Semua">Semua Status</option>
+                                                <option value="Menunggu Diterima" selected>Menunggu Diterima</option>
+                                                <option value="Diterima">Diterima</option>
+                                                <option value="Ditolak">Ditolak</option>
+                                                <option value="Batal">Batal</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Pencarian (Keyword)</label>
+                                            <input type="text" class="form-control form-control-sm" id="farmasi_retur_udd_keyword" placeholder="No. Retur / Pasien / Kamar / Petugas...">
+                                        </div>
+                                        <div class="col-md-2 col-12">
+                                            <div class="d-flex gap-1">
+                                                <button type="button" class="btn btn-warning text-dark fw-semibold btn-sm w-100" onclick="loadReturUddFarmasi()">
+                                                    <i class="bi bi-search me-1"></i> Filter
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="loadReturUddFarmasi()" title="Refresh Data">
+                                                    <i class="bi bi-arrow-clockwise"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tabel Retur UDD -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-2">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-striped table-sm align-middle text-sm mb-0" id="tb_farmasi_retur_udd" width="100%">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th class="text-center" width="15%">No. Retur &amp; Waktu</th>
+                                                    <th width="15%">Kamar / Bangsal</th>
+                                                    <th width="20%">Pasien &amp; No. RM</th>
+                                                    <th width="13%">Petugas Ruangan</th>
+                                                    <th width="15%">Alasan Pengembalian</th>
+                                                    <th width="12%">Rincian Obat</th>
+                                                    <th class="text-center" width="9%">Status</th>
+                                                    <th class="text-center" width="11%">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbody_farmasi_retur_udd">
+                                                <tr>
+                                                    <td colspan="8" class="text-center text-muted py-3">Klik tombol filter atau buka tab untuk memuat data pengembalian sisa UDD.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -953,9 +977,19 @@
                 loadPermintaanResepPulangFarmasi();
             });
             $('#tab-farmasi-retur-link').on('shown.bs.tab', function() {
+                if ($('#subtab-retur-udd').hasClass('show') || $('#subtab-retur-udd').hasClass('active')) {
+                    loadReturUddFarmasi();
+                } else {
+                    loadPengajuanReturFarmasi();
+                }
+                // Background update count keduanya
+                loadPengajuanReturFarmasi(true);
+                loadReturUddFarmasi(true);
+            });
+            $('#subtab-retur-billing-link').on('shown.bs.tab', function() {
                 loadPengajuanReturFarmasi();
             });
-            $('#tab-farmasi-retur-udd-link').on('shown.bs.tab', function() {
+            $('#subtab-retur-udd-link').on('shown.bs.tab', function() {
                 loadReturUddFarmasi();
             });
         });
@@ -1218,8 +1252,8 @@
         }
 
         // Pindah tab secara terprogram (simulasi klik nyata dan Bootstrap 5 Tab trigger)
-        function switchToTab(tabLinkId) {
-            console.log('[FARMASI] Pindah tab ke:', tabLinkId);
+        function switchToTab(tabLinkId, subTabLinkId = null) {
+            console.log('[FARMASI] Pindah tab ke:', tabLinkId, subTabLinkId);
             const el = document.getElementById(tabLinkId);
             if (!el) {
                 console.warn('[FARMASI] Tab link tidak ditemukan:', tabLinkId);
@@ -1240,7 +1274,25 @@
                 console.warn('[FARMASI] Bootstrap tab switch warning:', err);
             }
 
-            // 3. Scroll halus ke navigasi tab agar langsung terlihat
+            // 3. Jika ada subtab yang dituju
+            if (subTabLinkId) {
+                setTimeout(function() {
+                    const subEl = document.getElementById(subTabLinkId);
+                    if (subEl) {
+                        subEl.click();
+                        $('#' + subTabLinkId).trigger('click');
+                        try {
+                            if (window.bootstrap && bootstrap.Tab) {
+                                bootstrap.Tab.getOrCreateInstance(subEl).show();
+                            }
+                        } catch (e) {
+                            console.warn('[FARMASI] SubTab switch warning:', e);
+                        }
+                    }
+                }, 150);
+            }
+
+            // 4. Scroll halus ke navigasi tab agar langsung terlihat
             $('html, body').animate({
                 scrollTop: $('#pills-farmasi-tab').offset().top - 20
             }, 300);
@@ -1257,7 +1309,11 @@
             } else if ($('#tab-farmasi-pulang').hasClass('show')) {
                 loadPermintaanResepPulangFarmasi();
             } else if ($('#tab-farmasi-retur').hasClass('show')) {
-                loadPengajuanReturFarmasi();
+                if ($('#subtab-retur-udd').hasClass('show') || $('#subtab-retur-udd').hasClass('active')) {
+                    loadReturUddFarmasi();
+                } else {
+                    loadPengajuanReturFarmasi();
+                }
             }
         }
 
@@ -1268,9 +1324,10 @@
             }
             const $toast = $(this).closest('.swal2-farmasi-toast');
             const targetTab = $(this).attr('data-tab-id') || $(this).data('tab-id') || $toast.attr('data-tab-id') || $toast.data('tab-id');
+            const targetSubTab = $(this).attr('data-subtab-id') || $(this).data('subtab-id') || $toast.attr('data-subtab-id') || $toast.data('subtab-id');
             if (targetTab) {
-                console.log('[FARMASI] Toast diklik, menuju tab:', targetTab);
-                switchToTab(targetTab);
+                console.log('[FARMASI] Toast diklik, menuju tab:', targetTab, targetSubTab);
+                switchToTab(targetTab, targetSubTab);
                 Swal.close();
             }
         });
@@ -1312,6 +1369,13 @@
                     iconColor: '#0d6efd',
                     borderClass: 'toast-border-retur',
                     btnClass: 'btn-outline-primary'
+                },
+                'retur_udd': {
+                    badge: 'bg-warning text-dark',
+                    iconBg: 'rgba(255, 193, 7, 0.15)',
+                    iconColor: '#b45309',
+                    borderClass: 'toast-border-warning',
+                    btnClass: 'btn-outline-warning text-dark'
                 }
             }[item.type] || {
                 badge: 'bg-secondary text-white',
@@ -1332,7 +1396,7 @@
                     popup: `swal2-farmasi-toast ${typeConfig.borderClass}`
                 },
                 didOpen: (toastEl) => {
-                    $(toastEl).attr('data-tab-id', item.tabId).css('cursor', 'pointer');
+                    $(toastEl).attr('data-tab-id', item.tabId).attr('data-subtab-id', item.subTabId || '').css('cursor', 'pointer');
                     toastEl.addEventListener('mouseenter', Swal.stopTimer);
                     toastEl.addEventListener('mouseleave', Swal.resumeTimer);
                 }
@@ -1340,7 +1404,7 @@
 
             Toast.fire({
                 html: `
-                    <div class="d-flex align-items-start" style="gap: 16px;" data-tab-id="${item.tabId}">
+                    <div class="d-flex align-items-start" style="gap: 16px;" data-tab-id="${item.tabId}" data-subtab-id="${item.subTabId || ''}">
                         <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" 
                              style="width: 44px; height: 44px; min-width: 44px; border-radius: 12px; background: ${typeConfig.iconBg}; color: ${typeConfig.iconColor}; border: 1px solid rgba(0,0,0,0.06);">
                             <i class="bi ${item.icon} fs-5"></i>
@@ -1364,7 +1428,7 @@
                                 </span>
                             </div>
                             <div class="mt-2.5 pt-2 border-top d-flex justify-content-end">
-                                <span class="btn btn-xs ${typeConfig.btnClass} rounded-pill py-1 px-3 d-inline-flex align-items-center gap-1.5 shadow-xs" data-tab-id="${item.tabId}" style="font-size: 11.5px; font-weight: 600;">
+                                <span class="btn btn-xs ${typeConfig.btnClass} rounded-pill py-1 px-3 d-inline-flex align-items-center gap-1.5 shadow-xs" data-tab-id="${item.tabId}" data-subtab-id="${item.subTabId || ''}" style="font-size: 11.5px; font-weight: 600;">
                                     <span>Buka Antrean</span> <i class="bi bi-arrow-right"></i>
                                 </span>
                             </div>
@@ -1505,6 +1569,7 @@
         const knownUddIds = new Set();
         const knownPulangIds = new Set();
         const knownReturIds = new Set();
+        const knownReturUddIds = new Set();
         const recentlyAlertedIds = new Set();
 
         function checkAntreanFarmasiBaru() {
@@ -1515,13 +1580,15 @@
                 $.get("{{ route('farmasi.resep-ranap.data') }}", { tgl_awal: today, tgl_akhir: today }),
                 $.get("{{ route('farmasi.permintaan-ranap.data') }}", { tgl_awal: today, tgl_akhir: today }),
                 $.get("{{ route('farmasi.resep-pulang.permintaan') }}", { tgl_awal: today, tgl_akhir: today }),
-                $.get("{{ route('retur-obat.daftar') }}", { status: 'Menunggu Validasi' })
-            ).done(function(resRalan, resRanap, resUdd, resPulang, resRetur) {
+                $.get("{{ route('retur-obat.daftar') }}", { status: 'Menunggu Validasi' }),
+                $.get("{{ route('retur-stok-udd.daftar') }}", { status: 'Menunggu Diterima' })
+            ).done(function(resRalan, resRanap, resUdd, resPulang, resRetur, resReturUdd) {
                 const dataRalan = (resRalan && resRalan[0]) ? resRalan[0] : [];
                 const dataRanap = (resRanap && resRanap[0]) ? resRanap[0] : [];
                 const dataUdd = (resUdd && resUdd[0]) ? resUdd[0] : [];
                 const dataPulang = (resPulang && resPulang[0]) ? resPulang[0] : [];
                 const dataRetur = (resRetur && resRetur[0]) ? resRetur[0] : [];
+                const dataReturUdd = (resReturUdd && resReturUdd[0]) ? resReturUdd[0] : [];
 
                 const newItems = [];
 
@@ -1631,7 +1698,7 @@
                     knownPulangIds.add(row.no_permintaan);
                 });
 
-                // 5. Cek Retur Obat Ranap
+                // 5. Cek Retur Billing Pasien
                 let countReturTunggu = 0;
                 dataRetur.forEach(function(row) {
                     const isWaiting = row.status === 'Menunggu Validasi';
@@ -1641,12 +1708,13 @@
                             if (!isInitialNotifCheck) {
                                 newItems.push({
                                     type: 'retur',
-                                    label: 'Pengajuan Retur Ranap',
-                                    icon: 'bi-arrow-return-left',
+                                    label: 'Retur Billing Ranap',
+                                    icon: 'bi-receipt',
                                     nomor: row.no_pengajuan,
                                     pasien: row.reg_periksa?.pasien?.nm_pasien || '-',
                                     lokasi: getKamarFormat(row.reg_periksa),
-                                    tabId: 'tab-farmasi-retur-link'
+                                    tabId: 'tab-farmasi-retur-link',
+                                    subTabId: 'subtab-retur-billing-link'
                                 });
                                 recentlyAlertedIds.add(row.no_pengajuan);
                             }
@@ -1654,6 +1722,33 @@
                     }
                     knownReturIds.add(row.no_pengajuan);
                 });
+
+                // 6. Cek Retur Sisa Stok UDD
+                let countReturUddTunggu = 0;
+                dataReturUdd.forEach(function(row) {
+                    const isWaiting = row.status === 'Menunggu Diterima';
+                    if (isWaiting) {
+                        countReturUddTunggu++;
+                        if (!knownReturUddIds.has(row.no_retur_udd)) {
+                            if (!isInitialNotifCheck) {
+                                newItems.push({
+                                    type: 'retur_udd',
+                                    label: 'Retur Sisa UDD',
+                                    icon: 'bi-box-arrow-in-down-left',
+                                    nomor: row.no_retur_udd,
+                                    pasien: row.reg_periksa?.pasien?.nm_pasien || '-',
+                                    lokasi: getKamarFormat(row.reg_periksa),
+                                    tabId: 'tab-farmasi-retur-link',
+                                    subTabId: 'subtab-retur-udd-link'
+                                });
+                                recentlyAlertedIds.add(row.no_retur_udd);
+                            }
+                        }
+                    }
+                    knownReturUddIds.add(row.no_retur_udd);
+                });
+
+                const totalReturTunggu = countReturTunggu + countReturUddTunggu;
 
                 // Update counter angka pada UI
                 $('#count-resep').text(countRalanTotal);
@@ -1663,7 +1758,9 @@
                 $('#badgeCountResepRanapTunggu').text(countRanapTunggu);
                 $('#badgeCountRanapTunggu').text(countUddTunggu);
                 $('#badgeCountPulangTunggu').text(countPulangTunggu);
-                $('#badgeCountReturTunggu').text(countReturTunggu);
+                $('#badgeCountReturTotalTunggu').text(totalReturTunggu);
+                $('#badgeSubReturBilling').text(countReturTunggu);
+                $('#badgeSubReturUdd').text(countReturUddTunggu);
 
                 $('#lblLastSyncTime').html(`<i class="bi bi-check2-circle text-success me-1"></i>Dicek: ${moment().format('HH:mm:ss')}`);
 
@@ -1673,7 +1770,7 @@
                     return;
                 }
 
-                const totalMenunggu = countRalanTunggu + countRanapTunggu + countUddTunggu + countPulangTunggu + countReturTunggu;
+                const totalMenunggu = countRalanTunggu + countRanapTunggu + countUddTunggu + countPulangTunggu + totalReturTunggu;
 
                 if (newItems.length > 0) {
                     lastReminderTimestamp = Date.now();
@@ -1704,7 +1801,7 @@
                             lastReminderTimestamp = Date.now();
                             playReminderChime();
                             flashDocTitle(`⚠️ (${totalMenunggu}) Menunggu!`);
-                            tampilkanToastReminder(totalMenunggu, countRalanTunggu, countRanapTunggu, countUddTunggu, countPulangTunggu, countReturTunggu);
+                            tampilkanToastReminder(totalMenunggu, countRalanTunggu, countRanapTunggu, countUddTunggu, countPulangTunggu, totalReturTunggu);
                         }
                     }
                 } else {
@@ -2903,8 +3000,15 @@
             });
         }
 
+        // Helper hitung total badge retur ranap (billing + UDD)
+        function updateBadgeCountReturTotal() {
+            const b = parseInt($('#badgeSubReturBilling').text()) || 0;
+            const u = parseInt($('#badgeSubReturUdd').text()) || 0;
+            $('#badgeCountReturTotalTunggu').text(b + u);
+        }
+
         // ========================================================
-        // TAB 5: PENGAJUAN RETUR OBAT RAWAT INAP (FARMASI)
+        // TAB 5: RETUR RANAP (KONSOLIDASI RETUR BILLING & SISA UDD)
         // ========================================================
 
         function loadPengajuanReturFarmasi(isBackgroundCountOnly = false) {
@@ -2949,7 +3053,8 @@
                     $('#count-retur-menunggu').text(countMenunggu);
                     $('#count-retur-disetujui').text(countDisetujui);
                     $('#count-retur-ditolak').text(countDitolak);
-                    $('#badgeCountReturTunggu').text(countMenunggu);
+                    $('#badgeSubReturBilling').text(countMenunggu);
+                    updateBadgeCountReturTotal();
 
                     if (isBackgroundCountOnly) return;
 
@@ -3093,7 +3198,8 @@
                     $('#count-retur-udd-menunggu').text(countMenunggu);
                     $('#count-retur-udd-diterima').text(countDiterima);
                     $('#count-retur-udd-ditolak').text(countDitolak);
-                    $('#badgeCountReturUddTunggu').text(countMenunggu);
+                    $('#badgeSubReturUdd').text(countMenunggu);
+                    updateBadgeCountReturTotal();
 
                     if (isBackgroundCountOnly) return;
 
