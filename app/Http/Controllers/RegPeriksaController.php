@@ -137,6 +137,30 @@ class RegPeriksaController extends Controller
     }
     public function riwayat(Request $request)
     {
+        if ($request->mode === 'ringkas') {
+            $pemeriksaan = Pasien::where('no_rkm_medis', $request->no_rkm_medis)
+                ->with(['regPeriksa' => function ($q) use ($request) {
+                    $q->select(
+                        DB::raw('TRIM(no_rkm_medis) as no_rkm_medis'),
+                        DB::raw('TRIM(kd_poli) as kd_poli'),
+                        DB::raw('TRIM(kd_dokter) as kd_dokter'),
+                        'tgl_registrasi',
+                        'jam_reg',
+                        'no_rawat',
+                        'status_lanjut'
+                    )->where(function ($q) {
+                        $q->where('stts', 'Sudah')->orWhere('status_lanjut', '=', 'Ranap')->orWhere('kd_poli', 'IGDK');
+                    })->with('poliklinik:kd_poli,nm_poli');
+
+                    if ($request->sortir) {
+                        $q->orderBy('tgl_registrasi', $request->sortir)
+                          ->orderBy('jam_reg', $request->sortir);
+                    }
+                }])->first();
+
+            return response()->json($pemeriksaan);
+        }
+
         ini_set('memory_limit', '512M');
         $pemeriksaan = Pasien::where('no_rkm_medis', $request->no_rkm_medis)
             ->with('regPeriksa', function ($q) use ($request) {

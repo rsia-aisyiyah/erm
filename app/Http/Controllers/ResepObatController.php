@@ -255,6 +255,7 @@ class ResepObatController extends Controller
             return $query->where('no_rkm_medis', $no_rkm_medis);
         })->with(['resepRacikan.detail.databarang.kodeSatuan', 'resepRacikan.metode', 'resepDokter.dataBarang.kodeSatuan'])
             ->orderBy('tgl_peresepan', 'DESC')
+            ->limit(15)
             ->get();
 
         return response()->json($resep);

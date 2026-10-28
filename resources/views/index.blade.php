@@ -1503,10 +1503,11 @@
 
 
 
-        function getRiwayatPasien(no_rkm_medis, sortir = '') {
+        function getRiwayatPasien(no_rkm_medis, sortir = '', mode = 'ringkas') {
             const riwayat = $.get('/erm/registrasi/riwayat', {
                 no_rkm_medis: no_rkm_medis,
-                sortir: sortir
+                sortir: sortir,
+                mode: mode
             })
             return riwayat;
         }

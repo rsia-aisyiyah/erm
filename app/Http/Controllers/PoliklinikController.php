@@ -59,8 +59,8 @@ class PoliklinikController extends Controller
                 'pasien' => function ($query) {
                     $query->with(['askepRalanAnak', 'askepRalanKebidanan']);
                 },
-                'pasien.regPeriksa.askepRalanAnak',
-                'pasien.regPeriksa.askepRalanKebidanan',
+                'askepRalanAnak',
+                'askepRalanKebidanan',
                 'dokter.mappingDokter',
                 'penjab',
                 'skriningTb',
@@ -109,21 +109,15 @@ class PoliklinikController extends Controller
     }
     public function viewPoliPasien($kd_poli, Request $request)
     {
-        $kd_dokter = $request->dokter ? $request->dokter : '';
-        $tgl_registrasi = $request->tgl_registrasi ? $request->tgl_registrasi : '';
-        $pasien = $this->poliPasien($kd_poli, $kd_dokter, $tgl_registrasi);
         $poliklinik = $this->namaPoli($kd_poli);
         $dokter = $this->dokterPoli($request->dokter);
-        $jmlUpload = 0;
-        foreach ($pasien as $p) {
-            $jmlUpload = $jmlUpload + $p->upload_count;
-        }
+
         return view('content.poliklinik.pasien', [
-            'pasien' => $pasien->get(),
-            'jumlah' => $pasien->count(),
+            'pasien' => collect([]),
+            'jumlah' => 0,
             'poli' => $poliklinik,
             'dokter' => $dokter,
-            'uploaded' => $jmlUpload,
+            'uploaded' => 0,
         ]);
     }
     public function countUpload($kd_poli, Request $request)
