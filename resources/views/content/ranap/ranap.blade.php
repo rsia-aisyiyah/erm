@@ -374,6 +374,7 @@
 
             kd_dokter = isDokter && isSpesialis != 'S0007' ? "{{ session()->get('pegawai')->nik }}" : '';
             tb_ranap();
+            initFilterDokterSps()
         });
 
         $('#cari-kamar').on('search', function() {
@@ -417,6 +418,45 @@
             $('#tb_ranap').DataTable().destroy();
             tb_ranap();
         })
+
+        function initFilterDokterSps() {
+            let isDokter = "{{ session()->get('pegawai')->dokter }}"
+            let isSpesialis = "{{ session()->get('pegawai')->dokter?->kd_sps }}"
+            kd_dokter = isDokter && isSpesialis != 'S0007' ? "{{ session()->get('pegawai')->nik }}" : '';
+
+            if (kd_dokter) {
+                $('#dokter').val(kd_dokter).trigger('change');
+            }
+
+            if (isSpesialis) {
+                $('#spesialis').val(isSpesialis).trigger('change');
+            }
+
+            $('#dokter').select2({
+                placeholder: 'Pilih Dokter',
+                allowClear: true,
+                ajax: {
+                    url: "{{ route('dokter.ambil') }}",
+                    data: function(params) {
+                        return {
+                            sps: $('#spesialis').val(),
+                            search: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.data.map(function(dokter) {
+                                return {
+                                    id: dokter.kd_dokter,
+                                    text: dokter.nm_dokter
+                                };
+                            })
+                        };
+                    }
+                }
+            })
+
+        }
 
         $("#cari-kamar").bind('keypress', function(e) {
             // console.log($(this).val())

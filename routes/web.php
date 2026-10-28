@@ -244,7 +244,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('ews/{sttsRawat}/{noRawat}', [EwsController::class, 'get']);
 	Route::get('ews/maternal/{sttsRawat}/{noRawat}', [EwsMaternalController::class, 'get']);
 
-	Route::get('dokter/ambil', [DokterController::class, 'ambil']);
+	Route::get('dokter/ambil', [DokterController::class, 'ambil'])->name('dokter.ambil');
 	Route::get('dokter/cari', [DokterController::class, 'cari'])->name('dokter.cari');
 
 	Route::get('asmed/kebidanan', [PenilaianMedisKebidananController::class, 'index']);
