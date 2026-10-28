@@ -5,7 +5,11 @@
     <table>
         <tr>
             <td width="50%" style="padding-right: 75px">
-                <img src="{{ asset('img/logo_bpjs.png') }}" alt="" width="200px" />
+                @php
+                    $logoBpjsPath = public_path('img/logo_bpjs.png');
+                    $logoBpjs = file_exists($logoBpjsPath) ? 'data:image/png;base64,' . base64_encode(file_get_contents($logoBpjsPath)) : asset('img/logo_bpjs.png');
+                @endphp
+                <img src="{{ $logoBpjs }}" alt="" width="200px" />
             </td>
             <td style="text-align: center">
                 <h3 class="" style="margin-bottom:0px;">SURAT RUJUKAN RUMAH SAKIT</h3>

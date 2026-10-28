@@ -22,6 +22,10 @@ class DataBarang extends Model
     {
         return $this->belongsTo(KodeSatuan::class, 'kode_sat', 'kode_sat');
     }
+    public function satuan()
+    {
+        return $this->belongsTo(KodeSatuan::class, 'kode_sat', 'kode_sat');
+    }
     public function kodeSatuanBesar()
     {
         return $this->belongsTo(KodeSatuan::class, 'kode_satbesar', 'kode_sat');

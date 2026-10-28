@@ -72,7 +72,7 @@
         </table>
     </div>
 </div>
-<div class="modal fade" id="modalObatRacik" aria-labelledby="modalObatRacik" aria-hidden="true" style="background-color: #00000062!important;">
+<div class="modal fade" id="modalObatRacik" aria-labelledby="modalObatRacik" aria-hidden="true" style="background-color: #00000062!important; z-index: 1070 !important;">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">

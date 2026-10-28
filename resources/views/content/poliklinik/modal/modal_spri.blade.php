@@ -200,58 +200,81 @@
 
 
         function showModalSpri(no_rawat) {
+            swal.fire({
+                title: 'Memuat Form SPRI...',
+                text: 'Mengambil data pasien, mohon tunggu',
+                allowOutsideClick: false,
+                didOpen: () => swal.showLoading()
+            });
+
             $.get(`/erm/spri/get`, {
                 no_rawat: no_rawat
             }).done((val) => {
-                $('.btn-cari-peserta').attr('onclick', `getPesertaDetail('${val.pasien.no_peserta}', '${val.tgl_reg}')`);
+                swal.close();
+                if (!val) {
+                    swal.fire('Error', 'Data pemeriksaan rawat tidak ditemukan.', 'error');
+                    return;
+                }
 
-                $formSpri.find('input[name=no_rawat]').val(no_rawat)
-                $formSpri.find('input[name=pasien]').val(`${val.no_rkm_medis} ${val.pasien.nm_pasien} ( ${val.umurdaftar} ${val.sttsumur})`)
-                $formSpri.find('input[name=tgl_lahir]').val(splitTanggal(val.pasien.tgl_lahir))
-                $formSpri.find('input[name=no_kartu]').val(val.pasien.no_peserta)
-                $formSpri.find('input[name=penjab]').val(val.penjab.png_jawab)
-                $formSpri.find('input[name=no_sep]').val(val.sep.no_sep)
-                $formSpri.find('input[name=nmppkrujukan]').val(val.sep.nmppkpelayanan)
-                $formSpri.find('input[name=tgl_surat]').val(val.tgl_registrasi).prop('readonly', false)
+                const noPeserta = val.pasien ? val.pasien.no_peserta : '';
+                const tglReg = val.tgl_registrasi || '';
+                $('.btn-cari-peserta').attr('onclick', `getPesertaDetail('${noPeserta}', '${tglReg}')`);
+
+                $formSpri.find('input[name=no_rawat]').val(no_rawat);
+                $formSpri.find('input[name=pasien]').val(`${val.no_rkm_medis || ''} ${val.pasien ? val.pasien.nm_pasien : ''} ( ${val.umurdaftar || ''} ${val.sttsumur || ''})`);
+                $formSpri.find('input[name=tgl_lahir]').val(val.pasien && val.pasien.tgl_lahir ? splitTanggal(val.pasien.tgl_lahir) : '-');
+                $formSpri.find('input[name=no_kartu]').val(noPeserta);
+                $formSpri.find('input[name=penjab]').val(val.penjab ? val.penjab.png_jawab : '');
+                $formSpri.find('input[name=no_sep]').val(val.sep ? val.sep.no_sep : '-');
+                $formSpri.find('input[name=nmppkrujukan]').val(val.sep ? (val.sep.nmppkpelayanan || '-') : '-');
+                $formSpri.find('input[name=tgl_surat]').val(val.tgl_registrasi || "{{ date('Y-m-d') }}").prop('readonly', false);
+
                 if (val.spri) {
-
-                    $formSpri.find('input[name=no_surat]').val(val.spri.no_surat).addClass('is-valid').prop('readonly', true)
-                    $formSpri.find('input[name=tgl_inap]').val(val.spri.tgl_rencana).addClass('is-valid').prop('readonly', true)
+                    $formSpri.find('input[name=no_surat]').val(val.spri.no_surat).addClass('is-valid').prop('readonly', true);
+                    $formSpri.find('input[name=tgl_inap]').val(val.spri.tgl_rencana).addClass('is-valid').prop('readonly', true);
 
                     const diagnosa = new Option(val.spri.diagnosa, val.spri.diagnosa, true, true);
-                    $formSpri.find('select[name=kd_diagnosa_inap]').append(diagnosa).trigger('select').prop('disabled', true);
+                    $formSpri.find('select[name=kd_diagnosa_inap]').empty().append(diagnosa).trigger('select').prop('disabled', true);
 
                     const dokter = new Option(val.spri.nm_dokter_bpjs, val.spri.kd_dokter_bpjs, true, true);
-                    $formSpri.find('select[name=kd_dokter_bpjs]').append(dokter).trigger('select').prop('disabled', true);
+                    $formSpri.find('select[name=kd_dokter_bpjs]').empty().append(dokter).trigger('select').prop('disabled', true);
 
                     const poliklinik = new Option(val.spri.nm_poli_bpjs, val.spri.kd_poli_bpjs, true, true);
-                    $formSpri.find('select[name=kode_poli_inap]').append(poliklinik).trigger('select').prop('disabled', true);
+                    $formSpri.find('select[name=kode_poli_inap]').empty().append(poliklinik).trigger('select').prop('disabled', true);
 
-                    $('.btn-buat-spri').addClass('d-none')
-                    $('.btn-print-spri').removeClass('d-none').prop('href', `/erm/spri/print/${val.spri.no_surat}`)
-
+                    $('.btn-buat-spri').addClass('d-none');
+                    $('.btn-print-spri').removeClass('d-none').prop('href', `/erm/spri/print/${val.spri.no_surat}`);
                 } else {
-                    $formSpri.find('input[name=no_surat]').val("").removeClass('is-valid')
-                    $formSpri.find('input[name=tgl_inap]').val("{{ date('Y-m-d') }}").removeClass('is-valid').prop('readonly', false)
+                    $formSpri.find('input[name=no_surat]').val("").removeClass('is-valid');
+                    $formSpri.find('input[name=tgl_inap]').val("{{ date('Y-m-d') }}").removeClass('is-valid').prop('readonly', false);
 
-                    $formSpri.find('select[name=kd_diagnosa_inap]').prop('disabled', false);
-                    $formSpri.find('select[name=kd_dokter_bpjs]').prop('disabled', false);
-                    $formSpri.find('select[name=kode_poli_inap]').prop('disabled', false);
+                    $formSpri.find('select[name=kd_diagnosa_inap]').empty().prop('disabled', false);
+                    $formSpri.find('select[name=kd_dokter_bpjs]').empty().prop('disabled', false);
+                    $formSpri.find('select[name=kode_poli_inap]').empty().prop('disabled', false);
 
-                    const diagnosa = new Option(val.sep.nmdiagnosaawal, val.sep.diagawal, true, true)
-                    $formSpri.find('select[name=kd_diagnosa_inap]').append(diagnosa).trigger('select')
+                    if (val.sep) {
+                        const diagnosa = new Option(val.sep.nmdiagnosaawal || '', val.sep.diagawal || '', true, true);
+                        $formSpri.find('select[name=kd_diagnosa_inap]').append(diagnosa).trigger('select');
 
-                    const dokter = new Option(val.sep.nmdpdjp, val.sep.kddpjp, true, true)
-                    $formSpri.find('select[name=kd_dokter_bpjs]').append(dokter).trigger('select')
+                        const dokter = new Option(val.sep.nmdpdjp || '', val.sep.kddpjp || '', true, true);
+                        $formSpri.find('select[name=kd_dokter_bpjs]').append(dokter).trigger('select');
 
-                    const poliklinik = new Option(val.sep.nmpolitujuan, val.sep.kdpolitujuan, true, true)
-                    $formSpri.find('select[name=kode_poli_inap]').append(poliklinik).trigger('select')
+                        const poliklinik = new Option(val.sep.nmpolitujuan || '', val.sep.kdpolitujuan || '', true, true);
+                        $formSpri.find('select[name=kode_poli_inap]').append(poliklinik).trigger('select');
+                    } else if (val.dokter) {
+                        const dokter = new Option(val.dokter.nm_dokter || '', val.dokter.kd_dokter || '', true, true);
+                        $formSpri.find('select[name=kd_dokter_bpjs]').append(dokter).trigger('select');
+                    }
 
-                    $('.btn-buat-spri').removeClass('d-none')
-                    $('.btn-print-spri').addClass('d-none').prop('href', `javascript:void(0)`)
+                    $('.btn-buat-spri').removeClass('d-none');
+                    $('.btn-print-spri').addClass('d-none').prop('href', `javascript:void(0)`);
                 }
-                $('#modalSpri').modal('show')
-            })
+
+                $('#modalSpri').modal('show');
+            }).fail((xhr) => {
+                swal.close();
+                alertErrorAjax(xhr);
+            });
         }
 
         $('#modalSpri').on('hidden.bs.modal', function() {
@@ -359,68 +382,22 @@
 
         }
 
-        //
-        // function getPerintahInap(no_rawat) {
-        //     return $.ajax({
-        //         url: '/erm/spri/get/',
-        //         data: {
-        //             no_rawat : no_rawat
-        //         },
-        //         dataType: 'JSON',
-        //         error: (request) => {
-        //             alertSessionExpired(request.status)
-        //         },
-        //     });
-        // }
-
-
-        function rawatInap(noRm, tanggal) {
-
-            const formSpri = $('#formSpri')
-            getPasienPeriksa(noRm, tanggal).done((response) => {
-                $.map(response, (periksa) => {
-                    getPerintahInap(periksa.pasien.no_peserta, tanggal).done((val) => {
-
-                        $('.btn-cari-peserta').attr('onclick', `getPesertaDetail('${periksa.pasien.no_peserta}', '${tanggal}')`);
-                        $('.no_rawat_inap').val(periksa.no_rawat)
-                        $('.pasien_inap').val(periksa.no_rkm_medis + ' - ' + periksa.pasien.nm_pasien + ' (' + periksa.umurdaftar + ' ' + periksa.sttsumur + ' )');
-                        $('.tgl_lahir_inap').val(splitTanggal(periksa.pasien.tgl_lahir));
-                        $('.no_kartu_inap').val(periksa.pasien.no_peserta);
-                        $('.no_surat_inap').val(val.no_surat);
-
-                        if (Object.keys(val).length > 0) {
-                            $('.tgl_surat_inap').val(splitTanggal(val.tgl_surat));
-                            $('.tgl_inap').val(splitTanggal(val.tgl_rencana));
-                            $('.kode_dokter_inap').val(val.kd_dokter_bpjs);
-                            $('.nama_dokter_inap').val(val.nm_dokter_bpjs);
-                            $('.diagnosa_inap').val(val.diagnosa);
-                            $('.diagnosa_inap').attr('disabled', true);
-                            $('.tgl_inap').attr('disabled', true);
-                            $('.btn-buat-spri').css('display', 'none')
-                            $('.kode_poli_inap').val(val.kd_poli_bpjs);
-                            $('.nama_poli_inap').val(val.nm_poli_bpjs);
-                        } else {
-                            $('.diagnosa_inap').attr('disabled', false);
-                            $('.tgl_inap').attr('disabled', false);
-                            $('.btn-buat-spri').css('display', 'inline')
-                            $('.tgl_surat_inap').val("{{ date('d-m-Y') }}");
-                            $('.tgl_inap').val("{{ date('d-m-Y') }}");
-                            getPoliBpjs(periksa.kd_poli).done((response) => {
-                                $('.kode_poli_inap').val(response.kd_poli_bpjs)
-                                $('.nama_poli_inap').val(response.nm_poli_bpjs)
-                            })
-                            getDokter(periksa.kd_dokter).done((response) => {
-                                $.map(response, (data) => {
-                                    $('.kode_dokter_inap').val(data.mapping_dokter.kd_dokter_bpjs);
-                                    $('.nama_dokter_inap').val(data.nm_dokter);
-                                })
-                            })
-                        }
-
-                    })
-                })
-            })
-            $('#modalSpri').modal('show');
+        function rawatInap(noRawatOrRm, tanggal) {
+            if (noRawatOrRm && noRawatOrRm.includes('/')) {
+                showModalSpri(noRawatOrRm);
+            } else if (tanggal) {
+                getPasienPeriksa(noRawatOrRm, tanggal).done((response) => {
+                    if (response && response.length > 0) {
+                        showModalSpri(response[0].no_rawat);
+                    } else {
+                        swal.fire('Informasi', 'Data kunjungan pasien tidak ditemukan.', 'info');
+                    }
+                }).fail((xhr) => {
+                    alertErrorAjax(xhr);
+                });
+            } else {
+                showModalSpri(noRawatOrRm);
+            }
         }
 
         $('.diagnosa_inap').on('keyup', function() {

@@ -633,15 +633,7 @@
             const kd_dokter = formInfoPasienResep.find('[name=kd_dokter]').val();
 
             if (!no_resep) {
-                $.post(`/erm/resep/create`, {
-                    _token: "{{ csrf_token() }}",
-                    kd_dokter: kd_dokter,
-                    no_rawat: no_rawat,
-                }).done((response) => {
-                    $('.no_resep').val(response.no_resep)
-                    $('.noResepText').text(response.no_resep)
-                    $('.labelTglResep').text(`${formatTanggal(response.tgl_peresepan)} ${response.jam_peresepan}`);
-                })
+                createResep(kd_dokter, no_rawat)
             }
 
             html = '<tr>';

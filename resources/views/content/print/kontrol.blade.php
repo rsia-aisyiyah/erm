@@ -4,7 +4,11 @@
     <table>
         <tr>
             <td width="180px" style="padding-right: 10px">
-                <img src="{{ asset('img/logo_bpjs.png') }}" alt="" width="200px" style="margin-top:15px" />
+                @php
+                    $logoBpjsPath = public_path('img/logo_bpjs.png');
+                    $logoBpjs = file_exists($logoBpjsPath) ? 'data:image/png;base64,' . base64_encode(file_get_contents($logoBpjsPath)) : asset('img/logo_bpjs.png');
+                @endphp
+                <img src="{{ $logoBpjs }}" alt="" width="200px" style="margin-top:15px" />
             </td>
             <td style="text-align: center" width="275px">
                 <h4 class="" style="margin-bottom:0px;">SURAT RENCANA KONTROL</h4>

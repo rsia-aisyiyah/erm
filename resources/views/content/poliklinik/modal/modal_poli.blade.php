@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalPoli" tabindex="-1" aria-labelledby="modalPoli" aria-hidden="true">
+<div class="modal fade" id="modalPoli" tabindex="-1" aria-labelledby="modalPoli" aria-hidden="true" style="z-index: 1080 !important;">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
         <div class="modal-content">
             <div class="modal-header">

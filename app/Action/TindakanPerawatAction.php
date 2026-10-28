@@ -46,7 +46,7 @@ class TindakanPerawatAction
 		DB::transaction(function () use ($data, &$tindakan) {
 			try {
 				$tindakan = $this->deleteTindakanPerawat($data);
-				$this->jurnalService->revertJurnalTindakanRalan($data, $tindakan);
+				$this->jurnalService->revertJurnalTindakan($data, $tindakan);
 
 			} catch (Exception $e) {
 				DB::rollBack();

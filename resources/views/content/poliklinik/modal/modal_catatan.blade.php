@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalCatatan" tabindex="-1" aria-labelledby="modalCatatan" aria-hidden="true" style="background-color: #00000085;">
+<div class="modal fade" id="modalCatatan" tabindex="-1" aria-labelledby="modalCatatan" aria-hidden="true" style="background-color: #00000085; z-index: 1070 !important;">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="border-radius:0px;background-color: #ffd900;color:#000000">

@@ -15,7 +15,7 @@
                 </div>
 
                 <button type="button" class="btn btn-sm btn-primary" id="btnCreateTindakanDokterRanap"
-                        onclick="createTindakanDokterRanap()"><i class="bi bi-floppy"></i> Buat
+                        onclick="createTindakanDokterRanap()"><i class="bi bi-floppy"></i> Simpan
                 </button>
             </div>
         </div>

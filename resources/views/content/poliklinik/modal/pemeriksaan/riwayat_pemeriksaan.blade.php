@@ -435,8 +435,12 @@
 
         btnTabRiwayatPemeriksaan.on('shown.bs.tab', function(e, x, y) {
             const no_rkm_medis = formSoapPoli.find('input[name=no_rkm_medis]').val();
-            setRiwayatPemeriksaan(no_rkm_medis)
-            $('.btn-soap').addClass('d-none')
+            setRiwayatPemeriksaan(no_rkm_medis);
+            if (typeof updateActionButtons === 'function') {
+                updateActionButtons('');
+            } else {
+                $('.btnAction').addClass('d-none');
+            }
         })
 
 

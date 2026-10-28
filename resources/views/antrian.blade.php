@@ -152,57 +152,175 @@
     </div>
 
 
-    {{-- <script src="https://code.responsivevoice.org/responsivevoice.js?key=bJDDvdyZ"></script> --}}
     <script>
+        let activeAudio = null;
+
+        function putarSpeechSynthesis(text) {
+            try {
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.resume();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = 'id-ID';
+                window.speechSynthesis.speak(utter);
+            } catch (e) {}
+        }
+
         function ngomong(text) {
-            if (text.trim() === "") {
-                console.warn("Teks kosong, tidak ada yang bisa diucapkan.");
+            console.log("[TTS] ngomong() dipanggil:", text);
+            if (!text || text.trim() === "") {
+                console.warn("[TTS] Teks kosong!");
                 return;
             }
 
-            const utterance = new SpeechSynthesisUtterance(text);
-
-            // Tunggu sampai voices tersedia
-            const setVoiceAndSpeak = () => {
-                const voices = window.speechSynthesis.getVoices();
-                console.log("Jumlah suara tersedia:", voices.length);
-
-                // Pilih suara Indonesia jika ada
-                const indoVoice = voices.find(voice => voice.lang.includes("id"));
-                if (indoVoice) {
-                    utterance.voice = indoVoice;
+            try {
+                if (activeAudio) {
+                    activeAudio.pause();
+                    activeAudio = null;
                 }
 
-                window.speechSynthesis.speak(utterance);
-                // Hindari dipanggil ulang
-                window.speechSynthesis.onvoiceschanged = null;
-            };
+                const audioUrl = "{{ url('/antrian/suara') }}?text=" + encodeURIComponent(text);
+                activeAudio = new Audio(audioUrl);
 
-            if (window.speechSynthesis.getVoices().length === 0) {
-                window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
-            } else {
-                setVoiceAndSpeak();
+                activeAudio.onplay = function() {
+                    console.log("[TTS] Audio MP3 mulai bersuara di speaker!");
+                };
+
+                activeAudio.onended = function() {
+                    console.log("[TTS] Audio MP3 selesai diputar.");
+                    activeAudio = null;
+                };
+
+                activeAudio.onerror = function(err) {
+                    console.error("[TTS] Gagal memuat Audio MP3, fallback ke SpeechSynthesis:", err);
+                    putarSpeechSynthesis(text);
+                };
+
+                const playPromise = activeAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(err) {
+                        console.warn("[TTS] Audio play diblokir oleh browser (butuh klik user):", err);
+                        $('#start-modal').show();
+                    });
+                }
+            } catch (err) {
+                console.error("[TTS] Error saat memutar audio:", err);
+                putarSpeechSynthesis(text);
             }
         }
 
+        function highlightResep(no_resep) {
+            if (!no_resep) return;
+
+            $("tr").each(function() {
+                if ($(this).attr('id') != no_resep) {
+                    $(this).removeClass("bg-yellow-400 bg-yellow-300");
+                }
+            });
+
+            var element = document.getElementById(no_resep);
+            if (element) {
+                $("#" + no_resep).addClass("bg-yellow-400");
+                element.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                    inline: "nearest"
+                });
+            }
+
+            var nap = document.getElementById("name_active_position");
+            if (nap && nap.scrollHeight > nap.clientHeight) {
+                nap.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                    inline: "nearest"
+                });
+            }
+        }
+
+        let lastProcessedTrigger = '';
+
+        function prosesPanggilanSekarang() {
+            var currentTrigger = localStorage.getItem('panggil_trigger') || '';
+            var no_resep = localStorage.getItem('no_panggil') || '-';
+            var raw_nm_pasien = localStorage.getItem('nm_pasien') || '';
+
+            console.log("[ANTRIAN] prosesPanggilanSekarang dipicu:", {
+                currentTrigger: currentTrigger,
+                lastProcessedTrigger: lastProcessedTrigger,
+                no_resep: no_resep,
+                nm_pasien: raw_nm_pasien
+            });
+
+            if (currentTrigger && currentTrigger === lastProcessedTrigger) {
+                console.log("[ANTRIAN] Trigger sudah pernah diproses sebelumnya, skip.");
+                return;
+            }
+            if (currentTrigger) {
+                lastProcessedTrigger = currentTrigger;
+            }
+
+            $("#no_resep").html(no_resep);
+            $("#nm_pasien").html(raw_nm_pasien);
+
+            highlightResep(no_resep);
+
+            if (raw_nm_pasien.trim() !== "") {
+                var splitname = raw_nm_pasien.toLowerCase().split(",");
+                var namaPanggil = splitname[0].trim();
+                ngomong(namaPanggil + ". Silahkan menuju loket penyerahan obat");
+            } else {
+                console.warn("[ANTRIAN] Nama pasien kosong!");
+            }
+        }
+
+        // Listener Instan Native Storage Event (Real-time 0 Detik Antar Tab)
+        window.addEventListener('storage', function(e) {
+            console.log("[ANTRIAN] Storage Event terdeteksi:", e.key, e.newValue);
+            if (e.key === 'panggil_trigger' || e.key === 'panggil' || e.key === 'no_panggil') {
+                prosesPanggilanSekarang();
+            } else if (e.key === 'resep_selesai_trigger') {
+                getData();
+            }
+        });
+
         $(document).ready(function() {
-            // Check if "start" has been clicked before
-            if (!sessionStorage.getItem('app_started')) {
-                $('#start-modal').removeClass('hidden');
+            // Pre-load voices
+            if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+            }
+
+            // Tampilkan modal jika browser belum memiliki izin aktivasi suara dari user
+            if (!navigator.userActivation || !navigator.userActivation.hasBeenActive) {
+                $('#start-modal').show();
+            } else {
+                $('#start-modal').hide();
             }
 
             // Handle Start button click
             $('#start-button').on('click', function () {
                 sessionStorage.setItem('app_started', 'true');
-                $('#start-modal').addClass('hidden');
+                $('#start-modal').hide();
+
+                try {
+                    window.speechSynthesis.resume();
+                } catch(e) {}
                 
                 ngomong("Selamat datang di loket antrian farmasi. Silahkan tunggu panggilan nomor resep anda.");
             });
 
+            // Pastikan audio selalu di-resume saat user mengklik halaman antrian
+            $(document).on('click', function() {
+                try {
+                    if (window.speechSynthesis.paused) {
+                        window.speechSynthesis.resume();
+                    }
+                } catch(e) {}
+            });
+
             getData();
 
-            $("#no_resep").html(localStorage.getItem('no_panggil'));
-            $("#nm_pasien").html(localStorage.getItem('nm_pasien'));
+            $("#no_resep").html(localStorage.getItem('no_panggil') || '-');
+            $("#nm_pasien").html(localStorage.getItem('nm_pasien') || '');
 
             setInterval(() => {
                 getData();
@@ -212,54 +330,16 @@
             setInterval(() => {
                 appendTglWaktu();
             }, 1000);
-        });
 
-        setInterval(() => {
-            if (localStorage.getItem('panggil') == "yes") {
-                $("#no_resep").html(localStorage.getItem('no_panggil'));
-                $("#nm_pasien").html(localStorage.getItem('nm_pasien'));
-
-                setTimeout(() => {
-                    var nm_pasien = localStorage.getItem('nm_pasien').toLowerCase();
-                    var splitname = nm_pasien.split(",");
-
-                    // Panggil fungsi ngomong setelah suara di-load
-                    ngomong(splitname[0] + ". silahkan menuju loket penyerahan obat");
-                }, 1000);
-            }
-
-            $("tr").each(function() {
-                if ($(this).attr('id') != localStorage.getItem('no_panggil')) {
-                    $(this).removeClass("bg-yellow-400");
+            // Fallback interval (1 detik) - hanya aktif jika ada panggilan aktif baru
+            setInterval(() => {
+                var trigger = localStorage.getItem('panggil_trigger');
+                var panggilStatus = localStorage.getItem('panggil');
+                if (panggilStatus === 'yes' && trigger && trigger !== lastProcessedTrigger) {
+                    prosesPanggilanSekarang();
                 }
-            });
-
-
-            var no_resep = localStorage.getItem('no_panggil');
-            var element = document.getElementById(no_resep);
-
-            if (element == null) {
-                return;
-            }
-
-            $("#" + no_resep).addClass("bg-yellow-400");
-
-            element.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-                inline: "nearest"
-            });
-
-            // if name_active_position can be scroll, then scroll to center position
-            var nap = document.getElementById("name_active_position");
-            if (nap.scrollHeight > nap.clientHeight) {
-                nap.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                    inline: "nearest"
-                });
-            }
-        }, 3000);
+            }, 1000);
+        });
 
         function getData() {
             $.ajax({

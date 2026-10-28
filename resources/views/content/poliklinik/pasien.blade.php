@@ -115,7 +115,7 @@
     @include('content.ranap.modal.modal_riwayat')
     @include('content.poliklinik.modal.modal_askep')
     @include('content.poliklinik.modal.modal_askep_anak')
-    @include('content.poliklinik.modal.modal_resep')
+    {{-- @include('content.poliklinik.modal.modal_resep') --}}
     @include('content.poliklinik.modal.modal_skrj')
     @include('content.poliklinik.modal.modal_spri')
     @include('content.poliklinik.modal.modal_rujukan_keluar')
@@ -534,22 +534,25 @@
                     //     window.labAlertCache = {};
                     // }
                     //
+                    window.labAlertCache = window.labAlertCache || {};
                     const noRkmMedis = data.no_rkm_medis;
-                    //
-                    // if (window.labAlertCache[noRkmMedis]) {
-                    //     renderInfectionAlertRow(alertContainer, window.labAlertCache[noRkmMedis], noRkmMedis);
-                    //     return;
-                    // }
 
-                    $.get(`/erm/lab/riwayat-hasil/${data.no_rkm_medis}`)
-                        .done(response => {
-                            // window.labAlertCache[data.no_rkm_medis] = response.infection_alert;
-                            // renderInfectionAlertRow(alertContainer, response.infection_alert, noRkmMedis);
-                            if (response.infection_alert?.highest_risk === 'HIGH') {
-                                $(`.pasien-${data.no_reg}`)
-                                    .addClass('text-danger fw-bold').attr('onclick', `showLabInfectionAlert('${noRkmMedis}')`);
-                            }
-                        });
+                    if (window.labAlertCache[noRkmMedis] !== undefined) {
+                        if (window.labAlertCache[noRkmMedis] === 'HIGH') {
+                            $(`.pasien-${data.no_reg}`)
+                                .addClass('text-danger fw-bold').attr('onclick', `showLabInfectionAlert('${noRkmMedis}')`);
+                        }
+                    } else {
+                        $.get(`/erm/lab/riwayat-hasil/${data.no_rkm_medis}`)
+                            .done(response => {
+                                const risk = response.infection_alert?.highest_risk || 'NONE';
+                                window.labAlertCache[noRkmMedis] = risk;
+                                if (risk === 'HIGH') {
+                                    $(`.pasien-${data.no_reg}`)
+                                        .addClass('text-danger fw-bold').attr('onclick', `showLabInfectionAlert('${noRkmMedis}')`);
+                                }
+                            });
+                    }
                 },
                 columns: [{
                     data: null,
@@ -607,7 +610,7 @@
                             $('#btn-rujuk-' + no_rawat).text('SEP Sudah Terbit');
                             html = '<ul class="dropdown-menu" style="font-size:12px">'
                             html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="kontrolUlang(\'' + row.sep.no_sep + '\')">Kontrol Ulang / SKRJ</a></li>'
-                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rkm_medis + '\', \'' + row.tgl_registrasi + '\')">Perintah Rawat Inap / SPRI</a></li>'
+                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rawat + '\')">Perintah Rawat Inap / SPRI</a></li>'
                             html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rujukanKeluar(\'' + row.sep.no_sep + '\')">Rujukan Keluar</a></li>'
                             html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
                             html += '</ul>'
@@ -626,7 +629,7 @@
                         } else if (!row.sep && row.kd_pj != "A03") {
                             $('#btn-rujuk-' + no_rawat).addClass('btn btn-danger dropdown-toggle');
                             html = '<ul class="dropdown-menu" style="font-size:12px">'
-                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rkm_medis + '\', \'' + row.tgl_registrasi + '\')">Perintah Rawat Inap / SPRI</a></li>'
+                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rawat + '\')">Perintah Rawat Inap / SPRI</a></li>'
                             html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
                             html += '</ul>'
                             $('#dropdown-sep-' + no_rawat).append(html)
@@ -719,17 +722,20 @@
                             $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', true);
                         }
 
-                        $.map(row.pasien?.reg_periksa, function (data) {
-                            if (data.kd_poli == 'P001' || data.kd_poli == 'P007' || data.kd_poli == 'P009') {
-                                if (Object.keys(data.askep_ralan_kebidanan).length > 0) {
-                                    $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1 btn-width-poliklinik')
-                                }
-                            } else if (data.kd_poli == 'P008' || data.kd_poli == 'P003') {
-                                if (Object.keys(data.askep_ralan_anak).length > 0) {
-                                    $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1 btn-width-poliklinik')
-                                }
+                        const hasAskepKebidanan = (row.askep_ralan_kebidanan && row.askep_ralan_kebidanan.length > 0) ||
+                                                  (row.pasien?.askep_ralan_kebidanan && row.pasien.askep_ralan_kebidanan.length > 0);
+                        const hasAskepAnak = (row.askep_ralan_anak && row.askep_ralan_anak.length > 0) ||
+                                             (row.pasien?.askep_ralan_anak && row.pasien.askep_ralan_anak.length > 0);
+
+                        if (row.kd_poli == 'P001' || row.kd_poli == 'P007' || row.kd_poli == 'P009') {
+                            if (hasAskepKebidanan) {
+                                $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1 btn-width-poliklinik')
                             }
-                        })
+                        } else if (row.kd_poli == 'P008' || row.kd_poli == 'P003') {
+                            if (hasAskepAnak) {
+                                $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1 btn-width-poliklinik')
+                            }
+                        }
 
                         return `<div class="d-flex flex-column">${html}</div>`;
                     },

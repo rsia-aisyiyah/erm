@@ -43,7 +43,11 @@ class AskepUgdController extends Controller
 
     public function getMaster(Request $request)
     {
-        $master = MasterMasalahAskepUgd::with('masterRencana')->orderBy('kode_masalah', 'asc')->get();
+        $master = MasterMasalahAskepUgd::where('status', '1')
+            ->with('masterRencana')
+            ->orderBy('urutan', 'asc')
+            ->get();
+
         return response()->json($master);
     }
 

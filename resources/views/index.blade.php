@@ -12,7 +12,10 @@
             <img src="/erm/public/img/logo.png" alt="Logo" style="max-width: 30px" />
             {{ config('app.name') }}
         </a>
-        <button style="border-radius:0px" class="navbar-toggler position-absolute d-md-none collapsed" type="button"
+        <div class="d-flex align-items-center ms-auto pe-3">
+            @include('layout.notifikasi_respon_farmasi')
+        </div>
+        <button style="border-radius:0px" class="navbar-toggler position-relative d-md-none collapsed ms-2 me-3" type="button"
             data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
             aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -52,8 +55,7 @@
     @include('content.notifikasi')
     @include('content.ranap.modal.modal_riwayat_infeksi')
     @include('content.poliklinik.modal.modal_riwayat_persalinan')
-
-
+    @include('content.poliklinik.modal.pemeriksaan.modal_satusehat_rme')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {{--
@@ -61,6 +63,110 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>
+    <script>
+        // Mencegah infinite focus loop pada modal bertumpuk (stacked modals) di Bootstrap 5
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            try {
+                Object.defineProperty(bootstrap.Modal, 'Default', {
+                    get: function() {
+                        return {
+                            backdrop: true,
+                            focus: false,
+                            keyboard: true
+                        };
+                    }
+                });
+            } catch (err) {}
+
+            bootstrap.Modal.prototype._initializeFocusTrap = function() {
+                return {
+                    activate: function() {},
+                    deactivate: function() {},
+                    _handleFocusin: function() {},
+                    _handleKeydown: function() {}
+                };
+            };
+        }
+        if (typeof jQuery !== 'undefined' && jQuery.fn && jQuery.fn.modal && jQuery.fn.modal.Constructor) {
+            if (jQuery.fn.modal.Constructor.prototype) {
+                jQuery.fn.modal.Constructor.prototype._initializeFocusTrap = function() {
+                    return {
+                        activate: function() {},
+                        deactivate: function() {},
+                        _handleFocusin: function() {},
+                        _handleKeydown: function() {}
+                    };
+                };
+                jQuery.fn.modal.Constructor.prototype._enforceFocus = function() {};
+                jQuery.fn.modal.Constructor.prototype.enforceFocus = function() {};
+            }
+        }
+
+        // Matikan event listener focusin focus-trap di document saat modal ditampilkan
+        document.addEventListener('show.bs.modal', function() {
+            if (typeof jQuery !== 'undefined') {
+                $(document).off('focusin.bs.focustrap focusin.bs.modal');
+            }
+        }, true);
+
+        // Capture phase focusin: jangan biarkan bubbling focus event memicu loop saat modal aktif
+        window.addEventListener('focusin', function(e) {
+            if (document.querySelectorAll('.modal.show').length > 1) {
+                e.stopImmediatePropagation();
+            }
+        }, true);
+
+        // Global Stacked Modal Manager: Menangani z-index dan backdrop untuk modal bertumpuk di seluruh modul
+        function adjustModalZIndex() {
+            if (typeof jQuery === 'undefined') return;
+            const openModals = $('.modal.show');
+            const backdrops = $('.modal-backdrop');
+            const numModals = openModals.length;
+            const numBackdrops = backdrops.length;
+
+            openModals.each(function(index) {
+                const modalZ = 1055 + (index * 20);
+                this.style.setProperty('z-index', modalZ, 'important');
+            });
+
+            backdrops.each(function(bIndex) {
+                const modalIndex = numModals - numBackdrops + bIndex;
+                const targetModalIndex = modalIndex >= 0 ? modalIndex : bIndex;
+                const backdropZ = 1050 + (targetModalIndex * 20);
+                this.style.setProperty('z-index', backdropZ, 'important');
+            });
+        }
+
+        if (typeof jQuery !== 'undefined') {
+            $(document).on('show.bs.modal', '.modal', function() {
+                const numOpen = $('.modal.show').not(this).length;
+                const modalZ = 1055 + (numOpen * 20);
+                this.style.setProperty('z-index', modalZ, 'important');
+                setTimeout(adjustModalZIndex, 0);
+            });
+
+            $(document).on('shown.bs.modal', '.modal', function() {
+                adjustModalZIndex();
+            });
+
+            $(document).on('hidden.bs.modal', '.modal', function() {
+                this.style.removeProperty('z-index');
+                const openModals = $('.modal.show');
+                const backdrops = $('.modal-backdrop');
+
+                if (openModals.length > 0) {
+                    $('body').addClass('modal-open');
+                    if (backdrops.length > openModals.length) {
+                        backdrops.slice(openModals.length).remove();
+                    }
+                    adjustModalZIndex();
+                } else {
+                    $('.modal-backdrop').remove();
+                    $('body').removeClass('modal-open').css('overflow', '');
+                }
+            });
+        }
+    </script>
     {{--
     <script src="{{ asset('js/select2/select2.full.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -114,7 +220,12 @@
             }
         });
 
-        window.onerror = function (msg, url, linenumber) {
+        window.onerror = function (msg, url, linenumber, colno, error) {
+            console.error('GLOBAL JS ERROR:', msg, 'at', url, ':', linenumber, error);
+            if (msg && msg.toString().toLowerCase().includes('call stack')) {
+                console.error('Call stack error suppressed from SweetAlert loop:', error ? error.stack : msg);
+                return true;
+            }
             const messageError = 'Error message : ' + msg + '<br/>Muat ulang halaman ?';
             Swal.fire({
                 title: 'Terjadi Masalah!',
@@ -316,6 +427,11 @@
 
             // 4. Gabungkan kembali dengan jam jika jamnya ada
             return jamSaja ? `${tglBaru} ${jamSaja}` : tglBaru;
+        }
+
+        function formatRupiah(angka) {
+            const num = parseFloat(angka) || 0;
+            return 'Rp ' + num.toLocaleString('id-ID');
         }
 
         function hitungLamaHari(d1, d2) {
@@ -644,7 +760,16 @@
         }
 
         function formatTanggal(oldTgl) {
+            if (!oldTgl || oldTgl === '0000-00-00' || oldTgl === '0000-00-00 00:00:00') {
+                return '-';
+            }
+            if (typeof oldTgl !== 'string') {
+                oldTgl = String(oldTgl);
+            }
             let t = new Date(oldTgl);
+            if (isNaN(t.getTime())) {
+                return oldTgl;
+            }
             let bulan = '';
             switch ((t.getMonth() + 1)) {
                 case 1:
@@ -691,7 +816,7 @@
 
                 return t.getDate() + ' ' + bulan + ' ' + t.getFullYear() + ' ' + oldTgl.split(' ')[1];
             }
-            return tanggal = t.getDate() + ' ' + bulan + ' ' + t.getFullYear();
+            return t.getDate() + ' ' + bulan + ' ' + t.getFullYear();
         }
 
         function isKosong(x, satuan = '') {
@@ -1378,10 +1503,11 @@
 
 
 
-        function getRiwayatPasien(no_rkm_medis, sortir = '') {
+        function getRiwayatPasien(no_rkm_medis, sortir = '', mode = 'ringkas') {
             const riwayat = $.get('/erm/registrasi/riwayat', {
                 no_rkm_medis: no_rkm_medis,
-                sortir: sortir
+                sortir: sortir,
+                mode: mode
             })
             return riwayat;
         }

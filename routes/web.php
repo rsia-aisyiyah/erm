@@ -38,6 +38,7 @@ use App\Http\Controllers\MasterMasalahKeperawatanController;
 use App\Http\Controllers\MasterRencanaKeperawatanController;
 use App\Http\Controllers\MonitoringCairanPasienController;
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\RsiaRencanaKontrolRalanController;
 use App\Http\Controllers\PemeriksaanRalanController;
 use App\Http\Controllers\PemeriksaanRanapController;
 use App\Http\Controllers\PenilaianMedisKebidananController;
@@ -87,6 +88,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
+Route::get('/antrian/suara', [AntreanController::class, 'getSuara']);
 
 Route::get('/login', function () {
 	return view('content.auth.login');
@@ -165,6 +167,9 @@ Route::middleware('auth')->group(function () {
 	Route::post('/pemeriksaan/simpan', [PemeriksaanRalanController::class, 'simpan']);
 	Route::post('/pemeriksaan/edit', [PemeriksaanRalanController::class, 'edit']);
 	Route::delete('/pemeriksaan/delete', [PemeriksaanRalanController::class, 'delete']);
+
+	Route::get('/rencana-kontrol/ralan', [RsiaRencanaKontrolRalanController::class, 'get']);
+	Route::post('/rencana-kontrol/ralan/simpan', [RsiaRencanaKontrolRalanController::class, 'simpan']);
 
 	Route::get('/soap/get', [PemeriksaanRanapController::class, 'ambilPemeriksaan']);
 	Route::get('/soap/get/table', [PemeriksaanRanapController::class, 'getDataTable']);
@@ -262,7 +267,7 @@ Route::middleware('auth')->group(function () {
 
 	Route::get('obat/', [DataBarangController::class, 'index']);
 	Route::get('obat/get/{kode_brng}', [DataBarangController::class, 'get']);
-	Route::get('obat/cari', [DataBarangController::class, 'cari']);
+	Route::get('obat/cari', [DataBarangController::class, 'cari'])->name('obat.cari');
 
 	Route::get('/resep', [ResepObatController::class, 'index']);
 	Route::post('/resep/create', [ResepObatController::class, 'create']);
@@ -271,8 +276,69 @@ Route::middleware('auth')->group(function () {
 	Route::get('/resep/get/rawat/{no_rawat}', [ResepObatController::class, 'getByNoRawat']);
 	Route::get('/resep/ambil/sekarang', [ResepObatController::class, 'ambilSekarang']);
 	Route::get('/resep/riwayat/{no_rkm_medis}', [ResepObatController::class, 'getByNoRm']);
-	Route::get('/resep/get/nomor/akhir', [ResepObatController::class, 'getLast']);
 	Route::post('/resep/copy/{noResep}', [ResepObatController::class, 'copyResep']);
+	Route::get('/resep/etiket/{no_resep?}', [ResepObatController::class, 'printEtiket'])->name('resep.etiket');
+	Route::get('/resep/etiket-items/{no_resep}', [ResepObatController::class, 'getEtiketItems'])->name('resep.etiket-items');
+
+	// Telaah Farmasi (Telaah Resep & Verifikasi Obat DlgResepObat)
+	Route::get('/farmasi/telaah/{no_resep}', [\App\Http\Controllers\TelaahFarmasiController::class, 'get'])->name('farmasi.telaah.get');
+	Route::post('/farmasi/telaah', [\App\Http\Controllers\TelaahFarmasiController::class, 'simpan'])->name('farmasi.telaah.simpan');
+
+	// Dashboard Farmasi Ranap (Permintaan Stok Pasien & Substitusi)
+	Route::get('/farmasi/permintaan-ranap/data', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'getFarmasiData'])->name('farmasi.permintaan-ranap.data');
+	Route::post('/farmasi/permintaan-ranap/substitusi', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'substitusi'])->name('farmasi.permintaan-ranap.substitusi');
+
+	// Validasi & Manajemen Item Resep Ralan & Ranap Farmasi
+	Route::get('/farmasi/resep-ranap/data', [ResepObatController::class, 'getResepRanap'])->name('farmasi.resep-ranap.data');
+	Route::get('/farmasi/resep-ralan/detail/{no_resep}', [ResepObatController::class, 'getDetailRalan'])->name('farmasi.resep-ralan.detail');
+	Route::post('/farmasi/resep-ralan/tambah-obat', [ResepObatController::class, 'tambahObatRalan'])->name('farmasi.resep-ralan.tambah-obat');
+	Route::post('/farmasi/resep-ralan/ubah-obat', [ResepObatController::class, 'ubahObatRalan'])->name('farmasi.resep-ralan.ubah-obat');
+	Route::delete('/farmasi/resep-ralan/hapus-obat', [ResepObatController::class, 'hapusObatRalan'])->name('farmasi.resep-ralan.hapus-obat');
+	Route::post('/farmasi/resep-ralan/tambah-racikan', [ResepObatController::class, 'tambahRacikanRalan'])->name('farmasi.resep-ralan.tambah-racikan');
+	Route::post('/farmasi/resep-ralan/ubah-racikan', [ResepObatController::class, 'ubahRacikanRalan'])->name('farmasi.resep-ralan.ubah-racikan');
+	Route::delete('/farmasi/resep-ralan/hapus-racikan', [ResepObatController::class, 'hapusRacikanRalan'])->name('farmasi.resep-ralan.hapus-racikan');
+	Route::post('/farmasi/resep-ralan/tambah-item-racikan', [ResepObatController::class, 'tambahItemRacikanRalan'])->name('farmasi.resep-ralan.tambah-item-racikan');
+	Route::post('/farmasi/resep-ralan/ubah-item-racikan', [ResepObatController::class, 'ubahItemRacikanRalan'])->name('farmasi.resep-ralan.ubah-item-racikan');
+	Route::delete('/farmasi/resep-ralan/hapus-item-racikan', [ResepObatController::class, 'hapusItemRacikanRalan'])->name('farmasi.resep-ralan.hapus-item-racikan');
+	Route::post('/farmasi/resep-ralan/validasi', [ResepObatController::class, 'validasiRalan'])->name('farmasi.resep-ralan.validasi');
+
+	// Permintaan Resep Pulang Farmasi (Sesuai Khanza DlgDaftarPermintaanResep Tab 4)
+	Route::get('/farmasi/resep-pulang/permintaan', [ResepPulangController::class, 'getPermintaan'])->name('farmasi.resep-pulang.permintaan');
+	Route::get('/farmasi/resep-pulang/detail/{noPermintaan}', [ResepPulangController::class, 'getDetailPermintaan'])->name('farmasi.resep-pulang.detail');
+	Route::post('/farmasi/resep-pulang/validasi', [ResepPulangController::class, 'validasiPermintaan'])->name('farmasi.resep-pulang.validasi');
+	Route::post('/farmasi/resep-pulang/simpan-item', [ResepPulangController::class, 'simpanItemPermintaan'])->name('farmasi.resep-pulang.simpan-item');
+	Route::delete('/farmasi/resep-pulang/hapus-item', [ResepPulangController::class, 'hapusItemPermintaan'])->name('farmasi.resep-pulang.hapus-item');
+	Route::delete('/farmasi/resep-pulang/hapus-racikan', [ResepPulangController::class, 'hapusRacikanPermintaan'])->name('farmasi.resep-pulang.hapus-racikan');
+	Route::post('/farmasi/resep-pulang/ubah-aturan-pakai', [ResepPulangController::class, 'ubahAturanPakai'])->name('farmasi.resep-pulang.ubah-aturan-pakai');
+	Route::get('/farmasi/resep-pulang/etiket/{noPermintaan?}', [ResepPulangController::class, 'printEtiket'])->name('farmasi.resep-pulang.etiket');
+	Route::get('/farmasi/resep-pulang/etiket-items/{noPermintaan}', [ResepPulangController::class, 'getEtiketItems'])->name('farmasi.resep-pulang.etiket-items');
+
+	// Permintaan Resep Pulang dari Rawat Inap (Sesuai Khanza DlgPermintaanResepPulang)
+	Route::get('/resep-pulang/nomor', [ResepPulangController::class, 'getNomorPermintaan'])->name('resep-pulang.nomor');
+	Route::post('/resep-pulang/simpan', [ResepPulangController::class, 'simpanPermintaan'])->name('resep-pulang.simpan');
+	Route::get('/resep-pulang/riwayat/{noRawat}', [ResepPulangController::class, 'getRiwayatPasien'])->name('resep-pulang.riwayat');
+	Route::delete('/resep-pulang/batal/{noPermintaan}', [ResepPulangController::class, 'batalPermintaan'])->name('resep-pulang.batal');
+
+	// Retur Obat Rawat Inap (Pengajuan & Validasi Farmasi Sesuai Mode Approval)
+	Route::get('/retur-obat/riwayat-pemberian', [\App\Http\Controllers\ReturObatRanapController::class, 'getRiwayatObatPasien'])->name('retur-obat.riwayat-pemberian');
+	Route::post('/retur-obat/ajukan', [\App\Http\Controllers\ReturObatRanapController::class, 'simpanPengajuan'])->name('retur-obat.ajukan');
+	Route::get('/retur-obat/daftar', [\App\Http\Controllers\ReturObatRanapController::class, 'getDaftarPengajuan'])->name('retur-obat.daftar');
+	Route::get('/retur-obat/detail/{no_pengajuan}', [\App\Http\Controllers\ReturObatRanapController::class, 'getDetailPengajuan'])->name('retur-obat.detail');
+	Route::post('/retur-obat/batal/{no_pengajuan}', [\App\Http\Controllers\ReturObatRanapController::class, 'batalkanPengajuan'])->name('retur-obat.batal');
+	Route::post('/retur-obat/validasi/{no_pengajuan}', [\App\Http\Controllers\ReturObatRanapController::class, 'prosesValidasiFarmasi'])->name('retur-obat.validasi');
+	Route::get('/retur-obat/cetak/{no_pengajuan}', [\App\Http\Controllers\ReturObatRanapController::class, 'cetakSlip'])->name('retur-obat.cetak');
+
+	// Retur Sisa Stok Obat UDD (Logistik Fisik Loker Pasien -> Depo Farmasi Ranap)
+	Route::get('/retur-stok-udd/sisa', [\App\Http\Controllers\ReturStokUddController::class, 'getSisaStokPasien'])->name('retur-stok-udd.sisa');
+	Route::post('/retur-stok-udd/ajukan', [\App\Http\Controllers\ReturStokUddController::class, 'simpanPengajuan'])->name('retur-stok-udd.ajukan');
+	Route::get('/retur-stok-udd/daftar', [\App\Http\Controllers\ReturStokUddController::class, 'getDaftar'])->name('retur-stok-udd.daftar');
+	Route::get('/retur-stok-udd/detail/{no_retur_udd}', [\App\Http\Controllers\ReturStokUddController::class, 'getDetail'])->name('retur-stok-udd.detail');
+	Route::post('/retur-stok-udd/batal/{no_retur_udd}', [\App\Http\Controllers\ReturStokUddController::class, 'batalkan'])->name('retur-stok-udd.batal');
+	Route::post('/retur-stok-udd/terima/{no_retur_udd}', [\App\Http\Controllers\ReturStokUddController::class, 'prosesPenerimaan'])->name('retur-stok-udd.terima');
+	Route::get('/retur-stok-udd/cetak/{no_retur_udd}', [\App\Http\Controllers\ReturStokUddController::class, 'cetak'])->name('retur-stok-udd.cetak');
+
+	// Notifikasi Respon Balik Farmasi ke Rawat Inap / Orderer
+	Route::get('/notifikasi/respon-farmasi', [\App\Http\Controllers\NotifikasiFarmasiController::class, 'getResponFarmasi'])->name('notifikasi.respon-farmasi');
 
 	Route::get('/resep/obat/akhir', [ResepObatController::class, 'akhir']);
 	Route::get('/resep/obat/ambil', [ResepObatController::class, 'ambil']);
@@ -437,6 +503,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('ranap/asesmen-geriatri/print', [\App\Http\Controllers\AsesmenGeriatriController::class, 'print']);
 
 	Route::get('sep', [BridgingSepController::class, 'index'])->name('sep.index');
+	Route::get('sep/count', [BridgingSepController::class, 'countSummary'])->name('sep.count');
 	Route::get('sep/datatable', [BridgingSepController::class, 'dataTable'])->name('sep.datatable');
 	Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
 
@@ -482,6 +549,7 @@ require __DIR__ . '/partials/logs.php';
 require __DIR__ . '/partials/ranap.php';
 require __DIR__ . '/partials/hasil_kritis.php';
 require __DIR__ . '/partials/askep.php';
+require __DIR__ . '/partials/satusehat.php';
 
 // Route::get('/file', function () {
 // $file = Storage::disk('custom')->url('LOGO RSIA (2).png');

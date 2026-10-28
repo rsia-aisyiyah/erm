@@ -47,7 +47,7 @@ class TindakanDokterPerawatAction
 		DB::transaction(function () use ($data, &$tindakan) {
 			try {
 				$tindakan = $this->deleteTindakanPerawat($data);
-				$this->jurnalService->revertJurnalTindakanRalan($data, $tindakan);
+				$this->jurnalService->revertJurnalTindakan($data, $tindakan);
 
 			} catch (Exception $e) {
 				DB::rollBack();
@@ -89,6 +89,7 @@ class TindakanDokterPerawatAction
 				'jam_rawat' => date('H:i:s'),
 				'material' => $item['material'],
 				'bhp' => $item['bhp'],
+				'tarif_tindakandr' => $item['tarif_tindakandr'],
 				'tarif_tindakanpr' => $item['tarif_tindakanpr'],
 				'kso' => $item['kso'],
 				'menejemen' => $item['menejemen'],

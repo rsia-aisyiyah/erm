@@ -550,6 +550,7 @@
                 formInfoPasien.find('input[name=penjab]').val(penjab.png_jawab || '-');
                 formInfoPasien.find('input[name=no_kartu]').val(pasien.no_kartu || '-');
                 formInfoPasien.find('input[name=dokter_dpjp]').val(dokter.nm_dokter || '-');
+                formInfoPasien.find('input[name=kd_dokter_dpjp]').val(dokter.kd_dokter || response.kd_dokter || '');
 
                 const kamar = kamarInapList.filter((item) => {
                     return item.stts_pulang != 'Pindah Kamar'

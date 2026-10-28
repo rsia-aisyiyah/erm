@@ -3,19 +3,62 @@
 @section('contents')
     <div class="container-fluid">
         <div class="card">
-            <div class="card-header">SEP</div>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>SEP Terbit</span>
+                <span class="text-muted small" style="font-size: 11.5px;"><i class="bi bi-info-circle me-1"></i>Klik kanan pada baris tabel untuk memproses menu (SKRJ, SPRI, Rujuk Keluar)</span>
+            </div>
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-md-3">
+                <div class="row g-2 mb-3 align-items-center">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
                         <x-input-group class="input-group-sm">
                             <x-input class="form-control" id="start_date" name="start_date" value="{{ date('Y-m-d') }}" type="date"></x-input>
                             <x-input-group-text for="no_sep" label="s/d"></x-input-group-text>
                             <x-input class="form-control" id="end_date" name="end_date" value="{{ date('Y-m-d') }}" type="date"></x-input>
                         </x-input-group>
                     </div>
-                    <div class="col-md-3">
-                        <button id="filter" class="btn btn-primary btn-sm"><i class="bi bi-filter"></i> Filter</button>
+                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6">
+                        <select class="form-select form-select-sm" id="jnspelayanan" name="jnspelayanan">
+                            <option value="">Semua Pelayanan</option>
+                            <option value="2">Rawat Jalan</option>
+                            <option value="1">Rawat Inap</option>
+                        </select>
                     </div>
+                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                        <select class="form-select form-select-sm select2" id="kd_poli" name="kd_poli">
+                            <option value="">Semua Poliklinik</option>
+                            @foreach ($poliklinik as $p)
+                                <option value="{{ $p->kd_poli }}">{{ $p->nm_poli }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                        <select class="form-select form-select-sm select2" id="kd_dokter" name="kd_dokter">
+                            <option value="">Semua Dokter</option>
+                            @foreach ($dokter as $d)
+                                <option value="{{ $d->kd_dokter }}">{{ $d->nm_dokter }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-xl-2 col-lg-1 col-md-6 col-sm-12 d-flex gap-1">
+                        <button id="filter" class="btn btn-primary btn-sm flex-fill" title="Terapkan Filter"><i class="bi bi-filter"></i> Filter</button>
+                        <button id="btn-reset" class="btn btn-secondary btn-sm" title="Reset Filter"><i class="bi bi-arrow-clockwise"></i></button>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-3 p-2 bg-light rounded border">
+                    <span class="text-secondary small fw-bold me-1"><i class="bi bi-tag-fill me-1 text-primary"></i>Status Kontrol (SKU):</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-filter-skrj active py-0 px-2" data-status="" style="font-size: 12px; border-radius: 20px;">
+                        Semua SEP <span class="badge bg-secondary ms-1 count-total">0</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-primary btn-filter-skrj py-0 px-2" data-status="flagged" style="font-size: 12px; border-radius: 20px;">
+                        <i class="bi bi-calendar-event me-1"></i>Flagging Kontrol <span class="badge bg-primary ms-1 count-flagged">0</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-success btn-filter-skrj py-0 px-2" data-status="terbit" style="font-size: 12px; border-radius: 20px;">
+                        <i class="bi bi-check-circle me-1"></i>SKRJ Terbit <span class="badge bg-success ms-1 count-terbit">0</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-warning text-dark btn-filter-skrj py-0 px-2" data-status="belum" style="font-size: 12px; border-radius: 20px;">
+                        <i class="bi bi-exclamation-circle me-1"></i>Belum Terbit <span class="badge bg-warning text-dark ms-1 count-belum">0</span>
+                    </button>
                 </div>
 
                 <div class="table-responsive">
@@ -40,10 +83,31 @@
     <script>
         const start = $('#start_date');
         const end = $('#end_date');
+        const jnsPelayanan = $('#jnspelayanan');
+        const kdPoli = $('#kd_poli');
+        const kdDokter = $('#kd_dokter');
         const filter = $('#filter');
+        const btnReset = $('#btn-reset');
+        let statusSkrj = '';
 
-        // $(document).ready(function() {
+        $('#kd_poli, #kd_dokter').select2({
+            width: '100%'
+        });
 
+        function updateSummaryCount() {
+            $.get("{{ route('sep.count') }}", {
+                start_date: start.val(),
+                end_date: end.val(),
+                jnspelayanan: jnsPelayanan.val(),
+                kd_poli: kdPoli.val(),
+                kd_dokter: kdDokter.val()
+            }).done(function(res) {
+                $('.count-total').text(res.total || 0);
+                $('.count-flagged').text(res.flagged || 0);
+                $('.count-terbit').text(res.terbit || 0);
+                $('.count-belum').text(res.belum || 0);
+            });
+        }
 
         const tableSep = $('#tableSep').DataTable({
             processing: true,
@@ -58,6 +122,10 @@
                 data: function(d) {
                     d.start_date = start.val();
                     d.end_date = end.val();
+                    d.jnspelayanan = jnsPelayanan.val();
+                    d.kd_poli = kdPoli.val();
+                    d.kd_dokter = kdDokter.val();
+                    d.status_skrj = statusSkrj;
                 }
             },
             createdRow: (element, data, index, meta) => {
@@ -135,12 +203,90 @@
                     return `<strong class="${colorClass}">${jenis}</strong>`
                 },
                 title: 'Jenis Pelayanan'
+            }, {
+                data: 'reg_periksa.rencana_kontrol_ralan',
+                name: 'reg_periksa.rencana_kontrol_ralan.status_tindak_lanjut',
+                title: 'Rencana Tindak Lanjut',
+                orderable: false,
+                searchable: false,
+                render: (data, type, row, meta) => {
+                    const rtl = row.reg_periksa?.rencana_kontrol_ralan;
+                    const skrj = row.surat_kontrol;
+                    const rujukan = row.rujukan_keluar;
+                    let html = '';
+
+                    if (rtl && rtl.status_tindak_lanjut) {
+                        const status = rtl.status_tindak_lanjut;
+                        if (status === 'KONTROL') {
+                            if (skrj && skrj.no_surat) {
+                                html += `<a href="/erm/rencanaKontrol/print/${skrj.no_surat}" target="_blank" class="badge bg-success text-decoration-none" title="Cetak SKRJ"><i class="bi bi-printer me-1"></i>SKRJ: ${splitTanggal(skrj.tgl_rencana) || skrj.tgl_rencana}</a>`;
+                            } else {
+                                const tglPlan = rtl.tgl_rencana_kontrol ? (splitTanggal(rtl.tgl_rencana_kontrol) || rtl.tgl_rencana_kontrol) : '-';
+                                html += `<div><span class="badge bg-warning text-dark"><i class="bi bi-calendar-event me-1"></i>Kontrol: ${tglPlan}</span><span class="badge bg-light text-secondary border ms-1" style="font-size: 10px;" title="Klik kanan untuk terbitkan SKRJ">Belum Terbit</span></div>`;
+                            }
+                        } else if (status === 'SEMBUH') {
+                            html += `<div><span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Sembuh / Selesai</span></div>`;
+                        } else if (status === 'RUJUK_BALIK') {
+                            html += `<div><span class="badge bg-info text-dark"><i class="bi bi-arrow-return-left me-1"></i>Kembali ke FKTP</span></div>`;
+                        } else if (status === 'RUJUK_LANJUT') {
+                            html += `<div><span class="badge" style="background-color: #6f42c1; color: white;"><i class="bi bi-hospital me-1"></i>Rujuk RS Lain</span>`;
+                            if (rujukan && rujukan.no_rujukan) {
+                                html += `<a href="/erm/rujukan/print/${rujukan.no_rujukan}" target="_blank" class="badge bg-secondary text-decoration-none ms-1" title="Cetak Rujukan"><i class="bi bi-printer me-1"></i>${rujukan.no_rujukan}</a>`;
+                            }
+                            html += `</div>`;
+                        } else if (status === 'RAWAT_INAP') {
+                            html += `<div><span class="badge bg-danger"><i class="bi bi-hospital-fill me-1"></i>Rawat Inap</span></div>`;
+                        } else {
+                            html += `<div><span class="badge bg-secondary">${status}</span></div>`;
+                        }
+
+                        if (rtl.catatan && rtl.catatan !== '-' && rtl.catatan.trim() !== '') {
+                            html += `<div class="text-muted small mt-1" style="font-size: 11px; line-height: 1.25; max-width: 250px; word-break: break-word;" title="${rtl.catatan}"><i class="bi bi-chat-left-text text-primary me-1"></i>${rtl.catatan}</div>`;
+                        }
+                    } else if (skrj && skrj.no_surat) {
+                        html += `<a href="/erm/rencanaKontrol/print/${skrj.no_surat}" target="_blank" class="badge bg-success text-decoration-none" title="Cetak SKRJ"><i class="bi bi-printer me-1"></i>SKRJ: ${splitTanggal(skrj.tgl_rencana) || skrj.tgl_rencana}</a>`;
+                    } else if (rujukan && rujukan.no_rujukan) {
+                        html += `<a href="/erm/rujukan/print/${rujukan.no_rujukan}" target="_blank" class="badge bg-secondary text-decoration-none" title="Cetak Rujukan"><i class="bi bi-printer me-1"></i>Rujukan: ${rujukan.no_rujukan}</a>`;
+                    } else {
+                        html = `<span class="text-muted">-</span>`;
+                    }
+
+                    return html;
+                }
             }]
         })
         // })
 
         filter.on('click', function() {
             tableSep.ajax.reload(null, true);
-        })
+            updateSummaryCount();
+        });
+
+        $('#jnspelayanan, #kd_poli, #kd_dokter').on('change', function() {
+            tableSep.ajax.reload(null, true);
+            updateSummaryCount();
+        });
+
+        $('.btn-filter-skrj').on('click', function() {
+            $('.btn-filter-skrj').removeClass('active');
+            $(this).addClass('active');
+            statusSkrj = $(this).data('status');
+            tableSep.ajax.reload(null, true);
+        });
+
+        btnReset.on('click', function() {
+            start.val("{{ date('Y-m-d') }}");
+            end.val("{{ date('Y-m-d') }}");
+            jnsPelayanan.val('');
+            kdPoli.val('').trigger('change.select2');
+            kdDokter.val('').trigger('change.select2');
+            statusSkrj = '';
+            $('.btn-filter-skrj').removeClass('active');
+            $('.btn-filter-skrj[data-status=""]').addClass('active');
+            tableSep.ajax.reload(null, true);
+            updateSummaryCount();
+        });
+
+        updateSummaryCount();
     </script>
 @endpush

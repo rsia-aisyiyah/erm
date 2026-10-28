@@ -22,5 +22,22 @@ Route::middleware('auth')->group(function () {
         $q->get('skrining-gizi', [SkriningGiziController::class, 'get'])->name('ranap.skrining-gizi.get');
         $q->post('skrining-gizi', [SkriningGiziController::class, 'store'])->name('ranap.skrining-gizi.store');
         $q->get('skrining-gizi/cetak', [SkriningGiziController::class, 'cetak'])->name('ranap.skrining-gizi.cetak');
+
+        // Route Permintaan Stok Obat Pasien (Ranap UDD)
+        $q->get('permintaan-obat/nomor', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'getNomor'])->name('ranap.permintaan-obat.nomor');
+        $q->get('permintaan-obat', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'get'])->name('ranap.permintaan-obat.get');
+        $q->get('permintaan-obat/detail/{no_permintaan}', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'getDetail'])->name('ranap.permintaan-obat.detail');
+        $q->post('permintaan-obat', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'simpan'])->name('ranap.permintaan-obat.simpan');
+        $q->delete('permintaan-obat/{no_permintaan}', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'hapus'])->name('ranap.permintaan-obat.hapus');
+        $q->get('permintaan-obat/cetak', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'cetak'])->name('ranap.permintaan-obat.cetak');
+
+        // Farmasi Validasi & Penyiapan Obat
+        $q->post('permintaan-obat/validasi', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'validasi'])->name('ranap.permintaan-obat.validasi');
+
+        // Jadwal & Pemberian Obat ke Pasien (E-MAR)
+        $q->get('pemberian-obat/stok', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'getStokPasien'])->name('ranap.pemberian-obat.stok');
+        $q->post('pemberian-obat/simpan', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'beriObat'])->name('ranap.pemberian-obat.simpan');
+        $q->delete('pemberian-obat/hapus', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'hapusPemberian'])->name('ranap.pemberian-obat.hapus');
+        $q->get('pemberian-obat/riwayat', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'riwayatPemberian'])->name('ranap.pemberian-obat.riwayat');
     });
 });

@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalDetailResep" tabindex="-1" aria-labelledby="modalDetailResep" aria-hidden="true" style="background-color: #00000085;">
+<div class="modal fade" id="modalDetailResep" tabindex="-1" aria-labelledby="modalDetailResep" aria-hidden="true" style="background-color: #00000085; z-index: 1070 !important;">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">

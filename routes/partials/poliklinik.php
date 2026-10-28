@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pemeriksaan/jumlah', [PoliklinikController::class, 'jumlahPasienPoli']);
     Route::get('/poli/panggil', [EstimasiPoliController::class, 'get']);
     Route::post('/poliklinik/panggil', [EstimasiPoliController::class, 'kirim']);
+    Route::post('/poliklinik/estimasi', [EstimasiPoliController::class, 'catatEstimasiAwal']);
     Route::delete('/poliklinik/batal', [EstimasiPoliController::class, 'hapus']);
     Route::post('/poliklinik/selesai', [SelesaiPoliController::class, 'kirim']);
     Route::get('poliklinik/status/periksa', [PoliklinikController::class, 'statusSoap']);

@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalSoapUgd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalSoapUgd" data-bs-focus="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
@@ -55,6 +55,16 @@
                             placeholder="" readonly>
                         <input type="hidden" id="kd_dokter_dpjp" name="kd_dokter_dpjp">
                         <input type="hidden" id="kd_sps_dokter" name="kd_sps_dokter">
+                    </div>
+                    <div class="col-lg-5 col-md-12 col-sm-12 d-flex align-items-end gap-2 mt-2 mt-lg-0">
+                        <button type="button" class="btn btn-sm btn-danger fw-semibold d-inline-flex align-items-center rounded-pill px-3 shadow-xs btn-ssrme-emergency" onclick="openSatuSehatRmeUgd(1)" style="height: 31px; background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%); border-color: #b91c1c; font-size: 11.5px; transition: all 0.2s ease;" title="Akses Emergency RME SATUSEHAT (Bypass Kode Akses Pasien)">
+                            <i class="bi bi-shield-fill-exclamation me-2 fs-6"></i>
+                            <span>SSRME Emergency</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-success fw-semibold d-inline-flex align-items-center rounded-pill px-3 shadow-xs btn-ssrme-reguler" onclick="openSatuSehatRmeUgd(0)" style="height: 31px; border: 1.5px solid #00877a; color: #007a6c; background-color: #ffffff; font-size: 11.5px; transition: all 0.2s ease;" title="Akses Reguler RME SATUSEHAT (Persetujuan Consent Pasien)">
+                            <i class="bi bi-shield-check me-2 fs-6" style="color: #00877a;"></i>
+                            <span>Reguler (Consent)</span>
+                        </button>
                     </div>
                 </div>
                 <ul class="nav nav-tabs" id="navTabUgd" role="tablist">
@@ -430,4 +440,20 @@
             tbSoapRanap(no_rawat);
         });
     </script>
+    <style>
+        .btn-ssrme-emergency:hover {
+            background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%) !important;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.35) !important;
+            transform: translateY(-1px);
+        }
+        .btn-ssrme-reguler:hover {
+            background-color: #00877a !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(0, 135, 122, 0.25) !important;
+            transform: translateY(-1px);
+        }
+        .btn-ssrme-reguler:hover i {
+            color: #ffffff !important;
+        }
+    </style>
 @endpush
