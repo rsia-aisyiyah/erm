@@ -52,8 +52,8 @@
             {{-- separtor horizontal --}}
             <div class="w-full my-2 h-[3px] rounded-full bg-blue-600"></div>
             {{-- separtor horizontal --}}
-            <div class="p-1 flex flex-col md:flex-row gap-1">
-                <div class="w-full md:w-[35%] h-full">
+            <div class="p-1 flex flex-col md:flex-row gap-2">
+                <div class="w-full md:w-[32%] xl:w-[30%] h-full">
                     {{-- <iframe class="w-full rounded-xl h-[450px]" src="https://www.youtube.com/embed/rTu824dilZo"
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -124,22 +124,75 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-full">
-                    <div
-                        class="h-[543px] 2xl:h-[590px] border-2 border-blue-300 rounded-xl overflow-y-scroll no-scrollbar">
-                        <table class="table-auto w-full">
-                            <thead class="sticky top-0 bg-blue-100">
-                                <tr>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">No Resep</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600"> Nama</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Jam Resep</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600"> Kategori</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600"> Status</th>
-                                    <th class="p-3 px-5 border-2 border-blue-300 text-center text-2xl text-blue-600">Jam Selesai</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                <div class="w-full md:w-[68%] xl:w-[70%] grid grid-cols-1 lg:grid-cols-2 gap-2">
+                    <!-- TABEL NON-RACIKAN -->
+                    <div class="flex flex-col h-[543px] 2xl:h-[590px] border-2 border-emerald-400 rounded-xl overflow-hidden bg-white shadow-sm">
+                        <!-- Header Kategori Non-Racikan -->
+                        <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-2.5 px-3 text-white flex justify-between items-center shadow">
+                            <div>
+                                <span class="font-extrabold text-lg xl:text-xl tracking-wide flex items-center gap-1.5">
+                                    💊 NON RACIKAN
+                                </span>
+                                <span class="text-xs bg-emerald-800 bg-opacity-70 px-2 py-0.5 rounded text-emerald-100 font-semibold">
+                                    Target Maks. 30 Menit
+                                </span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs font-mono text-emerald-100">
+                                    Menunggu: <b id="nr_menunggu" class="text-white text-sm">0</b> | Selesai: <b id="nr_selesai_badge" class="text-white text-sm">0</b>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Table Scroll Container -->
+                        <div class="flex-1 overflow-y-scroll no-scrollbar">
+                            <table class="table-auto w-full border-collapse">
+                                <thead class="sticky top-0 bg-emerald-100 text-emerald-950 border-b-2 border-emerald-300 shadow-sm z-10">
+                                    <tr>
+                                        <th class="py-2.5 px-2 border-r border-emerald-200 text-center text-sm xl:text-base font-bold">No Resep</th>
+                                        <th class="py-2.5 px-3 border-r border-emerald-200 text-left text-sm xl:text-base font-bold">Nama Pasien</th>
+                                        <th class="py-2.5 px-1 border-r border-emerald-200 text-center text-sm xl:text-base font-bold">Jam</th>
+                                        <th class="py-2.5 px-2 border-r border-emerald-200 text-center text-sm xl:text-base font-bold">Status</th>
+                                        <th class="py-2.5 px-1 text-center text-sm xl:text-base font-bold">Selesai</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-non-racikan"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TABEL RACIKAN -->
+                    <div class="flex flex-col h-[543px] 2xl:h-[590px] border-2 border-amber-400 rounded-xl overflow-hidden bg-white shadow-sm">
+                        <!-- Header Kategori Racikan -->
+                        <div class="bg-gradient-to-r from-amber-600 to-orange-600 p-2.5 px-3 text-white flex justify-between items-center shadow">
+                            <div>
+                                <span class="font-extrabold text-lg xl:text-xl tracking-wide flex items-center gap-1.5">
+                                    🧪 RACIKAN
+                                </span>
+                                <span class="text-xs bg-amber-800 bg-opacity-70 px-2 py-0.5 rounded text-amber-100 font-semibold">
+                                    Target Maks. 1 Jam
+                                </span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs font-mono text-amber-100">
+                                    Menunggu: <b id="r_menunggu" class="text-white text-sm">0</b> | Selesai: <b id="r_selesai_badge" class="text-white text-sm">0</b>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Table Scroll Container -->
+                        <div class="flex-1 overflow-y-scroll no-scrollbar">
+                            <table class="table-auto w-full border-collapse">
+                                <thead class="sticky top-0 bg-amber-100 text-amber-950 border-b-2 border-amber-300 shadow-sm z-10">
+                                    <tr>
+                                        <th class="py-2.5 px-2 border-r border-amber-200 text-center text-sm xl:text-base font-bold">No Resep</th>
+                                        <th class="py-2.5 px-3 border-r border-amber-200 text-left text-sm xl:text-base font-bold">Nama Pasien</th>
+                                        <th class="py-2.5 px-1 border-r border-amber-200 text-center text-sm xl:text-base font-bold">Jam</th>
+                                        <th class="py-2.5 px-2 border-r border-amber-200 text-center text-sm xl:text-base font-bold">Status</th>
+                                        <th class="py-2.5 px-1 text-center text-sm xl:text-base font-bold">Selesai</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-racikan"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -347,45 +400,85 @@
                 url: "/erm/get/antrian",
                 type: "GET",
                 success: function(data) {
-                    var html = "";
+                    var htmlNonRacik = "";
+                    var htmlRacik = "";
                     var rselesai = 0,
                         nrselesai = 0,
                         non_racikan = 0,
-                        racikan = 0;
-                    $.each(data, function(key, value) {
+                        racikan = 0,
+                        nr_menunggu = 0,
+                        r_menunggu = 0;
 
-                        if (value.no_resep == localStorage.getItem('no_panggil')) {
-                            html += "<tr id='" + value.no_resep + "' class='bg-yellow-300 font-bold'>";
+                    const activeNoPanggil = localStorage.getItem('no_panggil');
+
+                    $.each(data, function(key, value) {
+                        const isCallActive = (value.no_resep == activeNoPanggil);
+                        const isRacikan = (value.category_obat === 'RACIKAN');
+
+                        let statusBadge = "";
+                        if (value.status_obat === 'SELESAI') {
+                            statusBadge = "<span class='px-2 py-0.5 rounded-full text-xs font-bold bg-green-600 text-white shadow-sm inline-block'>SELESAI</span>";
+                        } else if (value.status_obat === 'DISIAPKAN') {
+                            statusBadge = "<span class='px-2 py-0.5 rounded-full text-xs font-bold bg-amber-500 text-white animate-pulse inline-block'>DISIAPKAN</span>";
                         } else {
-                            html += "<tr id='" + value.no_resep + "' class='text-blue-700 font-medium'>";
+                            statusBadge = "<span class='px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-200 text-slate-700 inline-block'>MENUNGGU</span>";
                         }
 
-                        html += "<td class='py-3 px-5 border-2 border-blue-300 text-center text-base xl:text-xl'>" + value.no_resep + "</td>";
-                        html += "<td class='py-3 px-5 border-2 border-blue-300 text-left text-base xl:text-xl'>" + value.nm_pasien + "</td>";
-                        html += "<td class='py-3 px-5 border-2 border-blue-300 text-center text-base xl:text-xl'>" + value.jam_peresepan + "</td>";
-                        html += "<td class='py-3 px-5 border-2 border-blue-300 text-center text-base xl:text-xl'>" + value.category_obat + "</td>";
-                        html += "<td class='py-3 px-5 border-2 border-blue-300 text-center text-base xl:text-xl'>" + value.status_obat + "</td>";
-                        html += "<td class='py-3 px-5 border-2 border-blue-300 text-center text-base xl:text-xl'>" + value.jam_penyerahan + "</td>";
-                        html += "</tr>";
+                        let rowClass = isCallActive
+                            ? "bg-yellow-300 font-bold"
+                            : (isRacikan ? "text-amber-950 hover:bg-amber-50 font-medium" : "text-emerald-950 hover:bg-emerald-50 font-medium");
 
-                        if (value.category_obat == 'RACIKAN') {
+                        let borderClass = isRacikan ? "border-amber-200" : "border-emerald-200";
+
+                        let jamResep = value.jam_peresepan ? value.jam_peresepan.substring(0, 5) : '-';
+                        let jamSelesai = (value.jam_penyerahan && value.jam_penyerahan !== '00:00:00') ? value.jam_penyerahan.substring(0, 5) : '-';
+
+                        let rowHtml = `<tr id='${value.no_resep}' class='${rowClass} border-b ${borderClass} transition-colors'>
+                            <td class='py-2 px-2 text-center text-sm xl:text-base font-mono font-semibold border-r ${borderClass}'>${value.no_resep}</td>
+                            <td class='py-2 px-3 text-left text-sm xl:text-base font-semibold border-r ${borderClass} truncate max-w-[130px] xl:max-w-[180px]' title='${value.nm_pasien}'>${value.nm_pasien}</td>
+                            <td class='py-2 px-1 text-center text-xs xl:text-sm font-mono border-r ${borderClass}'>${jamResep}</td>
+                            <td class='py-2 px-1 text-center text-xs xl:text-sm border-r ${borderClass}'>${statusBadge}</td>
+                            <td class='py-2 px-1 text-center text-xs xl:text-sm font-mono'>${jamSelesai}</td>
+                        </tr>`;
+
+                        if (isRacikan) {
                             racikan++;
-                            if (value.status_obat == 'SELESAI') {
+                            if (value.status_obat === 'SELESAI') {
                                 rselesai++;
+                            } else {
+                                r_menunggu++;
                             }
+                            htmlRacik += rowHtml;
                         } else {
                             non_racikan++;
-                            if (value.status_obat == 'SELESAI') {
+                            if (value.status_obat === 'SELESAI') {
                                 nrselesai++;
+                            } else {
+                                nr_menunggu++;
                             }
+                            htmlNonRacik += rowHtml;
                         }
                     });
 
-                    $("tbody").html(html);
+                    if (htmlNonRacik === "") {
+                        htmlNonRacik = "<tr><td colspan='5' class='py-12 text-center text-slate-400 italic text-sm'>Belum ada antrean non racikan</td></tr>";
+                    }
+                    if (htmlRacik === "") {
+                        htmlRacik = "<tr><td colspan='5' class='py-12 text-center text-slate-400 italic text-sm'>Belum ada antrean racikan</td></tr>";
+                    }
+
+                    $("#tbody-non-racikan").html(htmlNonRacik);
+                    $("#tbody-racikan").html(htmlRacik);
+
                     $("#cnon_racik").html(non_racikan);
                     $("#cracik").html(racikan);
                     $("#nrselesai").html(nrselesai);
                     $("#rselesai").html(rselesai);
+
+                    $("#nr_menunggu").html(nr_menunggu);
+                    $("#nr_selesai_badge").html(nrselesai);
+                    $("#r_menunggu").html(r_menunggu);
+                    $("#r_selesai_badge").html(rselesai);
                 }
             });
         }
