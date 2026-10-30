@@ -180,7 +180,7 @@
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link py-2 fw-semibold text-nowrap" id="tab-farmasi-ranap-link" data-bs-toggle="pill" data-bs-target="#tab-farmasi-ranap" type="button" role="tab" style="font-size: 13px;">
-                <i class="bi bi-inbox-fill me-1"></i> 3. Stok UDD
+                <i class="bi bi-inbox-fill me-1"></i> 3. Obat Harian Ranap
                 <span class="badge bg-danger rounded-pill ms-1" id="badgeCountRanapTunggu">0</span>
             </button>
         </li>
@@ -392,7 +392,7 @@
                             <div class="row g-2 text-center">
                                 <div class="col-md-4 col-12">
                                     <div class="p-2 border rounded-3 bg-light">
-                                        <small class="text-muted d-block" style="font-size: 11px;">TOTAL PERMINTAAN UDD</small>
+                                        <small class="text-muted d-block" style="font-size: 11px;">TOTAL PERMINTAAN OBAT RANAP</small>
                                         <span class="fs-5 fw-bold text-primary font-monospace" id="count-ranap-total">0</span>
                                     </div>
                                 </div>
@@ -598,14 +598,14 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link py-1.5 px-3 rounded-pill fw-semibold text-nowrap text-secondary" id="subtab-retur-udd-link" data-bs-toggle="pill" data-bs-target="#subtab-retur-udd" type="button" role="tab" style="font-size: 12.5px;">
-                                <i class="bi bi-box-arrow-in-down-left me-1"></i> B. Retur Sisa Stok UDD
+                                <i class="bi bi-box-arrow-in-down-left me-1"></i> B. Retur Sisa Obat Pasien
                                 <span class="badge bg-warning text-dark rounded-pill ms-1" id="badgeSubReturUdd">0</span>
                             </button>
                         </li>
                     </ul>
                     <div class="text-muted small d-none d-md-flex align-items-center gap-1.5" style="font-size: 11.5px;">
                         <i class="bi bi-info-circle text-primary"></i>
-                        <span>Pilih jenis retur: <b>Billing Pasien</b> (retur penjualan/nota) atau <b>Sisa UDD</b> (fisik obat kembali ke depo).</span>
+                        <span>Pilih jenis retur: <b>Billing Pasien</b> (retur penjualan/nota) atau <b>Sisa Obat Pasien</b> (fisik obat kembali ke depo).</span>
                     </div>
                 </div>
             </div>
@@ -731,7 +731,7 @@
                                     <div class="row g-2 text-center">
                                         <div class="col-md-3 col-6">
                                             <div class="p-2 border rounded-3 bg-light">
-                                                <small class="text-muted d-block" style="font-size: 11px;">TOTAL PENGEMBALIAN UDD</small>
+                                                <small class="text-muted d-block" style="font-size: 11px;">TOTAL RETUR SISA OBAT</small>
                                                 <span class="fs-5 fw-bold text-primary font-monospace" id="count-retur-udd-total">0</span>
                                             </div>
                                         </div>
@@ -940,7 +940,12 @@
 
         function getKamarFormat(regPeriksa) {
             const ki = regPeriksa?.kamar_inap?.[0];
-            if (!ki) return '-';
+            if (!ki) {
+                if (regPeriksa?.kd_poli === 'IGDK' || regPeriksa?.poliklinik?.nm_poli?.includes('IGD') || regPeriksa?.poliklinik?.nm_poli?.includes('UGD')) {
+                    return '<span class="badge bg-danger text-white"><i class="bi bi-hospital me-1"></i>UGD</span>';
+                }
+                return regPeriksa?.poliklinik?.nm_poli || '-';
+            }
             const kdKamar = (ki.kd_kamar || '').replace(/[\r\n\t]+/g, ' ').trim();
             const nmBangsal = (ki.kamar?.bangsal?.nm_bangsal || '').replace(/[\r\n\t]+/g, ' ').trim();
             if (nmBangsal && kdKamar) {
@@ -1525,7 +1530,7 @@
             const rincian = [];
             if (ralan > 0) rincian.push(`<span class="badge bg-light text-dark border px-2 py-1 me-1 mb-1" style="cursor: pointer;" data-tab-id="tab-farmasi-ralan-link">${ralan} Ralan</span>`);
             if (ranap > 0) rincian.push(`<span class="badge bg-light text-dark border px-2 py-1 me-1 mb-1" style="cursor: pointer;" data-tab-id="tab-farmasi-resep-ranap-link">${ranap} Resep Ranap</span>`);
-            if (udd > 0) rincian.push(`<span class="badge bg-light text-dark border px-2 py-1 me-1 mb-1" style="cursor: pointer;" data-tab-id="tab-farmasi-ranap-link">${udd} UDD</span>`);
+            if (udd > 0) rincian.push(`<span class="badge bg-light text-dark border px-2 py-1 me-1 mb-1" style="cursor: pointer;" data-tab-id="tab-farmasi-ranap-link">${udd} Obat Ranap</span>`);
             if (pulang > 0) rincian.push(`<span class="badge bg-light text-dark border px-2 py-1 me-1 mb-1" style="cursor: pointer;" data-tab-id="tab-farmasi-pulang-link">${pulang} Pulang</span>`);
             if (retur > 0) rincian.push(`<span class="badge bg-light text-dark border px-2 py-1 me-1 mb-1" style="cursor: pointer;" data-tab-id="tab-farmasi-retur-link">${retur} Retur</span>`);
 
@@ -1650,7 +1655,7 @@
                     knownRanapIds.add(row.no_resep);
                 });
 
-                // 3. Cek Permintaan Stok Ranap (UDD)
+                // 3. Cek Permintaan Stok Ranap (Obat Harian Ranap)
                 let countUddTunggu = 0;
                 dataUdd.forEach(function(row) {
                     const isWaiting = row.status === 'Belum';
@@ -1660,7 +1665,7 @@
                             if (!isInitialNotifCheck) {
                                 newItems.push({
                                     type: 'udd',
-                                    label: 'Permintaan Stok Ranap (UDD)',
+                                    label: 'Permintaan Obat Harian (Ranap)',
                                     icon: 'bi-inbox-fill',
                                     nomor: row.no_permintaan,
                                     pasien: row.reg_periksa?.pasien?.nm_pasien || '-',
@@ -1723,7 +1728,7 @@
                     knownReturIds.add(row.no_pengajuan);
                 });
 
-                // 6. Cek Retur Sisa Stok UDD
+                // 6. Cek Retur Sisa Stok Obat Pasien
                 let countReturUddTunggu = 0;
                 dataReturUdd.forEach(function(row) {
                     const isWaiting = row.status === 'Menunggu Diterima';
@@ -1733,7 +1738,7 @@
                             if (!isInitialNotifCheck) {
                                 newItems.push({
                                     type: 'retur_udd',
-                                    label: 'Retur Sisa UDD',
+                                    label: 'Retur Sisa Obat Pasien',
                                     icon: 'bi-box-arrow-in-down-left',
                                     nomor: row.no_retur_udd,
                                     pasien: row.reg_periksa?.pasien?.nm_pasien || '-',

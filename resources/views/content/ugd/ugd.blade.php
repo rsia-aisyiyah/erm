@@ -68,6 +68,8 @@
     @include('content.poliklinik.modal.modal_icare')
     @include('content.ranap.modal.modal_transfer_pasien')
     @include('content.ranap.modal.modal_asesmen_geriatri')
+    @include('content.ranap.modal.modal_permintaan_stok_obat_pasien')
+    @include('content.ranap.modal.modal_pemberian_obat_pasien')
 @endsection
 
 
@@ -298,6 +300,8 @@
                         } else {
                             list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Anak</a></li>`;
                         }
+                        list += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPermintaanObatRanap('${row.no_rawat}')"><i class="bi bi-cart-plus text-success me-1"></i> Permintaan Obat Pasien (UGD)</a></li>`;
+                        list += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPemberianObatRanap('${row.no_rawat}')"><i class="bi bi-capsule-pill text-primary me-1"></i> Jadwal & Pemberian Obat (E-MAR)</a></li>`;
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${row.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
                         list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenGeriatri('${row.no_rawat}')"><i class="bi bi-person-heart text-success me-1"></i> Asesmen Awal Geriatri ${cekList(row.asesmen_geriatri)}</a></li>`;
                         

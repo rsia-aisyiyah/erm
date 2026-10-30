@@ -11,7 +11,7 @@
                     </div>
                     <div>
                         <h6 class="modal-title fw-bold mb-0 text-white" id="modalVerifikasiReturUddLabel">
-                            VERIFIKASI &amp; PENERIMAAN FISIK SISA OBAT UDD (FARMASI)
+                            VERIFIKASI &amp; PENERIMAAN FISIK SISA OBAT PASIEN (FARMASI)
                         </h6>
                         <small class="text-white-50" style="font-size: 11px;">Pengecekan fisik obat sisa loker pasien ranap &amp; pengembalian ke stok Depo Farmasi</small>
                     </div>
