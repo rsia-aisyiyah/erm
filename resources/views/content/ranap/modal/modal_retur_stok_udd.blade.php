@@ -11,7 +11,7 @@
                     </div>
                     <div>
                         <h6 class="modal-title fw-bold mb-0 text-white" id="modalReturStokUddLabel">
-                            PENGEMBALIAN SISA OBAT UDD KE DEPO FARMASI
+                            PENGEMBALIAN SISA OBAT PASIEN KE DEPO FARMASI
                         </h6>
                         <small class="text-white-50" style="font-size: 11px;">Mutasi Fisik Obat dari Loker Pasien ke Depo Farmasi (Pasien Pulang / Stop Terapi)</small>
                     </div>

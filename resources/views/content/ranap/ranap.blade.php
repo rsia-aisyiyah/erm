@@ -1227,7 +1227,7 @@
 
             // 3. KATEGORI: TERAPI OBAT & GIZI
             let menuObat = '';
-            menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPermintaanObatRanap('${data.no_rawat}')"><i class="bi bi-cart-plus text-success me-1"></i> Permintaan Obat Pasien (UDD)</a></li>`;
+            menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPermintaanObatRanap('${data.no_rawat}')"><i class="bi bi-cart-plus text-success me-1"></i> Permintaan Obat Harian (Ranap)</a></li>`;
             menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPemberianObatRanap('${data.no_rawat}')"><i class="bi bi-capsule-pill text-primary me-1"></i> Jadwal & Pemberian Obat (E-MAR)</a></li>`;
             menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="bukaModalReturObatRanap('${data.no_rawat}')"><i class="bi bi-arrow-return-left text-primary me-1"></i> Retur Obat Pasien</a></li>`;
             menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')"><i class="bi bi-droplet text-info me-1"></i> Monitoring Cairan Pasien</a></li>`;

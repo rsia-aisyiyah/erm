@@ -38,7 +38,7 @@
                     </div>
                     <div>
                         <h6 class="modal-title fw-bold mb-0 text-white" id="modalPermintaanObatRanapLabel">
-                            PERMINTAAN STOK OBAT PASIEN (UDD RAWAT INAP)
+                            PERMINTAAN OBAT HARIAN PASIEN (RAWAT INAP)
                         </h6>
                         <small class="text-white-50" style="font-size: 11px;">Pengorderan Obat Harian dari Ruangan ke Depo Farmasi &amp; Validasi Kesiapan Stok</small>
                     </div>
@@ -363,6 +363,10 @@
             if (kamarList.length > 0) {
                 const activeKamar = kamarList.find(k => k.stts_pulang === '-') || kamarList[0];
                 kamarNama = activeKamar?.kamar?.bangsal?.nm_bangsal || activeKamar?.kd_kamar || '-';
+            } else if (res?.kd_poli === 'IGDK' || res?.poliklinik?.nm_poli?.includes('IGD') || res?.poliklinik?.nm_poli?.includes('UGD')) {
+                kamarNama = 'IGD / UGD';
+            } else if (res?.poliklinik?.nm_poli) {
+                kamarNama = res.poliklinik.nm_poli;
             }
 
             $('#permintaan_info_no_rkm_medis').text(pasien?.no_rkm_medis || '-');
