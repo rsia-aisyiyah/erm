@@ -192,8 +192,8 @@
                     </td>
                     <td>
                         <div class="d-flex justify-content-start gap-2 actionsObatUmum">
-                            <span class="text-danger deleteObatUmum" style="cursor: pointer" onclick="deleteObatUmum('${no_resep}', '${val.kode_brng}' )"><i class="bi bi-trash"></i></span>    
-                            <span class="text-warning editObatUmum" style="cursor: pointer" onclick="editObatUmum('${no_resep}', '${val.kode_brng}' )"><i class="bi bi-pencil"></i></span>    
+                            <span class="text-danger deleteObatUmum" style="cursor: pointer" onclick="deleteObatUmum('${no_resep}', '${val.kode_brng}' )"><i class="bi bi-trash"></i></span>
+                            <span class="text-warning editObatUmum" style="cursor: pointer" onclick="editObatUmum('${no_resep}', '${val.kode_brng}' )"><i class="bi bi-pencil"></i></span>
                         </div>
                     </td>
                     </tr>`
@@ -227,16 +227,16 @@
                     return `<tr class="racikan-${val.no_racik}">
                                     <td>${val.nama_racik}</td>
                                     <td>${val.metode.nm_racik}</td>
-                                    <td>${val.jml_dr}</td>  
+                                    <td>${val.jml_dr}</td>
                                     <td>${val.aturan_pakai}</td>
                                     <td class="subtotalRacikan text-end" data-number="${subtotal}">
                                         ${formatCurrency(subtotal)}
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-start gap-2 actionsRacikan">
-                                            <span class="text-danger deleteRacikan" style="cursor: pointer" onclick="hapusRacikan('${no_resep}', '${val.no_racik}' )"><i class="bi bi-trash" title="Hapus Racikan"></i></span>    
-                                            <span class="text-warning editRacikan" style="cursor: pointer" onclick="editRacikan('${no_resep}', '${val.no_racik}' )"><i class="bi bi-pencil" title="Edit Racikan"></i></span>    
-                                        </div>    
+                                            <span class="text-danger deleteRacikan" style="cursor: pointer" onclick="hapusRacikan('${no_resep}', '${val.no_racik}' )"><i class="bi bi-trash" title="Hapus Racikan"></i></span>
+                                            <span class="text-warning editRacikan" style="cursor: pointer" onclick="editRacikan('${no_resep}', '${val.no_racik}' )"><i class="bi bi-pencil" title="Edit Racikan"></i></span>
+                                        </div>
                                     </td>
                                 </tr>
                                 ${rowObat}`;
@@ -332,26 +332,26 @@
             $.get(`/erm/obat/get/${kode_brng}`).done((response) => {
                 let html = `
             <td>
-                <input type="search" 
-                       autocomplete="off" 
-                       class="form-control form-control-sm nama_obat_umum form-underline" 
-                       name="nama_obat_umum" 
-                       value="${response.nama_brng}" 
+                <input type="search"
+                       autocomplete="off"
+                       class="form-control form-control-sm nama_obat_umum form-underline"
+                       name="nama_obat_umum"
+                       value="${response.nama_brng}"
                        readonly />
             </td>
             <td>
-                <input type="search" 
-                       autocomplete="off" 
-                       class="form-control form-control-sm jml_umum form-underline" 
-                       name="jml_umum" 
-                       value="${jumlah}" 
+                <input type="search"
+                       autocomplete="off"
+                       class="form-control form-control-sm jml_umum form-underline"
+                       name="jml_umum"
+                       value="${jumlah}"
                        onkeypress="return hanyaAngka(event)" />
             </td>
             <td>
-                <input type="search" 
-                       autocomplete="off" 
-                       class="form-control form-control-sm aturan_pakai form-underline" 
-                       name="aturan_pakai" 
+                <input type="search"
+                       autocomplete="off"
+                       class="form-control form-control-sm aturan_pakai form-underline"
+                       name="aturan_pakai"
                        value="${aturanPakai}" />
                 <div class="list_aturan"></div>
             </td>
@@ -371,15 +371,15 @@
             </td>
             <td>
                 <div class="status d-flex justify-content-start gap-2">
-                    <button type="button" 
-                            class="btn btn-primary btn-sm" 
-                            onclick="updateObatUmum(${no_resep}, '${kode_brng}')" 
+                    <button type="button"
+                            class="btn btn-primary btn-sm"
+                            onclick="updateObatUmum(${no_resep}, '${kode_brng}')"
                             style="font-size:10px">
                         <i class="bi bi-floppy"></i>
                     </button>
-                    <button type="button" 
-                            class="btn btn-danger btn-sm" 
-                            onclick="cancelUpdateObatUmum(${no_resep})" 
+                    <button type="button"
+                            class="btn btn-danger btn-sm"
+                            onclick="cancelUpdateObatUmum(${no_resep})"
                             style="font-size:12px">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
@@ -435,7 +435,7 @@
                             modalDetailPpra.find('input[name="nama_obat"]').val($(`.obatUmum-${kode_brng}`).find('td:eq(0)').text());
                             modalDetailPpra.find('#btnRiwayatLabPpra').attr('onclick', `hasilKritis('${no_rawat}')`)
                             modalDetailPpra.modal('show')
-                        }   
+                        }
                     })
                 }
 
@@ -603,17 +603,17 @@
             const harga = item.data('harga');
             // const notif = item.data('notif-ppra');
 
-            if(status_lanjut === 'ranap') {
-            //     const no_rawat = $('#formInfoPasienResep').find('[name=no_rawat]').val();
-            //     const no_resep = $('.noResepText').text();
-            //     if(item.data('notif-ppra')) {
-            //         modalDetailPpra.find('input[name="no_resep"]').val(no_resep);
-            //         modalDetailPpra.find('input[name="no_rawat"]').val(no_rawat);
-            //         modalDetailPpra.find('input[name="kode_brng"]').val(item.data('id'));
-            //         modalDetailPpra.find('input[name="nama_obat"]').val(item.data('nama'));
-            //         modalDetailPpra.find('#btnRiwayatLabPpra').attr('onclick', `hasilKritis('${no_rawat}')`)
-            //         modalDetailPpra.modal('show')
-            //     }
+            if (status_lanjut === 'ranap') {
+                //     const no_rawat = $('#formInfoPasienResep').find('[name=no_rawat]').val();
+                //     const no_resep = $('.noResepText').text();
+                //     if(item.data('notif-ppra')) {
+                //         modalDetailPpra.find('input[name="no_resep"]').val(no_resep);
+                //         modalDetailPpra.find('input[name="no_rawat"]').val(no_rawat);
+                //         modalDetailPpra.find('input[name="kode_brng"]').val(item.data('id'));
+                //         modalDetailPpra.find('input[name="nama_obat"]').val(item.data('nama'));
+                //         modalDetailPpra.find('#btnRiwayatLabPpra').attr('onclick', `hasilKritis('${no_rawat}')`)
+                //         modalDetailPpra.modal('show')
+                //     }
                 $('.status_notif_ppra').val(item.data('notif-ppra'));
             }
 
@@ -761,30 +761,30 @@
                     }
                 }).done(function() {
                     const status_notif_ppra = $('.status_notif_ppra').val();
-                        if(status_lanjut === 'ranap' && status_notif_ppra === '1') {
-                             Swal.fire({
-                                title: 'Obat ini masuk dalam daftar PPRA',
-                                text: "Apakah anda ingin mengubah/menambah form persetujuan PPRA ?",
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Ya, lihat sekarang!',
-                                cancelButtonText: 'Tidak, nanti saja!',
+                    if (status_lanjut === 'ranap' && status_notif_ppra === '1') {
+                        Swal.fire({
+                            title: 'Obat ini masuk dalam daftar PPRA',
+                            text: "Apakah anda ingin mengubah/menambah form persetujuan PPRA ?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, lihat sekarang!',
+                            cancelButtonText: 'Tidak, nanti saja!',
 
-                            }).then((response) => {
-                                if (response.isConfirmed) {
-                                        modalDetailPpra.find('input[name="no_resep"]').val(no_resep);
-                                        modalDetailPpra.find('input[name="no_rawat"]').val(no_rawat);
-                                        modalDetailPpra.find('input[name="kode_brng"]').val(kode_obat);
-                                        modalDetailPpra.find('input[name="nama_obat"]').val(nm_obat);
-                                        modalDetailPpra.find('input[name="jumlah"]').val(jml);
-                                        modalDetailPpra.find('input[name="aturan_pakai"]').val(aturan_pakai);
-                                        modalDetailPpra.find('#btnRiwayatLabPpra').attr('onclick', `hasilKritis('${no_rawat}')`)
-                                        modalDetailPpra.modal('show')
-                                }
-                            })
-                        }
+                        }).then((response) => {
+                            if (response.isConfirmed) {
+                                modalDetailPpra.find('input[name="no_resep"]').val(no_resep);
+                                modalDetailPpra.find('input[name="no_rawat"]').val(no_rawat);
+                                modalDetailPpra.find('input[name="kode_brng"]').val(kode_obat);
+                                modalDetailPpra.find('input[name="nama_obat"]').val(nm_obat);
+                                modalDetailPpra.find('input[name="jumlah"]').val(jml);
+                                modalDetailPpra.find('input[name="aturan_pakai"]').val(aturan_pakai);
+                                modalDetailPpra.find('#btnRiwayatLabPpra').attr('onclick', `hasilKritis('${no_rawat}')`)
+                                modalDetailPpra.modal('show')
+                            }
+                        })
+                    }
 
                     tulisPlan()
                 })
@@ -830,7 +830,7 @@
                             <div class="d-flex justify-content-between">
                                 <x-input id="kps${index}" class="kps${index} form-underline" name="kps[]" value="${val.databarang.kapasitas}" readonly type="search" />
                                 <span class="mt-2">mg</span>
-                            </div>    
+                            </div>
                         </td>
                         <td>
                             <x-input-group class="input-group-sm">
@@ -843,7 +843,7 @@
                             <div class="d-flex justify-content-between">
                                 <x-input id="kandungan${index}" class="kandungan${index} form-underline" name="kandungan[]" value="${val.kandungan}" onchange="hitungDosis(${index})" type="search" />
                                 <span class="mt-2">mg</span>
-                            </div>     
+                            </div>
                         </td>
                         <td id="labelHargaBarang${index}" data-number="${val.databarang.ralan}" class="text-end">
                             ${formatCurrency(val.databarang.ralan)}
@@ -855,7 +855,7 @@
                             ${formatCurrency(subtotal)}
                         </td>
                         <td>
-                             <a href="javascript:void(0)" data-no="${index}" type="button" 
+                             <a href="javascript:void(0)" data-no="${index}" type="button"
                                     class="btn btn-danger btn-sm x form-label mb-0">
                                 <i class="bi bi-trash-fill"></i>
                             </a>
@@ -867,7 +867,7 @@
                 $(`#modalObatRacik`).modal('show');
                 tableDetailRacikan.html(contentObat);
 
-                //tambah row di akhir table dengan total harga 
+                //tambah row di akhir table dengan total harga
                 const total = response.detail.reduce((total, val) => {
                     return total + (parseInt(val.databarang.ralan) * parseInt(val.jml));
                 }, 0);
@@ -877,7 +877,7 @@
                     <td colspan="6">Total</td>
                     <td>
                         <div class="d-flex justify-content-between">
-                            <span>Rp. </span>    
+                            <span>Rp. </span>
                             <span id="labelTotalBarangRacikan">${toRupiah(total)}</span>
                         </div>
 
@@ -996,7 +996,7 @@
             $.ajax({
                 url: '/erm/obat/cari',
                 data: {
-                    'gudang' : gudang,
+                    'gudang': gudang,
                     'nama': obat.value
                 },
                 success: function(response) {
@@ -1008,17 +1008,17 @@
                             const hargaKelas = data[kelas] ? data[kelas] : data.ralan;
                             if (data && data.status != "0") {
                                 if (item.stok) {
-                                    html += `<li data-id="${data.kode_brng}" 
-                                                data-stok="${item.stok}" 
-                                                data-kapasitas="${data.kapasitas}" 
-                                                data-nama="${data.nama_brng}" 
+                                    html += `<li data-id="${data.kode_brng}"
+                                                data-stok="${item.stok}"
+                                                data-kapasitas="${data.kapasitas}"
+                                                data-nama="${data.nama_brng}"
                                                 data-harga="${hargaKelas}"
                                                 data-notif-ppra="${data.status_notif}"
                                                 onclick="ambilObat(this)">
                                                 <a class="dropdown-item" href="#">
-                                                    ${data.nama_brng} 
+                                                    ${data.nama_brng}
                                                     <span class="text-primary">
-                                                        - Rp. ${toRupiah(hargaKelas)} - 
+                                                        - Rp. ${toRupiah(hargaKelas)} -
                                                         <i><b>Stok (${item.stok})</b></i>
                                                     </span><br/>
                                                     <span class="text-disable" style="font-size:9px;color:#8b8b8b">
@@ -1028,8 +1028,8 @@
                                             </li>`;
                                 } else {
                                     html += `
-                                        <li class="disable" 
-                                            data-id="${data.kode_brng}" 
+                                        <li class="disable"
+                                            data-id="${data.kode_brng}"
                                             data-stok="${item.stok}">
                                             <a class="dropdown-item text-danger" href="#">
                                                 ${data.nama_brng} - Rp. ${toRupiah(hargaKelas)} - <b>Stok Kosong</b>
@@ -1147,7 +1147,7 @@
                 success: function(response) {
                     if (response) {
                         let html = `
-                    <ul class="dropdown-menu show" 
+                    <ul class="dropdown-menu show"
                         style="width:auto;display:block;position:absolute;font-size:12px;max-height:200px;overflow-y:auto">
                 `;
 
@@ -1484,16 +1484,16 @@
                     return `
                         <tr>
                             <td>
-                                <ul>
-                                    <li>
-                                        Resep : ${item.tgl_peresepan} ${item.jam_peresepan}
+                                <ul class="list-unstyled" style="font-size:12px">
+                                    <li title="Tanggal Peresepan">
+                                        <i class="bi bi-prescription text-primary"></i> : ${item.tgl_peresepan} ${item.jam_peresepan}
                                     </li>
-                                    <li>
-                                        Proses : ${item.tgl_perawatan} ${item.jam}
+                                    <li title="Tanggal Proses">
+                                        <i class="bi bi-clock text-warning"></i> : ${item.tgl_perawatan} ${item.jam}
                                     </li>
-                                    <li>
-                                        Penyerahan : ${item.tgl_penyerahan} ${item.jam_penyerahan}    
-                                    </li>  
+                                    <li title="Tanggal Penyerahan">
+                                        <i class="bi bi-check2-circle text-success"></i> : ${item.tgl_penyerahan} ${item.jam_penyerahan}
+                                    </li>
                                 </ul>
                             </td>
                             <td>${item.no_resep}</td>

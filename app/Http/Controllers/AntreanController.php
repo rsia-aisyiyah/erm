@@ -50,7 +50,13 @@ class AntreanController extends Controller
     function getAntrian()
     {
         $data = $this->resepObat
-            ->with(['regPeriksa', 'regPeriksa.pasien', 'resepDokter', 'resepRacikan',])
+            ->with([
+                'regPeriksa' => function ($q) {
+                    return $q->with(['pasien', 'poliklinik', 'dokter']);
+                },
+                'resepDokter',
+                'resepRacikan',
+            ])
             ->where('tgl_peresepan', date('Y-m-d'))
             ->get();
 
@@ -61,6 +67,8 @@ class AntreanController extends Controller
                 'nm_pasien' => $item->regPeriksa->pasien->nm_pasien,
                 'status_obat' => $this->getStatus($item),
                 'category_obat' => $this->getCategory($item),
+                'poliklinik' => $item->regPeriksa->poliklinik->nm_poli,
+                'dokter' => $item->regPeriksa->dokter->nm_dokter,
 
                 'tgl_peresepan' => $item->tgl_peresepan,
                 'jam_peresepan' => $item->jam_peresepan,
