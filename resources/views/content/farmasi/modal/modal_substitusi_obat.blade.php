@@ -180,6 +180,9 @@
                 if (typeof showDetailPermintaanObat === 'function') {
                     showDetailPermintaanObat(noPermintaan);
                 }
+                if (typeof bukaDetailRanapFarmasi === 'function') {
+                    bukaDetailRanapFarmasi(noPermintaan);
+                }
             },
             error: function(xhr) {
                 const msg = xhr.responseJSON?.message || 'Gagal mensubstitusi obat.';

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN PASIEN UGD</h5>
+                <h5 class="modal-title fs-5" id="exampleModalLabel">PEMERIKSAAN & RESEP PASIEN UGD</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -92,11 +92,6 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab-resep" data-bs-toggle="tab" data-bs-target="#tab-resep-pane"
-                            type="button" role="tab" aria-controls="tab-resep-pane" aria-selected="false">Resep
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tabTindakan" data-bs-toggle="tab"
                             data-bs-target="#tabTindakan-pane" type="button" role="tab" aria-controls="tabTindakan-pane"
                             aria-selected="false">Tindakan
@@ -128,17 +123,6 @@
                     <div class="tab-pane fade p-3" id="tab-tabel-pane" role="tabpanel" aria-labelledby="tab-tabel"
                         tabindex="0">
                         @include('content.ranap.modal.cppt._table_soap') </div>
-                    <div class="tab-pane fade p-3" id="tab-resep-pane" role="tabpanel" aria-labelledby="tab-resep"
-                        tabindex="0">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                @include('content.poliklinik.modal.pemeriksaan.resepRalan')
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
-
-                            </div>
-                        </div>
-                    </div>
                     <div class="tab-pane fade  p-2 m-2" id="tabTindakan-pane" role="tabpanel"
                         aria-labelledby="tabTindakan" tabindex="0">
                         @include('content.poliklinik.modal.tab-tindakan')
@@ -214,12 +198,13 @@
         }
 
         function resetSoap(no_rawat) {
-            $('#formSoapUgd input').each((index, element) => {
+            $('#formSoapUgd input:not([type="hidden"])').each((index, element) => {
                 $(element).val('-');
                 $(element).removeAttr('readonly');
-                $('#jam_rawat').val("{{ date('Y-m-d') }}");
-                $('#tgl_perawatan').val("{{ date('H:i:s') }}");
             })
+            $('#jam_rawat').val("{{ date('H:i:s') }}");
+            $('#tgl_perawatan').val("{{ date('Y-m-d') }}");
+            $('#lingkar_perut').val("-");
             $('#formSoapUgd textarea').each((index, element) => {
                 $(element).val('-')
             });

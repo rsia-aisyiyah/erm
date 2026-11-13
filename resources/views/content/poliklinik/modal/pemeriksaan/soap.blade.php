@@ -451,6 +451,14 @@
                 formInfoPasienResep.find('input[name=kd_dokter]').val(response.kd_dokter);
                 formInfoPasienResep.find('input[name=status_lanjut]').val(response.status_lanjut?.toLowerCase());
                 formInfoPasienResep.find('input[name=kelasHarga]').val('ralan');
+                const depoPoli = response.status_lanjut?.toLowerCase() === 'ranap' ? 'RM' : 'RM7';
+                if (typeof setDepoResep === 'function') {
+                    setDepoResep(depoPoli, 0);
+                } else {
+                    formInfoPasienResep.find('input[name=kd_bangsal]').val(depoPoli);
+                    formInfoPasienResep.find('input[name=cari_kandungan]').val('0');
+                    $('.namaDepoText').text(depoPoli === 'RM' ? 'Apotek Ranap' : 'Apotek Rajal');
+                }
 
                 riwayatResep(response.no_rkm_medis)
 

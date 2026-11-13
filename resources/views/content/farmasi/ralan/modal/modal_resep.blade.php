@@ -19,22 +19,32 @@
                 <div class="card border-0 shadow-sm rounded-3 mb-3">
                     <div class="card-body p-3">
                         <div class="row g-2 align-items-center">
-                            <div class="col-md-3">
+                            <div class="col-md-2 col-12">
                                 <small class="text-muted d-block" style="font-size: 11px;">NO. RESEP & TGL</small>
                                 <span class="fw-bold font-monospace text-primary fs-6" id="infoNoResep">-</span>
                                 <div class="text-muted" style="font-size: 11px;" id="infoTglResep">-</div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4 col-12">
                                 <small class="text-muted d-block" style="font-size: 11px;">PASIEN & NO. RAWAT</small>
-                                <strong class="text-dark d-block text-truncate" id="ralanPasienNama">-</strong>
-                                <small class="text-muted font-monospace" id="ralanNoRawat">-</small>
+                                <div class="d-flex align-items-center gap-1 flex-wrap">
+                                    <strong class="text-dark d-inline-block text-truncate" id="ralanPasienNama" style="max-width: 250px; font-size: 13.5px;">-</strong>
+                                    <span class="badge bg-light text-secondary border font-monospace" id="ralanJk" style="font-size: 10px;">-</span>
+                                </div>
+                                <div class="text-muted font-monospace" style="font-size: 11px;">
+                                    <span id="ralanNoRawat">-</span> • <span id="ralanNoRm">-</span>
+                                </div>
+                                <div class="mt-1" style="font-size: 11px;">
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1" id="badgePasienLahirUmur" style="font-size: 11px; font-weight: 500;">
+                                        <i class="bi bi-calendar2-heart text-danger me-1"></i>Lahir: <span id="ralanTglLahir" class="fw-semibold">-</span> • Usia: <b id="ralanUmurPasien" class="text-dark">-</b>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-12">
                                 <small class="text-muted d-block" style="font-size: 11px;">POLIKLINIK & DOKTER</small>
                                 <div class="fw-semibold text-dark text-truncate" id="ralanPoliNama">-</div>
                                 <small class="text-muted text-truncate d-block" id="ralanDokterNama">-</small>
                             </div>
-                            <div class="col-md-3 text-md-end">
+                            <div class="col-md-3 col-12 text-md-end">
                                 <small class="text-muted d-block" style="font-size: 11px;">DEPO FARMASI & STATUS</small>
                                 <span class="badge bg-secondary mb-1" id="ralanDepoNama">Depo Rajal</span><br>
                                 <span class="badge bg-warning text-dark" id="ralanStatusBadge">BELUM VALIDASI</span>
@@ -241,6 +251,15 @@
                 <input type="hidden" id="editItemKodeBrng">
                 <input type="hidden" id="editItemKodeBrngBaru">
 
+                <!-- Info Pasien Ringkas -->
+                <div class="mb-2 p-2 bg-primary-subtle rounded border border-primary-subtle d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="text-primary d-block" id="editItemPasienNama" style="font-size: 12.5px;">-</strong>
+                        <div class="text-dark" id="editItemPasienLahirUmur" style="font-size: 11px;">-</div>
+                    </div>
+                    <span class="badge bg-light text-primary border font-monospace" id="editItemNoResep" style="font-size: 10.5px;">-</span>
+                </div>
+
                 <!-- Obat Saat Ini -->
                 <div class="mb-3 p-2 bg-light rounded border">
                     <small class="text-muted d-block" style="font-size: 11px;">OBAT SAAT INI :</small>
@@ -301,6 +320,16 @@
             </div>
             <div class="modal-body p-3">
                 <input type="hidden" id="racikNoRacik">
+
+                <!-- Info Pasien Ringkas -->
+                <div class="mb-2 p-2 bg-primary-subtle rounded border border-primary-subtle d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="text-primary d-block" id="racikPasienNama" style="font-size: 12.5px;">-</strong>
+                        <div class="text-dark" id="racikPasienLahirUmur" style="font-size: 11px;">-</div>
+                    </div>
+                    <span class="badge bg-light text-primary border font-monospace" id="racikNoResep" style="font-size: 10.5px;">-</span>
+                </div>
+
                 <div class="mb-2">
                     <label class="form-label small fw-bold mb-1">Nama Racikan :</label>
                     <input type="text" class="form-control form-control-sm" id="racikNama" placeholder="Contoh: Puyer Batuk Pilek" required>
@@ -468,7 +497,11 @@
         $('#infoNoResep').text(no_resep);
         $('#infoTglResep').text('Memuat...');
         $('#ralanPasienNama').text('Memuat...');
+        $('#ralanJk').text('-');
         $('#ralanNoRawat').text('-');
+        $('#ralanNoRm').text('-');
+        $('#ralanTglLahir').text('Memuat...');
+        $('#ralanUmurPasien').text('-');
         $('#ralanPoliNama').text('-');
         $('#ralanDokterNama').text('-');
         $('#notifResep').val('Memuat resep by plan...').css('height', '110px');
@@ -481,12 +514,33 @@
             currentIsValidatedRalan = res.is_validated;
 
             // Render Header Info
+            const pasien = resep.reg_periksa?.pasien;
+            const regPeriksa = resep.reg_periksa;
+
             $('#infoNoResep').text(resep.no_resep);
             $('#infoTglResep').text(`${resep.tgl_peresepan} pk ${resep.jam_peresepan}`);
-            $('#ralanPasienNama').text(resep.reg_periksa?.pasien?.nm_pasien || '-');
+            $('#ralanPasienNama').text(pasien?.nm_pasien || '-');
+            $('#ralanJk').text(pasien?.jk ? (pasien.jk === 'L' ? 'L' : 'P') : '-');
             $('#ralanNoRawat').text(resep.no_rawat);
-            $('#ralanPoliNama').text(resep.reg_periksa?.poliklinik?.nm_poli || '-');
-            $('#ralanDokterNama').text(resep.reg_periksa?.dokter?.nm_dokter || '-');
+            $('#ralanNoRm').text(pasien?.no_rkm_medis ? `RM: ${pasien.no_rkm_medis}` : '-');
+
+            let tglLahirStr = '-';
+            let umurStr = '-';
+            if (pasien?.tgl_lahir && pasien.tgl_lahir !== '0000-00-00') {
+                tglLahirStr = (typeof formatTanggal === 'function') ? formatTanggal(pasien.tgl_lahir) : pasien.tgl_lahir;
+                if (typeof hitungUmur === 'function') {
+                    umurStr = hitungUmur(pasien.tgl_lahir);
+                }
+            }
+            if ((umurStr === '-' || !umurStr) && regPeriksa?.umurdaftar) {
+                umurStr = `${regPeriksa.umurdaftar} ${regPeriksa.sttsumur || 'Th'}`;
+            }
+
+            $('#ralanTglLahir').text(tglLahirStr);
+            $('#ralanUmurPasien').text(umurStr);
+
+            $('#ralanPoliNama').text(regPeriksa?.poliklinik?.nm_poli || '-');
+            $('#ralanDokterNama').text(regPeriksa?.dokter?.nm_dokter || '-');
             $('#ralanDepoNama').text(`${res.nmBangsal} (${currentKdBangsalRalan})`);
 
             // Status Badge & Tombol Validasi
@@ -505,10 +559,10 @@
             }
 
             // Bind Tombol Telaah
-            const isTelaahRalan = !!resep.telaah_farmasi;
+            const isTelaahRalan = !!(resep.telaah_farmasi || resep.telaahFarmasi);
             if (isTelaahRalan) {
                 $('#btnModalTelaahRalan')
-                    .removeClass('btn-outline-danger')
+                    .removeClass('btn-outline-danger fw-semibold')
                     .addClass('text-white')
                     .css('background-color', '#0f766e')
                     .html('<i class="bi bi-shield-check me-1"></i> Telaah Farmasi <span class="badge bg-white text-dark ms-1" style="font-size:10px;">Sudah</span>');
@@ -911,6 +965,25 @@
         });
     }
 
+    // Helper Info Pasien Lengkap untuk Modal Popup Edit / Racikan
+    function getInfoPasienLengkap() {
+        const p = currentRawatDataRalan?.reg_periksa?.pasien;
+        const rp = currentRawatDataRalan?.reg_periksa;
+        let tglLahirU = (p?.tgl_lahir && p.tgl_lahir !== '0000-00-00')
+            ? ((typeof formatTanggal === 'function') ? formatTanggal(p.tgl_lahir) : p.tgl_lahir)
+            : '-';
+        let umurU = (p?.tgl_lahir && p.tgl_lahir !== '0000-00-00' && typeof hitungUmur === 'function')
+            ? hitungUmur(p.tgl_lahir)
+            : (rp?.umurdaftar ? `${rp.umurdaftar} ${rp.sttsumur || 'Th'}` : '-');
+        return {
+            nama: p?.nm_pasien || $('#ralanPasienNama').text() || '-',
+            no_resep: currentRawatDataRalan?.no_resep || currentNoResepRalan || '-',
+            tgl_lahir: tglLahirU,
+            umur: umurU,
+            jk: p?.jk ? (p.jk === 'L' ? 'L' : 'P') : ($('#ralanJk').text() || '-')
+        };
+    }
+
     // Buka Modal Edit Item / Substitusi
     function bukaModalEditItem(kode_brng, nama_brng, jml, aturan_pakai) {
         $('#editItemKodeBrng').val(kode_brng);
@@ -919,6 +992,12 @@
         $('#editItemKodeBrngDisplay').text(`Kode: ${kode_brng}`);
         $('#editItemJml').val(jml);
         $('#editItemAturan').val(aturan_pakai);
+
+        // Pasang Info Pasien Ringkas
+        const infoP = getInfoPasienLengkap();
+        $('#editItemPasienNama').text(`${infoP.nama} (${infoP.jk})`);
+        $('#editItemPasienLahirUmur').html(`<i class="bi bi-calendar2-heart text-danger me-1"></i>Lahir: <b>${infoP.tgl_lahir}</b> • Usia: <b>${infoP.umur}</b>`);
+        $('#editItemNoResep').text(`Resep: ${infoP.no_resep}`);
 
         // Reset state substitusi
         $('#editInputCariObatBaru').val('');
@@ -1128,6 +1207,12 @@
         $('#racikJmlDr').val('10');
         $('#racikAturanPakai').val('');
         $('#racikKeterangan').val('-');
+
+        const infoP = getInfoPasienLengkap();
+        $('#racikPasienNama').text(`${infoP.nama} (${infoP.jk})`);
+        $('#racikPasienLahirUmur').html(`<i class="bi bi-calendar2-heart text-danger me-1"></i>Lahir: <b>${infoP.tgl_lahir}</b> • Usia: <b>${infoP.umur}</b>`);
+        $('#racikNoResep').text(`Resep: ${infoP.no_resep}`);
+
         if (globalMetodeRacikList && globalMetodeRacikList.length > 0) {
             $('#racikKdMetode').val(globalMetodeRacikList[0].kd_racik);
         }
@@ -1143,6 +1228,12 @@
         $('#racikJmlDr').val(jml_dr);
         $('#racikAturanPakai').val(aturan_pakai);
         $('#racikKeterangan').val(keterangan);
+
+        const infoP = getInfoPasienLengkap();
+        $('#racikPasienNama').text(`${infoP.nama} (${infoP.jk})`);
+        $('#racikPasienLahirUmur').html(`<i class="bi bi-calendar2-heart text-danger me-1"></i>Lahir: <b>${infoP.tgl_lahir}</b> • Usia: <b>${infoP.umur}</b>`);
+        $('#racikNoResep').text(`Resep: ${infoP.no_resep}`);
+
         $('#modalHeaderRacikanRalan').modal('show');
     }
 

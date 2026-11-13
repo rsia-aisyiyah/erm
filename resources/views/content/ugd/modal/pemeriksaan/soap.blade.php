@@ -178,54 +178,112 @@
 
         </div>
         <div class="col-sm-12 col-md-12 col-lg-6">
-            <table class="borderless">
-                <tr>
-                    <td width="5%" style="font-size:11px">Alergi :</td>
-                    <td width="65%">
-                        <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder=""
-                            onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size:11px" width="5%">Asesmen : </td>
-                    <td colspan="3" width="5%">
-                        <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="5"
-                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size:11px">Plan : </td>
-                    <td colspan="3">
-                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="5"
-                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size:11px">Instruksi : </td>
-                    <td colspan="3">
-                        <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="5"
-                            style="font-size:11px;min-height:20px;;resize:none" onfocus="removeZero(this)"
-                            onblur="cekKosong(this)">-</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type="hidden" name="jam_rawat" id="jam_rawat" value="{{ date('H:i:s') }}">
-                        <input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="{{ date('Y-m-d') }}">
-                        <input type="hidden" name="lingkar_perut" id="lingkar_perut" value="-">
-                        <input type="hidden" name="spesialis" id="spesialis">
-                        <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRalan()"><i
-                                class="bi bi-save"></i> Simpan</button>
-                        <button type="button" class="btn btn-warning btn-sm" id="btn-reset"
-                            style="font-size:12px;display: none"><i class="bi bi-arrow-clockwise"></i> Baru</button>
-                        <button type="button" class="btn btn-success btn-sm" onclick="editSoapRalan()" id="btn-ubah"
-                            style="font-size:12px;display: none"><i class="bi bi-pencil-square"></i> Ubah</button>
+            <!-- 1. Alergi -->
+            <div class="mb-2">
+                <div class="d-flex align-items-center gap-2">
+                    <label for="alergi" class="form-label mb-0 fw-bold text-danger text-nowrap" style="font-size: 11.5px; min-width: 60px;">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i>Alergi :
+                    </label>
+                    <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder="Riwayat alergi obat / makanan..."
+                        onfocus="removeZero(this)" onblur="cekKosong(this)" value="-" autocomplete="off">
+                </div>
+            </div>
 
-                    </td>
-                </tr>
-            </table>
+            <!-- 2. Asesmen -->
+            <div class="mb-2">
+                <label for="asesmen" class="form-label mb-1 fw-bold text-dark" style="font-size: 12px;">
+                    Asesmen (Diagnosis / Masalah) :
+                </label>
+                <textarea class="form-control" name="asesmen" id="asesmen" rows="4"
+                    style="font-size: 12px; min-height: 90px; resize: vertical;"
+                    placeholder="Diagnosis kerja / masalah klinis..." onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+            </div>
+
+            <!-- 3. Instruksi Medis -->
+            <div class="mb-2">
+                <label for="instruksi" class="form-label mb-1 fw-bold text-dark" style="font-size: 12px;">
+                    Instruksi Medis / Tindakan :
+                </label>
+                <textarea class="form-control" name="instruksi" id="instruksi" rows="3"
+                    style="font-size: 12px; min-height: 75px; resize: vertical;"
+                    placeholder="Instruksi dokter / tindakan segera..." onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+            </div>
+
+            <!-- 4. Plan (Rencana Terapi) -->
+            @php
+                $isUserDokter = session()->get('role') === 'dokter' || 
+                                !empty(session()->get('pegawai')->dokter) || 
+                                session()->get('pegawai')->bidang === 'Spesialis' || 
+                                str_contains(session()->get('pegawai')->jbtn ?? '', 'Dokter') ||
+                                str_contains(session()->get('pegawai')->jnj_jabatan ?? '', 'Dokter');
+            @endphp
+            <div class="mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label for="plan" class="form-label mb-0 fw-bold text-dark" style="font-size: 12px;">
+                        Plan (Rencana Penatalaksanaan) :
+                    </label>
+                    @if ($isUserDokter)
+                        <span class="text-muted" style="font-size: 10.5px;">
+                            <i class="bi bi-arrow-repeat text-primary me-1"></i>Otomatis tersinkron dari resep di bawah
+                        </span>
+                    @else
+                        <div class="d-flex align-items-center gap-1">
+                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle" style="font-size: 10px;" title="Akun Petugas/Perawat: Isi Plan dengan rencana asuhan keperawatan / monitoring">
+                                <i class="bi bi-person-heart me-1 text-danger"></i>Plan Keperawatan
+                            </span>
+                            <button type="button" class="btn btn-xs btn-outline-primary py-0 px-2 fw-semibold" onclick="salinResepKePlanUgd()" style="font-size: 10.5px;" title="Salin resep obat dokter DPJP ke kolom Plan ini sebagai catatan kolaborasi">
+                                <i class="bi bi-clipboard-plus me-1"></i>Salin Terapi Dokter
+                            </button>
+                        </div>
+                    @endif
+                </div>
+                <textarea class="form-control" name="plan" id="plan" rows="4"
+                    style="font-size: 12px; min-height: 95px; resize: vertical;"
+                    placeholder="{{ $isUserDokter ? 'Terapi, rencana tindak lanjut, edukasi...' : 'Rencana asuhan keperawatan, monitoring, observasi...' }}" onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+            </div>
+
+            <!-- 5. Resep Obat Terintegrasi (Non-Racikan, Racikan, Riwayat Resep) -->
+            <div class="mb-3">
+                @include('content.poliklinik.modal.pemeriksaan.resepRalan')
+            </div>
+
+            <!-- 6. Tombol Aksi SOAP -->
+            <div class="d-flex justify-content-start align-items-center gap-2 mt-2 pt-2 border-top">
+                <input type="hidden" name="jam_rawat" id="jam_rawat" value="{{ date('H:i:s') }}">
+                <input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="{{ date('Y-m-d') }}">
+                <input type="hidden" name="lingkar_perut" id="lingkar_perut" value="-">
+                <input type="hidden" name="spesialis" id="spesialis">
+                <button type="button" class="btn btn-primary btn-sm btn-simpan shadow-sm px-3" onclick="simpanSoapRalan()">
+                    <i class="bi bi-save me-1"></i> Simpan SOAP
+                </button>
+                <button type="button" class="btn btn-warning btn-sm shadow-sm" id="btn-reset" style="font-size:12px; display: none">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Baru
+                </button>
+                <button type="button" class="btn btn-success btn-sm shadow-sm" onclick="editSoapRalan()" id="btn-ubah" style="font-size:12px; display: none">
+                    <i class="bi bi-pencil-square me-1"></i> Ubah
+                </button>
+            </div>
         </div>
     </div>
 
 </form>
+
+<script>
+    function salinResepKePlanUgd() {
+        const teks = (window.teksResepAktif || '').trim();
+        if (!teks || teks === '-') {
+            Swal.fire('Info', 'Belum ada resep obat dokter yang tersimpan untuk kunjungan ini.', 'info');
+            return;
+        }
+        const $plan = $('#formSoapUgd').find('textarea[name=plan]');
+        const currentVal = $plan.val().trim();
+        if (currentVal && currentVal !== '-') {
+            $plan.val(currentVal + '\n\n[Terapi Dokter DPJP]:\n' + teks);
+        } else {
+            $plan.val('[Terapi Dokter DPJP]:\n' + teks);
+        }
+        if (typeof swalToast === 'function') {
+            swalToast('Terapi dokter disalin ke Plan');
+        }
+    }
+</script>

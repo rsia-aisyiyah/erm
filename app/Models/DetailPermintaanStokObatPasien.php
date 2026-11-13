@@ -23,4 +23,9 @@ class DetailPermintaanStokObatPasien extends Model
     {
         return $this->belongsTo(DataBarang::class, 'kode_brng', 'kode_brng');
     }
+
+    public function barang()
+    {
+        return $this->dataBarang();
+    }
 }

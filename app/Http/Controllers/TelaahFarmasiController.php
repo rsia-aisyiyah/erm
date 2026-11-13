@@ -64,6 +64,8 @@ class TelaahFarmasiController extends Controller
             'obat_tepat_dosis' => $request->obat_tepat_dosis ?? 'Ya',
             'obat_tepat_cara_pemberian' => $request->obat_tepat_cara_pemberian ?? 'Ya',
             'obat_tepat_waktu_pemberian' => $request->obat_tepat_waktu_pemberian ?? 'Ya',
+            'obat_benar_dokumentasi' => $request->obat_benar_dokumentasi ?? 'Ya',
+            'obat_benar_informasi' => $request->obat_benar_informasi ?? 'Ya',
             'nip' => $nip,
         ];
 

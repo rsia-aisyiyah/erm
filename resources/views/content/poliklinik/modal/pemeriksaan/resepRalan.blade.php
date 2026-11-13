@@ -1,3 +1,10 @@
+@php
+    $isUserDokter = session()->get('role') === 'dokter' || 
+                    !empty(session()->get('pegawai')->dokter) || 
+                    session()->get('pegawai')->bidang === 'Spesialis' || 
+                    str_contains(session()->get('pegawai')->jbtn ?? '', 'Dokter') ||
+                    str_contains(session()->get('pegawai')->jnj_jabatan ?? '', 'Dokter');
+@endphp
 <div id="formInfoPasienResep">
     <input type="hidden" class="no_resep form-control form-control-sm" name="no_resep" />
     <input type="hidden" name="no_rawat" id="no_rawat" />
@@ -5,15 +12,43 @@
     <input type="hidden" name="kd_dokter" id="kd_dokter" />
     <input type="hidden" name="status_lanjut" id="status_lanjut" />
     <input type="hidden" name="kelasHarga" id="kelasHarga" />
+    <input type="hidden" name="kd_bangsal" id="kd_bangsal" value="RM7" />
+    <input type="hidden" name="cari_kandungan" id="cari_kandungan" value="0" />
 
 </div>
 <div class="border p-3 mt-3 bg-light">
+    @if (!$isUserDokter)
+        <div class="alert alert-info py-2 px-3 mb-2 rounded-3 border-info-subtle bg-info-subtle text-dark shadow-2xs" style="font-size: 11.5px;">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-shield-lock-fill text-primary fs-5"></i>
+                    <div>
+                        <strong>Mode Lihat Resep (Non-Dokter):</strong> 
+                        <span class="text-secondary">Anda dapat meninjau resep dokter &amp; riwayat obat pasien. Pembuatan dan perubahan resep obat merupakan kewenangan DPJP/Dokter.</span>
+                    </div>
+                </div>
+                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1"><i class="bi bi-eye me-1"></i>Read-Only</span>
+            </div>
+        </div>
+        <style>
+            .actionsObatUmum, .actionsRacikan, .actionResep, .tambah_umum, .tambah_racik {
+                display: none !important;
+            }
+        </style>
+    @endif
     <div class="d-flex justify-content-between gap-2 mb-2">
         <label for="no_resep p-2">No. Resep :
             <span class="noResepText"></span>
-            <a href="javascript:void(0)" class="actionResep" onclick="deleteResep()"><i class="bi bi-trash text-danger"></i></a>
+            @if ($isUserDokter)
+                <a href="javascript:void(0)" class="actionResep" onclick="deleteResep()"><i class="bi bi-trash text-danger"></i></a>
+            @endif
         </label>
-        <small style="font-size:11px">Tgl. Resep : <span class="labelTglResep"></span></small>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-white text-dark border shadow-2xs labelDepoResep" style="font-size:10.5px;">
+                <i class="bi bi-shop me-1 text-primary"></i>Depo: <strong class="namaDepoText text-primary">Apotek Rajal</strong>
+            </span>
+            <small style="font-size:11px">Tgl. Resep : <span class="labelTglResep"></span></small>
+        </div>
     </div>
     <ul class="nav nav-tabs" id="myTab">
         <li class="nav-item">
@@ -88,6 +123,7 @@
 
 @push('script')
     <script>
+        const isUserDokter = {{ $isUserDokter ? 'true' : 'false' }};
         const modalDetailPpra = $('#modalDetailPpra')
         const btnTambahObatUmum = $('.tambah_umum')
         const bodyResepRacikan = $('#body_racikan')
@@ -106,7 +142,15 @@
                 if (!response.length) {
                     bodyResepObatUmum.empty();
                     bodyResepRacikan.empty();
-                    formSoapPoli.find('textarea[name="rtl"]').val("-")
+                    window.teksResepAktif = '';
+                    if (isUserDokter) {
+                        if (typeof formSoapPoli !== 'undefined' && formSoapPoli.length) {
+                            formSoapPoli.find('textarea[name="rtl"]').val("-")
+                        }
+                        if ($('#formSoapUgd').length) {
+                            $('#formSoapUgd').find('textarea[name=plan]').val("-");
+                        }
+                    }
                     $('.noResepText').text('');
                     $('.labelTglResep').text(``);
                     return;
@@ -155,19 +199,30 @@
 
                     })
 
-                    formSoapPoli.find('textarea[name="rtl"]').val(teksRd + '\n' + teksRr);
-                    $('#formSoapRanap').find('textarea[name=plan]').val(teksRd + '\n' + teksRr);
-                    $('#formSoapUgd').find('textarea[name=plan]').val(teksRd + '\n' + teksRr);
+                    window.teksResepAktif = (teksRd + '\n' + teksRr).trim();
+                    const planText = window.teksResepAktif || '-';
 
-
+                    // Hanya sinkronkan resep otomatis ke Plan jika user adalah Dokter
+                    if (isUserDokter) {
+                        if (typeof formSoapPoli !== 'undefined' && formSoapPoli.length) {
+                            formSoapPoli.find('textarea[name="rtl"]').val(planText);
+                        }
+                        if ($('#formSoapRanap').length) {
+                            $('#formSoapRanap').find('textarea[name=plan]').val(planText);
+                        }
+                        if ($('#formSoapUgd').length) {
+                            $('#formSoapUgd').find('textarea[name=plan]').val(planText);
+                        }
+                    }
                 },
                 error: function(request, status, error) {
-                    Swal.fire(
-                        'Gagal !',
-                        'Tidak tertulis di PLAN<br/>' + request.responseJSON.message,
-                        'error',
-                    )
-
+                    if (isUserDokter) {
+                        Swal.fire(
+                            'Gagal !',
+                            'Tidak tertulis di PLAN<br/>' + (request.responseJSON ? request.responseJSON.message : ''),
+                            'error',
+                        );
+                    }
                 }
             })
         }
@@ -207,17 +262,19 @@
             $.get(`/erm/resep/racik/ambil`, {
                 no_resep: no_resep
             }).done((response) => {
-                if (!response.length) {
+                if (!response || !response.length) {
                     bodyResepRacikan.empty();
+                    return;
                 }
                 const content = response.map((val) => {
-                    const subtotal = val.detail.reduce((sum, item) => {
-                        return sum + (parseInt(item.databarang.ralan) * parseInt(item.jml));
+                    const details = Array.isArray(val.detail) ? val.detail : [];
+                    const subtotal = details.reduce((sum, item) => {
+                        return sum + ((parseInt(item.databarang?.ralan) || 0) * (parseInt(item.jml) || 0));
                     }, 0);
 
 
-                    const obat = val.detail.map((item) => {
-                        return `<span class="badge bg-success">${item.databarang.nama_brng} (${item.kandungan} mg)</span>`
+                    const obat = details.map((item) => {
+                        return `<span class="badge bg-success">${item.databarang?.nama_brng || item.kode_brng} (${item.kandungan} mg)</span>`
                     })
                     const rowObat = `<tr class="table-sm">
 
@@ -226,9 +283,9 @@
                         </tr>`
                     return `<tr class="racikan-${val.no_racik}">
                                     <td>${val.nama_racik}</td>
-                                    <td>${val.metode.nm_racik}</td>
-                                    <td>${val.jml_dr}</td>
-                                    <td>${val.aturan_pakai}</td>
+                                    <td>${val.metode?.nm_racik || '-'}</td>
+                                    <td>${val.jml_dr}</td>  
+                                    <td>${val.aturan_pakai || '-'}</td>
                                     <td class="subtotalRacikan text-end" data-number="${subtotal}">
                                         ${formatCurrency(subtotal)}
                                     </td>
@@ -313,7 +370,44 @@
                         swalToast('Berhasil Hapus Obat')
                         getResepObat(no_rawat)
                     }).fail(function(request) {
-                        Swal.fire('Gagal !', 'Tidak menghapus obat<br/>' + request.responseJSON.message, 'error', )
+                        Swal.fire('Gagal !', 'Tidak menghapus obat<br/>' + (request.responseJSON?.message || request.statusText || 'Terjadi kesalahan'), 'error', )
+                    })
+                }
+            })
+        }
+
+        function hapusRacikan(no_resep, no_racik) {
+            const no_rawat = $('#formInfoPasienResep').find('#no_rawat').val() ||
+                             $('#formInfoPasien').find('input[name="no_rawat"]').val() ||
+                             $('input[name="no_rawat"]').filter(function() { return $(this).val(); }).first().val();
+            Swal.fire({
+                title: 'Yakin ?',
+                text: "Anda tidak bisa mengembalikan lagi",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus saja!',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    hapusResepRacikan(no_resep, no_racik).done(() => {
+                        swalToast('Berhasil Hapus Racikan')
+                        // Hapus baris dari DOM langsung (sinkron) agar tampilan update seketika
+                        const $row = bodyResepRacikan.find('.racikan-' + no_racik);
+                        $row.next('tr').remove(); // baris detail obat (badge)
+                        $row.remove();
+                        totalResepRacikan();
+                        // Refresh async untuk sinkronisasi data & Plan
+                        if (no_rawat) {
+                            getResepObat(no_rawat)
+                        } else {
+                            getResepRacikan(no_resep)
+                            tulisPlan()
+                        }
+                    }).fail((request) => {
+                        const msg = request.responseJSON?.message || request.statusText || 'Terjadi kesalahan';
+                        Swal.fire('Gagal !', 'Tidak bisa menghapus racikan<br/>' + msg, 'error')
                     })
                 }
             })
@@ -478,7 +572,17 @@
                             showConfirmButton: false,
                             timer: 1500
                         })
-                        formSoapPoli.find('[name=rtl]').val('-');
+                        if (isUserDokter) {
+                            if (typeof formSoapPoli !== 'undefined' && formSoapPoli.length) {
+                                formSoapPoli.find('[name=rtl]').val('-');
+                            }
+                            if ($('#formSoapRanap').length) {
+                                $('#formSoapRanap').find('textarea[name=plan]').val('-');
+                            }
+                            if ($('#formSoapUgd').length) {
+                                $('#formSoapUgd').find('textarea[name=plan]').val('-');
+                            }
+                        }
                         getResepObat(no_rawat)
                         tulisPlan()
 
@@ -964,11 +1068,23 @@
             $('.id_racik').val(id_racik);
         }
 
+        function setDepoResep(kdBangsal, cariKandungan = null) {
+            kdBangsal = (kdBangsal || 'RM7').toString().trim();
+            $('#formInfoPasienResep').find('input[name="kd_bangsal"]').val(kdBangsal);
+            if (cariKandungan !== null) {
+                $('#formInfoPasienResep').find('input[name="cari_kandungan"]').val(cariKandungan ? '1' : '0');
+            }
+            const namaDepo = kdBangsal === 'RM' ? 'Apotek Ranap' : (kdBangsal === 'RM7' ? 'Apotek Rajal' : kdBangsal);
+            $('.namaDepoText').text(namaDepo);
+        }
+
         let selectedIndex = -1; // posisi item aktif
         function cariObat(obat, e) {
             const kelas = $('#formInfoPasienResep').find('input[name="kelasHarga"]').val();
             const status = $('#formInfoPasienResep').find('input[name="status_lanjut"]').val();
-            const gudang = status === 'ranap' ? 'RM' : 'RM7';
+            const kdBangsal = $('#formInfoPasienResep').find('input[name="kd_bangsal"]').val();
+            const gudang = kdBangsal || (status === 'ranap' ? 'RM' : 'RM7');
+            const cariKandungan = $('#formInfoPasienResep').find('input[name="cari_kandungan"]').val() || ($('#modalSoapUgd').hasClass('show') ? 1 : 0);
             // Navigasi keyboard
             let $list = $(".list_obat ul li");
             if (e.key === "ArrowDown") {
@@ -997,7 +1113,8 @@
                 url: '/erm/obat/cari',
                 data: {
                     'gudang': gudang,
-                    'nama': obat.value
+                    'nama': obat.value,
+                    'cari_kandungan': cariKandungan
                 },
                 success: function(response) {
 
@@ -1386,71 +1503,155 @@
         }
 
         function riwayatResep(no_rm) {
+            if (!no_rm) return;
+            $('.tb-resep-riwayat tbody').html('<tr><td colspan="4" class="text-center text-muted py-3"><div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>Memuat riwayat resep...</td></tr>');
 
-            $('.tb-resep-riwayat tbody').empty()
+            const currentNoResep = $('#formInfoPasienResep').find('input[name=no_resep]').val() || $('.noResepText').text().trim();
+
             $.ajax({
                 url: `/erm/resep/riwayat/${no_rm}`,
                 method: 'GET',
             }).done((response) => {
+                if (!response || response.length === 0) {
+                    $('.tb-resep-riwayat tbody').html('<tr><td colspan="4" class="text-center text-muted py-3"><i class="bi bi-info-circle me-1"></i> Tidak ada riwayat resep sebelumnya untuk pasien ini.</td></tr>');
+                    return;
+                }
 
-                const resep = response.map((item) => {
+                const rows = [];
+                response.forEach((item) => {
+                    // Jangan tampilkan resep yang sedang aktif diedit di form saat ini
+                    if (currentNoResep && item.no_resep == currentNoResep) {
+                        return;
+                    }
+
                     let resepDokter = '';
                     let resepRacikan = '';
-                    if (item.resep_dokter) {
+                    if (item.resep_dokter && item.resep_dokter.length > 0) {
                         resepDokter = item.resep_dokter.map((items) => {
-                            return `<li>${items.data_barang.nama_brng} @${items.jml} ${items.data_barang?.kode_satuan?.satuan} ${items.aturan_pakai}</li>`
-                        }).join('')
+                            const satuan = items.data_barang?.kode_satuan?.satuan || items.data_barang?.kode_sat || '';
+                            const aturan = items.aturan_pakai ? `<span class="badge bg-light text-dark border ms-1">${items.aturan_pakai}</span>` : '';
+                            return `<li class="mb-1">${items.data_barang?.nama_brng || items.kode_brng} <strong class="text-primary">@${items.jml} ${satuan}</strong> ${aturan}</li>`;
+                        }).join('');
                     }
-                    if (item.resep_racikan) {
+                    if (item.resep_racikan && item.resep_racikan.length > 0) {
                         resepRacikan = item.resep_racikan.map((items) => {
-                            const obat = items.detail.map((itemsObat) => {
-                                return `<span class="badge text-bg-success">${itemsObat.databarang.nama_brng}</span>`
-                            }).join(', ')
+                            const obat = (items.detail || items.detail_racikan || []).map((itemsObat) => {
+                                const nmBrng = itemsObat.databarang?.nama_brng || itemsObat.kode_brng || '';
+                                const dosis = itemsObat.kandungan ? `(${itemsObat.kandungan} mg)` : '';
+                                return `<span class="badge text-bg-success mb-1">${nmBrng} ${dosis}</span>`;
+                            }).join(' ');
 
-                            return `<li>
-                                           ${items.nama_racik} @${items.jml_dr} ${items.metode.nm_racik} ${items.aturan_pakai}<br/>
-                                           ${obat}
-                                    </li>`
-                        }).join('')
+                            const metode = items.metode?.nm_racik || 'Racikan';
+                            const aturan = items.aturan_pakai ? `<span class="badge bg-light text-dark border ms-1">${items.aturan_pakai}</span>` : '';
+                            return `<li class="mb-2">
+                                        <strong>${items.nama_racik}</strong> @${items.jml_dr} ${metode} ${aturan}<br/>
+                                        <div class="mt-1">${obat}</div>
+                                    </li>`;
+                        }).join('');
                     }
 
-                    if (item.tgl_penyerahan === '0000-00-00' && item.tgl_perawatan) {
-                        return '';
+                    // Lewati jika tidak ada item obat maupun racikan
+                    if (!resepDokter && !resepRacikan) {
+                        return;
                     }
-                    return `<tr>
-                                <td width="15%">${formatTanggal(item.tgl_peresepan)}</td>
-                                <td><ul>${resepDokter}</ul></td>
-                                <td><ul>${resepRacikan}</ul></td>
-                                <td><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(${item.no_resep})" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy Resep</button></td>
 
-                            </tr>`
+                    const isRanap = item.status === 'ranap';
+                    const badgeStatus = isRanap 
+                        ? '<span class="badge text-white ms-1" style="background-color: #6f42c1; font-size:10px;"><i class="bi bi-hospital me-1"></i>Ranap</span>'
+                        : '<span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-1" style="font-size:10px;"><i class="bi bi-person-walking me-1"></i>Ralan</span>';
 
-                })
+                    const unitNama = isRanap 
+                        ? (item.reg_periksa?.kamar_inap?.[0]?.kamar?.bangsal?.nm_bangsal || 'Rawat Inap')
+                        : (item.reg_periksa?.poliklinik?.nm_poli || 'Rawat Jalan');
 
-                $('.tb-resep-riwayat tbody').html(resep)
+                    const dokterNama = item.dokter?.nm_dokter 
+                        ? `<small class="text-muted d-block text-truncate" style="font-size:11px;" title="${item.dokter.nm_dokter}"><i class="bi bi-person-fill"></i> ${item.dokter.nm_dokter}</small>` 
+                        : '';
 
-                // $.map(response, (resep) => {
-                //     if (resep.resep_dokter.length > 0 || resep.resep_racikan.length > 0) {
-                //         html = `<tr>`
-                //         html += `<td width="15%">${formatTanggal(resep.tgl_peresepan)} <br>${resep.no_resep}</td>`
-                //         html += `<td><ul style="disc inside">`
-                //         $.map(resep.resep_dokter, (dokter) => {
-                //             html += `<li>${dokter.data_barang.nama_brng}, ${dokter.jml} ${dokter.data_barang.kode_satuan.satuan}, aturan pakai ${dokter.aturan_pakai}</li>`
-                //         })
-                //         $.map(resep.resep_racikan, (racikan) => {
-                //             html += `<li>${racikan.nama_racik}, jumlah ${racikan.jml_dr} ${racikan.metode.nm_racik}, aturan pakai ${racikan.aturan_pakai}</li>`
-                //             $.map(racikan.detail_racikan, (detail) => {
-                //                 html += `<span class="badge rounded-pill text-bg-success">${detail.databarang.nama_brng}</span>`
-                //             })
-                //         })
-                //
-                //         html += `</ul></td>`
-                //         html += `<td><button style="font-size:12px" class="btn btn-warning btn-sm" onclick="copyResep(${resep.no_resep})" type="button"><i class="bi bi-clipboard-check-fill"></i> Copy Resep</button></td>`;
-                //         html += `<tr>`
-                //         $('.tb-resep-riwayat tbody').append(html)
-                //     }
-                // })
-            })
+                    rows.push(`<tr>
+                        <td width="22%" class="align-middle">
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="fw-bold text-dark">${formatTanggal(item.tgl_peresepan)}</span>
+                                ${badgeStatus}
+                            </div>
+                            <span class="badge bg-secondary-subtle text-secondary font-monospace mb-1" style="font-size:10px;">No. ${item.no_resep}</span>
+                            <small class="text-dark d-block fw-semibold text-truncate" style="font-size:11px;">${unitNama}</small>
+                            ${dokterNama}
+                        </td>
+                        <td class="align-middle"><ul class="ps-3 mb-0" style="font-size:12px;">${resepDokter || '<span class="text-muted fst-italic">-</span>'}</ul></td>
+                        <td class="align-middle"><ul class="ps-3 mb-0" style="font-size:12px;">${resepRacikan || '<span class="text-muted fst-italic">-</span>'}</ul></td>
+                        <td width="13%" class="align-middle text-center">
+                            <button style="font-size:11.5px" class="btn btn-warning btn-sm shadow-xs fw-semibold" onclick="copyResep('${item.no_resep}')" type="button" title="Copy resep ini ke form aktif">
+                                <i class="bi bi-clipboard-check-fill me-1"></i> Copy Resep
+                            </button>
+                        </td>
+                    </tr>`);
+                });
+
+                if (rows.length === 0) {
+                    $('.tb-resep-riwayat tbody').html('<tr><td colspan="4" class="text-center text-muted py-3"><i class="bi bi-info-circle me-1"></i> Tidak ada riwayat resep sebelumnya untuk pasien ini.</td></tr>');
+                } else {
+                    $('.tb-resep-riwayat tbody').html(rows.join(''));
+                }
+            }).fail(() => {
+                $('.tb-resep-riwayat tbody').html('<tr><td colspan="4" class="text-center text-danger py-3"><i class="bi bi-exclamation-triangle me-1"></i> Gagal memuat riwayat resep.</td></tr>');
+            });
+        }
+
+        // Auto load riwayat resep saat tab Riwayat Resep diklik
+        $(document).on('shown.bs.tab', 'a[href="#riwayat"]', function() {
+            const no_rm = $('#formInfoPasienResep').find('input[name=no_rkm_medis]').val() || 
+                          $('#formInfoPasien').find('input[name=no_rkm_medis]').val() ||
+                          $('#no_rkm_medis').val() ||
+                          $('#no_rm').val();
+            if (no_rm) {
+                riwayatResep(no_rm);
+            }
+        });
+
+        // Fallback global copyResep agar berfungsi di UGD, Poli, maupun Ranap
+        if (typeof window.copyResep !== 'function') {
+            window.copyResep = function(kdResep) {
+                const formInfoPasienResep = $('#formInfoPasienResep');
+                const no_rawat = formInfoPasienResep.find('[name=no_rawat]').val();
+                const kd_dokter = formInfoPasienResep.find('[name=kd_dokter]').val();
+                const status = formInfoPasienResep.find('[name=status_lanjut]').val();
+
+                Swal.fire({
+                    title: 'Yakin ?',
+                    text: "Anda mengcopy resep ini",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post(`/erm/resep/copy/${kdResep}`, {
+                            no_rawat: no_rawat,
+                            kd_dokter: kd_dokter,
+                            status: status,
+                        }).done((response) => {
+                            if (response.success) {
+                                if (typeof swalToast === 'function') {
+                                    swalToast('Berhasil Copy Resep');
+                                } else {
+                                    Swal.fire('Berhasil!', 'Berhasil copy resep', 'success');
+                                }
+                                getResepObat(no_rawat);
+                                $('a[href="#umum"]').tab('show');
+                            }
+                        }).fail((error) => {
+                            if (typeof alertErrorAjax === 'function') {
+                                alertErrorAjax(error);
+                            } else {
+                                Swal.fire('Gagal!', error.responseJSON?.message || 'Gagal copy resep', 'error');
+                            }
+                        });
+                    }
+                });
+            };
         }
 
         function getResepByRawat(noRawat) {

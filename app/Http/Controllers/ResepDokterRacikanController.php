@@ -37,7 +37,7 @@ class ResepDokterRacikanController extends Controller
                     }
                 ])->first();
             } else {
-                $hasil = $resepDokter->where('no_resep', $request->no_resep)->with(['metode', 'detailRacikan.dataBarang', 'detail.databarang'])->get();
+                $hasil = $resepDokter->where('no_resep', $request->no_resep)->with(['metode', 'detail.databarang'])->get();
             }
         }
         return response()->json($hasil, 200);

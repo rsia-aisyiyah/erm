@@ -218,7 +218,7 @@
                                         <tr>
                                             <th width="5%">No</th>
                                             <th width="65%">Parameter Verifikasi Fisik Obat</th>
-                                            <th width="30%">Status Sesuai</th>
+                                            <th width="30%">Status Kesesuaian</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -228,7 +228,7 @@
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <input type="radio" class="btn-check" name="obat_tepat_pasien" id="obat_pasien_ya" value="Ya" checked>
-                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_pasien_ya">Sesuai (Ya)</label>
+                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_pasien_ya">Benar (Ya)</label>
                                                     <input type="radio" class="btn-check" name="obat_tepat_pasien" id="obat_pasien_tdk" value="Tidak">
                                                     <label class="btn btn-outline-danger py-0 px-3" for="obat_pasien_tdk">Tidak</label>
                                                 </div>
@@ -240,7 +240,7 @@
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <input type="radio" class="btn-check" name="obat_tepat_obat" id="obat_obat_ya" value="Ya" checked>
-                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_obat_ya">Sesuai (Ya)</label>
+                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_obat_ya">Benar (Ya)</label>
                                                     <input type="radio" class="btn-check" name="obat_tepat_obat" id="obat_obat_tdk" value="Tidak">
                                                     <label class="btn btn-outline-danger py-0 px-3" for="obat_obat_tdk">Tidak</label>
                                                 </div>
@@ -252,7 +252,7 @@
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <input type="radio" class="btn-check" name="obat_tepat_dosis" id="obat_dosis_ya" value="Ya" checked>
-                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_dosis_ya">Sesuai (Ya)</label>
+                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_dosis_ya">Benar (Ya)</label>
                                                     <input type="radio" class="btn-check" name="obat_tepat_dosis" id="obat_dosis_tdk" value="Tidak">
                                                     <label class="btn btn-outline-danger py-0 px-3" for="obat_dosis_tdk">Tidak</label>
                                                 </div>
@@ -264,7 +264,7 @@
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <input type="radio" class="btn-check" name="obat_tepat_cara_pemberian" id="obat_cara_ya" value="Ya" checked>
-                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_cara_ya">Sesuai (Ya)</label>
+                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_cara_ya">Benar (Ya)</label>
                                                     <input type="radio" class="btn-check" name="obat_tepat_cara_pemberian" id="obat_cara_tdk" value="Tidak">
                                                     <label class="btn btn-outline-danger py-0 px-3" for="obat_cara_tdk">Tidak</label>
                                                 </div>
@@ -276,9 +276,33 @@
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <input type="radio" class="btn-check" name="obat_tepat_waktu_pemberian" id="obat_waktu_ya" value="Ya" checked>
-                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_waktu_ya">Sesuai (Ya)</label>
+                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_waktu_ya">Benar (Ya)</label>
                                                     <input type="radio" class="btn-check" name="obat_tepat_waktu_pemberian" id="obat_waktu_tdk" value="Tidak">
                                                     <label class="btn btn-outline-danger py-0 px-3" for="obat_waktu_tdk">Tidak</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center fw-bold">6</td>
+                                            <td>Tepat Dokumentasi</td>
+                                            <td class="text-center">
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <input type="radio" class="btn-check" name="obat_benar_dokumentasi" id="obat_dok_ya" value="Ya" checked>
+                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_dok_ya">Benar (Ya)</label>
+                                                    <input type="radio" class="btn-check" name="obat_benar_dokumentasi" id="obat_dok_tdk" value="Tidak">
+                                                    <label class="btn btn-outline-danger py-0 px-3" for="obat_dok_tdk">Tidak</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center fw-bold">7</td>
+                                            <td>Tepat Informasi</td>
+                                            <td class="text-center">
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <input type="radio" class="btn-check" name="obat_benar_informasi" id="obat_info_ya" value="Ya" checked>
+                                                    <label class="btn btn-outline-success py-0 px-3" for="obat_info_ya">Benar (Ya)</label>
+                                                    <input type="radio" class="btn-check" name="obat_benar_informasi" id="obat_info_tdk" value="Tidak">
+                                                    <label class="btn btn-outline-danger py-0 px-3" for="obat_info_tdk">Tidak</label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -366,6 +390,8 @@
                 setRadioVal('obat_tepat_dosis', d.obat_tepat_dosis);
                 setRadioVal('obat_tepat_cara_pemberian', d.obat_tepat_cara_pemberian);
                 setRadioVal('obat_tepat_waktu_pemberian', d.obat_tepat_waktu_pemberian);
+                setRadioVal('obat_benar_dokumentasi', d.obat_benar_dokumentasi);
+                setRadioVal('obat_benar_informasi', d.obat_benar_informasi);
 
                 if (d.petugas) {
                     $('#lblTelaahPetugas').text(`${d.petugas.nama} (${d.nip})`);
@@ -414,6 +440,8 @@
         setRadioVal('obat_tepat_dosis', 'Ya');
         setRadioVal('obat_tepat_cara_pemberian', 'Ya');
         setRadioVal('obat_tepat_waktu_pemberian', 'Ya');
+        setRadioVal('obat_benar_dokumentasi', 'Ya');
+        setRadioVal('obat_benar_informasi', 'Ya');
     }
 
     // Submit Simpan Hasil Telaah Farmasi
@@ -435,11 +463,30 @@
             success: function(resp) {
                 Swal.fire('Berhasil!', resp.message || 'Hasil telaah farmasi berhasil disimpan.', 'success');
                 $('#modalTelaahFarmasi').modal('hide');
+
+                // Update visual tombol telaah di modal validasi resep ralan langsung jika aktif
+                const noResepSaved = $('#telaah_no_resep').val();
+                if (typeof currentNoResepRalan !== 'undefined' && currentNoResepRalan && currentNoResepRalan == noResepSaved) {
+                    $('#btnModalTelaahRalan')
+                        .removeClass('btn-outline-danger fw-semibold')
+                        .addClass('text-white')
+                        .css('background-color', '#0f766e')
+                        .html('<i class="bi bi-shield-check me-1"></i> Telaah Farmasi <span class="badge bg-white text-dark ms-1" style="font-size:10px;">Sudah</span>');
+                }
+
+                // Update visual modal detail permintaan ranap farmasi jika sedang aktif
+                const noPermintaanRanap = $('#fDetNoPermintaan').text();
+                if (noPermintaanRanap && noPermintaanRanap === noResepSaved) {
+                    if (typeof bukaDetailRanapFarmasi === 'function') {
+                        bukaDetailRanapFarmasi(noPermintaanRanap);
+                    }
+                }
+
                 // Trigger refresh tabel jika ada
-                if (typeof tbResep === 'function' && $.fn.DataTable.isDataTable('#tb_resep')) {
+                if ($.fn.DataTable.isDataTable('#tb_resep')) {
                     $('#tb_resep').DataTable().ajax.reload(null, false);
                 }
-                if (typeof loadDataDetailResepRalan === 'function' && $('#modalResepObat').hasClass('show') && typeof currentNoResepRalan !== 'undefined' && currentNoResepRalan) {
+                if (typeof loadDataDetailResepRalan === 'function' && typeof currentNoResepRalan !== 'undefined' && currentNoResepRalan) {
                     loadDataDetailResepRalan(currentNoResepRalan);
                 }
                 if (typeof loadResepRanapFarmasi === 'function') {

@@ -1209,7 +1209,10 @@
 
         function cariObatRacikan(obat, no, event) {
             let $list = $('.list_obat_' + no);
-            const gudang = status === 'ranap' ? 'RM' : 'RM7';
+            const kdBangsal = $('#formInfoPasienResep').find('input[name="kd_bangsal"]').val();
+            const statusLanjut = $('#formInfoPasienResep').find('input[name="status_lanjut"]').val();
+            const gudang = kdBangsal || (statusLanjut === 'ranap' ? 'RM' : 'RM7');
+            const cariKandungan = $('#formInfoPasienResep').find('input[name="cari_kandungan"]').val() || ($('#modalSoapUgd').hasClass('show') ? 1 : 0);
             // Handle navigasi panah & enter
             if (event) {
                 let $items = $list.find('.dropdown-item');
@@ -1251,6 +1254,7 @@
                 data: {
                     'nama': obat.value,
                     'gudang': gudang,
+                    'cari_kandungan': cariKandungan,
                 },
                 success: function (response) {
                     let html = `

@@ -253,7 +253,16 @@ class ResepObatController extends Controller
     {
         $resep = $this->resepObat->whereHas('regPeriksa.pasien', function ($query) use ($no_rkm_medis) {
             return $query->where('no_rkm_medis', $no_rkm_medis);
-        })->with(['resepRacikan.detail.databarang.kodeSatuan', 'resepRacikan.metode', 'resepDokter.dataBarang.kodeSatuan'])
+        })->with([
+            'resepRacikan.detail.databarang.kodeSatuan',
+            'resepRacikan.metode',
+            'resepDokter.dataBarang.kodeSatuan',
+            'dokter',
+            'regPeriksa.poliklinik',
+            'regPeriksa.kamarInap' => function ($q) {
+                $q->with('kamar.bangsal')->orderBy('tgl_masuk', 'desc')->orderBy('jam_masuk', 'desc');
+            },
+        ])
             ->orderBy('tgl_peresepan', 'DESC')
             ->limit(15)
             ->get();
@@ -399,6 +408,7 @@ class ResepObatController extends Controller
                 'regPeriksa.dokter.spesialis',
                 'resepDokter.dataBarang.kodeSatuan',
                 'resepRacikan.metode',
+                'telaahFarmasi',
             ])->first();
 
         if (!$resep) {
@@ -1423,6 +1433,35 @@ class ResepObatController extends Controller
             '5x5.8' => [144.00, 165.00], // SIMRS Khanza Model 3 Portrait (144pt x 165pt)
         ];
 
+        // Petugas yang memvalidasi resep
+        $petugasValidasi = null;
+        if (!empty($resep->tgl_perawatan) && $resep->tgl_perawatan !== '0000-00-00') {
+            $riwayat = DB::table('riwayat_barang_medis')
+                ->where('posisi', 'Pemberian Obat')
+                ->where('keterangan', $resep->no_rawat)
+                ->where('tanggal', $resep->tgl_perawatan)
+                ->where('jam', $resep->jam)
+                ->first();
+
+            if ($riwayat && !empty($riwayat->petugas)) {
+                $pegawai = DB::table('pegawai')->where('nik', $riwayat->petugas)->first();
+                if ($pegawai && !empty($pegawai->nama)) {
+                    $petugasValidasi = $pegawai->nama;
+                } else {
+                    $petugas = DB::table('petugas')->where('nip', $riwayat->petugas)->first();
+                    $petugasValidasi = $petugas->nama ?? $riwayat->petugas;
+                }
+            }
+        }
+
+        if (!$petugasValidasi && $resep->telaahFarmasi && $resep->telaahFarmasi->petugas) {
+            $petugasValidasi = $resep->telaahFarmasi->petugas->nama ?? null;
+        }
+
+        if (!$petugasValidasi && session()->has('pegawai')) {
+            $petugasValidasi = session()->get('pegawai')->nama ?? null;
+        }
+
         $paperSize = $dimensions[$ukuran] ?? $dimensions['6.5x4'];
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('content.print.etiket_obat', [
@@ -1435,6 +1474,7 @@ class ResepObatController extends Controller
             'tglResep' => $tglResep,
             'jamResep' => $jamResep,
             'kamarDisplay' => $kamarDisplay,
+            'petugasValidasi' => $petugasValidasi,
         ])
         ->setPaper([0, 0, $paperSize[0], $paperSize[1]])
         ->setOptions([

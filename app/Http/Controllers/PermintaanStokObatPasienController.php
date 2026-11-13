@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AturanPakai;
+use App\Models\CatatanPemberianObatPasien;
 use App\Models\DataBarang;
 use App\Models\DetailPemberianObat;
 use App\Models\DetailPermintaanStokObatPasien;
@@ -12,6 +13,7 @@ use App\Models\PermintaanStokObatPasien;
 use App\Models\RegPeriksa;
 use App\Models\StokObatPasien;
 use Exception;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -177,6 +179,7 @@ class PermintaanStokObatPasienController extends Controller
                     $q->where('stts_pulang', '-')->with('kamar.bangsal');
                 },
                 'dokter',
+                'telaahFarmasi.petugas',
             ])
             ->first();
 
@@ -477,7 +480,82 @@ class PermintaanStokObatPasienController extends Controller
     }
 
     /**
+     * Ubah Jumlah, Aturan Pakai & Jadwal Jam Pemberian pada detail permintaan obat
+     */
+    public function ubahAturanPakai(Request $request): JsonResponse
+    {
+        $request->validate([
+            'no_permintaan' => 'required',
+            'kode_brng' => 'required',
+            'aturan_pakai' => 'nullable|string',
+            'jml' => 'nullable|numeric|min:0.01',
+        ]);
+
+        $permintaan = PermintaanStokObatPasien::where('no_permintaan', $request->no_permintaan)->first();
+        if (!$permintaan) {
+            return response()->json(['message' => 'Permintaan obat tidak ditemukan'], 404);
+        }
+
+        if ($permintaan->status === 'Sudah') {
+            return response()->json(['message' => 'Permintaan sudah divalidasi, tidak dapat mengubah item obat.'], 422);
+        }
+
+        $detail = DetailPermintaanStokObatPasien::where('no_permintaan', $request->no_permintaan)
+            ->where('kode_brng', $request->kode_brng)
+            ->first();
+
+        if (!$detail) {
+            return response()->json(['message' => 'Item obat tidak ditemukan pada permintaan ini'], 404);
+        }
+
+        $updateData = [];
+
+        if ($request->has('aturan_pakai') && $request->aturan_pakai !== null) {
+            $updateData['aturan_pakai'] = $request->aturan_pakai;
+        }
+
+        if ($request->has('jml') && $request->jml !== null) {
+            $updateData['jml'] = (float) $request->jml;
+        }
+
+        // Update jadwal jam bila ada
+        for ($h = 0; $h <= 23; $h++) {
+            $key = 'jam' . sprintf('%02d', $h);
+            if ($request->has($key)) {
+                $val = $request->input($key);
+                $updateData[$key] = (!empty($val) && ($val === true || $val === 'true' || $val === '1' || $val === 1)) ? 'true' : 'false';
+            }
+        }
+
+        if (empty($updateData)) {
+            return response()->json(['message' => 'Tidak ada data yang diperbarui'], 422);
+        }
+
+        DB::beginTransaction();
+        try {
+            DB::table('detail_permintaan_stok_obat_pasien')
+                ->where('no_permintaan', $request->no_permintaan)
+                ->where('kode_brng', $request->kode_brng)
+                ->update($updateData);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Rincian obat (jumlah / aturan pakai / jam) berhasil diperbarui',
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal memperbarui item obat: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
      * Ambil data stok obat pasien & jadwal jam pemberian (Tahap 3 E-MAR)
+     * Menggabungkan Pintu 1 (Resep Dokter CPPT Ranap) & Pintu 2 (Permintaan Harian/UDD)
      */
     public function getStokPasien(Request $request): JsonResponse
     {
@@ -486,27 +564,41 @@ class PermintaanStokObatPasienController extends Controller
         ]);
 
         $noRawat = $request->no_rawat;
-        $tanggal = $request->tanggal ?: date('Y-m-d');
+        $rawTgl = $request->tanggal;
+        $tanggal = date('Y-m-d');
+        if ($rawTgl) {
+            try {
+                $clean = str_replace('/', '-', trim($rawTgl));
+                $tanggal = Carbon::parse($clean)->format('Y-m-d');
+            } catch (\Throwable $e) {
+                $tanggal = date('Y-m-d');
+            }
+        }
+        $grouped = [];
 
-        // Ambil master stok obat pasien untuk no_rawat ini
+        // 1. PINTU 2: Ambil dari Permintaan Stok Obat Pasien (UDD / Harian)
         $stokItems = StokObatPasien::where('no_rawat', $noRawat)
             ->with(['dataBarang.kodeSatuan'])
             ->get();
 
-        // Group by kode_brng, no_batch, no_faktur
-        $grouped = [];
         foreach ($stokItems as $item) {
-            $key = $item->kode_brng . '_' . $item->no_batch . '_' . $item->no_faktur;
+            $key = 'harian_' . $item->kode_brng . '_' . $item->no_batch . '_' . $item->no_faktur;
             if (!isset($grouped[$key])) {
                 $grouped[$key] = [
+                    'key' => $key,
+                    'sumber' => 'permintaan_harian',
+                    'is_prebilled' => false,
+                    'sumber_label' => 'Permintaan Harian / BHP',
+                    'no_resep' => null,
                     'kode_brng' => $item->kode_brng,
                     'nama_brng' => $item->dataBarang->nama_brng ?? '-',
                     'satuan' => $item->dataBarang->kodeSatuan->satuan ?? '-',
+                    'kapasitas' => (float) ($item->dataBarang->kapasitas ?? 0),
                     'no_batch' => $item->no_batch,
                     'no_faktur' => $item->no_faktur,
                     'kd_bangsal' => $item->kd_bangsal,
                     'aturan_pakai' => $item->aturan_pakai,
-                    'first_udd_date' => $item->tanggal,
+                    'first_date' => $item->tanggal,
                     'total_masuk' => 0,
                     'masuk_hari_ini' => 0,
                     'total_diberikan' => 0,
@@ -515,15 +607,14 @@ class PermintaanStokObatPasienController extends Controller
                     'pemberian_hari_ini' => [],
                 ];
 
-                // Inisialisasi jadwal jam 00-23
                 for ($i = 0; $i <= 23; $i++) {
                     $jamCol = 'jam' . sprintf('%02d', $i);
                     $grouped[$key]['jadwal_jam'][$jamCol] = false;
                 }
             }
 
-            if ($item->tanggal < $grouped[$key]['first_udd_date']) {
-                $grouped[$key]['first_udd_date'] = $item->tanggal;
+            if ($item->tanggal < $grouped[$key]['first_date']) {
+                $grouped[$key]['first_date'] = $item->tanggal;
             }
 
             $grouped[$key]['total_masuk'] += (float) $item->jumlah;
@@ -531,7 +622,6 @@ class PermintaanStokObatPasienController extends Controller
                 $grouped[$key]['masuk_hari_ini'] += (float) $item->jumlah;
             }
 
-            // Gabungkan jadwal jam true
             for ($i = 0; $i <= 23; $i++) {
                 $jamCol = 'jam' . sprintf('%02d', $i);
                 if ($item->{$jamCol} === 'true') {
@@ -540,33 +630,149 @@ class PermintaanStokObatPasienController extends Controller
             }
         }
 
-        // Hitung total pengeluaran obat dari detail_pemberian_obat (Status Ranap) sejak obat masuk alur UDD
-        foreach ($grouped as $key => &$val) {
-            $pemberianQuery = DetailPemberianObat::where('no_rawat', $noRawat)
-                ->where('kode_brng', $val['kode_brng'])
-                ->where('no_batch', $val['no_batch'])
-                ->where('no_faktur', $val['no_faktur'])
-                ->where('status', 'Ranap');
+        // 2. PINTU 1: Ambil dari Resep Dokter Ranap (CPPT) yang sudah divalidasi Farmasi
+        $resepRanap = DB::table('resep_obat')
+            ->join('resep_dokter', 'resep_obat.no_resep', '=', 'resep_dokter.no_resep')
+            ->join('databarang', 'resep_dokter.kode_brng', '=', 'databarang.kode_brng')
+            ->leftJoin('kodesatuan', 'databarang.kode_sat', '=', 'kodesatuan.kode_sat')
+            ->where('resep_obat.no_rawat', $noRawat)
+            ->where('resep_obat.status', 'ranap')
+            ->where('resep_obat.tgl_perawatan', '<>', '0000-00-00')
+            ->select([
+                'resep_obat.no_resep',
+                'resep_obat.tgl_perawatan as tgl_validasi',
+                'resep_obat.jam as jam_validasi',
+                'resep_dokter.kode_brng',
+                'databarang.nama_brng',
+                'databarang.kapasitas',
+                'kodesatuan.satuan',
+                'resep_dokter.jml',
+                'resep_dokter.aturan_pakai',
+            ])
+            ->get();
 
-            if (!empty($val['first_udd_date'])) {
-                $pemberianQuery->where('tgl_perawatan', '>=', $val['first_udd_date']);
+        foreach ($resepRanap as $r) {
+            $key = 'resep_' . $r->kode_brng . '_' . $r->no_resep;
+            if (!isset($grouped[$key])) {
+                $grouped[$key] = [
+                    'key' => $key,
+                    'sumber' => 'resep_dokter',
+                    'is_prebilled' => true,
+                    'sumber_label' => 'Resep Dokter (' . $r->no_resep . ')',
+                    'no_resep' => $r->no_resep,
+                    'kode_brng' => $r->kode_brng,
+                    'nama_brng' => $r->nama_brng,
+                    'satuan' => $r->satuan ?: 'Sat',
+                    'kapasitas' => (float) ($r->kapasitas ?? 0),
+                    'no_batch' => '',
+                    'no_faktur' => '',
+                    'kd_bangsal' => 'RM',
+                    'aturan_pakai' => $r->aturan_pakai ?: '-',
+                    'first_date' => $r->tgl_validasi,
+                    'total_masuk' => (float) $r->jml,
+                    'masuk_hari_ini' => ($r->tgl_validasi === $tanggal) ? (float) $r->jml : 0,
+                    'total_diberikan' => 0,
+                    'sisa_stok' => 0,
+                    'jadwal_jam' => [],
+                    'pemberian_hari_ini' => [],
+                ];
+
+                for ($i = 0; $i <= 23; $i++) {
+                    $jamCol = 'jam' . sprintf('%02d', $i);
+                    $grouped[$key]['jadwal_jam'][$jamCol] = false;
+                }
+
+                // Auto-schedule jam berdasarkan aturan pakai
+                $aturan = strtolower($r->aturan_pakai);
+                if (strpos($aturan, '1x') !== false || strpos($aturan, '1 x') !== false) {
+                    if (strpos($aturan, 'malam') !== false || strpos($aturan, '19') !== false) {
+                        $grouped[$key]['jadwal_jam']['jam19'] = true;
+                    } else {
+                        $grouped[$key]['jadwal_jam']['jam07'] = true;
+                    }
+                } elseif (strpos($aturan, '2x') !== false || strpos($aturan, '2 x') !== false) {
+                    $grouped[$key]['jadwal_jam']['jam07'] = true;
+                    $grouped[$key]['jadwal_jam']['jam19'] = true;
+                } elseif (strpos($aturan, '3x') !== false || strpos($aturan, '3 x') !== false) {
+                    $grouped[$key]['jadwal_jam']['jam07'] = true;
+                    $grouped[$key]['jadwal_jam']['jam13'] = true;
+                    $grouped[$key]['jadwal_jam']['jam19'] = true;
+                } elseif (strpos($aturan, '4x') !== false || strpos($aturan, '4 x') !== false) {
+                    $grouped[$key]['jadwal_jam']['jam07'] = true;
+                    $grouped[$key]['jadwal_jam']['jam13'] = true;
+                    $grouped[$key]['jadwal_jam']['jam19'] = true;
+                    $grouped[$key]['jadwal_jam']['jam01'] = true;
+                } elseif (strpos($aturan, '8 jam') !== false || strpos($aturan, '8h') !== false) {
+                    $grouped[$key]['jadwal_jam']['jam06'] = true;
+                    $grouped[$key]['jadwal_jam']['jam14'] = true;
+                    $grouped[$key]['jadwal_jam']['jam22'] = true;
+                } else {
+                    $grouped[$key]['jadwal_jam']['jam07'] = true;
+                }
+            } else {
+                $grouped[$key]['total_masuk'] += (float) $r->jml;
+            }
+        }
+
+        // 3. Hitung pengeluaran klinis dari catatan_pemberian_obat_pasien (dengan fallback)
+        foreach ($grouped as $key => &$val) {
+            $catatanQuery = CatatanPemberianObatPasien::where('no_rawat', $noRawat)
+                ->where('kode_brng', $val['kode_brng'])
+                ->where('sumber', $val['sumber']);
+
+            if (!empty($val['first_date'])) {
+                $catatanQuery->where('tgl_perawatan', '>=', $val['first_date']);
             }
 
-            $pemberianTotal = $pemberianQuery->sum('jml');
+            $totalKlinis = (float) $catatanQuery->sum('dosis_klinis');
 
-            $val['total_diberikan'] = (float) $pemberianTotal;
+            // Fallback ke DetailPemberianObat jika catatan_pemberian_obat_pasien belum ada untuk data lama
+            if ($totalKlinis <= 0 && $val['sumber'] === 'permintaan_harian') {
+                $pemberianLegacy = DetailPemberianObat::where('no_rawat', $noRawat)
+                    ->where('kode_brng', $val['kode_brng'])
+                    ->where('status', 'Ranap');
+                if (!empty($val['first_date'])) {
+                    $pemberianLegacy->where('tgl_perawatan', '>=', $val['first_date']);
+                }
+                $totalKlinis = (float) $pemberianLegacy->sum('jml');
+            }
+
+            $val['total_diberikan'] = $totalKlinis;
             $val['sisa_stok'] = max(0, $val['total_masuk'] - $val['total_diberikan']);
 
             // Detail pemberian khusus tanggal yang dipilih (E-MAR hari ini)
-            $pemberianHariIni = DetailPemberianObat::where('no_rawat', $noRawat)
+            $pemberianHariIni = CatatanPemberianObatPasien::where('no_rawat', $noRawat)
                 ->where('kode_brng', $val['kode_brng'])
-                ->where('no_batch', $val['no_batch'])
-                ->where('no_faktur', $val['no_faktur'])
-                ->where('status', 'Ranap')
+                ->where('sumber', $val['sumber'])
                 ->where('tgl_perawatan', $tanggal)
                 ->get();
 
-            $val['pemberian_hari_ini'] = $pemberianHariIni;
+            if ($pemberianHariIni->isEmpty() && $val['sumber'] === 'permintaan_harian') {
+                $legacyHariIni = DetailPemberianObat::where('no_rawat', $noRawat)
+                    ->where('kode_brng', $val['kode_brng'])
+                    ->where('status', 'Ranap')
+                    ->where('tgl_perawatan', $tanggal)
+                    ->get()
+                    ->map(function ($leg) {
+                        return [
+                            'id' => null,
+                            'jam' => $leg->jam,
+                            'dosis_klinis' => (float) $leg->jml,
+                            'status_billing' => 'Sudah Dibilkan',
+                        ];
+                    });
+                $val['pemberian_hari_ini'] = $legacyHariIni;
+            } else {
+                $val['pemberian_hari_ini'] = $pemberianHariIni->map(function ($cat) {
+                    return [
+                        'id' => $cat->id,
+                        'jam' => $cat->jam,
+                        'dosis_klinis' => (float) $cat->dosis_klinis,
+                        'status_billing' => $cat->status_billing,
+                        'keterangan' => $cat->keterangan,
+                    ];
+                });
+            }
         }
 
         return response()->json([
@@ -578,6 +784,7 @@ class PermintaanStokObatPasienController extends Controller
 
     /**
      * Eksekusi Pemberian Obat ke Pasien oleh Ruangan/Perawat (E-MAR)
+     * Mencatat dosis klinis ke catatan_pemberian_obat_pasien dan mengelola status billing
      */
     public function beriObat(Request $request): JsonResponse
     {
@@ -589,23 +796,27 @@ class PermintaanStokObatPasienController extends Controller
 
         $noRawat = $request->no_rawat;
         $kodeBrng = $request->kode_brng;
-        $tglPerawatan = $request->tgl_perawatan ?: date('Y-m-d');
+        $rawTgl = $request->tgl_perawatan;
+        $tglPerawatan = date('Y-m-d');
+        if ($rawTgl) {
+            try {
+                $clean = str_replace('/', '-', trim($rawTgl));
+                $tglPerawatan = Carbon::parse($clean)->format('Y-m-d');
+            } catch (\Throwable $e) {
+                $tglPerawatan = date('Y-m-d');
+            }
+        }
         $jam = $request->jam ?: date('H:i:s');
         $jml = (float) $request->jml;
         $noBatch = $request->no_batch ?? '';
         $noFaktur = $request->no_faktur ?? '';
         $kdBangsal = $request->kd_bangsal ?: 'RM';
         $aturanPakai = $request->aturan_pakai ?? '-';
+        $sumber = $request->sumber ?: 'permintaan_harian';
+        $noResep = $request->no_resep ?? null;
+        $nipPerawat = session()->get('pegawai')->nik ?? (session()->get('user')->username ?? '-');
 
-        // Ambil data kamar inap untuk menentukan kelas tarif
-        $kamarInap = KamarInap::where('no_rawat', $noRawat)
-            ->where('stts_pulang', '-')
-            ->with('kamar')
-            ->first();
-
-        $kelas = $kamarInap->kamar->kelas ?? 'Kelas 1';
-
-        // Ambil data barang & harga jual sesuai kelas
+        // Ambil data barang
         $barang = DataBarang::with('kodeSatuan')->where('kode_brng', $kodeBrng)->first();
         if (!$barang) {
             return response()->json(['message' => 'Data obat tidak ditemukan'], 404);
@@ -613,47 +824,9 @@ class PermintaanStokObatPasienController extends Controller
 
         $satuan = $barang->kodeSatuan->satuan ?? 'satuan';
 
-        // Validasi ketersediaan stok obat pasien (UDD) - hanya hitung pengeluaran sejak obat masuk alur UDD
-        $firstUddDate = StokObatPasien::where('no_rawat', $noRawat)
-            ->where('kode_brng', $kodeBrng)
-            ->where('no_batch', $noBatch)
-            ->where('no_faktur', $noFaktur)
-            ->min('tanggal');
-
-        $totalMasuk = (float) StokObatPasien::where('no_rawat', $noRawat)
-            ->where('kode_brng', $kodeBrng)
-            ->where('no_batch', $noBatch)
-            ->where('no_faktur', $noFaktur)
-            ->sum('jumlah');
-
-        $totalKeluarQuery = DetailPemberianObat::where('no_rawat', $noRawat)
-            ->where('kode_brng', $kodeBrng)
-            ->where('no_batch', $noBatch)
-            ->where('no_faktur', $noFaktur)
-            ->where('status', 'Ranap');
-
-        if ($firstUddDate) {
-            $totalKeluarQuery->where('tgl_perawatan', '>=', $firstUddDate);
-        }
-
-        $totalKeluar = (float) $totalKeluarQuery->sum('jml');
-
-        $sisaStok = $totalMasuk - $totalKeluar;
-
-        if ($sisaStok <= 0) {
-            return response()->json([
-                'status' => false,
-                'message' => "Stok obat {$barang->nama_brng} untuk pasien ini sudah habis (Sisa: 0 {$satuan}). Silakan buat order permintaan stok obat baru ke Farmasi.",
-            ], 422);
-        }
-
-        if ($jml > $sisaStok) {
-            return response()->json([
-                'status' => false,
-                'message' => "Jumlah yang diberikan ({$jml} {$satuan}) melebihi sisa stok yang tersedia ({$sisaStok} {$satuan}).",
-            ], 422);
-        }
-
+        // Hitung harga obat sesuai kelas kamar
+        $kamarInap = KamarInap::where('no_rawat', $noRawat)->where('stts_pulang', '-')->with('kamar')->first();
+        $kelas = $kamarInap->kamar->kelas ?? 'Kelas 1';
         $hBeli = (float) $barang->dasar ?: (float) $barang->h_beli;
         $biayaObat = (float) $barang->kelas1;
 
@@ -675,29 +848,81 @@ class PermintaanStokObatPasienController extends Controller
             $biayaObat = $hBeli > 0 ? ceil($hBeli * 1.2) : (float) $barang->ralan;
         }
 
-        $total = $biayaObat * $jml;
-
         DB::beginTransaction();
         try {
-            // Masukkan ke detail_pemberian_obat
-            DetailPemberianObat::create([
-                'tgl_perawatan' => $tglPerawatan,
-                'jam' => $jam,
+            // Tentukan status billing:
+            // 1. Jika sumber dari resep_dokter: sudah ter-billing di depan saat validasi resep!
+            // 2. Jika sumber permintaan_harian & BHP bulat: langsung billing
+            // 3. Jika sumber permintaan_harian & obat pecahan: menunggu verifikasi Farmasi
+            $statusBilling = 'Menunggu Verifikasi';
+            $jmlBilling = 0;
+
+            if ($sumber === 'resep_dokter') {
+                $statusBilling = 'Sudah Dibilkan';
+                $jmlBilling = $jml;
+            } else {
+                $nama = strtolower($barang->nama_brng);
+                $isBhp = (strpos($nama, 'spuit') !== false ||
+                          strpos($nama, 'abocath') !== false ||
+                          strpos($nama, 'iv set') !== false ||
+                          strpos($nama, 'infus set') !== false ||
+                          strpos($nama, 'kassa') !== false ||
+                          strpos($nama, 'plaster') !== false ||
+                          strpos($nama, 'plester') !== false ||
+                          strpos($nama, 'needle') !== false ||
+                          strpos($nama, 'wing') !== false ||
+                          strpos($nama, 'underpad') !== false ||
+                          stripos($satuan, 'pcs') !== false ||
+                          stripos($satuan, 'biji') !== false);
+
+                if ($isBhp && fmod($jml, 1) == 0) {
+                    $statusBilling = 'Sudah Dibilkan';
+                    $jmlBilling = $jml;
+
+                    DetailPemberianObat::create([
+                        'tgl_perawatan' => $tglPerawatan,
+                        'jam' => $jam,
+                        'no_rawat' => $noRawat,
+                        'kode_brng' => $kodeBrng,
+                        'h_beli' => $hBeli,
+                        'biaya_obat' => $biayaObat,
+                        'jml' => $jmlBilling,
+                        'embalase' => 0,
+                        'tuslah' => 0,
+                        'total' => $biayaObat * $jmlBilling,
+                        'status' => 'Ranap',
+                        'kd_bangsal' => $kdBangsal,
+                        'no_batch' => $noBatch,
+                        'no_faktur' => $noFaktur,
+                    ]);
+                } else {
+                    $statusBilling = 'Menunggu Verifikasi';
+                    $jmlBilling = 0;
+                }
+            }
+
+            // Catat ke catatan_pemberian_obat_pasien (Rekam Medis Klinis E-MAR)
+            CatatanPemberianObatPasien::create([
                 'no_rawat' => $noRawat,
                 'kode_brng' => $kodeBrng,
-                'h_beli' => $hBeli,
-                'biaya_obat' => $biayaObat,
-                'jml' => $jml,
-                'embalase' => 0,
-                'tuslah' => 0,
-                'total' => $total,
-                'status' => 'Ranap',
+                'tgl_perawatan' => $tglPerawatan,
+                'jam' => $jam,
+                'dosis_klinis' => $jml,
+                'satuan' => $satuan,
+                'aturan_pakai' => $aturanPakai,
                 'kd_bangsal' => $kdBangsal,
                 'no_batch' => $noBatch,
                 'no_faktur' => $noFaktur,
+                'nip_perawat' => $nipPerawat,
+                'sumber' => $sumber,
+                'no_resep' => $noResep,
+                'keterangan' => $request->keterangan ?? null,
+                'status_pemberian' => 'Sudah Diberikan',
+                'status_billing' => $statusBilling,
+                'jml_billing' => $jmlBilling,
             ]);
 
-            // Catat ke aturan_pakai
+            // Catat juga ke aturan_pakai standar Khanza
             AturanPakai::updateOrCreate(
                 [
                     'tgl_perawatan' => $tglPerawatan,
@@ -714,7 +939,9 @@ class PermintaanStokObatPasienController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Pemberian obat berhasil dicatat ke rekam medis & billing pasien',
+                'message' => $statusBilling === 'Sudah Dibilkan'
+                    ? 'Pemberian obat berhasil dicatat ke E-MAR'
+                    : 'Pemberian obat klinis berhasil dicatat ke E-MAR (Menunggu verifikasi pembulatan Farmasi)',
             ]);
         } catch (Exception $e) {
             DB::rollBack();
@@ -726,39 +953,63 @@ class PermintaanStokObatPasienController extends Controller
     }
 
     /**
-     * Batalkan / Hapus satu rekaman pemberian obat (jika belum diverifikasi kasir)
+     * Batalkan / Hapus satu rekaman pemberian obat di E-MAR
      */
     public function hapusPemberian(Request $request): JsonResponse
     {
-        $request->validate([
-            'no_rawat' => 'required',
-            'kode_brng' => 'required',
-            'tgl_perawatan' => 'required',
-            'jam' => 'required',
-        ]);
+        $id = $request->id;
+        $catatan = null;
 
-        DB::beginTransaction();
-        try {
+        if ($id) {
+            $catatan = CatatanPemberianObatPasien::find($id);
+        } else {
+            $catatan = CatatanPemberianObatPasien::where('no_rawat', $request->no_rawat)
+                ->where('kode_brng', $request->kode_brng)
+                ->where('tgl_perawatan', $request->tgl_perawatan)
+                ->where('jam', $request->jam)
+                ->first();
+        }
+
+        if (!$catatan) {
+            // Fallback legacy DetailPemberianObat
             DetailPemberianObat::where('no_rawat', $request->no_rawat)
                 ->where('kode_brng', $request->kode_brng)
                 ->where('tgl_perawatan', $request->tgl_perawatan)
                 ->where('jam', $request->jam)
-                ->where('no_batch', $request->no_batch ?? '')
-                ->where('no_faktur', $request->no_faktur ?? '')
                 ->where('status', 'Ranap')
                 ->delete();
 
-            AturanPakai::where('no_rawat', $request->no_rawat)
-                ->where('kode_brng', $request->kode_brng)
-                ->where('tgl_perawatan', $request->tgl_perawatan)
-                ->where('jam', $request->jam)
+            return response()->json([
+                'status' => true,
+                'message' => 'Pemberian obat berhasil dihapus',
+            ]);
+        }
+
+        DB::beginTransaction();
+        try {
+            // Jika sudah terlanjur terbit di detail_pemberian_obat, hapus juga
+            if ($catatan->status_billing === 'Sudah Dibilkan' && $catatan->sumber === 'permintaan_harian' && $catatan->jml_billing > 0) {
+                DetailPemberianObat::where('no_rawat', $catatan->no_rawat)
+                    ->where('kode_brng', $catatan->kode_brng)
+                    ->where('tgl_perawatan', $catatan->tgl_perawatan)
+                    ->where('status', 'Ranap')
+                    ->where('jml', $catatan->jml_billing)
+                    ->delete();
+            }
+
+            AturanPakai::where('no_rawat', $catatan->no_rawat)
+                ->where('kode_brng', $catatan->kode_brng)
+                ->where('tgl_perawatan', $catatan->tgl_perawatan)
+                ->where('jam', $catatan->jam)
                 ->delete();
+
+            $catatan->delete();
 
             DB::commit();
 
             return response()->json([
                 'status' => true,
-                'message' => 'Pemberian obat berhasil dihapus',
+                'message' => 'Catatan pemberian obat berhasil dihapus',
             ]);
         } catch (Exception $e) {
             DB::rollBack();
@@ -770,7 +1021,7 @@ class PermintaanStokObatPasienController extends Controller
     }
 
     /**
-     * Riwayat pemberian obat pasien untuk tabel log
+     * Riwayat pemberian obat pasien untuk tabel log E-MAR
      */
     public function riwayatPemberian(Request $request): JsonResponse
     {
@@ -778,19 +1029,267 @@ class PermintaanStokObatPasienController extends Controller
             'no_rawat' => 'required',
         ]);
 
-        $query = DetailPemberianObat::where('no_rawat', $request->no_rawat)
-            ->where('status', 'Ranap')
-            ->with(['dataBarang.kodeSatuan', 'aturanPakai']);
+        $query = CatatanPemberianObatPasien::where('no_rawat', $request->no_rawat)
+            ->with(['dataBarang.kodeSatuan', 'pegawaiPerawat', 'pegawaiFarmasi']);
 
         if ($request->filled('tanggal')) {
-            $query->where('tgl_perawatan', $request->tanggal);
+            try {
+                $clean = str_replace('/', '-', trim($request->tanggal));
+                $filterTgl = Carbon::parse($clean)->format('Y-m-d');
+            } catch (\Throwable $e) {
+                $filterTgl = $request->tanggal;
+            }
+            $query->where('tgl_perawatan', $filterTgl);
         }
 
-        $data = $query->orderBy('tgl_perawatan', 'desc')
-            ->orderBy('jam', 'desc')
-            ->get();
+        $catatan = $query->orderBy('jam', 'desc')->get();
+
+        if ($catatan->isEmpty()) {
+            // Fallback legacy
+            $legacyQuery = DetailPemberianObat::where('no_rawat', $request->no_rawat)
+                ->where('status', 'Ranap')
+                ->with(['dataBarang.kodeSatuan', 'aturanPakai']);
+            if (isset($filterTgl) && $filterTgl) {
+                $legacyQuery->where('tgl_perawatan', $filterTgl);
+            }
+            $legacy = $legacyQuery->orderBy('jam', 'desc')->get();
+
+            $data = $legacy->map(function ($leg) {
+                return [
+                    'id' => null,
+                    'no_rawat' => $leg->no_rawat,
+                    'kode_brng' => $leg->kode_brng,
+                    'tgl_perawatan' => $leg->tgl_perawatan,
+                    'jam' => $leg->jam,
+                    'dosis_klinis' => (float) $leg->jml,
+                    'satuan' => $leg->dataBarang->kodeSatuan->satuan ?? '-',
+                    'nama_brng' => $leg->dataBarang->nama_brng ?? $leg->kode_brng,
+                    'aturan_pakai' => $leg->aturanPakai->aturan ?? '-',
+                    'sumber' => 'permintaan_harian',
+                    'sumber_badge' => 'Permintaan Harian',
+                    'status_pemberian' => 'Sudah Diberikan',
+                    'status_billing' => 'Sudah Dibilkan',
+                    'jml_billing' => (float) $leg->jml,
+                    'biaya_satuan' => (float) $leg->biaya_obat,
+                    'total_biaya' => (float) $leg->total,
+                    'perawat' => '-',
+                    'farmasi' => '-',
+                ];
+            });
+
+            return response()->json($data);
+        }
+
+        $data = $catatan->map(function ($row) {
+            $biayaObat = (float) ($row->dataBarang->kelas1 ?? $row->dataBarang->ralan ?? 0);
+            return [
+                'id' => $row->id,
+                'no_rawat' => $row->no_rawat,
+                'kode_brng' => $row->kode_brng,
+                'tgl_perawatan' => $row->tgl_perawatan,
+                'jam' => $row->jam,
+                'dosis_klinis' => (float) $row->dosis_klinis,
+                'satuan' => $row->satuan ?: ($row->dataBarang->kodeSatuan->satuan ?? '-'),
+                'nama_brng' => $row->dataBarang->nama_brng ?? $row->kode_brng,
+                'aturan_pakai' => $row->aturan_pakai,
+                'keterangan' => $row->keterangan ?? '',
+                'sumber' => $row->sumber,
+                'sumber_badge' => $row->sumber === 'resep_dokter' ? 'Resep Dokter' : 'Permintaan Harian',
+                'status_pemberian' => $row->status_pemberian,
+                'status_billing' => $row->status_billing,
+                'jml_billing' => (float) $row->jml_billing,
+                'biaya_satuan' => $biayaObat,
+                'total_biaya' => $row->status_billing === 'Sudah Dibilkan' ? ($biayaObat * ($row->jml_billing ?: $row->dosis_klinis)) : 0,
+                'perawat' => $row->pegawaiPerawat->nama ?? $row->nip_perawat,
+                'farmasi' => $row->pegawaiFarmasi->nama ?? $row->nip_farmasi,
+            ];
+        });
 
         return response()->json($data);
+    }
+
+    /**
+     * Ambil data rekonsiliasi E-MAR harian untuk divalidasi & dibulatkan oleh Farmasi
+     */
+    public function getRekonsiliasiEmar(Request $request): JsonResponse
+    {
+        $tanggal = $request->tanggal ?: date('Y-m-d');
+        $statusBilling = $request->status_billing ?: 'Menunggu Verifikasi';
+
+        $query = CatatanPemberianObatPasien::with([
+            'regPeriksa.pasien',
+            'regPeriksa.kamarInap' => function ($q) {
+                $q->with('kamar.bangsal')->where('stts_pulang', '-');
+            },
+            'dataBarang.kodeSatuan',
+            'pegawaiPerawat',
+        ])
+        ->where('tgl_perawatan', $tanggal)
+        ->where('sumber', 'permintaan_harian');
+
+        if ($statusBilling !== 'Semua') {
+            $query->where('status_billing', $statusBilling);
+        }
+
+        $records = $query->orderBy('no_rawat')->orderBy('jam')->get();
+
+        $grouped = [];
+        foreach ($records as $rec) {
+            $key = $rec->no_rawat . '_' . $rec->kode_brng;
+            if (!isset($grouped[$key])) {
+                $kamar = '-';
+                if ($rec->regPeriksa && $rec->regPeriksa->kamarInap && $rec->regPeriksa->kamarInap->count() > 0) {
+                    $activeK = $rec->regPeriksa->kamarInap->first();
+                    $kamar = ($activeK->kamar->bangsal->nm_bangsal ?? '') . ' (' . ($activeK->kd_kamar ?? '-') . ')';
+                }
+
+                $hBeli = (float) ($rec->dataBarang->dasar ?: $rec->dataBarang->h_beli);
+                $biayaSatuan = (float) ($rec->dataBarang->kelas1 ?: ($hBeli > 0 ? ceil($hBeli * 1.2) : (float) $rec->dataBarang->ralan));
+
+                $grouped[$key] = [
+                    'no_rawat' => $rec->no_rawat,
+                    'pasien' => $rec->regPeriksa->pasien->nm_pasien ?? '-',
+                    'no_rkm_medis' => $rec->regPeriksa->pasien->no_rkm_medis ?? '-',
+                    'kamar' => $kamar,
+                    'kode_brng' => $rec->kode_brng,
+                    'nama_brng' => $rec->dataBarang->nama_brng ?? $rec->kode_brng,
+                    'satuan' => $rec->satuan ?: ($rec->dataBarang->kodeSatuan->satuan ?? 'satuan'),
+                    'aturan_pakai' => $rec->aturan_pakai,
+                    'kd_bangsal' => $rec->kd_bangsal,
+                    'no_batch' => $rec->no_batch,
+                    'no_faktur' => $rec->no_faktur,
+                    'tgl_perawatan' => $rec->tgl_perawatan,
+                    'status_billing' => $rec->status_billing,
+                    'biaya_satuan' => $biayaSatuan,
+                    'total_dosis_klinis' => 0,
+                    'suggested_billing' => 0,
+                    'rincian_pemberian' => [],
+                    'ids' => [],
+                ];
+            }
+
+            $grouped[$key]['total_dosis_klinis'] += (float) $rec->dosis_klinis;
+            $grouped[$key]['rincian_pemberian'][] = [
+                'id' => $rec->id,
+                'jam' => $rec->jam,
+                'dosis' => (float) $rec->dosis_klinis,
+                'keterangan' => $rec->keterangan ?? '',
+                'perawat' => $rec->pegawaiPerawat->nama ?? $rec->nip_perawat,
+            ];
+            $grouped[$key]['ids'][] = $rec->id;
+        }
+
+        foreach ($grouped as &$g) {
+            // Rekomendasi pembulatan ke atas (ceil)
+            $g['suggested_billing'] = ceil($g['total_dosis_klinis']);
+            if ($g['suggested_billing'] <= 0) $g['suggested_billing'] = 1;
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => array_values($grouped),
+        ]);
+    }
+
+    /**
+     * Farmasi Menyetujui & Membulatkan Tagihan E-MAR ke detail_pemberian_obat Khanza
+     */
+    public function verifikasiBillingEmar(Request $request): JsonResponse
+    {
+        $request->validate([
+            'no_rawat' => 'required',
+            'kode_brng' => 'required',
+            'tgl_perawatan' => 'required',
+            'jml_billing' => 'required|numeric|min:0.01',
+        ]);
+
+        $noRawat = $request->no_rawat;
+        $kodeBrng = $request->kode_brng;
+        $tglPerawatan = $request->tgl_perawatan;
+        $jmlBilling = (float) $request->jml_billing;
+        $nipFarmasi = session()->get('pegawai')->nik ?? (session()->get('user')->username ?? '-');
+
+        // Ambil data barang
+        $barang = DataBarang::with('kodeSatuan')->where('kode_brng', $kodeBrng)->first();
+        if (!$barang) {
+            return response()->json(['message' => 'Data obat tidak ditemukan'], 404);
+        }
+
+        // Hitung harga obat sesuai kelas kamar
+        $kamarInap = KamarInap::where('no_rawat', $noRawat)->where('stts_pulang', '-')->with('kamar')->first();
+        $kelas = $kamarInap->kamar->kelas ?? 'Kelas 1';
+        $hBeli = (float) $barang->dasar ?: (float) $barang->h_beli;
+        $biayaObat = (float) $barang->kelas1;
+
+        if (stripos($kelas, 'Kelas 1') !== false) {
+            $biayaObat = (float) $barang->kelas1;
+        } elseif (stripos($kelas, 'Kelas 2') !== false) {
+            $biayaObat = (float) $barang->kelas2;
+        } elseif (stripos($kelas, 'Kelas 3') !== false) {
+            $biayaObat = (float) $barang->kelas3;
+        } elseif (stripos($kelas, 'Utama') !== false) {
+            $biayaObat = (float) $barang->utama;
+        } elseif (stripos($kelas, 'VIP') !== false && stripos($kelas, 'VVIP') === false) {
+            $biayaObat = (float) $barang->vip;
+        } elseif (stripos($kelas, 'VVIP') !== false) {
+            $biayaObat = (float) $barang->vvip;
+        }
+
+        if ($biayaObat <= 0) {
+            $biayaObat = $hBeli > 0 ? ceil($hBeli * 1.2) : (float) $barang->ralan;
+        }
+
+        $jamNow = date('H:i:s');
+        $kdBangsal = $request->kd_bangsal ?: 'RM';
+        $noBatch = $request->no_batch ?? '';
+        $noFaktur = $request->no_faktur ?? '';
+
+        DB::beginTransaction();
+        try {
+            // 1. Masukkan ke detail_pemberian_obat Khanza dengan jumlah bulat yang disetujui Farmasi
+            DetailPemberianObat::create([
+                'tgl_perawatan' => $tglPerawatan,
+                'jam' => $jamNow,
+                'no_rawat' => $noRawat,
+                'kode_brng' => $kodeBrng,
+                'h_beli' => $hBeli,
+                'biaya_obat' => $biayaObat,
+                'jml' => $jmlBilling,
+                'embalase' => 0,
+                'tuslah' => 0,
+                'total' => $biayaObat * $jmlBilling,
+                'status' => 'Ranap',
+                'kd_bangsal' => $kdBangsal,
+                'no_batch' => $noBatch,
+                'no_faktur' => $noFaktur,
+            ]);
+
+            // 2. Update status_billing pada catatan_pemberian_obat_pasien
+            CatatanPemberianObatPasien::where('no_rawat', $noRawat)
+                ->where('kode_brng', $kodeBrng)
+                ->where('tgl_perawatan', $tglPerawatan)
+                ->where('sumber', 'permintaan_harian')
+                ->where('status_billing', 'Menunggu Verifikasi')
+                ->update([
+                    'status_billing' => 'Sudah Dibilkan',
+                    'jml_billing' => $jmlBilling,
+                    'tgl_verifikasi_billing' => now(),
+                    'nip_farmasi' => $nipFarmasi,
+                ]);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => "Pemakaian obat {$barang->nama_brng} berhasil diverifikasi & dibillkan ({$jmlBilling} {$barang->kodeSatuan->satuan})",
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal memverifikasi billing E-MAR: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -843,5 +1342,471 @@ class PermintaanStokObatPasienController extends Controller
         ])->setPaper('a4', 'portrait');
 
         return $pdf->stream('permintaan_obat_' . $permintaan->no_permintaan . '.pdf');
+    }
+
+    /**
+     * Parsing Data Daftar Pemberian Obat Format RM 5A (Oral, Injeksi, Lain-Lain)
+     */
+    public function parseDaftarPemberianRm5a($noRawat, $tglAwal = null, $tglAkhir = null)
+    {
+        $noRawat = str_replace('-', '/', $noRawat);
+        $regPeriksa = RegPeriksa::where('no_rawat', $noRawat)
+            ->with(['pasien', 'dokter', 'poliklinik', 'kamarInap.kamar.bangsal'])
+            ->first();
+
+        if (!$regPeriksa) {
+            return null;
+        }
+
+        $kamarInapList = KamarInap::where('no_rawat', $noRawat)
+            ->with('kamar.bangsal')
+            ->orderBy('tgl_masuk', 'asc')
+            ->get();
+        $kamarAwal = $kamarInapList->first();
+        $kamarAktif = $kamarInapList->where('stts_pulang', '-')->last() ?? $kamarInapList->last();
+        $tglMasukRawat = $kamarAwal ? $kamarAwal->tgl_masuk : ($regPeriksa->tgl_registrasi ?? date('Y-m-d'));
+
+        $kamarDisplay = '-';
+        if ($kamarAktif && $kamarAktif->kamar) {
+            $bangsal = $kamarAktif->kamar->bangsal->nm_bangsal ?? '';
+            $kdKamar = $kamarAktif->kd_kamar ?? '';
+            $kamarDisplay = $bangsal ? "{$bangsal} ({$kdKamar})" : $kdKamar;
+        }
+
+        // Alergi Pasien (Pemeriksaan Ranap, Ralan/IGD, Asesmen Medis / Askep)
+        $alergi = null;
+        try {
+            $alergi = DB::table('pemeriksaan_ranap')
+                ->where('no_rawat', $noRawat)
+                ->whereNotNull('alergi')
+                ->where('alergi', '!=', '')
+                ->where('alergi', '!=', '-')
+                ->orderBy('tgl_perawatan', 'desc')
+                ->value('alergi');
+        } catch (\Throwable $e) {}
+
+        if (!$alergi) {
+            try {
+                $alergi = DB::table('pemeriksaan_ralan')
+                    ->where('no_rawat', $noRawat)
+                    ->whereNotNull('alergi')
+                    ->where('alergi', '!=', '')
+                    ->where('alergi', '!=', '-')
+                    ->orderBy('tgl_perawatan', 'desc')
+                    ->value('alergi');
+            } catch (\Throwable $e) {}
+        }
+
+        if (!$alergi) {
+            try {
+                $alergi = DB::table('penilaian_awal_keperawatan_ranap_anak')
+                    ->where('no_rawat', $noRawat)
+                    ->whereNotNull('riwayat_alergi')
+                    ->where('riwayat_alergi', '!=', '')
+                    ->where('riwayat_alergi', '!=', '-')
+                    ->value('riwayat_alergi');
+            } catch (\Throwable $e) {}
+        }
+
+        if (!$alergi) {
+            try {
+                $alergi = DB::table('penilaian_awal_keperawatan_kebidanan_ranap')
+                    ->where('no_rawat', $noRawat)
+                    ->whereNotNull('alergi')
+                    ->where('alergi', '!=', '')
+                    ->where('alergi', '!=', '-')
+                    ->value('alergi');
+            } catch (\Throwable $e) {}
+        }
+
+        if (!$alergi) {
+            try {
+                $alergi = DB::table('penilaian_medis_ranap')
+                    ->where('no_rawat', $noRawat)
+                    ->whereNotNull('alergi')
+                    ->where('alergi', '!=', '')
+                    ->where('alergi', '!=', '-')
+                    ->value('alergi');
+            } catch (\Throwable $e) {}
+        }
+
+        $alergiDisplay = ($alergi && trim($alergi) !== '-' && trim($alergi) !== '') ? trim($alergi) : 'Tidak Ada';
+
+        // Tentukan 6 Kolom Tanggal (Sesuai kolom formulir RM 5A)
+        $jmlKolom = 6;
+        $tanggalList = [];
+
+        if ($tglAwal) {
+            $start = Carbon::parse($tglAwal);
+        } else {
+            $tglMasukCarbon = Carbon::parse($tglMasukRawat);
+            $hariIni = Carbon::today();
+            if ($hariIni->diffInDays($tglMasukCarbon) >= $jmlKolom) {
+                $start = $hariIni->copy()->subDays($jmlKolom - 1);
+            } else {
+                $start = $tglMasukCarbon;
+            }
+        }
+
+        for ($i = 0; $i < $jmlKolom; $i++) {
+            $currDate = $start->copy()->addDays($i)->format('Y-m-d');
+            $tanggalList[] = [
+                'tanggal' => $currDate,
+                'label' => Carbon::parse($currDate)->format('d/m'),
+                'label_full' => Carbon::parse($currDate)->format('d/m/Y'),
+                'hari' => Carbon::parse($currDate)->translatedFormat('D'),
+            ];
+        }
+
+        $allTglKeys = array_column($tanggalList, 'tanggal');
+
+        // Ambil Riwayat Pemberian Klinis E-MAR
+        $catatans = CatatanPemberianObatPasien::where('no_rawat', $noRawat)
+            ->whereIn('tgl_perawatan', $allTglKeys)
+            ->with(['dataBarang.kodeSatuan', 'pegawaiPerawat', 'pegawaiFarmasi'])
+            ->orderBy('jam', 'asc')
+            ->get();
+
+        // Ambil juga jika ada pemberian legacy Khanza
+        $details = DetailPemberianObat::where('no_rawat', $noRawat)
+            ->where('status', 'Ranap')
+            ->whereIn('tgl_perawatan', $allTglKeys)
+            ->with(['dataBarang.kodeSatuan', 'aturanPakai'])
+            ->orderBy('jam', 'asc')
+            ->get();
+
+        // Ambil seluruh master permintaan obat aktif pasien
+        $permintaanItems = DetailPermintaanStokObatPasien::whereHas('permintaan', function ($q) use ($noRawat) {
+            $q->where('no_rawat', $noRawat);
+        })->with('dataBarang.kodeSatuan')->get();
+
+        // Koleksi semua obat unik
+        $obatMasterMap = [];
+
+        foreach ($permintaanItems as $pi) {
+            $barang = $pi->dataBarang ?: $pi->barang;
+            if (!$barang) continue;
+            $kode = $pi->kode_brng;
+            if (!isset($obatMasterMap[$kode])) {
+                $obatMasterMap[$kode] = [
+                    'kode_brng' => $kode,
+                    'nama_brng' => $barang->nama_brng,
+                    'satuan' => $barang->kodeSatuan->satuan ?? ($barang->kode_sat ?? ''),
+                    'aturan_pakai' => $pi->aturan_pakai ?? '-',
+                    'frekuensi' => $pi->frekuensi ?? '',
+                ];
+            }
+        }
+
+        foreach ($catatans as $cat) {
+            $kode = $cat->kode_brng;
+            if (!isset($obatMasterMap[$kode])) {
+                $obatMasterMap[$kode] = [
+                    'kode_brng' => $kode,
+                    'nama_brng' => $cat->dataBarang->nama_brng ?? $kode,
+                    'satuan' => $cat->satuan ?: ($cat->dataBarang->kodeSatuan->satuan ?? ''),
+                    'aturan_pakai' => $cat->aturan_pakai ?? '-',
+                    'frekuensi' => '',
+                ];
+            }
+        }
+
+        foreach ($details as $dtl) {
+            $kode = $dtl->kode_brng;
+            if (!isset($obatMasterMap[$kode])) {
+                $obatMasterMap[$kode] = [
+                    'kode_brng' => $kode,
+                    'nama_brng' => $dtl->dataBarang->nama_brng ?? $kode,
+                    'satuan' => $dtl->dataBarang->kodeSatuan->satuan ?? '',
+                    'aturan_pakai' => $dtl->aturanPakai->aturan ?? '-',
+                    'frekuensi' => '',
+                ];
+            }
+        }
+
+        // Matriks Petugas Penyiap (Farmasi) & Pemberi (Perawat) per tanggal & shift
+        $petugasMap = [];
+        foreach ($allTglKeys as $tgl) {
+            $petugasMap[$tgl] = [
+                'menyiapkan' => '-',
+                'P' => '-',
+                'S' => '-',
+                'M' => '-',
+            ];
+        }
+
+        foreach ($catatans as $cat) {
+            $tgl = $cat->tgl_perawatan;
+            if (!isset($petugasMap[$tgl])) continue;
+
+            $jamInt = (int) substr($cat->jam, 0, 2);
+            $shift = 'M';
+            if ($jamInt >= 6 && $jamInt < 14) {
+                $shift = 'P';
+            } elseif ($jamInt >= 14 && $jamInt < 21) {
+                $shift = 'S';
+            } else {
+                $shift = 'M';
+            }
+
+            if ($cat->pegawaiPerawat && !empty($cat->pegawaiPerawat->nama)) {
+                $parts = explode(' ', trim($cat->pegawaiPerawat->nama));
+                $namaPerawat = $parts[0];
+                if ($petugasMap[$tgl][$shift] === '-' || empty($petugasMap[$tgl][$shift])) {
+                    $petugasMap[$tgl][$shift] = $namaPerawat;
+                } elseif (strpos($petugasMap[$tgl][$shift], $namaPerawat) === false) {
+                    $petugasMap[$tgl][$shift] .= '/' . $namaPerawat;
+                }
+            }
+
+            if ($cat->pegawaiFarmasi && !empty($cat->pegawaiFarmasi->nama)) {
+                $partsF = explode(' ', trim($cat->pegawaiFarmasi->nama));
+                $petugasMap[$tgl]['menyiapkan'] = $partsF[0];
+            } elseif ($petugasMap[$tgl]['menyiapkan'] === '-') {
+                $petugasMap[$tgl]['menyiapkan'] = 'Farmasi';
+            }
+        }
+
+        // Kelompokkan 3 Kategori Obat: ORAL, INJEKSI, LAIN
+        $grupOral = [];
+        $grupInjeksi = [];
+        $grupLain = [];
+
+        foreach ($obatMasterMap as $kode => $info) {
+            $nama = strtolower($info['nama_brng']);
+            $satuan = strtolower($info['satuan']);
+            $aturan = strtolower($info['aturan_pakai']);
+
+            $isInjeksi = (
+                strpos($nama, 'inj') !== false ||
+                strpos($nama, 'injeksi') !== false ||
+                strpos($nama, 'infus') !== false ||
+                strpos($nama, 'drip') !== false ||
+                strpos($nama, 'amp') !== false ||
+                strpos($nama, 'ampul') !== false ||
+                strpos($nama, 'vial') !== false ||
+                strpos($nama, 'ceftriaxone') !== false ||
+                strpos($nama, 'cefotaxime') !== false ||
+                strpos($nama, 'meropenem') !== false ||
+                strpos($nama, 'furosemid') !== false ||
+                strpos($satuan, 'amp') !== false ||
+                strpos($satuan, 'vial') !== false ||
+                strpos($aturan, 'iv') !== false ||
+                strpos($aturan, 'im') !== false ||
+                strpos($aturan, 'sc') !== false
+            );
+
+            $isLain = (
+                strpos($nama, ' o2') !== false ||
+                strpos($nama, 'oksigen') !== false ||
+                strpos($nama, 'nebu') !== false ||
+                strpos($nama, 'nebulizer') !== false ||
+                strpos($nama, 'combivent') !== false ||
+                strpos($nama, 'pulmicort') !== false ||
+                strpos($nama, 'lasalcom') !== false ||
+                strpos($nama, 'salep') !== false ||
+                strpos($nama, 'cream') !== false ||
+                strpos($nama, 'krim') !== false ||
+                strpos($nama, 'supp') !== false ||
+                strpos($nama, 'tetes') !== false ||
+                strpos($nama, 'gtt') !== false ||
+                strpos($nama, 'kassa') !== false
+            );
+
+            $frek = '-';
+            if (preg_match('/(\d+)\s*[xX]/', $info['aturan_pakai'], $mFrek)) {
+                $frek = $mFrek[1] . 'x';
+            } elseif (!empty($info['frekuensi'])) {
+                $frek = $info['frekuensi'];
+            }
+
+            $dosis = '-';
+            if (preg_match('/[xX]\s*([0-9.,\/]+(?:\s*[a-zA-Z%]+)?)/', $info['aturan_pakai'], $mDosis)) {
+                $dosis = trim($mDosis[1]);
+            } else {
+                $dosis = $info['satuan'] ?: '1';
+            }
+
+            $matriksPemberian = [];
+            foreach ($allTglKeys as $tgl) {
+                $matriksPemberian[$tgl] = [
+                    'P' => [],
+                    'S' => [],
+                    'M' => [],
+                ];
+            }
+
+            $pemberianCat = $catatans->where('kode_brng', $kode);
+            foreach ($pemberianCat as $p) {
+                $tgl = $p->tgl_perawatan;
+                if (!isset($matriksPemberian[$tgl])) continue;
+
+                $jamInt = (int) substr($p->jam, 0, 2);
+                $jamMenit = substr($p->jam, 0, 5);
+                $jamTampil = substr($jamMenit, 3, 2) === '00' ? sprintf('%02d', $jamInt) : $jamMenit;
+
+                if ($p->status_pemberian === 'Ditunda') {
+                    $jamTampil = 'Tunda';
+                } elseif ($p->status_pemberian === 'Ditolak Pasien') {
+                    $jamTampil = 'Tolak';
+                }
+
+                $shift = 'M';
+                if ($jamInt >= 6 && $jamInt < 14) {
+                    $shift = 'P';
+                } elseif ($jamInt >= 14 && $jamInt < 21) {
+                    $shift = 'S';
+                } else {
+                    $shift = 'M';
+                }
+
+                $matriksPemberian[$tgl][$shift][] = $jamTampil;
+            }
+
+            $pemberianDtl = $details->where('kode_brng', $kode);
+            foreach ($pemberianDtl as $p) {
+                $tgl = $p->tgl_perawatan;
+                if (!isset($matriksPemberian[$tgl])) continue;
+
+                $jamInt = (int) substr($p->jam, 0, 2);
+                $jamMenit = substr($p->jam, 0, 5);
+                $jamTampil = substr($jamMenit, 3, 2) === '00' ? sprintf('%02d', $jamInt) : $jamMenit;
+
+                $shift = 'M';
+                if ($jamInt >= 6 && $jamInt < 14) {
+                    $shift = 'P';
+                } elseif ($jamInt >= 14 && $jamInt < 21) {
+                    $shift = 'S';
+                } else {
+                    $shift = 'M';
+                }
+
+                if (!in_array($jamTampil, $matriksPemberian[$tgl][$shift])) {
+                    $matriksPemberian[$tgl][$shift][] = $jamTampil;
+                }
+            }
+
+            $pemberianDisplay = [];
+            foreach ($allTglKeys as $tgl) {
+                $pemberianDisplay[$tgl] = [
+                    'P' => !empty($matriksPemberian[$tgl]['P']) ? implode(', ', $matriksPemberian[$tgl]['P']) : '',
+                    'S' => !empty($matriksPemberian[$tgl]['S']) ? implode(', ', $matriksPemberian[$tgl]['S']) : '',
+                    'M' => !empty($matriksPemberian[$tgl]['M']) ? implode(', ', $matriksPemberian[$tgl]['M']) : '',
+                ];
+            }
+
+            if ($isLain) {
+                $grupLain[] = [
+                    'kode_brng' => $kode,
+                    'nama' => $info['nama_brng'],
+                    'frekuensi' => $frek,
+                    'keterangan' => $info['aturan_pakai'] !== '-' ? $info['aturan_pakai'] : $dosis,
+                    'pemberian' => $pemberianDisplay,
+                ];
+            } elseif ($isInjeksi) {
+                $isIv = (strpos($aturan, 'iv') !== false || strpos($aturan, 'intra vena') !== false || strpos($aturan, 'infus') !== false || strpos($aturan, 'drip') !== false || true);
+                $isIm = (strpos($aturan, 'im') !== false || strpos($aturan, 'intra muskuler') !== false);
+                $isSc = (strpos($aturan, 'sc') !== false || strpos($aturan, 'subkutan') !== false);
+                if ($isIm || $isSc) {
+                    $isIv = false;
+                }
+
+                $grupInjeksi[] = [
+                    'kode_brng' => $kode,
+                    'nama' => $info['nama_brng'],
+                    'frekuensi' => $frek,
+                    'dosis' => $dosis,
+                    'iv' => $isIv,
+                    'im' => $isIm,
+                    'sc' => $isSc,
+                    'pemberian' => $pemberianDisplay,
+                ];
+            } else {
+                $isAc = (strpos($aturan, 'ac') !== false || strpos($aturan, 'a.c') !== false || strpos($aturan, 'sebelum') !== false);
+                $isDc = (strpos($aturan, 'dc') !== false || strpos($aturan, 'd.c') !== false || strpos($aturan, 'saat makan') !== false || strpos($aturan, 'bersama makan') !== false);
+                $isPc = (strpos($aturan, 'pc') !== false || strpos($aturan, 'p.c') !== false || strpos($aturan, 'sesudah') !== false || strpos($aturan, 'setelah') !== false);
+                if (!$isAc && !$isDc && !$isPc) {
+                    $isPc = true;
+                }
+
+                $grupOral[] = [
+                    'kode_brng' => $kode,
+                    'nama' => $info['nama_brng'],
+                    'frekuensi' => $frek,
+                    'dosis' => $dosis,
+                    'ac' => $isAc,
+                    'dc' => $isDc,
+                    'pc' => $isPc,
+                    'pemberian' => $pemberianDisplay,
+                ];
+            }
+        }
+
+        return [
+            'regPeriksa' => $regPeriksa,
+            'pasien' => $regPeriksa->pasien,
+            'kamarDisplay' => $kamarDisplay,
+            'dokterDpjp' => $regPeriksa->dokter->nm_dokter ?? '-',
+            'tglMasukRawat' => $tglMasukRawat,
+            'alergiDisplay' => $alergiDisplay,
+            'tanggalList' => $tanggalList,
+            'grupOral' => $grupOral,
+            'grupInjeksi' => $grupInjeksi,
+            'grupLain' => $grupLain,
+            'petugasMap' => $petugasMap,
+        ];
+    }
+
+    /**
+     * API Data Rekap Formulir RM 5A (Untuk Tampilan Screen di Modal E-MAR)
+     */
+    public function getRekapRm5a(Request $request): JsonResponse
+    {
+        $noRawat = $request->no_rawat;
+        if (!$noRawat) {
+            return response()->json(['message' => 'no_rawat wajib diisi'], 400);
+        }
+
+        $data = $this->parseDaftarPemberianRm5a($noRawat, $request->tgl_awal, $request->tgl_akhir);
+        if (!$data) {
+            return response()->json(['message' => 'Data pasien rawat inap tidak ditemukan'], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $data,
+        ]);
+    }
+
+    /**
+     * Cetak PDF Formulir RM 5A: Daftar Pemberian Obat Pasien Rawat Inap
+     */
+    public function cetakRm5a(Request $request, $no_rawat)
+    {
+        $data = $this->parseDaftarPemberianRm5a($no_rawat, $request->tgl_awal, $request->tgl_akhir);
+        if (!$data) {
+            abort(404, 'Data rekam medis pasien tidak ditemukan');
+        }
+
+        $setting = DB::table('setting')->first();
+        $logoFile = public_path('img/LOGO RSIA .png');
+        if (!file_exists($logoFile)) {
+            $logoFile = public_path('img/logo.png');
+        }
+        $logoBase64 = file_exists($logoFile) ? base64_encode(file_get_contents($logoFile)) : null;
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('content.print.daftar_pemberian_obat_rm5a', array_merge($data, [
+            'setting' => $setting,
+            'logoBase64' => $logoBase64,
+        ]))
+        ->setPaper('a4', 'landscape')
+        ->setOptions([
+            'defaultFont' => 'Helvetica',
+            'isRemoteEnabled' => true,
+            'isHtml5ParserEnabled' => true,
+        ]);
+
+        $safeRm = $data['pasien']->no_rkm_medis ?? 'pasien';
+        return $pdf->stream("DAFTAR_PEMBERIAN_OBAT_RM5A_{$safeRm}.pdf");
     }
 }

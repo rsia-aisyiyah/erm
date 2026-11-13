@@ -60,7 +60,8 @@
             .obat-qty { font-size: 4.6pt; font-weight: bold; text-align: right; padding-right: 1.5pt; }
             .aturan-box { font-size: 7.2pt; font-weight: bold; margin: 1.2pt 0 0.8pt 0; text-align: center; }
             .racik-detail { font-size: 3.2pt; font-style: italic; color: #222; text-align: center; line-height: 1.0; }
-            .doa-text { font-size: 3.4pt; font-style: italic; text-align: center; margin-top: 0.8pt; }
+            .petugas-text { font-size: 3.2pt; text-align: left; white-space: nowrap; overflow: hidden; }
+            .doa-text { font-size: 3.4pt; font-style: italic; text-align: right; }
             .divider { border-bottom: 0.4pt solid #000; margin: 1pt 0; }
             .logo-img { max-height: 15pt; max-width: 15pt; }
             .logo-td { width: 16pt; }
@@ -82,7 +83,8 @@
             .obat-qty { font-size: 6.8pt; font-weight: bold; text-align: right; padding-right: 1.5pt; }
             .aturan-box { font-size: 13pt; font-weight: bold; margin: 9pt 0 5pt 0; text-align: center; line-height: 1.2; }
             .racik-detail { font-size: 3.8pt; font-style: italic; color: #222; text-align: center; line-height: 1.05; margin: 1.5pt 0; }
-            .doa-text { font-size: 5.2pt; font-style: italic; text-align: center; margin-top: 8pt; }
+            .petugas-text { font-size: 4.8pt; text-align: left; white-space: nowrap; overflow: hidden; }
+            .doa-text { font-size: 5.2pt; font-style: italic; text-align: right; }
             .divider { border-bottom: 0.55pt solid #000; margin: 2pt 0; }
             .logo-img { max-height: 22pt; max-width: 22pt; }
             .logo-td { width: 23pt; }
@@ -96,7 +98,8 @@
             .obat-qty { font-size: 6.3pt; font-weight: bold; text-align: right; padding-right: 1.5pt; }
             .aturan-box { font-size: 10pt; font-weight: bold; margin: 2pt 0 1.2pt 0; text-align: center; }
             .racik-detail { font-size: 3.6pt; font-style: italic; color: #222; text-align: center; line-height: 1.05; }
-            .doa-text { font-size: 4.2pt; font-style: italic; text-align: center; margin-top: 1.8pt; }
+            .petugas-text { font-size: 4.2pt; text-align: left; white-space: nowrap; overflow: hidden; }
+            .doa-text { font-size: 4.2pt; font-style: italic; text-align: right; }
             .divider { border-bottom: 0.5pt solid #000; margin: 1.2pt 0; }
             .logo-img { max-height: 19pt; max-width: 19pt; }
             .logo-td { width: 21pt; }
@@ -110,7 +113,8 @@
             .obat-qty { font-size: 7pt; font-weight: bold; text-align: right; padding-right: 2pt; }
             .aturan-box { font-size: 11pt; font-weight: bold; margin: 3pt 0 1.5pt 0; text-align: center; }
             .racik-detail { font-size: 4.5pt; font-style: italic; color: #222; text-align: center; }
-            .doa-text { font-size: 5pt; font-style: italic; text-align: center; margin-top: 2.2pt; }
+            .petugas-text { font-size: 4.8pt; text-align: left; white-space: nowrap; overflow: hidden; }
+            .doa-text { font-size: 5pt; font-style: italic; text-align: right; }
             .divider { border-bottom: 0.65pt solid #000; margin: 1.6pt 0; }
             .logo-img { max-height: 23pt; max-width: 23pt; }
             .logo-td { width: 25pt; }
@@ -124,7 +128,8 @@
             .obat-qty { font-size: 7.5pt; font-weight: bold; text-align: right; padding-right: 2pt; }
             .aturan-box { font-size: 11.5pt; font-weight: bold; margin: 3pt 0 1.5pt 0; text-align: center; }
             .racik-detail { font-size: 4.8pt; font-style: italic; color: #222; text-align: center; }
-            .doa-text { font-size: 5.2pt; font-style: italic; text-align: center; margin-top: 2.2pt; }
+            .petugas-text { font-size: 5pt; text-align: left; white-space: nowrap; overflow: hidden; }
+            .doa-text { font-size: 5.2pt; font-style: italic; text-align: right; }
             .divider { border-bottom: 0.7pt solid #000; margin: 1.8pt 0; }
             .logo-img { max-height: 24pt; max-width: 24pt; }
             .logo-td { width: 26pt; }
@@ -138,7 +143,8 @@
             .obat-qty { font-size: 8pt; font-weight: bold; text-align: right; padding-right: 2.5pt; }
             .aturan-box { font-size: 12.5pt; font-weight: bold; margin: 3.5pt 0 2pt 0; text-align: center; }
             .racik-detail { font-size: 5.2pt; font-style: italic; color: #222; text-align: center; }
-            .doa-text { font-size: 5.6pt; font-style: italic; text-align: center; margin-top: 2.5pt; }
+            .petugas-text { font-size: 5.4pt; text-align: left; white-space: nowrap; overflow: hidden; }
+            .doa-text { font-size: 5.6pt; font-style: italic; text-align: right; }
             .divider { border-bottom: 0.75pt solid #000; margin: 2pt 0; }
             .logo-img { max-height: 26pt; max-width: 26pt; }
             .logo-td { width: 28pt; }
@@ -152,7 +158,8 @@
             .obat-qty { font-size: 6.5pt; font-weight: bold; text-align: right; padding-right: 2pt; }
             .aturan-box { font-size: 10.5pt; font-weight: bold; margin: 2.5pt 0 1.5pt 0; text-align: center; }
             .racik-detail { font-size: 3.8pt; font-style: italic; color: #222; text-align: center; }
-            .doa-text { font-size: 4.5pt; font-style: italic; text-align: center; margin-top: 2pt; }
+            .petugas-text { font-size: 4.2pt; text-align: left; white-space: nowrap; overflow: hidden; }
+            .doa-text { font-size: 4.5pt; font-style: italic; text-align: right; }
             .divider { border-bottom: 0.55pt solid #000; margin: 1.5pt 0; }
             .logo-img { max-height: 20pt; max-width: 20pt; }
             .logo-td { width: 22pt; }
@@ -265,9 +272,18 @@
         </div>
     @endif
 
-    <div class="doa-text">
-        Semoga Lekas Sembuh
-    </div>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 2pt;">
+        <tr>
+            <td style="width: 50%; vertical-align: bottom; text-align: left; padding: 0;">
+                @if(!empty($petugasValidasi))
+                    <div class="petugas-text">Petugas: {{ $petugasValidasi }}</div>
+                @endif
+            </td>
+            <td style="width: 50%; vertical-align: bottom; text-align: right; padding: 0;">
+                <div class="doa-text">Semoga Lekas Sembuh</div>
+            </td>
+        </tr>
+    </table>
 </div>
 @endforeach
 

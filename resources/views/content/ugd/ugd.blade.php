@@ -87,7 +87,9 @@
         var getInstance = '';
 
         $(document).ready(() => {
-            new bootstrap.Tab('#tab-resep')
+            if (document.querySelector('#tab-resep')) {
+                new bootstrap.Tab('#tab-resep')
+            }
             new bootstrap.Tab('#tab-ews')
             new bootstrap.Tab('#tab-tabel')
 
@@ -544,6 +546,13 @@
                 $('#formInfoPasienResep').find('input[name=kd_dokter]').val(response.kd_dokter || dokter.kd_dokter || '');
                 $('#formInfoPasienResep').find('input[name=status_lanjut]').val((response.status_lanjut || '').toLowerCase());
                 $('#formInfoPasienResep').find('input[name=kelasHarga]').val('ralan');
+                if (typeof setDepoResep === 'function') {
+                    setDepoResep('RM', 1);
+                } else {
+                    $('#formInfoPasienResep').find('input[name=kd_bangsal]').val('RM');
+                    $('#formInfoPasienResep').find('input[name=cari_kandungan]').val('1');
+                    $('.namaDepoText').text('Apotek Ranap');
+                }
 
                 const formInfoPasien = $('#formInfoPasien');
                 formInfoPasien.find('input[name=no_rawat]').val(noRawat);
@@ -570,6 +579,9 @@
                 $('button[data-bs-toggle="tab"][data-bs-target="#tabSoapPaneUgd"]').trigger('click')
 
                 getResepObat(noRawat)
+                if (response.no_rkm_medis && typeof riwayatResep === 'function') {
+                    riwayatResep(response.no_rkm_medis);
+                }
                 setEws(noRawat, 'ralan', dokter.kd_sps || '')
                 if (dokter.kd_sps == 'S0001') {
                     $('.formEws').removeAttr('style');

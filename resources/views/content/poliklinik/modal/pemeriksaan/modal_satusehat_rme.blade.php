@@ -58,10 +58,10 @@
                     </p>
 
                     <div class="w-100 px-3 mb-3 d-flex flex-column flex-sm-row gap-2.5 justify-content-center">
-                        <a id="btnSsrmeOpenDirect" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-success flex-fill rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #00877a; border-color: #00877a; font-size: 13.5px;">
+                        <button type="button" id="btnSsrmeOpenDirect" class="btn btn-lg btn-success flex-fill rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" onclick="openSsrmeDirect()" style="background-color: #00877a; border-color: #00877a; font-size: 13.5px;">
                             <i class="bi bi-box-arrow-up-right"></i>
                             <span>Buka di Tab Baru</span>
-                        </a>
+                        </button>
                         <button type="button" id="btnSsrmeOpenPopup" class="btn btn-lg btn-outline-success flex-fill rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" onclick="openSsrmeAsPopup()" style="color: #00877a; border: 1.5px solid #00877a; font-size: 13.5px;">
                             <i class="bi bi-window-stack"></i>
                             <span>Buka Jendela Pop-up</span>
@@ -242,10 +242,10 @@
 
                     <!-- Tombol Aksi Kedaruratan -->
                     <div class="w-100 px-3 mb-2 d-flex flex-column flex-sm-row gap-2.5 justify-content-center">
-                        <a id="btnSsrmeEmergencyOpenDirect" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-danger flex-fill rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #dc2626; border-color: #dc2626; font-size: 13.5px;">
+                        <button type="button" id="btnSsrmeEmergencyOpenDirect" class="btn btn-lg btn-danger flex-fill rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" onclick="openSsrmeDirect()" style="background-color: #dc2626; border-color: #dc2626; font-size: 13.5px;">
                             <i class="bi bi-box-arrow-up-right"></i>
                             <span>Buka Form Akses Emergency (Tab Baru)</span>
-                        </a>
+                        </button>
                         <button type="button" id="btnSsrmeEmergencyOpenPopup" class="btn btn-lg btn-outline-danger flex-fill rounded-pill fw-bold py-2.5 shadow-sm d-flex align-items-center justify-content-center gap-2" onclick="openSsrmeAsPopup()" style="color: #dc2626; border: 1.5px solid #dc2626; font-size: 13.5px;">
                             <i class="bi bi-window-stack"></i>
                             <span>Buka Jendela Pop-up</span>
@@ -307,6 +307,7 @@
     let isCurrentEmergency = 0;
     let currentTargetNoRawat = '';
     let currentTargetKdDokter = '';
+    let currentSsrmeXhr = null;
 
     $(document).ready(function() {
         // Jaga agar scroll modal induk tetap aktif saat modal SATUSEHAT ditutup
@@ -318,11 +319,33 @@
         });
     });
 
-    function openSsrmeAsPopup() {
-        const url = currentShlinkUrl || $('#btnSsrmeOpenDirect').attr('href') || $('#btnSsrmeEmergencyOpenDirect').attr('href');
+    function openSsrmeDirect() {
+        const url = currentShlinkUrl || $('#btnSsrmeOpenDirect').attr('data-url') || $('#btnSsrmeEmergencyOpenDirect').attr('data-url');
         if (!url || url === '#' || url === 'javascript:void(0)') {
+            if (typeof swalToast === 'function') {
+                swalToast('Tautan RME belum siap, silakan tunggu...', 'warning');
+            } else {
+                alert('Tautan RME belum siap, silakan tunggu...');
+            }
             return;
         }
+
+        console.log('[SSRME] Buka di Tab Baru:', url);
+        window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
+    function openSsrmeAsPopup() {
+        const url = currentShlinkUrl || $('#btnSsrmeOpenDirect').attr('data-url') || $('#btnSsrmeEmergencyOpenDirect').attr('data-url');
+        if (!url || url === '#' || url === 'javascript:void(0)') {
+            if (typeof swalToast === 'function') {
+                swalToast('Tautan RME belum siap, silakan tunggu...', 'warning');
+            } else {
+                alert('Tautan RME belum siap, silakan tunggu...');
+            }
+            return;
+        }
+
+        console.log('[SSRME] Buka di Jendela Pop-up:', url);
 
         // Ukuran pop-up optimal
         const width = Math.min(1300, Math.floor(window.screen.availWidth * 0.9));
@@ -353,6 +376,10 @@
      *              1 = Emergency (Bypass Kode Akses untuk UGD/Gawat Darurat)
      */
     function openSatuSehatRme(isEmergency = 0, customNoRawat = null, customKdDokter = null, customNmPasien = null, customNoRm = null) {
+        if (currentSsrmeXhr && currentSsrmeXhr.readyState !== 4) {
+            currentSsrmeXhr.abort();
+        }
+
         currentShlinkUrl = '';
         isCurrentEmergency = isEmergency ? 1 : 0;
 
@@ -399,8 +426,8 @@
 
         // Reset view ke loading state
         showSsrmeView('loading');
-        $('#btnSsrmeOpenDirect').attr('href', '#');
-        $('#btnSsrmeEmergencyOpenDirect').attr('href', '#');
+        $('#btnSsrmeOpenDirect').removeAttr('data-url');
+        $('#btnSsrmeEmergencyOpenDirect').removeAttr('data-url');
 
         fetchSatuSehatRme(noRawat, kdDokter, isCurrentEmergency);
     }
@@ -484,7 +511,11 @@
     }
 
     function fetchSatuSehatRme(noRawat, kdDokter, isEmergency = 0) {
-        $.ajax({
+        if (currentSsrmeXhr && currentSsrmeXhr.readyState !== 4) {
+            currentSsrmeXhr.abort();
+        }
+
+        currentSsrmeXhr = $.ajax({
             url: '{{ route("satusehat.rme.open") }}',
             type: 'GET',
             data: {
@@ -497,7 +528,8 @@
                 if (res.status === 'ready' && res.shlink_url) {
                     // Kasus 1: Siap Tampil (Tautan langsung terbuka)
                     currentShlinkUrl = res.shlink_url;
-                    $('#btnSsrmeOpenDirect').attr('href', res.shlink_url);
+                    $('#btnSsrmeOpenDirect').attr('data-url', res.shlink_url);
+                    console.log('[SSRME] Ready URL received:', res.shlink_url);
                     showSsrmeView('viewer');
 
                     if (typeof swalToast === 'function') {
@@ -512,7 +544,7 @@
 
                     if (isModeEmergency) {
                         // Tampilkan Form Panduan Emergency
-                        $('#btnSsrmeEmergencyOpenDirect').attr('href', targetUrl || '#');
+                        $('#btnSsrmeEmergencyOpenDirect').attr('data-url', targetUrl);
                         showSsrmeView('emergency');
                     } else {
                         // Tampilkan Panduan 4-Langkah Mobile
@@ -541,7 +573,10 @@
                     showSsrmeError(res.message || 'Respons tidak valid dari server');
                 }
             },
-            error: function(xhr) {
+            error: function(xhr, status) {
+                if (status === 'abort') {
+                    return;
+                }
                 const res = xhr.responseJSON;
                 const msg = res && res.message ? res.message : '';
                 

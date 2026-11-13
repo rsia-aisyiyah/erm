@@ -959,6 +959,8 @@ class ResepPulangController extends Controller
             'dokter' => $permintaan->dokter,
         ];
 
+        $petugasValidasi = session()->get('pegawai')->nama ?? null;
+
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('content.print.etiket_obat', [
             'resep' => $resepObj,
             'items' => $items,
@@ -969,6 +971,7 @@ class ResepPulangController extends Controller
             'tglResep' => $tglResep,
             'jamResep' => $jamResep,
             'kamarDisplay' => $kamarDisplay,
+            'petugasValidasi' => $petugasValidasi,
         ])
         ->setPaper([0, 0, $paperSize[0], $paperSize[1]])
         ->setOptions([

@@ -384,28 +384,118 @@
 
         <!-- TAB 3: PERMINTAAN OBAT RAWAT INAP (RANAP / UDD) -->
         <div class="tab-pane fade" id="tab-farmasi-ranap" role="tabpanel">
-            <div class="row gy-2">
-                <!-- Counter Badges Ranap -->
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm rounded-3">
-                        <div class="card-body p-3">
-                            <div class="row g-2 text-center">
-                                <div class="col-md-4 col-12">
-                                    <div class="p-2 border rounded-3 bg-light">
-                                        <small class="text-muted d-block" style="font-size: 11px;">TOTAL PERMINTAAN OBAT RANAP</small>
-                                        <span class="fs-5 fw-bold text-primary font-monospace" id="count-ranap-total">0</span>
+            <!-- SUBTAB NAVIGASI DI TAB 3 -->
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <ul class="nav nav-pills p-1 bg-white rounded-3 border shadow-sm" id="pills-subtab-ranap" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active py-1.5 px-3 fw-bold btn-sm" id="subtab-ranap-antrean-link" data-bs-toggle="pill" data-bs-target="#subtab-ranap-antrean" type="button" role="tab" style="font-size: 12px;">
+                            <i class="bi bi-inbox me-1"></i> 1. Antrean Permintaan Ruangan
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-1.5 px-3 fw-bold btn-sm" id="subtab-ranap-rekonsiliasi-link" data-bs-toggle="pill" data-bs-target="#subtab-ranap-rekonsiliasi" type="button" role="tab" style="font-size: 12px;">
+                            <i class="bi bi-calculator me-1"></i> 2. Rekonsiliasi &amp; Billing E-MAR
+                            <span class="badge bg-warning text-dark ms-1" id="badgeCountRekonsiliasiPending">0</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content" id="pills-subtab-ranapContent">
+                <!-- SUBTAB 1: ANTREAN PERMINTAAN RUANGAN -->
+                <div class="tab-pane fade show active" id="subtab-ranap-antrean" role="tabpanel">
+                    <div class="row gy-2">
+                        <!-- Counter Badges Ranap -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-3">
+                                    <div class="row g-2 text-center">
+                                        <div class="col-md-4 col-12">
+                                            <div class="p-2 border rounded-3 bg-light">
+                                                <small class="text-muted d-block" style="font-size: 11px;">TOTAL PERMINTAAN OBAT RANAP</small>
+                                                <span class="fs-5 fw-bold text-primary font-monospace" id="count-ranap-total">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-6">
+                                            <div class="p-2 border rounded-3 bg-warning-subtle border-warning">
+                                                <small class="text-warning-emphasis d-block fw-semibold" style="font-size: 11px;">MENUNGGU PENYIAPAN FARMASI</small>
+                                                <span class="fs-5 fw-bold text-warning-emphasis font-monospace" id="count-ranap-menunggu">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-6">
+                                            <div class="p-2 border rounded-3 bg-success-subtle border-success">
+                                                <small class="text-success-emphasis d-block fw-semibold" style="font-size: 11px;">SUDAH DISIAPKAN (SELESAI)</small>
+                                                <span class="fs-5 fw-bold text-success font-monospace" id="count-ranap-selesai">0</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-6">
-                                    <div class="p-2 border rounded-3 bg-warning-subtle border-warning">
-                                        <small class="text-warning-emphasis d-block fw-semibold" style="font-size: 11px;">MENUNGGU PENYIAPAN FARMASI</small>
-                                        <span class="fs-5 fw-bold text-warning-emphasis font-monospace" id="count-ranap-menunggu">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Filter Controls Ranap -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-2.5">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-md-2 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Awal</label>
+                                            <input type="text" class="form-control form-control-sm" id="farmasi_ranap_tgl_awal" value="{{ date('d-m-Y') }}" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-2 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Akhir</label>
+                                            <input type="text" class="form-control form-control-sm" id="farmasi_ranap_tgl_akhir" value="{{ date('d-m-Y') }}" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-2 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Status Pelayanan</label>
+                                            <select class="form-select form-select-sm" id="farmasi_ranap_status">
+                                                <option value="Semua">Semua Status</option>
+                                                <option value="Belum" selected>Menunggu Farmasi (Belum)</option>
+                                                <option value="Sudah">Sudah Disiapkan</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Pencarian (Keyword)</label>
+                                            <input type="text" class="form-control form-control-sm" id="farmasi_ranap_keyword" placeholder="No. Permintaan / Pasien / Bangsal...">
+                                        </div>
+                                        <div class="col-md-2 col-12">
+                                            <div class="d-flex gap-1">
+                                                <button type="button" class="btn btn-primary btn-sm w-100" onclick="loadPermintaanRanapFarmasi()">
+                                                    <i class="bi bi-search me-1"></i> Filter
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="loadPermintaanRanapFarmasi()" title="Refresh Data">
+                                                    <i class="bi bi-arrow-clockwise"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-6">
-                                    <div class="p-2 border rounded-3 bg-success-subtle border-success">
-                                        <small class="text-success-emphasis d-block fw-semibold" style="font-size: 11px;">SUDAH DISIAPKAN (SELESAI)</small>
-                                        <span class="fs-5 fw-bold text-success font-monospace" id="count-ranap-selesai">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Tabel Permintaan Ranap UDD -->
+                        <div class="col-12 mt-2">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-2">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-bordered table-sm align-middle mb-0" id="tb_permintaan_ranap_farmasi" style="font-size: 11.5px;">
+                                            <thead class="table-light text-center">
+                                                <tr>
+                                                    <th width="14%">No. Permintaan &amp; Jam</th>
+                                                    <th width="16%">Kamar / Bangsal</th>
+                                                    <th width="24%">Pasien</th>
+                                                    <th width="15%">Dokter Peminta</th>
+                                                    <th width="11%">Telaah Farmasi</th>
+                                                    <th width="10%">Status Kesiapan</th>
+                                                    <th width="10%">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbody_permintaan_ranap_farmasi">
+                                                <tr>
+                                                    <td colspan="7" class="text-center text-muted py-3">Memuat antrean permintaan obat rawat inap...</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -413,74 +503,85 @@
                     </div>
                 </div>
 
-                <!-- Filter Controls Ranap -->
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm rounded-3">
-                        <div class="card-body p-2.5">
-                            <div class="row g-2 align-items-end">
-                                <div class="col-md-2 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Awal</label>
-                                    <input type="text" class="form-control form-control-sm" id="farmasi_ranap_tgl_awal" value="{{ date('d-m-Y') }}" autocomplete="off">
+                <!-- SUBTAB 2: REKONSILIASI & BILLING E-MAR -->
+                <div class="tab-pane fade" id="subtab-ranap-rekonsiliasi" role="tabpanel">
+                    <div class="row gy-2">
+                        <!-- Guidance Alert -->
+                        <div class="col-12">
+                            <div class="alert alert-info py-2 px-3 mb-1 rounded-3 border-info d-flex align-items-center gap-2" style="font-size: 11.5px;">
+                                <i class="bi bi-info-circle-fill fs-5 text-info flex-shrink-0"></i>
+                                <div>
+                                    <b>Alur Rekonsiliasi &amp; Billing E-MAR:</b>
+                                    Pemberian obat harian/BHP dicatat dosis klinis riil oleh perawat (misal <i>0.25 atau 0.5 ampul</i>). Petugas Farmasi memverifikasi akumulasi harian dan menetapkan jumlah bulat (misal <i>1 ampul</i>) untuk diterbitkan ke tagihan rawat inap (<code>detail_pemberian_obat</code>) pasien.
                                 </div>
-                                <div class="col-md-2 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tgl. Akhir</label>
-                                    <input type="text" class="form-control form-control-sm" id="farmasi_ranap_tgl_akhir" value="{{ date('d-m-Y') }}" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <!-- Filter Controls Rekonsiliasi -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-2.5">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-md-3 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tanggal Pemberian (E-MAR)</label>
+                                            <input type="date" class="form-control form-control-sm" id="rekon_tgl" value="{{ date('Y-m-d') }}">
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Status Tagihan</label>
+                                            <select class="form-select form-select-sm" id="rekon_status">
+                                                <option value="Menunggu Verifikasi" selected>Menunggu Verifikasi (Pecahan)</option>
+                                                <option value="Sudah Dibilkan">Sudah Dibilkan</option>
+                                                <option value="Semua">Semua Status</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-8">
+                                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Pencarian (Pasien / Obat / No. Rawat)</label>
+                                            <input type="text" class="form-control form-control-sm" id="rekon_keyword" placeholder="Ketik nama pasien / obat...">
+                                        </div>
+                                        <div class="col-md-2 col-4">
+                                            <div class="d-flex gap-1">
+                                                <button type="button" class="btn btn-primary btn-sm w-100" onclick="loadRekonsiliasiEmar()">
+                                                    <i class="bi bi-search me-1"></i> Muat
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="loadRekonsiliasiEmar()" title="Refresh Data">
+                                                    <i class="bi bi-arrow-clockwise"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-2 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Status Pelayanan</label>
-                                    <select class="form-select form-select-sm" id="farmasi_ranap_status">
-                                        <option value="Semua">Semua Status</option>
-                                        <option value="Belum" selected>Menunggu Farmasi (Belum)</option>
-                                        <option value="Sudah">Sudah Disiapkan</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 col-6">
-                                    <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Pencarian (Keyword)</label>
-                                    <input type="text" class="form-control form-control-sm" id="farmasi_ranap_keyword" placeholder="No. Permintaan / Pasien / Bangsal...">
-                                </div>
-                                <div class="col-md-2 col-12">
-                                    <div class="d-flex gap-1">
-                                        <button type="button" class="btn btn-primary btn-sm w-100" onclick="loadPermintaanRanapFarmasi()">
-                                            <i class="bi bi-search me-1"></i> Filter
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="loadPermintaanRanapFarmasi()" title="Refresh Data">
-                                            <i class="bi bi-arrow-clockwise"></i>
-                                        </button>
+                            </div>
+                        </div>
+
+                        <!-- Tabel Rekonsiliasi E-MAR -->
+                        <div class="col-12 mt-2">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-2">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-bordered table-sm align-middle mb-0" id="tb_rekonsiliasi_emar" style="font-size: 11.5px;">
+                                            <thead class="table-light text-center">
+                                                <tr>
+                                                    <th width="4%">No</th>
+                                                    <th width="22%">Pasien &amp; Ruangan</th>
+                                                    <th width="22%">Nama Obat / BHP</th>
+                                                    <th width="14%">Akumulasi E-MAR</th>
+                                                    <th width="14%">Persetujuan Billing</th>
+                                                    <th width="12%">Estimasi Biaya</th>
+                                                    <th width="12%">Aksi / Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbody_rekonsiliasi_emar">
+                                                <tr>
+                                                    <td colspan="7" class="text-center text-muted py-3">Pilih tanggal dan klik Muat Data untuk melihat antrean rekonsiliasi E-MAR.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Tabel Permintaan Ranap UDD -->
-                <div class="col-12 mt-2">
-                    <div class="card border-0 shadow-sm rounded-3">
-                        <div class="card-body p-2">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-hover table-bordered table-sm align-middle mb-0" id="tb_permintaan_ranap_farmasi" style="font-size: 11.5px;">
-                                    <thead class="table-light text-center">
-                                        <tr>
-                                            <th width="14%">No. Permintaan &amp; Jam</th>
-                                            <th width="16%">Kamar / Bangsal</th>
-                                            <th width="24%">Pasien</th>
-                                            <th width="15%">Dokter Peminta</th>
-                                            <th width="11%">Telaah Farmasi</th>
-                                            <th width="10%">Status Kesiapan</th>
-                                            <th width="10%">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody_permintaan_ranap_farmasi">
-                                        <tr>
-                                            <td colspan="7" class="text-center text-muted py-3">Memuat antrean permintaan obat rawat inap...</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -870,11 +971,14 @@
 
                     <!-- Tabel Item Obat -->
                     <div class="card border-0 shadow-sm rounded-3 bg-white">
-                        <div class="card-header bg-white border-bottom py-2 d-flex justify-content-between align-items-center">
+                        <div class="card-header bg-white border-bottom py-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
                             <span class="fw-bold small text-secondary">
                                 <i class="bi bi-capsule text-primary me-1"></i> Rincian Obat &amp; Jadwal Pemberian Jam
                             </span>
-                            <span id="fDetStatusBadge">-</span>
+                            <div class="d-flex align-items-center gap-1.5 flex-wrap">
+                                <span id="fDetTelaahBadge">-</span>
+                                <span id="fDetStatusBadge">-</span>
+                            </div>
                         </div>
                         <div class="card-body p-2">
                             <div class="table-responsive">
@@ -920,6 +1024,7 @@
     @include('content.farmasi.ralan.modal.modal_resep')
     @include('content.farmasi.modal.modal_telaah_farmasi')
     @include('content.farmasi.modal.modal_substitusi_obat')
+    @include('content.farmasi.modal.modal_edit_aturan_pakai')
     @include('content.farmasi.ralan.modal.modal_resep_pulang_farmasi')
     @include('content.farmasi.modal.modal_validasi_retur_farmasi')
     @include('content.farmasi.modal.modal_verifikasi_retur_udd')
@@ -976,7 +1081,18 @@
                 loadResepRanapFarmasi();
             });
             $('#tab-farmasi-ranap-link').on('shown.bs.tab', function() {
+                if ($('#subtab-ranap-rekonsiliasi').hasClass('show') || $('#subtab-ranap-rekonsiliasi').hasClass('active')) {
+                    loadRekonsiliasiEmar();
+                } else {
+                    loadPermintaanRanapFarmasi();
+                }
+                loadRekonsiliasiEmar(true);
+            });
+            $('#subtab-ranap-antrean-link').on('shown.bs.tab', function() {
                 loadPermintaanRanapFarmasi();
+            });
+            $('#subtab-ranap-rekonsiliasi-link').on('shown.bs.tab', function() {
+                loadRekonsiliasiEmar();
             });
             $('#tab-farmasi-pulang-link').on('shown.bs.tab', function() {
                 loadPermintaanResepPulangFarmasi();
@@ -2088,31 +2204,40 @@
                                 ? `<button onclick="bukaModalTelaahFarmasi('${safeNoResep}', '${safeNoRawat}', '${safeNmPasien}', '${safeNmPoli}')" class="btn btn-sm text-white mb-1" style="background-color: #0f766e; width:110px;" type="button" title="Sudah Ditelaah Farmasi (Klik untuk melihat/mengubah)"><i class="bi bi-shield-check me-1"></i> TELAAH <i class="bi bi-check-lg fw-bold"></i></button><br/>`
                                 : `<button onclick="bukaModalTelaahFarmasi('${safeNoResep}', '${safeNoRawat}', '${safeNmPasien}', '${safeNmPoli}')" class="btn btn-sm btn-outline-danger mb-1 fw-bold" style="width:110px;" type="button" title="Belum Ditelaah Farmasi (Klik untuk menelaah)"><i class="bi bi-shield-exclamation me-1"></i> BLM TELAAH</button><br/>`;
 
-                            let html = `<button onclick="tampilResep('${safeNoResep}', '${safeKdPoli}')" class="btn btn-sm mb-1 status-${safeNoResep}" type="button" style="width:110px;display:inline" data-id="${safeNoRawat}"></button><br/>`;
-                            html += btnTelaah;
-                            html += `<button onclick="bukaModalEtiket('${safeNoResep}')" class="btn btn-sm btn-outline-primary mb-1" style="width:110px;" type="button" title="Cetak Etiket Aturan Pakai Obat"><i class="bi bi-printer me-1"></i> ETIKET</button><br/>`;
-                            html += `<button onclick="panggilResep('${safeNoResep}', false, '${safeNmPasien}')" class="btn btn-sm btn-warning mb-1 panggil-${safeNoResep}" style="width:110px;display:none" type="button" data-id="${safeNoRawat}">PANGGIL</button><br/>`;
-                            html += `<button onclick="panggilResep('${safeNoResep}', true, '${safeNmPasien}')" class="btn btn-sm btn-success mb-1 selesai-${safeNoResep}" style="width:110px;display:none" type="button" data-id="${safeNoRawat}">SELESAI</button>`;
+                            let statusBtnClass = 'btn-primary';
+                            let statusBtnText = 'BELUM';
+                            let statusBtnStyle = 'width:110px;display:inline;';
+                            let panggilDisplay = 'none';
+                            let selesaiDisplay = 'none';
 
-                            if (row.tgl_perawatan == '0000-00-00') {
-                                if (row.reg_periksa.status_bayar == 'Belum Bayar') {
-                                    $('.status-' + row.no_resep).addClass('btn-primary').text('BELUM');
-                                    $('.panggil-' + row.no_resep).css('display', 'none');
+                            const isBelumValidasi = !row.tgl_perawatan || row.tgl_perawatan === '0000-00-00';
+                            if (isBelumValidasi) {
+                                if (row.reg_periksa && row.reg_periksa.status_bayar === 'Sudah Bayar') {
+                                    statusBtnClass = 'btn-danger';
+                                    statusBtnText = 'TIDAK DIAMBIL';
                                 } else {
-                                    $('.status-' + row.no_resep).addClass('btn-danger').text('TIDAK DIAMBIL');
-                                    $('.panggil-' + row.no_resep).css('display', 'none');
+                                    statusBtnClass = 'btn-primary';
+                                    statusBtnText = 'BELUM';
                                 }
                             } else {
-                                if (row.jam_penyerahan == '00:00:00') {
-                                    $('.status-' + row.no_resep).addClass('btn-primary').text('RESEP');
-                                    $('.panggil-' + row.no_resep).css('display', 'inline');
-                                    $('.selesai-' + row.no_resep).css('display', 'inline');
-                                } else if (row.jam_penyerahan != '00:00:00') {
-                                    $('.status-' + row.no_resep).css('height', '50px').addClass('btn-success').text('SELESAI');
-                                    $('.panggil-' + row.no_resep).css('display', 'none');
-                                    $('.selesai-' + row.no_resep).css('display', 'none');
+                                if (!row.jam_penyerahan || row.jam_penyerahan === '00:00:00') {
+                                    statusBtnClass = 'btn-primary';
+                                    statusBtnText = 'RESEP';
+                                    panggilDisplay = 'inline';
+                                    selesaiDisplay = 'inline';
+                                } else {
+                                    statusBtnClass = 'btn-success';
+                                    statusBtnText = 'SELESAI';
+                                    statusBtnStyle = 'width:110px;display:inline;height:50px;';
                                 }
                             }
+
+                            let html = `<button onclick="tampilResep('${safeNoResep}', '${safeKdPoli}')" class="btn btn-sm mb-1 ${statusBtnClass} status-${safeNoResep}" type="button" style="${statusBtnStyle}" data-id="${safeNoRawat}">${statusBtnText}</button><br/>`;
+                            html += btnTelaah;
+                            html += `<button onclick="bukaModalEtiket('${safeNoResep}')" class="btn btn-sm btn-outline-primary mb-1" style="width:110px;" type="button" title="Cetak Etiket Aturan Pakai Obat"><i class="bi bi-printer me-1"></i> ETIKET</button><br/>`;
+                            html += `<button onclick="panggilResep('${safeNoResep}', false, '${safeNmPasien}')" class="btn btn-sm btn-warning mb-1 panggil-${safeNoResep}" style="width:110px;display:${panggilDisplay}" type="button" data-id="${safeNoRawat}">PANGGIL</button><br/>`;
+                            html += `<button onclick="panggilResep('${safeNoResep}', true, '${safeNmPasien}')" class="btn btn-sm btn-success mb-1 selesai-${safeNoResep}" style="width:110px;display:${selesaiDisplay}" type="button" data-id="${safeNoRawat}">SELESAI</button>`;
+
                             return html;
                         },
                         name: 'status'
@@ -2205,6 +2330,7 @@
                 $('#count-ranap-menunggu').text(countMenunggu);
                 $('#count-ranap-selesai').text(countSelesai);
                 $('#badgeCountRanapTunggu').text(countMenunggu);
+                loadRekonsiliasiEmar(true);
 
                 if (isBackgroundCountOnly) return;
 
@@ -2278,7 +2404,38 @@
                 const kamar = getKamarFormat(res.reg_periksa);
                 $('#fDetKamar').text(kamar);
 
-                $('#fDetStatusBadge').html(res.status === 'Sudah' ? '<span class="badge bg-success">Sudah Disiapkan</span>' : '<span class="badge bg-warning text-dark">Menunggu Farmasi</span>');
+                // Badge Status Kesiapan Stok
+                $('#fDetStatusBadge').html(res.status === 'Sudah'
+                    ? '<span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11px;"><i class="bi bi-check-circle"></i> Sudah Disiapkan</span>'
+                    : '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11px;"><i class="bi bi-hourglass-split"></i> Menunggu Farmasi</span>');
+
+                // Badge & Tombol Telaah Farmasi
+                const isTelaah = !!res.telaah_farmasi;
+                const namaPetugasTelaah = res.telaah_farmasi?.petugas?.nama || res.telaah_farmasi?.nip || '';
+
+                if (isTelaah) {
+                    $('#fDetTelaahBadge').html(`
+                        <span class="badge text-white px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1 shadow-sm" style="background-color: #0f766e; font-size: 11px;" title="Ditelaah oleh: ${namaPetugasTelaah}">
+                            <i class="bi bi-shield-check"></i> Sudah Ditelaah ${namaPetugasTelaah ? `<small class="text-white-50">(${namaPetugasTelaah})</small>` : ''}
+                        </span>
+                    `);
+                    $('#btnTelaahDariFarmasiDetail')
+                        .removeClass('btn-outline-danger fw-semibold')
+                        .addClass('text-white')
+                        .css('background-color', '#0f766e')
+                        .html('<i class="bi bi-shield-check me-1"></i> Telaah Farmasi <span class="badge bg-white text-dark ms-1" style="font-size: 10px;">Sudah</span>');
+                } else {
+                    $('#fDetTelaahBadge').html(`
+                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11px;">
+                            <i class="bi bi-shield-exclamation"></i> Belum Ditelaah
+                        </span>
+                    `);
+                    $('#btnTelaahDariFarmasiDetail')
+                        .removeClass('text-white')
+                        .removeAttr('style')
+                        .addClass('btn-outline-danger fw-semibold')
+                        .html('<i class="bi bi-shield-exclamation me-1"></i> Telaah Farmasi <span class="badge bg-danger text-white ms-1" style="font-size: 10px;">Belum</span>');
+                }
 
                 // Render tombol aksi footer
                 $('#btnCetakDariFarmasiDetail').off('click').on('click', function() {
@@ -2302,11 +2459,14 @@
                 const $tbody = $('#fDetTbodyObat');
                 $tbody.empty();
                 const details = res.detail_permintaan || [];
+                window.activePermintaanItems = window.activePermintaanItems || {};
 
                 if (details.length === 0) {
                     $tbody.html('<tr><td colspan="7" class="text-center text-muted py-3">Tidak ada data obat.</td></tr>');
                 } else {
                     details.forEach(function(det, idx) {
+                        window.activePermintaanItems[`${res.no_permintaan}_${det.kode_brng}`] = det;
+
                         const jamList = [];
                         for (let h = 0; h <= 23; h++) {
                             const key = `jam${String(h).padStart(2, '0')}`;
@@ -2318,6 +2478,8 @@
                         const sat = det.data_barang?.kode_satuan?.satuan || det.data_barang?.kode_sat || '-';
 
                         let btnSubstitusiHtml = '-';
+                        let btnEditAturanHtml = '';
+                        let btnEditJmlHtml = '';
                         if (res.status === 'Belum') {
                             const safeNoPermintaan = safeJsStr(res.no_permintaan);
                             const safeKodeBrng = safeJsStr(det.kode_brng);
@@ -2328,6 +2490,16 @@
                                     <i class="bi bi-arrow-left-right"></i> Ganti
                                 </button>
                             `;
+                            btnEditAturanHtml = `
+                                <button type="button" class="btn btn-outline-primary btn-sm py-0 px-1.5 ms-1 text-nowrap rounded shadow-none" onclick="triggerEditAturanPakai('${safeNoPermintaan}', '${safeKodeBrng}')" title="Ubah Jumlah, Aturan Pakai &amp; Jam" style="font-size: 11px;">
+                                    <i class="bi bi-pencil-square"></i> Ubah
+                                </button>
+                            `;
+                            btnEditJmlHtml = `
+                                <button type="button" class="btn btn-outline-secondary btn-sm p-0 px-1 border-0 text-muted shadow-none" onclick="quickEditJumlah('${safeNoPermintaan}', '${safeKodeBrng}', ${det.jml}, '${safeNamaBrng}')" title="Sesuaikan Jumlah Obat" style="font-size: 11px;">
+                                    <i class="bi bi-pencil text-primary"></i>
+                                </button>
+                            `;
                         }
 
                         const tr = `
@@ -2335,10 +2507,18 @@
                                 <td class="text-center">${idx + 1}</td>
                                 <td class="font-monospace">${det.kode_brng}</td>
                                 <td><strong>${det.data_barang?.nama_brng || '-'}</strong></td>
-                                <td class="text-center fw-bold text-primary">${det.jml}</td>
+                                <td class="text-center align-middle">
+                                    <div class="d-inline-flex align-items-center justify-content-center gap-1">
+                                        <span class="fw-bold text-primary">${det.jml}</span>
+                                        ${btnEditJmlHtml}
+                                    </div>
+                                </td>
                                 <td class="text-center">${sat}</td>
                                 <td>
-                                    <div>${det.aturan_pakai}</div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-semibold text-dark">${det.aturan_pakai || '-'}</span>
+                                        ${btnEditAturanHtml}
+                                    </div>
                                     <div class="mt-1">${jamStr}</div>
                                 </td>
                                 <td class="text-center">${btnSubstitusiHtml}</td>
@@ -2393,6 +2573,164 @@
             if (!noPermintaan) return;
             const printUrl = `{{ route('ranap.permintaan-obat.cetak') }}?no_permintaan=${encodeURIComponent(noPermintaan)}`;
             window.open(printUrl, '_blank');
+        }
+
+        // ========================================================
+        // FITUR REKONSILIASI & BILLING E-MAR RANAP DI FARMASI
+        // ========================================================
+
+        function loadRekonsiliasiEmar(isBackgroundCountOnly = false) {
+            const tgl = $('#rekon_tgl').val() || moment().format('YYYY-MM-DD');
+            const status = $('#rekon_status').val() || 'Menunggu Verifikasi';
+            const keyword = ($('#rekon_keyword').val() || '').toLowerCase();
+
+            const $tbody = $('#tbody_rekonsiliasi_emar');
+            if (!isBackgroundCountOnly) {
+                $tbody.html('<tr><td colspan="7" class="text-center text-muted py-3">Memuat antrean rekonsiliasi E-MAR...</td></tr>');
+            }
+
+            $.get("{{ route('farmasi.permintaan-ranap.rekonsiliasi-emar') }}", {
+                tanggal: tgl,
+                status_billing: status
+            }).done(function(resp) {
+                let items = resp?.data || [];
+
+                let pendingCount = 0;
+                items.forEach(function(it) {
+                    if (it.status_billing === 'Menunggu Verifikasi') {
+                        pendingCount++;
+                    }
+                });
+                $('#badgeCountRekonsiliasiPending').text(pendingCount);
+
+                if (isBackgroundCountOnly) return;
+
+                if (keyword) {
+                    items = items.filter(function(it) {
+                        return (it.pasien || '').toLowerCase().includes(keyword) ||
+                               (it.nama_brng || '').toLowerCase().includes(keyword) ||
+                               (it.no_rawat || '').toLowerCase().includes(keyword) ||
+                               (it.kamar || '').toLowerCase().includes(keyword);
+                    });
+                }
+
+                $tbody.empty();
+                if (items.length === 0) {
+                    $tbody.html('<tr><td colspan="7" class="text-center text-muted py-3"><i>Tidak ada catatan E-MAR yang memerlukan rekonsiliasi pada filter ini.</i></td></tr>');
+                    return;
+                }
+
+                items.forEach(function(item, idx) {
+                    // Breakdown jam pemberian obat
+                    let rincianHtml = '';
+                    if (item.rincian_pemberian && item.rincian_pemberian.length > 0) {
+                        const badges = item.rincian_pemberian.map(r => 
+                            `<span class="badge bg-light text-dark border me-1 mb-1 font-monospace" style="font-size: 9.5px;" title="Petugas: ${r.perawat || '-'}${r.keterangan ? ' | Ket: ' + r.keterangan : ''}">${r.jam}: <b>${r.dosis}</b> ${item.satuan}</span>`
+                        ).join('');
+                        rincianHtml = `<div class="d-flex flex-wrap mt-1 justify-content-center">${badges}</div>`;
+                    }
+
+                    const estTotal = item.biaya_satuan * (item.suggested_billing || 1);
+
+                    let aksiHtml = '';
+                    if (item.status_billing === 'Sudah Dibilkan') {
+                        aksiHtml = `<span class="badge bg-success-subtle text-success border border-success px-2 py-1.5 rounded-pill fw-semibold" style="font-size: 11px;"><i class="bi bi-check-all me-1"></i> Terbit Billing</span>`;
+                    } else {
+                        aksiHtml = `
+                            <button type="button" class="btn btn-success btn-sm py-1 px-2.5 shadow-sm text-nowrap fw-semibold" style="font-size: 11px;" onclick="simpanVerifikasiBillingEmar('${item.no_rawat}', '${item.kode_brng}', '${item.tgl_perawatan}', 'input_rekon_bill_${idx}', '${item.kd_bangsal || 'RM'}', '${item.no_batch || ''}', '${item.no_faktur || ''}', '${safeJsStr(item.nama_brng)}')">
+                                <i class="bi bi-check2-circle me-1"></i> Terbitkan Billing
+                            </button>
+                        `;
+                    }
+
+                    const inputBilling = item.status_billing === 'Sudah Dibilkan'
+                        ? `<strong class="text-success fs-6">${item.suggested_billing}</strong> <small class="text-muted">${item.satuan}</small>`
+                        : `
+                            <div class="input-group input-group-sm w-75 mx-auto">
+                                <input type="number" step="any" min="0.01" class="form-control text-center fw-bold text-primary" id="input_rekon_bill_${idx}" value="${item.suggested_billing}">
+                                <span class="input-group-text">${item.satuan}</span>
+                            </div>
+                            <small class="text-muted d-block text-center mt-0.5" style="font-size: 9.5px;">(Saran: ${item.suggested_billing})</small>
+                        `;
+
+                    const tr = `
+                        <tr>
+                            <td class="text-center align-middle">${idx + 1}</td>
+                            <td class="align-middle">
+                                <strong class="text-dark d-block" style="font-size: 12px;">${item.pasien}</strong>
+                                <small class="text-muted d-block" style="font-size: 10px;">${item.no_rawat} | ${item.no_rkm_medis}</small>
+                                <span class="badge bg-light text-primary border" style="font-size: 10px;"><i class="bi bi-door-closed me-1"></i> ${item.kamar}</span>
+                            </td>
+                            <td class="align-middle">
+                                <strong class="text-primary d-block" style="font-size: 12px;">${item.nama_brng}</strong>
+                                <small class="text-muted" style="font-size: 10.5px;">Aturan: <b>${item.aturan_pakai || '-'}</b></small>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="badge bg-warning-subtle text-dark border border-warning px-2 py-1 fs-6 font-monospace">${item.total_dosis_klinis} ${item.satuan}</span>
+                                ${rincianHtml}
+                            </td>
+                            <td class="align-middle text-center">
+                                ${inputBilling}
+                            </td>
+                            <td class="align-middle text-end">
+                                <small class="text-muted d-block" style="font-size: 10px;">@ Rp ${formatRupiah(item.biaya_satuan)}</small>
+                                <strong class="text-dark font-monospace" style="font-size: 11.5px;">Rp ${formatRupiah(estTotal)}</strong>
+                            </td>
+                            <td class="align-middle text-center">
+                                ${aksiHtml}
+                            </td>
+                        </tr>
+                    `;
+                    $tbody.append(tr);
+                });
+            });
+        }
+
+        // Simpan Persetujuan & Terbitkan Tagihan Billing ke Khanza
+        function simpanVerifikasiBillingEmar(noRawat, kodeBrng, tglPerawatan, inputId, bangsal, batch, faktur, namaBrng) {
+            const jmlBilling = parseFloat($(`#${inputId}`).val()) || 0;
+            if (jmlBilling <= 0) {
+                Swal.fire('Peringatan', 'Jumlah billing yang disetujui harus lebih dari 0.', 'warning');
+                return;
+            }
+
+            Swal.fire({
+                title: 'Terbitkan Tagihan Billing?',
+                html: `Terbitkan tagihan <b>${jmlBilling} satuan</b> untuk <b>${namaBrng}</b> ke rincian billing rawat inap pasien (<code>detail_pemberian_obat</code>)?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#198754',
+                confirmButtonText: '<i class="bi bi-check-lg me-1"></i> Ya, Terbitkan',
+                cancelButtonText: 'Batal'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('farmasi.permintaan-ranap.verifikasi-billing-emar') }}",
+                        type: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_rawat: noRawat,
+                            kode_brng: kodeBrng,
+                            tgl_perawatan: tglPerawatan,
+                            jml_billing: jmlBilling,
+                            kd_bangsal: bangsal,
+                            no_batch: batch,
+                            no_faktur: faktur
+                        },
+                        beforeSend: function() {
+                            Swal.fire({ title: 'Menerbitkan billing...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+                        },
+                        success: function(resp) {
+                            Swal.fire('Berhasil!', resp.message || 'Billing E-MAR berhasil diterbitkan ke rincian rawat inap.', 'success');
+                            loadRekonsiliasiEmar();
+                        },
+                        error: function(xhr) {
+                            const msg = xhr.responseJSON?.message || 'Gagal menerbitkan billing E-MAR.';
+                            Swal.fire('Gagal!', msg, 'error');
+                        }
+                    });
+                }
+            });
         }
 
         // ========================================================

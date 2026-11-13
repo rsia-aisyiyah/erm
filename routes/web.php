@@ -287,6 +287,9 @@ Route::middleware('auth')->group(function () {
 	// Dashboard Farmasi Ranap (Permintaan Stok Pasien & Substitusi)
 	Route::get('/farmasi/permintaan-ranap/data', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'getFarmasiData'])->name('farmasi.permintaan-ranap.data');
 	Route::post('/farmasi/permintaan-ranap/substitusi', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'substitusi'])->name('farmasi.permintaan-ranap.substitusi');
+	Route::post('/farmasi/permintaan-ranap/ubah-aturan-pakai', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'ubahAturanPakai'])->name('farmasi.permintaan-ranap.ubah-aturan-pakai');
+	Route::get('/farmasi/permintaan-ranap/rekonsiliasi-emar', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'getRekonsiliasiEmar'])->name('farmasi.permintaan-ranap.rekonsiliasi-emar');
+	Route::post('/farmasi/permintaan-ranap/verifikasi-billing-emar', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'verifikasiBillingEmar'])->name('farmasi.permintaan-ranap.verifikasi-billing-emar');
 
 	// Validasi & Manajemen Item Resep Ralan & Ranap Farmasi
 	Route::get('/farmasi/resep-ranap/data', [ResepObatController::class, 'getResepRanap'])->name('farmasi.resep-ranap.data');

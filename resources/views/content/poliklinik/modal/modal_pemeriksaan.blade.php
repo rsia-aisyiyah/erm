@@ -1059,31 +1059,6 @@
             })
         }
 
-        function hapusRacikan(no_resep, no_racik) {
-            const no_rawat = $('input[name="no_rawat"][value!=""]:first').val();
-            Swal.fire({
-                title: 'Yakin ?',
-                text: "Anda tidak bisa mengembalikan lagi",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus saja!',
-                cancelButtonText: 'Jangan',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    hapusResepRacikan(no_resep, no_racik).done((response) => {
-                        getResepObat(no_rawat)
-                        tulisPlan()
-                        swalToast('Berhasil Hapus Racikan')
-                    }).fail((request, status, error) => {
-                        Swal.fire('Gagal !', 'Tidak menghapus obat<br/>' + request.responseJSON.message, 'error',)
-                    })
-                }
-            })
-
-        }
-
         $('tbody').on('click', '.remove', function () {
             let no_resep = $(this).attr('data-resep');
             let kode_brng = $(this).attr('data-obat');
@@ -1382,6 +1357,14 @@
                 formInfoPasienResep.find('input[name=kd_dokter]').val(response.kd_dokter);
                 formInfoPasienResep.find('input[name=no_rkm_medis]').val(response.no_rkm_medis);
                 formInfoPasienResep.find('input[name=status_lanjut]').val(response.status_lanjut?.toLowerCase());
+                const depoPoli = response.status_lanjut?.toLowerCase() === 'ranap' ? 'RM' : 'RM7';
+                if (typeof setDepoResep === 'function') {
+                    setDepoResep(depoPoli, 0);
+                } else {
+                    formInfoPasienResep.find('input[name=kd_bangsal]').val(depoPoli);
+                    formInfoPasienResep.find('input[name=cari_kandungan]').val('0');
+                    $('.namaDepoText').text(depoPoli === 'RM' ? 'Apotek Ranap' : 'Apotek Rajal');
+                }
 
             })
             no = 1;

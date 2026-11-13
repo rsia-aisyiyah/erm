@@ -33,11 +33,18 @@ Route::middleware('auth')->group(function () {
 
         // Farmasi Validasi & Penyiapan Obat
         $q->post('permintaan-obat/validasi', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'validasi'])->name('ranap.permintaan-obat.validasi');
+        $q->post('permintaan-obat/ubah-aturan-pakai', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'ubahAturanPakai'])->name('ranap.permintaan-obat.ubah-aturan-pakai');
 
         // Jadwal & Pemberian Obat ke Pasien (E-MAR)
         $q->get('pemberian-obat/stok', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'getStokPasien'])->name('ranap.pemberian-obat.stok');
         $q->post('pemberian-obat/simpan', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'beriObat'])->name('ranap.pemberian-obat.simpan');
         $q->delete('pemberian-obat/hapus', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'hapusPemberian'])->name('ranap.pemberian-obat.hapus');
         $q->get('pemberian-obat/riwayat', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'riwayatPemberian'])->name('ranap.pemberian-obat.riwayat');
+        $q->get('pemberian-obat/rekonsiliasi-emar', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'getRekonsiliasiEmar'])->name('ranap.pemberian-obat.rekonsiliasi-emar');
+        $q->post('pemberian-obat/verifikasi-billing-emar', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'verifikasiBillingEmar'])->name('ranap.pemberian-obat.verifikasi-billing-emar');
+
+        // Rekap & Cetak Formulir RM 5A (Daftar Pemberian Obat)
+        $q->get('pemberian-obat/rekap-rm5a', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'getRekapRm5a'])->name('ranap.pemberian-obat.rekap-rm5a');
+        $q->get('pemberian-obat/cetak-rm5a/{no_rawat}', [\App\Http\Controllers\PermintaanStokObatPasienController::class, 'cetakRm5a'])->name('ranap.pemberian-obat.cetak-rm5a');
     });
 });

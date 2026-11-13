@@ -338,6 +338,7 @@
 </div>
 
 @include('content.farmasi.modal.modal_substitusi_obat')
+@include('content.farmasi.modal.modal_edit_aturan_pakai')
 
 @push('script')
 <script>
@@ -847,7 +848,10 @@
             if (details.length === 0) {
                 $tbody.html('<tr><td colspan="6" class="text-center text-muted py-3">Tidak ada data detail obat.</td></tr>');
             } else {
+                window.activePermintaanItems = window.activePermintaanItems || {};
                 details.forEach(function(det, idx) {
+                    window.activePermintaanItems[`${res.no_permintaan}_${det.kode_brng}`] = det;
+
                     // Extract active hours
                     const jamList = [];
                     for (let h = 0; h <= 23; h++) {
@@ -859,10 +863,24 @@
                     const jamStr = jamList.length > 0 ? jamList.map(j => `<span class="badge bg-success-subtle text-success border border-success me-0.5" style="font-size: 9px;">${j}</span>`).join(' ') : '-';
 
                     let btnSubstitusiHtml = '-';
+                    let btnEditAturanHtml = '';
+                    let btnEditJmlHtml = '';
                     if (res.status === 'Belum') {
+                        const safeNama = (det.data_barang?.nama_brng || det.kode_brng).replace(/'/g, "\\'");
+                        const safeAturan = (det.aturan_pakai || '').replace(/'/g, "\\'");
                         btnSubstitusiHtml = `
-                            <button type="button" class="btn btn-outline-warning btn-sm py-0 px-1 text-dark" onclick="bukaModalSubstitusi('${res.no_permintaan}', '${det.kode_brng}', '${(det.data_barang?.nama_brng || det.kode_brng).replace(/'/g, "\\'")}', ${det.jml}, '${(det.aturan_pakai || '').replace(/'/g, "\\'")}')" title="Substitusi / Ganti Obat">
+                            <button type="button" class="btn btn-outline-warning btn-sm py-0 px-1 text-dark" onclick="bukaModalSubstitusi('${res.no_permintaan}', '${det.kode_brng}', '${safeNama}', ${det.jml}, '${safeAturan}')" title="Substitusi / Ganti Obat">
                                 <i class="bi bi-arrow-left-right"></i> Ganti
+                            </button>
+                        `;
+                        btnEditAturanHtml = `
+                            <button type="button" class="btn btn-outline-primary btn-sm py-0 px-1.5 ms-1 text-nowrap rounded shadow-none" onclick="triggerEditAturanPakai('${res.no_permintaan}', '${det.kode_brng}')" title="Ubah Jumlah, Aturan Pakai &amp; Jam" style="font-size: 11px;">
+                                <i class="bi bi-pencil-square"></i> Ubah
+                            </button>
+                        `;
+                        btnEditJmlHtml = `
+                            <button type="button" class="btn btn-outline-secondary btn-sm p-0 px-1 border-0 text-muted shadow-none" onclick="quickEditJumlah('${res.no_permintaan}', '${det.kode_brng}', ${det.jml}, '${safeNama}')" title="Sesuaikan Jumlah Obat" style="font-size: 11px;">
+                                <i class="bi bi-pencil text-primary"></i>
                             </button>
                         `;
                     }
@@ -872,10 +890,18 @@
                             <td class="text-center">${idx + 1}</td>
                             <td class="font-monospace">${det.kode_brng}</td>
                             <td><strong>${det.data_barang?.nama_brng || '-'}</strong></td>
-                            <td class="text-center fw-bold">${det.jml}</td>
+                            <td class="text-center align-middle">
+                                <div class="d-inline-flex align-items-center justify-content-center gap-1">
+                                    <span class="fw-bold text-primary">${det.jml}</span>
+                                    ${btnEditJmlHtml}
+                                </div>
+                            </td>
                             <td class="text-center">${det.data_barang?.kode_satuan?.satuan || det.data_barang?.kode_sat || '-'}</td>
                             <td>
-                                <div>${det.aturan_pakai}</div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold text-dark">${det.aturan_pakai || '-'}</span>
+                                    ${btnEditAturanHtml}
+                                </div>
                                 <div class="mt-1">${jamStr}</div>
                             </td>
                             <td class="text-center">${btnSubstitusiHtml}</td>

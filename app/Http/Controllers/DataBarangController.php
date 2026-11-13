@@ -36,11 +36,23 @@ class DataBarangController extends Controller
     public function cari(Request $request)
     {
         DB::enableQueryLog();
-        $hasil = $this->barang
+        $keyword = $request->nama;
+        $cariKandungan = $request->boolean('cari_kandungan') || $request->input('cari_kandungan') === '1' || $request->input('cari_kandungan') === 1;
+
+        $query = $this->barang
             ->select(['databarang.*', 'rsia_ppra_mapping_obat.kode_brng as kode_mapping', 'rsia_ppra_mapping_obat.status_notif'])
-            ->leftJoin('rsia_ppra_mapping_obat', 'databarang.kode_brng', '=', 'rsia_ppra_mapping_obat.kode_brng')
-            ->where('nama_brng', 'like', $request->nama . '%')
-            ->limit(10)
+            ->leftJoin('rsia_ppra_mapping_obat', 'databarang.kode_brng', '=', 'rsia_ppra_mapping_obat.kode_brng');
+
+        if ($cariKandungan) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('nama_brng', 'like', '%' . $keyword . '%')
+                  ->orWhere('letak_barang', 'like', '%' . $keyword . '%');
+            });
+        } else {
+            $query->where('nama_brng', 'like', $keyword . '%');
+        }
+
+        $hasil = $query->limit(20)
             ->with('gudangBarang', function ($q) use ($request) {
                 return $q->where('kd_bangsal', $request->gudang);
             })

@@ -144,10 +144,14 @@ class SatuSehatRmeService
             $payload['type_medical_summary'] = 'EMERGENCY';
         }
 
+        Log::info('SATUSEHAT SHL Payload:', $payload);
+
         $response = Http::withToken($token)
             ->withHeaders(['Content-Type' => 'application/json'])
             ->timeout(20)
             ->post($endpoint, $payload);
+
+        Log::info('SATUSEHAT SHL Response:', ['status' => $response->status(), 'body' => $response->json()]);
 
         // Kasus 1: Sukses 200 OK -> Viewer URL tersedia
         if ($response->status() === 200 && $response->json('success') === true) {
@@ -204,10 +208,14 @@ class SatuSehatRmeService
             $payload['type_medical_summary'] = 'EMERGENCY';
         }
 
+        Log::info('SATUSEHAT CHL Payload:', $payload);
+
         $response = Http::withToken($token)
             ->withHeaders(['Content-Type' => 'application/json'])
             ->timeout(20)
             ->post($endpoint, $payload);
+
+        Log::info('SATUSEHAT CHL Response:', ['status' => $response->status(), 'body' => $response->json()]);
 
         if ($response->status() === 200 && $response->json('success') === true) {
             return [
