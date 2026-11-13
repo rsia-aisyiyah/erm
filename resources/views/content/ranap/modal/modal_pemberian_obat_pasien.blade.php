@@ -283,18 +283,19 @@
 
                     <div class="alert py-1.5 px-2.5 mb-2 rounded-2 small d-none" id="alertEksekusiInfo" style="font-size: 11px;"></div>
 
-                    <!-- Dosis / Jumlah Diberikan & Tool Kalkulator -->
+                    <!-- Dosis / Jumlah Diberikan & Tool Kalkulator (Ukuran & Tinggi Konsisten 31px) -->
                     <div class="row g-2 align-items-end mb-2">
                         <div class="col-md-6 col-12">
-                            <label class="form-label small fw-bold mb-1">Dosis / Jumlah Diberikan</label>
+                            <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Dosis / Jumlah Diberikan</label>
                             <div class="input-group input-group-sm">
-                                <input type="number" class="form-control text-center fw-bold fs-6" id="eksekusi_jml" value="1" min="0.0001" step="any">
-                                <span class="input-group-text fw-semibold" id="lblEksekusiSatuan">Sat</span>
+                                <input type="number" class="form-control form-control-sm text-center fw-bold" id="eksekusi_jml" value="1" min="0.0001" step="any" style="height: 31px; font-size: 12px;">
+                                <span class="input-group-text fw-semibold" id="lblEksekusiSatuan" style="height: 31px; font-size: 11.5px; min-width: 65px; justify-content: center;">Sat</span>
                             </div>
                             <div class="mt-1 small text-muted d-none" id="lblKalkulatorSummary" style="font-size: 10.5px;"></div>
                         </div>
-                        <div class="col-md-6 col-12 text-md-end text-start mb-md-1">
-                            <button type="button" class="btn btn-sm btn-outline-primary py-1 px-3 rounded-pill shadow-xs fw-semibold" id="btnToggleKalkulatorDosis" style="font-size: 11px;">
+                        <div class="col-md-6 col-12">
+                            <label class="form-label small fw-bold mb-1 d-none d-md-block text-muted" style="font-size: 11px; visibility: hidden;">Kalkulator</label>
+                            <button type="button" class="btn btn-outline-primary btn-sm w-100 fw-semibold d-flex align-items-center justify-content-center" id="btnToggleKalkulatorDosis" style="height: 31px; font-size: 11.5px;">
                                 <i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan
                             </button>
                         </div>
@@ -316,8 +317,8 @@
                                         Kapasitas Sediaan (Kps)
                                     </label>
                                     <div class="input-group input-group-sm">
-                                        <input type="number" step="any" min="0" class="form-control text-center px-1" id="kalk_kps" placeholder="Contoh: 500">
-                                        <select class="form-select px-1 text-center" id="kalk_satuan_kps" style="max-width: 58px; font-size: 11px;">
+                                        <input type="number" step="any" min="0" class="form-control form-control-sm text-center px-1" id="kalk_kps" placeholder="Contoh: 500" style="height: 31px; font-size: 11.5px;">
+                                        <select class="form-select form-select-sm px-1 text-center" id="kalk_satuan_kps" style="max-width: 58px; font-size: 11px; height: 31px;">
                                             <option value="ml">ml</option>
                                             <option value="mg">mg</option>
                                             <option value="gr">gr</option>
@@ -332,8 +333,8 @@
                                         Dosis Diminta <span class="badge bg-success-subtle text-success py-0 px-1 font-monospace" id="lblKalkSatuanKebutuhan">ml</span>
                                     </label>
                                     <div class="input-group input-group-sm">
-                                        <input type="number" step="any" min="0" class="form-control text-center px-1 fw-bold border-success text-success" id="kalk_dosis_diminta" placeholder="Contoh: 100">
-                                        <button class="btn btn-outline-success px-1.5" type="button" id="btnApplyKalkulator" title="Terapkan ke Jumlah Diberikan">
+                                        <input type="number" step="any" min="0" class="form-control form-control-sm text-center px-1 fw-bold border-success text-success" id="kalk_dosis_diminta" placeholder="Contoh: 100" style="height: 31px; font-size: 11.5px;">
+                                        <button class="btn btn-outline-success btn-sm px-1.5" type="button" id="btnApplyKalkulator" title="Terapkan ke Jumlah Diberikan" style="height: 31px;">
                                             <i class="bi bi-check-lg"></i>
                                         </button>
                                     </div>
@@ -343,19 +344,19 @@
                                         P1 / P2 (Pecahan)
                                     </label>
                                     <div class="input-group input-group-sm">
-                                        <input type="number" step="any" min="0" class="form-control text-center px-1 fw-bold text-primary" id="kalk_p1" placeholder="P1" value="1">
-                                        <span class="input-group-text px-1 fw-bold bg-white text-muted">/</span>
-                                        <input type="number" step="any" min="1" class="form-control text-center px-1 fw-bold text-primary" id="kalk_p2" placeholder="P2" value="1">
+                                        <input type="number" step="any" min="0" class="form-control form-control-sm text-center px-1 fw-bold text-primary" id="kalk_p1" placeholder="P1" value="1" style="height: 31px; font-size: 11.5px;">
+                                        <span class="input-group-text px-1 fw-bold bg-white text-muted" style="height: 31px;">/</span>
+                                        <input type="number" step="any" min="1" class="form-control form-control-sm text-center px-1 fw-bold text-primary" id="kalk_p2" placeholder="P2" value="1" style="height: 31px; font-size: 11.5px;">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
                                     <label class="form-label mb-1 text-muted fw-semibold" style="font-size: 10.5px;">Pecahan Cepat:</label>
                                     <div class="btn-group btn-group-sm w-100" role="group">
-                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="1" data-p2="4" style="font-size: 10px;">¼</button>
-                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="1" data-p2="3" style="font-size: 10px;">⅓</button>
-                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="1" data-p2="2" style="font-size: 10px;">½</button>
-                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="3" data-p2="4" style="font-size: 10px;">¾</button>
-                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="1" data-p2="1" style="font-size: 10px;">1</button>
+                                        <button type="button" class="btn btn-outline-secondary py-1 px-1 btn-quick-fraction" data-p1="1" data-p2="4" style="font-size: 10.5px; height: 31px;">¼</button>
+                                        <button type="button" class="btn btn-outline-secondary py-1 px-1 btn-quick-fraction" data-p1="1" data-p2="3" style="font-size: 10.5px; height: 31px;">⅓</button>
+                                        <button type="button" class="btn btn-outline-secondary py-1 px-1 btn-quick-fraction" data-p1="1" data-p2="2" style="font-size: 10.5px; height: 31px;">½</button>
+                                        <button type="button" class="btn btn-outline-secondary py-1 px-1 btn-quick-fraction" data-p1="3" data-p2="4" style="font-size: 10.5px; height: 31px;">¾</button>
+                                        <button type="button" class="btn btn-outline-secondary py-1 px-1 btn-quick-fraction" data-p1="1" data-p2="1" style="font-size: 10.5px; height: 31px;">1</button>
                                     </div>
                                 </div>
                             </div>
@@ -949,7 +950,7 @@
 
         // Reset panel kalkulator tertutup
         $('#panelKalkulatorDosis').addClass('d-none');
-        $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan');
+        $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
 
         const $sumberBadge = $('#lblEksekusiSumberBadge');
         const $alertInfo = $('#alertEksekusiInfo');
@@ -1042,17 +1043,17 @@
         const $panel = $('#panelKalkulatorDosis');
         if ($panel.hasClass('d-none')) {
             $panel.removeClass('d-none');
-            $(this).html('<i class="bi bi-x-circle me-1"></i> Tutup Kalkulator');
+            $(this).html('<i class="bi bi-x-circle me-1"></i> Tutup Kalkulator').removeClass('btn-outline-primary').addClass('btn-outline-danger');
             $('#kalk_dosis_diminta').focus().select();
         } else {
             $panel.addClass('d-none');
-            $(this).html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan');
+            $(this).html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
         }
     });
 
     $('#btnCloseKalkulatorDosis').on('click', function() {
         $('#panelKalkulatorDosis').addClass('d-none');
-        $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan');
+        $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
     });
 
     $('#kalk_dosis_diminta').on('input', function() {
@@ -1088,7 +1089,7 @@
     $('#btnApplyKalkulator').on('click', function() {
         hitungKalkulatorDosis('dosis_diminta');
         $('#panelKalkulatorDosis').addClass('d-none');
-        $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan');
+        $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
     });
 
     // Hapus Catatan Pemberian Obat
