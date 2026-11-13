@@ -1613,18 +1613,40 @@ class PermintaanStokObatPasienController extends Controller
                 strpos($nama, 'kassa') !== false
             );
 
+            $aturanPakai = $info['aturan_pakai'];
+            $pemberianCat = $catatans->where('kode_brng', $kode);
+            $pemberianDtl = $details->where('kode_brng', $kode);
+
+            $lastCat = $pemberianCat->sortByDesc('tgl_perawatan')->sortByDesc('jam')->first();
+            if ($lastCat && !empty($lastCat->aturan_pakai) && $lastCat->aturan_pakai !== '-') {
+                $aturanPakai = $lastCat->aturan_pakai;
+            }
+
             $frek = '-';
-            if (preg_match('/(\d+)\s*[xX]/', $info['aturan_pakai'], $mFrek)) {
+            if (preg_match('/(\d+)\s*[xX]/', $aturanPakai, $mFrek)) {
                 $frek = $mFrek[1] . 'x';
             } elseif (!empty($info['frekuensi'])) {
                 $frek = $info['frekuensi'];
             }
 
             $dosis = '-';
-            if (preg_match('/[xX]\s*([0-9.,\/]+(?:\s*[a-zA-Z%]+)?)/', $info['aturan_pakai'], $mDosis)) {
-                $dosis = trim($mDosis[1]);
-            } else {
-                $dosis = $info['satuan'] ?: '1';
+            // Prioritaskan dosis klinis aktual dari catatan pemberian obat
+            if ($lastCat && !empty($lastCat->dosis_klinis) && (float) $lastCat->dosis_klinis > 0) {
+                $dosis = (string) (float) $lastCat->dosis_klinis;
+            } elseif ($pemberianDtl->isNotEmpty()) {
+                $lastDtl = $pemberianDtl->sortByDesc('tgl_perawatan')->sortByDesc('jam')->first();
+                if ($lastDtl && !empty($lastDtl->jml) && (float) $lastDtl->jml > 0) {
+                    $dosis = (string) (float) $lastDtl->jml;
+                }
+            }
+
+            // Fallback: Parse dari aturan pakai jika belum ada riwayat pemberian klinis
+            if ($dosis === '-' || $dosis === '') {
+                if (preg_match('/[xX]\s*([0-9.,\/]+(?:\s*[a-zA-Z%]+)?)/', $aturanPakai, $mDosis)) {
+                    $dosis = trim($mDosis[1]);
+                } else {
+                    $dosis = $info['satuan'] ?: '1';
+                }
             }
 
             $matriksPemberian = [];
@@ -1636,7 +1658,6 @@ class PermintaanStokObatPasienController extends Controller
                 ];
             }
 
-            $pemberianCat = $catatans->where('kode_brng', $kode);
             foreach ($pemberianCat as $p) {
                 $tgl = $p->tgl_perawatan;
                 if (!isset($matriksPemberian[$tgl])) continue;

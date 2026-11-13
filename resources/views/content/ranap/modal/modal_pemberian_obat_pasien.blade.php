@@ -889,6 +889,12 @@
         if (!currentKet || currentKet.startsWith('Diberikan ')) {
             $('#eksekusi_keterangan').val(autoKet);
         }
+
+        const currentAturan = $('#eksekusi_aturan_pakai').val() || '';
+        const matchFrek = currentAturan.match(/^(\d+\s*[xX]\s*)/);
+        if (matchFrek) {
+            $('#eksekusi_aturan_pakai').val(`${matchFrek[1]}${jml}`);
+        }
     }
 
     // Buka Dialog Eksekusi Pemberian Obat
