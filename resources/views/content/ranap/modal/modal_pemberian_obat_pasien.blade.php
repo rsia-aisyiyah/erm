@@ -237,10 +237,10 @@
 
 <!-- Submodal Form Dialog Pemberian Obat -->
 <div class="modal fade" id="modalDialogEksekusiBeriObat" tabindex="-1" aria-hidden="true" style="z-index: 1060;">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 760px;">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-success text-white py-2 px-3">
-                <h6 class="modal-title fw-bold" style="font-size: 12.5px;">
+                <h6 class="modal-title fw-bold" style="font-size: 13px;">
                     <i class="bi bi-capsule me-1"></i> Catat Pemberian Obat (E-MAR)
                 </h6>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -255,58 +255,63 @@
                     <input type="hidden" id="eksekusi_sumber" value="permintaan_harian">
                     <input type="hidden" id="eksekusi_no_resep" value="">
 
-                    <div class="mb-2">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <label class="form-label small text-muted mb-0">Nama Obat:</label>
-                            <span class="badge" id="lblEksekusiSumberBadge">Sumber</span>
-                        </div>
-                        <div class="fw-bold text-dark" id="lblEksekusiNamaObat" style="font-size: 12px;">-</div>
-                        <div class="d-flex justify-content-between align-items-center mt-1">
-                            <small class="text-success" id="lblEksekusiSisaStok">Sisa Stok: 0</small>
-                            <small class="text-muted" id="lblEksekusiNoResep"></small>
+                    <!-- Baris Atas: Info Obat (Kiri) & Tanggal/Jam Beri (Kanan) -->
+                    <div class="card border-0 bg-light p-2.5 mb-2 rounded-3">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-md-7 col-12">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <span class="badge" id="lblEksekusiSumberBadge">Sumber</span>
+                                    <small class="text-muted" id="lblEksekusiNoResep"></small>
+                                </div>
+                                <div class="fw-bold text-dark fs-6 text-truncate" id="lblEksekusiNamaObat" title="Nama Obat">-</div>
+                                <small class="text-success fw-semibold" id="lblEksekusiSisaStok">Sisa Stok: 0</small>
+                            </div>
+                            <div class="col-md-5 col-12">
+                                <div class="row g-1.5">
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Tanggal</label>
+                                        <input type="date" class="form-control form-control-sm" id="eksekusi_tanggal" value="{{ date('Y-m-d') }}">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Jam Beri</label>
+                                        <input type="time" step="1" class="form-control form-control-sm text-center" id="eksekusi_jam" value="{{ date('H:i:s') }}">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="alert py-1.5 px-2 mb-2 rounded-2 small d-none" id="alertEksekusiInfo" style="font-size: 10.5px;"></div>
-
-                    <div class="row g-2 mb-2">
-                        <div class="col-6">
-                            <label class="form-label small fw-bold mb-1">Tanggal</label>
-                            <input type="date" class="form-control form-control-sm" id="eksekusi_tanggal" value="{{ date('Y-m-d') }}">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label small fw-bold mb-1">Jam Beri</label>
-                            <input type="time" step="1" class="form-control form-control-sm text-center" id="eksekusi_jam" value="{{ date('H:i:s') }}">
-                        </div>
-                    </div>
+                    <div class="alert py-1.5 px-2.5 mb-2 rounded-2 small d-none" id="alertEksekusiInfo" style="font-size: 11px;"></div>
 
                     <!-- Dosis / Jumlah Diberikan & Tool Kalkulator -->
-                    <div class="mb-2">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <label class="form-label small fw-bold mb-0">Dosis / Jumlah Diberikan</label>
-                            <button type="button" class="btn btn-xs btn-outline-primary py-0 px-2 rounded-pill shadow-xs" id="btnToggleKalkulatorDosis" style="font-size: 11px;">
+                    <div class="row g-2 align-items-end mb-2">
+                        <div class="col-md-6 col-12">
+                            <label class="form-label small fw-bold mb-1">Dosis / Jumlah Diberikan</label>
+                            <div class="input-group input-group-sm">
+                                <input type="number" class="form-control text-center fw-bold fs-6" id="eksekusi_jml" value="1" min="0.0001" step="any">
+                                <span class="input-group-text fw-semibold" id="lblEksekusiSatuan">Sat</span>
+                            </div>
+                            <div class="mt-1 small text-muted d-none" id="lblKalkulatorSummary" style="font-size: 10.5px;"></div>
+                        </div>
+                        <div class="col-md-6 col-12 text-md-end text-start mb-md-1">
+                            <button type="button" class="btn btn-sm btn-outline-primary py-1 px-3 rounded-pill shadow-xs fw-semibold" id="btnToggleKalkulatorDosis" style="font-size: 11px;">
                                 <i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan
                             </button>
                         </div>
-                        <div class="input-group input-group-sm">
-                            <input type="number" class="form-control text-center fw-bold" id="eksekusi_jml" value="1" min="0.0001" step="any">
-                            <span class="input-group-text fw-semibold" id="lblEksekusiSatuan">Sat</span>
-                        </div>
-                        <div class="mt-1 small text-muted d-none" id="lblKalkulatorSummary" style="font-size: 10.5px;"></div>
                     </div>
 
                     <!-- Panel Kalkulator Dosis (Metode Racikan) -->
                     <div class="card border border-primary border-opacity-25 bg-light mb-2.5 rounded-3 shadow-sm d-none" id="panelKalkulatorDosis">
                         <div class="card-header bg-primary bg-opacity-10 py-1.5 px-2.5 d-flex justify-content-between align-items-center">
                             <span class="fw-bold text-primary small" style="font-size: 11.5px;">
-                                <i class="bi bi-calculator-fill me-1"></i> Hitung Berdasarkan Dosis / Sediaan
+                                <i class="bi bi-calculator-fill me-1"></i> Hitung Berdasarkan Dosis / Sediaan (Metode Racikan)
                             </span>
                             <button type="button" class="btn-close" style="font-size: 9px;" id="btnCloseKalkulatorDosis" aria-label="Tutup"></button>
                         </div>
                         <div class="card-body p-2.5">
-                            <!-- Baris 1: Kapasitas Sediaan & Dosis Diminta -->
-                            <div class="row g-2 mb-2">
-                                <div class="col-6">
+                            <!-- 4 Kolom Sejajar: Kapasitas, Dosis Diminta, P1/P2, Pecahan Cepat -->
+                            <div class="row g-2 mb-2 align-items-center">
+                                <div class="col-md-3 col-6">
                                     <label class="form-label mb-1 fw-semibold text-muted" style="font-size: 10.5px;" title="Kapasitas total kemasan obat utuh (misal: 100 ml, 500 ml, 500 mg)">
                                         Kapasitas Sediaan (Kps)
                                     </label>
@@ -322,8 +327,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <label class="form-label mb-1 fw-semibold text-success" style="font-size: 10.5px;" title="Jumlah dosis atau volume yang dibutuhkan pasien (misal: 100 ml)">
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label mb-1 fw-semibold text-success" style="font-size: 10.5px;" title="Jumlah dosis atau volume yang dibutuhkan pasien">
                                         Dosis Diminta <span class="badge bg-success-subtle text-success py-0 px-1 font-monospace" id="lblKalkSatuanKebutuhan">ml</span>
                                     </label>
                                     <div class="input-group input-group-sm">
@@ -333,11 +338,7 @@
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- Baris 2: Pecahan P1/P2 & Preset Cepat -->
-                            <div class="row g-2 align-items-center mb-2">
-                                <div class="col-6">
+                                <div class="col-md-3 col-6">
                                     <label class="form-label mb-1 fw-semibold text-primary" style="font-size: 10.5px;" title="Pecahan bagian sediaan seperti metode racikan (contoh: 1/2)">
                                         P1 / P2 (Pecahan)
                                     </label>
@@ -347,45 +348,47 @@
                                         <input type="number" step="any" min="1" class="form-control text-center px-1 fw-bold text-primary" id="kalk_p2" placeholder="P2" value="1">
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-md-3 col-6">
                                     <label class="form-label mb-1 text-muted fw-semibold" style="font-size: 10.5px;">Pecahan Cepat:</label>
                                     <div class="btn-group btn-group-sm w-100" role="group">
-                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="1" data-p2="4" style="font-size: 10px;">&frac14;</button>
+                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="1" data-p2="4" style="font-size: 10px;">¼</button>
                                         <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="1" data-p2="3" style="font-size: 10px;">⅓</button>
-                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="1" data-p2="2" style="font-size: 10px;">&frac12;</button>
-                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="3" data-p2="4" style="font-size: 10px;">&frac34;</button>
+                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="1" data-p2="2" style="font-size: 10px;">½</button>
+                                        <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="3" data-p2="4" style="font-size: 10px;">¾</button>
                                         <button type="button" class="btn btn-outline-secondary py-0.5 px-1 btn-quick-fraction" data-p1="1" data-p2="1" style="font-size: 10px;">1</button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Feedback Ringkasan Perhitungan -->
-                            <div class="rounded-2 p-1.5 bg-white border border-primary-subtle" style="font-size: 10.5px;">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted">Hasil Dosis Diberikan:</span>
-                                    <span class="fw-bold text-primary font-monospace" id="lblKalkHasilDosis" style="font-size: 12px;">1 Kemasan</span>
-                                </div>
-                                <div class="text-secondary small mt-0.5 text-truncate" id="lblKalkFormulaText" style="font-size: 10px;">
+                            <div class="rounded-2 p-1.5 px-2 bg-white border border-primary-subtle d-flex justify-content-between align-items-center" style="font-size: 11px;">
+                                <div class="text-secondary small text-truncate me-2" id="lblKalkFormulaText" style="font-size: 10.5px;">
                                     Rumus: 1 kemasan utuh
+                                </div>
+                                <div class="text-nowrap">
+                                    <span class="text-muted small me-1">Hasil:</span>
+                                    <span class="fw-bold text-primary font-monospace" id="lblKalkHasilDosis" style="font-size: 12px;">1 Kemasan</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="mb-2">
-                        <label class="form-label small fw-bold mb-1">Aturan Pakai</label>
-                        <input type="text" class="form-control form-control-sm" id="eksekusi_aturan_pakai" placeholder="Aturan pakai...">
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label small fw-bold mb-1">Keterangan / Catatan Dosis (Opsional)</label>
-                        <input type="text" class="form-control form-control-sm" id="eksekusi_keterangan" placeholder="Contoh: Diberikan 100 ml via infus pump...">
+                    <!-- Baris Aturan Pakai & Keterangan (Sejajar 2 Kolom) -->
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6 col-12">
+                            <label class="form-label small fw-bold mb-1">Aturan Pakai</label>
+                            <input type="text" class="form-control form-control-sm" id="eksekusi_aturan_pakai" placeholder="Aturan pakai...">
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-label small fw-bold mb-1">Keterangan / Catatan Dosis (Opsional)</label>
+                            <input type="text" class="form-control form-control-sm" id="eksekusi_keterangan" placeholder="Contoh: Diberikan 100 ml via infus pump...">
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer py-1.5 px-3 bg-light">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-success btn-sm px-3" id="btnSimpanEksekusiBeriObat">
+                <button type="button" class="btn btn-success btn-sm px-3 fw-bold" id="btnSimpanEksekusiBeriObat">
                     <i class="bi bi-check-lg me-1"></i> Simpan Pemberian
                 </button>
             </div>
