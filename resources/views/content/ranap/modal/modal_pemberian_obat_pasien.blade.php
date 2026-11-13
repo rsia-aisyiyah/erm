@@ -318,7 +318,7 @@
                                     </label>
                                     <div class="input-group input-group-sm">
                                         <input type="number" step="any" min="0" class="form-control form-control-sm text-center px-1" id="kalk_kps" placeholder="Contoh: 500" style="height: 31px; font-size: 11.5px;">
-                                        <select class="form-select form-select-sm px-1 text-center" id="kalk_satuan_kps" style="max-width: 58px; font-size: 11px; height: 31px;">
+                                        <select class="form-select form-select-sm ps-2 pe-3" id="kalk_satuan_kps" style="max-width: 72px; min-width: 68px; font-size: 11px; height: 31px; background-position: right 6px center;">
                                             <option value="ml">ml</option>
                                             <option value="mg">mg</option>
                                             <option value="gr">gr</option>
