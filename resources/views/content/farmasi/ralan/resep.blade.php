@@ -561,13 +561,13 @@
                                         <table class="table table-striped table-hover table-bordered table-sm align-middle mb-0" id="tb_rekonsiliasi_emar" style="font-size: 11.5px;">
                                             <thead class="table-light text-center">
                                                 <tr>
-                                                    <th width="4%">No</th>
-                                                    <th width="22%">Pasien &amp; Ruangan</th>
-                                                    <th width="22%">Nama Obat / BHP</th>
-                                                    <th width="14%">Akumulasi E-MAR</th>
-                                                    <th width="14%">Persetujuan Billing</th>
-                                                    <th width="12%">Estimasi Biaya</th>
-                                                    <th width="12%">Aksi / Status</th>
+                                                    <th width="3%">No</th>
+                                                    <th width="20%">Pasien &amp; Ruangan</th>
+                                                    <th width="20%">Nama Obat / BHP</th>
+                                                    <th width="13%">Akumulasi E-MAR</th>
+                                                    <th width="17%">Persetujuan Billing</th>
+                                                    <th width="13%">Estimasi Biaya</th>
+                                                    <th width="14%">Aksi / Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbody_rekonsiliasi_emar">
@@ -2646,11 +2646,13 @@
                     const inputBilling = item.status_billing === 'Sudah Dibilkan'
                         ? `<strong class="text-success fs-6">${item.suggested_billing}</strong> <small class="text-muted">${item.satuan}</small>`
                         : `
-                            <div class="input-group input-group-sm w-75 mx-auto">
-                                <input type="number" step="any" min="0.01" class="form-control text-center fw-bold text-primary" id="input_rekon_bill_${idx}" value="${item.suggested_billing}">
-                                <span class="input-group-text">${item.satuan}</span>
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="input-group input-group-sm" style="width: 145px; max-width: 100%;">
+                                    <input type="number" step="any" min="0.01" class="form-control text-center fw-bold text-primary px-1" id="input_rekon_bill_${idx}" value="${item.suggested_billing}" style="min-width: 55px;" oninput="updateEstimasiBiayaRekon(${idx}, ${item.biaya_satuan})">
+                                    <span class="input-group-text px-2 text-truncate" style="max-width: 90px;" title="${item.satuan}">${item.satuan}</span>
+                                </div>
+                                <small class="text-muted text-center mt-1" style="font-size: 10px;">(Saran: <b>${item.suggested_billing}</b>)</small>
                             </div>
-                            <small class="text-muted d-block text-center mt-0.5" style="font-size: 9.5px;">(Saran: ${item.suggested_billing})</small>
                         `;
 
                     const tr = `
@@ -2674,7 +2676,7 @@
                             </td>
                             <td class="align-middle text-end">
                                 <small class="text-muted d-block" style="font-size: 10px;">@ Rp ${formatRupiah(item.biaya_satuan)}</small>
-                                <strong class="text-dark font-monospace" style="font-size: 11.5px;">Rp ${formatRupiah(estTotal)}</strong>
+                                <strong class="text-dark font-monospace" style="font-size: 11.5px;" id="est_biaya_rekon_${idx}">Rp ${formatRupiah(estTotal)}</strong>
                             </td>
                             <td class="align-middle text-center">
                                 ${aksiHtml}
@@ -2684,6 +2686,13 @@
                     $tbody.append(tr);
                 });
             });
+        }
+
+        // Live Update Estimasi Biaya Billing saat Jumlah Diubah
+        function updateEstimasiBiayaRekon(idx, biayaSatuan) {
+            const qty = parseFloat($(`#input_rekon_bill_${idx}`).val()) || 0;
+            const total = qty * (biayaSatuan || 0);
+            $(`#est_biaya_rekon_${idx}`).text('Rp ' + formatRupiah(total));
         }
 
         // Simpan Persetujuan & Terbitkan Tagihan Billing ke Khanza
