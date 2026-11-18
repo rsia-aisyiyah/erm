@@ -1658,6 +1658,7 @@ class PermintaanStokObatPasienController extends Controller
                 ];
             }
 
+            $catatanPerTgl = [];
             foreach ($pemberianCat as $p) {
                 $tgl = $p->tgl_perawatan;
                 if (!isset($matriksPemberian[$tgl])) continue;
@@ -1681,13 +1682,19 @@ class PermintaanStokObatPasienController extends Controller
                     $shift = 'M';
                 }
 
-                $matriksPemberian[$tgl][$shift][] = $jamTampil;
+                if (!in_array($jamTampil, $matriksPemberian[$tgl][$shift])) {
+                    $matriksPemberian[$tgl][$shift][] = $jamTampil;
+                }
+                $catatanPerTgl[$tgl] = true;
             }
 
+            // Fallback DetailPemberianObat: Hanya dipakai jika tanggal tersebut BELUM ADA catatan E-MAR
+            // (karena detail_pemberian_obat pada tanggal yang sudah ada E-MAR hanyalah billing yang diterbitkan farmasi)
             $pemberianDtl = $details->where('kode_brng', $kode);
             foreach ($pemberianDtl as $p) {
                 $tgl = $p->tgl_perawatan;
                 if (!isset($matriksPemberian[$tgl])) continue;
+                if (!empty($catatanPerTgl[$tgl])) continue;
 
                 $jamInt = (int) substr($p->jam, 0, 2);
                 $jamMenit = substr($p->jam, 0, 5);
