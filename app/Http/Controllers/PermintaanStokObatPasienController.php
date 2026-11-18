@@ -11,6 +11,7 @@ use App\Models\GudangBarang;
 use App\Models\KamarInap;
 use App\Models\PermintaanStokObatPasien;
 use App\Models\RegPeriksa;
+use App\Models\RsiaSubstitusiObatPasien;
 use App\Models\StokObatPasien;
 use Exception;
 use Carbon\Carbon;
@@ -175,11 +176,13 @@ class PermintaanStokObatPasienController extends Controller
             ->with([
                 'detailPermintaan.dataBarang.kodeSatuan',
                 'regPeriksa.pasien',
+                'regPeriksa.dokter',
                 'regPeriksa.kamarInap' => function ($q) {
                     $q->where('stts_pulang', '-')->with('kamar.bangsal');
                 },
                 'dokter',
                 'telaahFarmasi.petugas',
+                'riwayatSubstitusi',
             ])
             ->first();
 
@@ -421,9 +424,14 @@ class PermintaanStokObatPasienController extends Controller
             'no_permintaan' => 'required',
             'kode_brng_lama' => 'required',
             'kode_brng_baru' => 'required',
+            'konfirmasi_dokter' => 'required',
+        ], [
+            'konfirmasi_dokter.required' => 'Persetujuan konfirmasi penggantian obat kepada dokter register wajib dicentang.',
         ]);
 
-        $permintaan = PermintaanStokObatPasien::where('no_permintaan', $request->no_permintaan)->first();
+        $permintaan = PermintaanStokObatPasien::where('no_permintaan', $request->no_permintaan)
+            ->with(['dokter', 'regPeriksa.dokter'])
+            ->first();
         if (!$permintaan) {
             return response()->json(['message' => 'Permintaan obat tidak ditemukan'], 404);
         }
@@ -453,6 +461,16 @@ class PermintaanStokObatPasienController extends Controller
             }
         }
 
+        // Ambil data dokter register / DPJP
+        $kdDokter = $permintaan->kd_dokter ?: ($permintaan->regPeriksa->kd_dokter ?? null);
+        $namaDokter = $permintaan->dokter->nm_dokter ?? ($permintaan->regPeriksa->dokter->nm_dokter ?? ($request->nama_dokter ?: '-'));
+
+        // Ambil nama obat asal & pengganti
+        $namaLama = DB::table('databarang')->where('kode_brng', $request->kode_brng_lama)->value('nama_brng') ?: ($request->nama_brng_lama ?: $request->kode_brng_lama);
+        $namaBaru = DB::table('databarang')->where('kode_brng', $request->kode_brng_baru)->value('nama_brng') ?: ($request->nama_brng_baru ?: $request->kode_brng_baru);
+
+        $nipFarmasi = session('pegawai')->nik ?? session('username') ?? null;
+
         DB::beginTransaction();
         try {
             DB::table('detail_permintaan_stok_obat_pasien')
@@ -464,11 +482,26 @@ class PermintaanStokObatPasienController extends Controller
                     'aturan_pakai' => $request->filled('aturan_pakai') ? $request->aturan_pakai : $detail->aturan_pakai,
                 ]);
 
+            // Catat log substitusi obat dengan consent dokter register
+            RsiaSubstitusiObatPasien::create([
+                'no_permintaan' => $permintaan->no_permintaan,
+                'no_rawat' => $permintaan->no_rawat,
+                'kode_brng_asal' => $request->kode_brng_lama,
+                'nama_brng_asal' => $namaLama,
+                'kode_brng_pengganti' => $request->kode_brng_baru,
+                'nama_brng_pengganti' => $namaBaru,
+                'kd_dokter' => $kdDokter,
+                'nama_dokter' => $namaDokter,
+                'konfirmasi_dokter' => true,
+                'catatan' => $request->catatan ?: 'Telah dikonfirmasi penggantian obat kepada dokter register',
+                'nip_farmasi' => $nipFarmasi,
+            ]);
+
             DB::commit();
 
             return response()->json([
                 'status' => true,
-                'message' => 'Item obat berhasil disubstitusi / diganti',
+                'message' => 'Item obat berhasil disubstitusi dan riwayat konfirmasi dokter telah tersimpan',
             ]);
         } catch (Exception $e) {
             DB::rollBack();
@@ -715,7 +748,28 @@ class PermintaanStokObatPasienController extends Controller
         }
 
         // 3. Hitung pengeluaran klinis dari catatan_pemberian_obat_pasien (dengan fallback)
+        $riwayatSubstitusi = RsiaSubstitusiObatPasien::where('no_rawat', $noRawat)
+            ->orderBy('id', 'desc')
+            ->get();
+
         foreach ($grouped as $key => &$val) {
+            // Informasi riwayat substitusi jika obat ini adalah hasil penggantian
+            $sub = $riwayatSubstitusi->firstWhere('kode_brng_pengganti', $val['kode_brng']);
+            if ($sub) {
+                $val['substitusi'] = [
+                    'id' => $sub->id,
+                    'no_permintaan' => $sub->no_permintaan,
+                    'kode_brng_asal' => $sub->kode_brng_asal,
+                    'nama_brng_asal' => $sub->nama_brng_asal,
+                    'nama_dokter' => $sub->nama_dokter,
+                    'konfirmasi_dokter' => (bool) $sub->konfirmasi_dokter,
+                    'catatan' => $sub->catatan,
+                    'tgl_substitusi' => $sub->created_at ? $sub->created_at->format('d/m/Y H:i') : null,
+                ];
+            } else {
+                $val['substitusi'] = null;
+            }
+
             $catatanQuery = CatatanPemberianObatPasien::where('no_rawat', $noRawat)
                 ->where('kode_brng', $val['kode_brng'])
                 ->where('sumber', $val['sumber']);

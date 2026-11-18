@@ -281,6 +281,21 @@
                         </div>
                     </div>
 
+                    <!-- Alert Notifikasi Substitusi Obat & Konfirmasi Dokter DPJP -->
+                    <div class="alert alert-warning py-2 px-3 mb-2 rounded-3 border-warning d-none shadow-sm" id="alertEksekusiSubstitusi" style="background-color: #fff9db; border-left: 4px solid #f59f00 !important;">
+                        <div class="d-flex align-items-center gap-1.5 mb-1">
+                            <i class="bi bi-arrow-left-right text-warning fs-5"></i>
+                            <strong class="text-dark" style="font-size: 12px;">PERHATIAN: Obat Ini Merupakan Hasil Substitusi Farmasi</strong>
+                        </div>
+                        <div class="text-dark" style="font-size: 11.5px; line-height: 1.45;">
+                            <div>Obat Asal / Diganti dari: <strong class="text-danger" id="lblSubstitusiNamaAsal">-</strong></div>
+                            <div>Status Konfirmasi: <span class="text-success fw-bold"><i class="bi bi-check-circle-fill"></i> Sudah Dikonfirmasi kepada Dokter: <span id="lblSubstitusiDokterPemeriksa">-</span></span></div>
+                            <div id="lblSubstitusiCatatanWrap" class="text-muted d-none mt-0.5">
+                                <em>Catatan: <span id="lblSubstitusiCatatanText">-</span></em>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="alert py-1.5 px-2.5 mb-2 rounded-2 small d-none" id="alertEksekusiInfo" style="font-size: 11px;"></div>
 
                     <!-- Dosis / Jumlah Diberikan & Tool Kalkulator (Ukuran & Tinggi Konsisten 31px) -->
@@ -500,7 +515,9 @@
                 return;
             }
 
+            window.emarItemsMap = window.emarItemsMap || {};
             items.forEach(function(item, idx) {
+                window.emarItemsMap[item.kode_brng] = item;
                 // Buat 24 kotak jam
                 let timelineBoxes = '';
                 for (let h = 0; h <= 23; h++) {
@@ -579,6 +596,24 @@
                     ? `<span class="badge bg-primary-subtle text-primary border border-primary px-2 py-0.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-prescription2 me-1"></i> Resep DPJP Ranap (${item.no_resep || '-'})</span>`
                     : `<span class="badge bg-info-subtle text-dark border border-info px-2 py-0.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-box-seam me-1"></i> Permintaan Harian / BHP</span>`;
 
+                let substitusiBadge = '';
+                let substitusiAlert = '';
+                if (item.substitusi) {
+                    substitusiBadge = `
+                        <span class="badge bg-warning text-dark border border-warning px-1.5 py-0.5 rounded-pill" style="font-size: 9.5px;" title="Obat ini menggantikan ${item.substitusi.nama_brng_asal}">
+                            <i class="bi bi-arrow-left-right me-0.5"></i> Substitusi
+                        </span>
+                    `;
+                    substitusiAlert = `
+                        <div class="alert alert-warning py-1 px-2 mt-1 mb-1 d-flex align-items-center gap-1.5 rounded-2" style="font-size: 11px; background-color: #fff9db; border-left: 3px solid #f59f00;">
+                            <i class="bi bi-shield-check-fill text-warning fs-6"></i>
+                            <div>
+                                <strong>Obat Hasil Substitusi:</strong> Pengganti dari <span class="text-danger fw-bold">${item.substitusi.nama_brng_asal}</span> &bull; Konfirmasi DPJP: <strong class="text-success">${item.substitusi.nama_dokter || 'Dokter Register'}</strong> <span class="badge bg-success ms-1" style="font-size: 9px;"><i class="bi bi-check-all"></i> ACC</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
                 const cardHtml = `
                     <div class="card border rounded-3 mb-2 shadow-sm bg-white">
                         <div class="card-body p-2.5">
@@ -591,8 +626,10 @@
                                         <div>
                                             <div class="d-flex align-items-center gap-1.5 flex-wrap">
                                                 <strong class="text-dark" style="font-size: 12.5px;">${item.nama_brng}</strong>
+                                                ${substitusiBadge}
                                                 ${sumberBadge}
                                             </div>
+                                            ${substitusiAlert}
                                             <small class="text-muted" style="font-size: 10.5px;">
                                                 Aturan: <b class="text-dark">${item.aturan_pakai}</b> | Batch: ${item.no_batch || '-'}
                                             </small>
@@ -974,6 +1011,24 @@
             $alertInfo.removeClass('d-none alert-primary').addClass('alert-info').html(
                 '<i class="bi bi-info-circle me-1"></i> <b>Billing Rekonsiliasi:</b> Dosis pecahan (misal 0.5 ampul) akan diverifikasi dan dibulatkan tagihannya oleh Farmasi.'
             );
+        }
+
+        // Tampilkan Notifikasi Khusus Obat Hasil Substitusi Farmasi
+        const itemObj = (window.emarItemsMap && window.emarItemsMap[kode]) || null;
+        const sub = itemObj?.substitusi || null;
+
+        if (sub) {
+            $('#alertEksekusiSubstitusi').removeClass('d-none');
+            $('#lblSubstitusiNamaAsal').text(sub.nama_brng_asal || '-');
+            $('#lblSubstitusiDokterPemeriksa').text(sub.nama_dokter || 'Dokter Register');
+            if (sub.catatan) {
+                $('#lblSubstitusiCatatanText').text(sub.catatan);
+                $('#lblSubstitusiCatatanWrap').removeClass('d-none');
+            } else {
+                $('#lblSubstitusiCatatanWrap').addClass('d-none');
+            }
+        } else {
+            $('#alertEksekusiSubstitusi').addClass('d-none');
         }
 
         $('#modalDialogEksekusiBeriObat').modal('show');

@@ -862,6 +862,25 @@
                     }
                     const jamStr = jamList.length > 0 ? jamList.map(j => `<span class="badge bg-success-subtle text-success border border-success me-0.5" style="font-size: 9px;">${j}</span>`).join(' ') : '-';
 
+                    const kdDokter = res.kd_dokter || res.reg_periksa?.kd_dokter || '';
+                    const namaDokter = res.dokter?.nm_dokter || res.reg_periksa?.dokter?.nm_dokter || '';
+                    const safeNoRawat = (res.no_rawat || '').replace(/'/g, "\\'");
+                    const safeKdDokter = (kdDokter || '').replace(/'/g, "\\'");
+                    const safeNamaDokter = (namaDokter || '').replace(/'/g, "\\'");
+
+                    // Cek apakah item ini pernah disubstitusi
+                    const riwayatSub = (res.riwayat_substitusi || []).find(s => s.kode_brng_pengganti === det.kode_brng);
+                    let badgeSubstitusi = '';
+                    if (riwayatSub) {
+                        badgeSubstitusi = `
+                            <div class="mt-1">
+                                <span class="badge bg-warning-subtle text-dark border border-warning" style="font-size: 10px;" title="Disubstitusi dari: ${riwayatSub.nama_brng_asal} | ACC DPJP: ${riwayatSub.nama_dokter}">
+                                    <i class="bi bi-arrow-left-right text-warning"></i> Ganti dari: <b>${riwayatSub.nama_brng_asal}</b>
+                                </span>
+                            </div>
+                        `;
+                    }
+
                     let btnSubstitusiHtml = '-';
                     let btnEditAturanHtml = '';
                     let btnEditJmlHtml = '';
@@ -869,7 +888,7 @@
                         const safeNama = (det.data_barang?.nama_brng || det.kode_brng).replace(/'/g, "\\'");
                         const safeAturan = (det.aturan_pakai || '').replace(/'/g, "\\'");
                         btnSubstitusiHtml = `
-                            <button type="button" class="btn btn-outline-warning btn-sm py-0 px-1 text-dark" onclick="bukaModalSubstitusi('${res.no_permintaan}', '${det.kode_brng}', '${safeNama}', ${det.jml}, '${safeAturan}')" title="Substitusi / Ganti Obat">
+                            <button type="button" class="btn btn-outline-warning btn-sm py-0 px-1 text-dark" onclick="bukaModalSubstitusi('${res.no_permintaan}', '${det.kode_brng}', '${safeNama}', ${det.jml}, '${safeAturan}', '${safeNoRawat}', '${safeKdDokter}', '${safeNamaDokter}')" title="Substitusi / Ganti Obat">
                                 <i class="bi bi-arrow-left-right"></i> Ganti
                             </button>
                         `;
@@ -889,7 +908,10 @@
                         <tr>
                             <td class="text-center">${idx + 1}</td>
                             <td class="font-monospace">${det.kode_brng}</td>
-                            <td><strong>${det.data_barang?.nama_brng || '-'}</strong></td>
+                            <td>
+                                <strong>${det.data_barang?.nama_brng || '-'}</strong>
+                                ${badgeSubstitusi}
+                            </td>
                             <td class="text-center align-middle">
                                 <div class="d-inline-flex align-items-center justify-content-center gap-1">
                                     <span class="fw-bold text-primary">${det.jml}</span>

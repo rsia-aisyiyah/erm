@@ -19,16 +19,42 @@
             <div class="modal-body p-3 bg-light">
                 <form id="formSubstitusiObat">
                     <input type="hidden" id="substitusi_no_permintaan" name="no_permintaan">
+                    <input type="hidden" id="substitusi_no_rawat" name="no_rawat">
                     <input type="hidden" id="substitusi_kode_brng_lama" name="kode_brng_lama">
+                    <input type="hidden" id="substitusi_kd_dokter" name="kd_dokter">
+                    <input type="hidden" id="substitusi_nama_dokter" name="nama_dokter">
 
                     <!-- Kartu Obat Asal -->
-                    <div class="card border-0 shadow-sm rounded-3 mb-3 bg-white border-start border-danger border-4">
+                    <div class="card border-0 shadow-sm rounded-3 mb-2.5 bg-white border-start border-danger border-4">
                         <div class="card-body p-2.5">
                             <label class="text-danger small fw-bold mb-1" style="font-size: 10.5px;">OBAT ASAL (YANG AKAN DIGANTI):</label>
                             <h6 class="fw-bold text-dark mb-1" id="lblSubstitusiNamaLama">-</h6>
                             <div class="d-flex justify-content-between text-muted" style="font-size: 11px;">
                                 <span>Kode: <b id="lblSubstitusiKodeLama" class="font-monospace">-</b></span>
                                 <span>Jumlah Awal: <b id="lblSubstitusiJmlLama">0</b></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Verifikasi & Consent Dokter Register -->
+                    <div class="card border-0 shadow-sm rounded-3 mb-2.5 bg-white border-start border-primary border-4">
+                        <div class="card-body p-2.5">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-person-badge-fill text-primary fs-5"></i>
+                                <div>
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size: 10px;">Dokter Register / Penanggung Jawab Pasien:</small>
+                                    <h6 class="fw-bold text-dark mb-0" id="lblSubstitusiNamaDokter">-</h6>
+                                </div>
+                            </div>
+                            <div class="form-check p-2 bg-light rounded-2 border">
+                                <input class="form-check-input ms-0 me-2" type="checkbox" id="chkSubstitusiKonfirmasiDokter" style="cursor: pointer; width: 1.15em; height: 1.15em;">
+                                <label class="form-check-label small fw-bold text-dark" for="chkSubstitusiKonfirmasiDokter" style="cursor: pointer; font-size: 11.5px; line-height: 1.4;">
+                                    Sudah dilakukan konfirmasi penggantian obat kepada Dokter (sesuai dokter register: <span id="lblSubstitusiNamaDokterConsent" class="text-primary">-</span>)
+                                </label>
+                            </div>
+                            <div class="mt-2">
+                                <label class="form-label text-muted mb-1" style="font-size: 10.5px;">Catatan Konfirmasi (Opsional):</label>
+                                <input type="text" class="form-control form-control-sm" id="substitusi_catatan_konfirmasi" placeholder="Contoh: Disetujui ganti sediaan / merek setara" style="font-size: 11px;">
                             </div>
                         </div>
                     </div>
@@ -78,12 +104,23 @@
 @push('script')
 <script>
     // Buka Modal Substitusi
-    function bukaModalSubstitusi(noPermintaan, kodeLama, namaLama, jmlLama, aturanLama) {
+    function bukaModalSubstitusi(noPermintaan, kodeLama, namaLama, jmlLama, aturanLama, noRawat = '', kdDokter = '', namaDokter = '') {
         $('#substitusi_no_permintaan').val(noPermintaan);
+        $('#substitusi_no_rawat').val(noRawat);
         $('#substitusi_kode_brng_lama').val(kodeLama);
+        $('#substitusi_kd_dokter').val(kdDokter);
+        $('#substitusi_nama_dokter').val(namaDokter);
+
         $('#lblSubstitusiNamaLama').text(namaLama);
         $('#lblSubstitusiKodeLama').text(kodeLama);
         $('#lblSubstitusiJmlLama').text(jmlLama);
+
+        const dokterDisplay = namaDokter || 'Dokter Register';
+        $('#lblSubstitusiNamaDokter').text(dokterDisplay);
+        $('#lblSubstitusiNamaDokterConsent').text(dokterDisplay);
+
+        $('#chkSubstitusiKonfirmasiDokter').prop('checked', false);
+        $('#substitusi_catatan_konfirmasi').val('');
 
         $('#substitusi_kode_brng_baru').val('');
         $('#substitusi_cari_obat_baru').val('');
@@ -157,16 +194,39 @@
             return;
         }
 
+        const isKonfirmasi = $('#chkSubstitusiKonfirmasiDokter').is(':checked');
+        if (!isKonfirmasi) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Konfirmasi Dokter Diperlukan',
+                text: 'Harap pastikan penggantian obat sudah dikonfirmasi kepada Dokter Register dan centang checklist konfirmasi sebelum melanjutkan.',
+                confirmButtonColor: '#ffc107',
+            });
+            return;
+        }
+
+        const noRawat = $('#substitusi_no_rawat').val();
+        const kdDokter = $('#substitusi_kd_dokter').val();
+        const namaDokter = $('#substitusi_nama_dokter').val();
+        const catatan = $('#substitusi_catatan_konfirmasi').val();
+
         $.ajax({
             url: "{{ route('farmasi.permintaan-ranap.substitusi') }}",
             type: "POST",
             data: {
                 _token: "{{ csrf_token() }}",
                 no_permintaan: noPermintaan,
+                no_rawat: noRawat,
                 kode_brng_lama: kodeLama,
+                nama_brng_lama: $('#lblSubstitusiNamaLama').text(),
                 kode_brng_baru: kodeBaru,
+                nama_brng_baru: $('#lblSubstitusiObatTerpilih').text(),
                 jml: jml,
-                aturan_pakai: aturan
+                aturan_pakai: aturan,
+                kd_dokter: kdDokter,
+                nama_dokter: namaDokter,
+                konfirmasi_dokter: 1,
+                catatan: catatan
             },
             beforeSend: function() {
                 Swal.fire({ title: 'Memproses Substitusi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });

@@ -35,4 +35,9 @@ class PermintaanStokObatPasien extends Model
     {
         return $this->hasOne(TelaahFarmasi::class, 'no_resep', 'no_permintaan');
     }
+
+    public function riwayatSubstitusi()
+    {
+        return $this->hasMany(RsiaSubstitusiObatPasien::class, 'no_permintaan', 'no_permintaan');
+    }
 }
