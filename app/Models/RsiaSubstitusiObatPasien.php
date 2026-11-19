@@ -37,3 +37,4 @@ class RsiaSubstitusiObatPasien extends Model
         return $this->belongsTo(Dokter::class, 'kd_dokter', 'kd_dokter');
     }
 }
+

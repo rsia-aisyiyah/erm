@@ -44,3 +44,4 @@ class CreateRsiaSubstitusiObatPasienTable extends Migration
         Schema::dropIfExists('rsia_substitusi_obat_pasien');
     }
 }
+

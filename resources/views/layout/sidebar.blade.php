@@ -177,6 +177,35 @@
                 </li>
             @endif
 
+            @if (session()->get('pegawai')->nik == 'direksi' ||
+                    session()->get('pegawai')->departemen == 'DIR' ||
+                    session()->get('pegawai')->jnj_jabatan == 'DIRU' ||
+                    session()->get('pegawai')->departemen == 'DM1' ||
+                    session()->get('pegawai')->departemen == 'DM2' ||
+                    session()->get('pegawai')->departemen == 'DM3' ||
+                    session()->get('pegawai')->departemen == 'DM4' ||
+                    session()->get('pegawai')->departemen == 'DM5' ||
+                    session()->get('pegawai')->departemen == 'DM7' ||
+                    session()->get('pegawai')->departemen == 'SPS' ||
+                    session()->get('pegawai')->departemen == 'DPM1' ||
+                    session()->get('pegawai')->departemen == 'DPM2' ||
+                    session()->get('pegawai')->departemen == 'OK' ||
+                    session()->get('pegawai')->departemen == 'IBS' ||
+                    session()->get('pegawai')->departemen == 'CSM' ||
+                    session()->get('pegawai')->departemen == 'ICU' ||
+                    session()->get('pegawai')->dokter ||
+                    session()->get('pegawai')->nik == '2.319.1017' ||
+                    session()->get('pegawai')->nik == '2.424.0418' ||
+                    session()->get('pegawai')->nik == '3.604.0123' ||
+                    session()->get('pegawai')->departemen == 'IT')
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('operasi*') ? 'active' : '' }}" href="/erm/operasi">
+                        <i class="bi bi-heart-pulse-fill align-text-bottom text-danger"></i>
+                        Kamar Operasi (IBS)
+                    </a>
+                </li>
+            @endif
+
             <li class="nav-item">
                 <a class="nav-link" target="_blank"
                     href="{{ config('app.kyc') }}?nama={{ session()->get('pegawai')->nama }}&nik={{ session()->get('pegawai')->nik }}">
