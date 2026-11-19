@@ -3,7 +3,7 @@
 use App\Http\Controllers\OperasiController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('login')->prefix('operasi')->name('operasi.')->group(function () {
+Route::middleware('auth')->prefix('operasi')->name('operasi.')->group(function () {
     Route::get('/', [OperasiController::class, 'index'])->name('index');
     Route::get('/jadwal', [OperasiController::class, 'getJadwal'])->name('jadwal');
     Route::post('/booking/simpan', [OperasiController::class, 'simpanBooking'])->name('booking.simpan');
@@ -15,3 +15,4 @@ Route::middleware('login')->prefix('operasi')->name('operasi.')->group(function 
     Route::get('/laporan/cetak/{no_rawat}', [OperasiController::class, 'cetakLaporan'])->name('laporan.cetak');
     Route::get('/pasien/cari', [OperasiController::class, 'cariPasien'])->name('pasien.cari');
 });
+
