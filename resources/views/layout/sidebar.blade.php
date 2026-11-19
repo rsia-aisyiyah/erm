@@ -24,24 +24,30 @@
     /* Styling Modern Scoped Sidebar ERM */
     #sidebarMenu {
         background-color: #ffffff !important;
-        border-right: 1px solid #e9ecef !important;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.02) !important;
-        padding-top: 52px !important;
+        border-right: 1px solid #e2e8f0 !important;
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.03) !important;
+        padding-top: 50px !important;
         height: 100vh !important;
-        display: flex;
-        flex-direction: column;
+        max-height: 100vh !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        z-index: 1000 !important;
     }
 
     .sidebar-scroll-wrapper {
-        flex: 1 1 auto;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 10px 8px 16px 8px;
+        flex: 1 1 0px !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        padding: 10px 10px 16px 10px;
     }
 
     /* Custom Ultra-Slim Scrollbar */
     .sidebar-scroll-wrapper::-webkit-scrollbar {
-        width: 4px;
+        width: 5px;
     }
     .sidebar-scroll-wrapper::-webkit-scrollbar-track {
         background: transparent;
@@ -56,7 +62,7 @@
 
     /* Kategori Header */
     .sidebar-cat-title {
-        font-size: 9.5px;
+        font-size: 10.5px;
         font-weight: 700;
         letter-spacing: 0.8px;
         text-transform: uppercase;
@@ -66,33 +72,35 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        white-space: nowrap;
     }
 
     /* Menu Link Card */
     .erm-nav-link {
         display: flex;
         align-items: center;
-        gap: 9px;
-        padding: 5px 8px;
+        gap: 10px;
+        padding: 6px 10px;
         margin-bottom: 2px;
         border-radius: 8px;
         color: #334155 !important;
-        font-size: 11.5px;
+        font-size: 12.5px;
         font-weight: 500;
         text-decoration: none;
         transition: all 0.16s ease;
         position: relative;
+        white-space: nowrap;
     }
 
     .erm-nav-link:hover {
-        background-color: #f8fafc;
+        background-color: #f1f5f9;
         color: #0f172a !important;
         transform: translateX(3px);
     }
 
     /* Active Link State */
     .erm-nav-link.active {
-        background-color: #f1f5f9;
+        background-color: #e2e8f0;
         color: #0f172a !important;
         font-weight: 600;
         box-shadow: inset 3px 0 0 #0d6efd;
@@ -100,13 +108,13 @@
 
     /* Icon Box Mini Pastel Medis */
     .erm-icon-box {
-        width: 26px;
-        height: 26px;
-        border-radius: 6px;
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 13px;
+        font-size: 14px;
         flex-shrink: 0;
         transition: all 0.16s ease;
     }
@@ -129,9 +137,9 @@
 
     /* Profil User Card di Footer Sidebar */
     .sidebar-user-footer {
-        flex-shrink: 0;
-        padding: 10px 8px;
-        border-top: 1px solid #f1f5f9;
+        flex-shrink: 0 !important;
+        padding: 10px 10px;
+        border-top: 1px solid #e2e8f0;
         background-color: #ffffff;
     }
     .user-profile-card {
@@ -162,7 +170,7 @@
         flex: 1 1 auto;
     }
     .user-name-title {
-        font-size: 11.5px;
+        font-size: 12px;
         font-weight: 700;
         color: #1e293b;
         white-space: nowrap;
@@ -171,7 +179,7 @@
         line-height: 1.25;
     }
     .user-role-subtitle {
-        font-size: 10px;
+        font-size: 10.5px;
         color: #64748b;
         white-space: nowrap;
         overflow: hidden;
@@ -196,7 +204,7 @@
     }
 </style>
 
-<nav id="sidebarMenu" class="col-md-2 col-lg-1 d-md-block sidebar collapse">
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
     <div class="sidebar-scroll-wrapper">
         <ul class="nav flex-column mb-0">
 
