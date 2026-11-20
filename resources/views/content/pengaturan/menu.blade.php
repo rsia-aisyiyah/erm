@@ -108,68 +108,202 @@
                 </div>
             </div>
 
-            {{-- TAB 2: MATRIKS HAK AKSES UNIT / PROFESI --}}
+            {{-- TAB 2: MATRIKS & PENGATURAN HAK AKSES UNIT / PROFESI --}}
             <div class="tab-pane fade" id="pills-matrix" role="tabpanel">
-                <div class="card border-0 shadow-sm rounded-3">
-                    <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
-                        <span class="small text-muted"><i class="bi bi-info-circle me-1"></i>Centang untuk memberikan hak akses menu ke departemen atau profesi dokter. Perubahan tersimpan secara realtime.</span>
+                {{-- Toggle Sub-Mode Tampilan --}}
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="btn-group btn-group-sm p-1 bg-light rounded-pill border" role="group">
+                        <button type="button" class="btn btn-primary rounded-pill px-3 fw-semibold active" id="btnModeVertical" onclick="switchAksesMode('vertical')">
+                            <i class="bi bi-layout-split me-1"></i> Mode Vertikal (Isi ke Bawah)
+                        </button>
+                        <button type="button" class="btn btn-light rounded-pill px-3 fw-semibold text-secondary" id="btnModeMatrix" onclick="switchAksesMode('matrix')">
+                            <i class="bi bi-table me-1"></i> Mode Tabel Matriks Lebar
+                        </button>
                     </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive" style="max-height: 65vh;">
-                            <table class="table table-bordered table-hover align-middle mb-0" style="font-size: 12px;">
-                                <thead class="table-light sticky-top text-center text-muted text-uppercase" style="z-index: 5;">
-                                    <tr>
-                                        <th style="min-width: 180px; position: sticky; left: 0; background: #f8fafc; z-index: 6;">Nama Menu</th>
-                                        <th style="min-width: 80px;" class="bg-primary text-white">Semua User</th>
-                                        <th style="min-width: 80px;" class="bg-info text-white">Dokter</th>
+                    <span class="small text-muted d-none d-md-inline"><i class="bi bi-lightning-charge-fill text-warning me-1"></i>Perubahan hak akses tersimpan otomatis secara realtime</span>
+                </div>
+
+                {{-- SUB-MODE 1: MODE VERTIKAL (MENGALIR KE BAWAH, TIDAK SCROLL KANAN) --}}
+                <div id="wrapperAksesVertical">
+                    <div class="row g-3">
+                        {{-- Kolom Kiri: Pilih Unit / Departemen --}}
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-header bg-white py-2 fw-bold d-flex justify-content-between align-items-center">
+                                    <span><i class="bi bi-building me-1 text-primary"></i> 1. Pilih Unit / Profesi</span>
+                                    <span class="badge bg-light text-dark border">{{ count($departemens) + 2 }} Pilihan</span>
+                                </div>
+                                <div class="p-2 border-bottom bg-light">
+                                    <input type="text" class="form-control form-control-sm rounded-pill" id="searchUnitInput" 
+                                           placeholder="Cari Poli, UGD, Bangsal..." onkeyup="filterUnitList(this.value)">
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="list-group list-group-flush" id="listGroupUnit" style="max-height: 60vh; overflow-y: auto;">
+                                        {{-- Pilihan Global --}}
+                                        <a href="javascript:void(0)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2 active" 
+                                           onclick="selectUnit('dokter', 'DOKTER', 'DPJP / Dokter Umum & Spesialis', this)">
+                                            <div>
+                                                <div class="fw-bold"><i class="bi bi-person-badge me-1"></i> DOKTER</div>
+                                                <div class="small opacity-75">DPJP / Dokter Umum & Spesialis</div>
+                                            </div>
+                                            <span class="badge bg-white text-primary rounded-pill" id="badgeCount_dokter">-</span>
+                                        </a>
+
+                                        <a href="javascript:void(0)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2" 
+                                           onclick="selectUnit('all', 'SEMUA USER', 'Akses Terbuka untuk Semua Pegawai', this)">
+                                            <div>
+                                                <div class="fw-bold"><i class="bi bi-globe me-1"></i> SEMUA USER (PUBLIK)</div>
+                                                <div class="small text-muted">Akses Terbuka untuk Semua Pegawai</div>
+                                            </div>
+                                            <span class="badge bg-secondary rounded-pill" id="badgeCount_all">-</span>
+                                        </a>
+
+                                        <div class="list-group-item bg-light text-muted small fw-bold py-1 text-uppercase">Departemen / Ruangan SIMRS</div>
+
+                                        {{-- Loop Departemen --}}
                                         @foreach($departemens as $dep)
-                                            <th style="min-width: 100px;" title="{{ $dep->nama }} ({{ $dep->dep_id }})">
-                                                {{ $dep->dep_id }}
-                                                <div style="font-size: 9px; font-weight: normal; text-transform: none;" class="text-truncate">{{ $dep->nama }}</div>
-                                            </th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($menus as $m)
-                                        @php
-                                            $isAll = $m->akses->contains('tipe_akses', 'all');
-                                            $isDokter = $m->akses->contains('tipe_akses', 'dokter');
-                                            $depsAkses = $m->akses->where('tipe_akses', 'dep')->pluck('target_id')->toArray();
-                                        @endphp
-                                        <tr>
-                                            <td style="position: sticky; left: 0; background: #ffffff; font-weight: 600; z-index: 4;">
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <span class="erm-icon-box {{ $m->icon_bg }}" style="width: 22px; height: 22px; font-size: 11px;">
-                                                        <i class="bi {{ $m->icon }}"></i>
-                                                    </span>
-                                                    <span>{{ $m->nama_menu }}</span>
+                                            <a href="javascript:void(0)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2 unit-item" 
+                                               data-name="{{ strtolower($dep->nama) }} {{ strtolower($dep->dep_id) }}"
+                                               onclick="selectUnit('dep', '{{ $dep->dep_id }}', '{{ addslashes($dep->nama) }}', this)">
+                                                <div style="min-width: 0;" class="me-2">
+                                                    <div class="fw-bold text-truncate">{{ $dep->dep_id }}</div>
+                                                    <div class="small text-muted text-truncate">{{ $dep->nama }}</div>
                                                 </div>
-                                            </td>
-                                            {{-- Kolom All Users --}}
-                                            <td class="text-center bg-light">
-                                                <input type="checkbox" class="form-check-input" 
-                                                       onchange="updateMatrixAkses({{ $m->id }}, 'all', null, this.checked)"
-                                                       {{ $isAll ? 'checked' : '' }}>
-                                            </td>
-                                            {{-- Kolom Dokter --}}
-                                            <td class="text-center">
-                                                <input type="checkbox" class="form-check-input" 
-                                                       onchange="updateMatrixAkses({{ $m->id }}, 'dokter', 'dokter', this.checked)"
-                                                       {{ $isDokter ? 'checked' : '' }}>
-                                            </td>
-                                            {{-- Kolom Per Departemen --}}
+                                                <span class="badge bg-light text-dark border rounded-pill" id="badgeCount_{{ $dep->dep_id }}">-</span>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Kolom Kanan: Checklist Menu Tersusun Rapi ke Bawah --}}
+                        <div class="col-md-8">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <div>
+                                        <span class="text-muted small">Hak Akses Menu untuk:</span>
+                                        <div class="fw-bold text-primary fs-6" id="selectedUnitTitle">DOKTER (DPJP / Dokter Umum & Spesialis)</div>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-2 py-0" style="font-size: 11.5px;" onclick="bulkCheckAll(true)">
+                                            <i class="bi bi-check-all"></i> Centang Semua
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-2 py-0" style="font-size: 11.5px;" onclick="bulkCheckAll(false)">
+                                            <i class="bi bi-x-circle"></i> Hapus Semua
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3" style="max-height: 65vh; overflow-y: auto;">
+                                    {{-- Daftar Menu Mengalir ke Bawah per Kategori --}}
+                                    @php
+                                        $groupedForVertical = $menus->groupBy('kategori');
+                                    @endphp
+
+                                    @foreach($groupedForVertical as $kategori => $items)
+                                        <div class="mb-3">
+                                            <div class="text-uppercase text-muted fw-bold small mb-2 d-flex align-items-center gap-2">
+                                                <span>{{ $kategori }}</span>
+                                                <hr class="flex-grow-1 my-0 text-muted opacity-25">
+                                            </div>
+                                            <div class="row g-2">
+                                                @foreach($items as $m)
+                                                    <div class="col-md-6 col-lg-6">
+                                                        <div class="p-2 border rounded-3 bg-white d-flex align-items-center justify-content-between hover-shadow-sm transition">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <span class="erm-icon-box {{ $m->icon_bg }}" style="width: 28px; height: 28px; font-size: 13px;">
+                                                                    <i class="bi {{ $m->icon }}"></i>
+                                                                </span>
+                                                                <div>
+                                                                    <div class="fw-semibold text-dark" style="font-size: 12.5px;">{{ $m->nama_menu }}</div>
+                                                                    <code style="font-size: 11px;">{{ $m->url }}</code>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-check form-switch ms-2">
+                                                                <input class="form-check-input switch-menu-akses" type="checkbox" role="switch" 
+                                                                       style="cursor: pointer; transform: scale(1.15);"
+                                                                       id="chkMenu_{{ $m->id }}"
+                                                                       data-menuid="{{ $m->id }}"
+                                                                       onchange="onVerticalSwitchChange({{ $m->id }}, this.checked)">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- SUB-MODE 2: MODE TABEL MATRIKS LEBAR (OPSIONAL) --}}
+                <div id="wrapperAksesMatrix" class="d-none">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
+                            <span class="small text-muted"><i class="bi bi-info-circle me-1"></i>Centang untuk memberikan hak akses menu ke departemen atau profesi dokter.</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive" style="max-height: 65vh;">
+                                <table class="table table-bordered table-hover align-middle mb-0" style="font-size: 12px;">
+                                    <thead class="table-light sticky-top text-center text-muted text-uppercase" style="z-index: 5;">
+                                        <tr>
+                                            <th style="min-width: 180px; position: sticky; left: 0; background: #f8fafc; z-index: 6;">Nama Menu</th>
+                                            <th style="min-width: 80px;" class="bg-primary text-white">Semua User</th>
+                                            <th style="min-width: 80px;" class="bg-info text-white">Dokter</th>
                                             @foreach($departemens as $dep)
-                                                <td class="text-center">
-                                                    <input type="checkbox" class="form-check-input" 
-                                                           onchange="updateMatrixAkses({{ $m->id }}, 'dep', '{{ $dep->dep_id }}', this.checked)"
-                                                           {{ in_array($dep->dep_id, $depsAkses) ? 'checked' : '' }}>
-                                                </td>
+                                                <th style="min-width: 100px;" title="{{ $dep->nama }} ({{ $dep->dep_id }})">
+                                                    {{ $dep->dep_id }}
+                                                    <div style="font-size: 9px; font-weight: normal; text-transform: none;" class="text-truncate">{{ $dep->nama }}</div>
+                                                </th>
                                             @endforeach
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($menus as $m)
+                                            @php
+                                                $isAll = $m->akses->contains('tipe_akses', 'all');
+                                                $isDokter = $m->akses->contains('tipe_akses', 'dokter');
+                                                $depsAkses = $m->akses->where('tipe_akses', 'dep')->pluck('target_id')->toArray();
+                                            @endphp
+                                            <tr>
+                                                <td style="position: sticky; left: 0; background: #ffffff; font-weight: 600; z-index: 4;">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <span class="erm-icon-box {{ $m->icon_bg }}" style="width: 22px; height: 22px; font-size: 11px;">
+                                                            <i class="bi {{ $m->icon }}"></i>
+                                                        </span>
+                                                        <span>{{ $m->nama_menu }}</span>
+                                                    </div>
+                                                </td>
+                                                {{-- Kolom All Users --}}
+                                                <td class="text-center bg-light">
+                                                    <input type="checkbox" class="form-check-input matrix-chk" 
+                                                           id="matrix_{{ $m->id }}_all"
+                                                           onchange="updateMatrixAkses({{ $m->id }}, 'all', null, this.checked)"
+                                                           {{ $isAll ? 'checked' : '' }}>
+                                                </td>
+                                                {{-- Kolom Dokter --}}
+                                                <td class="text-center">
+                                                    <input type="checkbox" class="form-check-input matrix-chk" 
+                                                           id="matrix_{{ $m->id }}_dokter"
+                                                           onchange="updateMatrixAkses({{ $m->id }}, 'dokter', 'dokter', this.checked)"
+                                                           {{ $isDokter ? 'checked' : '' }}>
+                                                </td>
+                                                {{-- Kolom Per Departemen --}}
+                                                @foreach($departemens as $dep)
+                                                    <td class="text-center">
+                                                        <input type="checkbox" class="form-check-input matrix-chk" 
+                                                               id="matrix_{{ $m->id }}_{{ $dep->dep_id }}"
+                                                               onchange="updateMatrixAkses({{ $m->id }}, 'dep', '{{ $dep->dep_id }}', this.checked)"
+                                                               {{ in_array($dep->dep_id, $depsAkses) ? 'checked' : '' }}>
+                                                    </td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -378,6 +512,150 @@
 <script>
     let timerCariPegawai = null;
 
+    // Data Master & Akses
+    const rawMenusData = @json($menus);
+    let currentTipe = 'dokter';
+    let currentTarget = 'dokter';
+
+    // Peta Akses Lokal: { menu_id: [ { tipe: 'dep', target: 'DM1' }, ... ] }
+    let menusAksesMap = {};
+
+    $(document).ready(function() {
+        initAksesData();
+        // Default pilih dokter di mode vertikal
+        selectUnit('dokter', 'dokter', 'DOKTER (DPJP / Dokter Umum & Spesialis)');
+    });
+
+    function initAksesData() {
+        menusAksesMap = {};
+        rawMenusData.forEach(m => {
+            menusAksesMap[m.id] = (m.akses || []).map(a => ({
+                tipe: a.tipe_akses,
+                target: a.target_id
+            }));
+        });
+        updateAllUnitBadges();
+    }
+
+    function switchAksesMode(mode) {
+        if (mode === 'vertical') {
+            $('#wrapperAksesVertical').removeClass('d-none');
+            $('#wrapperAksesMatrix').addClass('d-none');
+            $('#btnModeVertical').addClass('btn-primary active text-white').removeClass('btn-light text-secondary');
+            $('#btnModeMatrix').removeClass('btn-primary active text-white').addClass('btn-light text-secondary');
+        } else {
+            $('#wrapperAksesVertical').addClass('d-none');
+            $('#wrapperAksesMatrix').removeClass('d-none');
+            $('#btnModeMatrix').addClass('btn-primary active text-white').removeClass('btn-light text-secondary');
+            $('#btnModeVertical').removeClass('btn-primary active text-white').addClass('btn-light text-secondary');
+        }
+    }
+
+    function filterUnitList(keyword) {
+        keyword = keyword.toLowerCase().trim();
+        $('#listGroupUnit .unit-item').each(function() {
+            const text = $(this).data('name') || '';
+            if (text.includes(keyword)) {
+                $(this).removeClass('d-none');
+            } else {
+                $(this).addClass('d-none');
+            }
+        });
+    }
+
+    function selectUnit(tipe, targetId, label, elem) {
+        currentTipe = tipe;
+        currentTarget = targetId;
+
+        // Update list group active styling
+        $('#listGroupUnit .list-group-item').removeClass('active');
+        if (elem) {
+            $(elem).addClass('active');
+        }
+
+        // Update title
+        $('#selectedUnitTitle').html(`<span class="badge bg-primary me-2">${targetId}</span> ${label}`);
+
+        // Update semua switch di panel kanan sesuai akses unit ini
+        $('.switch-menu-akses').each(function() {
+            const menuId = $(this).data('menuid');
+            const hasAccess = checkUnitAccess(menuId, tipe, targetId);
+            $(this).prop('checked', hasAccess);
+        });
+    }
+
+    function checkUnitAccess(menuId, tipe, targetId) {
+        const list = menusAksesMap[menuId] || [];
+        if (tipe === 'all') {
+            return list.some(a => a.tipe === 'all');
+        } else if (tipe === 'dokter') {
+            return list.some(a => a.tipe === 'dokter');
+        } else {
+            return list.some(a => a.tipe === 'dep' && a.target === targetId);
+        }
+    }
+
+    function onVerticalSwitchChange(menuId, isChecked) {
+        updateMatrixAkses(menuId, currentTipe, (currentTipe === 'all' ? null : currentTarget), isChecked);
+        
+        // Update local state
+        if (!menusAksesMap[menuId]) menusAksesMap[menuId] = [];
+        if (isChecked) {
+            menusAksesMap[menuId].push({ tipe: currentTipe, target: (currentTipe === 'all' ? null : currentTarget) });
+        } else {
+            menusAksesMap[menuId] = menusAksesMap[menuId].filter(a => {
+                if (currentTipe === 'all') return a.tipe !== 'all';
+                if (currentTipe === 'dokter') return a.tipe !== 'dokter';
+                return !(a.tipe === 'dep' && a.target === currentTarget);
+            });
+        }
+
+        // Sinkronkan ke checkbox di Mode Matriks
+        const matrixId = `#matrix_${menuId}_${currentTarget || currentTipe}`;
+        $(matrixId).prop('checked', isChecked);
+
+        updateAllUnitBadges();
+    }
+
+    function bulkCheckAll(isChecked) {
+        const actionText = isChecked ? 'memberikan SEMUA menu' : 'mencabut SEMUA menu';
+        if (!confirm(`Yakin ingin ${actionText} untuk unit ini?`)) return;
+
+        $('.switch-menu-akses').each(function() {
+            const menuId = $(this).data('menuid');
+            const currentChecked = $(this).prop('checked');
+            if (currentChecked !== isChecked) {
+                $(this).prop('checked', isChecked);
+                onVerticalSwitchChange(menuId, isChecked);
+            }
+        });
+    }
+
+    function updateAllUnitBadges() {
+        // Hitung total menu per unit
+        let countDokter = 0;
+        let countAll = 0;
+        let countDep = {};
+
+        Object.keys(menusAksesMap).forEach(mId => {
+            const list = menusAksesMap[mId] || [];
+            list.forEach(a => {
+                if (a.tipe === 'dokter') countDokter++;
+                if (a.tipe === 'all') countAll++;
+                if (a.tipe === 'dep' && a.target) {
+                    countDep[a.target] = (countDep[a.target] || 0) + 1;
+                }
+            });
+        });
+
+        $('#badgeCount_dokter').text(countDokter);
+        $('#badgeCount_all').text(countAll);
+
+        Object.keys(countDep).forEach(depId => {
+            $(`#badgeCount_${depId}`).text(countDep[depId]);
+        });
+    }
+
     function bukaModalMenu() {
         $('#formMenuMaster')[0].reset();
         $('#menuId').val('');
@@ -546,3 +824,4 @@
     }
 </script>
 @endpush
+
