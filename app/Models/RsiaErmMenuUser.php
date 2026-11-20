@@ -22,3 +22,4 @@ class RsiaErmMenuUser extends Model
         return $this->belongsTo(Pegawai::class, 'nik', 'nik');
     }
 }
+

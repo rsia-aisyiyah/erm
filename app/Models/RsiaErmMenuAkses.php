@@ -22,3 +22,4 @@ class RsiaErmMenuAkses extends Model
         return $this->belongsTo(Departemen::class, 'target_id', 'dep_id');
     }
 }
+

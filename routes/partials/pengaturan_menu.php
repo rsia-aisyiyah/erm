@@ -13,3 +13,4 @@ Route::middleware('auth')->prefix('pengaturan/menu')->group(function () {
     Route::delete('/user-override', [ErmMenuController::class, 'hapusUserOverride'])->name('pengaturan.menu.user-override.hapus');
     Route::get('/cari-pegawai', [ErmMenuController::class, 'cariPegawai'])->name('pengaturan.menu.cari-pegawai');
 });
+

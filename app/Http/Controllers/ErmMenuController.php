@@ -215,3 +215,4 @@ class ErmMenuController extends Controller
         return response()->json($pegawai);
     }
 }
+

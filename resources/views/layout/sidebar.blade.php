@@ -32,10 +32,35 @@
         padding-top: 50px !important;
         height: 100vh !important;
         max-height: 100vh !important;
-        display: flex !important;
-        flex-direction: column !important;
         overflow: hidden !important;
-        z-index: 1000 !important;
+    }
+
+    /* Penanganan Responsif Mobile (< 768px) */
+    @media (max-width: 767.98px) {
+        #sidebarMenu.collapse:not(.show) {
+            display: none !important;
+        }
+        #sidebarMenu.show {
+            display: flex !important;
+            flex-direction: column !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 80% !important;
+            max-width: 320px !important;
+            height: 100vh !important;
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.25) !important;
+            z-index: 1050 !important;
+        }
+    }
+
+    /* Penanganan Layanan Desktop / Layar Lebar (>= 768px) */
+    @media (min-width: 768px) {
+        #sidebarMenu {
+            display: flex !important;
+            flex-direction: column !important;
+            z-index: 1000 !important;
+        }
     }
 
     .sidebar-scroll-wrapper {

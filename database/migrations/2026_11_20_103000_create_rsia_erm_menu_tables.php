@@ -355,3 +355,4 @@ class CreateRsiaErmMenuTables extends Migration
         }
     }
 }
+

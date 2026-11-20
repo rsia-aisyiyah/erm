@@ -95,3 +95,4 @@ class RsiaErmMenu extends Model
         return $filteredMenus->groupBy('kategori');
     }
 }
+
