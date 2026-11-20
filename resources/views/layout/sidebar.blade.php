@@ -294,7 +294,7 @@
                 <li class="nav-item">
                     <a class="erm-nav-link {{ Request::is('operasi*') ? 'active' : '' }}" href="/erm/operasi" title="Kamar Operasi (IBS) & Laporan Operasi">
                         <span class="erm-icon-box icon-ok"><i class="bi bi-heart-pulse-fill"></i></span>
-                        <span>Kamar Bedah (OK)</span>
+                        <span>Kamar Operasi</span>
                     </a>
                 </li>
             @endif
