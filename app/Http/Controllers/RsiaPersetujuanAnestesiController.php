@@ -107,57 +107,64 @@ class RsiaPersetujuanAnestesiController extends Controller
 
         // Set default checkbox values ('1' jika dicentang, '0' jika tidak)
         $checkboxFields = [
-            'check_diagnosis', 'check_dasar_diagnosis', 'check_tindakan_medis',
-            'check_indikasi_tindakan', 'check_tata_cara', 'check_tujuan',
-            'check_risiko', 'check_komplikasi', 'check_prognosis', 'check_alternatif'
+            'check_diagnosis',
+            'check_dasar_diagnosis',
+            'check_tindakan_medis',
+            'check_indikasi_tindakan',
+            'check_tata_cara',
+            'check_tujuan',
+            'check_risiko',
+            'check_komplikasi',
+            'check_prognosis',
+            'check_alternatif'
         ];
         foreach ($checkboxFields as $cb) {
             $validated[$cb] = !empty($validated[$cb]) ? '1' : '0';
         }
 
         try {
-           if (!empty($validated['id'])) {
+            if (!empty($validated['id'])) {
 
-    $id = $validated['id'];
-    unset($validated['id']);
+                $id = $validated['id'];
+                unset($validated['id']);
 
-    // Ambil instance model agar event Eloquent "updated" terpanggil
-    $record = $this->anestesi->findOrFail($id);
+                // Ambil instance model agar event Eloquent "updated" terpanggil
+                $record = $this->anestesi->findOrFail($id);
 
-    // Update melalui instance
-    $record->fill($validated);
-    $record->save();
+                // Update melalui instance
+                $record->fill($validated);
+                $record->save();
 
-    try {
-        $this->track->updateSql(
-            $this->anestesi,
-            $validated,
-            ['id' => $id]
-        );
-    } catch (\Throwable $t) {
-        // Jangan menggagalkan proses utama jika audit legacy gagal
-    }
+                try {
+                    $this->track->updateSql(
+                        $this->anestesi,
+                        $validated,
+                        ['id' => $id]
+                    );
+                } catch (\Throwable $t) {
+                    // Jangan menggagalkan proses utama jika audit legacy gagal
+                }
 
-    $pesan = 'Berhasil memperbarui data persetujuan regional anestesi.';
+                $pesan = 'Berhasil memperbarui data persetujuan regional anestesi.';
 
-} else {
+            } else {
 
-    unset($validated['id']);
+                unset($validated['id']);
 
-    // create() akan memicu event "created"
-    $record = $this->anestesi->create($validated);
+                // create() akan memicu event "created"
+                $record = $this->anestesi->create($validated);
 
-    try {
-        $this->track->insertSql(
-            $this->anestesi,
-            $validated
-        );
-    } catch (\Throwable $t) {
-        // Jangan menggagalkan proses utama jika audit legacy gagal
-    }
+                try {
+                    $this->track->insertSql(
+                        $this->anestesi,
+                        $validated
+                    );
+                } catch (\Throwable $t) {
+                    // Jangan menggagalkan proses utama jika audit legacy gagal
+                }
 
-    $pesan = 'Berhasil menyimpan data persetujuan regional anestesi baru.';
-}
+                $pesan = 'Berhasil menyimpan data persetujuan regional anestesi baru.';
+            }
 
             return response()->json([
                 'status' => true,
@@ -188,7 +195,8 @@ class RsiaPersetujuanAnestesiController extends Controller
             $record->delete();
             try {
                 $this->track->deleteSql($this->anestesi, ['id' => $request->id]);
-            } catch (\Throwable $t) {}
+            } catch (\Throwable $t) {
+            }
 
             return response()->json([
                 'status' => true,
@@ -273,7 +281,7 @@ class RsiaPersetujuanAnestesiController extends Controller
             \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory($folder);
         }
 
-        $fileName = 'ttd_ra_'. \Illuminate\Support\Str::uuid()->toString() . '.png';
+        $fileName = 'ttd_ra_' . \Illuminate\Support\Str::uuid()->toString() . '.png';
         $filePath = $folder . '/' . $fileName;
 
         \Illuminate\Support\Facades\Storage::disk('public')->put($filePath, $binary);

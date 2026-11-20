@@ -488,9 +488,10 @@ Route::middleware('auth')->group(function () {
 	Route::post('edukasi-obat-pulang/delete', [KomunikasiEdukasiObatPulangController::class, 'delete']);
 	Route::get('resep-pulang', [ResepPulangController::class, 'get']);
 
-	Route::post('discharge-planning', [DischargePlanningController::class, 'create']);
-	Route::get('discharge-planning/print', [DischargePlanningController::class, 'print']);
-	Route::get('discharge-planning', [DischargePlanningController::class, 'get']);
+	Route::post('discharge-planning', [DischargePlanningController::class, 'create'])->name('discharge-planning.create');
+	Route::get('discharge-planning/print', [DischargePlanningController::class, 'print'])->name('discharge-planning.print');
+	Route::get('discharge-planning', [DischargePlanningController::class, 'get'])->name('discharge-planning.get');
+	Route::delete('discharge-planning', [DischargePlanningController::class, 'delete'])->name('discharge-planning.delete');
 
 	Route::get('transfer/pasien/antar-ruang', [\App\Http\Controllers\TransferPasienAntarRuangController::class, 'get']);
 	Route::post('transfer/pasien/antar-ruang', [\App\Http\Controllers\TransferPasienAntarRuangController::class, 'create']);

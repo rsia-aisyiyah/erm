@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDishcarePlanning;
 use App\Models\DischargePlanning;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -17,40 +20,17 @@ class DischargePlanningController extends Controller
         $this->track = new TrackerSqlController();
     }
 
-    function create(Request $request)
+    function create(StoreDishcarePlanning $request)
     {
-        $data = [
-            'no_rawat' => $request->no_rawat,
-            'tanggal' => date('Y-m-d H:i:s'),
-            'rencana_rawat' => $request->rencana_rawat,
-            'tgl_rencana_pulang' => date('Y-m-d H:i:s', strtotime($request->tgl_rencana_pulang)),
-            'diagnosa_keluar' => $request->diagnosa_keluar,
-            'kondisi_pulang' => $request->kondisi_pulang,
-            'mobilisasi' => $request->mobilisasi,
-            'alat_terpasang' => $request->alat_terpasang,
-            'penyuluhan' => $request->penyuluhan,
-            'penyuluhan_lain' => $request->penyuluhan_lain,
-            'dokumen_penunjang' => $request->dokumen_penunjang,
-            'obat_pulang' => $request->obat_pulang,
-            'target_asuhan' => $request->target_asuhan,
-            'diet_dirumah' => $request->diet_dirumah,
-            'instruksi' => $request->instruksi,
-            'nip' => session()->get('pegawai')->nik
-        ];
 
-        $validate = $request->validate([
-            'rencana_rawat' => ['required', 'integer', 'min:0', 'gt:0'],
-            'tgl_rencana_pulang' => 'required',
-            'diagnosa_keluar' => 'required',
-        ]);
+        $data = $request->validated();
 
-        $get = $this->modal->where('no_rawat', $request->no_rawat)
-            ->with(['petugas'])
-            ->first();
+        $isExist = $this->modal->find($request->no_rawat);
 
-        if ($get) {
+        if ($isExist) {
             return $this->update($request);
         }
+        $data['tanggal'] = Carbon::now()->format('Y-m-d H:i:s');
         try {
             $create = $this->modal->create($data);
             if ($create) {
@@ -62,47 +42,22 @@ class DischargePlanningController extends Controller
         return response()->json(['status' => 'success', 'data' => $data], 201);
     }
 
-    function get(Request $request)
+
+    function update(StoreDishcarePlanning $request)
     {
-        $get = $this->modal->where('no_rawat', $request->no_rawat)
-            ->with(['petugas'])
-            ->first();
-        return response()->json($get);
-    }
 
-    function update(Request $request)
-    {
-        $data = [
-            'no_rawat' => $request->no_rawat,
-            'tanggal' => date('Y-m-d H:i:s'),
-            'rencana_rawat' => $request->rencana_rawat,
-            'tgl_rencana_pulang' => date('Y-m-d H:i:s', strtotime($request->tgl_rencana_pulang)),
-            'diagnosa_keluar' => $request->diagnosa_keluar,
-            'kondisi_pulang' => $request->kondisi_pulang,
-            'mobilisasi' => $request->mobilisasi,
-            'alat_terpasang' => $request->alat_terpasang,
-            'penyuluhan' => $request->penyuluhan,
-            'penyuluhan_lain' => $request->penyuluhan_lain,
-            'dokumen_penunjang' => $request->dokumen_penunjang,
-            'obat_pulang' => $request->obat_pulang,
-            'target_asuhan' => $request->target_asuhan,
-            'diet_dirumah' => $request->diet_dirumah,
-            'instruksi' => $request->instruksi,
-            'nip' => session()->get('pegawai')->nik
-        ];
+        $data = $request->validated();
+        $user = session()->get('pegawai')->nik;
 
-        $validate = $request->validate([
-            'rencana_rawat' => ['required', 'integer', 'min:0', 'gt:0'],
-            'tgl_rencana_pulang' => 'required',
-            'diagnosa_keluar' => 'required',
-        ]);
-
-        if ($data['nip'] !== $request->nip) {
+        if ($user !== $request->nip) {
             return response()->json('Anda tidak dapat mengubah data ini, Hubungi perawat penanggung jawab pasien', 401);
         }
 
         try {
-            $update = $this->modal->where('no_rawat', $request->no_rawat)->update($data);
+
+            $update = $this->modal->findOrFail($request->no_rawat);
+            $update->fill($data);
+            $update->save();
             if ($update) {
                 $this->track->updateSql($this->modal, $data, ['no_rawat' => $request->no_rawat]);
                 return response()->json(['status' => 'success update', 'data' => $data], 200);
@@ -113,6 +68,41 @@ class DischargePlanningController extends Controller
         return response()->json(null, 200);
 
 
+    }
+
+    public function get(Request $request)
+    {
+
+        try {
+            $data = $this->modal->with(['petugas', 'regPeriksa.dokter', 'pasien'])->find($request->no_rawat);
+            return response()->json($data, 200);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        $nip = session()->get('pegawai')->nik;
+        $nip2 = $request->nip;
+        if ($nip !== $nip2) {
+            return response()->json('Anda tidak dapat menghapus data ini, Hubungi perawat penanggung jawab pasien', 401);
+
+        }
+
+        $data = $this->modal->findOrFail($request->no_rawat);
+
+        if (!$data) {
+            return response()->json(['status' => 'not found'], 404);
+        }
+
+        try {
+            $data->delete();
+            $this->track->deleteSql($this->modal, ['no_rawat' => $request->no_rawat]);
+            return response()->json(['status' => 'success delete'], 200);
+        } catch (QueryException $e) {
+            return response()->json($e->errorInfo, 500);
+        }
     }
 
     public function print(Request $request)

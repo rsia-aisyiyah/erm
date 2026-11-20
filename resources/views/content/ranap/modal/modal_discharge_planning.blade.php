@@ -1,3 +1,485 @@
+@push('style')
+    <style>
+        /* ==========================================
+                                                                                   DISCHARGE PLANNING - MODERN CLINICAL UI
+                                                                                ========================================== */
+
+        #modalDischargePlanning,
+        #modalObatDischargePlanning {
+            --dp-primary: #247b66;
+            --dp-primary-dark: #195d4e;
+            --dp-bg: #f5f8fa;
+            --dp-border: #e2e8f0;
+            --dp-text: #263746;
+            --dp-muted: #718096;
+            --dp-radius: 12px;
+        }
+
+        /* Modal */
+        #modalDischargePlanning .modal-dialog {
+            width: calc(100% - 24px);
+            max-width: 1440px;
+            margin: 12px auto;
+        }
+
+        #modalObatDischargePlanning .modal-dialog {
+            width: calc(100% - 24px);
+            max-width: 1000px;
+            margin: 12px auto;
+        }
+
+        #modalDischargePlanning .modal-content,
+        #modalObatDischargePlanning .modal-content {
+            border: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(15, 35, 50, .15);
+        }
+
+        /* Header */
+        #modalDischargePlanning .modal-header,
+        #modalObatDischargePlanning .modal-header {
+            padding: 18px 24px;
+            background: linear-gradient(120deg, #247b66, #319783);
+            color: white;
+            border-bottom: 0;
+        }
+
+        #modalDischargePlanning .modal-title,
+        #modalObatDischargePlanning .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            color: white;
+        }
+
+        #modalDischargePlanning .modal-header .btn-close,
+        #modalObatDischargePlanning .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+            opacity: .9;
+        }
+
+        /* Body */
+        #modalDischargePlanning .modal-body,
+        #modalObatDischargePlanning .modal-body {
+            padding: 24px;
+            background: var(--dp-bg);
+        }
+
+        /* Patient Information */
+        #modalDischargePlanning #formDischargePlanning>.row:first-child {
+            background: white;
+            border: 1px solid var(--dp-border);
+            border-radius: var(--dp-radius);
+            padding: 16px 8px;
+            margin: 0;
+            box-shadow: 0 2px 8px rgba(15, 35, 50, .03);
+        }
+
+        #modalDischargePlanning .form-label,
+        #modalObatDischargePlanning .form-label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--dp-text);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .15px;
+        }
+
+        #modalDischargePlanning .form-control,
+        #modalDischargePlanning .form-select,
+        #modalObatDischargePlanning .form-control,
+        #modalObatDischargePlanning .form-select {
+            min-height: 38px;
+            border: 1px solid #dce4eb;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--dp-text);
+            background-color: #fff;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        #modalDischargePlanning .form-control:focus,
+        #modalDischargePlanning .form-select:focus,
+        #modalObatDischargePlanning .form-control:focus,
+        #modalObatDischargePlanning .form-select:focus {
+            border-color: var(--dp-primary);
+            box-shadow: 0 0 0 3px rgba(36, 123, 102, .12);
+        }
+
+        #modalDischargePlanning #formDischargePlanning>.row:first-child .form-control[readonly] {
+            background: #f5f8fa;
+            color: #536575;
+            font-weight: 600;
+        }
+
+        /* Separator */
+        #modalDischargePlanning .modal-body>hr {
+            border-color: var(--dp-border);
+            opacity: 1;
+            margin: 20px 0;
+        }
+
+        /* Alert */
+        #modalDischargePlanning #alertDischargePlanning {
+            border: 1px solid #b8e5d1;
+            border-radius: 10px;
+            background: #eaf8f0;
+            color: #176343;
+            padding: 12px 16px !important;
+            margin-bottom: 18px;
+        }
+
+        /* Main Form Section */
+        #modalDischargePlanning .sectionMonitoring {
+            row-gap: 16px !important;
+        }
+
+        #modalDischargePlanning .sectionMonitoring>div {
+            min-width: 0;
+        }
+
+        /* Fieldset */
+        #modalDischargePlanning fieldset,
+        #modalObatDischargePlanning fieldset {
+            min-width: 0;
+            height: 100%;
+            padding: 16px !important;
+            border: 1px solid var(--dp-border) !important;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(15, 35, 50, .025);
+        }
+
+        #modalDischargePlanning fieldset legend,
+        #modalObatDischargePlanning fieldset legend {
+            float: none;
+            width: auto;
+            max-width: 95%;
+            padding: 0 8px;
+            margin-bottom: 8px;
+            color: var(--dp-primary-dark);
+            font-size: 12px !important;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        /* Radio & Checkbox */
+        #modalDischargePlanning .form-check,
+        #modalObatDischargePlanning .form-check {
+            margin: 5px 10px 5px 0;
+            min-height: 24px;
+        }
+
+        #modalDischargePlanning .form-check-input,
+        #modalObatDischargePlanning .form-check-input {
+            width: 16px;
+            height: 16px;
+            margin-top: .15em;
+            cursor: pointer;
+            border-color: #b8c5ce;
+        }
+
+        #modalDischargePlanning .form-check-input:checked,
+        #modalObatDischargePlanning .form-check-input:checked {
+            background-color: var(--dp-primary);
+            border-color: var(--dp-primary);
+        }
+
+        #modalDischargePlanning .form-check-label,
+        #modalObatDischargePlanning .form-check-label {
+            font-size: 12px;
+            color: #455565;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        /* Input Group */
+        #modalDischargePlanning .input-group,
+        #modalObatDischargePlanning .input-group {
+            flex-wrap: wrap;
+        }
+
+        #modalDischargePlanning .input-group-text,
+        #modalObatDischargePlanning .input-group-text {
+            background: #f1f5f7;
+            border-color: #dce4eb;
+            color: var(--dp-muted);
+            font-size: 12px;
+        }
+
+        /* Underline Input */
+        #modalDischargePlanning .form-underline {
+            border: 0;
+            border-bottom: 1px solid #b8c5ce;
+            border-radius: 0;
+            background: transparent;
+            min-height: 30px;
+            box-shadow: none;
+        }
+
+        #modalDischargePlanning .form-underline:focus {
+            border-bottom: 2px solid var(--dp-primary);
+        }
+
+        /* Textarea */
+        #modalDischargePlanning textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.6;
+            padding: 12px;
+            background: #fff;
+        }
+
+        /* Search Link */
+        #modalDischargePlanning a[onclick*="showModalObatDischargePlanning"] {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            border-radius: 7px;
+            color: var(--dp-primary);
+            background: #e8f5f0;
+            text-decoration: none;
+        }
+
+        #modalDischargePlanning a[onclick*="showModalObatDischargePlanning"]:hover {
+            background: var(--dp-primary);
+            color: white;
+        }
+
+        /* Tables */
+        #modalDischargePlanning #tableObatDischargePlanning,
+        #modalObatDischargePlanning #tbResepObatPulangDischarge {
+            width: 100%;
+            min-width: 600px;
+            border-color: var(--dp-border);
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        #modalDischargePlanning #tableObatDischargePlanning thead th,
+        #modalObatDischargePlanning #tbResepObatPulangDischarge thead th {
+            padding: 12px;
+            background: #edf4f2;
+            color: #285d50;
+            font-weight: 700;
+            white-space: nowrap;
+            border-color: var(--dp-border);
+        }
+
+        #modalDischargePlanning #tableObatDischargePlanning tbody td,
+        #modalObatDischargePlanning #tbResepObatPulangDischarge tbody td {
+            padding: 10px 12px;
+            border-color: var(--dp-border);
+        }
+
+        #modalDischargePlanning #tableObatDischargePlanning tbody tr:hover,
+        #modalObatDischargePlanning #tbResepObatPulangDischarge tbody tr:hover {
+            background: #f0f8f5;
+        }
+
+        /* Modal Obat */
+        #modalObatDischargePlanning .alert-warning {
+            background: #fff8e7;
+            border: 1px solid #f2dfaa;
+            color: #89631c;
+            border-radius: 8px;
+        }
+
+        /* Section Title */
+        #modalObatDischargePlanning h5 {
+            color: var(--dp-text);
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 22px;
+        }
+
+        /* Footer */
+        #modalDischargePlanning .modal-footer,
+        #modalObatDischargePlanning .modal-footer {
+            padding: 14px 24px;
+            background: white;
+            border-top: 1px solid var(--dp-border);
+        }
+
+        #modalDischargePlanning .modal-footer .btn,
+        #modalObatDischargePlanning .modal-footer .btn {
+            min-height: 36px;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all .2s;
+        }
+
+        #modalDischargePlanning .btn-primary,
+        #modalObatDischargePlanning .btn-primary {
+            background: var(--dp-primary);
+            border-color: var(--dp-primary);
+        }
+
+        #modalDischargePlanning .btn-primary:hover,
+        #modalObatDischargePlanning .btn-primary:hover {
+            background: var(--dp-primary-dark);
+            border-color: var(--dp-primary-dark);
+        }
+
+        /* Select2 */
+        #modalDischargePlanning .select2-container,
+        #modalObatDischargePlanning .select2-container {
+            width: 100% !important;
+        }
+
+        #modalDischargePlanning .select2-container--default .select2-selection--single,
+        #modalObatDischargePlanning .select2-container--default .select2-selection--single {
+            min-height: 38px;
+            height: auto;
+            border: 1px solid #dce4eb;
+            border-radius: 8px;
+        }
+
+        #modalDischargePlanning .select2-container--default .select2-selection--single .select2-selection__rendered,
+        #modalObatDischargePlanning .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 36px;
+            font-size: 13px;
+        }
+
+        #modalDischargePlanning .select2-container--default .select2-selection--single .select2-selection__arrow,
+        #modalObatDischargePlanning .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
+
+        /* ==========================================
+                                                                                   RESPONSIVE TABLET
+                                                                                ========================================== */
+
+        @media (max-width: 991.98px) {
+
+            #modalDischargePlanning .modal-dialog,
+            #modalObatDischargePlanning .modal-dialog {
+                max-width: calc(100% - 20px);
+            }
+
+            #modalDischargePlanning .modal-body,
+            #modalObatDischargePlanning .modal-body {
+                padding: 18px;
+            }
+        }
+
+        /* ==========================================
+                                                                                   RESPONSIVE MOBILE
+                                                                                ========================================== */
+
+        @media (max-width: 575.98px) {
+
+            #modalDischargePlanning .modal-dialog,
+            #modalObatDischargePlanning .modal-dialog {
+                width: calc(100% - 12px);
+                max-width: none;
+                margin: 6px auto;
+            }
+
+            #modalDischargePlanning .modal-content,
+            #modalObatDischargePlanning .modal-content {
+                border-radius: 12px;
+            }
+
+            #modalDischargePlanning .modal-header,
+            #modalObatDischargePlanning .modal-header {
+                padding: 14px 16px;
+            }
+
+            #modalDischargePlanning .modal-title,
+            #modalObatDischargePlanning .modal-title {
+                font-size: 13px;
+            }
+
+            #modalDischargePlanning .modal-body,
+            #modalObatDischargePlanning .modal-body {
+                padding: 12px;
+            }
+
+            #modalDischargePlanning #formDischargePlanning>.row:first-child {
+                padding: 12px 6px;
+            }
+
+            #modalDischargePlanning .sectionMonitoring {
+                row-gap: 12px !important;
+            }
+
+            #modalDischargePlanning fieldset,
+            #modalObatDischargePlanning fieldset {
+                padding: 12px !important;
+            }
+
+            #modalDischargePlanning .form-check,
+            #modalObatDischargePlanning .form-check {
+                margin-right: 6px;
+            }
+
+            #modalDischargePlanning .form-check-label,
+            #modalObatDischargePlanning .form-check-label {
+                font-size: 11px;
+            }
+
+            #modalDischargePlanning #tableObatDischargePlanning,
+            #modalObatDischargePlanning #tbResepObatPulangDischarge {
+                font-size: 11px;
+            }
+
+            #modalDischargePlanning .modal-footer {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 12px;
+            }
+
+            #modalDischargePlanning .modal-footer>div {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            #modalDischargePlanning .modal-footer .btn,
+            #modalObatDischargePlanning .modal-footer .btn {
+                padding: 7px 10px;
+                font-size: 11px;
+            }
+
+            #modalDischargePlanning textarea.form-control {
+                min-height: 100px;
+            }
+
+            /* Input Group - Seamless Border Radius */
+            #modalDischargePlanning .input-group> :not(:first-child),
+            #modalObatDischargePlanning .input-group> :not(:first-child) {
+                border-top-left-radius: 0 !important;
+                border-bottom-left-radius: 0 !important;
+            }
+
+            #modalDischargePlanning .input-group> :not(:last-child),
+            #modalObatDischargePlanning .input-group> :not(:last-child) {
+                border-top-right-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
+            }
+
+            /* Hindari border ganda pada sambungan */
+            #modalDischargePlanning .input-group>*+*,
+            #modalObatDischargePlanning .input-group>*+* {
+                margin-left: -1px;
+            }
+
+            /* Fokus tetap terlihat */
+            #modalDischargePlanning .input-group .form-control:focus,
+            #modalObatDischargePlanning .input-group .form-control:focus {
+                position: relative;
+                z-index: 3;
+            }
+        }
+    </style>
+@endpush
 <div class="modal fade" id="modalDischargePlanning" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
@@ -52,8 +534,8 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label for="petugas" class="form-label">Petugas</label>
                             <x-input-group class="input-group-sm">
-                                <x-input id="nip" name="nip" value="{{ session()->get('pegawai')->nik }}" readonly />
-                                <x-input id="petugas" name="petugas" value="{{ session()->get('pegawai')->nama }}" class="w-25" readonly />
+                                <x-input id="nip" name="nip" value="{{ session()->get('pegawai')->nik }}" readonly style="border-top-right-radius:0px;border-bottom-right-radius:0px" />
+                                <x-input id="petugas" name="petugas" value="{{ session()->get('pegawai')->nama }}" class="w-25" readonly style="border-top-left-radius:0px;border-bottom-left-radius:0px" />
                             </x-input-group>
                         </div>
                         <div class="col-lg-2 col-md-6 col-sm-12">
@@ -62,8 +544,8 @@
                         </div>
                         <div class="col-lg-2 col-md-6 col-sm-12">
                             <label for="rencana_rawat" class="form-label">Rencana Rawat</label>
-                            <x-input-group class="input-group-sm">
-                                <x-input id="rencana_rawat" name="rencana_rawat" type="number" value=0 />
+                            <x-input-group>
+                                <x-input id="rencana_rawat" name="rencana_rawat" type="number" value=0 style="border-top-right-radius:0px;border-bottom-right-radius:0px" />
                                 <x-input-group-text>
                                     Hari
                                 </x-input-group-text>
@@ -220,7 +702,6 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label for="instruksi" class="form-label">Instruksi Tindak Lanjut</label>
                             <textarea id="instruksi" name="instruksi" class="form-control form-control-sm" rows="5" style="min-height: 120px;" placeholder="Instruksi tindak lanjut">-</textarea>
-                            @csrf
                         </div>
 
 
@@ -229,16 +710,24 @@
             </div>
             <div class="modal-footer d-flex justify-content-between align-items-center">
 
-                <button type="button" class="btn btn-secondary btn-sm" id="btnPrintDischargePlanning" style="font-size:12px">
-                    <i class="bi bi-printer me-1"></i> Print
-                </button>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm" id="btnPrintDischargePlanning">
+                        <i class="bi bi-printer me-1"></i> Print
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm d-none" id="btnDeleteDischargePlanning">
+                        <i class="bi bi-trash me-1"></i> Hapus
+                    </button>
+                </div>
+
 
                 <div>
-                    <button type="button" class="btn btn-primary btn-sm" id="btnCreateDischargePlanning" style="font-size:12px">
+                    <button type="button" class="btn btn-primary btn-sm" id="btnCreateDischargePlanning">
                         <i class="bi bi-save me-1"></i> Simpan
                     </button>
 
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" style="font-size:12px">
+
+
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle me-1"></i> Keluar
                     </button>
                 </div>
@@ -329,6 +818,7 @@
         const btnPrintDischargePlanning = $('#btnPrintDischargePlanning');
         const selectObatDischargePlanning = formObatDischargePlanning.find('select[name=obat]');
         const btnCreateObatDischargePlanning = $('#btnCreateObatDischargePlanning');
+        const btnDeleteDischargePlanning = $('#btnDeleteDischargePlanning');
         const tableObatDischargePlanning = $('#tableObatDischargePlanning');
         const tbResepObatPulangDischarge = $('#tbResepObatPulangDischarge');
 
@@ -449,7 +939,7 @@
         btnCreateDischargePlanning.on('click', (e) => {
             e.preventDefault();
             const form = $(`#formDischargePlanning`);
-            const data = getDataForm('#formDischargePlanning', ['input', 'select', 'checkbox', 'radio']);
+            const data = getDataForm('#formDischargePlanning', ['input', 'select', 'checkbox', 'radio', 'textarea']);
             const obat = tableObatDischargePlanning.find('tbody');
             const tanggal_rencana = data['tgl_rencana_pulang'].split(' ')[0];
             const jam_rencana = data['tgl_rencana_pulang'].split(' ')[1];
@@ -490,8 +980,7 @@
                 data['obat_pulang'] = obatData;
             }
 
-
-            $.post(`${url}/discharge-planning`, data).done((response) => {
+            $.post("{{ route('discharge-planning.create') }}", data).done((response) => {
                 alertSuccessAjax()
                 modalDischargePlanning.modal('hide')
                 $('#formDischargePlanning').trigger('reset')
@@ -573,10 +1062,9 @@
 
 
 
-                $.get(`${url}/discharge-planning`, {
+                $.get("{{ route('discharge-planning.get') }}", {
                     no_rawat: no_rawat
-                }).done((response) => {
-
+                }).done((response, index, data) => {
                     if (Object.values(response).length) {
                         $('.tgl_input').text(formatTanggal(response.tanggal));
                         $('.petugas_input').text(response.petugas.nama);
@@ -603,12 +1091,18 @@
                         setPenyuluhanDischargePlanning(response.penyuluhan)
                         setDokumenDischargePlanning(response.dokumen_penunjang)
                         setObatDischargePlanning(response.obat_pulang)
+                        btnCreateDischargePlanning.addClass('btn-warning').removeClass('btn-primary').html('<i class="bi bi-pencil me-1"></i> Ubah');
+                        btnDeleteDischargePlanning.removeClass('d-none');
                     } else {
+                        btnDeleteDischargePlanning.addClass('d-none');
+                        btnCreateDischargePlanning.removeClass('btn-warning').addClass('btn-primary').html('<i class="bi bi-save me-1"></i> Simpan');
                         formDischargePlanning.find('input[name=petugas]').val("{{ session()->get('pegawai')->nama }}");
                         formDischargePlanning.find('input[name=nip]').val("{{ session()->get('pegawai')->nik }}");
                         btnPrintDischargePlanning.attr('disabled', true).removeAttr('onclick');
                     }
 
+                }).fail((error) => {
+                    console.log(error)
                 })
                 modalDischargePlanning.modal('show')
 
@@ -735,5 +1229,52 @@
 
         //     })
         // }
+        btnDeleteDischargePlanning.on('click', () => {
+            const no_rawat = formDischargePlanning.find('input[name=no_rawat]').val();
+            const nip = formDischargePlanning.find('input[name=nip]').val();
+            const nip2 = "{{ session()->get('pegawai')->nik }}"
+            if (nip !== nip2) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal !',
+                    text: 'Hanya petugas yang membuat discharge planning yang bisa menghapusnya',
+                })
+                return false;
+
+            }
+            Swal.fire({
+                title: 'Yakin ?',
+                text: "Anda tidak bisa mengembalikan lagi",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus saja!',
+                cancelButtonText: 'Jangan',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('discharge-planning.delete') }}",
+                        method: 'DELETE',
+                        data: {
+                            no_rawat: no_rawat,
+                            nip: nip
+                        }
+                    }).done((response) => {
+                        alertSuccessAjax()
+                        modalDischargePlanning.modal('hide')
+                        $('#formDischargePlanning').trigger('reset')
+                        tb_ranap();
+                    }).fail((error) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal !',
+                            text: error.responseJSON,
+                        })
+                    })
+                }
+
+            })
+        })
     </script>
 @endpush
