@@ -31,7 +31,22 @@ class BookingOperasi extends Model
 
     public function laporanOperasi()
     {
-        return $this->hasOne(RsiaOperasi::class, 'no_rawat', 'no_rawat');
+        return $this->hasOne(RsiaOperasiSafe::class, 'no_rawat', 'no_rawat');
+    }
+
+    public function laporanOperasiSafe()
+    {
+        return $this->hasOne(RsiaOperasiSafe::class, 'no_rawat', 'no_rawat');
+    }
+
+    public function laporanOperasiKhanza()
+    {
+        return $this->hasOne(LaporanOperasi::class, 'no_rawat', 'no_rawat');
+    }
+
+    public function operasiKhanza()
+    {
+        return $this->hasOne(Operasi::class, 'no_rawat', 'no_rawat');
     }
 }
 

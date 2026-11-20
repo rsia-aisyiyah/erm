@@ -356,7 +356,7 @@
                     }
 
                     // Status Laporan Operasi
-                    const hasLaporan = !!item.laporan_operasi;
+                    const hasLaporan = !!(item.laporan_operasi || item.laporan_operasi_safe || item.laporan_operasi_khanza || item.operasi_khanza);
                     const badgeLaporan = hasLaporan
                         ? `<span class="badge bg-success text-white py-1 px-1.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-check-all me-0.5"></i>Terisi</span>`
                         : `<span class="badge bg-secondary-subtle text-muted border py-1 px-1.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-dash-circle me-0.5"></i>Belum</span>`;

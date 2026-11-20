@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\BookingOperasi;
 use App\Models\Dokter;
 use App\Models\LaporanOperasi;
+use App\Models\Operasi;
 use App\Models\PaketOperasi;
 use App\Models\Petugas;
 use App\Models\RegPeriksa;
 use App\Models\RsiaOperasi;
+use App\Models\RsiaOperasiSafe;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Exception;
@@ -57,7 +59,9 @@ class OperasiController extends Controller
             },
             'paketOperasi',
             'dokter',
-            'laporanOperasi',
+            'laporanOperasiSafe.operatorSatu',
+            'laporanOperasiKhanza',
+            'operasiKhanza',
         ])
         ->whereBetween('tanggal', [$tglAwal, $tglAkhir]);
 
@@ -86,6 +90,11 @@ class OperasiController extends Controller
         $data = $query->orderBy('tanggal', 'asc')
             ->orderBy('jam_mulai', 'asc')
             ->get();
+
+        $data->transform(function ($item) {
+            $item->laporan_operasi = $item->laporanOperasiSafe ?? $item->laporanOperasiKhanza ?? $item->operasiKhanza;
+            return $item;
+        });
 
         return response()->json([
             'status' => true,
@@ -211,7 +220,7 @@ class OperasiController extends Controller
     {
         $noRawat = str_replace('-', '/', $request->no_rawat);
 
-        $laporan = RsiaOperasi::with([
+        $laporan = RsiaOperasiSafe::with([
             'regPeriksa.pasien',
             'paketOperasi',
             'operatorSatu',
@@ -226,8 +235,27 @@ class OperasiController extends Controller
         ->where('no_rawat', $noRawat)
         ->first();
 
-        // Fallback jika belum ada di rsia_operasi, ambil info awal dari booking_operasi / reg_periksa
+        // Fallback jika belum ada di rsia_operasi_safe, cek rsia_operasi legacy
         if (!$laporan) {
+            $laporan = RsiaOperasi::with([
+                'regPeriksa.pasien',
+                'paketOperasi',
+                'operatorSatu',
+                'dokterAnestesi',
+                'dokterAnak',
+                'asistenOperatorSatu',
+                'asistenOperatorDua',
+                'asistenAnestesiPetugas',
+                'onloopPetugas',
+                'bookingOperasi',
+            ])
+            ->where('no_rawat', $noRawat)
+            ->first();
+        }
+
+        // Fallback jika belum ada di rsia_operasi_safe/rsia_operasi, cek laporan_operasi Khanza atau booking
+        if (!$laporan) {
+            $khanza = LaporanOperasi::where('no_rawat', $noRawat)->first();
             $booking = BookingOperasi::with(['regPeriksa.pasien', 'paketOperasi', 'dokter'])
                 ->where('no_rawat', $noRawat)
                 ->first();
@@ -235,6 +263,31 @@ class OperasiController extends Controller
             $regPeriksa = RegPeriksa::with(['pasien', 'dokter'])
                 ->where('no_rawat', $noRawat)
                 ->first();
+
+            if ($khanza) {
+                return response()->json([
+                    'status' => true,
+                    'is_new' => false,
+                    'data' => [
+                        'no_rawat' => $noRawat,
+                        'reg_periksa' => $booking->regPeriksa ?? $regPeriksa,
+                        'pasien' => $booking->regPeriksa->pasien ?? ($regPeriksa->pasien ?? null),
+                        'kode_paket' => $booking->kode_paket ?? '',
+                        'operator1' => $booking->kd_dokter ?? ($regPeriksa->kd_dokter ?? ''),
+                        'tgl_operasi' => $khanza->tanggal ?: ($booking ? $booking->tanggal . ' ' . $booking->jam_mulai : date('Y-m-d H:i:s')),
+                        'tgl_selesai' => $khanza->selesaioperasi ?: ($booking ? $booking->tanggal . ' ' . $booking->jam_selesai : date('Y-m-d H:i:s')),
+                        'kategori' => 'Elektive',
+                        'jenis_anestesi' => 'GA',
+                        'pemeriksaan_pa' => $khanza->permintaan_pa ?: 'Tidak',
+                        'diagnosa_preop' => $khanza->diagnosa_preop ?: '',
+                        'diagnosa_postop' => $khanza->diagnosa_postop ?: '',
+                        'jaringan_insisi' => $khanza->jaringan_dieksekusi ?: '',
+                        'laporan_operasi' => $khanza->laporan_operasi ?: '',
+                        'dr_anestesi_hadir' => 'Ya',
+                        'dr_anak_hadir' => 'Tidak',
+                    ],
+                ]);
+            }
 
             return response()->json([
                 'status' => true,
@@ -248,7 +301,7 @@ class OperasiController extends Controller
                     'tgl_selesai' => $booking ? $booking->tanggal . ' ' . $booking->jam_selesai : date('Y-m-d H:i:s'),
                     'kategori' => 'Elektive',
                     'jenis_anestesi' => 'GA',
-                    'permintaan_pa' => 'Tidak',
+                    'pemeriksaan_pa' => 'Tidak',
                     'dr_anestesi_hadir' => 'Ya',
                     'dr_anak_hadir' => 'Tidak',
                 ],
@@ -302,31 +355,33 @@ class OperasiController extends Controller
                 'dr_anak_hadir' => $request->dr_anak_hadir ?: 'Tidak',
             ];
 
-            // Cek apakah sudah ada di rsia_operasi
-            $exists = DB::table('rsia_operasi')->where('no_rawat', $noRawat)->exists();
-            if ($exists) {
-                DB::table('rsia_operasi')->where('no_rawat', $noRawat)->update($dataPayload);
-            } else {
-                DB::table('rsia_operasi')->insert($dataPayload);
-            }
+            // Upsert ke tabel utama rsia_operasi_safe
+            DB::table('rsia_operasi_safe')->updateOrInsert(
+                ['no_rawat' => $noRawat],
+                $dataPayload
+            );
+
+            // Upsert juga ke rsia_operasi bila tabel ada
+            try {
+                DB::table('rsia_operasi')->updateOrInsert(
+                    ['no_rawat' => $noRawat],
+                    $dataPayload
+                );
+            } catch (\Throwable $e) {}
 
             // Sinkronkan juga ke tabel standar Khanza laporan_operasi
-            $existsLegacy = DB::table('laporan_operasi')->where('no_rawat', $noRawat)->exists();
-            $legacyPayload = [
-                'no_rawat' => $noRawat,
-                'tanggal' => $request->tgl_operasi,
-                'diagnosa_preop' => $request->diagnosa_preop ?: '-',
-                'diagnosa_postop' => $request->diagnosa_postop ?: '-',
-                'jaringan_dieksekusi' => $request->jaringan_insisi ?: '-',
-                'selesaioperasi' => $request->tgl_selesai,
-                'permintaan_pa' => $request->pemeriksaan_pa === 'Ya' ? 'Ya' : 'Tidak',
-                'laporan_operasi' => $request->laporan_operasi ?: '-',
-            ];
-            if ($existsLegacy) {
-                DB::table('laporan_operasi')->where('no_rawat', $noRawat)->update($legacyPayload);
-            } else {
-                DB::table('laporan_operasi')->insert($legacyPayload);
-            }
+            DB::table('laporan_operasi')->updateOrInsert(
+                ['no_rawat' => $noRawat],
+                [
+                    'tanggal' => $request->tgl_operasi,
+                    'diagnosa_preop' => $request->diagnosa_preop ?: '-',
+                    'diagnosa_postop' => $request->diagnosa_postop ?: '-',
+                    'jaringan_dieksekusi' => $request->jaringan_insisi ?: '-',
+                    'selesaioperasi' => $request->tgl_selesai,
+                    'permintaan_pa' => $request->pemeriksaan_pa === 'Ya' ? 'Ya' : 'Tidak',
+                    'laporan_operasi' => $request->laporan_operasi ?: '-',
+                ]
+            );
 
             // Update status booking_operasi menjadi Selesai bila ada
             DB::table('booking_operasi')
@@ -357,6 +412,7 @@ class OperasiController extends Controller
 
         DB::beginTransaction();
         try {
+            DB::table('rsia_operasi_safe')->where('no_rawat', $noRawat)->delete();
             DB::table('rsia_operasi')->where('no_rawat', $noRawat)->delete();
             DB::table('laporan_operasi')->where('no_rawat', $noRawat)->delete();
 
@@ -382,7 +438,7 @@ class OperasiController extends Controller
     {
         $noRawat = str_replace('-', '/', $no_rawat);
 
-        $laporan = RsiaOperasi::with([
+        $laporan = RsiaOperasiSafe::with([
             'regPeriksa.pasien',
             'regPeriksa.kamarInap' => function ($q) {
                 $q->where('stts_pulang', '-')->with('kamar.bangsal');
@@ -398,6 +454,29 @@ class OperasiController extends Controller
         ])
         ->where('no_rawat', $noRawat)
         ->first();
+
+        if (!$laporan) {
+            $laporan = RsiaOperasi::with([
+                'regPeriksa.pasien',
+                'regPeriksa.kamarInap' => function ($q) {
+                    $q->where('stts_pulang', '-')->with('kamar.bangsal');
+                },
+                'paketOperasi',
+                'operatorSatu',
+                'dokterAnestesi',
+                'dokterAnak',
+                'asistenOperatorSatu',
+                'asistenOperatorDua',
+                'asistenAnestesiPetugas',
+                'onloopPetugas',
+            ])
+            ->where('no_rawat', $noRawat)
+            ->first();
+        }
+
+        if (!$laporan) {
+            abort(404, 'Laporan operasi untuk nomor rawat ini belum tersedia.');
+        }
 
         if (!$laporan) {
             abort(404, 'Laporan operasi untuk nomor rawat ini belum tersedia.');
