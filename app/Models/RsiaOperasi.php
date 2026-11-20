@@ -64,3 +64,4 @@ class RsiaOperasi extends Model
         return $this->hasOne(BookingOperasi::class, 'no_rawat', 'no_rawat');
     }
 }
+

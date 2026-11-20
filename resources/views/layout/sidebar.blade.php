@@ -18,6 +18,9 @@
 
     // Role check helper
     $isDireksiOrIt = ($nik === 'direksi' || $dept === 'DIR' || $jnj === 'DIRU' || $dept === 'IT' || $nik === '2.319.1017' || $nik === '2.424.0418' || $nik === '3.604.0123');
+
+    // Ambil menu dinamis dari database rsia_erm_menu
+    $groupedMenus = \App\Models\RsiaErmMenu::getMenusForUser($pegawai);
 @endphp
 
 <style>
@@ -134,6 +137,7 @@
     .icon-sep { background-color: #ecfdf5; color: #047857; }
     .icon-kyc { background-color: #fef3c7; color: #b45309; }
     .icon-log { background-color: #f1f5f9; color: #64748b; }
+    .icon-menu-manage { background-color: #fce7f3; color: #be185d; }
 
     /* Profil User Card di Footer Sidebar */
     .sidebar-user-footer {
@@ -208,220 +212,263 @@
     <div class="sidebar-scroll-wrapper">
         <ul class="nav flex-column mb-0">
 
-            <!-- 1. KELOMPOK PELAYANAN PASIEN (CORE KLINIS DOKTER) -->
-            <div class="sidebar-cat-title">
-                <span>Pelayanan Pasien</span>
-            </div>
+            @if ($groupedMenus->isNotEmpty())
+                {{-- ======================================================== --}}
+                {{-- 1. MODE DINAMIS (BERBASIS DATABASE rsia_erm_menu)       --}}
+                {{-- ======================================================== --}}
+                @foreach ($groupedMenus as $kategori => $menus)
+                    <div class="sidebar-cat-title {{ !$loop->first ? 'mt-2' : '' }}">
+                        <span>{{ $kategori }}</span>
+                    </div>
+                    @foreach ($menus as $m)
+                        @php
+                            $targetUrl = $m->url;
+                            if ($targetUrl === 'KYC_DYNAMIC') {
+                                $targetUrl = config('app.kyc') . '?nama=' . urlencode($nama) . '&nik=' . urlencode($nik);
+                            }
+                            $urlPath = parse_url($m->url, PHP_URL_PATH) ?? '';
+                            $cleanPath = ltrim($urlPath, '/');
+                            $cleanPath = preg_replace('/^erm\//', '', $cleanPath);
+                            $isActive = !empty($cleanPath) && (Request::is($cleanPath . '*') || Request::is('erm/' . $cleanPath . '*'));
+                        @endphp
+                        <li class="nav-item">
+                            <a class="erm-nav-link {{ $isActive ? 'active' : '' }}" 
+                               href="{{ $targetUrl }}" 
+                               target="{{ $m->target }}" 
+                               title="{{ $m->title ?: $m->nama_menu }}">
+                                <span class="erm-icon-box {{ $m->icon_bg }}"><i class="bi {{ $m->icon }}"></i></span>
+                                <span>{{ $m->nama_menu }}</span>
+                            </a>
+                        </li>
+                    @endforeach
+                @endforeach
+            @else
+                {{-- ======================================================== --}}
+                {{-- 2. MODE FALLBACK HARDCODED                               --}}
+                {{-- ======================================================== --}}
 
-            <!-- Poliklinik (Rawat Jalan) -->
-            @if (
-                (($isDireksiOrIt ||
-                    $dept == 'DPM1' ||
-                    $dept == 'DPM2' ||
-                    $dept == 'DM6' ||
-                    $dept == 'CSM' ||
-                    $dept == 'SPS' ||
-                    $dept == 'DM7' ||
-                    $nik == '' ||
-                    $isDokter) &&
-                    ($pegawai->jbtn ?? '') != 'Dokter Spesialis Radiologi'))
+                <!-- 1. KELOMPOK PELAYANAN PASIEN (CORE KLINIS DOKTER) -->
+                <div class="sidebar-cat-title">
+                    <span>Pelayanan Pasien</span>
+                </div>
+
+                <!-- Poliklinik (Rawat Jalan) -->
+                @if (
+                    (($isDireksiOrIt ||
+                        $dept == 'DPM1' ||
+                        $dept == 'DPM2' ||
+                        $dept == 'DM6' ||
+                        $dept == 'CSM' ||
+                        $dept == 'SPS' ||
+                        $dept == 'DM7' ||
+                        $nik == '' ||
+                        $isDokter) &&
+                        ($pegawai->jbtn ?? '') != 'Dokter Spesialis Radiologi'))
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('poliklinik*') ? 'active' : '' }}" href="/erm/poliklinik" title="Pelayanan Pasien Poliklinik (Rawat Jalan)">
+                            <span class="erm-icon-box icon-poli"><i class="bi bi-bandaid"></i></span>
+                            <span>Poliklinik</span>
+                        </a>
+                    </li>
+                @endif
+
+                <!-- Rawat Inap (Bangsal) -->
+                @if (
+                    $isDireksiOrIt ||
+                        $dept == 'DM3' ||
+                        $dept == 'DM7' ||
+                        $dept == 'SPS' ||
+                        $dept == 'DPM1' ||
+                        $dept == 'DNM5' ||
+                        $dept == 'DM4' ||
+                        $dept == 'DM5' ||
+                        $dept == 'DM2' ||
+                        $dept == 'DPM2' ||
+                        $dept == 'DM1' ||
+                        $dept == 'CSM' ||
+                        $dept == 'ICU' ||
+                        $isDokter)
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('ranap*') ? 'active' : '' }}" href="/erm/ranap" title="Pelayanan Pasien Rawat Inap & E-MAR">
+                            <span class="erm-icon-box icon-ranap"><i class="bi bi-hospital"></i></span>
+                            <span>Rawat Inap</span>
+                        </a>
+                    </li>
+                @endif
+
+                <!-- UGD (Gawat Darurat) -->
+                @if (
+                    $isDireksiOrIt ||
+                        $dept == 'DM1' ||
+                        $dept == 'CSM' ||
+                        $dept == 'DM7' ||
+                        $dept == 'SPS' ||
+                        $dept == 'DPM2' ||
+                        $isDokter)
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('ugd*') ? 'active' : '' }}" href="/erm/ugd" title="Instalasi Gawat Darurat (UGD)">
+                            <span class="erm-icon-box icon-ugd"><i class="bi bi-clipboard2-pulse"></i></span>
+                            <span>UGD</span>
+                        </a>
+                    </li>
+                @endif
+
+                <!-- Kamar Operasi (IBS) -->
+                @if (
+                    $isDireksiOrIt ||
+                        $dept == 'DM1' ||
+                        $dept == 'DM2' ||
+                        $dept == 'DM3' ||
+                        $dept == 'DM4' ||
+                        $dept == 'DM5' ||
+                        $dept == 'DM7' ||
+                        $dept == 'SPS' ||
+                        $dept == 'DPM1' ||
+                        $dept == 'DPM2' ||
+                        $dept == 'OK' ||
+                        $dept == 'IBS' ||
+                        $dept == 'CSM' ||
+                        $dept == 'ICU' ||
+                        $isDokter)
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('operasi*') ? 'active' : '' }}" href="/erm/operasi" title="Kamar Operasi (IBS) & Laporan Operasi">
+                            <span class="erm-icon-box icon-ok"><i class="bi bi-heart-pulse-fill"></i></span>
+                            <span>Kamar Operasi</span>
+                        </a>
+                    </li>
+                @endif
+
+
+                <!-- 2. KELOMPOK PENUNJANG & FARMASI -->
+                <div class="sidebar-cat-title mt-2">
+                    <span>Penunjang &amp; Resep</span>
+                </div>
+
+                <!-- Laborat -->
                 <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('poliklinik*') ? 'active' : '' }}" href="/erm/poliklinik" title="Pelayanan Pasien Poliklinik (Rawat Jalan)">
-                        <span class="erm-icon-box icon-poli"><i class="bi bi-bandaid"></i></span>
-                        <span>Poliklinik</span>
-                    </a>
-                </li>
-            @endif
-
-            <!-- Rawat Inap (Bangsal) -->
-            @if (
-                $isDireksiOrIt ||
-                    $dept == 'DM3' ||
-                    $dept == 'DM7' ||
-                    $dept == 'SPS' ||
-                    $dept == 'DPM1' ||
-                    $dept == 'DNM5' ||
-                    $dept == 'DM4' ||
-                    $dept == 'DM5' ||
-                    $dept == 'DM2' ||
-                    $dept == 'DPM2' ||
-                    $dept == 'DM1' ||
-                    $dept == 'CSM' ||
-                    $dept == 'ICU' ||
-                    $isDokter)
-                <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('ranap*') ? 'active' : '' }}" href="/erm/ranap" title="Pelayanan Pasien Rawat Inap & E-MAR">
-                        <span class="erm-icon-box icon-ranap"><i class="bi bi-hospital"></i></span>
-                        <span>Rawat Inap</span>
-                    </a>
-                </li>
-            @endif
-
-            <!-- UGD (Gawat Darurat) -->
-            @if (
-                $isDireksiOrIt ||
-                    $dept == 'DM1' ||
-                    $dept == 'CSM' ||
-                    $dept == 'DM7' ||
-                    $dept == 'SPS' ||
-                    $dept == 'DPM2' ||
-                    $isDokter)
-                <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('ugd*') ? 'active' : '' }}" href="/erm/ugd" title="Instalasi Gawat Darurat (UGD)">
-                        <span class="erm-icon-box icon-ugd"><i class="bi bi-clipboard2-pulse"></i></span>
-                        <span>UGD</span>
-                    </a>
-                </li>
-            @endif
-
-            <!-- Kamar Operasi (IBS) -->
-            @if (
-                $isDireksiOrIt ||
-                    $dept == 'DM1' ||
-                    $dept == 'DM2' ||
-                    $dept == 'DM3' ||
-                    $dept == 'DM4' ||
-                    $dept == 'DM5' ||
-                    $dept == 'DM7' ||
-                    $dept == 'SPS' ||
-                    $dept == 'DPM1' ||
-                    $dept == 'DPM2' ||
-                    $dept == 'OK' ||
-                    $dept == 'IBS' ||
-                    $dept == 'CSM' ||
-                    $dept == 'ICU' ||
-                    $isDokter)
-                <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('operasi*') ? 'active' : '' }}" href="/erm/operasi" title="Kamar Operasi (IBS) & Laporan Operasi">
-                        <span class="erm-icon-box icon-ok"><i class="bi bi-heart-pulse-fill"></i></span>
-                        <span>Kamar Operasi</span>
-                    </a>
-                </li>
-            @endif
-
-
-            <!-- 2. KELOMPOK PENUNJANG & FARMASI -->
-            <div class="sidebar-cat-title mt-2">
-                <span>Penunjang &amp; Resep</span>
-            </div>
-
-            <!-- Laborat -->
-            <li class="nav-item">
-                <a class="erm-nav-link {{ Request::is('lab*') ? 'active' : '' }}" href="{{ url('/lab') }}" title="Pelayanan & Hasil Pemeriksaan Laboratorium">
-                    <span class="erm-icon-box icon-lab"><i class="bi bi-prescription2"></i></span>
-                    <span>Laborat</span>
-                </a>
-            </li>
-
-            <!-- Radiologi -->
-            @if (
-                $isDireksiOrIt ||
-                    ($pegawai->jbtn ?? '') == 'Dokter Spesialis Radiologi' ||
-                    $dept == 'RAD' ||
-                    $dept == 'CSM')
-                <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('radiologi*') ? 'active' : '' }}" href="/erm/radiologi" title="Pelayanan & Hasil Radiologi">
-                        <span class="erm-icon-box icon-rad"><i class="bi bi-radioactive"></i></span>
-                        <span>Radiologi</span>
-                    </a>
-                </li>
-            @endif
-
-            <!-- Resep Dokter / Farmasi -->
-            @if ($isDireksiOrIt || $dept == 'DPM1')
-                <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep" title="Daftar Resep Obat Dokter">
-                        <span class="erm-icon-box icon-resep"><i class="bi bi-prescription"></i></span>
-                        <span>Resep</span>
-                    </a>
-                </li>
-            @endif
-
-            <!-- Obat & BHP -->
-            @if (
-                (($isDireksiOrIt ||
-                    $dept == 'DPM1' ||
-                    $dept == 'DPM2' ||
-                    $dept == 'DM6' ||
-                    $dept == 'CSM' ||
-                    $dept == 'SPS' ||
-                    $dept == 'DM7' ||
-                    $nik == '' ||
-                    $isDokter) &&
-                    ($pegawai->jbtn ?? '') != 'Dokter Spesialis Radiologi'))
-                <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('obat*') ? 'active' : '' }}" href="/erm/obat" title="Master Data Obat & Bahan Medis Habis Pakai">
-                        <span class="erm-icon-box icon-obat"><i class="bi bi-capsule-pill"></i></span>
-                        <span>Obat &amp; BHP</span>
+                    <a class="erm-nav-link {{ Request::is('lab*') ? 'active' : '' }}" href="{{ url('/lab') }}" title="Pelayanan & Hasil Pemeriksaan Laboratorium">
+                        <span class="erm-icon-box icon-lab"><i class="bi bi-prescription2"></i></span>
+                        <span>Laborat</span>
                     </a>
                 </li>
 
+                <!-- Radiologi -->
+                @if (
+                    $isDireksiOrIt ||
+                        ($pegawai->jbtn ?? '') == 'Dokter Spesialis Radiologi' ||
+                        $dept == 'RAD' ||
+                        $dept == 'CSM')
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('radiologi*') ? 'active' : '' }}" href="/erm/radiologi" title="Pelayanan & Hasil Radiologi">
+                            <span class="erm-icon-box icon-rad"><i class="bi bi-radioactive"></i></span>
+                            <span>Radiologi</span>
+                        </a>
+                    </li>
+                @endif
+
+                <!-- Resep Dokter / Farmasi -->
+                @if ($isDireksiOrIt || $dept == 'DPM1')
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('resep') ? 'active' : '' }}" href="/erm/resep" title="Daftar Resep Obat Dokter">
+                            <span class="erm-icon-box icon-resep"><i class="bi bi-prescription"></i></span>
+                            <span>Resep</span>
+                        </a>
+                    </li>
+                @endif
+
+                <!-- Obat & BHP -->
+                @if (
+                    (($isDireksiOrIt ||
+                        $dept == 'DPM1' ||
+                        $dept == 'DPM2' ||
+                        $dept == 'DM6' ||
+                        $dept == 'CSM' ||
+                        $dept == 'SPS' ||
+                        $dept == 'DM7' ||
+                        $nik == '' ||
+                        $isDokter) &&
+                        ($pegawai->jbtn ?? '') != 'Dokter Spesialis Radiologi'))
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('obat*') ? 'active' : '' }}" href="/erm/obat" title="Master Data Obat & Bahan Medis Habis Pakai">
+                            <span class="erm-icon-box icon-obat"><i class="bi bi-capsule-pill"></i></span>
+                            <span>Obat &amp; BHP</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('resep/racik*') || Request::is('racikan*') ? 'active' : '' }}" href="/erm/resep/racik" title="Template Racikan Obat Dokter">
+                            <span class="erm-icon-box icon-racik"><i class="bi bi-mortarboard"></i></span>
+                            <span>Template Racik</span>
+                        </a>
+                    </li>
+                @endif
+
+
+                <!-- 3. KELOMPOK REGISTRASI & PASIEN -->
+                <div class="sidebar-cat-title mt-2">
+                    <span>Data Pasien &amp; Reg</span>
+                </div>
+
+                <!-- Pasien -->
+                @if ($isDireksiOrIt || $dept == 'DPM2' || $dept == 'CSM' || $dept == 'DNM2' || $nik == '2.326.0418')
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('pasien*') ? 'active' : '' }}" href="/erm/pasien" title="Master Data Pasien & Riwayat RM">
+                            <span class="erm-icon-box icon-pasien"><i class="bi bi-people"></i></span>
+                            <span>Data Pasien</span>
+                        </a>
+                    </li>
+                @endif
+
+                <!-- Pendaftaran -->
+                @if ($isDireksiOrIt || $dept == 'DNM6')
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('registrasi*') ? 'active' : '' }}" href="/erm/registrasi" title="Pendaftaran Pasien Baru / Lama">
+                            <span class="erm-icon-box icon-daftar"><i class="bi bi-pen"></i></span>
+                            <span>Pendaftaran</span>
+                        </a>
+                    </li>
+                @endif
+
+                <!-- SEP Terbit -->
+                @if ($isDireksiOrIt || $dept == 'DNM6' || $dept == 'DM6')
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('sep*') ? 'active' : '' }}" href="/erm/sep" title="Monitoring Surat Eligibilitas Peserta (SEP BPJS)">
+                            <span class="erm-icon-box icon-sep"><i class="bi bi-link-45deg"></i></span>
+                            <span>SEP Terbit</span>
+                        </a>
+                    </li>
+                @endif
+
+
+                <!-- 4. KELOMPOK SISTEM & UTILITY -->
+                <div class="sidebar-cat-title mt-2">
+                    <span>Sistem</span>
+                </div>
+
+                <!-- KYC -->
                 <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('resep/racik*') || Request::is('racikan*') ? 'active' : '' }}" href="/erm/resep/racik" title="Template Racikan Obat Dokter">
-                        <span class="erm-icon-box icon-racik"><i class="bi bi-mortarboard"></i></span>
-                        <span>Template Racik</span>
+                    <a class="erm-nav-link" target="_blank" href="{{ config('app.kyc') }}?nama={{ urlencode($nama) }}&nik={{ urlencode($nik) }}" title="Verifikasi SatuSehat KYC Kemenkes">
+                        <span class="erm-icon-box icon-kyc"><i class="bi bi-key"></i></span>
+                        <span>KYC SatuSehat</span>
                     </a>
                 </li>
-            @endif
 
+                <!-- Log Aktivitas -->
+                @if ($nik === 'direksi' || $dept === 'IT')
+                    <li class="nav-item">
+                        <a class="erm-nav-link" target="_blank" href="/erm/logs" title="System Application Logs">
+                            <span class="erm-icon-box icon-log"><i class="bi bi-journal-code"></i></span>
+                            <span>App Logs</span>
+                        </a>
+                    </li>
 
-            <!-- 3. KELOMPOK REGISTRASI & PASIEN -->
-            <div class="sidebar-cat-title mt-2">
-                <span>Data Pasien &amp; Reg</span>
-            </div>
-
-            <!-- Pasien -->
-            @if ($isDireksiOrIt || $dept == 'DPM2' || $dept == 'CSM' || $dept == 'DNM2' || $nik == '2.326.0418')
-                <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('pasien*') ? 'active' : '' }}" href="/erm/pasien" title="Master Data Pasien & Riwayat RM">
-                        <span class="erm-icon-box icon-pasien"><i class="bi bi-people"></i></span>
-                        <span>Data Pasien</span>
-                    </a>
-                </li>
-            @endif
-
-            <!-- Pendaftaran -->
-            @if ($isDireksiOrIt || $dept == 'DNM6')
-                <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('registrasi*') ? 'active' : '' }}" href="/erm/registrasi" title="Pendaftaran Pasien Baru / Lama">
-                        <span class="erm-icon-box icon-daftar"><i class="bi bi-pen"></i></span>
-                        <span>Pendaftaran</span>
-                    </a>
-                </li>
-            @endif
-
-            <!-- SEP Terbit -->
-            @if ($isDireksiOrIt || $dept == 'DNM6' || $dept == 'DM6')
-                <li class="nav-item">
-                    <a class="erm-nav-link {{ Request::is('sep*') ? 'active' : '' }}" href="/erm/sep" title="Monitoring Surat Eligibilitas Peserta (SEP BPJS)">
-                        <span class="erm-icon-box icon-sep"><i class="bi bi-link-45deg"></i></span>
-                        <span>SEP Terbit</span>
-                    </a>
-                </li>
-            @endif
-
-
-            <!-- 4. KELOMPOK SISTEM & UTILITY -->
-            <div class="sidebar-cat-title mt-2">
-                <span>Sistem</span>
-            </div>
-
-            <!-- KYC -->
-            <li class="nav-item">
-                <a class="erm-nav-link" target="_blank" href="{{ config('app.kyc') }}?nama={{ urlencode($nama) }}&nik={{ urlencode($nik) }}" title="Verifikasi SatuSehat KYC Kemenkes">
-                    <span class="erm-icon-box icon-kyc"><i class="bi bi-key"></i></span>
-                    <span>KYC SatuSehat</span>
-                </a>
-            </li>
-
-            <!-- Log Aktivitas -->
-            @if ($nik === 'direksi' || $dept === 'IT')
-                <li class="nav-item">
-                    <a class="erm-nav-link" target="_blank" href="/erm/logs" title="System Application Logs">
-                        <span class="erm-icon-box icon-log"><i class="bi bi-journal-code"></i></span>
-                        <span>App Logs</span>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('pengaturan/menu*') ? 'active' : '' }}" href="/erm/pengaturan/menu" title="Manajemen Menu & Hak Akses">
+                            <span class="erm-icon-box icon-menu-manage"><i class="bi bi-sliders"></i></span>
+                            <span>Manajemen Menu</span>
+                        </a>
+                    </li>
+                @endif
             @endif
 
         </ul>

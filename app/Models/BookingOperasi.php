@@ -34,3 +34,4 @@ class BookingOperasi extends Model
         return $this->hasOne(RsiaOperasi::class, 'no_rawat', 'no_rawat');
     }
 }
+
