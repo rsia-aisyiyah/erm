@@ -1,112 +1,732 @@
 @extends('index')
 
 @section('contents')
+    <style>
+        /* ======================================
+                           QUEUE SUMMARY - MODERN DASHBOARD
+                        ====================================== */
+
+        .queue-summary {
+            width: 100%;
+            margin-bottom: 16px;
+            font-family: inherit;
+        }
+
+        .queue-summary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .queue-summary-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .queue-summary-title i {
+            font-size: 17px;
+            color: #64748b;
+        }
+
+        .queue-summary-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .queue-summary-status span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        /* Grid */
+        .queue-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        /* Card */
+        .queue-stat {
+            min-width: 0;
+            padding: 14px 16px;
+            border: 1px solid var(--stat-border);
+            border-radius: 10px;
+            background: var(--stat-bg);
+            transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .queue-stat:hover {
+            border-color: var(--stat-color);
+            box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+        }
+
+        /* Color variants */
+        .stat-primary {
+            --stat-color: #2563eb;
+            --stat-bg: #eff6ff;
+            --stat-border: #dbeafe;
+        }
+
+        .stat-success {
+            --stat-color: #16a34a;
+            --stat-bg: #f0fdf4;
+            --stat-border: #dcfce7;
+        }
+
+        .stat-warning {
+            --stat-color: #d97706;
+            --stat-bg: #fffbeb;
+            --stat-border: #fef3c7;
+        }
+
+        .stat-danger {
+            --stat-color: #dc2626;
+            --stat-bg: #fef2f2;
+            --stat-border: #fee2e2;
+        }
+
+        /* Card header */
+        .queue-stat-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .queue-stat-label {
+            color: #475569;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Icon */
+        .queue-stat-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--stat-color);
+            font-size: 16px;
+        }
+
+        /* Number */
+        .queue-stat-value {
+            margin-top: 8px;
+            color: var(--stat-color);
+            font-size: 27px;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.8px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .queue-stat-desc {
+            margin-top: 4px;
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 400;
+        }
+
+        /* Tablet */
+        @media (max-width: 991.98px) {
+            .queue-summary-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 575.98px) {
+            .queue-summary-header {
+                margin-bottom: 10px;
+            }
+
+            .queue-summary-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .queue-stat {
+                padding: 12px;
+                border-radius: 8px;
+            }
+
+            .queue-stat-value {
+                font-size: 24px;
+            }
+
+            .queue-stat-label {
+                font-size: 11px;
+            }
+
+            .queue-stat-desc {
+                font-size: 10px;
+            }
+
+            .queue-stat-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+        }
+
+        /* Very small screen */
+        @media (max-width: 360px) {
+            .queue-stat {
+                padding: 10px;
+            }
+
+            .queue-stat-value {
+                font-size: 21px;
+            }
+        }
+
+        /* ==========================================
+               MODERN QUEUE MANAGEMENT
+               Bootstrap 5 | Tailwind Inspired
+            ========================================== */
+
+        :root {
+            --queue-primary: #2563eb;
+            --queue-primary-soft: #eff6ff;
+            --queue-text: #1e293b;
+            --queue-muted: #64748b;
+            --queue-border: #e2e8f0;
+            --queue-bg: #f8fafc;
+            --queue-radius: 10px;
+        }
+
+        /* MAIN CARD */
+        .queue-main-card {
+            border: 1px solid var(--queue-border);
+            border-radius: var(--queue-radius);
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, .04);
+        }
+
+        .queue-main-card>.card-body {
+            padding: 20px;
+        }
+
+        /* ==========================================
+               HEADER
+            ========================================== */
+
+        .queue-page-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--queue-border);
+        }
+
+        .queue-header-icon {
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--queue-primary-soft);
+            color: var(--queue-primary);
+            font-size: 25px;
+        }
+
+        .queue-header-content {
+            min-width: 0;
+        }
+
+        .queue-header-label {
+            color: var(--queue-muted);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+
+        .queue-header-title {
+            color: var(--queue-text);
+            font-size: 19px;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .queue-doctor-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+            padding: 4px 10px;
+            border-radius: 5px;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* ==========================================
+               SECTION HEADING
+            ========================================== */
+
+        .queue-section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .queue-section-heading>div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--queue-text);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .queue-section-heading>div i {
+            color: var(--queue-primary);
+            font-size: 16px;
+        }
+
+        .queue-section-heading>span {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        /* ==========================================
+               FILTER SECTION
+            ========================================== */
+
+        .queue-filter-section {
+            padding: 16px;
+            margin-bottom: 22px;
+            border: 1px solid var(--queue-border);
+            border-radius: 9px;
+            background: var(--queue-bg);
+        }
+
+        .queue-filter-item {
+            width: 100%;
+        }
+
+        .queue-filter-item .form-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .queue-filter-item .form-label i {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .queue-filter-item .form-control,
+        .queue-filter-item .form-select {
+            min-height: 35px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background-color: #fff;
+            color: #334155;
+            font-size: 12px;
+            box-shadow: none;
+            transition: border-color .15s ease,
+                box-shadow .15s ease;
+        }
+
+        .queue-filter-item .form-control:focus,
+        .queue-filter-item .form-select:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, .12);
+        }
+
+        .queue-filter-item .form-control::placeholder {
+            color: #94a3b8;
+        }
+
+        /* ==========================================
+               PATIENT TABLE
+            ========================================== */
+
+        .queue-table-section {
+            width: 100%;
+        }
+
+        .queue-patient-table {
+            width: 100% !important;
+            margin-bottom: 0;
+            font-size: 12px;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .queue-patient-table thead th {
+            padding: 11px 12px;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            border-top: 1px solid var(--queue-border);
+            border-bottom: 1px solid var(--queue-border);
+            white-space: nowrap;
+        }
+
+        .queue-patient-table tbody td {
+            padding: 10px 12px;
+            color: #334155;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .queue-patient-table tbody tr {
+            transition: background-color .15s ease;
+        }
+
+        .queue-patient-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .queue-patient-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        /* Baris ganjil */
+        .queue-patient-table tbody tr:nth-child(odd)>td {
+            background-color: #ffffff !important;
+        }
+
+        /* Baris genap */
+        .queue-patient-table tbody tr:nth-child(even)>td {
+            background-color: #f1f5f9 !important;
+        }
+
+        /* Hover tetap terlihat */
+        .queue-patient-table tbody tr:hover>td {
+            background-color: #dbeafe !important;
+        }
+
+        /* Border pemisah */
+        .queue-patient-table tbody td {
+            border-bottom: 1px solid #e2e8f0 !important;
+        }
+
+        /* Header */
+        .queue-patient-table thead th {
+            background-color: #eaf0f7 !important;
+            color: #334155;
+        }
+
+        /* Jangan menghilangkan warna saat selected */
+        .queue-patient-table tbody tr.selected>td {
+            background-color: #dbeafe !important;
+        }
+
+        /* ==========================================
+               RESPONSIVE
+            ========================================== */
+
+        @media (max-width: 767.98px) {
+
+            .queue-main-card>.card-body {
+                padding: 14px;
+            }
+
+            .queue-page-header {
+                gap: 12px;
+                margin-bottom: 16px;
+                padding-bottom: 14px;
+            }
+
+            .queue-header-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 21px;
+            }
+
+            .queue-header-title {
+                font-size: 16px;
+            }
+
+            .queue-filter-section {
+                padding: 12px;
+                margin-bottom: 18px;
+            }
+
+            .queue-section-heading>span {
+                font-size: 10px;
+            }
+
+            .queue-patient-table {
+                min-width: 450px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+
+            .queue-main-card>.card-body {
+                padding: 12px;
+            }
+
+            .queue-header-label {
+                font-size: 9px;
+            }
+
+            .queue-header-title {
+                font-size: 15px;
+            }
+
+            .queue-doctor-info {
+                font-size: 11px;
+            }
+
+            .queue-section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .queue-filter-item .form-control,
+            .queue-filter-item .form-select {
+                min-height: 38px;
+            }
+        }
+    </style>
     <div class="row gy-2">
         <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Poli : {{ $poli->nm_poli }}</h5>
-                    <p
-                        style="background-color: var(--bs-blue);color:white;padding:5px;text-align:center;border-radius: 1em;">
-                        <strong>{{ Request::get('dokter') ? 'Dokter : ' . $dokter->nm_dokter : '' }}</strong>
-                    </p>
-                    <table class="" style="margin-bottom : 10px">
-                        <tr style="height: 25px">
-                            <td>Jumlah Pasien</td>
-                            <td>:</td>
-                            <td width="100px">
-                                <button class="btn btn-sm" id="count-pasien"
-                                    style=" display: block; width:auto; border-radius: 50%; background-color: #0067dd; color:white; font-weight:bold">
-                                </button>
-                            </td>
-                            <td>Selesai</td>
-                            <td>:</td>
-                            <td>
-                                <button id="count-selesai" class="btn btn-sm btn-success"
-                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr style="height: 40px">
-                            <td>Menunggu</td>
-                            <td>:</td>
-                            <td>
-                                <button id="count-tunggu" class="btn btn-sm btn-warning"
-                                    style=" display: block; width:auto; border-radius: 50%; color:rgb(48, 48, 48); font-weight:bold">
-                                </button>
-                            </td>
-                            <td>Batal</td>
-                            <td>:</td>
-                            <td>
-                                <button id="count-batal" class="btn btn-sm btn-danger"
-                                    style=" display: block; width:auto; border-radius: 50%; color:white; font-weight:bold">
-                                </button>
-                            </td>
-                        </tr>
 
-                    </table>
+            <div class="queue-summary">
+                <div class="queue-summary-header">
+                    <div class="queue-summary-title">
+                        <i class="bi bi-bar-chart-line"></i>
+                        Ringkasan Antrian
+                    </div>
+                    <span class="queue-summary-status">
+                        <span></span> Statistik Pasien
+                    </span>
+                </div>
 
-                    <input type="hidden" id="hitung-panggil" value="">
-                    <div class="row">
-                        <div class="col-md-6 col-lg-3 col-sm-12">
-                            <div class="mb-3">
-                                <label for="tgl_registrasi" class="form-label" style="margin-bottom:0px">Tgl.
-                                    Registrasi</label>
-                                <input type="text" class="form-control form-control-sm" id="tgl_registrasi" placeholder=""
-                                    autocomplete="off">
+                <div class="queue-summary-grid">
+
+                    <div class="queue-stat stat-primary">
+                        <div class="queue-stat-info">
+                            <div class="queue-stat-label">Jumlah Pasien</div>
+                            <div class="queue-stat-icon">
+                                <i class="bi bi-people"></i>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-3 col-sm-12">
-                            <div class="mb-3">
-                                <label for="pasien" class="form-label" style="margin-bottom:0px">Nama Pasien</label>
-                                <input type="search" class="form-control form-control-sm" id="pasien-cari"
-                                    placeholder="Cari nama pasien... " autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3 col-sm-12">
-                            <div class="mb-3">
-                                <label for="pembiayaan" class="form-label" style="margin-bottom:0px">Pembiayaan</label>
-                                <select name="pembiayaan" id="pembiayaan" class="form-select form-select-sm" style="">
-                                    <option value="" disabled selected>Pilih Pembiayaan</option>
-                                    <option value="">Umum & BPJS</option>
-                                    <option value="BPJS">BPJS</option>
-                                    <option value="Umum">Umum</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3 col-sm-12">
-                            <div class="mb-3">
-                                <label for="status_periksa" class="form-label" style="margin-bottom:0px">Status
-                                    Periksa</label>
-                                <select name="status_periksa" id="status_periksa" class="form-select form-select-sm"
-                                    style="">
-                                    <option value="" disabled selected>Pilih Status Periksa</option>
-                                    <option value="">Semua</option>
-                                    <option value="Sudah">Sudah</option>
-                                    <option value="Belum">Belum</option>
-                                    <option value="Batal">Batal</option>
-                                </select>
-                            </div>
-                        </div>
+                        <div class="queue-stat-value" id="count-pasien"></div>
+                        <div class="queue-stat-desc">Total antrian</div>
                     </div>
 
-                    <table class="table table-striped text-sm table-sm" id="tb_pasien" width="100%"
-                        style="font-size: 12px !important">
-                        <thead>
-                            <tr role="row">
-                                <th style="width: 20px">Aksi</th>
-                                <th>Nama</th>
-                                <th>Tools</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="queue-stat stat-success">
+                        <div class="queue-stat-info">
+                            <div class="queue-stat-label">Selesai</div>
+                            <div class="queue-stat-icon">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="queue-stat-value" id="count-selesai"></div>
+                        <div class="queue-stat-desc">Sudah dilayani</div>
+                    </div>
+
+                    <div class="queue-stat stat-warning">
+                        <div class="queue-stat-info">
+                            <div class="queue-stat-label">Menunggu</div>
+                            <div class="queue-stat-icon">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                        </div>
+                        <div class="queue-stat-value" id="count-tunggu"></div>
+                        <div class="queue-stat-desc">Dalam antrian</div>
+                    </div>
+
+                    <div class="queue-stat stat-danger">
+                        <div class="queue-stat-info">
+                            <div class="queue-stat-label">Batal</div>
+                            <div class="queue-stat-icon">
+                                <i class="bi bi-x-circle"></i>
+                            </div>
+                        </div>
+                        <div class="queue-stat-value" id="count-batal"></div>
+                        <div class="queue-stat-desc">Antrian dibatalkan</div>
+                    </div>
 
                 </div>
             </div>
 
         </div>
+
+        <div class="col-12">
+            <div class="card queue-main-card">
+
+                <div class="card-body">
+
+                    {{-- HEADER POLI --}}
+                    <div class="queue-page-header">
+                        <div class="queue-header-icon">
+                            <i class="bi bi-hospital"></i>
+                        </div>
+
+                        <div class="queue-header-content">
+                            <div class="queue-header-label">LAYANAN RAWAT JALAN</div>
+                            <h5 class="queue-header-title">
+                                {{ $poli->nm_poli }}
+                            </h5>
+
+                            @if (Request::get('dokter'))
+                                <div class="queue-doctor-info">
+                                    <i class="bi bi-person-badge"></i>
+                                    {{ $dokter->nm_dokter }}
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="hitung-panggil" value="">
+
+                    {{-- FILTER SECTION --}}
+                    <div class="queue-filter-section">
+
+                        <div class="queue-section-heading">
+                            <div>
+                                <i class="bi bi-funnel"></i>
+                                Filter Pencarian
+                            </div>
+                            <span>Gunakan filter untuk mencari pasien</span>
+                        </div>
+
+                        <div class="row g-3">
+
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="queue-filter-item">
+                                    <label for="tgl_registrasi" class="form-label">
+                                        <i class="bi bi-calendar3"></i>
+                                        Tanggal Registrasi
+                                    </label>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        id="tgl_registrasi"
+                                        placeholder="Pilih tanggal"
+                                        autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="queue-filter-item">
+                                    <label for="pasien-cari" class="form-label">
+                                        <i class="bi bi-search"></i>
+                                        Nama Pasien
+                                    </label>
+                                    <input type="search"
+                                        class="form-control form-control-sm"
+                                        id="pasien-cari"
+                                        placeholder="Cari nama pasien..."
+                                        autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="queue-filter-item">
+                                    <label for="pembiayaan" class="form-label">
+                                        <i class="bi bi-wallet2"></i>
+                                        Pembiayaan
+                                    </label>
+                                    <select name="pembiayaan"
+                                        id="pembiayaan"
+                                        class="form-select form-select-sm">
+                                        <option value="" disabled selected>
+                                            Pilih Pembiayaan
+                                        </option>
+                                        <option value="">Umum & BPJS</option>
+                                        <option value="BPJS">BPJS</option>
+                                        <option value="Umum">Umum</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="queue-filter-item">
+                                    <label for="status_periksa" class="form-label">
+                                        <i class="bi bi-clipboard-check"></i>
+                                        Status Periksa
+                                    </label>
+                                    <select name="status_periksa"
+                                        id="status_periksa"
+                                        class="form-select form-select-sm">
+                                        <option value="" disabled selected>
+                                            Pilih Status Periksa
+                                        </option>
+                                        <option value="">Semua</option>
+                                        <option value="Sudah">Sudah</option>
+                                        <option value="Belum">Belum</option>
+                                        <option value="Batal">Batal</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {{-- TABLE SECTION --}}
+                    <div class="queue-table-section">
+
+                        <div class="queue-section-heading">
+                            <div>
+                                <i class="bi bi-people"></i>
+                                Daftar Pasien
+                            </div>
+                            <span>Data registrasi pasien</span>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm queue-patient-table"
+                                id="tb_pasien"
+                                width="100%">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 80px;">Aksi</th>
+                                        <th>Nama Pasien</th>
+                                        <th style="width: 120px;">Tools</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         {{-- @include('content.upload.inforegistrasi')
         @include('content.upload.resume') --}}
     </div>
@@ -139,7 +759,7 @@
         var pembiayaan = "";
         var status_periksa = "";
 
-        $('#pasien-cari').on('keyup', function () {
+        $('#pasien-cari').on('keyup', function() {
             localStorage.setItem('pasien', $('#pasien-cari').val());
             nmpasien = localStorage.getItem('pasien');
             if (nmpasien.length >= 3 || nmpasien.length == 0) {
@@ -148,25 +768,25 @@
             }
         })
 
-        $('#pasien-cari').on('search', function () {
+        $('#pasien-cari').on('search', function() {
             nmpasien = '';
             localStorage.setItem('pasien', '');
             $('#tb_pasien').DataTable().destroy();
             tb_pasien(tgl_registrasi);
         })
 
-        $('#pembiayaan').on('change', function () {
+        $('#pembiayaan').on('change', function() {
             pembiayaan = $(this).val();
             $('#tb_pasien').DataTable().destroy();
             tb_pasien(tgl_registrasi, nmpasien, pembiayaan, status_periksa);
         })
-        $('#status_periksa').on('change', function () {
+        $('#status_periksa').on('change', function() {
             status_periksa = $(this).val();
             $('#tb_pasien').DataTable().destroy();
             tb_pasien(tgl_registrasi, nmpasien, pembiayaan, status_periksa);
         })
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             date = new Date()
             hari = ('0' + (date.getDate())).slice(-2);
             bulan = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -202,7 +822,7 @@
                     'kd_dokter': kd_dokter
                 },
                 method: 'GET',
-                success: function (response) {
+                success: function(response) {
                     $('#count-pasien').text(response);
                 }
             })
@@ -263,9 +883,9 @@
                     no_rkm_medis: no_rm,
                     sortir: 'ASC',
                 },
-                success: function (response) {
+                success: function(response) {
                     alergi = '-'
-                    $.map(response.reg_periksa, function (val) {
+                    $.map(response.reg_periksa, function(val) {
                         if (val.pemeriksaan_ralan.length) {
                             $.map(val.pemeriksaan_ralan, (pem) => {
                                 if (pem.alergi != '-' || pem.alergi != '' || pem.alergi) {
@@ -291,13 +911,13 @@
                     'kd_dokter': kd_dokter,
                 },
                 method: 'GET',
-                success: function (response) {
+                success: function(response) {
                     let jumlah = 0;
                     let batal = 0;
                     let tunggu = 0;
                     let sudah = 0;
                     let periksa = 0;
-                    $.map(response, function (val, index) {
+                    $.map(response, function(val, index) {
                         if (val.stts == 'Belum') {
                             tunggu = val.jumlah;
                         } else if (val.stts == 'Sudah') {
@@ -347,7 +967,7 @@
                         'no_rawat': id,
                     },
                     method: "POST",
-                    success: function (data) {
+                    success: function(data) {
                         $.toast({
                             text: 'Memangil : ' + data.no_rawat + '<br/> Jam Periksa : ' + data
                                 .jam_periksa,
@@ -394,7 +1014,7 @@
                             'no_rawat': id,
                         },
                         method: 'POST',
-                        success: function (response) {
+                        success: function(response) {
                             $.toast({
                                 text: 'Periksa : ' + response.no_rawat +
                                     ' Selesai <br/> Jam Periksa : ' +
@@ -524,7 +1144,7 @@
                         status_periksa: status,
                     },
                 },
-                createdRow: function (row, data, dataIndex) {
+                createdRow: function(row, data, dataIndex) {
                     $(row).attr('data-no-rkm-medis', data.no_rkm_medis);
                     //
                     // const alertContainer = $('<div class="infection-alert mt-2"></div>');
@@ -555,192 +1175,192 @@
                     }
                 },
                 columns: [{
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        let html = '';
-                        norawat = textRawat(row.no_rawat)
-                        if (row.stts == 'Batal') {
-                            html =
-                                '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
-                        } else if (row.stts == 'Sudah') {
-                            html =
-                                '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
-                        } else {
-
-                            if (row.stts == 'Berkas Diterima' || row.stts == 'Periksa') {
-                                $('.panggil-' + norawat).text('RE-CALL');
-                                $('.selesai-' + norawat).addClass('btn-warning');
-                                $('.panggil-' + norawat).prop('style',
-                                    'width:80px;background-color:#9800af;border-color:#8e06a3;color:white'
-                                );
-                                $('.batal-' + norawat).addClass('btn-danger');
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            let html = '';
+                            norawat = textRawat(row.no_rawat)
+                            if (row.stts == 'Batal') {
+                                html =
+                                    '<h3 class="text-danger" align="center"><i class="bi bi-x-circle-fill"></i></h3>';
+                            } else if (row.stts == 'Sudah') {
+                                html =
+                                    '<h3 class="text-success" align="center"><i class="bi bi-check-circle-fill"></i></h3>';
                             } else {
-                                $('.panggil-' + norawat).addClass('btn-success');
-                                $('.batal-' + norawat).addClass('btn-secondary');
-                                $('.selesai-' + norawat).addClass('btn-secondary');
-                                $('.panggil-' + norawat).text('PANGGIL')
-                                $('.batal-' + norawat).prop('disabled', true);
-                                $('.selesai-' + norawat).prop('disabled', true);
+
+                                if (row.stts == 'Berkas Diterima' || row.stts == 'Periksa') {
+                                    $('.panggil-' + norawat).text('RE-CALL');
+                                    $('.selesai-' + norawat).addClass('btn-warning');
+                                    $('.panggil-' + norawat).prop('style',
+                                        'width:80px;background-color:#9800af;border-color:#8e06a3;color:white'
+                                    );
+                                    $('.batal-' + norawat).addClass('btn-danger');
+                                } else {
+                                    $('.panggil-' + norawat).addClass('btn-success');
+                                    $('.batal-' + norawat).addClass('btn-secondary');
+                                    $('.selesai-' + norawat).addClass('btn-secondary');
+                                    $('.panggil-' + norawat).text('PANGGIL')
+                                    $('.batal-' + norawat).prop('disabled', true);
+                                    $('.selesai-' + norawat).prop('disabled', true);
+                                }
+                                html = '<div id="aksi-' + norawat + '">';
+                                html += ' <button onclick="panggil(\'' + norawat + '\')" class="btn btn-sm mb-2 panggil-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '"></button><br/>';
+                                html += ' <button onclick="selesai(\'' + norawat + '\')" class="btn btn-sm mb-2 selesai-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">SELESAI</button><br/>';
+                                html += ' <button onclick="batal(\'' + norawat + '\')" class="btn btn-sm mb-2 batal-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">BATAL</button><br/>';
+                                html += '</div>';
                             }
-                            html = '<div id="aksi-' + norawat + '">';
-                            html += ' <button onclick="panggil(\'' + norawat + '\')" class="btn btn-sm mb-2 panggil-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '"></button><br/>';
-                            html += ' <button onclick="selesai(\'' + norawat + '\')" class="btn btn-sm mb-2 selesai-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">SELESAI</button><br/>';
-                            html += ' <button onclick="batal(\'' + norawat + '\')" class="btn btn-sm mb-2 batal-' + norawat + '" type="button" style="width:80px;" data-id="' + row.no_rawat + '">BATAL</button><br/>';
-                            html += '</div>';
-                        }
-                        return html
+                            return html
+                        },
+                        name: 'aksi'
                     },
-                    name: 'aksi'
-                },
-                {
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        if (row.kd_pj == 'A01' || row.kd_pj == 'A05') {
-                            classTeksPenjab = 'text-success';
-                        } else {
-                            classTeksPenjab = 'text-danger';
-                        }
-
-                        pasien = data.pasien.nm_pasien;
-                        no_rawat = textRawat(row.no_rawat);
-                        badgeKontrol = '';
-                        btnSep = '<div class="dropdown mb-1 mt-1" id="dropdown-sep-' + no_rawat + '"> <button id="btn-rujuk-' + no_rawat + '" class="btn-sm" style="font-size:10px;width:112px" type="button" data-bs-toggle="dropdown" aria-expanded="false" ><ul class="dropdown-menu" style="font-size:12px"></button></div>';
-                        if (row.sep && row.kd_pj != "A03") {
-                            $('#btn-rujuk-' + no_rawat).addClass('btn btn-success dropdown-toggle');
-                            $('#btn-rujuk-' + no_rawat).text('SEP Sudah Terbit');
-                            html = '<ul class="dropdown-menu" style="font-size:12px">'
-                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="kontrolUlang(\'' + row.sep.no_sep + '\')">Kontrol Ulang / SKRJ</a></li>'
-                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rawat + '\')">Perintah Rawat Inap / SPRI</a></li>'
-                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rujukanKeluar(\'' + row.sep.no_sep + '\')">Rujukan Keluar</a></li>'
-                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
-                            html += '</ul>'
-                            $('#dropdown-sep-' + no_rawat).append(html)
-                            if (row.sep?.surat_kontrol) {
-                                badgeKontrol = '<a target="_blank" href="/erm/rencanaKontrol/print/' + row.sep?.surat_kontrol?.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
-                            } else if (row.sep?.rujukan_keluar) {
-                                textRujukan = row.sep.rujukan_keluar?.nm_ppkDirujuk?.split(' - ')[0];
-                                rujukan = textRujukan.length > 10 ? textRujukan.substring(0, 10) + '...' : textRujukan
-                                badgeKontrol = '<a target="_blank" href="/erm/rujukan/print/' + row.sep?.rujukan_keluar?.no_rujukan + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Rujuk : ' + rujukan + '</span></a>';
-                            }
-
-                            if (row.pasien.spri?.tgl_surat == row.tgl_registrasi) {
-                                badgeKontrol = '<a target="_blank" href="/erm/spri/print/' + row.pasien?.spri?.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >SPRI : ' + splitTanggal(row.pasien.spri.tgl_rencana) + '</span></a>';
-                            }
-                        } else if (!row.sep && row.kd_pj != "A03") {
-                            $('#btn-rujuk-' + no_rawat).addClass('btn btn-danger dropdown-toggle');
-                            html = '<ul class="dropdown-menu" style="font-size:12px">'
-                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rawat + '\')">Perintah Rawat Inap / SPRI</a></li>'
-                            html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
-                            html += '</ul>'
-                            $('#dropdown-sep-' + no_rawat).append(html)
-                            $('#btn-rujuk-' + no_rawat).text('Belum Terbit SEP');
-                            if (row.pasien.spri?.tgl_surat == row.tgl_registrasi) {
-                                badgeKontrol = '<a target="_blank" href="/erm/spri/print/' + row.pasien.spri.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >SPRI : ' + splitTanggal(row.pasien.spri.tgl_rencana) + '</span></a>';
-                            }
-                        } else {
-                            if (row.surat_kontrol) {
-                                badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Kontrol : ' + splitTanggal(row.surat_kontrol.tanggal) + '</span></a>';
-                            }
-                            $('#dropdown-sep-' + no_rawat).css('display', 'none')
-                        }
-
-
-                        if (row.penjab?.png_jawab == 'UMUM') {
-                            textPenjab = '<a href="javascript:void(0)" onclick="kontrolUmum(\'' + row.no_rawat + '\')" style="text-decoration:none;color:red">' + row.penjab.png_jawab + '</a>'
-                        } else {
-                            textPenjab = '<a href="javascript:void(0)" onclick="" style="text-decoration:none;color:green">' + row.penjab.png_jawab + '</a>'
-                        }
-
-                        html = '<h5 class="mb-1 h3">' + row.no_reg + '</h5>';
-                        html += '<p style="margin:0px"><span class="pasien-' + row.no_reg + '">' + pasien + cekList(row.skrining_tb) +
-                            '</span></br>' +
-                            row.no_rawat +
-                            '</br><i><strong class="' + classTeksPenjab + '">' + textPenjab + '</strong></i></p>' + btnSep + ' ' + badgeKontrol;
-
-                        return html;
-                    },
-                    name: 'nm_pasien'
-
-                },
-                {
-                    data: '',
-                    render: function (data, type, row, meta) {
-                        let ambilAskep = '';
-                        let no_rkm_medis = row.no_rkm_medis.replace(/\s/g, '');
-                        if (row.dokter) {
-                            dokter = row.dokter.nm_dokter;
-                            if (row.dokter.kd_sps == 'S0001') {
-                                ambilAskep = 'ambilAskepKebidanan(\'' + no_rkm_medis + '\')';
+                    {
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            if (row.kd_pj == 'A01' || row.kd_pj == 'A05') {
+                                classTeksPenjab = 'text-success';
                             } else {
-                                ambilAskep = 'ambilAskepAnak(\'' + no_rkm_medis + '\')';
+                                classTeksPenjab = 'text-danger';
                             }
-                        }
-                        html =
-                            '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" style="" onclick = "detailPeriksa(\'' +
-                            row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' +
-                            textRawat(row.no_rawat) +
-                            '"><i id="upload-' +
-                            textRawat(row.no_rawat) +
-                            '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a>';
-                        html += `<button id="btn-periksa-${textRawat(row.no_rawat)}" style="" onclick="showSoapRalan('${row.no_rawat}')" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik">
+
+                            pasien = data.pasien.nm_pasien;
+                            no_rawat = textRawat(row.no_rawat);
+                            badgeKontrol = '';
+                            btnSep = '<div class="dropdown mb-1 mt-1" id="dropdown-sep-' + no_rawat + '"> <button id="btn-rujuk-' + no_rawat + '" class="btn-sm" style="font-size:10px;width:112px" type="button" data-bs-toggle="dropdown" aria-expanded="false" ><ul class="dropdown-menu" style="font-size:12px"></button></div>';
+                            if (row.sep && row.kd_pj != "A03") {
+                                $('#btn-rujuk-' + no_rawat).addClass('btn btn-success dropdown-toggle');
+                                $('#btn-rujuk-' + no_rawat).text('SEP Sudah Terbit');
+                                html = '<ul class="dropdown-menu" style="font-size:12px">'
+                                html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="kontrolUlang(\'' + row.sep.no_sep + '\')">Kontrol Ulang / SKRJ</a></li>'
+                                html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rawat + '\')">Perintah Rawat Inap / SPRI</a></li>'
+                                html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rujukanKeluar(\'' + row.sep.no_sep + '\')">Rujukan Keluar</a></li>'
+                                html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
+                                html += '</ul>'
+                                $('#dropdown-sep-' + no_rawat).append(html)
+                                if (row.sep?.surat_kontrol) {
+                                    badgeKontrol = '<a target="_blank" href="/erm/rencanaKontrol/print/' + row.sep?.surat_kontrol?.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Kontrol : ' + splitTanggal(row.sep.surat_kontrol.tgl_rencana) + '</span></a>';
+                                } else if (row.sep?.rujukan_keluar) {
+                                    textRujukan = row.sep.rujukan_keluar?.nm_ppkDirujuk?.split(' - ')[0];
+                                    rujukan = textRujukan.length > 10 ? textRujukan.substring(0, 10) + '...' : textRujukan
+                                    badgeKontrol = '<a target="_blank" href="/erm/rujukan/print/' + row.sep?.rujukan_keluar?.no_rujukan + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Rujuk : ' + rujukan + '</span></a>';
+                                }
+
+                                if (row.pasien.spri?.tgl_surat == row.tgl_registrasi) {
+                                    badgeKontrol = '<a target="_blank" href="/erm/spri/print/' + row.pasien?.spri?.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >SPRI : ' + splitTanggal(row.pasien.spri.tgl_rencana) + '</span></a>';
+                                }
+                            } else if (!row.sep && row.kd_pj != "A03") {
+                                $('#btn-rujuk-' + no_rawat).addClass('btn btn-danger dropdown-toggle');
+                                html = '<ul class="dropdown-menu" style="font-size:12px">'
+                                html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="rawatInap(\'' + row.no_rawat + '\')">Perintah Rawat Inap / SPRI</a></li>'
+                                html += '<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare(\'' + row.pasien.no_peserta + '\', ' + row.dokter.mapping_dokter.kd_dokter_bpjs + ')">Riwayat Perawatan ICare</a></li>'
+                                html += '</ul>'
+                                $('#dropdown-sep-' + no_rawat).append(html)
+                                $('#btn-rujuk-' + no_rawat).text('Belum Terbit SEP');
+                                if (row.pasien.spri?.tgl_surat == row.tgl_registrasi) {
+                                    badgeKontrol = '<a target="_blank" href="/erm/spri/print/' + row.pasien.spri.no_surat + '"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >SPRI : ' + splitTanggal(row.pasien.spri.tgl_rencana) + '</span></a>';
+                                }
+                            } else {
+                                if (row.surat_kontrol) {
+                                    badgeKontrol = '<a href="javascript:void(0)"><span id="kontrol-' + no_rawat + '" class="badge text-bg-warning" >Kontrol : ' + splitTanggal(row.surat_kontrol.tanggal) + '</span></a>';
+                                }
+                                $('#dropdown-sep-' + no_rawat).css('display', 'none')
+                            }
+
+
+                            if (row.penjab?.png_jawab == 'UMUM') {
+                                textPenjab = '<a href="javascript:void(0)" onclick="kontrolUmum(\'' + row.no_rawat + '\')" style="text-decoration:none;color:red">' + row.penjab.png_jawab + '</a>'
+                            } else {
+                                textPenjab = '<a href="javascript:void(0)" onclick="" style="text-decoration:none;color:green">' + row.penjab.png_jawab + '</a>'
+                            }
+
+                            html = '<h5 class="mb-1 h3">' + row.no_reg + '</h5>';
+                            html += '<p style="margin:0px"><span class="pasien-' + row.no_reg + '">' + pasien + cekList(row.skrining_tb) +
+                                '</span></br>' +
+                                row.no_rawat +
+                                '</br><i><strong class="' + classTeksPenjab + '">' + textPenjab + '</strong></i></p>' + btnSep + ' ' + badgeKontrol;
+
+                            return html;
+                        },
+                        name: 'nm_pasien'
+
+                    },
+                    {
+                        data: '',
+                        render: function(data, type, row, meta) {
+                            let ambilAskep = '';
+                            let no_rkm_medis = row.no_rkm_medis.replace(/\s/g, '');
+                            if (row.dokter) {
+                                dokter = row.dokter.nm_dokter;
+                                if (row.dokter.kd_sps == 'S0001') {
+                                    ambilAskep = 'ambilAskepKebidanan(\'' + no_rkm_medis + '\')';
+                                } else {
+                                    ambilAskep = 'ambilAskepAnak(\'' + no_rkm_medis + '\')';
+                                }
+                            }
+                            html =
+                                '<a href="#form-upload" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" style="" onclick = "detailPeriksa(\'' +
+                                row.no_rawat + '\',\'' + row.status_lanjut + '\')" id="btn-upload-' +
+                                textRawat(row.no_rawat) +
+                                '"><i id="upload-' +
+                                textRawat(row.no_rawat) +
+                                '" class="bi bi-cloud-upload-fill"></i> UPLOAD</a>';
+                            html += `<button id="btn-periksa-${textRawat(row.no_rawat)}" style="" onclick="showSoapRalan('${row.no_rawat}')" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik">
                                             <i class="bi bi-pencil-square" id="icon-periksa-${textRawat(row.no_rawat)}"></i>
                                             SOAP
                                         </button>`
 
-                        html += '<button id="btn-askep-' + textRawat(row.no_rawat) + '" onclick="' + ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" data-id="' +
-                            row.no_rkm_medis +
-                            '"><i id="icon-askep-' +
-                            textRawat(row.no_rawat) +
-                            '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button>';
-                        html +=
-                            '<button class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" onclick="confirmUpdateRiwayat(\'' + row.no_rkm_medis + '\')" data-id="' +
-                            row.no_rkm_medis + '"  style="width:100px;font-size:11px;text-align:left"><i class="bi bi-search"></i>RIWAYAT</button>';
+                            html += '<button id="btn-askep-' + textRawat(row.no_rawat) + '" onclick="' + ambilAskep + '" class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" data-id="' +
+                                row.no_rkm_medis +
+                                '"><i id="icon-askep-' +
+                                textRawat(row.no_rawat) +
+                                '" class="bi bi-file-bar-graph-fill"></i> ASKEP</button>';
+                            html +=
+                                '<button class="btn btn-primary btn-sm mb-2 mr-1 btn-width-poliklinik" onclick="confirmUpdateRiwayat(\'' + row.no_rkm_medis + '\')" data-id="' +
+                                row.no_rkm_medis + '"  style="width:100px;font-size:11px;text-align:left"><i class="bi bi-search"></i>RIWAYAT</button>';
 
-                        if (row.upload.length > 0) {
-                            $('#upload-' + textRawat(row.no_rawat)).removeClass(
-                                'bi bi-cloud-upload-fill')
-                            $('#btn-upload-' + textRawat(row.no_rawat)).removeClass('btn-primary')
-                            $('#upload-' + textRawat(row.no_rawat)).addClass(
-                                'bi bi-check2-circle')
-                            $('#btn-upload-' + textRawat(row.no_rawat)).addClass('btn-success')
-                        }
-
-
-                        if (row.pemeriksaan_ralan.length) {
-                            $('#icon-periksa-' + textRawat(row.no_rawat)).removeClass(
-                                'bi bi-pencil-square')
-                            $('#btn-periksa-' + textRawat(row.no_rawat)).removeClass('btn-primary')
-                            $('#icon-periksa-' + textRawat(row.no_rawat)).addClass(
-                                'bi bi-check2-circle')
-                            $('#btn-periksa-' + textRawat(row.no_rawat)).addClass('btn-success')
-                            $('.panggil-' + textRawat(row.no_rawat)).addClass('btn-success');
-                            $('.panggil-' + textRawat(row.no_rawat)).removeClass('btn-secondary');
-                            $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', false);
-                        } else {
-                            $('.panggil-' + textRawat(row.no_rawat)).removeClass('btn-success');
-                            $('.panggil-' + textRawat(row.no_rawat)).addClass('btn-secondary');
-                            $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', true);
-                        }
-
-                        const hasAskepKebidanan = (row.askep_ralan_kebidanan && row.askep_ralan_kebidanan.length > 0) ||
-                                                  (row.pasien?.askep_ralan_kebidanan && row.pasien.askep_ralan_kebidanan.length > 0);
-                        const hasAskepAnak = (row.askep_ralan_anak && row.askep_ralan_anak.length > 0) ||
-                                             (row.pasien?.askep_ralan_anak && row.pasien.askep_ralan_anak.length > 0);
-
-                        if (row.kd_poli == 'P001' || row.kd_poli == 'P007' || row.kd_poli == 'P009') {
-                            if (hasAskepKebidanan) {
-                                $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1 btn-width-poliklinik')
+                            if (row.upload.length > 0) {
+                                $('#upload-' + textRawat(row.no_rawat)).removeClass(
+                                    'bi bi-cloud-upload-fill')
+                                $('#btn-upload-' + textRawat(row.no_rawat)).removeClass('btn-primary')
+                                $('#upload-' + textRawat(row.no_rawat)).addClass(
+                                    'bi bi-check2-circle')
+                                $('#btn-upload-' + textRawat(row.no_rawat)).addClass('btn-success')
                             }
-                        } else if (row.kd_poli == 'P008' || row.kd_poli == 'P003') {
-                            if (hasAskepAnak) {
-                                $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1 btn-width-poliklinik')
-                            }
-                        }
 
-                        return `<div class="d-flex flex-column">${html}</div>`;
-                    },
-                    name: 'upload',
-                }
+
+                            if (row.pemeriksaan_ralan.length) {
+                                $('#icon-periksa-' + textRawat(row.no_rawat)).removeClass(
+                                    'bi bi-pencil-square')
+                                $('#btn-periksa-' + textRawat(row.no_rawat)).removeClass('btn-primary')
+                                $('#icon-periksa-' + textRawat(row.no_rawat)).addClass(
+                                    'bi bi-check2-circle')
+                                $('#btn-periksa-' + textRawat(row.no_rawat)).addClass('btn-success')
+                                $('.panggil-' + textRawat(row.no_rawat)).addClass('btn-success');
+                                $('.panggil-' + textRawat(row.no_rawat)).removeClass('btn-secondary');
+                                $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', false);
+                            } else {
+                                $('.panggil-' + textRawat(row.no_rawat)).removeClass('btn-success');
+                                $('.panggil-' + textRawat(row.no_rawat)).addClass('btn-secondary');
+                                $('.panggil-' + textRawat(row.no_rawat)).attr('disabled', true);
+                            }
+
+                            const hasAskepKebidanan = (row.askep_ralan_kebidanan && row.askep_ralan_kebidanan.length > 0) ||
+                                (row.pasien?.askep_ralan_kebidanan && row.pasien.askep_ralan_kebidanan.length > 0);
+                            const hasAskepAnak = (row.askep_ralan_anak && row.askep_ralan_anak.length > 0) ||
+                                (row.pasien?.askep_ralan_anak && row.pasien.askep_ralan_anak.length > 0);
+
+                            if (row.kd_poli == 'P001' || row.kd_poli == 'P007' || row.kd_poli == 'P009') {
+                                if (hasAskepKebidanan) {
+                                    $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success mb-2 btn-sm mr-1 btn-width-poliklinik')
+                                }
+                            } else if (row.kd_poli == 'P008' || row.kd_poli == 'P003') {
+                                if (hasAskepAnak) {
+                                    $('#btn-askep-' + textRawat(row.no_rawat)).prop('class', 'btn btn-success btn-sm mr-1 btn-width-poliklinik')
+                                }
+                            }
+
+                            return `<div class="d-flex flex-column">${html}</div>`;
+                        },
+                        name: 'upload',
+                    }
 
                 ],
                 "language": {
@@ -783,7 +1403,7 @@
                 data: {
                     no_rawat: no_rawat
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.surat_kontrol) {
                         tanggalKontrol = splitTanggal(response.surat_kontrol.tanggal);
                         $('.no_surat').val(response.surat_kontrol.no_surat)
@@ -834,7 +1454,7 @@
                     tanggal: splitTanggal(tanggal),
                     dokter: dokter,
                 },
-                success: function (response) {
+                success: function(response) {
                     Swal.fire(
                         'Berhasil',
                         'Surat kontrol sudah dibuat',
@@ -847,7 +1467,7 @@
                         'tanggal': splitTanggal(tanggal),
                     }
 
-                    buatBooking(dataBooking).done(function (val) {
+                    buatBooking(dataBooking).done(function(val) {
                         data = {
                             'no_reg': val.response.no_reg,
                             'tgl_registrasi': val.response.tanggal_periksa,
@@ -879,7 +1499,7 @@
                 url: '/erm/booking/buat',
                 data: data,
                 method: 'POST',
-                success: function (response) {
+                success: function(response) {
                     $('.booking').val('true');
                     Swal.fire(
                         'Berhasil',
@@ -887,7 +1507,7 @@
                         'success'
                     );
                 },
-                error: function (a, b, c) {
+                error: function(a, b, c) {
                     Swal.fire(
                         'Gagal',
                         'Terjadi kesalahan pembuatan booking',
@@ -905,7 +1525,7 @@
                 url: '/erm/registrasi/buat',
                 method: 'POST',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     $('.registrasi').val('true');
                     Swal.fire(
                         'Berhasil',
@@ -914,7 +1534,7 @@
                     );
                     reloadTabelPoli();
                 },
-                error: function (a, b, c) {
+                error: function(a, b, c) {
                     Swal.fire(
                         'Gagal',
                         'Terjadi kesalahan pembuatan registrasi pasien',
@@ -933,11 +1553,11 @@
                     no_rkm_medis: no_rkm_medis,
                 },
                 dataType: 'JSON',
-                success: function (response) {
+                success: function(response) {
                     if (Object.keys(response).length > 0) {
                         $('#opt-rawat').append(
                             '<option value="" disabled selected>PILIH TANGGAL ASESMEN</option>')
-                        $.map(response, function (data) {
+                        $.map(response, function(data) {
                             $('#opt-rawat').append('<option class="opt-asesmen-anak" value=' + data.no_rawat + '>' + formatTanggal(data.tanggal) + ' - ' + data.no_rawat + '</option>')
                             $('.no_rkm_medis').html(': ' + data.reg_periksa.no_rkm_medis);
                             $('.jk').html(data.reg_periksa.pasien.jk == 'L' ? ': Laki-laki' :
@@ -946,9 +1566,9 @@
                                 .tgl_registrasi));
                             $('.nm_pasien').html(': ' + data.reg_periksa.pasien.nm_pasien);
                             $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien
-                                .tgl_lahir) +
+                                    .tgl_lahir) +
                                 ' / ' + data.reg_periksa.umurdaftar + ' ' + data.reg_periksa
-                                    .sttsumur);
+                                .sttsumur);
                             $('.anamnesis').html(': ' + data.informasi);
                             $('.tensi').html(': ' + data.td + ' mmHG');
                             $('.nadi').html(': ' + data.nadi + ' x/menit');
@@ -977,7 +1597,7 @@
                             namaImunisasi = '';
                             $('.tb-askep-imunisasi tbody').empty()
                             $('.imunisasi').remove()
-                            $.map(data.reg_periksa.pasien.riwayat_imunisasi, function (imunisasi) {
+                            $.map(data.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
                                 if (namaImunisasi != imunisasi.master_imunisasi
                                     .nama_imunisasi) {
                                     namaImunisasi = imunisasi.master_imunisasi
@@ -1031,7 +1651,7 @@
             });
         }
 
-        $('#opt-rawat').on('change', function () {
+        $('#opt-rawat').on('change', function() {
             no_rawat = $(this).val();
             $.ajax({
                 url: 'askep/anak/detail',
@@ -1039,7 +1659,7 @@
                     no_rawat: no_rawat,
                 },
                 dataType: 'JSON',
-                success: function (response) {
+                success: function(response) {
                     $('.tgl_registrasi').html(': ' + formatTanggal(response.reg_periksa
                         .tgl_registrasi));
                     $('.tensi').html(': ' + response.td + ' mmHG');
@@ -1068,7 +1688,7 @@
                     namaImunisasi = '';
                     $('.tb-askep-imunisasi tbody').empty()
                     $('.imunisasi').remove()
-                    $.map(response.reg_periksa.pasien.riwayat_imunisasi, function (imunisasi) {
+                    $.map(response.reg_periksa.pasien.riwayat_imunisasi, function(imunisasi) {
                         if (namaImunisasi != imunisasi.master_imunisasi.nama_imunisasi) {
                             namaImunisasi = imunisasi.master_imunisasi.nama_imunisasi
                             html = '<tr class="imunisasi ' + imunisasi.kode_imunisasi + '">'
@@ -1113,7 +1733,7 @@
                     no_rkm_medis: no_rkm_medis,
                 },
                 dataType: 'JSON',
-                success: function (response) {
+                success: function(response) {
                     let option = '';
                     response?.data?.map((data) => {
                         $('#select-askep-bidan').append('<option class="opt-askep-bidan" value=' + textRawat(data.no_rawat, '-') + '>' + formatTanggal(data.tanggal) + ' - ' + data.no_rawat + '</option>')
@@ -1124,7 +1744,7 @@
                         $('.tgl_lahir').html(': ' + formatTanggal(data.reg_periksa.pasien.tgl_lahir) +
                             ' / ' +
                             data
-                                .reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
+                            .reg_periksa.umurdaftar + ' ' + data.reg_periksa.sttsumur);
                         $('.anamnesis').html(': ' + data.informasi);
                         $('.tensi').html(': ' + data.td + ' mmHG');
                         $('.nadi').html(': ' + data.nadi + ' x/menit');
@@ -1192,7 +1812,7 @@
                         $('.berhenti').text(data.berhenti);
                         $('.alasan').text(data.alasan);
                         no = 1;
-                        data.reg_periksa.pasien.riwayat_persalinan.forEach(function (riwayat) {
+                        data.reg_periksa.pasien.riwayat_persalinan.forEach(function(riwayat) {
                             html = '<tr>';
                             html += '<td>' + no + '</td>'
                             html += '<td>' + formatTanggal(riwayat.tgl_thn) + '</td>'
@@ -1203,7 +1823,7 @@
                             html += '<td> Persalinan : ' + riwayat.jenis_persalinan +
                                 '<br/> Penyulit : ' +
                                 riwayat
-                                    .penyulit +
+                                .penyulit +
                                 '</td>'
                             html += '<td> JK : ' + riwayat.jk + '<br/> BB/PB : ' + riwayat.bbpb +
                                 '<br/> Keadaaan : ' + riwayat.keadaan + '</td>'
@@ -1225,7 +1845,7 @@
                 },
                 method: 'GET',
                 dataType: 'JSON',
-                success: function (response) {
+                success: function(response) {
                     $('.no_rawat').val(response.no_rawat);
                     $('.nm_pasien').val(response.no_rkm_medis + ' / ' + response.pasien.nm_pasien + ' / ' +
                         response.umurdaftar + ' ' + response.sttsumur)

@@ -794,5 +794,249 @@
         .select2-container--open {
             z-index: 2050 !important;
         }
+
+        /* button */
+
+        /* ==========================================
+   MODERN BOOTSTRAP 5 BUTTON OVERRIDE
+   Responsive | Clean | Modern UI
+========================================== */
+
+        :root {
+            --btn-radius: 8px;
+            --btn-padding-y: 0.625rem;
+            --btn-padding-x: 1.125rem;
+            --btn-font-size: 0.875rem;
+            --btn-font-weight: 600;
+            --btn-transition: all 0.2s ease-in-out;
+        }
+
+        /* Base Button */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+
+            padding: var(--btn-padding-y) var(--btn-padding-x);
+            border-radius: var(--btn-radius);
+
+            font-size: var(--btn-font-size);
+            font-weight: var(--btn-font-weight);
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+
+            border-width: 1px;
+            transition: var(--btn-transition);
+
+            white-space: nowrap;
+            cursor: pointer;
+            box-shadow: none;
+        }
+
+        /* Hover */
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Active */
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: none !important;
+        }
+
+        /* Focus */
+        .btn:focus,
+        .btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+        }
+
+        /* Disabled */
+        .btn:disabled,
+        .btn.disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Primary */
+        .btn-primary {
+            box-shadow: 0 2px 5px rgba(13, 110, 253, 0.15);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+        }
+
+        /* Secondary */
+        .btn-secondary {
+            box-shadow: 0 2px 5px rgba(108, 117, 125, 0.12);
+        }
+
+        /* Success */
+        .btn-success {
+            box-shadow: 0 2px 5px rgba(25, 135, 84, 0.15);
+        }
+
+        /* Danger */
+        .btn-danger {
+            box-shadow: 0 2px 5px rgba(220, 53, 69, 0.15);
+        }
+
+        /* Warning */
+        .btn-warning {
+            box-shadow: 0 2px 5px rgba(255, 193, 7, 0.15);
+        }
+
+        /* Info */
+        .btn-info {
+            box-shadow: 0 2px 5px rgba(13, 202, 240, 0.15);
+        }
+
+        /* Light */
+        .btn-light {
+            border-color: #e9ecef;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        .btn-light:hover {
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+            color: #212529;
+        }
+
+        /* Dark */
+        .btn-dark {
+            box-shadow: 0 2px 5px rgba(33, 37, 41, 0.15);
+        }
+
+        /* Outline Buttons */
+        [class*="btn-outline-"] {
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        [class*="btn-outline-"]:hover {
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Link Button */
+        .btn-link {
+            box-shadow: none;
+            text-decoration: none;
+        }
+
+        .btn-link:hover {
+            transform: none;
+            text-decoration: underline;
+        }
+
+        /* Button Sizes */
+        .btn-sm {
+            --btn-radius: 6px;
+            --btn-padding-y: 0.375rem;
+            --btn-padding-x: 0.75rem;
+            --btn-font-size: 0.8rem;
+        }
+
+        .btn-lg {
+            --btn-radius: 10px;
+            --btn-padding-y: 0.8rem;
+            --btn-padding-x: 1.5rem;
+            --btn-font-size: 1rem;
+        }
+
+        /* Rounded Button */
+        .btn.rounded-pill {
+            border-radius: 50rem;
+        }
+
+        /* Icon inside Button */
+        .btn i,
+        .btn svg,
+        .btn .bi {
+            font-size: 1em;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        /* Button Group */
+        .btn-group>.btn,
+        .btn-group-vertical>.btn {
+            transform: none;
+        }
+
+        .btn-group>.btn:hover {
+            z-index: 2;
+        }
+
+        /* Block Button */
+        .btn-block,
+        .btn.w-100 {
+            width: 100%;
+        }
+
+        /* ==========================================
+   RESPONSIVE BREAKPOINTS
+========================================== */
+
+        /* Tablet */
+        @media (max-width: 991.98px) {
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .btn-lg {
+                padding: 0.75rem 1.25rem;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 575.98px) {
+            .btn {
+                --btn-radius: 7px;
+                --btn-padding-y: 0.55rem;
+                --btn-padding-x: 0.85rem;
+
+                font-size: 0.8125rem;
+                white-space: normal;
+            }
+
+            .btn-lg {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .btn-group {
+                flex-wrap: wrap;
+            }
+
+            .btn-group>.btn {
+                flex: 1 1 auto;
+            }
+
+            /* Responsive utility */
+            .btn-responsive {
+                width: 100%;
+            }
+        }
+
+        /* Touch Device */
+        @media (hover: none) {
+            .btn:hover {
+                transform: none;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .btn {
+                transition: none;
+            }
+        }
     </style>
 </head>
