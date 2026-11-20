@@ -1,13 +1,13 @@
 {{-- Komponen Notifikasi Respon Farmasi ke Ranap/Orderer (Non-Intrusive) --}}
-<div class="dropdown me-1 position-relative" id="dropdownResponFarmasi">
-    <button class="btn btn-dark position-relative border-0 py-1.5 px-2.5 rounded-3 d-flex align-items-center gap-1.5"
+<div class="dropdown position-relative" id="dropdownResponFarmasi">
+    <button class="btn btn-dark position-relative border-0 d-flex align-items-center justify-content-center"
         type="button" 
         id="btnDropdownNotifFarmasi" 
         data-bs-toggle="dropdown" 
         data-bs-display="static"
         aria-expanded="false" 
         title="Respon & Validasi Permintaan Farmasi"
-        style="background: rgba(255, 255, 255, 0.08); transition: all 0.2s;">
+        style="width: 38px; height: 38px; min-width: 38px; background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 0; transition: all 0.2s;">
         <i class="bi bi-bell-fill fs-5 text-light" id="iconBellFarmasi"></i>
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light" 
             id="badgeNotifCount" 

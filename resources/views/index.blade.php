@@ -12,14 +12,19 @@
             <img src="/erm/public/img/logo.png" alt="Logo" style="max-width: 30px" />
             {{ config('app.name') }}
         </a>
-        <div class="d-flex align-items-center ms-auto pe-3">
+        <div class="d-flex align-items-center ms-auto pe-3 gap-2">
             @include('layout.notifikasi_respon_farmasi')
+            <button class="navbar-toggler border-0 d-md-none collapsed d-flex align-items-center justify-content-center p-0" 
+                type="button"
+                data-bs-toggle="collapse" 
+                data-bs-target="#sidebarMenu" 
+                aria-controls="sidebarMenu" 
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+                style="width: 38px; height: 38px; min-width: 38px; background: rgba(255, 255, 255, 0.08); border-radius: 10px; transition: all 0.2s;">
+                <i class="bi bi-list text-light fs-4"></i>
+            </button>
         </div>
-        <button style="border-radius:0px" class="navbar-toggler position-relative d-md-none collapsed ms-2 me-3" type="button"
-            data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
     </header>
 
     <div class="container-fluid">
