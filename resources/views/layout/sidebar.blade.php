@@ -35,22 +35,53 @@
         overflow: hidden !important;
     }
 
-    /* Penanganan Responsif Mobile (< 768px) */
+    /* Penanganan Responsif Mobile (< 768px) - Smooth Drawer App Style */
     @media (max-width: 767.98px) {
-        #sidebarMenu.collapse:not(.show) {
-            display: none !important;
-        }
-        #sidebarMenu.show {
-            display: flex !important;
-            flex-direction: column !important;
+        #sidebarMenu {
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
-            width: 80% !important;
-            max-width: 320px !important;
+            bottom: 0 !important;
+            width: 285px !important;
+            max-width: 82vw !important;
             height: 100vh !important;
-            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.25) !important;
+            max-height: 100vh !important;
+            padding-top: 55px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            transform: translateX(-105%) !important;
+            transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.28s ease !important;
+            box-shadow: none !important;
             z-index: 1050 !important;
+            visibility: hidden !important;
+            background-color: #ffffff !important;
+        }
+
+        #sidebarMenu.show {
+            transform: translateX(0) !important;
+            visibility: visible !important;
+            box-shadow: 8px 0 32px rgba(15, 23, 42, 0.28) !important;
+        }
+
+        /* Backdrop Overlay Gelap Halus saat Menu Terbuka */
+        .erm-sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.28s ease, visibility 0.28s ease;
+        }
+
+        .erm-sidebar-backdrop.show {
+            opacity: 1;
+            visibility: visible;
         }
     }
 
@@ -515,3 +546,51 @@
         </div>
     </div>
 </nav>
+
+{{-- Backdrop Overlay Halus untuk Tampilan Mobile --}}
+<div id="ermSidebarBackdrop" class="erm-sidebar-backdrop" onclick="tutupSidebarMobile()"></div>
+
+<script>
+    function tutupSidebarMobile() {
+        const sidebar = document.getElementById('sidebarMenu');
+        const backdrop = document.getElementById('ermSidebarBackdrop');
+        if (sidebar) {
+            sidebar.classList.remove('show');
+            const toggler = document.querySelector('.navbar-toggler');
+            if (toggler) toggler.classList.add('collapsed');
+        }
+        if (backdrop) {
+            backdrop.classList.remove('show');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('sidebarMenu');
+        const backdrop = document.getElementById('ermSidebarBackdrop');
+        if (!sidebar || !backdrop) return;
+
+        // Amati penambahan/penghapusan class 'show' pada sidebar secara realtime
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'class') {
+                    if (sidebar.classList.contains('show') && window.innerWidth < 768) {
+                        backdrop.classList.add('show');
+                    } else {
+                        backdrop.classList.remove('show');
+                    }
+                }
+            });
+        });
+
+        observer.observe(sidebar, { attributes: true });
+
+        // Klik link menu di mobile otomatis menutup sidebar
+        sidebar.querySelectorAll('.erm-nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth < 768) {
+                    tutupSidebarMobile();
+                }
+            });
+        });
+    });
+</script>
